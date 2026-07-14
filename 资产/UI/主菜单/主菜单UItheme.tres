@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://vq2spgyu4car"]
+
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="1_wncj5"]
+
+[resource]
+default_font = ExtResource("1_wncj5")
+default_font_size = 65

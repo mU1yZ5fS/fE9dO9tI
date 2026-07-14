@@ -1,0 +1,562 @@
+[gd_scene format=3 uid="uid://bheujwt4qte1y"]
+
+[ext_resource type="Script" uid="uid://b8sogok83gf8" path="res://场景/事件界面/事件.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://blpnhbuddwmnq" path="res://场景/事件界面/状态栏.gd" id="2_nyx3b"]
+[ext_resource type="Texture2D" uid="uid://dp62vv8nr53ya" path="res://资产/UI/事件/事件背景.png" id="2_qatr3"]
+[ext_resource type="Texture2D" uid="uid://cna2yftijoqqi" path="res://资产/UI/主游戏UI/状态栏背景.png" id="3_j13k0"]
+[ext_resource type="Texture2D" uid="uid://dy8kecb6d4loa" path="res://资产/UI/主游戏UI/状态背景.png" id="4_utjew"]
+[ext_resource type="Texture2D" uid="uid://ck3yssxxbuhru" path="res://资产/UI/主游戏UI/党内支持度.png" id="5_fhk46"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="6_nyx3b"]
+[ext_resource type="Texture2D" uid="uid://bp4vslkj6seye" path="res://资产/UI/主游戏UI/人民支持度.png" id="7_ucx3m"]
+[ext_resource type="Texture2D" uid="uid://b6bb575lb8cw0" path="res://资产/UI/主游戏UI/思想自由度.png" id="8_kmrgj"]
+[ext_resource type="Texture2D" uid="uid://cbi2105s7kje2" path="res://资产/UI/主游戏UI/生活水平.png" id="9_wb404"]
+[ext_resource type="Texture2D" uid="uid://cjr8ydvc7fuh0" path="res://资产/UI/主游戏UI/国际声望.png" id="10_tkqvd"]
+[ext_resource type="Texture2D" uid="uid://cq007uywcr5pc" path="res://资产/UI/主游戏UI/特工网络.png" id="11_fkmno"]
+[ext_resource type="Texture2D" uid="uid://ccqh1h787cp5c" path="res://资产/UI/主游戏UI/与苏联关系.png" id="12_fhk46"]
+[ext_resource type="Texture2D" uid="uid://cw0u78fykq5ws" path="res://资产/UI/主游戏UI/全球影响力.png" id="12_greuv"]
+[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="13_mc307"]
+[ext_resource type="Texture2D" uid="uid://b5rynoptf3d37" path="res://资产/UI/主游戏UI/与美国关系.png" id="13_nyx3b"]
+[ext_resource type="Texture2D" uid="uid://d1fcqj3u10abp" path="res://资产/UI/事件/事件切换页面按钮.png" id="14_1vwpt"]
+[ext_resource type="Texture2D" uid="uid://dmcb1vpcgusm0" path="res://资产/UI/事件/选项未选中.png" id="15_ak082"]
+[ext_resource type="Texture2D" uid="uid://c670k2ux6ytrb" path="res://资产/UI/事件/选项选中.png" id="16_j13k0"]
+
+[node name="事件" type="Control" unique_id=135846827]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_event")
+
+[node name="状态栏" type="CanvasLayer" parent="." unique_id=1811485340]
+script = ExtResource("2_nyx3b")
+
+[node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=399054322]
+offset_right = 1920.0
+offset_bottom = 78.0
+texture = ExtResource("3_j13k0")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="状态背景" type="TextureRect" parent="状态栏" unique_id=35859738]
+offset_left = 40.0
+offset_top = 16.0
+offset_right = 246.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="党内支持度图标" type="TextureRect" parent="状态栏" unique_id=325945404]
+offset_left = 44.0
+offset_top = 22.0
+offset_right = 90.0
+offset_bottom = 65.0
+texture = ExtResource("5_fhk46")
+metadata/_edit_use_anchors_ = true
+
+[node name="党内支持度" type="Label" parent="状态栏" unique_id=791112701]
+offset_left = 73.0
+offset_top = 13.0
+offset_right = 222.0
+offset_bottom = 88.0
+scale = Vector2(0.8, 0.8)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="人民支持度背景" type="TextureRect" parent="状态栏" unique_id=612467183]
+offset_left = 216.0
+offset_top = 16.0
+offset_right = 422.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="人民支持度图标" type="TextureRect" parent="状态栏" unique_id=785991149]
+offset_left = 224.0
+offset_top = 22.0
+offset_right = 270.0
+offset_bottom = 65.0
+texture = ExtResource("7_ucx3m")
+metadata/_edit_use_anchors_ = true
+
+[node name="人民支持度" type="Label" parent="状态栏" unique_id=1938744084]
+offset_left = 256.0
+offset_top = 16.0
+offset_right = 405.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="思想自由度背景" type="TextureRect" parent="状态栏" unique_id=861093328]
+offset_left = 392.0
+offset_top = 16.0
+offset_right = 598.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="思想自由度图标" type="TextureRect" parent="状态栏" unique_id=1636105753]
+offset_left = 400.0
+offset_top = 22.0
+offset_right = 446.0
+offset_bottom = 65.0
+texture = ExtResource("8_kmrgj")
+metadata/_edit_use_anchors_ = true
+
+[node name="思想自由度" type="Label" parent="状态栏" unique_id=1323610394]
+offset_left = 431.99997
+offset_top = 16.0
+offset_right = 581.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="生活水平背景" type="TextureRect" parent="状态栏" unique_id=1799401652]
+offset_left = 568.0
+offset_top = 16.0
+offset_right = 774.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="生活水平图标" type="TextureRect" parent="状态栏" unique_id=1579219336]
+offset_left = 576.0
+offset_top = 22.0
+offset_right = 622.0
+offset_bottom = 65.0
+texture = ExtResource("9_wb404")
+metadata/_edit_use_anchors_ = true
+
+[node name="生活水平" type="Label" parent="状态栏" unique_id=1338355095]
+offset_left = 608.0
+offset_top = 16.0
+offset_right = 757.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="国际声望背景" type="TextureRect" parent="状态栏" unique_id=1804913943]
+offset_left = 744.0
+offset_top = 16.0
+offset_right = 950.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="国际声望图标" type="TextureRect" parent="状态栏" unique_id=1855366561]
+offset_left = 752.0
+offset_top = 22.0
+offset_right = 798.0
+offset_bottom = 65.0
+texture = ExtResource("10_tkqvd")
+metadata/_edit_use_anchors_ = true
+
+[node name="国际声望" type="Label" parent="状态栏" unique_id=785592405]
+offset_left = 784.0
+offset_top = 16.0
+offset_right = 933.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="特工网络背景" type="TextureRect" parent="状态栏" unique_id=1824081930]
+offset_left = 920.0
+offset_top = 16.0
+offset_right = 1126.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="特工网络图标" type="TextureRect" parent="状态栏" unique_id=254257390]
+offset_left = 926.0
+offset_top = 22.0
+offset_right = 972.0
+offset_bottom = 65.0
+texture = ExtResource("11_fkmno")
+metadata/_edit_use_anchors_ = true
+
+[node name="特工网络" type="Label" parent="状态栏" unique_id=708210896]
+offset_left = 952.0
+offset_top = 16.0
+offset_right = 1101.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="全球影响力背景" type="TextureRect" parent="状态栏" unique_id=1410357165]
+offset_left = 1096.0
+offset_top = 16.0
+offset_right = 1302.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="全球影响力图标" type="TextureRect" parent="状态栏" unique_id=1961605447]
+offset_left = 1104.0
+offset_top = 22.0
+offset_right = 1150.0
+offset_bottom = 65.0
+texture = ExtResource("12_greuv")
+metadata/_edit_use_anchors_ = true
+
+[node name="全球影响力" type="Label" parent="状态栏" unique_id=1911376281]
+offset_left = 1132.0
+offset_top = 16.0
+offset_right = 1281.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="预算背景" type="TextureRect" parent="状态栏" unique_id=1869908639]
+offset_left = 1624.0
+offset_top = 16.0
+offset_right = 1830.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="与苏联关系背景" type="TextureRect" parent="状态栏" unique_id=978421523]
+offset_left = 1272.0
+offset_top = 16.0
+offset_right = 1478.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="与苏联关系图标" type="TextureRect" parent="状态栏" unique_id=1003925513]
+offset_left = 1280.0
+offset_top = 22.0
+offset_right = 1326.0
+offset_bottom = 65.0
+texture = ExtResource("12_fhk46")
+metadata/_edit_use_anchors_ = true
+
+[node name="与苏联关系" type="Label" parent="状态栏" unique_id=414594291]
+offset_left = 1311.0
+offset_top = 16.0
+offset_right = 1460.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="与美国关系背景" type="TextureRect" parent="状态栏" unique_id=1051633532]
+offset_left = 1448.0
+offset_top = 16.0
+offset_right = 1654.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_utjew")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="与美国关系图标" type="TextureRect" parent="状态栏" unique_id=1981887243]
+offset_left = 1456.0
+offset_top = 22.0
+offset_right = 1502.0
+offset_bottom = 65.0
+texture = ExtResource("13_nyx3b")
+metadata/_edit_use_anchors_ = true
+
+[node name="与美国关系" type="Label" parent="状态栏" unique_id=1340232081]
+offset_left = 1487.0
+offset_top = 16.0
+offset_right = 1636.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="预算图标" type="TextureRect" parent="状态栏" unique_id=895743445]
+offset_left = 1632.0
+offset_top = 24.0
+offset_right = 1678.0
+offset_bottom = 67.0
+texture = ExtResource("13_mc307")
+metadata/_edit_use_anchors_ = true
+
+[node name="预算" type="Label" parent="状态栏" unique_id=714927941]
+offset_left = 1661.0
+offset_top = 16.0
+offset_right = 1810.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="事件背景" type="TextureRect" parent="." unique_id=1550529252]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_qatr3")
+
+[node name="事件标题" type="Label" parent="." unique_id=114266937]
+layout_mode = 1
+offset_left = 523.0
+offset_top = 87.0
+offset_right = 1283.0
+offset_bottom = 137.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 55
+text = "事件标题"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="事件描述" type="Label" parent="." unique_id=1155274145]
+layout_mode = 1
+offset_left = 55.0
+offset_top = 150.0
+offset_right = 1505.0
+offset_bottom = 1028.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 29
+text = "事件描述"
+autowrap_mode = 3
+
+[node name="事件切换页面按钮" type="TextureButton" parent="." unique_id=1521991204]
+layout_mode = 0
+offset_left = 1568.0
+offset_top = 661.0
+offset_right = 1860.0
+offset_bottom = 953.0
+texture_normal = ExtResource("14_1vwpt")
+
+[node name="事件切换页面按钮2" type="TextureButton" parent="." unique_id=1266993698]
+layout_mode = 0
+offset_left = 1768.0
+offset_top = 641.0
+offset_right = 1899.0
+offset_bottom = 772.0
+rotation = 3.1415927
+texture_normal = ExtResource("14_1vwpt")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="事件图片" type="TextureRect" parent="." unique_id=366794167]
+layout_mode = 0
+offset_left = 1542.0
+offset_top = 97.0
+offset_right = 1876.0
+offset_bottom = 522.0
+
+[node name="事件选项" type="Control" parent="." unique_id=1724481168]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="选项1文本" type="Label" parent="事件选项" unique_id=370598662]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 193.0
+offset_right = 1221.0
+offset_bottom = 248.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 48
+text = "选项1文本"
+
+[node name="选项1" type="TextureButton" parent="事件选项" unique_id=1870156611]
+layout_mode = 0
+offset_left = 1256.0
+offset_top = 170.0
+offset_right = 1405.0
+offset_bottom = 268.0
+toggle_mode = true
+texture_normal = ExtResource("15_ak082")
+texture_pressed = ExtResource("16_j13k0")
+texture_hover = ExtResource("16_j13k0")
+
+[node name="选项2文本" type="Label" parent="事件选项" unique_id=358251981]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 321.0
+offset_right = 1221.0
+offset_bottom = 376.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 48
+text = "选项1文本"
+
+[node name="选项2" type="TextureButton" parent="事件选项" unique_id=1886280644]
+layout_mode = 0
+offset_left = 1256.0
+offset_top = 298.0
+offset_right = 1405.0
+offset_bottom = 396.0
+toggle_mode = true
+texture_normal = ExtResource("15_ak082")
+texture_pressed = ExtResource("16_j13k0")
+texture_hover = ExtResource("16_j13k0")
+
+[node name="选项3文本" type="Label" parent="事件选项" unique_id=1627895579]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 449.0
+offset_right = 1221.0
+offset_bottom = 504.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 48
+text = "选项1文本"
+
+[node name="选项3" type="TextureButton" parent="事件选项" unique_id=2048283484]
+layout_mode = 0
+offset_left = 1256.0
+offset_top = 426.0
+offset_right = 1405.0
+offset_bottom = 524.0
+toggle_mode = true
+texture_normal = ExtResource("15_ak082")
+texture_pressed = ExtResource("16_j13k0")
+texture_hover = ExtResource("16_j13k0")
+
+[node name="选项4文本" type="Label" parent="事件选项" unique_id=2107305291]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 577.0
+offset_right = 1221.0
+offset_bottom = 632.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 48
+text = "选项1文本"
+
+[node name="选项4" type="TextureButton" parent="事件选项" unique_id=2137781419]
+layout_mode = 0
+offset_left = 1256.0
+offset_top = 554.0
+offset_right = 1405.0
+offset_bottom = 652.0
+toggle_mode = true
+texture_normal = ExtResource("15_ak082")
+texture_pressed = ExtResource("16_j13k0")
+texture_hover = ExtResource("16_j13k0")
+
+[node name="选项5文本" type="Label" parent="事件选项" unique_id=1529716406]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 705.0
+offset_right = 1221.0
+offset_bottom = 760.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 48
+text = "选项1文本"
+
+[node name="选项5" type="TextureButton" parent="事件选项" unique_id=186843578]
+layout_mode = 0
+offset_left = 1256.0
+offset_top = 682.0
+offset_right = 1405.0
+offset_bottom = 780.0
+toggle_mode = true
+texture_normal = ExtResource("15_ak082")
+texture_pressed = ExtResource("16_j13k0")
+texture_hover = ExtResource("16_j13k0")
+
+[node name="选项6文本" type="Label" parent="事件选项" unique_id=2111346257]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 833.0
+offset_right = 1221.0
+offset_bottom = 888.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 48
+text = "选项1文本"
+
+[node name="选项6" type="TextureButton" parent="事件选项" unique_id=1859314566]
+layout_mode = 0
+offset_left = 1256.0
+offset_top = 810.0
+offset_right = 1405.0
+offset_bottom = 908.0
+toggle_mode = true
+texture_normal = ExtResource("15_ak082")
+texture_pressed = ExtResource("16_j13k0")
+texture_hover = ExtResource("16_j13k0")
+
+[node name="事件结果" type="Control" parent="." unique_id=1580412305]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="事件结果描述" type="Label" parent="事件结果" unique_id=1751352144]
+layout_mode = 1
+offset_left = 55.0
+offset_top = 150.0
+offset_right = 1505.0
+offset_bottom = 1028.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_nyx3b")
+theme_override_font_sizes/font_size = 29
+text = "事件描述"
+autowrap_mode = 3

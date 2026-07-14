@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://d2qkifpx3o8pl"]
+
+[ext_resource type="Script" uid="uid://cdg7a5ltf7001" path="res://场景/科研界面/科研.gd" id="1_13msm"]
+[ext_resource type="Texture2D" uid="uid://dknh0tkp0npsn" path="res://资产/UI/科研/科研背景.png" id="1_xqk0p"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="2_ujbyv"]
+
+[node name="Control" type="Control" unique_id=81003301]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_13msm")
+
+[node name="科研背景" type="TextureRect" parent="." unique_id=1361839528]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_xqk0p")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="返回外交" type="TextureButton" parent="." unique_id=1865736311]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 56.0
+offset_right = 159.0
+offset_bottom = 168.0
+texture_normal = ExtResource("2_ujbyv")
+
+[connection signal="pressed" from="返回外交" to="." method="_on_返回外交_pressed"]

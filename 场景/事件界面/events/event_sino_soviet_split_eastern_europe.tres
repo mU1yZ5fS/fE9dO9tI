@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_r7kwp"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_aerfb"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_gip52"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_673da"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_3hpei"]
+
+[sub_resource type="Resource" id="Resource_r7kwp"]
+script = ExtResource("3_gip52")
+type = 1
+key = "war_state"
+
+[sub_resource type="Resource" id="Resource_aerfb"]
+script = ExtResource("3_gip52")
+type = 1
+key = "war_pressure"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_gip52"]
+script = ExtResource("3_gip52")
+type = 2
+key = "ovd"
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_673da"]
+script = ExtResource("3_gip52")
+type = 2
+key = "sev"
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_3hpei"]
+script = ExtResource("2_aerfb")
+text = "保持中立"
+effects = Array[ExtResource("3_gip52")]([SubResource("Resource_r7kwp"), SubResource("Resource_aerfb"), SubResource("Resource_gip52"), SubResource("Resource_673da")])
+result_text = "我们决定在这场争端中保持中立，不偏袒任何一方。"
+
+[sub_resource type="Resource" id="Resource_otrt1"]
+script = ExtResource("3_gip52")
+type = 8
+key = "1"
+value = -200.0
+
+[sub_resource type="Resource" id="Resource_bylha"]
+script = ExtResource("3_gip52")
+type = 1
+key = "war_state"
+
+[sub_resource type="Resource" id="Resource_nvfo7"]
+script = ExtResource("3_gip52")
+type = 1
+key = "war_pressure"
+value = 1000.0
+
+[sub_resource type="Resource" id="Resource_h65pt"]
+script = ExtResource("3_gip52")
+type = 2
+key = "sev"
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_xpcu2"]
+script = ExtResource("4_673da")
+
+[sub_resource type="Resource" id="Resource_vciew"]
+script = ExtResource("4_673da")
+type = 18
+children = Array[ExtResource("4_673da")]([SubResource("Resource_xpcu2")])
+
+[sub_resource type="Resource" id="Resource_83k3d"]
+script = ExtResource("2_aerfb")
+text = "倒向美国"
+disabled_text = "需要：25"
+enable_condition = SubResource("Resource_vciew")
+effects = Array[ExtResource("3_gip52")]([SubResource("Resource_otrt1"), SubResource("Resource_bylha"), SubResource("Resource_nvfo7"), SubResource("Resource_h65pt")])
+result_text = "与其在两个社会主义大国之间左右为难，不如彻底转向西方。"
+
+[resource]
+script = ExtResource("5_3hpei")
+event_id = "sino_soviet_split_eastern_europe"
+title = "东方抉择"
+description = "中苏同盟已经名存实亡。东欧的社会主义国家必须在两个老大哥之间做出选择。"
+options = Array[ExtResource("2_aerfb")]([SubResource("Resource_3hpei"), SubResource("Resource_83k3d")])

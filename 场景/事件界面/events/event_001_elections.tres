@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_pbd7v"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_582so"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_cg7xm"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_xyfh0"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_wcf6q"]
+
+[sub_resource type="Resource" id="Resource_e2y4c"]
+script = ExtResource("3_cg7xm")
+type = 15
+key = "election_free"
+
+[sub_resource type="Resource" id="Resource_m5m3q"]
+script = ExtResource("2_582so")
+text = "Do not interfere and wait for results"
+effects = Array[ExtResource("3_cg7xm")]([SubResource("Resource_e2y4c")])
+result_text = "The election proceeds naturally. The results depend on people support and party dynamics."
+
+[sub_resource type="Resource" id="Resource_7elp3"]
+script = ExtResource("3_cg7xm")
+key = "people_support"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_yimyg"]
+script = ExtResource("3_cg7xm")
+key = "party_support"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_hq2k1"]
+script = ExtResource("4_xyfh0")
+key = "party_support"
+value = 500.0
+
+[sub_resource type="Resource" id="Resource_up5mr"]
+script = ExtResource("2_582so")
+text = "Drive civil servants to the vote"
+disabled_text = "The party blocks such brazen intervention"
+enable_condition = SubResource("Resource_hq2k1")
+effects = Array[ExtResource("3_cg7xm")]([SubResource("Resource_7elp3"), SubResource("Resource_yimyg")])
+result_text = "With the promise of bonuses, payouts and threats of layoffs and downgrades, we managed to get the civil servants to come to the polls and vote for our party. But people will long remember such an open scam."
+
+[sub_resource type="Resource" id="Resource_uaals"]
+script = ExtResource("3_cg7xm")
+key = "agents"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_l8p3h"]
+script = ExtResource("3_cg7xm")
+type = 10
+key = "1"
+value = 150.0
+
+[sub_resource type="Resource" id="Resource_ydy2g"]
+script = ExtResource("4_xyfh0")
+key = "agents"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_7rwql"]
+script = ExtResource("2_582so")
+text = "Falsify results"
+disabled_text = "The intelligence services do not have enough strength"
+enable_condition = SubResource("Resource_ydy2g")
+effects = Array[ExtResource("3_cg7xm")]([SubResource("Resource_uaals"), SubResource("Resource_l8p3h")])
+result_text = "The special services did a great job getting places for us. Only they are very tired."
+
+[resource]
+script = ExtResource("5_wcf6q")
+event_id = "npc_elections"
+title = "Elections, Elections, Candidates are..."
+description = "It is the day of the national elections in the NPC. And since we occupy a dominant position in Chinese politics, we can intervene a little in their conduct, so that everything will remain same. Or just rely on the Chinese people's faith in us."
+options = Array[ExtResource("2_582so")]([SubResource("Resource_m5m3q"), SubResource("Resource_up5mr"), SubResource("Resource_7rwql")])

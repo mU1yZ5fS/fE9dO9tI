@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://cb1wvmuscp64r"]
+
+[ext_resource type="Texture2D" uid="uid://7tovnybvehrj" path="" id="1_1nt0e"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="" id="1_t8q0p"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="" id="2_111s4"]
+[ext_resource type="Script" uid="uid://din8rhkhfxup5" path="" id="2_niyhs"]
+[ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="" id="4_uxlqu"]
+
+[sub_resource type="Theme" id="Theme_vg3t2"]
+default_font = ExtResource("1_t8q0p")
+
+[node name="关于" type="Control" unique_id=1101911459]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_vg3t2")
+script = ExtResource("2_niyhs")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1846426357]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_1nt0e")
+
+[node name="Label" type="Label" parent="." unique_id=1015949005]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 32.0
+offset_right = 632.0
+offset_bottom = 88.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "文本基于GKchP汉化组与改版制作组"
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1030888446]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 56.0
+offset_right = 271.0
+offset_bottom = 168.0
+texture_normal = ExtResource("2_111s4")
+texture_hover = ExtResource("4_uxlqu")
+
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]

@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_jws1t"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_t8lsk"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_8aom8"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="4_ab2t2"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="5_8rfvq"]
+
+[sub_resource type="Resource" id="Resource_ew8b3"]
+script = ExtResource("3_8aom8")
+key = "people_support"
+value = -20.0
+
+[sub_resource type="Resource" id="Resource_4ehcb"]
+script = ExtResource("2_t8lsk")
+text = "Do nothing. Jiang Qing and Xiaoping each other stand"
+effects = Array[ExtResource("3_8aom8")]([SubResource("Resource_ew8b3")])
+result_text = "In the media controlled by Jiang Qing's group, active persecution of Deng Xiaoping and his ideas began. Deng was stripped of all posts, though his party card was left with him."
+
+[sub_resource type="Resource" id="Resource_6030b"]
+script = ExtResource("3_8aom8")
+key = "party_support"
+value = 80.0
+
+[sub_resource type="Resource" id="Resource_ipnox"]
+script = ExtResource("3_8aom8")
+key = "people_support"
+value = -20.0
+
+[sub_resource type="Resource" id="Resource_mhrxq"]
+script = ExtResource("2_t8lsk")
+text = "Join Xiaoping's persecution"
+effects = Array[ExtResource("3_8aom8")]([SubResource("Resource_6030b"), SubResource("Resource_ipnox")])
+result_text = "The new Premier Hua Guofeng also joined the persecution, saying that Deng's reformist ideas lead China to capitalist slavery."
+
+[sub_resource type="Resource" id="Resource_20hm2"]
+script = ExtResource("3_8aom8")
+key = "people_support"
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_y67ye"]
+script = ExtResource("3_8aom8")
+key = "party_support"
+value = -70.0
+
+[sub_resource type="Resource" id="Resource_70uo1"]
+script = ExtResource("2_t8lsk")
+text = "Stand up for Xiaoping"
+effects = Array[ExtResource("3_8aom8")]([SubResource("Resource_20hm2"), SubResource("Resource_y67ye")])
+result_text = "You, however, stood up for him, arguing that Xiaoping made mistakes but admitted them, helped China develop. This caused discontent among the party top, but it appealed to the people."
+
+[resource]
+script = ExtResource("4_ab2t2")
+event_id = "criticize_deng"
+title = "Criticize Deng and fight with right!"
+description = "The death of Zhou Enlai seriously affected the position of his protege Deng Xiaoping, who was left without the patronage of the former prime minister. He is now under constant attack by the radicals headed by Mao Zedong's wife Jiang Qing... And what should we do, given that Hua Guofeng has never been on good terms with either Jiang Qing or Xiaoping?"
+options = Array[ExtResource("2_t8lsk")]([SubResource("Resource_4ehcb"), SubResource("Resource_mhrxq"), SubResource("Resource_70uo1")])

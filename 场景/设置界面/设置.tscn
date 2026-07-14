@@ -1,0 +1,502 @@
+[gd_scene format=3 uid="uid://b6l0sieu63sgv"]
+
+[ext_resource type="Texture2D" uid="uid://dghufbk22c6mf" path="" id="1_cq6xe"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="" id="1_ioabl"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="" id="2_0f5pc"]
+[ext_resource type="Script" uid="uid://d2oyrxvvkv6pw" path="" id="2_d8khx"]
+[ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="" id="3_ioabl"]
+[ext_resource type="Texture2D" uid="uid://bbqmlpf484xsg" path="" id="4_d8khx"]
+[ext_resource type="Texture2D" uid="uid://cecvpe5obv57k" path="" id="5_v75l0"]
+[ext_resource type="Texture2D" uid="uid://ddlatnm5n6orn" path="" id="6_4lujy"]
+[ext_resource type="Texture2D" uid="uid://cyvh88oq1sybe" path="" id="7_cm5al"]
+[ext_resource type="Script" uid="uid://witg74bkog08" path="" id="7_v75l0"]
+[ext_resource type="Texture2D" uid="uid://gu82xjrtnb7e" path="" id="8_owh4n"]
+[ext_resource type="Texture2D" uid="uid://cp3ou6l8whjic" path="" id="12_cm5al"]
+[ext_resource type="Texture2D" uid="uid://l7yjfwrmjs3" path="" id="13_owh4n"]
+[ext_resource type="Texture2D" uid="uid://8eufacjq8ce2" path="" id="14_owh4n"]
+[ext_resource type="PackedScene" uid="uid://dvrbfsm4ixjq6" path="" id="15_5n7di"]
+[ext_resource type="PackedScene" uid="uid://er1exkjd2a6b" path="" id="17_ujnel"]
+[ext_resource type="Texture2D" uid="uid://cpwi1qdw7s3s" path="" id="18_upx2b"]
+
+[sub_resource type="Theme" id="Theme_34yt3"]
+default_font = ExtResource("1_ioabl")
+
+[node name="设置" type="Control" unique_id=1989100062]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_34yt3")
+script = ExtResource("2_d8khx")
+
+[node name="背景图" type="TextureRect" parent="." unique_id=1670569175]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_cq6xe")
+
+[node name="返回" type="TextureButton" parent="." unique_id=546953166]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 16.0
+offset_right = 543.0
+offset_bottom = 128.0
+texture_normal = ExtResource("2_0f5pc")
+texture_hover = ExtResource("3_ioabl")
+
+[node name="音频信息背景图" type="TextureRect" parent="." unique_id=738632101]
+layout_mode = 0
+offset_left = 648.0
+offset_top = 256.0
+offset_right = 1266.0
+offset_bottom = 422.0
+texture = ExtResource("4_d8khx")
+script = ExtResource("7_v75l0")
+
+[node name="减小1音量" type="TextureButton" parent="音频信息背景图" unique_id=1023150651]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 88.0
+offset_right = 174.0
+offset_bottom = 140.0
+texture_normal = ExtResource("5_v75l0")
+
+[node name="减小10音量" type="TextureButton" parent="音频信息背景图" unique_id=1609073142]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 88.0
+offset_right = 86.0
+offset_bottom = 140.0
+texture_normal = ExtResource("6_4lujy")
+
+[node name="增大1音量" type="TextureButton" parent="音频信息背景图" unique_id=1639350392]
+layout_mode = 0
+offset_left = 451.0
+offset_top = 88.0
+offset_right = 529.0
+offset_bottom = 140.0
+texture_normal = ExtResource("7_cm5al")
+
+[node name="增大10音量" type="TextureButton" parent="音频信息背景图" unique_id=98293738]
+layout_mode = 0
+offset_left = 531.0
+offset_top = 88.0
+offset_right = 609.0
+offset_bottom = 140.0
+texture_normal = ExtResource("8_owh4n")
+
+[node name="歌曲名" type="Label" parent="音频信息背景图" unique_id=1385000151]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 612.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="音量值" type="Label" parent="音频信息背景图" unique_id=1379477664]
+layout_mode = 0
+offset_left = 242.0
+offset_top = 73.0
+offset_right = 342.0
+offset_bottom = 149.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="循环播放" type="TextureButton" parent="." unique_id=1384500785]
+layout_mode = 0
+offset_left = 1376.0
+offset_top = 37.0
+offset_right = 1976.0
+offset_bottom = 637.0
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("12_cm5al")
+
+[node name="随机播放" type="TextureButton" parent="." unique_id=763706404]
+layout_mode = 0
+offset_left = 1375.9999
+offset_top = 183.99998
+offset_right = 1975.9999
+offset_bottom = 784.0
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("13_owh4n")
+
+[node name="左歌名背景" type="TextureRect" parent="." unique_id=1099629759]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 32.0
+offset_right = 386.0
+offset_bottom = 1056.0
+texture = ExtResource("14_owh4n")
+
+[node name="右歌名背景" type="TextureRect" parent="." unique_id=1403145163]
+layout_mode = 0
+offset_left = 1544.0
+offset_top = 40.0
+offset_right = 1906.0
+offset_bottom = 1064.0
+texture = ExtResource("14_owh4n")
+
+[node name="左1" parent="." unique_id=1150421874 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 29.0
+offset_top = 91.0
+offset_right = 29.639984
+offset_bottom = 91.04
+
+[node name="左2" parent="." unique_id=724239443 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 29.0
+offset_top = 137.0
+offset_right = 29.639984
+offset_bottom = 137.04001
+
+[node name="左3" parent="." unique_id=2084800308 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 183.0
+offset_right = 30.639984
+offset_bottom = 183.04001
+
+[node name="左4" parent="." unique_id=1889329450 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 229.0
+offset_right = 30.639984
+offset_bottom = 229.04001
+
+[node name="左5" parent="." unique_id=2082146679 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 275.0
+offset_right = 30.639984
+offset_bottom = 275.04
+
+[node name="左6" parent="." unique_id=470238914 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 29.0
+offset_top = 320.0
+offset_right = 29.639984
+offset_bottom = 320.04
+
+[node name="左7" parent="." unique_id=994115845 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 367.0
+offset_right = 30.639984
+offset_bottom = 367.04
+
+[node name="左8" parent="." unique_id=2042188561 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 412.0
+offset_right = 30.639984
+offset_bottom = 412.04
+
+[node name="左9" parent="." unique_id=2027887480 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 457.0
+offset_right = 30.639984
+offset_bottom = 457.04
+
+[node name="左10" parent="." unique_id=1204563722 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 503.0
+offset_right = 30.639984
+offset_bottom = 503.04
+
+[node name="左11" parent="." unique_id=1170904609 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 548.0
+offset_right = 30.639984
+offset_bottom = 548.04
+
+[node name="左12" parent="." unique_id=970671349 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 595.0
+offset_right = 30.639984
+offset_bottom = 595.04
+
+[node name="左13" parent="." unique_id=2122865857 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 641.0
+offset_right = 30.639984
+offset_bottom = 641.04
+
+[node name="左14" parent="." unique_id=1596326702 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 687.0
+offset_right = 30.639984
+offset_bottom = 687.04
+
+[node name="左15" parent="." unique_id=24985041 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 732.0
+offset_right = 30.639984
+offset_bottom = 732.04
+
+[node name="左16" parent="." unique_id=1008951576 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 777.0
+offset_right = 30.639984
+offset_bottom = 777.04
+
+[node name="左17" parent="." unique_id=859830744 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 824.0
+offset_right = 30.639984
+offset_bottom = 824.04
+
+[node name="左18" parent="." unique_id=12481183 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 870.0
+offset_right = 30.639984
+offset_bottom = 870.04
+
+[node name="左19" parent="." unique_id=279822888 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 916.0
+offset_right = 30.639984
+offset_bottom = 916.04
+
+[node name="左20" parent="." unique_id=2029931239 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 961.0
+offset_right = 30.639984
+offset_bottom = 961.04
+
+[node name="右1" parent="." unique_id=312306804 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 100.0
+offset_right = 1549.64
+offset_bottom = 100.04
+
+[node name="右2" parent="." unique_id=1458589024 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 146.0
+offset_right = 1549.64
+offset_bottom = 146.04001
+
+[node name="右3" parent="." unique_id=986461703 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 191.0
+offset_right = 1549.64
+offset_bottom = 191.04001
+
+[node name="右4" parent="." unique_id=1232040952 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 237.0
+offset_right = 1549.64
+offset_bottom = 237.04001
+
+[node name="右5" parent="." unique_id=1230280776 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 282.0
+offset_right = 1549.64
+offset_bottom = 282.04
+
+[node name="右6" parent="." unique_id=1866140294 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 329.0
+offset_right = 1549.64
+offset_bottom = 329.04
+
+[node name="右7" parent="." unique_id=1023951153 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 375.0
+offset_right = 1549.64
+offset_bottom = 375.04
+
+[node name="右8" parent="." unique_id=1667640839 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 420.0
+offset_right = 1549.64
+offset_bottom = 420.04
+
+[node name="右9" parent="." unique_id=1602105291 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 465.0
+offset_right = 1549.64
+offset_bottom = 465.04
+
+[node name="右10" parent="." unique_id=1455121372 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 511.0
+offset_right = 1549.64
+offset_bottom = 511.04
+
+[node name="右11" parent="." unique_id=1818528145 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 558.0
+offset_right = 1549.64
+offset_bottom = 558.04
+
+[node name="右12" parent="." unique_id=461034802 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 603.0
+offset_right = 1549.64
+offset_bottom = 603.04
+
+[node name="右13" parent="." unique_id=1411106359 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 650.0
+offset_right = 1549.64
+offset_bottom = 650.04
+
+[node name="右14" parent="." unique_id=1980655490 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 695.0
+offset_right = 1549.64
+offset_bottom = 695.04
+
+[node name="右15" parent="." unique_id=907316809 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 740.0
+offset_right = 1549.64
+offset_bottom = 740.04
+
+[node name="右16" parent="." unique_id=590497421 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 786.0
+offset_right = 1549.64
+offset_bottom = 786.04
+
+[node name="右17" parent="." unique_id=1884410080 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 833.0
+offset_right = 1549.64
+offset_bottom = 833.04
+
+[node name="右18" parent="." unique_id=1628218219 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 879.0
+offset_right = 1549.64
+offset_bottom = 879.04
+
+[node name="右19" parent="." unique_id=878317924 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 925.0
+offset_right = 1549.64
+offset_bottom = 925.04
+
+[node name="右20" parent="." unique_id=175579782 instance=ExtResource("15_5n7di")]
+layout_mode = 1
+offset_left = 1549.0
+offset_top = 970.0
+offset_right = 1549.64
+offset_bottom = 970.04
+
+[node name="专辑右翻页" type="TextureButton" parent="." unique_id=1783096521]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 915.99994
+offset_right = 1032.0
+offset_bottom = 1516.0
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("18_upx2b")
+
+[node name="专辑" parent="." unique_id=1114735453 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 432.0
+offset_top = 177.0
+offset_right = 432.96
+offset_bottom = 177.12
+
+[node name="专辑2" parent="." unique_id=1505516132 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 432.0
+offset_top = 329.0
+offset_right = 432.96
+offset_bottom = 329.12
+
+[node name="专辑3" parent="." unique_id=1031607644 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 432.0
+offset_top = 497.0
+offset_right = 432.96
+offset_bottom = 497.12
+
+[node name="专辑4" parent="." unique_id=13602096 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 432.0
+offset_top = 649.0
+offset_right = 432.96
+offset_bottom = 649.12
+
+[node name="专辑5" parent="." unique_id=1719844588 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 432.0
+offset_top = 786.0
+offset_right = 432.96
+offset_bottom = 786.12
+
+[node name="专辑6" parent="." unique_id=516802386 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 1376.0
+offset_top = 324.0
+offset_right = 1376.96
+offset_bottom = 324.12
+
+[node name="专辑7" parent="." unique_id=1300708466 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 1376.0
+offset_top = 499.0
+offset_right = 1376.96
+offset_bottom = 499.12
+
+[node name="专辑8" parent="." unique_id=476233216 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 1376.0
+offset_top = 681.0
+offset_right = 1376.96
+offset_bottom = 681.12
+
+[node name="专辑9" parent="." unique_id=188910054 groups=["专辑"] instance=ExtResource("17_ujnel")]
+layout_mode = 1
+offset_left = 1376.0
+offset_top = 833.0
+offset_right = 1376.96
+offset_bottom = 833.12
+
+[connection signal="pressed" from="返回" to="." method="_on_返回_pressed"]
+[connection signal="pressed" from="音频信息背景图/减小1音量" to="音频信息背景图" method="_on_减小1音量_pressed"]
+[connection signal="pressed" from="音频信息背景图/减小10音量" to="音频信息背景图" method="_on_减小10音量_pressed"]
+[connection signal="pressed" from="音频信息背景图/增大1音量" to="音频信息背景图" method="_on_增大1音量_pressed"]
+[connection signal="pressed" from="音频信息背景图/增大10音量" to="音频信息背景图" method="_on_增大10音量_pressed"]

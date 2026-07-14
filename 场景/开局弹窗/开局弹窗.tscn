@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://nah0k1r2k8jt"]
+
+[ext_resource type="Texture2D" uid="uid://cyeer5fmqc6lb" path="res://资产/UI/开局弹窗/背景.png" id="1_gxbbg"]
+
+[node name="开局弹窗" type="Control" unique_id=768448040]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -977.0
+offset_bottom = -638.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="背景" type="TextureRect" parent="." unique_id=1591847517]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_gxbbg")

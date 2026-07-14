@@ -1,0 +1,144 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_8bik7"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_ej2j1"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_5caad"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_kpjrn"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_iymjb"]
+
+[sub_resource type="Resource" id="Resource_uuv4e"]
+script = ExtResource("3_5caad")
+type = 1
+key = "industry"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_rp3s3"]
+script = ExtResource("3_5caad")
+key = "money"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_k2ejb"]
+script = ExtResource("2_ej2j1")
+text = "Urgently allocate money for development"
+effects = Array[ExtResource("3_5caad")]([SubResource("Resource_uuv4e"), SubResource("Resource_rp3s3")])
+result_text = "Large funds from the budget were urgently allocated for the modernization of the industry, the purchase of imported technologies and the involvement of specialists in this area. The problem starts to be solved"
+
+[sub_resource type="Resource" id="Resource_vheo4"]
+script = ExtResource("3_5caad")
+type = 1
+key = "industry"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_qllyf"]
+script = ExtResource("3_5caad")
+key = "living_standard"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_lk7yf"]
+script = ExtResource("3_5caad")
+type = 8
+key = "0"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_1xefh"]
+script = ExtResource("4_kpjrn")
+type = 8
+key = "0"
+value = 60.0
+
+[sub_resource type="Resource" id="Resource_bo7ma"]
+script = ExtResource("4_kpjrn")
+key = "development"
+value = 13.0
+
+[sub_resource type="Resource" id="Resource_qbvck"]
+script = ExtResource("4_kpjrn")
+type = 14
+key = "sez"
+
+[sub_resource type="Resource" id="Resource_wbur8"]
+script = ExtResource("4_kpjrn")
+type = 19
+children = Array[ExtResource("4_kpjrn")]([SubResource("Resource_bo7ma"), SubResource("Resource_qbvck")])
+
+[sub_resource type="Resource" id="Resource_jxtnr"]
+script = ExtResource("4_kpjrn")
+type = 18
+children = Array[ExtResource("4_kpjrn")]([SubResource("Resource_1xefh"), SubResource("Resource_wbur8")])
+
+[sub_resource type="Resource" id="Resource_ypipg"]
+script = ExtResource("2_ej2j1")
+text = "Attract foreign investment"
+disabled_text = "Investors will not go to us"
+enable_condition = SubResource("Resource_jxtnr")
+effects = Array[ExtResource("3_5caad")]([SubResource("Resource_vheo4"), SubResource("Resource_qllyf"), SubResource("Resource_lk7yf")])
+result_text = "Our campaign to attract foreign investment was a great success! Foreigners themselves now build and modernize our plants without a single yuan from our budget. True, for this it was necessary to reduce the minimum wage, production safety requirements and other requirements of labor legislation, but nothing, the people will suffer."
+
+[sub_resource type="Resource" id="Resource_ox7to"]
+script = ExtResource("3_5caad")
+type = 1
+key = "industry"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_mg1ou"]
+script = ExtResource("3_5caad")
+type = 10
+key = "1"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_46v2u"]
+script = ExtResource("3_5caad")
+type = 8
+key = "1"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_ksm48"]
+script = ExtResource("3_5caad")
+type = 8
+key = "0"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_7xqvo"]
+script = ExtResource("4_kpjrn")
+type = 8
+key = "1"
+value = 70.0
+
+[sub_resource type="Resource" id="Resource_34rdy"]
+script = ExtResource("2_ej2j1")
+text = "Request help from the USSR"
+disabled_text = "We don't need handouts from revisionists!"
+enable_condition = SubResource("Resource_7xqvo")
+effects = Array[ExtResource("3_5caad")]([SubResource("Resource_ox7to"), SubResource("Resource_mg1ou"), SubResource("Resource_46v2u"), SubResource("Resource_ksm48")])
+result_text = "The Soviet Union agreed how in the old days to help us with the modernization of industry. However, he doesn't particularly like distributing specialists and machines for nothing, and we've got some dependence on the USSR."
+
+[sub_resource type="Resource" id="Resource_mpjt3"]
+script = ExtResource("3_5caad")
+type = 1
+key = "industry"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_cdgcw"]
+script = ExtResource("3_5caad")
+key = "food"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_j4w2k"]
+script = ExtResource("4_kpjrn")
+key = "food"
+value = 500.0
+
+[sub_resource type="Resource" id="Resource_md0t2"]
+script = ExtResource("2_ej2j1")
+text = "Foster development at the expense of agriculture"
+disabled_text = "Position in agriculture is not much better"
+enable_condition = SubResource("Resource_j4w2k")
+effects = Array[ExtResource("3_5caad")]([SubResource("Resource_mpjt3"), SubResource("Resource_cdgcw")])
+result_text = "By the method of redistributing budget funds and revenues from enterprises, we were able to direct the power of agriculture to the development of industry. This helped the industry, but agriculture suffered a big blow."
+
+[resource]
+script = ExtResource("5_iymjb")
+event_id = "industry_decline"
+title = "The decline of industry"
+description = "Our industry is in an unprecedented decline - some of the plants are idle, some are about to close and everyone is working on outdated equipment."
+options = Array[ExtResource("2_ej2j1")]([SubResource("Resource_k2ejb"), SubResource("Resource_ypipg"), SubResource("Resource_34rdy"), SubResource("Resource_md0t2")])

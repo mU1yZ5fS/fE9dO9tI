@@ -1,0 +1,144 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_qn3og"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_46nys"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_i1gde"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_i68lb"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_mr0iq"]
+
+[sub_resource type="Resource" id="Resource_fnhdc"]
+script = ExtResource("3_i1gde")
+type = 6
+key = "special_ending"
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_hj268"]
+script = ExtResource("2_46nys")
+text = "金正日 - 父亲的继承人"
+effects = Array[ExtResource("3_i1gde")]([SubResource("Resource_fnhdc")])
+result_text = "金正日长期以来一直被塑造为金日成的继承人。在他的父亲继续担任劳动党领袖的情况下，让他成为统一朝鲜的国家领导人，是局势的自然延续，也不太可能给朝鲜政治带来显著变化。"
+
+[sub_resource type="Resource" id="Resource_18kp7"]
+script = ExtResource("3_i1gde")
+key = "agents"
+value = -250.0
+
+[sub_resource type="Resource" id="Resource_f7lcp"]
+script = ExtResource("3_i1gde")
+key = "money"
+value = -250.0
+
+[sub_resource type="Resource" id="Resource_n0ysg"]
+script = ExtResource("3_i1gde")
+key = "political"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_0xxlt"]
+script = ExtResource("3_i1gde")
+type = 6
+key = "special_ending"
+value = 1.0
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_1558c"]
+script = ExtResource("3_i1gde")
+type = 4
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_i4e7d"]
+script = ExtResource("4_i68lb")
+key = "agents"
+value = 250.0
+
+[sub_resource type="Resource" id="Resource_oypp4"]
+script = ExtResource("4_i68lb")
+key = "money"
+value = 250.0
+
+[sub_resource type="Resource" id="Resource_lmd16"]
+script = ExtResource("4_i68lb")
+type = 18
+children = Array[ExtResource("4_i68lb")]([SubResource("Resource_i4e7d"), SubResource("Resource_oypp4")])
+
+[sub_resource type="Resource" id="Resource_lj705"]
+script = ExtResource("2_46nys")
+text = "金平日 - 可控候选人"
+disabled_text = "需要特工：250，资金：250"
+enable_condition = SubResource("Resource_lmd16")
+effects = Array[ExtResource("3_i1gde")]([SubResource("Resource_18kp7"), SubResource("Resource_f7lcp"), SubResource("Resource_n0ysg"), SubResource("Resource_0xxlt"), SubResource("Resource_1558c")])
+result_text = "金平日是金正日的弟弟，年轻时曾是有名的浪荡子，因此失去了父亲的宠信。现在，在我们的影响下，我们可以把他推上统一朝鲜领导人的位置。"
+
+[sub_resource type="Resource" id="Resource_rdqty"]
+script = ExtResource("3_i1gde")
+key = "diplo"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_o0crw"]
+script = ExtResource("3_i1gde")
+type = 6
+key = "special_ending"
+value = 2.0
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_15644"]
+script = ExtResource("2_46nys")
+text = "金永焕 - 以外部视角理解主体思想"
+effects = Array[ExtResource("3_i1gde")]([SubResource("Resource_rdqty"), SubResource("Resource_o0crw")])
+result_text = "金永焕长期以来都是韩国所谓'主体思想派'的领袖，也是一个适合作为南北共同象征的人选。"
+
+[sub_resource type="Resource" id="Resource_r0nv5"]
+script = ExtResource("3_i1gde")
+key = "diplo"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_2sx1w"]
+script = ExtResource("3_i1gde")
+key = "agents"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_7cinx"]
+script = ExtResource("3_i1gde")
+type = 6
+key = "special_ending"
+value = 3.0
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_mlmox"]
+script = ExtResource("3_i1gde")
+type = 5
+target = "KOR"
+
+[sub_resource type="Resource" id="Resource_5c8la"]
+script = ExtResource("4_i68lb")
+key = "agents"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_uxjec"]
+script = ExtResource("4_i68lb")
+type = 3
+key = "6"
+
+[sub_resource type="Resource" id="Resource_ah5o5"]
+script = ExtResource("4_i68lb")
+type = 3
+key = "3"
+
+[sub_resource type="Resource" id="Resource_1mg7k"]
+script = ExtResource("4_i68lb")
+type = 18
+children = Array[ExtResource("4_i68lb")]([SubResource("Resource_5c8la"), SubResource("Resource_uxjec"), SubResource("Resource_ah5o5")])
+
+[sub_resource type="Resource" id="Resource_fcnvu"]
+script = ExtResource("2_46nys")
+text = "权永吉 - 是时候放弃主体思想了"
+disabled_text = "毛主席万岁！"
+enable_condition = SubResource("Resource_1mg7k")
+effects = Array[ExtResource("3_i1gde")]([SubResource("Resource_r0nv5"), SubResource("Resource_2sx1w"), SubResource("Resource_7cinx"), SubResource("Resource_mlmox")])
+result_text = "权永吉是一名记者，也是反美、反殖民、反威权左翼工会运动的领袖。对于一个仍需弥合南北伤痕的统一朝鲜来说，这样一位理解多方诉求的政治人物很适合。"
+
+[resource]
+script = ExtResource("5_mr0iq")
+event_id = "korea_unification"
+title = "统一而不可分割"
+description = "朝鲜终于在我们的盟友领导下完成统一。这一切只可能依靠我们的帮助：苏联并不真想卷入一场新的冲突，而朝鲜民主主义人民共和国也没有别的大国朋友。在这场战争中，我们的专家、顾问和军官不仅进入了统一后的朝鲜国家机器，也取得了对这个国家相当程度的控制。借助这种影响力，我们能够决定新统一朝鲜未来的发展道路。现在有四名候选人……"
+options = Array[ExtResource("2_46nys")]([SubResource("Resource_hj268"), SubResource("Resource_lj705"), SubResource("Resource_15644"), SubResource("Resource_fcnvu")])

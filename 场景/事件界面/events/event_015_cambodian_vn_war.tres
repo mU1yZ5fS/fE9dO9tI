@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_32tmr"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_5y7hh"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_mln7p"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_ht34l"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_x6miu"]
+
+[sub_resource type="Resource" id="Resource_7if4f"]
+script = ExtResource("2_5y7hh")
+text = "Do not interfere"
+result_text = "We decided not to intervene in the conflict. Pol Pot and the Khmer Rouge leadership, of course, are very unhappy with this, but it does not seem that they will live long..."
+
+[sub_resource type="Resource" id="Resource_u82pv"]
+script = ExtResource("3_mln7p")
+key = "agents"
+value = -30.0
+
+[sub_resource type="Resource" id="Resource_kbt30"]
+script = ExtResource("4_ht34l")
+key = "agents"
+value = 30.0
+
+[sub_resource type="Resource" id="Resource_w1t1b"]
+script = ExtResource("2_5y7hh")
+text = "Remove Pol Pot in favor of the trio of Hu Nim, Hou Yuon and Khieu Samphan"
+disabled_text = "We can't remove Pol Pot"
+enable_condition = SubResource("Resource_kbt30")
+effects = Array[ExtResource("3_mln7p")]([SubResource("Resource_u82pv")])
+result_text = "Coming in contact with the Left Opposition within the Kampuchean army, we were able to organize the displacement and arrest of Pol Pot..."
+
+[sub_resource type="Resource" id="Resource_1jpx4"]
+script = ExtResource("3_mln7p")
+key = "army"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_j5ukc"]
+script = ExtResource("3_mln7p")
+key = "money"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_w1ygu"]
+script = ExtResource("3_mln7p")
+type = 8
+key = "1"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_5k4iu"]
+script = ExtResource("2_5y7hh")
+text = "Help the Khmer Rouge"
+effects = Array[ExtResource("3_mln7p")]([SubResource("Resource_1jpx4"), SubResource("Resource_j5ukc"), SubResource("Resource_w1ygu")])
+result_text = "We sent help to our old ally, Pol Pot, but it is not known whether this is enough for him..."
+
+[resource]
+script = ExtResource("5_x6miu")
+event_id = "cambodian_vietnam_war"
+title = "Cambodian-Vietnamese war"
+description = "For several years, ruling in Democratic Kampuchea, the Red Khmers of Pol Pot pursued an openly aggressive policy towards neighboring Vietnam, often attacking border villages and killing civilians en masse. And it seems that Vietnam's patience has come to an end - quite recently the Vietnamese army launched a full-scale invasion of Cambodia to overthrow the Pol Pot regime..."
+options = Array[ExtResource("2_5y7hh")]([SubResource("Resource_7if4f"), SubResource("Resource_w1t1b"), SubResource("Resource_5k4iu")])

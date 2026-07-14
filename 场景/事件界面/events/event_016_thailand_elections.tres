@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_k1l7k"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_68mlv"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_oa6gt"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_ox2cw"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_uaxor"]
+
+[sub_resource type="Resource" id="Resource_cgmww"]
+script = ExtResource("3_oa6gt")
+type = 10
+key = "0"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_5hqmy"]
+script = ExtResource("2_68mlv")
+text = "Do not interfere"
+effects = Array[ExtResource("3_oa6gt")]([SubResource("Resource_cgmww")])
+result_text = "The election campaign of 1976 was accompanied by bloody street clashes. Killed about 30 people. The Seni Pramoj's Democratic Party received the largest number of votes..."
+
+[sub_resource type="Resource" id="Resource_3xj63"]
+script = ExtResource("3_oa6gt")
+key = "agents"
+value = -20.0
+
+[sub_resource type="Resource" id="Resource_gwh6c"]
+script = ExtResource("3_oa6gt")
+key = "money"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_ep5hn"]
+script = ExtResource("4_ox2cw")
+key = "agents"
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_qqxog"]
+script = ExtResource("4_ox2cw")
+type = 19
+children = Array[ExtResource("4_ox2cw")]([SubResource("Resource_ep5hn")])
+
+[sub_resource type="Resource" id="Resource_cgc1i"]
+script = ExtResource("2_68mlv")
+text = "Support the CPT and create a coalition with the left and the democrats"
+disabled_text = "We do not have enough strength to support CPT"
+enable_condition = SubResource("Resource_qqxog")
+effects = Array[ExtResource("3_oa6gt")]([SubResource("Resource_3xj63"), SubResource("Resource_gwh6c")])
+result_text = "We managed to provide substantial support for the CPT and to achieve an alliance with various moderately left-wing activists..."
+
+[sub_resource type="Resource" id="Resource_w2u2e"]
+script = ExtResource("3_oa6gt")
+key = "army"
+value = -20.0
+
+[sub_resource type="Resource" id="Resource_todn4"]
+script = ExtResource("4_ox2cw")
+key = "army"
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_c2uyo"]
+script = ExtResource("4_ox2cw")
+type = 18
+children = Array[ExtResource("4_ox2cw")]([SubResource("Resource_todn4")])
+
+[sub_resource type="Resource" id="Resource_3elvy"]
+script = ExtResource("2_68mlv")
+text = "To hell with the election! Send CPT more weapons for guerrilla warfare."
+disabled_text = "We can not send CPT more weapons"
+enable_condition = SubResource("Resource_c2uyo")
+effects = Array[ExtResource("3_oa6gt")]([SubResource("Resource_w2u2e")])
+result_text = "Ignoring the elections, we sent more weapons to the guerrillas from CPT..."
+
+[resource]
+script = ExtResource("5_uaxor")
+event_id = "thailand_elections"
+title = "Elections in Thailand"
+description = "After the fall of the military junta in 1973 and the transfer of power to the civilian government, Thailand entered the period of \"chaotic democracy\". The victories of the communist forces throughout Indochina contribute to the growth of leftist sentiments..."
+options = Array[ExtResource("2_68mlv")]([SubResource("Resource_5hqmy"), SubResource("Resource_cgc1i"), SubResource("Resource_3elvy")])

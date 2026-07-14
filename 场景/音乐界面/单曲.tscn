@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://dvrbfsm4ixjq6"]
+
+[ext_resource type="Texture2D" uid="uid://bm2j0saiwrmii" path="" id="1_lwa0x"]
+[ext_resource type="Texture2D" uid="uid://dkov01tllv7nq" path="" id="2_ohrrf"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="" id="3_ohrrf"]
+
+[node name="单曲" type="Control" unique_id=1150421874]
+layout_mode = 3
+anchor_right = 0.18300001
+anchor_bottom = 0.037
+offset_right = 0.63998413
+offset_bottom = 0.040000916
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="播放按钮" type="TextureButton" parent="." unique_id=521160960]
+layout_mode = 0
+offset_right = 43.0
+offset_bottom = 42.0
+texture_normal = ExtResource("1_lwa0x")
+texture_hover = ExtResource("2_ohrrf")
+
+[node name="歌名" type="Label" parent="." unique_id=1717019289]
+layout_mode = 0
+offset_left = 43.0
+offset_right = 355.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_ohrrf")
+theme_override_font_sizes/font_size = 25
+horizontal_alignment = 1
+vertical_alignment = 1

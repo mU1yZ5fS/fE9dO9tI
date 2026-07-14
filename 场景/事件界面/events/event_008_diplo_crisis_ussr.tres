@@ -1,0 +1,81 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_opaww"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_8yby2"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_tql7y"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="4_1gicc"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="5_vi3cr"]
+
+[sub_resource type="Resource" id="Resource_0i7pr"]
+script = ExtResource("3_tql7y")
+type = 9
+key = "1"
+value = 400.0
+
+[sub_resource type="Resource" id="Resource_ueknw"]
+script = ExtResource("3_tql7y")
+key = "money"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_uy464"]
+script = ExtResource("2_8yby2")
+text = "Organize detente at our expense"
+effects = Array[ExtResource("3_tql7y")]([SubResource("Resource_0i7pr"), SubResource("Resource_ueknw")])
+result_text = "We urgently organized a magnificent meeting of the foreign ministers of China and the USSR, and the Soviet delegation was invited to a luxurious tour of China, where various festivals and events are being prepared, showing our peacefulness. The detente succeeded, the tension subsided."
+
+[sub_resource type="Resource" id="Resource_0t54k"]
+script = ExtResource("3_tql7y")
+type = 9
+key = "1"
+value = 400.0
+
+[sub_resource type="Resource" id="Resource_etwxd"]
+script = ExtResource("3_tql7y")
+key = "army"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_mja2a"]
+script = ExtResource("3_tql7y")
+key = "agents"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_172ff"]
+script = ExtResource("2_8yby2")
+text = "Pass a part of foreign policy positions as a sign of goodwill"
+effects = Array[ExtResource("3_tql7y")]([SubResource("Resource_0t54k"), SubResource("Resource_etwxd"), SubResource("Resource_mja2a")])
+result_text = "We have abandoned some foreign policy claims, reduced the support of loyal opposition in other countries and, in general, reduced the degree of interventionism of Chinese politics. This was positively perceived by the Ministry of Foreign Affairs of the USSR, tensions decreased. Like our influence."
+
+[sub_resource type="Resource" id="Resource_45ccd"]
+script = ExtResource("2_8yby2")
+text = "Don't care at all"
+result_text = "Tension grows. This may lead to war."
+
+[sub_resource type="Resource" id="Resource_t8364"]
+script = ExtResource("3_tql7y")
+type = 13
+key = "16"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_ffqsi"]
+script = ExtResource("3_tql7y")
+key = "army"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_787gw"]
+script = ExtResource("3_tql7y")
+key = "agents"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_bq1dh"]
+script = ExtResource("2_8yby2")
+text = "Launch nukes into imperialists!"
+disabled_text = "Nobody wants a nuclear war"
+effects = Array[ExtResource("3_tql7y")]([SubResource("Resource_t8364"), SubResource("Resource_ffqsi"), SubResource("Resource_787gw")])
+result_text = "Tension grows."
+
+[resource]
+script = ExtResource("4_1gicc")
+event_id = "diplomatic_crisis_ussr"
+title = "Diplomatic crisis"
+description = "Our relations with the USSR have reached a critically low level. Their propaganda already accuses China of all possible and impossible crimes, and our intelligence reports on the turmoil in the General Staff of the USSR and the movement of Soviet troops on the border. We urgently need to somehow correct the situation if we don't want the Third World War."
+options = Array[ExtResource("2_8yby2")]([SubResource("Resource_uy464"), SubResource("Resource_172ff"), SubResource("Resource_45ccd"), SubResource("Resource_bq1dh")])

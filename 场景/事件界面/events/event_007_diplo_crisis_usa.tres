@@ -1,0 +1,107 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_1elvh"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_e30uj"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_vn5nf"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_tbdlv"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_v8hd3"]
+
+[sub_resource type="Resource" id="Resource_jueq3"]
+script = ExtResource("3_vn5nf")
+type = 9
+key = "0"
+value = 400.0
+
+[sub_resource type="Resource" id="Resource_i6g0f"]
+script = ExtResource("3_vn5nf")
+key = "money"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_iqph1"]
+script = ExtResource("2_e30uj")
+text = "Organize detente at our expense"
+effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_jueq3"), SubResource("Resource_i6g0f")])
+result_text = "We urgently organized a magnificent meeting of the foreign ministers of China and the USA, and the American delegation was invited to a luxurious tour of China, where various festivals and events are being prepared, showing our peacefulness. The detente succeeded, the tension subsided."
+
+[sub_resource type="Resource" id="Resource_hkxfe"]
+script = ExtResource("3_vn5nf")
+type = 9
+key = "0"
+value = 400.0
+
+[sub_resource type="Resource" id="Resource_gejl1"]
+script = ExtResource("3_vn5nf")
+key = "army"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_gfu06"]
+script = ExtResource("3_vn5nf")
+key = "agents"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_fogln"]
+script = ExtResource("4_tbdlv")
+key = "political"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_43k7t"]
+script = ExtResource("2_e30uj")
+text = "Pass a part of foreign policy positions as a sign of goodwill"
+disabled_text = "Our influence is too weak, so we cannot limit it"
+enable_condition = SubResource("Resource_fogln")
+effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_hkxfe"), SubResource("Resource_gejl1"), SubResource("Resource_gfu06")])
+result_text = "We have abandoned some foreign policy claims, reduced the support of loyal opposition in other countries and, in general, reduced the degree of interventionism of Chinese politics. This was positively perceived by the Ministry of Foreign Affairs of the USA, tensions decreased. Like our influence."
+
+[sub_resource type="Resource" id="Resource_06ufc"]
+script = ExtResource("2_e30uj")
+text = "Launch nukes into imperialists!"
+disabled_text = "Nobody wants a nuclear war"
+result_text = "Tension grows. This leads to a nuclear confrontation."
+
+[sub_resource type="Resource" id="Resource_nsstf"]
+script = ExtResource("3_vn5nf")
+type = 13
+key = "17"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_shuk0"]
+script = ExtResource("3_vn5nf")
+key = "army"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_n44se"]
+script = ExtResource("3_vn5nf")
+key = "agents"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_0l65a"]
+script = ExtResource("2_e30uj")
+text = "Don't care at all"
+effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_nsstf"), SubResource("Resource_shuk0"), SubResource("Resource_n44se")])
+result_text = "Tension grows."
+
+[sub_resource type="Resource" id="Resource_eidyv"]
+script = ExtResource("3_vn5nf")
+type = 9
+key = "0"
+value = 400.0
+
+[sub_resource type="Resource" id="Resource_qng3i"]
+script = ExtResource("4_tbdlv")
+type = 2
+key = "17"
+
+[sub_resource type="Resource" id="Resource_ld467"]
+script = ExtResource("2_e30uj")
+text = "Bribe U.S. senators to keep the issue quiet"
+disabled_text = "Need specific conditions"
+enable_condition = SubResource("Resource_qng3i")
+effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_eidyv")])
+result_text = "We urgently organized a magnificent meeting of the foreign ministers of China and the USA... The detente succeeded, the tension subsided."
+
+[resource]
+script = ExtResource("5_v8hd3")
+event_id = "diplomatic_crisis_usa"
+title = "Diplomatic crisis"
+description = "Our relations with the USA have reached a critically low level. Their propaganda already accuses China of all possible and impossible crimes, and our intelligence reports on the turmoil in the Pentagon and activity at American bases in Southeast Asia. We urgently need to somehow correct the situation if we don't want the Third World War."
+options = Array[ExtResource("2_e30uj")]([SubResource("Resource_iqph1"), SubResource("Resource_43k7t"), SubResource("Resource_06ufc"), SubResource("Resource_0l65a"), SubResource("Resource_ld467")])

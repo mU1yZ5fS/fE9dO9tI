@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://er1exkjd2a6b"]
+
+[node name="专辑" type="Control" unique_id=1114735453]
+layout_mode = 3
+anchor_right = 0.062000003
+anchor_bottom = 0.11100001
+offset_right = 0.95999146
+offset_bottom = 0.11998749
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="专辑按钮" type="TextureButton" parent="." unique_id=1932639224]
+layout_mode = 0
+offset_right = 120.0
+offset_bottom = 120.0
+ignore_texture_size = true
+stretch_mode = 0

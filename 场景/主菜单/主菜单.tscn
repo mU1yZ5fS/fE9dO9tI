@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://bydan4iqthbaa"]
+
+[ext_resource type="Theme" uid="uid://vq2spgyu4car" path="res://资产/UI/主菜单/主菜单UItheme.tres" id="1_asok2"]
+[ext_resource type="Texture2D" uid="uid://dagp7pud1571n" path="res://资产/UI/主菜单/主菜单背景图.png" id="1_ctmvk"]
+[ext_resource type="Texture2D" uid="uid://b16ruch2kqkir" path="res://资产/UI/主菜单/主菜单按钮.png" id="2_ngrxy"]
+[ext_resource type="Script" uid="uid://dprrkvl1dxnw8" path="res://场景/主菜单/主菜单.gd" id="2_qdl27"]
+[ext_resource type="Script" uid="uid://c8lq4p6d1xjda" path="res://场景/主菜单/版本信息.gd" id="5_xj33c"]
+[ext_resource type="Texture2D" uid="uid://bg1icj0ofxh28" path="res://资产/UI/qq群.png" id="6_omqpa"]
+
+[node name="Control" type="Control" unique_id=1650672303]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_asok2")
+script = ExtResource("2_qdl27")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1793982612]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_behavior_recursive = 2
+texture = ExtResource("1_ctmvk")
+
+[node name="开始游戏" type="Button" parent="." unique_id=878493979]
+layout_mode = 0
+offset_left = 751.0
+offset_top = 816.0
+offset_right = 1199.0
+offset_bottom = 960.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
+text = "开始游戏"
+icon = ExtResource("2_ngrxy")
+flat = true
+icon_alignment = 1
+
+[node name="关于" type="Button" parent="." unique_id=776111374]
+layout_mode = 0
+offset_left = 1233.0
+offset_top = 894.00006
+offset_right = 1681.0
+offset_bottom = 1038.0
+rotation = -0.61086524
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
+text = "关于"
+icon = ExtResource("2_ngrxy")
+flat = true
+icon_alignment = 1
+
+[node name="退出" type="Button" parent="." unique_id=1820177510]
+layout_mode = 0
+offset_left = 1472.0
+offset_top = 940.0
+offset_right = 1920.0
+offset_bottom = 1084.0
+rotation = -0.61086524
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
+text = "退出游戏"
+icon = ExtResource("2_ngrxy")
+flat = true
+icon_alignment = 1
+
+[node name="加载" type="Button" parent="." unique_id=510100475]
+layout_mode = 0
+offset_left = 355.0
+offset_top = 632.00006
+offset_right = 803.0
+offset_bottom = 776.00006
+rotation = 0.61086524
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
+text = "加载"
+icon = ExtResource("2_ngrxy")
+flat = true
+icon_alignment = 1
+
+[node name="设置" type="Button" parent="." unique_id=2082171365]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 680.0
+offset_right = 539.0
+offset_bottom = 824.0
+rotation = 0.61086524
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
+text = "设置"
+icon = ExtResource("2_ngrxy")
+flat = true
+icon_alignment = 1
+
+[node name="版本信息" type="Label" parent="." unique_id=1449533189]
+layout_mode = 0
+offset_left = 1311.0
+offset_top = 24.0
+offset_right = 1904.0
+offset_bottom = 74.0
+tooltip_text = "欢迎加入！"
+tooltip_auto_translate_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 43
+text = "中国:毛的遗产[DH4591-Godot]"
+horizontal_alignment = 2
+script = ExtResource("5_xj33c")
+tooltip_image = ExtResource("6_omqpa")
+
+[node name="版本信息2" type="Label" parent="." unique_id=1314310004]
+layout_mode = 0
+offset_left = 1615.0
+offset_top = 80.0
+offset_right = 1904.0
+offset_bottom = 130.0
+tooltip_text = "当前版本内容：基础UI骨架+MVP"
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 43
+text = "v0.0.1星星之火"
+horizontal_alignment = 2
+
+[connection signal="pressed" from="开始游戏" to="." method="_on_开始游戏_pressed"]
+[connection signal="pressed" from="关于" to="." method="_on_关于_pressed"]
+[connection signal="pressed" from="退出" to="." method="_on_退出_pressed"]
+[connection signal="pressed" from="加载" to="." method="_on_加载_pressed"]
+[connection signal="pressed" from="设置" to="." method="_on_设置_pressed"]

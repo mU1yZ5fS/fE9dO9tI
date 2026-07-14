@@ -1,0 +1,125 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_ovyqu"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_7lsgv"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_dtuc1"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_llahx"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_4p5f1"]
+
+[sub_resource type="Resource" id="Resource_er6u3"]
+script = ExtResource("3_dtuc1")
+key = "people_support"
+value = -200.0
+
+[sub_resource type="Resource" id="Resource_gc4g2"]
+script = ExtResource("3_dtuc1")
+key = "party_support"
+value = -200.0
+
+[sub_resource type="Resource" id="Resource_vephg"]
+script = ExtResource("3_dtuc1")
+key = "money"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_u1baf"]
+script = ExtResource("3_dtuc1")
+key = "manpower"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_2w88w"]
+script = ExtResource("2_7lsgv")
+text = "Allow independence"
+effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_er6u3"), SubResource("Resource_gc4g2"), SubResource("Resource_vephg"), SubResource("Resource_u1baf")])
+result_text = "Tibet Autonomous Region officially declared its independence within the borders of 1950. This will be a big blow for us and a great opportunity for the USSR and the USA."
+
+[sub_resource type="Resource" id="Resource_83prh"]
+script = ExtResource("3_dtuc1")
+key = "party_support"
+value = -200.0
+
+[sub_resource type="Resource" id="Resource_bvh11"]
+script = ExtResource("3_dtuc1")
+key = "manpower"
+value = -20.0
+
+[sub_resource type="Resource" id="Resource_pe42h"]
+script = ExtResource("2_7lsgv")
+text = "Expand autonomy"
+effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_83prh"), SubResource("Resource_bvh11")])
+result_text = "We have further expanded the powers of local authorities and the rights of Tibetan autonomy. It seems that the majority of the population is satisfied, but it gives the radicals more opportunities to promote separatism, and other national outskirts are thinking about greater independence."
+
+[sub_resource type="Resource" id="Resource_v3quw"]
+script = ExtResource("3_dtuc1")
+key = "people_support"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_n6iib"]
+script = ExtResource("3_dtuc1")
+key = "army"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_dy1h5"]
+script = ExtResource("3_dtuc1")
+key = "diplo"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_u4mrn"]
+script = ExtResource("3_dtuc1")
+key = "manpower"
+value = 30.0
+
+[sub_resource type="Resource" id="Resource_unxpm"]
+script = ExtResource("2_7lsgv")
+text = "Send in the PLA to restore order"
+effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_v3quw"), SubResource("Resource_n6iib"), SubResource("Resource_dy1h5"), SubResource("Resource_u4mrn")])
+result_text = "The loyal parts of the PLA entered Tibet and quickly restored order. But the nationalists and the opposition will not forget this."
+
+[sub_resource type="Resource" id="Resource_nxam8"]
+script = ExtResource("3_dtuc1")
+key = "people_support"
+value = -20.0
+
+[sub_resource type="Resource" id="Resource_sy1m1"]
+script = ExtResource("3_dtuc1")
+key = "agents"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_uhfl7"]
+script = ExtResource("3_dtuc1")
+key = "money"
+value = -40.0
+
+[sub_resource type="Resource" id="Resource_m81cn"]
+script = ExtResource("3_dtuc1")
+key = "manpower"
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_y3fwd"]
+script = ExtResource("4_llahx")
+key = "agents"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_r7tf4"]
+script = ExtResource("4_llahx")
+key = "money"
+value = 40.0
+
+[sub_resource type="Resource" id="Resource_d0s5p"]
+script = ExtResource("4_llahx")
+type = 18
+children = Array[ExtResource("4_llahx")]([SubResource("Resource_y3fwd"), SubResource("Resource_r7tf4")])
+
+[sub_resource type="Resource" id="Resource_rch2o"]
+script = ExtResource("2_7lsgv")
+text = "Organize a referendum"
+disabled_text = "Need agents: 50 and money: 40"
+enable_condition = SubResource("Resource_d0s5p")
+effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_nxam8"), SubResource("Resource_sy1m1"), SubResource("Resource_uhfl7"), SubResource("Resource_m81cn")])
+result_text = "We organized a referendum in which the majority, of course, voted to preserve the status of Tibet. Dissatisfied nationalists and other radicals took to the streets, claiming falsification, but without past support these protests no longer pose a serious threat."
+
+[resource]
+script = ExtResource("5_4p5f1")
+event_id = "tibet_separatism"
+title = "Separatism in Tibet"
+description = "Encouraged by liberals and nationalists, residents of the Tibet Autonomous Region took to mass demonstrations for independence and secession from the PRC, which gradually develop into unrest. People demand \"liberation\" from \"the occupation of 1950\" and the majority of ethnic Tibetans support them. However, some are just satisfied with the requirements of greater autonomy than we can take advantage of."
+options = Array[ExtResource("2_7lsgv")]([SubResource("Resource_2w88w"), SubResource("Resource_pe42h"), SubResource("Resource_unxpm"), SubResource("Resource_rch2o")])

@@ -1,0 +1,120 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_oflkl"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_7q3cr"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_jhbl4"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_joby8"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_qlsdb"]
+
+[sub_resource type="Resource" id="Resource_ovr2n"]
+script = ExtResource("3_jhbl4")
+key = "people_support"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_32ptd"]
+script = ExtResource("3_jhbl4")
+key = "money"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_hklt6"]
+script = ExtResource("3_jhbl4")
+type = 1
+key = "living_standard"
+value = 300.0
+
+[sub_resource type="Resource" id="Resource_getai"]
+script = ExtResource("2_7q3cr")
+text = "Urgently allocate money for social programs"
+effects = Array[ExtResource("3_jhbl4")]([SubResource("Resource_ovr2n"), SubResource("Resource_32ptd"), SubResource("Resource_hklt6")])
+result_text = "Large funds from the budget were urgently allocated to social programs, housing development and to help the poor. Social problems are gradually beginning to be solved and people are satisfied."
+
+[sub_resource type="Resource" id="Resource_p8dk3"]
+script = ExtResource("3_jhbl4")
+type = 1
+key = "living_standard"
+value = 300.0
+
+[sub_resource type="Resource" id="Resource_moylu"]
+script = ExtResource("4_joby8")
+type = 8
+key = "0"
+value = 500.0
+
+[sub_resource type="Resource" id="Resource_uoxh1"]
+script = ExtResource("4_joby8")
+type = 8
+key = "1"
+value = 500.0
+
+[sub_resource type="Resource" id="Resource_jrvw5"]
+script = ExtResource("4_joby8")
+type = 19
+children = Array[ExtResource("4_joby8")]([SubResource("Resource_moylu"), SubResource("Resource_uoxh1")])
+
+[sub_resource type="Resource" id="Resource_0rfux"]
+script = ExtResource("2_7q3cr")
+text = "Request foreign humanitarian assistance"
+disabled_text = "We can't ask for help"
+enable_condition = SubResource("Resource_jrvw5")
+effects = Array[ExtResource("3_jhbl4")]([SubResource("Resource_p8dk3")])
+result_text = "We requested foreign humanitarian assistance, which was provided. Volunteers from different countries and from the UN distribute food, as well as develop housing for people on free terms. However, such actions showed both our people and the world community that we cannot cope with such things on our own, which greatly undermines our prestige."
+
+[sub_resource type="Resource" id="Resource_dxoeo"]
+script = ExtResource("3_jhbl4")
+key = "party_support"
+value = -500.0
+
+[sub_resource type="Resource" id="Resource_s0qw2"]
+script = ExtResource("3_jhbl4")
+type = 1
+key = "living_standard"
+value = 300.0
+
+[sub_resource type="Resource" id="Resource_t6mta"]
+script = ExtResource("4_joby8")
+key = "development"
+value = 13.0
+
+[sub_resource type="Resource" id="Resource_ci02a"]
+script = ExtResource("2_7q3cr")
+text = "Call on business by carrot and stick policy to solve social problems"
+disabled_text = "We can't call on business, we don't have it"
+enable_condition = SubResource("Resource_t6mta")
+effects = Array[ExtResource("3_jhbl4")]([SubResource("Resource_dxoeo"), SubResource("Resource_s0qw2")])
+result_text = "Through the development of labor laws, government orders, benefits and banal coercion, we managed to force our businessmen to provide social support to the people, improve working conditions and housing conditions. However, they are not particularly happy to share their wealth with the people."
+
+[sub_resource type="Resource" id="Resource_u5ik0"]
+script = ExtResource("3_jhbl4")
+key = "people_support"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_6lsck"]
+script = ExtResource("3_jhbl4")
+type = 1
+key = "living_standard"
+value = 300.0
+
+[sub_resource type="Resource" id="Resource_vwsqe"]
+script = ExtResource("3_jhbl4")
+type = 1
+key = "party_support"
+
+[sub_resource type="Resource" id="Resource_u3u31"]
+script = ExtResource("4_joby8")
+key = "party_support"
+value = 500.0
+
+[sub_resource type="Resource" id="Resource_24r3m"]
+script = ExtResource("2_7q3cr")
+text = "Arrange charity at the expense of the party and officials"
+disabled_text = "Party does not want to share"
+enable_condition = SubResource("Resource_u3u31")
+effects = Array[ExtResource("3_jhbl4")]([SubResource("Resource_u5ik0"), SubResource("Resource_6lsck"), SubResource("Resource_vwsqe")])
+result_text = "Speaking at the extraordinary party congress, you explained to the top the brunt of the situation and decided to allocate funds for social needs of the party and voluntarily-forcedly attracted party members and officials to participate in charity events. This, of course, raised the standard of living, but the party was not satisfied."
+
+[resource]
+script = ExtResource("5_qlsdb")
+event_id = "low_living_standard"
+title = "Low standard of living"
+description = "Your policy has led to a catastrophic decline in the standard of living in the country, people live in abominable conditions and the vast majority lack the ability to purchase even basic necessities. Of course, this leads to numerous protests where people demand to deal with this situation. Given the fact that the soldiers are also unhappy with the terrible conditions of detention, we can not count on the army."
+options = Array[ExtResource("2_7q3cr")]([SubResource("Resource_getai"), SubResource("Resource_0rfux"), SubResource("Resource_ci02a"), SubResource("Resource_24r3m")])

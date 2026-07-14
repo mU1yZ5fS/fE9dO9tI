@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_d5hms"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_eh2uu"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_0o8uv"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="4_idifi"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="5_b42yr"]
+
+[sub_resource type="Resource" id="Resource_doklx"]
+script = ExtResource("3_0o8uv")
+key = "people_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_sb36e"]
+script = ExtResource("2_eh2uu")
+text = "Stay quiet, targets unclear, don't get caught in the crossfire"
+effects = Array[ExtResource("3_0o8uv")]([SubResource("Resource_doklx")])
+result_text = "An obscure article sparked rumors... With targets unclear and tempers hot, we chose to keep our heads down. Even so, word spread, and protests flared across Yangtze cities."
+
+[sub_resource type="Resource" id="Resource_ddvsr"]
+script = ExtResource("3_0o8uv")
+key = "party_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_m4op2"]
+script = ExtResource("3_0o8uv")
+key = "people_support"
+value = -30.0
+
+[sub_resource type="Resource" id="Resource_dseda"]
+script = ExtResource("2_eh2uu")
+text = "Clamp down on the publication and speculation to avoid stirring the masses"
+effects = Array[ExtResource("3_0o8uv")]([SubResource("Resource_ddvsr"), SubResource("Resource_m4op2")])
+result_text = "We moved hard to seize the text and choke off any speculation. The clampdown slowed the spread; protests still erupted, but the scale stayed contained."
+
+[sub_resource type="Resource" id="Resource_qpfl0"]
+script = ExtResource("3_0o8uv")
+key = "people_support"
+value = -80.0
+
+[sub_resource type="Resource" id="Resource_pphyu"]
+script = ExtResource("3_0o8uv")
+key = "party_support"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_y41g5"]
+script = ExtResource("2_eh2uu")
+text = "Turn the article against capitalist-roadings reforms"
+effects = Array[ExtResource("3_0o8uv")]([SubResource("Resource_qpfl0"), SubResource("Resource_pphyu")])
+result_text = "You framed it as proof of the dangers of capitalist-roadings reforms and pushed it beyond Shanghai. The party appreciated the line; the public did not."
+
+[resource]
+script = ExtResource("4_idifi")
+event_id = "wenhuibao_article"
+title = "Mystery article about Zhou"
+description = "On March 25, 1976, the Shanghai newspaper \"Wenhuibao\" printed an article calling an unnamed Zhou a \"capitalist-roader\". Some read it as a posthumous strike on Zhou Enlai, others say it targets Zhou Rongxin... The masses do not yet know which Zhou is under attack, but emotions are rising — we must decide how to respond."
+options = Array[ExtResource("2_eh2uu")]([SubResource("Resource_sb36e"), SubResource("Resource_dseda"), SubResource("Resource_y41g5")])

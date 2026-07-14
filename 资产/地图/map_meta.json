@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-09 16:03:46",
+  "width": 16384,
+  "height": 8192,
+  "crs": "EPSG:4326",
+  "bbox": {
+    "min_lon": -180.0,
+    "min_lat": -90.0,
+    "max_lon": 180.0,
+    "max_lat": 90.0
+  },
+  "base_year": 1976,
+  "water_color_id": 0,
+  "water_color_rgb": [
+    0,
+    0,
+    0
+  ],
+  "max_region_id": 4596,
+  "color_encoding": {
+    "description": "region_id = (R << 16) | (G << 8) | B",
+    "bits_per_channel": 8,
+    "max_regions": 16777215
+  },
+  "pixel_scale": {
+    "deg_per_pixel_x": 0.02197265625,
+    "deg_per_pixel_y": 0.02197265625
+  },
+  "game_events": {
+    "ussr_dissolution": {
+      "description": "苏联解体 — 各加盟共和国独立",
+      "trigger_country": "Russia (Soviet Union)",
+      "affected_gwcode": 365
+    },
+    "us_dissolution": {
+      "description": "美国解体 — 各州独立/重组",
+      "trigger_country": "United States of America",
+      "affected_gwcode": 2
+    },
+    "qing_restoration": {
+      "description": "恢复清朝版图 — 合并清朝历史省界",
+      "trigger_country": "China"
+    }
+  }
+}

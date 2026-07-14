@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_qio24"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_1nr5k"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_8bteu"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_odaao"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_6b88l"]
+
+[sub_resource type="Resource" id="Resource_k2npf"]
+script = ExtResource("2_1nr5k")
+text = "It's not our business"
+result_text = "We chose not to get involved in the internal affairs of Thailand."
+
+[sub_resource type="Resource" id="Resource_uggkh"]
+script = ExtResource("3_8bteu")
+key = "agents"
+value = -40.0
+
+[sub_resource type="Resource" id="Resource_35ub3"]
+script = ExtResource("3_8bteu")
+key = "army"
+value = -30.0
+
+[sub_resource type="Resource" id="Resource_acecy"]
+script = ExtResource("4_odaao")
+key = "agents"
+value = 40.0
+
+[sub_resource type="Resource" id="Resource_wk6tg"]
+script = ExtResource("4_odaao")
+key = "army"
+value = 30.0
+
+[sub_resource type="Resource" id="Resource_7k4m5"]
+script = ExtResource("4_odaao")
+type = 18
+children = Array[ExtResource("4_odaao")]([SubResource("Resource_acecy"), SubResource("Resource_wk6tg")])
+
+[sub_resource type="Resource" id="Resource_el2cg"]
+script = ExtResource("2_1nr5k")
+text = "Send armed CPT units to help demonstrators and provoke an uprising"
+disabled_text = "We do not have enough strength to organize the uprising"
+enable_condition = SubResource("Resource_7k4m5")
+effects = Array[ExtResource("3_8bteu")]([SubResource("Resource_uggkh"), SubResource("Resource_35ub3")])
+result_text = "CPT units moved to help the student demonstrators..."
+
+[sub_resource type="Resource" id="Resource_1amd7"]
+script = ExtResource("2_1nr5k")
+text = "Condemn the cruelty of Thailand"
+result_text = "We issued a strong condemnation of the Thai government's actions."
+
+[resource]
+script = ExtResource("5_6b88l")
+event_id = "thailand_instability"
+title = "Instability in Thailand"
+description = "Against the background of social instability and constant confrontation between left and right forces, the royal family of Thailand decided in September to organize the return to the country of the radical right general Thanom Kittikachorn..."
+options = Array[ExtResource("2_1nr5k")]([SubResource("Resource_k2npf"), SubResource("Resource_el2cg"), SubResource("Resource_1amd7")])

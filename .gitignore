@@ -1,0 +1,27 @@
+# Godot 4.7 项目 .gitignore
+
+# ── Godot 引擎生成 ──
+.godot/
+*.import
+
+# ── IDE / 工具链 ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── 本地配置（含绝对路径，不可共享） ──
+.mcp.json
+
+# ── 系统 ──
+__pycache__/
+.DS_Store
+Thumbs.db
+
+# ── 构建输出 ──
+/android/
+/build/
+*.pck
+
+资产/音频/

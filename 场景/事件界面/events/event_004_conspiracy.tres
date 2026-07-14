@@ -1,0 +1,114 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_snu7j"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_syebt"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_2tba3"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_chkp2"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_22jbi"]
+
+[sub_resource type="Resource" id="Resource_xqoht"]
+script = ExtResource("3_2tba3")
+key = "party_support"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_e0qna"]
+script = ExtResource("3_2tba3")
+type = 15
+key = "congress_polemic_win"
+
+[sub_resource type="Resource" id="Resource_k88p2"]
+script = ExtResource("2_syebt")
+text = "Start polemic at the congress"
+effects = Array[ExtResource("3_2tba3")]([SubResource("Resource_xqoht"), SubResource("Resource_e0qna")])
+result_text = "Before the conspirators managed to voice their accusations, you attacked them with criticism and counter accusations. Most of those present at the congress supported you and the conspirators had to retreat."
+
+[sub_resource type="Resource" id="Resource_ckrrw"]
+script = ExtResource("3_2tba3")
+key = "people_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_dyyab"]
+script = ExtResource("3_2tba3")
+key = "agents"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_r7men"]
+script = ExtResource("3_2tba3")
+key = "party_support"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_5h0ko"]
+script = ExtResource("4_chkp2")
+key = "agents"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_3hpjc"]
+script = ExtResource("2_syebt")
+text = "Arrest conspirators!"
+disabled_text = "Special services will not support us"
+enable_condition = SubResource("Resource_5h0ko")
+effects = Array[ExtResource("3_2tba3")]([SubResource("Resource_ckrrw"), SubResource("Resource_dyyab"), SubResource("Resource_r7men")])
+result_text = "Even before the start of the congress, the secret service agents loyal to you, overwhelmed the conspirators who had arrived and sent them to the detention facilities. At the congress, you criticized them in absentia, which was supported by the delegates. But it's not so easy to get rid of high party members..."
+
+[sub_resource type="Resource" id="Resource_l44dg"]
+script = ExtResource("3_2tba3")
+key = "people_support"
+value = -80.0
+
+[sub_resource type="Resource" id="Resource_xl6h6"]
+script = ExtResource("3_2tba3")
+key = "army"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_njk3m"]
+script = ExtResource("3_2tba3")
+key = "party_support"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_glapx"]
+script = ExtResource("4_chkp2")
+key = "army"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_yboyw"]
+script = ExtResource("2_syebt")
+text = "Call loyal officers!"
+disabled_text = "Army will not support us"
+enable_condition = SubResource("Resource_glapx")
+effects = Array[ExtResource("3_2tba3")]([SubResource("Resource_l44dg"), SubResource("Resource_xl6h6"), SubResource("Resource_njk3m")])
+result_text = "Even before the start of the congress, the officers loyal to you overwhelmed the conspirators who had arrived and, at gunpoint, took them to military jails. At the congress, in the presence of armed soldiers, you criticized them in absentia, which was supported by the delegates."
+
+[sub_resource type="Resource" id="Resource_ixjwy"]
+script = ExtResource("3_2tba3")
+key = "people_support"
+value = -200.0
+
+[sub_resource type="Resource" id="Resource_2heau"]
+script = ExtResource("3_2tba3")
+key = "living_standard"
+value = -70.0
+
+[sub_resource type="Resource" id="Resource_0c5io"]
+script = ExtResource("3_2tba3")
+key = "party_support"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_caja5"]
+script = ExtResource("4_chkp2")
+key = "people_support"
+value = 700.0
+
+[sub_resource type="Resource" id="Resource_rubg4"]
+script = ExtResource("2_syebt")
+text = "Appeal to the people!"
+disabled_text = "People do not need another Cultural Revolution"
+enable_condition = SubResource("Resource_caja5")
+effects = Array[ExtResource("3_2tba3")]([SubResource("Resource_ixjwy"), SubResource("Resource_2heau"), SubResource("Resource_0c5io")])
+result_text = "Even before the start of the congress, you appealed through the media to the people with a call to support you and protect the conquests of your power. The people loyal to you went to mass demonstrations in your support and began to storm the departments under your opponent's control."
+
+[resource]
+script = ExtResource("5_22jbi")
+event_id = "congress_conspiracy"
+title = "Conspiracy"
+description = "According to the recently received information, several senior party members who are dissatisfied with your rule have agreed to remove you at the next congress of the Central Committee. You need to urgently do something if you do not want to repeat the fate of the revisionist Khrushchev in 1964."
+options = Array[ExtResource("2_syebt")]([SubResource("Resource_k88p2"), SubResource("Resource_3hpjc"), SubResource("Resource_yboyw"), SubResource("Resource_rubg4")])

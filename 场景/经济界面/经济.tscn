@@ -1,0 +1,1502 @@
+[gd_scene format=3 uid="uid://btldk7ul11cqn"]
+
+[ext_resource type="Script" uid="uid://tosr75dqu387" path="res://场景/经济界面/经济.gd" id="1_dpl73"]
+[ext_resource type="Texture2D" uid="uid://c12hbfb172xwu" path="res://资产/UI/经济/经济界面背景.png" id="2_rjao1"]
+[ext_resource type="Script" uid="uid://covbbtvlir1tf" path="res://场景/经济界面/状态栏.gd" id="3_e2tjs"]
+[ext_resource type="Texture2D" uid="uid://cna2yftijoqqi" path="res://资产/UI/主游戏UI/状态栏背景.png" id="3_v8igk"]
+[ext_resource type="Texture2D" uid="uid://dy8kecb6d4loa" path="res://资产/UI/主游戏UI/状态背景.png" id="4_ioqow"]
+[ext_resource type="Texture2D" uid="uid://ck3yssxxbuhru" path="res://资产/UI/主游戏UI/党内支持度.png" id="5_rrlqr"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="6_7gbkt"]
+[ext_resource type="Texture2D" uid="uid://bp4vslkj6seye" path="res://资产/UI/主游戏UI/人民支持度.png" id="7_h4isr"]
+[ext_resource type="Texture2D" uid="uid://b6bb575lb8cw0" path="res://资产/UI/主游戏UI/思想自由度.png" id="8_wfgam"]
+[ext_resource type="Texture2D" uid="uid://cbi2105s7kje2" path="res://资产/UI/主游戏UI/生活水平.png" id="9_nhxjk"]
+[ext_resource type="Texture2D" uid="uid://cjr8ydvc7fuh0" path="res://资产/UI/主游戏UI/国际声望.png" id="10_q5vhk"]
+[ext_resource type="Texture2D" uid="uid://cq007uywcr5pc" path="res://资产/UI/主游戏UI/特工网络.png" id="11_e2tjs"]
+[ext_resource type="Texture2D" uid="uid://cw0u78fykq5ws" path="res://资产/UI/主游戏UI/全球影响力.png" id="12_pfq8n"]
+[ext_resource type="Texture2D" uid="uid://ccqh1h787cp5c" path="res://资产/UI/主游戏UI/与苏联关系.png" id="13_q5vhk"]
+[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="13_yyr8f"]
+[ext_resource type="Texture2D" uid="uid://b5rynoptf3d37" path="res://资产/UI/主游戏UI/与美国关系.png" id="14_e2tjs"]
+[ext_resource type="Texture2D" uid="uid://bqaw1khohkkov" path="res://资产/UI/主游戏UI/切场景菜单背景.png" id="14_if6ax"]
+[ext_resource type="Texture2D" uid="uid://cgdu6l6shi02j" path="res://资产/UI/经济/工农服腐背景图标.png" id="15_rjao1"]
+[ext_resource type="Texture2D" uid="uid://l3t2mbqcugk1" path="res://资产/UI/经济/军费背景图标.png" id="16_h4isr"]
+[ext_resource type="Texture2D" uid="uid://dijqgr1c82xsq" path="res://资产/UI/经济/行政支出背景图标.png" id="17_wfgam"]
+[ext_resource type="Texture2D" uid="uid://ddxvcs4hopkyb" path="res://资产/UI/经济/农业支出背景图标.png" id="18_nhxjk"]
+[ext_resource type="Texture2D" uid="uid://cotm5oepbrtk5" path="res://资产/UI/经济/福利支出背景图标.png" id="19_q5vhk"]
+[ext_resource type="Texture2D" uid="uid://c7f6qkl6bi4rp" path="res://资产/UI/经济/预算分配背景.png" id="20_0enth"]
+[ext_resource type="Texture2D" uid="uid://bo6mwpudqwhin" path="res://资产/UI/经济/国安部经费背景图标.png" id="20_e2tjs"]
+[ext_resource type="Texture2D" uid="uid://bfmqplolijbts" path="res://资产/UI/经济/高层福利背景图标.png" id="23_pfq8n"]
+[ext_resource type="Texture2D" uid="uid://eg8bwinrn0ok" path="res://资产/UI/经济/工业支出背景图标.png" id="25_yyr8f"]
+[ext_resource type="Texture2D" uid="uid://uesbcpcvblli" path="res://资产/UI/经济/科研经费背景图标.png" id="26_if6ax"]
+[ext_resource type="Texture2D" uid="uid://c12binufcdoi8" path="res://资产/UI/经济/宣传支出背景图标.png" id="27_30v30"]
+[ext_resource type="Texture2D" uid="uid://xlposn2ygdq3" path="res://资产/UI/经济/服务业支出背景图标.png" id="28_qmdo1"]
+[ext_resource type="Texture2D" uid="uid://h4pgi58j15ny" path="res://资产/UI/经济/外交支出背景图标.png" id="29_qmdo1"]
+[ext_resource type="Texture2D" uid="uid://djwrtuqkqo1s6" path="res://资产/UI/经济/寡头状态背景.png" id="30_a182h"]
+[ext_resource type="Texture2D" uid="uid://c3sej3lqc4h2b" path="res://资产/UI/经济/贷款背景图标.png" id="31_4b4b0"]
+[ext_resource type="Texture2D" uid="uid://cr1xp1wmu0taq" path="res://资产/UI/经济/债务情况背景图标.png" id="32_neast"]
+[ext_resource type="Texture2D" uid="uid://0do688h7cx6o" path="res://资产/UI/经济/储蓄金背景图标.png" id="33_0enth"]
+
+[node name="经济" type="Control" unique_id=1490429291]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dpl73")
+
+[node name="背景" type="TextureRect" parent="." unique_id=1946531042]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_rjao1")
+
+[node name="状态栏" type="CanvasLayer" parent="." unique_id=1382094254]
+script = ExtResource("3_e2tjs")
+
+[node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=626606186]
+offset_right = 1920.0
+offset_bottom = 78.0
+texture = ExtResource("3_v8igk")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="状态背景" type="TextureRect" parent="状态栏" unique_id=887675801]
+offset_left = 40.0
+offset_top = 16.0
+offset_right = 246.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="党内支持度图标" type="TextureRect" parent="状态栏" unique_id=1150248022]
+offset_left = 44.0
+offset_top = 22.0
+offset_right = 90.0
+offset_bottom = 65.0
+texture = ExtResource("5_rrlqr")
+metadata/_edit_use_anchors_ = true
+
+[node name="党内支持度" type="Label" parent="状态栏" unique_id=595120909]
+offset_left = 73.0
+offset_top = 13.0
+offset_right = 222.0
+offset_bottom = 88.0
+scale = Vector2(0.8, 0.8)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="人民支持度背景" type="TextureRect" parent="状态栏" unique_id=1785036535]
+offset_left = 216.0
+offset_top = 16.0
+offset_right = 422.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="人民支持度图标" type="TextureRect" parent="状态栏" unique_id=1805842392]
+offset_left = 224.0
+offset_top = 22.0
+offset_right = 270.0
+offset_bottom = 65.0
+texture = ExtResource("7_h4isr")
+metadata/_edit_use_anchors_ = true
+
+[node name="人民支持度" type="Label" parent="状态栏" unique_id=1032450258]
+offset_left = 256.0
+offset_top = 16.0
+offset_right = 405.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="思想自由度背景" type="TextureRect" parent="状态栏" unique_id=1330289571]
+offset_left = 392.0
+offset_top = 16.0
+offset_right = 598.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="思想自由度图标" type="TextureRect" parent="状态栏" unique_id=1344307597]
+offset_left = 400.0
+offset_top = 22.0
+offset_right = 446.0
+offset_bottom = 65.0
+texture = ExtResource("8_wfgam")
+metadata/_edit_use_anchors_ = true
+
+[node name="思想自由度" type="Label" parent="状态栏" unique_id=371993158]
+offset_left = 431.99997
+offset_top = 16.0
+offset_right = 581.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="生活水平背景" type="TextureRect" parent="状态栏" unique_id=243230320]
+offset_left = 568.0
+offset_top = 16.0
+offset_right = 774.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="生活水平图标" type="TextureRect" parent="状态栏" unique_id=180102257]
+offset_left = 576.0
+offset_top = 22.0
+offset_right = 622.0
+offset_bottom = 65.0
+texture = ExtResource("9_nhxjk")
+metadata/_edit_use_anchors_ = true
+
+[node name="生活水平" type="Label" parent="状态栏" unique_id=345615610]
+offset_left = 608.0
+offset_top = 16.0
+offset_right = 757.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="国际声望背景" type="TextureRect" parent="状态栏" unique_id=1807466376]
+offset_left = 744.0
+offset_top = 16.0
+offset_right = 950.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="国际声望图标" type="TextureRect" parent="状态栏" unique_id=1798285323]
+offset_left = 752.0
+offset_top = 22.0
+offset_right = 798.0
+offset_bottom = 65.0
+texture = ExtResource("10_q5vhk")
+metadata/_edit_use_anchors_ = true
+
+[node name="国际声望" type="Label" parent="状态栏" unique_id=1391697137]
+offset_left = 784.0
+offset_top = 16.0
+offset_right = 933.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="特工网络背景" type="TextureRect" parent="状态栏" unique_id=322855052]
+offset_left = 920.0
+offset_top = 16.0
+offset_right = 1126.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="特工网络图标" type="TextureRect" parent="状态栏" unique_id=1111406830]
+offset_left = 926.0
+offset_top = 22.0
+offset_right = 972.0
+offset_bottom = 65.0
+texture = ExtResource("11_e2tjs")
+metadata/_edit_use_anchors_ = true
+
+[node name="特工网络" type="Label" parent="状态栏" unique_id=1534488998]
+offset_left = 952.0
+offset_top = 16.0
+offset_right = 1101.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="全球影响力背景" type="TextureRect" parent="状态栏" unique_id=779692353]
+offset_left = 1096.0
+offset_top = 16.0
+offset_right = 1302.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="全球影响力图标" type="TextureRect" parent="状态栏" unique_id=128219511]
+offset_left = 1104.0
+offset_top = 22.0
+offset_right = 1150.0
+offset_bottom = 65.0
+texture = ExtResource("12_pfq8n")
+metadata/_edit_use_anchors_ = true
+
+[node name="全球影响力" type="Label" parent="状态栏" unique_id=194974936]
+offset_left = 1132.0
+offset_top = 16.0
+offset_right = 1281.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="预算背景" type="TextureRect" parent="状态栏" unique_id=1823737620]
+offset_left = 1624.0
+offset_top = 16.0
+offset_right = 1830.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="与苏联关系背景" type="TextureRect" parent="状态栏" unique_id=2050400716]
+offset_left = 1272.0
+offset_top = 16.0
+offset_right = 1478.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="与苏联关系图标" type="TextureRect" parent="状态栏" unique_id=4089962]
+offset_left = 1280.0
+offset_top = 22.0
+offset_right = 1326.0
+offset_bottom = 65.0
+texture = ExtResource("13_q5vhk")
+metadata/_edit_use_anchors_ = true
+
+[node name="与苏联关系" type="Label" parent="状态栏" unique_id=1308086426]
+offset_left = 1311.0
+offset_top = 16.0
+offset_right = 1460.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="与美国关系背景" type="TextureRect" parent="状态栏" unique_id=717325514]
+offset_left = 1448.0
+offset_top = 16.0
+offset_right = 1654.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("4_ioqow")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="与美国关系图标" type="TextureRect" parent="状态栏" unique_id=30332423]
+offset_left = 1456.0
+offset_top = 22.0
+offset_right = 1502.0
+offset_bottom = 65.0
+texture = ExtResource("14_e2tjs")
+metadata/_edit_use_anchors_ = true
+
+[node name="与美国关系" type="Label" parent="状态栏" unique_id=772654464]
+offset_left = 1487.0
+offset_top = 16.0
+offset_right = 1636.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="预算图标" type="TextureRect" parent="状态栏" unique_id=1646364561]
+offset_left = 1632.0
+offset_top = 24.0
+offset_right = 1678.0
+offset_bottom = 67.0
+texture = ExtResource("13_yyr8f")
+metadata/_edit_use_anchors_ = true
+
+[node name="预算" type="Label" parent="状态栏" unique_id=1504950081]
+offset_left = 1661.0
+offset_top = 16.0
+offset_right = 1810.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="切场景菜单背景" type="TextureRect" parent="状态栏" unique_id=34063772]
+offset_top = 71.0
+offset_right = 1920.0
+offset_bottom = 159.0
+texture = ExtResource("14_if6ax")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="世界地图" type="Button" parent="状态栏" unique_id=1692266763]
+offset_left = 56.0
+offset_top = 80.0
+offset_right = 335.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "世界地图"
+icon = ExtResource("14_if6ax")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="派系" type="Button" parent="状态栏" unique_id=321313764]
+offset_left = 360.0
+offset_top = 80.0
+offset_right = 639.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "派系"
+icon = ExtResource("14_if6ax")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="科学" type="Button" parent="状态栏" unique_id=829463249]
+offset_left = 672.0
+offset_top = 80.0
+offset_right = 951.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "科学"
+icon = ExtResource("14_if6ax")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="概览" type="Button" parent="状态栏" unique_id=759480938]
+offset_left = 977.0
+offset_top = 80.0
+offset_right = 1256.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "概览"
+icon = ExtResource("14_if6ax")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="政治" type="Button" parent="状态栏" unique_id=240358585]
+offset_left = 1290.0
+offset_top = 80.0
+offset_right = 1569.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "政治"
+icon = ExtResource("14_if6ax")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="战争" type="Button" parent="状态栏" unique_id=1288905234]
+offset_left = 1594.0
+offset_top = 80.0
+offset_right = 1873.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 45
+text = "战争"
+icon = ExtResource("14_if6ax")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="工业农业服务业腐败背景图标" type="TextureRect" parent="." unique_id=1474585378]
+layout_mode = 0
+offset_top = 160.0
+offset_right = 1920.0
+offset_bottom = 300.0
+texture = ExtResource("15_rjao1")
+
+[node name="工业" type="Label" parent="." unique_id=664214568]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 208.0
+offset_right = 418.0
+offset_bottom = 309.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 48
+text = "工业"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="工业数值" type="Label" parent="." unique_id=2031364215]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 144.0
+offset_right = 418.0
+offset_bottom = 245.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 48
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="农业" type="Label" parent="." unique_id=255598294]
+layout_mode = 0
+offset_left = 704.0
+offset_top = 208.0
+offset_right = 882.0
+offset_bottom = 309.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 48
+text = "农业"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="农业数值" type="Label" parent="." unique_id=854392721]
+layout_mode = 0
+offset_left = 712.0
+offset_top = 144.0
+offset_right = 890.0
+offset_bottom = 245.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 48
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="服务业" type="Label" parent="." unique_id=1348108114]
+layout_mode = 0
+offset_left = 1176.0
+offset_top = 208.0
+offset_right = 1354.0
+offset_bottom = 309.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 48
+text = "服务业"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="服务业数值" type="Label" parent="." unique_id=1284952010]
+layout_mode = 0
+offset_left = 1176.0
+offset_top = 144.0
+offset_right = 1354.0
+offset_bottom = 245.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 48
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="腐败" type="Label" parent="." unique_id=1640036572]
+layout_mode = 0
+offset_left = 1624.0
+offset_top = 208.0
+offset_right = 1802.0
+offset_bottom = 309.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 48
+text = "腐败"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="腐败数值" type="Label" parent="." unique_id=887532335]
+layout_mode = 0
+offset_left = 1624.0
+offset_top = 144.0
+offset_right = 1802.0
+offset_bottom = 245.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 48
+text = "0.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="军费背景图标" type="TextureRect" parent="." unique_id=13239211]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 312.0
+offset_right = 485.0
+offset_bottom = 457.0
+texture = ExtResource("16_h4isr")
+
+[node name="军费+" type="Button" parent="." unique_id=1940652109]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 309.0
+offset_right = 488.0
+offset_bottom = 404.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="军费-" type="Button" parent="." unique_id=2079701873]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 309.0
+offset_right = 280.0
+offset_bottom = 404.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="军费" type="Label" parent="." unique_id=733787406]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 404.0
+offset_right = 398.0
+offset_bottom = 449.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "军费"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="军费数值" type="Label" parent="." unique_id=1772737840]
+layout_mode = 0
+offset_left = 304.0
+offset_top = 320.0
+offset_right = 415.0
+offset_bottom = 393.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="行政支出背景图标" type="TextureRect" parent="." unique_id=230668153]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 472.0
+offset_right = 485.0
+offset_bottom = 618.0
+texture = ExtResource("17_wfgam")
+
+[node name="行政支出+" type="Button" parent="." unique_id=513438060]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 469.0
+offset_right = 488.0
+offset_bottom = 564.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="行政支出-" type="Button" parent="." unique_id=142587253]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 469.0
+offset_right = 280.0
+offset_bottom = 564.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="行政支出" type="Label" parent="." unique_id=1075080383]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 566.0
+offset_right = 436.0
+offset_bottom = 611.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "行政支出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="行政支出数值" type="Label" parent="." unique_id=1417113053]
+layout_mode = 0
+offset_left = 304.0
+offset_top = 480.0
+offset_right = 415.0
+offset_bottom = 553.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="农业支出背景图标" type="TextureRect" parent="." unique_id=503801039]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 634.0
+offset_right = 485.0
+offset_bottom = 779.0
+texture = ExtResource("18_nhxjk")
+
+[node name="农业支出+" type="Button" parent="." unique_id=1776051098]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 629.0
+offset_right = 488.0
+offset_bottom = 724.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="农业支出-" type="Button" parent="." unique_id=588606185]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 629.0
+offset_right = 280.0
+offset_bottom = 724.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="农业支出" type="Label" parent="." unique_id=834849296]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 728.0
+offset_right = 436.0
+offset_bottom = 773.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "农业支出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="农业支出数值" type="Label" parent="." unique_id=1577683830]
+layout_mode = 0
+offset_left = 304.0
+offset_top = 640.0
+offset_right = 415.0
+offset_bottom = 713.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="福利支出背景图标" type="TextureRect" parent="." unique_id=832865175]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 795.0
+offset_right = 485.0
+offset_bottom = 941.0
+texture = ExtResource("19_q5vhk")
+
+[node name="福利支出+" type="Button" parent="." unique_id=1035232517]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 791.0
+offset_right = 488.0
+offset_bottom = 886.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="福利支出-" type="Button" parent="." unique_id=2057800921]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 791.0
+offset_right = 280.0
+offset_bottom = 886.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="福利支出" type="Label" parent="." unique_id=331948449]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 890.0
+offset_right = 436.0
+offset_bottom = 935.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "福利支出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="福利支出数值" type="Label" parent="." unique_id=1898587025]
+layout_mode = 0
+offset_left = 304.0
+offset_top = 802.0
+offset_right = 415.0
+offset_bottom = 875.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="国安部经费背景图标" type="TextureRect" parent="." unique_id=1193186629]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 312.0
+offset_right = 965.0
+offset_bottom = 458.0
+texture = ExtResource("20_e2tjs")
+
+[node name="国安部经费+" type="Button" parent="." unique_id=1463532]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 309.0
+offset_right = 967.0
+offset_bottom = 404.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="国安部经费-" type="Button" parent="." unique_id=1663822019]
+layout_mode = 0
+offset_left = 703.0
+offset_top = 309.0
+offset_right = 759.0
+offset_bottom = 404.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="国安部经费" type="Label" parent="." unique_id=1720755667]
+layout_mode = 0
+offset_left = 740.0
+offset_top = 404.0
+offset_right = 935.0
+offset_bottom = 449.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "国安部经费"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="国安部经费数值" type="Label" parent="." unique_id=1654922797]
+layout_mode = 0
+offset_left = 783.0
+offset_top = 320.0
+offset_right = 894.0
+offset_bottom = 393.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="高层福利背景图标" type="TextureRect" parent="." unique_id=371632787]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 472.0
+offset_right = 966.0
+offset_bottom = 618.0
+texture = ExtResource("23_pfq8n")
+
+[node name="高层福利+" type="Button" parent="." unique_id=413467340]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 469.0
+offset_right = 967.0
+offset_bottom = 564.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="高层福利-" type="Button" parent="." unique_id=1244203373]
+layout_mode = 0
+offset_left = 703.0
+offset_top = 469.0
+offset_right = 759.0
+offset_bottom = 564.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="高层福利" type="Label" parent="." unique_id=1531768446]
+layout_mode = 0
+offset_left = 760.0
+offset_top = 566.0
+offset_right = 916.0
+offset_bottom = 611.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "高层福利"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="高层福利数值" type="Label" parent="." unique_id=1440919917]
+layout_mode = 0
+offset_left = 783.0
+offset_top = 480.0
+offset_right = 894.0
+offset_bottom = 553.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="工业支出背景图标" type="TextureRect" parent="." unique_id=843434324]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 634.0
+offset_right = 966.0
+offset_bottom = 780.0
+texture = ExtResource("25_yyr8f")
+
+[node name="工业支出+" type="Button" parent="." unique_id=786545364]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 630.0
+offset_right = 967.0
+offset_bottom = 725.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="工业支出-" type="Button" parent="." unique_id=936336213]
+layout_mode = 0
+offset_left = 703.0
+offset_top = 630.0
+offset_right = 759.0
+offset_bottom = 725.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="工业支出" type="Label" parent="." unique_id=1033179797]
+layout_mode = 0
+offset_left = 760.0
+offset_top = 727.0
+offset_right = 916.0
+offset_bottom = 772.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "工业支出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="工业支出数值" type="Label" parent="." unique_id=88057391]
+layout_mode = 0
+offset_left = 783.0
+offset_top = 641.0
+offset_right = 894.0
+offset_bottom = 714.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="科研经费背景图标" type="TextureRect" parent="." unique_id=1069593597]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 312.0
+offset_right = 1444.0
+offset_bottom = 458.0
+texture = ExtResource("26_if6ax")
+
+[node name="科研经费+" type="Button" parent="." unique_id=1068609698]
+layout_mode = 0
+offset_left = 1391.0
+offset_top = 309.0
+offset_right = 1447.0
+offset_bottom = 404.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="科研经费-" type="Button" parent="." unique_id=1655492909]
+layout_mode = 0
+offset_left = 1183.0
+offset_top = 309.0
+offset_right = 1239.0
+offset_bottom = 404.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="科研经费" type="Label" parent="." unique_id=2092621913]
+layout_mode = 0
+offset_left = 1220.0
+offset_top = 404.0
+offset_right = 1415.0
+offset_bottom = 449.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "科研经费"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="科研经费数值" type="Label" parent="." unique_id=1673825170]
+layout_mode = 0
+offset_left = 1263.0
+offset_top = 320.0
+offset_right = 1374.0
+offset_bottom = 393.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="宣传支出背景图标" type="TextureRect" parent="." unique_id=1956051105]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 472.0
+offset_right = 1444.0
+offset_bottom = 618.0
+texture = ExtResource("27_30v30")
+
+[node name="宣传支出+" type="Button" parent="." unique_id=1388998157]
+layout_mode = 0
+offset_left = 1391.0
+offset_top = 469.0
+offset_right = 1447.0
+offset_bottom = 564.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="宣传支出-" type="Button" parent="." unique_id=745169781]
+layout_mode = 0
+offset_left = 1183.0
+offset_top = 469.0
+offset_right = 1239.0
+offset_bottom = 564.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="宣传支出" type="Label" parent="." unique_id=104970712]
+layout_mode = 0
+offset_left = 1220.0
+offset_top = 564.0
+offset_right = 1415.0
+offset_bottom = 609.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "宣传支出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="宣传支出数值" type="Label" parent="." unique_id=1655796369]
+layout_mode = 0
+offset_left = 1263.0
+offset_top = 480.0
+offset_right = 1374.0
+offset_bottom = 553.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="服务业支出背景图标" type="TextureRect" parent="." unique_id=1663317698]
+layout_mode = 0
+offset_left = 975.0
+offset_top = 634.0
+offset_right = 1444.0
+offset_bottom = 780.0
+texture = ExtResource("28_qmdo1")
+
+[node name="服务业支出+" type="Button" parent="." unique_id=1135620578]
+layout_mode = 0
+offset_left = 1391.0
+offset_top = 630.0
+offset_right = 1447.0
+offset_bottom = 725.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="服务业支出-" type="Button" parent="." unique_id=1386776789]
+layout_mode = 0
+offset_left = 1183.0
+offset_top = 630.0
+offset_right = 1239.0
+offset_bottom = 725.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="服务业支出" type="Label" parent="." unique_id=163930709]
+layout_mode = 0
+offset_left = 1220.0
+offset_top = 725.0
+offset_right = 1415.0
+offset_bottom = 770.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "服务业支出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="服务业支出数值" type="Label" parent="." unique_id=256910170]
+layout_mode = 0
+offset_left = 1263.0
+offset_top = 641.0
+offset_right = 1374.0
+offset_bottom = 714.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="外交支出背景图标" type="TextureRect" parent="." unique_id=430014595]
+layout_mode = 0
+offset_left = 977.0
+offset_top = 795.0
+offset_right = 1447.0
+offset_bottom = 941.0
+texture = ExtResource("29_qmdo1")
+
+[node name="外交支出+" type="Button" parent="." unique_id=453959685]
+layout_mode = 0
+offset_left = 1392.0
+offset_top = 791.0
+offset_right = 1448.0
+offset_bottom = 886.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="外交支出-" type="Button" parent="." unique_id=1849476411]
+layout_mode = 0
+offset_left = 1184.0
+offset_top = 791.0
+offset_right = 1240.0
+offset_bottom = 886.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="外交支出" type="Label" parent="." unique_id=1140271111]
+layout_mode = 0
+offset_left = 1221.0
+offset_top = 886.0
+offset_right = 1416.0
+offset_bottom = 931.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "外交支出"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="外交支出数值" type="Label" parent="." unique_id=535528754]
+layout_mode = 0
+offset_left = 1264.0
+offset_top = 802.0
+offset_right = 1375.0
+offset_bottom = 875.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="寡头状态背景" type="TextureRect" parent="." unique_id=1259812963]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 824.0
+offset_right = 930.0
+offset_bottom = 903.0
+texture = ExtResource("30_a182h")
+
+[node name="寡头状态文本" type="Label" parent="." unique_id=1337611574]
+layout_mode = 0
+offset_left = 536.0
+offset_top = 832.0
+offset_right = 920.0
+offset_bottom = 896.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 23
+text = "国内寡头无立锥之地
+其影响力为:0/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="贷款背景图标" type="TextureRect" parent="." unique_id=602664505]
+layout_mode = 0
+offset_left = 1472.0
+offset_top = 288.0
+offset_right = 1902.0
+offset_bottom = 1198.0
+texture = ExtResource("31_4b4b0")
+stretch_mode = 2
+
+[node name="贷款数值" type="Label" parent="." unique_id=1740538579]
+layout_mode = 0
+offset_left = 1704.0
+offset_top = 328.0
+offset_right = 1815.0
+offset_bottom = 401.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="贷款+" type="Button" parent="." unique_id=1946940673]
+layout_mode = 0
+offset_left = 1836.0
+offset_top = 320.0
+offset_right = 1892.0
+offset_bottom = 415.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="贷款-" type="Button" parent="." unique_id=234154050]
+layout_mode = 0
+offset_left = 1628.0
+offset_top = 320.0
+offset_right = 1684.0
+offset_bottom = 415.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="债务损耗背景图标" type="TextureRect" parent="." unique_id=296486477]
+layout_mode = 0
+offset_left = 1487.0
+offset_top = 480.0
+offset_right = 1889.0
+offset_bottom = 559.0
+texture = ExtResource("32_neast")
+
+[node name="债务损耗" type="Label" parent="." unique_id=1694759271]
+layout_mode = 0
+offset_left = 1496.0
+offset_top = 485.0
+offset_right = 1883.0
+offset_bottom = 553.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 30
+text = "债务损耗：
+预算-0.0"
+horizontal_alignment = 1
+
+[node name="债务限额背景图标" type="TextureRect" parent="." unique_id=892574024]
+layout_mode = 0
+offset_left = 1487.0
+offset_top = 568.0
+offset_right = 1889.0
+offset_bottom = 647.0
+texture = ExtResource("32_neast")
+
+[node name="债务限额" type="Label" parent="." unique_id=994588507]
+layout_mode = 0
+offset_left = 1496.0
+offset_top = 573.0
+offset_right = 1883.0
+offset_bottom = 646.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 30
+text = "债务限额：
+20.0"
+horizontal_alignment = 1
+
+[node name="贪腐损耗背景图标" type="TextureRect" parent="." unique_id=1337035571]
+layout_mode = 0
+offset_left = 1487.0
+offset_top = 656.0
+offset_right = 1889.0
+offset_bottom = 735.0
+texture = ExtResource("32_neast")
+
+[node name="贪腐损耗" type="Label" parent="." unique_id=868028620]
+layout_mode = 0
+offset_left = 1496.0
+offset_top = 664.0
+offset_right = 1883.0
+offset_bottom = 724.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 15
+text = "贪腐损耗:
+预算-1.5
+生活水平-0.3"
+horizontal_alignment = 1
+
+[node name="最大投资背景图标" type="TextureRect" parent="." unique_id=203214275]
+layout_mode = 0
+offset_left = 1487.0
+offset_top = 744.0
+offset_right = 1889.0
+offset_bottom = 823.0
+texture = ExtResource("32_neast")
+
+[node name="最大投资" type="Label" parent="." unique_id=749355804]
+layout_mode = 0
+offset_left = 1496.0
+offset_top = 749.0
+offset_right = 1883.0
+offset_bottom = 822.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 30
+text = "最大投资：
+28.0"
+horizontal_alignment = 1
+
+[node name="储蓄金背景图标" type="TextureRect" parent="." unique_id=1509582554]
+layout_mode = 0
+offset_left = 1496.0
+offset_top = 840.0
+offset_right = 1883.3103
+offset_bottom = 960.0
+texture = ExtResource("33_0enth")
+expand_mode = 1
+
+[node name="储蓄金-" type="Button" parent="." unique_id=1683276340]
+layout_mode = 0
+offset_left = 1668.0001
+offset_top = 831.0
+offset_right = 1729.3334
+offset_bottom = 953.66675
+scale = Vector2(0.75, 0.75)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "-"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="储蓄金+" type="Button" parent="." unique_id=1083540985]
+layout_mode = 0
+offset_left = 1841.0001
+offset_top = 831.0
+offset_right = 1902.3334
+offset_bottom = 953.66675
+scale = Vector2(0.75, 0.75)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 55
+text = "+"
+icon = ExtResource("20_0enth")
+flat = true
+icon_alignment = 1
+
+[node name="储蓄金数值" type="Label" parent="." unique_id=1041384406]
+layout_mode = 0
+offset_left = 1723.0
+offset_top = 842.0
+offset_right = 1834.0
+offset_bottom = 915.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 64
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="储蓄金" type="Label" parent="." unique_id=1628501794]
+layout_mode = 0
+offset_left = 1684.0
+offset_top = 912.0
+offset_right = 1879.0
+offset_bottom = 957.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 39
+text = "储蓄金"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="储蓄金影响背景图标" type="TextureRect" parent="." unique_id=2078945931]
+layout_mode = 0
+offset_left = 1487.0
+offset_top = 968.0
+offset_right = 1889.0
+offset_bottom = 1047.0
+texture = ExtResource("32_neast")
+
+[node name="储蓄金影响" type="Label" parent="." unique_id=1025324109]
+layout_mode = 0
+offset_left = 1592.0
+offset_top = 971.0
+offset_right = 1816.0
+offset_bottom = 1063.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_7gbkt")
+theme_override_font_sizes/font_size = 13
+text = "储蓄金影响：
+服务业，工业，生活水平+0.0
+腐败-0.0
+盟国政权稳定度+0.0
+"
+horizontal_alignment = 1

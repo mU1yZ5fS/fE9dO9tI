@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://b1dm8nycmn3gw"]
+
+[ext_resource type="Texture2D" uid="uid://27eysag2hgc4" path="res://资产/UI/结局/结局背景图.png" id="1_fd062"]
+[ext_resource type="Script" uid="uid://bvc6yckpgreae" path="res://场景/结局界面/结局.gd" id="1_vbfwq"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="2_l6py3"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="3_my560"]
+[ext_resource type="Texture2D" uid="uid://cpwi1qdw7s3s" path="res://资产/UI/设置/右翻页.png" id="4_hkeae"]
+
+[node name="结局" type="Control" unique_id=1518469888]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vbfwq")
+
+[node name="背景" type="TextureRect" parent="." unique_id=1457944575]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_fd062")
+
+[node name="结局标题" type="Label" parent="." unique_id=487603202]
+layout_mode = 0
+offset_left = 760.0
+offset_top = 32.0
+offset_right = 1180.0
+offset_bottom = 101.0
+theme_override_colors/font_color = Color(0.6522269, 2.7675183e-06, 4.3317675e-07, 1)
+theme_override_fonts/font = ExtResource("2_l6py3")
+theme_override_font_sizes/font_size = 60
+text = "一从大地起风雷"
+
+[node name="结局文案" type="Label" parent="." unique_id=1270958560]
+layout_mode = 0
+offset_left = 336.0
+offset_top = 120.0
+offset_right = 1592.0
+offset_bottom = 1064.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_l6py3")
+
+[node name="返回主菜单" type="TextureButton" parent="." unique_id=2071347647]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 48.0
+offset_right = 279.0
+offset_bottom = 160.0
+texture_normal = ExtResource("3_my560")
+
+[node name="翻页" type="TextureButton" parent="." unique_id=2026011206]
+layout_mode = 0
+offset_left = 1640.0
+offset_top = 880.0
+offset_right = 2240.0
+offset_bottom = 1480.0
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("4_hkeae")

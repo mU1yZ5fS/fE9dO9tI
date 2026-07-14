@@ -1,0 +1,20 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://62wfrx3m4hi8"]
+
+[ext_resource type="Shader" uid="uid://da46ftdhl8hgc" path="res://场景/世界地图/地图渲染.gdshader" id="1_xsnkq"]
+[ext_resource type="Texture2D" uid="uid://cy6xjdlpau1fg" path="res://资产/地图/map_color.png" id="2_kfmlw"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_xsnkq")
+shader_parameter/region_map = ExtResource("2_kfmlw")
+shader_parameter/selected_gwcode = 0
+shader_parameter/hover_gwcode = 0
+shader_parameter/water_color = Color(0.07, 0.22, 0.38, 1)
+shader_parameter/border_color = Color(0.02, 0.02, 0.02, 0.75)
+shader_parameter/selected_color = Color(1, 0.92, 0.15, 1)
+shader_parameter/hover_color = Color(1, 1, 1, 0.85)
+shader_parameter/day_night_enabled = true
+shader_parameter/sun_direction_local = Vector3(0.45, 0.2, 0.87)
+shader_parameter/night_tint = Color(0.025, 0.04, 0.085, 1)
+shader_parameter/night_strength = 0.55
+shader_parameter/terminator_softness = 0.09
