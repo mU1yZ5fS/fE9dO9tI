@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://b16ruch2kqkir" path="res://资产/UI/主菜单/主菜单按钮.png" id="2_ngrxy"]
 [ext_resource type="Script" uid="uid://dprrkvl1dxnw8" path="res://场景/主菜单/主菜单.gd" id="2_qdl27"]
 [ext_resource type="Script" uid="uid://c8lq4p6d1xjda" path="res://场景/主菜单/版本信息.gd" id="5_xj33c"]
-[ext_resource type="Texture2D" uid="uid://bg1icj0ofxh28" path="res://资产/UI/qq群.png" id="6_omqpa"]
 
 [node name="Control" type="Control" unique_id=1650672303]
 layout_mode = 3
@@ -99,14 +98,12 @@ offset_left = 1311.0
 offset_top = 24.0
 offset_right = 1904.0
 offset_bottom = 74.0
-tooltip_text = "欢迎加入！"
 tooltip_auto_translate_mode = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 43
-text = "中国:毛的遗产[DH4591-Godot]"
+text = "中国:毛的遗产[Godot]"
 horizontal_alignment = 2
 script = ExtResource("5_xj33c")
-tooltip_image = ExtResource("6_omqpa")
 
 [node name="版本信息2" type="Label" parent="." unique_id=1314310004]
 layout_mode = 0
