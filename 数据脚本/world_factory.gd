@@ -31,7 +31,28 @@ const NAME_ALIASES := {
 	"luxemburg": "luxembourg",
 	"greatbritain": "unitedkingdom",
 	"burma": "myanmar",
+	"holland": "netherlands",
+	"uae": "unitedarabemirates",
+	"cotedivoire": "cotedivoire",
+	"ctedivoire": "cotedivoire",  # Côte → c + te（ô 被剥掉）
+	"uppervolta": "burkinafasouppervolta",
+	"car": "centralafricanrepublic",
+	"suriname": "surinam",
+	"kampuchea": "cambodiakampuchea",
+	"jordania": "jordan",
+	"sovietunion": "russiasovietunion",
+	"dividedcyprus": "cyprus",
+	"romania": "rumania",
+	"vietnam": "vietnamdemocraticrepublicof",
+	"turkey": "turkeyottomanempire",
+	"iran": "iranpersia",
+	"italy": "italysardinia",
+	"srilanka": "srilankaceylon",
 }
+
+## 地图上不存在的虚构/分离实体：不得占用 G&W 真实 gwcode（否则点墨西哥会命中维吾尔斯坦）
+## 统一映射到 9000+ 原版序号，避免与 map_countries 0~960 冲突
+const FICTIONAL_COUNTRY_OFFSET := 9000
 
 
 # ============================================================================
@@ -237,18 +258,56 @@ const POLITICIAN_ROWS := [
 	[18, 18, 2, 6, 17, 74,  25],  # Wang Qiao (Qiao Guanhua record)
 ]
 
-# 名（按 trait_personality 索引）
-const GIVEN_NAMES := [
-	"Jiang", "Mao", "Hua", "Wang", "Zhang", "Yao", "Wang",
-	"Li", "Ye", "Ji", "Cheng", "Wu", "Huang", "Deng",
-	"Zhao", "Hu", "Chen", "Wang", "Qiao",
+# 中文全名（按政治家数组顺序，与 POLITICIAN_ROWS 一一对应）
+const POLITICIAN_NAMES_ZH := [
+	"江青", "毛泽东", "华国锋", "王洪文", "张春桥", "姚文元",
+	"汪东兴", "李先念", "叶剑英", "纪登奎", "陈锡联", "吴德",
+	"黄华", "邓小平", "赵紫阳", "胡耀邦", "陈云", "王震",
 ]
 
-# 姓（按政治家顺序索引）
+# 兼容旧逻辑的拼音拆分（按政治家顺序）
+const GIVEN_NAMES := [
+	"江", "毛", "华", "王", "张", "姚", "汪",
+	"李", "叶", "纪", "陈", "吴", "黄", "邓",
+	"赵", "胡", "陈", "王",
+]
 const SURNAMES := [
-	"Qing", "Zedong", "Guofeng", "Hongwen", "Chunqiao", "Wenyuan",
-	"Dongxing", "Xiannian", "Jianying", "Dengkui", "Xilian", "De",
-	"Hua", "Xiaoping", "Ziyang", "Yaobang", "Yun", "Zhen",
+	"青", "泽东", "国锋", "洪文", "春桥", "文元",
+	"东兴", "先念", "剑英", "登奎", "锡联", "德",
+	"华", "小平", "紫阳", "耀邦", "云", "震",
+]
+
+# 特质中文名（对应 traits[0]/traits[1]/traits[2] 的取值表）
+# traits[0] 派系倾向 0极左 1保守 2温和 3改革 4自由
+# traits[1] 性格 5硬汉 6实用主义 7宽容 8科学家
+# traits[2] 特殊 9病弱 10苛刻 11谋士 12傲慢 13和平 14经管学家 15中华派 16西渐派 17偶像
+const TRAIT_LABELS_ZH := {
+	0: "极左派", 1: "保守派", 2: "温和派", 3: "改革派", 4: "自由派",
+	5: "硬汉", 6: "实用主义", 7: "宽容", 8: "科学家",
+	9: "病弱", 10: "苛刻", 11: "谋士", 12: "傲慢", 13: "和平",
+	14: "经管学家", 15: "中华派", 16: "西渐派", 17: "偶像",
+}
+
+# 按政治家顺序的 (personality, alignment, special) — 对齐截图/原版初始展示
+const POLITICIAN_TRAITS := [
+	[0, 5, 10],  # 江青 极左 硬汉 苛刻
+	[0, 5, 9],   # 毛泽东 极左 硬汉 病弱
+	[1, 5, 14],  # 华国锋 保守 硬汉 经管（近似）
+	[0, 5, 11],  # 王洪文 极左 硬汉 谋士
+	[0, 5, 11],  # 张春桥 极左 硬汉 谋士
+	[0, 5, 12],  # 姚文元 极左 硬汉 傲慢
+	[1, 5, 13],  # 汪东兴 保守 硬汉 和平
+	[2, 5, 14],  # 李先念 温和 硬汉 经管学家
+	[3, 8, 11],  # 叶剑英 改革 科学家 谋士
+	[1, 6, 14],  # 纪登奎 保守 实用 经管
+	[1, 6, 11],  # 陈锡联 保守 实用 谋士
+	[1, 5, 10],  # 吴德 保守 硬汉 苛刻
+	[2, 6, 15],  # 黄华 温和 实用 中华派
+	[3, 6, 14],  # 邓小平 改革 实用 经管
+	[4, 7, 16],  # 赵紫阳 自由 宽容 西渐
+	[4, 7, 17],  # 胡耀邦 自由 宽容 偶像
+	[2, 6, 14],  # 陈云 温和 实用 经管
+	[1, 5, 15],  # 王震 保守 硬汉 中华派
 ]
 
 
@@ -402,11 +461,26 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 		if name_to_gwcode.has(hr_name):
 			gw = int(name_to_gwcode[hr_name])
 		else:
-			# contains 双向兜底
+			# 前缀唯一匹配兜底（仅 begins_with，避免 slovakia⊂czechoslovakia、oman⊂romania）
+			var best_len := 0
+			var best_gw := 0
+			var best_count := 0
 			for map_name in name_to_gwcode.keys():
-				if map_name in hr_name or hr_name in map_name:
-					gw = int(name_to_gwcode[map_name])
-					break
+				var mn: String = String(map_name)
+				if mn.length() < 4 or hr_name.length() < 4:
+					continue
+				var hit := mn.begins_with(hr_name) or hr_name.begins_with(mn)
+				if not hit:
+					continue
+				var L: int = mini(mn.length(), hr_name.length())
+				if L > best_len:
+					best_len = L
+					best_gw = int(name_to_gwcode[map_name])
+					best_count = 1
+				elif L == best_len and int(name_to_gwcode[map_name]) != best_gw:
+					best_count += 1
+			if best_count == 1 and best_gw > 0:
+				gw = best_gw
 		if gw > 0:
 			c.gwcode = gw
 			var gw_str := str(gw)
@@ -421,11 +495,13 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 						c.gov_names[int(k)] = String(gn[k])
 			matched += 1
 		else:
-			unmatched_log.append("%s(idx=%d)" % [c.name, c.原版序号])
+			# 关键：内部序号 70/100 与 G&W 墨西哥/哥伦比亚冲突 → 挪到 9000+
+			c.gwcode = FICTIONAL_COUNTRY_OFFSET + int(c.原版序号)
+			unmatched_log.append("%s(idx=%d→gw=%d)" % [c.name, c.原版序号, c.gwcode])
 
 	print("WorldFactory: gwcode 修正完成 %d/%d 匹配" % [matched, ws.countries.size()])
 	if unmatched_log.size() > 0 and unmatched_log.size() <= 40:
-		print("  未匹配(无真实gwcode，地图上无区域): %s" % str(unmatched_log))
+		print("  未匹配(虚构/无区域，已偏移到 9000+): %s" % str(unmatched_log))
 
 
 # ============================================================================
@@ -444,24 +520,35 @@ static func _fill_data_array(ws: WorldState) -> void:
 # ============================================================================
 
 static func _build_politicians(ws: WorldState) -> void:
-	for row in POLITICIAN_ROWS:
+	for i in POLITICIAN_ROWS.size():
+		var row: Array = POLITICIAN_ROWS[i]
 		var pd := PoliticianData.new()
-		pd.trait_personality = row[2]   # trait_id
-		pd.faction = row[1]             # party_id
+		pd.name_first = int(row[0])
+		pd.name_last = i
+		pd.faction = row[1]
 		pd.experience = row[3]
 		pd.age = row[4]
 		# 原版 loyality 为内部大尺度（阈值 50/150/300）；表内为显示值 0~100 → ×10
 		pd.loyalty = row[5] * 10
 		pd.power = row[6]
+		if i < POLITICIAN_TRAITS.size():
+			var trait_row: Array = POLITICIAN_TRAITS[i]
+			pd.trait_personality = int(trait_row[0])
+			pd.trait_alignment = int(trait_row[1])
+			pd.trait_special = int(trait_row[2])
+		else:
+			pd.trait_personality = int(row[2])
+			pd.trait_alignment = 5
+			pd.trait_special = 11
+		pd.face_type = 0 if i % 2 == 0 else 1
+		pd.jacket = i % 4
+		if i < POLITICIAN_NAMES_ZH.size():
+			pd.name_display = POLITICIAN_NAMES_ZH[i]
+		else:
+			var fn: String = GIVEN_NAMES[i] if i < GIVEN_NAMES.size() else "?"
+			var ln: String = SURNAMES[i] if i < SURNAMES.size() else "?"
+			pd.name_display = fn + ln
 		ws.politicians.append(pd)
-
-	# 组装显示名称
-	for i in ws.politicians.size():
-		var pd := ws.politicians[i]
-		var fn: String = GIVEN_NAMES[pd.trait_personality] \
-			if pd.trait_personality < GIVEN_NAMES.size() else "?"
-		var ln: String = SURNAMES[i] if i < SURNAMES.size() else "?"
-		pd.name_display = fn + " " + ln
 
 	print("WorldFactory: 加载了 %d 位政治家" % ws.politicians.size())
 
@@ -592,11 +679,21 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 # 工具函数
 # ============================================================================
 
-# 规范化国名：小写 + 去除空格/标点/连字符，便于跨数据源匹配
+# 规范化国名：小写 + 去重音 + 去除空格/标点/连字符，便于跨数据源匹配
 static func _normalize_country_name(s: String) -> String:
-	return s.to_lower().replace("&", "and").replace(" ", "").replace("-", "") \
-		.replace("_", "").replace(",", "").replace(".", "").replace("(", "") \
-		.replace(")", "").strip_edges()
+	var t := s.to_lower().replace("&", "and")
+	# 常见西欧重音 → ASCII（Côte / São 等）
+	const FROM := "àáâãäåāăąèéêëēĕėęěìíîïĩīĭįıòóôõöøōŏőùúûüũūŭůűýÿçñśźż"
+	const TO := "aaaaaaaaaeeeeeeeeeeiiiiiiiiiooooooooouuuuuuuuuyycnszz"
+	for i in mini(FROM.length(), TO.length()):
+		t = t.replace(FROM[i], TO[i])
+	var out := ""
+	for i in t.length():
+		var ch := t[i]
+		var code := ch.unicode_at(0)
+		if (code >= 97 and code <= 122) or (code >= 48 and code <= 57):
+			out += ch
+	return out
 
 
 # 加载 JSON 文件为 Dictionary（失败返回空字典）

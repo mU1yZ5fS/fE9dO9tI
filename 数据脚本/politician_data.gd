@@ -51,17 +51,19 @@ func _init() -> void:
 ## 获取意识形态标签
 func ideology_label() -> String:
 	match trait_personality:
-		0: return "极左/毛主义者"
-		1: return "温和派"
-		2: return "改良派"
-		3: return "自由派"
+		0: return "极左派"
+		1: return "保守派"
+		2: return "温和派"
+		3: return "改革派"
+		4: return "自由派"
 	return "未知"
+
 
 ## 获取对齐标签
 func alignment_label() -> String:
 	match trait_alignment:
-		4: return "坚定"
-		5: return "务实"
-		6: return "温和"
-		7: return "科学家"
+		5: return "硬汉"
+		6: return "实用主义"
+		7: return "宽容"
+		8: return "科学家"
 	return "未知"
