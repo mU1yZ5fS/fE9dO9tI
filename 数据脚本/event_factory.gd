@@ -946,7 +946,7 @@ static func create_event_11() -> EventDef:
 		+ "requirements of labor legislation, but nothing, the people will suffer.",
 		[set_resource("industry", 100), add_resource("living_standard", -50),
 		add_empire_relation(EmpireData.USA, -50)],
-		all_of([empire_rel_at_least(EmpireData.USA, 60), any_of([res_at_least("development", 13), has_flag("sez")])]),
+		all_of([empire_rel_at_least(EmpireData.USA, 600), any_of([res_at_least("development", 13), has_flag("sez")])]),
 		"Investors will not go to us"
 	))
 
@@ -957,7 +957,7 @@ static func create_event_11() -> EventDef:
 		+ "and we've got some dependence on the USSR.",
 		[set_resource("industry", 100), add_empire_power(EmpireData.USSR, 10),
 		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100)],
-		empire_rel_at_least(EmpireData.USSR, 70),
+		empire_rel_at_least(EmpireData.USSR, 700),
 		"We don't need handouts from revisionists!"
 	))
 
@@ -1000,7 +1000,7 @@ static func create_event_12() -> EventDef:
 		+ "build and modernize our farms without a single yuan from our budget...",
 		[set_resource("food", 100), add_resource("living_standard", -50),
 		add_empire_relation(EmpireData.USA, -50)],
-		all_of([empire_rel_at_least(EmpireData.USA, 60), any_of([res_at_least("development", 13), has_flag("sez")])]),
+		all_of([empire_rel_at_least(EmpireData.USA, 600), any_of([res_at_least("development", 13), has_flag("sez")])]),
 		"Investors will not go to us"
 	))
 
@@ -1009,7 +1009,7 @@ static func create_event_12() -> EventDef:
 		"The Soviet Union agreed how in the old days to help us with the rise of agriculture...",
 		[set_resource("food", 100), add_empire_power(EmpireData.USSR, 10),
 		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100)],
-		empire_rel_at_least(EmpireData.USSR, 70),
+		empire_rel_at_least(EmpireData.USSR, 700),
 		"We don't need handouts from revisionists!"
 	))
 
@@ -1050,7 +1050,7 @@ static func create_event_13() -> EventDef:
 		"Our campaign to attract foreign investment was a great success! Foreigners themselves now "
 		+ "build and modernize our shops and restaurants...",
 		[add_resource("living_standard", -50), add_empire_relation(EmpireData.USA, -50)],
-		all_of([empire_rel_at_least(EmpireData.USA, 60), any_of([res_at_least("development", 13), has_flag("sez")])]),
+		all_of([empire_rel_at_least(EmpireData.USA, 600), any_of([res_at_least("development", 13), has_flag("sez")])]),
 		"Investors will not go to us"
 	))
 
@@ -1059,7 +1059,7 @@ static func create_event_13() -> EventDef:
 		"The Soviet Union agreed how in the old days to help us with the development of the service sector...",
 		[add_empire_power(EmpireData.USSR, 10),
 		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100)],
-		empire_rel_at_least(EmpireData.USSR, 70),
+		empire_rel_at_least(EmpireData.USSR, 700),
 		"We don't need handouts from revisionists!"
 	))
 

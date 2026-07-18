@@ -6,6 +6,7 @@ extends CanvasLayer
 func _ready() -> void:
 	if not GameManager:
 		return
+	GameManager.date_changed.connect(func(_d): _refresh())
 	GameManager.world_state_loaded.connect(_refresh)
 	if GameManager.world != null:
 		_refresh()
@@ -13,7 +14,11 @@ func _ready() -> void:
 
 func _refresh() -> void:
 	var w := GameManager.world
-	if w == null or w.玩家经济 == null:
+	if w == null:
+		return
+	# 刷新前强制从数值表同步显示视图，避免跨场景后读到旧缓存
+	w.sync_economy()
+	if w.玩家经济 == null:
 		return
 	var eco := w.玩家经济
 	_label("党内支持度", "%.1f" % eco.党内支持度)
@@ -25,8 +30,9 @@ func _refresh() -> void:
 	_label("全球影响力", "%.1f" % eco.全球影响力)
 	_label("预算", "%.1f" % (float(eco.预算) / 10.0))
 	if w.empires.size() >= 2:
-		_label("与美国关系", "%d" % w.empires[0].relations)
-		_label("与苏联关系", "%d" % w.empires[1].relations)
+		# 关系值内部以 ×10 存储，显示时除以 10
+		_label("与美国关系", "%d" % (w.empires[0].relations / 10))
+		_label("与苏联关系", "%d" % (w.empires[1].relations / 10))
 
 
 func _label(label_name: String, text: String) -> void:

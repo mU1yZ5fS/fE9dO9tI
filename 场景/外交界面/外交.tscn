@@ -54,6 +54,7 @@
 [ext_resource type="Texture2D" uid="uid://60edbyccjft1" path="res://资产/UI/外交/经济联盟_经互会.png" id="52_vkq10"]
 [ext_resource type="Texture2D" uid="uid://cchdlv7ltbfsg" path="res://资产/UI/外交/在某国影响下_苏联.png" id="53_leers"]
 [ext_resource type="Texture2D" uid="uid://eprjrxt2krfc" path="res://资产/UI/外交/国家互动按钮背景.png" id="54_32v34"]
+[ext_resource type="Texture2D" uid="uid://d0l4bgmlrwl12" path="res://资产/UI/外交/决议.png" id="55_vkq10"]
 
 [sub_resource type="ShaderMaterial" id="star_mat"]
 render_priority = 0
@@ -580,6 +581,13 @@ flat = true
 icon_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="决议" type="TextureRect" parent="状态栏" unique_id=701327033]
+offset_left = 1800.0
+offset_right = 1880.0
+offset_bottom = 78.0
+texture = ExtResource("55_vkq10")
+expand_mode = 2
+
 [node name="地图模式" type="CanvasLayer" parent="." unique_id=17809947]
 script = ExtResource("9_13o5n")
 
@@ -859,7 +867,7 @@ theme_override_colors/font_color = Color(0.47479695, 1.1130236e-06, 3.6098064e-0
 theme_override_fonts/font = ExtResource("17_v5qqf")
 theme_override_font_sizes/font_size = 27
 text = "中国:毛的遗产
-[DH4591-Godot移植]"
+[Godot移植]"
 horizontal_alignment = 1
 
 [node name="存档" type="Button" parent="ESC菜单" unique_id=1649490135]

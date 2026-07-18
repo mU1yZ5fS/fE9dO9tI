@@ -17,9 +17,16 @@ var speed: int = 0
 var selected_country_gwcode: int = -1
 var settings_return_scene: String = "uid://bydan4iqthbaa"
 
+## 外交（主游戏）场景是否处于激活状态。
+## 只有外交场景激活时，时间才会流动 —— 与原版 Unity 行为一致
+## （原版 TimeScript 只在主地图场景的 Update() 中运行，切到子界面场景时自然暂停）。
+var is_diplomacy_active: bool = false
+
 # 事件状态
 var current_event_id: String = ""
 var event_is_timeout: bool = false
+
+var current_ending_id: int = -1
 
 # 速度 → tick 间隔（秒）
 const TICK_INTERVALS: Array[float] = [0.0, 0.2, 0.1, 0.05, 0.03]
@@ -76,6 +83,9 @@ func _load_tech_effects() -> void:
 func _process(delta: float) -> void:
 	if not is_playing or speed <= 0:
 		return
+	# 时间仅在外交（主游戏）场景流动；科研/经济/派系等子界面不推进时间
+	if not is_diplomacy_active:
+		return
 	_tick_timer += delta
 	var interval := TICK_INTERVALS[speed] if speed < TICK_INTERVALS.size() else 1.0
 	while _tick_timer >= interval:
@@ -126,30 +136,36 @@ func tick() -> void:
 	var old_month := world.date.month
 	var old_year := world.date.year
 	world.date.advance()
-	date_changed.emit(world.date)
 
-	# 月度模拟（月份变化时执行）
+	_daily_deficit_recovery(world)
+	_daily_science_gen(world)
+	_update_displays(world.数值表)
+
 	if world.date.month != old_month:
 		_on_month_changed()
 	if world.date.year != old_year:
 		_on_year_changed()
 
+	if world.date.day % 14 == 0:
+		_on_fortnight()
+
 	if EventEngine:
 		EventEngine.check_and_fire()
 
-	if world.techs != null and world.techs.is_researching():
-		var completed_tech := world.techs.advance_tick()
-		if completed_tech >= 0:
-			_apply_tech(completed_tech)
-			tech_completed.emit(completed_tech)
-
-	world.flush_economy()
 	world.clamp_values()
+	world.clamp_empire_relations()
+	world.sync_economy()
+	date_changed.emit(world.date)
 
 
 func select_country(gwcode: int) -> void:
 	selected_country_gwcode = gwcode
-	country_selected.emit(gwcode, gwcode)
+	var slot := -1
+	if world:
+		var c := world.get_country_by_gwcode(gwcode)
+		if c:
+			slot = c.slot
+	country_selected.emit(slot, gwcode)
 
 
 # ── 科技 ──
@@ -201,22 +217,62 @@ func clear_event() -> void:
 
 # ── 时间控制 ──
 
+const 经济场景_UID := "uid://btldk7ul11cqn"
+
+## 预算+储备 ≥ 0 才允许推进时间（原版 SpeedScript 守卫）
+func can_resume() -> bool:
+	if world == null or world.数值表.size() <= W.I_RESERVE:
+		return false
+	return world.数值表[W.I_BUDGET] + world.数值表[W.I_RESERVE] >= 0
+
+
 func set_speed(s: int) -> void:
-	speed = clampi(s, 0, 4)
+	var target := clampi(s, 0, 4)
+	if target > 0 and not can_resume():
+		speed = 0
+		is_playing = false
+		_force_goto_economy()
+		return
+	speed = target
+
 
 func play() -> void:
+	if not can_resume():
+		is_playing = false
+		speed = 0
+		_force_goto_economy()
+		return
 	is_playing = true
+
 
 func pause() -> void:
 	is_playing = false
 
+
 func toggle_play() -> void:
-	is_playing = not is_playing
+	if is_playing:
+		is_playing = false
+	else:
+		play()
+
 
 func get_date_string() -> String:
 	if world:
 		return world.date.format()
 	return ""
+
+
+## 赤字锁定：跳转经济界面强制调整预算（原版 goto_economy.OnMouseDown）
+func _force_goto_economy() -> void:
+	var tree := get_tree()
+	if tree == null:
+		return
+	var current := tree.current_scene
+	if current != null:
+		var path := current.scene_file_path
+		if path.contains("经济") or path.ends_with("经济.tscn"):
+			return
+	tree.change_scene_to_file(经济场景_UID)
 
 
 # ============================================================================
@@ -278,14 +334,21 @@ func adjust_loan(delta: int) -> bool:
 		d[W.I_LOAN] += delta
 		d[W.I_BUDGET] += delta
 		d[W.I_PARTY_SUPPORT] -= delta
+		d[W.I_THOUGHT_FREEDOM] += delta * 25 / 10
 	else:
 		if d[W.I_LOAN] < -delta:
 			return false
-		if d[W.I_BUDGET] < -delta:
+		var repay_amount := -delta
+		var budget_cost := repay_amount
+		if world.difficulty >= 3:
+			budget_cost = repay_amount * 3
+		elif world.difficulty >= 2:
+			budget_cost = repay_amount * 2
+		if d[W.I_BUDGET] < budget_cost:
 			return false
 		d[W.I_LOAN] += delta
-		d[W.I_BUDGET] += delta
-		d[W.I_PARTY_SUPPORT] -= delta
+		d[W.I_BUDGET] -= budget_cost
+		d[W.I_PARTY_SUPPORT] += 10
 	world.sync_economy()
 	return true
 
@@ -330,10 +393,29 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	if budget_have < budget_need or party_have < party_need:
 		return false
 	d[W.I_BUDGET] -= diff * 50
-	d[W.I_LIVING] -= diff * 50
-	d[W.I_PARTY_SUPPORT] -= diff * 30
+	if category_idx == W.I_ECON_SYSTEM:
+		d[W.I_LIVING] -= diff * 50
+	var delta := target_val - current_val
+	# 意识形态漂移
+	if category_idx == W.I_PARTY_SYSTEM or category_idx == W.I_ECON_SYSTEM:
+		d[W.I_DIPLO] -= delta * (60 if category_idx == W.I_PARTY_SYSTEM else 40)
+	else:
+		d[W.I_DIPLO] -= delta * 20
+	# 开放度变化
+	if category_idx == W.I_ECON_SYSTEM:
+		d[W.I_ECON_OPENNESS] += delta * 100
+	elif category_idx == W.I_PARTY_SYSTEM:
+		d[W.I_POLITICAL_OPENNESS] += delta * 100
+	else:
+		d[W.I_POLITICAL_OPENNESS] += delta * 50
+	# 党支持与异见
+	if d[W.I_PARTY_SYSTEM] < 8:
+		d[W.I_PARTY_SUPPORT] -= diff * 30
+		d[W.I_THOUGHT_FREEDOM] += diff * 10
+	else:
+		d[W.I_THOUGHT_FREEDOM] += diff * 20
 	d[category_idx] = target_val
-	world.flush_economy()
+	world.sync_economy()
 	return true
 
 
@@ -366,22 +448,13 @@ func _on_month_changed() -> void:
 	if w == null:
 		return
 	var d := w.数值表
-	var month := w.date.month
-	var year := w.date.year
-
-	_monthly_income(d)
-	_monthly_expenses(d, year)
-	_deficit_recovery(d)
-	_influence_from_investments(d, year)
-	_monthly_deficit_penalty(d)
+	# 原版月块（data[19]==1）：政治体制重算、人口增长、寡头成长
 	_political_system_recalc(d, w)
-
-	if month % 6 == 0:
-		_biannual_living_drift(d)
+	_monthly_population(d, w)
+	_monthly_oligarch(d, w)
+	# 半年：派系漂移（原版派系用 factionsPoints 体系，此处保留简化版）
+	if w.date.month % 6 == 0:
 		_biannual_faction_drift(w)
-		_biannual_manpower(d)
-		_biannual_econ_system_effect(d, year)
-
 	w.flush_economy()
 
 
@@ -390,59 +463,272 @@ func _on_year_changed() -> void:
 	if w == null:
 		return
 	var d := w.数值表
-
-	# 人口增长（按生育政策）
-	match d[W.I_BIRTH_POLICY]:
-		0: d[W.I_POPULATION] += d[W.I_POPULATION] / 100       # 一胎: 1%
-		1: d[W.I_POPULATION] += d[W.I_POPULATION] * 2 / 100   # 二胎: 2%
-		2: d[W.I_POPULATION] += d[W.I_POPULATION] * 3 / 100   # 无限制: 3%
-
-	# 派系席位年度衰减
+	# 派系席位年度衰减（原版 836-840，年块 data[19]==1&&data[20]==1）
 	for f in w.factions:
 		f.support = f.support / 10
-
-	# 满意现秩序者衰减
+	# 满意现秩序者衰减（原版 835）
 	d[W.I_SATISFIED] = d[W.I_SATISFIED] / 10
 
 
-# ── 月度收入 ──
-
-func _monthly_income(d: Array[int]) -> void:
-	var income: int = d[W.I_INDUSTRY] / 15 + d[W.I_AGRICULTURE] / 35 \
-		+ d[W.I_SERVICES] / 50 + d[W.I_INCOME]
-	d[W.I_BUDGET] += income
-
-
-# ── 月度扣除 ──
-
-func _monthly_expenses(d: Array[int], year: int) -> void:
-	if d[W.I_LOAN] > 0:
-		d[W.I_BUDGET] -= maxi(d[W.I_LOAN] / 40, 1)
-	d[W.I_BUDGET] -= d[W.I_CORRUPTION] / 10
-	if year >= 1980:
-		d[W.I_BUDGET] -= 1
-	if year >= 1983:
-		d[W.I_BUDGET] -= 2
-
-
-# ── 赤字处理（储备吸收） ──
-
-func _deficit_recovery(d: Array[int]) -> void:
+# ── 每日：赤字恢复（原版 546-563，日块 Repaint(true)）──
+## 原版条件 data[36]+(data[8]+data[36])>=0 即 2*reserve+budget>=0。
+## 储备耗尽仍赤字时：speed=0 + 强制跳转经济界面（原版 goto_economy）。
+func _daily_deficit_recovery(w: WorldState) -> void:
+	var d := w.数值表
 	if d[W.I_BUDGET] >= 0:
 		return
-	if d[W.I_RESERVE] + d[W.I_BUDGET] >= 0:
+	if d[W.I_RESERVE] + (d[W.I_BUDGET] + d[W.I_RESERVE]) >= 0:
 		d[W.I_RESERVE] += d[W.I_BUDGET]
 		d[W.I_BUDGET] = 0
 	else:
 		d[W.I_BUDGET] += d[W.I_RESERVE]
 		d[W.I_RESERVE] = 0
+		if d[W.I_BUDGET] < 0:
+			speed = 0
+			is_playing = false
+			call_deferred("_force_goto_economy")
 
 
-# ── 预算赤字→党支持惩罚 ──
+# ── 每日：科研点生成（原版 1224，日块）──
+## data[11] += data[73]/50，每日执行（原版日块，非月块）。
+func _daily_science_gen(w: WorldState) -> void:
+	w.数值表[W.I_SCIENCE] += w.数值表[W.I_BUDGET_SCIENCE] / 50
 
-func _monthly_deficit_penalty(d: Array[int]) -> void:
-	if d[W.I_BUDGET] < 0:
-		d[W.I_PARTY_SUPPORT] -= 1
+
+# ── 每日：开放度→显示等级映射（原版 1136-1167，日块）──
+func _update_displays(d: Array[int]) -> void:
+	if d[W.I_ECON_OPENNESS] <= 250: d[W.I_ECON_DISPLAY] = 34
+	elif d[W.I_ECON_OPENNESS] <= 500: d[W.I_ECON_DISPLAY] = 35
+	elif d[W.I_ECON_OPENNESS] <= 750: d[W.I_ECON_DISPLAY] = 36
+	else: d[W.I_ECON_DISPLAY] = 37
+	if d[W.I_POLITICAL_OPENNESS] <= 250: d[W.I_POLITICAL_DISPLAY] = 38
+	elif d[W.I_POLITICAL_OPENNESS] <= 500: d[W.I_POLITICAL_DISPLAY] = 39
+	elif d[W.I_POLITICAL_OPENNESS] <= 750: d[W.I_POLITICAL_DISPLAY] = 40
+	else: d[W.I_POLITICAL_DISPLAY] = 41
+
+
+# ── 月度：人口增长（原版 2280-2356，月块 data[19]==1）──
+func _monthly_population(d: Array[int], w: WorldState) -> void:
+	var pop_base: int = d[105]  # 人口增长基数（原版 data[105]，开局=2）
+	# 产值过低 → 人口下降
+	if d[W.I_AGRICULTURE] < 250:
+		d[W.I_POPULATION] -= 15
+	elif d[W.I_AGRICULTURE] < 410:
+		d[W.I_POPULATION] -= 8
+	if d[W.I_SERVICES] < 250:
+		d[W.I_POPULATION] -= 4
+	if d[W.I_INDUSTRY] < 250:
+		d[W.I_POPULATION] -= 8
+	elif d[W.I_INDUSTRY] < 410:
+		d[W.I_POPULATION] -= 4
+	# 舆论政策 18/19 → 人口下降
+	if d[W.I_PRESS_POLICY] == 18:
+		d[W.I_POPULATION] -= 4
+	elif d[W.I_PRESS_POLICY] == 19:
+		d[W.I_POPULATION] -= 9
+	# 宗教政策 28/29 → 人口增长
+	if d[W.I_RELIGION] == 28:
+		d[W.I_POPULATION] += pop_base
+	elif d[W.I_RELIGION] == 29:
+		d[W.I_POPULATION] += 2 * pop_base
+	# 经济体制基于人口规模的影响
+	if d[W.I_ECON_SYSTEM] == 11 or d[W.I_ECON_SYSTEM] == 10:
+		d[W.I_INDUSTRY] += d[W.I_POPULATION] / 5000
+	elif d[W.I_ECON_SYSTEM] == 14 and not _mod_active(w, 13):
+		d[W.I_PEOPLE_SUPPORT] -= d[W.I_POPULATION] / 4000
+	elif d[W.I_ECON_SYSTEM] == 15 and not _mod_active(w, 13):
+		d[W.I_PEOPLE_SUPPORT] -= d[W.I_POPULATION] / 4000
+	# 生活水平 → 人口增长
+	d[W.I_POPULATION] += d[W.I_LIVING] / 60 * pop_base
+	# 意识形态/生活水平条件块
+	if d[W.I_IDEOLOGY] <= 0 and d[W.I_LIVING] <= 500:
+		d[W.I_POPULATION] += 6 * pop_base
+	elif d[W.I_IDEOLOGY] <= 3 and d[W.I_LIVING] <= 400:
+		d[W.I_POPULATION] += 2 * pop_base
+	elif d[W.I_IDEOLOGY] == 4 and d[W.I_LIVING] >= 850:
+		d[W.I_POPULATION] -= 11
+	elif d[W.I_IDEOLOGY] == 4 and d[W.I_LIVING] >= 650:
+		d[W.I_POPULATION] -= 9
+	elif d[W.I_IDEOLOGY] == 5 and d[W.I_LIVING] >= 850:
+		d[W.I_POPULATION] -= 13
+	elif d[W.I_IDEOLOGY] == 5 and d[W.I_LIVING] >= 650:
+		d[W.I_POPULATION] -= 11
+
+
+# ── 月度：寡头成长（原版 1902-2123，月块 data[19]==1）──
+func _monthly_oligarch(d: Array[int], w: WorldState) -> void:
+	var year: int = w.date.year
+	var econ := d[W.I_ECON_SYSTEM]
+	if econ > 13:
+		# econ == 14/15
+		if econ == 14 and year < 1980:
+			d[W.I_OLIGARCH] += 5
+		elif econ == 14:
+			d[W.I_OLIGARCH] += 1
+		elif econ == 15 and year < 1980:
+			d[W.I_OLIGARCH] += 10
+		elif econ == 15:
+			d[W.I_OLIGARCH] += 4
+		if d[W.I_PARTY_SYSTEM] <= 7:
+			d[W.I_OLIGARCH] += 2
+		elif d[W.I_PARTY_SYSTEM] == 8:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_PARTY_SYSTEM] == 9:
+			d[W.I_OLIGARCH] -= 1
+		if d[W.I_PRESS_POLICY] <= 16:
+			d[W.I_OLIGARCH] += 2
+		elif d[W.I_PRESS_POLICY] == 17:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_PRESS_POLICY] == 19:
+			d[W.I_OLIGARCH] -= 1
+		if d[W.I_TERRITORY] == 21:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_TERRITORY] == 22:
+			d[W.I_OLIGARCH] += 2
+		elif d[W.I_TERRITORY] == 23:
+			d[W.I_OLIGARCH] += 3
+		if d[W.I_RELIGION] == 24:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_RELIGION] == 25:
+			d[W.I_OLIGARCH] -= 1
+		elif d[W.I_RELIGION] == 28:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_RELIGION] == 29:
+			d[W.I_OLIGARCH] += 3
+		if d[W.I_MIL_DOCTRINE] == 30:
+			d[W.I_OLIGARCH] += 2
+		elif d[W.I_MIL_DOCTRINE] == 31:
+			d[W.I_OLIGARCH] += 1
+		if _mod_active(w, 7):
+			d[W.I_OLIGARCH] -= 1
+		if _mod_active(w, 13):
+			d[W.I_OLIGARCH] -= 2
+		if _mod_active(w, 5):
+			d[W.I_OLIGARCH] += 3
+	elif econ == 13:
+		if year < 1980:
+			d[W.I_OLIGARCH] += 1
+		if d[W.I_PARTY_SYSTEM] == 9:
+			d[W.I_OLIGARCH] -= 1
+		if d[W.I_PRESS_POLICY] == 19:
+			d[W.I_OLIGARCH] -= 1
+		if d[W.I_TERRITORY] == 21:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_TERRITORY] == 22:
+			d[W.I_OLIGARCH] += 2
+		elif d[W.I_TERRITORY] == 23:
+			d[W.I_OLIGARCH] += 3
+		if d[W.I_RELIGION] == 24:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_RELIGION] == 25:
+			d[W.I_OLIGARCH] -= 1
+		elif d[W.I_RELIGION] == 28:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_RELIGION] == 29:
+			d[W.I_OLIGARCH] += 3
+		if _mod_active(w, 7):
+			d[W.I_OLIGARCH] -= 1
+		if _mod_active(w, 13):
+			d[W.I_OLIGARCH] -= 2
+		if _mod_active(w, 5):
+			d[W.I_OLIGARCH] += 3
+	elif econ == 12:
+		if d[W.I_OLIGARCH] > 50:
+			d[W.I_PARTY_SUPPORT] -= (d[W.I_OLIGARCH] - 50) * 10
+			if w.empires.size() > 0:
+				w.empires[0].relations -= (d[W.I_OLIGARCH] - 50) * 5
+			d[W.I_LIVING] += (d[W.I_OLIGARCH] - 50) * 5
+			d[W.I_DIPLO] += (d[W.I_OLIGARCH] - 50) * 5
+			d[W.I_AGENTS] -= (d[W.I_OLIGARCH] - 50) * 5
+			d[W.I_OLIGARCH] = 50
+		if d[W.I_PARTY_SYSTEM] == 9:
+			d[W.I_OLIGARCH] -= 1
+		if d[W.I_PRESS_POLICY] == 19:
+			d[W.I_OLIGARCH] -= 1
+		if d[W.I_RELIGION] == 24:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_RELIGION] == 25:
+			d[W.I_OLIGARCH] -= 1
+		elif d[W.I_RELIGION] == 28:
+			d[W.I_OLIGARCH] += 1
+		elif d[W.I_RELIGION] == 29:
+			d[W.I_OLIGARCH] += 3
+		d[W.I_OLIGARCH] -= 3
+		if _mod_active(w, 5):
+			d[W.I_OLIGARCH] += 3
+	elif d[W.I_OLIGARCH] > 0:
+		# econ <= 11：寡头归零
+		d[W.I_PARTY_SUPPORT] -= d[W.I_OLIGARCH] * 10
+		if w.empires.size() > 0:
+			w.empires[0].relations -= d[W.I_OLIGARCH] * 5
+		d[W.I_LIVING] += d[W.I_OLIGARCH] * 5
+		d[W.I_DIPLO] += d[W.I_OLIGARCH] * 5
+		d[W.I_AGENTS] -= d[W.I_OLIGARCH] * 5
+		d[W.I_OLIGARCH] = 0
+
+
+# ── 修正辅助：modifier 是否激活 ──
+func _mod_active(w: WorldState, idx: int) -> bool:
+	return w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
+
+
+# ── 双周：科研推进（原版 5458-5574，双周块）──
+func _fortnight_research_advance(d: Array[int], w: WorldState) -> void:
+	if w.techs == null:
+		return
+	if w.techs.is_researching():
+		d[W.I_SCIENCE] = w.techs.monthly_advance(d[W.I_SCIENCE])
+		var completed: int = w.techs.get_completed_this_tick()
+		if completed >= 0:
+			_apply_tech(completed)
+			tech_completed.emit(completed)
+	# 无研究时科研点上限 300（原版 5585-5587）
+	if not w.techs.is_researching() and d[W.I_SCIENCE] > 300:
+		d[W.I_SCIENCE] = 300
+
+
+# ── 双周：已解锁科技持续加成（TimeScript 4936-5140行） ──
+## 原版每双周对所有已解锁科技重复施加效果（非一次性）。
+func _apply_tech_periodic(w: WorldState) -> void:
+	if w.techs == null:
+		return
+	var d := w.数值表
+	var u := w.techs.unlocked
+	if u.size() < w.techs.TECH_COUNT:
+		return
+	if u[0]: d[W.I_LIVING] += 2; d[W.I_AGRICULTURE] += 1
+	if u[1]: d[W.I_AGRICULTURE] += 2
+	if u[2]: d[W.I_LIVING] += 1; d[W.I_AGRICULTURE] += 1; d[W.I_BUDGET] += 1
+	if u[3]: d[W.I_LIVING] += 2; d[W.I_AGRICULTURE] += 1
+	if u[4]: d[W.I_LIVING] += 4; d[W.I_SCIENCE] += 5
+	if u[5]: d[W.I_LIVING] += 2; d[W.I_SCIENCE] += 10
+	if u[6]: d[W.I_LIVING] += 2; d[W.I_AGRICULTURE] += 1
+	if u[7]: d[W.I_LIVING] += 2; d[W.I_BUDGET] += 1
+	if u[8]: d[W.I_AGRICULTURE] += 2
+	if u[9]: d[W.I_BUDGET] += 1; d[W.I_INDUSTRY] += 2
+	if u[10]: d[W.I_BUDGET] += 1; d[W.I_ARMY] += 4; d[W.I_INDUSTRY] += 2
+	if u[11]: d[W.I_LIVING] += 2
+	if u[12]: d[W.I_BUDGET] += 2; d[W.I_INDUSTRY] += 1
+	if u[13]: d[W.I_LIVING] += 3
+	if u[14]: d[W.I_LIVING] += 2; d[W.I_BUDGET] += 1; d[W.I_INDUSTRY] += 2
+	if u[15]: d[W.I_LIVING] += 2; d[W.I_BUDGET] += 2; d[W.I_INDUSTRY] += 1; d[W.I_AGRICULTURE] += 1
+	if u[16]: d[W.I_LIVING] += 3; d[W.I_BUDGET] += 2; d[W.I_SCIENCE] += 5; d[W.I_MANPOWER] += 4
+	if u[17]: d[W.I_LIVING] += 3; d[W.I_BUDGET] += 3
+	if u[18]: d[W.I_ARMY] += 2
+	if u[19]: d[W.I_AGENTS] += 3; d[W.I_THOUGHT_FREEDOM] -= 3
+	if u[20]: d[W.I_AGENTS] += 2; d[W.I_THOUGHT_FREEDOM] -= 2; d[W.I_PEOPLE_SUPPORT] += 2
+	if u[21]: d[W.I_ARMY] += 2; d[W.I_PARTY_SUPPORT] += 3; d[W.I_PEOPLE_SUPPORT] += 1
+	if u[22]: d[W.I_PEOPLE_SUPPORT] += 2; d[W.I_THOUGHT_FREEDOM] -= 2; d[W.I_PARTY_SUPPORT] += 2
+	if u[23]: d[W.I_ARMY] += 4
+	if u[24]: d[W.I_ARMY] += 4; d[W.I_THOUGHT_FREEDOM] -= 2
+	if u[25]: d[W.I_AGENTS] += 2; d[W.I_THOUGHT_FREEDOM] -= 2; d[W.I_PARTY_SUPPORT] += 3
+	if u[26]: d[W.I_ARMY] += 4; d[W.I_THOUGHT_FREEDOM] -= 2
+
+
+# ── 双周：贷款/外援周期效果（TimeScript 1620-1645行） ──
+## 外援(dota)系统尚未实装，此处仅为占位保证调用链完整。
+func _fortnight_loan_interest(_d: Array[int], _w: WorldState) -> void:
+	pass
 
 
 # ── 11项预算的完整月度效果 ──
@@ -474,9 +760,15 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 		d[W.I_LIVING] += d[W.I_BUDGET_MGB] / 80
 	if d[W.I_BUDGET_MGB] >= d[W.I_AGENTS] and d[W.I_BUDGET_MGB] <= 150:
 		d[W.I_CORRUPTION] -= d[W.I_BUDGET_MGB] / 50 + d[W.I_BUDGET_MGB] / 100
+	elif d[W.I_AGENTS] > 0 and d[W.I_AGENTS] <= 150 and d[W.I_BUDGET_MGB] <= 150:
+		d[W.I_CORRUPTION] -= d[W.I_AGENTS] / 50 + d[W.I_BUDGET_MGB] / 100
+	elif d[W.I_AGENTS] > 0 and d[W.I_AGENTS] <= 150 and d[W.I_BUDGET_MGB] > 150:
+		d[W.I_CORRUPTION] -= d[W.I_AGENTS] / 50 + 1
+	elif d[W.I_BUDGET_MGB] > 150:
+		d[W.I_CORRUPTION] -= 4
 
 	# ─ 科研经费 ─
-	d[W.I_SCIENCE] += d[W.I_BUDGET_SCIENCE] / 50
+	# 科研点生成（data[11]+=data[73]/50）原版在日块（1224行），已移至 _daily_science_gen
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_SCIENCE] / 50
 
 	# ─ 行政支出 ─
@@ -486,20 +778,17 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 
 	# ─ 高层福利(信封) ─
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_ENVELOPE] / 25
-	if d[W.I_BUDGET_ENVELOPE] > 61:
-		d[W.I_PARTY_SUPPORT] += (d[W.I_BUDGET_ENVELOPE] - 61) / 5
+	d[W.I_PARTY_SUPPORT] += (d[W.I_BUDGET_ENVELOPE] - 61) / 5
 
-	# ─ 宣传支出 ─
+	# ─ 宣传支出（原版 8138-8146）──
 	d[W.I_MANPOWER] += d[W.I_BUDGET_PROPAGANDA] / 150
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_PROPAGANDA] / 150
-	d[W.I_CORRUPTION] -= d[W.I_BUDGET_PROPAGANDA] / 100
 	d[W.I_THOUGHT_FREEDOM] -= d[W.I_BUDGET_PROPAGANDA] / 100
-	if d[W.I_BUDGET_PROPAGANDA] > 70:
-		d[W.I_PEOPLE_SUPPORT] += (d[W.I_BUDGET_PROPAGANDA] - 70) / 10
+	# 原版无条件：data[3] += (data[76]-70)/10（prop<70 时为负，扣民众支持）
+	d[W.I_PEOPLE_SUPPORT] += (d[W.I_BUDGET_PROPAGANDA] - 70) / 10
 	if d[W.I_BUDGET_PROPAGANDA] < 50:
 		d[W.I_CORRUPTION] += (50 - d[W.I_BUDGET_PROPAGANDA]) / 20
 		d[W.I_PEOPLE_SUPPORT] -= (50 - d[W.I_BUDGET_PROPAGANDA]) / 20
-		d[W.I_MANPOWER] -= (50 - d[W.I_BUDGET_PROPAGANDA]) / 20
 
 	# ─ 农业支出 ─
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_AGRI] / 80
@@ -536,6 +825,10 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 	elif d[W.I_BUDGET_DIPLO] < 60:
 		d[W.I_DIPLO] -= 1
 
+	# ─ 腐败扣预算/生活水平（原版 8186-8187，投资块末尾，用投资后腐败值）──
+	d[W.I_BUDGET] -= d[W.I_CORRUPTION] / 10
+	d[W.I_LIVING] -= d[W.I_CORRUPTION] / 50
+
 
 # ── 政治体制自动重算 ──
 
@@ -551,9 +844,13 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 	var new_system: int
 	var new_gosstroy: int
 	if d[W.I_PARTY_SYSTEM] <= 6 and d[W.I_ECON_SYSTEM] >= 14 \
-			and d[W.I_PRESS_POLICY] <= 16 and d[W.I_TERRITORY] <= 21:
+			and d[W.I_PRESS_POLICY] <= 16 and d[W.I_TERRITORY] <= 21 \
+			and (d[W.I_RELIGION] <= 24 or d[W.I_RELIGION] >= 28) \
+			and (d[W.I_MIL_DOCTRINE] <= 31 or d[W.I_MIL_DOCTRINE] >= 33):
 		new_system = 0; new_gosstroy = 0
-	elif score <= 6:
+	# 原版 1183：system=0 的第二分支含 3 个子条件
+	elif (score <= 6 or (score <= 7 and d[W.I_ECON_SYSTEM] <= 11) \
+			or (score <= 9 and _mod_active(w, 40))) and d[W.I_PRESS_POLICY] < 18:
 		new_system = 0; new_gosstroy = 0
 	elif score <= 9 and d[W.I_ECON_SYSTEM] <= 11:
 		new_system = 1; new_gosstroy = 1
@@ -561,10 +858,12 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 		new_system = 2; new_gosstroy = 1
 	elif score <= 15 and d[W.I_ECON_SYSTEM] > 11:
 		new_system = 3; new_gosstroy = 2
-	elif score <= 20:
+	elif score <= 20 and d[W.I_ECON_SYSTEM] > 11:
 		new_system = 4; new_gosstroy = 3
-	else:
+	elif d[W.I_ECON_SYSTEM] > 11:
 		new_system = 5; new_gosstroy = 3
+	else:
+		new_system = 2; new_gosstroy = 2
 
 	d[W.I_IDEOLOGY] = new_system
 	var pc := w.get_player_country()
@@ -572,18 +871,7 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 		pc.government = new_gosstroy
 
 
-# ── 半年度：生活水平漂移 ──
-
-func _biannual_living_drift(d: Array[int]) -> void:
-	var target: int = (d[W.I_INDUSTRY] + d[W.I_AGRICULTURE] + d[W.I_SERVICES]) / 30 \
-		- d[W.I_CORRUPTION] / 5
-	if d[W.I_LIVING] < target:
-		d[W.I_LIVING] += 1
-	elif d[W.I_LIVING] > target:
-		d[W.I_LIVING] -= 1
-
-
-# ── 半年度：派系支持漂移 ──
+# ── 半年度：派系支持漂移（保留简化版）──
 
 func _biannual_faction_drift(w: WorldState) -> void:
 	var political_line: int = w.数值表[W.I_POLITICAL_LINE]
@@ -600,50 +888,457 @@ func _biannual_faction_drift(w: WorldState) -> void:
 		f.support = maxi(0, f.support)
 
 
-# ── 半年度：兵源重算 ──
-
-func _biannual_manpower(d: Array[int]) -> void:
-	match d[W.I_MIL_DOCTRINE]:
-		30: d[W.I_MANPOWER] = d[W.I_POPULATION] / 10   # 全民皆兵
-		31: d[W.I_MANPOWER] = d[W.I_POPULATION] / 15   # 积极建军
-		32: d[W.I_MANPOWER] = d[W.I_POPULATION] / 25   # 国防建设
-		33: d[W.I_MANPOWER] = d[W.I_POPULATION] / 40   # 职业军队
-
-
-# ── 半年度：经济体制对经济的影响 ──
-
-func _biannual_econ_system_effect(d: Array[int], year: int) -> void:
-	var reserve := d[W.I_RESERVE]
+# ── 双周：经济体制效果（原版 3551-3664，双周块）──
+## 含 data[52]/data[54] 显示等级条件副效果。
+func _fortnight_econ_system_effect(d: Array[int]) -> void:
 	var econ := d[W.I_ECON_SYSTEM]
+	match econ:
+		11:
+			d[W.I_BUDGET] += 1
+			d[W.I_THOUGHT_FREEDOM] -= 2
+			d[W.I_LIVING] += 4
+			d[W.I_INDUSTRY] += 2
+			d[W.I_CORRUPTION] -= 5
+			if d[W.I_ECON_DISPLAY] > 34:
+				d[W.I_ECON_OPENNESS] -= 50
+		10:
+			d[W.I_LIVING] += 2
+			d[W.I_THOUGHT_FREEDOM] += 1
+			d[W.I_SERVICES] -= 1
+			d[W.I_INDUSTRY] += 1
+			d[W.I_CORRUPTION] += 1
+			if d[W.I_ECON_DISPLAY] > 34:
+				d[W.I_ECON_OPENNESS] -= 50
+		12:
+			d[W.I_AGRICULTURE] += 1
+			d[W.I_BUDGET] += 1
+			d[W.I_SERVICES] += 1
+			d[W.I_LIVING] -= 2
+			d[W.I_THOUGHT_FREEDOM] -= 2
+			d[W.I_CORRUPTION] += 1
+			if d[W.I_POLITICAL_DISPLAY] < 40:
+				d[W.I_CORRUPTION] += 1
+			if d[W.I_ECON_DISPLAY] > 35:
+				d[W.I_ECON_OPENNESS] -= 20
+			elif d[W.I_ECON_DISPLAY] < 35:
+				d[W.I_ECON_OPENNESS] += 30
+		13:
+			d[W.I_BUDGET] += 2
+			d[W.I_SERVICES] += 1
+			d[W.I_LIVING] -= 4
+			d[W.I_THOUGHT_FREEDOM] += 1
+			d[W.I_CORRUPTION] += 1
+			if d[W.I_POLITICAL_DISPLAY] < 40:
+				d[W.I_CORRUPTION] += 2
+			if d[W.I_ECON_DISPLAY] > 36:
+				d[W.I_ECON_OPENNESS] -= 40
+			elif d[W.I_ECON_DISPLAY] < 36:
+				d[W.I_ECON_OPENNESS] += 30
+		14:
+			d[W.I_BUDGET] += 2
+			d[W.I_SERVICES] += 2
+			d[W.I_LIVING] -= 5
+			d[W.I_THOUGHT_FREEDOM] += 2
+			d[W.I_INDUSTRY] -= 1
+			d[W.I_CORRUPTION] += 2
+			if d[W.I_POLITICAL_DISPLAY] < 40:
+				d[W.I_CORRUPTION] += 4
+			if d[W.I_ECON_DISPLAY] < 37:
+				d[W.I_ECON_OPENNESS] += 40
+		15:
+			d[W.I_AGRICULTURE] -= 1
+			d[W.I_SERVICES] += 3
+			d[W.I_LIVING] -= 7
+			d[W.I_THOUGHT_FREEDOM] += 4
+			d[W.I_INDUSTRY] -= 2
+			d[W.I_CORRUPTION] += 2
+			if d[W.I_POLITICAL_DISPLAY] < 40:
+				d[W.I_CORRUPTION] += 5
+			if d[W.I_ECON_DISPLAY] < 37:
+				d[W.I_ECON_OPENNESS] += 50
 
-	if econ == 12:
-		d[W.I_CORRUPTION] -= reserve / 200
-		if reserve < 600:
-			var penalty := 3 - reserve / 150
-			d[W.I_LIVING] -= penalty; d[W.I_SERVICES] -= penalty; d[W.I_INDUSTRY] -= penalty
-		else:
-			d[W.I_LIVING] += 1; d[W.I_SERVICES] += 1; d[W.I_INDUSTRY] += 1
 
-	elif econ == 13:
-		var threshold := 600 if year < 1980 else 750
-		var base_loss := 3 if year < 1980 else 4
-		d[W.I_CORRUPTION] -= reserve / (400 if year < 1980 else 600)
-		if reserve < threshold:
-			var penalty := base_loss - reserve / 150
-			d[W.I_LIVING] -= penalty; d[W.I_SERVICES] -= penalty; d[W.I_INDUSTRY] -= penalty
-		else:
-			d[W.I_LIVING] += 1; d[W.I_SERVICES] += 1; d[W.I_INDUSTRY] += 1
+# ============================================================================
+# 双周 tick — 移植自 TimeScript.cs 每14天周期的核心模拟
+# ============================================================================
 
-	elif econ == 14:
-		d[W.I_CORRUPTION] -= reserve / 400
-		if year >= 1980:
-			if reserve < 1500:
-				var penalty := 7 - reserve / 150
-				d[W.I_LIVING] -= penalty; d[W.I_SERVICES] -= penalty; d[W.I_INDUSTRY] -= penalty
+func _on_fortnight() -> void:
+	var w := world
+	if w == null:
+		return
+	var d := w.数值表
+	var year := w.date.year
+
+	_fortnight_industry_decay(d)
+	_fortnight_agriculture_decay(d)
+	_fortnight_services_decay(d)
+	_influence_from_investments(d, year)
+	_apply_tech_periodic(w)
+	_fortnight_loan_interest(d, w)
+	_fortnight_research_advance(d, w)
+	_fortnight_trade_balance(d, w)
+	_fortnight_satisfaction_drift(d, w)
+	_fortnight_political_drift(d, w)
+	_fortnight_military_doctrine(d, w)
+	_fortnight_econ_system_effect(d)
+	_fortnight_difficulty_bonus(d, w)
+	_check_coup(d, w)
+	_check_endings(d, w, year)
+
+	w.flush_economy()
+
+
+# ── 产业自然衰减（TimeScript 5195-5260行） ──
+
+func _fortnight_industry_decay(d: Array[int]) -> void:
+	var v := d[W.I_INDUSTRY]
+	if v < 250:
+		d[W.I_INDUSTRY] -= 2
+		d[W.I_PARTY_SUPPORT] -= 10
+		d[W.I_LIVING] -= 5
+		d[W.I_ARMY] -= 5
+	elif v < 410:
+		d[W.I_INDUSTRY] -= 3
+		d[W.I_PARTY_SUPPORT] -= 5
+		d[W.I_LIVING] -= 2
+		d[W.I_ARMY] -= 2
+	elif v < 610:
+		d[W.I_INDUSTRY] -= 15
+		d[W.I_PARTY_SUPPORT] -= 1
+	elif v < 710:
+		d[W.I_INDUSTRY] -= 22
+	elif v < 810:
+		d[W.I_INDUSTRY] -= 28
+	else:
+		d[W.I_INDUSTRY] -= 40
+		d[W.I_AGENTS] += 5
+	if d[W.I_ECON_SYSTEM] < 13:
+		if d[W.I_AGRICULTURE] < 300:
+			d[W.I_INDUSTRY] -= 4
+		elif d[W.I_AGRICULTURE] < 500:
+			d[W.I_INDUSTRY] -= 2
+	d[W.I_BUDGET] += d[W.I_INDUSTRY] / 50
+
+
+# ── 农业自然衰减（TimeScript 5319-5364行） ──
+
+func _fortnight_agriculture_decay(d: Array[int]) -> void:
+	var v := d[W.I_AGRICULTURE]
+	if v < 250:
+		d[W.I_AGRICULTURE] -= 2
+		d[W.I_PARTY_SUPPORT] -= 10
+		d[W.I_LIVING] -= 5
+	elif v < 410:
+		d[W.I_AGRICULTURE] -= 9
+		d[W.I_PARTY_SUPPORT] -= 5
+		d[W.I_LIVING] -= 2
+	elif v < 610:
+		d[W.I_AGRICULTURE] -= 15
+		d[W.I_PARTY_SUPPORT] -= 1
+	elif v < 710:
+		d[W.I_AGRICULTURE] -= 22
+	elif v < 810:
+		d[W.I_AGRICULTURE] -= 28
+	else:
+		d[W.I_AGRICULTURE] -= 40
+		d[W.I_ARMY] += 5
+	d[W.I_BUDGET] += d[W.I_AGRICULTURE] / 100
+
+
+# ── 服务业自然衰减（TimeScript 5258-5318行） ──
+
+func _fortnight_services_decay(d: Array[int]) -> void:
+	var v := d[W.I_SERVICES]
+	if v < 250:
+		d[W.I_SERVICES] -= 1
+		d[W.I_PARTY_SUPPORT] -= 10
+		d[W.I_LIVING] -= 5
+	elif v < 410:
+		d[W.I_SERVICES] -= 3
+		d[W.I_PARTY_SUPPORT] -= 5
+		d[W.I_LIVING] -= 2
+	elif v < 610:
+		d[W.I_SERVICES] -= 15
+		d[W.I_PARTY_SUPPORT] -= 1
+	elif v < 710:
+		d[W.I_SERVICES] -= 22
+	elif v < 810:
+		d[W.I_SERVICES] -= 28
+	else:
+		d[W.I_SERVICES] -= 40
+		d[W.I_LIVING] += 5
+	if d[W.I_ECON_SYSTEM] < 13:
+		if d[W.I_AGRICULTURE] < 300:
+			d[W.I_SERVICES] -= 5
+		elif d[W.I_AGRICULTURE] < 500:
+			d[W.I_SERVICES] -= 2
+	d[W.I_BUDGET] += d[W.I_SERVICES] / 50
+
+
+# ── 军事学说周期效果（TimeScript 3806-3862行） ──
+
+func _fortnight_military_doctrine(d: Array[int], _w: WorldState) -> void:
+	var pop_excess := d[W.I_POPULATION] - 9307
+	match d[W.I_MIL_DOCTRINE]:
+		30:
+			if pop_excess > 99:
+				d[W.I_BUDGET] -= pop_excess / 100
+				d[W.I_ARMY] += pop_excess / 100
+			if d[W.I_POLITICAL_DISPLAY] > 38:
+				d[W.I_POLITICAL_OPENNESS] -= 10
+		31:
+			if pop_excess > 199:
+				d[W.I_BUDGET] -= pop_excess / 200
+				d[W.I_ARMY] += pop_excess / 200
+		32:
+			if pop_excess > 299:
+				d[W.I_BUDGET] -= pop_excess / 300
+				d[W.I_ARMY] += pop_excess / 300
+		33:
+			if pop_excess > 149:
+				if d[W.I_LIVING] < 500:
+					d[W.I_BUDGET] -= pop_excess / 150
+					d[W.I_ARMY] += pop_excess / 250
+				elif d[W.I_LIVING] < 700:
+					d[W.I_BUDGET] -= pop_excess / 150
+					d[W.I_ARMY] += pop_excess / 300
+				else:
+					d[W.I_BUDGET] -= pop_excess / 500
+					d[W.I_ARMY] += pop_excess / 500
+			if d[W.I_POLITICAL_DISPLAY] < 40:
+				d[W.I_POLITICAL_OPENNESS] += 10
+			if d[W.I_ECON_DISPLAY] < 36:
+				d[W.I_ECON_OPENNESS] += 10
+
+
+# ── 贸易计算（TimeScript 854-911 + 3247-3272行） ──
+
+func _fortnight_trade_balance(d: Array[int], w: WorldState) -> void:
+	d[W.I_TRADE_PARTNERS] = 0
+	var trade_income := d[W.I_INCOME]
+	var pc := w.get_player_country()
+	if pc == null:
+		return
+	for c in w.countries:
+		if c == pc or c.gwcode <= 0:
+			continue
+		var added := false
+		if c.tags.has("对华贸易"):
+			d[W.I_TRADE_PARTNERS] += 1
+			trade_income += 2
+			added = true
+		if not added and c.tags.has("经济同盟") and pc.tags.has("经济同盟"):
+			d[W.I_TRADE_PARTNERS] += 1
+			if c.government > 0:
+				trade_income += 2 + maxi(0, 3 - c.government)
 			else:
-				d[W.I_LIVING] += 3; d[W.I_SERVICES] += 3; d[W.I_INDUSTRY] += 3
+				trade_income += 3
+	if _mod_active(w, 12):
+		trade_income -= trade_income / 6
+	var surplus := trade_income - d[W.I_IMPORT_NEEDS]
+	if surplus > 0:
+		d[W.I_BUDGET] += surplus / 2
+		d[W.I_PEOPLE_SUPPORT] += surplus / 3
+	elif surplus < 0:
+		d[W.I_BUDGET] += surplus / 2
+		d[W.I_PEOPLE_SUPPORT] += surplus / 3
+		d[W.I_LIVING] += surplus / 4
+	if d[W.I_TRADE_PARTNERS] <= 4:
+		d[W.I_THOUGHT_FREEDOM] -= -5 + d[W.I_TRADE_PARTNERS]
+		d[W.I_AGENTS] -= -5 + d[W.I_TRADE_PARTNERS]
+	elif d[W.I_TRADE_PARTNERS] > 12:
+		d[W.I_THOUGHT_FREEDOM] += d[W.I_TRADE_PARTNERS] - 12
+		d[W.I_AGENTS] -= d[W.I_TRADE_PARTNERS] - 12
 
-	elif econ == 15:
-		d[W.I_CORRUPTION] -= reserve / 200
-		var penalty := 13 - reserve / 150
-		d[W.I_LIVING] -= penalty; d[W.I_SERVICES] -= penalty; d[W.I_INDUSTRY] -= penalty
+
+# ── 满意度/异见漂移（TimeScript 3273-3292行） ──
+
+func _fortnight_satisfaction_drift(d: Array[int], w: WorldState) -> void:
+	var ws := d[W.I_WAR_SUPPORT]
+	if ws > 700:
+		d[W.I_LIVING] -= (ws - 500) / 100
+		d[W.I_PARTY_SUPPORT] += (ws - 500) / 100
+		d[W.I_AGENTS] += (ws - 500) / 100
+		if d[W.I_DIPLO] < 500:
+			d[W.I_DIPLO] += 5
+	elif ws < 400:
+		d[W.I_THOUGHT_FREEDOM] += (500 - ws) / 100
+		d[W.I_PARTY_SUPPORT] += (500 - ws) / 100
+		d[W.I_AGENTS] += (500 - ws) / 100
+		if w.empires.size() > 0:
+			w.empires[0].relations += (500 - ws) / 100
+		if w.empires.size() > 1:
+			w.empires[1].relations += (500 - ws) / 100
+
+
+# ── 政治满意度漂移（TimeScript 3665-3730行） ──
+
+func _fortnight_political_drift(d: Array[int], _w: WorldState) -> void:
+	var pd := d[W.I_POLITICAL_DISPLAY]
+	match d[W.I_PARTY_SYSTEM]:
+		6:
+			if pd > 38: d[W.I_POLITICAL_OPENNESS] -= 10
+		7:
+			if pd > 39: d[W.I_POLITICAL_OPENNESS] -= 20
+			elif pd < 39: d[W.I_POLITICAL_OPENNESS] += 20
+		8:
+			if pd > 40: d[W.I_POLITICAL_OPENNESS] -= 20
+			elif pd < 40: d[W.I_POLITICAL_OPENNESS] += 20
+		9:
+			if pd < 41: d[W.I_POLITICAL_OPENNESS] += 30
+	match d[W.I_PRESS_POLICY]:
+		16:
+			if pd > 38: d[W.I_POLITICAL_OPENNESS] -= 10
+		17:
+			if pd > 39: d[W.I_POLITICAL_OPENNESS] -= 20
+			elif pd < 39: d[W.I_POLITICAL_OPENNESS] += 20
+		18:
+			if pd > 40: d[W.I_POLITICAL_OPENNESS] -= 20
+			elif pd < 40: d[W.I_POLITICAL_OPENNESS] += 20
+		19:
+			if pd < 41: d[W.I_POLITICAL_OPENNESS] += 30
+	# ── 领土制度效果（TimeScript 3756-3805行） ──
+	match d[W.I_TERRITORY]:
+		20:
+			d[W.I_BUDGET] -= 1
+			d[W.I_PEOPLE_SUPPORT] -= 2
+			d[W.I_THOUGHT_FREEDOM] -= 4
+			d[W.I_MANPOWER] += 1
+			if pd > 39:
+				d[W.I_POLITICAL_OPENNESS] -= 10
+		21:
+			d[W.I_PARTY_SUPPORT] -= 2
+			d[W.I_THOUGHT_FREEDOM] -= 1
+			if pd < 40:
+				d[W.I_POLITICAL_OPENNESS] += 20
+		22:
+			d[W.I_PARTY_SUPPORT] -= 3
+			d[W.I_PEOPLE_SUPPORT] -= 1
+			d[W.I_THOUGHT_FREEDOM] += 2
+			d[W.I_MANPOWER] -= 2
+			if pd > 40:
+				d[W.I_POLITICAL_OPENNESS] -= 20
+			elif pd < 40:
+				d[W.I_POLITICAL_OPENNESS] += 20
+		23:
+			d[W.I_MANPOWER] -= 4
+			d[W.I_THOUGHT_FREEDOM] += 5
+			d[W.I_PEOPLE_SUPPORT] -= 2
+			d[W.I_PARTY_SUPPORT] -= 5
+			if pd < 41:
+				d[W.I_POLITICAL_OPENNESS] += 30
+
+
+
+# ── 难度修正（TimeScript 5589-5706行） ──
+
+func _fortnight_difficulty_bonus(d: Array[int], w: WorldState) -> void:
+	match w.difficulty:
+		0:
+			d[W.I_PARTY_SUPPORT] += 5
+			d[W.I_PEOPLE_SUPPORT] += 5
+			d[W.I_THOUGHT_FREEDOM] -= 5
+			d[W.I_LIVING] += 5
+			d[W.I_BUDGET] += 50
+			d[W.I_AGENTS] += 50
+			if d[W.I_CORRUPTION] > 200:
+				d[W.I_CORRUPTION] -= 30
+			elif d[W.I_CORRUPTION] > 100:
+				d[W.I_CORRUPTION] -= 20
+			else:
+				d[W.I_CORRUPTION] -= 10
+		1:
+			d[W.I_PARTY_SUPPORT] += 3
+			d[W.I_PEOPLE_SUPPORT] += 3
+			d[W.I_THOUGHT_FREEDOM] -= 3
+			d[W.I_LIVING] += 3
+			d[W.I_BUDGET] += 3
+			d[W.I_AGENTS] += 3
+		2:
+			if d[W.I_CORRUPTION] < 50:
+				d[W.I_CORRUPTION] += 8
+			elif d[W.I_CORRUPTION] < 100:
+				d[W.I_CORRUPTION] += 5
+		3:
+			d[W.I_PARTY_SUPPORT] -= 6
+			d[W.I_PEOPLE_SUPPORT] -= 7
+			d[W.I_THOUGHT_FREEDOM] += 7
+			d[W.I_LIVING] -= 7
+			d[W.I_BUDGET] -= 7
+			d[W.I_AGENTS] -= 7
+			if d[W.I_CORRUPTION] < 50:
+				d[W.I_CORRUPTION] += 10
+			elif d[W.I_CORRUPTION] < 100:
+				d[W.I_CORRUPTION] += 6
+			else:
+				d[W.I_CORRUPTION] += 1
+		4:
+			d[W.I_PARTY_SUPPORT] -= d[W.I_IDEOLOGY] * 3
+			d[W.I_PEOPLE_SUPPORT] -= d[W.I_IDEOLOGY] * 3
+			if w.empires.size() > 0:
+				w.empires[0].relations -= 5
+			if w.empires.size() > 1:
+				w.empires[1].relations -= 5
+			if d[W.I_STABILITY] == 100:
+				for p in w.politicians:
+					if p == null or p.traits.size() < 1:
+						continue
+					if p.traits[0] == 0:
+						p.power += 50
+					else:
+						p.loyalty -= 10
+
+
+# ── 政变条件（TimeScript PlotPlayer 389-403行） ──
+
+func _check_coup(d: Array[int], w: WorldState) -> void:
+	if d[W.I_STABILITY] < 100:
+		return
+	var disloyal_power := 0
+	for p in w.politicians:
+		if p == null:
+			continue
+		var dominated := false
+		if p.loyalty < 300 and p.traits.size() > 2 and p.traits[2] == 16:
+			dominated = true
+		elif p.loyalty < 150 and p.traits.size() > 2 and p.traits[2] != 9:
+			dominated = true
+		elif p.loyalty < 50:
+			dominated = true
+		if dominated and p.traits.size() > 2 and p.traits[2] != 17 and p.traits[2] != 19:
+			disloyal_power += p.power
+	if disloyal_power / 5 > d[W.I_PARTY_SUPPORT]:
+		_trigger_ending(2)
+	if d[W.I_PARTY_SUPPORT] <= 300 + d[W.I_THOUGHT_FREEDOM] / 5 - (d[W.I_PEOPLE_SUPPORT] - 500) / 5:
+		_trigger_ending(2)
+
+
+# ── 结局检查 ──
+
+func _check_endings(d: Array[int], _w: WorldState, year: int) -> void:
+	if d[W.I_POPULATION] < 6671:
+		_trigger_ending(4)
+		return
+	if year >= 1993:
+		if d[W.I_INFLUENCE] >= 800:
+			_trigger_ending(5)
+		elif d[W.I_ECON_SYSTEM] >= 13 and d[W.I_LIVING] >= 600:
+			_trigger_ending(6)
+		elif d[W.I_IDEOLOGY] == 0 and d[W.I_INFLUENCE] >= 500:
+			_trigger_ending(7)
+		else:
+			_trigger_ending(0)
+		return
+	if d[W.I_BUDGET] < -500 and d[W.I_RESERVE] <= 0 and d[W.I_LOAN] > 0:
+		_trigger_ending(3)
+		return
+	if d[W.I_PARTY_SUPPORT] <= 50 and d[W.I_THOUGHT_FREEDOM] >= 800:
+		_trigger_ending(1)
+
+
+func _trigger_ending(ending_id: int) -> void:
+	if current_ending_id >= 0:
+		return
+	current_ending_id = ending_id
+	pause()
+	get_tree().change_scene_to_file("uid://b1dm8nycmn3gw")

@@ -9,6 +9,7 @@ extends Resource
 
 const I_PARTY_SUPPORT := 1       ## 党内支持
 const I_SOVIET_INFLUENCE := 2    ## 苏联影响力
+const I_USA_INFLUENCE := 10      ## 美国影响力（empires[0].power 的种子源）
 const I_PEOPLE_SUPPORT := 3     ## 民众支持
 const I_THOUGHT_FREEDOM := 4    ## 思想自由 / 自由化程度
 const I_LIVING := 5             ## 生活水平
@@ -26,14 +27,20 @@ const I_PRESS_POLICY := 17      ## 舆论政策
 const I_TERRITORY := 18         ## 领土制度
 const I_ARMY := 22              ## 军力
 const I_INCOME := 23            ## 收入
+const I_IMPORT_NEEDS := 24      ## 进口需求
+const I_TRADE_PARTNERS := 25    ## 贸易伙伴数
 const I_CORRUPTION := 26        ## 腐败
 const I_WAR_SUPPORT := 31       ## 战争支持度
+const I_ECON_OPENNESS := 33     ## 经济开放度
 const I_POPULATION := 34        ## 人口(万)
 const I_RESERVE := 36           ## 外汇储备
 const I_STABILITY := 38         ## 政治稳定
 const I_WAR_PRESSURE := 39      ## 中苏战争压力
 const I_RELIGION := 50          ## 宗教政策
 const I_MIL_DOCTRINE := 51      ## 军事学说
+const I_ECON_DISPLAY := 52      ## 经济显示等级
+const I_POLITICAL_DISPLAY := 54 ## 政治显示等级
+const I_POLITICAL_OPENNESS := 55 ## 政治开放度
 const I_POLITICAL_LINE := 56    ## 政治路线
 const I_MANPOWER := 57          ## 兵源
 const I_BIRTH_POLICY := 60      ## 生育政策
@@ -89,7 +96,6 @@ const 数值索引 := {
 	"loan": I_LOAN, "debt": I_LOAN, "国债": I_LOAN,
 	"satisfied": I_SATISFIED, "满意现秩序者": I_SATISFIED,
 	"oligarch": I_OLIGARCH, "寡头": I_OLIGARCH,
-	"development": I_ECON_SYSTEM,
 }
 
 # ── 时间 ──
@@ -286,18 +292,55 @@ func sync_economy() -> void:
 	_sync_economy()
 
 
-# ── 数值边界保护 ──
+# ── 数值边界保护（移植自原版 TimeScript.BoundsOfVariables 5943-6046）──
 
+## 注意：原版只钳制以下项。Godot 早期版本额外钳制了 data[2/9/22/34/36/38/57/71-81]，
+## 这些原版都不钳制（如 data[9] 特工允许为负，是合法显示状态）。已按原版对齐。
 func clamp_values() -> void:
-	数值表[I_PARTY_SUPPORT] = maxi(数值表[I_PARTY_SUPPORT], 0)
-	数值表[I_PEOPLE_SUPPORT] = maxi(数值表[I_PEOPLE_SUPPORT], 0)
-	数值表[I_LIVING] = maxi(数值表[I_LIVING], 0)
-	数值表[I_AGENTS] = maxi(数值表[I_AGENTS], 0)
-	数值表[I_ARMY] = maxi(数值表[I_ARMY], 0)
-	数值表[I_MANPOWER] = maxi(数值表[I_MANPOWER], 0)
-	数值表[I_POPULATION] = maxi(数值表[I_POPULATION], 0)
-	数值表[I_RESERVE] = maxi(数值表[I_RESERVE], 0)
-	数值表[I_CORRUPTION] = clampi(数值表[I_CORRUPTION], 0, 1000)
-	数值表[I_OLIGARCH] = clampi(数值表[I_OLIGARCH], 0, 100)
-	for i in range(I_BUDGET_ARMY, I_BUDGET_DIPLO + 1):
-		数值表[i] = maxi(数值表[i], 0)
+	var mod1_active: bool = modifiers.size() > 1 and modifiers[1] != null and modifiers[1].is_active
+	# data[12] 工业：modifier[1] 激活时上限 500，否则 1000
+	if 数值表[I_INDUSTRY] > 1000 and not mod1_active:
+		数值表[I_INDUSTRY] = 1000
+	elif 数值表[I_INDUSTRY] > 500 and mod1_active:
+		数值表[I_INDUSTRY] = 500
+	if 数值表[I_AGRICULTURE] > 1000:
+		数值表[I_AGRICULTURE] = 1000
+	if 数值表[I_SERVICES] > 1000:
+		数值表[I_SERVICES] = 1000
+	if 数值表[I_PEOPLE_SUPPORT] > 1000:
+		数值表[I_PEOPLE_SUPPORT] = 1000
+	if 数值表[I_THOUGHT_FREEDOM] > 1000:
+		数值表[I_THOUGHT_FREEDOM] = 1000
+	if 数值表[I_PARTY_SUPPORT] > 1000:
+		数值表[I_PARTY_SUPPORT] = 1000
+	if 数值表[I_THOUGHT_FREEDOM] < 0:
+		数值表[I_THOUGHT_FREEDOM] = 0
+	if 数值表[I_CORRUPTION] < 0:
+		数值表[I_CORRUPTION] = 0   # 原版仅下限 0，无上限
+	if 数值表[I_LIVING] < 0:
+		数值表[I_LIVING] = 0
+	elif 数值表[I_LIVING] > 1000:
+		数值表[I_LIVING] = 1000
+	if 数值表[I_INFLUENCE] < 0:
+		数值表[I_INFLUENCE] = 0
+	elif 数值表[I_INFLUENCE] > 1000:
+		数值表[I_INFLUENCE] = 1000
+	if 数值表[I_OLIGARCH] < 0:
+		数值表[I_OLIGARCH] = 0
+	elif 数值表[I_OLIGARCH] > 100:
+		数值表[I_OLIGARCH] = 100
+	if 数值表[I_DIPLO] < -50:
+		数值表[I_DIPLO] = -50
+		return  # 原版此处直接 return，跳过 >1100 钳制
+	if 数值表[I_DIPLO] > 1100:
+		数值表[I_DIPLO] = 1100
+
+
+# ── 超级大国关系与力量边界保护（BoundsOfVariables 5973-6028）──
+
+## 关系值内部以 ×10 存储（0~1000 对应显示 0~100）。力量值同样 0~1000。
+func clamp_empire_relations() -> void:
+	for e in empires:
+		if e != null:
+			e.relations = clampi(e.relations, 0, 1000)
+			e.power = clampi(e.power, 0, 1000)

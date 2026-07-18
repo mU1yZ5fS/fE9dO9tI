@@ -25,6 +25,10 @@ func _ready() -> void:
 	# 始终处理，确保暂停时仍能接收 ESC 输入
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
+	# 标记外交场景已激活 —— GameManager 仅在此期间推进时间
+	if GameManager:
+		GameManager.is_diplomacy_active = true
+
 	# 连接地球的国家选择信号 → GameManager
 	var earth := get_node_or_null("地球")
 	if earth and earth.has_signal("country_selected"):
@@ -34,6 +38,8 @@ func _ready() -> void:
 	var btn := get_node_or_null("时间/时间启停")
 	if btn is TextureButton:
 		btn.toggled.connect(_on_time_toggled)
+		# 按钮状态与 GameManager.is_playing 同步（从子界面返回时恢复原播放状态）
+		btn.set_pressed_no_signal(GameManager.is_playing if GameManager else false)
 
 	# 连接速度按钮
 	_connect_speed_buttons()
@@ -62,6 +68,12 @@ func _ready() -> void:
 
 func _on_country_selected(gwcode: int, _country_name: String) -> void:
 	GameManager.select_country(gwcode)
+
+
+## 离开外交场景时清除激活标记，停止时间流动
+func _exit_tree() -> void:
+	if GameManager:
+		GameManager.is_diplomacy_active = false
 
 # ── 时间控制 ──
 

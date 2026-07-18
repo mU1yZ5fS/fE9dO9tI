@@ -44,7 +44,7 @@ value = -50.0
 script = ExtResource("4_t6nys")
 type = 8
 key = "0"
-value = 60.0
+value = 600.0
 
 [sub_resource type="Resource" id="Resource_iraau"]
 script = ExtResource("4_t6nys")
@@ -102,7 +102,7 @@ value = -100.0
 script = ExtResource("4_t6nys")
 type = 8
 key = "1"
-value = 70.0
+value = 700.0
 
 [sub_resource type="Resource" id="Resource_a8g1j"]
 script = ExtResource("2_fmn1d")

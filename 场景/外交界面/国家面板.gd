@@ -237,6 +237,9 @@ func _on_action_pressed(index: int) -> void:
 			return
 	if action.has("effect"):
 		action.effect.call()
+		# 外交互动可能直接改写 empires[].relations，立即钳制到合法区间
+		if GameManager.world:
+			GameManager.world.clamp_empire_relations()
 	_refresh(_current_country, "")
 	# 重新用国名刷新（名称保持不变）
 	var name_label := find_child("当前选中国家名称", true, false) as Label
@@ -307,12 +310,12 @@ func _build_actions(country: CountryData) -> Array[Dictionary]:
 		], "对苏关系 +10，预算 -50",
 		func():
 			if w.empires.size() > 1:
-				w.empires[1].relations += 10
+				w.empires[1].relations += 100
 			d[8] -= 50
 		))
 		if not player_in_sev:
 			actions.append(_make_action("申请经济合作", [
-				_cond("对苏关系 ≥ 40", func(): return w.empires[1].relations >= 40 if w.empires.size() > 1 else false),
+				_cond("对苏关系 ≥ 40", func(): return w.empires[1].relations >= 400 if w.empires.size() > 1 else false),
 				_cond("预算 ≥ 100", func(): return d[8] >= 100),
 			], "加入经互会",
 			func():
@@ -322,19 +325,19 @@ func _build_actions(country: CountryData) -> Array[Dictionary]:
 		if in_ovd and not player.has_tag("ovd"):
 			actions.append(_make_action("华沙条约", [
 				_cond("在经互会中", func(): return player_in_sev),
-				_cond("对苏关系 ≥ 60", func(): return w.empires[1].relations >= 60 if w.empires.size() > 1 else false),
+				_cond("对苏关系 ≥ 60", func(): return w.empires[1].relations >= 600 if w.empires.size() > 1 else false),
 			], "加入华沙条约组织",
 			func():
 				player.set_tag("ovd", true)
 			))
 		actions.append(_make_action("请求技术转让", [
-			_cond("对苏关系 ≥ 50", func(): return w.empires[1].relations >= 50 if w.empires.size() > 1 else false),
+			_cond("对苏关系 ≥ 50", func(): return w.empires[1].relations >= 500 if w.empires.size() > 1 else false),
 			_cond("科研 ≥ 20", func(): return d[11] >= 20),
 		], "科研 +30，对苏关系 -5",
 		func():
 			d[11] += 30
 			if w.empires.size() > 1:
-				w.empires[1].relations -= 5
+				w.empires[1].relations -= 50
 		))
 		return actions
 
@@ -346,25 +349,25 @@ func _build_actions(country: CountryData) -> Array[Dictionary]:
 		], "对美关系 +10，预算 -50",
 		func():
 			if w.empires.size() > 0:
-				w.empires[0].relations += 10
+				w.empires[0].relations += 100
 			d[8] -= 50
 		))
 		actions.append(_make_action("引进投资", [
-			_cond("对美关系 ≥ 30", func(): return w.empires[0].relations >= 30 if w.empires.size() > 0 else false),
+			_cond("对美关系 ≥ 30", func(): return w.empires[0].relations >= 300 if w.empires.size() > 0 else false),
 			_cond("经济体制 ≥ 国家资本主义", func(): return d[16] >= 12),
 		], "预算 +80, 工业 +5, 对美关系 -3",
 		func():
 			d[8] += 80; d[12] += 5
 			if w.empires.size() > 0:
-				w.empires[0].relations -= 3
+				w.empires[0].relations -= 30
 		))
 		actions.append(_make_action("请求技术转让", [
-			_cond("对美关系 ≥ 50", func(): return w.empires[0].relations >= 50 if w.empires.size() > 0 else false),
+			_cond("对美关系 ≥ 50", func(): return w.empires[0].relations >= 500 if w.empires.size() > 0 else false),
 		], "科研 +30，对美关系 -5",
 		func():
 			d[11] += 30
 			if w.empires.size() > 0:
-				w.empires[0].relations -= 5
+				w.empires[0].relations -= 50
 		))
 		return actions
 

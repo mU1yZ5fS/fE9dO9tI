@@ -107,6 +107,7 @@ func _ready() -> void:
 		return
 	GameManager.world_state_loaded.connect(_refresh)
 	GameManager.date_changed.connect(func(_d): _refresh())
+	_ensure_pie_chart()
 	for cat_name in 政策类别:
 		var btn := _find(cat_name + "切换")
 		if btn is Button:
@@ -166,12 +167,30 @@ func _refresh() -> void:
 		if btn: btn.set_pressed_no_signal(i == birth_val)
 	var pie := _find("派系饼图") as Control
 	if pie:
+		for child in pie.get_children():
+			if child is Control:
+				child.queue_redraw()
 		pie.queue_redraw()
 	if _当前类别 != "":
 		_refresh_policy_panel(_当前类别)
 
 
 # ── 饼图（使用 _draw 避免每帧重建节点） ──
+
+## 场景中的「派系饼图」是空 Control，需挂上可绘制的 PieChart 子节点
+func _ensure_pie_chart() -> void:
+	var host := _find("派系饼图") as Control
+	if host == null:
+		return
+	for child in host.get_children():
+		if child is PieChart:
+			return
+	var chart := PieChart.new()
+	chart.name = "Chart"
+	chart.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	chart.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	host.add_child(chart)
+
 
 class PieChart extends Control:
 	func _draw() -> void:
@@ -191,7 +210,9 @@ class PieChart extends Control:
 			var s: int = maxi(f.support, 0)
 			if s > 0:
 				slices.append({"value": s, "color": 派系颜色_ref[i]})
-		var satisfied: int = w.数值表[WorldState.I_SATISFIED] if WorldState.I_SATISFIED < w.数值表.size() else 0
+		var satisfied: int = 0
+		if w.数值表.size() > WorldState.I_SATISFIED:
+			satisfied = maxi(w.数值表[WorldState.I_SATISFIED], 0)
 		if satisfied > 0:
 			slices.append({"value": satisfied, "color": 派系颜色_ref[5]})
 		var total := 0
@@ -201,6 +222,8 @@ class PieChart extends Control:
 			return
 		var center := size / 2.0
 		var radius := minf(center.x, center.y) * 0.92
+		if radius <= 1.0:
+			return
 		var start_angle := -PI / 2.0
 		for s in slices:
 			var sweep := float(s.value) / float(total) * TAU

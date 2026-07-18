@@ -568,12 +568,12 @@ func _add_country_var(target_tag: String, var_name: String, delta: int) -> void:
 func _add_empire_relation(empire_index: int, delta: int) -> void:
 	var ws: WorldState = GameManager.world
 	if empire_index < 0 or empire_index >= ws.empires.size(): return
-	ws.empires[empire_index].relations += delta
+	ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_empire_relation(empire_index: int, value: int) -> void:
 	var ws: WorldState = GameManager.world
 	if empire_index < 0 or empire_index >= ws.empires.size(): return
-	ws.empires[empire_index].relations = value
+	ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
 func _add_empire_power(empire_index: int, delta: int) -> void:
 	var ws: WorldState = GameManager.world

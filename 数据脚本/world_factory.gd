@@ -285,8 +285,8 @@ const START_MODIFIER_IDS := [0, 1, 3, 6, 14, 15, 54, 55, 59]
 # 科技初始解锁状态（10 个槽位）
 # ============================================================================
 const SCIENCE_UNLOCKED := [
-	false, false, false, true, false,
-	false, true, false, false, false,
+	false, false, false, false, false,
+	false, false, false, false, false,
 ]
 
 
@@ -296,7 +296,7 @@ const SCIENCE_UNLOCKED := [
 
 static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> WorldState:
 	var ws := WorldState.new()
-	ws.date = GameDate.new(1, 1, 1976)
+	ws.date = GameDate.new(4, 2, 1976)
 	ws.player_country_gwcode = player_gwcode
 	ws.difficulty = difficulty
 
@@ -534,14 +534,14 @@ static func _init_science(ws: WorldState) -> void:
 static func _init_empires(ws: WorldState) -> void:
 	var usa := EmpireData.new(EmpireData.USA)
 	usa.money = 1000
-	usa.power = 1000
-	usa.relations = 70
+	usa.power = ws.数值表[WorldState.I_USA_INFLUENCE]      # 原版 empires[0].power = data[10] = 280
+	usa.relations = ws.数值表[28]                            # 原版 empires[0].relations = data[28] = 700
 	usa.leaders = [EmpireLeader.new("Gerald Ford", 60)]
 
 	var ussr := EmpireData.new(EmpireData.USSR)
 	ussr.money = 800
-	ussr.power = 900
-	ussr.relations = 30
+	ussr.power = ws.数值表[WorldState.I_SOVIET_INFLUENCE]   # 原版 empires[1].power = data[2] = 300
+	ussr.relations = ws.数值表[29]                           # 原版 empires[1].relations = data[29] = 300
 	ussr.leaders = [EmpireLeader.new("Leonid Brezhnev", 75)]
 
 	ws.empires = [usa, ussr]
@@ -566,9 +566,9 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 	ws.数值表[85] = 0
 
 	# 随机外交参数
-	ws.数值表[47] = randi_range(1, 5)
-	ws.数值表[48] = randi_range(1, 5)
-	ws.数值表[49] = randi_range(1, 5)
+	ws.数值表[47] = randi_range(1, 4)
+	ws.数值表[48] = randi_range(1, 4)
+	ws.数值表[49] = randi_range(1, 4)
 
 	# 难度调整
 	match difficulty:
