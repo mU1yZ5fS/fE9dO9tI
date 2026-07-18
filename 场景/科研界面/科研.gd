@@ -55,9 +55,6 @@ func _ready() -> void:
 			btn.mouse_filter = Control.MOUSE_FILTER_STOP  # 按钮自身保留鼠标事件
 			btn.pressed.connect(_on_tech_pressed.bind(i))
 
-	if GameManager and GameManager.has_signal("stats_changed"):
-		GameManager.stats_changed.connect(_refresh)
-		GameManager.date_changed.connect(func(_d): _refresh())
 	_refresh()
 
 
@@ -157,10 +154,7 @@ func _on_tech_pressed(tech_index: int) -> void:
 	if money_cost > 0:
 		d[W.I_SCIENCE] = 0            # 科研点全部消耗
 		d[W.I_BUDGET] -= money_cost   # 扣除预算
-		if GameManager.has_method("_notify_stats"):
-				GameManager._notify_stats()
-			else:
-				w.sync_economy()  # 直接写数值表不会置 dirty
+		w.sync_economy()              # 直接写数值表不会置 dirty，强制同步显示视图
 		音频总管.play_button_click_sound()
 	_refresh()
 

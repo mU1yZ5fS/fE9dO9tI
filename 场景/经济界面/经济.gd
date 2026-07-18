@@ -29,8 +29,6 @@ func _ready() -> void:
 		return
 	GameManager.world_state_loaded.connect(_refresh)
 	GameManager.date_changed.connect(func(_d): _refresh())
-	if GameManager.has_signal("stats_changed"):
-		GameManager.stats_changed.connect(_refresh)
 	for item_name in 预算项:
 		var idx: int = 预算项[item_name]
 		var plus := _find(item_name + "+")

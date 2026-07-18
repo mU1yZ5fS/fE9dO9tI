@@ -7,20 +7,16 @@ extends CanvasLayer
 const 派系场景 := "uid://dly5fmobnogab"
 const 经济场景 := "uid://btldk7ul11cqn"
 const 科研场景 := "uid://d2qkifpx3o8pl"
-const 政治场景 := "uid://dsmslhxc0e8u5"
 
 
 func _ready() -> void:
 	if not GameManager:
 		return
-	if GameManager.has_signal("stats_changed"):
-		GameManager.stats_changed.connect(_refresh)
 	GameManager.date_changed.connect(_on_tick)
 	GameManager.world_state_loaded.connect(_refresh)
 	_connect_nav("派系", 派系场景)
 	_connect_nav("经济", 经济场景)
 	_connect_nav("科学", 科研场景)
-	_connect_nav("政治", 政治场景)
 	if GameManager.world != null:
 		_refresh()
 
@@ -48,8 +44,8 @@ func _refresh() -> void:
 	_label("预算", "%.1f" % (float(eco.预算) / 10.0))
 	if w.empires.size() >= 2:
 		# 关系值内部以 ×10 存储（与原版 data[28]/data[29] 一致），显示时除以 10
-		_label("与美国关系", "%d" % (w.empires[0].relations / 10))
-		_label("与苏联关系", "%d" % (w.empires[1].relations / 10))
+		_label("与美国关系", w.display_relation(w.empires[0].relations))
+		_label("与苏联关系", w.display_relation(w.empires[1].relations))
 
 
 func _label(label_name: String, text: String) -> void:

@@ -306,16 +306,16 @@ func sync_economy() -> void:
 
 ## 连续指标显示：内部 ×10 → "80.0"；预算/特工等同规则
 func display_meter(raw: int) -> String:
-	var sign := "-" if raw < 0 else ""
+	var prefix := "-" if raw < 0 else ""
 	var v: int = absi(raw)
-	var whole: int = v / 10
+	var whole: int = int(v / 10.0)
 	var frac: int = v % 10
-	return "%s%d.%d" % [sign, whole, frac]
+	return "%s%d.%d" % [prefix, whole, frac]
 
 
 ## 关系显示：内部 ×10 → 整数 0~100
 func display_relation(raw: int) -> String:
-	return str(raw / 10)
+	return str(int(raw / 10.0))
 
 
 func clamp_values() -> void:

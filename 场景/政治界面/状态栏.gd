@@ -40,8 +40,9 @@ func _refresh() -> void:
 	_label("全球影响力", "%.1f" % eco.全球影响力)
 	_label("预算", "%.1f" % (float(eco.预算) / 10.0))
 	if w.empires.size() >= 2:
-		_label("与美国关系", "%d" % (w.empires[0].relations / 10))
-		_label("与苏联关系", "%d" % (w.empires[1].relations / 10))
+		# 关系值内部以 ×10 存储，显示时除以 10
+		_label("与美国关系", w.display_relation(w.empires[0].relations))
+		_label("与苏联关系", w.display_relation(w.empires[1].relations))
 
 
 func _label(label_name: String, text: String) -> void:
