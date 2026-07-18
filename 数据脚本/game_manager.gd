@@ -7,6 +7,8 @@ signal country_selected(slot: int, gwcode: int)
 signal world_state_loaded()
 signal event_started(event_id: String)
 signal tech_completed(tech_id: int)
+## 数值表/帝国关系变更后发出，跨场景状态栏可在暂停时也能刷新
+signal stats_changed()
 
 const W = preload("res://数据脚本/world_state.gd")
 const WF = preload("res://数据脚本/world_factory.gd")
@@ -154,8 +156,10 @@ func tick() -> void:
 
 	world.clamp_values()
 	world.clamp_empire_relations()
+	_mirror_empires_to_data(world)
 	world.sync_economy()
 	date_changed.emit(world.date)
+	stats_changed.emit()
 
 
 func select_country(gwcode: int) -> void:
@@ -311,7 +315,11 @@ func adjust_budget(category_idx: int, delta: int) -> bool:
 		return false
 	d[category_idx] += delta
 	d[W.I_BUDGET] -= delta
-	world.sync_economy()
+	# 原版 Plusmisnus_script.payment：削减「高层福利」时按 4× 扣党内支持
+	# -10 → 党支持-40；-50 → -200；-100 → -400
+	if category_idx == W.I_BUDGET_ENVELOPE and delta < 0:
+		d[W.I_PARTY_SUPPORT] -= (-delta) * 4
+	_notify_stats()
 	return true
 
 
@@ -349,7 +357,7 @@ func adjust_loan(delta: int) -> bool:
 		d[W.I_LOAN] += delta
 		d[W.I_BUDGET] -= budget_cost
 		d[W.I_PARTY_SUPPORT] += 10
-	world.sync_economy()
+	_notify_stats()
 	return true
 
 
@@ -370,7 +378,7 @@ func adjust_reserve(delta: int) -> bool:
 		d[W.I_BUDGET] -= delta
 		d[W.I_PARTY_SUPPORT] += delta
 		d[W.I_PEOPLE_SUPPORT] += delta
-	world.sync_economy()
+	_notify_stats()
 	return true
 
 
@@ -415,7 +423,7 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	else:
 		d[W.I_THOUGHT_FREEDOM] += diff * 20
 	d[category_idx] = target_val
-	world.sync_economy()
+	_notify_stats()
 	return true
 
 
@@ -423,8 +431,17 @@ func set_birth_policy(policy: int) -> void:
 	if world == null:
 		return
 	var d := world.数值表
-	if W.I_BIRTH_POLICY < d.size():
-		d[W.I_BIRTH_POLICY] = policy
+	# 原版 ChildScript：生育政策 = data[105]（同时作人口增长基数 0/1/2）
+	# data[3] -= 50*(old-new)；data[8] -= 5*(4-new)
+	if policy < 0 or policy > 2 or W.I_BIRTH_POLICY >= d.size():
+		return
+	var old_policy: int = d[W.I_BIRTH_POLICY]
+	if old_policy == policy:
+		return
+	d[W.I_PEOPLE_SUPPORT] -= 50 * (old_policy - policy)
+	d[W.I_BUDGET] -= 5 * (4 - policy)
+	d[W.I_BIRTH_POLICY] = policy
+	_notify_stats()
 
 
 func set_faction_ally(faction_idx: int, is_ally: bool) -> void:
@@ -437,6 +454,27 @@ func set_faction_enabled(faction_idx: int, is_enabled: bool) -> void:
 	if world == null or faction_idx >= world.factions.size():
 		return
 	world.factions[faction_idx].is_enabled = is_enabled
+
+
+## 写数值表后统一：同步显示视图 + 广播刷新
+func _notify_stats() -> void:
+	if world != null:
+		world.sync_economy()
+	stats_changed.emit()
+
+
+## 每日镜像：empires 权威 → 数值表[28/29/10/2]（原版 KumihaRepaint）
+func _mirror_empires_to_data(w: WorldState) -> void:
+	if w == null or w.数值表.size() <= 29:
+		return
+	var d := w.数值表
+	if w.empires.size() > 0 and w.empires[0] != null:
+		d[28] = w.empires[0].relations
+		d[W.I_USA_INFLUENCE] = w.empires[0].power
+	if w.empires.size() > 1 and w.empires[1] != null:
+		d[29] = w.empires[1].relations
+		d[W.I_SOVIET_INFLUENCE] = w.empires[1].power
+
 
 
 # ============================================================================
@@ -725,10 +763,57 @@ func _apply_tech_periodic(w: WorldState) -> void:
 	if u[26]: d[W.I_ARMY] += 4; d[W.I_THOUGHT_FREEDOM] -= 2
 
 
-# ── 双周：贷款/外援周期效果（TimeScript 1620-1645行） ──
-## 外援(dota)系统尚未实装，此处仅为占位保证调用链完整。
-func _fortnight_loan_interest(_d: Array[int], _w: WorldState) -> void:
-	pass
+# ── 双周：贷款利息 + 外援(dota)（TimeScript 5365-5454 + 1620-1645） ──
+func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
+	var loan: int = d[W.I_LOAN]
+	var year: int = w.date.year if w.date else 1976
+	# 国债利息（与 UI「债务损耗」对齐）
+	if loan > 0:
+		var interest: int = loan / 40
+		var usa_leader := 0
+		if w.empires.size() > 0 and w.empires[0] != null:
+			usa_leader = w.empires[0].current_leader
+		# 原版：里根(now_leader==3) 奇数月可豁免预算扣款
+		var skip_budget := (usa_leader == 3 and w.date != null and w.date.month % 2 != 0)
+		if interest <= 0:
+			if not skip_budget:
+				d[W.I_BUDGET] -= 1
+				if year >= 1983:
+					d[W.I_BUDGET] -= 2
+				elif year >= 1980:
+					d[W.I_BUDGET] -= 1
+			if loan > 10:
+				d[W.I_LOAN] -= 1
+			if w.empires.size() > 1 and w.empires[1] != null:
+				w.empires[1].relations -= 2
+		else:
+			if not skip_budget:
+				d[W.I_BUDGET] -= interest
+				if year >= 1983:
+					d[W.I_BUDGET] -= 1
+			if w.empires.size() > 1 and w.empires[1] != null:
+				w.empires[1].relations -= loan / 20
+			if loan > 10:
+				d[W.I_LOAN] -= interest / 2 + 1
+	# 外援 dota（data[146] = 援助强度；贸易同盟国吃援助）
+	var aid: int = d[W.I_FOREIGN_AID] if d.size() > W.I_FOREIGN_AID else 0
+	if aid > 0:
+		d[W.I_BUDGET] -= aid
+		d[W.I_AGENTS] -= aid
+		d[W.I_ARMY] -= aid
+		var ovd_alive := false
+		for x in w.countries:
+			if x != null and x.has_tag("ovd"):
+				ovd_alive = true
+				break
+		for c in w.countries:
+			if c == null or not c.has_tag("贸易同盟"):
+				continue
+			if ovd_alive:
+				c.sov_power = maxi(c.sov_power - 10, 0)
+			else:
+				c.usa_power = maxi(c.usa_power - 10, 0)
+			c.prc_power = mini(c.prc_power + 5, 1000)
 
 
 # ── 11项预算的完整月度效果 ──
@@ -1123,11 +1208,11 @@ func _fortnight_trade_balance(d: Array[int], w: WorldState) -> void:
 		if c == pc or c.gwcode <= 0:
 			continue
 		var added := false
-		if c.tags.has("对华贸易"):
+		if c.has_tag("对华贸易"):
 			d[W.I_TRADE_PARTNERS] += 1
 			trade_income += 2
 			added = true
-		if not added and c.tags.has("经济同盟") and pc.tags.has("经济同盟"):
+		if not added and c.has_tag("econ") and pc.has_tag("econ"):
 			d[W.I_TRADE_PARTNERS] += 1
 			if c.government > 0:
 				trade_income += 2 + maxi(0, 3 - c.government)
@@ -1281,9 +1366,9 @@ func _fortnight_difficulty_bonus(d: Array[int], w: WorldState) -> void:
 				w.empires[1].relations -= 5
 			if d[W.I_STABILITY] == 100:
 				for p in w.politicians:
-					if p == null or p.traits.size() < 1:
+					if p == null:
 						continue
-					if p.traits[0] == 0:
+					if p.trait_personality == 0:
 						p.power += 50
 					else:
 						p.loyalty -= 10
@@ -1298,22 +1383,22 @@ func _check_coup(d: Array[int], w: WorldState) -> void:
 	for p in w.politicians:
 		if p == null:
 			continue
+		# 原版 traits[2] → trait_special；loyality 为内部尺度
+		var special: int = p.trait_special
 		var dominated := false
-		if p.loyalty < 300 and p.traits.size() > 2 and p.traits[2] == 16:
+		if p.loyalty < 300 and special == 16:
 			dominated = true
-		elif p.loyalty < 150 and p.traits.size() > 2 and p.traits[2] != 9:
+		elif p.loyalty < 150 and special != 9:
 			dominated = true
 		elif p.loyalty < 50:
 			dominated = true
-		if dominated and p.traits.size() > 2 and p.traits[2] != 17 and p.traits[2] != 19:
+		if dominated and special != 17 and special != 19 and not p.is_under_investigation:
 			disloyal_power += p.power
 	if disloyal_power / 5 > d[W.I_PARTY_SUPPORT]:
 		_trigger_ending(2)
 	if d[W.I_PARTY_SUPPORT] <= 300 + d[W.I_THOUGHT_FREEDOM] / 5 - (d[W.I_PEOPLE_SUPPORT] - 500) / 5:
 		_trigger_ending(2)
 
-
-# ── 结局检查 ──
 
 func _check_endings(d: Array[int], _w: WorldState, year: int) -> void:
 	if d[W.I_POPULATION] < 6671:

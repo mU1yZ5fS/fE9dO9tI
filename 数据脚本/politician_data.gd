@@ -14,7 +14,7 @@ extends Resource
 @export var trait_special: int = 8          # traits[2]: 8-18 特殊特质
 
 # ── 数值 ──
-@export var loyalty: int = 50               # 对玩家/领导人的忠诚度 (0-100)
+@export var loyalty: int = 500              # 对玩家/领导人的忠诚度（内部×10，显示约 0~100）
 @export var loyalty_matrix: Array[int] = [] # 对其他17位政治家的忠诚度
 @export var power: int = 0                  # 政治权力
 @export var age: int = 40

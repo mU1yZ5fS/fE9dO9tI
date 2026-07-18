@@ -43,7 +43,10 @@ const I_POLITICAL_DISPLAY := 54 ## 政治显示等级
 const I_POLITICAL_OPENNESS := 55 ## 政治开放度
 const I_POLITICAL_LINE := 56    ## 政治路线
 const I_MANPOWER := 57          ## 兵源
-const I_BIRTH_POLICY := 60      ## 生育政策
+const I_BIRTH_POLICY := 105     ## 生育政策/人口增长基数（原版 data[105]：0一胎 1二胎 2无限制）
+const I_FOREIGN_AID := 146     ## 外援强度（原版 data[146]，dota 消耗）
+const I_USA_RELATIONS := 28    ## 对美关系镜像（权威在 empires[0].relations）
+const I_USSR_RELATIONS := 29   ## 对苏关系镜像（权威在 empires[1].relations）
 const I_SERVICES := 68          ## 服务业产值
 const I_LOAN := 69              ## 国债
 const I_BUDGET_ARMY := 71       ## 预算: 军费
@@ -96,6 +99,10 @@ const 数值索引 := {
 	"loan": I_LOAN, "debt": I_LOAN, "国债": I_LOAN,
 	"satisfied": I_SATISFIED, "满意现秩序者": I_SATISFIED,
 	"oligarch": I_OLIGARCH, "寡头": I_OLIGARCH,
+	"birth_policy": I_BIRTH_POLICY, "生育政策": I_BIRTH_POLICY,
+	"foreign_aid": I_FOREIGN_AID, "外援": I_FOREIGN_AID,
+	"usa_relations": I_USA_RELATIONS, "对美关系": I_USA_RELATIONS,
+	"ussr_relations": I_USSR_RELATIONS, "对苏关系": I_USSR_RELATIONS,
 }
 
 # ── 时间 ──
@@ -296,6 +303,21 @@ func sync_economy() -> void:
 
 ## 注意：原版只钳制以下项。Godot 早期版本额外钳制了 data[2/9/22/34/36/38/57/71-81]，
 ## 这些原版都不钳制（如 data[9] 特工允许为负，是合法显示状态）。已按原版对齐。
+
+## 连续指标显示：内部 ×10 → "80.0"；预算/特工等同规则
+func display_meter(raw: int) -> String:
+	var sign := "-" if raw < 0 else ""
+	var v: int = absi(raw)
+	var whole: int = v / 10
+	var frac: int = v % 10
+	return "%s%d.%d" % [sign, whole, frac]
+
+
+## 关系显示：内部 ×10 → 整数 0~100
+func display_relation(raw: int) -> String:
+	return str(raw / 10)
+
+
 func clamp_values() -> void:
 	var mod1_active: bool = modifiers.size() > 1 and modifiers[1] != null and modifiers[1].is_active
 	# data[12] 工业：modifier[1] 激活时上限 500，否则 1000

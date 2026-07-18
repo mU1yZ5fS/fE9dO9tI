@@ -6,6 +6,8 @@ extends CanvasLayer
 func _ready() -> void:
 	if not GameManager:
 		return
+	if GameManager.has_signal("stats_changed"):
+		GameManager.stats_changed.connect(_refresh)
 	GameManager.date_changed.connect(func(_d): _refresh())
 	GameManager.world_state_loaded.connect(_refresh)
 	if GameManager.world != null:

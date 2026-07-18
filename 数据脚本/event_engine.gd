@@ -394,6 +394,11 @@ func apply_event_option(event_def: EventDef, option_index: int) -> Dictionary:
 	var opt := event_def.options[option_index] as EventOption
 	execute(opt.effects)
 	_mark_done(event_def, option_index)
+	# 事件改数后同步显示视图并通知状态栏
+	if GameManager and GameManager.has_method("_notify_stats"):
+		GameManager._notify_stats()
+	elif GameManager and GameManager.world:
+		GameManager.world.sync_economy()
 	# 事件链：把 triggers_on_complete 列表加入队列，待玩家返回外交界面后依次触发
 	if not event_def.triggers_on_complete.is_empty():
 		enqueue_chain(event_def.triggers_on_complete)

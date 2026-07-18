@@ -107,6 +107,8 @@ func _ready() -> void:
 		return
 	GameManager.world_state_loaded.connect(_refresh)
 	GameManager.date_changed.connect(func(_d): _refresh())
+	if GameManager.has_signal("stats_changed"):
+		GameManager.stats_changed.connect(_refresh)
 	_ensure_pie_chart()
 	for cat_name in 政策类别:
 		var btn := _find(cat_name + "切换")
@@ -146,7 +148,7 @@ func _refresh() -> void:
 	var w := GameManager.world
 	if w == null:
 		return
-	_label("军队力量", "%d" % w.数值表[W.I_ARMY])
+	_label("军队力量", "%.1f" % (float(w.数值表[W.I_ARMY]) / 10.0))
 	var pc := w.get_player_country()
 	_label("政体类型", 政体名.get(pc.government, "未知") if pc else "")
 	_label("政治路线类型", 路线名.get(w.数值表[W.I_POLITICAL_LINE], "未知"))

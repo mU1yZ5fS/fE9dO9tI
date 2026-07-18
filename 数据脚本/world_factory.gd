@@ -272,7 +272,7 @@ const FACTION_LEADERS := [1, 10, 15, 12, 13]
 # ============================================================================
 const LEADER_INDEX := 2      # politicians 数组索引
 const LEADER_AGE := 55        # 华国锋 1976 年实际年龄
-const LEADER_LOYALTY := 16
+const LEADER_LOYALTY := 160  # 内部尺度（显示约 16.0）
 
 
 # ============================================================================
@@ -450,7 +450,8 @@ static func _build_politicians(ws: WorldState) -> void:
 		pd.faction = row[1]             # party_id
 		pd.experience = row[3]
 		pd.age = row[4]
-		pd.loyalty = row[5]
+		# 原版 loyality 为内部大尺度（阈值 50/150/300）；表内为显示值 0~100 → ×10
+		pd.loyalty = row[5] * 10
 		pd.power = row[6]
 		ws.politicians.append(pd)
 

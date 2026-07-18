@@ -49,8 +49,8 @@ const USSR: int = 1
 # 综合实力值（原版 power: int，影响非洲争夺等全局计算）
 @export var power: int = 0
 
-# 美苏双边关系 0~100（原版 relations: int）
-@export var relations: int = 50
+# 对华关系内部 ×10 存储（0~1000 对应显示 0~100；原版 relations）
+@export var relations: int = 500
 
 # 当前启用的国策树名称（原版 active_tree: string）
 @export var active_focus_tree: String = ""
