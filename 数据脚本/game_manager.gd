@@ -577,6 +577,7 @@ func _is_vacant_politician(p: PoliticianData) -> bool:
 ## 月结：调查/监视计数、自动支持·打压、在职 power 加成、空缺派系领袖补位
 func _monthly_politics(d: Array[int], w: WorldState) -> void:
 	@warning_ignore("integer_division")
+	_sync_in_power_flags(w)
 	for i in w.politicians.size():
 		var p: PoliticianData = w.politicians[i]
 		if _is_vacant_politician(p):
@@ -628,8 +629,6 @@ func _monthly_politics(d: Array[int], w: WorldState) -> void:
 		if p.trait_special == 18 and p.in_power:
 			d[W.I_CORRUPTION] += 2
 
-	# POL-06：政客间阴谋网（稳定满后，TimeScript.PlotPolitics）
-	_plot_politics(d, w)
 	fill_vacant_faction_leaders()
 	_sync_in_power_flags(w)
 	_notify_stats()
@@ -672,6 +671,8 @@ func _annual_politics(d: Array[int], w: WorldState) -> void:
 			p.trait_special = 19
 	for idx in to_kill:
 		kill_politician(idx)
+	# PlotPolitics 与 DeathPolitics 同频（年，TimeScript ~5734）
+	_plot_politics(d, w)
 
 
 ## POL-06 简化：对高 power 目标，若低忠诚他人 power 和过高则标记阴谋并可能削权/撤职/击杀
@@ -874,6 +875,9 @@ func kill_politician(pol_index: int) -> void:
 		empty.is_under_surveillance = false
 		empty.is_under_investigation = false
 		empty.is_conspiracy = false
+		empty.you_fall = false
+		empty.in_power = false
+		empty.years_in_power = 0
 		empty.auto_support = 0
 		empty.auto_hound = 0
 		empty.portrait = null
@@ -881,6 +885,7 @@ func kill_politician(pol_index: int) -> void:
 		empty.investigator_index = -1
 
 	fill_vacant_faction_leaders()
+	_sync_in_power_flags(world)
 	_notify_stats()
 
 
