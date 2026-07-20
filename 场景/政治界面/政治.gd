@@ -273,13 +273,23 @@ func _refresh_left_panel() -> void:
 	if pol.is_under_surveillance:
 		var remain_m: int = maxi(0, 7 - pol.days_surveillance)
 		lines.append("正在被监察调查（剩余 %d 月）" % remain_m)
+		# POL-08 ChangeOfKilling
+		var rate: float = GameManager.change_of_killing(_selected_pol_index)
+		lines.append("阴谋发现概率: %d%%" % int(round(rate * 100.0)))
 	else:
 		lines.append("尚未被监察调查")
 
+	if pol.you_fall:
+		lines.append("状态: 曾遭遇倒台/暗杀未遂")
 	if pol.is_under_surveillance and pol.is_conspiracy:
 		lines.append("阴谋: 已发现参与阴谋!")
 	elif pol.is_under_surveillance:
 		lines.append("留置后的影响力未知")
+	elif pol.is_conspiracy:
+		lines.append("传闻: 可能卷入派系阴谋")
+
+	if _is_faction_leader(_selected_pol_index):
+		lines.append("身份: 派系负责人（%s）" % pol.ideology_label())
 
 	lines.append("影响力: %d" % pol.power)
 	for threshold in POWER_LABELS:
@@ -288,6 +298,8 @@ func _refresh_left_panel() -> void:
 			break
 
 	lines.append("忠诚度: %s" % _world.display_meter(pol.loyalty))
+	if pol.in_power:
+		lines.append("在职年数: %d" % pol.years_in_power)
 	_left_status.text = "\n".join(lines)
 
 
@@ -552,11 +564,33 @@ func _on_assassinate() -> void:
 	if pol == null:
 		return
 	var d := _world.数值表
+	@warning_ignore("integer_division")
 	var cost: int = maxi(10, pol.power / 100)
+	if d[W.I_BUDGET] < cost or d[W.I_AGENTS] < cost or d[W.I_ARMY] < cost:
+		return
 	d[W.I_BUDGET] -= cost
 	d[W.I_AGENTS] -= cost
 	d[W.I_ARMY] -= cost
 	d[W.I_THOUGHT_FREEDOM] += 100
+
+	# POL-09：成功率用 ChangeOfKilling；失败则 you_fall + 全员忠诚惩罚，不杀
+	var success_rate: float = GameManager.change_of_killing(_selected_pol_index)
+	var roll: float = float(abs(hash("%d-%d-%s" % [
+		_world.date.year if _world.date else 1976,
+		_selected_pol_index,
+		pol.name_display,
+	])) % 1000) / 1000.0
+	if roll > success_rate:
+		pol.you_fall = true
+		pol.power = maxi(50, pol.power - absi(pol.power / 5))
+		pol.loyalty = maxi(0, pol.loyalty - 500)
+		# 失败：参与施压者（对目标 matrix 低）以外全员小惩罚
+		for p in _world.politicians:
+			if p == null or p == pol:
+				continue
+			p.loyalty = maxi(0, p.loyalty - 30)
+		_after_operation()
+		return
 
 	if _is_faction_leader(_selected_pol_index):
 		_apply_faction_loyalty_penalty(_selected_pol_index, -300)
@@ -661,7 +695,15 @@ func _on_assign_position(position_id: int) -> void:
 
 	_world.politics_positions[position_id] = _selected_pol_index
 	pol.loyalty += 250
+	pol.in_power = true
+	# wanted_position 命中加成（简化）
+	if pol.wanted_position == position_id or (pol.wanted_position <= 2 and position_id <= 2):
+		pol.loyalty += 100
+		pol.power += 20
 	_after_operation()
+	GameManager.fill_vacant_faction_leaders()
+	# 通过 stats 让任职标记同步
+	GameManager.stats_changed.emit()
 
 
 # ============================================================================

@@ -32,12 +32,14 @@ extends Resource
 
 # ── 派系（Party 槽 0-4，与 trait_personality 不同表） ──
 @export var faction: int = -1               # Party 索引 0-4
-@export var in_power: bool = false          # 是否在职
+@export var in_power: bool = false          # 是否在职（持有 politics_positions）
+@export var years_in_power: int = 0         # 任职累计年（原版 in_power 计数）
 
 # ── 监察与阴谋 ──
 @export var is_under_surveillance: bool = false
 @export var is_under_investigation: bool = false
 @export var is_conspiracy: bool = false
+@export var you_fall: bool = false          # 政变/阴谋失败等「倒台未遂」标记
 @export var days_surveillance: int = 0
 @export var investigator_index: int = -1
 
@@ -88,6 +90,11 @@ func make_instance() -> PoliticianData:
 	inst.is_under_surveillance = false
 	inst.is_under_investigation = false
 	inst.is_conspiracy = false
+	inst.you_fall = false
 	inst.days_surveillance = 0
 	inst.investigator_index = -1
+	inst.in_power = false
+	inst.years_in_power = 0
+	inst.auto_support = 0
+	inst.auto_hound = 0
 	return inst

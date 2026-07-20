@@ -562,6 +562,8 @@ func _on_year_changed() -> void:
 		f.support = f.support / 10
 	# 满意现秩序者衰减（原版 835）
 	d[W.I_SATISFIED] = d[W.I_SATISFIED] / 10
+	# POL-05 / POL-12：年龄 +1、病弱/老死、任职年数（TimeScript 615–621 + DeathPolitics）
+	_annual_politics(d, w)
 
 
 # ============================================================================
@@ -622,9 +624,193 @@ func _monthly_politics(d: Array[int], w: WorldState) -> void:
 					p.power -= absi(p.power / 10)
 
 		_apply_monthly_position_power(w, i, p)
+		# ECO-POL-06：贪腐特质(18) 在职则抬腐败
+		if p.trait_special == 18 and p.in_power:
+			d[W.I_CORRUPTION] += 2
 
+	# POL-06：政客间阴谋网（稳定满后，TimeScript.PlotPolitics）
+	_plot_politics(d, w)
 	fill_vacant_faction_leaders()
+	_sync_in_power_flags(w)
 	_notify_stats()
+
+
+## 年均政客生命周期（POL-05 / POL-12）
+func _annual_politics(d: Array[int], w: WorldState) -> void:
+	# 年龄增长（全体非空位；领袖独立体也 +1）
+	for p in w.politicians:
+		if _is_vacant_politician(p):
+			continue
+		p.age += 1
+		if p.in_power:
+			p.years_in_power += 1
+	if w.leader != null:
+		w.leader.age += 1
+
+	# DeathPolitics：仅 data[38]>=100（毛后/稳定满）才病弱与老死
+	if d[W.I_STABILITY] < 100:
+		return
+	var to_kill: Array[int] = []
+	for i in w.politicians.size():
+		var p: PoliticianData = w.politicians[i]
+		if _is_vacant_politician(p):
+			continue
+		# 老死：age >= 91..94
+		var death_age: int = 91 + (i % 4)
+		if p.age >= death_age:
+			to_kill.append(i)
+			continue
+		# 病弱：非改革 traits[0]!=2 时 80..83；改革派 85..88
+		if p.trait_special == 19:
+			continue
+		var sick_age: int
+		if p.trait_personality == 2:
+			sick_age = 85 + (i % 4)
+		else:
+			sick_age = 80 + (i % 4)
+		if p.age >= sick_age:
+			p.trait_special = 19
+	for idx in to_kill:
+		kill_politician(idx)
+
+
+## POL-06 简化：对高 power 目标，若低忠诚他人 power 和过高则标记阴谋并可能削权/撤职/击杀
+func _plot_politics(d: Array[int], w: WorldState) -> void:
+	if d[W.I_STABILITY] < 100:
+		return
+	@warning_ignore("integer_division")
+	var to_kill: Array[int] = []
+	for i in w.politicians.size():
+		var target: PoliticianData = w.politicians[i]
+		if _is_vacant_politician(target):
+			continue
+		if target.power <= 250 and target.trait_special != 16:
+			continue
+		var plot_power := 0
+		for j in w.politicians.size():
+			if j == i:
+				continue
+			var pol: PoliticianData = w.politicians[j]
+			if _is_vacant_politician(pol) or pol.is_under_investigation:
+				continue
+			if pol.trait_special == 17 or pol.trait_special == 19:
+				continue
+			var rel: int = 500
+			if i < pol.loyalty_matrix.size():
+				rel = pol.loyalty_matrix[i]
+			var joins := false
+			if pol.trait_special == 16 and rel < 450:
+				joins = true
+			elif pol.trait_special == 9 and rel < 150:
+				joins = true
+			elif pol.trait_special != 9 and rel < 300:
+				joins = true
+			if joins:
+				plot_power += pol.power
+		var resist := 3.0
+		if target.trait_special == 14 or target.trait_special == 13:
+			resist = 5.0
+		elif target.trait_special == 12 or target.trait_alignment == 6:
+			resist = 2.0
+		for pos_id in mini(3, w.politics_positions.size()):
+			if w.politics_positions[pos_id] == i:
+				resist += 2.0 if pos_id == 0 else 1.0
+		if float(plot_power) > resist * float(target.power):
+			target.is_conspiracy = true
+			var seed_v: int = abs(hash("%d-%d-%d-%d" % [w.date.year, w.date.month, i, plot_power]))
+			var r1: int = seed_v % 11
+			var r2: int = (seed_v / 11) % 22
+			var r3: int = (seed_v / 242) % 44
+			var man: int = d[W.I_MANPOWER]
+			if r1 > man / 100 and r2 > man / 50 and r3 > man / 25:
+				if float(plot_power) > resist * 4.0 * float(target.power):
+					var is_central := false
+					for pos_id2 in mini(3, w.politics_positions.size()):
+						if w.politics_positions[pos_id2] == i:
+							is_central = true
+							w.politics_positions[pos_id2] = -1
+					if is_central:
+						target.power = 100
+						target.you_fall = true
+					else:
+						to_kill.append(i)
+				else:
+					target.power -= absi(target.power / 10)
+					target.you_fall = true
+		else:
+			target.is_conspiracy = false
+	for idx in to_kill:
+		kill_politician(idx)
+
+
+func _sync_in_power_flags(w: WorldState) -> void:
+	var holders: Dictionary = {}
+	for pos_id in w.politics_positions.size():
+		var h: int = w.politics_positions[pos_id]
+		if h >= 0:
+			holders[h] = true
+	for i in w.politicians.size():
+		var p: PoliticianData = w.politicians[i]
+		if _is_vacant_politician(p):
+			p.in_power = false
+			continue
+		var now: bool = holders.has(i)
+		if now and not p.in_power:
+			p.years_in_power = 0
+		p.in_power = now
+
+
+## POL-08：监视/再教育「发现·成功率」显示用（GameState.ChangeOfKilling）
+## 返回 0.0~1.0 近似概率
+func change_of_killing(politic_index: int) -> float:
+	if world == null or politic_index < 0 or politic_index >= world.politicians.size():
+		return 0.0
+	var d := world.数值表
+	var pol: PoliticianData = world.politicians[politic_index]
+	if pol == null:
+		return 0.0
+	var num := 0.5
+	if d[W.I_AGENTS] + d[W.I_PARTY_SUPPORT] + d[W.I_ARMY] >= pol.power:
+		num += 0.05
+	else:
+		num -= 0.05
+	if d[W.I_AGENTS] + d[W.I_PARTY_SUPPORT] >= pol.power:
+		num += 0.05
+	var avg_loy: int = _sum_loyalty_avg()
+	if avg_loy > 900:
+		num += 0.15
+	elif avg_loy > 800:
+		num += 0.12
+	elif avg_loy > 700:
+		num += 0.1
+	elif avg_loy > 600:
+		num += 0.07
+	elif avg_loy > 500:
+		num += 0.05
+	else:
+		num -= 0.05
+	if d[W.I_PARTY_SUPPORT] > 800:
+		num += 0.05
+	elif d[W.I_PARTY_SUPPORT] < 700:
+		num -= 0.05
+	if pol.is_under_investigation:
+		num += 0.1
+	return clampf(num, 0.05, 0.95)
+
+
+func _sum_loyalty_avg() -> int:
+	if world == null or world.politicians.is_empty():
+		return 0
+	var s := 0
+	var n := 0
+	for p in world.politicians:
+		if _is_vacant_politician(p):
+			continue
+		s += p.loyalty
+		n += 1
+	if n <= 0:
+		return 0
+	return s / n
 
 
 func _apply_monthly_position_power(w: WorldState, pol_index: int, p: PoliticianData) -> void:
@@ -1368,6 +1554,7 @@ func _on_fortnight() -> void:
 	_fortnight_econ_system_effect(d)
 	_fortnight_difficulty_bonus(d, w)
 	_check_coup(d, w)
+	# 阴谋网也挂双周一次（原版 Death/Plot 在年/特定块；月结已跑，此处不重复击杀）
 	_check_endings(d, w, year)
 
 	w.flush_economy()
@@ -1683,10 +1870,12 @@ func _check_coup(d: Array[int], w: WorldState) -> void:
 	for p in w.politicians:
 		if p == null:
 			continue
-		# 原版 traits[2] → trait_special；loyality 为内部尺度
+		# 原版 traits[2] → trait_special；含 you_fall（POL-07）
 		var special: int = p.trait_special
 		var dominated := false
 		if p.loyalty < 300 and special == 16:
+			dominated = true
+		elif p.you_fall:
 			dominated = true
 		elif p.loyalty < 150 and special != 9:
 			dominated = true
