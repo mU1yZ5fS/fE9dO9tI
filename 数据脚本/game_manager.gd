@@ -425,6 +425,8 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	d[category_idx] = target_val
 	# FAC-05 / ECO-FAC-01：政策变更反馈派系 support / points
 	_apply_policy_faction_feedback(category_idx, current_val, target_val)
+	# FAC-08：改革路径可能解锁自由派
+	try_unlock_liberals()
 	_notify_stats()
 	return true
 
@@ -504,6 +506,14 @@ func set_faction_ally(faction_idx: int, is_ally: bool) -> void:
 func set_faction_enabled(faction_idx: int, is_enabled: bool) -> void:
 	if world == null or faction_idx >= world.factions.size():
 		return
+	# FAC-08：自由派从禁用→启用需满足解锁条件（禁止始终允许）
+	if is_enabled and faction_idx == FactionData.LIBERAL:
+		var f0: FactionData = world.factions[faction_idx]
+		if not f0.is_enabled:
+			if not try_unlock_liberals():
+				push_warning("GameManager: 自由派尚未满足解锁条件")
+				return
+			return
 	world.factions[faction_idx].is_enabled = is_enabled
 	# 禁止派系：支持下滑（FAC-04 最小连锁）
 	if not is_enabled:
@@ -554,6 +564,54 @@ func spend_faction_points(faction_idx: int) -> bool:
 	if f.points < 0:
 		f.points = 0
 	f.support += chunks * 2
+	_notify_stats()
+	return true
+
+
+
+## POL-14：politics[0] 毛泽东在 data[38]!=100 时受保护（不可负向操作/击杀）
+func is_mao_protected(pol_index: int) -> bool:
+	if world == null or pol_index != 0:
+		return false
+	var d := world.数值表
+	if d.size() <= W.I_STABILITY:
+		return false
+	return d[W.I_STABILITY] != 100
+
+
+## FAC-06：派内在世政客 power 合计
+func faction_power_sum(faction_idx: int) -> int:
+	if world == null or faction_idx < 0:
+		return 0
+	var total := 0
+	for p in world.politicians:
+		if p == null or p.name_display == "空位":
+			continue
+		if p.party_index() == faction_idx:
+			total += maxi(p.power, 0)
+	return total
+
+
+## FAC-08：自由派解锁条件（非事件路径的规则近似）
+## 原版主路径靠事件（如五中全会）与合作模式；此处提供可玩的改革解锁：
+## 政党制度≥联合政府(8) 或 经济体制≥国控资本主义(13) 或 思想自由≥400
+func try_unlock_liberals(force: bool = false) -> bool:
+	if world == null or world.factions.size() <= FactionData.LIBERAL:
+		return false
+	var f: FactionData = world.factions[FactionData.LIBERAL]
+	if f.is_enabled and not force:
+		return false
+	var d := world.数值表
+	var ok := force
+	if not ok and d.size() > W.I_PARTY_SYSTEM:
+		ok = d[W.I_PARTY_SYSTEM] >= 8 or d[W.I_ECON_SYSTEM] >= 13 or d[W.I_THOUGHT_FREEDOM] >= 400
+	if not ok:
+		return false
+	f.is_enabled = true
+	if f.support <= 0:
+		f.support = maxi(40, f.influence / 15) if f.influence > 0 else 40
+	# 确保有领袖
+	fill_vacant_faction_leaders()
 	_notify_stats()
 	return true
 
@@ -614,6 +672,7 @@ func _on_year_changed() -> void:
 	d[W.I_SATISFIED] = d[W.I_SATISFIED] / 10
 	# POL-05 / POL-12：年龄 +1、病弱/老死、任职年数（TimeScript 615–621 + DeathPolitics）
 	_annual_politics(d, w)
+	try_unlock_liberals()
 
 
 # ============================================================================
@@ -707,6 +766,8 @@ func _annual_politics(d: Array[int], w: WorldState) -> void:
 		# 老死：age >= 91..94
 		var death_age: int = 91 + (i % 4)
 		if p.age >= death_age:
+			if is_mao_protected(i):
+				continue
 			to_kill.append(i)
 			continue
 		# 病弱：非改革 traits[0]!=2 时 80..83；改革派 85..88
@@ -890,6 +951,10 @@ func _apply_monthly_position_power(w: WorldState, pol_index: int, p: PoliticianD
 ## 死亡/再教育：清职与派系领袖，同槽补员（KillPerson → BalancePolitic）
 func kill_politician(pol_index: int) -> void:
 	if world == null or pol_index < 0 or pol_index >= world.politicians.size():
+		return
+	# POL-14：毛在世保护 politics[0]（data[38]!=100 时不可杀）
+	if is_mao_protected(pol_index):
+		push_warning("GameManager: 毛泽东在世保护，拒绝 kill %d" % pol_index)
 		return
 	for i in world.politics_positions.size():
 		if world.politics_positions[i] == pol_index:

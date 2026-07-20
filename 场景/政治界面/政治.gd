@@ -298,6 +298,8 @@ func _refresh_left_panel() -> void:
 			break
 
 	lines.append("忠诚度: %s" % _world.display_meter(pol.loyalty))
+	if GameManager.is_mao_protected(_selected_pol_index):
+		lines.append("保护: 毛泽东在世，不可负向操作")
 	if pol.in_power:
 		lines.append("在职年数: %d" % pol.years_in_power)
 	_left_status.text = "\n".join(lines)
@@ -333,7 +335,7 @@ func _update_button_states() -> void:
 	var pol: PoliticianData = _get_selected_pol() if has_pol else null
 	var tier := _get_tier(_selected_pol_index) if has_pol else 99
 	# 原版：data[38]!=100 时不可对 politics[0]（毛泽东）执行负向操作
-	var mao_alive_protect := has_pol and _selected_pol_index == 0 and d[W.I_STABILITY] != 100
+	var mao_alive_protect := has_pol and GameManager.is_mao_protected(_selected_pol_index)
 	var investigating := pol != null and pol.is_under_investigation
 	var surveilling := pol != null and pol.is_under_surveillance
 	var budget_ok_support := d[W.I_BUDGET] >= COST_SUPPORT_BUDGET and d[W.I_AGENTS] >= COST_SUPPORT_AGENTS
@@ -417,6 +419,7 @@ func _can_assassinate(pol: PoliticianData, tier: int, mao_protect: bool, investi
 	if not _tier_allows_negative(tier, pol):
 		return false
 	var d := _world.数值表
+	@warning_ignore("integer_division")
 	var cost: int = maxi(10, pol.power / 100)
 	if d[W.I_BUDGET] < cost or d[W.I_AGENTS] < cost or d[W.I_ARMY] < cost:
 		return false
@@ -550,6 +553,8 @@ func _on_suppress() -> void:
 	var pol := _get_selected_pol()
 	if pol == null:
 		return
+	if GameManager.is_mao_protected(_selected_pol_index):
+		return
 	var d := _world.数值表
 	d[W.I_BUDGET] -= COST_SUPPRESS_BUDGET
 	d[W.I_AGENTS] -= COST_SUPPRESS_AGENTS
@@ -562,6 +567,8 @@ func _on_suppress() -> void:
 func _on_assassinate() -> void:
 	var pol := _get_selected_pol()
 	if pol == null:
+		return
+	if GameManager.is_mao_protected(_selected_pol_index):
 		return
 	var d := _world.数值表
 	@warning_ignore("integer_division")
@@ -607,6 +614,8 @@ func _on_investigate() -> void:
 	var pol := _get_selected_pol()
 	if pol == null:
 		return
+	if GameManager.is_mao_protected(_selected_pol_index):
+		return
 	var d := _world.数值表
 	d[W.I_AGENTS] -= COST_INVESTIGATE_AGENTS
 	pol.is_under_investigation = true
@@ -622,6 +631,8 @@ func _on_investigate() -> void:
 func _on_surveil() -> void:
 	var pol := _get_selected_pol()
 	if pol == null:
+		return
+	if GameManager.is_mao_protected(_selected_pol_index):
 		return
 	var d := _world.数值表
 	d[W.I_AGENTS] -= COST_SURVEIL_AGENTS
@@ -643,6 +654,8 @@ func _on_auto_support() -> void:
 func _on_auto_suppress() -> void:
 	var pol := _get_selected_pol()
 	if pol == null:
+		return
+	if GameManager.is_mao_protected(_selected_pol_index):
 		return
 	pol.auto_hound = 10 if pol.auto_hound == 0 else 0
 	_after_operation()
