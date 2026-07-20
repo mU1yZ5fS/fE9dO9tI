@@ -2,7 +2,7 @@ class_name FactionData
 extends Resource
 
 ## 派系数据。对应原版 GameState 的派系字段。
-## 5个派系: 0=极左派 1=保守派 2=温和派 3=改良派 4=自由派
+## 5个派系: 0=极左派 1=保守派 2=温和派 3=改革派 4=自由派
 
 const MAOIST: int = 0
 const CONSERVATIVE: int = 1
@@ -14,7 +14,7 @@ const FACTION_NAMES: Array[String] = [
 	"极左派",
 	"保守派",
 	"温和派",
-	"改良派",
+	"改革派",
 	"自由派",
 ]
 

@@ -1,14 +1,29 @@
 [gd_scene format=3 uid="uid://dsmslhxc0e8u5"]
 
+[ext_resource type="Script" uid="uid://b3236qf23ovfc" path="res://场景/政治界面/政治.gd" id="1_2b87v"]
 [ext_resource type="Texture2D" uid="uid://dyjgh5ovltwpu" path="res://资产/UI/政治/政治背景.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://cvjx2j0bi6k3l" path="res://资产/UI/政治/左栏背景.png" id="2_vbwtu"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="3_uhnri"]
+[ext_resource type="Texture2D" uid="uid://dnophrpyfwhhl" path="res://资产/UI/政治/实权领袖背景.png" id="4_x1jgi"]
+[ext_resource type="Texture2D" uid="uid://by1w0vtvm04ae" path="res://资产/UI/政治/行分隔箭头.png" id="5_ejoel"]
+[ext_resource type="PackedScene" uid="uid://b88f5esdeugoq" path="res://场景/政治界面/政治家卡片.tscn" id="6_hx4ig"]
+[ext_resource type="Texture2D" uid="uid://b03fhexcs37an" path="res://资产/UI/政治/操作按钮背景.png" id="7_ejoel"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="8_hx4ig"]
+[ext_resource type="Texture2D" uid="uid://b4yiib86ebkfv" path="res://资产/UI/政治/中央职位背景.png" id="10_07vlq"]
+[ext_resource type="Texture2D" uid="uid://g224ia0w6f36" path="res://资产/UI/政治/地方职位背景.png" id="11_whbwe"]
+[ext_resource type="Script" uid="uid://dns8y0n8rvrim" path="res://数据脚本/game_ui_base.gd" id="12_inopw"]
+[ext_resource type="Texture2D" uid="uid://dvfsm4g8optn4" path="res://资产/UI/政治/右栏数据背景.png" id="13_rv0rt"]
+[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="14_2mqy5"]
+[ext_resource type="Texture2D" uid="uid://cq007uywcr5pc" path="res://资产/UI/主游戏UI/特工网络.png" id="15_rv0rt"]
 
-[node name="政治" type="Control" unique_id=2086644049]
+[node name="政治" type="Control" unique_id=2144623429]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_2b87v")
 
 [node name="背景" type="TextureRect" parent="." unique_id=449705355]
 layout_mode = 0
@@ -16,3 +31,699 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("2_bg")
 expand_mode = 1
+
+[node name="左栏_当前选中政治家姓名_背景" type="TextureRect" parent="." unique_id=955515113]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 384.0
+offset_bottom = 56.0
+texture = ExtResource("2_vbwtu")
+expand_mode = 1
+
+[node name="左栏_当前选中政治家姓名" type="Label" parent="." unique_id=225038964]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 17.0
+offset_right = 379.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 24
+text = "张春桥"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左栏_当前选中政治家派系_背景" type="TextureRect" parent="." unique_id=68047835]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 104.0
+texture = ExtResource("2_vbwtu")
+expand_mode = 1
+
+[node name="左栏_当前选中政治家派系" type="Label" parent="." unique_id=1392277300]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 65.0
+offset_right = 379.0
+offset_bottom = 103.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 24
+text = "极左派"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左栏_当前选中政治家特质1_背景" type="TextureRect" parent="." unique_id=1476779546]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 112.0
+offset_right = 384.0
+offset_bottom = 152.0
+texture = ExtResource("2_vbwtu")
+expand_mode = 1
+
+[node name="左栏_当前选中政治家特质1" type="Label" parent="." unique_id=331105463]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 113.0
+offset_right = 379.0
+offset_bottom = 151.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 24
+text = "硬汉"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左栏_当前选中政治家特质2_背景" type="TextureRect" parent="." unique_id=1491276248]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 160.0
+offset_right = 384.0
+offset_bottom = 200.0
+texture = ExtResource("2_vbwtu")
+expand_mode = 1
+
+[node name="左栏_当前选中政治家特质2" type="Label" parent="." unique_id=1505384348]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 161.0
+offset_right = 379.0
+offset_bottom = 199.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 24
+text = "谋士"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左栏_当前选中政治家状态_背景" type="TextureRect" parent="." unique_id=347530814]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 208.0
+offset_right = 384.0
+offset_bottom = 440.0
+texture = ExtResource("2_vbwtu")
+expand_mode = 1
+
+[node name="左栏_当前选中政治家状态" type="Label" parent="." unique_id=404018647]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 214.0
+offset_right = 379.0
+offset_bottom = 434.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 16
+text = "职务:
+主管:华东；
+尚未被纪律审查
+尚未被监察调查
+留置后的影响力未知
+影响力:120.0
+强影响力"
+
+[node name="实权领袖背景" type="TextureRect" parent="." unique_id=357871974]
+layout_mode = 0
+offset_left = 1056.0
+offset_top = 24.0
+offset_right = 1268.0
+offset_bottom = 220.0
+texture = ExtResource("4_x1jgi")
+
+[node name="实权领袖肖像" type="TextureRect" parent="." unique_id=2137650745]
+layout_mode = 0
+offset_left = 1088.0
+offset_top = 40.0
+offset_right = 1237.0
+offset_bottom = 208.0
+
+[node name="分割线" type="TextureRect" parent="." unique_id=1205154761]
+layout_mode = 0
+offset_left = 664.0
+offset_top = 216.0
+offset_right = 1648.0
+offset_bottom = 256.0
+texture = ExtResource("5_ejoel")
+expand_mode = 1
+
+[node name="政治家1" parent="." unique_id=2116116684 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 664.0
+offset_top = 264.0
+offset_right = 884.0
+offset_bottom = 414.0
+
+[node name="政治家2" parent="." unique_id=1858874617 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1050.0
+offset_top = 264.0
+offset_right = 1270.0
+offset_bottom = 414.0
+
+[node name="政治家3" parent="." unique_id=1473785709 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1426.0
+offset_top = 264.0
+offset_right = 1646.0
+offset_bottom = 414.0
+
+[node name="分割线2" type="TextureRect" parent="." unique_id=487116403]
+layout_mode = 0
+offset_left = 517.0
+offset_top = 432.0
+offset_right = 1775.0
+offset_bottom = 472.0
+texture = ExtResource("5_ejoel")
+expand_mode = 2
+
+[node name="政治家4" parent="." unique_id=992592407 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 536.0
+offset_top = 480.0
+offset_right = 756.0
+offset_bottom = 630.0
+
+[node name="政治家5" parent="." unique_id=1541522308 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 896.0
+offset_top = 480.0
+offset_right = 1116.0
+offset_bottom = 630.0
+
+[node name="政治家6" parent="." unique_id=1021089500 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1248.0
+offset_top = 480.0
+offset_right = 1468.0
+offset_bottom = 630.0
+
+[node name="政治家7" parent="." unique_id=1489681447 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1600.0
+offset_top = 480.0
+offset_right = 1820.0
+offset_bottom = 630.0
+
+[node name="分割线3" type="TextureRect" parent="." unique_id=330100129]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 648.0
+offset_right = 1888.0
+offset_bottom = 688.0
+texture = ExtResource("5_ejoel")
+expand_mode = 2
+
+[node name="政治家8" parent="." unique_id=1497950313 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 688.0
+offset_right = 636.0
+offset_bottom = 838.0
+
+[node name="政治家9" parent="." unique_id=883092133 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 733.0
+offset_top = 688.0
+offset_right = 953.0
+offset_bottom = 838.0
+
+[node name="政治家10" parent="." unique_id=1278931928 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1064.0
+offset_top = 688.0
+offset_right = 1284.0
+offset_bottom = 838.0
+
+[node name="政治家11" parent="." unique_id=1728281029 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1384.0
+offset_top = 688.0
+offset_right = 1604.0
+offset_bottom = 838.0
+
+[node name="政治家12" parent="." unique_id=1825666333 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1685.0
+offset_top = 688.0
+offset_right = 1905.0
+offset_bottom = 838.0
+
+[node name="分割线4" type="TextureRect" parent="." unique_id=1567346032]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 840.0
+offset_right = 1900.0
+offset_bottom = 880.0
+texture = ExtResource("5_ejoel")
+expand_mode = 2
+
+[node name="政治家13" parent="." unique_id=16351671 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 413.0
+offset_top = 896.0
+offset_right = 633.0
+offset_bottom = 1046.0
+
+[node name="政治家14" parent="." unique_id=698884675 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 647.0
+offset_top = 896.0
+offset_right = 867.0
+offset_bottom = 1046.0
+
+[node name="政治家15" parent="." unique_id=70201625 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 888.0
+offset_top = 896.0
+offset_right = 1108.0
+offset_bottom = 1046.0
+
+[node name="政治家16" parent="." unique_id=1011541642 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1131.0
+offset_top = 896.0
+offset_right = 1351.0
+offset_bottom = 1046.0
+
+[node name="政治家17" parent="." unique_id=991450916 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1392.0
+offset_top = 896.0
+offset_right = 1612.0
+offset_bottom = 1046.0
+
+[node name="政治家18" parent="." unique_id=390056201 instance=ExtResource("6_hx4ig")]
+layout_mode = 0
+offset_left = 1664.0
+offset_top = 896.0
+offset_right = 1884.0
+offset_bottom = 1046.0
+
+[node name="送去再教育" type="Button" parent="." unique_id=2146533487]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 456.0
+offset_right = 184.0
+offset_bottom = 516.0
+theme_override_colors/font_color = Color(1, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "送去再教育"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="指定为派系负责人" type="Button" parent="." unique_id=1183049416]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 456.0
+offset_right = 368.0
+offset_bottom = 516.0
+theme_override_colors/font_color = Color(0, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "指定为派系负责人"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="调往南方" type="Button" parent="." unique_id=1308996369]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 520.0
+offset_right = 184.0
+offset_bottom = 580.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "调往南方"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="调往西方" type="Button" parent="." unique_id=753427922]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 520.0
+offset_right = 368.0
+offset_bottom = 580.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "调往西方"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="调往首都" type="Button" parent="." unique_id=780690054]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 584.0
+offset_right = 184.0
+offset_bottom = 644.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "调往首都"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="调往北方" type="Button" parent="." unique_id=1314118281]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 584.0
+offset_right = 368.0
+offset_bottom = 644.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "调往北方"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="调往外交部" type="Button" parent="." unique_id=2146763857]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 652.0
+offset_right = 184.0
+offset_bottom = 712.0
+theme_override_colors/font_color = Color(0.2901961, 0, 0.60784316, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "调往外交部"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="调往东方" type="Button" parent="." unique_id=203224512]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 652.0
+offset_right = 368.0
+offset_bottom = 712.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "调往东方"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="调往国务院" type="Button" parent="." unique_id=1315559758]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 720.0
+offset_right = 184.0
+offset_bottom = 780.0
+theme_override_colors/font_color = Color(0.2901961, 0, 0.60784316, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "调往国务院"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="调往中央军委" type="Button" parent="." unique_id=1425672401]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 720.0
+offset_right = 368.0
+offset_bottom = 780.0
+theme_override_colors/font_color = Color(0.2901961, 0, 0.60784316, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "调往中央军委"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="支持" type="Button" parent="." unique_id=450419201]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 792.0
+offset_right = 184.0
+offset_bottom = 852.0
+theme_override_colors/font_color = Color(0.2901961, 1, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "支持"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="打压" type="Button" parent="." unique_id=1491677087]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 792.0
+offset_right = 368.0
+offset_bottom = 852.0
+theme_override_colors/font_color = Color(1, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "打压"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="自动支持" type="Button" parent="." unique_id=1441648280]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 864.0
+offset_right = 184.0
+offset_bottom = 924.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "自动支持"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="自动打压" type="Button" parent="." unique_id=383371905]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 864.0
+offset_right = 368.0
+offset_bottom = 924.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "自动打压"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="开始调查" type="Button" parent="." unique_id=594621718]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 936.0
+offset_right = 184.0
+offset_bottom = 996.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 1, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "开始调查"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="监视" type="Button" parent="." unique_id=769402665]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 936.0
+offset_right = 368.0
+offset_bottom = 996.0
+theme_override_colors/font_color = Color(0.6431373, 0.29803923, 0, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "监视"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
+[node name="返回外交界面" type="TextureButton" parent="." unique_id=955857277]
+layout_mode = 0
+offset_left = 1752.0
+offset_top = 40.0
+offset_right = 1863.0
+offset_bottom = 152.0
+texture_normal = ExtResource("8_hx4ig")
+
+[node name="中央职位背景" type="TextureRect" parent="." unique_id=389149627]
+layout_mode = 0
+offset_left = 413.0
+offset_top = 8.0
+offset_right = 655.0
+offset_bottom = 165.0
+texture = ExtResource("10_07vlq")
+
+[node name="国务院总理" type="Label" parent="." unique_id=895509289]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 12.0
+offset_right = 650.0
+offset_bottom = 59.0
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 34
+text = "华国锋"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="中央军委主席" type="Label" parent="." unique_id=316409936]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 63.0
+offset_right = 650.0
+offset_bottom = 110.0
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 34
+text = "毛泽东"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="外交部长" type="Label" parent="." unique_id=277393892]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 114.0
+offset_right = 650.0
+offset_bottom = 161.0
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 34
+text = "乔冠华"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="地方职位背景" type="TextureRect" parent="." unique_id=1679627426]
+layout_mode = 0
+offset_left = 413.0
+offset_top = 168.0
+offset_right = 655.0
+offset_bottom = 427.0
+texture = ExtResource("11_whbwe")
+
+[node name="首都主管" type="Label" parent="." unique_id=1894084682]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 172.0
+offset_right = 650.0
+offset_bottom = 219.0
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 34
+text = "吴德"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="北方主管" type="Label" parent="." unique_id=1222698630]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 223.0
+offset_right = 650.0
+offset_bottom = 270.0
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 34
+text = "陈锡联"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="西方主管" type="Label" parent="." unique_id=286185090]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 274.0
+offset_right = 650.0
+offset_bottom = 321.0
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 34
+text = "陈云"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="南方主管" type="Label" parent="." unique_id=125190554]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 325.0
+offset_right = 650.0
+offset_bottom = 372.0
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 34
+text = "赵紫阳"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="东方主管" type="Label" parent="." unique_id=316556338]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 376.0
+offset_right = 650.0
+offset_bottom = 423.0
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 34
+text = "张春桥"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="右栏数据" type="Control" parent="." unique_id=875656097]
+anchors_preset = 0
+offset_left = 1659.0
+offset_top = 159.0
+offset_right = 1882.0
+offset_bottom = 399.0
+script = ExtResource("12_inopw")
+metadata/_custom_type_script = "uid://dns8y0n8rvrim"
+
+[node name="预算背景" type="TextureRect" parent="右栏数据" unique_id=818708880]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 27.0
+offset_right = 164.0
+offset_bottom = 76.0
+texture = ExtResource("13_rv0rt")
+expand_mode = 1
+
+[node name="预算图标" type="TextureRect" parent="右栏数据" unique_id=1125690239]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 33.0
+offset_right = 88.0
+offset_bottom = 76.0
+texture = ExtResource("14_2mqy5")
+
+[node name="预算" type="Label" parent="右栏数据" unique_id=412334947]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 32.0
+offset_right = 157.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 37
+text = "111.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="特工网络背景" type="TextureRect" parent="右栏数据" unique_id=203370717]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 91.0
+offset_right = 164.0
+offset_bottom = 140.0
+texture = ExtResource("13_rv0rt")
+expand_mode = 1
+
+[node name="特工网络图标" type="TextureRect" parent="右栏数据" unique_id=1410690253]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 95.0
+offset_right = 88.0
+offset_bottom = 138.0
+texture = ExtResource("15_rv0rt")
+
+[node name="特工网络" type="Label" parent="右栏数据" unique_id=1861145369]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 95.0
+offset_right = 158.0
+offset_bottom = 138.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 37
+text = "111.0"
+horizontal_alignment = 1
+vertical_alignment = 1

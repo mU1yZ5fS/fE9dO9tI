@@ -234,81 +234,24 @@ const COUNTRY_NAMES := {
 
 
 # ============================================================================
-# 政治家数据 -- 18 人，每人 7 字段
-# [polit_id, faction, trait_personality, experience, age, loyalty, power]
-# ============================================================================
-const POLITICIAN_ROWS := [
-	[1,  1,  0, 4, 19, 83, 100],  # Jiang Qing
-	[0,  0,  0, 4,  8, 61,  85],  # Jiang Zedong (Mao's record)
-	[3,  3,  0, 4, 16, 41,  80],  # Jiang Guofeng (Hua Guofeng)
-	[4,  4,  0, 4, 16, 59,  70],  # Wang Hongwen
-	[5,  5,  0, 4, 12, 45,  65],  # Zhang Chunqiao
-	[6,  6,  0, 4,  9, 60,  70],  # Yao Wenyuan
-	[7,  7,  1, 4, 11, 67,  65],  # Wang Dongxing
-	[8,  8,  2, 7, 16, 79,  60],  # Li Xiannian
-	[9,  9,  0, 5, 11, 53,  60],  # Ye Jianying
-	[10, 10, 0, 5, 16, 61,  55],  # Ji Dengkui
-	[11, 11, 0, 4,  8, 63,  55],  # Cheng Xilian
-	[12, 12, 1, 4, 10, 67,  50],  # Wu De
-	[13, 13, 2, 5, 11, 72,  40],  # Huang Hua (Deng Xiaoping record)
-	[14, 14, 3, 6, 15, 57,  45],  # Deng Xiaoping (Zhao Ziyang record)
-	[15, 15, 3, 6, 13, 61,  40],  # Zhao Yaobang (Hu Yaobang record)
-	[16, 16, 2, 5, 11, 71,  35],  # Hu Yun (Chen Yun record)
-	[17, 17, 1, 4, 14, 68,  40],  # Chen Zhen (Wang Zhen record)
-	[18, 18, 2, 6, 17, 74,  25],  # Wang Qiao (Qiao Guanhua record)
-]
-
-# 中文全名（按政治家数组顺序，与 POLITICIAN_ROWS 一一对应）
-const POLITICIAN_NAMES_ZH := [
-	"江青", "毛泽东", "华国锋", "王洪文", "张春桥", "姚文元",
-	"汪东兴", "李先念", "叶剑英", "纪登奎", "陈锡联", "吴德",
-	"黄华", "邓小平", "赵紫阳", "胡耀邦", "陈云", "王震",
-]
-
-# 兼容旧逻辑的拼音拆分（按政治家顺序）
-const GIVEN_NAMES := [
-	"江", "毛", "华", "王", "张", "姚", "汪",
-	"李", "叶", "纪", "陈", "吴", "黄", "邓",
-	"赵", "胡", "陈", "王",
-]
-const SURNAMES := [
-	"青", "泽东", "国锋", "洪文", "春桥", "文元",
-	"东兴", "先念", "剑英", "登奎", "锡联", "德",
-	"华", "小平", "紫阳", "耀邦", "云", "震",
-]
-
-# 特质中文名（对应 traits[0]/traits[1]/traits[2] 的取值表）
-# traits[0] 派系倾向 0极左 1保守 2温和 3改革 4自由
-# traits[1] 性格 5硬汉 6实用主义 7宽容 8科学家
-# traits[2] 特殊 9病弱 10苛刻 11谋士 12傲慢 13和平 14经管学家 15中华派 16西渐派 17偶像
+# 特质中文名 — 对齐原版 Traits1_en + 中文版 level13 用词
+# 重要：traits[0] 用 Traits 表，不是 Party 派系表！
+#   Traits[0..3]: 0极左 1温和 2改革 3自由
+#   Party[0..4]:  0极左 1保守 2温和 3改革 4自由  （多一个「保守」，且 1 起错位）
+#   traits[0]→Party 槽：0→0，>0→traits[0]+1（见 Button_Pol_Script 指定派系领袖）
+# traits[1]: 4硬汉 5实用主义 6宽容 7科学家
+# traits[2]: 8苛刻 9和平 10小暴君 11经管学家 12傲慢 13偶像 14中华派 15西渐派 16谋士 17胆怯 18贪腐 19病弱
 const TRAIT_LABELS_ZH := {
-	0: "极左派", 1: "保守派", 2: "温和派", 3: "改革派", 4: "自由派",
-	5: "硬汉", 6: "实用主义", 7: "宽容", 8: "科学家",
-	9: "病弱", 10: "苛刻", 11: "谋士", 12: "傲慢", 13: "和平",
-	14: "经管学家", 15: "中华派", 16: "西渐派", 17: "偶像",
+	0: "极左派", 1: "温和派", 2: "改革派", 3: "自由派",
+	4: "硬汉", 5: "实用主义", 6: "宽容", 7: "科学家",
+	8: "苛刻", 9: "和平", 10: "小暴君", 11: "经管学家", 12: "傲慢", 13: "偶像",
+	14: "中华派", 15: "西渐派", 16: "谋士", 17: "胆怯", 18: "贪腐", 19: "病弱",
 }
 
-# 按政治家顺序的 (personality, alignment, special) — 对齐截图/原版初始展示
-const POLITICIAN_TRAITS := [
-	[0, 5, 10],  # 江青 极左 硬汉 苛刻
-	[0, 5, 9],   # 毛泽东 极左 硬汉 病弱
-	[1, 5, 14],  # 华国锋 保守 硬汉 经管（近似）
-	[0, 5, 11],  # 王洪文 极左 硬汉 谋士
-	[0, 5, 11],  # 张春桥 极左 硬汉 谋士
-	[0, 5, 12],  # 姚文元 极左 硬汉 傲慢
-	[1, 5, 13],  # 汪东兴 保守 硬汉 和平
-	[2, 5, 14],  # 李先念 温和 硬汉 经管学家
-	[3, 8, 11],  # 叶剑英 改革 科学家 谋士
-	[1, 6, 14],  # 纪登奎 保守 实用 经管
-	[1, 6, 11],  # 陈锡联 保守 实用 谋士
-	[1, 5, 10],  # 吴德 保守 硬汉 苛刻
-	[2, 6, 15],  # 黄华 温和 实用 中华派
-	[3, 6, 14],  # 邓小平 改革 实用 经管
-	[4, 7, 16],  # 赵紫阳 自由 宽容 西渐
-	[4, 7, 17],  # 胡耀邦 自由 宽容 偶像
-	[2, 6, 14],  # 陈云 温和 实用 经管
-	[1, 5, 15],  # 王震 保守 硬汉 中华派
-]
+## Party 派系显示名（faction_leader / 派系界面用，与 traits[0] 不同表）
+const PARTY_LABELS_ZH := {
+	0: "极左派", 1: "保守派", 2: "温和派", 3: "改革派", 4: "自由派",
+}
 
 
 # ============================================================================
@@ -318,20 +261,27 @@ const FACTION_ROWS := [
 	[1, 0, 600, 600],   # 0 = 极左派
 	[1, 0, 900, 900],   # 1 = 保守派
 	[1, 0, 300, 300],   # 2 = 温和派
-	[1, 0, 160, 200],   # 3 = 改良派
+	[1, 0, 160, 200],   # 3 = 改革派
 	[0, 0,  40,   0],   # 4 = 自由派
 ]
 
-# 派系领袖对应的 politician 索引
+# 派系领袖 politician 索引（Party 槽 0..4，非 traits[0] 直映）
+# 0极左=江青(1) 1保守=吴德(10) 2温和=陈云(15) 3改革=邓小平(12) 4自由=赵紫阳(13)
 const FACTION_LEADERS := [1, 10, 15, 12, 13]
 
 
 # ============================================================================
-# 领导人初始设定
+# 领导人初始设定（原版 Politics_leader1: 2;2;1;5;16;55 = 华国锋）
+# 领袖是独立实体（UI 选中码 150），不在 politics[18] 数组里
+# politics[0]=毛泽东（power 后改 99999），politics[1]=江青
+# leader.traits[0]=1 → Traits 表「温和派」（不是 Party「保守派」）
 # ============================================================================
-const LEADER_INDEX := 2      # politicians 数组索引
-const LEADER_AGE := 55        # 华国锋 1976 年实际年龄
-const LEADER_LOYALTY := 160  # 内部尺度（显示约 16.0）
+const LEADER_NAME := "华国锋"
+const LEADER_AGE := 55
+const LEADER_TRAITS := [1, 5, 16]  # Traits: 温和 / 实用主义 / 谋士
+const LEADER_PORTRAIT_PATH := "res://资产/政治家/华国锋.png"
+## 职位槽中表示「实权领袖本人」（原版 politics_dolshnost 值 150）
+const LEADER_POSITION_SENTINEL := -2
 
 
 # ============================================================================
@@ -367,6 +317,8 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	_build_politicians(ws)
 	_build_factions(ws)
 	_set_leader(ws)
+	_init_positions(ws)
+	_init_politician_relations(ws)
 	_init_modifiers(ws)
 	_init_science(ws)
 	_init_empires(ws)
@@ -516,41 +468,14 @@ static func _fill_data_array(ws: WorldState) -> void:
 
 
 # ============================================================================
-# 政治家 -- 从嵌入数据创建 PoliticianData 对象
+# 政治家 -- 从 .tres 人物池加载 PoliticianData 对象
 # ============================================================================
 
 static func _build_politicians(ws: WorldState) -> void:
-	for i in POLITICIAN_ROWS.size():
-		var row: Array = POLITICIAN_ROWS[i]
-		var pd := PoliticianData.new()
-		pd.name_first = int(row[0])
-		pd.name_last = i
-		pd.faction = row[1]
-		pd.experience = row[3]
-		pd.age = row[4]
-		# 原版 loyality 为内部大尺度（阈值 50/150/300）；表内为显示值 0~100 → ×10
-		pd.loyalty = row[5] * 10
-		pd.power = row[6]
-		if i < POLITICIAN_TRAITS.size():
-			var trait_row: Array = POLITICIAN_TRAITS[i]
-			pd.trait_personality = int(trait_row[0])
-			pd.trait_alignment = int(trait_row[1])
-			pd.trait_special = int(trait_row[2])
-		else:
-			pd.trait_personality = int(row[2])
-			pd.trait_alignment = 5
-			pd.trait_special = 11
-		pd.face_type = 0 if i % 2 == 0 else 1
-		pd.jacket = i % 4
-		if i < POLITICIAN_NAMES_ZH.size():
-			pd.name_display = POLITICIAN_NAMES_ZH[i]
-		else:
-			var fn: String = GIVEN_NAMES[i] if i < GIVEN_NAMES.size() else "?"
-			var ln: String = SURNAMES[i] if i < SURNAMES.size() else "?"
-			pd.name_display = fn + ln
-		ws.politicians.append(pd)
-
-	print("WorldFactory: 加载了 %d 位政治家" % ws.politicians.size())
+	var initial := PoliticianPool.load_initial()
+	for pd in initial:
+		ws.politicians.append(pd.make_instance())
+	print("WorldFactory: 从人物池加载了 %d 位政治家" % ws.politicians.size())
 
 
 # ============================================================================
@@ -577,16 +502,394 @@ static func _build_factions(ws: WorldState) -> void:
 
 
 # ============================================================================
-# 领导人 -- 从 politicians 数组指定索引取出并覆盖属性
+# 领导人 -- 独立对象（原版 leader ≠ politics[i]），肖像用华国锋
 # ============================================================================
 
 static func _set_leader(ws: WorldState) -> void:
-	if LEADER_INDEX >= 0 and LEADER_INDEX < ws.politicians.size():
-		ws.leader = ws.politicians[LEADER_INDEX]
-	else:
-		ws.leader = PoliticianData.new()
-	ws.leader.age = LEADER_AGE
-	ws.leader.loyalty = LEADER_LOYALTY
+	var leader := PoliticianData.new()
+	leader.name_display = LEADER_NAME
+	leader.age = LEADER_AGE
+	leader.trait_personality = LEADER_TRAITS[0]
+	leader.trait_alignment = LEADER_TRAITS[1]
+	leader.trait_special = LEADER_TRAITS[2]
+	# 独立新游戏：华国锋显示为保守派（Party=1）；traits[0] 仍保留原版 1 供逻辑
+	leader.faction = 1
+	leader.power = 9999
+	leader.loyalty = 1000
+	if ResourceLoader.exists(LEADER_PORTRAIT_PATH):
+		leader.portrait = load(LEADER_PORTRAIT_PATH) as Texture2D
+	ws.leader_politician_index = -1  # 领袖不在 politicians 数组内
+	ws.leader = leader
+
+
+# ============================================================================
+# 职位初始化 -- 原版 GameStartScript politics_dolshnost
+# 0=总理(150=领袖本人) 1=军委 2=外交 3=首都 4=北方 5=西方 6=南方 7=东方
+# 我们用 -2 表示「实权领袖本人」担任该职
+# ============================================================================
+
+const INITIAL_POSITIONS := [-2, 0, 17, 10, 9, 15, 13, 3]
+
+static func _init_positions(ws: WorldState) -> void:
+	ws.politics_positions.resize(8)
+	for i in INITIAL_POSITIONS.size():
+		ws.politics_positions[i] = INITIAL_POSITIONS[i]
+	print("WorldFactory: 职位初始化完成")
+
+
+# ============================================================================
+# 政客间忠诚 / 对领袖忠诚 — 移植自 GameState.CalcRel / CalcRelLeader
+# 开局后按特质与职位生成，再应用原版硬编码覆盖
+# ============================================================================
+
+static func _init_politician_relations(ws: WorldState) -> void:
+	var n := ws.politicians.size()
+	for i in n:
+		_calc_rel(ws, i)
+		_calc_rel_leader(ws, i)
+	# 原版开局硬编码（politics[0]=毛泽东）：
+	# 1..4 对毛 10000；四人帮内部互信 10000；另有若干忠诚修正
+	if n > 4:
+		for a in [1, 2, 3, 4]:
+			ws.politicians[a].loyalty_matrix[0] = 10000
+		for a in [1, 2, 3, 4]:
+			for b in [1, 2, 3, 4]:
+				if a != b:
+					ws.politicians[a].loyalty_matrix[b] = 10000
+		ws.politicians[1].loyalty_matrix[12] -= 1000
+		ws.politicians[0].loyalty_matrix[12] += 500
+		ws.politicians[0].loyalty += 500
+		ws.politicians[5].loyalty += 400
+		ws.politicians[8].loyalty += 600
+		ws.politicians[9].loyalty += 800
+		ws.politicians[10].loyalty += 100
+	print("WorldFactory: 政客忠诚矩阵初始化完成")
+
+
+static func _is_holder(ws: WorldState, position_id: int, pol_index: int) -> bool:
+	if position_id < 0 or position_id >= ws.politics_positions.size():
+		return false
+	return ws.politics_positions[position_id] == pol_index
+
+
+static func _calc_rel(ws: WorldState, num: int) -> void:
+	## 原版 CalcRel：写入 politics[i].loyality_to_other[num] = i 对 num 的忠诚
+	var pols := ws.politicians
+	if num < 0 or num >= pols.size():
+		return
+	var target: PoliticianData = pols[num]
+	for i in pols.size():
+		if i == num:
+			pols[i].loyalty_matrix[i] = 1000
+			continue
+		var other: PoliticianData = pols[i]
+		var score := 0
+		if other.trait_personality == target.trait_personality:
+			score += 500
+		match target.trait_personality:
+			0:
+				match other.trait_personality:
+					1: score += 50
+					2: score -= 150
+					3: score -= 300
+			1:
+				match other.trait_personality:
+					0: score += 50
+					2: score -= 50
+					3: score -= 150
+			2:
+				match other.trait_personality:
+					0: score -= 150
+					1: score += 50
+					3: score += 100
+			3:
+				match other.trait_personality:
+					0: score -= 300
+					1: score -= 150
+					2: score += 100
+		match target.trait_alignment:
+			4:
+				if other.trait_alignment == 6:
+					score -= 250
+				elif other.trait_alignment == 4:
+					score += 100
+				else:
+					score -= 100
+			6:
+				if other.trait_alignment == 4:
+					score -= 300
+				elif other.trait_alignment == 6:
+					score += 100
+				else:
+					score += 100
+			5:
+				if other.trait_alignment != 5:
+					score += 100
+			7:
+				if other.trait_alignment == 6:
+					score += 50
+		match target.trait_special:
+			8:
+				match other.trait_special:
+					9: score -= 250
+					8: score += 100
+					10: score += 50
+					14: score += 50
+			9:
+				if other.trait_special == 16:
+					score -= 250
+				elif other.trait_special != 9:
+					score += 50
+			10:
+				if other.trait_special == 12:
+					score += 50
+				elif other.trait_special == 10:
+					score += 300
+				else:
+					score -= 100
+			11:
+				if other.trait_special == 10 or other.trait_special == 12:
+					score -= 100
+				else:
+					score += 100
+			12:
+				score -= 50
+			13:
+				score += 100
+			14:
+				if other.trait_special == 15:
+					score -= 300
+				elif other.trait_special == 14:
+					score += 150
+				else:
+					score += 50
+			15:
+				if other.trait_special == 15:
+					score += 200
+				elif other.trait_special == 14:
+					score -= 300
+			16:
+				if other.trait_special == 9:
+					score -= 250
+				elif other.trait_special == 14:
+					score += 50
+			17:
+				if other.trait_special == 8:
+					score -= 250
+				elif other.trait_special == 17:
+					score += 300
+				else:
+					score -= 50
+			18:
+				if other.trait_special == 11:
+					score -= 300
+				else:
+					score += 10
+		# 职位野心冲突
+		if _is_holder(ws, 0, num):
+			if other.wanted_position == 0:
+				score -= 400
+		elif _is_holder(ws, 1, num) or _is_holder(ws, 2, num):
+			if not _is_holder(ws, 0, i) and (other.wanted_position == 1 or other.wanted_position == 2):
+				score -= 400
+		elif (
+			_is_holder(ws, 3, num) or _is_holder(ws, 4, num) or _is_holder(ws, 5, num)
+			or _is_holder(ws, 6, num) or _is_holder(ws, 7, num)
+		):
+			if (
+				not _is_holder(ws, 0, i) and not _is_holder(ws, 1, i) and not _is_holder(ws, 2, i)
+				and other.wanted_position >= 3
+			):
+				score -= 400
+		if other.loyalty_matrix.size() <= num:
+			other.loyalty_matrix.resize(18)
+		other.loyalty_matrix[num] = score
+
+
+static func _calc_rel_leader(ws: WorldState, num: int) -> void:
+	## 原版 CalcRelLeader：politics[num].loyality 对领袖的忠诚
+	if num < 0 or num >= ws.politicians.size() or ws.leader == null:
+		return
+	var pol: PoliticianData = ws.politicians[num]
+	var leader: PoliticianData = ws.leader
+	var d := ws.数值表
+	var score := 100
+	# data[52] 经济显示档 / data[54] 政治显示档 / data[14] 意识形态 — 开局常量
+	match d[WorldState.I_ECON_DISPLAY] if d.size() > WorldState.I_ECON_DISPLAY else 0:
+		34:
+			match pol.trait_personality:
+				0: score += 250
+				1: score += 150
+				2: score -= 100
+				3: score -= 150
+		35:
+			match pol.trait_personality:
+				0: score += 100
+				1: score += 250
+				2: score += 150
+				3: score -= 100
+		36:
+			match pol.trait_personality:
+				0: score -= 100
+				1: score += 150
+				2: score += 250
+				3: score += 50
+		37:
+			match pol.trait_personality:
+				0: score -= 150
+				1: score -= 100
+				2: score += 150
+				3: score += 250
+	match d[WorldState.I_POLITICAL_DISPLAY] if d.size() > WorldState.I_POLITICAL_DISPLAY else 0:
+		38:
+			match pol.trait_personality:
+				0: score += 150
+				1: score -= 150
+				2: score -= 200
+				3: score += 250
+		39:
+			match pol.trait_personality:
+				0: score += 100
+				1: score -= 50
+				2: score -= 100
+				3: score += 50
+		40:
+			match pol.trait_personality:
+				0: score -= 100
+				1: score += 100
+				2: score += 150
+		41:
+			match pol.trait_personality:
+				0: score -= 150
+				1: score -= 50
+				2: score += 150
+				3: score += 100
+	match d[WorldState.I_IDEOLOGY] if d.size() > WorldState.I_IDEOLOGY else 0:
+		0:
+			if pol.trait_alignment == 4:
+				score += 250
+			elif pol.trait_alignment == 6:
+				score -= 150
+		1:
+			if pol.trait_alignment == 4:
+				score += 250
+			elif pol.trait_alignment == 5:
+				score -= 150
+			elif pol.trait_alignment == 7:
+				score -= 150
+		2:
+			if pol.trait_alignment == 4:
+				score += 100
+			elif pol.trait_alignment == 5:
+				score += 150
+			elif pol.trait_alignment == 7:
+				score -= 100
+		3:
+			if pol.trait_alignment == 4:
+				score += 100
+			elif pol.trait_alignment == 5:
+				score += 250
+			elif pol.trait_alignment == 7:
+				score -= 100
+		4:
+			if pol.trait_alignment == 4:
+				score -= 150
+			elif pol.trait_alignment == 6:
+				score += 200
+			elif pol.trait_alignment == 5:
+				score += 50
+			elif pol.trait_alignment == 7:
+				score += 100
+		5:
+			if pol.trait_alignment == 4:
+				score -= 250
+			elif pol.trait_alignment == 6:
+				score += 300
+			elif pol.trait_alignment == 5:
+				score -= 150
+			elif pol.trait_alignment == 7:
+				score += 250
+	if leader.trait_personality == pol.trait_personality:
+		score += 300
+	match leader.trait_alignment:
+		4:
+			if pol.trait_alignment == 6:
+				score -= 150
+			elif pol.trait_alignment == 4:
+				score += 100
+			else:
+				score -= 100
+		6:
+			if pol.trait_alignment == 4:
+				score -= 200
+			elif pol.trait_alignment == 6:
+				score += 100
+			else:
+				score += 100
+		5:
+			if pol.trait_alignment != 5:
+				score += 100
+		7:
+			if pol.trait_alignment == 6:
+				score += 50
+	match leader.trait_special:
+		8:
+			match pol.trait_special:
+				9: score -= 150
+				8: score += 100
+				10: score += 50
+				14: score += 50
+		9:
+			if pol.trait_special == 16:
+				score -= 150
+			elif pol.trait_special != 9:
+				score += 50
+		10:
+			if pol.trait_special == 12:
+				score += 50
+			elif pol.trait_special == 10:
+				score += 300
+			else:
+				score -= 100
+		11:
+			if pol.trait_special == 10 or pol.trait_special == 12:
+				score -= 100
+			else:
+				score += 100
+		12:
+			score -= 50
+		13:
+			score += 100
+		14:
+			if pol.trait_special == 15:
+				score -= 200
+			elif pol.trait_special == 14:
+				score += 150
+			else:
+				score += 50
+		15:
+			if pol.trait_special == 15:
+				score += 200
+			elif pol.trait_special == 14:
+				score -= 200
+		16:
+			if pol.trait_special == 9:
+				score -= 150
+			elif pol.trait_special == 14:
+				score += 50
+		17:
+			if pol.trait_special == 8:
+				score -= 150
+			elif pol.trait_special == 17:
+				score += 300
+			else:
+				score -= 50
+		18:
+			if pol.trait_special == 11:
+				score -= 200
+			else:
+				score += 10
+	pol.loyalty = score
 
 
 # ============================================================================

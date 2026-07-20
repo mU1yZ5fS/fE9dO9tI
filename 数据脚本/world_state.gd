@@ -112,6 +112,8 @@ const 数值索引 := {
 @export var countries: Array[CountryData] = []
 @export var politicians: Array[PoliticianData] = []
 @export var leader: PoliticianData
+## 实权领袖肖像对应的 politicians 槽（仅作回退/对照）
+@export var leader_politician_index: int = -1
 @export var factions: Array[FactionData] = []
 @export var empires: Array[EmpireData] = []
 
@@ -135,6 +137,10 @@ const 数值索引 := {
 # ── 事件完成追踪（event_id → option_index：键存在=已完成，值=所选选项编号） ──
 @export var completed_event_ids: Dictionary = {}
 
+# ── 政治家职位（dolshnost[8]，每槽记录持有人在 politicians 中的索引，-1=空缺） ──
+# 0=总理 1=军委主席 2=外交部长 3=首都 4=北方 5=西方 6=南方 7=东方
+@export var politics_positions: Array[int] = []
+
 # ── 数值表：唯一权威数据源 ──
 @export var 数值表: Array[int] = []
 
@@ -157,6 +163,8 @@ func _init() -> void:
 	decisions = DecisionState.new()
 	玩家经济 = EconomyData.new()
 	数值表.resize(200)
+	politics_positions.resize(8)
+	politics_positions.fill(-1)
 
 
 # ── 国家查询 ──
