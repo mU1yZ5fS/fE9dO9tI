@@ -267,11 +267,12 @@ func _refresh_left_panel() -> void:
 		lines.append("职务: 无")
 
 	if pol.is_under_investigation:
-		lines.append("正在接受纪律审查（进度 %d/7）" % pol.investigator_index)
+		lines.append("正在接受纪律审查（进度 %d/7）" % clampi(pol.investigator_index, 0, 7))
 	else:
 		lines.append("尚未被纪律审查")
 	if pol.is_under_surveillance:
-		lines.append("正在被监察调查（剩余 %d 月）" % pol.days_surveillance)
+		var remain_m: int = maxi(0, 7 - pol.days_surveillance)
+		lines.append("正在被监察调查（剩余 %d 月）" % remain_m)
 	else:
 		lines.append("尚未被监察调查")
 
@@ -558,7 +559,7 @@ func _on_assassinate() -> void:
 		_apply_faction_loyalty_penalty(_selected_pol_index, -300)
 	else:
 		_apply_faction_loyalty_penalty(_selected_pol_index, -5)
-	_kill_politician(_selected_pol_index)
+	GameManager.kill_politician(_selected_pol_index)
 	if d.size() > 110:
 		d[110] += 1
 	_selected_pol_index = -1
@@ -588,7 +589,8 @@ func _on_surveil() -> void:
 	var d := _world.数值表
 	d[W.I_AGENTS] -= COST_SURVEIL_AGENTS
 	pol.is_under_surveillance = true
-	pol.days_surveillance = 6
+	# 原版从 0 起每月 +1，满 7 解除（TimeScript ~2184）
+	pol.days_surveillance = 0
 	_after_operation()
 
 
@@ -678,23 +680,6 @@ func _apply_faction_loyalty_penalty(pol_index: int, penalty: int) -> void:
 		var other: PoliticianData = _world.politicians[i]
 		if other != null and other.party_index() == faction_id and i != pol_index:
 			other.loyalty += penalty
-
-
-func _kill_politician(pol_index: int) -> void:
-	for i in _world.politics_positions.size():
-		if _world.politics_positions[i] == pol_index:
-			_world.politics_positions[i] = -1
-	for f in _world.factions:
-		if f.leader_index == pol_index:
-			f.leader_index = -1
-	var pol: PoliticianData = _world.politicians[pol_index]
-	pol.power = 0
-	pol.loyalty = 0
-	pol.name_display = "空位"
-	pol.is_under_surveillance = false
-	pol.is_under_investigation = false
-	pol.is_conspiracy = false
-	pol.portrait = null
 
 
 func _after_operation() -> void:

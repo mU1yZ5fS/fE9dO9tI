@@ -490,6 +490,8 @@ func _on_month_changed() -> void:
 	_political_system_recalc(d, w)
 	_monthly_population(d, w)
 	_monthly_oligarch(d, w)
+	# 政客：调查/监视、自动支持打压、职位 power、空缺派系领袖（TimeScript ~937, ~2172）
+	_monthly_politics(d, w)
 	# 半年：派系漂移（原版派系用 factionsPoints 体系，此处保留简化版）
 	if w.date.month % 6 == 0:
 		_biannual_faction_drift(w)
@@ -506,6 +508,175 @@ func _on_year_changed() -> void:
 		f.support = f.support / 10
 	# 满意现秩序者衰减（原版 835）
 	d[W.I_SATISFIED] = d[W.I_SATISFIED] / 10
+
+
+# ============================================================================
+# 政客生命周期 — POL-01/02/03/04
+# ============================================================================
+
+func _is_vacant_politician(p: PoliticianData) -> bool:
+	return p == null or p.name_display == "空位" or (p.power <= 0 and p.portrait == null)
+
+
+## 月结：调查/监视计数、自动支持·打压、在职 power 加成、空缺派系领袖补位
+func _monthly_politics(d: Array[int], w: WorldState) -> void:
+	@warning_ignore("integer_division")
+	for i in w.politicians.size():
+		var p: PoliticianData = w.politicians[i]
+		if _is_vacant_politician(p):
+			continue
+
+		# POL-01 调查：满 7 结案（原版只清标志；副作用在开调查时已扣）
+		if p.is_under_investigation:
+			if p.investigator_index < 0:
+				p.investigator_index = 0
+			p.investigator_index += 1
+			if p.investigator_index >= 7:
+				p.investigator_index = 0
+				p.is_under_investigation = false
+
+		# POL-01 监视：满 7 解除
+		if p.is_under_surveillance:
+			p.days_surveillance += 1
+			if p.days_surveillance >= 7:
+				p.days_surveillance = 0
+				p.is_under_surveillance = false
+
+		# POL-02 自动支持（TimeScript ~2194）
+		if p.auto_support == 10:
+			if d[W.I_BUDGET] < 1 or d[W.I_AGENTS] < 5:
+				p.auto_support = 0
+			else:
+				d[W.I_BUDGET] -= 1
+				d[W.I_PARTY_SUPPORT] -= 20
+				d[W.I_AGENTS] -= 5
+				p.loyalty += 50
+				p.power += (1976 - w.date.year) * 5
+				p.power += absi(p.power / 10)
+
+		# POL-02 自动打压（TimeScript ~2207）
+		if p.auto_hound == 10:
+			if d[W.I_BUDGET] < 1 or d[W.I_AGENTS] < 20:
+				p.auto_hound = 0
+			else:
+				d[W.I_BUDGET] -= 1
+				d[W.I_PARTY_SUPPORT] -= 20
+				d[W.I_AGENTS] -= 20
+				p.loyalty -= 250
+				p.power -= (1976 - w.date.year) * 5
+				if p.power >= 10:
+					p.power -= absi(p.power / 10)
+
+		_apply_monthly_position_power(w, i, p)
+
+	fill_vacant_faction_leaders()
+	_notify_stats()
+
+
+func _apply_monthly_position_power(w: WorldState, pol_index: int, p: PoliticianData) -> void:
+	# TimeScript 2223–2237：地方 +10，首都 +15，总理/军委/外交 +20
+	@warning_ignore("integer_division")
+	var bonus := 0
+	for pos_id in w.politics_positions.size():
+		if w.politics_positions[pos_id] != pol_index:
+			continue
+		if pos_id <= 2:
+			bonus = maxi(bonus, 20)
+		elif pos_id == 3:
+			bonus = maxi(bonus, 15)
+		else:
+			bonus = maxi(bonus, 10)
+	if bonus > 0:
+		p.power += bonus
+	elif p.trait_special == 18:
+		p.power += 4
+	elif p.trait_special == 19:
+		p.power -= 20
+	elif p.trait_special == 16:
+		p.power += 1 + w.数值表[W.I_CORRUPTION] / 50
+
+
+## 死亡/再教育：清职与派系领袖，同槽补员（KillPerson → BalancePolitic）
+func kill_politician(pol_index: int) -> void:
+	if world == null or pol_index < 0 or pol_index >= world.politicians.size():
+		return
+	for i in world.politics_positions.size():
+		if world.politics_positions[i] == pol_index:
+			world.politics_positions[i] = -1
+	for f in world.factions:
+		if f.leader_index == pol_index:
+			f.leader_index = -1
+
+	var year: int = world.date.year if world.date else 1976
+	var existing_parties: Array[int] = []
+	for i in world.politicians.size():
+		if i == pol_index:
+			continue
+		var other: PoliticianData = world.politicians[i]
+		if not _is_vacant_politician(other):
+			existing_parties.append(other.party_index())
+
+	var replacement := PoliticianPool.pick_replacement(
+		world.politician_reserve, year, existing_parties
+	)
+	if replacement != null:
+		# 保持 matrix 长度与槽位数一致
+		if replacement.loyalty_matrix.size() < world.politicians.size():
+			replacement.loyalty_matrix.resize(world.politicians.size())
+		world.politicians[pol_index] = replacement
+		WorldFactory._calc_rel(world, pol_index)
+		WorldFactory._calc_rel_leader(world, pol_index)
+	else:
+		var empty := world.politicians[pol_index]
+		empty.power = 0
+		empty.loyalty = 0
+		empty.name_display = "空位"
+		empty.is_under_surveillance = false
+		empty.is_under_investigation = false
+		empty.is_conspiracy = false
+		empty.auto_support = 0
+		empty.auto_hound = 0
+		empty.portrait = null
+		empty.days_surveillance = 0
+		empty.investigator_index = -1
+
+	fill_vacant_faction_leaders()
+	_notify_stats()
+
+
+## 空缺派系领袖：按 Party 槽从在世政客中选 power 最高者（POL-04）
+func fill_vacant_faction_leaders() -> void:
+	if world == null:
+		return
+	for fi in world.factions.size():
+		var f: FactionData = world.factions[fi]
+		if f.leader_index >= 0 and f.leader_index < world.politicians.size():
+			var cur: PoliticianData = world.politicians[f.leader_index]
+			if not _is_vacant_politician(cur):
+				continue
+			f.leader_index = -1
+		if f.leader_index >= 0:
+			continue
+		var best_idx := -1
+		var best_power := -1
+		var fallback_idx := -1
+		var fallback_power := -1
+		for i in world.politicians.size():
+			var p: PoliticianData = world.politicians[i]
+			if _is_vacant_politician(p):
+				continue
+			var party: int = p.party_index()
+			if party == fi and p.power > best_power:
+				best_power = p.power
+				best_idx = i
+			# 保守派空缺：允许 traits 映射到 0/1 的人作次选（简化 TimeScript 957）
+			if fi == 1 and (party == 0 or party == 1) and p.power > fallback_power:
+				fallback_power = p.power
+				fallback_idx = i
+		if best_idx >= 0:
+			f.leader_index = best_idx
+		elif fallback_idx >= 0:
+			f.leader_index = fallback_idx
 
 
 # ── 每日：赤字恢复（原版 546-563，日块 Repaint(true)）──

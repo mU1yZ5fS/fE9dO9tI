@@ -475,7 +475,13 @@ static func _build_politicians(ws: WorldState) -> void:
 	var initial := PoliticianPool.load_initial()
 	for pd in initial:
 		ws.politicians.append(pd.make_instance())
-	print("WorldFactory: 从人物池加载了 %d 位政治家" % ws.politicians.size())
+	ws.politician_reserve.clear()
+	for pd in PoliticianPool.load_reserve():
+		ws.politician_reserve.append(pd)
+	print(
+		"WorldFactory: 从人物池加载了 %d 位政治家，预备 %d"
+		% [ws.politicians.size(), ws.politician_reserve.size()]
+	)
 
 
 # ============================================================================

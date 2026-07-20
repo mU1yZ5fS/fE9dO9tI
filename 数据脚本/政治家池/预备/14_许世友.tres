@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="PoliticianData" format=3]
+
+[ext_resource type="Texture2D" path="res://资产/政治家/18_18.png" id="1_portrait"]
+[ext_resource type="Script" uid="uid://b2huwoa1jp02c" path="res://数据脚本/politician_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+name_display = "许世友"
+portrait = ExtResource("1_portrait")
+is_historical = true
+pool_priority = 73
+entry_year = 1976
+exit_year = 9999
+trait_personality = 1
+trait_alignment = 4
+trait_special = 8
+loyalty = 340
+power = 150
+age = 70
+faction = 1
+wanted_position = 3

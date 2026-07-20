@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="PoliticianData" format=3]
+
+[ext_resource type="Texture2D" path="res://资产/政治家/3_44.png" id="1_portrait"]
+[ext_resource type="Script" uid="uid://b2huwoa1jp02c" path="res://数据脚本/politician_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+name_display = "方毅"
+portrait = ExtResource("1_portrait")
+is_historical = true
+pool_priority = 66
+entry_year = 1977
+exit_year = 9999
+trait_personality = 2
+trait_alignment = 7
+trait_special = 11
+loyalty = 370
+power = 95
+age = 60
+faction = 3
+wanted_position = 3

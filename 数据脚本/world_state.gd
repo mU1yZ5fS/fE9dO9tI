@@ -114,6 +114,8 @@ const 数值索引 := {
 @export var leader: PoliticianData
 ## 实权领袖肖像对应的 politicians 槽（仅作回退/对照）
 @export var leader_politician_index: int = -1
+## 运行时预备池（开局从 政治家池/预备 装入，Kill 补员时消耗）
+@export var politician_reserve: Array[PoliticianData] = []
 @export var factions: Array[FactionData] = []
 @export var empires: Array[EmpireData] = []
 
