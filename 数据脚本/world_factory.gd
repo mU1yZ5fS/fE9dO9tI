@@ -496,8 +496,8 @@ static func _build_factions(ws: WorldState) -> void:
 		fd.is_ally = row[1] != 0
 		fd.ideology = row[2]
 		fd.influence = row[2]    # influence = ideology（原版逻辑）
-		fd.support = row[3]
-		fd.seats = row[3]
+		fd.support = row[3]      # ≡ party_number
+		fd.points = 0
 		ws.factions.append(fd)
 
 	# 派系领袖
@@ -505,6 +505,7 @@ static func _build_factions(ws: WorldState) -> void:
 		ws.factions[i].leader_index = FACTION_LEADERS[i]
 
 	print("WorldFactory: 加载了 %d 个派系" % ws.factions.size())
+
 
 
 # ============================================================================

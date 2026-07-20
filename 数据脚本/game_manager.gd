@@ -448,12 +448,64 @@ func set_faction_ally(faction_idx: int, is_ally: bool) -> void:
 	if world == null or faction_idx >= world.factions.size():
 		return
 	world.factions[faction_idx].is_ally = is_ally
+	_notify_stats()
 
 
 func set_faction_enabled(faction_idx: int, is_enabled: bool) -> void:
 	if world == null or faction_idx >= world.factions.size():
 		return
 	world.factions[faction_idx].is_enabled = is_enabled
+	# 禁止派系：支持下滑（FAC-04 最小连锁）
+	if not is_enabled:
+		var f: FactionData = world.factions[faction_idx]
+		f.support = maxi(0, f.support / 2)
+		f.points = 0
+	_notify_stats()
+
+
+## 执政联盟判定 — 对齐 GameState.IsFactionLeadeng（无 DLC 合作规则）
+## num == data[56] 政治路线，或 多党(data[15]>7) 且 保守+盟友启用派 support 占比 >66%
+func is_faction_leading(faction_index: int) -> bool:
+	if world == null or faction_index < 0:
+		return false
+	var d := world.数值表
+	if d.size() <= W.I_POLITICAL_LINE:
+		return false
+	if d[W.I_POLITICAL_LINE] == faction_index:
+		return true
+	# 一党制及以下：仅政治路线算「执政」
+	if d[W.I_PARTY_SYSTEM] <= 7:
+		return false
+	var allied := 0
+	var total := 0
+	for i in world.factions.size():
+		var f: FactionData = world.factions[i]
+		total += maxi(f.support, 0)
+		# 原版：始终计入保守派(1)，另加 is_ally && is_enabled 且非 1
+		if i == FactionData.CONSERVATIVE:
+			allied += maxi(f.support, 0)
+		elif f.is_ally and f.is_enabled:
+			allied += maxi(f.support, 0)
+	if total <= 0:
+		return false
+	return float(allied) * 100.0 / float(total) > 66.0
+
+
+## 用积分强化派系 support（Party_ally_script：每 10 点 → +2% 量级，简化为 support += points/10*2）
+func spend_faction_points(faction_idx: int) -> bool:
+	if world == null or faction_idx < 0 or faction_idx >= world.factions.size():
+		return false
+	var f: FactionData = world.factions[faction_idx]
+	if f.points < 10:
+		return false
+	@warning_ignore("integer_division")
+	var chunks: int = f.points / 10
+	f.points -= 10 * chunks * 2  # 原版扣 20/chunk 量级
+	if f.points < 0:
+		f.points = 0
+	f.support += chunks * 2
+	_notify_stats()
+	return true
 
 
 ## 写数值表后统一：同步显示视图 + 广播刷新
@@ -492,8 +544,9 @@ func _on_month_changed() -> void:
 	_monthly_oligarch(d, w)
 	# 政客：调查/监视、自动支持打压、职位 power、空缺派系领袖（TimeScript ~937, ~2172）
 	_monthly_politics(d, w)
-	# 半年：派系漂移（原版派系用 factionsPoints 体系，此处保留简化版）
-	if w.date.month % 6 == 0:
+	# 半年：factionsPoints 积分（原版 data[19]==1 && month 1 或 7）+ 简化漂移
+	if w.date.month == 1 or w.date.month == 7:
+		_biannual_faction_points(d, w)
 		_biannual_faction_drift(w)
 	w.flush_economy()
 
@@ -503,7 +556,8 @@ func _on_year_changed() -> void:
 	if w == null:
 		return
 	var d := w.数值表
-	# 派系席位年度衰减（原版 836-840，年块 data[19]==1&&data[20]==1）
+	@warning_ignore("integer_division")
+	# 派系 support 年度衰减（原版 party_number/=10）
 	for f in w.factions:
 		f.support = f.support / 10
 	# 满意现秩序者衰减（原版 835）
@@ -1035,6 +1089,8 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 	# ─ 高层福利(信封) ─
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_ENVELOPE] / 25
 	d[W.I_PARTY_SUPPORT] += (d[W.I_BUDGET_ENVELOPE] - 61) / 5
+	# ECO-POL-01：信封高低影响政客忠诚
+	_apply_envelope_loyalty(d)
 
 	# ─ 宣传支出（原版 8138-8146）──
 	d[W.I_MANPOWER] += d[W.I_BUDGET_PROPAGANDA] / 150
@@ -1086,6 +1142,28 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 	d[W.I_LIVING] -= d[W.I_CORRUPTION] / 50
 
 
+## ECO-POL-01：高层福利预算 → 政客忠诚微调
+func _apply_envelope_loyalty(d: Array[int]) -> void:
+	if world == null:
+		return
+	var env: int = d[W.I_BUDGET_ENVELOPE]
+	var delta := 0
+	if env >= 90:
+		delta = 8
+	elif env >= 70:
+		delta = 3
+	elif env <= 30:
+		delta = -8
+	elif env <= 50:
+		delta = -3
+	if delta == 0:
+		return
+	for p in world.politicians:
+		if p == null or p.name_display == "空位":
+			continue
+		p.loyalty += delta
+
+
 # ── 政治体制自动重算 ──
 
 func _political_system_recalc(d: Array[int], w: WorldState) -> void:
@@ -1127,7 +1205,58 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 		pc.government = new_gosstroy
 
 
-# ── 半年度：派系支持漂移（保留简化版）──
+# ── 半年度：factionsPoints（TimeScript ~740–762，非合作模式也可用经济指标）──
+## 原版挂在 dlc[0]&&gamerules；本移植：始终按经济/党支持给积分，供 spend_faction_points 或自动折算。
+
+func _biannual_faction_points(d: Array[int], w: WorldState) -> void:
+	if w.factions.is_empty():
+		return
+	@warning_ignore("integer_division")
+	# 按 support 排序 (index, support)
+	var ranked: Array = []
+	for i in w.factions.size():
+		ranked.append([i, w.factions[i].support])
+	ranked.sort_custom(func(a, b) -> bool: return a[1] > b[1])
+
+	var people: int = d[W.I_PEOPLE_SUPPORT] / 100
+	var living: int = d[W.I_LIVING] / 100
+	var liberal: int = d[W.I_THOUGHT_FREEDOM] / 100
+	var party_u: int = d[W.I_PARTY_SUPPORT] / 100
+
+	# 最大 2 派：+民众支持/100、+生活/100
+	for k in mini(2, ranked.size()):
+		var idx: int = ranked[k][0]
+		w.factions[idx].points += people
+		w.factions[idx].points += living
+	# 最大 3 派：再 +生活（原版 top3 都加 living；top2 已加一次 → top3 再加 living 等价 top2 双倍）
+	if ranked.size() >= 3:
+		w.factions[ranked[2][0]].points += living
+	# 最小 2 派：+自由化；最小 3 派：+(10-民众)
+	var n := ranked.size()
+	for k in mini(2, n):
+		var idx2: int = ranked[n - 1 - k][0]
+		w.factions[idx2].points += liberal
+	for k in mini(3, n):
+		var idx3: int = ranked[n - 1 - k][0]
+		w.factions[idx3].points += 10 - people
+	# 非最大派：+党支持/100
+	var top_idx: int = ranked[0][0]
+	for i in w.factions.size():
+		if i != top_idx:
+			w.factions[i].points += party_u
+
+	# 自动轻量折算：积分≥10 时每半年自动花一轮，避免积分只涨不花
+	for i in w.factions.size():
+		var f: FactionData = w.factions[i]
+		if f.points >= 10 and f.is_enabled:
+			var chunks: int = f.points / 10
+			# 最多折 3 档，避免半年暴涨
+			chunks = mini(chunks, 3)
+			f.points -= 10 * chunks
+			f.support += chunks * 2
+
+
+# ── 半年度：派系支持漂移（路线/结盟微调，叠在积分折算之上）──
 
 func _biannual_faction_drift(w: WorldState) -> void:
 	var political_line: int = w.数值表[W.I_POLITICAL_LINE]

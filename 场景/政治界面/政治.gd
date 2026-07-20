@@ -527,6 +527,8 @@ func _on_support() -> void:
 	var d := _world.数值表
 	d[W.I_BUDGET] -= COST_SUPPORT_BUDGET
 	d[W.I_AGENTS] -= COST_SUPPORT_AGENTS
+	# ECO-POL-03 / POL-11：对齐原版扣党支持
+	d[W.I_PARTY_SUPPORT] -= 20
 	pol.loyalty += 50
 	pol.power += absi(pol.power / 10)
 	_after_operation()
@@ -539,6 +541,7 @@ func _on_suppress() -> void:
 	var d := _world.数值表
 	d[W.I_BUDGET] -= COST_SUPPRESS_BUDGET
 	d[W.I_AGENTS] -= COST_SUPPRESS_AGENTS
+	d[W.I_PARTY_SUPPORT] -= 20
 	pol.loyalty -= 50
 	pol.power -= absi(pol.power / 10)
 	_after_operation()

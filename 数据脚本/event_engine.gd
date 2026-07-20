@@ -464,21 +464,8 @@ func _get_empire_relation(empire_index: int) -> int:
 
 
 func _is_faction_leading(faction_index: int) -> bool:
-	var ws: WorldState = GameManager.world
-	if ws == null:
-		return false
-	if ws.get_data_value("political_line") == faction_index:
-		return true
-	if ws.get_data_value("party_system") <= 7:
-		return false
-	var allied_support := 0
-	var total_support := 0
-	for i in ws.factions.size():
-		var faction: FactionData = ws.factions[i]
-		total_support += faction.support
-		if i == FactionData.CONSERVATIVE or (faction.is_ally and faction.is_enabled):
-			allied_support += faction.support
-	return total_support > 0 and float(allied_support) * 100.0 / float(total_support) > 66.0
+	# 与 GameManager.is_faction_leading 共用（FAC-03）
+	return GameManager != null and GameManager.is_faction_leading(faction_index)
 
 
 func _player_has_tag(tag: String) -> bool:
