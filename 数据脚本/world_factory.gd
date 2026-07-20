@@ -713,6 +713,85 @@ static func _calc_rel(ws: WorldState, num: int) -> void:
 		other.loyalty_matrix[num] = score
 
 
+## 原版 CalcRel2：写入 politics[num].loyality_to_other[i]（num 对他人的忠诚）
+## 与 _calc_rel 对称，供任命/换领袖后双向刷新（POL-20）
+static func _calc_rel2(ws: WorldState, num: int) -> void:
+	var pols := ws.politicians
+	if num < 0 or num >= pols.size():
+		return
+	var self_pol: PoliticianData = pols[num]
+	if self_pol.loyalty_matrix.size() < pols.size():
+		self_pol.loyalty_matrix.resize(pols.size())
+	for i in pols.size():
+		if i == num:
+			self_pol.loyalty_matrix[i] = 1000
+			continue
+		var other: PoliticianData = pols[i]
+		var score := 0
+		if self_pol.trait_personality == other.trait_personality:
+			score += 500
+		# 以 other 为参照的 traits 差（对齐 CalcRel2 循环变量 i 侧）
+		match other.trait_personality:
+			0:
+				match self_pol.trait_personality:
+					1: score += 50
+					2: score -= 150
+					3: score -= 300
+			1:
+				match self_pol.trait_personality:
+					0: score += 50
+					2: score -= 50
+					3: score -= 150
+			2:
+				match self_pol.trait_personality:
+					0: score -= 150
+					1: score += 50
+					3: score += 100
+			3:
+				match self_pol.trait_personality:
+					0: score -= 300
+					1: score -= 150
+					2: score += 100
+		match other.trait_alignment:
+			4:
+				if self_pol.trait_alignment == 6:
+					score -= 250
+				elif self_pol.trait_alignment == 4:
+					score += 100
+				else:
+					score -= 100
+			6:
+				if self_pol.trait_alignment == 4:
+					score -= 300
+				elif self_pol.trait_alignment == 6:
+					score += 100
+				else:
+					score += 100
+			5:
+				if self_pol.trait_alignment != 5:
+					score += 100
+			7:
+				if self_pol.trait_alignment == 6:
+					score += 50
+		# 职位野心：若 i 在职且 num 想要该职
+		if _is_holder(ws, 0, i):
+			if self_pol.wanted_position == 0:
+				score -= 400
+		elif _is_holder(ws, 1, i) or _is_holder(ws, 2, i):
+			if not _is_holder(ws, 0, num) and (self_pol.wanted_position == 1 or self_pol.wanted_position == 2):
+				score -= 400
+		elif (
+			_is_holder(ws, 3, i) or _is_holder(ws, 4, i) or _is_holder(ws, 5, i)
+			or _is_holder(ws, 6, i) or _is_holder(ws, 7, i)
+		):
+			if (
+				not _is_holder(ws, 0, num) and not _is_holder(ws, 1, num) and not _is_holder(ws, 2, num)
+				and self_pol.wanted_position >= 3
+			):
+				score -= 400
+		self_pol.loyalty_matrix[i] = score
+
+
 static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 	## 原版 CalcRelLeader：politics[num].loyality 对领袖的忠诚
 	if num < 0 or num >= ws.politicians.size() or ws.leader == null:

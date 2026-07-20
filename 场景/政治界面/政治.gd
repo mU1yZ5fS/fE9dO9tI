@@ -650,60 +650,19 @@ func _on_auto_suppress() -> void:
 
 func _on_set_faction_leader() -> void:
 	var pol := _get_selected_pol()
-	if pol == null:
+	if pol == null or _selected_pol_index < 0:
 		return
-	# Party 槽：traits[0]==0→0，否则 traits[0]+1（原版跳过「保守」位）
-	var faction_id: int = pol.party_index()
-	if faction_id >= 0 and faction_id < _world.factions.size():
-		var prev: int = _world.factions[faction_id].leader_index
-		if prev >= 0 and prev < _world.politicians.size():
-			_world.politicians[prev].loyalty -= 1000
-			if _selected_pol_index < _world.politicians[prev].loyalty_matrix.size():
-				_world.politicians[prev].loyalty_matrix[_selected_pol_index] -= 500
-		_world.factions[faction_id].leader_index = _selected_pol_index
-		_apply_faction_loyalty_penalty(_selected_pol_index, -100)
-		pol.loyalty += 400
+	if not GameManager.set_faction_leader_politician(_selected_pol_index):
+		return
 	_after_operation()
 
 
 func _on_assign_position(position_id: int) -> void:
-	var pol := _get_selected_pol()
-	if pol == null or _selected_pol_index < 0:
+	if _selected_pol_index < 0:
 		return
-
-	# 地方职位互斥（3-7）；中央职位也清掉地方兼任
-	for i in range(3, 8):
-		if _world.politics_positions[i] == _selected_pol_index:
-			_world.politics_positions[i] = -1
-	if position_id == 0:
-		for i in range(1, 8):
-			if _world.politics_positions[i] == _selected_pol_index:
-				_world.politics_positions[i] = -1
-	elif position_id == 1 or position_id == 2:
-		var other_central := 2 if position_id == 1 else 1
-		if _world.politics_positions[other_central] == _selected_pol_index:
-			_world.politics_positions[other_central] = -1
-
-	var prev_holder: int = _world.politics_positions[position_id]
-	if prev_holder >= 0 and prev_holder < _world.politicians.size():
-		var prev_pol: PoliticianData = _world.politicians[prev_holder]
-		prev_pol.loyalty -= 1000
-		if _selected_pol_index < prev_pol.loyalty_matrix.size():
-			prev_pol.loyalty_matrix[_selected_pol_index] = maxi(
-				0, prev_pol.loyalty_matrix[_selected_pol_index] - 500
-			)
-
-	_world.politics_positions[position_id] = _selected_pol_index
-	pol.loyalty += 250
-	pol.in_power = true
-	# wanted_position 命中加成（简化）
-	if pol.wanted_position == position_id or (pol.wanted_position <= 2 and position_id <= 2):
-		pol.loyalty += 100
-		pol.power += 20
+	if not GameManager.assign_politician_position(_selected_pol_index, position_id):
+		return
 	_after_operation()
-	GameManager.fill_vacant_faction_leaders()
-	# 通过 stats 让任职标记同步
-	GameManager.stats_changed.emit()
 
 
 # ============================================================================

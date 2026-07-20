@@ -423,8 +423,58 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	else:
 		d[W.I_THOUGHT_FREEDOM] += diff * 20
 	d[category_idx] = target_val
+	# FAC-05 / ECO-FAC-01：政策变更反馈派系 support / points
+	_apply_policy_faction_feedback(category_idx, current_val, target_val)
 	_notify_stats()
 	return true
+
+
+## 政策值升高 = 更开放/市场化/多元；降低 = 更集中/管制
+## 反馈量按 |delta| * 步长，写入 support 与 points（FAC-01 积分体系）
+func _apply_policy_faction_feedback(category_idx: int, old_val: int, new_val: int) -> void:
+	if world == null or world.factions.is_empty():
+		return
+	var step := new_val - old_val
+	if step == 0:
+		return
+	var mag: int = absi(step)
+	# 各政策类别对「开放方向」的权重
+	var open_weight := 1
+	match category_idx:
+		W.I_ECON_SYSTEM:
+			open_weight = 3
+		W.I_PARTY_SYSTEM:
+			open_weight = 3
+		W.I_PRESS_POLICY:
+			open_weight = 2
+		W.I_RELIGION:
+			open_weight = 1
+		W.I_TERRITORY:
+			open_weight = 1
+		W.I_MIL_DOCTRINE:
+			open_weight = 1
+		_:
+			open_weight = 1
+	var dir := 1 if step > 0 else -1
+	var unit: int = mag * open_weight * 8
+	# 0极左 1保守 2温和 3改革 4自由
+	var deltas: Array[int] = [
+		-unit,           # 极左：开放则受损
+		-(unit * 2) / 3, # 保守
+		unit / 5,        # 温和：略受益
+		(unit * 2) / 3,  # 改革
+		unit,            # 自由：开放则受益
+	]
+	if dir < 0:
+		for i in deltas.size():
+			deltas[i] = -deltas[i]
+	@warning_ignore("integer_division")
+	for i in mini(world.factions.size(), deltas.size()):
+		var f: FactionData = world.factions[i]
+		if not f.is_enabled and deltas[i] > 0:
+			continue
+		f.support = maxi(0, f.support + deltas[i])
+		f.points = maxi(0, f.points + deltas[i] / 4)
 
 
 func set_birth_policy(policy: int) -> void:
@@ -887,6 +937,120 @@ func kill_politician(pol_index: int) -> void:
 	fill_vacant_faction_leaders()
 	_sync_in_power_flags(world)
 	_notify_stats()
+
+
+## POL-10 任命：按职位细表改 loyalty / matrix，并 POL-20 重算关系
+## position_id: 0总理 1军委 2外交 3首都 4北方 5西方 6南方 7东方
+## 对齐 Button_Pol_Script num7/5/6/8-12（注意原版按钮编号与 dolshnost 索引映射）
+func assign_politician_position(pol_index: int, position_id: int) -> bool:
+	if world == null or pol_index < 0 or pol_index >= world.politicians.size():
+		return false
+	if position_id < 0 or position_id >= world.politics_positions.size():
+		return false
+	var pol: PoliticianData = world.politicians[pol_index]
+	if _is_vacant_politician(pol) or pol.is_under_investigation:
+		return false
+	# 已在该职
+	if world.politics_positions[position_id] == pol_index:
+		return false
+
+	# 职位互斥：地方 3-7 互斥；总理清空其它；军委/外交互斥对方
+	for i in range(3, 8):
+		if world.politics_positions[i] == pol_index:
+			world.politics_positions[i] = -1
+	if position_id == 0:
+		for i in range(1, 8):
+			if world.politics_positions[i] == pol_index:
+				world.politics_positions[i] = -1
+	elif position_id == 1 or position_id == 2:
+		var other_central := 2 if position_id == 1 else 1
+		if world.politics_positions[other_central] == pol_index:
+			world.politics_positions[other_central] = -1
+
+	# 前任惩罚表：prev_loyalty_delta, prev_matrix_delta, new_loyalty, wanted_bonus
+	# wanted 命中时 prev 额外 -400 loyalty 与 matrix（原版）
+	var prev_loy := 250
+	var prev_mat := 50
+	var new_loy := 250
+	match position_id:
+		0:  # 总理 num7
+			prev_loy = 800; prev_mat = 400; new_loy = 400
+		1:  # 军委 num5
+			prev_loy = 700; prev_mat = 300; new_loy = 350
+		2:  # 外交 num6
+			prev_loy = 600; prev_mat = 250; new_loy = 350
+		3:  # 首都 num8
+			prev_loy = 250; prev_mat = 50; new_loy = 300
+		_:  # 地方 4-7
+			prev_loy = 150; prev_mat = 0; new_loy = 250
+
+	var prev_holder: int = world.politics_positions[position_id]
+	if prev_holder >= 0 and prev_holder < world.politicians.size() and prev_holder != pol_index:
+		var prev_pol: PoliticianData = world.politicians[prev_holder]
+		if not _is_vacant_politician(prev_pol):
+			var extra := 400 if prev_pol.wanted_position == position_id else 0
+			prev_pol.loyalty -= prev_loy + extra
+			if pol_index < prev_pol.loyalty_matrix.size():
+				prev_pol.loyalty_matrix[pol_index] = maxi(
+					0, prev_pol.loyalty_matrix[pol_index] - (prev_mat + extra)
+				)
+
+	world.politics_positions[position_id] = pol_index
+	pol.loyalty += new_loy
+	if pol.wanted_position == position_id:
+		pol.loyalty += 250
+		pol.power += 20
+	pol.in_power = true
+
+	# POL-20：任命后重算目标与前任关系矩阵 + 对领袖忠诚
+	WorldFactory._calc_rel(world, pol_index)
+	WorldFactory._calc_rel2(world, pol_index)
+	WorldFactory._calc_rel_leader(world, pol_index)
+	if prev_holder >= 0 and prev_holder < world.politicians.size() and prev_holder != pol_index:
+		WorldFactory._calc_rel(world, prev_holder)
+		WorldFactory._calc_rel2(world, prev_holder)
+		WorldFactory._calc_rel_leader(world, prev_holder)
+
+	_sync_in_power_flags(world)
+	fill_vacant_faction_leaders()
+	_notify_stats()
+	return true
+
+
+## 指定派系负责人后重算关系（FAC-07 半）
+func set_faction_leader_politician(pol_index: int) -> bool:
+	if world == null or pol_index < 0 or pol_index >= world.politicians.size():
+		return false
+	var pol: PoliticianData = world.politicians[pol_index]
+	if _is_vacant_politician(pol):
+		return false
+	var faction_id: int = pol.party_index()
+	if faction_id < 0 or faction_id >= world.factions.size():
+		return false
+	var prev: int = world.factions[faction_id].leader_index
+	if prev >= 0 and prev < world.politicians.size() and prev != pol_index:
+		var prev_pol: PoliticianData = world.politicians[prev]
+		prev_pol.loyalty -= 1000
+		if pol_index < prev_pol.loyalty_matrix.size():
+			prev_pol.loyalty_matrix[pol_index] -= 500
+	world.factions[faction_id].leader_index = pol_index
+	# 同派小惩罚
+	for i in world.politicians.size():
+		if i == pol_index:
+			continue
+		var other: PoliticianData = world.politicians[i]
+		if other != null and other.party_index() == faction_id:
+			other.loyalty -= 100
+	pol.loyalty += 400
+	WorldFactory._calc_rel(world, pol_index)
+	WorldFactory._calc_rel2(world, pol_index)
+	WorldFactory._calc_rel_leader(world, pol_index)
+	if prev >= 0 and prev < world.politicians.size() and prev != pol_index:
+		WorldFactory._calc_rel(world, prev)
+		WorldFactory._calc_rel2(world, prev)
+		WorldFactory._calc_rel_leader(world, prev)
+	_notify_stats()
+	return true
 
 
 ## 空缺派系领袖：按 Party 槽从在世政客中选 power 最高者（POL-04）
@@ -1450,7 +1614,22 @@ func _biannual_faction_points(d: Array[int], w: WorldState) -> void:
 # ── 半年度：派系支持漂移（路线/结盟微调，叠在积分折算之上）──
 
 func _biannual_faction_drift(w: WorldState) -> void:
-	var political_line: int = w.数值表[W.I_POLITICAL_LINE]
+	var d := w.数值表
+	var political_line: int = d[W.I_POLITICAL_LINE]
+	var econ: int = d[W.I_ECON_SYSTEM]
+	var freedom: int = d[W.I_THOUGHT_FREEDOM]
+	# ECO-FAC-02：经济越开放(数值越大) / 思想自由越高，改革/自由略受益
+	var open_bias := 0
+	if econ >= 14:
+		open_bias = 2
+	elif econ >= 12:
+		open_bias = 1
+	elif econ <= 11:
+		open_bias = -1
+	if freedom >= 400:
+		open_bias += 1
+	elif freedom <= 150:
+		open_bias -= 1
 	for i in w.factions.size():
 		var f: FactionData = w.factions[i]
 		if f.id == political_line:
@@ -1461,6 +1640,12 @@ func _biannual_faction_drift(w: WorldState) -> void:
 			f.support += 1
 		if not f.is_enabled:
 			f.support = maxi(0, f.support - 3)
+		# 开放偏向：3改革 +bias，4自由 +bias，0极左/1保守 -bias
+		if open_bias != 0:
+			if f.id >= 3:
+				f.support += open_bias
+			elif f.id <= 1:
+				f.support -= open_bias
 		f.support = maxi(0, f.support)
 
 
