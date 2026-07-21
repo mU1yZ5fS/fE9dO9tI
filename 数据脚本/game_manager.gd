@@ -121,6 +121,8 @@ func load_game(path: String) -> void:
 		# 运行时缓存不序列化，读档后重建
 		world.rebuild_gwcode_index()
 		world.sync_economy()
+		if EventEngine and EventEngine.has_method("import_runtime_from_world"):
+			EventEngine.import_runtime_from_world(world)
 		selected_country_gwcode = world.player_country_gwcode
 		is_playing = false
 		speed = 0
@@ -140,6 +142,8 @@ func save_game(path: String) -> void:
 		return
 	# 写入前同步显示视图，避免读档后经济视图过期
 	world.sync_economy()
+	if EventEngine and EventEngine.has_method("export_runtime_to_world"):
+		EventEngine.export_runtime_to_world(world)
 	var err := ResourceSaver.save(world, path)
 	if err != OK:
 		push_error("GameManager: 保存失败 %d → %s" % [err, path])
@@ -1922,6 +1926,7 @@ func _on_fortnight() -> void:
 	_fortnight_military_doctrine(d, w)
 	_fortnight_econ_system_effect(d)
 	_fortnight_difficulty_bonus(d, w)
+	_fortnight_modifiers(d, w)
 	_check_coup(d, w)
 	_fortnight_wars(w)
 	# 阴谋网也挂双周一次（原版 Death/Plot 在年/特定块；月结已跑，此处不重复击杀）
@@ -2529,7 +2534,153 @@ func resolve_war_finished(war_id: int = -1) -> void:
 	if id < 0:
 		id = world.数值表[W.I_WAR_RESOLVE]
 	if id >= 0 and id < world.wars.size() and world.wars[id] != null:
+		_apply_war_result(id)
 		world.wars[id].is_going = false
 	world.数值表[W.I_WAR_RESOLVE] = -1
 	_notify_stats()
 
+
+# ============================================================================
+# 修正双周效果 — 对齐 ModifiesInfuence.ModifiesChanges（MVP 子集）
+# 内部数值为原版 ×10 量级（如 -5 工业 = -0.5 显示）
+# ============================================================================
+
+func _fortnight_modifiers(d: Array[int], w: WorldState) -> void:
+	if w == null:
+		return
+	# 0 工业技术依赖：工业 -5；科技 10 解除
+	if _mod_active(w, 0):
+		if w.techs and w.techs.unlocked.size() > 10 and w.techs.unlocked[10]:
+			w.modifiers[0].is_active = false
+		else:
+			d[W.I_INDUSTRY] -= 5
+	# 1 工业产能上限：科技 11 解除（上限在 clamp）
+	if _mod_active(w, 1) and w.techs and w.techs.unlocked.size() > 11 and w.techs.unlocked[11]:
+		w.modifiers[1].is_active = false
+	# 3 后毛时代效应
+	if _mod_active(w, 3):
+		d[W.I_BUDGET] += 6
+		d[W.I_AGENTS] += 2
+		d[W.I_ARMY] += 5
+		if d.size() > W.I_STABILITY and d[W.I_STABILITY] >= 100:
+			d[W.I_PEOPLE_SUPPORT] += 5
+			d[W.I_THOUGHT_FREEDOM] += 10
+			d[W.I_LIVING] -= 5
+			if w.empires.size() > 0:
+				w.empires[0].relations -= 5
+		# 深度改革则解除并冲击
+		if d[W.I_IDEOLOGY] >= 4 or d[W.I_ECON_SYSTEM] >= 14 or d[W.I_PRESS_POLICY] > 18:
+			w.modifiers[3].is_active = false
+			d[W.I_THOUGHT_FREEDOM] += 200
+			d[W.I_PEOPLE_SUPPORT] += 100
+			d[W.I_PARTY_SUPPORT] -= 250
+			d[W.I_DIPLO] -= 10
+	# 5 市场改革冲击
+	if _mod_active(w, 5):
+		d[W.I_PEOPLE_SUPPORT] -= 2
+		d[W.I_THOUGHT_FREEDOM] += 10
+		d[W.I_BUDGET] += 2
+	# 6 意识形态动员
+	if _mod_active(w, 6):
+		d[W.I_PARTY_SUPPORT] += 5
+		d[W.I_THOUGHT_FREEDOM] -= 2
+		d[W.I_MANPOWER] += 1
+		d[W.I_DIPLO] += 2
+		if w.empires.size() > 0:
+			w.empires[0].relations -= 2
+		if w.empires.size() > 1:
+			w.empires[1].relations -= 4
+	# 12 政治危机：伤收入（简化为预算）
+	if _mod_active(w, 12):
+		d[W.I_BUDGET] -= 10
+		d[W.I_AGENTS] -= 10
+	# 15 农业产能上限：科技解除若有农业关键科技则关（无则仅 clamp）
+	# 15 农业上限：仅 cap，解除靠科技/事件（MVP 不自动关）
+	_apply_modifier_caps(d, w)
+	_mirror_empires_to_data(world)
+
+
+func _apply_modifier_caps(d: Array[int], w: WorldState) -> void:
+	# 工业上限：mod1 激活 → 500，否则 1000
+	var ind_cap := 500 if _mod_active(w, 1) else 1000
+	if d[W.I_INDUSTRY] > ind_cap:
+		d[W.I_INDUSTRY] = ind_cap
+	# 农业上限：mod15 激活 → 700，否则 1000
+	var agri_cap := 700 if _mod_active(w, 15) else 1000
+	if d[W.I_AGRICULTURE] > agri_cap:
+		d[W.I_AGRICULTURE] = agri_cap
+	if d[W.I_SERVICES] > 1000:
+		d[W.I_SERVICES] = 1000
+
+
+# ============================================================================
+# 战争结束结算 — WarResult 简化（MVP：影响力/关系/预算，无完整地图吞并）
+# ============================================================================
+
+func _apply_war_result(war_id: int) -> void:
+	if world == null or war_id < 0 or war_id >= world.wars.size():
+		return
+	var war: WarData = world.wars[war_id]
+	if war == null:
+		return
+	var d := world.数值表
+	var side1_win := war.infl1 >= war.infl2
+	# 通用：胜方给一点介入点恢复
+	d[W.I_MIL_INTERVENTION] += 5
+	match war_id:
+		0:  # 朝鲜
+			if war.infl1 >= 900:
+				d[W.I_INFLUENCE] += 50
+				if world.empires.size() > 0:
+					world.empires[0].power = maxi(0, world.empires[0].power - 40)
+			elif war.infl2 >= 900:
+				d[W.I_INFLUENCE] -= 20
+				if world.empires.size() > 0:
+					world.empires[0].power += 50
+				if world.empires.size() > 1:
+					world.empires[1].power = maxi(0, world.empires[1].power - 20)
+		1:  # 柬越
+			if war.infl1 >= 900:
+				d[W.I_INFLUENCE] += 20
+				d[W.I_PARTY_SUPPORT] += 100
+				if world.empires.size() > 1:
+					world.empires[1].power = maxi(0, world.empires[1].power - 20)
+			elif war.infl2 >= 900:
+				d[W.I_INFLUENCE] -= 30
+				if world.empires.size() > 1:
+					world.empires[1].power += 10
+		2:  # 泰国
+			if war.infl1 >= 750:
+				d[W.I_INFLUENCE] += 20
+				if world.empires.size() > 0:
+					world.empires[0].power = maxi(0, world.empires[0].power - 20)
+			else:
+				d[W.I_INFLUENCE] -= 10
+		3:  # 两伊
+			if side1_win:
+				if world.empires.size() > 1:
+					world.empires[1].power += 10
+			else:
+				if world.empires.size() > 0:
+					world.empires[0].power += 10
+		5:  # 阿富汗
+			if war.infl1 >= 900:  # 圣战者
+				d[W.I_INFLUENCE] += 15
+				if world.empires.size() > 1:
+					world.empires[1].power = maxi(0, world.empires[1].power - 30)
+			elif war.infl2 >= 900:
+				d[W.I_INFLUENCE] -= 10
+				if world.empires.size() > 1:
+					world.empires[1].power += 15
+		6:  # 福克兰
+			if war.infl1 >= 400:
+				d[W.I_INFLUENCE] += 5
+			else:
+				if world.empires.size() > 0:
+					world.empires[0].power += 10
+		_:
+			if side1_win:
+				d[W.I_INFLUENCE] += 10
+			else:
+				d[W.I_INFLUENCE] -= 5
+	_mirror_empires_to_data(world)

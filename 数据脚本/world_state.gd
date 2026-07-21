@@ -146,6 +146,12 @@ const 数值索引 := {
 # ── 事件完成追踪（event_id → option_index：键存在=已完成，值=所选选项编号） ──
 @export var completed_event_ids: Dictionary = {}
 
+# ── 事件引擎运行时（随 WorldState 存档） ──
+@export var event_pending_id: String = ""
+@export var event_pending_deadline: int = -1
+@export var event_mtth_timers: Dictionary = {}
+@export var event_chain_queue: Array[String] = []
+
 # ── 政治家职位（dolshnost[8]，每槽记录持有人在 politicians 中的索引，-1=空缺） ──
 # 0=总理 1=军委主席 2=外交部长 3=首都 4=北方 5=西方 6=南方 7=东方
 @export var politics_positions: Array[int] = []

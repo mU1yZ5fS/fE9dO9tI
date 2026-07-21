@@ -630,3 +630,31 @@ func _set_modifier_available(key: String, available: bool) -> void:
 	var idx := int(key) if key.is_valid_int() else -1
 	if idx >= 0 and idx < ws.modifiers.size():
 		ws.modifiers[idx].is_available = available
+
+
+## 写入 WorldState，供存档
+func export_runtime_to_world(ws: WorldState) -> void:
+	if ws == null:
+		return
+	ws.event_pending_id = pending_event_id
+	ws.event_pending_deadline = _pending_deadline
+	ws.event_mtth_timers = _mtth_timers.duplicate(true)
+	ws.event_chain_queue = _event_queue.duplicate()
+
+
+## 从存档恢复 pending / MTTH / 链队列
+func import_runtime_from_world(ws: WorldState) -> void:
+	if ws == null:
+		return
+	pending_event_id = ws.event_pending_id
+	_pending_deadline = ws.event_pending_deadline
+	_mtth_timers = ws.event_mtth_timers.duplicate(true) if ws.event_mtth_timers else {}
+	_event_queue.clear()
+	for eid in ws.event_chain_queue:
+		if str(eid) != "":
+			_event_queue.append(str(eid))
+	if pending_event_id != "":
+		var edef := _events.get(pending_event_id) as EventDef
+		var title := edef.title if edef else pending_event_id
+		event_notification.emit(pending_event_id, title)
+
