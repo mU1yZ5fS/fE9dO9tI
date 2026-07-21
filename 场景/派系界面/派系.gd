@@ -162,6 +162,10 @@ func _refresh() -> void:
 		var ban := _find("禁止" + 派系列表[i]) as TextureButton
 		if sup: sup.set_pressed_no_signal(f.is_ally)
 		if ban: ban.set_pressed_no_signal(not f.is_enabled)
+		if sup:
+			sup.tooltip_text = "%s 支持度 %d｜积分 %d（结盟后再点支持可花积分强化）" % [
+				派系列表[i], f.support, f.points
+			]
 	var birth_val: int = _raw(w, W.I_BIRTH_POLICY)
 	for i in 生育政策名.size():
 		var btn := _find(生育政策名[i]) as Button
@@ -321,7 +325,16 @@ func _on_policy_hover(cat_name: String, target_val: int) -> void:
 
 func _on_faction_support(button_pressed: bool, faction_idx: int, is_support: bool) -> void:
 	if is_support:
-		GameManager.set_faction_ally(faction_idx, button_pressed)
+		var w := GameManager.world
+		var already_ally := false
+		if w and faction_idx < w.factions.size() and w.factions[faction_idx]:
+			already_ally = w.factions[faction_idx].is_ally
+		# 已结盟时再点「支持」：花积分强化 support（FAC-01）
+		if button_pressed and already_ally:
+			if not GameManager.spend_faction_points(faction_idx):
+				print("派系: 积分不足（需≥10）")
+		else:
+			GameManager.set_faction_ally(faction_idx, button_pressed)
 	else:
 		GameManager.set_faction_enabled(faction_idx, not button_pressed)
 	_refresh()

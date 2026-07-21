@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_snu7j"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_syebt"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_2tba3"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_chkp2"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_22jbi"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_snu7j"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_syebt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_2tba3"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_chkp2"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_22jbi"]
 
 [sub_resource type="Resource" id="Resource_xqoht"]
 script = ExtResource("3_2tba3")
@@ -106,9 +106,21 @@ enable_condition = SubResource("Resource_caja5")
 effects = Array[ExtResource("3_2tba3")]([SubResource("Resource_ixjwy"), SubResource("Resource_2heau"), SubResource("Resource_0c5io")])
 result_text = "Even before the start of the congress, you appealed through the media to the people with a call to support you and protect the conquests of your power. The people loyal to you went to mass demonstrations in your support and began to storm the departments under your opponent's control."
 
+[sub_resource type="Resource" id="Resource_uh3nh"]
+script = ExtResource("4_chkp2")
+type = 12
+key = "1976.10"
+
+[sub_resource type="Resource" id="Resource_jcii1"]
+script = ExtResource("4_chkp2")
+type = 1
+key = "party_support"
+value = 450.0
+
 [resource]
 script = ExtResource("5_22jbi")
 event_id = "congress_conspiracy"
 title = "Conspiracy"
 description = "According to the recently received information, several senior party members who are dissatisfied with your rule have agreed to remove you at the next congress of the Central Committee. You need to urgently do something if you do not want to repeat the fate of the revisionist Khrushchev in 1964."
+trigger_conditions = Array[ExtResource("4_chkp2")]([SubResource("Resource_uh3nh"), SubResource("Resource_jcii1")])
 options = Array[ExtResource("2_syebt")]([SubResource("Resource_k88p2"), SubResource("Resource_3hpjc"), SubResource("Resource_yboyw"), SubResource("Resource_rubg4")])

@@ -76,6 +76,14 @@ static func empire_rel_at_least(index: int, value: float) -> ExprNode:
 	n.value = value
 	return n
 
+## empires[index].relations <= value
+static func empire_rel_at_most(index: int, value: float) -> ExprNode:
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.EMPIRE_RELATION_AT_MOST
+	n.key = str(index)
+	n.value = value
+	return n
+
 ## IsFactionLeadeng(index)
 static func is_faction_leader(index: int) -> ExprNode:
 	var n := ExprNode.new()
@@ -456,6 +464,7 @@ static func create_event_1() -> EventDef:
 			+ "Or just rely on the Chinese people's faith in us.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1978.1")] as Array[ExprNode]
 
 	# 选项0：不干涉
 	ev.options.append(option(
@@ -501,6 +510,7 @@ static func create_event_3() -> EventDef:
 			+ "commission and decide how we are conduct the chairman in his last journey.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.9")] as Array[ExprNode]
 
 	# 选项0：火化并建纪念碑
 	ev.options.append(option(
@@ -511,7 +521,8 @@ static func create_event_3() -> EventDef:
 		+ "deadline, Mao's body was cremated, according to his wish, and the urn with ashes after three minutes "
 		+ "of silence and Hua Guofeng's farewell speech in Tiananmen Square was walled up in a monument specially "
 		+ "built on the same square.",
-		[add_resource("people_support", 20), set_flag("mao_cremated")],
+		[add_resource("people_support", 20), set_flag("mao_cremated"),
+		set_flag("mao_dead"), set_resource("political_stability", 100)],
 		null, ""
 	))
 
@@ -523,8 +534,8 @@ static func create_event_3() -> EventDef:
 		+ "After three minutes of silence and Hua Guofeng's farewell speech on Tiananmen Square, the chairman rested "
 		+ "in a mausoleum built on the same square by a special order of Guofeng.",
 		[add_resource("people_support", 50), add_resource("party_support", 40),
-		add_resource("money", -10), set_flag("mao_mausoleum")],
-
+		add_resource("money", -10), set_flag("mao_mausoleum"),
+		set_flag("mao_dead"), set_resource("political_stability", 100)],
 		null, ""
 	))
 
@@ -536,8 +547,7 @@ static func create_event_3() -> EventDef:
 		+ "After three minutes of silence and Hua Guofeng's farewell speech on Tiananmen Square, the chairman rested "
 		+ "in a mausoleum built on the same square by a special order of the funeral commission.",
 		[add_resource("people_support", 50), add_resource("party_support", -40),
-		set_flag("mao_mausoleum")],
-
+		set_flag("mao_mausoleum"), set_flag("mao_dead"), set_resource("political_stability", 100)],
 		null, ""
 	))
 
@@ -557,6 +567,7 @@ static func create_event_4() -> EventDef:
 			+ "You need to urgently do something if you do not want to repeat the fate of the revisionist Khrushchev in 1964.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.10"), res_at_most("party_support", 450)] as Array[ExprNode]
 
 	# 选项0：在大会上展开论战（始终可选）
 	ev.options.append(option(
@@ -624,6 +635,7 @@ static func create_event_6() -> EventDef:
 			+ "detention, we can not count on the army.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [res_at_most("living", 100)] as Array[ExprNode]
 
 	# 选项0：紧急拨款社会项目
 	ev.options.append(option(
@@ -690,6 +702,7 @@ static func create_event_7() -> EventDef:
 			+ "correct the situation if we don't want the Third World War.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [empire_rel_at_most(EmpireData.USA, 0)] as Array[ExprNode]
 
 	# 选项0：自费组织缓和 — 需 军事≠30 或 外交≤950
 	ev.options.append(option(
@@ -760,6 +773,7 @@ static func create_event_8() -> EventDef:
 			+ "need to somehow correct the situation if we don't want the Third World War.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [empire_rel_at_most(EmpireData.USSR, 0)] as Array[ExprNode]
 
 	# 选项0：自费组织缓和
 	ev.options.append(option(
@@ -820,6 +834,7 @@ static func create_event_9() -> EventDef:
 			+ "than we can take advantage of.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [res_at_most("manpower", 400)] as Array[ExprNode]
 
 	# 选项0：允许独立
 	ev.options.append(option(
@@ -885,6 +900,7 @@ static func create_event_10() -> EventDef:
 			+ "advantage of.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [res_at_most("manpower", 300)] as Array[ExprNode]
 
 	# 选项0：允许独立
 	ev.options.append(option(
@@ -946,6 +962,7 @@ static func create_event_11() -> EventDef:
 			+ "some are about to close and everyone is working on outdated equipment.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [res_at_most("industry", 0)] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Urgently allocate money for development",
@@ -1004,6 +1021,7 @@ static func create_event_12() -> EventDef:
 			+ "even in times of great leap forward!")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [res_at_most("agriculture", 0)] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Urgently allocate money for development",
@@ -1055,6 +1073,7 @@ static func create_event_13() -> EventDef:
 			+ "establishments do not work, and the quality of service in the working ones is simply terrible.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [res_at_most("services", 0)] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Urgently allocate money for development",
@@ -1106,6 +1125,7 @@ static func create_event_14() -> EventDef:
 			+ "like this, we soon will not be able to maintain the normal work of our state.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [res_at_most("money", 0)] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Raise taxes and cut social programs",
@@ -1306,8 +1326,8 @@ static func create_event_18() -> EventDef:
 
 	ev.options.append(option(
 		"Long live the peace!",
-		"Another war ended. The outcome depends on the specific conflict.",
-		[],
+		"Another war ended. The Foreign Ministry files the outcome. Military intervention stock recovers slightly.",
+		[add_resource("political", 10)],
 		null, ""
 	))
 
@@ -1330,6 +1350,7 @@ static func create_event_19() -> EventDef:
 			+ "Five \"no\" in motion... And you, as a new prime minister, can influence its execution.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.2")] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Let it pass, how it goes",
@@ -1382,6 +1403,7 @@ static func create_event_20() -> EventDef:
 			+ "given that Hua Guofeng has never been on good terms with either Jiang Qing or Xiaoping?")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.2"), event_done("five_no")] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Do nothing. Jiang Qing and Xiaoping each other stand",
@@ -1424,6 +1446,7 @@ static func create_event_21() -> EventDef:
 			+ "but emotions are rising — we must decide how to respond.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.4")] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Stay quiet, targets unclear, don't get caught in the crossfire",
@@ -1467,6 +1490,7 @@ static func create_event_22() -> EventDef:
 			+ "the mayor of Beijing, Wu De; what line will we choose?")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.5")] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Disperse protest with the help of the army and police",
@@ -1511,6 +1535,7 @@ static func create_event_23() -> EventDef:
 			+ "According to preliminary data, from 200 to 600 thousand people died.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.8")] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Allocate funds from the budget for restoration (-3.0 from budget)",

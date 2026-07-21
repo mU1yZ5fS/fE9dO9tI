@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_jws1t"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_t8lsk"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_8aom8"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="4_ab2t2"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="5_8rfvq"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_jws1t"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_t8lsk"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_8aom8"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_ab2t2"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_8rfvq"]
 
 [sub_resource type="Resource" id="Resource_ew8b3"]
 script = ExtResource("3_8aom8")
@@ -49,9 +49,20 @@ text = "Stand up for Xiaoping"
 effects = Array[ExtResource("3_8aom8")]([SubResource("Resource_20hm2"), SubResource("Resource_y67ye")])
 result_text = "You, however, stood up for him, arguing that Xiaoping made mistakes but admitted them, helped China develop. This caused discontent among the party top, but it appealed to the people."
 
+[sub_resource type="Resource" id="Resource_g08n1"]
+script = ExtResource("5_8rfvq")
+type = 12
+key = "1976.2"
+
+[sub_resource type="Resource" id="Resource_dom16"]
+script = ExtResource("5_8rfvq")
+type = 5
+ref_event_id = "five_no"
+
 [resource]
 script = ExtResource("4_ab2t2")
 event_id = "criticize_deng"
 title = "Criticize Deng and fight with right!"
 description = "The death of Zhou Enlai seriously affected the position of his protege Deng Xiaoping, who was left without the patronage of the former prime minister. He is now under constant attack by the radicals headed by Mao Zedong's wife Jiang Qing... And what should we do, given that Hua Guofeng has never been on good terms with either Jiang Qing or Xiaoping?"
+trigger_conditions = Array[ExtResource("5_8rfvq")]([SubResource("Resource_g08n1"), SubResource("Resource_dom16")])
 options = Array[ExtResource("2_t8lsk")]([SubResource("Resource_4ehcb"), SubResource("Resource_mhrxq"), SubResource("Resource_70uo1")])

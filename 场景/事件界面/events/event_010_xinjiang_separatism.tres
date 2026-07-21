@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_3pe70"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_sir7f"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_nsmhh"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_o41p8"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_6ax5d"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_3pe70"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_sir7f"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_nsmhh"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_o41p8"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_6ax5d"]
 
 [sub_resource type="Resource" id="Resource_tvvbs"]
 script = ExtResource("3_nsmhh")
@@ -117,9 +117,16 @@ enable_condition = SubResource("Resource_84tjk")
 effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_6kyr3"), SubResource("Resource_4xhu0"), SubResource("Resource_sc6yf"), SubResource("Resource_kuiv2")])
 result_text = "We organized a referendum in which the majority, of course, voted to preserve the status of Xinjiang. Dissatisfied nationalists and other radicals took to the streets, claiming falsification, but without past support these protests no longer pose a serious threat."
 
+[sub_resource type="Resource" id="Resource_ey2ma"]
+script = ExtResource("4_o41p8")
+type = 1
+key = "manpower"
+value = 300.0
+
 [resource]
 script = ExtResource("5_6ax5d")
 event_id = "xinjiang_separatism"
 title = "Separatism in Xinjiang"
 description = "Encouraged by liberals and nationalists, residents of the Xinjiang Uygur Autonomous Region took to mass demonstrations for independence and secession from the PRC, which gradually develop into unrest. People demand \"liberation\" from \"the occupation of 1949\" and the majority of ethnic Uighurs support them. However, there is a counterweight to them from the Hanzu, and some of the Uighurs are just satisfied with the requirements of greater autonomy than we can take advantage of."
+trigger_conditions = Array[ExtResource("4_o41p8")]([SubResource("Resource_ey2ma")])
 options = Array[ExtResource("2_sir7f")]([SubResource("Resource_hojh7"), SubResource("Resource_7gmw0"), SubResource("Resource_5e2is"), SubResource("Resource_b5j6h")])

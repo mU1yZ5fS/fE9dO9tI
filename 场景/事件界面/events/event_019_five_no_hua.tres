@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_q3hfb"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_sgyki"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_5vxtx"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_ewqf2"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_6x40d"]
+
+[sub_resource type="Resource" id="Resource_5tkmn"]
+script = ExtResource("3_5vxtx")
+key = "people_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_5mpi3"]
+script = ExtResource("2_sgyki")
+text = "Let it pass, how it goes"
+effects = Array[ExtResource("3_5vxtx")]([SubResource("Resource_5tkmn")])
+result_text = "As part of the campaign, government and police officers removed improvised memorials and tore down posters marking Zhou Enlai's achievements. Constant propaganda aimed at denigrating Zhou and bans on open commemoration caused widespread discontent."
+
+[sub_resource type="Resource" id="Resource_80i6h"]
+script = ExtResource("3_5vxtx")
+key = "people_support"
+value = -70.0
+
+[sub_resource type="Resource" id="Resource_imxg5"]
+script = ExtResource("3_5vxtx")
+key = "diplo"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_eahju"]
+script = ExtResource("2_sgyki")
+text = "Follow the strict execution of Mao's decrees"
+effects = Array[ExtResource("3_5vxtx")]([SubResource("Resource_80i6h"), SubResource("Resource_imxg5")])
+result_text = "You personally followed the strict execution of the campaign. Discontent of people with Mao Zedong and the top party, especially his wife Jiang Qing and successor Hua Guofeng."
+
+[sub_resource type="Resource" id="Resource_uh62h"]
+script = ExtResource("3_5vxtx")
+key = "people_support"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_hjgq0"]
+script = ExtResource("3_5vxtx")
+key = "diplo"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_sd673"]
+script = ExtResource("2_sgyki")
+text = "Follow the strict execution of the campaign, as well as criticize Zhou in the media."
+effects = Array[ExtResource("3_5vxtx")]([SubResource("Resource_uh62h"), SubResource("Resource_hjgq0")])
+result_text = "You personally followed the strict execution of the campaign and were responsible for the publication of criticism of Zhou Enlai in newspapers, which, however, had no effect on people already tired of criticism in the spirit of the Cultural Revolution."
+
+[sub_resource type="Resource" id="Resource_lk6l4"]
+script = ExtResource("3_5vxtx")
+key = "people_support"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_hboes"]
+script = ExtResource("3_5vxtx")
+key = "party_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_mujgc"]
+script = ExtResource("3_5vxtx")
+key = "diplo"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_8gv2a"]
+script = ExtResource("2_sgyki")
+text = "Gently sabotage the campaign"
+effects = Array[ExtResource("3_5vxtx")]([SubResource("Resource_lk6l4"), SubResource("Resource_hboes"), SubResource("Resource_mujgc")])
+result_text = "Thanks to your efforts to sabotage the campaign, discontent does not go beyond reasonable limits."
+
+[sub_resource type="Resource" id="Resource_eqysa"]
+script = ExtResource("5_6x40d")
+type = 12
+key = "1976.2"
+
+[resource]
+script = ExtResource("4_ewqf2")
+event_id = "five_no_hua"
+title = "Five \"no\""
+description = "Congratulations on your appointment to the post of Premier of the State Council of the People's Republic of China, Comrade Hua Guofeng. As you know, your predecessor was Zhou Enlai, who gained popularity and respect among the people at home and abroad for his honesty and administrative talents... Rumor has it Mao Zedong himself set the campaign of Five \"no\" in motion... And you, as a new prime minister, can influence its execution."
+trigger_conditions = Array[ExtResource("5_6x40d")]([SubResource("Resource_eqysa")])
+options = Array[ExtResource("2_sgyki")]([SubResource("Resource_5mpi3"), SubResource("Resource_eahju"), SubResource("Resource_sd673"), SubResource("Resource_8gv2a")])

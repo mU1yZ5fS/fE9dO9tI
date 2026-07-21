@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_8bik7"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_ej2j1"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_5caad"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_kpjrn"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_iymjb"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_8bik7"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_ej2j1"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_5caad"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_kpjrn"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_iymjb"]
 
 [sub_resource type="Resource" id="Resource_uuv4e"]
 script = ExtResource("3_5caad")
@@ -136,9 +136,15 @@ enable_condition = SubResource("Resource_j4w2k")
 effects = Array[ExtResource("3_5caad")]([SubResource("Resource_mpjt3"), SubResource("Resource_cdgcw")])
 result_text = "By the method of redistributing budget funds and revenues from enterprises, we were able to direct the power of agriculture to the development of industry. This helped the industry, but agriculture suffered a big blow."
 
+[sub_resource type="Resource" id="Resource_e75qb"]
+script = ExtResource("4_kpjrn")
+type = 1
+key = "industry"
+
 [resource]
 script = ExtResource("5_iymjb")
 event_id = "industry_decline"
 title = "The decline of industry"
 description = "Our industry is in an unprecedented decline - some of the plants are idle, some are about to close and everyone is working on outdated equipment."
+trigger_conditions = Array[ExtResource("4_kpjrn")]([SubResource("Resource_e75qb")])
 options = Array[ExtResource("2_ej2j1")]([SubResource("Resource_k2ejb"), SubResource("Resource_ypipg"), SubResource("Resource_34rdy"), SubResource("Resource_md0t2")])

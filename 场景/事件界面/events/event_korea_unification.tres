@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_qn3og"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_46nys"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_i1gde"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_i68lb"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_mr0iq"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_qn3og"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_46nys"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_i1gde"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_i68lb"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_mr0iq"]
 
 [sub_resource type="Resource" id="Resource_fnhdc"]
 script = ExtResource("3_i1gde")
@@ -131,7 +131,7 @@ children = Array[ExtResource("4_i68lb")]([SubResource("Resource_5c8la"), SubReso
 [sub_resource type="Resource" id="Resource_fcnvu"]
 script = ExtResource("2_46nys")
 text = "权永吉 - 是时候放弃主体思想了"
-disabled_text = "毛主席万岁！"
+disabled_text = "需要无毛泽东思想、无文化大革命，并拥有特工：50"
 enable_condition = SubResource("Resource_1mg7k")
 effects = Array[ExtResource("3_i1gde")]([SubResource("Resource_r0nv5"), SubResource("Resource_2sx1w"), SubResource("Resource_7cinx"), SubResource("Resource_mlmox")])
 result_text = "权永吉是一名记者，也是反美、反殖民、反威权左翼工会运动的领袖。对于一个仍需弥合南北伤痕的统一朝鲜来说，这样一位理解多方诉求的政治人物很适合。"

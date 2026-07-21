@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_lkvco"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_1424i"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_n54w4"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_70s0l"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_l7wvu"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_lkvco"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_1424i"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_n54w4"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_70s0l"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_l7wvu"]
 
 [sub_resource type="Resource" id="Resource_3pypg"]
 script = ExtResource("3_n54w4")
@@ -19,144 +19,137 @@ key = "18"
 value = 1.0
 
 [sub_resource type="Resource" id="Resource_3wupn"]
-script = ExtResource("4_70s0l")
-type = 4
-value = 33.0
-event_id = 69
-
-[sub_resource type="Resource" id="Resource_q1rxe"]
 script = ExtResource("2_1424i")
 text = "顺其自然，任其发展。"
 disabled_text = "需要特定条件"
-enable_condition = SubResource("Resource_3wupn")
 effects = Array[ExtResource("3_n54w4")]([SubResource("Resource_3pypg"), SubResource("Resource_oo8e4")])
 result_text = "作为运动的一部分，政府官员和警察拆除了临时纪念物，撕毁了赞扬周恩来成就的海报。持续不断的贬低周恩来并禁止公开悼念的宣传活动，引起了民众对毛泽东和党内高层的广泛不满，尤其是对他的妻子江青。"
 
-[sub_resource type="Resource" id="Resource_0mhmp"]
+[sub_resource type="Resource" id="Resource_q1rxe"]
 script = ExtResource("3_n54w4")
 key = "agents"
 value = -50.0
 
-[sub_resource type="Resource" id="Resource_gfw33"]
+[sub_resource type="Resource" id="Resource_0mhmp"]
 script = ExtResource("3_n54w4")
 key = "war_support"
 value = -250.0
 
-[sub_resource type="Resource" id="Resource_nlqjh"]
+[sub_resource type="Resource" id="Resource_gfw33"]
 script = ExtResource("3_n54w4")
 key = "political"
 value = 15.0
 
-[sub_resource type="Resource" id="Resource_gxttr"]
+[sub_resource type="Resource" id="Resource_nlqjh"]
 script = ExtResource("3_n54w4")
 type = 8
 key = "0"
 value = 500.0
 
-[sub_resource type="Resource" id="Resource_utsgc"]
+[sub_resource type="Resource" id="Resource_gxttr"]
 script = ExtResource("3_n54w4")
 type = 10
 key = "0"
 value = 25.0
 
-[sub_resource type="Resource" id="Resource_sljdr"]
+[sub_resource type="Resource" id="Resource_utsgc"]
 script = ExtResource("3_n54w4")
 type = 13
 key = "19"
 value = 1.0
 
-[sub_resource type="Resource" id="Resource_2akie"]
+[sub_resource type="Resource" id="Resource_sljdr"]
 script = ExtResource("3_n54w4")
 type = 6
 key = "special_ending"
 value = 1.0
 target = "HUA"
 
-[sub_resource type="Resource" id="Resource_wkw5k"]
+[sub_resource type="Resource" id="Resource_2akie"]
 script = ExtResource("4_70s0l")
 type = 1
 key = "diplo"
 value = 400.0
 
-[sub_resource type="Resource" id="Resource_pyhwc"]
+[sub_resource type="Resource" id="Resource_wkw5k"]
 script = ExtResource("4_70s0l")
 type = 3
 key = "6"
 
-[sub_resource type="Resource" id="Resource_xchai"]
+[sub_resource type="Resource" id="Resource_pyhwc"]
 script = ExtResource("4_70s0l")
 type = 3
 key = "3"
 
-[sub_resource type="Resource" id="Resource_dmaco"]
+[sub_resource type="Resource" id="Resource_xchai"]
 script = ExtResource("4_70s0l")
 type = 18
-children = Array[ExtResource("4_70s0l")]([SubResource("Resource_wkw5k"), SubResource("Resource_pyhwc"), SubResource("Resource_xchai")])
+children = Array[ExtResource("4_70s0l")]([SubResource("Resource_2akie"), SubResource("Resource_wkw5k"), SubResource("Resource_pyhwc")])
 
-[sub_resource type="Resource" id="Resource_wao4a"]
+[sub_resource type="Resource" id="Resource_dmaco"]
 script = ExtResource("2_1424i")
 text = "严格执行毛泽东的命令。"
 disabled_text = "需要特定条件"
-enable_condition = SubResource("Resource_dmaco")
-effects = Array[ExtResource("3_n54w4")]([SubResource("Resource_0mhmp"), SubResource("Resource_gfw33"), SubResource("Resource_nlqjh"), SubResource("Resource_gxttr"), SubResource("Resource_utsgc"), SubResource("Resource_sljdr"), SubResource("Resource_2akie")])
+enable_condition = SubResource("Resource_xchai")
+effects = Array[ExtResource("3_n54w4")]([SubResource("Resource_q1rxe"), SubResource("Resource_0mhmp"), SubResource("Resource_gfw33"), SubResource("Resource_nlqjh"), SubResource("Resource_gxttr"), SubResource("Resource_utsgc"), SubResource("Resource_sljdr")])
 result_text = "作为国务院总理兼公安部长，你亲自监督了运动的严格执行。持续不断的宣传引起了民众对毛泽东和党内高层的广泛不满，尤其是对江青和继任者华国锋。"
 
-[sub_resource type="Resource" id="Resource_oxui0"]
+[sub_resource type="Resource" id="Resource_wao4a"]
 script = ExtResource("3_n54w4")
 key = "army"
 value = -50.0
 
-[sub_resource type="Resource" id="Resource_5mw0e"]
+[sub_resource type="Resource" id="Resource_oxui0"]
 script = ExtResource("3_n54w4")
 key = "war_support"
 value = -50.0
 
-[sub_resource type="Resource" id="Resource_733gl"]
+[sub_resource type="Resource" id="Resource_5mw0e"]
 script = ExtResource("3_n54w4")
 key = "agents"
 value = 25.0
 
-[sub_resource type="Resource" id="Resource_mtube"]
+[sub_resource type="Resource" id="Resource_733gl"]
 script = ExtResource("3_n54w4")
 type = 8
 key = "0"
 value = -250.0
 
-[sub_resource type="Resource" id="Resource_i0ifj"]
+[sub_resource type="Resource" id="Resource_mtube"]
 script = ExtResource("3_n54w4")
 type = 8
 key = "1"
 value = 500.0
 
-[sub_resource type="Resource" id="Resource_x0s11"]
+[sub_resource type="Resource" id="Resource_i0ifj"]
 script = ExtResource("3_n54w4")
 type = 10
 key = "1"
 value = 25.0
 
-[sub_resource type="Resource" id="Resource_rd4ue"]
+[sub_resource type="Resource" id="Resource_x0s11"]
 script = ExtResource("3_n54w4")
 type = 13
 key = "20"
 value = 1.0
 
-[sub_resource type="Resource" id="Resource_5pjtm"]
+[sub_resource type="Resource" id="Resource_rd4ue"]
 script = ExtResource("3_n54w4")
 type = 6
 key = "special_ending"
 value = 2.0
 target = "HUA"
 
-[sub_resource type="Resource" id="Resource_sdvoq"]
+[sub_resource type="Resource" id="Resource_5pjtm"]
 script = ExtResource("2_1424i")
 text = "严格执行运动，并在媒体上批判周恩来。"
 disabled_text = "需要特定条件"
-effects = Array[ExtResource("3_n54w4")]([SubResource("Resource_oxui0"), SubResource("Resource_5mw0e"), SubResource("Resource_733gl"), SubResource("Resource_mtube"), SubResource("Resource_i0ifj"), SubResource("Resource_x0s11"), SubResource("Resource_rd4ue"), SubResource("Resource_5pjtm")])
+effects = Array[ExtResource("3_n54w4")]([SubResource("Resource_wao4a"), SubResource("Resource_oxui0"), SubResource("Resource_5mw0e"), SubResource("Resource_733gl"), SubResource("Resource_mtube"), SubResource("Resource_i0ifj"), SubResource("Resource_x0s11"), SubResource("Resource_rd4ue")])
 result_text = "作为国务院总理兼公安部长，你亲自监督了运动的严格执行，并负责在报纸上发表对周恩来的批判。持续不断的宣传引起了民众对毛泽东和党内高层的广泛不满，尤其是对江青和继任者华国锋。"
 
 [resource]
 script = ExtResource("5_l7wvu")
 event_id = "five_no"
-title = "五 \"不准\""
+title = "Five \"no\""
 description = "恭喜你就任中华人民共和国国务院总理，华国锋同志。如你所知，你的前任周恩来因其清廉正直与行政才能，赢得了海内外人民的广泛尊敬。然而，他也是经济改革的积极推动者，并在党内提拔了改革派，例如他的门生邓小平。正因如此，1976年1月8日周恩来的逝世引起了民众的巨大悲痛，这也令毛泽东和中共领导层深感不满，他们对周的死反应极为冷淡。根据毛泽东的命令，发起了'五不准'运动——不准戴黑纱、不准送花圈、不准设灵堂、不准开追悼会、不准挂周恩来遗像——这到目前为止除了引发不满之外毫无作用。而你，作为新任总理，可以对这一运动的执行施加影响。"
-options = Array[ExtResource("2_1424i")]([SubResource("Resource_q1rxe"), SubResource("Resource_wao4a"), SubResource("Resource_sdvoq")])
+options = Array[ExtResource("2_1424i")]([SubResource("Resource_3wupn"), SubResource("Resource_dmaco"), SubResource("Resource_5pjtm")])

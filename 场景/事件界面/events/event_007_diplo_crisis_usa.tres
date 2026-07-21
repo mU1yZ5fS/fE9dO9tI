@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_1elvh"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_e30uj"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_vn5nf"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_tbdlv"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_v8hd3"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_1elvh"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_e30uj"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_vn5nf"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_tbdlv"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_v8hd3"]
 
 [sub_resource type="Resource" id="Resource_jueq3"]
 script = ExtResource("3_vn5nf")
@@ -99,9 +99,15 @@ enable_condition = SubResource("Resource_qng3i")
 effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_eidyv")])
 result_text = "We urgently organized a magnificent meeting of the foreign ministers of China and the USA... The detente succeeded, the tension subsided."
 
+[sub_resource type="Resource" id="Resource_ehfuw"]
+script = ExtResource("4_tbdlv")
+type = 9
+key = "0"
+
 [resource]
 script = ExtResource("5_v8hd3")
 event_id = "diplomatic_crisis_usa"
 title = "Diplomatic crisis"
 description = "Our relations with the USA have reached a critically low level. Their propaganda already accuses China of all possible and impossible crimes, and our intelligence reports on the turmoil in the Pentagon and activity at American bases in Southeast Asia. We urgently need to somehow correct the situation if we don't want the Third World War."
+trigger_conditions = Array[ExtResource("4_tbdlv")]([SubResource("Resource_ehfuw")])
 options = Array[ExtResource("2_e30uj")]([SubResource("Resource_iqph1"), SubResource("Resource_43k7t"), SubResource("Resource_06ufc"), SubResource("Resource_0l65a"), SubResource("Resource_ld467")])

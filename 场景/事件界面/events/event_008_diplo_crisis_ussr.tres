@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_opaww"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_8yby2"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_tql7y"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="4_1gicc"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="5_vi3cr"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_opaww"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_8yby2"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_tql7y"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_1gicc"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_vi3cr"]
 
 [sub_resource type="Resource" id="Resource_0i7pr"]
 script = ExtResource("3_tql7y")
@@ -73,9 +73,15 @@ disabled_text = "Nobody wants a nuclear war"
 effects = Array[ExtResource("3_tql7y")]([SubResource("Resource_t8364"), SubResource("Resource_ffqsi"), SubResource("Resource_787gw")])
 result_text = "Tension grows."
 
+[sub_resource type="Resource" id="Resource_2tw7y"]
+script = ExtResource("5_vi3cr")
+type = 9
+key = "1"
+
 [resource]
 script = ExtResource("4_1gicc")
 event_id = "diplomatic_crisis_ussr"
 title = "Diplomatic crisis"
 description = "Our relations with the USSR have reached a critically low level. Their propaganda already accuses China of all possible and impossible crimes, and our intelligence reports on the turmoil in the General Staff of the USSR and the movement of Soviet troops on the border. We urgently need to somehow correct the situation if we don't want the Third World War."
+trigger_conditions = Array[ExtResource("5_vi3cr")]([SubResource("Resource_2tw7y")])
 options = Array[ExtResource("2_8yby2")]([SubResource("Resource_uy464"), SubResource("Resource_172ff"), SubResource("Resource_45ccd"), SubResource("Resource_bq1dh")])

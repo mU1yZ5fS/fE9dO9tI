@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_jh4e6"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_0kx2q"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_764ir"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_rykqa"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_8w18u"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_jh4e6"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_0kx2q"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_764ir"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_rykqa"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_8w18u"]
 
 [sub_resource type="Resource" id="Resource_au3ro"]
 script = ExtResource("3_764ir")
@@ -109,9 +109,15 @@ text = "Let the provincial administration deal with it"
 effects = Array[ExtResource("3_764ir")]([SubResource("Resource_ckk7l"), SubResource("Resource_3lg1i"), SubResource("Resource_i5q1n")])
 result_text = "The center remained deaf to the problems of Hebei Province, which of course made it difficult to eliminate the consequences of the earthquake and gave rise to discontent."
 
+[sub_resource type="Resource" id="Resource_txetv"]
+script = ExtResource("4_rykqa")
+type = 12
+key = "1976.8"
+
 [resource]
 script = ExtResource("5_8w18u")
 event_id = "tangshan_earthquake"
 title = "Tangshan earthquake"
 description = "On July 28, a magnitude 8.2 earthquake on the Richter scale occurred in the city of Tangshan, Hebei Province, at 03:42 local time, as a result of which the city was almost completely destroyed. The destruction also took place in Tianjin and in Beijing... According to preliminary data, from 200 to 600 thousand people died."
+trigger_conditions = Array[ExtResource("4_rykqa")]([SubResource("Resource_txetv")])
 options = Array[ExtResource("2_0kx2q")]([SubResource("Resource_t8d4o"), SubResource("Resource_yu36w"), SubResource("Resource_byup5"), SubResource("Resource_1smbs")])

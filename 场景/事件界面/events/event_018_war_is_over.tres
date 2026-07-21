@@ -7,14 +7,20 @@
 [ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_7d36o"]
 
 [sub_resource type="Resource" id="Resource_ybmvd"]
+script = ExtResource("3_bea88")
+key = "political"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_t6t6v"]
 script = ExtResource("2_xu4ow")
 text = "Long live the peace!"
-result_text = "Another war ended. The outcome depends on the specific conflict."
+effects = Array[ExtResource("3_bea88")]([SubResource("Resource_ybmvd")])
+result_text = "Another war ended. The Foreign Ministry files the outcome. Military intervention stock recovers slightly."
 
 [resource]
 script = ExtResource("4_uolcr")
 event_id = "war_is_over"
 title = "War is over"
 description = "After long and bloody battles, the conflict is finally over. The Ministry of Foreign Affairs has taken care of everything and is now ready to give you a quick overview of the outcome of the war."
-options = Array[ExtResource("2_xu4ow")]([SubResource("Resource_ybmvd")])
+options = Array[ExtResource("2_xu4ow")]([SubResource("Resource_t6t6v")])
 fire_only_once = false
