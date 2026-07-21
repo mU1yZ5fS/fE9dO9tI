@@ -80,17 +80,38 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 	return "效果未录入"
 
 
-## 按激活状态取图：icon_active / icon_inactive
+## 图标命名约定（与原版/资源目录一致）：
+##   res://资产/修正图标/{id}_0.png = 激活
+##   res://资产/修正图标/{id}_1.png = 未激活
+const ICON_DIR := "res://资产/修正图标/"
+
+
+static func _load_icon_file(id: int, active: bool) -> Texture2D:
+	var suffix := "0" if active else "1"
+	var path := "%s%d_%s.png" % [ICON_DIR, id, suffix]
+	if ResourceLoader.exists(path):
+		var tex = load(path)
+		if tex is Texture2D:
+			return tex as Texture2D
+	return null
+
+
+## 按激活状态取图：优先 .tres 里配置的 icon_active/icon_inactive，否则按 {id}_0/{id}_1 约定加载
 static func icon(id: int, is_active: bool = true) -> Texture2D:
 	var def := get_def(id)
-	if def == null:
-		return null
 	if is_active:
-		return def.icon_active
-	if def.icon_inactive != null:
+		if def != null and def.icon_active != null:
+			return def.icon_active
+		return _load_icon_file(id, true)
+	if def != null and def.icon_inactive != null:
 		return def.icon_inactive
-	# 仅配了激活图：仍返回激活图，由 UI 变暗表示未激活
-	return def.icon_active
+	var off := _load_icon_file(id, false)
+	if off != null:
+		return off
+	# 仅有激活图：返回激活图，由 UI 变暗表示未激活
+	if def != null and def.icon_active != null:
+		return def.icon_active
+	return _load_icon_file(id, true)
 
 
 static func is_known(id: int) -> bool:

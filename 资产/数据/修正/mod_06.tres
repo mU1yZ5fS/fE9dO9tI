@@ -1,9 +1,13 @@
-[gd_resource type="Resource" script_class="ModifierDef" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ModifierDef" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://数据脚本/modifier_def.gd" id="1_def"]
+[ext_resource type="Texture2D" path="res://资产/修正图标/6_0.png" id="2_on"]
+[ext_resource type="Texture2D" path="res://资产/修正图标/6_1.png" id="3_off"]
 
 [resource]
 script = ExtResource("1_def")
 id = 6
 name_zh = "意识形态动员"
 effect_zh = "每两周：党内支持 +0.5，思想自由 -0.2，团结相关 +0.1\n声望 +0.2；对苏 -0.4，对美 -0.2"
+icon_active = ExtResource("2_on")
+icon_inactive = ExtResource("3_off")

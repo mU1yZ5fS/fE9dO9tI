@@ -1,9 +1,13 @@
-[gd_resource type="Resource" script_class="ModifierDef" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ModifierDef" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://数据脚本/modifier_def.gd" id="1_def"]
+[ext_resource type="Texture2D" path="res://资产/修正图标/11_0.png" id="2_on"]
+[ext_resource type="Texture2D" path="res://资产/修正图标/11_1.png" id="3_off"]
 
 [resource]
 script = ExtResource("1_def")
 id = 11
 name_zh = "经济整顿"
 effect_zh = "每两周：工业 +2，农业 +2，预算 +5，生活 +0.2，腐败 -0.1，党内支持 -5.0"
+icon_active = ExtResource("2_on")
+icon_inactive = ExtResource("3_off")

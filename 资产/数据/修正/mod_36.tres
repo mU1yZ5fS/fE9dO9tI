@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ModifierDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/modifier_def.gd" id="1_def"]
+[ext_resource type="Texture2D" path="res://资产/修正图标/36_0.png" id="2_on"]
+[ext_resource type="Texture2D" path="res://资产/修正图标/36_1.png" id="3_off"]
+
+[resource]
+script = ExtResource("1_def")
+id = 36
+name_zh = "修正 #36"
+effect_zh = "效果未录入（仅图标已挂接）"
+icon_active = ExtResource("2_on")
+icon_inactive = ExtResource("3_off")
