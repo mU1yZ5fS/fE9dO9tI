@@ -11,6 +11,7 @@ signal tech_completed(tech_id: int)
 signal stats_changed()
 
 const W = preload("res://数据脚本/world_state.gd")
+const _SaveCatalogScript = preload("res://数据脚本/save_catalog.gd")
 const WF = preload("res://数据脚本/world_factory.gd")
 
 var world: WorldState
@@ -18,6 +19,8 @@ var is_playing: bool = false
 var speed: int = 0
 var selected_country_gwcode: int = -1
 var settings_return_scene: String = "uid://bydan4iqthbaa"
+## 保存/加载界面返回目标（esc 进存档时设为外交等）
+var save_return_scene: String = "uid://bydan4iqthbaa"
 
 ## 外交（主游戏）场景是否处于激活状态。
 ## 只有外交场景激活时，时间才会流动 —— 与原版 Unity 行为一致
@@ -111,25 +114,78 @@ func load_game(path: String) -> void:
 	if not FileAccess.file_exists(path):
 		push_error("GameManager: 存档不存在 %s" % path)
 		return
-	var loaded = ResourceLoader.load(path, "WorldState", ResourceLoader.CACHE_MODE_IGNORE)
+	# 不传 type_hint：.res 内嵌 class_name 时强制 WorldState 会误报 not found
+	var loaded = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if loaded is WorldState:
-		world = loaded
+		world = loaded as WorldState
+		# 运行时缓存不序列化，读档后重建
+		world.rebuild_gwcode_index()
 		world.sync_economy()
+		selected_country_gwcode = world.player_country_gwcode
 		is_playing = false
 		speed = 0
 		_tick_timer = 0.0
+		current_event_id = ""
+		event_is_timeout = false
+		current_ending_id = -1
 		world_state_loaded.emit()
+		_notify_stats()
 	else:
-		push_error("GameManager: 加载失败")
+		push_error("GameManager: 加载失败 %s" % path)
 
 
 func save_game(path: String) -> void:
 	if world == null:
 		push_error("GameManager: 无活动游戏")
 		return
+	# 写入前同步显示视图，避免读档后经济视图过期
+	world.sync_economy()
 	var err := ResourceSaver.save(world, path)
 	if err != OK:
-		push_error("GameManager: 保存失败 %d" % err)
+		push_error("GameManager: 保存失败 %d → %s" % [err, path])
+		return
+	# 部分环境下 user:// 相对路径需 globalize 才能立刻 FileAccess 可见
+	if not FileAccess.file_exists(path):
+		var abs_path := ProjectSettings.globalize_path(path)
+		push_warning("GameManager: FileAccess 暂未见 %s (abs=%s exists=%s)" % [
+			path, abs_path, FileAccess.file_exists(abs_path)
+		])
+	print("GameManager: 已保存 %s size_hint ok" % path)
+
+
+## 槽位保存：WorldState.res + meta.json 摘要。
+## iron_override: -1=沿用 world.is_ironman；0/1=仅写 meta，不改运行时 world。
+func save_to_slot(slot: int, iron_override: int = -1) -> bool:
+	if world == null:
+		push_error("GameManager: 无活动游戏")
+		return false
+	if slot < 0:
+		return false
+	SaveCatalog.ensure_dir()
+	var path := SaveCatalog.slot_path(slot)
+	save_game(path)
+	if not FileAccess.file_exists(path):
+		return false
+	var meta := SaveCatalog.meta_from_world(world)
+	if iron_override == 0:
+		meta["is_ironman"] = false
+	elif iron_override == 1:
+		meta["is_ironman"] = true
+	SaveCatalog.write_slot_meta(slot, meta)
+	return true
+
+
+func load_from_slot(slot: int) -> bool:
+	var path := SaveCatalog.slot_path(slot)
+	if not FileAccess.file_exists(path):
+		push_error("GameManager: 槽位 %d 无存档" % slot)
+		return false
+	load_game(path)
+	return world != null
+
+
+func delete_save_slot(slot: int) -> bool:
+	return SaveCatalog.delete_slot(slot)
 
 
 func tick() -> void:

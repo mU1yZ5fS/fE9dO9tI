@@ -29,5 +29,7 @@ func _on_开始游戏_pressed() -> void:
 
 func _on_加载_pressed() -> void:
 	#跳转到加载场景
+	if GameManager:
+		GameManager.save_return_scene = "uid://bydan4iqthbaa"
 	get_tree().change_scene_to_file("uid://b1x75pv02eanc")
 	音频总管.play_button_click_sound()

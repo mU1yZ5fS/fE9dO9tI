@@ -1,105 +1,117 @@
 [gd_scene format=3 uid="uid://b1x75pv02eanc"]
 
-[ext_resource type="Script" uid="uid://y43yy5r7w2tm" path="" id="1_13wdq"]
-[ext_resource type="Texture2D" uid="uid://c3r5jxubjxnnt" path="" id="1_kpqw8"]
-[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="" id="2_sgsry"]
-[ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="" id="3_doacx"]
-[ext_resource type="Texture2D" uid="uid://cgkvinhaed2ke" path="" id="4_doacx"]
+[ext_resource type="Script" path="res://场景/加载界面/加载.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c3r5jxubjxnnt" path="res://资产/UI/加载/加载背景图.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="3_back"]
+[ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="res://资产/UI/复用/向上箭头选中.png" id="4_back_h"]
+[ext_resource type="Texture2D" uid="uid://cgkvinhaed2ke" path="res://资产/UI/加载/加载文本栏.png" id="5_bar"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="6_font"]
 
-[node name="加载" type="Control" unique_id=1369762483]
+[node name="加载" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_13wdq")
+script = ExtResource("1_script")
 
-[node name="加载背景图" type="TextureRect" parent="." unique_id=618686441]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("1_kpqw8")
+[node name="加载背景图" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="返回主菜单" type="TextureButton" parent="." unique_id=1896184626]
+[node name="返回主菜单" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 432.0
 offset_top = 24.0
 offset_right = 543.0
 offset_bottom = 136.0
-texture_normal = ExtResource("2_sgsry")
-texture_hover = ExtResource("3_doacx")
+texture_normal = ExtResource("3_back")
+texture_hover = ExtResource("4_back_h")
+ignore_texture_size = true
+stretch_mode = 5
 
-[node name="加载文本栏" type="TextureRect" parent="." unique_id=1243942437]
+[node name="加载文本栏" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = 584.0
 offset_top = 224.0
 offset_right = 1344.0
 offset_bottom = 456.0
-texture = ExtResource("4_doacx")
+texture = ExtResource("5_bar")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="加载文本" type="Label" parent="." unique_id=1595438703]
-editor_description = "用于显示存档按钮的信息
-"
+[node name="加载文本" type="Label" parent="."]
 layout_mode = 0
 offset_left = 608.0
 offset_top = 248.0
 offset_right = 1320.0
 offset_bottom = 432.0
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 22
+text = "选择存档…"
+autowrap_mode = 3
 
-[node name="无成就存档位1" type="Button" parent="." unique_id=1655137739]
-layout_mode = 0
-offset_left = 792.0
-offset_top = 496.0
-offset_right = 1112.0
-offset_bottom = 584.0
-icon = ExtResource("4_doacx")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="无成就存档位2" type="Button" parent="." unique_id=1720631398]
-layout_mode = 0
-offset_left = 792.0
-offset_top = 608.0
-offset_right = 1112.0
-offset_bottom = 696.0
-icon = ExtResource("4_doacx")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="无成就存档位3" type="Button" parent="." unique_id=2145546869]
-layout_mode = 0
-offset_left = 792.0
-offset_top = 720.0
-offset_right = 1112.0
-offset_bottom = 808.0
-icon = ExtResource("4_doacx")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="无成就存档位4" type="Button" parent="." unique_id=1924397343]
-layout_mode = 0
-offset_left = 792.0
-offset_top = 840.0
-offset_right = 1112.0
-offset_bottom = 928.0
-icon = ExtResource("4_doacx")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="成就存档位" type="Button" parent="." unique_id=1151921090]
+[node name="成就存档位" type="Button" parent="."]
 layout_mode = 0
 offset_left = 792.0
 offset_top = 72.0
 offset_right = 1112.0
 offset_bottom = 160.0
-icon = ExtResource("4_doacx")
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 20
+text = "成就槽"
 flat = true
-icon_alignment = 1
-expand_icon = true
+
+[node name="无成就存档位1" type="Button" parent="."]
+layout_mode = 0
+offset_left = 792.0
+offset_top = 496.0
+offset_right = 1112.0
+offset_bottom = 584.0
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 20
+text = "空槽 2"
+flat = true
+
+[node name="无成就存档位2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 792.0
+offset_top = 608.0
+offset_right = 1112.0
+offset_bottom = 696.0
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 20
+text = "空槽 3"
+flat = true
+
+[node name="无成就存档位3" type="Button" parent="."]
+layout_mode = 0
+offset_left = 792.0
+offset_top = 720.0
+offset_right = 1112.0
+offset_bottom = 808.0
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 20
+text = "空槽 4"
+flat = true
+
+[node name="无成就存档位4" type="Button" parent="."]
+layout_mode = 0
+offset_left = 792.0
+offset_top = 840.0
+offset_right = 1112.0
+offset_bottom = 928.0
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 20
+text = "空槽 5"
+flat = true
 
 [connection signal="pressed" from="返回主菜单" to="." method="_on_返回主菜单_pressed"]
