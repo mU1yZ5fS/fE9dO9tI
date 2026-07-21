@@ -277,7 +277,12 @@ func _refresh_modifiers() -> void:
 		var item := MODIFIER_ITEM.instantiate()
 		_list.add_child(item)
 		if item.has_method("setup"):
-			item.setup(id, ModifierCatalog.name_zh(id), ModifierCatalog.effect_zh(id, w))
+			item.setup(
+				id,
+				ModifierCatalog.name_zh(id),
+				ModifierCatalog.effect_zh(id, w),
+				ModifierCatalog.icon(id)
+			)
 	if not any:
 		var empty := Label.new()
 		empty.text = "当前无激活修正"

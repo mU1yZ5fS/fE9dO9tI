@@ -10,9 +10,19 @@ offset_right = 480.0
 offset_bottom = 100.0
 script = ExtResource("1_cjxle")
 
-[node name="名称" type="Label" parent="."]
+[node name="图标" type="TextureRect" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 8.0
+offset_top = 12.0
+offset_right = 72.0
+offset_bottom = 76.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="名称" type="Label" parent="."]
+layout_mode = 0
+offset_left = 80.0
 offset_top = 4.0
 offset_right = 472.0
 offset_bottom = 36.0
@@ -22,7 +32,7 @@ text = "修正名"
 
 [node name="效果" type="Label" parent="."]
 layout_mode = 0
-offset_left = 8.0
+offset_left = 80.0
 offset_top = 36.0
 offset_right = 472.0
 offset_bottom = 96.0

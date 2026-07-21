@@ -70,6 +70,13 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 	return "效果未录入"
 
 
+static func icon(id: int) -> Texture2D:
+	var def := get_def(id)
+	if def != null:
+		return def.icon
+	return null
+
+
 static func is_known(id: int) -> bool:
 	_ensure_loaded()
 	return _by_id.has(id)
