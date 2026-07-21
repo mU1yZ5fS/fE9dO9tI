@@ -1,8 +1,8 @@
 class_name ModifierCatalog
 extends RefCounted
 
-## 从 res://资产/数据/修正/mod_XX.tres 加载修正展示文案。
-## 运行时激活状态仍看 WorldState.modifiers；本类只负责名称/说明。
+## 从 res://资产/数据/修正/mod_XX.tres 加载修正展示文案与图标。
+## 运行时激活状态仍看 WorldState.modifiers；本类只负责定义与展示资源。
 
 const MOD_DIR := "res://资产/数据/修正/"
 
@@ -39,6 +39,16 @@ static func get_def(id: int) -> ModifierDef:
 	return _by_id.get(id) as ModifierDef
 
 
+## 已加载定义 id 列表（升序），供概览列出激活/未激活项
+static func all_ids() -> Array[int]:
+	_ensure_loaded()
+	var ids: Array[int] = []
+	for k in _by_id.keys():
+		ids.append(int(k))
+	ids.sort()
+	return ids
+
+
 static func name_zh(id: int) -> String:
 	var def := get_def(id)
 	if def != null and def.name_zh != "":
@@ -70,11 +80,17 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 	return "效果未录入"
 
 
-static func icon(id: int) -> Texture2D:
+## 按激活状态取图：icon_active / icon_inactive
+static func icon(id: int, is_active: bool = true) -> Texture2D:
 	var def := get_def(id)
-	if def != null:
-		return def.icon
-	return null
+	if def == null:
+		return null
+	if is_active:
+		return def.icon_active
+	if def.icon_inactive != null:
+		return def.icon_inactive
+	# 仅配了激活图：仍返回激活图，由 UI 变暗表示未激活
+	return def.icon_active
 
 
 static func is_known(id: int) -> bool:

@@ -262,18 +262,41 @@ func _clear_modifiers() -> void:
 		child.free()
 
 
+func _modifier_is_active(w: WorldState, id: int) -> bool:
+	if w == null or id < 0:
+		return false
+	if id < w.modifiers.size() and w.modifiers[id] != null:
+		return w.modifiers[id].is_active
+	for slot in w.modifiers:
+		if slot != null and slot.id == id:
+			return slot.is_active
+	return false
+
+
 func _refresh_modifiers() -> void:
 	_ensure_modifier_list()
 	_clear_modifiers()
 	var w: WorldState = GameManager.world
 	if w == null or _list == null:
 		return
-	var any := false
+	# 展示 catalog 中全部定义（激活/未激活两套图）；外加无定义但已激活的槽
+	var ids: Array[int] = ModifierCatalog.all_ids()
+	var seen: Dictionary = {}
+	for id in ids:
+		seen[id] = true
 	for slot in w.modifiers:
-		if slot == null or not slot.is_active:
-			continue
-		any = true
-		var id: int = slot.id
+		if slot != null and slot.is_active and not seen.has(slot.id):
+			ids.append(slot.id)
+			seen[slot.id] = true
+	ids.sort()
+	if ids.is_empty():
+		var empty := Label.new()
+		empty.text = "暂无修正定义"
+		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_list.add_child(empty)
+		return
+	for id in ids:
+		var active := _modifier_is_active(w, id)
 		var item := MODIFIER_ITEM.instantiate()
 		_list.add_child(item)
 		if item.has_method("setup"):
@@ -281,10 +304,6 @@ func _refresh_modifiers() -> void:
 				id,
 				ModifierCatalog.name_zh(id),
 				ModifierCatalog.effect_zh(id, w),
-				ModifierCatalog.icon(id)
+				ModifierCatalog.icon(id, active),
+				active
 			)
-	if not any:
-		var empty := Label.new()
-		empty.text = "当前无激活修正"
-		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		_list.add_child(empty)
