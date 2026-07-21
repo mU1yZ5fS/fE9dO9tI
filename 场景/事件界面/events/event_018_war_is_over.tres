@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_5e5ib"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_xu4ow"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_bea88"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="4_uolcr"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="5_7d36o"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_5e5ib"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_xu4ow"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_bea88"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_uolcr"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_7d36o"]
 
 [sub_resource type="Resource" id="Resource_ybmvd"]
 script = ExtResource("2_xu4ow")
@@ -17,3 +17,4 @@ event_id = "war_is_over"
 title = "War is over"
 description = "After long and bloody battles, the conflict is finally over. The Ministry of Foreign Affairs has taken care of everything and is now ready to give you a quick overview of the outcome of the war."
 options = Array[ExtResource("2_xu4ow")]([SubResource("Resource_ybmvd")])
+fire_only_once = false

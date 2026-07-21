@@ -224,6 +224,24 @@ static func set_modifier_active(key: String, active: bool = true) -> EffectNode:
 	n.value = 1.0 if active else 0.0
 	return n
 
+## 开战：war_id + 可选 infl/阵营/侧名（-1 / 空 = WarDef 默认）
+static func start_war(
+		war_id: int,
+		infl1: int = -1,
+		infl2: int = -1,
+		usa_side: int = -1,
+		ussr_side: int = -1,
+		side1: String = "",
+		side2: String = ""
+) -> EffectNode:
+	var n := EffectNode.new()
+	n.type = EffectNode.Type.START_WAR
+	n.value = float(war_id)
+	n.key = "%d,%d,%d,%d" % [infl1, infl2, usa_side, ussr_side]
+	if side1 != "" or side2 != "":
+		n.target = "%s|%s" % [side1, side2]
+	return n
+
 
 # ── 事件选项快捷构建 ──
 
@@ -1146,19 +1164,25 @@ static func create_event_15() -> EventDef:
 			+ "to overthrow the Pol Pot regime...")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	# 原作 TimeScript：1976.12+ 或 1977 年
+	ev.trigger_conditions = [date_after("1976.12")] as Array[ExprNode]
 
+	# 三选项均开战 war_id=1；infl 按 Results_text 分档；ussr_side=1
 	ev.options.append(option(
 		"Do not interfere",
 		"We decided not to intervene in the conflict. Pol Pot and the Khmer Rouge leadership, of "
 		+ "course, are very unhappy with this, but it does not seem that they will live long...",
-		[], null, ""
+		[add_resource("influence", -10),
+		start_war(1, 300, 700, -1, 1, "Kampuchea", "Vietnam")],
+		null, ""
 	))
 
 	ev.options.append(option(
 		"Remove Pol Pot in favor of the trio of Hu Nim, Hou Yuon and Khieu Samphan",
 		"Coming in contact with the Left Opposition within the Kampuchean army, we were able to "
 		+ "organize the displacement and arrest of Pol Pot...",
-		[add_resource("agents", -30)],
+		[add_resource("agents", -30),
+		start_war(1, 450, 550, -1, 1, "Kampuchea", "Vietnam")],
 		res_at_least("agents", 30),
 		"We can't remove Pol Pot"
 	))
@@ -1167,7 +1191,8 @@ static func create_event_15() -> EventDef:
 		"Help the Khmer Rouge",
 		"We sent help to our old ally, Pol Pot, but it is not known whether this is enough for him...",
 		[add_resource("army", -50), add_resource("money", -10),
-		add_empire_relation(EmpireData.USSR, -50)],
+		add_empire_relation(EmpireData.USSR, -50),
+		start_war(1, 400, 600, -1, 1, "Kampuchea", "Vietnam")],
 		null, ""
 	))
 
@@ -1187,6 +1212,8 @@ static func create_event_16() -> EventDef:
 			+ "of the communist forces throughout Indochina contribute to the growth of leftist sentiments...")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	# 原作：1976.4+ 或 1977
+	ev.trigger_conditions = [date_after("1976.4")] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Do not interfere",
@@ -1229,17 +1256,23 @@ static func create_event_17() -> EventDef:
 			+ "return to the country of the radical right general Thanom Kittikachorn...")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
+	# 原作：1976.10+ 或 1977
+	ev.trigger_conditions = [date_after("1976.10")] as Array[ExprNode]
 
 	ev.options.append(option(
 		"It's not our business",
 		"We chose not to get involved in the internal affairs of Thailand.",
-		[], null, ""
+		[add_empire_power(EmpireData.USA, 5)],
+		null, ""
 	))
 
+	# 选项2：支持 CPT 起义 → 泰国内战 war_id=2（Results_text）
 	ev.options.append(option(
 		"Send armed CPT units to help demonstrators and provoke an uprising",
 		"CPT units moved to help the student demonstrators...",
-		[add_resource("agents", -40), add_resource("army", -30)],
+		[add_resource("agents", -40), add_resource("army", -30),
+		add_empire_relation(EmpireData.USA, -100),
+		start_war(2, 300, 700, 1, 0, "Communists", "Loyalists")],
 		all_of([res_at_least("agents", 40), res_at_least("army", 30)]),
 		"We do not have enough strength to organize the uprising"
 	))
@@ -1247,7 +1280,9 @@ static func create_event_17() -> EventDef:
 	ev.options.append(option(
 		"Condemn the cruelty of Thailand",
 		"We issued a strong condemnation of the Thai government's actions.",
-		[], null, ""
+		[add_empire_relation(EmpireData.USSR, 20), add_empire_relation(EmpireData.USA, -20),
+		add_empire_power(EmpireData.USA, 5), add_resource("influence", 10)],
+		null, ""
 	))
 
 	return ev
@@ -1265,7 +1300,8 @@ static func create_event_18() -> EventDef:
 	ev.description = ("After long and bloody battles, the conflict is finally over. "
 			+ "The Ministry of Foreign Affairs has taken care of everything and is now ready "
 			+ "to give you a quick overview of the outcome of the war.")
-	ev.fire_only_once = true
+	# 多场战争可多次结束；由 I_WAR_RESOLVE + queue_pending 触发
+	ev.fire_only_once = false
 	ev.mtth_base = 0.0
 
 	ev.options.append(option(

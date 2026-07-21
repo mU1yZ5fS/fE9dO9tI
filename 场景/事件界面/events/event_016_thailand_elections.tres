@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_k1l7k"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_68mlv"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_oa6gt"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_ox2cw"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_uaxor"]
+[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_k1l7k"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_68mlv"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_oa6gt"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_ox2cw"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_uaxor"]
 
 [sub_resource type="Resource" id="Resource_cgmww"]
 script = ExtResource("3_oa6gt")
@@ -69,9 +69,15 @@ enable_condition = SubResource("Resource_c2uyo")
 effects = Array[ExtResource("3_oa6gt")]([SubResource("Resource_w2u2e")])
 result_text = "Ignoring the elections, we sent more weapons to the guerrillas from CPT..."
 
+[sub_resource type="Resource" id="Resource_7h83m"]
+script = ExtResource("4_ox2cw")
+type = 12
+key = "1976.4"
+
 [resource]
 script = ExtResource("5_uaxor")
 event_id = "thailand_elections"
 title = "Elections in Thailand"
 description = "After the fall of the military junta in 1973 and the transfer of power to the civilian government, Thailand entered the period of \"chaotic democracy\". The victories of the communist forces throughout Indochina contribute to the growth of leftist sentiments..."
+trigger_conditions = Array[ExtResource("4_ox2cw")]([SubResource("Resource_7h83m")])
 options = Array[ExtResource("2_68mlv")]([SubResource("Resource_5hqmy"), SubResource("Resource_cgc1i"), SubResource("Resource_3elvy")])

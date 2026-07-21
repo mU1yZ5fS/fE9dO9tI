@@ -65,6 +65,8 @@ enum Type {
 
 	# ── 逃生舱口 —— 高级事件回退到自定义脚本 ──
 	CUSTOM_SCRIPT,              # custom_script 指向 GDScript，引擎调用其 execute(context)
+	## 开战：value=war_id；key="infl1,infl2,usa_side,ussr_side"；target="side1|side2"
+	START_WAR,
 }
 
 ## 效果类型

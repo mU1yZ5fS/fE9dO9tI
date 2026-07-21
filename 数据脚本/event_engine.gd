@@ -189,12 +189,22 @@ func _enter_pending(event_def: EventDef) -> void:
 	event_notification.emit(event_def.event_id, event_def.title)
 
 
-## 手动将事件加入待处理队列（供外部系统如 Decision 使用）
+## 手动将事件加入待处理队列（供外部系统如 Decision / 战争结束 使用）。
+## 若已有待处理：战争结算优先覆盖；其它事件入链队列避免丢失。
 func queue_pending(event_id: String) -> void:
-	if pending_event_id != "":
-		return
 	var event_def := _events.get(event_id) as EventDef
 	if event_def == null:
+		return
+	if pending_event_id != "":
+		if event_id == "war_is_over" and pending_event_id != "war_is_over":
+			# 把原待处理事件压回链，优先展示战争结束
+			if not _event_queue.has(pending_event_id):
+				_event_queue.push_front(pending_event_id)
+			_clear_pending()
+			_enter_pending(event_def)
+			return
+		if not _event_queue.has(event_id):
+			_event_queue.append(event_id)
 		return
 	_enter_pending(event_def)
 
@@ -331,6 +341,7 @@ func execute(effects: Array[EffectNode], context: Dictionary = {}) -> void:
 			EffectNode.Type.ADD_EMPIRE_POWER: _add_empire_power(int(fx.key), int(fx.value))
 			EffectNode.Type.ADD_FACTION_SUPPORT: _add_faction_support(int(fx.key), int(fx.value))
 			EffectNode.Type.SET_WAR_STATE: _set_resource("war", int(fx.value))
+			EffectNode.Type.START_WAR: _start_war_from_effect(fx)
 			EffectNode.Type.SET_MODIFIER_ACTIVE: _set_modifier(fx.key, fx.value >= 0.5)
 			EffectNode.Type.SET_MODIFIER_AVAILABLE: _set_modifier_available(fx.key, fx.value >= 0.5)
 			EffectNode.Type.SET_FLAG: ws.set_flag(fx.key, true)
@@ -345,6 +356,37 @@ func execute(effects: Array[EffectNode], context: Dictionary = {}) -> void:
 # ========================================================================
 # 事件 UI API
 # ========================================================================
+
+## START_WAR 效果：value=war_id；key="infl1,infl2,usa_side,ussr_side"；target="side1|side2"
+func _start_war_from_effect(fx: EffectNode) -> void:
+	if GameManager == null or not GameManager.has_method("start_war"):
+		push_warning("EventEngine: START_WAR 时 GameManager.start_war 不可用")
+		return
+	var war_id := int(fx.value)
+	var infl1 := -1
+	var infl2 := -1
+	var usa_side := -1
+	var ussr_side := -1
+	if fx.key != "":
+		var parts := fx.key.split(",")
+		if parts.size() > 0 and parts[0].is_valid_int():
+			infl1 = int(parts[0])
+		if parts.size() > 1 and parts[1].is_valid_int():
+			infl2 = int(parts[1])
+		if parts.size() > 2 and parts[2].is_valid_int():
+			usa_side = int(parts[2])
+		if parts.size() > 3 and parts[3].is_valid_int():
+			ussr_side = int(parts[3])
+	var side1 := ""
+	var side2 := ""
+	if fx.target != "" and fx.target != "ROOT":
+		var sides := fx.target.split("|")
+		if sides.size() > 0:
+			side1 = sides[0]
+		if sides.size() > 1:
+			side2 = sides[1]
+	GameManager.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
+
 
 ## 执行 CUSTOM_SCRIPT 效果。
 ## custom_script 必须继承 RefCounted（而非 Node），否则 new() 创建的实例会
