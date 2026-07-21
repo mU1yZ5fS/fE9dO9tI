@@ -232,15 +232,18 @@ func _religion_label(v: int) -> String:
 
 
 func _build_allies(w: WorldState) -> String:
+	## 仅正式对华军事同盟（okb）。亲中/对华贸易是倾向或贸易，不是联盟。
+	## 开局 COUNTRY_ROWS 中 okb 全为 0 → 应显示「不属于任何联盟」。
 	var names: Array[String] = []
 	var pc := w.get_player_country()
 	for c in w.countries:
 		if c == null or c == pc:
 			continue
-		if c.has_tag("亲中") or c.has_tag("okb") or c.has_tag("econ") or c.has_tag("对华贸易"):
-			var n: String = c.chinese_name if c.chinese_name != "" else c.name
-			if n != "" and n not in names:
-				names.append(n)
+		if not c.has_tag("okb"):
+			continue
+		var n: String = c.chinese_name if c.chinese_name != "" else c.name
+		if n != "" and n not in names:
+			names.append(n)
 	var s := _h("中国人民的老朋友")
 	if names.is_empty():
 		s += "我们不属于任何联盟\n"

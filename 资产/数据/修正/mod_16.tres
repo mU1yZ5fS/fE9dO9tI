@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ModifierDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/modifier_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 16
+name_zh = "对苏关系受损"
+effect_zh = "对苏关系差时削减预算与特工"

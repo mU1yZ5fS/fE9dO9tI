@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ModifierDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/modifier_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 0
+name_zh = "工业技术依赖"
+effect_zh = "每两周工业 -0.5\n解除：自主工业技术"

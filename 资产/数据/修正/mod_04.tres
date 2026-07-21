@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ModifierDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/modifier_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 4
+name_zh = "人口与工业压力"
+effect_zh = "生活水平偏低或改革超前时压制工业，并影响自由化与团结"
