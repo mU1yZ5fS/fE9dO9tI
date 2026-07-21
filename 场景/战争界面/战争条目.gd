@@ -1,66 +1,79 @@
 extends Control
 
-## 单场战争列表条目。
+## 单场战争条目（对齐用户重制的 战争条目.tscn）。
+## 左方 = side1，右方 = side2。
+## 按钮映射原作 WarButtonScript action_id：
+##   左 人力增援=0 人道 | 特战支援=1 专家 | 军武援助=2 武器 | 外交声援=3
+##   右 人力增援=5 | 特战支援=4 | 军武援助=6 | 外交声援=7
 
-signal selected(war_id: int)
+signal action_pressed(war_id: int, action_id: int)
 
 var war_id: int = -1
 
-@onready var _name: Label = $战名
-@onready var _s1: Label = $side1
-@onready var _s2: Label = $side2
-@onready var _i1: Label = $infl1
-@onready var _i2: Label = $infl2
-@onready var _stance: Label = $站队
-@onready var _btn: Button = $选中
+const _LEFT_BTNS := {
+	"人力增援左方参战势力": 0,
+	"特战支援左方参战势力": 1,
+	"军武援助左方参战势力": 2,
+	"外交声援左方参战势力": 3,
+}
+const _RIGHT_BTNS := {
+	"特战支援右方参战势力": 4,
+	"人力增援右方参战势力": 5,
+	"军武援助右方参战势力": 6,
+	"外交声援右方参战势力": 7,
+}
 
 
 func _ready() -> void:
-	if _btn and not _btn.pressed.is_connected(_on_pressed):
-		_btn.pressed.connect(_on_pressed)
+	_wire_buttons()
 
 
-func setup(p_war_id: int, war: WarData, is_selected: bool) -> void:
+func _wire_buttons() -> void:
+	for n in _LEFT_BTNS.keys():
+		_connect_btn(n, int(_LEFT_BTNS[n]))
+	for n in _RIGHT_BTNS.keys():
+		_connect_btn(n, int(_RIGHT_BTNS[n]))
+
+
+func _connect_btn(node_name: String, action_id: int) -> void:
+	var btn := find_child(node_name, true, false)
+	if btn is Button:
+		if not btn.pressed.is_connected(_on_action):
+			btn.pressed.connect(_on_action.bind(action_id))
+
+
+func setup(p_war_id: int, war: WarData) -> void:
 	war_id = p_war_id
-	if _name == null:
-		_name = find_child("战名", true, false) as Label
-		_s1 = find_child("side1", true, false) as Label
-		_s2 = find_child("side2", true, false) as Label
-		_i1 = find_child("infl1", true, false) as Label
-		_i2 = find_child("infl2", true, false) as Label
-		_stance = find_child("站队", true, false) as Label
-		_btn = find_child("选中", true, false) as Button
-		if _btn and not _btn.pressed.is_connected(_on_pressed):
-			_btn.pressed.connect(_on_pressed)
 	if war == null:
 		return
-	var n := find_child("战名", true, false)
+	_set_label("条目战争名称", war.name_war)
+	_set_label("左方参战势力名称", war.side1)
+	_set_label("右方参战势力名称", war.side2)
+	# 原作 UI 常显示整数档；内部仍是 0–1000，这里显示 ÷10 取整更贴近美术圆圈
+	_set_label("左方参战势力数值", str(war.infl1 / 10))
+	_set_label("右方参战势力数值", str(war.infl2 / 10))
+	_refresh_button_states()
+
+
+func _set_label(node_name: String, text: String) -> void:
+	var n := find_child(node_name, true, false)
 	if n is Label:
-		n.text = war.name_war
-	var s1 := find_child("side1", true, false)
-	if s1 is Label:
-		s1.text = war.side1
-	var s2 := find_child("side2", true, false)
-	if s2 is Label:
-		s2.text = war.side2
-	var i1 := find_child("infl1", true, false)
-	if i1 is Label:
-		i1.text = "%.1f" % (float(war.infl1) / 10.0)
-	var i2 := find_child("infl2", true, false)
-	if i2 is Label:
-		i2.text = "%.1f" % (float(war.infl2) / 10.0)
-	var st := find_child("站队", true, false)
-	if st is Label:
-		var u := "美→%s" % (war.side1 if war.usa_side == 0 else war.side2)
-		var s := "苏→%s" % (war.side1 if war.ussr_side == 0 else war.side2)
-		st.text = "%s  %s" % [u, s]
-	var btn := find_child("选中", true, false)
-	if btn is Button:
-		if not btn.pressed.is_connected(_on_pressed):
-			btn.pressed.connect(_on_pressed)
-		btn.text = "已选" if is_selected else "选择"
-	modulate = Color(1.1, 1.05, 0.9, 1) if is_selected else Color.WHITE
+		n.text = text
 
 
-func _on_pressed() -> void:
-	selected.emit(war_id)
+func _refresh_button_states() -> void:
+	if GameManager == null:
+		return
+	for n in _LEFT_BTNS.keys():
+		var btn := find_child(n, true, false)
+		if btn is Button:
+			btn.disabled = not GameManager.can_intervene(war_id, int(_LEFT_BTNS[n]))
+	for n in _RIGHT_BTNS.keys():
+		var btn := find_child(n, true, false)
+		if btn is Button:
+			btn.disabled = not GameManager.can_intervene(war_id, int(_RIGHT_BTNS[n]))
+
+
+func _on_action(action_id: int) -> void:
+	音频总管.play_button_click_sound()
+	action_pressed.emit(war_id, action_id)

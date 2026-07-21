@@ -1,63 +1,269 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://b13ioqypy2mhs"]
 
-[ext_resource type="Script" path="res://场景/战争界面/战争条目.gd" id="1_entry"]
+[ext_resource type="Script" path="res://场景/战争界面/战争条目.gd" id="script_entry"]
 
-[node name="战争条目" type="PanelContainer"]
-custom_minimum_size = Vector2(900, 96)
-script = ExtResource("1_entry")
+[ext_resource type="Texture2D" uid="uid://bgloilhkremty" path="res://资产/UI/战争/条目背景.png" id="1_5010t"]
+[ext_resource type="Texture2D" uid="uid://c4sxnhb6bcdnt" path="res://资产/UI/战争/条目战争名称背景.png" id="2_f6uxw"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="3_yrfvw"]
+[ext_resource type="Texture2D" uid="uid://b7jntrvm4voxt" path="res://资产/UI/战争/参战势力背景.png" id="4_d0u78"]
+[ext_resource type="Texture2D" uid="uid://cyg6cvop43kcb" path="res://资产/UI/战争/左方参战势力图标.png" id="5_wk6fa"]
+[ext_resource type="Texture2D" uid="uid://vwcredj8ancr" path="res://资产/UI/战争/圆圈.png" id="6_l21k2"]
+[ext_resource type="Texture2D" uid="uid://2wmdqm3cdo6u" path="res://资产/UI/战争/右方参战势力图标.png" id="7_uhcjt"]
+[ext_resource type="Texture2D" uid="uid://dec4efus8irwv" path="res://资产/UI/战争/按钮背景.png" id="8_f6uxw"]
 
-[node name="Margin" type="MarginContainer" parent="."]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 4
+[node name="Control" type="Control" unique_id=1799883235]
+layout_mode = 3
+script = ExtResource("script_entry")
+anchor_right = 0.61800003
+anchor_bottom = 0.09900001
+offset_right = -0.5600586
+offset_bottom = 0.0799942
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="HBox" type="HBoxContainer" parent="Margin"]
-layout_mode = 2
-theme_override_constants/separation = 12
+[node name="条目背景" type="TextureRect" parent="." unique_id=2119196491]
+layout_mode = 0
+offset_right = 1186.0
+offset_bottom = 107.0
+texture = ExtResource("1_5010t")
 
-[node name="VBox" type="VBoxContainer" parent="Margin/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="条目战争名称背景" type="TextureRect" parent="." unique_id=1990464152]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 8.0
+offset_right = 995.0
+offset_bottom = 51.0
+texture = ExtResource("2_f6uxw")
 
-[node name="战名" type="Label" parent="Margin/HBox/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.45, 0.1, 0.1, 1)
-theme_override_font_sizes/font_size = 22
-text = "战争名"
+[node name="条目战争名称" type="Label" parent="." unique_id=1211318767]
+layout_mode = 0
+offset_left = 223.0
+offset_top = 11.0
+offset_right = 992.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+theme_override_font_sizes/font_size = 25
+text = "泰国内战"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Sides" type="HBoxContainer" parent="Margin/HBox/VBox"]
-layout_mode = 2
+[node name="左方参战势力背景" type="TextureRect" parent="." unique_id=1417819366]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 61.0
+offset_right = 600.0
+offset_bottom = 94.0
+texture = ExtResource("4_d0u78")
+expand_mode = 1
 
-[node name="side1" type="Label" parent="Margin/HBox/VBox/Sides"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "side1"
+[node name="左方参战势力名称" type="Label" parent="." unique_id=1044156882]
+layout_mode = 0
+offset_left = 413.0
+offset_top = 64.0
+offset_right = 597.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "泰国共产党"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="infl1" type="Label" parent="Margin/HBox/VBox/Sides"]
-layout_mode = 2
-text = "50.0"
+[node name="左方参战势力图标" type="TextureRect" parent="." unique_id=1225977844]
+layout_mode = 0
+offset_left = 303.0
+offset_top = 56.0
+offset_right = 349.0
+offset_bottom = 99.0
+texture = ExtResource("5_wk6fa")
 
-[node name="vs" type="Label" parent="Margin/HBox/VBox/Sides"]
-layout_mode = 2
-text = " vs "
+[node name="左方装饰圆圈" type="TextureRect" parent="." unique_id=426035295]
+layout_mode = 0
+offset_left = 242.0
+offset_top = 51.0
+offset_right = 292.0
+offset_bottom = 101.0
+texture = ExtResource("6_l21k2")
 
-[node name="side2" type="Label" parent="Margin/HBox/VBox/Sides"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "side2"
+[node name="左方参战势力数值背景" type="TextureRect" parent="." unique_id=261558093]
+layout_mode = 0
+offset_left = 354.0
+offset_top = 51.0
+offset_right = 404.0
+offset_bottom = 101.0
+texture = ExtResource("6_l21k2")
 
-[node name="infl2" type="Label" parent="Margin/HBox/VBox/Sides"]
-layout_mode = 2
-text = "50.0"
+[node name="左方参战势力数值" type="Label" parent="." unique_id=1776583198]
+layout_mode = 0
+offset_left = 364.0
+offset_top = 62.0
+offset_right = 394.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+theme_override_font_sizes/font_size = 25
+text = "41"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="站队" type="Label" parent="Margin/HBox/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "美→  苏→"
+[node name="右方参战势力背景" type="TextureRect" parent="." unique_id=494524999]
+layout_mode = 0
+offset_left = 606.0
+offset_top = 61.0
+offset_right = 796.0
+offset_bottom = 94.0
+texture = ExtResource("4_d0u78")
+expand_mode = 1
 
-[node name="选中" type="Button" parent="Margin/HBox"]
-custom_minimum_size = Vector2(100, 40)
-layout_mode = 2
-text = "选择"
+[node name="右方参战势力名称" type="Label" parent="." unique_id=843493714]
+layout_mode = 0
+offset_left = 609.0
+offset_top = 64.0
+offset_right = 793.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "泰国军政府"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="右方参战势力图标" type="TextureRect" parent="." unique_id=1243077188]
+layout_mode = 0
+offset_left = 860.0
+offset_top = 56.0
+offset_right = 906.0
+offset_bottom = 99.0
+texture = ExtResource("7_uhcjt")
+
+[node name="右方装饰圆圈" type="TextureRect" parent="." unique_id=198371206]
+layout_mode = 0
+offset_left = 914.0
+offset_top = 51.0
+offset_right = 964.0
+offset_bottom = 101.0
+texture = ExtResource("6_l21k2")
+
+[node name="右方参战势力数值背景" type="TextureRect" parent="." unique_id=2061164369]
+layout_mode = 0
+offset_left = 802.0
+offset_top = 51.0
+offset_right = 852.0
+offset_bottom = 101.0
+texture = ExtResource("6_l21k2")
+
+[node name="右方参战势力数值" type="Label" parent="." unique_id=1748920124]
+layout_mode = 0
+offset_left = 812.0
+offset_top = 62.0
+offset_right = 842.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+theme_override_font_sizes/font_size = 25
+text = "59"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="外交声援左方参战势力" type="Button" parent="." unique_id=1687582099]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 11.0
+offset_right = 208.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "外交声援"
+icon = ExtResource("8_f6uxw")
+flat = true
+icon_alignment = 1
+
+[node name="军武援助左方参战势力" type="Button" parent="." unique_id=29580347]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 51.0
+offset_right = 208.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "军武援助"
+icon = ExtResource("8_f6uxw")
+flat = true
+icon_alignment = 1
+
+[node name="人力增援左方参战势力" type="Button" parent="." unique_id=177095259]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 11.0
+offset_right = 120.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "人力增援"
+icon = ExtResource("8_f6uxw")
+flat = true
+icon_alignment = 1
+
+[node name="特战支援左方参战势力" type="Button" parent="." unique_id=1642391070]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 51.0
+offset_right = 120.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "特战支援"
+icon = ExtResource("8_f6uxw")
+flat = true
+icon_alignment = 1
+
+[node name="外交声援右方参战势力" type="Button" parent="." unique_id=261634768]
+layout_mode = 0
+offset_left = 1088.0
+offset_top = 11.0
+offset_right = 1168.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "外交声援"
+icon = ExtResource("8_f6uxw")
+flat = true
+icon_alignment = 1
+
+[node name="军武援助右方参战势力" type="Button" parent="." unique_id=645244503]
+layout_mode = 0
+offset_left = 1088.0
+offset_top = 51.0
+offset_right = 1168.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "军武援助"
+icon = ExtResource("8_f6uxw")
+flat = true
+icon_alignment = 1
+
+[node name="人力增援右方参战势力" type="Button" parent="." unique_id=664756082]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 11.0
+offset_right = 1080.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "人力增援"
+icon = ExtResource("8_f6uxw")
+flat = true
+icon_alignment = 1
+
+[node name="特战支援右方参战势力" type="Button" parent="." unique_id=437584978]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 51.0
+offset_right = 1080.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_yrfvw")
+text = "特战支援"
+icon = ExtResource("8_f6uxw")
+flat = true
+icon_alignment = 1
