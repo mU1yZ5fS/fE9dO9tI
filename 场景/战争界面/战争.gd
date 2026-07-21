@@ -1,30 +1,49 @@
 extends Control
 
 ## 战争界面主逻辑。
-## 布局以 战争.tscn 为准：状态栏 + 军事介入点 + 运行时 Scroll 列表挂条目。
-## 不在此脚本里代码拼整页 UI；仅补列表容器与调试开战条。
+## 布局以 战争.tscn 为准；列表滚动容器运行时补齐。
+## 刷新列表时用 queue_free + call_deferred，避免按钮回调里 free 触发 locked object。
 
 const ENTRY := preload("res://场景/战争界面/战争条目.tscn")
 
 var _list: VBoxContainer
 var _debug_box: HBoxContainer
+var _refresh_list_queued: bool = false
 
 
 func _ready() -> void:
 	_ensure_list_host()
 	_ensure_debug_bar()
 	if GameManager:
-		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_refresh):
-			GameManager.stats_changed.connect(_refresh)
+		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_on_stats):
+			GameManager.stats_changed.connect(_on_stats)
 		if not GameManager.date_changed.is_connected(_on_date):
 			GameManager.date_changed.connect(_on_date)
-		if not GameManager.world_state_loaded.is_connected(_refresh):
-			GameManager.world_state_loaded.connect(_refresh)
-	_refresh()
+		if not GameManager.world_state_loaded.is_connected(_on_world_loaded):
+			GameManager.world_state_loaded.connect(_on_world_loaded)
+	_refresh_intervention()
+	_rebuild_list()
 
 
 func _on_date(_d: GameDate) -> void:
-	_refresh()
+	_request_full_refresh()
+
+
+func _on_stats() -> void:
+	_request_full_refresh()
+
+
+func _on_world_loaded() -> void:
+	_request_full_refresh()
+
+
+func _request_full_refresh() -> void:
+	_refresh_intervention()
+	# 列表重建推迟到帧末，避免从条目按钮信号栈里 free 自身
+	if _refresh_list_queued:
+		return
+	_refresh_list_queued = true
+	call_deferred("_rebuild_list")
 
 
 func _ensure_list_host() -> void:
@@ -32,7 +51,6 @@ func _ensure_list_host() -> void:
 	if scroll == null:
 		scroll = ScrollContainer.new()
 		scroll.name = "战争列表滚动"
-		# 避开顶栏与左下介入点：中部可滚动区域
 		scroll.offset_left = 48.0
 		scroll.offset_top = 176.0
 		scroll.offset_right = 1872.0
@@ -71,24 +89,19 @@ func _ensure_debug_bar() -> void:
 		_debug_box.add_child(b)
 
 
-func _refresh() -> void:
-	_refresh_intervention()
-	_refresh_list()
-
-
 func _refresh_intervention() -> void:
 	var lbl := find_child("军事介入点数值", true, false)
 	if lbl is Label and GameManager:
 		lbl.text = GameManager.get_mil_intervention_display()
 
 
-func _refresh_list() -> void:
-	if _list == null:
+func _rebuild_list() -> void:
+	_refresh_list_queued = false
+	if _list == null or not is_instance_valid(_list):
 		return
-	while _list.get_child_count() > 0:
-		var c := _list.get_child(0)
+	for c in _list.get_children():
 		_list.remove_child(c)
-		c.free()
+		c.queue_free()
 	if GameManager == null or GameManager.world == null:
 		return
 	var any := false
@@ -98,7 +111,6 @@ func _refresh_list() -> void:
 			continue
 		any = true
 		var item := ENTRY.instantiate() as Control
-		# 条目根锚点较特殊，实例化后用最小高度保证列表排布
 		item.custom_minimum_size = Vector2(1186, 110)
 		_list.add_child(item)
 		if item.has_method("setup"):
@@ -113,11 +125,13 @@ func _refresh_list() -> void:
 
 
 func _on_entry_action(war_id: int, action_id: int) -> void:
-	if GameManager and GameManager.intervene_war(war_id, action_id):
-		_refresh()
+	if GameManager == null:
+		return
+	# 只改数据；列表在 stats_changed → deferred rebuild
+	GameManager.intervene_war(war_id, action_id)
 
 
 func _on_debug_start(war_id: int) -> void:
 	音频总管.play_button_click_sound()
-	if GameManager and GameManager.debug_start_war(war_id):
-		_refresh()
+	if GameManager:
+		GameManager.debug_start_war(war_id)
