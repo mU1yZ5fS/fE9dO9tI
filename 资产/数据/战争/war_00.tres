@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 0
+name_zh = "第三次朝鲜战争"
+name_en = "Third Korean War"
+fortnight_max = 48
+drift_infl1 = -7
+drift_infl2 = 7
+drift_extra_infl1 = -2
+drift_extra_infl2 = 2
+drift_extra_flag = "korea_prop_prc"
+default_side1 = "北朝鲜"
+default_side2 = "南朝鲜"
+default_usa_side = 1
+default_ussr_side = 0
+default_infl1 = 400
+default_infl2 = 600

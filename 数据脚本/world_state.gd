@@ -7,6 +7,7 @@ extends Resource
 # 数值表索引常量 — 取代魔术数字
 # ============================================================================
 
+const I_MIL_INTERVENTION := 0   ## 军事介入点（原 data[0]）
 const I_PARTY_SUPPORT := 1       ## 党内支持
 const I_SOVIET_INFLUENCE := 2    ## 苏联影响力
 const I_USA_INFLUENCE := 10      ## 美国影响力（empires[0].power 的种子源）
@@ -30,6 +31,8 @@ const I_INCOME := 23            ## 收入
 const I_IMPORT_NEEDS := 24      ## 进口需求
 const I_TRADE_PARTNERS := 25    ## 贸易伙伴数
 const I_CORRUPTION := 26        ## 腐败
+const I_USA_RELATIONS := 28    ## 对美关系镜像（权威在 empires[0].relations）
+const I_USSR_RELATIONS := 29   ## 对苏关系镜像（权威在 empires[1].relations）
 const I_WAR_SUPPORT := 31       ## 战争支持度
 const I_ECON_OPENNESS := 33     ## 经济开放度
 const I_POPULATION := 34        ## 人口(万)
@@ -43,10 +46,6 @@ const I_POLITICAL_DISPLAY := 54 ## 政治显示等级
 const I_POLITICAL_OPENNESS := 55 ## 政治开放度
 const I_POLITICAL_LINE := 56    ## 政治路线
 const I_MANPOWER := 57          ## 兵源
-const I_BIRTH_POLICY := 105     ## 生育政策/人口增长基数（原版 data[105]：0一胎 1二胎 2无限制）
-const I_FOREIGN_AID := 146     ## 外援强度（原版 data[146]，dota 消耗）
-const I_USA_RELATIONS := 28    ## 对美关系镜像（权威在 empires[0].relations）
-const I_USSR_RELATIONS := 29   ## 对苏关系镜像（权威在 empires[1].relations）
 const I_SERVICES := 68          ## 服务业产值
 const I_LOAN := 69              ## 国债
 const I_BUDGET_ARMY := 71       ## 预算: 军费
@@ -60,8 +59,13 @@ const I_BUDGET_INDUSTRY := 78   ## 预算: 工业
 const I_BUDGET_SERVICES := 79   ## 预算: 服务业
 const I_BUDGET_WELFARE := 80    ## 预算: 福利
 const I_BUDGET_DIPLO := 81      ## 预算: 外交
+const I_WAR_RESOLVE := 82       ## 待结算战争 id，<0 无（原 data[82]）
+const I_PROJECTION := 93        ## 投射力（原 data[93]）
+const I_AFGHAN_POLICY := 94     ## 阿富汗策略（原 data[94]）
+const I_BIRTH_POLICY := 105     ## 生育政策/人口增长基数（原版 data[105]：0一胎 1二胎 2无限制）
 const I_SATISFIED := 106        ## 满意现秩序者
 const I_OLIGARCH := 108         ## 寡头影响力
+const I_FOREIGN_AID := 146     ## 外援强度（原版 data[146]，dota 消耗）
 const I_INDUSTRY_BASE := 152    ## 工业基数
 
 # ── 数值表索引 → 语义名映射（事件/效果系统的字符串 key 查表用） ──
@@ -87,6 +91,9 @@ const 数值索引 := {
 	"day": 19, "month": 20, "year": 21,
 	"army": I_ARMY, "army_strength": I_ARMY, "military": I_ARMY, "军力": I_ARMY,
 	"corruption": I_CORRUPTION, "腐败": I_CORRUPTION,
+	"mil_intervention": I_MIL_INTERVENTION, "军事介入点": I_MIL_INTERVENTION,
+	"war_resolve": I_WAR_RESOLVE, "战争结算": I_WAR_RESOLVE,
+	"projection": I_PROJECTION, "投射力": I_PROJECTION,
 	"war_support": I_WAR_SUPPORT,
 	"population": I_POPULATION, "人口": I_POPULATION,
 	"money_reserve": I_RESERVE, "reserve": I_RESERVE, "外汇": I_RESERVE,

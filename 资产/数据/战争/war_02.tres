@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 2
+name_zh = "泰国内战"
+name_en = "Thai Civil War"
+fortnight_max = 96
+drift_infl1 = -5
+drift_infl2 = 5
+drift_extra_infl1 = 0
+drift_extra_infl2 = 0
+drift_extra_flag = ""
+default_side1 = "泰共"
+default_side2 = "泰国政府"
+default_usa_side = 0
+default_ussr_side = 0
+default_infl1 = 500
+default_infl2 = 500

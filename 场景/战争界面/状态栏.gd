@@ -1,37 +1,47 @@
 extends CanvasLayer
 
-## 状态栏 — 经济界面。
+## 状态栏 — 战争界面。
 
 const 外交场景 := "uid://vq6jexkk5tru"
+const 经济场景 := "uid://btldk7ul11cqn"
 const 派系场景 := "uid://dly5fmobnogab"
 const 科研场景 := "uid://d2qkifpx3o8pl"
 const 政治场景 := "uid://dsmslhxc0e8u5"
 const 概览场景 := "uid://cj3ye88n40e8y"
-const 战争场景 := "uid://bs6bexbaawcyw"
 
 
 func _ready() -> void:
 	if not GameManager:
 		return
 	if GameManager.has_signal("stats_changed"):
-		GameManager.stats_changed.connect(_refresh)
-	GameManager.date_changed.connect(func(_d): _refresh())
-	GameManager.world_state_loaded.connect(_refresh)
+		if not GameManager.stats_changed.is_connected(_refresh):
+			GameManager.stats_changed.connect(_refresh)
+	if not GameManager.date_changed.is_connected(_on_date):
+		GameManager.date_changed.connect(_on_date)
+	if not GameManager.world_state_loaded.is_connected(_refresh):
+		GameManager.world_state_loaded.connect(_refresh)
 	_connect_nav("世界地图", 外交场景)
+	_connect_nav("经济", 经济场景)
 	_connect_nav("派系", 派系场景)
 	_connect_nav("科学", 科研场景)
 	_connect_nav("政治", 政治场景)
-	_connect_nav("战争", 战争场景)
 	_connect_nav("概览", 概览场景)
+	# 修正误标：节点名「概览」若 text 为「战争」则改回
+	var overview_btn := find_child("概览", true, false)
+	if overview_btn is Button:
+		overview_btn.text = "概览"
 	if GameManager.world != null:
 		_refresh()
+
+
+func _on_date(_d: GameDate) -> void:
+	_refresh()
 
 
 func _refresh() -> void:
 	var w := GameManager.world
 	if w == null:
 		return
-	# 刷新前强制从数值表同步显示视图，避免跨场景后读到旧缓存
 	w.sync_economy()
 	if w.玩家经济 == null:
 		return
@@ -45,7 +55,6 @@ func _refresh() -> void:
 	_label("全球影响力", "%.1f" % eco.全球影响力)
 	_label("预算", "%.1f" % (float(eco.预算) / 10.0))
 	if w.empires.size() >= 2:
-		# 关系值内部以 ×10 存储，显示时除以 10
 		_label("与美国关系", w.display_relation(w.empires[0].relations))
 		_label("与苏联关系", w.display_relation(w.empires[1].relations))
 

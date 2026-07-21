@@ -151,6 +151,8 @@ func tick() -> void:
 	if world.date.day % 14 == 0:
 		_on_fortnight()
 
+	_check_war_endings()
+
 	if EventEngine:
 		EventEngine.check_and_fire()
 
@@ -215,6 +217,9 @@ func _start_initial_events() -> void:
 
 
 func clear_event() -> void:
+	# 战争结束事件关闭后结算槽位
+	if current_event_id == "war_is_over":
+		resolve_war_finished()
 	current_event_id = ""
 	event_is_timeout = false
 
@@ -665,6 +670,7 @@ func _on_month_changed() -> void:
 	if w.date.month == 1 or w.date.month == 7:
 		_biannual_faction_points(d, w)
 		_biannual_faction_drift(w)
+	_monthly_war_points()
 	w.flush_economy()
 
 
@@ -1861,6 +1867,7 @@ func _on_fortnight() -> void:
 	_fortnight_econ_system_effect(d)
 	_fortnight_difficulty_bonus(d, w)
 	_check_coup(d, w)
+	_fortnight_wars(w)
 	# 阴谋网也挂双周一次（原版 Death/Plot 在年/特定块；月结已跑，此处不重复击杀）
 	_check_endings(d, w, year)
 
@@ -2223,3 +2230,250 @@ func _trigger_ending(ending_id: int) -> void:
 	current_ending_id = ending_id
 	pause()
 	get_tree().change_scene_to_file("uid://b1dm8nycmn3gw")
+# ============================================================================
+# 代理战争 — WarCatalog + WarActionCatalog
+# ============================================================================
+
+func _monthly_war_points() -> void:
+	var w := world
+	if w == null:
+		return
+	var d := w.数值表
+	@warning_ignore("integer_division")
+	d[W.I_MIL_INTERVENTION] += d[W.I_PROJECTION] / 50
+	var any_war := false
+	for war in w.wars:
+		if war != null and war.is_going:
+			any_war = true
+			break
+	if any_war:
+		@warning_ignore("integer_division")
+		d[W.I_MIL_INTERVENTION] += d[W.I_INFLUENCE] / 12
+
+
+func _clamp_war_infl(war: WarData) -> void:
+	if war.infl1 > 1000 or war.infl2 < 0:
+		war.infl1 = 1000
+		war.infl2 = 0
+	elif war.infl2 > 1000 or war.infl1 < 0:
+		war.infl2 = 1000
+		war.infl1 = 0
+	war.infl1 = clampi(war.infl1, 0, 1000)
+	war.infl2 = clampi(war.infl2, 0, 1000)
+
+
+func _fortnight_wars(w: WorldState) -> void:
+	if w == null:
+		return
+	for i in w.wars.size():
+		var war: WarData = w.wars[i]
+		if war == null or not war.is_going:
+			continue
+		var def := WarCatalog.get_def(i)
+		if def:
+			war.infl1 += def.drift_infl1
+			war.infl2 += def.drift_infl2
+			_apply_war_drift_extra(w, war, def)
+		war.fortnight_elapsed += 1
+		_clamp_war_infl(war)
+
+
+func _apply_war_drift_extra(w: WorldState, war: WarData, def: WarDef) -> void:
+	var flag := def.drift_extra_flag
+	if flag.is_empty():
+		return
+	match flag:
+		"korea_prop_prc":
+			war.infl1 += def.drift_extra_infl1
+			war.infl2 += def.drift_extra_infl2
+		"iran_iraq":
+			pass
+		"afghanistan":
+			if war.ussr_side == 1:
+				war.infl1 -= 50
+				war.infl2 += 50
+			if w.数值表.size() > W.I_AFGHAN_POLICY:
+				var pol: int = w.数值表[W.I_AFGHAN_POLICY]
+				if pol == 1:
+					war.infl1 += 4
+					war.infl2 -= 4
+				elif pol == 3:
+					war.infl1 += 6
+					war.infl2 -= 6
+				elif pol == 2:
+					war.infl1 -= 2
+					war.infl2 += 2
+		_:
+			pass
+
+
+func _check_war_endings() -> void:
+	var w := world
+	if w == null:
+		return
+	if w.数值表.size() <= W.I_WAR_RESOLVE:
+		return
+	if w.数值表[W.I_WAR_RESOLVE] >= 0:
+		return
+	for i in w.wars.size():
+		var war: WarData = w.wars[i]
+		if war == null or not war.is_going:
+			continue
+		var by_time := war.fortnight_max >= 0 and war.fortnight_elapsed >= war.fortnight_max
+		var by_infl := war.infl1 >= 1000 or war.infl2 >= 1000
+		if by_time or by_infl:
+			w.数值表[W.I_WAR_RESOLVE] = i
+			if EventEngine:
+				EventEngine.queue_pending("war_is_over")
+			_notify_stats()
+			return
+
+
+func get_active_wars() -> Array[WarData]:
+	var out: Array[WarData] = []
+	if world == null:
+		return out
+	for war in world.wars:
+		if war != null and war.is_going:
+			out.append(war)
+	return out
+
+
+func get_mil_intervention_display() -> String:
+	if world == null:
+		return "0.0"
+	return "%.1f" % (float(world.数值表[W.I_MIL_INTERVENTION]) / 10.0)
+
+
+func start_war(
+	war_id: int,
+	side1: String = "",
+	side2: String = "",
+	infl1: int = -1,
+	infl2: int = -1,
+	usa_side: int = -1,
+	ussr_side: int = -1
+) -> bool:
+	if world == null or war_id < 0:
+		return false
+	while world.wars.size() <= war_id:
+		world.wars.append(WarData.new())
+	var war: WarData = world.wars[war_id]
+	if war == null:
+		war = WarData.new()
+		world.wars[war_id] = war
+	var def := WarCatalog.get_def(war_id)
+	war.is_going = true
+	if def:
+		war.name_war = def.name_zh
+		war.side1 = side1 if side1 != "" else def.default_side1
+		war.side2 = side2 if side2 != "" else def.default_side2
+		war.infl1 = infl1 if infl1 >= 0 else def.default_infl1
+		war.infl2 = infl2 if infl2 >= 0 else def.default_infl2
+		war.usa_side = usa_side if usa_side >= 0 else def.default_usa_side
+		war.ussr_side = ussr_side if ussr_side >= 0 else def.default_ussr_side
+		war.fortnight_max = def.fortnight_max
+	else:
+		war.name_war = "战争 #%d" % war_id
+		war.side1 = side1 if side1 != "" else "side1"
+		war.side2 = side2 if side2 != "" else "side2"
+		war.infl1 = infl1 if infl1 >= 0 else 500
+		war.infl2 = infl2 if infl2 >= 0 else 500
+		war.usa_side = usa_side if usa_side >= 0 else 0
+		war.ussr_side = ussr_side if ussr_side >= 0 else 0
+	war.fortnight_elapsed = 0
+	war.diplo_done = [false, false]
+	_clamp_war_infl(war)
+	_notify_stats()
+	return true
+
+
+func debug_start_war(war_id: int) -> bool:
+	return start_war(war_id)
+
+
+func can_intervene(war_id: int, action_id: int) -> bool:
+	if world == null:
+		return false
+	if war_id < 0 or war_id >= world.wars.size():
+		return false
+	var war: WarData = world.wars[war_id]
+	if war == null or not war.is_going:
+		return false
+	var act := WarActionCatalog.get_action(action_id)
+	if act.is_empty():
+		return false
+	var d := world.数值表
+	var side: int = int(act["side"])
+	if side == 1:
+		if war.infl1 >= 1000 or war.infl2 <= 0:
+			return false
+	else:
+		if war.infl2 >= 1000 or war.infl1 <= 0:
+			return false
+	if bool(act["diplo"]):
+		return not (war.diplo_done[0] or war.diplo_done[1])
+	if d[W.I_MIL_INTERVENTION] < int(act["interv"]):
+		return false
+	if d[W.I_BUDGET] < int(act["budget"]):
+		return false
+	if d[W.I_AGENTS] < int(act["agents"]):
+		return false
+	if d[W.I_ARMY] < int(act["army"]):
+		return false
+	return true
+
+
+func intervene_war(war_id: int, action_id: int) -> bool:
+	if not can_intervene(war_id, action_id):
+		return false
+	var war: WarData = world.wars[war_id]
+	var act := WarActionCatalog.get_action(action_id)
+	var d := world.数值表
+	var side: int = int(act["side"])
+	d[W.I_BUDGET] -= int(act["budget"])
+	d[W.I_AGENTS] -= int(act["agents"])
+	d[W.I_ARMY] -= int(act["army"])
+	if not bool(act["diplo"]):
+		d[W.I_MIL_INTERVENTION] -= int(act["interv"])
+	if side == 1:
+		war.infl1 += int(act["d_self"])
+		war.infl2 += int(act["d_other"])
+	else:
+		war.infl2 += int(act["d_self"])
+		war.infl1 += int(act["d_other"])
+	if bool(act["diplo"]):
+		var di: int = int(act["diplo_i"])
+		if di >= 0 and di < war.diplo_done.size():
+			war.diplo_done[di] = true
+		var rf: int = int(act["rel_friend"])
+		if rf != 0:
+			if war.usa_side == side - 1 and world.empires.size() > 0:
+				world.empires[0].relations += rf
+			if war.ussr_side == side - 1 and world.empires.size() > 1:
+				world.empires[1].relations += rf
+	else:
+		var re: int = int(act["rel_enemy"])
+		if re != 0:
+			var enemy_place := 1 if side == 1 else 0
+			if war.usa_side == enemy_place and world.empires.size() > 0:
+				world.empires[0].relations += re
+			if war.ussr_side == enemy_place and world.empires.size() > 1:
+				world.empires[1].relations += re
+	_clamp_war_infl(war)
+	_mirror_empires_to_data(world)
+	_notify_stats()
+	return true
+
+
+func resolve_war_finished(war_id: int = -1) -> void:
+	if world == null:
+		return
+	var id := war_id
+	if id < 0:
+		id = world.数值表[W.I_WAR_RESOLVE]
+	if id >= 0 and id < world.wars.size() and world.wars[id] != null:
+		world.wars[id].is_going = false
+	world.数值表[W.I_WAR_RESOLVE] = -1
+	_notify_stats()
+

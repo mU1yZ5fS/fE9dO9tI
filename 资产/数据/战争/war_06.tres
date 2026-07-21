@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 6
+name_zh = "福克兰战争"
+name_en = "Falklands War"
+fortnight_max = 24
+drift_infl1 = -10
+drift_infl2 = 10
+drift_extra_infl1 = 0
+drift_extra_infl2 = 0
+drift_extra_flag = ""
+default_side1 = "阿根廷"
+default_side2 = "英国"
+default_usa_side = 1
+default_ussr_side = 0
+default_infl1 = 450
+default_infl2 = 550

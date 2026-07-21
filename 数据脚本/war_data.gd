@@ -1,20 +1,23 @@
 class_name WarData
 extends Resource
 
-## 战争数据。对应原版 warinwars 类。
-## GameState.ingamewars[50]
+## 战争运行时数据。对应原版 warinwars。
+## 静态规则见 WarDef / WarCatalog。
 
 @export var is_going: bool = false
 @export var name_war: String = ""
-@export var side1: String = ""       # 攻击方名称
-@export var side2: String = ""       # 防御方名称
-@export var infl1: int = 0           # 攻击方战争分数 0-1000
-@export var infl2: int = 0           # 防御方战争分数 0-1000
-@export var fortnight_elapsed: int = 0  # 已过双周数
-@export var fortnight_max: int = 999    # 最大双周数
-@export var usa_side: int = 0        # 美国支持哪方 (0/1)
-@export var ussr_side: int = 0       # 苏联支持哪方 (0/1)
+@export var side1: String = ""
+@export var side2: String = ""
+@export var infl1: int = 0
+@export var infl2: int = 0
+@export var fortnight_elapsed: int = 0
+## 开战时从 WarDef 拷贝；-1 = 仅 infl 结束
+@export var fortnight_max: int = 48
+## 0 = 支持 side1，1 = 支持 side2
+@export var usa_side: int = 0
+@export var ussr_side: int = 0
 @export var diplo_done: Array[bool] = [false, false]
+
 
 func _init(
 	p_is_going: bool = false,
@@ -30,3 +33,4 @@ func _init(
 	side2 = p_side2
 	infl1 = p_infl1
 	infl2 = p_infl2
+	diplo_done = [false, false]

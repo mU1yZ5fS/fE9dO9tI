@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 5
+name_zh = "阿富汗战争"
+name_en = "Afghan War"
+fortnight_max = -1
+drift_infl1 = -1
+drift_infl2 = 1
+drift_extra_infl1 = 0
+drift_extra_infl2 = 0
+drift_extra_flag = "afghanistan"
+default_side1 = "圣战者"
+default_side2 = "阿富汗政府"
+default_usa_side = 0
+default_ussr_side = 1
+default_infl1 = 400
+default_infl2 = 600

@@ -322,6 +322,7 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	_init_modifiers(ws)
 	_init_science(ws)
 	_init_empires(ws)
+	_init_wars(ws)
 	_apply_post_load_overrides(ws, difficulty)
 
 	# 为玩家国家分配经济显示视图
@@ -1041,6 +1042,8 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 	ws.数值表[27] = 0
 	ws.数值表[0] = 0
 	ws.数值表[85] = 0
+	ws.数值表[WorldState.I_WAR_RESOLVE] = -1
+	ws.数值表[WorldState.I_MIL_INTERVENTION] = 0
 
 	# 随机外交参数
 	ws.数值表[47] = randi_range(1, 4)
@@ -1062,6 +1065,39 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 			ws.数值表[WorldState.I_SCIENCE] = 0
 		3:  # 困难
 			ws.数值表[WorldState.I_SCIENCE] = 0
+
+
+
+# ============================================================================
+# 代理战争槽 -- 按 WarCatalog 生成
+# ============================================================================
+
+static func _init_wars(ws: WorldState) -> void:
+	ws.wars.clear()
+	var ids: Array = WarCatalog.all_ids()
+	if ids.is_empty():
+		for i in 7:
+			var empty := WarData.new()
+			empty.name_war = "战争 #%d" % i
+			empty.fortnight_max = 48
+			ws.wars.append(empty)
+		print("WorldFactory: WarCatalog 空，创建 %d 个占位战争槽" % ws.wars.size())
+		return
+	var max_id := 0
+	for i in ids:
+		max_id = maxi(max_id, int(i))
+	ws.wars.resize(max_id + 1)
+	for id in ids:
+		var iid := int(id)
+		var def := WarCatalog.get_def(iid)
+		var w := WarData.new()
+		w.is_going = false
+		w.name_war = def.name_zh if def else ("战争 #%d" % iid)
+		w.fortnight_max = def.fortnight_max if def else 48
+		w.fortnight_elapsed = 0
+		w.diplo_done = [false, false]
+		ws.wars[iid] = w
+	print("WorldFactory: 加载了 %d 个战争槽" % ws.wars.size())
 
 
 # ============================================================================
