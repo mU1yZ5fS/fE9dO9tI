@@ -8,17 +8,22 @@ const 派系场景 := "uid://dly5fmobnogab"
 const 经济场景 := "uid://btldk7ul11cqn"
 const 科研场景 := "uid://d2qkifpx3o8pl"
 const 政治场景 := "uid://dsmslhxc0e8u5"
+const 概览场景 := "uid://cj3ye88n40e8y"
 
 
 func _ready() -> void:
 	if not GameManager:
 		return
+	if GameManager.has_signal("stats_changed"):
+		if not GameManager.stats_changed.is_connected(_refresh):
+			GameManager.stats_changed.connect(_refresh)
 	GameManager.date_changed.connect(_on_tick)
 	GameManager.world_state_loaded.connect(_refresh)
 	_connect_nav("派系", 派系场景)
 	_connect_nav("经济", 经济场景)
 	_connect_nav("科学", 科研场景)
 	_connect_nav("政治", 政治场景)
+	_connect_nav("概览", 概览场景)
 	if GameManager.world != null:
 		_refresh()
 

@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://bqaw1khohkkov" path="res://资产/UI/主游戏UI/切场景菜单背景.png" id="16_ha7r7"]
 [ext_resource type="Texture2D" uid="uid://ci1wkicj4r7tc" path="res://资产/UI/概览/плашка.png" id="17_q3aln"]
 [ext_resource type="Texture2D" uid="uid://dn5r2xt4xyu6h" path="res://资产/UI/概览/切换显示按钮背景.png" id="18_oy31c"]
+[ext_resource type="Script" path="res://场景/概览界面/概览.gd" id="19_overview"]
 
 [node name="概览" type="Control" unique_id=103169998]
 layout_mode = 3
@@ -26,6 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("19_overview")
 
 [node name="背景" type="TextureRect" parent="." unique_id=938139217]
 layout_mode = 0
@@ -734,3 +736,15 @@ offset_left = 1344.0
 offset_top = 192.0
 offset_right = 1856.0
 offset_bottom = 1048.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="修正显示区域"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="修正列表" type="VBoxContainer" parent="修正显示区域/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

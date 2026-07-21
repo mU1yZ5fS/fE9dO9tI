@@ -6,6 +6,7 @@ const 外交场景 := "uid://vq6jexkk5tru"
 const 派系场景 := "uid://dly5fmobnogab"
 const 科研场景 := "uid://d2qkifpx3o8pl"
 const 政治场景 := "uid://dsmslhxc0e8u5"
+const 概览场景 := "uid://cj3ye88n40e8y"
 
 
 func _ready() -> void:
@@ -19,6 +20,7 @@ func _ready() -> void:
 	_connect_nav("派系", 派系场景)
 	_connect_nav("科学", 科研场景)
 	_connect_nav("政治", 政治场景)
+	_connect_nav("概览", 概览场景)
 	if GameManager.world != null:
 		_refresh()
 
