@@ -51,19 +51,34 @@ func _ensure_list_host() -> void:
 	if scroll == null:
 		scroll = ScrollContainer.new()
 		scroll.name = "战争列表滚动"
-		scroll.offset_left = 48.0
+		# 条目宽约 1186：水平居中于 1920；(1920-1186)/2 ≈ 367
+		const ENTRY_W := 1186.0
+		const VIEW_W := 1920.0
+		const MARGIN_X := (VIEW_W - ENTRY_W) * 0.5
+		scroll.offset_left = MARGIN_X
 		scroll.offset_top = 176.0
-		scroll.offset_right = 1872.0
+		scroll.offset_right = MARGIN_X + ENTRY_W
 		scroll.offset_bottom = 760.0
 		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		add_child(scroll)
+	else:
+		# 已存在时也强制居中宽度，避免旧 offset 偏左
+		const ENTRY_W2 := 1186.0
+		const VIEW_W2 := 1920.0
+		const MARGIN_X2 := (VIEW_W2 - ENTRY_W2) * 0.5
+		scroll.offset_left = MARGIN_X2
+		scroll.offset_right = MARGIN_X2 + ENTRY_W2
 	_list = scroll.get_node_or_null("战争列表") as VBoxContainer
 	if _list == null:
 		_list = VBoxContainer.new()
 		_list.name = "战争列表"
 		_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_list.alignment = BoxContainer.ALIGNMENT_CENTER
 		_list.add_theme_constant_override("separation", 8)
 		scroll.add_child(_list)
+	else:
+		_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_list.alignment = BoxContainer.ALIGNMENT_CENTER
 
 
 func _ensure_debug_bar() -> void:
@@ -111,7 +126,16 @@ func _rebuild_list() -> void:
 			continue
 		any = true
 		var item := ENTRY.instantiate() as Control
+		# 条目视觉宽 1186；取消宽锚点，避免在列表里被拉偏
+		item.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		item.anchor_right = 0.0
+		item.anchor_bottom = 0.0
+		item.offset_left = 0.0
+		item.offset_top = 0.0
+		item.offset_right = 1186.0
+		item.offset_bottom = 110.0
 		item.custom_minimum_size = Vector2(1186, 110)
+		item.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		_list.add_child(item)
 		if item.has_method("setup"):
 			item.setup(i, war)
@@ -121,6 +145,7 @@ func _rebuild_list() -> void:
 		var empty := Label.new()
 		empty.text = "当前无进行中的代理战争（可用下方调试开战）"
 		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_list.add_child(empty)
 
 
