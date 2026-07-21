@@ -514,12 +514,21 @@ func set_faction_enabled(faction_idx: int, is_enabled: bool) -> void:
 				push_warning("GameManager: 自由派尚未满足解锁条件")
 				return
 			return
+	var was_enabled := world.factions[faction_idx].is_enabled
 	world.factions[faction_idx].is_enabled = is_enabled
-	# 禁止派系：支持下滑（FAC-04 最小连锁）
-	if not is_enabled:
+	# FAC-04：禁止派系连锁 — support 腰斩、points 清零、同派政客忠诚/权力下滑
+	if was_enabled and not is_enabled:
 		var f: FactionData = world.factions[faction_idx]
+		@warning_ignore("integer_division")
 		f.support = maxi(0, f.support / 2)
 		f.points = 0
+		f.is_ally = false
+		for p in world.politicians:
+			if p == null or p.name_display == "空位":
+				continue
+			if p.party_index() == faction_idx:
+				p.loyalty = maxi(0, p.loyalty - 150)
+				p.power = maxi(0, p.power - 50)
 	_notify_stats()
 
 
@@ -668,8 +677,11 @@ func _on_year_changed() -> void:
 	# 派系 support 年度衰减（原版 party_number/=10）
 	for f in w.factions:
 		f.support = f.support / 10
-	# 满意现秩序者衰减（原版 835）
+	# 满意现秩序者衰减（原版 835 年 /=10）
 	d[W.I_SATISFIED] = d[W.I_SATISFIED] / 10
+	# 联合/人民民主(7/8) 额外腰斩（TimeScript 年滚 ~640）
+	if d[W.I_SATISFIED] > 1 and (d[W.I_PARTY_SYSTEM] == 7 or d[W.I_PARTY_SYSTEM] == 8):
+		d[W.I_SATISFIED] = d[W.I_SATISFIED] / 2
 	# POL-05 / POL-12：年龄 +1、病弱/老死、任职年数（TimeScript 615–621 + DeathPolitics）
 	_annual_politics(d, w)
 	try_unlock_liberals()
@@ -1623,6 +1635,46 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 	var pc := w.get_player_country()
 	if pc:
 		pc.government = new_gosstroy
+	# FAC-SAT：满意现秩序者 + 一党制下政治路线跟最大派（Doctrine_button ~1227）
+	_update_satisfied_and_political_line(d, w)
+
+
+## 满意现秩序者 data[106] 与政治路线 data[56]
+## 原版 Doctrine_button_script：
+##   data[15]<=7：data[106] += party_ideology[data[56]]/4，并按 party_number 最大派写 data[56]
+##   data[15]>7：data[106] += party_number[1]/4（保守基座）
+## party_ideology 我方用 FactionData.influence（开局=原 ideology 列）
+func _update_satisfied_and_political_line(d: Array[int], w: WorldState) -> void:
+	if w.factions.is_empty() or d.size() <= W.I_SATISFIED:
+		return
+	@warning_ignore("integer_division")
+	var party_sys: int = d[W.I_PARTY_SYSTEM]
+	if party_sys <= 7:
+		# 一党/专政：按当前政治路线的 ideology 基座增长
+		var line: int = clampi(d[W.I_POLITICAL_LINE], 0, w.factions.size() - 1)
+		var base_ideo: int = w.factions[line].influence
+		if base_ideo <= 0:
+			base_ideo = w.factions[line].support
+		d[W.I_SATISFIED] += base_ideo / 4
+		# 政治路线跟随最大启用派 support（原版 party_number 比较链）
+		var best_i := 0
+		var best_s := -1
+		for i in w.factions.size():
+			var f: FactionData = w.factions[i]
+			if not f.is_enabled and i != 0:
+				# 极左即使禁用仍可比较？原版不查 enabled；用 support 即可
+				pass
+			if f.support > best_s:
+				best_s = f.support
+				best_i = i
+		d[W.I_POLITICAL_LINE] = best_i
+	else:
+		# 多党/联合：满意现秩序者吃保守派 support/4
+		var cons: int = 0
+		if w.factions.size() > FactionData.CONSERVATIVE:
+			cons = w.factions[FactionData.CONSERVATIVE].support
+		d[W.I_SATISFIED] += cons / 4
+	d[W.I_SATISFIED] = maxi(0, d[W.I_SATISFIED])
 
 
 # ── 半年度：factionsPoints（TimeScript ~740–762，非合作模式也可用经济指标）──

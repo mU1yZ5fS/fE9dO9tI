@@ -150,6 +150,7 @@ func _refresh() -> void:
 	var pc := w.get_player_country()
 	_label("政体类型", 政体名.get(pc.government, "未知") if pc else "")
 	_label("政治路线类型", 路线名.get(w.数值表[W.I_POLITICAL_LINE], "未知"))
+	# 满足现状者（I_SATISFIED）仅出现在饼图灰色扇区，不进左侧可互动派系列表
 	for cat_name in 政策类别:
 		var cat: Dictionary = 政策类别[cat_name]
 		var current_val: int = _raw(w, int(cat["idx"]))
