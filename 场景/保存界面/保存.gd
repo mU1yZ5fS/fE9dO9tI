@@ -1,5 +1,7 @@
 extends Control
 
+const SaveCatalog = preload("res://数据脚本/save_catalog.gd")
+
 ## 保存界面：5 槽（0=成就/铁人位，1–4=普通）。布局见 保存.tscn。
 
 const DIPLO_SCENE := "uid://vq6jexkk5tru"

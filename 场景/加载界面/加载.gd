@@ -1,5 +1,7 @@
 extends Control
 
+const SaveCatalog = preload("res://数据脚本/save_catalog.gd")
+
 ## 加载界面：5 槽读取 / 删除。布局见 加载.tscn。
 
 const DIPLO_SCENE := "uid://vq6jexkk5tru"

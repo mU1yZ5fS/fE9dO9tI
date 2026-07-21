@@ -11,7 +11,7 @@ signal tech_completed(tech_id: int)
 signal stats_changed()
 
 const W = preload("res://数据脚本/world_state.gd")
-const _SaveCatalogScript = preload("res://数据脚本/save_catalog.gd")
+const SaveCatalog = preload("res://数据脚本/save_catalog.gd")
 const WF = preload("res://数据脚本/world_factory.gd")
 
 var world: WorldState
