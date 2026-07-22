@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LoadingScreenConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/启动加载配置.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+seconds_per_image = 4.0
+randomize_order = false
+tips = PackedStringArray("正在加载世界地图……", "提示:预算与储备之和为负时,时间会自动暂停", "提示:派系支持与忠诚影响你的执政稳定")
+seconds_per_tip = 3.5
+min_display_seconds = 2.5
