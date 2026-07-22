@@ -21,9 +21,12 @@ func _on_设置_pressed() -> void:
 
 
 func _on_开始游戏_pressed() -> void:
-	#创建新游戏 → 跳转到外交场景
+	#创建新游戏 → 跳转到外交场景(优先用启动加载屏预热好的 PackedScene,无缝进场)
 	GameManager.new_game()
-	get_tree().change_scene_to_file("uid://vq6jexkk5tru")
+	if GameManager.cached_diplomacy_scene is PackedScene:
+		get_tree().change_scene_to_packed(GameManager.cached_diplomacy_scene)
+	else:
+		get_tree().change_scene_to_file("uid://vq6jexkk5tru")
 	音频总管.play_button_click_sound()
 
 

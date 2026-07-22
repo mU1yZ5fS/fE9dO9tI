@@ -56,6 +56,29 @@ const FICTIONAL_COUNTRY_OFFSET := 9000
 
 
 # ============================================================================
+# 国家与派系原始数据行字段索引常量
+# ============================================================================
+enum CountryRowField {
+	GWCODE = 0,
+	# 1-10 对应联盟/外交标签
+	STABILITY = 12,
+	DEVELOPMENT = 13,
+	SOV_POWER = 14,
+	USA_POWER = 15,
+	PRC_POWER = 16,
+	GOVERNMENT = 17,
+	SUB_GOVERNMENT = 18
+}
+
+enum FactionRowField {
+	ENABLED = 0,
+	ALLY = 1,
+	IDEOLOGY = 2,
+	SUPPORT = 3
+}
+
+
+# ============================================================================
 # 国家数据字段 1-10 对应的标签名
 # ============================================================================
 const TAG_FIELDS: Array[String] = [
@@ -341,8 +364,8 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 static func _build_countries(ws: WorldState) -> void:
 	for row in COUNTRY_ROWS:
 		var cd := CountryData.new()
-		cd.gwcode = row[0]
-		cd.原版序号 = row[0]
+		cd.gwcode = row[CountryRowField.GWCODE]
+		cd.原版序号 = row[CountryRowField.GWCODE]
 
 		# 保存原始字段（调试/兼容用）
 		cd.原始字段.resize(19)
@@ -354,18 +377,18 @@ static func _build_countries(ws: WorldState) -> void:
 			if row[i] == 1:
 				cd.tags[TAG_FIELDS[i]] = true
 
-		# 数值属性（字段 12-13）
-		cd.stability = row[12]
-		cd.development = row[13]
+		# 数值属性
+		cd.stability = row[CountryRowField.STABILITY]
+		cd.development = row[CountryRowField.DEVELOPMENT]
 
-		# 大国影响力（字段 14-16）
-		cd.sov_power = row[14]
-		cd.usa_power = row[15]
-		cd.prc_power = row[16]
+		# 大国影响力
+		cd.sov_power = row[CountryRowField.SOV_POWER]
+		cd.usa_power = row[CountryRowField.USA_POWER]
+		cd.prc_power = row[CountryRowField.PRC_POWER]
 
-		# 政体（字段 17-18）
-		cd.government = row[17]
-		cd.sub_government = row[18]
+		# 政体
+		cd.government = row[CountryRowField.GOVERNMENT]
+		cd.sub_government = row[CountryRowField.SUB_GOVERNMENT]
 
 		ws.countries.append(cd)
 
@@ -380,6 +403,35 @@ static func _assign_country_names(ws: WorldState) -> void:
 	for c in ws.countries:
 		if COUNTRY_NAMES.has(c.gwcode):
 			c.name = COUNTRY_NAMES[c.gwcode]
+
+
+# 寻找与规范化后名字最匹配的真实 gwcode（精确匹配或前缀模糊匹配兜底）
+static func _find_best_matching_gwcode(hr_name: String, name_to_gwcode: Dictionary) -> int:
+	if name_to_gwcode.has(hr_name):
+		return int(name_to_gwcode[hr_name])
+
+	# 前缀唯一匹配兜底（仅 begins_with，避免 slovakia⊂czechoslovakia、oman⊂romania）
+	var best_len := 0
+	var best_gw := 0
+	var best_count := 0
+	for map_name in name_to_gwcode.keys():
+		var mn: String = String(map_name)
+		if mn.length() < 4 or hr_name.length() < 4:
+			continue
+		var hit := mn.begins_with(hr_name) or hr_name.begins_with(mn)
+		if not hit:
+			continue
+		var L: int = mini(mn.length(), hr_name.length())
+		if L > best_len:
+			best_len = L
+			best_gw = int(name_to_gwcode[map_name])
+			best_count = 1
+		elif L == best_len and int(name_to_gwcode[map_name]) != best_gw:
+			best_count += 1
+
+	if best_count == 1 and best_gw > 0:
+		return best_gw
+	return 0
 
 
 # ============================================================================
@@ -410,30 +462,7 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 		var hr_name := _normalize_country_name(c.name)
 		if NAME_ALIASES.has(hr_name):
 			hr_name = String(NAME_ALIASES[hr_name])
-		var gw := 0
-		if name_to_gwcode.has(hr_name):
-			gw = int(name_to_gwcode[hr_name])
-		else:
-			# 前缀唯一匹配兜底（仅 begins_with，避免 slovakia⊂czechoslovakia、oman⊂romania）
-			var best_len := 0
-			var best_gw := 0
-			var best_count := 0
-			for map_name in name_to_gwcode.keys():
-				var mn: String = String(map_name)
-				if mn.length() < 4 or hr_name.length() < 4:
-					continue
-				var hit := mn.begins_with(hr_name) or hr_name.begins_with(mn)
-				if not hit:
-					continue
-				var L: int = mini(mn.length(), hr_name.length())
-				if L > best_len:
-					best_len = L
-					best_gw = int(name_to_gwcode[map_name])
-					best_count = 1
-				elif L == best_len and int(name_to_gwcode[map_name]) != best_gw:
-					best_count += 1
-			if best_count == 1 and best_gw > 0:
-				gw = best_gw
+		var gw := _find_best_matching_gwcode(hr_name, name_to_gwcode)
 		if gw > 0:
 			c.gwcode = gw
 			var gw_str := str(gw)
@@ -580,6 +609,134 @@ static func _is_holder(ws: WorldState, position_id: int, pol_index: int) -> bool
 	return ws.politics_positions[position_id] == pol_index
 
 
+# 计算两个政客之间的基础关系忠诚得分 (100% 还原原版匹配逻辑值)
+static func _compute_relation_score(source: PoliticianData, target: PoliticianData, include_special: bool, ws: WorldState, source_index: int, target_index: int) -> int:
+	var score := 0
+	if source.trait_personality == target.trait_personality:
+		score += 500
+	match target.trait_personality:
+		0:
+			match source.trait_personality:
+				1: score += 50
+				2: score -= 150
+				3: score -= 300
+		1:
+			match source.trait_personality:
+				0: score += 50
+				2: score -= 50
+				3: score -= 150
+		2:
+			match source.trait_personality:
+				0: score -= 150
+				1: score += 50
+				3: score += 100
+		3:
+			match source.trait_personality:
+				0: score -= 300
+				1: score -= 150
+				2: score += 100
+
+	match target.trait_alignment:
+		4:
+			if source.trait_alignment == 6:
+				score -= 250
+			elif source.trait_alignment == 4:
+				score += 100
+			else:
+				score -= 100
+		6:
+			if source.trait_alignment == 4:
+				score -= 300
+			elif source.trait_alignment == 6:
+				score += 100
+			else:
+				score += 100
+		5:
+			if source.trait_alignment != 5:
+				score += 100
+		7:
+			if source.trait_alignment == 6:
+				score += 50
+
+	if include_special:
+		match target.trait_special:
+			8:
+				match source.trait_special:
+					9: score -= 250
+					8: score += 100
+					10: score += 50
+					14: score += 50
+			9:
+				if source.trait_special == 16:
+					score -= 250
+				elif source.trait_special != 9:
+					score += 50
+			10:
+				if source.trait_special == 12:
+					score += 50
+				elif source.trait_special == 10:
+					score += 300
+				else:
+					score -= 100
+			11:
+				if source.trait_special == 10 or source.trait_special == 12:
+					score -= 100
+				else:
+					score += 100
+			12:
+				score -= 50
+			13:
+				score += 100
+			14:
+				if source.trait_special == 15:
+					score -= 300
+				elif source.trait_special == 14:
+					score += 150
+				else:
+					score += 50
+			15:
+				if source.trait_special == 15:
+					score += 200
+				elif source.trait_special == 14:
+					score -= 300
+			16:
+				if source.trait_special == 9:
+					score -= 250
+				elif source.trait_special == 14:
+					score += 50
+			17:
+				if source.trait_special == 8:
+					score -= 250
+				elif source.trait_special == 17:
+					score += 300
+				else:
+					score -= 50
+			18:
+				if source.trait_special == 11:
+					score -= 300
+				else:
+					score += 10
+
+	# 职位野心冲突：若 target_index 担任某职且 source_index 想要该职
+	if _is_holder(ws, 0, target_index):
+		if source.wanted_position == 0:
+			score -= 400
+	elif _is_holder(ws, 1, target_index) or _is_holder(ws, 2, target_index):
+		if not _is_holder(ws, 0, source_index) and (source.wanted_position == 1 or source.wanted_position == 2):
+			score -= 400
+	elif (
+		_is_holder(ws, 3, target_index) or _is_holder(ws, 4, target_index) or _is_holder(ws, 5, target_index)
+		or _is_holder(ws, 6, target_index) or _is_holder(ws, 7, target_index)
+	):
+		if (
+			not _is_holder(ws, 0, source_index) and not _is_holder(ws, 1, source_index) and not _is_holder(ws, 2, source_index)
+			and source.wanted_position >= 3
+		):
+			score -= 400
+
+	return score
+
+
 static func _calc_rel(ws: WorldState, num: int) -> void:
 	## 原版 CalcRel：写入 politics[i].loyality_to_other[num] = i 对 num 的忠诚
 	var pols := ws.politicians
@@ -591,124 +748,7 @@ static func _calc_rel(ws: WorldState, num: int) -> void:
 			pols[i].loyalty_matrix[i] = 1000
 			continue
 		var other: PoliticianData = pols[i]
-		var score := 0
-		if other.trait_personality == target.trait_personality:
-			score += 500
-		match target.trait_personality:
-			0:
-				match other.trait_personality:
-					1: score += 50
-					2: score -= 150
-					3: score -= 300
-			1:
-				match other.trait_personality:
-					0: score += 50
-					2: score -= 50
-					3: score -= 150
-			2:
-				match other.trait_personality:
-					0: score -= 150
-					1: score += 50
-					3: score += 100
-			3:
-				match other.trait_personality:
-					0: score -= 300
-					1: score -= 150
-					2: score += 100
-		match target.trait_alignment:
-			4:
-				if other.trait_alignment == 6:
-					score -= 250
-				elif other.trait_alignment == 4:
-					score += 100
-				else:
-					score -= 100
-			6:
-				if other.trait_alignment == 4:
-					score -= 300
-				elif other.trait_alignment == 6:
-					score += 100
-				else:
-					score += 100
-			5:
-				if other.trait_alignment != 5:
-					score += 100
-			7:
-				if other.trait_alignment == 6:
-					score += 50
-		match target.trait_special:
-			8:
-				match other.trait_special:
-					9: score -= 250
-					8: score += 100
-					10: score += 50
-					14: score += 50
-			9:
-				if other.trait_special == 16:
-					score -= 250
-				elif other.trait_special != 9:
-					score += 50
-			10:
-				if other.trait_special == 12:
-					score += 50
-				elif other.trait_special == 10:
-					score += 300
-				else:
-					score -= 100
-			11:
-				if other.trait_special == 10 or other.trait_special == 12:
-					score -= 100
-				else:
-					score += 100
-			12:
-				score -= 50
-			13:
-				score += 100
-			14:
-				if other.trait_special == 15:
-					score -= 300
-				elif other.trait_special == 14:
-					score += 150
-				else:
-					score += 50
-			15:
-				if other.trait_special == 15:
-					score += 200
-				elif other.trait_special == 14:
-					score -= 300
-			16:
-				if other.trait_special == 9:
-					score -= 250
-				elif other.trait_special == 14:
-					score += 50
-			17:
-				if other.trait_special == 8:
-					score -= 250
-				elif other.trait_special == 17:
-					score += 300
-				else:
-					score -= 50
-			18:
-				if other.trait_special == 11:
-					score -= 300
-				else:
-					score += 10
-		# 职位野心冲突
-		if _is_holder(ws, 0, num):
-			if other.wanted_position == 0:
-				score -= 400
-		elif _is_holder(ws, 1, num) or _is_holder(ws, 2, num):
-			if not _is_holder(ws, 0, i) and (other.wanted_position == 1 or other.wanted_position == 2):
-				score -= 400
-		elif (
-			_is_holder(ws, 3, num) or _is_holder(ws, 4, num) or _is_holder(ws, 5, num)
-			or _is_holder(ws, 6, num) or _is_holder(ws, 7, num)
-		):
-			if (
-				not _is_holder(ws, 0, i) and not _is_holder(ws, 1, i) and not _is_holder(ws, 2, i)
-				and other.wanted_position >= 3
-			):
-				score -= 400
+		var score := _compute_relation_score(other, target, true, ws, i, num)
 		if other.loyalty_matrix.size() <= num:
 			other.loyalty_matrix.resize(18)
 		other.loyalty_matrix[num] = score
@@ -728,68 +768,7 @@ static func _calc_rel2(ws: WorldState, num: int) -> void:
 			self_pol.loyalty_matrix[i] = 1000
 			continue
 		var other: PoliticianData = pols[i]
-		var score := 0
-		if self_pol.trait_personality == other.trait_personality:
-			score += 500
-		# 以 other 为参照的 traits 差（对齐 CalcRel2 循环变量 i 侧）
-		match other.trait_personality:
-			0:
-				match self_pol.trait_personality:
-					1: score += 50
-					2: score -= 150
-					3: score -= 300
-			1:
-				match self_pol.trait_personality:
-					0: score += 50
-					2: score -= 50
-					3: score -= 150
-			2:
-				match self_pol.trait_personality:
-					0: score -= 150
-					1: score += 50
-					3: score += 100
-			3:
-				match self_pol.trait_personality:
-					0: score -= 300
-					1: score -= 150
-					2: score += 100
-		match other.trait_alignment:
-			4:
-				if self_pol.trait_alignment == 6:
-					score -= 250
-				elif self_pol.trait_alignment == 4:
-					score += 100
-				else:
-					score -= 100
-			6:
-				if self_pol.trait_alignment == 4:
-					score -= 300
-				elif self_pol.trait_alignment == 6:
-					score += 100
-				else:
-					score += 100
-			5:
-				if self_pol.trait_alignment != 5:
-					score += 100
-			7:
-				if self_pol.trait_alignment == 6:
-					score += 50
-		# 职位野心：若 i 在职且 num 想要该职
-		if _is_holder(ws, 0, i):
-			if self_pol.wanted_position == 0:
-				score -= 400
-		elif _is_holder(ws, 1, i) or _is_holder(ws, 2, i):
-			if not _is_holder(ws, 0, num) and (self_pol.wanted_position == 1 or self_pol.wanted_position == 2):
-				score -= 400
-		elif (
-			_is_holder(ws, 3, i) or _is_holder(ws, 4, i) or _is_holder(ws, 5, i)
-			or _is_holder(ws, 6, i) or _is_holder(ws, 7, i)
-		):
-			if (
-				not _is_holder(ws, 0, num) and not _is_holder(ws, 1, num) and not _is_holder(ws, 2, num)
-				and self_pol.wanted_position >= 3
-			):
-				score -= 400
+		var score := _compute_relation_score(self_pol, other, false, ws, num, i)
 		self_pol.loyalty_matrix[i] = score
 
 
@@ -801,8 +780,14 @@ static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 	var leader: PoliticianData = ws.leader
 	var d := ws.数值表
 	var score := 100
+
+	# 提前提取开局状态参数以消除冗余的安全越界校验
+	var econ_display := d[WorldState.I_ECON_DISPLAY] if d.size() > WorldState.I_ECON_DISPLAY else 0
+	var political_display := d[WorldState.I_POLITICAL_DISPLAY] if d.size() > WorldState.I_POLITICAL_DISPLAY else 0
+	var ideology := d[WorldState.I_IDEOLOGY] if d.size() > WorldState.I_IDEOLOGY else 0
+
 	# data[52] 经济显示档 / data[54] 政治显示档 / data[14] 意识形态 — 开局常量
-	match d[WorldState.I_ECON_DISPLAY] if d.size() > WorldState.I_ECON_DISPLAY else 0:
+	match econ_display:
 		34:
 			match pol.trait_personality:
 				0: score += 250
@@ -827,7 +812,7 @@ static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 				1: score -= 100
 				2: score += 150
 				3: score += 250
-	match d[WorldState.I_POLITICAL_DISPLAY] if d.size() > WorldState.I_POLITICAL_DISPLAY else 0:
+	match political_display:
 		38:
 			match pol.trait_personality:
 				0: score += 150
@@ -851,7 +836,7 @@ static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 				1: score -= 50
 				2: score += 150
 				3: score += 100
-	match d[WorldState.I_IDEOLOGY] if d.size() > WorldState.I_IDEOLOGY else 0:
+	match ideology:
 		0:
 			if pol.trait_alignment == 4:
 				score += 250
