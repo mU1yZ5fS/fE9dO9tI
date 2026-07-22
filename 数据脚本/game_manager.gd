@@ -11,7 +11,6 @@ signal tech_completed(tech_id: int)
 signal stats_changed()
 
 const W = preload("res://数据脚本/world_state.gd")
-const SaveCatalog = preload("res://数据脚本/save_catalog.gd")
 const WF = preload("res://数据脚本/world_factory.gd")
 
 var world: WorldState
@@ -39,9 +38,28 @@ var _tick_timer: float = 0.0
 
 var _tech_effects: Dictionary = {}
 
-# 预加载地图底图（后台线程解码 16K PNG，避免外交场景切入时白屏）
+# 预加载地图底图与数据（后台线程解析并处理，避免场景切入时卡顿）
+signal map_data_preloaded
+var is_map_data_preloaded: bool = false
+
 const REGION_MAP_PATH: String = "res://资产/地图/map_color.png"
+var cached_map_meta: Dictionary = {}
+var cached_map_regions: Dictionary = {}
+var cached_map_countries: Dictionary = {}
+var cached_region_owner: Dictionary = {}
+var cached_initial_owner: Dictionary = {}
+
 var cached_region_map_image: Image = null
+var cached_owner_palette_image: Image = null
+var cached_color_palette_image: Image = null
+
+var cached_region_map_tex: ImageTexture = null
+var cached_owner_palette_tex: ImageTexture = null
+var cached_color_palette_tex: ImageTexture = null
+
+## 启动加载屏预热好的外交场景 PackedScene(点开始时 change_scene_to_packed 无缝进场)
+var cached_diplomacy_scene: PackedScene = null
+
 var _map_preload_thread: Thread = null
 
 
@@ -61,16 +79,142 @@ func _preload_region_map() -> void:
 
 
 func _decode_region_map() -> void:
-	var img := Image.load_from_file(ProjectSettings.globalize_path(REGION_MAP_PATH))
-	call_deferred("_on_region_map_preloaded", img)
+	var img: Image = null
+	
+	# 1. 检查底图资源是否存在并加载为 Image
+	if ResourceLoader.exists(REGION_MAP_PATH):
+		var tex = ResourceLoader.load(REGION_MAP_PATH)
+		if tex is Texture2D:
+			img = tex.get_image()
+			
+	if img == null:
+		push_error("GameManager: 无法预加载地图底图 " + REGION_MAP_PATH)
+		call_deferred("_on_region_map_preloaded_failed")
+		return
+
+	# 限制底图大小至 16384 规格（原汁原味的分辨率，避免降低画质）
+	const GPU_MAX_SIZE := 16384
+	if img.get_width() > GPU_MAX_SIZE or img.get_height() > GPU_MAX_SIZE:
+		var ratio := float(GPU_MAX_SIZE) / float(maxi(img.get_width(), img.get_height()))
+		img.resize(int(img.get_width() * ratio), int(img.get_height() * ratio), Image.INTERPOLATE_NEAREST)
+
+	# 2. 加载与解析地图相关的 JSON 文件
+	const META_PATH := "res://资产/地图/map_meta.json"
+	const REGIONS_PATH := "res://资产/地图/map_regions.json"
+	const COUNTRIES_PATH := "res://资产/地图/map_countries.json"
+
+	var meta := _load_json_async(META_PATH)
+	var regions_raw := _load_json_async(REGIONS_PATH)
+	var countries_raw := _load_json_async(COUNTRIES_PATH)
+
+	# 3. 在后台子线程洗数据（把 key 转换为 int，构建归属字典，规避主线程 CPU 瓶颈）
+	var regions_dict: Dictionary = {}
+	var countries_dict: Dictionary = {}
+	var region_owner_dict: Dictionary = {}
+	var initial_owner_dict: Dictionary = {}
+
+	for key in regions_raw:
+		var r_id := int(key)
+		var owner_gw := int(regions_raw[key].get("owner_1976_gwcode", 0))
+		regions_dict[r_id] = regions_raw[key]
+		region_owner_dict[r_id] = owner_gw
+		initial_owner_dict[r_id] = owner_gw
+
+	for key in countries_raw:
+		countries_dict[int(key)] = countries_raw[key]
+
+	# 4. 初始化 owner_palette 和 color_palette 图像（像素级填充在子线程完成）
+	const PALETTE_SIZE := 256
+	var owner_pal_img := Image.create(PALETTE_SIZE, PALETTE_SIZE, false, Image.FORMAT_RGB8)
+	var color_pal_img := Image.create(PALETTE_SIZE, PALETTE_SIZE, false, Image.FORMAT_RGB8)
+
+	owner_pal_img.fill(Color.BLACK)
+	for r_id in region_owner_dict:
+		var val: int = region_owner_dict[r_id]
+		var col := Color8((val >> 16) & 0xFF, (val >> 8) & 0xFF, val & 0xFF)
+		if r_id > 0:
+			owner_pal_img.set_pixel(r_id & 0xFF, (r_id >> 8) & 0xFF, col)
+
+	color_pal_img.fill(Color(0.46, 0.46, 0.46)) # 预填 BLOC_NEUTRAL
+
+	# 5. 传回主线程生成 GPU 纹理与缓存更新
+	call_deferred(
+		"_on_region_map_preloaded", 
+		img, 
+		meta, 
+		regions_dict, 
+		countries_dict, 
+		region_owner_dict, 
+		initial_owner_dict, 
+		owner_pal_img, 
+		color_pal_img
+	)
 
 
-func _on_region_map_preloaded(img: Image) -> void:
+func _on_region_map_preloaded(
+	img: Image, 
+	meta: Dictionary, 
+	regions: Dictionary, 
+	countries: Dictionary, 
+	region_owner: Dictionary, 
+	initial_owner: Dictionary, 
+	owner_pal_img: Image, 
+	color_pal_img: Image
+) -> void:
 	if _map_preload_thread != null:
 		_map_preload_thread.wait_to_finish()
 		_map_preload_thread = null
+
 	cached_region_map_image = img
-	print("GameManager: 地图底图预加载完成")
+	cached_map_meta = meta
+	cached_map_regions = regions
+	cached_map_countries = countries
+	cached_region_owner = region_owner
+	cached_initial_owner = initial_owner
+	
+	cached_owner_palette_image = owner_pal_img
+	cached_color_palette_image = color_pal_img
+
+	# 在主线程安全创建 GPU 纹理
+	cached_region_map_tex = ImageTexture.create_from_image(cached_region_map_image)
+	cached_owner_palette_tex = ImageTexture.create_from_image(cached_owner_palette_image)
+	cached_color_palette_tex = ImageTexture.create_from_image(cached_color_palette_image)
+
+	is_map_data_preloaded = true
+	map_data_preloaded.emit()
+	print("GameManager: 地图底图、数据加载及纹理分配全部完成")
+
+
+func _on_region_map_preloaded_failed() -> void:
+	if _map_preload_thread != null:
+		_map_preload_thread.wait_to_finish()
+		_map_preload_thread = null
+	is_map_data_preloaded = true
+	map_data_preloaded.emit()
+
+
+func _load_json_async(path: String) -> Dictionary:
+	if not FileAccess.file_exists(path):
+		push_error("GameManager: 找不到文件 %s" % path)
+		return {}
+	var text := FileAccess.get_file_as_string(path)
+	var parsed = JSON.parse_string(text)
+	return parsed if parsed is Dictionary else {}
+
+
+func reset_map_runtime_state() -> void:
+	if cached_initial_owner.size() > 0:
+		cached_region_owner = cached_initial_owner.duplicate()
+		if cached_owner_palette_image:
+			cached_owner_palette_image.fill(Color.BLACK)
+			for r_id in cached_region_owner:
+				var val: int = cached_region_owner[r_id]
+				var col = Color8((val >> 16) & 0xFF, (val >> 8) & 0xFF, val & 0xFF)
+				if r_id > 0:
+					cached_owner_palette_image.set_pixel(r_id & 0xFF, (r_id >> 8) & 0xFF, col)
+			if cached_owner_palette_tex:
+				cached_owner_palette_tex.update(cached_owner_palette_image)
+		print("GameManager: 地图归属运行时状态与调色板已重置")
 
 
 func _load_tech_effects() -> void:
@@ -102,6 +246,7 @@ func _process(delta: float) -> void:
 
 func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	world = WF.create_world(player_gwcode, p_difficulty)
+	reset_map_runtime_state()
 	selected_country_gwcode = player_gwcode
 	is_playing = false
 	speed = 0
@@ -118,6 +263,7 @@ func load_game(path: String) -> void:
 	var loaded = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if loaded is WorldState:
 		world = loaded as WorldState
+		reset_map_runtime_state()
 		# 运行时缓存不序列化，读档后重建
 		world.rebuild_gwcode_index()
 		world.sync_economy()
