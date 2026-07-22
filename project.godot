@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="中国:毛的遗产[Godot重制版]"
-run/main_scene="uid://bydan4iqthbaa"
+run/main_scene="res://场景/启动加载/启动加载.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 buses/default_bus_layout="uid://cj7b8uqaaherh"
 
 [autoload]
+
+
+
+
+
 
 EventEngine="*uid://cq6ffym63pyt0"
 GameManager="*uid://ci37skps0qpd1"
@@ -43,3 +48,4 @@ window/stretch/aspect="expand"
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
