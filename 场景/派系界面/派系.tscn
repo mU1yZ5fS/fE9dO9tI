@@ -55,7 +55,11 @@ script = ExtResource("1_8ij5d")
 script = ExtResource("2_3n6cn")
 
 [node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=1812718366]
-offset_right = 1920.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
 offset_bottom = 78.0
 texture = ExtResource("2_dy0na")
 expand_mode = 1
@@ -372,8 +376,11 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="切场景菜单背景" type="TextureRect" parent="状态栏" unique_id=640080661]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.0
 offset_top = 71.0
-offset_right = 1920.0
+offset_right = 0.0
 offset_bottom = 159.0
 texture = ExtResource("13_1cqeh")
 expand_mode = 1
