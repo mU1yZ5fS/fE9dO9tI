@@ -20,16 +20,24 @@ theme = SubResource("Theme_vg3t2")
 script = ExtResource("2_niyhs")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1846426357]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_1nt0e")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="Label" type="Label" parent="." unique_id=1015949005]
-layout_mode = 0
-offset_left = 496.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -464.0
 offset_top = 32.0
-offset_right = 632.0
+offset_right = -328.0
 offset_bottom = 88.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "文本基于GKchP汉化组与改版制作组"
