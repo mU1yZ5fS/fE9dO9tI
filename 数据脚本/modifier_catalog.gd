@@ -15,23 +15,14 @@ static func _ensure_loaded() -> void:
 		return
 	_loaded = true
 	_by_id.clear()
-	var dir := DirAccess.open(MOD_DIR)
-	if dir == null:
-		push_warning("ModifierCatalog: 无法打开 %s" % MOD_DIR)
-		return
-	dir.list_dir_begin()
-	var fname := dir.get_next()
-	while fname != "":
-		if not dir.current_is_dir() and fname.ends_with(".tres"):
-			var path := MOD_DIR.path_join(fname)
-			var res = load(path)
-			if res is ModifierDef:
-				var def := res as ModifierDef
-				_by_id[def.id] = def
-			elif res != null:
-				push_warning("ModifierCatalog: 非 ModifierDef 资源 %s" % path)
-		fname = dir.get_next()
-	dir.list_dir_end()
+	# 用 ResScan 以兼容导出包（.tres 会被重映射为 .tres.remap）
+	for path in ResScan.list_files(MOD_DIR, [".tres"]):
+		var res = load(path)
+		if res is ModifierDef:
+			var def := res as ModifierDef
+			_by_id[def.id] = def
+		elif res != null:
+			push_warning("ModifierCatalog: 非 ModifierDef 资源 %s" % path)
 
 
 static func get_def(id: int) -> ModifierDef:

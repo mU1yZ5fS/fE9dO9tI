@@ -120,21 +120,9 @@ func _扫描当前专辑曲目() -> void:
 	当前曲目名列表.clear()
 	if 当前专辑目录 == "":
 		return
-	var 目录 := DirAccess.open(当前专辑目录)
-	if 目录 == null:
-		return
-	var 路径们: Array[String] = []
-	目录.list_dir_begin()
-	var 名称 := 目录.get_next()
-	while 名称 != "":
-		if not 目录.current_is_dir():
-			var 小写名 := 名称.to_lower()
-			for 后缀 in _音频扩展名:
-				if 小写名.ends_with(后缀):
-					路径们.append(当前专辑目录 + 名称)
-					break
-		名称 = 目录.get_next()
-	路径们.sort()
+	# 用 ResScan 以兼容导出包（.ogg/.mp3 等会被重映射为 *.remap/*.import）
+	var 后缀数组 := PackedStringArray(_音频扩展名)
+	var 路径们 := ResScan.list_files(当前专辑目录, 后缀数组)
 	for p in 路径们:
 		当前曲目路径列表.append(p)
 		当前曲目名列表.append(p.get_file().get_basename())

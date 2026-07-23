@@ -74,22 +74,18 @@ func _ready() -> void:
 
 func _scan_events() -> void:
 	# 从磁盘加载 .tres 事件文件（这些文件应由 GenerateEvents 工具在编辑器中预生成）
-	var dir := DirAccess.open(scan_directory)
-	if dir == null:
+	# 用 ResScan 以兼容导出包（.tres 会被重映射为 .tres.remap）
+	var paths := ResScan.list_files(scan_directory, [".tres"])
+	if paths.is_empty() and DirAccess.open(scan_directory) == null:
 		push_warning("EventEngine: 事件目录不存在 %s —— 请在编辑器中运行 GenerateEvents 工具" % scan_directory)
 		return
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while file_name != "":
-		if not dir.current_is_dir() and file_name.ends_with(".tres"):
-			var res := load(scan_directory + file_name)
-			if res is EventDef:
-				_events[res.event_id] = res
-				print("EventEngine: 已加载事件 %s" % res.event_id)
-			else:
-				push_warning("EventEngine: 跳过非 EventDef 文件 %s" % file_name)
-		file_name = dir.get_next()
-	dir.list_dir_end()
+	for path in paths:
+		var res := load(path)
+		if res is EventDef:
+			_events[res.event_id] = res
+			print("EventEngine: 已加载事件 %s" % res.event_id)
+		else:
+			push_warning("EventEngine: 跳过非 EventDef 文件 %s" % path)
 	print("EventEngine: 扫描完成，共 %d 个事件" % _events.size())
 
 
