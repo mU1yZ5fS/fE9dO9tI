@@ -69,6 +69,17 @@ var _test_mode_enabled: bool = false
 var _mouse_moved: bool = true
 var _last_camera_transform: Transform3D = Transform3D()
 
+## 轻点最大位移（超过则判为拖拽，不选国）
+const TAP_MAX_MOVE := 12.0
+## 收到真实触摸即置 true，屏蔽 emulate_mouse_from_touch 的模拟鼠标
+var _using_touch: bool = false
+## 当前按下手指数
+var _active_touches: int = 0
+## 单指按下起点，用于 tap 判定
+var _tap_start_pos: Vector2 = Vector2.ZERO
+## 本次触摸是否仍是 tap 候选（未超位移、未多指）
+var _tap_candidate: bool = false
+
 
 # ============================================================================
 # 生命周期
@@ -121,10 +132,25 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# 键盘：测试模式开关（始终响应）
 	if event is InputEventKey and event.pressed and not event.is_echo() and event.keycode == KEY_M:
 		_test_mode_enabled = not _test_mode_enabled
 		print("[TerritoryMap] 测试模式 %s" % ("开启" if _test_mode_enabled else "关闭"))
-	elif event is InputEventMouseButton and event.pressed:
+		return
+
+	# 触控路径
+	if event is InputEventScreenTouch:
+		_handle_touch(event as InputEventScreenTouch)
+		return
+	if event is InputEventScreenDrag:
+		_handle_touch_drag(event as InputEventScreenDrag)
+		return
+
+	# 触屏设备上忽略模拟鼠标
+	if _using_touch:
+		return
+
+	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			_click_queued = true
 			_mouse_screen_pos = event.position
@@ -133,6 +159,35 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion:
 		_mouse_screen_pos = event.position
 		_mouse_moved = true
+
+
+## 手指按下/抬起：维护触点计数并做轻点判定。
+## 单指、短位移、全程未多指 → 判为轻点选国，复用既有 _physics_process 选国管线。
+func _handle_touch(t: InputEventScreenTouch) -> void:
+	_using_touch = true
+	if t.pressed:
+		if _active_touches == 0:
+			_tap_start_pos = t.position
+			_tap_candidate = true
+		_active_touches += 1
+		if _active_touches >= 2:
+			_tap_candidate = false  # 多指=手势，不选国
+	else:
+		_active_touches = maxi(0, _active_touches - 1)
+		if _tap_candidate and not t.canceled and t.position.distance_to(_tap_start_pos) <= TAP_MAX_MOVE:
+			_click_queued = true
+			_mouse_screen_pos = t.position
+		if _active_touches == 0:
+			_tap_candidate = false
+
+
+## 手指拖动：超过位移阈值即取消本次 tap 候选（判为拖拽相机）。
+func _handle_touch_drag(d: InputEventScreenDrag) -> void:
+	_using_touch = true
+	if d.position.distance_to(_tap_start_pos) > TAP_MAX_MOVE:
+		_tap_candidate = false  # 超位移，本次不再算 tap
+	_mouse_screen_pos = d.position
+	_mouse_moved = true
 
 
 func _physics_process(_delta: float) -> void:
