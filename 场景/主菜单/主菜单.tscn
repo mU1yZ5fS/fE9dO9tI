@@ -17,18 +17,27 @@ theme = ExtResource("1_asok2")
 script = ExtResource("2_qdl27")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1793982612]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 0
 mouse_behavior_recursive = 2
 texture = ExtResource("1_ctmvk")
 
 [node name="开始游戏" type="Button" parent="." unique_id=878493979]
-layout_mode = 0
-offset_left = 751.0
-offset_top = 816.0
-offset_right = 1199.0
-offset_bottom = 960.0
+layout_mode = 1
+anchor_left = 0.391146
+anchor_top = 0.755556
+anchor_right = 0.624479
+anchor_bottom = 0.888889
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
 text = "开始游戏"
@@ -37,11 +46,15 @@ flat = true
 icon_alignment = 1
 
 [node name="关于" type="Button" parent="." unique_id=776111374]
-layout_mode = 0
-offset_left = 1233.0
-offset_top = 894.00006
-offset_right = 1681.0
-offset_bottom = 1038.0
+layout_mode = 1
+anchor_left = 0.642188
+anchor_top = 0.827778
+anchor_right = 0.875521
+anchor_bottom = 0.961111
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 rotation = -0.61086524
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
@@ -51,11 +64,15 @@ flat = true
 icon_alignment = 1
 
 [node name="退出" type="Button" parent="." unique_id=1820177510]
-layout_mode = 0
-offset_left = 1472.0
-offset_top = 940.0
-offset_right = 1920.0
-offset_bottom = 1084.0
+layout_mode = 1
+anchor_left = 0.766667
+anchor_top = 0.870370
+anchor_right = 1.0
+anchor_bottom = 1.003704
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 rotation = -0.61086524
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
@@ -65,11 +82,15 @@ flat = true
 icon_alignment = 1
 
 [node name="加载" type="Button" parent="." unique_id=510100475]
-layout_mode = 0
-offset_left = 355.0
-offset_top = 632.00006
-offset_right = 803.0
-offset_bottom = 776.00006
+layout_mode = 1
+anchor_left = 0.184896
+anchor_top = 0.585185
+anchor_right = 0.418229
+anchor_bottom = 0.718519
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 rotation = 0.61086524
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
@@ -79,11 +100,15 @@ flat = true
 icon_alignment = 1
 
 [node name="设置" type="Button" parent="." unique_id=2082171365]
-layout_mode = 0
-offset_left = 91.0
-offset_top = 680.0
-offset_right = 539.0
-offset_bottom = 824.0
+layout_mode = 1
+anchor_left = 0.047396
+anchor_top = 0.629630
+anchor_right = 0.280729
+anchor_bottom = 0.762963
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 rotation = 0.61086524
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
@@ -93,11 +118,15 @@ flat = true
 icon_alignment = 1
 
 [node name="版本信息" type="Label" parent="." unique_id=1449533189]
-layout_mode = 0
-offset_left = 1311.0
-offset_top = 24.0
-offset_right = 1904.0
-offset_bottom = 74.0
+layout_mode = 1
+anchor_left = 0.682813
+anchor_top = 0.022222
+anchor_right = 0.991667
+anchor_bottom = 0.068519
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 tooltip_auto_translate_mode = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 43
@@ -106,11 +135,15 @@ horizontal_alignment = 2
 script = ExtResource("5_xj33c")
 
 [node name="版本信息2" type="Label" parent="." unique_id=1314310004]
-layout_mode = 0
-offset_left = 1615.0
-offset_top = 80.0
-offset_right = 1904.0
-offset_bottom = 130.0
+layout_mode = 1
+anchor_left = 0.841146
+anchor_top = 0.074074
+anchor_right = 0.991667
+anchor_bottom = 0.120370
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 tooltip_text = "当前版本内容：基础UI骨架+MVP"
 mouse_filter = 1
 theme_override_colors/font_color = Color(1, 1, 0, 1)
