@@ -33,7 +33,11 @@ script = ExtResource("1_event")
 script = ExtResource("2_nyx3b")
 
 [node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=399054322]
-offset_right = 1920.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
 offset_bottom = 78.0
 texture = ExtResource("3_j13k0")
 expand_mode = 1
@@ -350,9 +354,14 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="事件背景" type="TextureRect" parent="." unique_id=1550529252]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
 texture = ExtResource("2_qatr3")
 
 [node name="事件标题" type="Label" parent="." unique_id=114266937]
@@ -381,18 +390,24 @@ text = "事件描述"
 autowrap_mode = 3
 
 [node name="事件切换页面按钮" type="TextureButton" parent="." unique_id=1521991204]
-layout_mode = 0
-offset_left = 1568.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -352.0
 offset_top = 661.0
-offset_right = 1860.0
+offset_right = -60.0
 offset_bottom = 953.0
 texture_normal = ExtResource("14_1vwpt")
 
 [node name="事件切换页面按钮2" type="TextureButton" parent="." unique_id=1266993698]
-layout_mode = 0
-offset_left = 1768.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -152.0
 offset_top = 641.0
-offset_right = 1899.0
+offset_right = -21.0
 offset_bottom = 772.0
 rotation = 3.1415927
 texture_normal = ExtResource("14_1vwpt")
@@ -400,10 +415,13 @@ ignore_texture_size = true
 stretch_mode = 0
 
 [node name="事件图片" type="TextureRect" parent="." unique_id=366794167]
-layout_mode = 0
-offset_left = 1542.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -378.0
 offset_top = 97.0
-offset_right = 1876.0
+offset_right = -44.0
 offset_bottom = 522.0
 
 [node name="事件选项" type="Control" parent="." unique_id=1724481168]
