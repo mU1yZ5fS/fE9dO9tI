@@ -21,12 +21,6 @@ buses/default_bus_layout="uid://cj7b8uqaaherh"
 
 [autoload]
 
-
-
-
-
-
-
 EventEngine="*uid://cq6ffym63pyt0"
 GameManager="*uid://ci37skps0qpd1"
 "音频总管"="*uid://dcs43210kry7n"
@@ -39,6 +33,11 @@ window/size/mode=4
 window/size/borderless=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/handheld/orientation=4
+
+[input_devices]
+
+pointing/emulate_mouse_from_touch=true
 
 [physics]
 
