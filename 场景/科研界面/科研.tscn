@@ -54,11 +54,14 @@ script = ExtResource("1_13msm")
 layer = -1
 
 [node name="科研背景" type="TextureRect" parent="固定" unique_id=1361839528]
-offset_right = 1920.0
-offset_bottom = 1080.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_xqk0p")
 expand_mode = 1
-stretch_mode = 1
+stretch_mode = 6
 
 [node name="返回外交" type="TextureButton" parent="固定" unique_id=1865736311]
 offset_left = 48.0
