@@ -45,16 +45,25 @@ grow_vertical = 2
 script = ExtResource("1_dpl73")
 
 [node name="背景" type="TextureRect" parent="." unique_id=1946531042]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_rjao1")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="状态栏" type="CanvasLayer" parent="." unique_id=1382094254]
 script = ExtResource("3_e2tjs")
 
 [node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=626606186]
-offset_right = 1920.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
 offset_bottom = 78.0
 texture = ExtResource("3_v8igk")
 expand_mode = 1
@@ -371,8 +380,11 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="切场景菜单背景" type="TextureRect" parent="状态栏" unique_id=34063772]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.0
 offset_top = 71.0
-offset_right = 1920.0
+offset_right = 0.0
 offset_bottom = 159.0
 texture = ExtResource("14_if6ax")
 expand_mode = 1
