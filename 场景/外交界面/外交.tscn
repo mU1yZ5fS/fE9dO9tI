@@ -173,7 +173,11 @@ environment = SubResource("env")
 script = ExtResource("10_n77dy")
 
 [node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=889964788]
-offset_right = 1920.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
 offset_bottom = 78.0
 texture = ExtResource("9_2t65l")
 expand_mode = 1
@@ -490,8 +494,11 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="切场景菜单背景" type="TextureRect" parent="状态栏" unique_id=1823047538]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.0
 offset_top = 71.0
-offset_right = 1920.0
+offset_right = 0.0
 offset_bottom = 159.0
 texture = ExtResource("22_ihuqk")
 expand_mode = 1
@@ -592,18 +599,28 @@ expand_mode = 2
 script = ExtResource("9_13o5n")
 
 [node name="地图模式背景" type="TextureRect" parent="地图模式" unique_id=236702710]
-offset_left = 1640.0
-offset_top = 576.0
-offset_right = 1919.0
-offset_bottom = 1086.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -504.0
+offset_right = -1.0
+offset_bottom = 6.0
 texture = ExtResource("8_qy4bt")
 expand_mode = 1
 
 [node name="政府类型地图模式" type="Button" parent="地图模式" unique_id=1930160142]
-offset_left = 1664.0
-offset_top = 592.0
-offset_right = 1901.0
-offset_bottom = 683.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -488.0
+offset_right = -19.0
+offset_bottom = -397.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
@@ -616,10 +633,15 @@ flat = true
 icon_alignment = 1
 
 [node name="影响地图模式" type="Button" parent="地图模式" unique_id=1763483580]
-offset_left = 1664.0
-offset_top = 688.0
-offset_right = 1901.0
-offset_bottom = 779.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -392.0
+offset_right = -19.0
+offset_bottom = -301.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
@@ -632,10 +654,15 @@ flat = true
 icon_alignment = 1
 
 [node name="军事阵营地图模式" type="Button" parent="地图模式" unique_id=986836618]
-offset_left = 1664.0
-offset_top = 784.0
-offset_right = 1901.0
-offset_bottom = 875.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -296.0
+offset_right = -19.0
+offset_bottom = -205.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
@@ -648,10 +675,15 @@ flat = true
 icon_alignment = 1
 
 [node name="经济阵营地图模式" type="Button" parent="地图模式" unique_id=735000876]
-offset_left = 1664.0
-offset_top = 880.0
-offset_right = 1901.0
-offset_bottom = 971.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -200.0
+offset_right = -19.0
+offset_bottom = -109.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
@@ -664,10 +696,15 @@ flat = true
 icon_alignment = 1
 
 [node name="自然地理地图模式" type="Button" parent="地图模式" unique_id=1593347059]
-offset_left = 1664.0
-offset_top = 976.0
-offset_right = 1901.0
-offset_bottom = 1067.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -104.0
+offset_right = -19.0
+offset_bottom = -13.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
@@ -778,33 +815,45 @@ script = ExtResource("32_yikjq")
 
 [node name="右侧栏展开后背景" type="TextureRect" parent="右侧栏" unique_id=421577081]
 visible = false
-offset_left = 1709.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -211.0
 offset_top = 219.0
-offset_right = 1920.0
+offset_right = 0.0
 offset_bottom = 756.0
 texture = ExtResource("13_fpo1t")
 
 [node name="右侧栏收回按钮" type="TextureButton" parent="右侧栏" unique_id=1080282892]
 visible = false
-offset_left = 1712.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -208.0
 offset_top = 363.0
-offset_right = 1752.0
+offset_right = -168.0
 offset_bottom = 601.0
 texture_normal = ExtResource("12_0r3oo")
 
 [node name="右侧栏展开按钮" type="TextureButton" parent="右侧栏" unique_id=1233074202]
-offset_left = 1920.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 0.0
 offset_top = 597.0
-offset_right = 1948.0
+offset_right = 28.0
 offset_bottom = 835.0
 rotation = 3.1415927
 texture_normal = ExtResource("12_0r3oo")
 
 [node name="全国形势展开" type="TextureButton" parent="右侧栏" unique_id=2134077641]
 visible = false
-offset_left = 1766.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -154.0
 offset_top = 244.0
-offset_right = 1839.0
+offset_right = -81.0
 offset_bottom = 303.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("16_13o5n")
@@ -813,9 +862,12 @@ stretch_mode = 0
 
 [node name="全国政协展开" type="TextureButton" parent="右侧栏" unique_id=1008765268]
 visible = false
-offset_left = 1783.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -137.0
 offset_top = 398.0
-offset_right = 1823.0
+offset_right = -97.0
 offset_bottom = 438.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("17_qy4bt")
@@ -824,9 +876,12 @@ stretch_mode = 0
 
 [node name="中央军委展开" type="TextureButton" parent="右侧栏" unique_id=57432949]
 visible = false
-offset_left = 1790.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -130.0
 offset_top = 509.0
-offset_right = 1830.0
+offset_right = -90.0
 offset_bottom = 549.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("18_wsnwf")
@@ -852,17 +907,27 @@ visible = false
 script = ExtResource("39_7aa6i")
 
 [node name="ESC菜单背景" type="TextureRect" parent="ESC菜单" unique_id=1469376975]
-offset_left = 787.0
-offset_top = 237.0
-offset_right = 1095.0
-offset_bottom = 799.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -173.0
+offset_top = -303.0
+offset_right = 135.0
+offset_bottom = 259.0
 texture = ExtResource("16_qo2jh")
 
 [node name="Label" type="Label" parent="ESC菜单" unique_id=2130791309]
-offset_left = 816.0
-offset_top = 280.0
-offset_right = 1075.0
-offset_bottom = 347.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -144.0
+offset_top = -260.0
+offset_right = 115.0
+offset_bottom = -193.0
 theme_override_colors/font_color = Color(0.47479695, 1.1130236e-06, 3.6098064e-07, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
 theme_override_font_sizes/font_size = 27
@@ -871,10 +936,15 @@ text = "中国:毛的遗产
 horizontal_alignment = 1
 
 [node name="存档" type="Button" parent="ESC菜单" unique_id=1649490135]
-offset_left = 845.0
-offset_top = 360.0
-offset_right = 1030.0
-offset_bottom = 444.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -180.0
+offset_right = 70.0
+offset_bottom = -96.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
 theme_override_font_sizes/font_size = 28
@@ -885,10 +955,15 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="加载" type="Button" parent="ESC菜单" unique_id=534433302]
-offset_left = 845.0
-offset_top = 430.0
-offset_right = 1030.0
-offset_bottom = 514.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -110.0
+offset_right = 70.0
+offset_bottom = -26.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
 theme_override_font_sizes/font_size = 28
@@ -900,10 +975,15 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="设置" type="Button" parent="ESC菜单" unique_id=1456121837]
-offset_left = 845.0
-offset_top = 503.0
-offset_right = 1030.0
-offset_bottom = 587.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -37.0
+offset_right = 70.0
+offset_bottom = 47.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
 theme_override_font_sizes/font_size = 28
@@ -915,10 +995,15 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="退出" type="Button" parent="ESC菜单" unique_id=216678351]
-offset_left = 845.0
-offset_top = 576.0
-offset_right = 1030.0
-offset_bottom = 660.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = 36.0
+offset_right = 70.0
+offset_bottom = 120.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
 theme_override_font_sizes/font_size = 28
@@ -1019,32 +1104,44 @@ flat = true
 script = ExtResource("45_pb6ma")
 
 [node name="背景" type="TextureRect" parent="国家面板" unique_id=2038508092]
-offset_top = 832.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -248.0
 offset_right = 1632.0
-offset_bottom = 1080.0
+offset_bottom = 0.0
 texture = ExtResource("46_ve70n")
 
 [node name="关闭背景" type="TextureRect" parent="国家面板" unique_id=1533306585]
-offset_top = 746.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -334.0
 offset_right = 279.0
-offset_bottom = 1033.0
+offset_bottom = -47.0
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("8_qy4bt")
 
 [node name="关闭" type="TextureButton" parent="国家面板" unique_id=1550883285]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 2.0
-offset_top = 748.0
+offset_top = -332.0
 offset_right = 628.0
-offset_bottom = 1374.0
+offset_bottom = 294.0
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("47_vqwm3")
 texture_hover = ExtResource("48_ihuqk")
 
 [node name="当前选中国家名称" type="Label" parent="国家面板" unique_id=1973141611]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 8.0
-offset_top = 840.0
+offset_top = -240.0
 offset_right = 112.0
-offset_bottom = 877.0
+offset_bottom = -203.0
 theme_override_fonts/font = ExtResource("17_v5qqf")
 theme_override_font_sizes/font_size = 32
 text = "苏联"
@@ -1052,48 +1149,66 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="国家属性背景" type="TextureRect" parent="国家面板" unique_id=1052982624]
-offset_top = 884.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -196.0
 offset_right = 349.0
-offset_bottom = 935.0
+offset_bottom = -145.0
 texture = ExtResource("49_cqjq1")
 
 [node name="政府类型" type="TextureRect" parent="国家面板" unique_id=642610366]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 15.999999
-offset_top = 888.0
+offset_top = -192.0
 offset_right = 136.0
-offset_bottom = 1008.0
+offset_bottom = -72.0
 scale = Vector2(0.34, 0.34)
 texture = ExtResource("50_leers")
 
 [node name="军事联盟" type="TextureRect" parent="国家面板" unique_id=1226814457]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 63.000008
-offset_top = 888.0
+offset_top = -192.0
 offset_right = 183.0
-offset_bottom = 1008.0
+offset_bottom = -72.0
 scale = Vector2(0.34, 0.34)
 texture = ExtResource("51_32v34")
 
 [node name="经济联盟" type="TextureRect" parent="国家面板" unique_id=11946238]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 109.999985
-offset_top = 888.0
+offset_top = -192.0
 offset_right = 229.99998
-offset_bottom = 1008.0
+offset_bottom = -72.0
 scale = Vector2(0.34, 0.34)
 texture = ExtResource("52_vkq10")
 
 [node name="在某国影响下" type="TextureRect" parent="国家面板" unique_id=441754020]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 245.99997
-offset_top = 888.0
+offset_top = -192.0
 offset_right = 365.99997
-offset_bottom = 1008.0
+offset_bottom = -72.0
 scale = Vector2(0.34, 0.34)
 texture = ExtResource("53_leers")
 
 [node name="互动按钮" type="Button" parent="国家面板" unique_id=2006736957]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 17.0
-offset_top = 944.0
+offset_top = -136.0
 offset_right = 184.0
-offset_bottom = 1003.0
+offset_bottom = -77.0
 scale = Vector2(0.87, 0.87)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
@@ -1102,10 +1217,13 @@ flat = true
 icon_alignment = 1
 
 [node name="互动按钮2" type="Button" parent="国家面板" unique_id=1053465208]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 160.99998
-offset_top = 944.0
+offset_top = -136.0
 offset_right = 328.0
-offset_bottom = 1003.0
+offset_bottom = -77.0
 scale = Vector2(0.87, 0.87)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
@@ -1114,10 +1232,13 @@ flat = true
 icon_alignment = 1
 
 [node name="互动按钮3" type="Button" parent="国家面板" unique_id=792336673]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 17.0
-offset_top = 1008.00006
+offset_top = -72.0
 offset_right = 184.00002
-offset_bottom = 1067.0
+offset_bottom = -13.0
 scale = Vector2(0.87, 0.87)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
@@ -1126,10 +1247,13 @@ flat = true
 icon_alignment = 1
 
 [node name="互动按钮4" type="Button" parent="国家面板" unique_id=277974183]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 160.99998
-offset_top = 1008.0
+offset_top = -72.0
 offset_right = 328.0
-offset_bottom = 1067.0
+offset_bottom = -13.0
 scale = Vector2(0.87, 0.87)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
@@ -1138,10 +1262,13 @@ flat = true
 icon_alignment = 1
 
 [node name="执行当前互动按钮所需条件及检查" type="Label" parent="国家面板" unique_id=1212368593]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 352.0
-offset_top = 840.0
+offset_top = -240.0
 offset_right = 1624.0
-offset_bottom = 1072.0
+offset_bottom = -8.0
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_fonts/font = ExtResource("17_v5qqf")
 theme_override_font_sizes/font_size = 25
