@@ -21,8 +21,6 @@ class_name OrbitCamera
 ##      耦合较紧。建议改用全局单例（autoload）或信号机制解耦。
 ##   3. 使用 _unhandled_input 而非 _input，意味着 UI 控件可以优先消费鼠标
 ##      事件，这对策略游戏是有利的设计，但需要确保 UI 设置了 mouse_filter。
-##   4. _orbit() 的参数 mouse_pos 实际上仅用于计算 delta，方法内部也依赖
-##      _last_mouse_pos 的先前值，耦合性略高。可以考虑改为接收 delta 向量。
 ## =============================================================================
 
 ## 鼠标灵敏度，值越大旋转越快
@@ -160,7 +158,8 @@ func _handle_drag(d: InputEventScreenDrag) -> void:
 			_zoom(_pinch_last_dist / dist)
 		_pinch_last_dist = dist
 	elif _touch_points.size() == 1:
-		# 单指拖拽旋转
+		# 单指拖拽旋转。用 relative（canvas 空间，随分辨率一致）而非 screen_relative，
+		# 与鼠标路径共用 _orbit_delta，灵敏度不受设备分辨率影响。
 		_orbit_delta(d.relative, touch_sensitivity)
 
 
