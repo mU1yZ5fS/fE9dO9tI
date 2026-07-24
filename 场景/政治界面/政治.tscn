@@ -18,15 +18,23 @@
 
 [node name="政治" type="Control" unique_id=2144623429]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2b87v")
 
-[node name="背景" type="TextureRect" parent="." unique_id=449705355]
-layout_mode = 1
+[node name="背景层" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="背景" type="TextureRect" parent="背景层" unique_id=449705355]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
