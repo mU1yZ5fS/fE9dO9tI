@@ -44,12 +44,21 @@ bg_color = Color(0.6, 0.6, 0.6, 0.4509804)
 
 [node name="Control" type="Control" unique_id=1094361100]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8ij5d")
+
+[node name="背景层" type="CanvasLayer" parent="."]
+layer = -1
 
 [node name="状态栏" type="CanvasLayer" parent="." unique_id=412646823]
 script = ExtResource("2_3n6cn")
@@ -470,11 +479,15 @@ flat = true
 icon_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="派系背景图" type="TextureRect" parent="." unique_id=1326782302]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="派系背景图" type="TextureRect" parent="背景层" unique_id=1326782302]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_tf04v")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="军队力量背景图" type="TextureRect" parent="." unique_id=1480023552]
 layout_mode = 0
