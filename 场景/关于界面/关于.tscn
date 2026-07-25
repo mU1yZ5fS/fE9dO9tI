@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cb1wvmuscp64r"]
 
-[ext_resource type="Texture2D" uid="uid://7tovnybvehrj" path="" id="1_1nt0e"]
-[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="" id="1_t8q0p"]
-[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="" id="2_111s4"]
-[ext_resource type="Script" uid="uid://din8rhkhfxup5" path="" id="2_niyhs"]
-[ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="" id="4_uxlqu"]
+[ext_resource type="Texture2D" uid="uid://7tovnybvehrj" path="res://资产/UI/关于/关于背景图.png" id="1_1nt0e"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="1_t8q0p"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="2_111s4"]
+[ext_resource type="Script" uid="uid://din8rhkhfxup5" path="res://场景/关于界面/关于.gd" id="2_niyhs"]
+[ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="res://资产/UI/复用/向上箭头选中.png" id="4_uxlqu"]
 
 [sub_resource type="Theme" id="Theme_vg3t2"]
 default_font = ExtResource("1_t8q0p")
@@ -35,10 +35,11 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -464.0
-offset_top = 32.0
-offset_right = -328.0
-offset_bottom = 88.0
+offset_left = -470.0
+offset_top = 33.0
+offset_right = -210.0
+offset_bottom = 89.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "文本基于GKchP汉化组与改版制作组"
 
