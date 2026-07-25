@@ -68,6 +68,8 @@ var _test_mode_enabled: bool = false
 
 var _mouse_moved: bool = true
 var _last_camera_transform: Transform3D = Transform3D()
+## 本机 GPU 安全纹理上限（主线程查询后缓存，供后台解码线程读取）
+var _safe_max_tex_size: int = 4096
 
 ## 轻点最大位移（超过则判为拖拽，不选国）
 const TAP_MAX_MOVE := 12.0
@@ -118,7 +120,14 @@ func _ready() -> void:
 	# Fallback 机制：仅在独立测试场景、GameManager 不存在或预加载失败时同步加载
 	_meta = _load_json(meta_path)
 	_build_region_data(_load_json(regions_path), _load_json(countries_path))
-	
+
+	# 主线程查询 GPU 纹理上限（RenderingServer 不可在子线程调用），供 _load_image 缩放使用
+	var rd := RenderingServer.get_rendering_device()
+	if rd:
+		var gpu_limit := rd.limit_get(RenderingDevice.LIMIT_MAX_TEXTURE_SIZE_2D)
+		if gpu_limit > 0:
+			_safe_max_tex_size = mini(gpu_limit, 8192)
+
 	var thread := Thread.new()
 	thread.start(func(): 
 		var img := _load_image(region_map_path)
@@ -547,9 +556,10 @@ func _load_image(path: String) -> Image:
 		push_error("TerritoryMap: 无法加载底图 %s" % path)
 		return Image.create(1, 1, false, Image.FORMAT_RGB8)
 
-	const GPU_MAX_SIZE := 16384
-	if img.get_width() > GPU_MAX_SIZE or img.get_height() > GPU_MAX_SIZE:
-		var ratio := float(GPU_MAX_SIZE) / float(maxi(img.get_width(), img.get_height()))
+	# 按本机 GPU 安全上限缩放，避免纹理上限较低的手机上传失败（地球全蓝）。id 编码图只能最近邻。
+	var max_size := _safe_max_tex_size
+	if img.get_width() > max_size or img.get_height() > max_size:
+		var ratio := float(max_size) / float(maxi(img.get_width(), img.get_height()))
 		img.resize(int(img.get_width() * ratio), int(img.get_height() * ratio), Image.INTERPOLATE_NEAREST)
 		
 	return img

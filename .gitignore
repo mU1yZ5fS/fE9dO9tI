@@ -10,6 +10,13 @@
 *.swp
 *.swo
 *~
+.reasonix/
+AGENTS.md
+godot_operations.gd
+godot_operations.gd.uid
+mcp_interaction_server.gd
+mcp_interaction_server.gd.uid
+
 
 # ── 本地配置（含绝对路径，不可共享） ──
 .mcp.json
