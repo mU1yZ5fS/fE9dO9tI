@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_033_041_world_and_party.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.3"
+
+[sub_resource type="Resource" id="Expr_course_not_2"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_line_at_least_2"]
+script = ExtResource("3_expr")
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "The leader will head a conservative Maoist commission"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The resolution defended Mao's fundamental line while treating the Cultural Revolution as a collection of secondary excesses."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Entrust Deng Xiaoping and pragmatic reformers with a balanced assessment"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The commission adopted a balanced seventy-to-thirty assessment of Mao and blamed major failures on his advisers."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Let Peng Zhen and Zhao Ziyang expose every mistake"
+disabled_text = "The current political line will not entrust history to liberals"
+enable_condition = SubResource("Expr_line_at_least_2")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The liberal commission condemned Mao's rule and demanded a return to the party's pre-Maoist roots."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "historical_resolution"
+source_event_number = 39
+title = "Commission on the historical resolution"
+description = "The party must write an authoritative judgement on the history of the PRC and Mao Zedong's legacy. The commission's composition will determine that judgement."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_course_not_2")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

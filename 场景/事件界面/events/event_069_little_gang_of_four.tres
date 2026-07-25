@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_067_070_crises_and_plenums.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.2"
+
+[sub_resource type="Resource" id="Expr_reform"]
+script = ExtResource("3_expr")
+type = 0
+key = "reform_stage"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_power"]
+script = ExtResource("3_expr")
+type = 35
+key = "1,2"
+target = "0"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_party_650"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_support"
+value = 650.0
+
+[sub_resource type="Resource" id="Expr_party_600"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_support"
+value = 600.0
+
+[sub_resource type="Resource" id="Expr_promote"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_party_650"), SubResource("Expr_power")])
+
+[sub_resource type="Resource" id="Expr_remove"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_party_600"), SubResource("Expr_power")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do nothing; different views are the guarantee of democracy"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Conservatives retained their posts, frustrating reformers and undermining the leadership's authority."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Attack the conservatives and promote active reformers"
+disabled_text = "Requires 650 party support and combined moderate-reformer power above the Maoists"
+enable_condition = SubResource("Expr_promote")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Little Gang of Four was removed and its positions filled by reformers and their supporters."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Attack and remove the conservatives"
+disabled_text = "Requires 600 party support and combined moderate-reformer power above the Maoists"
+enable_condition = SubResource("Expr_remove")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Little Gang of Four and its conservative network were stripped of party and government influence."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "little_gang_of_four"
+source_event_number = 69
+trigger_priority = 690
+title = "Another gang?"
+description = "Reform has begun, but the Little Gang of Four still occupies key posts. The Fifth Plenum offers a chance to remove or replace them."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_reform")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

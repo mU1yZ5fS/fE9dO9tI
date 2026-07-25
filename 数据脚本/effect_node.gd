@@ -67,6 +67,10 @@ enum Type {
 	CUSTOM_SCRIPT,              # custom_script 指向 GDScript，引擎调用其 execute(context)
 	## 开战：value=war_id；key="infl1,infl2,usa_side,ussr_side"；target="side1|side2"
 	START_WAR,
+
+	# 新类型只追加，避免改变旧 .tres 的枚举整数。
+	ADD_ALL_POLITICIAN_LOYALTY,            # value=全体忠诚变化
+	ADD_POLITICIAN_LOYALTY_BY_PERSONALITY, # key="2,3" value=对应 traits[0] 忠诚变化
 }
 
 ## 效果类型
@@ -85,3 +89,6 @@ enum Type {
 ## 【重要】此脚本必须继承 RefCounted（而非 Node），
 ## 以避免 new() 创建的实例泄漏到场景树之外。
 @export var custom_script: GDScript
+
+## 可选执行条件。为空时总是执行；用于原版 Results_text 中的分支效果。
+@export var condition: ExprNode

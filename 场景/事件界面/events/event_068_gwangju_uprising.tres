@@ -1,0 +1,87 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_067_070_crises_and_plenums.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_day"]
+script = ExtResource("3_expr")
+type = 0
+key = "day"
+value = 15.0
+
+[sub_resource type="Resource" id="Expr_month"]
+script = ExtResource("3_expr")
+type = 0
+key = "month"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_year_1980"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1980.0
+
+[sub_resource type="Resource" id="Expr_1980_date"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_day"), SubResource("Expr_month"), SubResource("Expr_year_1980")])
+
+[sub_resource type="Resource" id="Expr_year_1981"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1981.0
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_1980_date"), SubResource("Expr_year_1981")])
+
+[sub_resource type="Resource" id="Expr_agents"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 80.0
+
+[sub_resource type="Resource" id="Expr_army"]
+script = ExtResource("3_expr")
+type = 0
+key = "army"
+value = 80.0
+
+[sub_resource type="Resource" id="Expr_aid"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents"), SubResource("Expr_army")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Let South Korea deal with the uprising itself"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "South Korean forces stormed Gwangju and crushed the uprising."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Aid the rebels and sabotage the assault"
+disabled_text = "Requires at least 80 army strength and 80 agents"
+enable_condition = SubResource("Expr_aid")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Chinese arms and sabotage prolonged the uprising, spread unrest across South Korea and destabilized Chun Doo-hwan."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "gwangju_uprising"
+source_event_number = 68
+trigger_priority = 680
+title = "Uprising in Gwangju"
+description = "The South Korean army is preparing to crush the Gwangju uprising. China can stay out or expend military and intelligence assets to widen the revolt."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])

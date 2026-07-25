@@ -8,18 +8,95 @@
 
 [sub_resource type="Resource" id="Resource_tvvbs"]
 script = ExtResource("3_nsmhh")
-key = "people_support"
-value = -200.0
+key = "influence"
+value = -250.0
 
 [sub_resource type="Resource" id="Resource_b5xge"]
 script = ExtResource("3_nsmhh")
-key = "party_support"
-value = -200.0
+key = "population"
+value = -18.0
 
 [sub_resource type="Resource" id="Resource_xasxc"]
 script = ExtResource("3_nsmhh")
-key = "money"
+key = "agriculture"
 value = -50.0
+
+[sub_resource type="Resource" id="Resource_independence_industry"]
+script = ExtResource("3_nsmhh")
+key = "industry"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_independence_party"]
+script = ExtResource("3_nsmhh")
+key = "party_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_kazakhstan_proprc"]
+script = ExtResource("4_o41p8")
+type = 10
+key = "is_proprc"
+target = "12"
+
+[sub_resource type="Resource" id="Resource_war_5_active"]
+script = ExtResource("4_o41p8")
+type = 30
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_kazakhstan_not_proprc"]
+script = ExtResource("4_o41p8")
+type = 20
+children = Array[ExtResource("4_o41p8")]([SubResource("Resource_kazakhstan_proprc")])
+
+[sub_resource type="Resource" id="Resource_war_5_inactive"]
+script = ExtResource("4_o41p8")
+type = 20
+children = Array[ExtResource("4_o41p8")]([SubResource("Resource_war_5_active")])
+
+[sub_resource type="Resource" id="Resource_xinjiang_soviet_branch"]
+script = ExtResource("4_o41p8")
+type = 18
+children = Array[ExtResource("4_o41p8")]([SubResource("Resource_kazakhstan_not_proprc"), SubResource("Resource_war_5_inactive")])
+
+[sub_resource type="Resource" id="Resource_xinjiang_other_branch"]
+script = ExtResource("4_o41p8")
+type = 19
+children = Array[ExtResource("4_o41p8")]([SubResource("Resource_kazakhstan_proprc"), SubResource("Resource_war_5_active")])
+
+[sub_resource type="Resource" id="Resource_xinjiang_policy_1"]
+script = ExtResource("3_nsmhh")
+type = 1
+key = "xinjiang_policy"
+value = 1.0
+condition = SubResource("Resource_xinjiang_soviet_branch")
+
+[sub_resource type="Resource" id="Resource_xinjiang_government"]
+script = ExtResource("3_nsmhh")
+type = 6
+key = "government"
+value = 1.0
+target = "70"
+condition = SubResource("Resource_xinjiang_soviet_branch")
+
+[sub_resource type="Resource" id="Resource_xinjiang_join_soviet"]
+script = ExtResource("3_nsmhh")
+type = 2
+key = "is_prosov"
+target = "70"
+condition = SubResource("Resource_xinjiang_soviet_branch")
+
+[sub_resource type="Resource" id="Resource_xinjiang_policy_2"]
+script = ExtResource("3_nsmhh")
+type = 1
+key = "xinjiang_policy"
+value = 2.0
+condition = SubResource("Resource_xinjiang_other_branch")
+
+[sub_resource type="Resource" id="Resource_xinjiang_leave_soviet"]
+script = ExtResource("3_nsmhh")
+type = 3
+key = "is_prosov"
+target = "70"
+condition = SubResource("Resource_xinjiang_other_branch")
 
 [sub_resource type="Resource" id="Resource_f27ye"]
 script = ExtResource("3_nsmhh")
@@ -29,7 +106,7 @@ value = -50.0
 [sub_resource type="Resource" id="Resource_hojh7"]
 script = ExtResource("2_sir7f")
 text = "Allow independence"
-effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_tvvbs"), SubResource("Resource_b5xge"), SubResource("Resource_xasxc"), SubResource("Resource_f27ye")])
+effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_tvvbs"), SubResource("Resource_b5xge"), SubResource("Resource_xasxc"), SubResource("Resource_independence_industry"), SubResource("Resource_f27ye"), SubResource("Resource_independence_party"), SubResource("Resource_xinjiang_policy_1"), SubResource("Resource_xinjiang_government"), SubResource("Resource_xinjiang_join_soviet"), SubResource("Resource_xinjiang_policy_2"), SubResource("Resource_xinjiang_leave_soviet")])
 result_text = "Xinjiang Uygur Autonomous Region officially declared its independence. This will be a big blow for us and a great opportunity for the USSR and the USA."
 
 [sub_resource type="Resource" id="Resource_5x2q2"]
@@ -42,10 +119,28 @@ script = ExtResource("3_nsmhh")
 key = "manpower"
 value = -20.0
 
+[sub_resource type="Resource" id="Resource_autonomy_freedom"]
+script = ExtResource("3_nsmhh")
+key = "thought_freedom"
+value = 70.0
+
+[sub_resource type="Resource" id="Resource_autonomy_territory"]
+script = ExtResource("3_nsmhh")
+key = "territorial_policy"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_can_autonomy"]
+script = ExtResource("4_o41p8")
+type = 1
+key = "territorial_policy"
+value = 22.0
+
 [sub_resource type="Resource" id="Resource_7gmw0"]
 script = ExtResource("2_sir7f")
 text = "Expand autonomy"
-effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_5x2q2"), SubResource("Resource_wkqns")])
+disabled_text = "We cannot give more autonomy"
+enable_condition = SubResource("Resource_can_autonomy")
+effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_autonomy_freedom"), SubResource("Resource_wkqns"), SubResource("Resource_5x2q2"), SubResource("Resource_autonomy_territory")])
 result_text = "We have further expanded the powers of local authorities and the rights of Xinjiang autonomy. It seems that the majority of the population is satisfied, but it gives the radicals more opportunities to promote separatism."
 
 [sub_resource type="Resource" id="Resource_jvjuj"]
@@ -68,10 +163,33 @@ script = ExtResource("3_nsmhh")
 key = "manpower"
 value = 30.0
 
+[sub_resource type="Resource" id="Resource_suppression_freedom"]
+script = ExtResource("3_nsmhh")
+key = "thought_freedom"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_line_not_4"]
+script = ExtResource("4_o41p8")
+type = 22
+key = "political_line"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_army_100"]
+script = ExtResource("4_o41p8")
+key = "army"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_can_suppress"]
+script = ExtResource("4_o41p8")
+type = 19
+children = Array[ExtResource("4_o41p8")]([SubResource("Resource_line_not_4"), SubResource("Resource_army_100")])
+
 [sub_resource type="Resource" id="Resource_5e2is"]
 script = ExtResource("2_sir7f")
 text = "Send in the PLA to restore order"
-effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_jvjuj"), SubResource("Resource_q05h0"), SubResource("Resource_nxarn"), SubResource("Resource_8kypp")])
+disabled_text = "Just crushing them with the army will not work"
+enable_condition = SubResource("Resource_can_suppress")
+effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_suppression_freedom"), SubResource("Resource_8kypp"), SubResource("Resource_jvjuj"), SubResource("Resource_q05h0"), SubResource("Resource_nxarn")])
 result_text = "The loyal parts of the PLA entered Xinjiang and quickly restored order. But the nationalists and the opposition will not forget this."
 
 [sub_resource type="Resource" id="Resource_6kyr3"]
@@ -94,27 +212,37 @@ script = ExtResource("3_nsmhh")
 key = "manpower"
 value = 20.0
 
+[sub_resource type="Resource" id="Resource_referendum_freedom"]
+script = ExtResource("3_nsmhh")
+key = "thought_freedom"
+value = 30.0
+
 [sub_resource type="Resource" id="Resource_orxmd"]
 script = ExtResource("4_o41p8")
 key = "agents"
-value = 50.0
+value = 40.0
 
 [sub_resource type="Resource" id="Resource_b6qgq"]
 script = ExtResource("4_o41p8")
 key = "money"
-value = 40.0
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_reserve_20"]
+script = ExtResource("4_o41p8")
+key = "reserve"
+value = 20.0
 
 [sub_resource type="Resource" id="Resource_84tjk"]
 script = ExtResource("4_o41p8")
-type = 18
-children = Array[ExtResource("4_o41p8")]([SubResource("Resource_orxmd"), SubResource("Resource_b6qgq")])
+type = 19
+children = Array[ExtResource("4_o41p8")]([SubResource("Resource_b6qgq"), SubResource("Resource_reserve_20"), SubResource("Resource_orxmd")])
 
 [sub_resource type="Resource" id="Resource_b5j6h"]
 script = ExtResource("2_sir7f")
 text = "Organize a referendum"
-disabled_text = "Need agents: 50 and money: 40"
+disabled_text = "We have neither the means nor the forces for falsification"
 enable_condition = SubResource("Resource_84tjk")
-effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_6kyr3"), SubResource("Resource_4xhu0"), SubResource("Resource_sc6yf"), SubResource("Resource_kuiv2")])
+effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_referendum_freedom"), SubResource("Resource_kuiv2"), SubResource("Resource_6kyr3"), SubResource("Resource_4xhu0"), SubResource("Resource_sc6yf")])
 result_text = "We organized a referendum in which the majority, of course, voted to preserve the status of Xinjiang. Dissatisfied nationalists and other radicals took to the streets, claiming falsification, but without past support these protests no longer pose a serious threat."
 
 [sub_resource type="Resource" id="Resource_ey2ma"]
@@ -123,10 +251,17 @@ type = 1
 key = "manpower"
 value = 300.0
 
+[sub_resource type="Resource" id="Resource_xinjiang_policy_zero"]
+script = ExtResource("4_o41p8")
+type = 21
+key = "xinjiang_policy"
+
 [resource]
 script = ExtResource("5_6ax5d")
 event_id = "xinjiang_separatism"
+source_event_number = 10
+trigger_priority = 65
 title = "Separatism in Xinjiang"
 description = "Encouraged by liberals and nationalists, residents of the Xinjiang Uygur Autonomous Region took to mass demonstrations for independence and secession from the PRC, which gradually develop into unrest. People demand \"liberation\" from \"the occupation of 1949\" and the majority of ethnic Uighurs support them. However, there is a counterweight to them from the Hanzu, and some of the Uighurs are just satisfied with the requirements of greater autonomy than we can take advantage of."
-trigger_conditions = Array[ExtResource("4_o41p8")]([SubResource("Resource_ey2ma")])
+trigger_conditions = Array[ExtResource("4_o41p8")]([SubResource("Resource_ey2ma"), SubResource("Resource_xinjiang_policy_zero")])
 options = Array[ExtResource("2_sir7f")]([SubResource("Resource_hojh7"), SubResource("Resource_7gmw0"), SubResource("Resource_5e2is"), SubResource("Resource_b5j6h")])

@@ -5,13 +5,13 @@
 #
 # 触发机制（两种路径）：
 #   【即时事件】mtth_base = 0
-#     条件满足 → 发出 event_triggered 信号，由 GameManager 切场景。
+#     条件满足 → 按 EventDef.show_notification 进入通知或直接切场景。
 #
 #   【延时事件】mtth_base > 0
 #     MTTH 计时到期 → 进入"待处理"状态：
-#       1. 弹出通知提示（显示在 UI 上），给玩家 10 天缓冲期
+#       1. 弹出通知提示（显示在 UI 上），默认给玩家 13 天缓冲期
 #       2. 玩家可以点击通知立即进入事件
-#       3. 10 天后若未点击，强制切场景
+#       3. 到期若未点击，扣除超时代价并强制切场景
 #
 # 架构：
 #     EventEngine (Autoload)
@@ -31,8 +31,8 @@ extends Node
 ## 事件定义文件存放目录（仅在编辑器中由 GenerateEvents 工具使用）
 @export_dir var scan_directory: String = "res://场景/事件界面/events/"
 
-## 延时事件的缓冲天数（游戏内日期）
-const PENDING_GRACE_DAYS: int = 10
+## 旧事件资源没有指定时的原版缓冲天数。
+const PENDING_GRACE_DAYS: int = 13
 
 ## 每 tick 经过的游戏月数（1 天 ≈ 1/30 月）
 const TICK_MONTHS: float = 1.0 / 30.0
@@ -49,13 +49,16 @@ signal event_notification_dismissed()
 ## 事件定义注册表（event_id → EventDef）
 var _events: Dictionary = {}
 
+## 按原版 else-if 链稳定排序的自动扫描序列。
+var _event_order: Array[EventDef] = []
+
 ## MTTH 累计计时（event_id → 累计月数）
 var _mtth_timers: Dictionary = {}
 
 ## 待处理的延时事件 ID（空串 = 无）
 var pending_event_id: String = ""
 
-## 待处理事件的截止日期（GameDate.to_int() 格式）
+## 待处理事件的截止 tick_count（跨月/跨年仍是精确天数）
 var _pending_deadline: int = -1
 
 ## 文本库引用（可选，设置后优先使用文本库的本地化文本）
@@ -79,19 +82,30 @@ func _scan_events() -> void:
 	if paths.is_empty() and DirAccess.open(scan_directory) == null:
 		push_warning("EventEngine: 事件目录不存在 %s —— 请在编辑器中运行 GenerateEvents 工具" % scan_directory)
 		return
+	var scan_order: Dictionary = {}
 	for path in paths:
 		var res := load(path)
 		if res is EventDef:
 			_events[res.event_id] = res
+			scan_order[res.event_id] = _event_order.size() * 10
+			_event_order.append(res)
 			print("EventEngine: 已加载事件 %s" % res.event_id)
 		else:
 			push_warning("EventEngine: 跳过非 EventDef 文件 %s" % path)
+	_event_order.sort_custom(func(a: EventDef, b: EventDef) -> bool:
+		var pa: int = a.trigger_priority if a.trigger_priority >= 0 else int(scan_order.get(a.event_id, 100000))
+		var pb: int = b.trigger_priority if b.trigger_priority >= 0 else int(scan_order.get(b.event_id, 100000))
+		if pa == pb:
+			return a.event_id < b.event_id
+		return pa < pb
+	)
 	print("EventEngine: 扫描完成，共 %d 个事件" % _events.size())
 
 
 ## 重新加载所有事件定义（热重载用）
 func reload_events() -> void:
 	_events.clear()
+	_event_order.clear()
 	_mtth_timers.clear()
 	_event_queue.clear()
 	pending_event_id = ""
@@ -119,6 +133,8 @@ func check_and_fire() -> void:
 	var ws: WorldState = GameManager.world
 	if ws == null:
 		return
+	if _is_event_in_progress():
+		return
 
 	# 优先处理事件链队列：既无待处理事件、也无正在展示的事件时，
 	# 立即触发队首事件（事件A完成 → 立即弹事件B）。
@@ -133,7 +149,7 @@ func check_and_fire() -> void:
 
 	# 检查待处理事件是否超时
 	if pending_event_id != "" and _pending_deadline > 0:
-		if ws.date.to_int() >= _pending_deadline:
+		if ws.date.tick_count >= _pending_deadline:
 			_force_fire_pending()
 			return
 
@@ -142,12 +158,12 @@ func check_and_fire() -> void:
 		return
 
 	# 扫描所有事件
-	for ev in _events.values():
+	for ev in _event_order:
 		var event_def := ev as EventDef
 		if not _evaluate_trigger(event_def):
 			continue
 		if event_def.mtth_base <= 0.0:
-			_fire_immediate(event_def)
+			_dispatch_trigger(event_def)
 			return
 		_tick_mtth(event_def)
 
@@ -157,6 +173,13 @@ func _fire_immediate(event_def: EventDef) -> void:
 	event_triggered.emit(event_def.event_id, false)
 
 
+func _dispatch_trigger(event_def: EventDef) -> void:
+	if event_def.show_notification:
+		_enter_pending(event_def)
+	else:
+		_fire_immediate(event_def)
+
+
 func _tick_mtth(event_def: EventDef) -> void:
 	var effective_mtth := _calc_effective_mtth(event_def)
 	if not _mtth_timers.has(event_def.event_id):
@@ -164,7 +187,7 @@ func _tick_mtth(event_def: EventDef) -> void:
 	_mtth_timers[event_def.event_id] += TICK_MONTHS / effective_mtth
 	if _mtth_timers[event_def.event_id] >= 1.0:
 		_mtth_timers[event_def.event_id] = 0.0
-		_enter_pending(event_def)
+		_dispatch_trigger(event_def)
 
 
 func _calc_effective_mtth(event_def: EventDef) -> float:
@@ -180,7 +203,8 @@ func _calc_effective_mtth(event_def: EventDef) -> float:
 func _enter_pending(event_def: EventDef) -> void:
 	pending_event_id = event_def.event_id
 	var ws: WorldState = GameManager.world
-	_pending_deadline = ws.date.to_int() + PENDING_GRACE_DAYS if ws else -1
+	var grace_days := event_def.notification_days if event_def.notification_days > 0 else PENDING_GRACE_DAYS
+	_pending_deadline = ws.date.tick_count + grace_days if ws else -1
 	print("EventEngine: 延时事件待处理 %s (截止 %d)" % [event_def.event_id, _pending_deadline])
 	event_notification.emit(event_def.event_id, event_def.title)
 
@@ -222,8 +246,13 @@ func _force_fire_pending() -> void:
 	if pending_event_id == "":
 		return
 	var event_id := pending_event_id
-	_clear_pending()
 	var event_def := _events.get(event_id) as EventDef
+	if event_def:
+		var ws: WorldState = GameManager.world
+		if ws != null:
+			ws.add_data_value("agents", -event_def.timeout_agents_penalty)
+			ws.add_data_value("budget", -event_def.timeout_budget_penalty)
+	_clear_pending()
 	if event_def:
 		print("EventEngine: 超时强制触发 %s" % event_id)
 		event_triggered.emit(event_id, true)
@@ -278,6 +307,19 @@ func evaluate(node: ExprNode) -> bool:
 		ExprNode.Type.RESOURCE_AT_LEAST: return _get_resource(node.key) >= node.value
 		ExprNode.Type.RESOURCE_AT_MOST: return _get_resource(node.key) <= node.value
 		ExprNode.Type.RESOURCE_AT_LEAST_FOR: return _get_resource_for(node.target, node.key) >= node.value
+		ExprNode.Type.RESOURCE_AT_MOST_FOR: return _get_resource_for(node.target, node.key) <= node.value
+		ExprNode.Type.RESOURCE_EQUALS: return _get_resource(node.key) == node.value
+		ExprNode.Type.RESOURCE_NOT_EQUALS: return _get_resource(node.key) != node.value
+		ExprNode.Type.RESOURCE_SUM_AT_LEAST: return _get_resource_sum(node.keys) >= node.value
+		ExprNode.Type.RESOURCE_SUM_AT_MOST: return _get_resource_sum(node.keys) <= node.value
+		ExprNode.Type.RESOURCE_DIFFERENCE_AT_MOST:
+			return _get_resource(node.key) - _get_resource(node.target) <= node.value
+		ExprNode.Type.POLITICIAN_POWER_DIFFERENCE_AT_LEAST:
+			return _politician_power_sum(int(node.key)) - _politician_power_sum(int(node.target)) >= node.value
+		ExprNode.Type.POLITICIAN_GROUP_POWER_DIFFERENCE_AT_LEAST:
+			return _politician_group_power_sum(node.key) - _politician_group_power_sum(node.target) >= node.value
+		ExprNode.Type.WAR_FIELD_EQUALS:
+			return _get_war_field(int(node.target), node.key) == node.value
 		ExprNode.Type.MODIFIER_ACTIVE: return _is_modifier_active(node.key)
 		ExprNode.Type.MODIFIER_INACTIVE: return not _is_modifier_active(node.key)
 		ExprNode.Type.PREV_EVENT_RESULT_IS:
@@ -289,7 +331,7 @@ func evaluate(node: ExprNode) -> bool:
 		ExprNode.Type.IS_FACTION_LEADER: return _is_faction_leading(int(node.value))
 		ExprNode.Type.EMPIRE_RELATION_AT_LEAST: return _get_empire_relation(int(node.key)) >= node.value
 		ExprNode.Type.EMPIRE_RELATION_AT_MOST: return _get_empire_relation(int(node.key)) <= node.value
-		ExprNode.Type.COUNTRY_HAS_TAG: return _player_has_tag(node.key)
+		ExprNode.Type.COUNTRY_HAS_TAG: return _country_has_tag(node.target, node.key)
 		ExprNode.Type.COUNTRY_IS_SUBJECT_OF:
 			# overlord_tag（新字段）优先，回退到 key（旧字段兼容）
 			var overlord: String = node.overlord_tag if node.overlord_tag != "" else node.key
@@ -299,6 +341,12 @@ func evaluate(node: ExprNode) -> bool:
 		ExprNode.Type.HAS_FLAG: return ws != null and ws.get_flag(node.key)
 		ExprNode.Type.NOT_HAS_FLAG: return ws == null or not ws.get_flag(node.key)
 		ExprNode.Type.COUNTRY_EXISTS: return _resolve_country(node.key) != null
+		ExprNode.Type.COUNTRY_FIELD_EQUALS: return _get_country_field(node.target, node.key) == node.value
+		ExprNode.Type.COUNTRY_FIELD_NOT_EQUALS: return _get_country_field(node.target, node.key) != node.value
+		ExprNode.Type.COUNTRY_FIELD_AT_LEAST: return _get_country_field(node.target, node.key) >= node.value
+		ExprNode.Type.COUNTRY_FIELD_AT_MOST: return _get_country_field(node.target, node.key) <= node.value
+		ExprNode.Type.TECH_UNLOCKED: return _is_tech_unlocked(int(node.value))
+		ExprNode.Type.WAR_ACTIVE: return _is_war_active(int(node.value))
 		ExprNode.Type.ALL:
 			for child in node.children:
 				if not evaluate(child): return false
@@ -323,6 +371,8 @@ func execute(effects: Array[EffectNode], context: Dictionary = {}) -> void:
 	for fx in effects:
 		if fx == null:
 			continue
+		if fx.condition != null and not evaluate(fx.condition):
+			continue
 		match fx.type:
 			EffectNode.Type.ADD_RESOURCE: _add_resource(fx.key, int(fx.value))
 			EffectNode.Type.SET_RESOURCE: _set_resource(fx.key, int(fx.value))
@@ -338,13 +388,22 @@ func execute(effects: Array[EffectNode], context: Dictionary = {}) -> void:
 			EffectNode.Type.ADD_FACTION_SUPPORT: _add_faction_support(int(fx.key), int(fx.value))
 			EffectNode.Type.SET_WAR_STATE: _set_resource("war", int(fx.value))
 			EffectNode.Type.START_WAR: _start_war_from_effect(fx)
+			EffectNode.Type.ADD_ALL_POLITICIAN_LOYALTY:
+				_add_politician_loyalty([], int(fx.value))
+			EffectNode.Type.ADD_POLITICIAN_LOYALTY_BY_PERSONALITY:
+				var personalities: Array[int] = []
+				for part in fx.key.split(",", false):
+					if part.is_valid_int():
+						personalities.append(int(part))
+				_add_politician_loyalty(personalities, int(fx.value))
 			EffectNode.Type.SET_MODIFIER_ACTIVE: _set_modifier(fx.key, fx.value >= 0.5)
 			EffectNode.Type.SET_MODIFIER_AVAILABLE: _set_modifier_available(fx.key, fx.value >= 0.5)
 			EffectNode.Type.SET_FLAG: ws.set_flag(fx.key, true)
 			EffectNode.Type.CLEAR_FLAG: ws.set_flag(fx.key, false)
 			EffectNode.Type.TRIGGER_EVENT:
 				if _events.has(fx.key):
-					_fire_immediate(_events[fx.key])
+					var chain_ids: Array[String] = [fx.key]
+					enqueue_chain(chain_ids)
 			EffectNode.Type.CUSTOM_SCRIPT:
 				_run_custom_script(fx, context)
 
@@ -400,6 +459,7 @@ func _run_custom_script(fx: EffectNode, context: Dictionary) -> void:
 	if not executor.has_method("execute"):
 		push_error("EventEngine: CUSTOM_SCRIPT 缺少 execute(context) 方法：%s" % fx.custom_script.resource_path)
 		return
+	context["effect"] = fx
 	executor.execute(context)
 
 
@@ -430,7 +490,11 @@ func apply_event_option(event_def: EventDef, option_index: int) -> Dictionary:
 	if option_index < 0 or option_index >= event_def.options.size():
 		return {"name": "", "text": "选项无效"}
 	var opt := event_def.options[option_index] as EventOption
-	execute(opt.effects)
+	var execution_context: Dictionary = {
+		"event_id": event_def.event_id,
+		"option_index": option_index,
+	}
+	execute(opt.effects, execution_context)
 	_mark_done(event_def, option_index)
 	# 事件改数后同步显示视图并通知状态栏
 	if GameManager and GameManager.has_method("_notify_stats"):
@@ -441,8 +505,8 @@ func apply_event_option(event_def: EventDef, option_index: int) -> Dictionary:
 	if not event_def.triggers_on_complete.is_empty():
 		enqueue_chain(event_def.triggers_on_complete)
 	return {
-		"name": _resolve_option_title(event_def, opt),
-		"text": _resolve_option_result(event_def, opt, option_index),
+		"name": execution_context.get("result_title", _resolve_option_title(event_def, opt)),
+		"text": execution_context.get("result_text", _resolve_option_result(event_def, opt, option_index)),
 	}
 
 
@@ -473,6 +537,48 @@ func _get_resource(key: String) -> int:
 	if ws != null:
 		return ws.get_data_value(key)
 	return 0
+
+
+func _get_resource_sum(keys: Array[String]) -> int:
+	var total := 0
+	for resource_key in keys:
+		total += _get_resource(resource_key)
+	return total
+
+
+func _politician_power_sum(personality: int) -> int:
+	var ws: WorldState = GameManager.world
+	if ws == null:
+		return 0
+	var total := 0
+	for politician in ws.politicians:
+		if politician != null and politician.trait_personality == personality:
+			total += politician.power
+	return total
+
+
+func _politician_group_power_sum(personalities_csv: String) -> int:
+	var total := 0
+	for part in personalities_csv.split(",", false):
+		if part.is_valid_int():
+			total += _politician_power_sum(int(part))
+	return total
+
+
+func _get_war_field(war_index: int, field_name: String) -> int:
+	var ws: WorldState = GameManager.world
+	if ws == null or war_index < 0 or war_index >= ws.wars.size() or ws.wars[war_index] == null:
+		return 0
+	var war: WarData = ws.wars[war_index]
+	match field_name.to_lower():
+		"infl1": return war.infl1
+		"infl2": return war.infl2
+		"usa_side", "usa_place": return war.usa_side
+		"ussr_side", "ussr_place": return war.ussr_side
+		"fortnight_elapsed", "fortnight_go": return war.fortnight_elapsed
+		_:
+			push_warning("EventEngine: 不支持的战争字段 %s" % field_name)
+			return 0
 
 
 ## 获取指定国家的资源值（用于 RESOURCE_AT_LEAST_FOR 条件）
@@ -506,10 +612,47 @@ func _is_faction_leading(faction_index: int) -> bool:
 	return GameManager != null and GameManager.is_faction_leading(faction_index)
 
 
-func _player_has_tag(tag: String) -> bool:
-	var player: CountryData = GameManager.world.get_player_country()
-	if player == null: return false
-	return player.has_tag(tag)
+func _country_has_tag(target: String, tag: String) -> bool:
+	var country := _resolve_country(target)
+	return country != null and country.has_tag(tag)
+
+
+func _get_country_field(target: String, field_name: String) -> int:
+	var country := _resolve_country(target)
+	if country == null:
+		return 0
+	match field_name.to_lower():
+		"government", "gosstroy": return country.government
+		"sub_government", "subgosstroy": return country.sub_government
+		"stability": return country.stability
+		"social_stability": return country.social_stability
+		"development": return country.development
+		"level_of_development": return country.level_of_development
+		"level_of_instability": return country.level_of_instability
+		"special": return country.special
+		"special_ending": return country.special_ending
+		"sov_power": return country.sov_power
+		"usa_power": return country.usa_power
+		"prc_power": return country.prc_power
+		"fre_power": return country.fre_power
+		"puppet_of": return country.puppet_of
+		_:
+			push_warning("EventEngine: 不支持的国家字段 %s" % field_name)
+			return 0
+
+
+func _is_tech_unlocked(tech_index: int) -> bool:
+	var ws: WorldState = GameManager.world
+	return (ws != null and ws.techs != null and tech_index >= 0
+			and tech_index < ws.techs.unlocked.size() and ws.techs.unlocked[tech_index])
+
+
+func _is_war_active(war_id: int) -> bool:
+	var ws: WorldState = GameManager.world
+	if ws == null or war_id < 0 or war_id >= ws.wars.size():
+		return false
+	var war := ws.wars[war_id]
+	return war != null and war.is_going
 
 
 func _country_is_subject_of(subject_tag: String, overlord_tag: String) -> bool:
@@ -525,16 +668,13 @@ func _country_is_subject_of(subject_tag: String, overlord_tag: String) -> bool:
 func _date_compare(date_str: String, before: bool) -> bool:
 	var parts := date_str.split(".")
 	if parts.size() < 2: return false
-	var ty := int(parts[0]); var tm := int(parts[1])
+	var ty := int(parts[0])
+	var tm := int(parts[1])
+	var td := int(parts[2]) if parts.size() >= 3 else 1
 	var cur: GameDate = GameManager.world.date
-	if before:
-		if cur.year < ty: return true
-		if cur.year > ty: return false
-		return cur.month <= tm
-	else:
-		if cur.year > ty: return true
-		if cur.year < ty: return false
-		return cur.month >= tm
+	var target_value := ty * 10000 + tm * 100 + td
+	var current_value := cur.to_int()
+	return current_value <= target_value if before else current_value >= target_value
 
 
 ## 按标签解析国家。通过 WorldState.get_country_by_tag() 动态查找。
@@ -543,6 +683,8 @@ func _resolve_country(tag: String) -> CountryData:
 	if ws == null: return null
 	if tag == "ROOT" or tag == "":
 		return ws.get_player_country()
+	if tag.is_valid_int():
+		return ws.get_country_by_legacy_index(int(tag))
 	return ws.get_country_by_tag(tag)
 
 
@@ -587,13 +729,34 @@ func _set_country_var(target_tag: String, var_name: String, var_value: int) -> v
 	var country: CountryData = _resolve_country(target_tag)
 	if country == null: return
 	match var_name:
+		"government", "gosstroy": country.government = var_value
+		"sub_government", "subgosstroy": country.sub_government = var_value
+		"stability": country.stability = var_value
+		"social_stability": country.social_stability = var_value
+		"development": country.development = var_value
+		"special": country.special = var_value
 		"special_ending": country.special_ending = var_value
 
 func _add_country_var(target_tag: String, var_name: String, delta: int) -> void:
 	var country: CountryData = _resolve_country(target_tag)
 	if country == null: return
 	match var_name:
+		"stability": country.stability += delta
+		"social_stability": country.social_stability += delta
+		"development": country.development += delta
+		"special": country.special += delta
 		"special_ending": country.special_ending += delta
+
+
+func _add_politician_loyalty(personalities: Array[int], delta: int) -> void:
+	var ws: WorldState = GameManager.world
+	if ws == null:
+		return
+	for politician in ws.politicians:
+		if politician == null:
+			continue
+		if personalities.is_empty() or personalities.has(politician.trait_personality):
+			politician.loyalty += delta
 
 func _add_empire_relation(empire_index: int, delta: int) -> void:
 	var ws: WorldState = GameManager.world
@@ -651,6 +814,11 @@ func import_runtime_from_world(ws: WorldState) -> void:
 			_event_queue.append(str(eid))
 	if pending_event_id != "":
 		var edef := _events.get(pending_event_id) as EventDef
+		# 0.1.x 旧存档把截止值写成 YYYYMMDD，且跨月加法可能产生非法日期。
+		# 无法精确还原剩余天数时，从读档日重建一个完整通知期。
+		if _pending_deadline >= 10000000:
+			var grace_days := edef.notification_days if edef != null else PENDING_GRACE_DAYS
+			_pending_deadline = ws.date.tick_count + grace_days
 		var title := edef.title if edef else pending_event_id
 		event_notification.emit(pending_event_id, title)
 

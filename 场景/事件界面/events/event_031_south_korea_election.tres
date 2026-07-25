@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_agents_40"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 40.0
+
+[sub_resource type="Resource" id="Expr_agents_60"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 60.0
+
+[sub_resource type="Resource" id="Expr_influence_200"]
+script = ExtResource("3_expr")
+key = "influence"
+value = 200.0
+
+[sub_resource type="Resource" id="Expr_unification"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_60"), SubResource("Expr_influence_200")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do not interfere in the democratic process"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Roh Tae-woo used the divided opposition to win the first free presidential election."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Help Kim Dae-jung build an opposition coalition"
+disabled_text = "Requires at least 40 agents"
+enable_condition = SubResource("Expr_agents_40")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Kim Dae-jung united the opposition, won the election and began democratic reform and détente with the North."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Help Kim Dae-jung and pressure the DPRK toward unification"
+disabled_text = "Requires 60 agents and 200 global influence"
+enable_condition = SubResource("Expr_unification")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Kim Dae-jung won and both Koreas agreed to move toward a neutral confederation."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "south_korea_election"
+source_event_number = 31
+title = "Correct democracy"
+description = "The Gwangju rebellion and regional economic pressure have forced Chun Doo-hwan to permit a free presidential election. China may leave the opposition divided, unite it behind Kim Dae-jung, or push both Koreas toward confederation."
+show_notification = false
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

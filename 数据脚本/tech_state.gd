@@ -9,6 +9,9 @@ const TECH_COUNT: int = 27
 @export var required_time: Array[int] = []
 @export var active_slot: int = -1
 
+## 完成通知是一次性运行时状态；用 -1 表示本轮无完成项。
+@export var completed_this_tick: int = -1
+
 # 每个科技的预算花费（启动时一次性扣除，data[8] -= money）
 const TECH_MONEY: Array[int] = [
 	3, 3, 5, 5, 5, 5, 7, 9, 7,
@@ -122,17 +125,16 @@ func monthly_advance(science_pool: int) -> int:
 
 
 func get_completed_this_tick() -> int:
-	for i in TECH_COUNT:
-		if unlocked[i] and in_progress[i]:
-			in_progress[i] = false
-			return i
-	return -1
+	var completed := completed_this_tick
+	completed_this_tick = -1
+	return completed
 
 
 func _complete(index: int) -> void:
 	in_progress[index] = false
 	unlocked[index] = true
 	active_slot = -1
+	completed_this_tick = index
 
 
 func _is_valid_index(index: int) -> bool:

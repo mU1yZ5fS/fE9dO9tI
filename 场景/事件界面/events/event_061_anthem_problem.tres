@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_053_062_reform_and_alliances.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.2"
+
+[sub_resource type="Resource" id="Expr_no_war_result"]
+script = ExtResource("3_expr")
+type = 22
+key = "war_resolve"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_east_red"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_new_words"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Restore March of the Volunteers unchanged"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "March of the Volunteers was restored with its original lyrics and regulated as the national anthem."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Approve The East Is Red"
+disabled_text = "The current political line rejects a return to Cultural Revolution symbolism"
+enable_condition = SubResource("Expr_east_red")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The East Is Red became the anthem, pleasing the public but provoking party and international criticism."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Restore March of the Volunteers with new lyrics"
+disabled_text = "The current political line has moved too far from revolutionary symbolism"
+enable_condition = SubResource("Expr_new_words")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "March of the Volunteers returned with new lyrics invoking the party, communism and Mao's banner."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "anthem_problem"
+source_event_number = 61
+trigger_priority = 610
+title = "The anthem problem"
+description = "China still lacks a settled post-Cultural Revolution national anthem. The NPC must choose between restoration and revolutionary alternatives."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_no_war_result")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

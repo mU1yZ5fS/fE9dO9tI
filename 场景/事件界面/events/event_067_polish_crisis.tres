@@ -1,0 +1,121 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_067_070_crises_and_plenums.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.10"
+
+[sub_resource type="Resource" id="Expr_relres"]
+script = ExtResource("3_expr")
+type = 14
+key = "relres"
+
+[sub_resource type="Resource" id="Expr_albania"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "20"
+
+[sub_resource type="Resource" id="Expr_line"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_radical"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_relres"), SubResource("Expr_albania"), SubResource("Expr_line")])
+
+[sub_resource type="Resource" id="Expr_ussr_relation"]
+script = ExtResource("3_expr")
+type = 8
+key = "1"
+value = 60.0
+
+[sub_resource type="Resource" id="Expr_china_ovd"]
+script = ExtResource("3_expr")
+type = 10
+key = "ovd"
+target = "1"
+
+[sub_resource type="Resource" id="Expr_intervention"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_ussr_relation"), SubResource("Expr_china_ovd")])
+
+[sub_resource type="Resource" id="Expr_usa_relation"]
+script = ExtResource("3_expr")
+type = 8
+key = "0"
+value = 60.0
+
+[sub_resource type="Resource" id="Expr_usa_trade"]
+script = ExtResource("3_expr")
+type = 10
+key = "对华贸易"
+target = "51"
+
+[sub_resource type="Resource" id="Expr_solidarity"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_usa_relation"), SubResource("Expr_usa_trade")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Poland's affairs do not concern China"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China stayed neutral while Jaruzelski imposed martial law with Soviet support."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Support Jaruzelski's pro-Soviet military"
+disabled_text = "Requires restored Sino-Soviet relations"
+enable_condition = SubResource("Expr_relres")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Chinese and Soviet pressure pushed Jaruzelski to impose martial law and establish military rule."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Build a national-communist coalition around Mijal and Siwak"
+disabled_text = "Requires Soviet reconciliation, pro-Chinese Albania, and political line below 3"
+enable_condition = SubResource("Expr_radical")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "A Chinese-backed national-communist coalition seized power and aligned Poland with Beijing while remaining in the Soviet blocs."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Ask the Warsaw Pact to intervene militarily"
+disabled_text = "Requires Soviet relations of at least 6 and Chinese membership in the Warsaw Pact"
+enable_condition = SubResource("Expr_intervention")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Warsaw Pact considered China's request for military intervention."
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "Support Solidarity together with the United States"
+disabled_text = "Requires American relations of at least 6 and close trade ties with the United States"
+enable_condition = SubResource("Expr_solidarity")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China and the United States attempted a joint operation in support of Solidarity."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "polish_crisis"
+source_event_number = 67
+trigger_priority = 670
+title = "Poland has not died yet?"
+description = "Solidarity, the Polish party and the army are approaching a decisive confrontation. China can back Moscow, radical national communists, Warsaw Pact intervention, or the opposition."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

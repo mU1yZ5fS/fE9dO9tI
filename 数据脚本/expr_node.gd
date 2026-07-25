@@ -42,6 +42,23 @@ enum Type {
 	ALL,                        # AND — children 全部满足
 	ANY,                        # OR  — children 任一满足
 	NOT,                        # NOT — children[0] 取反
+
+	# 新类型必须追加在组合节点之后，不能插入前方：旧 .tres 按枚举整数序列化。
+	RESOURCE_EQUALS,            # key=资源名 value=值 → data[key] == value
+	RESOURCE_NOT_EQUALS,        # key=资源名 value=值 → data[key] != value
+	RESOURCE_SUM_AT_LEAST,      # keys=资源名数组 value=阈值 → sum(data[keys]) >= value
+	RESOURCE_SUM_AT_MOST,       # keys=资源名数组 value=阈值 → sum(data[keys]) <= value
+	COUNTRY_FIELD_EQUALS,       # target=国家标签/原版序号 key=字段 value=值
+	COUNTRY_FIELD_NOT_EQUALS,   # target=国家标签/原版序号 key=字段 value=值
+	COUNTRY_FIELD_AT_LEAST,     # target=国家标签/原版序号 key=字段 value=阈值
+	COUNTRY_FIELD_AT_MOST,      # target=国家标签/原版序号 key=字段 value=阈值
+	TECH_UNLOCKED,              # value=科技编号 → techs.unlocked[value]
+	WAR_ACTIVE,                 # value=战争编号 → wars[value].is_going
+	RESOURCE_AT_MOST_FOR,       # key=资源名 value=阈值 target=国家标签
+	RESOURCE_DIFFERENCE_AT_MOST,# key=被减数 target=减数 value=阈值
+	POLITICIAN_POWER_DIFFERENCE_AT_LEAST, # key=左侧性格 target=右侧性格 value=最小权力差
+	WAR_FIELD_EQUALS,            # target=战争编号 key=字段 value=值
+	POLITICIAN_GROUP_POWER_DIFFERENCE_AT_LEAST, # key/target=逗号分隔性格组 value=最小权力差
 }
 
 ## 节点类型
@@ -55,6 +72,9 @@ enum Type {
 
 ## 通用参数：目标国家标签（RESOURCE_AT_LEAST_FOR / COUNTRY_IS_SUBJECT_OF 的 subject 方）
 @export var target: String = ""
+
+## 多资源求和条件使用的键列表（RESOURCE_SUM_*）。
+@export var keys: Array[String] = []
 
 ## 引用前序事件ID（PREV_EVENT_* 节点使用，字符串 event_id）
 @export var ref_event_id: String = ""

@@ -39,6 +39,63 @@ static func res_at_most(key: String, value: float) -> ExprNode:
 	n.value = value
 	return n
 
+## data[key] == value
+static func res_equals(key: String, value: float) -> ExprNode:
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.RESOURCE_EQUALS
+	n.key = key
+	n.value = value
+	return n
+
+## data[key] != value
+static func res_not_equals(key: String, value: float) -> ExprNode:
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.RESOURCE_NOT_EQUALS
+	n.key = key
+	n.value = value
+	return n
+
+## sum(data[keys]) <= value
+static func res_sum_at_most(keys: Array[String], value: float) -> ExprNode:
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.RESOURCE_SUM_AT_MOST
+	n.keys = keys
+	n.value = value
+	return n
+
+## data[left] - data[right] <= value
+static func res_difference_at_most(left: String, right: String, value: float) -> ExprNode:
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.RESOURCE_DIFFERENCE_AT_MOST
+	n.key = left
+	n.target = right
+	n.value = value
+	return n
+
+## allcountries[target].field == value；target 可为标签或原版数组序号。
+static func country_field_equals(target: String, field_name: String, value: float) -> ExprNode:
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.COUNTRY_FIELD_EQUALS
+	n.target = target
+	n.key = field_name
+	n.value = value
+	return n
+
+## 指定国家拥有标签；target 可为标签或原版数组序号。
+static func country_has_tag(target: String, tag: String) -> ExprNode:
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.COUNTRY_HAS_TAG
+	n.target = target
+	n.key = tag
+	return n
+
+## 指定原版战争正在进行。
+static func war_active(war_id: int) -> ExprNode:
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.WAR_ACTIVE
+	n.value = float(war_id)
+	return n
+
 ## modifies[key].active == true
 static func mod_active(key: String) -> ExprNode:
 	var n := ExprNode.new()
@@ -135,6 +192,18 @@ static func date_after(date_str: String) -> ExprNode:
 
 # ── 效果节点快捷构建 ──
 
+## 给效果附加条件（效果节点仍可在 Inspector 中独立编辑）。
+static func effect_if(effect: EffectNode, condition: ExprNode) -> EffectNode:
+	effect.condition = condition
+	return effect
+
+## 高级事件自定义效果。
+static func custom_effect(script: GDScript) -> EffectNode:
+	var n := EffectNode.new()
+	n.type = EffectNode.Type.CUSTOM_SCRIPT
+	n.custom_script = script
+	return n
+
 ## data[key] += delta
 static func add_resource(key: String, delta: int) -> EffectNode:
 	var n := EffectNode.new()
@@ -180,6 +249,24 @@ static func set_country_var(target: String, var_name: String, value: int) -> Eff
 	n.target = target
 	n.key = var_name
 	n.value = float(value)
+	return n
+
+## 所有政治家忠诚变化。
+static func add_all_politician_loyalty(delta: int) -> EffectNode:
+	var n := EffectNode.new()
+	n.type = EffectNode.Type.ADD_ALL_POLITICIAN_LOYALTY
+	n.value = float(delta)
+	return n
+
+## 指定 traits[0] 人群的忠诚变化。
+static func add_politician_loyalty_by_personality(personalities: Array[int], delta: int) -> EffectNode:
+	var n := EffectNode.new()
+	n.type = EffectNode.Type.ADD_POLITICIAN_LOYALTY_BY_PERSONALITY
+	var parts := PackedStringArray()
+	for personality in personalities:
+		parts.append(str(personality))
+	n.key = ",".join(parts)
+	n.value = float(delta)
 	return n
 
 ## empires[index].relations += delta
@@ -462,9 +549,9 @@ static func create_event_1() -> EventDef:
 	ev.description = ("It is the day of the national elections in the NPC. And since we occupy a dominant position "
 			+ "in Chinese politics, we can intervene a little in their conduct, so that everything will remain same. "
 			+ "Or just rely on the Chinese people's faith in us.")
-	ev.fire_only_once = true
+	ev.fire_only_once = false
 	ev.mtth_base = 0.0
-	ev.trigger_conditions = [date_after("1978.1")] as Array[ExprNode]
+	ev.show_notification = false
 
 	# 选项0：不干涉
 	ev.options.append(option(
@@ -510,7 +597,7 @@ static func create_event_3() -> EventDef:
 			+ "commission and decide how we are conduct the chairman in his last journey.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
-	ev.trigger_conditions = [date_after("1976.9")] as Array[ExprNode]
+	ev.trigger_conditions = [date_after("1976.9.9")] as Array[ExprNode]
 
 	# 选项0：火化并建纪念碑
 	ev.options.append(option(
@@ -565,9 +652,9 @@ static func create_event_4() -> EventDef:
 	ev.description = ("According to the recently received information, several senior party members who are "
 			+ "dissatisfied with your rule have agreed to remove you at the next congress of the Central Committee. "
 			+ "You need to urgently do something if you do not want to repeat the fate of the revisionist Khrushchev in 1964.")
-	ev.fire_only_once = true
+	ev.fire_only_once = false
 	ev.mtth_base = 0.0
-	ev.trigger_conditions = [date_after("1976.10"), res_at_most("party_support", 450)] as Array[ExprNode]
+	ev.show_notification = false
 
 	# 选项0：在大会上展开论战（始终可选）
 	ev.options.append(option(
@@ -621,19 +708,92 @@ static func create_event_4() -> EventDef:
 
 
 # ========================================================================
+# 事件迁移 —— Event5（民众不满 / Popular Discontent）
+# ========================================================================
+
+static func create_event_5() -> EventDef:
+	var ev := EventDef.new()
+	ev.event_id = "popular_discontent"
+	ev.source_event_number = 5
+	ev.title = "Popular discontent"
+	ev.description = ("Dissatisfied with your politics, people went to mass rallies throughout the country and "
+			+ "began to build tent camps in squares, distribute leaflets and even storm local government "
+			+ "agencies. Different groups are dissatisfied with different aspects of your government, but "
+			+ "they all demand democratization in order to limit your influence on Chinese politics.")
+	ev.fire_only_once = false
+	ev.mtth_base = 0.0
+	ev.trigger_conditions = [any_of([
+		res_difference_at_most("people_support", "thought_freedom", -51),
+		res_at_most("people_support", -1),
+		res_at_least("thought_freedom", 1200),
+	])] as Array[ExprNode]
+
+	ev.options.append(option(
+		"Speak out and calm the people",
+		"You addressed the protesters and promised political change.",
+		[custom_effect(preload("res://数据脚本/事件效果/event_005_popular_discontent.gd"))],
+		null, ""
+	))
+
+	var press_if_already_multiparty := effect_if(
+		set_resource("press_policy", 19), res_equals("party_system", 9)
+	)
+	var multiparty_if_needed := effect_if(
+		set_resource("party_system", 9), res_not_equals("party_system", 9)
+	)
+	ev.options.append(option(
+		"Agree to democratization",
+		"The people are inspired by the promised democratic reforms, although criticism also grows.",
+		[add_resource("party_support", -50), add_resource("people_support", 100),
+		add_resource("diplo", -50), press_if_already_multiparty, multiparty_if_needed,
+		add_all_politician_loyalty(-100)],
+		any_of([res_not_equals("party_system", 9), res_not_equals("press_policy", 19)]),
+		"There is no room for further democratization"
+	))
+
+	ev.options.append(option(
+		"Disperse the protesters",
+		"The army entered the cities and firmly dispersed the protests. There were casualties on both sides.",
+		[add_resource("thought_freedom", -150), add_resource("army", -100),
+		add_resource("diplo", 50), set_resource("protest_repression", 9),
+		add_politician_loyalty_by_personality([3], -100)],
+		res_at_least("army", 100), "Army will not support us"
+	))
+
+	ev.options.append(option(
+		"Call a loyal part of the people in support",
+		"Supporters rallied in defense of your course and drove the protesters from the streets.",
+		[add_resource("thought_freedom", -200), add_resource("party_support", -50),
+		add_resource("diplo", 20), add_resource("people_support", -50),
+		add_politician_loyalty_by_personality([2, 3], -100)],
+		res_at_least("people_support", 500), "People do not need another Cultural Revolution"
+	))
+
+	ev.options.append(option(
+		"Break up the protest from the inside by the secret services",
+		"The intelligence services split the opposition from within, and the leaderless protest soon dried up.",
+		[add_resource("agents", -100), add_resource("thought_freedom", -150),
+		add_resource("people_support", 100)],
+		res_at_least("agents", 100), "Intelligence agencies cannot cope"
+	))
+	return ev
+
+
+# ========================================================================
 # 事件迁移 —— Event6（低生活水平 / Low Standard of Living）
 # ========================================================================
 
 static func create_event_6() -> EventDef:
 	var ev := EventDef.new()
 	ev.event_id = "low_living_standard"
+	ev.source_event_number = 6
 	ev.title = "Low standard of living"
 	ev.description = ("Your policy has led to a catastrophic decline in the standard of living in the country, "
 			+ "people live in abominable conditions and the vast majority lack the ability to purchase even basic "
 			+ "necessities. Of course, this leads to numerous protests where people demand to deal with this "
 			+ "situation. Given the fact that the soldiers are also unhappy with the terrible conditions of "
 			+ "detention, we can not count on the army.")
-	ev.fire_only_once = true
+	ev.fire_only_once = false
 	ev.mtth_base = 0.0
 	ev.trigger_conditions = [res_at_most("living", 100)] as Array[ExprNode]
 
@@ -643,7 +803,7 @@ static func create_event_6() -> EventDef:
 		"Large funds from the budget were urgently allocated to social programs, housing development and to "
 		+ "help the poor. Social problems are gradually beginning to be solved and people are satisfied.",
 		[add_resource("people_support", 50), add_resource("money", -100),
-		set_resource("living_standard", 300)],
+		add_resource("living_standard", 100)],
 
 		null, ""
 	))
@@ -655,8 +815,9 @@ static func create_event_6() -> EventDef:
 		+ "and from the UN distribute food, as well as develop housing for people on free terms. However, such "
 		+ "actions showed both our people and the world community that we cannot cope with such things on our "
 		+ "own, which greatly undermines our prestige.",
-		[set_resource("living_standard", 300)],
-		any_of([empire_rel_at_least(EmpireData.USA, 500), empire_rel_at_least(EmpireData.USSR, 500)]),
+		[add_resource("thought_freedom", 100), add_resource("influence", -100),
+		add_resource("living_standard", 100)],
+		any_of([empire_rel_at_least(EmpireData.USA, 50), empire_rel_at_least(EmpireData.USSR, 50)]),
 		"We can't ask for help"
 	))
 
@@ -666,7 +827,9 @@ static func create_event_6() -> EventDef:
 		"Through the development of labor laws, government orders, benefits and banal coercion, we managed to "
 		+ "force our businessmen to provide social support to the people, improve working conditions and housing "
 		+ "conditions. However, they are not particularly happy to share their wealth with the people.",
-		[add_resource("party_support", -500), set_resource("living_standard", 300)],
+		[add_resource("thought_freedom", 50), add_resource("party_support", -100),
+		add_resource("living_standard", 100),
+		add_politician_loyalty_by_personality([2, 3], -100)],
 		res_at_least("development", 13),
 		"We can't call on business, we don't have it"
 	))
@@ -678,8 +841,8 @@ static func create_event_6() -> EventDef:
 		+ "and decided to allocate funds for social needs of the party and voluntarily-forcedly attracted party "
 		+ "members and officials to participate in charity events. This, of course, raised the standard of "
 		+ "living, but the party was not satisfied.",
-		[add_resource("people_support", 100), set_resource("living_standard", 300),
-		set_resource("party_support", 0)],
+		[add_resource("party_support", -150), add_resource("people_support", 50),
+		add_resource("living_standard", 100), add_all_politician_loyalty(-100)],
 
 		res_at_least("party_support", 500),
 		"Party does not want to share"
@@ -826,6 +989,8 @@ static func create_event_8() -> EventDef:
 static func create_event_9() -> EventDef:
 	var ev := EventDef.new()
 	ev.event_id = "tibet_separatism"
+	ev.source_event_number = 9
+	ev.trigger_priority = 75
 	ev.title = "Separatism in Tibet"
 	ev.description = ("Encouraged by liberals and nationalists, residents of the Tibet Autonomous Region took "
 			+ "to mass demonstrations for independence and secession from the PRC, which gradually develop into "
@@ -834,15 +999,20 @@ static func create_event_9() -> EventDef:
 			+ "than we can take advantage of.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
-	ev.trigger_conditions = [res_at_most("manpower", 400)] as Array[ExprNode]
+	ev.trigger_conditions = [res_at_most("manpower", 400), res_equals("tibet_policy", 0)] as Array[ExprNode]
 
 	# 选项0：允许独立
 	ev.options.append(option(
 		"Allow independence",
 		"Tibet Autonomous Region officially declared its independence within the borders of 1950. "
 		+ "This will be a big blow for us and a great opportunity for the USSR and the USA.",
-		[add_resource("people_support", -200), add_resource("party_support", -200),
-		add_resource("money", -50), add_resource("manpower", -50)],
+		[add_resource("influence", -250), add_resource("population", -18),
+		add_resource("agriculture", -50), add_resource("industry", -10),
+		add_resource("manpower", -50), add_resource("party_support", -50),
+		effect_if(set_resource("tibet_policy", 1), res_at_most("ideology", 3)),
+		effect_if(set_country_var("69", "government", 3), res_at_most("ideology", 3)),
+		effect_if(set_resource("tibet_policy", 2), res_at_least("ideology", 4)),
+		set_alliance("69", "is_prosov", false)],
 
 		null, ""
 	))
@@ -853,8 +1023,9 @@ static func create_event_9() -> EventDef:
 		"We have further expanded the powers of local authorities and the rights of Tibetan autonomy. "
 		+ "It seems that the majority of the population is satisfied, but it gives the radicals more "
 		+ "opportunities to promote separatism, and other national outskirts are thinking about greater independence.",
-		[add_resource("party_support", -200), add_resource("manpower", -20)],
-		null, ""
+		[add_resource("thought_freedom", 70), add_resource("manpower", -20),
+		add_resource("party_support", -200), add_resource("territorial_policy", 1)],
+		res_at_most("territorial_policy", 22), "We cannot give more autonomy"
 	))
 
 	# 选项2：军事镇压
@@ -862,10 +1033,12 @@ static func create_event_9() -> EventDef:
 		"Send in the PLA to restore order",
 		"The loyal parts of the PLA entered Tibet and quickly restored order. But the nationalists "
 		+ "and the opposition will not forget this.",
-		[add_resource("people_support", -100), add_resource("army", -100),
-		add_resource("diplo", 50), add_resource("manpower", 30)],
+		[add_resource("thought_freedom", 50), add_resource("manpower", 30),
+		add_resource("people_support", -100), add_resource("army", -100),
+		add_resource("diplo", 50)],
 
-		null, ""
+		any_of([res_not_equals("political_line", 4), res_at_least("army", 100)]),
+		"Just crushing them with the army will not work"
 	))
 
 	# 选项3：组织公投 — 需特工≥50 且 金钱≥40
@@ -874,11 +1047,12 @@ static func create_event_9() -> EventDef:
 		"We organized a referendum in which the majority, of course, voted to preserve the status of Tibet. "
 		+ "Dissatisfied nationalists and other radicals took to the streets, claiming falsification, but "
 		+ "without past support these protests no longer pose a serious threat.",
-		[add_resource("people_support", -20), add_resource("agents", -50),
-		add_resource("money", -40), add_resource("manpower", 20)],
+		[add_resource("thought_freedom", 30), add_resource("manpower", 20),
+		add_resource("people_support", -20), add_resource("agents", -50),
+		add_resource("money", -40)],
 
-		all_of([res_at_least("agents", 50), res_at_least("money", 40)]),
-		"Need agents: 50 and money: 40"
+		any_of([res_at_least("money", 40), res_at_least("reserve", 40), res_at_least("agents", 50)]),
+		"We have neither the means nor the forces for falsification"
 	))
 
 	return ev
@@ -891,6 +1065,8 @@ static func create_event_9() -> EventDef:
 static func create_event_10() -> EventDef:
 	var ev := EventDef.new()
 	ev.event_id = "xinjiang_separatism"
+	ev.source_event_number = 10
+	ev.trigger_priority = 65
 	ev.title = "Separatism in Xinjiang"
 	ev.description = ("Encouraged by liberals and nationalists, residents of the Xinjiang Uygur Autonomous Region "
 			+ "took to mass demonstrations for independence and secession from the PRC, which gradually develop "
@@ -900,17 +1076,33 @@ static func create_event_10() -> EventDef:
 			+ "advantage of.")
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
-	ev.trigger_conditions = [res_at_most("manpower", 300)] as Array[ExprNode]
+	ev.trigger_conditions = [res_at_most("manpower", 300), res_equals("xinjiang_policy", 0)] as Array[ExprNode]
 
 	# 选项0：允许独立
 	ev.options.append(option(
 		"Allow independence",
 		"Xinjiang Uygur Autonomous Region officially declared its independence. This will be a big blow "
 		+ "for us and a great opportunity for the USSR and the USA.",
-		[add_resource("people_support", -200), add_resource("party_support", -200),
-		add_resource("money", -50), add_resource("manpower", -50)],
+		[add_resource("influence", -250), add_resource("population", -18),
+		add_resource("agriculture", -50), add_resource("industry", -10),
+		add_resource("manpower", -50), add_resource("party_support", -50),
+		effect_if(set_resource("xinjiang_policy", 1), all_of([
+			not_expr(country_has_tag("12", "is_proprc")), not_expr(war_active(5))
+		])),
+		effect_if(set_country_var("70", "government", 1), all_of([
+			not_expr(country_has_tag("12", "is_proprc")), not_expr(war_active(5))
+		])),
+		effect_if(set_alliance("70", "is_prosov", true), all_of([
+			not_expr(country_has_tag("12", "is_proprc")), not_expr(war_active(5))
+		])),
+		effect_if(set_resource("xinjiang_policy", 2), any_of([
+			country_has_tag("12", "is_proprc"), war_active(5)
+		])),
+		effect_if(set_alliance("70", "is_prosov", false), any_of([
+			country_has_tag("12", "is_proprc"), war_active(5)
+		]))],
 
-		null, ""
+		res_at_most("territorial_policy", 22), "We cannot give more autonomy"
 	))
 
 	# 选项1：扩大自治权
@@ -919,8 +1111,10 @@ static func create_event_10() -> EventDef:
 		"We have further expanded the powers of local authorities and the rights of Xinjiang autonomy. "
 		+ "It seems that the majority of the population is satisfied, but it gives the radicals more "
 		+ "opportunities to promote separatism.",
-		[add_resource("party_support", -200), add_resource("manpower", -20)],
-		null, ""
+		[add_resource("thought_freedom", 70), add_resource("manpower", -20),
+		add_resource("party_support", -200), add_resource("territorial_policy", 1)],
+		any_of([res_not_equals("political_line", 4), res_at_least("army", 100)]),
+		"Just crushing them with the army will not work"
 	))
 
 	# 选项2：军事镇压
@@ -928,8 +1122,9 @@ static func create_event_10() -> EventDef:
 		"Send in the PLA to restore order",
 		"The loyal parts of the PLA entered Xinjiang and quickly restored order. But the nationalists "
 		+ "and the opposition will not forget this.",
-		[add_resource("people_support", -100), add_resource("army", -100),
-		add_resource("diplo", 50), add_resource("manpower", 30)],
+		[add_resource("thought_freedom", 50), add_resource("manpower", 30),
+		add_resource("people_support", -100), add_resource("army", -100),
+		add_resource("diplo", 50)],
 
 		null, ""
 	))
@@ -940,11 +1135,12 @@ static func create_event_10() -> EventDef:
 		"We organized a referendum in which the majority, of course, voted to preserve the status of "
 		+ "Xinjiang. Dissatisfied nationalists and other radicals took to the streets, claiming "
 		+ "falsification, but without past support these protests no longer pose a serious threat.",
-		[add_resource("people_support", -20), add_resource("agents", -50),
-		add_resource("money", -40), add_resource("manpower", 20)],
+		[add_resource("thought_freedom", 30), add_resource("manpower", 20),
+		add_resource("people_support", -20), add_resource("agents", -50),
+		add_resource("money", -40)],
 
-		all_of([res_at_least("agents", 50), res_at_least("money", 40)]),
-		"Need agents: 50 and money: 40"
+		any_of([res_at_least("money", 20), res_at_least("reserve", 20), res_at_least("agents", 40)]),
+		"We have neither the means nor the forces for falsification"
 	))
 
 	return ev
@@ -957,10 +1153,11 @@ static func create_event_10() -> EventDef:
 static func create_event_11() -> EventDef:
 	var ev := EventDef.new()
 	ev.event_id = "industry_decline"
+	ev.source_event_number = 11
 	ev.title = "The decline of industry"
 	ev.description = ("Our industry is in an unprecedented decline - some of the plants are idle, "
 			+ "some are about to close and everyone is working on outdated equipment.")
-	ev.fire_only_once = true
+	ev.fire_only_once = false
 	ev.mtth_base = 0.0
 	ev.trigger_conditions = [res_at_most("industry", 0)] as Array[ExprNode]
 
@@ -969,7 +1166,7 @@ static func create_event_11() -> EventDef:
 		"Large funds from the budget were urgently allocated for the modernization of the industry, "
 		+ "the purchase of imported technologies and the involvement of specialists in this area. "
 		+ "The problem starts to be solved",
-		[set_resource("industry", 100), add_resource("money", -100)],
+		[add_resource("industry", 100), add_resource("money", -100)],
 		null, ""
 	))
 
@@ -979,9 +1176,10 @@ static func create_event_11() -> EventDef:
 		+ "build and modernize our plants without a single yuan from our budget. True, for this it "
 		+ "was necessary to reduce the minimum wage, production safety requirements and other "
 		+ "requirements of labor legislation, but nothing, the people will suffer.",
-		[set_resource("industry", 100), add_resource("living_standard", -50),
-		add_empire_relation(EmpireData.USA, -50)],
-		all_of([empire_rel_at_least(EmpireData.USA, 600), any_of([res_at_least("development", 13), has_flag("sez")])]),
+		[add_resource("industry", 100), add_resource("living_standard", -50),
+		add_resource("thought_freedom", -50), add_empire_relation(EmpireData.USA, -50),
+		add_politician_loyalty_by_personality([2, 3], -100)],
+		all_of([empire_rel_at_least(EmpireData.USA, 60), any_of([res_at_least("development", 13), has_flag("sez")])]),
 		"Investors will not go to us"
 	))
 
@@ -990,9 +1188,10 @@ static func create_event_11() -> EventDef:
 		"The Soviet Union agreed how in the old days to help us with the modernization of industry. "
 		+ "However, he doesn't particularly like distributing specialists and machines for nothing, "
 		+ "and we've got some dependence on the USSR.",
-		[set_resource("industry", 100), add_empire_power(EmpireData.USSR, 10),
-		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100)],
-		empire_rel_at_least(EmpireData.USSR, 700),
+		[add_resource("industry", 100), add_resource("soviet_influence", 10),
+		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100),
+		add_politician_loyalty_by_personality([2, 3], -100)],
+		any_of([empire_rel_at_least(EmpireData.USSR, 70), has_flag("relres")]),
 		"We don't need handouts from revisionists!"
 	))
 
@@ -1001,7 +1200,7 @@ static func create_event_11() -> EventDef:
 		"By the method of redistributing budget funds and revenues from enterprises, we were able "
 		+ "to direct the power of agriculture to the development of industry. This helped the "
 		+ "industry, but agriculture suffered a big blow.",
-		[set_resource("industry", 100), add_resource("food", -100)],  # food = data[13] agriculture
+		[add_resource("industry", 100), add_resource("food", -100)],  # food = data[13] agriculture
 		res_at_least("food", 500),
 		"Position in agriculture is not much better"
 	))
@@ -1016,17 +1215,18 @@ static func create_event_11() -> EventDef:
 static func create_event_12() -> EventDef:
 	var ev := EventDef.new()
 	ev.event_id = "agriculture_decline"
+	ev.source_event_number = 12
 	ev.title = "The decline of agriculture"
 	ev.description = ("Our agriculture is in unprecedented decline - there was no such disorder "
 			+ "even in times of great leap forward!")
-	ev.fire_only_once = true
+	ev.fire_only_once = false
 	ev.mtth_base = 0.0
 	ev.trigger_conditions = [res_at_most("agriculture", 0)] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Urgently allocate money for development",
 		"Large funds from the budget were urgently allocated for the modernization of the agriculture...",
-		[set_resource("food", 100), add_resource("money", -100)],
+		[add_resource("food", 100), add_resource("money", -100)],
 		null, ""
 	))
 
@@ -1034,18 +1234,20 @@ static func create_event_12() -> EventDef:
 		"Attract foreign investment",
 		"Our campaign to attract foreign investment was a great success! Foreigners themselves now "
 		+ "build and modernize our farms without a single yuan from our budget...",
-		[set_resource("food", 100), add_resource("living_standard", -50),
-		add_empire_relation(EmpireData.USA, -50)],
-		all_of([empire_rel_at_least(EmpireData.USA, 600), any_of([res_at_least("development", 13), has_flag("sez")])]),
+		[add_resource("food", 100), add_resource("living_standard", -50),
+		add_resource("thought_freedom", -50), add_empire_relation(EmpireData.USA, -50),
+		add_politician_loyalty_by_personality([2, 3], -100)],
+		all_of([empire_rel_at_least(EmpireData.USA, 60), any_of([res_at_least("development", 13), has_flag("sez")])]),
 		"Investors will not go to us"
 	))
 
 	ev.options.append(option(
 		"Request help from the USSR",
 		"The Soviet Union agreed how in the old days to help us with the rise of agriculture...",
-		[set_resource("food", 100), add_empire_power(EmpireData.USSR, 10),
-		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100)],
-		empire_rel_at_least(EmpireData.USSR, 700),
+		[add_resource("food", 100), add_resource("soviet_influence", 10),
+		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100),
+		add_politician_loyalty_by_personality([2, 3], -100)],
+		any_of([empire_rel_at_least(EmpireData.USSR, 70), has_flag("relres")]),
 		"We don't need handouts from revisionists!"
 	))
 
@@ -1053,7 +1255,7 @@ static func create_event_12() -> EventDef:
 		"Foster development at the expense of industry",
 		"By the method of redistributing budget funds, we were able to direct the power of industry "
 		+ "to the development of agriculture. This helped the agriculture, but industry suffered a big blow.",
-		[set_resource("food", 100), add_resource("industry", -100)],
+		[add_resource("food", 100), add_resource("industry", -100)],
 		res_at_least("industry", 500),
 		"Position in industry is not much better"
 	))
@@ -1068,17 +1270,18 @@ static func create_event_12() -> EventDef:
 static func create_event_13() -> EventDef:
 	var ev := EventDef.new()
 	ev.event_id = "service_decline"
+	ev.source_event_number = 13
 	ev.title = "The decline of service sector"
 	ev.description = ("Our service sector is in terrible decline - most of the stores and "
 			+ "establishments do not work, and the quality of service in the working ones is simply terrible.")
-	ev.fire_only_once = true
+	ev.fire_only_once = false
 	ev.mtth_base = 0.0
 	ev.trigger_conditions = [res_at_most("services", 0)] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Urgently allocate money for development",
 		"Large funds from the budget were urgently allocated for the modernization of the service sector...",
-		[add_resource("money", -100)],
+		[add_resource("services", 100), add_resource("money", -100)],
 		null, ""
 	))
 
@@ -1086,17 +1289,20 @@ static func create_event_13() -> EventDef:
 		"Attract foreign investment",
 		"Our campaign to attract foreign investment was a great success! Foreigners themselves now "
 		+ "build and modernize our shops and restaurants...",
-		[add_resource("living_standard", -50), add_empire_relation(EmpireData.USA, -50)],
-		all_of([empire_rel_at_least(EmpireData.USA, 600), any_of([res_at_least("development", 13), has_flag("sez")])]),
+		[add_resource("services", 100), add_resource("living_standard", -50),
+		add_resource("thought_freedom", -50), add_empire_relation(EmpireData.USA, -50),
+		add_politician_loyalty_by_personality([2, 3], -100)],
+		all_of([empire_rel_at_least(EmpireData.USA, 60), any_of([res_at_least("development", 13), has_flag("sez")])]),
 		"Investors will not go to us"
 	))
 
 	ev.options.append(option(
 		"Request help from the USSR",
 		"The Soviet Union agreed how in the old days to help us with the development of the service sector...",
-		[add_empire_power(EmpireData.USSR, 10),
-		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100)],
-		empire_rel_at_least(EmpireData.USSR, 700),
+		[add_resource("services", 100), add_resource("soviet_influence", 10),
+		add_empire_relation(EmpireData.USSR, -50), add_empire_relation(EmpireData.USA, -100),
+		add_politician_loyalty_by_personality([2, 3], -100)],
+		any_of([empire_rel_at_least(EmpireData.USSR, 70), has_flag("relres")]),
 		"We don't need handouts from revisionists!"
 	))
 
@@ -1105,7 +1311,8 @@ static func create_event_13() -> EventDef:
 		"By the method of redistributing budget funds, we were able to direct the power of industry "
 		+ "and agriculture to the development of services sector. This helped the services sector, "
 		+ "but industry and agriculture suffered a big blow.",
-		[add_resource("food", -100), add_resource("industry", -100)],
+		[add_resource("food", -100), add_resource("industry", -100),
+		add_resource("services", 100)],
 		any_of([res_at_least("industry", 500), res_at_least("food", 500)]),
 		"Position in agriculture and industry is not much better"
 	))
@@ -1120,29 +1327,36 @@ static func create_event_13() -> EventDef:
 static func create_event_14() -> EventDef:
 	var ev := EventDef.new()
 	ev.event_id = "budget_crisis"
+	ev.source_event_number = 14
 	ev.title = "We have no money, but you hang in there!"
 	ev.description = ("There is too little money in our budget and reserve fund. If it continues "
 			+ "like this, we soon will not be able to maintain the normal work of our state.")
-	ev.fire_only_once = true
+	ev.fire_only_once = false
 	ev.mtth_base = 0.0
-	ev.trigger_conditions = [res_at_most("money", 0)] as Array[ExprNode]
+	ev.trigger_conditions = [
+		res_sum_at_most([
+			"money", "budget_army", "budget_mgb", "budget_science", "budget_admin",
+			"budget_envelope", "budget_propaganda", "budget_agriculture",
+			"budget_industry", "budget_services", "budget_welfare", "budget_diplomacy",
+		], 499),
+		res_at_most("money", 299),
+	] as Array[ExprNode]
 
 	ev.options.append(option(
 		"Raise taxes and cut social programs",
 		"Taxes and fees were raised, and social programs for the population were reduced. "
 		+ "It helped, of course, to replenish the budget, but the people are not happy.",
-		[add_resource("people_support", -100), add_resource("money", 100),
-		add_resource("living_standard", -300)],
-		all_of([res_at_least("development", 13), res_at_least("living_standard", 500)]),
-		"Need development >= 13 and living standard >= 500"
+		[add_resource("people_support", -100), add_resource("thought_freedom", 50),
+		add_resource("money", 100)],
+		null, ""
 	))
 
 	ev.options.append(option(
 		"Raise taxes on luxury and for the super rich",
 		"Taxes on luxury and super-wealth were raised, which made it possible to replenish the "
 		+ "budget without hurting the common people.",
-		[add_resource("money", 100), add_resource("party_support", -500),
-		add_empire_relation(EmpireData.USA, -50)],
+		[add_resource("money", 100), add_resource("party_support", -100),
+		add_resource("thought_freedom", 50), add_empire_relation(EmpireData.USA, -50)],
 		res_at_least("development", 14),
 		"We have no oligarchs"
 	))
@@ -1151,9 +1365,9 @@ static func create_event_14() -> EventDef:
 		"Take a foreign loan",
 		"A foreign loan was taken, which helped replenish the budget, but had a negative impact "
 		+ "on our influence. Yes, and you still have to pay it...",
-		[add_resource("money", 100)],
-		any_of([empire_rel_at_least(EmpireData.USA, 500),
-				all_of([empire_rel_at_least(EmpireData.USSR, 500), res_at_least("political", 50)])]),
+		[add_resource("money", 100), add_resource("loan", 100),
+		add_resource("influence", -20)],
+		any_of([empire_rel_at_least(EmpireData.USA, 50), empire_rel_at_least(EmpireData.USSR, 50)]),
 		"Nobody wants to give us credit"
 	))
 
@@ -1162,8 +1376,15 @@ static func create_event_14() -> EventDef:
 		"Many state-owned enterprises were sold into private hands, which of course hit the "
 		+ "standard of living and disrupted the mechanism of our economy, but it helped replenish the budget.",
 		[add_resource("living_standard", -100), add_resource("money", 100),
-		add_resource("industry", -50), add_resource("food", -50)],
-		null, ""
+		add_resource("industry", -10), add_resource("food", -10),
+		add_resource("services", -10),
+		effect_if(add_resource("development", 1), all_of([
+			res_at_least("development", 13), res_at_most("development", 14)
+		])),
+		effect_if(set_resource("development", 13), res_at_most("development", 12))],
+		all_of([res_at_most("development", 14), res_not_equals("political_line", 0),
+			any_of([res_at_least("party_system", 8), res_not_equals("political_line", 1)])]),
+		"Privatization will not work"
 	))
 
 	return ev
@@ -1176,6 +1397,7 @@ static func create_event_14() -> EventDef:
 static func create_event_15() -> EventDef:
 	var ev := EventDef.new()
 	ev.event_id = "cambodian_vietnam_war"
+	ev.source_event_number = 15
 	ev.title = "Cambodian-Vietnamese war"
 	ev.description = ("For several years, ruling in Democratic Kampuchea, the Red Khmers of Pol Pot "
 			+ "pursued an openly aggressive policy towards neighboring Vietnam, often attacking border "
@@ -1185,7 +1407,7 @@ static func create_event_15() -> EventDef:
 	ev.fire_only_once = true
 	ev.mtth_base = 0.0
 	# 原作 TimeScript：1976.12+ 或 1977 年
-	ev.trigger_conditions = [date_after("1976.12")] as Array[ExprNode]
+	ev.trigger_conditions = [date_after("1976.12"), country_field_equals("23", "government", 0)] as Array[ExprNode]
 
 	# 三选项均开战 war_id=1；infl 按 Results_text 分档；ussr_side=1
 	ev.options.append(option(
@@ -1201,9 +1423,9 @@ static func create_event_15() -> EventDef:
 		"Remove Pol Pot in favor of the trio of Hu Nim, Hou Yuon and Khieu Samphan",
 		"Coming in contact with the Left Opposition within the Kampuchean army, we were able to "
 		+ "organize the displacement and arrest of Pol Pot...",
-		[add_resource("agents", -30),
+		[add_resource("agents", -30), set_country_var("23", "government", 1),
 		start_war(1, 450, 550, -1, 1, "Kampuchea", "Vietnam")],
-		res_at_least("agents", 30),
+		all_of([res_at_least("agents", 30), res_not_equals("political_line", 0)]),
 		"We can't remove Pol Pot"
 	))
 
@@ -1213,7 +1435,7 @@ static func create_event_15() -> EventDef:
 		[add_resource("army", -50), add_resource("money", -10),
 		add_empire_relation(EmpireData.USSR, -50),
 		start_war(1, 400, 600, -1, 1, "Kampuchea", "Vietnam")],
-		null, ""
+		res_not_equals("political_line", 4), "We cannot help the dictator!"
 	))
 
 	return ev
@@ -1323,6 +1545,7 @@ static func create_event_18() -> EventDef:
 	# 多场战争可多次结束；由 I_WAR_RESOLVE + queue_pending 触发
 	ev.fire_only_once = false
 	ev.mtth_base = 0.0
+	ev.show_notification = false
 
 	ev.options.append(option(
 		"Long live the peace!",
@@ -1577,6 +1800,143 @@ static func create_event_23() -> EventDef:
 
 
 # ========================================================================
+# 事件迁移 —— Event24（毛后路线 / Wind of change?）
+# ========================================================================
+
+static func create_event_24() -> EventDef:
+	var ev := EventDef.new()
+	ev.event_id = "post_mao_course"
+	ev.source_event_number = 24
+	ev.title = "Wind of change?"
+	ev.description = ("After Mao's death, power has finally concentrated in your hands. Every faction "
+			+ "of the CCP now demands a decision on China's future: conservative Maoism without the "
+			+ "excesses of the Cultural Revolution, a renewed radical course, limited modernization, "
+			+ "or large-scale market reform and opening to the world.")
+	ev.fire_only_once = true
+	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.12")] as Array[ExprNode]
+	var transition_script := preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
+
+	ev.options.append(option(
+		"Continue Mao's work while phasing out the Cultural Revolution",
+		"You proclaimed loyalty to Mao's precepts and the Two Whatevers, while the remaining "
+		+ "centres of the Cultural Revolution began to be dismantled.",
+		[custom_effect(transition_script)]
+	))
+	ev.options.append(option(
+		"Continue the Cultural Revolution without its former excesses",
+		"Relying on loyal radicals, you renewed the struggle against revisionism and attempted "
+		+ "to rekindle the Cultural Revolution under tighter control.",
+		[custom_effect(transition_script)],
+		res_equals("gang_of_four_path", 3),
+		"The Cultural Revolution has already exhausted its political base"
+	))
+	ev.options.append(option(
+		"End the Cultural Revolution and reorganize the economy",
+		"You declared that the Cultural Revolution had fulfilled its tasks and promised an "
+		+ "economic modernization programme, without yet defining its exact form.",
+		[custom_effect(transition_script)],
+		res_not_equals("gang_of_four_path", 3), ""
+	))
+	ev.options.append(option(
+		"End the Cultural Revolution and begin large-scale market reforms",
+		"The remnants of the Cultural Revolution were dismantled and veteran reformers were "
+		+ "promoted to prepare China for market reform and entry into the world economy.",
+		[custom_effect(transition_script)],
+		res_not_equals("gang_of_four_path", 3), ""
+	))
+	return ev
+
+
+# ========================================================================
+# 事件迁移 —— Event25（粉碎四人帮 / Gang of four）
+# ========================================================================
+
+static func create_event_25() -> EventDef:
+	var ev := EventDef.new()
+	ev.event_id = "gang_of_four"
+	ev.source_event_number = 25
+	ev.title = "Gang of four"
+	ev.description = ("After Mao's death, the struggle inside the CCP has flared up again. Jiang Qing, "
+			+ "Wang Hongwen, Zhang Chunqiao and Yao Wenyuan remain the strongest radical bloc and the "
+			+ "most immediate threat to your government. Crushing them requires military and reformist "
+			+ "support, while compromise risks giving the radicals the power they seek.")
+	ev.fire_only_once = true
+	ev.mtth_base = 0.0
+	ev.trigger_conditions = [date_after("1976.10")] as Array[ExprNode]
+	var transition_script := preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
+
+	ev.options.append(option(
+		"Arrest all four",
+		"The Politburo meeting ended with the arrest of the radical leaders. Their network in "
+		+ "Beijing and Shanghai was dismantled and the press launched a campaign against the Gang of Four.",
+		[custom_effect(transition_script)]
+	))
+	ev.options.append(option(
+		"Arrest Wang Hongwen and Jiang Qing, compromise with the others",
+		"Jiang Qing and Wang Hongwen were arrested, while Yao Wenyuan and Zhang Chunqiao received "
+		+ "government posts in exchange for loyalty. The radical bloc survived, but was weakened.",
+		[custom_effect(transition_script)]
+	))
+	ev.options.append(option(
+		"Reach a compromise and enlist radical support",
+		"You allied with the radicals against the reformers, conceding the military council and "
+		+ "foreign ministry while reviving the campaign against Deng Xiaoping.",
+		[custom_effect(transition_script)]
+	))
+	ev.options.append(option(
+		"Do not interfere in the party struggle",
+		"Without intervention, the struggle at the top of the party ended your rule.",
+		[custom_effect(transition_script)]
+	))
+	return ev
+
+
+# ========================================================================
+# 事件迁移 —— Event26（激进派联盟破裂 / Weak alliance）
+# ========================================================================
+
+static func create_event_26() -> EventDef:
+	var ev := EventDef.new()
+	ev.event_id = "weak_alliance"
+	ev.source_event_number = 26
+	ev.title = "Weak alliance"
+	ev.description = ("The compromise between Hua Guofeng and the radical left is cracking. Moderate "
+			+ "party members are openly dissatisfied, while the four demand broader powers and harsher "
+			+ "action against the opposition. Wang Dongxing and the 8341 Special Regiment remain loyal, "
+			+ "but the radicals are now stronger than they were in October.")
+	ev.fire_only_once = true
+	ev.mtth_base = 0.0
+	ev.trigger_conditions = [
+		date_after("1976.11"),
+		res_equals("gang_of_four_path", 3),
+	] as Array[ExprNode]
+	var transition_script := preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
+
+	ev.options.append(option(
+		"Arrest all four",
+		"The radical leadership and its network were arrested, although their increased influence "
+		+ "made the operation more costly and violent than it would have been earlier.",
+		[custom_effect(transition_script)],
+		res_at_least("agents", 70), "Requires at least 70 agents"
+	))
+	ev.options.append(option(
+		"Arrest only Wang Hongwen and Jiang Qing",
+		"The two most ambitious radical leaders were removed, while their remaining partners were "
+		+ "kept inside the government under a revised compromise.",
+		[custom_effect(transition_script)],
+		res_at_least("agents", 50), "Requires at least 50 agents"
+	))
+	ev.options.append(option(
+		"Abandon the struggle and transfer power gradually",
+		"Further concessions made Jiang Qing the new de facto leader. Hua Guofeng retained his life "
+		+ "and a formal place in politics, but lost control of the state and party.",
+		[custom_effect(transition_script)]
+	))
+	return ev
+
+
+# ========================================================================
 # 批量迁移辅助
 # ========================================================================
 
@@ -1589,6 +1949,7 @@ static func batch_migrate(output_dir: String = "res://场景/事件界面/events
 		{"func": create_event_1, "filename": "event_001_elections.tres"},
 		{"func": create_event_3, "filename": "event_003_death_of_mao.tres"},
 		{"func": create_event_4, "filename": "event_004_conspiracy.tres"},
+		{"func": create_event_5, "filename": "event_005_popular_discontent.tres"},
 		{"func": create_event_6, "filename": "event_006_low_living.tres"},
 		{"func": create_event_7, "filename": "event_007_diplo_crisis_usa.tres"},
 		{"func": create_event_8, "filename": "event_008_diplo_crisis_ussr.tres"},
@@ -1607,6 +1968,9 @@ static func batch_migrate(output_dir: String = "res://场景/事件界面/events
 		{"func": create_event_21, "filename": "event_021_wenhuibao_article.tres"},
 		{"func": create_event_22, "filename": "event_022_tiananmen_incident.tres"},
 		{"func": create_event_23, "filename": "event_023_tangshan_earthquake.tres"},
+		{"func": create_event_24, "filename": "event_024_post_mao_course.tres"},
+		{"func": create_event_25, "filename": "event_025_gang_of_four.tres"},
+		{"func": create_event_26, "filename": "event_026_weak_alliance.tres"},
 		{"func": create_event_120, "filename": "event_korea_unification.tres"},
 		{"func": create_event_121, "filename": "event_five_no.tres"},
 		{"func": create_event_300, "filename": "event_sino_soviet_split_eastern_europe.tres"},

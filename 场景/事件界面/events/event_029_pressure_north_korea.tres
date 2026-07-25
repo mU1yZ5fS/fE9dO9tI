@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_market"]
+script = ExtResource("3_expr")
+key = "economy_system"
+value = 13.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Demand limited political liberalization"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Kim Il-sung accepted limited rehabilitation, softer party-state control and partial contact with Japan and South Korea."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Demand broad political and economic reforms"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "If Chinese influence outweighs Soviet influence, Pyongyang will accept broad political and economic reform."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Demand special economic zones for Chinese companies"
+disabled_text = "Requires an economic system of at least 13"
+enable_condition = SubResource("Expr_market")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Pyongyang opened special economic zones where Chinese enterprises receive preferential terms."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Demand the greatest possible democratization"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Kim Il-sung rejected the maximal demand and sought Soviet protection."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "pressure_north_korea"
+source_event_number = 29
+title = "Chinese imperialism"
+description = "Sanctions have exposed North Korea's dependence on Chinese trade and aid. We may demand political concessions, economic opening, or sweeping reform, but Soviet assistance gives Kim Il-sung an alternative."
+show_notification = false
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

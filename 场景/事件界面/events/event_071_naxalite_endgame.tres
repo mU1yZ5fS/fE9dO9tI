@@ -1,0 +1,83 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_071_073_india_and_iran_war.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_power"]
+script = ExtResource("3_expr")
+type = 0
+key = "naxalite_power"
+value = 500.0
+
+[sub_resource type="Resource" id="Expr_influence"]
+script = ExtResource("3_expr")
+type = 0
+key = "global_influence"
+value = 100.0
+
+[sub_resource type="Resource" id="Expr_trade"]
+script = ExtResource("3_expr")
+type = 10
+key = "对华贸易"
+target = "19"
+
+[sub_resource type="Resource" id="Expr_negotiate"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_influence"), SubResource("Expr_trade")])
+
+[sub_resource type="Resource" id="Expr_no_trade"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_trade")])
+
+[sub_resource type="Resource" id="Expr_peace"]
+script = ExtResource("3_expr")
+type = 21
+key = "war_state"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_war"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_no_trade"), SubResource("Expr_peace")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Let the Naxalites continue their guerrilla struggle"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Naxalites remained an armed reserve in India's disputed eastern territories, giving China a future border-war pretext."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Mediate their inclusion in local government"
+disabled_text = "Requires 100 global influence and trade relations with India"
+enable_condition = SubResource("Expr_negotiate")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Chinese mediation legalized much of the Naxalite movement in exchange for ending hostilities."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Prepare for war and send in the PLA"
+disabled_text = "Requires no trade relations with India and no current interstate war"
+enable_condition = SubResource("Expr_war")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The PLA crossed the border, beginning a new and costly war with India."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "naxalite_endgame"
+source_event_number = 71
+trigger_priority = 710
+title = "The East Is Red..."
+description = "Five rounds of Chinese support have made the Naxalite movement a strategic force. Beijing must decide whether to preserve, legalize, or exploit it for war."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_power")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

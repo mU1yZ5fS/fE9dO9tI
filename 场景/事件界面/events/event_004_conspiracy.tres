@@ -106,21 +106,11 @@ enable_condition = SubResource("Resource_caja5")
 effects = Array[ExtResource("3_2tba3")]([SubResource("Resource_ixjwy"), SubResource("Resource_2heau"), SubResource("Resource_0c5io")])
 result_text = "Even before the start of the congress, you appealed through the media to the people with a call to support you and protect the conquests of your power. The people loyal to you went to mass demonstrations in your support and began to storm the departments under your opponent's control."
 
-[sub_resource type="Resource" id="Resource_uh3nh"]
-script = ExtResource("4_chkp2")
-type = 12
-key = "1976.10"
-
-[sub_resource type="Resource" id="Resource_jcii1"]
-script = ExtResource("4_chkp2")
-type = 1
-key = "party_support"
-value = 450.0
-
 [resource]
 script = ExtResource("5_22jbi")
 event_id = "congress_conspiracy"
 title = "Conspiracy"
 description = "According to the recently received information, several senior party members who are dissatisfied with your rule have agreed to remove you at the next congress of the Central Committee. You need to urgently do something if you do not want to repeat the fate of the revisionist Khrushchev in 1964."
-trigger_conditions = Array[ExtResource("4_chkp2")]([SubResource("Resource_uh3nh"), SubResource("Resource_jcii1")])
+show_notification = false
 options = Array[ExtResource("2_syebt")]([SubResource("Resource_k88p2"), SubResource("Resource_3hpjc"), SubResource("Resource_yboyw"), SubResource("Resource_rubg4")])
+fire_only_once = false

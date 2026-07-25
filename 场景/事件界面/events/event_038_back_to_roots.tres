@@ -1,0 +1,134 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_033_041_world_and_party.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.4"
+
+[sub_resource type="Resource" id="Expr_econ_not_10"]
+script = ExtResource("3_expr")
+type = 22
+key = "economy_system"
+value = 10.0
+
+[sub_resource type="Resource" id="Expr_course_not_2"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_course_not_4"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 4.0
+
+[sub_resource type="Resource" id="Expr_keep_normal"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_course_not_2"), SubResource("Expr_course_not_4")])
+
+[sub_resource type="Resource" id="Expr_course_4"]
+script = ExtResource("3_expr")
+type = 21
+key = "post_mao_course"
+value = 4.0
+
+[sub_resource type="Resource" id="Expr_gang_3"]
+script = ExtResource("3_expr")
+type = 21
+key = "gang_of_four_path"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_line_at_most_1"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_reform_disabled"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_gang_3"), SubResource("Expr_line_at_most_1")])
+
+[sub_resource type="Resource" id="Expr_both_others_disabled"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_course_4"), SubResource("Expr_reform_disabled")])
+
+[sub_resource type="Resource" id="Expr_keep"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_keep_normal"), SubResource("Expr_both_others_disabled")])
+
+[sub_resource type="Resource" id="Expr_plan"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 4.0
+
+[sub_resource type="Resource" id="Expr_gang_not_3"]
+script = ExtResource("3_expr")
+type = 22
+key = "gang_of_four_path"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_course_not_1"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_line_at_least_2"]
+script = ExtResource("3_expr")
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_reform"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_gang_not_3"), SubResource("Expr_course_not_2"), SubResource("Expr_course_not_1"), SubResource("Expr_line_at_least_2")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do not break what works"
+disabled_text = "The old system has outlived itself"
+enable_condition = SubResource("Expr_keep")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The existing economic system was left unchanged while its gradual growth continued."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Revive the planned system (-10 budget)"
+disabled_text = "The party is already committed to your reform course"
+enable_condition = SubResource("Expr_plan")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "A Soviet-style planning commission was restored, reversing the economic experiments of the 1960s."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Prepare further large-scale reforms"
+disabled_text = "The current political settlement does not permit a reform commission"
+enable_condition = SubResource("Expr_reform")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "A special commission of leading reformers began preparing a new programme of economic transformation."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "back_to_roots"
+source_event_number = 38
+title = "Back to the roots"
+description = "China's hybrid economic arrangements now face a strategic choice: preserve them, restore centralized planning, or prepare a deeper reform programme."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_econ_not_10")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

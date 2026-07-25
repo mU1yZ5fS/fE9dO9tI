@@ -64,15 +64,11 @@ enable_condition = SubResource("Resource_ydy2g")
 effects = Array[ExtResource("3_cg7xm")]([SubResource("Resource_uaals"), SubResource("Resource_l8p3h")])
 result_text = "The special services did a great job getting places for us. Only they are very tired."
 
-[sub_resource type="Resource" id="Resource_0nnos"]
-script = ExtResource("4_xyfh0")
-type = 12
-key = "1978.1"
-
 [resource]
 script = ExtResource("5_wcf6q")
 event_id = "npc_elections"
 title = "Elections, Elections, Candidates are..."
 description = "It is the day of the national elections in the NPC. And since we occupy a dominant position in Chinese politics, we can intervene a little in their conduct, so that everything will remain same. Or just rely on the Chinese people's faith in us."
-trigger_conditions = Array[ExtResource("4_xyfh0")]([SubResource("Resource_0nnos")])
+show_notification = false
 options = Array[ExtResource("2_582so")]([SubResource("Resource_m5m3q"), SubResource("Resource_up5mr"), SubResource("Resource_7rwql")])
+fire_only_once = false

@@ -28,7 +28,7 @@ const FACTION_NAMES: Array[String] = [
 @export var support: int = 0                # 民众支持 / party_number（权威）
 @export var points: int = 0                 # factionsPoints 隐藏积分
 @export var influence: int = 0              # 政治影响力
-@export var leader_index: int = -1          # 派系领袖的 politician 索引
+@export var leader_index: int = -1          # politician 索引；-2=实权领袖本人，-1=空缺
 
 ## 兼容旧字段：席位只读派生，写入时同步到 support
 @export var seats: int = 0:

@@ -1,0 +1,94 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_048_052_063_afghanistan.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.1"
+
+[sub_resource type="Resource" id="Expr_war_active"]
+script = ExtResource("3_expr")
+type = 30
+value = 5.0
+
+[sub_resource type="Resource" id="Expr_pakistan_pro_china"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "31"
+
+[sub_resource type="Resource" id="Expr_ussr_side_1"]
+script = ExtResource("3_expr")
+type = 34
+key = "ussr_side"
+value = 1.0
+target = "5"
+
+[sub_resource type="Resource" id="Expr_ussr_side_not_1"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_ussr_side_1")])
+
+[sub_resource type="Resource" id="Expr_country_1_sev"]
+script = ExtResource("3_expr")
+type = 10
+key = "sev"
+target = "1"
+
+[sub_resource type="Resource" id="Expr_country_1_not_sev"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_country_1_sev")])
+
+[sub_resource type="Resource" id="Expr_usa_deal"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_ussr_side_not_1"), SubResource("Expr_country_1_not_sev")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Let Pakistan handle the border itself"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Pakistan continued suppressing some radical activity without sealing the Afghan frontier."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Help Pakistan patrol the border and catch Islamists"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Joint Chinese-Pakistani patrols disrupted Islamist routes and training networks."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Negotiate with the United States"
+disabled_text = "The war alignment or regional blocs rule out an American deal"
+enable_condition = SubResource("Expr_usa_deal")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "American arms and advisers crossed Pakistan into Afghanistan through a profitable Chinese arrangement."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Build Pakistani bases for Afghan Maoist insurgents (-50 budget)"
+disabled_text = "This route requires the Maoist side in the Afghan war"
+enable_condition = SubResource("Expr_ussr_side_1")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China built camps and supply centres in Pakistan for Afghan Maoist insurgents."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "afghan_pakistan_border"
+source_event_number = 52
+trigger_priority = 520
+title = "Difficult neighborhood..."
+description = "A friendly Pakistan controls the main supply routes into the Afghan war. China can close the frontier, work with Washington, or build a Maoist supply network."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_war_active"), SubResource("Expr_pakistan_pro_china")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

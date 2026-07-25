@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_024_026_political_transition.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.10"
+
+[sub_resource type="Resource" id="Effect_transition"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Arrest all four"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "The Politburo meeting ended with the arrest of the radical leaders. Their network in Beijing and Shanghai was dismantled and the press launched a campaign against the Gang of Four."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Arrest Wang Hongwen and Jiang Qing, compromise with the others"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "Jiang Qing and Wang Hongwen were arrested, while Yao Wenyuan and Zhang Chunqiao received government posts in exchange for loyalty. The radical bloc survived, but was weakened."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Reach a compromise and enlist radical support"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "You allied with the radicals against the reformers, conceding the military council and foreign ministry while reviving the campaign against Deng Xiaoping."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Do not interfere in the party struggle"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "Without intervention, the struggle at the top of the party ended your rule."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "gang_of_four"
+source_event_number = 25
+title = "Gang of four"
+description = "After Mao's death, the struggle inside the CCP has flared up again. Jiang Qing, Wang Hongwen, Zhang Chunqiao and Yao Wenyuan remain the strongest radical bloc and the most immediate threat to your government. Crushing them requires military and reformist support, while compromise risks giving the radicals the power they seek."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

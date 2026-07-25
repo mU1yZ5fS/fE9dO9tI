@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_048_052_063_afghanistan.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.1"
+
+[sub_resource type="Resource" id="Expr_event_49"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "afghan_soviet_plot"
+
+[sub_resource type="Resource" id="Expr_afghan_socialist"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 1.0
+target = "12"
+
+[sub_resource type="Resource" id="Expr_relres"]
+script = ExtResource("3_expr")
+type = 14
+key = "relres"
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Stay out"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China stayed out while the Soviet-backed DRA fought the Mujahideen."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Aid the DRA in exchange for including Maoists in the PDPA alliance"
+disabled_text = "Requires reconciliation with the Soviet Union"
+enable_condition = SubResource("Expr_relres")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The DRA ended its persecution of Maoists and accepted Chinese aid against the insurgency."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Aid the DRA"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China supported the DRA despite domestic objections, strengthening its side in the civil war."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Aid the Maoist rebels"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China backed a small Maoist insurgency against both the DRA and Islamist forces."
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "Sell weapons to the armed opposition on an American contract"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "American money financed Chinese arms shipments to the Mujahideen through the Afghan frontier."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "afghan_civil_war"
+source_event_number = 50
+trigger_priority = 500
+title = "Cursed mountain frontier"
+description = "The Soviet-backed Afghan government now faces a widening civil war. China must choose whether to aid the DRA, Maoists, or the American-supported opposition."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_event_49"), SubResource("Expr_afghan_socialist")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

@@ -1,0 +1,92 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_053_062_reform_and_alliances.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.5"
+
+[sub_resource type="Resource" id="Expr_country_23"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "23"
+
+[sub_resource type="Resource" id="Expr_country_34"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "34"
+
+[sub_resource type="Resource" id="Expr_country_20"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "20"
+
+[sub_resource type="Resource" id="Expr_country_31"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "31"
+
+[sub_resource type="Resource" id="Expr_ally"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_country_23"), SubResource("Expr_country_34"), SubResource("Expr_country_20"), SubResource("Expr_country_31")])
+
+[sub_resource type="Resource" id="Expr_relres"]
+script = ExtResource("3_expr")
+type = 14
+key = "relres"
+
+[sub_resource type="Resource" id="Expr_line"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_cmea"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_relres"), SubResource("Expr_line")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Ignore the proposal"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China declined to organize a new economic bloc."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Create a Chinese-led economic cooperation organization"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Beijing formed an economic union with all pro-Chinese countries, alarming both superpowers while boosting domestic prestige."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Apply to join CMEA"
+disabled_text = "Requires Soviet reconciliation and a political line no higher than 1"
+enable_condition = SubResource("Expr_cmea")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China joined CMEA; aligned members of its former economic network entered the Soviet economic bloc and the independent network was dissolved."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "economic_union"
+source_event_number = 59
+trigger_priority = 590
+title = "Economic union"
+description = "China's allies propose institutionalizing economic cooperation. Beijing may create its own bloc, enter CMEA, or decline."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_ally")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

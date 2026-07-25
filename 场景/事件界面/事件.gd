@@ -175,4 +175,6 @@ func _clear_option_selection() -> void:
 
 func _return_to_diplomacy() -> void:
 	GameManager.clear_event()
+	if GameManager.current_ending_id >= 0:
+		return
 	get_tree().change_scene_to_file("uid://vq6jexkk5tru")

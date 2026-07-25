@@ -1,0 +1,172 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_064_066_international.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.1"
+
+[sub_resource type="Resource" id="Expr_stage_zero"]
+script = ExtResource("3_expr")
+type = 21
+key = "reform_stage"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_stage_positive"]
+script = ExtResource("3_expr")
+type = 0
+key = "reform_stage"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_line_at_most_2"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_line_at_least_1"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_line_at_least_2"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_line_at_most_3"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_line_zero"]
+script = ExtResource("3_expr")
+type = 21
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_line_at_least_4"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 4.0
+
+[sub_resource type="Resource" id="Expr_moscow"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_stage_zero"), SubResource("Expr_line_at_most_2")])
+
+[sub_resource type="Resource" id="Expr_ignore_both"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_stage_zero"), SubResource("Expr_line_at_least_1"), SubResource("Expr_line_at_most_2")])
+
+[sub_resource type="Resource" id="Expr_usa_games"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_stage_positive"), SubResource("Expr_line_at_least_2")])
+
+[sub_resource type="Resource" id="Expr_budget"]
+script = ExtResource("3_expr")
+type = 0
+key = "budget"
+value = 20.0
+
+[sub_resource type="Resource" id="Expr_reserve"]
+script = ExtResource("3_expr")
+type = 0
+key = "reserve"
+value = 20.0
+
+[sub_resource type="Resource" id="Expr_ganefo_money"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_budget"), SubResource("Expr_reserve")])
+
+[sub_resource type="Resource" id="Expr_ganefo"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_ganefo_money"), SubResource("Expr_stage_zero"), SubResource("Expr_line_at_most_2")])
+
+[sub_resource type="Resource" id="Expr_middle_line"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_at_least_1"), SubResource("Expr_line_at_most_3")])
+
+[sub_resource type="Resource" id="Expr_positive_stage_zero_line"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_stage_positive"), SubResource("Expr_line_zero")])
+
+[sub_resource type="Resource" id="Expr_zero_stage_high_line"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_stage_zero"), SubResource("Expr_line_at_least_4")])
+
+[sub_resource type="Resource" id="Expr_olympic_flag"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_middle_line"), SubResource("Expr_positive_stage_zero_line"), SubResource("Expr_zero_stage_high_line")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Attend the Moscow Olympics with the best athletes"
+disabled_text = "Requires no reform opening and political line below 3"
+enable_condition = SubResource("Expr_moscow")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China rejected the American boycott and achieved third place in Moscow, greatly improving relations with the USSR."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Ignore both Moscow and Los Angeles"
+disabled_text = "Requires no reform opening and political line 1 or 2"
+enable_condition = SubResource("Expr_ignore_both")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China ignored both Olympic camps, baffling the IOC, the public and both superpowers."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Boycott officially, but let athletes compete in Moscow under the Olympic flag"
+disabled_text = "This compromise conflicts with the current political course"
+enable_condition = SubResource("Expr_olympic_flag")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Chinese athletes competed under the Olympic flag while China also attended the American alternative games."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Boycott Moscow and send the team to the American alternative games"
+disabled_text = "Requires reform opening and political line at least 2"
+enable_condition = SubResource("Expr_usa_games")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China joined the American boycott and sent its athletes to Philadelphia, sharply realigning superpower relations."
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "Revive GANEFO and invite the developing world"
+disabled_text = "Requires 20 budget or reserves, no reform opening, and political line below 3"
+enable_condition = SubResource("Expr_ganefo")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China revived the Games of the New Emerging Forces as an alternative to both Olympic blocs."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "moscow_olympics"
+source_event_number = 65
+trigger_priority = 650
+title = "Goodbye, our sweet Mishka..."
+description = "The American boycott of the Moscow Olympics forces China to choose between Moscow, Washington, neutrality, an IOC compromise, or reviving GANEFO."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

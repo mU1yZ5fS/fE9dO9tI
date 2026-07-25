@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_053_062_reform_and_alliances.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.1"
+
+[sub_resource type="Resource" id="Expr_private"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_stage_zero"]
+script = ExtResource("3_expr")
+type = 21
+key = "reform_stage"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_funds"]
+script = ExtResource("3_expr")
+type = 23
+keys = Array[String](["budget", "reserve"])
+value = 50.0
+
+[sub_resource type="Resource" id="Expr_collective"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_stage_zero"), SubResource("Expr_funds")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Leave the communes as they are"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The communes remained intact, but weak agricultural output continued to depress living standards and public confidence."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Introduce the household responsibility system"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Communes were divided into family farms with fixed state procurement obligations, raising food output and strengthening reformers."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Introduce private farming"
+disabled_text = "The current political line will not surrender agriculture to private speculators"
+enable_condition = SubResource("Expr_private")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Private landholding and agricultural credit raised productivity, but also speculation, corruption and party resistance."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Reorganize the communes into collective farms"
+disabled_text = "Requires the old course and at least 50 combined budget and reserves"
+enable_condition = SubResource("Expr_collective")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "State-guided collective farms and machine-tractor stations overcame part of agriculture's technical backwardness at high political and financial cost."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "agricultural_reform"
+source_event_number = 53
+trigger_priority = 530
+title = "Agricultural reform"
+description = "The people's communes perform poorly. The leadership must choose between household contracts, private farms, collective farms, or no structural change."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

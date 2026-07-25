@@ -1,0 +1,81 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_033_041_world_and_party.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.2"
+
+[sub_resource type="Resource" id="Expr_gang_not_3"]
+script = ExtResource("3_expr")
+type = 22
+key = "gang_of_four_path"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_course_not_1"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_course_not_2"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_reformer_alliance"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_course_not_1"), SubResource("Expr_course_not_2")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Carefully strike the reformers"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "A cautious Politburo criticism weakened prominent reformers but also disappointed the public."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Promote only loyal conservatives"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Loyal moderate conservatives were promoted without an open confrontation with the reform wing."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Strike reformers to clear the way for moderate conservatives"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Security pressure checked reformist careers and strengthened the conservative centre."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Build a strong alliance with reformers"
+disabled_text = "The current Maoist course rules out an alliance with reformers"
+enable_condition = SubResource("Expr_reformer_alliance")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "A moderate-reformist alliance opened the party to figures such as Deng Xiaoping and Zhao Ziyang."
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "Preserve the unstable balance in the party"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The balance endured, though reformist-liberal forces continued to accumulate power."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "enemies_of_my_enemies"
+source_event_number = 34
+title = "Enemies of my enemies"
+description = "With the Gang of Four removed, conservatives and reformers compete to define the new leadership. Every possible alliance will strengthen some rivals and alienate others."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_gang_not_3")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

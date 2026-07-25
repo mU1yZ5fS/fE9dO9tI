@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_042_047_revolution_and_reform.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.11"
+
+[sub_resource type="Resource" id="Expr_agents_80"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 80.0
+
+[sub_resource type="Resource" id="Expr_agents_30"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_army_10"]
+script = ExtResource("3_expr")
+key = "army"
+value = 10.0
+
+[sub_resource type="Resource" id="Expr_uprising"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_30"), SubResource("Expr_army_10")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Europe is far away; Asia matters more"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China ignored the Hungarian struggle, allowing Kadar to purge Bela Biszku and the conservative opposition."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Coordinate and support Bela Biszku through our intelligence services"
+disabled_text = "Requires 80 agents"
+enable_condition = SubResource("Expr_agents_80")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "A carefully coordinated party coup removed Kadar and installed Biszku without provoking Soviet intervention."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Help organize a pro-Chinese uprising"
+disabled_text = "Requires 30 agents and 10 army strength"
+enable_condition = SubResource("Expr_uprising")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The uprising became uncontrollable and Soviet troops restored a loyal Hungarian leadership."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Offer Biszku asylum in China"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Biszku fled to China and became a prominent critic of Hungarian and Soviet revisionism."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "hungarian_crisis"
+source_event_number = 46
+trigger_priority = 460
+title = "A new 1956?"
+description = "Bela Biszku's conservative opposition to Janos Kadar seeks Chinese backing. Covert party action may work; a street uprising risks another Soviet intervention."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

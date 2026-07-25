@@ -1,0 +1,223 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_005_popular_discontent.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_support_minus_freedom"]
+script = ExtResource("3_expr")
+type = 32
+key = "people_support"
+value = -51.0
+target = "thought_freedom"
+
+[sub_resource type="Resource" id="Expr_support_negative"]
+script = ExtResource("3_expr")
+type = 1
+key = "people_support"
+value = -1.0
+
+[sub_resource type="Resource" id="Expr_freedom_1200"]
+script = ExtResource("3_expr")
+key = "thought_freedom"
+value = 1200.0
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_support_minus_freedom"), SubResource("Expr_support_negative"), SubResource("Expr_freedom_1200")])
+
+[sub_resource type="Resource" id="Effect_speech"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_speech"]
+script = ExtResource("1_option")
+text = "Speak out and calm the people"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_speech")])
+result_text = "You addressed the protesters and promised political change."
+
+[sub_resource type="Resource" id="Expr_party_not_9"]
+script = ExtResource("3_expr")
+type = 22
+key = "party_system"
+value = 9.0
+
+[sub_resource type="Resource" id="Expr_press_not_19"]
+script = ExtResource("3_expr")
+type = 22
+key = "press_policy"
+value = 19.0
+
+[sub_resource type="Resource" id="Expr_democratize"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_party_not_9"), SubResource("Expr_press_not_19")])
+
+[sub_resource type="Resource" id="Effect_dem_party_support"]
+script = ExtResource("2_effect")
+key = "party_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Effect_dem_people"]
+script = ExtResource("2_effect")
+key = "people_support"
+value = 100.0
+
+[sub_resource type="Resource" id="Effect_dem_diplo"]
+script = ExtResource("2_effect")
+key = "diplo"
+value = -50.0
+
+[sub_resource type="Resource" id="Expr_party_is_9"]
+script = ExtResource("3_expr")
+type = 21
+key = "party_system"
+value = 9.0
+
+[sub_resource type="Resource" id="Effect_press_19"]
+script = ExtResource("2_effect")
+type = 1
+key = "press_policy"
+value = 19.0
+condition = SubResource("Expr_party_is_9")
+
+[sub_resource type="Resource" id="Effect_party_9"]
+script = ExtResource("2_effect")
+type = 1
+key = "party_system"
+value = 9.0
+condition = SubResource("Expr_party_not_9")
+
+[sub_resource type="Resource" id="Effect_dem_loyalty"]
+script = ExtResource("2_effect")
+type = 20
+value = -100.0
+
+[sub_resource type="Resource" id="Option_democratize"]
+script = ExtResource("1_option")
+text = "Agree to democratization"
+disabled_text = "There is no room for further democratization"
+enable_condition = SubResource("Expr_democratize")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_dem_party_support"), SubResource("Effect_dem_people"), SubResource("Effect_dem_diplo"), SubResource("Effect_press_19"), SubResource("Effect_party_9"), SubResource("Effect_dem_loyalty")])
+result_text = "The people are inspired by the promised democratic reforms, although criticism also grows."
+
+[sub_resource type="Resource" id="Expr_army_100"]
+script = ExtResource("3_expr")
+key = "army"
+value = 100.0
+
+[sub_resource type="Resource" id="Effect_army_freedom"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
+value = -150.0
+
+[sub_resource type="Resource" id="Effect_army_cost"]
+script = ExtResource("2_effect")
+key = "army"
+value = -100.0
+
+[sub_resource type="Resource" id="Effect_army_diplo"]
+script = ExtResource("2_effect")
+key = "diplo"
+value = 50.0
+
+[sub_resource type="Resource" id="Effect_repression"]
+script = ExtResource("2_effect")
+type = 1
+key = "protest_repression"
+value = 9.0
+
+[sub_resource type="Resource" id="Effect_liberal_loyalty"]
+script = ExtResource("2_effect")
+type = 21
+key = "3"
+value = -100.0
+
+[sub_resource type="Resource" id="Option_army"]
+script = ExtResource("1_option")
+text = "Disperse the protesters"
+disabled_text = "Army will not support us"
+enable_condition = SubResource("Expr_army_100")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_army_freedom"), SubResource("Effect_army_cost"), SubResource("Effect_army_diplo"), SubResource("Effect_repression"), SubResource("Effect_liberal_loyalty")])
+result_text = "The army entered the cities and firmly dispersed the protests. There were casualties on both sides."
+
+[sub_resource type="Resource" id="Expr_people_500"]
+script = ExtResource("3_expr")
+key = "people_support"
+value = 500.0
+
+[sub_resource type="Resource" id="Effect_supporters_freedom"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
+value = -200.0
+
+[sub_resource type="Resource" id="Effect_supporters_party"]
+script = ExtResource("2_effect")
+key = "party_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Effect_supporters_diplo"]
+script = ExtResource("2_effect")
+key = "diplo"
+value = 20.0
+
+[sub_resource type="Resource" id="Effect_supporters_people"]
+script = ExtResource("2_effect")
+key = "people_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Effect_reform_loyalty"]
+script = ExtResource("2_effect")
+type = 21
+key = "2,3"
+value = -100.0
+
+[sub_resource type="Resource" id="Option_supporters"]
+script = ExtResource("1_option")
+text = "Call a loyal part of the people in support"
+disabled_text = "People do not need another Cultural Revolution"
+enable_condition = SubResource("Expr_people_500")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_supporters_freedom"), SubResource("Effect_supporters_party"), SubResource("Effect_supporters_diplo"), SubResource("Effect_supporters_people"), SubResource("Effect_reform_loyalty")])
+result_text = "Supporters rallied in defense of your course and drove the protesters from the streets."
+
+[sub_resource type="Resource" id="Expr_agents_100"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 100.0
+
+[sub_resource type="Resource" id="Effect_agents_cost"]
+script = ExtResource("2_effect")
+key = "agents"
+value = -100.0
+
+[sub_resource type="Resource" id="Effect_agents_freedom"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
+value = -150.0
+
+[sub_resource type="Resource" id="Effect_agents_people"]
+script = ExtResource("2_effect")
+key = "people_support"
+value = 100.0
+
+[sub_resource type="Resource" id="Option_agents"]
+script = ExtResource("1_option")
+text = "Break up the protest from the inside by the secret services"
+disabled_text = "Intelligence agencies cannot cope"
+enable_condition = SubResource("Expr_agents_100")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_agents_cost"), SubResource("Effect_agents_freedom"), SubResource("Effect_agents_people")])
+result_text = "The intelligence services split the opposition from within, and the leaderless protest soon dried up."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "popular_discontent"
+source_event_number = 5
+title = "Popular discontent"
+description = "Dissatisfied with your politics, people went to mass rallies throughout the country and began to build tent camps in squares, distribute leaflets and even storm local government agencies. Different groups of protesters are dissatisfied with different aspects of your government, but they all require the democratization of the system in order to be able to limit your influence on Chinese politics."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+options = Array[ExtResource("1_option")]([SubResource("Option_speech"), SubResource("Option_democratize"), SubResource("Option_army"), SubResource("Option_supporters"), SubResource("Option_agents")])
+fire_only_once = false

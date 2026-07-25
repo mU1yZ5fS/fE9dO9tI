@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_agents_30"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_agents_50"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 50.0
+
+[sub_resource type="Resource" id="Expr_budget_30"]
+script = ExtResource("3_expr")
+key = "budget"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_reserve_30"]
+script = ExtResource("3_expr")
+key = "reserve"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_funds"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_budget_30"), SubResource("Expr_reserve_30")])
+
+[sub_resource type="Resource" id="Expr_communists"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_50"), SubResource("Expr_funds")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do not interfere; Suharto is already doomed"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Suharto resigned, the regime liberalized and free elections began under a more independent foreign policy."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Support the moderate-left opposition"
+disabled_text = "Requires at least 30 agents"
+enable_condition = SubResource("Expr_agents_30")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "A moderate-left coalition won the transition election and began introducing socialist management into the economy."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Help the communist underground reorganize"
+disabled_text = "Requires 50 agents and 30 budget or reserve"
+enable_condition = SubResource("Expr_communists")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The rebuilt Communist Party entered and won the election with Chinese help, opening a new socialist era in Indonesia."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "indonesia_after_suharto"
+source_event_number = 28
+title = "The end of the Asian Pinochet"
+description = "Regional sanctions have wrecked Suharto's economic position and mass protests now threaten his government. China may leave the transition alone, organize a moderate-left alternative, or rebuild the destroyed communist underground."
+show_notification = false
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

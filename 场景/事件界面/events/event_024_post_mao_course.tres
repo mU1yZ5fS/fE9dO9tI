@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_024_026_political_transition.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.12"
+
+[sub_resource type="Resource" id="Expr_path_3"]
+script = ExtResource("3_expr")
+type = 21
+key = "gang_of_four_path"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_path_not_3"]
+script = ExtResource("3_expr")
+type = 22
+key = "gang_of_four_path"
+value = 3.0
+
+[sub_resource type="Resource" id="Effect_transition"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Continue Mao's work while phasing out the Cultural Revolution"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "You proclaimed loyalty to Mao's precepts and the Two Whatevers, while the remaining centres of the Cultural Revolution began to be dismantled."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Continue the Cultural Revolution without its former excesses"
+disabled_text = "The Cultural Revolution has already exhausted its political base"
+enable_condition = SubResource("Expr_path_3")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "Relying on loyal radicals, you renewed the struggle against revisionism and attempted to rekindle the Cultural Revolution under tighter control."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "End the Cultural Revolution and reorganize the economy"
+enable_condition = SubResource("Expr_path_not_3")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "You declared that the Cultural Revolution had fulfilled its tasks and promised economic modernization without yet defining its exact form."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "End the Cultural Revolution and begin large-scale market reforms"
+enable_condition = SubResource("Expr_path_not_3")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "The remnants of the Cultural Revolution were dismantled and veteran reformers were promoted to prepare China for market reform and entry into the world economy."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "post_mao_course"
+source_event_number = 24
+title = "Wind of change?"
+description = "After Mao's death, power has finally concentrated in your hands. Every faction of the CCP now demands a decision on China's future: conservative Maoism without the excesses of the Cultural Revolution, a renewed radical course, limited modernization, or large-scale market reform and opening to the world."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

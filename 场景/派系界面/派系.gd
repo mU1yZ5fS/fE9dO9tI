@@ -91,8 +91,6 @@ const 政策类别 := {
 	},
 }
 
-const COST_BUDGET_MULT := 50
-const COST_PARTY_MULT := 300
 const DEDUCT_BUDGET := 50
 const DEDUCT_LIVING := 50
 const DEDUCT_PARTY := 30
@@ -269,22 +267,13 @@ func _refresh_policy_panel(cat_name: String) -> void:
 		if btn == null:
 			continue
 		var target_val: int = int(val)
-		var can_select := _can_change_policy(w, current_val, target_val)
+		# 权威 4 条件检查在 GameManager，UI 只读结果（避免与实际切换判定漂移）
+		var chk := GameManager.check_policy_change(cat_idx, target_val)
+		var can_select: bool = chk["can"]
 		btn.disabled = not can_select
 		btn.modulate = Color.WHITE if can_select else Color(0.5, 0.5, 0.5)
 		if target_val == current_val:
-			btn.modulate = Color(1.0, 1.0, 0.6) if can_select else Color(0.6, 0.6, 0.3)
-
-
-func _can_change_policy(w: WorldState, current: int, target: int) -> bool:
-	if current == target:
-		return true
-	var diff := absi(target - current)
-	var budget_need: int = diff * COST_BUDGET_MULT
-	var party_need: int = diff * COST_PARTY_MULT
-	var budget_have: int = w.数值表[W.I_BUDGET] + w.数值表[W.I_RESERVE]
-	var party_have: int = w.数值表[W.I_PARTY_SUPPORT]
-	return budget_have >= budget_need and party_have >= party_need
+			btn.modulate = Color(1.0, 1.0, 0.6)
 
 
 func _on_policy_selected(cat_name: String, target_val: int) -> void:
@@ -305,12 +294,12 @@ func _on_policy_hover(cat_name: String, target_val: int) -> void:
 	if diff == 0:
 		cond_text = "当前政策"
 	else:
-		var budget_need: int = diff * COST_BUDGET_MULT
-		var party_need: int = diff * COST_PARTY_MULT
-		var budget_have: int = w.数值表[W.I_BUDGET] + w.数值表[W.I_RESERVE]
-		var party_have: int = w.数值表[W.I_PARTY_SUPPORT]
-		cond_text = "预算需求：%.1f  [%s]\n" % [float(budget_need) / 10.0, "满足" if budget_have >= budget_need else "未满足"]
-		cond_text += "党内支持需求：%.1f  [%s]\n" % [float(party_need) / 10.0, "满足" if party_have >= party_need else "未满足"]
+		# 4 条件明细走权威检查，与按钮可用性一致
+		var chk := GameManager.check_policy_change(cat_idx, target_val)
+		cond_text = "预算需求：%.1f  [%s]\n" % [float(chk["budget_need"]) / 10.0, "满足" if chk["budget_ok"] else "未满足"]
+		cond_text += "党内支持需求：%.1f  [%s]\n" % [float(chk["party_need"]) / 10.0, "满足" if chk["party_ok"] else "未满足"]
+		cond_text += "执政条件：%s  [%s]\n" % [chk["leading_text"], "满足" if chk["leading_ok"] else "未满足"]
+		cond_text += "毛主席已逝：[%s]\n" % ("满足" if chk["mao_ok"] else "未满足（毛在世期间不可变更政策）")
 		cond_text += "\n切换消耗：\n预算-%.1f  生活水平-%.1f  党内支持-%.1f" % [
 			float(diff * DEDUCT_BUDGET) / 10.0,
 			float(diff * DEDUCT_LIVING) / 10.0,

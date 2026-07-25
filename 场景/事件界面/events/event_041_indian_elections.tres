@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_033_041_world_and_party.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.3"
+
+[sub_resource type="Resource" id="Expr_agents_50"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 50.0
+
+[sub_resource type="Resource" id="Expr_budget_30"]
+script = ExtResource("3_expr")
+key = "budget"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_reserve_30"]
+script = ExtResource("3_expr")
+key = "reserve"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_money_30"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_budget_30"), SubResource("Expr_reserve_30")])
+
+[sub_resource type="Resource" id="Expr_opposition"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_50"), SubResource("Expr_money_30")])
+
+[sub_resource type="Resource" id="Expr_line_not_0"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_gandhi"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_50"), SubResource("Expr_line_not_0")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Keep out"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Janata Party defeated Congress and restored diplomatic relations with China."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Support the opposition"
+disabled_text = "Requires 50 agents and either 30 budget or 30 reserves"
+enable_condition = SubResource("Expr_opposition")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Chinese aid helped the Janata Party defeat Congress and establish a friendlier government."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Support Indira Gandhi"
+disabled_text = "Requires 50 agents and a political line other than 0"
+enable_condition = SubResource("Expr_gandhi")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Our assistance preserved Indira Gandhi's government and reopened diplomatic relations, though India moved closer to Moscow."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "indian_elections"
+source_event_number = 41
+title = "Indian elections"
+description = "Indira Gandhi's emergency rule has made the Indian election unusually competitive. China may abstain, aid the Janata opposition, or support Gandhi despite the unresolved border dispute."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

@@ -29,6 +29,13 @@ script = ExtResource("3_mln7p")
 key = "agents"
 value = -30.0
 
+[sub_resource type="Resource" id="Resource_kampuchea_government"]
+script = ExtResource("3_mln7p")
+type = 6
+key = "government"
+value = 1.0
+target = "23"
+
 [sub_resource type="Resource" id="Resource_1jpx4"]
 script = ExtResource("3_mln7p")
 type = 19
@@ -41,12 +48,22 @@ script = ExtResource("4_ht34l")
 key = "agents"
 value = 30.0
 
+[sub_resource type="Resource" id="Resource_line_not_0"]
+script = ExtResource("4_ht34l")
+type = 22
+key = "political_line"
+
+[sub_resource type="Resource" id="Resource_can_remove_pol_pot"]
+script = ExtResource("4_ht34l")
+type = 18
+children = Array[ExtResource("4_ht34l")]([SubResource("Resource_j5ukc"), SubResource("Resource_line_not_0")])
+
 [sub_resource type="Resource" id="Resource_w1ygu"]
 script = ExtResource("2_5y7hh")
 text = "Remove Pol Pot in favor of the trio of Hu Nim, Hou Yuon and Khieu Samphan"
 disabled_text = "We can't remove Pol Pot"
-enable_condition = SubResource("Resource_j5ukc")
-effects = Array[ExtResource("3_mln7p")]([SubResource("Resource_w1t1b"), SubResource("Resource_1jpx4")])
+enable_condition = SubResource("Resource_can_remove_pol_pot")
+effects = Array[ExtResource("3_mln7p")]([SubResource("Resource_w1t1b"), SubResource("Resource_kampuchea_government"), SubResource("Resource_1jpx4")])
 result_text = "Coming in contact with the Left Opposition within the Kampuchean army, we were able to organize the displacement and arrest of Pol Pot..."
 
 [sub_resource type="Resource" id="Resource_5k4iu"]
@@ -72,9 +89,17 @@ key = "400,600,-1,1"
 value = 1.0
 target = "Kampuchea|Vietnam"
 
+[sub_resource type="Resource" id="Resource_line_not_4"]
+script = ExtResource("4_ht34l")
+type = 22
+key = "political_line"
+value = 4.0
+
 [sub_resource type="Resource" id="Resource_jdeba"]
 script = ExtResource("2_5y7hh")
 text = "Help the Khmer Rouge"
+disabled_text = "We cannot help the dictator!"
+enable_condition = SubResource("Resource_line_not_4")
 effects = Array[ExtResource("3_mln7p")]([SubResource("Resource_5k4iu"), SubResource("Resource_6iuu4"), SubResource("Resource_0roub"), SubResource("Resource_0lk62")])
 result_text = "We sent help to our old ally, Pol Pot, but it is not known whether this is enough for him..."
 
@@ -83,10 +108,17 @@ script = ExtResource("4_ht34l")
 type = 12
 key = "1976.12"
 
+[sub_resource type="Resource" id="Resource_kampuchea_authoritarian"]
+script = ExtResource("4_ht34l")
+type = 25
+key = "government"
+target = "23"
+
 [resource]
 script = ExtResource("5_x6miu")
 event_id = "cambodian_vietnam_war"
+source_event_number = 15
 title = "Cambodian-Vietnamese war"
 description = "For several years, ruling in Democratic Kampuchea, the Red Khmers of Pol Pot pursued an openly aggressive policy towards neighboring Vietnam, often attacking border villages and killing civilians en masse. And it seems that Vietnam's patience has come to an end - quite recently the Vietnamese army launched a full-scale invasion of Cambodia to overthrow the Pol Pot regime..."
-trigger_conditions = Array[ExtResource("4_ht34l")]([SubResource("Resource_taryy")])
+trigger_conditions = Array[ExtResource("4_ht34l")]([SubResource("Resource_taryy"), SubResource("Resource_kampuchea_authoritarian")])
 options = Array[ExtResource("2_5y7hh")]([SubResource("Resource_kbt30"), SubResource("Resource_w1ygu"), SubResource("Resource_jdeba")])

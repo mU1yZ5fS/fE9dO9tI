@@ -1,0 +1,123 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_053_062_reform_and_alliances.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.8"
+
+[sub_resource type="Resource" id="Expr_no_war_result"]
+script = ExtResource("3_expr")
+type = 22
+key = "war_resolve"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_full"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_not_one"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_not_zero"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_not_two"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_stop_assimilation"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_not_zero"), SubResource("Expr_not_two")])
+
+[sub_resource type="Resource" id="Expr_religion"]
+script = ExtResource("3_expr")
+type = 22
+key = "religion_policy"
+value = 24.0
+
+[sub_resource type="Resource" id="Expr_line_high"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_territory"]
+script = ExtResource("3_expr")
+type = 1
+key = "territorial_policy"
+value = 22.0
+
+[sub_resource type="Resource" id="Expr_all_minorities"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_religion"), SubResource("Expr_line_high"), SubResource("Expr_territory")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Return the territories and end assimilation"
+disabled_text = "The current political line permits no concessions"
+enable_condition = SubResource("Expr_full")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Inner Mongolia recovered the territories transferred in 1969 and received guarantees for Mongolian culture and autonomy."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Refuse any concession"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Assimilation continued, worsening local conditions and encouraging dissidents to seek foreign support."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Return the territories but continue assimilation"
+disabled_text = "This compromise conflicts with political line 1"
+enable_condition = SubResource("Expr_not_one")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The 1969 territories returned to Inner Mongolia, but unchanged assimilation policies satisfied neither nationalists nor Mongolian critics."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "End assimilation but retain the territories"
+disabled_text = "This compromise conflicts with the current political line"
+enable_condition = SubResource("Expr_stop_assimilation")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Mongolian cultural life was restored, but the central government retained the territories transferred out of the autonomous region."
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "Adopt a new nationalities policy for all smaller autonomous regions"
+disabled_text = "Requires religion policy other than 24, political line at least 2, and territorial policy below 23"
+enable_condition = SubResource("Expr_all_minorities")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "A broad nationalities concept expanded minority rights, representation and cultural protection across Inner Mongolia, Guangxi and Ningxia."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "inner_mongolia_problem"
+source_event_number = 62
+trigger_priority = 620
+title = "The problems of the heirs of Genghis Khan"
+description = "Inner Mongolia demands the return of territories transferred in 1969 and an end to assimilation. Beijing can grant all, part, none, or reform nationalities policy nationwide."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_no_war_result")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

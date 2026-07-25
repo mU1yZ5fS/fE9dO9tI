@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="3_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="4_custom"]
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("4_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Propose an Arab state in parts of Palestine"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "With sufficient Chinese influence, Israel and the PLO will agree on a Palestinian state in occupied territories."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Propose Arab autonomy pending a final settlement"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Israel and the PLO agreed to a Palestinian National Administration for a five-year interim period."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Propose a union state of Arabs and Jews"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "With enough influence and an Arab union behind us, both sides may accept a neutral binational union."
+
+[resource]
+script = ExtResource("3_event")
+event_id = "palestine_settlement"
+source_event_number = 30
+title = "End of conflict?"
+description = "Israel's failure in Lebanon has created an opening for negotiations with the PLO. China can mediate a Palestinian state, interim autonomy, or a far more ambitious union state."
+show_notification = false
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

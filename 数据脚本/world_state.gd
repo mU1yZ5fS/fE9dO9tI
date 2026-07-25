@@ -26,19 +26,34 @@ const I_PARTY_SYSTEM := 15      ## 政党制度
 const I_ECON_SYSTEM := 16       ## 经济体制
 const I_PRESS_POLICY := 17      ## 舆论政策
 const I_TERRITORY := 18         ## 领土制度
+const I_DAY := 19               ## 当前日（原 data[19]）
+const I_MONTH := 20             ## 当前月（原 data[20]）
+const I_YEAR := 21              ## 当前年（原 data[21]）
 const I_ARMY := 22              ## 军力
 const I_INCOME := 23            ## 收入
 const I_IMPORT_NEEDS := 24      ## 进口需求
 const I_TRADE_PARTNERS := 25    ## 贸易伙伴数
 const I_CORRUPTION := 26        ## 腐败
+const I_INVESTMENT_DELAY := 27  ## 改革开放后等待外资政策的月数（原 data[27]）
 const I_USA_RELATIONS := 28    ## 对美关系镜像（权威在 empires[0].relations）
 const I_USSR_RELATIONS := 29   ## 对苏关系镜像（权威在 empires[1].relations）
+const I_COMMUNICATIONS := 30   ## 外交通信结构恢复度（原 data[30]）
 const I_WAR_SUPPORT := 31       ## 战争支持度
+const I_NAXALITE_POWER := 32    ## 印度纳萨尔派力量（原 data[32]）
 const I_ECON_OPENNESS := 33     ## 经济开放度
 const I_POPULATION := 34        ## 人口(万)
+const I_ENDING_ROUTE := 35      ## 待进入的结局编号（原 data[35]）
 const I_RESERVE := 36           ## 外汇储备
 const I_STABILITY := 38         ## 政治稳定
 const I_WAR_PRESSURE := 39      ## 中苏战争压力
+const I_INDIA_WAR_PRESSURE := 40 ## 中印边境战争攻势（原 data[40]）
+const I_IRAN_LEFT_SUPPORT := 42 ## 伊朗左翼势力（原 data[42]）
+const I_IRAN_SHAH_SUPPORT := 43 ## 伊朗王室势力（原 data[43]）
+const I_IRAN_DEMOCRAT_SUPPORT := 44 ## 伊朗民主派势力（原 data[44]）
+const I_IRAN_ISLAMIST_SUPPORT := 45 ## 伊朗伊斯兰派势力（原 data[45]）
+const I_AFGHAN_OPPOSITION := 46 ## 阿富汗亲华/毛派反对派势力（原 data[46]）
+const I_AFGHAN_KHALQ := 48     ## 阿富汗人民派势力（原 data[48]）
+const I_AFGHAN_PARCHAM := 49   ## 阿富汗旗帜派势力（原 data[49]）
 const I_RELIGION := 50          ## 宗教政策
 const I_MIL_DOCTRINE := 51      ## 军事学说
 const I_ECON_DISPLAY := 52      ## 经济显示等级
@@ -46,6 +61,11 @@ const I_POLITICAL_DISPLAY := 54 ## 政治显示等级
 const I_POLITICAL_OPENNESS := 55 ## 政治开放度
 const I_POLITICAL_LINE := 56    ## 政治路线
 const I_MANPOWER := 57          ## 兵源
+const I_SOVIET_SUCCESSION := 59 ## 苏联领导层继承结果（原 data[59]，>0 表示勃列日涅夫已逝）
+const I_ALBANIA_BREAK := 60     ## 中阿决裂/阿尔巴尼亚路线状态（原 data[60]）
+const I_HK_MACAU_STATUS := 65   ## 港澳回归路线（原 data[65]）
+const I_XINJIANG_POLICY := 66   ## 新疆/维吾尔文化政策状态（原 data[66]）
+const I_TIBET_POLICY := 67      ## 西藏文化政策状态（原 data[67]）
 const I_SERVICES := 68          ## 服务业产值
 const I_LOAN := 69              ## 国债
 const I_BUDGET_ARMY := 71       ## 预算: 军费
@@ -60,11 +80,24 @@ const I_BUDGET_SERVICES := 79   ## 预算: 服务业
 const I_BUDGET_WELFARE := 80    ## 预算: 福利
 const I_BUDGET_DIPLO := 81      ## 预算: 外交
 const I_WAR_RESOLVE := 82       ## 待结算战争 id，<0 无（原 data[82]）
+const I_KOREA_RESULT := 83      ## 朝鲜战争统一方向（原 data[83]：1北胜、2南胜）
+const I_GANG_OF_FOUR_PATH := 84 ## 四人帮处置路线（原 data[84]，事件25/26及后续链）
+const I_PALESTINE_STATUS := 85  ## 巴以安排（原 data[85]）
+const I_POST_MAO_COURSE := 87   ## 毛后文革/改革路线（原 data[87]，事件24及后续链）
+const I_REFORM_STAGE := 89      ## 改革阶段（原 data[89]）
+const I_MAO_HISTORY_LINE := 90  ## 毛泽东历史评价路线（原 data[90]）
+const I_INDIA_ELECTION := 91    ## 印度大选结果（原 data[91]）
+const I_REFORM_MOMENTUM := 92   ## 政策改革方向累计值（原 data[92]）
 const I_PROJECTION := 93        ## 投射力（原 data[93]）
 const I_AFGHAN_POLICY := 94     ## 阿富汗策略（原 data[94]）
+const I_SOVIET_SUCCESSOR_THIRD := 100 ## 苏联第三继承人权重（原 data[100]）
+const I_MAO_MAUSOLEUM := 104    ## 毛主席纪念堂状态（原 data[104]）
 const I_BIRTH_POLICY := 105     ## 生育政策/人口增长基数（原版 data[105]：0一胎 1二胎 2无限制）
 const I_SATISFIED := 106        ## 满意现秩序者
+const I_AFGHAN_WAR_PATH := 107  ## 阿富汗战争路线（原 data[107]）
 const I_OLIGARCH := 108         ## 寡头影响力
+const I_SOVIET_INTERVENTIONS := 112 ## 苏联武装干涉计数（原 data[112]）
+const I_PROTEST_REPRESSION := 113 ## 抗议镇压状态（原 data[113]）
 const I_FOREIGN_AID := 146     ## 外援强度（原版 data[146]，dota 消耗）
 const I_INDUSTRY_BASE := 152    ## 工业基数
 
@@ -84,32 +117,73 @@ const 数值索引 := {
 	"agriculture": I_AGRICULTURE, "food": I_AGRICULTURE, "农业": I_AGRICULTURE,
 	"ideology": I_IDEOLOGY, "意识形态": I_IDEOLOGY,
 	"party_system": I_PARTY_SYSTEM, "政党制度": I_PARTY_SYSTEM,
-	"economy_system": I_ECON_SYSTEM, "economic_system": I_ECON_SYSTEM, "经济体制": I_ECON_SYSTEM,
+	"economy_system": I_ECON_SYSTEM, "economic_system": I_ECON_SYSTEM, "development": I_ECON_SYSTEM, "经济体制": I_ECON_SYSTEM,
 	"speech_policy": I_PRESS_POLICY, "press_policy": I_PRESS_POLICY, "舆论政策": I_PRESS_POLICY,
 	"territorial_policy": I_TERRITORY, "领土制度": I_TERRITORY,
 	"religion_policy": I_RELIGION, "宗教政策": I_RELIGION,
-	"day": 19, "month": 20, "year": 21,
+	"day": I_DAY, "month": I_MONTH, "year": I_YEAR,
 	"army": I_ARMY, "army_strength": I_ARMY, "military": I_ARMY, "军力": I_ARMY,
 	"corruption": I_CORRUPTION, "腐败": I_CORRUPTION,
+	"investment_delay": I_INVESTMENT_DELAY, "外资政策等待月数": I_INVESTMENT_DELAY,
 	"mil_intervention": I_MIL_INTERVENTION, "军事介入点": I_MIL_INTERVENTION,
 	"war_resolve": I_WAR_RESOLVE, "战争结算": I_WAR_RESOLVE,
+	"korea_result": I_KOREA_RESULT, "朝鲜战争结果": I_KOREA_RESULT,
 	"projection": I_PROJECTION, "投射力": I_PROJECTION,
 	"war_support": I_WAR_SUPPORT,
+	"naxalite_power": I_NAXALITE_POWER, "纳萨尔派力量": I_NAXALITE_POWER,
 	"population": I_POPULATION, "人口": I_POPULATION,
+	"ending_route": I_ENDING_ROUTE, "结局编号": I_ENDING_ROUTE,
 	"money_reserve": I_RESERVE, "reserve": I_RESERVE, "外汇": I_RESERVE,
 	"political_stability": I_STABILITY, "政治稳定": I_STABILITY,
 	"war_pressure": I_WAR_PRESSURE, "sino_soviet_war_pressure": I_WAR_PRESSURE,
+	"india_war_pressure": I_INDIA_WAR_PRESSURE, "中印战争攻势": I_INDIA_WAR_PRESSURE,
 	"military_doctrine": I_MIL_DOCTRINE, "军事学说": I_MIL_DOCTRINE,
 	"political_line": I_POLITICAL_LINE, "政治路线": I_POLITICAL_LINE,
 	"manpower": I_MANPOWER, "兵源": I_MANPOWER,
+	"soviet_succession": I_SOVIET_SUCCESSION, "苏联继承": I_SOVIET_SUCCESSION,
+	"albania_break": I_ALBANIA_BREAK, "中阿决裂": I_ALBANIA_BREAK,
+	"hk_macau_status": I_HK_MACAU_STATUS, "港澳路线": I_HK_MACAU_STATUS,
+	"xinjiang_policy": I_XINJIANG_POLICY, "新疆文化政策": I_XINJIANG_POLICY,
+	"tibet_policy": I_TIBET_POLICY, "西藏文化政策": I_TIBET_POLICY,
 	"services": I_SERVICES, "服务业": I_SERVICES,
 	"loan": I_LOAN, "debt": I_LOAN, "国债": I_LOAN,
+	"budget_army": I_BUDGET_ARMY, "军费预算": I_BUDGET_ARMY,
+	"budget_mgb": I_BUDGET_MGB, "国安预算": I_BUDGET_MGB,
+	"budget_science": I_BUDGET_SCIENCE, "科研预算": I_BUDGET_SCIENCE,
+	"budget_admin": I_BUDGET_ADMIN, "行政预算": I_BUDGET_ADMIN,
+	"budget_envelope": I_BUDGET_ENVELOPE, "高层福利预算": I_BUDGET_ENVELOPE,
+	"budget_propaganda": I_BUDGET_PROPAGANDA, "宣传预算": I_BUDGET_PROPAGANDA,
+	"budget_agriculture": I_BUDGET_AGRI, "农业预算": I_BUDGET_AGRI,
+	"budget_industry": I_BUDGET_INDUSTRY, "工业预算": I_BUDGET_INDUSTRY,
+	"budget_services": I_BUDGET_SERVICES, "服务业预算": I_BUDGET_SERVICES,
+	"budget_welfare": I_BUDGET_WELFARE, "福利预算": I_BUDGET_WELFARE,
+	"budget_diplomacy": I_BUDGET_DIPLO, "外交预算": I_BUDGET_DIPLO,
+	"gang_of_four_path": I_GANG_OF_FOUR_PATH, "四人帮路线": I_GANG_OF_FOUR_PATH,
+	"palestine_status": I_PALESTINE_STATUS, "巴以安排": I_PALESTINE_STATUS,
+	"post_mao_course": I_POST_MAO_COURSE, "毛后路线": I_POST_MAO_COURSE,
+	"reform_stage": I_REFORM_STAGE, "改革阶段": I_REFORM_STAGE,
 	"satisfied": I_SATISFIED, "满意现秩序者": I_SATISFIED,
+	"afghan_war_path": I_AFGHAN_WAR_PATH, "阿富汗战争路线": I_AFGHAN_WAR_PATH,
 	"oligarch": I_OLIGARCH, "寡头": I_OLIGARCH,
+	"protest_repression": I_PROTEST_REPRESSION, "抗议镇压": I_PROTEST_REPRESSION,
 	"birth_policy": I_BIRTH_POLICY, "生育政策": I_BIRTH_POLICY,
 	"foreign_aid": I_FOREIGN_AID, "外援": I_FOREIGN_AID,
 	"usa_relations": I_USA_RELATIONS, "对美关系": I_USA_RELATIONS,
 	"ussr_relations": I_USSR_RELATIONS, "对苏关系": I_USSR_RELATIONS,
+	"communications": I_COMMUNICATIONS, "通信结构": I_COMMUNICATIONS,
+	"iran_left_support": I_IRAN_LEFT_SUPPORT, "伊朗左翼势力": I_IRAN_LEFT_SUPPORT,
+	"iran_shah_support": I_IRAN_SHAH_SUPPORT, "伊朗王室势力": I_IRAN_SHAH_SUPPORT,
+	"iran_democrat_support": I_IRAN_DEMOCRAT_SUPPORT, "伊朗民主派势力": I_IRAN_DEMOCRAT_SUPPORT,
+	"iran_islamist_support": I_IRAN_ISLAMIST_SUPPORT, "伊朗伊斯兰派势力": I_IRAN_ISLAMIST_SUPPORT,
+	"afghan_opposition": I_AFGHAN_OPPOSITION, "阿富汗亲华反对派": I_AFGHAN_OPPOSITION,
+	"afghan_khalq": I_AFGHAN_KHALQ, "阿富汗人民派": I_AFGHAN_KHALQ,
+	"afghan_parcham": I_AFGHAN_PARCHAM, "阿富汗旗帜派": I_AFGHAN_PARCHAM,
+	"mao_history_line": I_MAO_HISTORY_LINE, "毛泽东历史评价": I_MAO_HISTORY_LINE,
+	"india_election": I_INDIA_ELECTION, "印度大选结果": I_INDIA_ELECTION,
+	"reform_momentum": I_REFORM_MOMENTUM, "改革方向": I_REFORM_MOMENTUM,
+	"mao_mausoleum": I_MAO_MAUSOLEUM, "毛主席纪念堂": I_MAO_MAUSOLEUM,
+	"soviet_successor_third": I_SOVIET_SUCCESSOR_THIRD, "苏联第三继承人权重": I_SOVIET_SUCCESSOR_THIRD,
+	"soviet_interventions": I_SOVIET_INTERVENTIONS, "苏联干涉计数": I_SOVIET_INTERVENTIONS,
 }
 
 # ── 时间 ──
@@ -148,6 +222,7 @@ const 数值索引 := {
 
 # ── 事件引擎运行时（随 WorldState 存档） ──
 @export var event_pending_id: String = ""
+## GameDate.tick_count 截止值（旧存档的 YYYYMMDD 由 EventEngine 读档时迁移）
 @export var event_pending_deadline: int = -1
 @export var event_mtth_timers: Dictionary = {}
 @export var event_chain_queue: Array[String] = []

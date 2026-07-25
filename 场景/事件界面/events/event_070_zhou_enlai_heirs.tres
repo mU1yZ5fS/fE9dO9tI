@@ -1,0 +1,101 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_067_070_crises_and_plenums.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.2"
+
+[sub_resource type="Resource" id="Expr_no_reform"]
+script = ExtResource("3_expr")
+type = 21
+key = "reform_stage"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_modifier"]
+script = ExtResource("3_expr")
+type = 2
+key = "14"
+
+[sub_resource type="Resource" id="Expr_left_power"]
+script = ExtResource("3_expr")
+type = 35
+key = "0"
+target = "1,2"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_party_800"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_support"
+value = 800.0
+
+[sub_resource type="Resource" id="Expr_party_700"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_support"
+value = 700.0
+
+[sub_resource type="Resource" id="Expr_history"]
+script = ExtResource("3_expr")
+type = 22
+key = "mao_history_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_attack_all"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_party_800"), SubResource("Expr_left_power")])
+
+[sub_resource type="Resource" id="Expr_moderates"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_party_700"), SubResource("Expr_history")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do nothing; different views are the guarantee of democracy"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Reformers retained their posts, undermining the unreformed leadership while angering its left wing."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Attack reformers and moderates at the plenum"
+disabled_text = "Requires 800 party support and Maoist power above moderates and reformers combined"
+enable_condition = SubResource("Expr_attack_all")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The plenum removed reformers and many moderates from party and government positions."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Use moderate support to attack the reformers"
+disabled_text = "Requires 700 party support and a nonzero historical verdict on Mao"
+enable_condition = SubResource("Expr_moderates")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Moderate support enabled the leadership to purge reformers while preserving the center."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Arrest reformist leaders and launch a campaign against their supporters"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Reformist leaders were arrested and their supporters purged in a campaign recalling the Cultural Revolution."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "zhou_enlai_heirs"
+source_event_number = 70
+trigger_priority = 700
+title = "The problems of Zhou Enlai's heirs"
+description = "Without reform opening, Deng and the reformist old guard remain a rival center. The Fifth Plenum can marginalize, purge, or tolerate them."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_no_reform"), SubResource("Expr_modifier")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

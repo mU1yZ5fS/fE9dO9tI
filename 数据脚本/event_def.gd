@@ -25,6 +25,13 @@ extends Resource
 ## 事件唯一标识符（新系统主键，推荐 snake_case 命名）
 @export var event_id: String = ""
 
+## 原版基础事件编号（非编号事件保持 -1），用于源码追踪和存档迁移。
+@export var source_event_number: int = -1
+
+## 自动扫描优先级；-1 使用资源文件稳定扫描次序。数值越小越先检查。
+## 原版 TimeScript 使用 else-if 链，同一 tick 只进入第一个满足条件的事件。
+@export var trigger_priority: int = -1
+
 ## 事件标题（显示在事件 UI 顶部）
 @export var title: String = ""
 
@@ -46,6 +53,17 @@ extends Resource
 ## MTTH 修正因子列表。每个 MTTHModifier 在其 condition 满足时
 ## 将 base * factor 累积到实际触发概率。
 @export var mtth_modifiers: Array[MTTHModifier] = []
+
+## 条件满足后是否先显示地图通知。原版普通事件默认先通知；
+## 选举、政变、战争结算等 Reelect 直接事件设为 false。
+@export var show_notification: bool = true
+
+## 原 EventScript.Reset 的 104 计时单位 / 每日 8 单位 = 13 个游戏日。
+@export_range(1, 365, 1) var notification_days: int = 13
+
+## 通知超时代价（原 EventScript.Update：data[9]-=20, data[8]-=5）。
+@export var timeout_agents_penalty: int = 20
+@export var timeout_budget_penalty: int = 5
 
 ## 玩家可选的选项列表（通常 2~6 个）
 @export var options: Array[EventOption] = []

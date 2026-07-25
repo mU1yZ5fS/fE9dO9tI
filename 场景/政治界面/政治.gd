@@ -383,9 +383,9 @@ func _update_button_states() -> void:
 	_btn_faction_leader.disabled = not _can_set_faction_leader(pol, tier)
 
 	# 职位：num7 总理 / num5 军委 / num6 外交 / num8-12 地方
-	# 军委需 data[38]==100（毛已故/稳定满）
+	# 军委需毛已逝
 	_btn_pos_premier.disabled = not _can_assign_central(pol, tier, 0)
-	_btn_pos_cmc.disabled = not _can_assign_central(pol, tier, 1) or d[W.I_STABILITY] != 100
+	_btn_pos_cmc.disabled = not _can_assign_central(pol, tier, 1) or not GameManager.is_mao_dead()
 	_btn_pos_foreign.disabled = not _can_assign_central(pol, tier, 2)
 	_btn_pos_capital.disabled = not _can_assign_regional(pol, tier, 3)
 	_btn_pos_north.disabled = not _can_assign_regional(pol, tier, 4)
@@ -452,7 +452,7 @@ func _can_set_faction_leader(pol: PoliticianData, tier: int) -> bool:
 	if pol == null:
 		return false
 	var d := _world.数值表
-	if d[W.I_STABILITY] != 100:
+	if not GameManager.is_mao_dead():
 		return false
 	if d[W.I_BUDGET] < 100 or d[W.I_AGENTS] < 100:
 		return false

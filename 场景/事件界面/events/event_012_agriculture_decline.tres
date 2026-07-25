@@ -8,7 +8,6 @@
 
 [sub_resource type="Resource" id="Resource_28e7p"]
 script = ExtResource("3_ey8k2")
-type = 1
 key = "food"
 value = 100.0
 
@@ -25,7 +24,6 @@ result_text = "Large funds from the budget were urgently allocated for the moder
 
 [sub_resource type="Resource" id="Resource_74mgv"]
 script = ExtResource("3_ey8k2")
-type = 1
 key = "food"
 value = 100.0
 
@@ -40,11 +38,22 @@ type = 8
 key = "0"
 value = -50.0
 
+[sub_resource type="Resource" id="Resource_foreign_freedom"]
+script = ExtResource("3_ey8k2")
+key = "thought_freedom"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_foreign_loyalty"]
+script = ExtResource("3_ey8k2")
+type = 21
+key = "2,3"
+value = -100.0
+
 [sub_resource type="Resource" id="Resource_t8rn1"]
 script = ExtResource("4_t6nys")
 type = 8
 key = "0"
-value = 600.0
+value = 60.0
 
 [sub_resource type="Resource" id="Resource_iraau"]
 script = ExtResource("4_t6nys")
@@ -71,20 +80,24 @@ script = ExtResource("2_fmn1d")
 text = "Attract foreign investment"
 disabled_text = "Investors will not go to us"
 enable_condition = SubResource("Resource_oo3w3")
-effects = Array[ExtResource("3_ey8k2")]([SubResource("Resource_74mgv"), SubResource("Resource_lowjb"), SubResource("Resource_dctmi")])
+effects = Array[ExtResource("3_ey8k2")]([SubResource("Resource_74mgv"), SubResource("Resource_lowjb"), SubResource("Resource_foreign_freedom"), SubResource("Resource_dctmi"), SubResource("Resource_foreign_loyalty")])
 result_text = "Our campaign to attract foreign investment was a great success! Foreigners themselves now build and modernize our farms without a single yuan from our budget..."
 
 [sub_resource type="Resource" id="Resource_sivna"]
 script = ExtResource("3_ey8k2")
-type = 1
 key = "food"
 value = 100.0
 
 [sub_resource type="Resource" id="Resource_4qvfi"]
 script = ExtResource("3_ey8k2")
-type = 10
-key = "1"
+key = "soviet_influence"
 value = 10.0
+
+[sub_resource type="Resource" id="Resource_soviet_loyalty"]
+script = ExtResource("3_ey8k2")
+type = 21
+key = "2,3"
+value = -100.0
 
 [sub_resource type="Resource" id="Resource_f7drx"]
 script = ExtResource("3_ey8k2")
@@ -102,19 +115,28 @@ value = -100.0
 script = ExtResource("4_t6nys")
 type = 8
 key = "1"
-value = 700.0
+value = 70.0
+
+[sub_resource type="Resource" id="Resource_relres"]
+script = ExtResource("4_t6nys")
+type = 14
+key = "relres"
+
+[sub_resource type="Resource" id="Resource_soviet_help"]
+script = ExtResource("4_t6nys")
+type = 19
+children = Array[ExtResource("4_t6nys")]([SubResource("Resource_ur4wc"), SubResource("Resource_relres")])
 
 [sub_resource type="Resource" id="Resource_a8g1j"]
 script = ExtResource("2_fmn1d")
 text = "Request help from the USSR"
 disabled_text = "We don't need handouts from revisionists!"
-enable_condition = SubResource("Resource_ur4wc")
-effects = Array[ExtResource("3_ey8k2")]([SubResource("Resource_sivna"), SubResource("Resource_4qvfi"), SubResource("Resource_f7drx"), SubResource("Resource_s3xr4")])
+enable_condition = SubResource("Resource_soviet_help")
+effects = Array[ExtResource("3_ey8k2")]([SubResource("Resource_sivna"), SubResource("Resource_4qvfi"), SubResource("Resource_f7drx"), SubResource("Resource_s3xr4"), SubResource("Resource_soviet_loyalty")])
 result_text = "The Soviet Union agreed how in the old days to help us with the rise of agriculture..."
 
 [sub_resource type="Resource" id="Resource_wx1kb"]
 script = ExtResource("3_ey8k2")
-type = 1
 key = "food"
 value = 100.0
 
@@ -144,7 +166,9 @@ key = "agriculture"
 [resource]
 script = ExtResource("5_kew4r")
 event_id = "agriculture_decline"
+source_event_number = 12
 title = "The decline of agriculture"
 description = "Our agriculture is in unprecedented decline - there was no such disorder even in times of great leap forward!"
 trigger_conditions = Array[ExtResource("4_t6nys")]([SubResource("Resource_3dpml")])
 options = Array[ExtResource("2_fmn1d")]([SubResource("Resource_tp6pg"), SubResource("Resource_jwlga"), SubResource("Resource_a8g1j"), SubResource("Resource_ch0q3")])
+fire_only_once = false

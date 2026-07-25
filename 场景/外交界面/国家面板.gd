@@ -16,6 +16,8 @@ extends CanvasLayer
 
 # ── 图标资源 ──
 
+const W = preload("res://数据脚本/world_state.gd")
+
 const GOV_ICONS := {
 	0: preload("res://资产/UI/外交/政府类型_激进左翼.png"),
 	1: preload("res://资产/UI/外交/政府类型_苏式社会主义.png"),
@@ -240,6 +242,9 @@ func _on_action_pressed(index: int) -> void:
 		# 外交互动可能直接改写 empires[].relations，立即钳制到合法区间
 		if GameManager.world:
 			GameManager.world.clamp_empire_relations()
+	# 剧情外交操作会立即切入事件场景，不能再刷新即将离树的国家面板。
+	if GameManager.current_event_id != "":
+		return
 	_refresh(_current_country, "")
 	# 重新用国名刷新（名称保持不变）
 	var name_label := find_child("当前选中国家名称", true, false) as Label
@@ -287,6 +292,8 @@ func _build_actions(country: CountryData) -> Array[Dictionary]:
 	var player := w.get_player_country()
 	if player == null:
 		return []
+	# DiploButtonScript 的 27–32 号剧情操作必须排在普通互动前，避免四按钮截断。
+	actions.append_array(_build_story_actions(country, w, d))
 
 	var is_pro_china := country.has_tag("亲中")
 	var is_pro_soviet := country.has_tag("亲苏") or country.has_tag("苏联盟友")
@@ -304,6 +311,24 @@ func _build_actions(country: CountryData) -> Array[Dictionary]:
 
 	# 苏联 (gwcode ~365, 原版序号=7)
 	if country.原版序号 == 7:
+		var restore_text := "延长友好条约" if _is_early_soviet_reconciliation(w) else "恢复中苏友好关系"
+		actions.append(_make_action(restore_text, [
+			_cond("不早于 1979 年", func(): return w.date != null and w.date.year >= 1979),
+			_cond("党内支持与通信结构达到当前阶段门槛", func(): return _meets_soviet_reconciliation_threshold(w, d)),
+			_cond("未挑起对越战争", func(): return w.get_flag("vietnam_peace")),
+			_cond("对苏关系 ≥ 70", func(): return w.empires[1].relations >= 700 if w.empires.size() > 1 else false),
+			_cond("尚未恢复关系", func(): return not w.get_flag("relres")),
+		], "对苏关系 +5、对美关系 -5，解锁中苏和解事件分支",
+		func():
+			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+				w.empires[EmpireData.USSR].relations += 50
+				d[W.I_USSR_RELATIONS] = w.empires[EmpireData.USSR].relations
+			if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
+				w.empires[EmpireData.USA].relations -= 50
+				d[W.I_USA_RELATIONS] = w.empires[EmpireData.USA].relations
+			w.set_flag("relres", true)
+			country.stability = 1
+		))
 		actions.append(_make_action("改善关系", [
 			_cond("预算 ≥ 50", func(): return d[8] >= 50),
 			_cond("国际声望 ≥ 30", func(): return d[6] >= 300),
@@ -454,6 +479,142 @@ func _build_actions(country: CountryData) -> Array[Dictionary]:
 	if actions.size() > 4:
 		actions.resize(4)
 	return actions
+
+
+## DiploButtonScript.cs:94-137：1979 年一季度沿用“延长条约”门槛，4 月起提高门槛。
+func _is_early_soviet_reconciliation(w: WorldState) -> bool:
+	return w.date != null and w.date.year == 1979 and w.date.month < 4
+
+
+func _meets_soviet_reconciliation_threshold(w: WorldState, d: Array[int]) -> bool:
+	if w.date == null or w.date.year < 1979 or w.leader == null:
+		return false
+	if _is_early_soviet_reconciliation(w):
+		var special_leader := (
+			w.leader.trait_personality == 0
+			and w.leader.trait_alignment == 4
+			and w.leader.trait_special == 8
+		)
+		if special_leader:
+			return d[W.I_PARTY_SUPPORT] >= 900 and d[W.I_COMMUNICATIONS] >= 100
+		return d[W.I_PARTY_SUPPORT] >= 700 and d[W.I_COMMUNICATIONS] >= 200
+	return d[W.I_PARTY_SUPPORT] >= 900 and d[W.I_COMMUNICATIONS] >= 300
+
+
+## 原作不是按时间自动扫描，而是玩家在指定国家面板点击后立即付费并进入事件。
+func _build_story_actions(country: CountryData, w: WorldState, d: Array[int]) -> Array[Dictionary]:
+	var actions: Array[Dictionary] = []
+	match country.原版序号:
+		92, 87:  # 英国/葡萄牙：原 CountryScript 以欧洲特殊槽 0 展示该按钮
+			actions.append(_make_action("谈判港澳回归", [
+				_cond("特工网络 ≥ 20", func(): return d[W.I_AGENTS] >= 20),
+				_cond("不早于 1980 年", func(): return w.date != null and w.date.year >= 1980),
+				_cond("国际声望 < 700", func(): return d[W.I_DIPLO] < 700),
+				_cond("尚未谈判", func(): return d[W.I_HK_MACAU_STATUS] == 0 and not w.get_flag("hk_macau_negotiated")),
+			], "特工 -20，预算 -20；进入港澳安排事件",
+			func():
+				d[W.I_AGENTS] -= 20
+				d[W.I_BUDGET] -= 20
+				country.development = 1
+				w.set_flag("hk_macau_negotiated", true)
+				GameManager.start_event("hong_kong_macau")
+			))
+		9:  # 蒙古
+			actions.append(_make_action("煽动温和改革抗议", [
+				_cond("特工网络 ≥ 100", func(): return d[W.I_AGENTS] >= 100),
+				_cond("预算 ≥ 50", func(): return d[W.I_BUDGET] >= 50),
+				_cond("勃列日涅夫已经去世", func(): return d[W.I_SOVIET_SUCCESSION] > 0 or w.get_flag("brezhnev_dead")),
+				_cond("尚未煽动", func(): return country.stability == 0),
+			], "特工 -100，预算 -50，对苏关系 -100；进入蒙古改革事件",
+			func():
+				d[W.I_AGENTS] -= 100
+				d[W.I_BUDGET] -= 50
+				_add_story_relation(w, EmpireData.USSR, -100)
+				country.stability = 1
+				GameManager.start_event("mongolia_reform")
+			))
+		10:  # 朝鲜
+			actions.append(_make_action("对朝鲜实施制裁", [
+				_cond("尚未实施制裁", func(): return country.stability == 0),
+				_cond("国际声望 < 500", func(): return d[W.I_DIPLO] < 500),
+			], "进入对朝鲜施压事件",
+			func():
+				country.stability = 1
+				GameManager.start_event("pressure_north_korea")
+			))
+		37:  # 以色列
+			actions.append(_make_action("调停巴勒斯坦地位", [
+				_cond("以色列在黎巴嫩战争中失败", func(): return w.get_flag("israel_lost_lebanon_war")),
+				_cond("尚未谈判", func(): return country.development == 0),
+			], "进入巴以安排事件",
+			func():
+				country.development = 1
+				GameManager.start_event("palestine_settlement")
+			))
+		46:  # 韩国
+			actions.append(_make_action("施加经济与政治压力", [
+				_cond("越南、泰国、菲律宾与我国处于同一经济联盟",
+					func(): return _countries_share_economic_union(w, [11, 34, 47])),
+				_cond("特工网络 ≥ 40", func(): return d[W.I_AGENTS] >= 40),
+				_cond("曾支援光州起义", func(): return w.get_flag("south_korea_gwangju_rebellion")),
+				_cond("未处于朝鲜战争且尚未施压", func(): return not _war_active(w, 0) and country.stability == 0),
+			], "特工 -40，对美关系 -100；进入韩国选举事件",
+			func():
+				d[W.I_AGENTS] -= 40
+				_add_story_relation(w, EmpireData.USA, -100)
+				country.stability = 1
+				GameManager.start_event("south_korea_election")
+			))
+		50:  # 印度尼西亚
+			actions.append(_make_action("制裁右翼独裁政权", [
+				_cond("越南、泰国、马来西亚与我国处于同一经济联盟",
+					func(): return _countries_share_economic_union(w, [11, 34, 49])),
+				_cond("预算 ≥ 40", func(): return d[W.I_BUDGET] >= 40),
+				_cond("尚未施压", func(): return country.stability == 0),
+			], "预算 -40，对美关系 -50；进入印尼政权更替事件",
+			func():
+				d[W.I_BUDGET] -= 40
+				_add_story_relation(w, EmpireData.USA, -50)
+				country.stability = 1
+				GameManager.start_event("indonesia_after_suharto")
+			))
+		19:  # 印度：逐月扶植东部纳萨尔派，累计触发原作 71 号事件
+			actions.append(_make_action("支援印度东部毛派武装", [
+				_cond("国际声望 > 790", func(): return d[W.I_DIPLO] > 790),
+				_cond("特工网络 ≥ 30", func(): return d[W.I_AGENTS] >= 30),
+				_cond("军力 ≥ 30", func(): return d[W.I_ARMY] >= 30),
+				_cond("尚未与印度建立贸易关系", func(): return not country.has_tag("对华贸易")),
+				_cond("本月尚未支援", func(): return country.stability == 0),
+			], "纳萨尔派力量 +100、对苏关系 -50、军力 -30、特工 -30",
+			func():
+				d[W.I_NAXALITE_POWER] += 100
+				d[W.I_ARMY] -= 30
+				d[W.I_AGENTS] -= 30
+				_add_story_relation(w, EmpireData.USSR, -50)
+				country.stability = 1
+			))
+	return actions
+
+
+func _countries_share_economic_union(w: WorldState, legacy_indices: Array[int]) -> bool:
+	var all_econ := true
+	var all_sev := true
+	for legacy_index in legacy_indices:
+		var target := w.get_country_by_legacy_index(legacy_index)
+		if target == null:
+			return false
+		all_econ = all_econ and target.has_tag("econ")
+		all_sev = all_sev and target.has_tag("sev")
+	return all_econ or all_sev
+
+
+func _war_active(w: WorldState, war_index: int) -> bool:
+	return war_index >= 0 and war_index < w.wars.size() and w.wars[war_index] != null and w.wars[war_index].is_going
+
+
+func _add_story_relation(w: WorldState, empire_index: int, delta: int) -> void:
+	if empire_index >= 0 and empire_index < w.empires.size():
+		w.empires[empire_index].relations += delta
 
 
 # ── 工具方法 ──

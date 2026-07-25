@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_064_066_international.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.5"
+
+[sub_resource type="Resource" id="Expr_leader"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_delegation"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_ignore"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Express condolences, but no more"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China sent formal condolences without changing its relationship with Yugoslavia."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Lead the government delegation to Belgrade personally"
+disabled_text = "Political line must be above 1"
+enable_condition = SubResource("Expr_leader")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Chinese delegation restored diplomatic, economic and cultural relations with post-Tito Yugoslavia."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Send a delegation led by Ji Pengfei"
+disabled_text = "Political line must be above 0"
+enable_condition = SubResource("Expr_delegation")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China attended Tito's funeral but declined Yugoslav proposals for substantive negotiations."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Make no response to Tito's death"
+disabled_text = "Political line must remain below 3"
+enable_condition = SubResource("Expr_ignore")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China ignored Tito's death entirely, surprising Yugoslavia and the wider world."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "death_of_tito"
+source_event_number = 66
+trigger_priority = 660
+title = "And after Tito — Tito!"
+description = "Josip Broz Tito has died. The funeral offers a rare chance to restore relations with Yugoslavia, but ideological objections remain strong."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

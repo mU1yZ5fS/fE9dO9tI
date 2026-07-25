@@ -8,18 +8,67 @@
 
 [sub_resource type="Resource" id="Resource_er6u3"]
 script = ExtResource("3_dtuc1")
-key = "people_support"
-value = -200.0
+key = "influence"
+value = -250.0
 
 [sub_resource type="Resource" id="Resource_gc4g2"]
 script = ExtResource("3_dtuc1")
-key = "party_support"
-value = -200.0
+key = "population"
+value = -18.0
 
 [sub_resource type="Resource" id="Resource_vephg"]
 script = ExtResource("3_dtuc1")
-key = "money"
+key = "agriculture"
 value = -50.0
+
+[sub_resource type="Resource" id="Resource_independence_industry"]
+script = ExtResource("3_dtuc1")
+key = "industry"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_independence_party"]
+script = ExtResource("3_dtuc1")
+key = "party_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_ideology_at_most_3"]
+script = ExtResource("4_llahx")
+type = 1
+key = "ideology"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_ideology_at_least_4"]
+script = ExtResource("4_llahx")
+key = "ideology"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_tibet_policy_1"]
+script = ExtResource("3_dtuc1")
+type = 1
+key = "tibet_policy"
+value = 1.0
+condition = SubResource("Resource_ideology_at_most_3")
+
+[sub_resource type="Resource" id="Resource_tibet_government"]
+script = ExtResource("3_dtuc1")
+type = 6
+key = "government"
+value = 3.0
+target = "69"
+condition = SubResource("Resource_ideology_at_most_3")
+
+[sub_resource type="Resource" id="Resource_tibet_policy_2"]
+script = ExtResource("3_dtuc1")
+type = 1
+key = "tibet_policy"
+value = 2.0
+condition = SubResource("Resource_ideology_at_least_4")
+
+[sub_resource type="Resource" id="Resource_tibet_leave_soviet"]
+script = ExtResource("3_dtuc1")
+type = 3
+key = "is_prosov"
+target = "69"
 
 [sub_resource type="Resource" id="Resource_u1baf"]
 script = ExtResource("3_dtuc1")
@@ -29,7 +78,7 @@ value = -50.0
 [sub_resource type="Resource" id="Resource_2w88w"]
 script = ExtResource("2_7lsgv")
 text = "Allow independence"
-effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_er6u3"), SubResource("Resource_gc4g2"), SubResource("Resource_vephg"), SubResource("Resource_u1baf")])
+effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_er6u3"), SubResource("Resource_gc4g2"), SubResource("Resource_vephg"), SubResource("Resource_independence_industry"), SubResource("Resource_u1baf"), SubResource("Resource_independence_party"), SubResource("Resource_tibet_policy_1"), SubResource("Resource_tibet_government"), SubResource("Resource_tibet_policy_2"), SubResource("Resource_tibet_leave_soviet")])
 result_text = "Tibet Autonomous Region officially declared its independence within the borders of 1950. This will be a big blow for us and a great opportunity for the USSR and the USA."
 
 [sub_resource type="Resource" id="Resource_83prh"]
@@ -42,10 +91,28 @@ script = ExtResource("3_dtuc1")
 key = "manpower"
 value = -20.0
 
+[sub_resource type="Resource" id="Resource_autonomy_freedom"]
+script = ExtResource("3_dtuc1")
+key = "thought_freedom"
+value = 70.0
+
+[sub_resource type="Resource" id="Resource_autonomy_territory"]
+script = ExtResource("3_dtuc1")
+key = "territorial_policy"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_can_autonomy"]
+script = ExtResource("4_llahx")
+type = 1
+key = "territorial_policy"
+value = 22.0
+
 [sub_resource type="Resource" id="Resource_pe42h"]
 script = ExtResource("2_7lsgv")
 text = "Expand autonomy"
-effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_83prh"), SubResource("Resource_bvh11")])
+disabled_text = "We cannot give more autonomy"
+enable_condition = SubResource("Resource_can_autonomy")
+effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_autonomy_freedom"), SubResource("Resource_bvh11"), SubResource("Resource_83prh"), SubResource("Resource_autonomy_territory")])
 result_text = "We have further expanded the powers of local authorities and the rights of Tibetan autonomy. It seems that the majority of the population is satisfied, but it gives the radicals more opportunities to promote separatism, and other national outskirts are thinking about greater independence."
 
 [sub_resource type="Resource" id="Resource_v3quw"]
@@ -68,10 +135,33 @@ script = ExtResource("3_dtuc1")
 key = "manpower"
 value = 30.0
 
+[sub_resource type="Resource" id="Resource_suppression_freedom"]
+script = ExtResource("3_dtuc1")
+key = "thought_freedom"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_line_not_4"]
+script = ExtResource("4_llahx")
+type = 22
+key = "political_line"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_army_100"]
+script = ExtResource("4_llahx")
+key = "army"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_can_suppress"]
+script = ExtResource("4_llahx")
+type = 19
+children = Array[ExtResource("4_llahx")]([SubResource("Resource_line_not_4"), SubResource("Resource_army_100")])
+
 [sub_resource type="Resource" id="Resource_unxpm"]
 script = ExtResource("2_7lsgv")
 text = "Send in the PLA to restore order"
-effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_v3quw"), SubResource("Resource_n6iib"), SubResource("Resource_dy1h5"), SubResource("Resource_u4mrn")])
+disabled_text = "Just crushing them with the army will not work"
+enable_condition = SubResource("Resource_can_suppress")
+effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_suppression_freedom"), SubResource("Resource_u4mrn"), SubResource("Resource_v3quw"), SubResource("Resource_n6iib"), SubResource("Resource_dy1h5")])
 result_text = "The loyal parts of the PLA entered Tibet and quickly restored order. But the nationalists and the opposition will not forget this."
 
 [sub_resource type="Resource" id="Resource_nxam8"]
@@ -94,6 +184,11 @@ script = ExtResource("3_dtuc1")
 key = "manpower"
 value = 20.0
 
+[sub_resource type="Resource" id="Resource_referendum_freedom"]
+script = ExtResource("3_dtuc1")
+key = "thought_freedom"
+value = 30.0
+
 [sub_resource type="Resource" id="Resource_y3fwd"]
 script = ExtResource("4_llahx")
 key = "agents"
@@ -104,17 +199,22 @@ script = ExtResource("4_llahx")
 key = "money"
 value = 40.0
 
+[sub_resource type="Resource" id="Resource_reserve_40"]
+script = ExtResource("4_llahx")
+key = "reserve"
+value = 40.0
+
 [sub_resource type="Resource" id="Resource_d0s5p"]
 script = ExtResource("4_llahx")
-type = 18
-children = Array[ExtResource("4_llahx")]([SubResource("Resource_y3fwd"), SubResource("Resource_r7tf4")])
+type = 19
+children = Array[ExtResource("4_llahx")]([SubResource("Resource_r7tf4"), SubResource("Resource_reserve_40"), SubResource("Resource_y3fwd")])
 
 [sub_resource type="Resource" id="Resource_rch2o"]
 script = ExtResource("2_7lsgv")
 text = "Organize a referendum"
-disabled_text = "Need agents: 50 and money: 40"
+disabled_text = "We have neither the means nor the forces for falsification"
 enable_condition = SubResource("Resource_d0s5p")
-effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_nxam8"), SubResource("Resource_sy1m1"), SubResource("Resource_uhfl7"), SubResource("Resource_m81cn")])
+effects = Array[ExtResource("3_dtuc1")]([SubResource("Resource_referendum_freedom"), SubResource("Resource_m81cn"), SubResource("Resource_nxam8"), SubResource("Resource_sy1m1"), SubResource("Resource_uhfl7")])
 result_text = "We organized a referendum in which the majority, of course, voted to preserve the status of Tibet. Dissatisfied nationalists and other radicals took to the streets, claiming falsification, but without past support these protests no longer pose a serious threat."
 
 [sub_resource type="Resource" id="Resource_be6ah"]
@@ -123,10 +223,17 @@ type = 1
 key = "manpower"
 value = 400.0
 
+[sub_resource type="Resource" id="Resource_tibet_policy_zero"]
+script = ExtResource("4_llahx")
+type = 21
+key = "tibet_policy"
+
 [resource]
 script = ExtResource("5_4p5f1")
 event_id = "tibet_separatism"
+source_event_number = 9
+trigger_priority = 75
 title = "Separatism in Tibet"
 description = "Encouraged by liberals and nationalists, residents of the Tibet Autonomous Region took to mass demonstrations for independence and secession from the PRC, which gradually develop into unrest. People demand \"liberation\" from \"the occupation of 1950\" and the majority of ethnic Tibetans support them. However, some are just satisfied with the requirements of greater autonomy than we can take advantage of."
-trigger_conditions = Array[ExtResource("4_llahx")]([SubResource("Resource_be6ah")])
+trigger_conditions = Array[ExtResource("4_llahx")]([SubResource("Resource_be6ah"), SubResource("Resource_tibet_policy_zero")])
 options = Array[ExtResource("2_7lsgv")]([SubResource("Resource_2w88w"), SubResource("Resource_pe42h"), SubResource("Resource_unxpm"), SubResource("Resource_rch2o")])

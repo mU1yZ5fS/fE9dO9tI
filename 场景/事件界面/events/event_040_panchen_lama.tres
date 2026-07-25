@@ -1,0 +1,162 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_033_041_world_and_party.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_year_1978"]
+script = ExtResource("3_expr")
+key = "year"
+value = 1978.0
+
+[sub_resource type="Resource" id="Expr_year_1977"]
+script = ExtResource("3_expr")
+type = 21
+key = "year"
+value = 1977.0
+
+[sub_resource type="Resource" id="Expr_month_10"]
+script = ExtResource("3_expr")
+key = "month"
+value = 10.0
+
+[sub_resource type="Resource" id="Expr_day_22"]
+script = ExtResource("3_expr")
+key = "day"
+value = 22.0
+
+[sub_resource type="Resource" id="Expr_1977_date"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_year_1977"), SubResource("Expr_month_10"), SubResource("Expr_day_22")])
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_year_1978"), SubResource("Expr_1977_date")])
+
+[sub_resource type="Resource" id="Expr_religion_not_27"]
+script = ExtResource("3_expr")
+type = 22
+key = "religion_policy"
+value = 27.0
+
+[sub_resource type="Resource" id="Expr_line_at_most_1"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_line_at_most_2"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_agents_40"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 40.0
+
+[sub_resource type="Resource" id="Expr_line_not_0"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_line_not_4"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 4.0
+
+[sub_resource type="Resource" id="Expr_supervision"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_40"), SubResource("Expr_line_not_0"), SubResource("Expr_line_not_4")])
+
+[sub_resource type="Resource" id="Expr_line_at_least_2"]
+script = ExtResource("3_expr")
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_agents_70"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 70.0
+
+[sub_resource type="Resource" id="Expr_budget_40"]
+script = ExtResource("3_expr")
+key = "budget"
+value = 40.0
+
+[sub_resource type="Resource" id="Expr_reserve_40"]
+script = ExtResource("3_expr")
+key = "reserve"
+value = 40.0
+
+[sub_resource type="Resource" id="Expr_money_40"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_budget_40"), SubResource("Expr_reserve_40")])
+
+[sub_resource type="Resource" id="Expr_eliminate"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_70"), SubResource("Expr_money_40"), SubResource("Expr_line_not_4")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Keep him imprisoned"
+disabled_text = "The current political line cannot justify continued imprisonment"
+enable_condition = SubResource("Expr_line_at_most_1")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Panchen Lama remained confined, first in prison and later under house arrest."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Release him in exchange for renouncing monastic vows"
+disabled_text = "The current political line rejects coercing him in this way"
+enable_condition = SubResource("Expr_line_at_most_2")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Release was offered only in exchange for renouncing monastic vows."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Release him to Lhasa under state-security supervision"
+disabled_text = "Requires 40 agents and a political line other than 0 or 4"
+enable_condition = SubResource("Expr_supervision")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Panchen Lama returned to Lhasa under surveillance and was eventually permitted to live quietly."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Release and rehabilitate the prisoner of conscience"
+disabled_text = "The current political line will not rehabilitate a man condemned by Mao"
+enable_condition = SubResource("Expr_line_at_least_2")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Panchen Lama was released and rehabilitated. His response will depend on religious policy and public support."
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "Eliminate him and impose Norbu as the new Panchen Lama"
+disabled_text = "Requires 70 agents, 40 budget or reserves, and political line other than 4"
+enable_condition = SubResource("Expr_eliminate")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Panchen Lama died in a staged medical incident, but rival succession claims intensified Tibetan separatism."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "panchen_lama"
+source_event_number = 40
+title = "The fate of the Panchen Lama"
+description = "The imprisoned Tenth Panchen Lama has again petitioned for release. His fate will signal whether religious policy remains coercive, becomes supervisory, or turns toward rehabilitation."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_religion_not_27")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

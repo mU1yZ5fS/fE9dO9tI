@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_agents_40"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 40.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Watch the situation"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The Mongolian government accepted limited liberalization but remained oriented toward the Soviet Union."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Use the situation for our own purposes"
+disabled_text = "Requires at least 40 agents"
+enable_condition = SubResource("Expr_agents_40")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Pro-Chinese advocates gained access to Mongolian politics and media, weakening its automatic alignment with Moscow."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "mongolia_reform"
+source_event_number = 32
+title = "Ulaanbaatar Spring?"
+description = "Chinese intervention has provoked mass demonstrations demanding reform and a less rigidly pro-Soviet policy. Mongolia is ready for limited liberalization, which our agents may exploit."
+show_notification = false
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])

@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="3_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="4_custom"]
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("4_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Agree to transfer with broad autonomy"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Britain and Portugal agreed to transfer Hong Kong and Macau on schedule with broad legal and economic autonomy."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Agree to transfer with limited autonomy"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The colonies will return with limited economic and legal autonomy under joint local and CPC supervision."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Demand full integration while protecting foreign property"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Britain and Portugal accepted full integration, with foreign property protected inside special economic zones."
+
+[resource]
+script = ExtResource("3_event")
+event_id = "hong_kong_macau"
+source_event_number = 27
+title = "The fate of Hong Kong and Macau"
+description = "Britain and Portugal are prepared to negotiate the return of Hong Kong and Macau, but demand guarantees for foreign property and meaningful local autonomy. The exact constitutional arrangement remains ours to propose."
+show_notification = false
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

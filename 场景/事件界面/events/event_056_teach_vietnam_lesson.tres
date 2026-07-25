@@ -1,0 +1,92 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_053_062_reform_and_alliances.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.2"
+
+[sub_resource type="Resource" id="Expr_china_sev"]
+script = ExtResource("3_expr")
+type = 10
+key = "sev"
+target = "1"
+
+[sub_resource type="Resource" id="Expr_not_china_sev"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_china_sev")])
+
+[sub_resource type="Resource" id="Expr_peace"]
+script = ExtResource("3_expr")
+type = 21
+key = "war_state"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_war"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_not_china_sev"), SubResource("Expr_peace")])
+
+[sub_resource type="Resource" id="Expr_event_14"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "budget_crisis"
+
+[sub_resource type="Resource" id="Expr_vietnam_sev"]
+script = ExtResource("3_expr")
+type = 10
+key = "sev"
+target = "11"
+
+[sub_resource type="Resource" id="Expr_not_vietnam_sev"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_vietnam_sev")])
+
+[sub_resource type="Resource" id="Expr_talks"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_event_14"), SubResource("Expr_not_vietnam_sev")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do not aggravate the situation"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The party accepted restraint, while Vietnam continued moving closer to the Soviet Union."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Prepare for war and teach Vietnam a lesson"
+disabled_text = "War requires China to be outside CMEA and not already at war"
+enable_condition = SubResource("Expr_war")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "PLA forces crossed the Vietnamese border; the punitive campaign now depends on China's war pressure and military endurance."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Hold a Sino-Vietnamese summit"
+disabled_text = "Negotiations require the budget-crisis event to remain unresolved and Vietnam to stay outside CMEA"
+enable_condition = SubResource("Expr_talks")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China traded some island claims for protection of ethnic Chinese, improved relations and renewed bilateral trade."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "teach_vietnam_lesson"
+source_event_number = 56
+trigger_priority = 560
+title = "Teach Vietnam a lesson?"
+description = "Vietnam's alignment with Moscow and the regional crisis have brought the two socialist neighbors to the edge of war."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

@@ -1,0 +1,93 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_048_052_063_afghanistan.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.5"
+
+[sub_resource type="Resource" id="Expr_agents_30"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_agents_50"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 50.0
+
+[sub_resource type="Resource" id="Expr_line_at_most_2"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_khalq"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_50"), SubResource("Expr_line_at_most_2")])
+
+[sub_resource type="Resource" id="Expr_agents_60"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 60.0
+
+[sub_resource type="Resource" id="Expr_line_at_least_1"]
+script = ExtResource("3_expr")
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_parcham"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_60"), SubResource("Expr_line_at_least_1")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do not interfere in Afghan affairs"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "The PDPA took power without our involvement, and Khalq began pressing its advantage over Parcham."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Support opposition forces loyal to China"
+disabled_text = "Requires 30 agents"
+enable_condition = SubResource("Expr_agents_30")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China supplied Maoists, left oppositionists, moderate Islamists, and other anti-Soviet forces."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Establish relations with and support Khalq"
+disabled_text = "Requires 50 agents and political line below 3"
+enable_condition = SubResource("Expr_khalq")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Chinese support helped Khalq pressure Parcham and consolidate its position in the DRA."
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "Establish relations with and support Parcham"
+disabled_text = "Requires 60 agents and political line above 0"
+enable_condition = SubResource("Expr_parcham")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Chinese support helped Parcham resist Khalq and slowed Hafizullah Amin's rise."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "afghan_april_revolution"
+source_event_number = 63
+trigger_priority = 475
+title = "April revolution"
+description = "The PDPA has seized power in Afghanistan, but its Khalq and Parcham factions are already competing. China may cultivate either faction or a separate opposition."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

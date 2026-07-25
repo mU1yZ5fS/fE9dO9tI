@@ -1,0 +1,90 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_048_052_063_afghanistan.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_year_1980"]
+script = ExtResource("3_expr")
+key = "year"
+value = 1980.0
+
+[sub_resource type="Resource" id="Expr_year_1979"]
+script = ExtResource("3_expr")
+type = 21
+key = "year"
+value = 1979.0
+
+[sub_resource type="Resource" id="Expr_month_9"]
+script = ExtResource("3_expr")
+key = "month"
+value = 9.0
+
+[sub_resource type="Resource" id="Expr_day_16"]
+script = ExtResource("3_expr")
+key = "day"
+value = 16.0
+
+[sub_resource type="Resource" id="Expr_1979_date"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_year_1979"), SubResource("Expr_month_9"), SubResource("Expr_day_16")])
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_year_1980"), SubResource("Expr_1979_date")])
+
+[sub_resource type="Resource" id="Expr_khalq_not_greater"]
+script = ExtResource("3_expr")
+type = 32
+key = "afghan_khalq"
+value = 0.0
+target = "afghan_parcham"
+
+[sub_resource type="Resource" id="Expr_khalq_greater"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_khalq_not_greater")])
+
+[sub_resource type="Resource" id="Expr_relres"]
+script = ExtResource("3_expr")
+type = 14
+key = "relres"
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do not get involved"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Amin seized power and began broad repression while Moscow concealed its unease."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Begin a secret rapprochement with the DRA (-20 budget)"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Secret Chinese contacts gave Amin an alternative partner, at the cost of worsening relations with Moscow."
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "Secretly agree with the USSR to remove Amin"
+disabled_text = "Requires reconciliation with the Soviet Union"
+enable_condition = SubResource("Expr_relres")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "China quietly accepted a Soviet plan to replace Amin in exchange for influence with his successor."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "afghan_amin_coup"
+source_event_number = 48
+trigger_priority = 480
+title = "Coups continue"
+description = "Hafizullah Amin has overthrown Taraki and begun repressing his rivals. Moscow distrusts him, creating an opening for Chinese diplomacy or collusion."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_khalq_greater")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

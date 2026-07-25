@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_042_047_revolution_and_reform.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.11"
+
+[sub_resource type="Resource" id="Expr_agents_30"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_vietnam_socialist"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 1.0
+target = "23"
+
+[sub_resource type="Resource" id="Expr_stop"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_30"), SubResource("Expr_vietnam_socialist")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "Do not interfere"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Vietnam joined the CMEA, deepening its alignment with the Soviet Union."
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "Stop the accession process by every means available"
+disabled_text = "Requires 30 agents and a socialist Vietnam"
+enable_condition = SubResource("Expr_stop")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "Our intervention mobilized advocates of a balanced course and postponed Vietnamese accession indefinitely."
+
+[resource]
+script = ExtResource("4_event")
+event_id = "vietnam_cmea"
+source_event_number = 43
+trigger_priority = 430
+title = "Expansion of the CMEA"
+description = "Vietnam plans to join the Soviet-led Council for Mutual Economic Assistance, marking a decisive step away from China."
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])
