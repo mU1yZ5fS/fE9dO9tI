@@ -285,6 +285,7 @@ func load_game(path: String) -> void:
 		# 运行时缓存不序列化，读档后重建
 		world.rebuild_gwcode_index()
 		world.sync_economy()
+		world.ensure_rng()  # 从 rng_seed + rng_state 恢复随机流位置
 		if EventEngine and EventEngine.has_method("import_runtime_from_world"):
 			EventEngine.import_runtime_from_world(world)
 		selected_country_gwcode = world.player_country_gwcode
@@ -307,6 +308,7 @@ func save_game(path: String) -> void:
 		return
 	# 写入前同步显示视图，避免读档后经济视图过期
 	world.sync_economy()
+	world.sync_rng_state()  # 镜像 RNG 流位置，保证读档精确续流
 	if EventEngine and EventEngine.has_method("export_runtime_to_world"):
 		EventEngine.export_runtime_to_world(world)
 	var err := ResourceSaver.save(world, path)
@@ -619,21 +621,25 @@ func adjust_loan(delta: int) -> bool:
 		d[W.I_LOAN] += delta
 		d[W.I_BUDGET] += delta
 		d[W.I_PARTY_SUPPORT] -= delta
-		d[W.I_THOUGHT_FREEDOM] += delta * 25 / 10
+		# 借款思想自由：原版 data[4] += 10（Plusmisnus_script.cs:201），非 ×2.5
+		d[W.I_THOUGHT_FREEDOM] += delta
 	else:
-		if d[W.I_LOAN] < -delta:
+		# 还款：loan 为正才可还；零头(0<loan<10)只还剩余额并清零（原版:177-194）
+		if d[W.I_LOAN] <= 0:
 			return false
-		var repay_amount := -delta
-		var budget_cost := repay_amount
+		var repay_amount := mini(-delta, d[W.I_LOAN])
+		var mult := 1
 		if world.difficulty >= 3:
-			budget_cost = repay_amount * 3
+			mult = 3
 		elif world.difficulty >= 2:
-			budget_cost = repay_amount * 2
+			mult = 2
+		var budget_cost := repay_amount * mult
 		if d[W.I_BUDGET] < budget_cost:
 			return false
-		d[W.I_LOAN] += delta
+		d[W.I_LOAN] -= repay_amount
 		d[W.I_BUDGET] -= budget_cost
-		d[W.I_PARTY_SUPPORT] += 10
+		# 还款党支持：原版 data[1] += 5（Plusmisnus_script.cs:173/192），非 +10
+		d[W.I_PARTY_SUPPORT] += 5
 	_notify_stats()
 	return true
 
@@ -662,16 +668,16 @@ func adjust_reserve(delta: int) -> bool:
 ## 政策切换。category_idx 为数值表索引（15/16/17/18/50/51），target_val 为目标值。
 ## 需满足预算和党支持条件，切换后扣减预算、生活水平、党支持。
 # ============================================================================
-# 政策切换 4 条件（对齐原版 Doctrine_button_script.Show 的 uslovie[0..3]）
+# 政策切换 3 条件（对齐原版 Doctrine_button_script.OnMouseDown 的 uslovie[0..2]）
 #   [0] 预算    ≥ |diff|×50
 #   [1] 党内支持 ≥ |diff|×300
 #   [2] 派系/路线领导：一党制(data[15]≤7)看政治路线 data[56]；多党看 data[52]/data[54]+联盟席位>66%
-#   [3] 毛已死：data[38]==100（death_of_mao 事件后置位）
+# 注：原版 OnMouseDown 无毛存活门槛，开局即可切（已移除此前的 mao_ok 条件）。
 # ============================================================================
 
 ## 一党制(data[15]≤7)下：政策目标值 → 允许的政治路线 data[56] 集合。
 ## 对齐 Doctrine_button_script.cs 75-214。空数组 = 该项不施加路线限制。
-## 未列出的目标值（如本项目新增的“公社”5）= 无路线限制。
+## 未列出的目标值（如 OGAS 经济 11）= 无路线限制。
 const POLICY_LINE_REQ_ONEPARTY := {
 	10: [0, 1], 11: [], 12: [1, 2], 13: [2, 3], 14: [3, 4], 15: [4],  # 经济 data[16]
 	6: [0], 7: [1, 2], 8: [3], 9: [4],                                # 党政 data[15]
@@ -718,10 +724,12 @@ func check_policy_change(category_idx: int, target_val: int) -> Dictionary:
 	res.budget_ok = (d[W.I_BUDGET] + d[W.I_RESERVE]) >= res.budget_need
 	res.party_need = diff * 300
 	res.party_ok = d[W.I_PARTY_SUPPORT] >= res.party_need
-	res.mao_ok = is_mao_dead()  # 毛已逝方可变更政策
 	var lead := _policy_leading_ok(category_idx, target_val, d)
 	res.leading_ok = lead["ok"]
 	res.leading_text = lead["text"]
+	# 原版 uslovie_bool[3]：毛在世(data[38]<100)时恒为 false，不可切任何政策
+	# （Doctrine_button_script.cs:446-455；number_uslovie==4 需 4 条件全满足，见 :894）
+	res.mao_ok = is_mao_dead()
 	res.can = res.budget_ok and res.party_ok and res.leading_ok and res.mao_ok
 	return res
 
@@ -741,7 +749,7 @@ func _policy_leading_ok(_category_idx: int, target_val: int, d: Array[int]) -> D
 			return {"ok": true, "text": "威权体制+高民族主义"}
 		var req: Array = POLICY_LINE_REQ_ONEPARTY.get(target_val, [])
 		if req.is_empty():
-			return {"ok": true, "text": "无执政路线限制"}  # 含 OGAS(11) 与新增公社(5)
+			return {"ok": true, "text": "无执政路线限制"}  # 含 OGAS 经济(11)
 		var line: int = d[W.I_POLITICAL_LINE]
 		return {"ok": line in req, "text": _line_req_text(req)}
 	else:
@@ -829,6 +837,11 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 		d[W.I_THOUGHT_FREEDOM] += diff * 10
 	else:
 		d[W.I_THOUGHT_FREEDOM] += diff * 20
+	# 改革方向累计（原版 Doctrine_button_script.cs:1195-1198，军事学说 51 不计入；用旧值算 delta）
+	if category_idx != W.I_MIL_DOCTRINE:
+		d[W.I_REFORM_MOMENTUM] += delta * 15
+	# 政策切换对政治家忠诚的位移（原版 :988-1116，按 traits[0] 分派；须在覆写旧值前）
+	_apply_policy_loyalty_shift(category_idx, target_val, delta)
 	d[category_idx] = target_val
 	# TimeScript.cs:3786-3790：进入 data[15] > 7 后，autosave<=0 时立即进入一次选举。
 	# 年度 10 月 1 日选举仍由 _check_scheduled_events 单独处理。
@@ -842,6 +855,55 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	try_unlock_liberals()
 	_notify_stats()
 	return true
+
+
+## 政策切换对全体政治家忠诚的位移。逐类照抄 Doctrine_button_script.cs:986-1117。
+## delta = target - 旧值（升高为正）；原版 (data[X]-number)=-delta、(number-data[X])=+delta。
+## 每类分三桶（按 trait_personality = 原版 traits[0]）：
+##   a_set 恒 -delta*K（偏好更低值）；t_set 走门槛（target>=门槛 -delta，否则 +delta）；
+##   其余（原版 else 分支，含自由派 3 与变体值）恒 +delta*K。
+## 关键差异：改革(2) 在 政党15 属门槛桶、经济16/舆论17 属 else(+)、领土18/宗教50/军事51 属 a_set(-)。
+func _apply_policy_loyalty_shift(category_idx: int, target_val: int, delta: int) -> void:
+	if world == null or delta == 0:
+		return
+	# 每类：门槛 threshold、系数 k、a_set(恒-)、t_set(走门槛)。原版行号见注释。
+	var threshold := 0
+	var k := 50
+	var a_set: Array[int] = [0]
+	var t_set: Array[int] = [1]
+	match category_idx:
+		W.I_PARTY_SYSTEM:  # :986-1007
+			threshold = 7
+			k = 150
+			t_set = [1, 2]
+		W.I_ECON_SYSTEM:  # :1008-1029
+			threshold = 13
+			k = 150
+		W.I_PRESS_POLICY:  # :1030-1051
+			threshold = 18
+		W.I_TERRITORY:  # :1052-1073
+			threshold = 21
+			a_set = [0, 2]
+		W.I_RELIGION:  # :1074-1095
+			threshold = 27
+			a_set = [0, 2]
+		W.I_MIL_DOCTRINE:  # :1096-1117
+			threshold = 32
+			a_set = [0, 2]
+		_:
+			return
+	for p in world.politicians:
+		if p == null:
+			continue
+		var t: int = p.trait_personality
+		var shift := 0
+		if t in a_set:
+			shift = -delta * k
+		elif t in t_set:
+			shift = (-delta * k) if target_val >= threshold else (delta * k)
+		else:  # 原版 else：自由派(3) 及变体值
+			shift = delta * k
+		p.loyalty += shift
 
 
 ## 政策值升高 = 更开放/市场化/多元；降低 = 更集中/管制
@@ -1349,6 +1411,9 @@ func change_of_killing(politic_index: int) -> float:
 	if pol == null:
 		return 0.0
 	var num := 0.5
+	# 硬目标惩罚（原版 GameState.cs:5160）：traits[3]==28 或 traits[1]==41 → -0.1
+	if pol.trait_background == 28 or pol.trait_alignment == 41:
+		num -= 0.1
 	if d[W.I_AGENTS] + d[W.I_PARTY_SUPPORT] + d[W.I_ARMY] >= pol.power:
 		num += 0.05
 	else:
@@ -1374,7 +1439,8 @@ func change_of_killing(politic_index: int) -> float:
 		num -= 0.05
 	if pol.is_under_investigation:
 		num += 0.1
-	return clampf(num, 0.05, 0.95)
+	# 原版 GameState.cs:5212 return num，不钳制（允许 <0 必败 / >1 必成）
+	return num
 
 
 func _sum_loyalty_avg() -> int:

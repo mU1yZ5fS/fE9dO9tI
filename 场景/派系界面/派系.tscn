@@ -57,8 +57,18 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8ij5d")
 
-[node name="背景层" type="CanvasLayer" parent="."]
+[node name="背景层" type="CanvasLayer" parent="." unique_id=915607589]
 layer = -1
+
+[node name="派系背景图" type="TextureRect" parent="背景层" unique_id=1326782302]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_tf04v")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="状态栏" type="CanvasLayer" parent="." unique_id=412646823]
 script = ExtResource("2_3n6cn")
@@ -66,9 +76,6 @@ script = ExtResource("2_3n6cn")
 [node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=1812718366]
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
 offset_bottom = 78.0
 texture = ExtResource("2_dy0na")
 expand_mode = 1
@@ -387,9 +394,7 @@ metadata/_edit_use_anchors_ = true
 [node name="切场景菜单背景" type="TextureRect" parent="状态栏" unique_id=640080661]
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 0.0
 offset_top = 71.0
-offset_right = 0.0
 offset_bottom = 159.0
 texture = ExtResource("13_1cqeh")
 expand_mode = 1
@@ -478,16 +483,6 @@ icon = ExtResource("13_1cqeh")
 flat = true
 icon_alignment = 1
 metadata/_edit_use_anchors_ = true
-
-[node name="派系背景图" type="TextureRect" parent="背景层" unique_id=1326782302]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_tf04v")
-expand_mode = 1
-stretch_mode = 6
 
 [node name="军队力量背景图" type="TextureRect" parent="." unique_id=1480023552]
 layout_mode = 0
@@ -1214,7 +1209,7 @@ offset_top = -136.0
 offset_right = 336.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 18
 
 [node name="右栏经济类型" type="Control" parent="." unique_id=2043003623]
 visible = false
@@ -1378,21 +1373,6 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 19
 text = "西式民主"
-icon = ExtResource("32_axfdf")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="公社" type="Button" parent="右栏党政" unique_id=871356654]
-layout_mode = 0
-offset_top = 96.0
-offset_right = 151.0
-offset_bottom = 133.0
-scale = Vector2(1.145, 1.33)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 19
-text = "公社"
 icon = ExtResource("32_axfdf")
 flat = true
 icon_alignment = 1
@@ -1703,14 +1683,19 @@ expand_icon = true
 
 [node name="右栏条件显示" type="Label" parent="." unique_id=1041981016]
 visible = false
-layout_mode = 0
-offset_left = 1493.0
-offset_top = 387.0
-offset_right = 1856.0
-offset_bottom = 917.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.77900004
+anchor_top = 0.356
+anchor_right = 0.96700007
+anchor_bottom = 0.84900004
+offset_left = -2.6800537
+offset_top = 2.519989
+offset_right = -0.6401367
+offset_bottom = 0.079956055
 theme_override_colors/font_color = Color(1, 1, 0.61960787, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 15
 text = "预算中的资金:10[未满足]
 
 
@@ -1724,3 +1709,4 @@ text = "预算中的资金:10[未满足]
 
 "
 horizontal_alignment = 1
+vertical_alignment = 1

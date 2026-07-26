@@ -93,7 +93,7 @@ const TAG_FIELDS: Array[String] = [
 const DATA_VALUES := [
 	#  0       1       2       3       4       5       6       7       8       9
 	   0,    800,    300,    600,    100,    250,    830,     50,     30,     20,  # 0-9
-	 280,      0,    350,    450,      1,      6,     12,     16,     20,      4,  # 10-19
+	 280,      0,    350,    450,      1,      6,     11,     16,     20,      4,  # 10-19（[16]经济体制=11 中式计划，对齐 Data1.txt，原作 GameStartScript 只读不写）
 	   2,   1976,     50,     96,    100,      0,    150,     50,    700,    300,  # 20-29
 	  30,    500,    100,    200,   9307,    300,     50,    500,      5,      5,  # 30-39
 	   5,      0,    100,    120,    100,    180,     30,     20,    200,    150,  # 40-49
@@ -331,6 +331,10 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	ws.date = GameDate.new(4, 2, 1976)
 	ws.player_country_gwcode = player_gwcode
 	ws.difficulty = difficulty
+	# 玩法随机源种子：开局取系统时间，暗杀等真随机；rng_state 随存档续流
+	ws.rng_seed = int(Time.get_unix_time_from_system())
+	ws.rng_state = 0
+	ws.ensure_rng()
 
 	_build_countries(ws)
 	_assign_country_names(ws)

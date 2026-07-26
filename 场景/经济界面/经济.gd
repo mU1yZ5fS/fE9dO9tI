@@ -53,20 +53,34 @@ func _ready() -> void:
 		_refresh()
 
 
+## 预算/储备批量快捷：Shift=±50、Ctrl=±100、否则 ±10（原版 Plusmisnus_script.cs 预算/储备分支）
+func _step_magnitude() -> int:
+	if Input.is_key_pressed(KEY_SHIFT):
+		return 50
+	if Input.is_key_pressed(KEY_CTRL):
+		return 100
+	return STEP
+
+
 func _on_budget_adjust(idx: int, delta: int) -> void:
-	if GameManager.adjust_budget(idx, delta):
+	var mag := _step_magnitude()
+	var amount := mag if delta > 0 else -mag
+	if GameManager.adjust_budget(idx, amount):
 		_refresh()
 		音频总管.play_button_click_sound()
 
 
 func _on_loan_adjust(delta: int) -> void:
+	# 贷款分支原版无 Shift/Ctrl，固定 ±10
 	if GameManager.adjust_loan(delta):
 		_refresh()
 		音频总管.play_button_click_sound()
 
 
 func _on_reserve_adjust(delta: int) -> void:
-	if GameManager.adjust_reserve(delta):
+	var mag := _step_magnitude()
+	var amount := mag if delta > 0 else -mag
+	if GameManager.adjust_reserve(amount):
 		_refresh()
 		音频总管.play_button_click_sound()
 
@@ -102,7 +116,20 @@ func _refresh() -> void:
 	_label("最大投资", "每类上限：\n%.1f" % (float(planka) / 6.0 / 10.0))
 	_label("储蓄金影响", "储蓄金影响：\n工业,服务,生活水平\n腐败随储备增加")
 	var oligarch := w.数值表[W.I_OLIGARCH]
-	_label("寡头状态文本", "国内寡头无立锥之地\n其影响力为:%d/100" % oligarch if oligarch < 10 else "寡头势力渗透经济\n其影响力为:%d/100" % oligarch)
+	_label("寡头状态文本", "%s\n其影响力为:%d/100" % [_oligarch_label(oligarch), oligarch])
+
+
+## 寡头影响力 5 档文案（原版 Show_diplomacy_data_script.cs:229-248，读 data[108]）
+func _oligarch_label(v: int) -> String:
+	if v < 18:
+		return "国内寡头无立锥之地"
+	elif v < 36:
+		return "国内寡头无足轻重"
+	elif v < 54:
+		return "国内寡头方兴未艾"
+	elif v < 72:
+		return "国内寡头如日中天"
+	return "国内寡头权倾朝野"
 
 
 func _loan_limit(w: WorldState) -> int:

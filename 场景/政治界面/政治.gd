@@ -419,9 +419,9 @@ func _can_assassinate(pol: PoliticianData, tier: int, mao_protect: bool, investi
 	if not _tier_allows_negative(tier, pol):
 		return false
 	var d := _world.数值表
-	@warning_ignore("integer_division")
-	var cost: int = maxi(10, pol.power / 100)
-	if d[W.I_BUDGET] < cost or d[W.I_AGENTS] < cost or d[W.I_ARMY] < cost:
+	# 与 _on_assassinate 同：原版固定成本 特工-60/100(视立案状态)+预算-20，不扣军队
+	var agent_cost: int = 60 if pol.is_under_investigation else 100
+	if d[W.I_AGENTS] < agent_cost or d[W.I_BUDGET] < 20:
 		return false
 	# 至少 3 人对目标忠诚 < 500
 	var low_count := 0
@@ -544,6 +544,9 @@ func _on_support() -> void:
 	d[W.I_AGENTS] -= COST_SUPPORT_AGENTS
 	# ECO-POL-03 / POL-11：对齐原版扣党支持
 	d[W.I_PARTY_SUPPORT] -= 20
+	# 手动支持年份项：随年增强（原版 Button_Pol_Script.cs:615，用 +(year-1976)*5，在 |power/10| 之前）
+	var year: int = _world.date.year if _world.date else 1976
+	pol.power += (year - 1976) * 5
 	pol.loyalty += 50
 	pol.power += absi(pol.power / 10)
 	_after_operation()
@@ -560,6 +563,9 @@ func _on_suppress() -> void:
 	d[W.I_AGENTS] -= COST_SUPPRESS_AGENTS
 	d[W.I_PARTY_SUPPORT] -= 20
 	pol.loyalty -= 50
+	# 手动打压年份项：随年增强（原版 Button_Pol_Script.cs:625，用 -(year-1976)*5，在 |power/10| 之前）
+	var year: int = _world.date.year if _world.date else 1976
+	pol.power -= (year - 1976) * 5
 	pol.power -= absi(pol.power / 10)
 	_after_operation()
 
@@ -571,22 +577,18 @@ func _on_assassinate() -> void:
 	if GameManager.is_mao_protected(_selected_pol_index):
 		return
 	var d := _world.数值表
-	@warning_ignore("integer_division")
-	var cost: int = maxi(10, pol.power / 100)
-	if d[W.I_BUDGET] < cost or d[W.I_AGENTS] < cost or d[W.I_ARMY] < cost:
+	# 原版固定成本（Button_Pol_Script.cs:654-662）：立案侦查中特工-60 否则-100、预算-20，不扣军队
+	var agent_cost: int = 60 if pol.is_under_investigation else 100
+	if d[W.I_AGENTS] < agent_cost or d[W.I_BUDGET] < 20:
 		return
-	d[W.I_BUDGET] -= cost
-	d[W.I_AGENTS] -= cost
-	d[W.I_ARMY] -= cost
+	d[W.I_AGENTS] -= agent_cost
+	d[W.I_BUDGET] -= 20
 	d[W.I_THOUGHT_FREEDOM] += 100
 
 	# POL-09：成功率用 ChangeOfKilling；失败则 you_fall + 全员忠诚惩罚，不杀
+	# 种子 RNG（原版 Random.Range(0,1) <= 概率则成功），存档续流可复现
 	var success_rate: float = GameManager.change_of_killing(_selected_pol_index)
-	var roll: float = float(abs(hash("%d-%d-%s" % [
-		_world.date.year if _world.date else 1976,
-		_selected_pol_index,
-		pol.name_display,
-	])) % 1000) / 1000.0
+	var roll: float = _world.ensure_rng().randf()
 	if roll > success_rate:
 		pol.you_fall = true
 		pol.power = maxi(50, pol.power - absi(pol.power / 5))

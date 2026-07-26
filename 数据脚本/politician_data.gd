@@ -14,14 +14,16 @@ extends Resource
 @export var entry_year: int = 1976          # 最早可登场年份
 @export var exit_year: int = 9999           # 最晚在场年份（自然退场）
 
-# ── 特质（原版 traits[3]，显示名见 Traits 表，不是 Party 表） ──
-# traits[0]/Traits: 0极左 1温和 2改革 3自由
-# traits[1]: 4硬汉 5实用主义 6宽容 7科学家
+# ── 特质（对应原版 Politic.traits[4]，显示名见 Traits 表，不是 Party 表） ──
+# traits[0]: 0极左 1温和 2改革 3自由
+# traits[1]: 4硬汉 5实用主义 6宽容 7科学家（扩展 29/30/39-42）
 # traits[2]: 8-19 特殊
+# traits[3]: 21-28/43 出身背景（月度被动效果；暗杀硬目标判定 ==28）
 # Party 派系另有 0极左 1保守 2温和 3改革 4自由；映射见 party_index()
 @export var trait_personality: int = 0
 @export var trait_alignment: int = 4
 @export var trait_special: int = 11
+@export var trait_background: int = 0
 
 # ── 数值 ──
 @export var loyalty: int = 500              # 对玩家/领导人的忠诚度（内部×10，显示约 0~100）

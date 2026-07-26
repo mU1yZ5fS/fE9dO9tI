@@ -237,6 +237,11 @@ const 数值索引 := {
 # ── 玩家经济显示视图（只读镜像，非独立数据） ──
 @export var 玩家经济: EconomyData
 
+# ── 玩法随机源（暗杀等）：种子+流位置存档 → 行为真随机且回放可复现 ──
+# RandomNumberGenerator 是 RefCounted 不能 @export，用两个 int 持久化后运行时重建。
+@export var rng_seed: int = 0
+@export var rng_state: int = 0
+
 # ── 运行时缓存（不序列化） ──
 var _gwcode_cache: Dictionary = {}
 var _gwcode_cache_built: bool = false
@@ -245,6 +250,7 @@ var _tag_cache_built: bool = false
 var _slot_cache: Dictionary = {}
 var _slot_cache_built: bool = false
 var _economy_dirty: bool = false
+var _rng: RandomNumberGenerator = null
 
 
 func _init() -> void:
@@ -255,6 +261,24 @@ func _init() -> void:
 	数值表.resize(200)
 	politics_positions.resize(8)
 	politics_positions.fill(-1)
+
+
+# ── 玩法随机源 ──
+
+## 懒构造种子 RNG；从 rng_seed + rng_state 恢复流位置（读档后调用）。
+func ensure_rng() -> RandomNumberGenerator:
+	if _rng == null:
+		_rng = RandomNumberGenerator.new()
+		_rng.seed = rng_seed
+		if rng_state != 0:
+			_rng.state = rng_state
+	return _rng
+
+
+## 把当前 RNG 流位置镜像回 rng_state（存档前调用，保证读档精确续流）。
+func sync_rng_state() -> void:
+	if _rng != null:
+		rng_state = _rng.state
 
 
 # ── 国家查询 ──

@@ -37,9 +37,8 @@ const 政策类别 := {
 	"党政": {
 		"idx": W.I_PARTY_SYSTEM, "panel": "右栏党政",
 		"options": {6: "无产阶级专政", 7: "人民民主专政", 8: "联合政府",
-					9: "西式民主", 5: "公社"},
+					9: "西式民主"},
 		"descriptions": {
-			5: "公社制度。激进的基层民主。\n民众支持+2 党内支持-3 生活水平-2",
 			6: "无产阶级专政。党的绝对领导。\n党内支持+2 思想自由-2",
 			7: "人民民主专政。统一战线框架下的多党合作。\n党内支持+1 民众支持+1",
 			8: "联合政府。多党制下的有限民主。\n民众支持+2 思想自由+1 党内支持-1",
@@ -91,9 +90,52 @@ const 政策类别 := {
 	},
 }
 
+# 显示文案：随 modifies[6]（毛主义/文革态）动态切换。开局 modifies[6] 激活 → 用 MOD6 表
+# （中式计划经济/无产阶级专政/文化革命…）；modifies[6] 关闭 → 用默认表。出处 Doctrine_script.cs。
+# 更深分支（OGAS 11/国家垄断/550 联邦变体等）依赖未移植事件，延后（见 memory faction-dynamic-options-blocked）。
+# id 键节点仍按 政策类别.options 旧名 _find 定位，显示时覆盖 btn.text。
+const 选项显示_MOD6 := {
+	# 经济 :47-54
+	10: "经典计划经济", 11: "中式计划经济", 12: "国家资本主义",
+	13: "国家监护资本主义", 14: "社会主义导向市场", 15: "左翼小政府",
+	# 党政 :116-121
+	6: "无产阶级专政", 7: "新民主主义制度", 8: "人民民主制度", 9: "协和民主体制",
+	# 人权 :155-161（无 modifies[6] 分支）
+	16: "舆论一律", 17: "纪律约束", 18: "自然限制", 19: "多元自由",
+	# 国家体制 :232-246（21 随 resultOfEvents[550]，开局 0 → 美国模式联邦制）
+	20: "单一制", 21: "美国模式联邦制", 22: "联邦制", 23: "自治联盟",
+	# 传统与宗教 :282-287
+	24: "文化革命", 25: "无神国家", 26: "民宗管制", 27: "世俗主义", 28: "尊崇传统", 29: "政教协定",
+	# 军事 :316-319（固定）
+	30: "全民皆兵", 31: "积极建军", 32: "建设国防", 33: "合同兵制",
+}
+
+const 选项显示_默认 := {
+	# 经济 :64-71
+	10: "中央计划经济", 11: "分权计划经济", 12: "国家资本主义",
+	13: "鸟笼经济", 14: "混合经济", 15: "最小干预",
+	# 党政 :131-136
+	6: "一党专政党内民主", 7: "一党独大式民主", 8: "宪政民主制度", 9: "协和民主体制",
+	# 人权 :155-161
+	16: "舆论一律", 17: "纪律约束", 18: "自然限制", 19: "多元自由",
+	# 国家体制 :250-264
+	20: "单一制", 21: "美国模式联邦制", 22: "联省自治", 23: "自治联盟",
+	# 传统与宗教 :292-297
+	24: "破除传统", 25: "无神国家", 26: "民宗管制", 27: "世俗主义", 28: "尊崇传统", 29: "政教协定",
+	# 军事 :316-319
+	30: "全民皆兵", 31: "积极建军", 32: "建设国防", 33: "合同兵制",
+}
+
 const DEDUCT_BUDGET := 50
 const DEDUCT_LIVING := 50
 const DEDUCT_PARTY := 30
+
+
+## 政策 id → 显示文案：modifies[6] 激活用 MOD6 表，否则默认表。
+func _opt_text(w: WorldState, id: int) -> String:
+	var use_mod6: bool = w != null and w.modifiers.size() > 6 and w.modifiers[6] != null and w.modifiers[6].is_active
+	var table: Dictionary = 选项显示_MOD6 if use_mod6 else 选项显示_默认
+	return table.get(id, "未知")
 
 const 生育政策名 := ["一胎制", "二胎制", "无限制"]
 
@@ -152,8 +194,7 @@ func _refresh() -> void:
 	for cat_name in 政策类别:
 		var cat: Dictionary = 政策类别[cat_name]
 		var current_val: int = _raw(w, int(cat["idx"]))
-		var opts: Dictionary = cat["options"]
-		_label(cat_name + "显示", opts.get(current_val, "未知"))
+		_label(cat_name + "显示", _opt_text(w, current_val))
 	for i in mini(派系列表.size(), w.factions.size()):
 		var f: FactionData = w.factions[i]
 		var sup := _find("支持" + 派系列表[i]) as TextureButton
@@ -261,12 +302,15 @@ func _refresh_policy_panel(cat_name: String) -> void:
 	var cat_idx: int = int(cat["idx"])
 	var current_val: int = _raw(w, cat_idx)
 	var opts: Dictionary = cat["options"]
+	var first_other: int = -1
 	for val in opts:
 		var opt_name: String = opts[val]
 		var btn := _find(opt_name) as Button
 		if btn == null:
 			continue
 		var target_val: int = int(val)
+		# 文案随 modifies[6] 态覆盖 .tscn 静态 text（键=id）
+		btn.text = _opt_text(w, target_val)
 		# 权威 4 条件检查在 GameManager，UI 只读结果（避免与实际切换判定漂移）
 		var chk := GameManager.check_policy_change(cat_idx, target_val)
 		var can_select: bool = chk["can"]
@@ -274,6 +318,11 @@ func _refresh_policy_panel(cat_name: String) -> void:
 		btn.modulate = Color.WHITE if can_select else Color(0.5, 0.5, 0.5)
 		if target_val == current_val:
 			btn.modulate = Color(1.0, 1.0, 0.6)
+		elif first_other < 0:
+			first_other = target_val
+	# 常驻条件面板：默认对第一个非当前选项显示 4 条件（hover 具体选项时更新）
+	if first_other >= 0:
+		_label("右栏条件显示", _build_condition_text(cat_idx, first_other))
 
 
 func _on_policy_selected(cat_name: String, target_val: int) -> void:
@@ -282,30 +331,36 @@ func _on_policy_selected(cat_name: String, target_val: int) -> void:
 		音频总管.play_button_click_sound()
 
 
+## 常驻 4 条件文案（原版 uslovie_text[0..3]，各带 [满足]/[未满足]）。
+## 显示口径同原作：预算 |Δ|×5、党内团结 |Δ|×30（与判定阈值 ×50/×300 不同）。
+func _build_condition_text(cat_idx: int, target_val: int) -> String:
+	var w := GameManager.world
+	if w == null:
+		return ""
+	var current_val: int = _raw(w, cat_idx)
+	var diff := absi(target_val - current_val)
+	if diff == 0:
+		return "当前政策"
+	var chk := GameManager.check_policy_change(cat_idx, target_val)
+	var t := "预算中的资金：%d  [%s]\n\n\n" % [diff * 5, "满足" if chk["budget_ok"] else "未满足"]
+	t += "党内团结度高于：%d  [%s]\n\n\n" % [diff * 30, "满足" if chk["party_ok"] else "未满足"]
+	t += "%s  [%s]\n\n\n" % [chk["leading_text"], "满足" if chk["leading_ok"] else "未满足"]
+	t += "毛主席已离世，起锚！  [%s]\n\n" % ("满足" if chk["mao_ok"] else "未满足")
+	t += "切换消耗：预算-%.1f 生活-%.1f 党内-%.1f" % [
+		float(diff * DEDUCT_BUDGET) / 10.0,
+		float(diff * DEDUCT_LIVING) / 10.0,
+		float(diff * DEDUCT_PARTY) / 10.0,
+	]
+	return t
+
+
 func _on_policy_hover(cat_name: String, target_val: int) -> void:
 	var w := GameManager.world
 	if w == null:
 		return
 	var cat: Dictionary = 政策类别[cat_name]
 	var cat_idx: int = int(cat["idx"])
-	var current_val: int = _raw(w, cat_idx)
-	var diff := absi(target_val - current_val)
-	var cond_text := ""
-	if diff == 0:
-		cond_text = "当前政策"
-	else:
-		# 4 条件明细走权威检查，与按钮可用性一致
-		var chk := GameManager.check_policy_change(cat_idx, target_val)
-		cond_text = "预算需求：%.1f  [%s]\n" % [float(chk["budget_need"]) / 10.0, "满足" if chk["budget_ok"] else "未满足"]
-		cond_text += "党内支持需求：%.1f  [%s]\n" % [float(chk["party_need"]) / 10.0, "满足" if chk["party_ok"] else "未满足"]
-		cond_text += "执政条件：%s  [%s]\n" % [chk["leading_text"], "满足" if chk["leading_ok"] else "未满足"]
-		cond_text += "毛主席已逝：[%s]\n" % ("满足" if chk["mao_ok"] else "未满足（毛在世期间不可变更政策）")
-		cond_text += "\n切换消耗：\n预算-%.1f  生活水平-%.1f  党内支持-%.1f" % [
-			float(diff * DEDUCT_BUDGET) / 10.0,
-			float(diff * DEDUCT_LIVING) / 10.0,
-			float(diff * DEDUCT_PARTY) / 10.0,
-		]
-	_label("右栏条件显示", cond_text)
+	_label("右栏条件显示", _build_condition_text(cat_idx, target_val))
 	var descs: Dictionary = cat.get("descriptions", {})
 	_label("右栏政策介绍文案", descs.get(target_val, ""))
 

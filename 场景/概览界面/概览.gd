@@ -7,6 +7,12 @@ const MODIFIER_ITEM := preload("res://场景/概览界面/修正模板.tscn")
 
 const PANEL_KEYS: Array[String] = ["交易", "影响", "领土", "形势", "凝聚力", "盟友"]
 
+## 领导人英文名→中文显示（数据层存英文名 world_factory.gd:1002/1008；继任未移植时回退原名）
+const 领导人中文名 := {
+	"Leonid Brezhnev": "列昂尼德·勃列日涅夫",
+	"Gerald Ford": "杰拉尔德·福特",
+}
+
 var _panels: Dictionary = {}  # key -> RichTextLabel
 var _buttons: Dictionary = {}  # key -> Button
 var _list: VBoxContainer
@@ -135,6 +141,19 @@ func _f1(v: float) -> String:
 	return "%.1f" % v
 
 
+## 读帝国现任领导人姓名（原版 now_leader 索引 leaders[]）。越界/空则回退占位。
+func _leader_name(empire: EmpireData, fallback: String) -> String:
+	if empire == null:
+		return fallback
+	var idx: int = empire.current_leader
+	if idx < 0 or idx >= empire.leaders.size():
+		return fallback
+	var leader: EmpireLeader = empire.leaders[idx]
+	if leader == null or leader.leader_name == "":
+		return fallback
+	return 领导人中文名.get(leader.leader_name, leader.leader_name)
+
+
 func _build_trade(w: WorldState) -> String:
 	var d := w.数值表
 	var income: int = d[W.I_INCOME] if d.size() > W.I_INCOME else 0
@@ -167,18 +186,21 @@ func _build_influence(w: WorldState) -> String:
 	s += "[color=darkblue][font_size=25]美国的世界影响力:[/font_size][/color]\n%s\n" % _f1(float(us) / 10.0)
 	s += "影响美苏在第三世界的争夺结果\n\n"
 	s += _h("苏联领导人")
-	s += "列昂尼德·勃列日涅夫\n（领导人字段尚未接入数值表，显示开局默认）\n\n"
+	var ussr: EmpireData = w.empires[1] if w.empires.size() > 1 else null
+	s += "%s\n\n" % _leader_name(ussr, "列昂尼德·勃列日涅夫")
 	s += _h("军备竞赛")
 	s += "我们不参与军备竞赛"
 	return s
 
 
-func _build_territory(_w: WorldState) -> String:
-	# data[62–67] 未移植：开局默认句
+func _build_territory(w: WorldState) -> String:
+	## 港澳/新疆/西藏 接 data[65/66/67]（modify_choose.cs 文案）。
+	## 蒙古无 data 索引（由国家状态推导）、藏南/台湾涉未移植决议，暂留默认句。
+	var d := w.数值表
 	var s := _h("中国大陆")
-	s += "西藏是中国领土不可分割的一部分\n"
-	s += "新疆是中国领土不可分割的一部分\n"
-	s += "港澳地区被外国势力控制\n"
+	s += "%s\n" % _tibet_text(d[W.I_TIBET_POLICY] if d.size() > W.I_TIBET_POLICY else 0)
+	s += "%s\n" % _xinjiang_text(d[W.I_XINJIANG_POLICY] if d.size() > W.I_XINJIANG_POLICY else 0)
+	s += "%s\n" % _hk_macau_text(d[W.I_HK_MACAU_STATUS] if d.size() > W.I_HK_MACAU_STATUS else 0)
 	s += "蒙古是亲苏的独立主权国家\n\n"
 	s += _h("台湾地区")
 	s += "中华民国-国民党统治\n（威权主义，少数国家承认）\n台湾岛屿：\n在国民党控制下\n\n"
@@ -187,13 +209,53 @@ func _build_territory(_w: WorldState) -> String:
 	return s
 
 
-func _build_situation(_w: WorldState) -> String:
+## data[65] 港澳回归状态 → 文案（modify_choose.cs:791-805）
+func _hk_macau_text(v: int) -> String:
+	if v == 1:
+		return "港澳是中国的特别行政区"
+	elif v >= 2:
+		return "港澳是中国领土不可分割的一部分"
+	return "港澳地区被外国势力控制"
+
+
+## data[66] 新疆文化政策状态 → 文案（modify_choose.cs:776-789）
+func _xinjiang_text(v: int) -> String:
+	if v == 1:
+		return "新疆-苏联傀儡"
+	elif v >= 2:
+		return "维吾尔斯坦伊斯兰共和国-独立主权"
+	return "新疆是中国领土不可分割的一部分"
+
+
+## data[67] 西藏文化政策状态 → 文案（modify_choose.cs:764-774）
+func _tibet_text(v: int) -> String:
+	if v == 1:
+		return "西藏共和国-独立主权"
+	elif v >= 2:
+		return "西藏共和国-独立主权；神权政治"
+	return "西藏是中国领土不可分割的一部分"
+
+
+func _build_situation(w: WorldState) -> String:
+	## 伊朗/阿富汗各派为连续势力值（modify_choose.cs 按 data/10 显示，无离散档位文案）。
+	## 定性局势文案原作挂 allcountries[8].SubGosstroy，Godot 未移植伊朗国家状态 → 暂以势力对比推导。
+	var d := w.数值表
+	var iran_left: int = d[W.I_IRAN_LEFT_SUPPORT] if d.size() > W.I_IRAN_LEFT_SUPPORT else 0
+	var iran_shah: int = d[W.I_IRAN_SHAH_SUPPORT] if d.size() > W.I_IRAN_SHAH_SUPPORT else 0
 	var s := _h("伊朗")
-	s += "沙阿政权依然巩固\n\n"
+	s += "革命派力量：%s\n保皇派力量：%s\n" % [_f1(float(iran_left) / 10.0), _f1(float(iran_shah) / 10.0)]
+	# Event58.cs:43 终局判据：革命派>保皇派 → 革命成功，否则沙阿续命
+	s += "%s\n\n" % ("革命派势头压过王室" if iran_left > iran_shah else "沙阿政权占据上风")
 	s += _h("阿富汗")
-	s += "毛主义者力量：3.0\n人民派力量：0.2\n旗帜派力量：0.4\n（形势字段尚未接入，显示开局占位）\n\n"
+	var af_maoist: int = d[W.I_AFGHAN_OPPOSITION] if d.size() > W.I_AFGHAN_OPPOSITION else 0
+	var af_khalq: int = d[W.I_AFGHAN_KHALQ] if d.size() > W.I_AFGHAN_KHALQ else 0
+	var af_parcham: int = d[W.I_AFGHAN_PARCHAM] if d.size() > W.I_AFGHAN_PARCHAM else 0
+	s += "毛主义者力量：%s\n人民派力量：%s\n旗帜派力量：%s\n\n" % [
+		_f1(float(af_maoist) / 10.0), _f1(float(af_khalq) / 10.0), _f1(float(af_parcham) / 10.0),
+	]
 	s += _h("美国总统")
-	s += "杰拉尔德·福特"
+	var usa: EmpireData = w.empires[0] if w.empires.size() > 0 else null
+	s += "%s" % _leader_name(usa, "杰拉尔德·福特")
 	return s
 
 
