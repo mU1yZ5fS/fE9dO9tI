@@ -234,6 +234,14 @@ const 数值索引 := {
 # ── 数值表：唯一权威数据源 ──
 @export var 数值表: Array[int] = []
 
+# ── 外交互动全局状态 ──
+## 中国全球影响力累计值（原版 gameState.influencePRC）。
+## 注：原版由 TimeScript 周期把它转化为各国 prc_power，此转化未移植 → 目前只累计。TODO
+@export var influence_prc: int = 0
+## 扶持极左派冷却：[0]=西欧、[1]=东欧（原版 war_active[0]/[1]）。
+## 注：原版每年重置一次（TimeScript），年度重置未移植 → 目前只置位不重置。TODO
+@export var war_active: Array[bool] = [false, false]
+
 # ── 玩家经济显示视图（只读镜像，非独立数据） ──
 @export var 玩家经济: EconomyData
 
@@ -488,3 +496,23 @@ func clamp_empire_relations() -> void:
 		if e != null:
 			e.relations = clampi(e.relations, 0, 1000)
 			e.power = clampi(e.power, 0, 1000)
+
+
+# ── 政体谓词（移植自 GameState.cs:IsSocialism/IsAuthoritarianism）──
+
+## 原版 IsSocialism(yes, country)。strict=true 对应 yes=true。
+## yes=true : Gosstroy==1 或 SubGosstroy==0
+## yes=false: Gosstroy!=1 且 SubGosstroy!=0
+func is_socialism(country: CountryData, strict: bool) -> bool:
+	if country == null:
+		return false
+	if strict:
+		return country.government == 1 or country.sub_government == 0
+	return country.government != 1 and country.sub_government != 0
+
+
+## 原版 IsAuthoritarianism(country)：Gosstroy==0 且 SubGosstroy!=0
+func is_authoritarian(country: CountryData) -> bool:
+	if country == null:
+		return false
+	return country.government == 0 and country.sub_government != 0
