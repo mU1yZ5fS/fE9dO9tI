@@ -791,6 +791,84 @@ func _mil19_slot_check(w: WorldState, player: CountryData, country: CountryData)
 	return false
 
 
+# ============================================================================
+# 编号 1 · 扶持极左派（支持毛派组织）
+# DiploButtonScript Show L54-73 / OnMouseDown L8622-8665
+# 西欧 = 原版序号 ∈ {92,21,17}；否则东欧
+# ============================================================================
+func _def_1(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	var player := w.get_player_country()
+	var is_west := country.原版序号 == 92 or country.原版序号 == 21 or country.原版序号 == 17
+	var conds: Array = []
+	# uslovie[0]：特工≥50 且 预算+外汇≥30（DBS L58）
+	conds.append(_cond("至少 5 特工网络和 3 百万预算",
+		func(): return d[W.I_AGENTS] >= 50 and d[W.I_BUDGET] + d[W.I_RESERVE] >= 30))
+	# uslovie[1]：modifies[6].active（DBS L60）
+	conds.append(_cond("我们始终坚持伟大的毛泽东思想！",
+		func(): return _modifier_active(w, 6)))
+	# uslovie[2]：声誉>750（DBS L62）
+	conds.append(_cond("外交声誉高于 75", func(): return d[W.I_DIPLO] > 750))
+	# uslovie[3]：西欧读 war_active[0]，东欧读 war_active[1]（DBS L64-71，每年一次冷却）
+	if is_west:
+		conds.append(_cond("西欧：每年一次", func(): return not _war_active_flag(w, 0)))
+	else:
+		conds.append(_cond("东欧：每年一次", func(): return not _war_active_flag(w, 1)))
+	var eff := func():
+		if is_west:
+			var usa := _empire(w, EmpireData.USA)
+			if usa != null:
+				var pen := 50
+				if usa.current_leader == 3:
+					pen = 75
+				elif usa.current_leader == 5:
+					pen = 100
+				usa.power -= pen
+				usa.relations -= 200
+			_set_war_active(w, 0, true)
+			if player != null and player.has_tag("rim"):
+				w.influence_prc += 25
+		else:
+			# 原版怪异逻辑：读 empires[0](美).now_leader 却扣 empires[1](苏).power（忠实保留，八荣八耻①，DBS L8647-8654）
+			var usa := _empire(w, EmpireData.USA)
+			var ussr := _empire(w, EmpireData.USSR)
+			var pen := 50
+			if usa != null and usa.current_leader == 5:
+				pen = 100
+			if ussr != null:
+				ussr.power -= pen
+				ussr.relations -= 200
+			_set_war_active(w, 1, true)
+			# completedDecisions[9] 未移植 → influencePRC+=25 增益暂略（DBS L8657-8660）TODO
+		d[W.I_AGENTS] -= 50
+		d[W.I_BUDGET] -= 30
+		d[W.I_ARMY] -= 50
+	return {
+		"caption": "扶持极左派", "opis": "支持毛派组织",
+		"conditions": conds, "dormant": false, "effect": eff,
+	}
+
+
+func _empire(w: WorldState, idx: int) -> EmpireData:
+	if idx >= 0 and idx < w.empires.size():
+		return w.empires[idx]
+	return null
+
+
+func _modifier_active(w: WorldState, mod_id: int) -> bool:
+	if mod_id >= 0 and mod_id < w.modifiers.size() and w.modifiers[mod_id] != null:
+		return w.modifiers[mod_id].is_active
+	return false
+
+
+func _war_active_flag(w: WorldState, idx: int) -> bool:
+	return idx >= 0 and idx < w.war_active.size() and w.war_active[idx]
+
+
+func _set_war_active(w: WorldState, idx: int, value: bool) -> void:
+	if idx >= 0 and idx < w.war_active.size():
+		w.war_active[idx] = value
+
+
 # ── 工具方法 ──
 
 func _make_action(text: String, conditions: Array, effect_desc: String, effect: Callable) -> Dictionary:
