@@ -704,6 +704,93 @@ func _def_24(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 	}
 
 
+# ============================================================================
+# 编号 10 · 经济合作
+# DiploButtonScript Show L343-431 / OnMouseDown L8839-8855
+# ============================================================================
+func _def_10(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	var player := w.get_player_country()
+	var conds: Array = []
+	# 条件1(uslovie[0])：已深化经贸 或 亲中（原版序号 9蒙古/35/14 有专属改写，未移植，走通用）
+	conds.append(_cond("已深化经贸关系或该国持亲中立场",
+		func(): return country.has_tag("对华贸易") or country.has_tag("亲中")))
+	# 条件2(uslovie[1])：中国已建经合组织(econ) 或 已入经互会(sev)
+	conds.append(_cond("中国已建立经合组织，或中国已加入经互会",
+		func(): return player != null and (player.has_tag("sev") or player.has_tag("econ"))))
+	# 条件3(uslovie[2])：目标国未加入任何经济组织
+	conds.append(_cond("该国未加入经合组织",
+		func(): return not country.has_tag("sev") and not country.has_tag("econ") and not country.has_tag("asean")))
+	# uslovie[3] 未移植（按国专属，首批略）：不受美国(Vyshi/usalliance)、不受苏联(prosov/sovalliance且中国未入sev)、
+	# 原版序号29不在北约欧共体、isSocEU、原版序号8的战事/声誉档 第4条件，见 DBS L366-430，后续批次。
+	var eff := func():
+		if player != null and player.has_tag("sev"):
+			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+				w.empires[EmpireData.USSR].power += 20
+			w.influence_prc += 10
+			country.set_tag("sev", true)
+		else:
+			d[W.I_PEOPLE_SUPPORT] += 20
+			w.influence_prc += 20
+			country.set_tag("econ", true)
+			country.social_stability = 1000
+			d[W.I_PARTY_SUPPORT] += 30
+	return {
+		"caption": "经济合作", "opis": "允许该国加入我国经济联盟，建立全面战略合作伙伴关系",
+		"conditions": conds, "dormant": false, "effect": eff,
+	}
+
+
+# ============================================================================
+# 编号 19 · 军事同盟
+# DiploButtonScript Show L636-661 / OnMouseDown L8951-8976
+# ============================================================================
+func _def_19(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	var player := w.get_player_country()
+	var conds: Array = []
+	# 原版 uslovie 赋值序为 [1],[3],[0],[2]；此处按可读顺序列出，条件为 AND 故顺序不影响判定
+	conds.append(_cond("至少 2 军事实力", func(): return d[W.I_ARMY] >= 20))
+	conds.append(_cond("外交声誉高于 79", func(): return d[W.I_DIPLO] > 790))
+	conds.append(_cond("他们已加入经合组织或经互会",
+		func(): return country.has_tag("sev") or country.has_tag("econ")))
+	conds.append(_cond("他们未参与军事联盟，且中国已成立集安组织或已加入华约",
+		func(): return _mil19_slot_check(w, player, country)))
+	var eff := func():
+		if player != null and player.has_tag("ovd"):
+			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+				w.empires[EmpireData.USSR].power += 20
+			w.influence_prc += 10
+			country.set_tag("ovd", true)
+			if country.has_tag("亲中"):
+				country.prc_influence = 500
+			elif country.has_tag("亲苏"):
+				country.sov_influence = 500
+		else:
+			w.influence_prc += 20
+			country.set_tag("okb", true)
+			if country.social_stability <= 0:
+				country.social_stability = 1000
+	return {
+		"caption": "军事同盟", "opis": "邀请该国参与我国军事联盟，实现合作无上限，保障地区安全稳定",
+		"conditions": conds, "dormant": false, "effect": eff,
+	}
+
+
+## 编号19 uslovie[2]：军事联盟排他（忠实 DBS Show L646-660）
+## 非 oar 目标 → OVD/okb 排他式；oar 目标 → 仅当 allcountries[30] 为社会主义(Gosstroy==1) 才放行，否则封锁(!oar=false)
+func _mil19_slot_check(w: WorldState, player: CountryData, country: CountryData) -> bool:
+	if player == null:
+		return false
+	var via_ovd := not country.has_tag("ovd") and player.has_tag("ovd") and not country.has_tag("seato")
+	var via_okb := not country.has_tag("okb") and player.has_tag("okb") and not country.has_tag("ovd") and not country.has_tag("seato")
+	var complex := via_ovd or via_okb
+	if not country.has_tag("oar"):
+		return complex
+	var c30 := w.get_country_by_legacy_index(30)
+	if c30 != null and c30.government == 1:
+		return complex
+	return false
+
+
 # ── 工具方法 ──
 
 func _make_action(text: String, conditions: Array, effect_desc: String, effect: Callable) -> Dictionary:
