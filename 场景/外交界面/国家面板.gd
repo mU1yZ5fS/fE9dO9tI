@@ -55,6 +55,17 @@ const INFLUENCE_NAMES := {0: "美国", 1: "苏联", 2: "中国"}
 # 每个互动：{id, text, conditions: [{desc, check: Callable}], effects: Callable}
 # conditions 中每项 check 返回 true 表示满足
 
+# ── 外交互动编号目录（移植自 DiploButtonScript）──
+# 每个编号对应原版 this_type：Show()=条件, OnMouseDown()=效果。
+# caption 来自 CountryScript.Show 的标签；opis 来自 DiploButtonScript.this_opis。
+const DIPLO_BTN_TRADE9 := 9
+const DIPLO_BTN_TRADE24 := 24
+const DIPLO_BTN_ECON10 := 10
+const DIPLO_BTN_MIL19 := 19
+const DIPLO_BTN_MAOIST1 := 1
+const DIPLO_BTN_RIM5000 := 5000
+const DIPLO_BTN_AU5001 := 5001
+
 var _current_country: CountryData
 var _current_actions: Array[Dictionary] = []
 var _buttons: Array[Button] = []
@@ -615,6 +626,82 @@ func _war_active(w: WorldState, war_index: int) -> bool:
 func _add_story_relation(w: WorldState, empire_index: int, delta: int) -> void:
 	if empire_index >= 0 and empire_index < w.empires.size():
 		w.empires[empire_index].relations += delta
+
+
+# ============================================================================
+# 编号 9 · 发展贸易（深化经贸关系）
+# DiploButtonScript Show L252-342 / OnMouseDown L8835
+# ============================================================================
+func _def_9(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	var opis := "深化经贸关系"
+	if country.原版序号 == 104:
+		opis = "建立正式外交关系并深化经贸关系"
+	var conds: Array = []
+	# 条件1：声誉档（按目标国政体分档）— LeaderProperty[2] 未移植默认 false
+	conds.append(_cond(_diplo_rep_desc(w, country), func(): return _diplo_rep_check(w, d, country)))
+	# 条件2：尚未深化经贸（战乱国 34/109/110 的内战分支未移植 → 只做通用项）
+	conds.append(_cond("尚未深化经贸关系", func(): return not country.has_tag("对华贸易")))
+	# 条件3：工业档
+	conds.append(_cond(_diplo_industry_desc(country), func(): return _diplo_industry_check(d, country)))
+	# 按国专属分支未移植（首批略）：108法属附庸声誉档改写(DBS L288)、
+	# 苏联入NATO时的第4条件(L328)、魁北克167不亲美第4条件(L335)。均属按国专属，后续批次。
+	return {
+		"caption": "发展贸易", "opis": opis, "conditions": conds, "dormant": false,
+		"effect": func(): country.set_tag("对华贸易", true),
+	}
+
+
+## 声誉档描述（DBS Show L252-... 的 uslovie[0] 分档）
+func _diplo_rep_desc(w: WorldState, country: CountryData) -> String:
+	# LeaderProperty[2] 未移植默认 false → 跳过首档
+	if w.is_authoritarian(country):
+		return "外交声誉在 39 到 80 之间"
+	if w.is_socialism(country, true):
+		return "外交声誉高于 69"
+	if country.government == 2:
+		return "外交声誉在 39 到 85 之间"
+	return "外交声誉低于 50"
+
+
+func _diplo_rep_check(w: WorldState, d: Array[int], country: CountryData) -> bool:
+	if w.is_authoritarian(country):
+		return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 800
+	if w.is_socialism(country, true):
+		return d[W.I_DIPLO] > 690
+	if country.government == 2:
+		return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 850
+	return d[W.I_DIPLO] < 500
+
+
+## 工业档（编号9 的 uslovie[2]，DBS L...）
+## 注：原版工业档还有"欧美列强集合→700"分支，属超级大国上下文，首批略。
+func _diplo_industry_desc(country: CountryData) -> String:
+	if country.has_tag("亲中"):
+		return "工业不低于 30"
+	return "工业不低于 50"
+
+
+func _diplo_industry_check(d: Array[int], country: CountryData) -> bool:
+	if country.has_tag("亲中"):
+		return d[W.I_INDUSTRY] >= 300
+	return d[W.I_INDUSTRY] >= 500
+
+
+# ============================================================================
+# 编号 24 · 发展贸易（变体）
+# DiploButtonScript Show L778-837 / OnMouseDown L9039
+# ============================================================================
+func _def_24(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	var conds: Array = []
+	conds.append(_cond(_diplo_rep_desc(w, country), func(): return _diplo_rep_check(w, d, country)))
+	conds.append(_cond("尚未深化经贸关系", func(): return not country.has_tag("对华贸易")))
+	conds.append(_cond("工业不低于 70", func(): return d[W.I_INDUSTRY] >= 700))
+	# uslovie[3] 未移植（按国专属，首批略）：原版在按钮条件层 DBS L816-836 有
+	# 伊朗14 puppetOf!=8、东欧2-6·16 中国已入经互会 或 该国!prosov 的对苏排他，后续批次。
+	return {
+		"caption": "发展贸易", "opis": "深化经贸关系", "conditions": conds, "dormant": false,
+		"effect": func(): country.set_tag("对华贸易", true),
+	}
 
 
 # ── 工具方法 ──
