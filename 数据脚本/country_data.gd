@@ -70,7 +70,7 @@ const IDEOLOGY_TO_GOV := {
 
 # ── 多边组织 + 外交倾向（统一 Dictionary 存储） ──
 ## 所有联盟/外交标签统一存储。key=标签名(String), value=true/false。
-## 联盟标签: nato, ovd, sev, eu, soc_eu, asean, sento, seato, okb, econ, oil, sc, fez, sto, oar, eaf
+## 联盟标签: nato, ovd, sev, eu, soc_eu, asean, sento, seato, okb, econ, oil, sc, fez, sto, oar, eaf, rim, au
 ## 外交倾向: 亲美, 亲中, 亲苏, 亲法, 对华贸易, 贸易同盟, 美国盟友, 苏联盟友, 法国盟友
 @export var tags: Dictionary = {}
 
@@ -160,7 +160,7 @@ const TAG_ALIASES := {
 	"is_soc_eu": "soc_eu", "is_asean": "asean", "is_sento": "sento",
 	"is_seato": "seato", "is_okb": "okb", "is_econ": "econ", "is_oil": "oil",
 	"is_sc": "sc", "is_fez": "fez", "is_sto": "sto", "is_oar": "oar",
-	"is_eaf": "eaf",
+	"is_eaf": "eaf", "is_rim": "rim", "is_au": "au",
 	"is_vyshi": "亲美", "is_proprc": "亲中", "is_prosov": "亲苏",
 	"is_profre": "亲法", "is_torg": "对华贸易", "is_dota": "贸易同盟",
 	"is_usalliance": "美国盟友",
