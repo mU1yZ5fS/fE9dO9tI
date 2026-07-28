@@ -926,6 +926,19 @@ func _def_5001(w: WorldState, d: Array[int], country: CountryData) -> Dictionary
 	}
 
 
+# 编号 → 定义分发（返回 {caption, opis, conditions, effect, dormant} 或 {}）。
+func _diplo_action_def(编号: int, w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	match 编号:
+		DIPLO_BTN_MAOIST1: return _def_1(w, d, country)
+		DIPLO_BTN_TRADE9: return _def_9(w, d, country)
+		DIPLO_BTN_ECON10: return _def_10(w, d, country)
+		DIPLO_BTN_MIL19: return _def_19(w, d, country)
+		DIPLO_BTN_TRADE24: return _def_24(w, d, country)
+		DIPLO_BTN_RIM5000: return _def_5000(w, d, country)
+		DIPLO_BTN_AU5001: return _def_5001(w, d, country)
+	return {}
+
+
 # ── 工具方法 ──
 
 func _make_action(text: String, conditions: Array, effect_desc: String, effect: Callable) -> Dictionary:
