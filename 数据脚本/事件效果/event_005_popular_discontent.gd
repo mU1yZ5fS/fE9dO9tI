@@ -12,17 +12,15 @@ func execute(context: Dictionary) -> void:
 		return
 	var d := ws.数值表
 	if d[W.I_PEOPLE_SUPPORT] <= 700 or d[W.I_PARTY_SUPPORT] < 500:
-		context["result_text"] = ("You personally spoke to the protesters in Beijing, but people tired of promises "
-				+ "demanded your resignation. The party organized your dismissal and arrest and formed a "
-				+ "transitional government pending general elections.")
+		context["result_text"] = "你在全国直播的情况下亲自与北京的抗议者进行了交谈，并承诺尽一切努力改变政策，考虑到所有公民的利益，最后建立真正的民主机制（不过，你并不急于执行）。不过看来人民已经对你的承诺感到了厌倦，他们对你态度冷漠并要求你直接辞职。对你失去了信心的党最后决定罢免你并将你逮捕，之后他们重新组织了一个新的政府领导全国并开始筹划全国选举，而你只能在监狱里蹲着。"
+		d[W.I_PARTY_SUPPORT] = 0
+		d[W.I_PEOPLE_SUPPORT] = 0
 		GameManager.queue_ending_after_event(1)
 		return
 
-	context["result_text"] = ("You personally addressed the protesters in Beijing in a speech broadcast "
-			+ "throughout the country. You promised to change policy, take the interests of all citizens "
-			+ "into account and create real democratic mechanisms. The protests are gradually subsiding.")
-	d[W.I_PEOPLE_SUPPORT] += 100
-	d[W.I_THOUGHT_FREEDOM] -= 50
+	context["result_text"] = "你亲自与全国各地的抗议者进行了交谈。你承诺将尽一切努力改变政策，考虑到所有公民的利益，并建立真正的民主机制。（不过，你并不急于执行）。看来你已经成功地说服了人民，抗议活动正在慢慢地减少。"
+	d[W.I_PEOPLE_SUPPORT] -= 150
+	d[W.I_THOUGHT_FREEDOM] -= 150
 	d[W.I_PARTY_SUPPORT] -= 100
 	if ws.factions.size() > FactionData.CONSERVATIVE:
 		ws.factions[FactionData.CONSERVATIVE].is_enabled = true
