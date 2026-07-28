@@ -1,74 +1,52 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_pbd7v"]
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_582so"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_cg7xm"]
-[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_xyfh0"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_wcf6q"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_001_elections.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_e2y4c"]
-script = ExtResource("3_cg7xm")
-type = 15
-key = "election_free"
+[sub_resource type="Resource" id="Custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_m5m3q"]
-script = ExtResource("2_582so")
-text = "Do not interfere and wait for results"
-effects = Array[ExtResource("3_cg7xm")]([SubResource("Resource_e2y4c")])
-result_text = "The election proceeds naturally. The results depend on people support and party dynamics."
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "不要介入，静待结果"
+effects = Array[ExtResource("2_effect")]([SubResource("Custom")])
+result_text = "（结果由 event_001_elections.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_7elp3"]
-script = ExtResource("3_cg7xm")
-key = "people_support"
-value = -100.0
-
-[sub_resource type="Resource" id="Resource_yimyg"]
-script = ExtResource("3_cg7xm")
+[sub_resource type="Resource" id="Expr_party501"]
+script = ExtResource("3_expr")
 key = "party_support"
-value = 50.0
+value = 501.0
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "推动公务员投票"
+disabled_text = "我党绝不容许这种无耻贿选"
+enable_condition = SubResource("Expr_party501")
+effects = Array[ExtResource("2_effect")]([SubResource("Custom")])
+result_text = "（结果由 event_001_elections.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_hq2k1"]
-script = ExtResource("4_xyfh0")
-key = "party_support"
-value = 500.0
-
-[sub_resource type="Resource" id="Resource_up5mr"]
-script = ExtResource("2_582so")
-text = "Drive civil servants to the vote"
-disabled_text = "The party blocks such brazen intervention"
-enable_condition = SubResource("Resource_hq2k1")
-effects = Array[ExtResource("3_cg7xm")]([SubResource("Resource_7elp3"), SubResource("Resource_yimyg")])
-result_text = "With the promise of bonuses, payouts and threats of layoffs and downgrades, we managed to get the civil servants to come to the polls and vote for our party. But people will long remember such an open scam."
-
-[sub_resource type="Resource" id="Resource_uaals"]
-script = ExtResource("3_cg7xm")
-key = "agents"
-value = -100.0
-
-[sub_resource type="Resource" id="Resource_l8p3h"]
-script = ExtResource("3_cg7xm")
-type = 10
-key = "1"
-value = 150.0
-
-[sub_resource type="Resource" id="Resource_ydy2g"]
-script = ExtResource("4_xyfh0")
+[sub_resource type="Resource" id="Expr_agents50"]
+script = ExtResource("3_expr")
 key = "agents"
 value = 50.0
-
-[sub_resource type="Resource" id="Resource_7rwql"]
-script = ExtResource("2_582so")
-text = "Falsify results"
-disabled_text = "The intelligence services do not have enough strength"
-enable_condition = SubResource("Resource_ydy2g")
-effects = Array[ExtResource("3_cg7xm")]([SubResource("Resource_uaals"), SubResource("Resource_l8p3h")])
-result_text = "The special services did a great job getting places for us. Only they are very tired."
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "伪造大选结果"
+disabled_text = "情报部门实力不足"
+enable_condition = SubResource("Expr_agents50")
+effects = Array[ExtResource("2_effect")]([SubResource("Custom")])
+result_text = "（结果由 event_001_elections.gd 动态生成）"
 
 [resource]
-script = ExtResource("5_wcf6q")
+script = ExtResource("4_event")
 event_id = "npc_elections"
-title = "Elections, Elections, Candidates are..."
-description = "It is the day of the national elections in the NPC. And since we occupy a dominant position in Chinese politics, we can intervene a little in their conduct, so that everything will remain same. Or just rely on the Chinese people's faith in us."
+source_event_number = 1
+title = "金豆豆，银豆豆，投到……"
+description = "今天是全国人大选举的日子。既然我们在中国政治上占主导地位，我们就可以稍微干预一下他们的选票去向，这样什么都不会被改变。或者我们仅仅依靠中国人民的信任就好了。"
 show_notification = false
-options = Array[ExtResource("2_582so")]([SubResource("Resource_m5m3q"), SubResource("Resource_up5mr"), SubResource("Resource_7rwql")])
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
 fire_only_once = false
