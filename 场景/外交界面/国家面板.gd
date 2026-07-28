@@ -230,7 +230,7 @@ func _refresh_icons(country: CountryData) -> void:
 # ── 互动按钮 ──
 
 func _refresh_actions(country: CountryData) -> void:
-	_current_actions = _build_actions(country)
+	_current_actions = _build_actions_v2(country)
 
 	for i in _buttons.size():
 		if i < _current_actions.size():
@@ -294,6 +294,8 @@ func _clear_condition_text() -> void:
 # 移植自原版 CountryScript.ChineseButtons() + DiploButtonScript.ChineseInfo()
 # ============================================================================
 
+## [已弃用 2026-07-27] 手写近似互动，被 _build_actions_v2（编号目录驱动）取代。
+## 保留供后续批次比对，勿在生产路径调用。
 func _build_actions(country: CountryData) -> Array[Dictionary]:
 	var w := GameManager.world
 	if w == null:
@@ -996,6 +998,37 @@ func _truncate4(nums: Array[int]) -> Array[int]:
 	if nums.size() > 4:
 		nums.resize(4)
 	return nums
+
+
+# ============================================================================
+# 组装当前国家的互动列表（新版：编号目录驱动）
+# 结构对齐现有 _current_actions：{text, conditions, effect_desc, effect}
+# ============================================================================
+func _build_actions_v2(country: CountryData) -> Array[Dictionary]:
+	var w := GameManager.world
+	if w == null:
+		return []
+	var d := w.数值表
+	var actions: Array[Dictionary] = []
+
+	# 剧情专属操作优先（复用现有实现，不动）
+	actions.append_array(_build_story_actions(country, w, d))
+
+	# 通用编号动作
+	for 编号 in _build_country_numbers(w, country):
+		var def := _diplo_action_def(编号, w, d, country)
+		if def.is_empty() or def.get("dormant", false):
+			continue  # 休眠编号（5000/5001）过滤，不显示
+		actions.append({
+			"text": def["caption"],
+			"conditions": def["conditions"],
+			"effect_desc": def["opis"],
+			"effect": def["effect"],
+		})
+
+	if actions.size() > 4:
+		actions.resize(4)
+	return actions
 
 
 # ── 工具方法 ──
