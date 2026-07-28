@@ -939,6 +939,65 @@ func _diplo_action_def(编号: int, w: WorldState, d: Array[int], country: Count
 	return {}
 
 
+# ============================================================================
+# 列表构建器 —— 按国家类别产出编号列表（≤4）
+# 忠实镜像 CountryScript 通用类别块；按国专属分支延后（后续批次）
+# ============================================================================
+func _build_country_numbers(w: WorldState, country: CountryData) -> Array[int]:
+	var player := w.get_player_country()
+	var nums: Array[int] = []
+	if player == null:
+		return nums
+
+	# —— 类别①：经互会卫星国（东欧模板）CountryScript L497-660 ——
+	# 守卫：目标 isSEV 且 中国未入 sev（超级大国 NATO/ingamewars 分支未移植，简化）
+	if country.has_tag("sev") and not player.has_tag("sev") and country.puppet_of < 0:
+		# !中国.isASEAN → 扶持极左派(1)，否则 123（延后）→ 此处只放 1
+		if not player.has_tag("asean"):
+			nums.append(DIPLO_BTN_MAOIST1)
+		nums.append(DIPLO_BTN_TRADE24)
+		return _truncate4(nums)
+
+	# —— 类别②：非洲 proprc 区间块 CountryScript L3914 ——
+	# 进入条件：非洲区间 + proprc + !africaOff
+	if _is_africa_proprc_block(country):
+		nums.append(DIPLO_BTN_ECON10)
+		nums.append(DIPLO_BTN_AU5001)    # 休眠：event_done[500] false → 后续过滤
+		nums.append(DIPLO_BTN_RIM5000)   # 休眠
+		return _truncate4(nums)
+
+	# —— 类别③：社会主义亲华盟友模板 CountryScript L682-701 ——
+	# 贸易→经合→军盟→革命国际 四连
+	if w.is_socialism(country, true) or country.has_tag("亲中"):
+		nums.append(DIPLO_BTN_TRADE9)
+		nums.append(DIPLO_BTN_ECON10)
+		nums.append(DIPLO_BTN_MIL19)
+		nums.append(DIPLO_BTN_RIM5000)   # 休眠
+		return _truncate4(nums)
+
+	# —— 类别④：中立/其它 → 贸易 CountryScript L3068 ——
+	nums.append(DIPLO_BTN_TRADE9)
+	return _truncate4(nums)
+
+
+## 非洲 proprc 区间块进入条件（CountryScript L3914）
+## 区间 53..68 / 106..108 / 112..133 / ==42，排除 54/55/106，proprc 且 !africaOff
+func _is_africa_proprc_block(country: CountryData) -> bool:
+	var n := country.原版序号
+	var in_range := (n > 53 and n < 69) or (n > 105 and n < 109) or (n > 111 and n < 134) or n == 42
+	if not in_range:
+		return false
+	if n == 54 or n == 55 or n == 106:
+		return false
+	return country.has_tag("亲中") and not country.禁用非洲机制
+
+
+func _truncate4(nums: Array[int]) -> Array[int]:
+	if nums.size() > 4:
+		nums.resize(4)
+	return nums
+
+
 # ── 工具方法 ──
 
 func _make_action(text: String, conditions: Array, effect_desc: String, effect: Callable) -> Dictionary:
