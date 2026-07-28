@@ -1,116 +1,69 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_sdv6s"]
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_1gqfx"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_52bq6"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_tx5po"]
-[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_7hdi0"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_003_death_of_mao.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_m4pa3"]
-script = ExtResource("3_52bq6")
-key = "people_support"
-value = 20.0
-
-[sub_resource type="Resource" id="Resource_k6kdd"]
-script = ExtResource("3_52bq6")
-type = 15
-key = "mao_cremated"
-
-[sub_resource type="Resource" id="Resource_uil04"]
-script = ExtResource("3_52bq6")
-type = 15
-key = "mao_dead"
-
-[sub_resource type="Resource" id="Resource_vbx7x"]
-script = ExtResource("3_52bq6")
-type = 1
-key = "political_stability"
-value = 100.0
-
-[sub_resource type="Resource" id="Resource_qmp3d"]
-script = ExtResource("2_1gqfx")
-text = "Cremate Mao according to his wishes and build a memorial"
-effects = Array[ExtResource("3_52bq6")]([SubResource("Resource_m4pa3"), SubResource("Resource_k6kdd"), SubResource("Resource_uil04"), SubResource("Resource_vbx7x")])
-result_text = "After Mao's death was announced, his body was placed in the House of People's Congregations for a week so that everyone could say goodbye to the chairman, mourning was declared throughout the country. Many Chinese people have come to pay their last honors to their great leader and teacher. After the deadline, Mao's body was cremated, according to his wish, and the urn with ashes after three minutes of silence and Hua Guofeng's farewell speech in Tiananmen Square was walled up in a monument specially built on the same square."
-
-[sub_resource type="Resource" id="Resource_133yy"]
-script = ExtResource("3_52bq6")
-key = "people_support"
-value = 50.0
-
-[sub_resource type="Resource" id="Resource_6kyrm"]
-script = ExtResource("3_52bq6")
-key = "party_support"
-value = 40.0
-
-[sub_resource type="Resource" id="Resource_0g2jo"]
-script = ExtResource("3_52bq6")
-key = "money"
-value = -10.0
-
-[sub_resource type="Resource" id="Resource_mt7vn"]
-script = ExtResource("3_52bq6")
-type = 15
-key = "mao_mausoleum"
-
-[sub_resource type="Resource" id="Resource_8bkh3"]
-script = ExtResource("3_52bq6")
-type = 15
-key = "mao_dead"
-
-[sub_resource type="Resource" id="Resource_e50tb"]
-script = ExtResource("3_52bq6")
-type = 1
-key = "political_stability"
-value = 100.0
-
-[sub_resource type="Resource" id="Resource_wxm0n"]
-script = ExtResource("2_1gqfx")
-text = "Build Mausoleum on Tiananmen Square for Mao"
-effects = Array[ExtResource("3_52bq6")]([SubResource("Resource_133yy"), SubResource("Resource_6kyrm"), SubResource("Resource_0g2jo"), SubResource("Resource_mt7vn"), SubResource("Resource_8bkh3"), SubResource("Resource_e50tb")])
-result_text = "After Mao's death was announced, his body was placed in the House of People's Congregations for a week... After the deadline, Mao's body was taken to the hospital and embalmed by a specially developed technique. After three minutes of silence and Hua Guofeng's farewell speech on Tiananmen Square, the chairman rested in a mausoleum built on the same square by a special order of Guofeng."
-
-[sub_resource type="Resource" id="Resource_6bv3h"]
-script = ExtResource("3_52bq6")
-key = "people_support"
-value = 50.0
-
-[sub_resource type="Resource" id="Resource_7smyo"]
-script = ExtResource("3_52bq6")
-key = "party_support"
-value = -40.0
-
-[sub_resource type="Resource" id="Resource_pghbc"]
-script = ExtResource("3_52bq6")
-type = 15
-key = "mao_mausoleum"
-
-[sub_resource type="Resource" id="Resource_tnprc"]
-script = ExtResource("3_52bq6")
-type = 15
-key = "mao_dead"
-
-[sub_resource type="Resource" id="Resource_5reox"]
-script = ExtResource("3_52bq6")
-type = 1
-key = "political_stability"
-value = 100.0
-
-[sub_resource type="Resource" id="Resource_hxcig"]
-script = ExtResource("2_1gqfx")
-text = "Let the funeral commission decide"
-effects = Array[ExtResource("3_52bq6")]([SubResource("Resource_6bv3h"), SubResource("Resource_7smyo"), SubResource("Resource_pghbc"), SubResource("Resource_tnprc"), SubResource("Resource_5reox")])
-result_text = "Guofeng decided not to participate directly in the organization of the funeral, which did not go unnoticed... After the deadline, Mao's body was taken to the hospital and embalmed by a specially developed technique. After three minutes of silence and Hua Guofeng's farewell speech on Tiananmen Square, the chairman rested in a mausoleum built on the same square by a special order of the funeral commission."
-
-[sub_resource type="Resource" id="Resource_ofead"]
-script = ExtResource("5_7hdi0")
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
 type = 12
 key = "1976.9.9"
 
+[sub_resource type="Resource" id="Custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="E0_dead"]
+script = ExtResource("2_effect")
+type = 15
+key = "mao_dead"
+[sub_resource type="Resource" id="E0_cremated"]
+script = ExtResource("2_effect")
+type = 15
+key = "mao_cremated"
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "按照伟大领袖的既定方针办，并为主席修建一座纪念碑"
+effects = Array[ExtResource("2_effect")]([SubResource("E0_dead"), SubResource("E0_cremated"), SubResource("Custom")])
+result_text = "（结果由 event_003_death_of_mao.gd 动态生成）"
+
+[sub_resource type="Resource" id="E1_dead"]
+script = ExtResource("2_effect")
+type = 15
+key = "mao_dead"
+[sub_resource type="Resource" id="E1_mausoleum"]
+script = ExtResource("2_effect")
+type = 15
+key = "mao_mausoleum"
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "将毛主席安葬在天安门广场的待建纪念堂内"
+effects = Array[ExtResource("2_effect")]([SubResource("E1_dead"), SubResource("E1_mausoleum"), SubResource("Custom")])
+result_text = "（结果由 event_003_death_of_mao.gd 动态生成）"
+
+[sub_resource type="Resource" id="E2_dead"]
+script = ExtResource("2_effect")
+type = 15
+key = "mao_dead"
+[sub_resource type="Resource" id="E2_mausoleum"]
+script = ExtResource("2_effect")
+type = 15
+key = "mao_mausoleum"
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "让治丧委员会决定"
+effects = Array[ExtResource("2_effect")]([SubResource("E2_dead"), SubResource("E2_mausoleum"), SubResource("Custom")])
+result_text = "（结果由 event_003_death_of_mao.gd 动态生成）"
+
 [resource]
-script = ExtResource("4_tx5po")
+script = ExtResource("4_event")
 event_id = "death_of_mao"
-title = "Death of helmsman"
-description = "A terrible thing happened. After 2 transferred heart attacks on September 9 at 0 h. 10 min. On the 83rd year of life, the great leader and teacher of the Chinese people, Chairman Mao Zedong, passed away. As long as all the people and the party are grieving, we need to convene the funeral commission and decide how we are conduct the chairman in his last journey."
-trigger_conditions = Array[ExtResource("5_7hdi0")]([SubResource("Resource_ofead")])
-options = Array[ExtResource("2_1gqfx")]([SubResource("Resource_qmp3d"), SubResource("Resource_wxm0n"), SubResource("Resource_hxcig")])
+source_event_number = 3
+title = "舵手逝世"
+description = "糟糕的事情发生了。9月9日0时10分，在两次心脏病发作后，中国人民的伟大领袖和导师，毛主席去世了，享年83岁。尽管人民和党还在悲伤中，我们需要召集治丧委员会，决定如何送主席最后一程。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
+fire_only_once = true
