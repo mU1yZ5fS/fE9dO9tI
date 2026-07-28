@@ -869,6 +869,63 @@ func _set_war_active(w: WorldState, idx: int, value: bool) -> void:
 		w.war_active[idx] = value
 
 
+# 编号 5000 革命国际（休眠）：条件 DBS L5520-5538，效果 DBS L12585-12588。
+# 休眠守卫 uslovie[0]=event_done[548]，事件未移植→get_flag 默认 false。
+func _def_5000(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	var conds: Array = []
+	# uslovie[0]：event_done[548]（DBS L5524，事件未移植）
+	conds.append(_cond("已建立革命国际", func(): return w.get_flag("event_done_548")))
+	# uslovie[1]：非 gkchp 分支（DBS L5528，权威默认）。
+	# TODO：gkchp 分支（DBS L5533 "该国愿意认可我们"，SubGosstroy∈{0,10,17,2}&&!SEV&&!OVD&&proprc）
+	#       因 WorldState 未建模 is_gkchp，暂只移植非 gkchp 分支。
+	conds.append(_cond("该国已建立革命的政权", func(): return _rim5000_regime_check(w, country)))
+	# uslovie[2]：!isRIM（DBS L5536）
+	conds.append(_cond("尚未加入", func(): return not country.has_tag("rim")))
+	var eff := func():
+		w.influence_prc += 50
+		country.set_tag("rim", true)
+	return {
+		"caption": "革命国际",
+		"opis": "邀请该国加入革命国际主义运动，为争得新世界而战！",
+		"conditions": conds, "dormant": true, "effect": eff,
+	}
+
+
+# 编号 5000 uslovie[1] 非 gkchp 分支：IsSocialism(true) && SubGosstroy!=16 && !=18
+# && !isSEV && !isOVD && !prosov（DBS L5528）。
+func _rim5000_regime_check(w: WorldState, country: CountryData) -> bool:
+	if country == null:
+		return false
+	return w.is_socialism(country, true) \
+		and country.sub_government != 16 \
+		and country.sub_government != 18 \
+		and not country.has_tag("sev") \
+		and not country.has_tag("ovd") \
+		and not country.has_tag("亲苏")
+
+
+# 编号 5001 非洲联盟（休眠）：条件 DBS L5539-5551，效果 DBS L12590-12593。
+# 休眠守卫 uslovie[0]=event_done[500]，事件未移植→get_flag 默认 false。
+func _def_5001(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	var conds: Array = []
+	# uslovie[0]：event_done[500]（DBS L5543，事件未移植）
+	conds.append(_cond("非洲联盟已建立", func(): return w.get_flag("event_done_500")))
+	# uslovie[1]：data[22]>=20（DBS L5545）
+	conds.append(_cond("至少 2 军事实力", func(): return d[W.I_ARMY] >= 20))
+	# uslovie[2]：!isAU（DBS L5547）
+	conds.append(_cond("他们未加入非洲联盟", func(): return not country.has_tag("au")))
+	# uslovie[3]：data[6]>790（DBS L5549）
+	conds.append(_cond("外交声誉高于 79", func(): return d[W.I_DIPLO] > 790))
+	var eff := func():
+		w.influence_prc += 30
+		country.set_tag("au", true)
+	return {
+		"caption": "非洲联盟",
+		"opis": "邀请该国加入非洲联盟，投身于非洲革命与解放的伟大事业中",
+		"conditions": conds, "dormant": true, "effect": eff,
+	}
+
+
 # ── 工具方法 ──
 
 func _make_action(text: String, conditions: Array, effect_desc: String, effect: Callable) -> Dictionary:
