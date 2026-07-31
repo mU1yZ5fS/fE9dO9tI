@@ -326,6 +326,11 @@ func evaluate(node: ExprNode) -> bool:
 			if ws == null or ws.empires.size() <= int(node.key) or ws.empires[int(node.key)] == null:
 				return false
 			return ws.influence_prc - ws.empires[int(node.key)].power >= node.value
+		ExprNode.Type.DECISION_DONE:
+			if ws == null or ws.decisions == null or not node.key.is_valid_int():
+				return false
+			var di := int(node.key)
+			return di >= 0 and di < ws.decisions.completed.size() and ws.decisions.completed[di]
 		ExprNode.Type.MODIFIER_ACTIVE: return _is_modifier_active(node.key)
 		ExprNode.Type.MODIFIER_INACTIVE: return not _is_modifier_active(node.key)
 		ExprNode.Type.PREV_EVENT_RESULT_IS:
