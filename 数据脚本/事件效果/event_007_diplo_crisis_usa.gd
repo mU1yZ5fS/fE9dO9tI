@@ -64,8 +64,7 @@ func _opt_indifferent(ws: WorldState, d: Array, context: Dictionary) -> void:
 			d[W.I_AGENTS] -= 50
 		if mod17 != null:
 			mod17.is_active = true
-			mod17.name_zh = "美国禁运"
-			mod17.effect_zh = "我们将减少与美国关系差额10%的收入|失去相当于与美国关系差额5%的特工网络"
+			_set_mod17_text("美国禁运", "我们将减少与美国关系差额10%的收入|失去相当于与美国关系差额5%的特工网络")
 		# 差异：原 data[111]++ 为反编译死代码（ptr 局部自增未写回），跳过。
 	if mod17 != null and mod17.is_active and _usa_in_asean(ws) and d.size() > 139 and d[139] <= 0:
 		d[139] = 5   # 原 data[139]（无端口命名键，数字索引直访）
@@ -77,8 +76,7 @@ func _opt_embargo(ws: WorldState, context: Dictionary) -> void:
 	var mod17 := _get_mod17(ws)
 	if mod17 != null:
 		mod17.is_active = true
-		mod17.name_zh = "禁运美国"
-		mod17.effect_zh = "我们将增加与美国影响差额10%的特工网络|获得相当于与美国影响差额5%的预算|美国将减少与中国影响差额10%的影响力|失去相当于与中国影响差额5%的收入"
+		_set_mod17_text("禁运美国", "我们将增加与美国影响差额10%的特工网络|获得相当于与美国影响差额5%的预算|美国将减少与中国影响差额10%的影响力|失去相当于与中国影响差额5%的收入")
 	context["result_text"] = "很快，我们就发动了联盟内的国家对美国实施了禁运，美方对此十分震惊，谴责中国的“帝国主义行为”，但他们之前威胁我们的时候为什么不想想可能的后果呢？总而言之，美国佬会有一段“难忘”的时光了！"
 
 
@@ -89,10 +87,18 @@ func _haiti_aftermath(ws: WorldState) -> void:
 		haiti.内战中 = true
 
 
-func _get_mod17(ws: WorldState):
+func _get_mod17(ws: WorldState) -> ModifierSlot:
 	if ws.modifiers.size() > 17:
 		return ws.modifiers[17]
 	return null
+
+
+## 原 old_modify_texts[17]/old_modify_desc[17]：运行时改 ModifierDef 展示文案（与 UI 读取路径一致）
+func _set_mod17_text(title: String, effect: String) -> void:
+	var def := ModifierCatalog.get_def(17)
+	if def != null:
+		def.name_zh = title
+		def.effect_zh = effect
 
 
 func _usa_in_asean(ws: WorldState) -> bool:

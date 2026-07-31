@@ -58,8 +58,7 @@ func _opt_indifferent(ws: WorldState, d: Array, context: Dictionary) -> void:
 			d[W.I_AGENTS] -= 50
 		if mod16 != null:
 			mod16.is_active = true
-			mod16.name_zh = "苏联禁运"
-			mod16.effect_zh = "我们将减少与苏联关系差额10%的收入|失去相当于与苏联关系差额5%的特工网络"
+			_set_mod16_text("苏联禁运", "我们将减少与苏联关系差额10%的收入|失去相当于与苏联关系差额5%的特工网络")
 		# 差异：原 data[111]++ 为反编译死代码（ptr 局部自增未写回），跳过。
 	if mod16 != null and mod16.is_active and _usa_in_sev(ws) and d.size() > 139 and d[139] <= 0:
 		d[139] = 5   # 原 data[139]（无端口命名键，数字索引直访）
@@ -71,15 +70,22 @@ func _opt_embargo(ws: WorldState, context: Dictionary) -> void:
 	var mod16 := _get_mod16(ws)
 	if mod16 != null:
 		mod16.is_active = true
-		mod16.name_zh = "禁运苏联"
-		mod16.effect_zh = "我们将增加与苏联影响差额10%的特工网络|获得相当于与苏联影响差额5%的预算|苏联将减少与中国影响差额10%的影响力|失去相当于与中国影响差额5%的收入"
+		_set_mod16_text("禁运苏联", "我们将增加与苏联影响差额10%的特工网络|获得相当于与苏联影响差额5%的预算|苏联将减少与中国影响差额10%的影响力|失去相当于与中国影响差额5%的收入")
 	context["result_text"] = "很快，我们就发动了联盟内的国家对苏联实施了禁运，苏方对此十分震惊，谴责中国的“帝国主义行为”，但他们之前威胁我们的时候为什么不想想可能的后果呢？总而言之，苏联佬会有一段“难忘”的时光了！"
 
 
-func _get_mod16(ws: WorldState):
+func _get_mod16(ws: WorldState) -> ModifierSlot:
 	if ws.modifiers.size() > 16:
 		return ws.modifiers[16]
 	return null
+
+
+## 原 old_modify_texts[16]/old_modify_desc[16]：运行时改 ModifierDef 展示文案（与 UI 读取路径一致）
+func _set_mod16_text(title: String, effect: String) -> void:
+	var def := ModifierCatalog.get_def(16)
+	if def != null:
+		def.name_zh = title
+		def.effect_zh = effect
 
 
 func _usa_in_sev(ws: WorldState) -> bool:
