@@ -1,21 +1,28 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_5e5ib"]
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_xu4ow"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_bea88"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_uolcr"]
-[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_7d36o"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="3_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_018_war_is_over.gd" id="4_display"]
 
-[sub_resource type="Resource" id="Resource_t6t6v"]
-script = ExtResource("2_xu4ow")
-text = "Long live the peace!"
-result_text = "Another war ended. The Foreign Ministry has filed the outcome and all resulting political changes."
+[sub_resource type="Resource" id="E0_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("4_display")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "和平万岁！"
+effects = Array[ExtResource("2_effect")]([SubResource("E0_custom")])
+result_text = "（结果由 event_018_war_is_over.gd 动态生成）"
 
 [resource]
-script = ExtResource("4_uolcr")
+script = ExtResource("3_event")
 event_id = "war_is_over"
-title = "War is over"
-description = "After long and bloody battles, the conflict is finally over. The Ministry of Foreign Affairs has taken care of everything and is now ready to give you a quick overview of the outcome of the war."
+source_event_number = 18
+title = "战争结束了"
+description = "在长时间的血腥冲突之后战争终于结束了。"
+display_script = ExtResource("4_display")
 show_notification = false
-options = Array[ExtResource("2_xu4ow")]([SubResource("Resource_t6t6v")])
 fire_only_once = false
+options = Array[ExtResource("1_option")]([SubResource("Opt0")])

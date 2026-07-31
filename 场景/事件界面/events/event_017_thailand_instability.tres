@@ -1,107 +1,79 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_qio24"]
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_1nr5k"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_8bteu"]
-[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_odaao"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_6b88l"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_017_thailand_instability.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_k2npf"]
-script = ExtResource("3_8bteu")
-type = 10
-key = "0"
-value = 5.0
+[sub_resource type="Resource" id="E0_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_uggkh"]
-script = ExtResource("2_1nr5k")
-text = "It's not our business"
-effects = Array[ExtResource("3_8bteu")]([SubResource("Resource_k2npf")])
-result_text = "We chose not to get involved in the internal affairs of Thailand."
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "这不关我们的事"
+effects = Array[ExtResource("2_effect")]([SubResource("E0_custom")])
+result_text = "（结果由 event_017_thailand_instability.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_35ub3"]
-script = ExtResource("3_8bteu")
-key = "agents"
-value = -40.0
-
-[sub_resource type="Resource" id="Resource_acecy"]
-script = ExtResource("3_8bteu")
-key = "army"
-value = -30.0
-
-[sub_resource type="Resource" id="Resource_wk6tg"]
-script = ExtResource("3_8bteu")
-type = 8
-key = "0"
-value = -100.0
-
-[sub_resource type="Resource" id="Resource_7k4m5"]
-script = ExtResource("3_8bteu")
-type = 19
-key = "300,700,1,0"
-value = 2.0
-target = "Communists|Loyalists"
-
-[sub_resource type="Resource" id="Resource_el2cg"]
-script = ExtResource("4_odaao")
+[sub_resource type="Resource" id="Expr_ag40"]
+script = ExtResource("3_expr")
 key = "agents"
 value = 40.0
 
-[sub_resource type="Resource" id="Resource_1amd7"]
-script = ExtResource("4_odaao")
+[sub_resource type="Resource" id="Expr_army30"]
+script = ExtResource("3_expr")
 key = "army"
 value = 30.0
 
-[sub_resource type="Resource" id="Resource_taneb"]
-script = ExtResource("4_odaao")
+[sub_resource type="Resource" id="Expr_d41"]
+script = ExtResource("3_expr")
+type = 21
+key = "data_41"
+value = 100.0
+
+[sub_resource type="Resource" id="Expr_opt1_enable"]
+script = ExtResource("3_expr")
 type = 18
-children = Array[ExtResource("4_odaao")]([SubResource("Resource_el2cg"), SubResource("Resource_1amd7")])
+children = Array[ExtResource("3_expr")]([SubResource("Expr_ag40"), SubResource("Expr_army30"), SubResource("Expr_d41")])
 
-[sub_resource type="Resource" id="Resource_oqlvp"]
-script = ExtResource("2_1nr5k")
-text = "Send armed CPT units to help demonstrators and provoke an uprising"
-disabled_text = "We do not have enough strength to organize the uprising"
-enable_condition = SubResource("Resource_taneb")
-effects = Array[ExtResource("3_8bteu")]([SubResource("Resource_35ub3"), SubResource("Resource_acecy"), SubResource("Resource_wk6tg"), SubResource("Resource_7k4m5")])
-result_text = "CPT units moved to help the student demonstrators..."
+[sub_resource type="Resource" id="E1_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_w3bds"]
-script = ExtResource("3_8bteu")
-type = 8
-key = "1"
-value = 20.0
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "派遣武装的泰国共产党部队去帮助示威者并煽动起义"
+disabled_text = "我们没有力量组织起义"
+enable_condition = SubResource("Expr_opt1_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("E1_custom")])
+result_text = "（结果由 event_017_thailand_instability.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_5udbx"]
-script = ExtResource("3_8bteu")
-type = 8
-key = "0"
-value = -20.0
+[sub_resource type="Resource" id="E2_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_etcqd"]
-script = ExtResource("3_8bteu")
-type = 10
-key = "0"
-value = 5.0
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "谴责泰国的暴行"
+effects = Array[ExtResource("2_effect")]([SubResource("E2_custom")])
+result_text = "（结果由 event_017_thailand_instability.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_dyhqi"]
-script = ExtResource("3_8bteu")
-key = "influence"
-value = 10.0
-
-[sub_resource type="Resource" id="Resource_1b21w"]
-script = ExtResource("2_1nr5k")
-text = "Condemn the cruelty of Thailand"
-effects = Array[ExtResource("3_8bteu")]([SubResource("Resource_w3bds"), SubResource("Resource_5udbx"), SubResource("Resource_etcqd"), SubResource("Resource_dyhqi")])
-result_text = "We issued a strong condemnation of the Thai government's actions."
-
-[sub_resource type="Resource" id="Resource_0laii"]
-script = ExtResource("4_odaao")
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
 type = 12
 key = "1976.10"
 
 [resource]
-script = ExtResource("5_6b88l")
+script = ExtResource("4_event")
 event_id = "thailand_instability"
-title = "Instability in Thailand"
-description = "Against the background of social instability and constant confrontation between left and right forces, the royal family of Thailand decided in September to organize the return to the country of the radical right general Thanom Kittikachorn..."
-trigger_conditions = Array[ExtResource("4_odaao")]([SubResource("Resource_0laii")])
-options = Array[ExtResource("2_1nr5k")]([SubResource("Resource_uggkh"), SubResource("Resource_oqlvp"), SubResource("Resource_1b21w")])
+source_event_number = 17
+title = "泰国动乱"
+description = "在社会动荡和左右派频繁对抗的背景下，九月，泰国王室决定召回极右将军他侬·吉滴卡宗，这位前总理需要对其在位期间的血腥镇压负责，他本人在1973年被公众演说推翻。吉滴卡宗本人并不想参与政治，只想做个僧侣，但关于他的回归和与国王会面的官方公告还是引起了部分人的不满。总理巴莫辞职，但被驳回，一波学生和工会示威的浪潮席卷全国，其中一起发生在泰国国立政法大学，右翼武装分子已经突袭了那里。根据我们的信息，军队正准备严酷镇压示威。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

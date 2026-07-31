@@ -672,6 +672,7 @@ func _get_country_field(target: String, field_name: String) -> int:
 		"econ": return 1 if country.has_tag("econ") else 0
 		"perevorot": return 1 if country.政变中 else 0
 		"based": return 1 if country.有驻军基地 else 0
+		"stab": return country.stab
 		_:
 			push_warning("EventEngine: 不支持的国家字段 %s" % field_name)
 			return 0

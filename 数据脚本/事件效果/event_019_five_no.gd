@@ -1,0 +1,90 @@
+extends RefCounted
+
+## 原作 Event19.cs：五"不准"。逐字中文 + 完整效果复刻。
+## 差异：
+##  - 触发：TimeScript.cs:10169（日期>=1976.2 且 !event_done[19]）。
+##  - 原版按钮 0-3 对应 number_otvet 1-4（按钮号+1），端口选项索引 0-3 直接对应。
+##  - opt0 的 data[88]++ / opt2 的 data[88]--：反编译为死代码（ptr 局部自增/自减未写回），跳过；
+##    opt3 的 data[88] += 2 为真实效果（保留）。
+##  - data[88]（无端口命名键）：数字索引直访。
+##  - politics[12].loyality += 200：端口 ws.politicians[12] 直访（判空）。
+const W = preload("res://数据脚本/world_state.gd")
+
+
+func execute(context: Dictionary) -> void:
+	var ws: WorldState = GameManager.world
+	if ws == null:
+		return
+	var d := ws.数值表
+	var opt := int(context.get("option_index", -1))
+	match opt:
+		0:
+			_opt_pass(ws, d, context)
+		1:
+			_opt_enforce(ws, d, context)
+		2:
+			_opt_criticize(ws, d, context)
+		3:
+			_opt_sabotage(ws, d, context)
+
+
+# 选项0：让它通过，我们静观其变（Event19.cs number_otvet==1）
+func _opt_pass(ws: WorldState, d: Array, context: Dictionary) -> void:
+	if d.size() > W.I_PEOPLE_SUPPORT:
+		d[W.I_PEOPLE_SUPPORT] -= 50
+	if d.size() > W.I_THOUGHT_FREEDOM:
+		d[W.I_THOUGHT_FREEDOM] += 50
+	context["result_text"] = "作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了人民的不满，而江青同志则被认为是幕后黑手……"
+
+
+# 选项1：严格执行这场运动（Event19.cs number_otvet==2）
+func _opt_enforce(ws: WorldState, d: Array, context: Dictionary) -> void:
+	if d.size() > W.I_PEOPLE_SUPPORT:
+		d[W.I_PEOPLE_SUPPORT] -= 70
+	if d.size() > W.I_THOUGHT_FREEDOM:
+		d[W.I_THOUGHT_FREEDOM] += 50
+	if d.size() > W.I_DIPLO:
+		d[W.I_DIPLO] += 10
+	_add_loyalty_by_trait(ws, 0, 70)
+	context["result_text"] = "作为国务院总理，公安部部长，您亲自指挥了这次驱散运动。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了广泛的不满，而江青同志和华国锋同志则被认为是幕后黑手……"
+
+
+# 选项2：严格执行这场运动，并在媒体上批评这种行为（Event19.cs number_otvet==3）
+func _opt_criticize(ws: WorldState, d: Array, context: Dictionary) -> void:
+	if d.size() > W.I_PEOPLE_SUPPORT:
+		d[W.I_PEOPLE_SUPPORT] -= 100
+	if d.size() > W.I_THOUGHT_FREEDOM:
+		d[W.I_THOUGHT_FREEDOM] += 70
+	if d.size() > W.I_DIPLO:
+		d[W.I_DIPLO] += 10
+	_add_loyalty_by_trait(ws, 0, 100)
+	context["result_text"] = "作为国务院总理，公安部部长，您亲自指挥了这次驱逐活动并在人民日报的头版发表了对纪念周恩来行为的批评，然而这看起来收效甚微，看起来群众已经厌倦了文化大革命中无止境的批判运动了。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制和在媒体上的批判引起了广泛的不满，而江青同志和华国锋同志则被认为是幕后黑手……"
+
+
+# 选项3：轻微地破坏这场运动（Event19.cs number_otvet==4）
+func _opt_sabotage(ws: WorldState, d: Array, context: Dictionary) -> void:
+	if d.size() > W.I_PEOPLE_SUPPORT:
+		d[W.I_PEOPLE_SUPPORT] -= 10
+	if d.size() > 88:
+		d[88] += 2   # 原 data[88]（无端口命名键）
+	if d.size() > W.I_PARTY_SUPPORT:
+		d[W.I_PARTY_SUPPORT] -= 50
+	if d.size() > W.I_DIPLO:
+		d[W.I_DIPLO] -= 10
+	if ws.politicians.size() > 12 and ws.politicians[12] != null:
+		ws.politicians[12].loyalty += 200   # 原 politics[12].loyality += 200
+	for p in ws.politicians:
+		if p == null:
+			continue
+		if p.trait_personality == 0:
+			p.loyalty -= 70
+		elif p.trait_personality >= 1 or p.trait_personality == 20:
+			p.loyalty += 50
+	context["result_text"] = "作为国务院总理，公安部部长，您尽全力的将这次运动的规模控制在最小范围内，一些下令完全禁止纪念活动的官员被调任。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了人民的不满，而江青同志则被认为是幕后黑手。然而由于您的出手，这些不满并没有到不可收拾的程度……"
+
+
+## 指定 traits[0]（性格）的政治家忠诚变化
+func _add_loyalty_by_trait(ws: WorldState, trait: int, delta: int) -> void:
+	for p in ws.politicians:
+		if p != null and p.trait_personality == trait:
+			p.loyalty += delta

@@ -1,68 +1,66 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_jws1t"]
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_t8lsk"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_8aom8"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_ab2t2"]
-[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_8rfvq"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_020_criticize_deng.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_ew8b3"]
-script = ExtResource("3_8aom8")
-key = "people_support"
-value = -20.0
+[sub_resource type="Resource" id="E0_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_4ehcb"]
-script = ExtResource("2_t8lsk")
-text = "Do nothing. Jiang Qing and Xiaoping each other stand"
-effects = Array[ExtResource("3_8aom8")]([SubResource("Resource_ew8b3")])
-result_text = "In the media controlled by Jiang Qing's group, active persecution of Deng Xiaoping and his ideas began. Deng was stripped of all posts, though his party card was left with him."
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "什么也别做。让江青与邓小平互相对立"
+effects = Array[ExtResource("2_effect")]([SubResource("E0_custom")])
+result_text = "（结果由 event_020_criticize_deng.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_6030b"]
-script = ExtResource("3_8aom8")
-key = "party_support"
-value = 80.0
+[sub_resource type="Resource" id="E1_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_ipnox"]
-script = ExtResource("3_8aom8")
-key = "people_support"
-value = -20.0
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "加入对小平的迫害"
+effects = Array[ExtResource("2_effect")]([SubResource("E1_custom")])
+result_text = "（结果由 event_020_criticize_deng.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_mhrxq"]
-script = ExtResource("2_t8lsk")
-text = "Join Xiaoping's persecution"
-effects = Array[ExtResource("3_8aom8")]([SubResource("Resource_6030b"), SubResource("Resource_ipnox")])
-result_text = "The new Premier Hua Guofeng also joined the persecution, saying that Deng's reformist ideas lead China to capitalist slavery."
+[sub_resource type="Resource" id="E2_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_20hm2"]
-script = ExtResource("3_8aom8")
-key = "people_support"
-value = 20.0
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "支持小平"
+effects = Array[ExtResource("2_effect")]([SubResource("E2_custom")])
+result_text = "（结果由 event_020_criticize_deng.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_y67ye"]
-script = ExtResource("3_8aom8")
-key = "party_support"
-value = -70.0
-
-[sub_resource type="Resource" id="Resource_70uo1"]
-script = ExtResource("2_t8lsk")
-text = "Stand up for Xiaoping"
-effects = Array[ExtResource("3_8aom8")]([SubResource("Resource_20hm2"), SubResource("Resource_y67ye")])
-result_text = "You, however, stood up for him, arguing that Xiaoping made mistakes but admitted them, helped China develop. This caused discontent among the party top, but it appealed to the people."
-
-[sub_resource type="Resource" id="Resource_g08n1"]
-script = ExtResource("5_8rfvq")
-type = 12
-key = "1976.2"
-
-[sub_resource type="Resource" id="Resource_dom16"]
-script = ExtResource("5_8rfvq")
+[sub_resource type="Resource" id="Expr_five_no"]
+script = ExtResource("3_expr")
 type = 5
 ref_event_id = "five_no"
 
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.2"
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_five_no"), SubResource("Expr_date")])
+
 [resource]
-script = ExtResource("4_ab2t2")
+script = ExtResource("4_event")
 event_id = "criticize_deng"
-title = "Criticize Deng and fight with right!"
-description = "The death of Zhou Enlai seriously affected the position of his protege Deng Xiaoping, who was left without the patronage of the former prime minister. He is now under constant attack by the radicals headed by Mao Zedong's wife Jiang Qing... And what should we do, given that Hua Guofeng has never been on good terms with either Jiang Qing or Xiaoping?"
-trigger_conditions = Array[ExtResource("5_8rfvq")]([SubResource("Resource_g08n1"), SubResource("Resource_dom16")])
-options = Array[ExtResource("2_t8lsk")]([SubResource("Resource_4ehcb"), SubResource("Resource_mhrxq"), SubResource("Resource_70uo1")])
+source_event_number = 20
+title = "批邓反击右倾翻案风"
+description = "周恩来的去世严重影响了他的得力助手邓小平的地位，没有前总理的庇护。他现在经常受到以毛泽东夫人江青为首的激进分子的攻击，2月2日，邓小平被调到对外关系领域工作。在毛泽东及其支持者的批准下，他们成功地发起了“批邓反击右倾翻案风”运动，并在媒体上对邓进行了积极的迫害。值得注意的是，尽管毛泽东对邓小平不信任，但他还没有参与到对他的迫害中。既然华国锋和江青或邓小平都没有良好的关系，那我们该怎么办？"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

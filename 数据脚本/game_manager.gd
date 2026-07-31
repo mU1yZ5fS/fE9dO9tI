@@ -464,6 +464,11 @@ func _on_event_triggered(event_id: String, is_timeout: bool) -> void:
 		return
 	current_event_id = event_id
 	event_is_timeout = is_timeout
+	# 显示前动态文案钩子（原版 Event18 战争结算等按 data[82] 动态生成标题/描述/按钮）
+	if event_def.display_script != null:
+		var display_inst: RefCounted = event_def.display_script.new()
+		if display_inst != null and display_inst.has_method("prepare"):
+			display_inst.prepare(event_def, world)
 	pause()
 	event_started.emit(event_id)
 	get_tree().change_scene_to_file("uid://bheujwt4qte1y")

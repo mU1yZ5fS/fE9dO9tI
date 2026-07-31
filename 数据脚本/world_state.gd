@@ -158,6 +158,7 @@ const 数值索引 := {
 	"budget_services": I_BUDGET_SERVICES, "服务业预算": I_BUDGET_SERVICES,
 	"budget_welfare": I_BUDGET_WELFARE, "福利预算": I_BUDGET_WELFARE,
 	"budget_diplomacy": I_BUDGET_DIPLO, "外交预算": I_BUDGET_DIPLO,
+	"data_41": 41,   # 原 data[41]（泰国选举干预标志，无正式命名键）
 	"gang_of_four_path": I_GANG_OF_FOUR_PATH, "四人帮路线": I_GANG_OF_FOUR_PATH,
 	"palestine_status": I_PALESTINE_STATUS, "巴以安排": I_PALESTINE_STATUS,
 	"post_mao_course": I_POST_MAO_COURSE, "毛后路线": I_POST_MAO_COURSE,

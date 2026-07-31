@@ -77,6 +77,11 @@ extends Resource
 ## 该事件所属的 DLC / 资料片（空 = 本体）
 @export var dlc: String = ""
 
+## 显示前动态文案钩子（可选）。指向 extends RefCounted 的脚本，
+## 事件 UI 打开前引擎调用其 prepare(event_def, world)，
+## 用于按游戏状态动态改写 title/description/options 文案（原版 Event18 战争结算等）。
+@export var display_script: GDScript = null
+
 
 # ── 工厂方法（方便代码中动态创建事件） ──
 
