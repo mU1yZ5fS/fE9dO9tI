@@ -539,67 +539,6 @@ static func create_event_300() -> EventDef:
 
 
 # ========================================================================
-# 事件迁移 —— Event7（对美外交危机 / Diplomatic Crisis with USA）
-# 事件迁移 —— Event8（对苏外交危机 / Diplomatic Crisis with USSR）
-# ========================================================================
-
-static func create_event_8() -> EventDef:
-	var ev := EventDef.new()
-	ev.event_id = "diplomatic_crisis_ussr"
-	ev.title = "Diplomatic crisis"
-	ev.description = ("Our relations with the USSR have reached a critically low level. Their propaganda already "
-			+ "accuses China of all possible and impossible crimes, and our intelligence reports on the turmoil "
-			+ "in the General Staff of the USSR and the movement of Soviet troops on the border. We urgently "
-			+ "need to somehow correct the situation if we don't want the Third World War.")
-	ev.fire_only_once = true
-	ev.mtth_base = 0.0
-	ev.trigger_conditions = [empire_rel_at_most(EmpireData.USSR, 0)] as Array[ExprNode]
-
-	# 选项0：自费组织缓和
-	ev.options.append(option(
-		"Organize detente at our expense",
-		"We urgently organized a magnificent meeting of the foreign ministers of China and the USSR, and the "
-		+ "Soviet delegation was invited to a luxurious tour of China, where various festivals and events "
-		+ "are being prepared, showing our peacefulness. The detente succeeded, the tension subsided.",
-		[set_empire_relation(EmpireData.USSR, 400), add_resource("money", -100)],
-		null, ""
-	))
-
-	# 选项1：放弃部分外交立场
-	ev.options.append(option(
-		"Pass a part of foreign policy positions as a sign of goodwill",
-		"We have abandoned some foreign policy claims, reduced the support of loyal opposition in other countries "
-		+ "and, in general, reduced the degree of interventionism of Chinese politics. This was positively "
-		+ "perceived by the Ministry of Foreign Affairs of the USSR, tensions decreased. Like our influence.",
-		[set_empire_relation(EmpireData.USSR, 400), add_resource("army", -50),
-		add_resource("agents", -50)],
-
-		null, ""
-	))
-
-	# 选项2：不在乎
-	ev.options.append(option(
-		"Don't care at all",
-		"Tension grows. This may lead to war.",
-		[],
-		null, ""
-	))
-
-	# 选项3：启动核对抗程序
-	ev.options.append(option(
-		"Launch nukes into imperialists!",
-		"Tension grows.",
-		[set_modifier_active("16", true), add_resource("army", -50),
-		add_resource("agents", -50)],
-
-		null,
-		"Nobody wants a nuclear war"
-	))
-
-	return ev
-
-
-# ========================================================================
 # 事件迁移 —— Event9（西藏分离主义 / Separatism in Tibet）
 # ========================================================================
 
@@ -1564,8 +1503,8 @@ static func batch_migrate(output_dir: String = "res://场景/事件界面/events
 	# 已迁移的事件列表
 	# 事件 001/003/004/005/006 已改为手写 .tres（唯一权威源），不经生成器。
 	# 事件 007 已改为手写 .tres（唯一权威源），不经生成器。
+	# 事件 008 已改为手写 .tres（唯一权威源），不经生成器。
 	var migrated := [
-		{"func": create_event_8, "filename": "event_008_diplo_crisis_ussr.tres"},
 		{"func": create_event_9, "filename": "event_009_tibet_separatism.tres"},
 		{"func": create_event_10, "filename": "event_010_xinjiang_separatism.tres"},
 		{"func": create_event_11, "filename": "event_011_industry_decline.tres"},

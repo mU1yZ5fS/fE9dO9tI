@@ -172,10 +172,21 @@ enable_condition = SubResource("Expr_opt4_enable")
 effects = Array[ExtResource("2_effect")]([SubResource("E4_custom")])
 result_text = "（结果由 event_007_diplo_crisis_usa.gd 动态生成）"
 
-[sub_resource type="Resource" id="Expr_trigger705"]
+[sub_resource type="Resource" id="Expr_rel0"]
 script = ExtResource("3_expr")
-type = 5
-ref_event_id = "event_705"
+type = 9
+key = "0"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_not421"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_421"
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_rel0"), SubResource("Expr_not421")])
 
 [resource]
 script = ExtResource("4_event")
@@ -183,7 +194,7 @@ event_id = "diplomatic_crisis_usa"
 source_event_number = 7
 title = "外交危机"
 description = "我们与美国的关系达到了极低的水平。他们的宣传已经开始指责我们犯下了可能的和不可能的罪行，我们的情报部门告诉我们五角大楼中的骚动以及东南亚的美国军事基地的活动。如果我们不想要打第三次世界大战的话，就需要尽快纠正这种情况。"
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger705")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
 show_notification = false
 fire_only_once = false
 options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

@@ -2,8 +2,10 @@ extends RefCounted
 
 ## 原作 Event7.cs：中美外交危机。逐字中文 + 完整效果复刻。
 ## 差异：
-##  - 触发：原版唯一触发源 = Event705「冠礼」结果链（Event705.cs:63）；端口 007 的
-##    trigger_conditions 用 PREV_EVENT_DONE(ref="event_705")，705 未移植前不自动触发。
+##  - 触发：TimeScript.cs:10076 自动触发（empires[0].relations<=0 && !event_done[7] &&
+##    !event_done[421]），每半年(1月/7月1日)重置可重复（TimeScript.cs:3029）；另有
+##    Event705「冠礼」结果链入口（Event705.cs:63）。端口 007 的 trigger_conditions =
+##    EMPIRE_RELATION_AT_MOST(0,0) + PREV_EVENT_NOT_DONE(event_421)，421 未移植前视为恒真。
 ##  - 海地覆盖（SubGosstroy==19 && !cw 时替换 opt0/opt1 文案并 Destroy 按钮）：依赖
 ##    705 链后的海地状态，端口 UI 静态文案无法动态替换 → 仅复刻结果末尾的 cw=true 置位，
 ##    文案覆盖部分在 705 移植时补（届时海地状态恒不成立，行为一致）。
