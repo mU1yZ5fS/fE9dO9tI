@@ -271,27 +271,26 @@ func _refresh_left_panel() -> void:
 	else:
 		lines.append("尚未被纪律审查")
 	if pol.is_under_surveillance:
-		var remain_m: int = maxi(0, 7 - pol.days_surveillance)
-		lines.append("正在被监察调查（剩余 %d 月）" % remain_m)
-		# POL-08 ChangeOfKilling
+		# 原版 Politic_Manager.cs:127：显示已进行月数 + 「留置后的影响」(=ChangeOfKilling 清除成功率)
+		lines.append("已处于监察调查：%d 个月" % pol.days_surveillance)
 		var rate: float = GameManager.change_of_killing(_selected_pol_index)
-		lines.append("阴谋发现概率: %d%%" % int(round(rate * 100.0)))
+		lines.append("留置后的影响: %d%%" % int(round(rate * 100.0)))
 	else:
-		lines.append("尚未被监察调查")
+		lines.append("尚未被监察调查｜留置后的影响未知")
 
 	if pol.you_fall:
 		lines.append("状态: 曾遭遇倒台/暗杀未遂")
 	if pol.is_under_surveillance and pol.is_conspiracy:
 		lines.append("阴谋: 已发现参与阴谋!")
-	elif pol.is_under_surveillance:
-		lines.append("留置后的影响力未知")
 	elif pol.is_conspiracy:
 		lines.append("传闻: 可能卷入派系阴谋")
 
 	if _is_faction_leader(_selected_pol_index):
 		lines.append("身份: 派系负责人（%s）" % pol.ideology_label())
 
-	lines.append("影响力: %d" % pol.power)
+	# 原版 Politic_Manager.cs:134：显示 power/10.|power%10|（power=850 → 85.0）
+	@warning_ignore("integer_division")
+	lines.append("影响力: %d.%d" % [pol.power / 10, absi(pol.power % 10)])
 	for threshold in POWER_LABELS:
 		if pol.power <= threshold[0]:
 			lines.append(threshold[1])
@@ -590,14 +589,14 @@ func _on_assassinate() -> void:
 	var success_rate: float = GameManager.change_of_killing(_selected_pol_index)
 	var roll: float = _world.ensure_rng().randf()
 	if roll > success_rate:
-		pol.you_fall = true
-		pol.power = maxi(50, pol.power - absi(pol.power / 5))
-		pol.loyalty = maxi(0, pol.loyalty - 500)
-		# 失败：参与施压者（对目标 matrix 低）以外全员小惩罚
+		# 原版 Button_Pol_Script.cs:709-715：全员 loyality-=100，目标额外 -400，
+		# you_fall=true。power 不变，不钳制负值（与调查/打压一致）。
 		for p in _world.politicians:
-			if p == null or p == pol:
+			if p == null:
 				continue
-			p.loyalty = maxi(0, p.loyalty - 30)
+			p.loyalty -= 100
+		pol.loyalty -= 400
+		pol.you_fall = true
 		_after_operation()
 		return
 
@@ -622,10 +621,14 @@ func _on_investigate() -> void:
 	d[W.I_AGENTS] -= COST_INVESTIGATE_AGENTS
 	pol.is_under_investigation = true
 	pol.investigator_index = 0
+	# 原版 Button_Pol_Script.cs:726-746：同 traits[0] 全员（含目标本人）扣忠诚，
+	# 领袖 -1000 否则 -100；helper 排除目标本人，故此处补目标自身一份，随后再 -2000。
 	if _is_faction_leader(_selected_pol_index):
 		_apply_faction_loyalty_penalty(_selected_pol_index, -1000)
+		pol.loyalty -= 1000
 	else:
 		_apply_faction_loyalty_penalty(_selected_pol_index, -100)
+		pol.loyalty -= 100
 	pol.loyalty -= 2000
 	_after_operation()
 

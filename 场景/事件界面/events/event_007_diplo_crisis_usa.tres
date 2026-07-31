@@ -1,113 +1,189 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_1elvh"]
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_e30uj"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_vn5nf"]
-[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="4_tbdlv"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="5_v8hd3"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_007_diplo_crisis_usa.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_jueq3"]
-script = ExtResource("3_vn5nf")
-type = 9
-key = "0"
-value = 400.0
+[sub_resource type="Resource" id="Expr_doctrine"]
+script = ExtResource("3_expr")
+type = 22
+key = "military_doctrine"
+value = 30.0
 
-[sub_resource type="Resource" id="Resource_i6g0f"]
-script = ExtResource("3_vn5nf")
-key = "money"
-value = -100.0
+[sub_resource type="Resource" id="Expr_diplo950"]
+script = ExtResource("3_expr")
+type = 1
+key = "diplo"
+value = 950.0
 
-[sub_resource type="Resource" id="Resource_iqph1"]
-script = ExtResource("2_e30uj")
-text = "Organize detente at our expense"
-effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_jueq3"), SubResource("Resource_i6g0f")])
-result_text = "We urgently organized a magnificent meeting of the foreign ministers of China and the USA, and the American delegation was invited to a luxurious tour of China, where various festivals and events are being prepared, showing our peacefulness. The detente succeeded, the tension subsided."
+[sub_resource type="Resource" id="Expr_opt0_enable"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_doctrine"), SubResource("Expr_diplo950")])
 
-[sub_resource type="Resource" id="Resource_hkxfe"]
-script = ExtResource("3_vn5nf")
-type = 9
-key = "0"
-value = 400.0
+[sub_resource type="Resource" id="E0_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_gejl1"]
-script = ExtResource("3_vn5nf")
-key = "army"
-value = -50.0
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "我们出资缓和关系"
+disabled_text = "我们绝不投降！"
+enable_condition = SubResource("Expr_opt0_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("E0_custom")])
+result_text = "（结果由 event_007_diplo_crisis_usa.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_gfu06"]
-script = ExtResource("3_vn5nf")
-key = "agents"
-value = -50.0
-
-[sub_resource type="Resource" id="Resource_fogln"]
-script = ExtResource("4_tbdlv")
-key = "political"
+[sub_resource type="Resource" id="Expr_infl50"]
+script = ExtResource("3_expr")
+key = "influence_prc"
 value = 50.0
 
-[sub_resource type="Resource" id="Resource_43k7t"]
-script = ExtResource("2_e30uj")
-text = "Pass a part of foreign policy positions as a sign of goodwill"
-disabled_text = "Our influence is too weak, so we cannot limit it"
-enable_condition = SubResource("Resource_fogln")
-effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_hkxfe"), SubResource("Resource_gejl1"), SubResource("Resource_gfu06")])
-result_text = "We have abandoned some foreign policy claims, reduced the support of loyal opposition in other countries and, in general, reduced the degree of interventionism of Chinese politics. This was positively perceived by the Ministry of Foreign Affairs of the USA, tensions decreased. Like our influence."
-
-[sub_resource type="Resource" id="Resource_06ufc"]
-script = ExtResource("2_e30uj")
-text = "Launch nukes into imperialists!"
-disabled_text = "Nobody wants a nuclear war"
-result_text = "Tension grows. This leads to a nuclear confrontation."
-
-[sub_resource type="Resource" id="Resource_nsstf"]
-script = ExtResource("3_vn5nf")
-type = 13
-key = "17"
-value = 1.0
-
-[sub_resource type="Resource" id="Resource_shuk0"]
-script = ExtResource("3_vn5nf")
-key = "army"
-value = -50.0
-
-[sub_resource type="Resource" id="Resource_n44se"]
-script = ExtResource("3_vn5nf")
-key = "agents"
-value = -50.0
-
-[sub_resource type="Resource" id="Resource_0l65a"]
-script = ExtResource("2_e30uj")
-text = "Don't care at all"
-effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_nsstf"), SubResource("Resource_shuk0"), SubResource("Resource_n44se")])
-result_text = "Tension grows."
-
-[sub_resource type="Resource" id="Resource_eidyv"]
-script = ExtResource("3_vn5nf")
+[sub_resource type="Resource" id="E1_rel"]
+script = ExtResource("2_effect")
 type = 9
 key = "0"
 value = 400.0
 
-[sub_resource type="Resource" id="Resource_qng3i"]
-script = ExtResource("4_tbdlv")
-type = 2
-key = "17"
+[sub_resource type="Resource" id="E1_infl"]
+script = ExtResource("2_effect")
+key = "influence_prc"
+value = -50.0
 
-[sub_resource type="Resource" id="Resource_ld467"]
-script = ExtResource("2_e30uj")
-text = "Bribe U.S. senators to keep the issue quiet"
-disabled_text = "Need specific conditions"
-enable_condition = SubResource("Resource_qng3i")
-effects = Array[ExtResource("3_vn5nf")]([SubResource("Resource_eidyv")])
-result_text = "We urgently organized a magnificent meeting of the foreign ministers of China and the USA... The detente succeeded, the tension subsided."
+[sub_resource type="Resource" id="E1_army"]
+script = ExtResource("2_effect")
+key = "army"
+value = -50.0
 
-[sub_resource type="Resource" id="Resource_ehfuw"]
-script = ExtResource("4_tbdlv")
-type = 9
+[sub_resource type="Resource" id="E1_agents"]
+script = ExtResource("2_effect")
+key = "agents"
+value = -50.0
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "放弃一部分外交政策立场来表达善意"
+disabled_text = "我们的影响力太弱了，所以我们限无可限"
+enable_condition = SubResource("Expr_infl50")
+effects = Array[ExtResource("2_effect")]([SubResource("E1_rel"), SubResource("E1_infl"), SubResource("E1_army"), SubResource("E1_agents")])
+result_text = "我们放弃了一些对外政策主张，减少了对其他国家反对派的支持，总体上减少了中国对他国政治的干预。美国外交部对此表示肯定，紧张局势有所缓解。我们的影响力也降低了"
+
+[sub_resource type="Resource" id="Expr_line0"]
+script = ExtResource("3_expr")
+type = 21
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_sys7"]
+script = ExtResource("3_expr")
+type = 1
+key = "party_system"
+value = 7.0
+
+[sub_resource type="Resource" id="Expr_branch1"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line0"), SubResource("Expr_sys7")])
+
+[sub_resource type="Resource" id="Expr_coal67"]
+script = ExtResource("3_expr")
+type = 36
+value = 67.0
+
+[sub_resource type="Resource" id="Expr_sys8"]
+script = ExtResource("3_expr")
+key = "party_system"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_branch2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_coal67"), SubResource("Expr_sys8")])
+
+[sub_resource type="Resource" id="Expr_opt2_enable"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_branch1"), SubResource("Expr_branch2")])
+
+[sub_resource type="Resource" id="E2_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "向帝国主义者发射核武器！"
+disabled_text = "没人想要一场核战争"
+enable_condition = SubResource("Expr_opt2_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("E2_custom")])
+result_text = "（结果由 event_007_diplo_crisis_usa.gd 动态生成）"
+
+[sub_resource type="Resource" id="E3_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_option")
+text = "一点都不在乎"
+effects = Array[ExtResource("2_effect")]([SubResource("E3_custom")])
+result_text = "（结果由 event_007_diplo_crisis_usa.gd 动态生成）"
+
+[sub_resource type="Resource" id="Expr_prev544_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_544"
+
+[sub_resource type="Resource" id="Expr_prev544_res"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_544"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_pwr_diff"]
+script = ExtResource("3_expr")
+type = 37
 key = "0"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_usa_econ"]
+script = ExtResource("3_expr")
+type = 25
+target = "1"
+key = "econ"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_opt4_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_prev544_done"), SubResource("Expr_prev544_res"), SubResource("Expr_pwr_diff"), SubResource("Expr_usa_econ")])
+
+[sub_resource type="Resource" id="E4_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_option")
+text = "让我们给帝国主义者一点颜色瞧瞧！"
+enable_condition = SubResource("Expr_opt4_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("E4_custom")])
+result_text = "（结果由 event_007_diplo_crisis_usa.gd 动态生成）"
+
+[sub_resource type="Resource" id="Expr_trigger705"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_705"
 
 [resource]
-script = ExtResource("5_v8hd3")
+script = ExtResource("4_event")
 event_id = "diplomatic_crisis_usa"
-title = "Diplomatic crisis"
-description = "Our relations with the USA have reached a critically low level. Their propaganda already accuses China of all possible and impossible crimes, and our intelligence reports on the turmoil in the Pentagon and activity at American bases in Southeast Asia. We urgently need to somehow correct the situation if we don't want the Third World War."
-trigger_conditions = Array[ExtResource("4_tbdlv")]([SubResource("Resource_ehfuw")])
-options = Array[ExtResource("2_e30uj")]([SubResource("Resource_iqph1"), SubResource("Resource_43k7t"), SubResource("Resource_06ufc"), SubResource("Resource_0l65a"), SubResource("Resource_ld467")])
+source_event_number = 7
+title = "外交危机"
+description = "我们与美国的关系达到了极低的水平。他们的宣传已经开始指责我们犯下了可能的和不可能的罪行，我们的情报部门告诉我们五角大楼中的骚动以及东南亚的美国军事基地的活动。如果我们不想要打第三次世界大战的话，就需要尽快纠正这种情况。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger705")])
+show_notification = false
+fire_only_once = false
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

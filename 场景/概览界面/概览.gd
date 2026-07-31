@@ -168,10 +168,17 @@ func _build_trade(w: WorldState) -> String:
 	s += "（双周结算时：顺差加预算/支持，逆差伤预算/支持/生活）\n"
 	s += "贸易伙伴数：%d\n\n" % partners
 	s += _h("世界市场参与")
+	# 三档标签对齐 modify_choose.cs；每两周效果对齐结算 _fortnight_trade_balance(game_manager.gd:2577-2582)
 	if partners <= 4:
-		s += "封闭 / 伙伴偏少"
+		var step := 5 - partners  # 结算：自由化/特工 -= -5+partners（即 +（5-partners））
+		s += "孤立主义\n"
+		s += "自由化思潮（每两周）：+%s\n" % _f1(float(step) / 10.0)
+		s += "特工网络（每两周）：+%s\n" % _f1(float(step) / 10.0)
 	elif partners > 12:
-		s += "高度参与"
+		var step := partners - 12
+		s += "积极参与全球化\n"
+		s += "自由化思潮（每两周）：+%s\n" % _f1(float(step) / 10.0)
+		s += "特工网络（每两周）：-%s\n" % _f1(float(step) / 10.0)
 	else:
 		s += "平衡主义"
 	return s
@@ -187,7 +194,12 @@ func _build_influence(w: WorldState) -> String:
 	s += "影响美苏在第三世界的争夺结果\n\n"
 	s += _h("苏联领导人")
 	var ussr: EmpireData = w.empires[1] if w.empires.size() > 1 else null
-	s += "%s\n\n" % _leader_name(ussr, "列昂尼德·勃列日涅夫")
+	s += "%s\n" % _leader_name(ussr, "列昂尼德·勃列日涅夫")
+	# 仅移植勃列日涅夫(current_leader==0)效果文案（modify_choose.cs:156-158）；
+	# 其余 8 位继任分支依赖未移植的继任系统，暂不列出（见记忆 faction-dynamic-options-blocked）
+	if ussr == null or ussr.current_leader == 0:
+		s += "提升苏联的非洲干涉行动花费\n若中苏关系尚未解冻：\n与美国的关系 +0.5；凝聚力 -0.2\n"
+	s += "\n"
 	s += _h("军备竞赛")
 	s += "我们不参与军备竞赛"
 	return s
@@ -260,37 +272,106 @@ func _build_situation(w: WorldState) -> String:
 
 
 func _build_cohesion(w: WorldState) -> String:
+	## 世界观瞻读 data[31]（原作统一度/世界观；项目常量误名 I_WAR_SUPPORT）。
+	## 档位/特殊影响对齐 modify_choose.cs:346-434 与结算 _fortnight_satisfaction_drift(game_manager.gd:2587-2602)。
+	## 注：data[31] 周期更新逻辑未移植，运行时近乎恒为初值 500（多元一体档）。
 	var d := w.数值表
-	var religion: int = d[W.I_RELIGION] if d.size() > W.I_RELIGION else 24
+	var unity_view: int = d[W.I_WAR_SUPPORT] if d.size() > W.I_WAR_SUPPORT else 500
 	var unity_raw: int = d[W.I_MANPOWER] if d.size() > W.I_MANPOWER else 0
 	var pop: int = d[W.I_POPULATION] if d.size() > W.I_POPULATION else 0
-	var worldview := _religion_label(religion)
 	var s := _h("世界观瞻")
-	s += "现状：\n%s（政策值 %d）\n\n" % [worldview, religion]
+	s += "现状：\n%s\n(%s/100)\n\n" % [_worldview_label(unity_view), _f1(float(unity_view) / 10.0)]
 	s += "国家凝聚力（兵源/团结代理）：\n%s / 100.0\n\n" % _f1(float(unity_raw) / 10.0)
 	s += _h("特殊影响")
-	s += "无\n\n"
+	s += _worldview_effects(unity_view, d)
 	s += _h("人口")
 	s += "%s 百万\n" % _f1(float(pop) / 10.0)
+	s += _population_effects(d, w)
 	return s
 
 
-func _religion_label(v: int) -> String:
-	match v:
-		24:
-			return "反传统取向"
-		25:
-			return "支持无神论宣传"
-		26:
-			return "宗教活动受监督"
-		27:
-			return "政教分离"
-		28:
-			return "依靠传统"
-		29:
-			return "政教协定"
-		_:
-			return "多元一体理念"
+## data[31] 统一度→世界观档位（modify_choose.cs:346-405）
+func _worldview_label(v: int) -> String:
+	if v > 700:
+		return "完全的统一"
+	elif v >= 400:
+		return "多元一体理念"
+	return "多元文化主义"
+
+
+## 特殊影响：对齐双周漂移结算 _fortnight_satisfaction_drift(game_manager.gd:2587-2602)
+func _worldview_effects(v: int, d: Array[int]) -> String:
+	if v > 700:
+		@warning_ignore("integer_division")
+		var step := (v - 500) / 100  # 与结算 game_manager.gd:2590 整除逐位一致
+		var s := "生活水平（每两周）：-%s\n" % _f1(float(step) / 10.0)
+		s += "党内支持（每两周）：+%s\n" % _f1(float(step) / 10.0)
+		s += "特工网络（每两周）：+%s\n" % _f1(float(step) / 10.0)
+		if d.size() > W.I_DIPLO and d[W.I_DIPLO] < 500:
+			s += "国际声望：+0.5（若低于 50.0）\n"
+		return s + "\n"
+	elif v < 400:
+		@warning_ignore("integer_division")
+		var step := (500 - v) / 100  # 与结算 game_manager.gd:2596 整除逐位一致
+		var s := "自由化思潮（每两周）：+%s\n" % _f1(float(step) / 10.0)
+		s += "党内支持（每两周）：+%s\n" % _f1(float(step) / 10.0)
+		s += "特工网络（每两周）：+%s\n" % _f1(float(step) / 10.0)
+		s += "与美/苏关系（每两周）：+%s\n" % _f1(float(step) / 10.0)
+		return s + "\n"
+	return "无\n\n"
+
+
+## 人口规模对国家数值的效应预览。镜像项目实际结算（非原作显示公式）：
+## 经济体制→工业/人民支持（月度 game_manager.gd:1765-1770）；军事学说→预算/军力（双周 game_manager.gd:2512-2538）。
+## 仅列项目真实存在的项；原作 modify_choose.cs 的特工项(pop/200)与 econ13 项(9037/3000) 项目未移植，故不显示。
+func _population_effects(d: Array[int], w: WorldState) -> String:
+	var econ: int = d[W.I_ECON_SYSTEM] if d.size() > W.I_ECON_SYSTEM else 0
+	var pop: int = d[W.I_POPULATION] if d.size() > W.I_POPULATION else 0
+	var pop_excess: int = pop - 9307  # 与结算 game_manager.gd:2512 同基数
+	var s := ""
+	# 经济体制→工业/人民支持（月度）
+	if econ == 10 or econ == 11:
+		s += "工业（每月）：+%s\n" % _p10(pop, 5000)
+	elif (econ == 14 or econ == 15) and not _modifier_is_active(w, 13):
+		s += "人民支持（每月）：-%s\n" % _p10(pop, 4000)
+	# 军事学说→预算/军力（双周，门槛与除数逐位对齐结算）
+	match d[W.I_MIL_DOCTRINE] if d.size() > W.I_MIL_DOCTRINE else -1:
+		30:
+			if pop_excess > 99:
+				s += "预算（每两周）：-%s\n" % _p10(pop_excess, 100)
+				s += "军事实力（每两周）：+%s\n" % _p10(pop_excess, 100)
+		31:
+			if pop_excess > 199:
+				s += "预算（每两周）：-%s\n" % _p10(pop_excess, 200)
+				s += "军事实力（每两周）：+%s\n" % _p10(pop_excess, 200)
+		32:
+			if pop_excess > 299:
+				s += "预算（每两周）：-%s\n" % _p10(pop_excess, 300)
+				s += "军事实力（每两周）：+%s\n" % _p10(pop_excess, 300)
+		33:
+			if pop_excess > 149:
+				var living: int = d[W.I_LIVING] if d.size() > W.I_LIVING else 0
+				if living < 500:
+					s += "预算（每两周）：-%s\n" % _p10(pop_excess, 150)
+					s += "军事实力（每两周）：+%s\n" % _p10(pop_excess, 250)
+				elif living < 700:
+					s += "预算（每两周）：-%s\n" % _p10(pop_excess, 150)
+					s += "军事实力（每两周）：+%s\n" % _p10(pop_excess, 300)
+				else:
+					s += "预算（每两周）：-%s\n" % _p10(pop_excess, 500)
+					s += "军事实力（每两周）：+%s\n" % _p10(pop_excess, 500)
+	if s == "":
+		s = "当前人口规模无显著效应\n"
+	return s
+
+
+## ×10 空间效应值（a/b 的商）→ "X.X" 显示；整除对齐结算逐位一致。符号由调用处文案给定，此处取绝对值。
+func _p10(a: int, b: int) -> String:
+	@warning_ignore("integer_division")
+	var v: int = a / b
+	@warning_ignore("integer_division")
+	var whole: int = absi(v) / 10
+	return "%d.%d" % [whole, absi(v) % 10]
 
 
 func _build_allies(w: WorldState) -> String:

@@ -718,7 +718,6 @@
     "name_1976": "Morocco",
     "regions": [
       54,
-      55,
       56,
       248,
       533,
@@ -736,13 +735,14 @@
       3594
     ],
     "capital": null,
-    "region_count": 17,
+    "region_count": 16,
     "name_zh": "摩洛哥"
   },
   "435": {
     "gwcode": 435,
     "name_1976": "Mauritania",
     "regions": [
+      55,
       57,
       1427,
       1439,
@@ -759,7 +759,7 @@
       4213
     ],
     "capital": null,
-    "region_count": 14,
+    "region_count": 15,
     "name_zh": "毛里塔尼亚"
   },
   "94": {

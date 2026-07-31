@@ -1,0 +1,2 @@
+[permissions]
+allow = ["Bash=cd \"F:\\work\\中国-毛的遗产[dh-4591]\" && for f in 场景/事件界面/events/*.tres; do t=$(grep -m1 \"^title\" \"$f\"); if echo \"$t\" | grep -qP '[\\x{4e00}-\\x{9fff}]'; then echo \"CN $f\"; else echo \"EN $f\"; fi; done"]

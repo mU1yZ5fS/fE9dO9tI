@@ -351,6 +351,8 @@ func get_data_index(key: String) -> int:
 func get_data_value(key: String) -> int:
 	if key.to_lower() in ["war", "war_state"]:
 		return war_state
+	if key.to_lower() == "influence_prc":
+		return influence_prc
 	var idx := get_data_index(key)
 	if idx >= 0 and idx < 数值表.size():
 		return 数值表[idx]
@@ -361,6 +363,9 @@ func set_data_value(key: String, value: int) -> void:
 	if key.to_lower() in ["war", "war_state"]:
 		war_state = value
 		return
+	if key.to_lower() == "influence_prc":
+		influence_prc = value
+		return
 	var idx := get_data_index(key)
 	if idx >= 0 and idx < 数值表.size():
 		数值表[idx] = value
@@ -370,6 +375,9 @@ func set_data_value(key: String, value: int) -> void:
 func add_data_value(key: String, delta: int) -> void:
 	if key.to_lower() in ["war", "war_state"]:
 		war_state += delta
+		return
+	if key.to_lower() == "influence_prc":
+		influence_prc += delta
 		return
 	var idx := get_data_index(key)
 	if idx >= 0 and idx < 数值表.size():

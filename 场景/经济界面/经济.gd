@@ -102,16 +102,27 @@ func _refresh() -> void:
 		_label(item_name + "数值", "%.1f" % (float(_raw(w, idx)) / 10.0))
 	_label("贷款数值", "%.1f" % (float(w.数值表[W.I_LOAN]) / 10.0))
 	_label("储蓄金数值", "%.1f" % (float(w.数值表[W.I_RESERVE]) / 10.0))
-	var debt_loss := float(w.数值表[W.I_LOAN]) / 40.0
+	# 债务损耗 UI（原版 Show_diplomacy_data_script.Repaint_dolg:280-298）：
+	# num=loan/40；零头保底(num<=0 且 loan>0 → 1)；年份互斥加成(1983 +2 / 1980 +1)；定点 num/10.num%10
+	var loan: int = w.数值表[W.I_LOAN]
 	var year := w.date.year if w.date else 1976
-	if year >= 1980:
-		debt_loss += 1.0
-	if year >= 1983:
-		debt_loss += 2.0
-	_label("债务损耗", "债务损耗：\n预算-%.1f" % debt_loss)
+	@warning_ignore("integer_division")
+	var debt_num := loan / 40
+	if debt_num <= 0 and loan > 0:
+		debt_num = 1
+	if year >= 1983 and loan > 0:
+		debt_num += 2
+	elif year >= 1980 and loan > 0:
+		debt_num += 1
+	_label("债务损耗", "债务损耗：\n预算-" + _fixed_point(debt_num))
 	_label("债务限额", "债务限额：\n%.1f" % (float(_loan_limit(w)) / 10.0))
-	var corruption := w.数值表[W.I_CORRUPTION]
-	_label("贪腐损耗", "贪腐损耗:\n预算-%.1f\n生活水平-%.1f" % [float(corruption) / 10.0, float(corruption) / 50.0])
+	# 贪腐损耗 UI（原版 Repaint_corrupt:316-330）：预算 num=corr/10、生活 num2=corr/50，定点显示
+	var corruption: int = w.数值表[W.I_CORRUPTION]
+	@warning_ignore("integer_division")
+	var corr_budget := corruption / 10
+	@warning_ignore("integer_division")
+	var corr_living := corruption / 50
+	_label("贪腐损耗", "贪腐损耗:\n预算-%s\n生活水平:-%s" % [_fixed_point(corr_budget), _fixed_point(corr_living)])
 	var planka := GameManager.calc_budget_planka()
 	_label("最大投资", "每类上限：\n%.1f" % (float(planka) / 6.0 / 10.0))
 	_label("储蓄金影响", "储蓄金影响：\n工业,服务,生活水平\n腐败随储备增加")
@@ -141,3 +152,9 @@ func _loan_limit(w: WorldState) -> int:
 		ussr_rel = w.empires[1].relations
 	@warning_ignore("integer_division")
 	return (usa_rel + ussr_rel) / 5
+
+
+## 整数（×10 存储单位）→ 定点字符串 "x.y"，对齐原版各 Repaint_* 的 num/10 "." num%10 显示。
+func _fixed_point(v: int) -> String:
+	@warning_ignore("integer_division")
+	return "%d.%d" % [absi(v / 10), absi(v % 10)]

@@ -7,13 +7,11 @@ extends Control
 const ENTRY := preload("res://场景/战争界面/战争条目.tscn")
 
 var _list: VBoxContainer
-var _debug_box: HBoxContainer
 var _refresh_list_queued: bool = false
 
 
 func _ready() -> void:
 	_ensure_list_host()
-	_ensure_debug_bar()
 	if GameManager:
 		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_on_stats):
 			GameManager.stats_changed.connect(_on_stats)
@@ -80,28 +78,6 @@ func _ensure_list_host() -> void:
 		_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_list.alignment = BoxContainer.ALIGNMENT_CENTER
 
-
-func _ensure_debug_bar() -> void:
-	_debug_box = get_node_or_null("调试开战") as HBoxContainer
-	if _debug_box != null:
-		return
-	_debug_box = HBoxContainer.new()
-	_debug_box.name = "调试开战"
-	_debug_box.offset_left = 280.0
-	_debug_box.offset_top = 980.0
-	_debug_box.offset_right = 1800.0
-	_debug_box.offset_bottom = 1040.0
-	_debug_box.add_theme_constant_override("separation", 6)
-	add_child(_debug_box)
-	var tip := Label.new()
-	tip.text = "调试开战:"
-	_debug_box.add_child(tip)
-	for id in WarCatalog.all_ids():
-		var def := WarCatalog.get_def(id)
-		var b := Button.new()
-		b.text = def.name_zh if def else str(id)
-		b.pressed.connect(_on_debug_start.bind(id))
-		_debug_box.add_child(b)
 
 
 func _refresh_intervention() -> void:

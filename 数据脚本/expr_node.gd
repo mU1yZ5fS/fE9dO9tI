@@ -59,6 +59,8 @@ enum Type {
 	POLITICIAN_POWER_DIFFERENCE_AT_LEAST, # key=左侧性格 target=右侧性格 value=最小权力差
 	WAR_FIELD_EQUALS,            # target=战争编号 key=字段 value=值
 	POLITICIAN_GROUP_POWER_DIFFERENCE_AT_LEAST, # key/target=逗号分隔性格组 value=最小权力差
+	COALITION_SUPPORT_AT_LEAST,  # value=阈值 → 执政联盟支持率(原 summa_3_2) >= value（仅 party_system>7 时计算，否则 0）
+	EMPIRE_POWER_DIFFERENCE_AT_LEAST, # key=帝国编号 value=阈值 → influence_prc - empires[key].power >= value
 }
 
 ## 节点类型

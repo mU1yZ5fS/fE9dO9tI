@@ -679,7 +679,7 @@ func adjust_reserve(delta: int) -> bool:
 ## 对齐 Doctrine_button_script.cs 75-214。空数组 = 该项不施加路线限制。
 ## 未列出的目标值（如 OGAS 经济 11）= 无路线限制。
 const POLICY_LINE_REQ_ONEPARTY := {
-	10: [0, 1], 11: [], 12: [1, 2], 13: [2, 3], 14: [3, 4], 15: [4],  # 经济 data[16]
+	10: [0, 1], 11: [0, 1], 12: [1, 2], 13: [2, 3], 14: [3, 4], 15: [4],  # 经济 data[16]（原版 :42 id11=极左/保守0,1）
 	6: [0], 7: [1, 2], 8: [3], 9: [4],                                # 党政 data[15]
 	16: [0, 1], 17: [0, 1, 2, 3], 18: [2, 3, 4], 19: [3, 4],          # 人权 data[17]
 	20: [0, 1, 2, 3], 21: [2, 3], 22: [3, 4], 23: [4],                # 国家体制 data[18]
@@ -691,7 +691,7 @@ const POLICY_LINE_REQ_ONEPARTY := {
 ## 经济类(10-15)看 data[52](34-37)，其余看 data[54](38-41)，均需联盟席位>66%。
 ## 对齐 Doctrine_button_script.cs 233-453。
 const POLICY_DISPLAY_REQ_MULTIPARTY := {
-	10: [34], 11: [], 12: [34, 35], 13: [35, 36], 14: [36, 37], 15: [37],  # 经济 → data[52]
+	10: [34], 11: [34], 12: [34, 35], 13: [35, 36], 14: [36, 37], 15: [37],  # 经济 → data[52]（原版 :204 id11=社会主义34）
 	6: [38, 39], 7: [39, 40], 8: [40, 41], 9: [41],                        # 党政 → data[54]
 	16: [38, 39], 17: [39, 40], 18: [40], 19: [41],                        # 人权 → data[54]
 	20: [38, 39], 21: [39, 40, 41], 22: [40, 41], 23: [41],                # 国家体制 → data[54]
@@ -740,30 +740,35 @@ func _policy_leading_ok(_category_idx: int, target_val: int, d: Array[int]) -> D
 	if party_sys <= 7:
 		# neutral_leading：满足现状者席位 ≥ 所有派系 → 中间派主导，任何政策都不可变
 		if _satisfied_leads(d):
-			return {"ok": false, "text": "满足现状者主导，无法变更政策"}
-		# 经济 10/15 额外要求“非人民民主专政(data[15]!=7)”
-		if (target_val == 10 or target_val == 15) and party_sys == 7:
-			return {"ok": false, "text": "人民民主专政下不可选此经济政策"}
-		# 宗教 29 特例：data[56]==4 或 (威权 data[14]==0 且 高民族主义 data[31]≥700)
-		if target_val == 29 and d[W.I_IDEOLOGY] == 0 and d[W.I_WAR_SUPPORT] >= 700:
-			return {"ok": true, "text": "威权体制+高民族主义"}
-		var req: Array = POLICY_LINE_REQ_ONEPARTY.get(target_val, [])
-		if req.is_empty():
-			return {"ok": true, "text": "无执政路线限制"}  # 含 OGAS 经济(11)
+			return {"ok": false, "text": "满足现状者失去领导"}
 		var line: int = d[W.I_POLITICAL_LINE]
-		return {"ok": line in req, "text": _line_req_text(req)}
+		var text: String = LEADING_TEXT_ONEPARTY.get(target_val, "")
+		if text == "":
+			return {"ok": true, "text": "无执政路线限制"}  # 未列出（如 OGAS 经济 11 在多态另处理）
+		var req: Array = POLICY_LINE_REQ_ONEPARTY.get(target_val, [])
+		var ok: bool = line in req
+		# 经济 10/15：额外要求 data[15]!=7（非人民民主专政）
+		if target_val == 10 or target_val == 15:
+			ok = ok and party_sys != 7
+		# 宗教 29 特例：data[56]==4 或 (威权 data[14]==0 且 高民族主义 data[31]≥700)
+		elif target_val == 29:
+			ok = ok or (d[W.I_IDEOLOGY] == 0 and d[W.I_WAR_SUPPORT] >= 700)
+		return {"ok": ok, "text": text}
 	else:
-		# 多党：显示等级 + 联盟席位 > 66%
-		var req2: Array = POLICY_DISPLAY_REQ_MULTIPARTY.get(target_val, [])
-		if req2.is_empty():
+		# 多党：路线显示等级 + 联盟席位 > 66%
+		var text: String = LEADING_TEXT_MULTIPARTY.get(target_val, "")
+		if text == "":
 			return {"ok": true, "text": "无执政路线限制"}
+		text += MULTIPARTY_SEAT_SUFFIX
+		var req2: Array = POLICY_DISPLAY_REQ_MULTIPARTY.get(target_val, [])
 		var seat_ok := _multiparty_seat_majority(d)
+		# 经济类(10-15)看 data[52]，其余看 data[54]
 		var econ_cat := target_val >= 10 and target_val <= 15
 		var disp: int = d[W.I_ECON_DISPLAY] if econ_cat else d[W.I_POLITICAL_DISPLAY]
 		var disp_ok: bool = disp in req2
-		if target_val == 29:  # 政教协定多党特例：另需 data[52]∈{36,37}
+		if target_val == 29:  # 政教协定多党特例：另需 data[52]∈{36,37}（原版 :402）
 			disp_ok = disp_ok and (d[W.I_ECON_DISPLAY] == 36 or d[W.I_ECON_DISPLAY] == 37)
-		return {"ok": disp_ok and seat_ok, "text": "需对应政治路线 + 联盟席位>66%"}
+		return {"ok": disp_ok and seat_ok, "text": text}
 
 
 ## neutral_leading：满足现状者 data[106] ≥ 每个派系 support（原版 Doctrine 60）
@@ -796,12 +801,33 @@ func _multiparty_seat_majority(d: Array[int]) -> bool:
 	return float(allied) * 100.0 / float(total) > 66.0
 
 
-func _line_req_text(req: Array) -> String:
-	var names := PackedStringArray()
-	for i in req:
-		if i >= 0 and i < FactionData.FACTION_NAMES.size():
-			names.append(FactionData.FACTION_NAMES[i])
-	return "需 %s 主导执政路线" % "/".join(names)
+## 一党制 uslovie_text[2] 逐字文案（原版 Doctrine_button_script.cs:37-173，基于 data[56] 派系）。
+## 与 POLICY_LINE_REQ_ONEPARTY 判定一一对应；10/15 的“并非新民主主义制度”尾注见 _policy_leading_ok。
+const LEADING_TEXT_ONEPARTY := {
+	10: "极左派/保守派领导\n并非\"新民主主义制度\"", 11: "极左派/保守派领导",
+	12: "保守派/温和派领导", 13: "温和派/改革派领导", 14: "改革派/自由派领导",
+	15: "自由派领导\n并非\"新民主主义制度\"",
+	6: "极左派领导", 7: "保守派/温和派领导", 8: "改革派领导", 9: "自由派领导",
+	16: "非自由派领导", 17: "任意派领导", 18: "温和派/改革派/自由派领导", 19: "改革派/自由派领导",
+	20: "极左派/保守派/温和派/改革派领导", 21: "温和派/改革派领导", 22: "改革派/自由派领导", 23: "自由派领导",
+	24: "极左派领导", 25: "极左派/保守派领导", 26: "保守派/温和派/改革派领导",
+	27: "温和派/改革派/自由派领导", 28: "改革派/自由派领导", 29: "自由派领导/威权主义且民族主义高涨",
+	30: "极左派领导", 31: "极左派/保守派/温和派领导", 32: "温和派/改革派领导", 33: "改革派/自由派领导",
+}
+
+## 多党 uslovie_text[2] 逐字文案（原版 :195-443，基于 data[52]/data[54] 路线）。
+## 统一尾注“且 我方党派联盟在全国人大中保有66%以上席位”（MULTIPARTY_SEAT_SUFFIX），此处仅存路线前缀。
+const LEADING_TEXT_MULTIPARTY := {
+	10: "党派路线：社会主义", 11: "党派路线：社会主义", 12: "党派路线：社会主义/改良主义",
+	13: "党派路线：改良主义/实用主义", 14: "党派路线：实用主义/市场主义", 15: "党派路线：市场主义",
+	6: "党派路线：威权/强硬", 7: "党派路线：强硬/温和", 8: "党派路线：温和/民主", 9: "党派路线：民主",
+	16: "党派路线：威权/强硬", 17: "党派路线：强硬/温和", 18: "党派路线：温和", 19: "党派路线：民主",
+	20: "党派路线：威权/强硬", 21: "党派路线：强硬/温和/民主", 22: "党派路线：温和/民主", 23: "党派路线：民主",
+	24: "党派路线：威权", 25: "党派路线：威权/强硬", 26: "党派路线：强硬/温和",
+	27: "党派路线：温和/民主", 28: "党派路线：强硬/民主", 29: "党派路线：威权/强硬，实用主义/市场主义",
+	30: "党派路线：威权/强硬", 31: "党派路线：威权/民主", 32: "党派路线：温和/民主", 33: "党派路线：强硬/温和/民主",
+}
+const MULTIPARTY_SEAT_SUFFIX := " 且我方党派联盟在全国人大中保有66%以上席位"
 
 
 func change_policy(category_idx: int, target_val: int) -> bool:
@@ -975,6 +1001,9 @@ func set_faction_ally(faction_idx: int, is_ally: bool) -> void:
 	if world == null or faction_idx >= world.factions.size():
 		return
 	world.factions[faction_idx].is_ally = is_ally
+	# 原作 Party_ally_script.OnMouseDown：每次点击后按 party_number 重算执政路线 data[56]
+	#（一党制 ≤7：取 support 最大派系；多党 >7：_update_political_line no-op，走 is_faction_leading 读取路径）
+	_update_political_line(world.数值表, world)
 	_notify_stats()
 
 
@@ -1033,24 +1062,6 @@ func is_faction_leading(faction_index: int) -> bool:
 	if total <= 0:
 		return false
 	return float(allied) * 100.0 / float(total) > 66.0
-
-
-## 用积分强化派系 support（Party_ally_script：每 10 点 → +2% 量级，简化为 support += points/10*2）
-func spend_faction_points(faction_idx: int) -> bool:
-	if world == null or faction_idx < 0 or faction_idx >= world.factions.size():
-		return false
-	var f: FactionData = world.factions[faction_idx]
-	if f.points < 10:
-		return false
-	@warning_ignore("integer_division")
-	var chunks: int = f.points / 10
-	f.points -= 10 * chunks * 2  # 原版扣 20/chunk 量级
-	if f.points < 0:
-		f.points = 0
-	f.support += chunks * 2
-	_notify_stats()
-	return true
-
 
 
 ## 毛是否已逝——全项目唯一权威谓词。
@@ -1595,9 +1606,9 @@ func assign_politician_position(pol_index: int, position_id: int) -> bool:
 
 	world.politics_positions[position_id] = pol_index
 	pol.loyalty += new_loy
+	# 原版 Button_Pol_Script num5-12：命中意向职位仅 loyality+=250，不加 power
 	if pol.wanted_position == position_id:
 		pol.loyalty += 250
-		pol.power += 20
 	pol.in_power = true
 
 	# POL-20：任命后重算目标与前任关系矩阵 + 对领袖忠诚
@@ -3181,7 +3192,10 @@ func _fortnight_modifiers(
 		if freedom_before > d[W.I_THOUGHT_FREEDOM]:
 			d[W.I_THOUGHT_FREEDOM] += (freedom_before - d[W.I_THOUGHT_FREEDOM]) / 4
 
-	# 11 自动化计划经济。
+	# 11 自动化计划经济（OGAS）。原版唯一激活入口 = 事件97选项0（Event97.cs:58：
+	# data[1]=0/忠诚±/激活均为该事件的一次性副作用；触发需 science[17]+体制10/11，
+	# TimeScript.cs:10810）。事件97未移植 → 恒不激活。原版无「econ==11 自动激活」
+	# 逻辑（开局 data[16]=11 即中式计划，此前误加致开局党内支持清零，已移除）。
 	if _mod_active(w, 11):
 		d[W.I_INDUSTRY] += 20
 		d[W.I_AGRICULTURE] += 20
@@ -3194,12 +3208,6 @@ func _fortnight_modifiers(
 			d[W.I_PARTY_SUPPORT] += 500
 			d[W.I_AGENTS] -= 500
 			d[W.I_BUDGET] -= 500
-	elif d[W.I_ECON_SYSTEM] == 11:
-		w.modifiers[11].is_active = true
-		d[W.I_PARTY_SUPPORT] = 0
-		for p in w.politicians:
-			if not _is_vacant_politician(p):
-				p.loyalty -= 500
 
 	# 12 政治危机的动态激活条件与完整代价。
 	var output_average := (d[W.I_INDUSTRY] + d[W.I_AGRICULTURE] + d[W.I_SERVICES] - d[W.I_CORRUPTION]) / 3

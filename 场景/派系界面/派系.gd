@@ -20,11 +20,12 @@ const 派系列表 := ["极左派", "保守派", "温和派", "改革派", "自�
 const 政体名 := {0: "威权体制", 1: "社会主义", 2: "改良主义", 3: "自由民主"}
 const 路线名 := {0: "毛主义路线", 1: "保守路线", 2: "温和路线", 3: "改革路线", 4: "自由路线"}
 
+# num=this_number（原版 Doctrine_script 分支键）；slots=.tscn 面板内按钮节点名（场景顺序，
+# 作定位槽用，文案由 _build_options 运行时覆盖）；descriptions 按 id（=data 值）索引。
 const 政策类别 := {
 	"经济类型": {
-		"idx": W.I_ECON_SYSTEM, "panel": "右栏经济类型",
-		"options": {10: "中央计划经济", 11: "中式计划经济", 12: "国家资本主义",
-					13: "国控资本主义", 14: "市场经济", 15: "自由市场"},
+		"idx": W.I_ECON_SYSTEM, "num": 16, "panel": "右栏经济类型",
+		"slots": ["中央计划经济", "中式计划经济", "国家资本主义", "国控资本主义", "市场经济", "自由市场"],
 		"descriptions": {
 			10: "苏联式中央计划经济。国家完全控制生产与分配。\n工业+2 农业-1 思想自由-2",
 			11: "带有中国特色的计划经济。允许有限的地方自主权。\n工业+1 农业+1",
@@ -35,9 +36,8 @@ const 政策类别 := {
 		},
 	},
 	"党政": {
-		"idx": W.I_PARTY_SYSTEM, "panel": "右栏党政",
-		"options": {6: "无产阶级专政", 7: "人民民主专政", 8: "联合政府",
-					9: "西式民主"},
+		"idx": W.I_PARTY_SYSTEM, "num": 15, "panel": "右栏党政",
+		"slots": ["无产阶级专政", "人民民主专政", "联合政府", "西式民主"],
 		"descriptions": {
 			6: "无产阶级专政。党的绝对领导。\n党内支持+2 思想自由-2",
 			7: "人民民主专政。统一战线框架下的多党合作。\n党内支持+1 民众支持+1",
@@ -46,8 +46,8 @@ const 政策类别 := {
 		},
 	},
 	"人权": {
-		"idx": W.I_PRESS_POLICY, "panel": "右栏人权",
-		"options": {16: "舆论一律", 17: "纪律约束", 18: "自然限制", 19: "多元自由"},
+		"idx": W.I_PRESS_POLICY, "num": 17, "panel": "右栏人权",
+		"slots": ["舆论一律", "纪律约束", "自然限制", "多元自由"],
 		"descriptions": {
 			16: "严格的新闻与舆论管控。所有媒体服从党的指挥。\n党内支持+1 思想自由-3 特工网络+1",
 			17: "党纪约束。维持基本纪律但允许内部讨论。\n党内支持+1 思想自由-1",
@@ -56,8 +56,8 @@ const 政策类别 := {
 		},
 	},
 	"国家体制": {
-		"idx": W.I_TERRITORY, "panel": "右栏国家体制",
-		"options": {20: "单一制", 21: "联邦制", 22: "邦联制", 23: "区域自治"},
+		"idx": W.I_TERRITORY, "num": 18, "panel": "右栏国家体制",
+		"slots": ["单一制", "区域自治", "联邦制", "邦联制"],
 		"descriptions": {
 			20: "中央集权的单一制国家。地方服从中央。\n党内支持+1 民众支持-1",
 			21: "联邦制。各省拥有较大自主权。\n民众支持+1 国际声望+1",
@@ -66,9 +66,8 @@ const 政策类别 := {
 		},
 	},
 	"传统与宗教": {
-		"idx": W.I_RELIGION, "panel": "右栏传统与宗教",
-		"options": {24: "文化革命", 25: "国家无神论", 26: "宗教管制",
-					27: "世俗化", 28: "尊崇传统", 29: "政教协定"},
+		"idx": W.I_RELIGION, "num": 50, "panel": "右栏传统与宗教",
+		"slots": ["文化革命", "国家无神论", "宗教管制", "世俗化", "尊崇传统", "政教协定"],
 		"descriptions": {
 			24: "打击传统主义。消灭一切旧文化。\n党内支持+1 民众支持-3 思想自由-3",
 			25: "支持无神论。宗教活动受到严格限制。\n党内支持+1 思想自由-1",
@@ -79,8 +78,8 @@ const 政策类别 := {
 		},
 	},
 	"军事力量": {
-		"idx": W.I_MIL_DOCTRINE, "panel": "右栏军事力量",
-		"options": {30: "全民皆兵", 31: "积极建军", 32: "国防建设", 33: "职业化军队"},
+		"idx": W.I_MIL_DOCTRINE, "num": 51, "panel": "右栏军事力量",
+		"slots": ["全民皆兵", "积极建军", "国防建设", "职业化军队"],
 		"descriptions": {
 			30: "全面军事化。最大化动员人口。\n兵力最多 预算消耗高",
 			31: "建设军力。扩大常备军规模。\n兵力较多 预算消耗中",
@@ -90,40 +89,24 @@ const 政策类别 := {
 	},
 }
 
-# 显示文案：随 modifies[6]（毛主义/文革态）动态切换。开局 modifies[6] 激活 → 用 MOD6 表
-# （中式计划经济/无产阶级专政/文化革命…）；modifies[6] 关闭 → 用默认表。出处 Doctrine_script.cs。
-# 更深分支（OGAS 11/国家垄断/550 联邦变体等）依赖未移植事件，延后（见 memory faction-dynamic-options-blocked）。
-# id 键节点仍按 政策类别.options 旧名 _find 定位，显示时覆盖 btn.text。
-const 选项显示_MOD6 := {
-	# 经济 :47-54
-	10: "经典计划经济", 11: "中式计划经济", 12: "国家资本主义",
-	13: "国家监护资本主义", 14: "社会主义导向市场", 15: "左翼小政府",
-	# 党政 :116-121
-	6: "无产阶级专政", 7: "新民主主义制度", 8: "人民民主制度", 9: "协和民主体制",
-	# 人权 :155-161（无 modifies[6] 分支）
+# ── 当前政策名标签（doctr 名表）──
+# 原版 Politic_doctr_script 读 doctr[data[idx]]；doctr[42] 基础名来自 Assets/Resources/Doctr_en.txt
+# （LoadInScript.cs:64-79），再由 modifies[6].active 覆盖部分项（GameStartScript.cs:1645-1673）。
+# 开局 modifies[6] 激活 → 经济11=中式计划经济、党政6=无产阶级专政、宗教24=文化革命…
+const DOCTR_BASE := {
+	0: "威权主义", 1: "保守社会主义", 2: "民族特色社会主义", 3: "邓式实用主义", 4: "社会民主主义", 5: "自由主义",
+	6: "一党制共和国", 7: "新民主主义制度", 8: "管制民主制", 9: "西方范式民主国家",
+	10: "中央计划经济", 11: "分权计划经济", 12: "国家垄断资本主义", 13: "鸟笼经济", 14: "\"社会\"市场经济", 15: "最小干预",
 	16: "舆论一律", 17: "纪律约束", 18: "自然限制", 19: "多元自由",
-	# 国家体制 :232-246（21 随 resultOfEvents[550]，开局 0 → 美国模式联邦制）
-	20: "单一制", 21: "美国模式联邦制", 22: "联邦制", 23: "自治联盟",
-	# 传统与宗教 :282-287
-	24: "文化革命", 25: "无神国家", 26: "民宗管制", 27: "世俗主义", 28: "尊崇传统", 29: "政教协定",
-	# 军事 :316-319（固定）
+	20: "单一制", 21: "联邦制", 22: "联省自治", 23: "自治联盟",
+	24: "破除传统", 25: "无神论化", 26: "宗教管制", 27: "世俗主义", 28: "尊崇传统", 29: "政教协定",
 	30: "全民皆兵", 31: "积极建军", 32: "建设国防", 33: "合同兵制",
+	34: "社会主义", 35: "改良主义", 36: "实用主义", 37: "市场", 38: "威权", 39: "强硬", 40: "柔和", 41: "民主",
 }
-
-const 选项显示_默认 := {
-	# 经济 :64-71
-	10: "中央计划经济", 11: "分权计划经济", 12: "国家资本主义",
-	13: "鸟笼经济", 14: "混合经济", 15: "最小干预",
-	# 党政 :131-136
-	6: "一党专政党内民主", 7: "一党独大式民主", 8: "宪政民主制度", 9: "协和民主体制",
-	# 人权 :155-161
-	16: "舆论一律", 17: "纪律约束", 18: "自然限制", 19: "多元自由",
-	# 国家体制 :250-264
-	20: "单一制", 21: "美国模式联邦制", 22: "联省自治", 23: "自治联盟",
-	# 传统与宗教 :292-297
-	24: "破除传统", 25: "无神国家", 26: "民宗管制", 27: "世俗主义", 28: "尊崇传统", 29: "政教协定",
-	# 军事 :316-319
-	30: "全民皆兵", 31: "积极建军", 32: "建设国防", 33: "合同兵制",
+# modifies[6].active 时覆盖（GameStartScript.cs:1647-1657）
+const DOCTR_MOD6 := {
+	6: "无产阶级专政", 8: "人民民主制度", 9: "协和民主体制", 10: "经典计划经济", 11: "中式计划经济",
+	13: "国家监护资本主义", 14: "社会主义导向市场", 15: "左翼小政府", 21: "改良区域自治制度", 22: "联邦制", 24: "文化革命",
 }
 
 const DEDUCT_BUDGET := 50
@@ -131,11 +114,135 @@ const DEDUCT_LIVING := 50
 const DEDUCT_PARTY := 30
 
 
-## 政策 id → 显示文案：modifies[6] 激活用 MOD6 表，否则默认表。
-func _opt_text(w: WorldState, id: int) -> String:
-	var use_mod6: bool = w != null and w.modifiers.size() > 6 and w.modifiers[6] != null and w.modifiers[6].is_active
-	var table: Dictionary = 选项显示_MOD6 if use_mod6 else 选项显示_默认
-	return table.get(id, "未知")
+# ── 状态位读取（映射 WorldState；数字事件未移植 → 恒默认）──
+func _mod_active(w: WorldState, n: int) -> bool:
+	return w != null and w.modifiers.size() > n and w.modifiers[n] != null and w.modifiers[n].is_active
+
+func _dec_done(w: WorldState, n: int) -> bool:
+	return w != null and w.decisions != null and w.decisions.completed.size() > n and w.decisions.completed[n]
+
+# 数字键事件（444/502/503/550/551/682…）在本移植中未接入（completed_event_ids 用字符串键）
+# → resultOfEvents 恒 -1、event_done 恒 false，与原版 GameStartScript.cs:48-51 初始态一致。
+func _evt_result(w: WorldState, n: int) -> int:
+	return w.completed_event_ids.get(n, -1) if w != null else -1
+
+func _evt_done(w: WorldState, n: int) -> bool:
+	return w != null and w.completed_event_ids.has(n)
+
+
+## 当前政策值 id → 显示名（doctr[id]，modifies[6] 覆盖）。原版 doctr[data[idx]]。
+func doctr_name(w: WorldState, id: int) -> String:
+	if _mod_active(w, 6) and DOCTR_MOD6.has(id):
+		return DOCTR_MOD6[id]
+	return DOCTR_BASE.get(id, "未知")
+
+
+## 忠实移植 Doctrine_script.cs OnMouseDown()：按 this_number 与真实状态位生成有序选项 [{id,text}]。
+## 数字事件（444/503/550/551/682）未移植 → _evt_* 恒 -1/false，与原版开局初始态一致。
+## 开局态 modifies[6]=true、completedDecisions/其余 modifies 全 false → 各类满编选项。
+func _build_options(w: WorldState, num: int) -> Array[Dictionary]:
+	var o: Array[Dictionary] = []
+	match num:
+		16:  # 经济
+			if _mod_active(w, 11):
+				o.append({"id": 10, "text": "国家信息自动化系统"})
+				o.append({"id": 11, "text": "赛博协同控制工程"})
+			elif _dec_done(w, 18):
+				o.append({"id": 12, "text": "国家垄断资本主义"})
+			elif _evt_result(w, 503) == 0:
+				o.append({"id": 10, "text": "中央计划经济"})
+			elif _evt_result(w, 682) == 3:
+				o.append({"id": 13, "text": "新乔治主义社会"})
+			elif _mod_active(w, 6):
+				o.append({"id": 10, "text": "经典计划经济"})
+				o.append({"id": 11, "text": "中式计划经济"})
+				o.append({"id": 12, "text": "国家资本主义"})
+				o.append({"id": 13, "text": "国家监护资本主义"})
+				if not _dec_done(w, 13):
+					o.append({"id": 14, "text": "社会主义导向市场"})
+					o.append({"id": 15, "text": "左翼小政府"})
+			else:
+				o.append({"id": 10, "text": "中央计划经济"})
+				o.append({"id": 11, "text": "分权计划经济"})
+				o.append({"id": 12, "text": "国家资本主义"})
+				o.append({"id": 13, "text": "鸟笼经济"})
+				if not _dec_done(w, 13):
+					o.append({"id": 14, "text": "混合经济"})
+					o.append({"id": 15, "text": "最小干预"})
+		15:  # 党政
+			if _evt_done(w, 444) and _evt_result(w, 444) == 0:
+				o.append({"id": 6, "text": "无产阶级专政"})
+			elif _evt_result(w, 503) == 0:
+				o.append({"id": 6, "text": "一党专政"})
+			elif _dec_done(w, 18):
+				o.append({"id": 7, "text": "新民主主义制度" if _mod_active(w, 6) else "一党独大式民主"})
+			elif _mod_active(w, 6):
+				o.append({"id": 6, "text": "无产阶级专政"})
+				o.append({"id": 7, "text": "新民主主义制度"})
+				if not _dec_done(w, 13) and not _mod_active(w, 24) and not _dec_done(w, 16):
+					o.append({"id": 8, "text": "人民民主制度"})
+					o.append({"id": 9, "text": "协和民主体制"})
+			else:
+				o.append({"id": 6, "text": "一党专政党内民主"})
+				o.append({"id": 7, "text": "一党独大式民主"})
+				if not _dec_done(w, 13) and not _mod_active(w, 24) and not _dec_done(w, 16):
+					o.append({"id": 8, "text": "宪政民主制度"})
+					o.append({"id": 9, "text": "协和民主体制"})
+		17:  # 人权
+			if _evt_done(w, 444) and _evt_result(w, 444) == 0:
+				o.append({"id": 19, "text": "自由境界"})
+			else:
+				o.append({"id": 16, "text": "舆论一律"})
+				if not _mod_active(w, 26) and _evt_result(w, 503) != 0:
+					o.append({"id": 17, "text": "纪律约束"})
+					o.append({"id": 18, "text": "自然限制"})
+					o.append({"id": 19, "text": "多元自由"})
+		18:  # 国家体制
+			if _evt_done(w, 551) and _evt_result(w, 551) == 3:
+				o.append({"id": 21, "text": _territory21_text(w)})
+				o.append({"id": 22, "text": "联邦制" if _mod_active(w, 6) else "联省自治"})
+				o.append({"id": 23, "text": "自治联盟"})
+			elif _evt_done(w, 550) and _evt_result(w, 550) == 2:
+				o.append({"id": 21, "text": "中国特色联邦制"})
+			elif _evt_done(w, 550) and _evt_result(w, 550) == 3:
+				o.append({"id": 20, "text": "单一制"})
+			else:
+				o.append({"id": 20, "text": "单一制"})
+				o.append({"id": 21, "text": _territory21_text(w)})
+				o.append({"id": 22, "text": "联邦制" if _mod_active(w, 6) else "联省自治"})
+				o.append({"id": 23, "text": "自治联盟"})
+		50:  # 传统与宗教
+			if _evt_done(w, 444) and _evt_result(w, 444) == 0:
+				o.append({"id": 24, "text": "文化革命"})
+			elif _evt_result(w, 503) == 0 or _evt_result(w, 682) == 1:
+				o.append({"id": 29, "text": "政教协定"})
+			elif not _mod_active(w, 25) and not _dec_done(w, 16):
+				o.append({"id": 24, "text": "文化革命" if _mod_active(w, 6) else "破除传统"})
+				o.append({"id": 25, "text": "无神国家"})
+				o.append({"id": 26, "text": "民宗管制"})
+				o.append({"id": 27, "text": "世俗主义"})
+				o.append({"id": 28, "text": "尊崇传统"})
+				o.append({"id": 29, "text": "政教协定"})
+			else:
+				o.append({"id": 28, "text": "尊崇传统"})
+				o.append({"id": 29, "text": "政教协定"})
+		51:  # 军事（固定）
+			o.append({"id": 30, "text": "全民皆兵"})
+			o.append({"id": 31, "text": "积极建军"})
+			o.append({"id": 32, "text": "建设国防"})
+			o.append({"id": 33, "text": "合同兵制"})
+	return o
+
+
+## 国家体制 id21 文案：随 resultOfEvents[550]（原版 :233-244/198-208，均以 modifies[6] 分改良/联邦）。
+func _territory21_text(w: WorldState) -> String:
+	var r := _evt_result(w, 550)
+	if r == 0:
+		return "美国模式联邦制"
+	elif r == 1:
+		return "苏联模式联邦制"
+	return "改良区域自治制度" if _mod_active(w, 6) else "联邦制"
+
 
 const 生育政策名 := ["一胎制", "二胎制", "无限制"]
 
@@ -152,15 +259,14 @@ func _ready() -> void:
 		var btn := _find(cat_name + "切换")
 		if btn is Button:
 			btn.pressed.connect(_on_policy_tab.bind(cat_name))
+	# 选项按钮按 slot 位置接线（id/文案运行时由 _build_options 决定，点击/悬停时按位置解析）
 	for cat_name in 政策类别:
-		var cat: Dictionary = 政策类别[cat_name]
-		var opts: Dictionary = cat["options"]
-		for val in opts:
-			var opt_name: String = opts[val]
-			var btn := _find(opt_name)
+		var slots: Array = 政策类别[cat_name]["slots"]
+		for slot_idx in slots.size():
+			var btn := _find(slots[slot_idx])
 			if btn is Button:
-				btn.pressed.connect(_on_policy_selected.bind(cat_name, int(val)))
-				btn.mouse_entered.connect(_on_policy_hover.bind(cat_name, int(val)))
+				btn.pressed.connect(_on_policy_slot.bind(cat_name, slot_idx))
+				btn.mouse_entered.connect(_on_policy_slot_hover.bind(cat_name, slot_idx))
 	for i in 派系列表.size():
 		var sup := _find("支持" + 派系列表[i])
 		var ban := _find("禁止" + 派系列表[i])
@@ -194,7 +300,7 @@ func _refresh() -> void:
 	for cat_name in 政策类别:
 		var cat: Dictionary = 政策类别[cat_name]
 		var current_val: int = _raw(w, int(cat["idx"]))
-		_label(cat_name + "显示", _opt_text(w, current_val))
+		_label(cat_name + "显示", doctr_name(w, current_val))
 	for i in mini(派系列表.size(), w.factions.size()):
 		var f: FactionData = w.factions[i]
 		var sup := _find("支持" + 派系列表[i]) as TextureButton
@@ -202,8 +308,8 @@ func _refresh() -> void:
 		if sup: sup.set_pressed_no_signal(f.is_ally)
 		if ban: ban.set_pressed_no_signal(not f.is_enabled)
 		if sup:
-			sup.tooltip_text = "%s 支持度 %d｜积分 %d（结盟后再点支持可花积分强化）" % [
-				派系列表[i], f.support, f.points
+			sup.tooltip_text = "%s 支持度 %d｜点击结盟/取消（仅未禁止派系可结盟）" % [
+				派系列表[i], f.support
 			]
 	var birth_val: int = _raw(w, W.I_BIRTH_POLICY)
 	for i in 生育政策名.size():
@@ -301,16 +407,20 @@ func _refresh_policy_panel(cat_name: String) -> void:
 	var cat: Dictionary = 政策类别[cat_name]
 	var cat_idx: int = int(cat["idx"])
 	var current_val: int = _raw(w, cat_idx)
-	var opts: Dictionary = cat["options"]
+	var slots: Array = cat["slots"]
+	# 运行时按状态位生成有序选项，填入位置槽；多余槽隐藏（对齐原版 num+1 个可见）
+	var options := _build_options(w, int(cat["num"]))
 	var first_other: int = -1
-	for val in opts:
-		var opt_name: String = opts[val]
-		var btn := _find(opt_name) as Button
+	for slot_idx in slots.size():
+		var btn := _find(slots[slot_idx]) as Button
 		if btn == null:
 			continue
-		var target_val: int = int(val)
-		# 文案随 modifies[6] 态覆盖 .tscn 静态 text（键=id）
-		btn.text = _opt_text(w, target_val)
+		if slot_idx >= options.size():
+			btn.visible = false
+			continue
+		btn.visible = true
+		var target_val: int = int(options[slot_idx]["id"])
+		btn.text = String(options[slot_idx]["text"]).replace("\n", "")
 		# 权威 4 条件检查在 GameManager，UI 只读结果（避免与实际切换判定漂移）
 		var chk := GameManager.check_policy_change(cat_idx, target_val)
 		var can_select: bool = chk["can"]
@@ -325,7 +435,21 @@ func _refresh_policy_panel(cat_name: String) -> void:
 		_label("右栏条件显示", _build_condition_text(cat_idx, first_other))
 
 
-func _on_policy_selected(cat_name: String, target_val: int) -> void:
+## slot 位置 → 当前该槽的政策 id（运行时由 _build_options 决定）。-1 = 槽为空。
+func _slot_target(w: WorldState, cat_name: String, slot_idx: int) -> int:
+	var options := _build_options(w, int(政策类别[cat_name]["num"]))
+	if slot_idx < 0 or slot_idx >= options.size():
+		return -1
+	return int(options[slot_idx]["id"])
+
+
+func _on_policy_slot(cat_name: String, slot_idx: int) -> void:
+	var w := GameManager.world
+	if w == null:
+		return
+	var target_val := _slot_target(w, cat_name, slot_idx)
+	if target_val < 0:
+		return
 	if GameManager.change_policy(int(政策类别[cat_name]["idx"]), target_val):
 		_refresh()
 		音频总管.play_button_click_sound()
@@ -345,7 +469,7 @@ func _build_condition_text(cat_idx: int, target_val: int) -> String:
 	var t := "预算中的资金：%d  [%s]\n\n\n" % [diff * 5, "满足" if chk["budget_ok"] else "未满足"]
 	t += "党内团结度高于：%d  [%s]\n\n\n" % [diff * 30, "满足" if chk["party_ok"] else "未满足"]
 	t += "%s  [%s]\n\n\n" % [chk["leading_text"], "满足" if chk["leading_ok"] else "未满足"]
-	t += "毛主席已离世，起锚！  [%s]\n\n" % ("满足" if chk["mao_ok"] else "未满足")
+	t += "%s  [%s]\n\n" % [_mao_cond_text(w, target_val), "满足" if chk["mao_ok"] else "未满足"]
 	t += "切换消耗：预算-%.1f 生活-%.1f 党内-%.1f" % [
 		float(diff * DEDUCT_BUDGET) / 10.0,
 		float(diff * DEDUCT_LIVING) / 10.0,
@@ -354,9 +478,24 @@ func _build_condition_text(cat_idx: int, target_val: int) -> String:
 	return t
 
 
-func _on_policy_hover(cat_name: String, target_val: int) -> void:
+## 第4条件文案（原版 Doctrine_button_script.cs:446-461）：
+## modifies[6]激活且目标∈{9,14,15,22,23,28,29} 或 (19且res[444]≠0) → "毛主席正看着你！"；
+## 否则毛已死(data[38]≥100)→"尚未建立"、毛在世→"毛主席已离世，起锚！"。
+func _mao_cond_text(w: WorldState, target_val: int) -> String:
+	if _mod_active(w, 6) and (target_val in [9, 14, 15, 22, 23, 28, 29] \
+			or (target_val == 19 and _evt_result(w, 444) != 0)):
+		return "毛主席正看着你！"
+	if GameManager.is_mao_dead():
+		return "尚未建立"
+	return "毛主席已离世，起锚！"
+
+
+func _on_policy_slot_hover(cat_name: String, slot_idx: int) -> void:
 	var w := GameManager.world
 	if w == null:
+		return
+	var target_val := _slot_target(w, cat_name, slot_idx)
+	if target_val < 0:
 		return
 	var cat: Dictionary = 政策类别[cat_name]
 	var cat_idx: int = int(cat["idx"])
@@ -369,16 +508,12 @@ func _on_policy_hover(cat_name: String, target_val: int) -> void:
 
 func _on_faction_support(button_pressed: bool, faction_idx: int, is_support: bool) -> void:
 	if is_support:
+		# 原版 Party_ally_script 一党制：点击=toggle is_ally，仅启用派系可结盟（无积分/无强化）
 		var w := GameManager.world
-		var already_ally := false
+		var enabled := false
 		if w and faction_idx < w.factions.size() and w.factions[faction_idx]:
-			already_ally = w.factions[faction_idx].is_ally
-		# 已结盟时再点「支持」：花积分强化 support（FAC-01）
-		if button_pressed and already_ally:
-			if not GameManager.spend_faction_points(faction_idx):
-				print("派系: 积分不足（需≥10）")
-		else:
-			GameManager.set_faction_ally(faction_idx, button_pressed)
+			enabled = w.factions[faction_idx].is_enabled
+		GameManager.set_faction_ally(faction_idx, button_pressed and enabled)
 	else:
 		GameManager.set_faction_enabled(faction_idx, not button_pressed)
 	_refresh()

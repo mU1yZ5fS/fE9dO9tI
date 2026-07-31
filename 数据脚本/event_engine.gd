@@ -320,6 +320,12 @@ func evaluate(node: ExprNode) -> bool:
 			return _politician_group_power_sum(node.key) - _politician_group_power_sum(node.target) >= node.value
 		ExprNode.Type.WAR_FIELD_EQUALS:
 			return _get_war_field(int(node.target), node.key) == node.value
+		ExprNode.Type.COALITION_SUPPORT_AT_LEAST:
+			return _coalition_support_percent() >= node.value
+		ExprNode.Type.EMPIRE_POWER_DIFFERENCE_AT_LEAST:
+			if ws == null or ws.empires.size() <= int(node.key) or ws.empires[int(node.key)] == null:
+				return false
+			return ws.influence_prc - ws.empires[int(node.key)].power >= node.value
 		ExprNode.Type.MODIFIER_ACTIVE: return _is_modifier_active(node.key)
 		ExprNode.Type.MODIFIER_INACTIVE: return not _is_modifier_active(node.key)
 		ExprNode.Type.PREV_EVENT_RESULT_IS:
@@ -607,6 +613,27 @@ func _get_empire_relation(empire_index: int) -> int:
 	return ws.empires[empire_index].relations
 
 
+## 执政联盟支持率（原版 doneventscript/Event7 等 Awake 的 summa_3_2）。
+## 仅 party_system>7（data[15]>7）时计算：执政党(1)+盟友席位数 ×100 / 五党总席位数；否则 0。
+func _coalition_support_percent() -> int:
+	var ws: WorldState = GameManager.world
+	if ws == null or ws.factions.size() < 5:
+		return 0
+	if ws.数值表.size() <= 15 or ws.数值表[15] <= 7:
+		return 0
+	var num := ws.factions[1].support
+	for i in ws.factions.size():
+		if i != 1 and ws.factions[i].is_ally and ws.factions[i].is_enabled:
+			num += ws.factions[i].support
+	var total := 0
+	for i in 5:
+		total += ws.factions[i].support
+	if total <= 0:
+		return 0
+	@warning_ignore("integer_division")
+	return num * 100 / total
+
+
 func _is_faction_leading(faction_index: int) -> bool:
 	# 与 GameManager.is_faction_leading 共用（FAC-03）
 	return GameManager != null and GameManager.is_faction_leading(faction_index)
@@ -636,6 +663,10 @@ func _get_country_field(target: String, field_name: String) -> int:
 		"prc_power": return country.prc_power
 		"fre_power": return country.fre_power
 		"puppet_of": return country.puppet_of
+		"cw", "civil_war": return 1 if country.内战中 else 0
+		"econ": return 1 if country.has_tag("econ") else 0
+		"perevorot": return 1 if country.政变中 else 0
+		"based": return 1 if country.有驻军基地 else 0
 		_:
 			push_warning("EventEngine: 不支持的国家字段 %s" % field_name)
 			return 0
@@ -736,6 +767,9 @@ func _set_country_var(target_tag: String, var_name: String, var_value: int) -> v
 		"development": country.development = var_value
 		"special": country.special = var_value
 		"special_ending": country.special_ending = var_value
+		"cw", "civil_war": country.内战中 = var_value != 0
+		"perevorot": country.政变中 = var_value != 0
+		"based": country.有驻军基地 = var_value != 0
 
 func _add_country_var(target_tag: String, var_name: String, delta: int) -> void:
 	var country: CountryData = _resolve_country(target_tag)

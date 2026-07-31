@@ -540,76 +540,6 @@ static func create_event_300() -> EventDef:
 
 # ========================================================================
 # 事件迁移 —— Event7（对美外交危机 / Diplomatic Crisis with USA）
-# ========================================================================
-
-static func create_event_7() -> EventDef:
-	var ev := EventDef.new()
-	ev.event_id = "diplomatic_crisis_usa"
-	ev.title = "Diplomatic crisis"
-	ev.description = ("Our relations with the USA have reached a critically low level. Their propaganda already "
-			+ "accuses China of all possible and impossible crimes, and our intelligence reports on the turmoil "
-			+ "in the Pentagon and activity at American bases in Southeast Asia. We urgently need to somehow "
-			+ "correct the situation if we don't want the Third World War.")
-	ev.fire_only_once = true
-	ev.mtth_base = 0.0
-	ev.trigger_conditions = [empire_rel_at_most(EmpireData.USA, 0)] as Array[ExprNode]
-
-	# 选项0：自费组织缓和 — 需 军事≠30 或 外交≤950
-	ev.options.append(option(
-		"Organize detente at our expense",
-		"We urgently organized a magnificent meeting of the foreign ministers of China and the USA, and the "
-		+ "American delegation was invited to a luxurious tour of China, where various festivals and events "
-		+ "are being prepared, showing our peacefulness. The detente succeeded, the tension subsided.",
-		[set_empire_relation(EmpireData.USA, 400), add_resource("money", -100)],
-		null, ""
-	))
-
-	# 选项1：放弃部分外交立场 — 需影响力≥50
-	ev.options.append(option(
-		"Pass a part of foreign policy positions as a sign of goodwill",
-		"We have abandoned some foreign policy claims, reduced the support of loyal opposition in other countries "
-		+ "and, in general, reduced the degree of interventionism of Chinese politics. This was positively "
-		+ "perceived by the Ministry of Foreign Affairs of the USA, tensions decreased. Like our influence.",
-		[set_empire_relation(EmpireData.USA, 400), add_resource("army", -50),
-		add_resource("agents", -50)],
-
-		res_at_least("political", 50),  # influencePRC >= 50
-		"Our influence is too weak, so we cannot limit it"
-	))
-
-	# 选项2：发射核弹 — 条件复杂（data[56]==0 && data[15]<8 或 议会多数或AI模式）
-	ev.options.append(option(
-		"Launch nukes into imperialists!",
-		"Tension grows. This leads to a nuclear confrontation.",
-		[],  # 效果由 CUSTOM_SCRIPT 处理（game over）
-		null,
-		"Nobody wants a nuclear war"
-	))
-
-	# 选项3：不在乎
-	ev.options.append(option(
-		"Don't care at all",
-		"Tension grows.",
-		[set_modifier_active("17", true), add_resource("army", -50),
-		add_resource("agents", -50)],
-
-		null, ""
-	))
-
-	# 选项4：贿赂美国参议员（DLC6）— 条件复杂
-	ev.options.append(option(
-		"Bribe U.S. senators to keep the issue quiet",
-		"We urgently organized a magnificent meeting of the foreign ministers of China and the USA... "
-		+ "The detente succeeded, the tension subsided.",
-		[set_empire_relation(EmpireData.USA, 400)],
-		mod_active("17"),
-		"Need specific conditions"
-	))
-
-	return ev
-
-
-# ========================================================================
 # 事件迁移 —— Event8（对苏外交危机 / Diplomatic Crisis with USSR）
 # ========================================================================
 
@@ -1633,8 +1563,8 @@ static func create_event_26() -> EventDef:
 static func batch_migrate(output_dir: String = "res://场景/事件界面/events/") -> void:
 	# 已迁移的事件列表
 	# 事件 001/003/004/005/006 已改为手写 .tres（唯一权威源），不经生成器。
+	# 事件 007 已改为手写 .tres（唯一权威源），不经生成器。
 	var migrated := [
-		{"func": create_event_7, "filename": "event_007_diplo_crisis_usa.tres"},
 		{"func": create_event_8, "filename": "event_008_diplo_crisis_ussr.tres"},
 		{"func": create_event_9, "filename": "event_009_tibet_separatism.tres"},
 		{"func": create_event_10, "filename": "event_010_xinjiang_separatism.tres"},
