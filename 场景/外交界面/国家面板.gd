@@ -1849,6 +1849,40 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array[int]:
 		150, 151:
 			# CS L1748/L1763：ev499 未建模(→false) → 10/5001/5000 分支不触发 TODO
 			return []
+		3:
+			# CS L645：100/123/103-106 未移植 TODO；[!1.isASEAN] 1 + 24 + [revint]5000
+			var p3 := w.get_player_country()
+			var n3: Array[int] = []
+			if p3 != null and not p3.has_tag("asean"):
+				n3.append(DIPLO_BTN_MAOIST1)
+			n3.append(DIPLO_BTN_TRADE24)
+			if _revint_ok(w, country):
+				n3.append(DIPLO_BTN_RIM5000)
+			return n3
+		8:
+			# CS L672：prcpower 未建模(0≠1000) → 首分支；8 支持友方派系(ev58)未移植 TODO
+			return [DIPLO_BTN_TRADE9]
+		9:
+			# CS L706：11 联络反对派未移植 TODO；war22/data[133]/res62 未建模 → 视为通过
+			var n9: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+			if _revint_ok(w, country):
+				n9.append(DIPLO_BTN_RIM5000)
+			return n9
+		10:
+			# CS L723：res495 未建模(0≠1) → 首分支；13/14/15/16 未移植 TODO
+			# [econ||SEV] → 19；L750 变体(无 prosov&&puppet<0) → 5000
+			var n10: Array[int] = []
+			if country.has_tag("econ") or country.has_tag("sev"):
+				n10.append(DIPLO_BTN_MIL19)
+			if _revint_core_ok(w, country) and not country.has_tag("亲苏") and country.puppet_of < 0:
+				n10.append(DIPLO_BTN_RIM5000)
+			return n10
+		11:
+			# CS L766：ev535 未建模 → 中间分支；17/18/1000/80 未移植 TODO
+			# [econ&&puppet<0] → 19（war<=0 分支的 19 依赖 ev43 未建模）
+			if country.has_tag("econ") and country.puppet_of < 0:
+				return [DIPLO_BTN_MIL19]
+			return []
 		_:
 			# 未移植分支 → 链尾块H（非洲区间）或 无按钮
 			var block := _africa_block_numbers(w, country)
