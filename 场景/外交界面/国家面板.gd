@@ -1006,6 +1006,75 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array[int]:
 		167:
 			# CS L3365：!NATO → 9 + [社会主义] 10,5000
 			return _x167_numbers(w, country)
+		71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83:
+			# CS L2136 区间分支：82-88 全未移植 TODO；仅 80 有 revint 变体 5000
+			if n == 80 and _revint_sub17_ok(w, country):
+				return [DIPLO_BTN_RIM5000]
+			return []
+		84:
+			# CS L2182：整支在 dlc[3] 内，dlc 未建模 → 无按钮 TODO
+			return []
+		85:
+			# CS L2213：整支在 dlc[3] 内（cw/perevorot/ev481/ev398/ev401 均未建模）→ 无按钮 TODO
+			return []
+		86:
+			# CS L2262：整支在 dlc[3] 内 → 无按钮 TODO
+			return []
+		87:
+			# CS L2282：data[65] 未建模 → 按 !=0 走第二分支 TODO；
+			# data65==0 的特别军事行动(2/3)未移植；128 未移植
+			if country.has_tag("亲美") and country.government == 0:
+				return []
+			# !ev419 && !ev420（事件未移植→默认 true）→ 128(C)+9 → 只 9
+			if not w.get_flag("event_done_419") and not w.get_flag("event_done_420"):
+				return [DIPLO_BTN_TRADE9]
+			var n87: Array[int] = [DIPLO_BTN_TRADE9]
+			# Torg && (soc || (auth && !亲美 && 1.sub∈{7,9})) → 10 + [亲中]19 + [revint]5000
+			var p87 := w.get_player_country()
+			if country.has_tag("对华贸易") and (w.is_socialism(country, true) \
+					or (w.is_authoritarian(country) and not country.has_tag("亲美") \
+					and p87 != null and (p87.sub_government == 7 or p87.sub_government == 9))):
+				n87.append(DIPLO_BTN_ECON10)
+				if country.has_tag("亲中"):
+					n87.append(DIPLO_BTN_MIL19)
+					if _revint_ok(w, country):
+						n87.append(DIPLO_BTN_RIM5000)
+			return n87
+		92:
+			# CS L2325：data[65] 未建模 → 按 !=0 且 !auth 分支 TODO；
+			# 2/3/113/1064-1066/10000 未移植
+			if w.is_authoritarian(country):
+				return []
+			var n92: Array[int] = [DIPLO_BTN_TRADE9]
+			# soc && Torg && sub!=18 → 10,19 + [revint]5000
+			if w.is_socialism(country, true) and country.has_tag("对华贸易") and country.sub_government != 18:
+				n92.append(DIPLO_BTN_ECON10)
+				n92.append(DIPLO_BTN_MIL19)
+				if _revint_ok(w, country):
+					n92.append(DIPLO_BTN_RIM5000)
+			return n92
+		93:
+			# CS L2391：整支在 dlc[3] 内（93/1002/1079/67 未移植）→ 无按钮 TODO
+			return []
+		94:
+			# CS L2419：!cw（cw 未建模→视为真 TODO）→ 9；95/1075/1074/53 未移植
+			var n94: Array[int] = [DIPLO_BTN_TRADE9]
+			# revint && econ && !cw → 5000
+			if _revint_ok(w, country) and country.has_tag("econ"):
+				n94.append(DIPLO_BTN_RIM5000)
+			return n94
+		95:
+			# CS L2443：整支在 dlc[3] 内（96/53 未移植）→ 无按钮 TODO
+			return []
+		139, 143, 144, 146, 148:
+			# CS L2155 区间分支（145/147 有专属分支除外）：!亲中 → 1036(未移植 TODO)
+			if not country.has_tag("亲中"):
+				return []
+			var n139: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+			if _revint_ok(w, country):
+				n139.append(DIPLO_BTN_RIM5000)
+			# TODO：139 的 70 巫术（1.sub==19，CS L2170）
+			return n139
 		_:
 			# 未移植分支 → 链尾块H（非洲区间）或 无按钮
 			var block := _africa_block_numbers(w, country)
@@ -1056,9 +1125,8 @@ func _six_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	if country.sub_government == 17:
 		nums2.append(DIPLO_BTN_ECON10)
 		nums2.append(DIPLO_BTN_MIL19)
-		# L618：ev548 && 中国.isRIM && !SEV && !OVD && 亲中（无 soc/sub 检查）
-		if w.get_flag("event_done_548") and player.has_tag("rim") \
-				and not country.has_tag("sev") and not country.has_tag("ovd") and country.has_tag("亲中"):
+		# L618：sub==17 变体（无 soc/sub 检查）
+		if _revint_sub17_ok(w, country):
 			nums2.append(DIPLO_BTN_RIM5000)
 	return nums2
 
@@ -1174,6 +1242,16 @@ func _revint_ok(w: WorldState, country: CountryData) -> bool:
 	if country.has_tag("sev") or country.has_tag("ovd"):
 		return false
 	return country.has_tag("亲中")
+
+
+## revint sub==17 变体（CS L618/L2150）：ev548 && 中国.isRIM && sub==17 && !SEV && !OVD && 亲中
+func _revint_sub17_ok(w: WorldState, country: CountryData) -> bool:
+	var player := w.get_player_country()
+	if player == null:
+		return false
+	return w.get_flag("event_done_548") and player.has_tag("rim") \
+		and country.sub_government == 17 \
+		and not country.has_tag("sev") and not country.has_tag("ovd") and country.has_tag("亲中")
 
 
 ## AU 列表级守卫（CS L2739 等）：IsSocialism(true) && ev500 && res==0
