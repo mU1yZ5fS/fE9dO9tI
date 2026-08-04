@@ -1,4 +1,4 @@
-extends RefCounted
+extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event10.cs：新疆的分离主义。逐字中文 + 完整效果复刻。
 ## 差异：
@@ -9,21 +9,18 @@ extends RefCounted
 ##  - allcountries[70].dev=0：端口无 dev 字段 → 用 development 近似。
 ##  - allcountries[12].proprc / allcountries[70].prosov：端口标签体系 → has_tag("亲中")/set_tag("亲苏")。
 ##  - opt1 的 data[18]++：反编译为死代码（ptr 局部自增未写回 data），跳过。
-const W = preload("res://数据脚本/world_state.gd")
 
 
 func execute(context: Dictionary) -> void:
-	var ws: WorldState = GameManager.world
-	if ws == null:
+	if not _bind_world():
 		return
 	if int(context.get("option_index", -1)) != 0:
 		return
-	_opt_independent(ws, context)
+	_opt_independent(context)
 
 
 # 选项0：我们管不着啊（Event10.cs result 0：新疆独立）
-func _opt_independent(ws: WorldState, context: Dictionary) -> void:
-	var d := ws.数值表
+func _opt_independent(context: Dictionary) -> void:
 	ws.influence_prc -= 250
 	if d.size() > W.I_POPULATION:
 		d[W.I_POPULATION] -= 218
@@ -43,7 +40,7 @@ func _opt_independent(ws: WorldState, context: Dictionary) -> void:
 	if xinjiang != null:
 		xinjiang.development = 0    # 差异：原 dev=0
 	var usa := ws.get_country_by_legacy_index(1)
-	var soviet_puppet_mongolia: bool = _mongolia_condition(ws)
+	var soviet_puppet_mongolia: bool = _mongolia_condition()
 	if d.size() > W.I_XINJIANG_POLICY:
 		d[W.I_XINJIANG_POLICY] = 1 if soviet_puppet_mongolia else 2
 	if usa != null:
@@ -60,7 +57,7 @@ func _opt_independent(ws: WorldState, context: Dictionary) -> void:
 
 
 # Event10.cs result 0 分支条件：!allcountries[12].proprc && !ingamewars[5].is_going && Gosstroy!=0
-func _mongolia_condition(ws: WorldState) -> bool:
+func _mongolia_condition() -> bool:
 	var mongolia := ws.get_country_by_legacy_index(12)
 	if mongolia == null:
 		return false

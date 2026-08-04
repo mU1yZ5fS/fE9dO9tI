@@ -107,6 +107,39 @@ script = ExtResource("3_expr")
 type = 18
 children = Array[ExtResource("3_expr")]([SubResource("Expr_rel1_501"), SubResource("Expr_infl50")])
 
+[sub_resource type="Resource" id="Expr_econ14_max"]
+script = ExtResource("3_expr")
+type = 1
+key = "economy_system"
+value = 14.0
+
+[sub_resource type="Resource" id="Expr_line0_not"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_sys7"]
+script = ExtResource("3_expr")
+key = "party_system"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_line1_not"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_opt3_b"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_sys7"), SubResource("Expr_line1_not")])
+
+[sub_resource type="Resource" id="Expr_opt3_gate"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_econ14_max"), SubResource("Expr_line0_not"), SubResource("Expr_opt3_b")])
+
 [sub_resource type="Resource" id="Expr_any_gate"]
 script = ExtResource("3_expr")
 type = 19
@@ -144,39 +177,6 @@ disabled_text = "没人愿意借钱给我们"
 enable_condition = SubResource("Expr_opt2_enable")
 effects = Array[ExtResource("2_effect")]([SubResource("E2_money"), SubResource("E2_loan"), SubResource("E2_infl")])
 result_text = "我国的外债逐渐攀升，这使得我们能够继续减小我们的赤字，但是这会对我们的国际影响力造成负面结果。而且我们还是要还钱，只不过晚了一会而已........"
-
-[sub_resource type="Resource" id="Expr_econ14_max"]
-script = ExtResource("3_expr")
-type = 1
-key = "economy_system"
-value = 14.0
-
-[sub_resource type="Resource" id="Expr_line0_not"]
-script = ExtResource("3_expr")
-type = 22
-key = "political_line"
-value = 0.0
-
-[sub_resource type="Resource" id="Expr_sys7"]
-script = ExtResource("3_expr")
-key = "party_system"
-value = 8.0
-
-[sub_resource type="Resource" id="Expr_line1_not"]
-script = ExtResource("3_expr")
-type = 22
-key = "political_line"
-value = 1.0
-
-[sub_resource type="Resource" id="Expr_opt3_b"]
-script = ExtResource("3_expr")
-type = 19
-children = Array[ExtResource("3_expr")]([SubResource("Expr_sys7"), SubResource("Expr_line1_not")])
-
-[sub_resource type="Resource" id="Expr_opt3_gate"]
-script = ExtResource("3_expr")
-type = 18
-children = Array[ExtResource("3_expr")]([SubResource("Expr_econ14_max"), SubResource("Expr_line0_not"), SubResource("Expr_opt3_b")])
 
 [sub_resource type="Resource" id="E3_living"]
 script = ExtResource("2_effect")

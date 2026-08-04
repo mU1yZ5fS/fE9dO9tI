@@ -1,4 +1,4 @@
-extends RefCounted
+extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event19.cs：五"不准"。逐字中文 + 完整效果复刻。
 ## 差异：
@@ -8,28 +8,25 @@ extends RefCounted
 ##    opt3 的 data[88] += 2 为真实效果（保留）。
 ##  - data[88]（无端口命名键）：数字索引直访。
 ##  - politics[12].loyality += 200：端口 ws.politicians[12] 直访（判空）。
-const W = preload("res://数据脚本/world_state.gd")
 
 
 func execute(context: Dictionary) -> void:
-	var ws: WorldState = GameManager.world
-	if ws == null:
+	if not _bind_world():
 		return
-	var d := ws.数值表
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			_opt_pass(ws, d, context)
+			_opt_pass(context)
 		1:
-			_opt_enforce(ws, d, context)
+			_opt_enforce(context)
 		2:
-			_opt_criticize(ws, d, context)
+			_opt_criticize(context)
 		3:
-			_opt_sabotage(ws, d, context)
+			_opt_sabotage(context)
 
 
 # 选项0：让它通过，我们静观其变（Event19.cs number_otvet==1）
-func _opt_pass(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_pass(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
 		d[W.I_PEOPLE_SUPPORT] -= 50
 	if d.size() > W.I_THOUGHT_FREEDOM:
@@ -38,31 +35,31 @@ func _opt_pass(ws: WorldState, d: Array, context: Dictionary) -> void:
 
 
 # 选项1：严格执行这场运动（Event19.cs number_otvet==2）
-func _opt_enforce(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_enforce(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
 		d[W.I_PEOPLE_SUPPORT] -= 70
 	if d.size() > W.I_THOUGHT_FREEDOM:
 		d[W.I_THOUGHT_FREEDOM] += 50
 	if d.size() > W.I_DIPLO:
 		d[W.I_DIPLO] += 10
-	_add_loyalty_by_trait(ws, 0, 70)
+	_add_loyalty_by_trait(0, 70)
 	context["result_text"] = "作为国务院总理，公安部部长，您亲自指挥了这次驱散运动。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了广泛的不满，而江青同志和华国锋同志则被认为是幕后黑手……"
 
 
 # 选项2：严格执行这场运动，并在媒体上批评这种行为（Event19.cs number_otvet==3）
-func _opt_criticize(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_criticize(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
 		d[W.I_PEOPLE_SUPPORT] -= 100
 	if d.size() > W.I_THOUGHT_FREEDOM:
 		d[W.I_THOUGHT_FREEDOM] += 70
 	if d.size() > W.I_DIPLO:
 		d[W.I_DIPLO] += 10
-	_add_loyalty_by_trait(ws, 0, 100)
+	_add_loyalty_by_trait(0, 100)
 	context["result_text"] = "作为国务院总理，公安部部长，您亲自指挥了这次驱逐活动并在人民日报的头版发表了对纪念周恩来行为的批评，然而这看起来收效甚微，看起来群众已经厌倦了文化大革命中无止境的批判运动了。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制和在媒体上的批判引起了广泛的不满，而江青同志和华国锋同志则被认为是幕后黑手……"
 
 
 # 选项3：轻微地破坏这场运动（Event19.cs number_otvet==4）
-func _opt_sabotage(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_sabotage(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
 		d[W.I_PEOPLE_SUPPORT] -= 10
 	if d.size() > 88:
@@ -84,7 +81,8 @@ func _opt_sabotage(ws: WorldState, d: Array, context: Dictionary) -> void:
 
 
 ## 指定 traits[0]（性格）的政治家忠诚变化
-func _add_loyalty_by_trait(ws: WorldState, trait: int, delta: int) -> void:
+## 注：参数名不用 trait（Godot 4.3+ 保留字），用 trait_id
+func _add_loyalty_by_trait(trait_id: int, delta: int) -> void:
 	for p in ws.politicians:
-		if p != null and p.trait_personality == trait:
+		if p != null and p.trait_personality == trait_id:
 			p.loyalty += delta

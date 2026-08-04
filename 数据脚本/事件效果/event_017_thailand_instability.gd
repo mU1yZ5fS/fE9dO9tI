@@ -1,32 +1,29 @@
-extends RefCounted
+extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event17.cs：泰国动乱。逐字中文 + 完整效果复刻。
 ## 差异：
 ##  - 触发：TimeScript.cs:10162（日期>=1976.10 且 !event_done[17]）。
 ##  - TaiCoup=true：端口无对应字段 → 用 flag "tai_coup" 表达（原版影响后续泰国事件链）。
 ##  - party_change[0]=1f（派系支持缓冲）：端口无等价 → 跳过。
-const W = preload("res://数据脚本/world_state.gd")
 
 
 func execute(context: Dictionary) -> void:
-	var ws: WorldState = GameManager.world
-	if ws == null:
+	if not _bind_world():
 		return
 	ws.set_flag("tai_coup", true)
-	var d := ws.数值表
 	var opt := int(context.get("option_index", -1))
-	_set_thai_govt(ws)
+	_set_thai_govt()
 	match opt:
 		0:
-			_opt_ignore(ws, context)
+			_opt_ignore(context)
 		1:
-			_opt_uprising(ws, d, context)
+			_opt_uprising(context)
 		2:
-			_opt_condemn(ws, d, context)
+			_opt_condemn(context)
 
 
 # 泰国政体变更（三个选项共有）：Gosstroy=0 / SubGosstroy=7
-func _set_thai_govt(ws: WorldState) -> void:
+func _set_thai_govt() -> void:
 	var thai := ws.get_country_by_legacy_index(34)
 	if thai != null:
 		thai.government = 0
@@ -34,14 +31,14 @@ func _set_thai_govt(ws: WorldState) -> void:
 
 
 # 选项0：这不关我们的事（Event17.cs result 0）
-func _opt_ignore(ws: WorldState, context: Dictionary) -> void:
+func _opt_ignore(context: Dictionary) -> void:
 	if ws.empires.size() > 0 and ws.empires[0] != null:
 		ws.empires[0].power += 5
 	context["result_text"] = "在10月6号，警察部队和右翼民兵最终控制了大学，学生们虽然愿意投降，但是随后政府军还是开始了屠杀，据被引用最多的报道，至少有100名学生死于屠杀之中。同一天晚上，军方迫使总理普拉莫吉辞职。在国王的支持下，军方组建了军政府，结束了维持了三年的民主政治。泰国又一次进入了专制的时代，只有北方的游击队活动区域仍在泰国共产党的控制之下。"
 
 
 # 选项1：派遣武装的泰国共产党部队（Event17.cs result 1：启动战争2「泰国内战」）
-func _opt_uprising(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_uprising(context: Dictionary) -> void:
 	if d.size() > W.I_AGENTS:
 		d[W.I_AGENTS] -= 40
 	if d.size() > W.I_ARMY:
@@ -66,7 +63,7 @@ func _opt_uprising(ws: WorldState, d: Array, context: Dictionary) -> void:
 
 
 # 选项2：谴责泰国的暴行（Event17.cs result 2）
-func _opt_condemn(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_condemn(context: Dictionary) -> void:
 	if ws.empires.size() > 1 and ws.empires[1] != null:
 		ws.empires[1].relations += 20
 	if ws.empires.size() > 0 and ws.empires[0] != null:

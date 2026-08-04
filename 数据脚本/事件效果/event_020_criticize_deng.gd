@@ -1,4 +1,4 @@
-extends RefCounted
+extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event20.cs：批邓反击右倾翻案风。逐字中文 + 完整效果复刻。
 ## 差异：
@@ -7,26 +7,23 @@ extends RefCounted
 ##  - data[88]++/--：反编译为死代码（ptr 局部自增/自减未写回），跳过。
 ##  - politics[12]（固定索引政治家）：端口 ws.politicians[12] 直访（判空）。
 ##  - 忠诚循环：原版独立 if/else-if 链（==0 → +X；非0 且 ==20 → +Y；非0 且非20 且 ==2 → -Z），逐字保留。
-const W = preload("res://数据脚本/world_state.gd")
 
 
 func execute(context: Dictionary) -> void:
-	var ws: WorldState = GameManager.world
-	if ws == null:
+	if not _bind_world():
 		return
-	var d := ws.数值表
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			_opt_do_nothing(ws, d, context)
+			_opt_do_nothing(context)
 		1:
-			_opt_join(ws, d, context)
+			_opt_join(context)
 		2:
-			_opt_support(ws, d, context)
+			_opt_support(context)
 
 
 # 选项0：什么也别做（Event20.cs result 0）
-func _opt_do_nothing(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_do_nothing(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
 		d[W.I_PEOPLE_SUPPORT] -= 20
 	if d.size() > W.I_THOUGHT_FREEDOM:
@@ -37,7 +34,7 @@ func _opt_do_nothing(ws: WorldState, d: Array, context: Dictionary) -> void:
 
 
 # 选项1：加入对小平的迫害（Event20.cs result 1）
-func _opt_join(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_join(context: Dictionary) -> void:
 	if d.size() > W.I_PARTY_SUPPORT:
 		d[W.I_PARTY_SUPPORT] += 80
 	if d.size() > W.I_PEOPLE_SUPPORT:
@@ -59,7 +56,7 @@ func _opt_join(ws: WorldState, d: Array, context: Dictionary) -> void:
 
 
 # 选项2：支持小平（Event20.cs result 2）
-func _opt_support(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_support(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
 		d[W.I_PEOPLE_SUPPORT] += 20
 	if d.size() > W.I_PARTY_SUPPORT:

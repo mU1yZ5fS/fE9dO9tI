@@ -1,27 +1,24 @@
-extends RefCounted
+extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event16.cs：泰国大选。逐字中文 + 完整效果复刻。
 ## 差异：
 ##  - 触发：TimeScript.cs:10155（日期>=1976.4 且 !event_done[16]）。
 ##  - data[41]=100（泰国选举干预标志）：端口无命名键 → 数字索引直访。
 ##  - party_change[0]=0.5f / party_change[2]=1f（派系支持缓冲）：端口无等价 → 跳过。
-const W = preload("res://数据脚本/world_state.gd")
 
 
 func execute(context: Dictionary) -> void:
-	var ws: WorldState = GameManager.world
-	if ws == null:
+	if not _bind_world():
 		return
-	var d := ws.数值表
 	var opt := int(context.get("option_index", -1))
 	if opt == 1:
-		_opt_support_cpt(ws, d, context)
+		_opt_support_cpt(context)
 	elif opt == 2:
-		_opt_arms(ws, d, context)
+		_opt_arms(context)
 
 
 # 选项1：支持泰国共产党（Event16.cs result 1）
-func _opt_support_cpt(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_support_cpt(context: Dictionary) -> void:
 	if d.size() > W.I_AGENTS:
 		d[W.I_AGENTS] -= 20
 	if d.size() > W.I_BUDGET:
@@ -33,7 +30,7 @@ func _opt_support_cpt(ws: WorldState, d: Array, context: Dictionary) -> void:
 
 
 # 选项2：让选举见鬼去吧！（Event16.cs result 2）
-func _opt_arms(ws: WorldState, d: Array, context: Dictionary) -> void:
+func _opt_arms(context: Dictionary) -> void:
 	if d.size() > W.I_ARMY:
 		d[W.I_ARMY] -= 20
 	ws.influence_prc += 10

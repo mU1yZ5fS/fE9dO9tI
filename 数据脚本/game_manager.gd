@@ -12,6 +12,8 @@ signal stats_changed()
 
 const W = preload("res://数据脚本/world_state.gd")
 const WF = preload("res://数据脚本/world_factory.gd")
+const WAR_SYS = preload("res://数据脚本/war_system.gd")
+const POL_SYS = preload("res://数据脚本/politician_system.gd")
 
 var world: WorldState
 var is_playing: bool = false
@@ -382,7 +384,7 @@ func tick() -> void:
 	if current_event_id == "" and world.date.day % 14 == 0:
 		_on_fortnight()
 
-	_check_war_endings()
+	WAR_SYS.check_war_endings()
 
 	if EventEngine:
 		EventEngine.check_and_fire()
@@ -1122,7 +1124,7 @@ func try_unlock_liberals(force: bool = false) -> bool:
 	if f.support <= 0:
 		f.support = maxi(40, f.influence / 15) if f.influence > 0 else 40
 	# 确保有领袖
-	fill_vacant_faction_leaders()
+	POL_SYS.fill_vacant_faction_leaders()
 	_notify_stats()
 	return true
 
@@ -1182,12 +1184,12 @@ func _on_month_changed() -> void:
 	_monthly_population(d, w)
 	_monthly_oligarch(d, w)
 	# 政客：调查/监视、自动支持打压、职位 power、空缺派系领袖（TimeScript ~937, ~2172）
-	_monthly_politics(d, w)
+	POL_SYS.monthly_politics(d, w)
 	# 半年：factionsPoints 积分（原版 data[19]==1 && month 1 或 7）+ 简化漂移
 	if w.date.month == 1 or w.date.month == 7:
 		_biannual_faction_points(d, w)
 		_biannual_faction_drift(w)
-	_monthly_war_points()
+	WAR_SYS.monthly_war_points()
 	w.flush_economy()
 
 
@@ -1206,503 +1208,33 @@ func _on_year_changed() -> void:
 	if d[W.I_SATISFIED] > 1 and (d[W.I_PARTY_SYSTEM] == 7 or d[W.I_PARTY_SYSTEM] == 8):
 		d[W.I_SATISFIED] = d[W.I_SATISFIED] / 2
 	# POL-05 / POL-12：年龄 +1、病弱/老死、任职年数（TimeScript 615–621 + DeathPolitics）
-	_annual_politics(d, w)
+	POL_SYS.annual_politics(d, w)
 	try_unlock_liberals()
 
 
 # ============================================================================
-# 政客生命周期 — POL-01/02/03/04
+# 政客生命周期 — 逻辑已拆至 数据脚本/politician_system.gd，此处仅保留公开 API 转发 stub
+# （外部调用点：政治界面 / 事件脚本 kill_politician 零改动）
 # ============================================================================
 
-func _is_vacant_politician(p: PoliticianData) -> bool:
-	return p == null or p.name_display == "空位" or (p.power <= 0 and p.portrait == null)
-
-
-## 月结：调查/监视计数、自动支持·打压、在职 power 加成、空缺派系领袖补位
-func _monthly_politics(d: Array[int], w: WorldState) -> void:
-	@warning_ignore("integer_division")
-	_sync_in_power_flags(w)
-	for i in w.politicians.size():
-		var p: PoliticianData = w.politicians[i]
-		if _is_vacant_politician(p):
-			continue
-
-		# POL-01 调查：满 7 结案（原版只清标志；副作用在开调查时已扣）
-		if p.is_under_investigation:
-			if p.investigator_index < 0:
-				p.investigator_index = 0
-			p.investigator_index += 1
-			if p.investigator_index >= 7:
-				p.investigator_index = 0
-				p.is_under_investigation = false
-
-		# POL-01 监视：满 7 解除
-		if p.is_under_surveillance:
-			p.days_surveillance += 1
-			if p.days_surveillance >= 7:
-				p.days_surveillance = 0
-				p.is_under_surveillance = false
-
-		# POL-02 自动支持（TimeScript ~2194）
-		if p.auto_support == 10:
-			if d[W.I_BUDGET] < 1 or d[W.I_AGENTS] < 5:
-				p.auto_support = 0
-			else:
-				d[W.I_BUDGET] -= 1
-				d[W.I_PARTY_SUPPORT] -= 20
-				d[W.I_AGENTS] -= 5
-				p.loyalty += 50
-				p.power += (1976 - w.date.year) * 5
-				p.power += absi(p.power / 10)
-
-		# POL-02 自动打压（TimeScript ~2207）
-		if p.auto_hound == 10:
-			if d[W.I_BUDGET] < 1 or d[W.I_AGENTS] < 20:
-				p.auto_hound = 0
-			else:
-				d[W.I_BUDGET] -= 1
-				d[W.I_PARTY_SUPPORT] -= 20
-				d[W.I_AGENTS] -= 20
-				p.loyalty -= 250
-				p.power -= (1976 - w.date.year) * 5
-				if p.power >= 10:
-					p.power -= absi(p.power / 10)
-
-		_apply_monthly_position_power(w, i, p)
-		# ECO-POL-06：贪腐特质(18) 在职则抬腐败
-		if p.trait_special == 18 and p.in_power:
-			d[W.I_CORRUPTION] += 2
-		# TimeScript.cs:1871-1883：modifier[14] 每月提升改革派/非领袖自由派声势。
-		if _mod_active(w, 14):
-			if p.trait_personality == 2:
-				p.power += 10
-			elif p.trait_personality == 3:
-				var liberal_leader := -1
-				if w.factions.size() > FactionData.LIBERAL:
-					liberal_leader = w.factions[FactionData.LIBERAL].leader_index
-				if liberal_leader != i:
-					p.power += 5
-
-	fill_vacant_faction_leaders()
-	_sync_in_power_flags(w)
-	_notify_stats()
-
-
-## 年均政客生命周期（POL-05 / POL-12）
-func _annual_politics(d: Array[int], w: WorldState) -> void:
-	# 年龄增长（全体非空位；领袖独立体也 +1）
-	for p in w.politicians:
-		if _is_vacant_politician(p):
-			continue
-		p.age += 1
-		if p.in_power:
-			p.years_in_power += 1
-	if w.leader != null:
-		w.leader.age += 1
-
-	# DeathPolitics：仅毛逝后才病弱与老死
-	if not is_mao_dead():
-		return
-	var to_kill: Array[int] = []
-	for i in w.politicians.size():
-		var p: PoliticianData = w.politicians[i]
-		if _is_vacant_politician(p):
-			continue
-		# 老死：age >= 91..94
-		var death_age: int = 91 + (i % 4)
-		if p.age >= death_age:
-			if is_mao_protected(i):
-				continue
-			to_kill.append(i)
-			continue
-		# 病弱：非改革 traits[0]!=2 时 80..83；改革派 85..88
-		if p.trait_special == 19:
-			continue
-		var sick_age: int
-		if p.trait_personality == 2:
-			sick_age = 85 + (i % 4)
-		else:
-			sick_age = 80 + (i % 4)
-		if p.age >= sick_age:
-			p.trait_special = 19
-	for idx in to_kill:
-		kill_politician(idx)
-	# PlotPolitics 与 DeathPolitics 同频（年，TimeScript ~5734）
-	_plot_politics(d, w)
-
-
-## POL-06 简化：对高 power 目标，若低忠诚他人 power 和过高则标记阴谋并可能削权/撤职/击杀
-func _plot_politics(d: Array[int], w: WorldState) -> void:
-	if not is_mao_dead():
-		return
-	@warning_ignore("integer_division")
-	var to_kill: Array[int] = []
-	for i in w.politicians.size():
-		var target: PoliticianData = w.politicians[i]
-		if _is_vacant_politician(target):
-			continue
-		if target.power <= 250 and target.trait_special != 16:
-			continue
-		var plot_power := 0
-		for j in w.politicians.size():
-			if j == i:
-				continue
-			var pol: PoliticianData = w.politicians[j]
-			if _is_vacant_politician(pol) or pol.is_under_investigation:
-				continue
-			if pol.trait_special == 17 or pol.trait_special == 19:
-				continue
-			var rel: int = 500
-			if i < pol.loyalty_matrix.size():
-				rel = pol.loyalty_matrix[i]
-			var joins := false
-			if pol.trait_special == 16 and rel < 450:
-				joins = true
-			elif pol.trait_special == 9 and rel < 150:
-				joins = true
-			elif pol.trait_special != 9 and rel < 300:
-				joins = true
-			if joins:
-				plot_power += pol.power
-		var resist := 3.0
-		if target.trait_special == 14 or target.trait_special == 13:
-			resist = 5.0
-		elif target.trait_special == 12 or target.trait_alignment == 6:
-			resist = 2.0
-		for pos_id in mini(3, w.politics_positions.size()):
-			if w.politics_positions[pos_id] == i:
-				resist += 2.0 if pos_id == 0 else 1.0
-		if float(plot_power) > resist * float(target.power):
-			target.is_conspiracy = true
-			var seed_v: int = abs(hash("%d-%d-%d-%d" % [w.date.year, w.date.month, i, plot_power]))
-			var r1: int = seed_v % 11
-			var r2: int = (seed_v / 11) % 22
-			var r3: int = (seed_v / 242) % 44
-			var man: int = d[W.I_MANPOWER]
-			if r1 > man / 100 and r2 > man / 50 and r3 > man / 25:
-				if float(plot_power) > resist * 4.0 * float(target.power):
-					var is_central := false
-					for pos_id2 in mini(3, w.politics_positions.size()):
-						if w.politics_positions[pos_id2] == i:
-							is_central = true
-							w.politics_positions[pos_id2] = -1
-					if is_central:
-						target.power = 100
-						target.you_fall = true
-					else:
-						to_kill.append(i)
-				else:
-					target.power -= absi(target.power / 10)
-					target.you_fall = true
-		else:
-			target.is_conspiracy = false
-	for idx in to_kill:
-		kill_politician(idx)
-
-
-func _sync_in_power_flags(w: WorldState) -> void:
-	var holders: Dictionary = {}
-	for pos_id in w.politics_positions.size():
-		var h: int = w.politics_positions[pos_id]
-		if h >= 0:
-			holders[h] = true
-	for i in w.politicians.size():
-		var p: PoliticianData = w.politicians[i]
-		if _is_vacant_politician(p):
-			p.in_power = false
-			continue
-		var now: bool = holders.has(i)
-		if now and not p.in_power:
-			p.years_in_power = 0
-		p.in_power = now
-
-
-## POL-08：监视/再教育「发现·成功率」显示用（GameState.ChangeOfKilling）
-## 返回 0.0~1.0 近似概率
 func change_of_killing(politic_index: int) -> float:
-	if world == null or politic_index < 0 or politic_index >= world.politicians.size():
-		return 0.0
-	var d := world.数值表
-	var pol: PoliticianData = world.politicians[politic_index]
-	if pol == null:
-		return 0.0
-	var num := 0.5
-	# 硬目标惩罚（原版 GameState.cs:5160）：traits[3]==28 或 traits[1]==41 → -0.1
-	if pol.trait_background == 28 or pol.trait_alignment == 41:
-		num -= 0.1
-	if d[W.I_AGENTS] + d[W.I_PARTY_SUPPORT] + d[W.I_ARMY] >= pol.power:
-		num += 0.05
-	else:
-		num -= 0.05
-	if d[W.I_AGENTS] + d[W.I_PARTY_SUPPORT] >= pol.power:
-		num += 0.05
-	var avg_loy: int = _sum_loyalty_avg()
-	if avg_loy > 900:
-		num += 0.15
-	elif avg_loy > 800:
-		num += 0.12
-	elif avg_loy > 700:
-		num += 0.1
-	elif avg_loy > 600:
-		num += 0.07
-	elif avg_loy > 500:
-		num += 0.05
-	else:
-		num -= 0.05
-	if d[W.I_PARTY_SUPPORT] > 800:
-		num += 0.05
-	elif d[W.I_PARTY_SUPPORT] < 700:
-		num -= 0.05
-	if pol.is_under_investigation:
-		num += 0.1
-	# 原版 GameState.cs:5212 return num，不钳制（允许 <0 必败 / >1 必成）
-	return num
+	return POL_SYS.change_of_killing(politic_index)
 
 
-func _sum_loyalty_avg() -> int:
-	if world == null or world.politicians.is_empty():
-		return 0
-	var s := 0
-	var n := 0
-	for p in world.politicians:
-		if _is_vacant_politician(p):
-			continue
-		s += p.loyalty
-		n += 1
-	if n <= 0:
-		return 0
-	return s / n
-
-
-func _apply_monthly_position_power(w: WorldState, pol_index: int, p: PoliticianData) -> void:
-	# TimeScript 2223–2237：地方 +10，首都 +15，总理/军委/外交 +20
-	@warning_ignore("integer_division")
-	var bonus := 0
-	for pos_id in w.politics_positions.size():
-		if w.politics_positions[pos_id] != pol_index:
-			continue
-		if pos_id <= 2:
-			bonus = maxi(bonus, 20)
-		elif pos_id == 3:
-			bonus = maxi(bonus, 15)
-		else:
-			bonus = maxi(bonus, 10)
-	if bonus > 0:
-		p.power += bonus
-	elif p.trait_special == 18:
-		p.power += 4
-	elif p.trait_special == 19:
-		p.power -= 20
-	elif p.trait_special == 16:
-		p.power += 1 + w.数值表[W.I_CORRUPTION] / 50
-
-
-## 死亡/再教育：清职与派系领袖，同槽补员（KillPerson → BalancePolitic）
 func kill_politician(pol_index: int) -> void:
-	if world == null or pol_index < 0 or pol_index >= world.politicians.size():
-		return
-	# POL-14：毛在世保护 politics[0]（data[38]!=100 时不可杀）
-	if is_mao_protected(pol_index):
-		push_warning("GameManager: 毛泽东在世保护，拒绝 kill %d" % pol_index)
-		return
-	for i in world.politics_positions.size():
-		if world.politics_positions[i] == pol_index:
-			world.politics_positions[i] = -1
-	for f in world.factions:
-		if f.leader_index == pol_index:
-			f.leader_index = -1
-
-	var year: int = world.date.year if world.date else 1976
-	var existing_parties: Array[int] = []
-	for i in world.politicians.size():
-		if i == pol_index:
-			continue
-		var other: PoliticianData = world.politicians[i]
-		if not _is_vacant_politician(other):
-			existing_parties.append(other.party_index())
-
-	var replacement := PoliticianPool.pick_replacement(
-		world.politician_reserve, year, existing_parties
-	)
-	if replacement != null:
-		# 保持 matrix 长度与槽位数一致
-		if replacement.loyalty_matrix.size() < world.politicians.size():
-			replacement.loyalty_matrix.resize(world.politicians.size())
-		world.politicians[pol_index] = replacement
-		WorldFactory._calc_rel(world, pol_index)
-		WorldFactory._calc_rel_leader(world, pol_index)
-	else:
-		var empty := world.politicians[pol_index]
-		empty.power = 0
-		empty.loyalty = 0
-		empty.name_display = "空位"
-		empty.is_under_surveillance = false
-		empty.is_under_investigation = false
-		empty.is_conspiracy = false
-		empty.you_fall = false
-		empty.in_power = false
-		empty.years_in_power = 0
-		empty.auto_support = 0
-		empty.auto_hound = 0
-		empty.portrait = null
-		empty.days_surveillance = 0
-		empty.investigator_index = -1
-
-	fill_vacant_faction_leaders()
-	_sync_in_power_flags(world)
-	_notify_stats()
+	POL_SYS.kill_politician(pol_index)
 
 
-## POL-10 任命：按职位细表改 loyalty / matrix，并 POL-20 重算关系
-## position_id: 0总理 1军委 2外交 3首都 4北方 5西方 6南方 7东方
-## 对齐 Button_Pol_Script num7/5/6/8-12（注意原版按钮编号与 dolshnost 索引映射）
 func assign_politician_position(pol_index: int, position_id: int) -> bool:
-	if world == null or pol_index < 0 or pol_index >= world.politicians.size():
-		return false
-	if position_id < 0 or position_id >= world.politics_positions.size():
-		return false
-	var pol: PoliticianData = world.politicians[pol_index]
-	if _is_vacant_politician(pol) or pol.is_under_investigation:
-		return false
-	# 已在该职
-	if world.politics_positions[position_id] == pol_index:
-		return false
-
-	# 职位互斥：地方 3-7 互斥；总理清空其它；军委/外交互斥对方
-	for i in range(3, 8):
-		if world.politics_positions[i] == pol_index:
-			world.politics_positions[i] = -1
-	if position_id == 0:
-		for i in range(1, 8):
-			if world.politics_positions[i] == pol_index:
-				world.politics_positions[i] = -1
-	elif position_id == 1 or position_id == 2:
-		var other_central := 2 if position_id == 1 else 1
-		if world.politics_positions[other_central] == pol_index:
-			world.politics_positions[other_central] = -1
-
-	# 前任惩罚表：prev_loyalty_delta, prev_matrix_delta, new_loyalty, wanted_bonus
-	# wanted 命中时 prev 额外 -400 loyalty 与 matrix（原版）
-	var prev_loy := 250
-	var prev_mat := 50
-	var new_loy := 250
-	match position_id:
-		0:  # 总理 num7
-			prev_loy = 800; prev_mat = 400; new_loy = 400
-		1:  # 军委 num5
-			prev_loy = 700; prev_mat = 300; new_loy = 350
-		2:  # 外交 num6
-			prev_loy = 600; prev_mat = 250; new_loy = 350
-		3:  # 首都 num8
-			prev_loy = 250; prev_mat = 50; new_loy = 300
-		_:  # 地方 4-7
-			prev_loy = 150; prev_mat = 0; new_loy = 250
-
-	var prev_holder: int = world.politics_positions[position_id]
-	if prev_holder >= 0 and prev_holder < world.politicians.size() and prev_holder != pol_index:
-		var prev_pol: PoliticianData = world.politicians[prev_holder]
-		if not _is_vacant_politician(prev_pol):
-			var extra := 400 if prev_pol.wanted_position == position_id else 0
-			prev_pol.loyalty -= prev_loy + extra
-			if pol_index < prev_pol.loyalty_matrix.size():
-				prev_pol.loyalty_matrix[pol_index] = maxi(
-					0, prev_pol.loyalty_matrix[pol_index] - (prev_mat + extra)
-				)
-
-	world.politics_positions[position_id] = pol_index
-	pol.loyalty += new_loy
-	# 原版 Button_Pol_Script num5-12：命中意向职位仅 loyality+=250，不加 power
-	if pol.wanted_position == position_id:
-		pol.loyalty += 250
-	pol.in_power = true
-
-	# POL-20：任命后重算目标与前任关系矩阵 + 对领袖忠诚
-	WorldFactory._calc_rel(world, pol_index)
-	WorldFactory._calc_rel2(world, pol_index)
-	WorldFactory._calc_rel_leader(world, pol_index)
-	if prev_holder >= 0 and prev_holder < world.politicians.size() and prev_holder != pol_index:
-		WorldFactory._calc_rel(world, prev_holder)
-		WorldFactory._calc_rel2(world, prev_holder)
-		WorldFactory._calc_rel_leader(world, prev_holder)
-
-	_sync_in_power_flags(world)
-	fill_vacant_faction_leaders()
-	_notify_stats()
-	return true
+	return POL_SYS.assign_politician_position(pol_index, position_id)
 
 
-## 指定派系负责人后重算关系（FAC-07 半）
 func set_faction_leader_politician(pol_index: int) -> bool:
-	if world == null or pol_index < 0 or pol_index >= world.politicians.size():
-		return false
-	var pol: PoliticianData = world.politicians[pol_index]
-	if _is_vacant_politician(pol):
-		return false
-	var faction_id: int = pol.party_index()
-	if faction_id < 0 or faction_id >= world.factions.size():
-		return false
-	var prev: int = world.factions[faction_id].leader_index
-	if prev >= 0 and prev < world.politicians.size() and prev != pol_index:
-		var prev_pol: PoliticianData = world.politicians[prev]
-		prev_pol.loyalty -= 1000
-		if pol_index < prev_pol.loyalty_matrix.size():
-			prev_pol.loyalty_matrix[pol_index] -= 500
-	world.factions[faction_id].leader_index = pol_index
-	# 同派小惩罚
-	for i in world.politicians.size():
-		if i == pol_index:
-			continue
-		var other: PoliticianData = world.politicians[i]
-		if other != null and other.party_index() == faction_id:
-			other.loyalty -= 100
-	pol.loyalty += 400
-	WorldFactory._calc_rel(world, pol_index)
-	WorldFactory._calc_rel2(world, pol_index)
-	WorldFactory._calc_rel_leader(world, pol_index)
-	if prev >= 0 and prev < world.politicians.size() and prev != pol_index:
-		WorldFactory._calc_rel(world, prev)
-		WorldFactory._calc_rel2(world, prev)
-		WorldFactory._calc_rel_leader(world, prev)
-	_notify_stats()
-	return true
+	return POL_SYS.set_faction_leader_politician(pol_index)
 
 
-## 空缺派系领袖：按 Party 槽从在世政客中选 power 最高者（POL-04）
 func fill_vacant_faction_leaders() -> void:
-	if world == null:
-		return
-	for fi in world.factions.size():
-		var f: FactionData = world.factions[fi]
-		# 事件26第三分支对应原 faction_leader[0]=200：实权领袖本人领导极左派。
-		if f.leader_index == WorldFactory.LEADER_POSITION_SENTINEL and world.leader != null:
-			continue
-		if f.leader_index >= 0 and f.leader_index < world.politicians.size():
-			var cur: PoliticianData = world.politicians[f.leader_index]
-			if not _is_vacant_politician(cur):
-				continue
-			f.leader_index = -1
-		if f.leader_index >= 0:
-			continue
-		var best_idx := -1
-		var best_power := -1
-		var fallback_idx := -1
-		var fallback_power := -1
-		for i in world.politicians.size():
-			var p: PoliticianData = world.politicians[i]
-			if _is_vacant_politician(p):
-				continue
-			var party: int = p.party_index()
-			if party == fi and p.power > best_power:
-				best_power = p.power
-				best_idx = i
-			# 保守派空缺：允许 traits 映射到 0/1 的人作次选（简化 TimeScript 957）
-			if fi == 1 and (party == 0 or party == 1) and p.power > fallback_power:
-				fallback_power = p.power
-				fallback_idx = i
-		if best_idx >= 0:
-			f.leader_index = best_idx
-		elif fallback_idx >= 0:
-			f.leader_index = fallback_idx
+	POL_SYS.fill_vacant_faction_leaders()
 
 
 # ── 每日：赤字恢复（原版 546-563，日块 Repaint(true)）──
@@ -2416,12 +1948,260 @@ func _on_fortnight() -> void:
 	_fortnight_difficulty_bonus(d, w)
 	_fortnight_modifiers(d, w, support_before, budget_before, freedom_before)
 	_check_coup(d, w)
-	_fortnight_wars(w)
+	WAR_SYS.fortnight_wars(w)
 	# 阴谋网也挂双周一次（原版 Death/Plot 在年/特定块；月结已跑，此处不重复击杀）
 	if current_event_id == "":
 		_check_endings(d, w, year)
 
 	w.flush_economy()
+
+
+# ============================================================================
+# 修正双周效果 — 对齐 TimeScript.cs:2971-2988, 3304-3579
+# 内部数值为原版 ×10 量级（如 -5 工业 = -0.5 显示）
+# ============================================================================
+
+## modifier[4] 在产业自然衰减之前计算，因此与其它修正分开以保持原作顺序。
+func _update_modifier_population_industry_pressure(d: Array[int], w: WorldState) -> void:
+	if w == null or w.modifiers.size() <= 4:
+		return
+	if d[W.I_LIVING] < 200:
+		w.modifiers[4].is_active = true
+		d[W.I_THOUGHT_FREEDOM] += 2
+		d[W.I_MANPOWER] -= 3
+		d[W.I_INDUSTRY] -= (250 - d[W.I_LIVING]) / 40
+	elif d[W.I_ECON_SYSTEM] > 12 and d[W.I_LIVING] < (d[W.I_ECON_SYSTEM] - 10) * 100:
+		w.modifiers[4].is_active = true
+		d[W.I_INDUSTRY] -= ((d[W.I_ECON_SYSTEM] - 10) * 100 - d[W.I_LIVING]) / 40
+		d[W.I_CORRUPTION] += 1
+		d[W.I_MANPOWER] -= 3
+	else:
+		w.modifiers[4].is_active = false
+
+
+func _fortnight_modifiers(
+		d: Array[int],
+		w: WorldState,
+		support_before: int,
+		budget_before: int,
+		freedom_before: int
+) -> void:
+	if w == null:
+		return
+	var player := w.get_player_country()
+
+	# 0 工业技术依赖：原作在解除的当轮仍会扣一次工业。
+	if _mod_active(w, 0):
+		if w.techs and w.techs.unlocked.size() > 10 and w.techs.unlocked[10]:
+			w.modifiers[0].is_active = false
+		d[W.I_INDUSTRY] -= 5
+
+	# 1 工业产能上限：科技 11 解除（上限在 clamp）。
+	if _mod_active(w, 1) and w.techs and w.techs.unlocked.size() > 11 and w.techs.unlocked[11]:
+		w.modifiers[1].is_active = false
+
+	# 2 社会动荡。
+	if _mod_active(w, 2):
+		d[W.I_PEOPLE_SUPPORT] -= 10
+		d[W.I_THOUGHT_FREEDOM] += 20
+
+	# 3 后毛时代效应。
+	if _mod_active(w, 3):
+		# 深度改革则解除并冲击。解除当轮仍继续执行下方周期效果。
+		if d[W.I_IDEOLOGY] >= 4 or d[W.I_ECON_SYSTEM] >= 14:
+			w.modifiers[3].is_active = false
+			d[W.I_THOUGHT_FREEDOM] += 200
+			d[W.I_PEOPLE_SUPPORT] += 100
+			d[W.I_PARTY_SUPPORT] -= 250
+			d[W.I_DIPLO] -= 10
+			for p in w.politicians:
+				if PoliticianSystem.is_vacant_politician(p):
+					continue
+				if p.trait_personality == 0:
+					p.loyalty -= 100
+				elif p.trait_personality > 1:
+					p.loyalty += 100
+		d[W.I_BUDGET] += 6
+		d[W.I_AGENTS] += 2
+		d[W.I_ARMY] += 5
+		if is_mao_dead():
+			d[W.I_PEOPLE_SUPPORT] += 5
+			d[W.I_THOUGHT_FREEDOM] += 10
+			d[W.I_LIVING] -= 5
+			if w.empires.size() > EmpireData.USA:
+				w.empires[EmpireData.USA].relations -= 5
+
+	# 5 市场改革冲击。
+	if _mod_active(w, 5):
+		d[W.I_PEOPLE_SUPPORT] -= 2
+		d[W.I_THOUGHT_FREEDOM] += 10
+		d[W.I_BUDGET] += 2
+
+	# 6 意识形态动员。
+	if _mod_active(w, 6):
+		d[W.I_PARTY_SUPPORT] += 5
+		d[W.I_THOUGHT_FREEDOM] -= 2
+		d[W.I_MANPOWER] += 1
+		d[W.I_DIPLO] += 2
+		if w.empires.size() > EmpireData.USA:
+			w.empires[EmpireData.USA].relations -= 2
+		if w.empires.size() > EmpireData.USSR:
+			w.empires[EmpireData.USSR].relations -= 4
+
+	# 7 五年计划：条件动态激活/解除。
+	var plan_condition := (
+		d[W.I_IDEOLOGY] == 3
+		and w.leader != null
+		and w.leader.trait_alignment == 5
+		and w.leader.trait_personality > 0
+		and d[W.I_REFORM_STAGE] >= 3
+		and player != null
+		and not player.has_tag("sev")
+		and not player.has_tag("ovd")
+		and not player.has_tag("okb")
+	)
+	if _mod_active(w, 7):
+		if d[W.I_CORRUPTION] > 200:
+			d[W.I_CORRUPTION] -= 1
+		if d[W.I_THOUGHT_FREEDOM] > 800:
+			d[W.I_THOUGHT_FREEDOM] -= 3
+		if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA].relations < 400:
+			w.empires[EmpireData.USA].relations += (500 - w.empires[EmpireData.USA].relations) / 100
+		if d[W.I_INDUSTRY] < 500:
+			d[W.I_INDUSTRY] += 3
+		if d[W.I_MANPOWER] <= 400:
+			d[W.I_MANPOWER] += 3
+		if not plan_condition:
+			w.modifiers[7].is_active = false
+	elif plan_condition:
+		w.modifiers[7].is_active = true
+
+	# 8 经济联盟身份：加入时激活，退出当轮施加一次余波后解除。
+	if player != null and player.has_tag("econ"):
+		w.modifiers[8].is_active = true
+	elif _mod_active(w, 8):
+		w.modifiers[8].is_active = false
+		if w.empires.size() > EmpireData.USA:
+			w.empires[EmpireData.USA].relations += 2
+		if w.empires.size() > EmpireData.USSR:
+			w.empires[EmpireData.USSR].relations += 2
+		d[W.I_THOUGHT_FREEDOM] -= 10
+
+	# 9/10 边疆文化政策：以本轮入口快照削弱支持/自由化涨幅。
+	if not _mod_active(w, 9):
+		if d[W.I_XINJIANG_POLICY] > 0:
+			w.modifiers[9].is_active = true
+	else:
+		d[W.I_MANPOWER] -= 10
+		if d[W.I_PEOPLE_SUPPORT] > support_before:
+			d[W.I_PEOPLE_SUPPORT] -= (d[W.I_PEOPLE_SUPPORT] - support_before) / 2
+		if freedom_before > d[W.I_THOUGHT_FREEDOM]:
+			d[W.I_THOUGHT_FREEDOM] += (freedom_before - d[W.I_THOUGHT_FREEDOM]) / 2
+	if not _mod_active(w, 10):
+		if d[W.I_TIBET_POLICY] > 0:
+			w.modifiers[10].is_active = true
+	else:
+		d[W.I_MANPOWER] -= 10
+		if d[W.I_PEOPLE_SUPPORT] > support_before:
+			d[W.I_PEOPLE_SUPPORT] -= (d[W.I_PEOPLE_SUPPORT] - support_before) / 4
+		if freedom_before > d[W.I_THOUGHT_FREEDOM]:
+			d[W.I_THOUGHT_FREEDOM] += (freedom_before - d[W.I_THOUGHT_FREEDOM]) / 4
+
+	# 11 自动化计划经济（OGAS）。原版唯一激活入口 = 事件97选项0（Event97.cs:58：
+	# data[1]=0/忠诚±/激活均为该事件的一次性副作用；触发需 science[17]+体制10/11，
+	# TimeScript.cs:10810）。事件97未移植 → 恒不激活。原版无「econ==11 自动激活」
+	# 逻辑（开局 data[16]=11 即中式计划，此前误加致开局党内支持清零，已移除）。
+	if _mod_active(w, 11):
+		d[W.I_INDUSTRY] += 20
+		d[W.I_AGRICULTURE] += 20
+		d[W.I_BUDGET] += 50
+		d[W.I_PARTY_SUPPORT] -= 50
+		d[W.I_LIVING] += 2
+		d[W.I_CORRUPTION] -= 1
+		if d[W.I_ECON_SYSTEM] > 11:
+			w.modifiers[11].is_active = false
+			d[W.I_PARTY_SUPPORT] += 500
+			d[W.I_AGENTS] -= 500
+			d[W.I_BUDGET] -= 500
+
+	# 12 政治危机的动态激活条件与完整代价。
+	var output_average := (d[W.I_INDUSTRY] + d[W.I_AGRICULTURE] + d[W.I_SERVICES] - d[W.I_CORRUPTION]) / 3
+	w.modifiers[12].is_active = output_average < 500 and w.date.year >= 1980
+	if _mod_active(w, 12):
+		d[W.I_BUDGET] -= 10
+		d[W.I_AGENTS] -= 10
+		d[W.I_MANPOWER] -= 3
+
+	# TimeScript.cs:3500-3514：本轮预算增长过快时的回落。
+	if d[W.I_BUDGET] - budget_before > 10:
+		d[W.I_BUDGET] -= (d[W.I_BUDGET] - budget_before) / 4
+		d[W.I_BUDGET] -= d[W.I_BUDGET] / 20
+
+	# 13 工业创收。原作激活后不在此处自动解除。
+	if not _mod_active(w, 13):
+		if d[W.I_ECON_SYSTEM] >= 13 and d[W.I_LIVING] >= 700:
+			w.modifiers[13].is_active = true
+	elif d[W.I_ECON_SYSTEM] == 13:
+		d[W.I_BUDGET] += d[W.I_LIVING] / 500
+	elif d[W.I_ECON_SYSTEM] == 14:
+		d[W.I_BUDGET] += d[W.I_LIVING] / 330
+	elif d[W.I_ECON_SYSTEM] == 15:
+		d[W.I_BUDGET] += d[W.I_LIVING] / 250
+
+	# 14 改革派声势：邓小平不再占据原 politics[12] 身份时解除。
+	if _mod_active(w, 14):
+		var deng_valid := false
+		if w.politicians.size() > 12:
+			var deng: PoliticianData = w.politicians[12]
+			deng_valid = (
+				deng != null
+				and deng.name_first == 13
+				and deng.name_last == 13
+				and deng.trait_personality == 2
+				and deng.trait_alignment == 5
+				and deng.trait_special == 11
+			)
+		if not deng_valid:
+			w.modifiers[14].is_active = false
+
+	# 15 农业产能上限：当轮先限制至 700，再由科技 2 解除。
+	if _mod_active(w, 15):
+		if d[W.I_AGRICULTURE] > 700:
+			d[W.I_AGRICULTURE] = 700
+		if w.techs and w.techs.unlocked.size() > 2 and w.techs.unlocked[2]:
+			w.modifiers[15].is_active = false
+
+	# 16/17 对苏/对美关系受损。
+	if _mod_active(w, 16):
+		var ussr_relation := w.empires[EmpireData.USSR].relations if w.empires.size() > EmpireData.USSR else d[W.I_USSR_RELATIONS]
+		if ussr_relation >= 500:
+			w.modifiers[16].is_active = false
+		else:
+			d[W.I_BUDGET] -= (500 - ussr_relation) / 50
+			d[W.I_AGENTS] -= (500 - ussr_relation) / 100
+	if _mod_active(w, 17):
+		var usa_relation := w.empires[EmpireData.USA].relations if w.empires.size() > EmpireData.USA else d[W.I_USA_RELATIONS]
+		if usa_relation >= 500:
+			w.modifiers[17].is_active = false
+		else:
+			d[W.I_BUDGET] -= (500 - usa_relation) / 50
+			d[W.I_AGENTS] -= (500 - usa_relation) / 100
+
+	_apply_modifier_caps(d, w)
+	_mirror_empires_to_data(world)
+
+
+func _apply_modifier_caps(d: Array[int], w: WorldState) -> void:
+	# 工业上限：mod1 激活 → 500，否则 1000
+	var ind_cap := 500 if _mod_active(w, 1) else 1000
+	if d[W.I_INDUSTRY] > ind_cap:
+		d[W.I_INDUSTRY] = ind_cap
+	# 农业上限：mod15 激活 → 700，否则 1000
+	var agri_cap := 700 if _mod_active(w, 15) else 1000
+	if d[W.I_AGRICULTURE] > agri_cap:
+		d[W.I_AGRICULTURE] = agri_cap
+	if d[W.I_SERVICES] > 1000:
+		d[W.I_SERVICES] = 1000
 
 
 # ── 产业自然衰减（TimeScript 5195-5260行） ──
@@ -2799,658 +2579,41 @@ func _trigger_ending(ending_id: int) -> void:
 	pause()
 	get_tree().change_scene_to_file("uid://b1dm8nycmn3gw")
 # ============================================================================
-# 代理战争 — WarCatalog + WarActionCatalog
+# 代理战争 — 逻辑已拆至 数据脚本/war_system.gd，此处仅保留公开 API 转发 stub
+# （外部调用点：战争界面 / EventEngine START_WAR / 事件脚本 start_war 零改动）
 # ============================================================================
 
-func _monthly_war_points() -> void:
-	var w := world
-	if w == null:
-		return
-	var d := w.数值表
-	@warning_ignore("integer_division")
-	d[W.I_MIL_INTERVENTION] += d[W.I_PROJECTION] / 50
-	var any_war := false
-	for war in w.wars:
-		if war != null and war.is_going:
-			any_war = true
-			break
-	if any_war:
-		@warning_ignore("integer_division")
-		d[W.I_MIL_INTERVENTION] += d[W.I_INFLUENCE] / 12
-
-
-func _clamp_war_infl(war: WarData) -> void:
-	if war.infl1 > 1000 or war.infl2 < 0:
-		war.infl1 = 1000
-		war.infl2 = 0
-	elif war.infl2 > 1000 or war.infl1 < 0:
-		war.infl2 = 1000
-		war.infl1 = 0
-	war.infl1 = clampi(war.infl1, 0, 1000)
-	war.infl2 = clampi(war.infl2, 0, 1000)
-
-
-func _fortnight_wars(w: WorldState) -> void:
-	if w == null:
-		return
-	for i in w.wars.size():
-		var war: WarData = w.wars[i]
-		if war == null or not war.is_going:
-			continue
-		var def := WarCatalog.get_def(i)
-		if def:
-			war.infl1 += def.drift_infl1
-			war.infl2 += def.drift_infl2
-			_apply_war_drift_extra(w, war, def)
-		war.fortnight_elapsed += 1
-		_clamp_war_infl(war)
-
-
-func _apply_war_drift_extra(w: WorldState, war: WarData, def: WarDef) -> void:
-	var flag := def.drift_extra_flag
-	if flag.is_empty():
-		return
-	match flag:
-		"korea_prop_prc":
-			war.infl1 += def.drift_extra_infl1
-			war.infl2 += def.drift_extra_infl2
-		"iran_iraq":
-			pass
-		"afghanistan":
-			if war.ussr_side == 1:
-				war.infl1 -= 50
-				war.infl2 += 50
-			if w.数值表.size() > W.I_AFGHAN_POLICY:
-				var pol: int = w.数值表[W.I_AFGHAN_POLICY]
-				if pol == 1:
-					war.infl1 += 4
-					war.infl2 -= 4
-				elif pol == 3:
-					war.infl1 += 6
-					war.infl2 -= 6
-				elif pol == 2:
-					war.infl1 -= 2
-					war.infl2 += 2
-		_:
-			pass
-
-
-func _check_war_endings() -> void:
-	var w := world
-	if w == null or current_event_id != "":
-		return
-	if w.数值表.size() <= W.I_WAR_RESOLVE:
-		return
-	if w.数值表[W.I_WAR_RESOLVE] >= 0:
-		return
-	for i in w.wars.size():
-		var war: WarData = w.wars[i]
-		if war == null or not war.is_going:
-			continue
-		var by_time := war.fortnight_max >= 0 and war.fortnight_elapsed >= war.fortnight_max
-		var by_infl := war.infl1 >= 1000 or war.infl2 >= 1000
-		if by_time or by_infl:
-			w.数值表[W.I_WAR_RESOLVE] = i
-			start_event("war_is_over")
-			_notify_stats()
-			return
-
-
 func get_active_wars() -> Array[WarData]:
-	var out: Array[WarData] = []
-	if world == null:
-		return out
-	for war in world.wars:
-		if war != null and war.is_going:
-			out.append(war)
-	return out
+	return WAR_SYS.get_active_wars()
 
 
 func get_mil_intervention_display() -> String:
-	if world == null:
-		return "0.0"
-	return "%.1f" % (float(world.数值表[W.I_MIL_INTERVENTION]) / 10.0)
+	return WAR_SYS.get_mil_intervention_display()
 
 
 func start_war(
-	war_id: int,
-	side1: String = "",
-	side2: String = "",
-	infl1: int = -1,
-	infl2: int = -1,
-	usa_side: int = -1,
-	ussr_side: int = -1
+		war_id: int,
+		side1: String = "",
+		side2: String = "",
+		infl1: int = -1,
+		infl2: int = -1,
+		usa_side: int = -1,
+		ussr_side: int = -1
 ) -> bool:
-	if world == null or war_id < 0:
-		return false
-	while world.wars.size() <= war_id:
-		world.wars.append(WarData.new())
-	var war: WarData = world.wars[war_id]
-	if war == null:
-		war = WarData.new()
-		world.wars[war_id] = war
-	var def := WarCatalog.get_def(war_id)
-	war.is_going = true
-	if def:
-		war.name_war = def.name_zh
-		war.side1 = side1 if side1 != "" else def.default_side1
-		war.side2 = side2 if side2 != "" else def.default_side2
-		war.infl1 = infl1 if infl1 >= 0 else def.default_infl1
-		war.infl2 = infl2 if infl2 >= 0 else def.default_infl2
-		war.usa_side = usa_side if usa_side >= 0 else def.default_usa_side
-		war.ussr_side = ussr_side if ussr_side >= 0 else def.default_ussr_side
-		war.fortnight_max = def.fortnight_max
-	else:
-		war.name_war = "战争 #%d" % war_id
-		war.side1 = side1 if side1 != "" else "side1"
-		war.side2 = side2 if side2 != "" else "side2"
-		war.infl1 = infl1 if infl1 >= 0 else 500
-		war.infl2 = infl2 if infl2 >= 0 else 500
-		war.usa_side = usa_side if usa_side >= 0 else 0
-		war.ussr_side = ussr_side if ussr_side >= 0 else 0
-	war.fortnight_elapsed = 0
-	war.diplo_done = [false, false]
-	_clamp_war_infl(war)
-	_notify_stats()
-	return true
+	return WAR_SYS.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
 
 
 func debug_start_war(war_id: int) -> bool:
-	return start_war(war_id)
+	return WAR_SYS.start_war(war_id)
 
 
 func can_intervene(war_id: int, action_id: int) -> bool:
-	if world == null:
-		return false
-	if war_id < 0 or war_id >= world.wars.size():
-		return false
-	var war: WarData = world.wars[war_id]
-	if war == null or not war.is_going:
-		return false
-	var act := WarActionCatalog.get_action(action_id)
-	if act.is_empty():
-		return false
-	var d := world.数值表
-	var side: int = int(act["side"])
-	if side == 1:
-		if war.infl1 >= 1000 or war.infl2 <= 0:
-			return false
-	else:
-		if war.infl2 >= 1000 or war.infl1 <= 0:
-			return false
-	if bool(act["diplo"]):
-		return not (war.diplo_done[0] or war.diplo_done[1])
-	if d[W.I_MIL_INTERVENTION] < int(act["interv"]):
-		return false
-	if d[W.I_BUDGET] < int(act["budget"]):
-		return false
-	if d[W.I_AGENTS] < int(act["agents"]):
-		return false
-	if d[W.I_ARMY] < int(act["army"]):
-		return false
-	return true
+	return WAR_SYS.can_intervene(war_id, action_id)
 
 
 func intervene_war(war_id: int, action_id: int) -> bool:
-	if not can_intervene(war_id, action_id):
-		return false
-	var war: WarData = world.wars[war_id]
-	var act := WarActionCatalog.get_action(action_id)
-	var d := world.数值表
-	var side: int = int(act["side"])
-	d[W.I_BUDGET] -= int(act["budget"])
-	d[W.I_AGENTS] -= int(act["agents"])
-	d[W.I_ARMY] -= int(act["army"])
-	if not bool(act["diplo"]):
-		d[W.I_MIL_INTERVENTION] -= int(act["interv"])
-	if side == 1:
-		war.infl1 += int(act["d_self"])
-		war.infl2 += int(act["d_other"])
-	else:
-		war.infl2 += int(act["d_self"])
-		war.infl1 += int(act["d_other"])
-	if bool(act["diplo"]):
-		var di: int = int(act["diplo_i"])
-		if di >= 0 and di < war.diplo_done.size():
-			war.diplo_done[di] = true
-		var rf: int = int(act["rel_friend"])
-		if rf != 0:
-			if war.usa_side == side - 1 and world.empires.size() > 0:
-				world.empires[0].relations += rf
-			if war.ussr_side == side - 1 and world.empires.size() > 1:
-				world.empires[1].relations += rf
-	else:
-		var re: int = int(act["rel_enemy"])
-		if re != 0:
-			var enemy_place := 1 if side == 1 else 0
-			if war.usa_side == enemy_place and world.empires.size() > 0:
-				world.empires[0].relations += re
-			if war.ussr_side == enemy_place and world.empires.size() > 1:
-				world.empires[1].relations += re
-	_clamp_war_infl(war)
-	_mirror_empires_to_data(world)
-	_notify_stats()
-	return true
+	return WAR_SYS.intervene_war(war_id, action_id)
 
 
 func resolve_war_finished(war_id: int = -1) -> void:
-	if world == null:
-		return
-	var id := war_id
-	if id < 0:
-		id = world.数值表[W.I_WAR_RESOLVE]
-	if id >= 0 and id < world.wars.size() and world.wars[id] != null:
-		var restarted := _apply_war_result(id)
-		world.wars[id].is_going = restarted
-	world.数值表[W.I_WAR_RESOLVE] = -10
-	_notify_stats()
-
-
-# ============================================================================
-# 修正双周效果 — 对齐 TimeScript.cs:2971-2988, 3304-3579
-# 内部数值为原版 ×10 量级（如 -5 工业 = -0.5 显示）
-# ============================================================================
-
-## modifier[4] 在产业自然衰减之前计算，因此与其它修正分开以保持原作顺序。
-func _update_modifier_population_industry_pressure(d: Array[int], w: WorldState) -> void:
-	if w == null or w.modifiers.size() <= 4:
-		return
-	if d[W.I_LIVING] < 200:
-		w.modifiers[4].is_active = true
-		d[W.I_THOUGHT_FREEDOM] += 2
-		d[W.I_MANPOWER] -= 3
-		d[W.I_INDUSTRY] -= (250 - d[W.I_LIVING]) / 40
-	elif d[W.I_ECON_SYSTEM] > 12 and d[W.I_LIVING] < (d[W.I_ECON_SYSTEM] - 10) * 100:
-		w.modifiers[4].is_active = true
-		d[W.I_INDUSTRY] -= ((d[W.I_ECON_SYSTEM] - 10) * 100 - d[W.I_LIVING]) / 40
-		d[W.I_CORRUPTION] += 1
-		d[W.I_MANPOWER] -= 3
-	else:
-		w.modifiers[4].is_active = false
-
-
-func _fortnight_modifiers(
-		d: Array[int],
-		w: WorldState,
-		support_before: int,
-		budget_before: int,
-		freedom_before: int
-) -> void:
-	if w == null:
-		return
-	var player := w.get_player_country()
-
-	# 0 工业技术依赖：原作在解除的当轮仍会扣一次工业。
-	if _mod_active(w, 0):
-		if w.techs and w.techs.unlocked.size() > 10 and w.techs.unlocked[10]:
-			w.modifiers[0].is_active = false
-		d[W.I_INDUSTRY] -= 5
-
-	# 1 工业产能上限：科技 11 解除（上限在 clamp）。
-	if _mod_active(w, 1) and w.techs and w.techs.unlocked.size() > 11 and w.techs.unlocked[11]:
-		w.modifiers[1].is_active = false
-
-	# 2 社会动荡。
-	if _mod_active(w, 2):
-		d[W.I_PEOPLE_SUPPORT] -= 10
-		d[W.I_THOUGHT_FREEDOM] += 20
-
-	# 3 后毛时代效应。
-	if _mod_active(w, 3):
-		# 深度改革则解除并冲击。解除当轮仍继续执行下方周期效果。
-		if d[W.I_IDEOLOGY] >= 4 or d[W.I_ECON_SYSTEM] >= 14:
-			w.modifiers[3].is_active = false
-			d[W.I_THOUGHT_FREEDOM] += 200
-			d[W.I_PEOPLE_SUPPORT] += 100
-			d[W.I_PARTY_SUPPORT] -= 250
-			d[W.I_DIPLO] -= 10
-			for p in w.politicians:
-				if _is_vacant_politician(p):
-					continue
-				if p.trait_personality == 0:
-					p.loyalty -= 100
-				elif p.trait_personality > 1:
-					p.loyalty += 100
-		d[W.I_BUDGET] += 6
-		d[W.I_AGENTS] += 2
-		d[W.I_ARMY] += 5
-		if is_mao_dead():
-			d[W.I_PEOPLE_SUPPORT] += 5
-			d[W.I_THOUGHT_FREEDOM] += 10
-			d[W.I_LIVING] -= 5
-			if w.empires.size() > EmpireData.USA:
-				w.empires[EmpireData.USA].relations -= 5
-
-	# 5 市场改革冲击。
-	if _mod_active(w, 5):
-		d[W.I_PEOPLE_SUPPORT] -= 2
-		d[W.I_THOUGHT_FREEDOM] += 10
-		d[W.I_BUDGET] += 2
-
-	# 6 意识形态动员。
-	if _mod_active(w, 6):
-		d[W.I_PARTY_SUPPORT] += 5
-		d[W.I_THOUGHT_FREEDOM] -= 2
-		d[W.I_MANPOWER] += 1
-		d[W.I_DIPLO] += 2
-		if w.empires.size() > EmpireData.USA:
-			w.empires[EmpireData.USA].relations -= 2
-		if w.empires.size() > EmpireData.USSR:
-			w.empires[EmpireData.USSR].relations -= 4
-
-	# 7 五年计划：条件动态激活/解除。
-	var plan_condition := (
-		d[W.I_IDEOLOGY] == 3
-		and w.leader != null
-		and w.leader.trait_alignment == 5
-		and w.leader.trait_personality > 0
-		and d[W.I_REFORM_STAGE] >= 3
-		and player != null
-		and not player.has_tag("sev")
-		and not player.has_tag("ovd")
-		and not player.has_tag("okb")
-	)
-	if _mod_active(w, 7):
-		if d[W.I_CORRUPTION] > 200:
-			d[W.I_CORRUPTION] -= 1
-		if d[W.I_THOUGHT_FREEDOM] > 800:
-			d[W.I_THOUGHT_FREEDOM] -= 3
-		if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA].relations < 400:
-			w.empires[EmpireData.USA].relations += (500 - w.empires[EmpireData.USA].relations) / 100
-		if d[W.I_INDUSTRY] < 500:
-			d[W.I_INDUSTRY] += 3
-		if d[W.I_MANPOWER] <= 400:
-			d[W.I_MANPOWER] += 3
-		if not plan_condition:
-			w.modifiers[7].is_active = false
-	elif plan_condition:
-		w.modifiers[7].is_active = true
-
-	# 8 经济联盟身份：加入时激活，退出当轮施加一次余波后解除。
-	if player != null and player.has_tag("econ"):
-		w.modifiers[8].is_active = true
-	elif _mod_active(w, 8):
-		w.modifiers[8].is_active = false
-		if w.empires.size() > EmpireData.USA:
-			w.empires[EmpireData.USA].relations += 2
-		if w.empires.size() > EmpireData.USSR:
-			w.empires[EmpireData.USSR].relations += 2
-		d[W.I_THOUGHT_FREEDOM] -= 10
-
-	# 9/10 边疆文化政策：以本轮入口快照削弱支持/自由化涨幅。
-	if not _mod_active(w, 9):
-		if d[W.I_XINJIANG_POLICY] > 0:
-			w.modifiers[9].is_active = true
-	else:
-		d[W.I_MANPOWER] -= 10
-		if d[W.I_PEOPLE_SUPPORT] > support_before:
-			d[W.I_PEOPLE_SUPPORT] -= (d[W.I_PEOPLE_SUPPORT] - support_before) / 2
-		if freedom_before > d[W.I_THOUGHT_FREEDOM]:
-			d[W.I_THOUGHT_FREEDOM] += (freedom_before - d[W.I_THOUGHT_FREEDOM]) / 2
-	if not _mod_active(w, 10):
-		if d[W.I_TIBET_POLICY] > 0:
-			w.modifiers[10].is_active = true
-	else:
-		d[W.I_MANPOWER] -= 10
-		if d[W.I_PEOPLE_SUPPORT] > support_before:
-			d[W.I_PEOPLE_SUPPORT] -= (d[W.I_PEOPLE_SUPPORT] - support_before) / 4
-		if freedom_before > d[W.I_THOUGHT_FREEDOM]:
-			d[W.I_THOUGHT_FREEDOM] += (freedom_before - d[W.I_THOUGHT_FREEDOM]) / 4
-
-	# 11 自动化计划经济（OGAS）。原版唯一激活入口 = 事件97选项0（Event97.cs:58：
-	# data[1]=0/忠诚±/激活均为该事件的一次性副作用；触发需 science[17]+体制10/11，
-	# TimeScript.cs:10810）。事件97未移植 → 恒不激活。原版无「econ==11 自动激活」
-	# 逻辑（开局 data[16]=11 即中式计划，此前误加致开局党内支持清零，已移除）。
-	if _mod_active(w, 11):
-		d[W.I_INDUSTRY] += 20
-		d[W.I_AGRICULTURE] += 20
-		d[W.I_BUDGET] += 50
-		d[W.I_PARTY_SUPPORT] -= 50
-		d[W.I_LIVING] += 2
-		d[W.I_CORRUPTION] -= 1
-		if d[W.I_ECON_SYSTEM] > 11:
-			w.modifiers[11].is_active = false
-			d[W.I_PARTY_SUPPORT] += 500
-			d[W.I_AGENTS] -= 500
-			d[W.I_BUDGET] -= 500
-
-	# 12 政治危机的动态激活条件与完整代价。
-	var output_average := (d[W.I_INDUSTRY] + d[W.I_AGRICULTURE] + d[W.I_SERVICES] - d[W.I_CORRUPTION]) / 3
-	w.modifiers[12].is_active = output_average < 500 and w.date.year >= 1980
-	if _mod_active(w, 12):
-		d[W.I_BUDGET] -= 10
-		d[W.I_AGENTS] -= 10
-		d[W.I_MANPOWER] -= 3
-
-	# TimeScript.cs:3500-3514：本轮预算增长过快时的回落。
-	if d[W.I_BUDGET] - budget_before > 10:
-		d[W.I_BUDGET] -= (d[W.I_BUDGET] - budget_before) / 4
-		d[W.I_BUDGET] -= d[W.I_BUDGET] / 20
-
-	# 13 工业创收。原作激活后不在此处自动解除。
-	if not _mod_active(w, 13):
-		if d[W.I_ECON_SYSTEM] >= 13 and d[W.I_LIVING] >= 700:
-			w.modifiers[13].is_active = true
-	elif d[W.I_ECON_SYSTEM] == 13:
-		d[W.I_BUDGET] += d[W.I_LIVING] / 500
-	elif d[W.I_ECON_SYSTEM] == 14:
-		d[W.I_BUDGET] += d[W.I_LIVING] / 330
-	elif d[W.I_ECON_SYSTEM] == 15:
-		d[W.I_BUDGET] += d[W.I_LIVING] / 250
-
-	# 14 改革派声势：邓小平不再占据原 politics[12] 身份时解除。
-	if _mod_active(w, 14):
-		var deng_valid := false
-		if w.politicians.size() > 12:
-			var deng: PoliticianData = w.politicians[12]
-			deng_valid = (
-				deng != null
-				and deng.name_first == 13
-				and deng.name_last == 13
-				and deng.trait_personality == 2
-				and deng.trait_alignment == 5
-				and deng.trait_special == 11
-			)
-		if not deng_valid:
-			w.modifiers[14].is_active = false
-
-	# 15 农业产能上限：当轮先限制至 700，再由科技 2 解除。
-	if _mod_active(w, 15):
-		if d[W.I_AGRICULTURE] > 700:
-			d[W.I_AGRICULTURE] = 700
-		if w.techs and w.techs.unlocked.size() > 2 and w.techs.unlocked[2]:
-			w.modifiers[15].is_active = false
-
-	# 16/17 对苏/对美关系受损。
-	if _mod_active(w, 16):
-		var ussr_relation := w.empires[EmpireData.USSR].relations if w.empires.size() > EmpireData.USSR else d[W.I_USSR_RELATIONS]
-		if ussr_relation >= 500:
-			w.modifiers[16].is_active = false
-		else:
-			d[W.I_BUDGET] -= (500 - ussr_relation) / 50
-			d[W.I_AGENTS] -= (500 - ussr_relation) / 100
-	if _mod_active(w, 17):
-		var usa_relation := w.empires[EmpireData.USA].relations if w.empires.size() > EmpireData.USA else d[W.I_USA_RELATIONS]
-		if usa_relation >= 500:
-			w.modifiers[17].is_active = false
-		else:
-			d[W.I_BUDGET] -= (500 - usa_relation) / 50
-			d[W.I_AGENTS] -= (500 - usa_relation) / 100
-
-	_apply_modifier_caps(d, w)
-	_mirror_empires_to_data(world)
-
-
-func _apply_modifier_caps(d: Array[int], w: WorldState) -> void:
-	# 工业上限：mod1 激活 → 500，否则 1000
-	var ind_cap := 500 if _mod_active(w, 1) else 1000
-	if d[W.I_INDUSTRY] > ind_cap:
-		d[W.I_INDUSTRY] = ind_cap
-	# 农业上限：mod15 激活 → 700，否则 1000
-	var agri_cap := 700 if _mod_active(w, 15) else 1000
-	if d[W.I_AGRICULTURE] > agri_cap:
-		d[W.I_AGRICULTURE] = agri_cap
-	if d[W.I_SERVICES] > 1000:
-		d[W.I_SERVICES] = 1000
-
-
-# ============================================================================
-# 战争结束结算 — 对齐 Results_text.cs:1514-1716（Event18）
-# ============================================================================
-
-## 返回 true 表示原战争结算后立即进入第二阶段（阿富汗战争专用）。
-func _apply_war_result(war_id: int) -> bool:
-	if world == null or war_id < 0 or war_id >= world.wars.size():
-		return false
-	var war: WarData = world.wars[war_id]
-	if war == null:
-		return false
-	var d := world.数值表
-	d[W.I_MIL_INTERVENTION] = 0
-	var restarted := false
-	if war.infl1 >= 1000:
-		restarted = _apply_war_side1_victory(war_id, war, d)
-	elif war.infl2 >= 1000:
-		restarted = _apply_war_side2_victory(war_id, war, d)
-	else:
-		_apply_war_draw(war_id, war, d)
-	_mirror_empires_to_data(world)
-	return restarted
-
-
-func _apply_war_side1_victory(war_id: int, war: WarData, d: Array[int]) -> bool:
-	match war_id:
-		0:
-			var north := world.get_country_by_legacy_index(10)
-			var south := world.get_country_by_legacy_index(46)
-			if north != null and south != null:
-				south.government = north.government
-			d[W.I_INFLUENCE] += 50
-			_add_empire_power(EmpireData.USA, -40)
-			d[W.I_KOREA_RESULT] = 1
-		1:
-			d[W.I_INFLUENCE] += 20
-			d[W.I_PARTY_SUPPORT] += 100
-			_add_empire_power(EmpireData.USSR, -20)
-		2:
-			var thailand := world.get_country_by_legacy_index(34)
-			if thailand != null:
-				thailand.government = 1
-				thailand.set_tag("亲中", true)
-				thailand.set_tag("亲美", false)
-			d[W.I_INFLUENCE] += 20
-			_add_empire_power(EmpireData.USA, -20)
-		3:
-			_add_empire_power(EmpireData.USSR, 10)
-		4:
-			_add_empire_power(EmpireData.USSR, -10)
-			_add_empire_power(EmpireData.USA, 20)
-		5:
-			if war.ussr_side == 0:
-				_add_empire_power(EmpireData.USSR, 50)
-			else:
-				var afghanistan := world.get_country_by_legacy_index(12)
-				if afghanistan != null:
-					afghanistan.government = 1
-					afghanistan.set_tag("亲苏", false)
-					afghanistan.set_tag("亲中", true)
-					afghanistan.set_tag("对华贸易", true)
-				d[W.I_INFLUENCE] += 100
-		6:
-			world.set_flag("britain_lost_falklands", true)
-			_add_empire_power(EmpireData.USA, -20)
-	return false
-
-
-func _apply_war_side2_victory(war_id: int, war: WarData, d: Array[int]) -> bool:
-	match war_id:
-		0:
-			var north := world.get_country_by_legacy_index(10)
-			var south := world.get_country_by_legacy_index(46)
-			if north != null and south != null:
-				north.government = south.government
-			d[W.I_INFLUENCE] -= 20
-			_add_empire_power(EmpireData.USSR, -20)
-			_add_empire_power(EmpireData.USA, 50)
-			d[W.I_KOREA_RESULT] = 2
-		1:
-			var kampuchea := world.get_country_by_legacy_index(23)
-			if kampuchea != null:
-				kampuchea.government = 1
-				kampuchea.set_tag("亲苏", true)
-				kampuchea.set_tag("econ", false)
-				kampuchea.set_tag("okb", false)
-				kampuchea.set_tag("亲中", false)
-				kampuchea.set_tag("对华贸易", false)
-			d[W.I_INFLUENCE] -= 30
-			_add_empire_power(EmpireData.USSR, 10)
-		2:
-			d[W.I_INFLUENCE] -= 10
-		3:
-			var iraq := world.get_country_by_legacy_index(14)
-			if iraq != null:
-				iraq.government = 0
-				iraq.set_tag("对华贸易", false)
-				iraq.set_tag("亲苏", false)
-		4:
-			_add_empire_power(EmpireData.USSR, 10)
-			_add_empire_power(EmpireData.USA, -20)
-			world.set_flag("israel_lost_lebanon_war", true)
-		5:
-			if war.ussr_side == 0:
-				var afghanistan := world.get_country_by_legacy_index(12)
-				if afghanistan != null:
-					afghanistan.government = 0
-					afghanistan.set_tag("亲苏", false)
-					afghanistan.set_tag("亲中", false)
-					afghanistan.set_tag("对华贸易", false)
-				_add_empire_power(EmpireData.USSR, -30)
-			else:
-				_restart_afghan_war(war, d)
-				return true
-		6:
-			_add_empire_power(EmpireData.USA, 20)
-	return false
-
-
-func _apply_war_draw(war_id: int, war: WarData, d: Array[int]) -> void:
-	match war_id:
-		2:
-			d[W.I_INFLUENCE] -= 10
-		4:
-			_add_empire_power(EmpireData.USSR, 10)
-			_add_empire_power(EmpireData.USA, -20)
-			world.set_flag("israel_lost_lebanon_war", true)
-		6:
-			if war.infl1 >= 400:
-				world.set_flag("britain_lost_falklands", true)
-				_add_empire_power(EmpireData.USA, -20)
-			else:
-				_add_empire_power(EmpireData.USA, 20)
-
-
-func _restart_afghan_war(war: WarData, d: Array[int]) -> void:
-	war.name_war = "Afghan war"
-	war.side1 = "DRA"
-	war.side2 = "Mujahideen"
-	war.ussr_side = 0
-	war.usa_side = 1
-	war.infl1 = 650
-	war.infl2 = 350
-	war.fortnight_elapsed = 0
-	var pakistan := world.get_country_by_legacy_index(31)
-	if pakistan != null and pakistan.has_tag("亲美"):
-		war.infl1 -= 100
-		war.infl2 += 100
-	var iran := world.get_country_by_legacy_index(8)
-	if iran != null and iran.government == 0:
-		war.infl1 -= 50
-		war.infl2 += 50
-	if d[W.I_AFGHAN_WAR_PATH] == 9:
-		war.infl1 += 25
-		war.infl2 -= 25
-
-
-func _add_empire_power(empire_index: int, delta: int) -> void:
-	if empire_index >= 0 and empire_index < world.empires.size() and world.empires[empire_index] != null:
-		world.empires[empire_index].power += delta
+	WAR_SYS.resolve_war_finished(war_id)

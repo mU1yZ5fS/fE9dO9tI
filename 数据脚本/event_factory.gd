@@ -1,11 +1,20 @@
 # ============================================================================
 # EventFactory — 事件工厂（编程方式构建事件定义）
 # ============================================================================
-# 两个用途：
-#   1. 迁移脚本：批量解析原版 C# 事件源码 → 创建 EventDef，保存为 .tres
-#   2. 运行时生成：在代码中动态构建事件（无对应 .tres 时）
+# 【已冻结 · 2026-08】不再扩展、不再用于生产事件。
+# 实际事件创作路径（唯一权威源）：
+#   1. 简单事件 → 手写 .tres（场景/事件界面/events/，EventDef + EffectNode 声明式）
+#   2. 复杂事件 → 手写 .tres 中挂 CUSTOM_SCRIPT → 事件效果脚本（数据脚本/事件效果/，
+#      继承 event_script_base.gd，逐字复刻原版 C# 逻辑）
+# 74 个 .tres 中 64 个（86%）走 CUSTOM_SCRIPT；ExprNode/EffectNode 枚举仅服务少数
+# 简单事件与既有资源。新需求禁止向 ExprNode/EffectNode/EventFactory 追加枚举或函数；
+# 引擎 evaluate()/execute() 的现有分支继续兜底旧 .tres（枚举整数不可前插，只可追加）。
 #
-# 使用方式：
+# 本文件保留用途：
+#   - 迁移示例参考（create_event_120 等，展示 ExprNode/EffectNode 用法）
+#   - 若确需重新生成 .tres，可手工调用单个 create_event_XXX。
+#
+# 使用方式（历史）：
 #   # 迁移单个事件
 #   var ev := EventFactory.create_event_120()
 #   ResourceSaver.save(ev, "res://场景/事件界面/events/event_korea_unification.tres")

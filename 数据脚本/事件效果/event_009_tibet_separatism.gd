@@ -1,4 +1,4 @@
-extends RefCounted
+extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event9.cs：西藏的分离主义。逐字中文 + 完整效果复刻。
 ## 差异：
@@ -9,21 +9,18 @@ extends RefCounted
 ##  - allcountries[69].dev=0：端口无 dev 字段 → 用 development 近似（原 dev 为发展度标志）。
 ##  - allcountries[69].prosov：端口标签体系 → set_tag("亲苏", false)。
 ##  - opt1 的 data[18]++：反编译为死代码（ptr 局部自增未写回 data），跳过。
-const W = preload("res://数据脚本/world_state.gd")
 
 
 func execute(context: Dictionary) -> void:
-	var ws: WorldState = GameManager.world
-	if ws == null:
+	if not _bind_world():
 		return
 	if int(context.get("option_index", -1)) != 0:
 		return
-	_opt_independent(ws, context)
+	_opt_independent(context)
 
 
 # 选项0：我们管不着啊（Event9.cs result 0：西藏独立）
-func _opt_independent(ws: WorldState, context: Dictionary) -> void:
-	var d := ws.数值表
+func _opt_independent(context: Dictionary) -> void:
 	ws.influence_prc -= 250
 	if d.size() > W.I_POPULATION:
 		d[W.I_POPULATION] -= 31

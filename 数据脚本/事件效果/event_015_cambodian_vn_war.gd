@@ -1,27 +1,25 @@
-extends RefCounted
+extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event15.cs：柬越战争。逐字中文 + 完整效果复刻。
 ## 差异：
 ##  - 触发：TimeScript.cs:10134（!vietnampeace && !event_done[15] && 日期>=1978.12.25）。
 ##    vietnampeace 端口无对应 → 视为 false（默认未和平，行为一致）；fire_only_once=true 表达 !event_done[15]。
 ##  - party_change[2]=1f（派系支持缓冲）：端口无等价 → 跳过。
-const W = preload("res://数据脚本/world_state.gd")
 
 
 func execute(context: Dictionary) -> void:
-	var ws: WorldState = GameManager.world
-	if ws == null:
+	if not _bind_world():
 		return
-	_start_war1(ws)
+	_start_war1()
 	var opt := int(context.get("option_index", -1))
 	if opt == 0:
-		_opt_stand_by(ws, context)
+		_opt_stand_by(context)
 	elif opt == 1:
-		_opt_support(ws, context)
+		_opt_support(context)
 
 
 # 所有选项共用：启动战争 1（Event15.cs ResultsOfEvents 开头无条件部分）
-func _start_war1(ws: WorldState) -> void:
+func _start_war1() -> void:
 	if ws.wars.size() <= 1:
 		return
 	var war := ws.wars[1]
@@ -33,7 +31,7 @@ func _start_war1(ws: WorldState) -> void:
 
 
 # 选项0：我们无能为力（Event15.cs result 0）
-func _opt_stand_by(ws: WorldState, context: Dictionary) -> void:
+func _opt_stand_by(context: Dictionary) -> void:
 	ws.influence_prc -= 10
 	if ws.wars.size() > 1:
 		ws.wars[1].infl1 = 300
@@ -47,8 +45,7 @@ func _opt_stand_by(ws: WorldState, context: Dictionary) -> void:
 
 
 # 选项1：支持民主柬埔寨（Event15.cs result 1）
-func _opt_support(ws: WorldState, context: Dictionary) -> void:
-	var d := ws.数值表
+func _opt_support(context: Dictionary) -> void:
 	if d.size() > W.I_AGENTS:
 		d[W.I_AGENTS] -= 30
 	if ws.wars.size() > 1:

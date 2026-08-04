@@ -62,7 +62,9 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 		else:
 			var base := get_def(id)
 			return base.effect_zh if base else "效果未录入"
+		@warning_ignore("integer_division")
 		var whole := living / (denom * 10)
+		@warning_ignore("integer_division")
 		var frac := absi(living / denom % 10)
 		return "预算收入约 +%d.%d（随生活水平）" % [whole, frac]
 	var def := get_def(id)
