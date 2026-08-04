@@ -874,13 +874,18 @@ func _set_war_active(w: WorldState, idx: int, value: bool) -> void:
 # 编号 5000 革命国际（休眠）：条件 DBS L5520-5538，效果 DBS L12585-12588。
 # 休眠守卫 uslovie[0]=event_done[548]，事件未移植→get_flag 默认 false。
 func _def_5000(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+	var player := w.get_player_country()
 	var conds: Array = []
 	# uslovie[0]：event_done[548]（DBS L5524，事件未移植）
 	conds.append(_cond("已建立革命国际", func(): return w.get_flag("event_done_548")))
+	# 列表级守卫（CS L550 等）：中国已入革命国际
+	conds.append(_cond("中国已加入革命国际", func(): return player != null and player.has_tag("rim")))
 	# uslovie[1]：非 gkchp 分支（DBS L5528，权威默认）。
 	# TODO：gkchp 分支（DBS L5533 "该国愿意认可我们"，SubGosstroy∈{0,10,17,2}&&!SEV&&!OVD&&proprc）
 	#       因 WorldState 未建模 is_gkchp，暂只移植非 gkchp 分支。
 	conds.append(_cond("该国已建立革命的政权", func(): return _rim5000_regime_check(w, country)))
+	# 列表级守卫（CS L550 等）：目标亲中；134/136 用 okb 变体，批3 各自分支处理
+	conds.append(_cond("该国持亲中立场", func(): return country.has_tag("亲中")))
 	# uslovie[2]：!isRIM（DBS L5536）
 	conds.append(_cond("尚未加入", func(): return not country.has_tag("rim")))
 	var eff := func():
@@ -912,6 +917,9 @@ func _def_5001(w: WorldState, d: Array[int], country: CountryData) -> Dictionary
 	var conds: Array = []
 	# uslovie[0]：event_done[500]（DBS L5543，事件未移植）
 	conds.append(_cond("非洲联盟已建立", func(): return w.get_flag("event_done_500")))
+	# 列表级守卫（CS L2679 等）：目标社会主义 且 亲中
+	conds.append(_cond("该国是社会主义政权", func(): return w.is_socialism(country, true)))
+	conds.append(_cond("该国持亲中立场", func(): return country.has_tag("亲中")))
 	# uslovie[1]：data[22]>=20（DBS L5545）
 	conds.append(_cond("至少 2 军事实力", func(): return d[W.I_ARMY] >= 20))
 	# uslovie[2]：!isAU（DBS L5547）
@@ -942,56 +950,252 @@ func _diplo_action_def(编号: int, w: WorldState, d: Array[int], country: Count
 
 
 # ============================================================================
-# 列表构建器 —— 按国家类别产出编号列表（≤4）
-# 忠实镜像 CountryScript 通用类别块；按国专属分支延后（后续批次）
+# 列表构建器 —— 按国序号逐国分发（忠实镜像 CountryScript 中文链 L495-3949）
+# 结构：块J(隐藏) → match 逐国分支 → 块K(仅发展贸易)
+# 已移植分支：2/4/5/6/98、109/110、113/114、122/124、133/135、155/158、167
+# 其余分支(批3)未移植 → 走链尾块H(非洲区间) 或 无按钮（原版对无分支国不产按钮）
 # ============================================================================
 func _build_country_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var player := w.get_player_country()
-	var nums: Array[int] = []
 	if player == null:
-		return nums
-
-	# —— 类别①：经互会卫星国（东欧模板）CountryScript L497-660 ——
-	# 守卫：目标 isSEV 且 中国未入 sev（超级大国 NATO/ingamewars 分支未移植，简化）
-	if country.has_tag("sev") and not player.has_tag("sev") and country.puppet_of < 0:
-		# !中国.isASEAN → 扶持极左派(1)，否则 123（延后）→ 此处只放 1
-		if not player.has_tag("asean"):
-			nums.append(DIPLO_BTN_MAOIST1)
-		nums.append(DIPLO_BTN_TRADE24)
-		return _truncate4(nums)
-
-	# —— 类别②：非洲 proprc 区间块 CountryScript L3914 ——
-	# 进入条件：非洲区间 + proprc + !africaOff
-	if _is_africa_proprc_block(country):
-		nums.append(DIPLO_BTN_ECON10)
-		nums.append(DIPLO_BTN_AU5001)    # 休眠：event_done[500] false → 后续过滤
-		nums.append(DIPLO_BTN_RIM5000)   # 休眠
-		return _truncate4(nums)
-
-	# —— 类别③：社会主义亲华盟友模板 CountryScript L682-701 ——
-	# 贸易→经合→军盟→革命国际 四连
-	if w.is_socialism(country, true) or country.has_tag("亲中"):
-		nums.append(DIPLO_BTN_TRADE9)
-		nums.append(DIPLO_BTN_ECON10)
-		nums.append(DIPLO_BTN_MIL19)
-		nums.append(DIPLO_BTN_RIM5000)   # 休眠
-		return _truncate4(nums)
-
-	# —— 类别④：中立/其它 → 贸易 CountryScript L3068 ——
-	nums.append(DIPLO_BTN_TRADE9)
+		return []
+	# 块J (CS L3934)：中国未入革命国际 且 目标已入 → 全部隐藏
+	if not player.has_tag("rim") and country.has_tag("rim"):
+		return []
+	var nums := _chain_numbers(w, country)
+	# 块K (CS L3942)：event_done[713] → 仅发展贸易(9)
+	if _block_k_ok(w, country):
+		return [DIPLO_BTN_TRADE9]
 	return _truncate4(nums)
 
 
-## 非洲 proprc 区间块进入条件（CountryScript L3914）
-## 区间 53..68 / 106..108 / 112..133 / ==42，排除 54/55/106，proprc 且 !africaOff
-func _is_africa_proprc_block(country: CountryData) -> bool:
+## 主链逐国分发（CS 中文链 L497-3929）
+func _chain_numbers(w: WorldState, country: CountryData) -> Array[int]:
+	var n := country.原版序号
+	match n:
+		2, 4, 5, 98:
+			return _sev_satellite_numbers(w, country)
+		6:
+			return _six_numbers(w, country)
+		109, 110:
+			# CS L2664：无条件 9, 10
+			return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+		113:
+			# CS L2729：分支头需 africaOff（非洲机制禁用）；未禁用则落入链尾块H
+			if not country.禁用非洲机制:
+				return _africa_block_numbers(w, country)
+			return _au_rim_country_numbers(w, country, false)
+		114:
+			# CS L2751
+			return _au_rim_country_numbers(w, country, false)
+		122:
+			# CS L2928：puppet<0 → 9 + [Gos∉{0,3}&&ev598&&!war53] 10,5001,5000；else → 9
+			return _econ_gate_country_numbers(w, country, "event_done_598")
+		124:
+			# CS L3000：同上，ev581
+			return _econ_gate_country_numbers(w, country, "event_done_581")
+		133:
+			# CS L3264：9,10 + [亲中] 5001(Gos==1)/5000
+			return _x133_numbers(w, country)
+		135:
+			# CS L3316：9 + [!亲美] 10/19/5000
+			return _x135_numbers(w, country)
+		155, 158:
+			# CS L3584/L3627：puppet<0 → 9+亲中尾；else → 9
+			return _au_rim_country_numbers(w, country, true)
+		167:
+			# CS L3365：!NATO → 9 + [社会主义] 10,5000
+			return _x167_numbers(w, country)
+		_:
+			# 未移植分支 → 链尾块H（非洲区间）或 无按钮
+			var block := _africa_block_numbers(w, country)
+			if not block.is_empty():
+				return block
+			return []
+
+
+## 经互会卫星 2/4/5/98（CS L524-556/L557-588）
+func _sev_satellite_numbers(w: WorldState, country: CountryData) -> Array[int]:
+	var player := w.get_player_country()
+	var n := country.原版序号
+	var c4 := w.get_country_by_legacy_index(4)
+	# L528：NATO 分支 → 103-106（未移植 TODO）；ingamewars[17] 未移植 → !war17 视为真
+	if (player.has_tag("nato") and country.has_tag("ovd")) or (n != 4 and c4 != null and c4.sub_government == 19):
+		return []
+	# L535：!中国NATO && !中国SEV && 目标SEV → [1|123] + 24
+	if not player.has_tag("sev") and country.has_tag("sev"):
+		var nums: Array[int] = []
+		if not player.has_tag("asean"):
+			nums.append(DIPLO_BTN_MAOIST1)
+		# else：123（CS L543，未移植 TODO）
+		nums.append(DIPLO_BTN_TRADE24)
+		return nums
+	# L547 else：24 + [revint]5000
+	var nums2: Array[int] = [DIPLO_BTN_TRADE24]
+	if _revint_ok(w, country):
+		nums2.append(DIPLO_BTN_RIM5000)
+	return nums2
+
+
+## 6（CS L590-623）：同卫星分支；else: 24 + [sub==17] 10,19,[revint6]5000
+func _six_numbers(w: WorldState, country: CountryData) -> Array[int]:
+	var player := w.get_player_country()
+	var c4 := w.get_country_by_legacy_index(4)
+	# L592：NATO 分支（注意 6 无 n!=4 豁免）→ 103-106（未移植 TODO）
+	if (player.has_tag("nato") and country.has_tag("ovd")) or (c4 != null and c4.sub_government == 19):
+		return []
+	# L599：!中国SEV && 目标SEV → [1|123] + 24
+	if not player.has_tag("sev") and country.has_tag("sev"):
+		var nums: Array[int] = []
+		if not player.has_tag("asean"):
+			nums.append(DIPLO_BTN_MAOIST1)
+		nums.append(DIPLO_BTN_TRADE24)
+		return nums
+	# L611 else：24 + [sub==17] 10,19,[revint6]5000
+	var nums2: Array[int] = [DIPLO_BTN_TRADE24]
+	if country.sub_government == 17:
+		nums2.append(DIPLO_BTN_ECON10)
+		nums2.append(DIPLO_BTN_MIL19)
+		# L618：ev548 && 中国.isRIM && !SEV && !OVD && 亲中（无 soc/sub 检查）
+		if w.get_flag("event_done_548") and player.has_tag("rim") \
+				and not country.has_tag("sev") and not country.has_tag("ovd") and country.has_tag("亲中"):
+			nums2.append(DIPLO_BTN_RIM5000)
+	return nums2
+
+
+## 中非通用模板（CS L2731/L2753/L3586/L3629）：puppet<0 → 9 + 亲中尾；puppet 由 trade_if_puppet 决定
+func _au_rim_country_numbers(w: WorldState, country: CountryData, trade_if_puppet: bool) -> Array[int]:
+	if country.puppet_of >= 0:
+		if trade_if_puppet:
+			return [DIPLO_BTN_TRADE9]
+		return []
+	var nums: Array[int] = [DIPLO_BTN_TRADE9]
+	_append_au_rim_tail(nums, w, country)
+	return nums
+
+
+## 事件门经济模板（CS L2930-2952/L3002-3024）：puppet<0 → 9 + [Gos∉{0,3}&&ev_flag] 10,5001,5000；else → 9
+func _econ_gate_country_numbers(w: WorldState, country: CountryData, ev_flag: String) -> Array[int]:
+	if country.puppet_of >= 0:
+		return [DIPLO_BTN_TRADE9]
+	var nums: Array[int] = [DIPLO_BTN_TRADE9]
+	# TODO：ingamewars[53].is_going 未移植 → 视为无战争
+	if country.government != 0 and country.government != 3 and w.get_flag(ev_flag):
+		nums.append(DIPLO_BTN_ECON10)
+		_append_rim_tail(nums, w, country)
+	return nums
+
+
+## 亲中尾段（CS L2734-2746 等）：[亲中] 10 + [soc500] 5001 + [revint] 5000
+func _append_au_rim_tail(nums: Array[int], w: WorldState, country: CountryData) -> void:
+	if not country.has_tag("亲中"):
+		return
+	nums.append(DIPLO_BTN_ECON10)
+	_append_rim_tail(nums, w, country)
+
+
+## 联盟尾段（CS L2938-2946 等）：[亲中] 5001(soc500) + 5000(revint)
+func _append_rim_tail(nums: Array[int], w: WorldState, country: CountryData) -> void:
+	if not country.has_tag("亲中"):
+		return
+	if _soc500_ok(w, country):
+		nums.append(DIPLO_BTN_AU5001)
+	if _revint_ok(w, country):
+		nums.append(DIPLO_BTN_RIM5000)
+
+
+## 133（CS L3264）：9,10 + [亲中] ([Gos==1&&ev500]5001 + [revint]5000)
+func _x133_numbers(w: WorldState, country: CountryData) -> Array[int]:
+	var nums: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+	if not country.has_tag("亲中"):
+		return nums
+	# TODO：原版 5001 守卫为 Gosstroy==1（非 IsSocialism）；resultOfEvents[500]==0 未移植
+	if country.government == 1 and w.get_flag("event_done_500"):
+		nums.append(DIPLO_BTN_AU5001)
+	if _revint_ok(w, country):
+		nums.append(DIPLO_BTN_RIM5000)
+	return nums
+
+
+## 135（CS L3316）：9 + [!亲美] ([亲中||Gos∉{0,3}]10 + [亲中]19 + [revint]5000)
+func _x135_numbers(w: WorldState, country: CountryData) -> Array[int]:
+	var nums: Array[int] = [DIPLO_BTN_TRADE9]
+	if country.has_tag("亲美"):
+		return nums
+	if country.has_tag("亲中") or (country.government != 3 and country.government != 0):
+		nums.append(DIPLO_BTN_ECON10)
+	if country.has_tag("亲中"):
+		nums.append(DIPLO_BTN_MIL19)
+		if _revint_ok(w, country):
+			nums.append(DIPLO_BTN_RIM5000)
+	return nums
+
+
+## 167（CS L3365）：!NATO → 9 + [社会主义] 10 + [revint]5000
+func _x167_numbers(w: WorldState, country: CountryData) -> Array[int]:
+	if country.has_tag("nato"):
+		return []
+	var nums: Array[int] = [DIPLO_BTN_TRADE9]
+	if w.is_socialism(country, true):
+		nums.append(DIPLO_BTN_ECON10)
+		if _revint_ok(w, country):
+			nums.append(DIPLO_BTN_RIM5000)
+	return nums
+
+
+## 链尾块H（CS L3914）：非洲区间+亲中+!africaOff → 10,[soc500]5001,[revint]5000
+## TODO：66 资源开发区（CS L3925，data[103] 未移植）
+func _africa_block_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var n := country.原版序号
 	var in_range := (n > 53 and n < 69) or (n > 105 and n < 109) or (n > 111 and n < 134) or n == 42
-	if not in_range:
+	if not in_range or n == 55 or n == 54 or n == 106:
+		return []
+	if not country.has_tag("亲中") or country.禁用非洲机制:
+		return []
+	var nums: Array[int] = [DIPLO_BTN_ECON10]
+	if _soc500_ok(w, country):
+		nums.append(DIPLO_BTN_AU5001)
+	if _revint_ok(w, country):
+		nums.append(DIPLO_BTN_RIM5000)
+	return nums
+
+
+## revint 列表级守卫（CS L550 等）：ev548 && 中国.isRIM && IsSocialism(true)
+## && sub∉{16,18} && !SEV && !OVD && 亲中
+## TODO：gkchp 变体 (sub==10&&is_gkchp，is_gkchp 未建模) 未移植
+func _revint_ok(w: WorldState, country: CountryData) -> bool:
+	var player := w.get_player_country()
+	if player == null:
 		return false
-	if n == 54 or n == 55 or n == 106:
+	if not w.get_flag("event_done_548") or not player.has_tag("rim"):
 		return false
-	return country.has_tag("亲中") and not country.禁用非洲机制
+	if not w.is_socialism(country, true) or country.sub_government == 16 or country.sub_government == 18:
+		return false
+	if country.has_tag("sev") or country.has_tag("ovd"):
+		return false
+	return country.has_tag("亲中")
+
+
+## AU 列表级守卫（CS L2739 等）：IsSocialism(true) && ev500 && res==0
+## TODO：resultOfEvents[500] 未移植，视为 0
+func _soc500_ok(w: WorldState, country: CountryData) -> bool:
+	return w.is_socialism(country, true) and w.get_flag("event_done_500")
+
+
+## 块K（CS L3942）：ev713 && n!=1 && puppet<0 && IsSocialism(true) && sub∉{16,18}
+## && !亲苏 && !亲美 && !SEV && !OVD && !NATO && !EU && !SEATO && !SENTO
+func _block_k_ok(w: WorldState, country: CountryData) -> bool:
+	if not w.get_flag("event_done_713") or country.原版序号 == 1:
+		return false
+	if country.puppet_of >= 0:
+		return false
+	if not w.is_socialism(country, true) or country.sub_government == 16 or country.sub_government == 18:
+		return false
+	if country.has_tag("亲苏") or country.has_tag("亲美") or country.has_tag("sev") \
+			or country.has_tag("ovd") or country.has_tag("nato") or country.has_tag("eu") \
+			or country.has_tag("seato") or country.has_tag("sento"):
+		return false
+	return true
 
 
 func _truncate4(nums: Array[int]) -> Array[int]:
