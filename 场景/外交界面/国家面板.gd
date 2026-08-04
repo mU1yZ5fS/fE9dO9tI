@@ -1075,6 +1075,147 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array[int]:
 				n139.append(DIPLO_BTN_RIM5000)
 			# TODO：139 的 70 巫术（1.sub==19，CS L2170）
 			return n139
+		36, 101, 102, 103, 105:
+			# CS L2456 组（分支头需 modifies[51].active）
+			# 组内 1023/1022/142-146/1079/67 未移植 TODO
+			if not _modifier_active(w, 51):
+				return []
+			var n36: Array[int] = []
+			# 101 且 !ev569 && !auth → 9,10（CS L2462）
+			if n == 101 and not w.get_flag("event_done_569") and not w.is_authoritarian(country):
+				n36.append(DIPLO_BTN_TRADE9)
+				n36.append(DIPLO_BTN_ECON10)
+			# 组内统一 revint → 5000（CS L2507）
+			if _revint_ok(w, country):
+				n36.append(DIPLO_BTN_RIM5000)
+			return n36
+		99:
+			# CS L2512：based/ingamewars[26] 未建模 → 首分支恒真 TODO（proprc 分支原版即死分支）
+			if country.puppet_of >= 0:
+				return []
+			var n99: Array[int] = []
+			if _soc500_ok(w, country):
+				n99.append(DIPLO_BTN_AU5001)
+			if _revint_econ_ok(w, country):
+				n99.append(DIPLO_BTN_RIM5000)
+			return n99
+		100:
+			# CS L2544：based/ingamewars[25] 未建模 → 恒真 TODO
+			# 原版 L2546 检查 99.puppetOf（原版笔误，忠实保留）
+			var c99 := w.get_country_by_legacy_index(99)
+			if c99 == null or c99.puppet_of >= 0:
+				return []
+			var n100: Array[int] = []
+			if _soc500_ok(w, country):
+				n100.append(DIPLO_BTN_AU5001)
+			if _revint_econ_ok(w, country):
+				n100.append(DIPLO_BTN_RIM5000)
+			return n100
+		104:
+			# CS L2576：分支头需 dlc[3]，dlc 未建模 → 无按钮 TODO
+			return []
+		106:
+			# CS L2600：亲中 → 10, [soc500]5001, 9, [revint-Torg]5000
+			if not country.has_tag("亲中"):
+				return []
+			var n106: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n106.append(DIPLO_BTN_AU5001)
+			n106.append(DIPLO_BTN_TRADE9)
+			if _revint_torg_ok(w, country):
+				n106.append(DIPLO_BTN_RIM5000)
+			# TODO：1035 非洲之角 (41.parts&&41.sub==17, CS L2614)
+			return n106
+		107:
+			# CS L2620：亲中 → 10, [soc500]5001, [revint]5000, 9
+			if not country.has_tag("亲中"):
+				return []  # 1053 革命左翼未移植 TODO
+			var n107: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n107.append(DIPLO_BTN_AU5001)
+			if _revint_ok(w, country):
+				n107.append(DIPLO_BTN_RIM5000)
+			n107.append(DIPLO_BTN_TRADE9)
+			return n107
+		108:
+			# CS L2640：9 + [亲中] 10,5001,5000（1032/70 未移植 TODO）
+			var n108: Array[int] = [DIPLO_BTN_TRADE9]
+			if country.has_tag("亲中"):
+				_append_au_rim_tail(n108, w, country)
+			return n108
+		119:
+			# CS L2669：分支头需 africaOff；未禁用则落入链尾块H
+			if not country.禁用非洲机制:
+				return _africa_block_numbers(w, country)
+			if country.sub_government == 9:
+				return []
+			# 1032 协助左派未移植 TODO
+			var n119: Array[int] = []
+			_append_au_rim_tail(n119, w, country)
+			return n119
+		123:
+			# CS L2954：ev638/1047-1049/142-144/1080/70 未移植 TODO → 仅 9
+			return [DIPLO_BTN_TRADE9]
+		125:
+			# CS L3026：puppet<0 → auth: 9(1032未移植) / !auth: 9,10 + 亲中尾
+			if country.puppet_of >= 0:
+				return []
+			if w.is_authoritarian(country):
+				return [DIPLO_BTN_TRADE9]  # 1032 施压未移植 TODO
+			var n125: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+			_append_rim_tail(n125, w, country)
+			return n125
+		126:
+			# CS L3053：分支头需 ev623（未移植→恒 false）→ 无按钮 TODO
+			return []
+		127:
+			# CS L3084：puppet<0 → 9 + [Gos∉{0,3}] 10 + 亲中尾（70 未移植 TODO）
+			if country.puppet_of >= 0:
+				return []
+			var n127: Array[int] = [DIPLO_BTN_TRADE9]
+			if country.government != 0 and country.government != 3:
+				n127.append(DIPLO_BTN_ECON10)
+				_append_rim_tail(n127, w, country)
+			return n127
+		129:
+			# CS L3110：亲中 → 9,10,5001,5000；!亲中&&puppet<0&&sub!=7 → 9(1043-45未移植)
+			if country.has_tag("亲中"):
+				var n129: Array[int] = [DIPLO_BTN_TRADE9]
+				_append_au_rim_tail(n129, w, country)
+				return n129
+			if country.puppet_of < 0 and country.sub_government != 7:
+				return [DIPLO_BTN_TRADE9]
+			return []  # sub==7 的 62-66 未移植 TODO
+		130:
+			# CS L3150：!cw(未建模→真) → 1038 未移植 TODO；cw 分支的 9,10,5001,5000 待 cw 建模
+			return []
+		131:
+			# CS L3173：57 抗议运动(cw 未建模)未移植 TODO
+			if country.sub_government == 9:
+				return []
+			var n131: Array[int] = []
+			if country.sub_government != 7:
+				n131.append(DIPLO_BTN_TRADE9)
+			# cw 未建模(默认 false) → auth&&sub!=19 分支无输出且跳过 Gos!=3 else-if
+			if not (w.is_authoritarian(country) and country.sub_government != 19) and country.government != 3:
+				n131.append(DIPLO_BTN_ECON10)
+				_append_rim_tail(n131, w, country)
+			# TODO：70 博莱斯 (sub==19, CS L3207)
+			return n131
+		132:
+			# CS L3213：9 + [puppet<0] 10 + 亲中尾（1037 未移植 TODO）
+			var n132: Array[int] = [DIPLO_BTN_TRADE9]
+			if country.puppet_of < 0:
+				n132.append(DIPLO_BTN_ECON10)
+				_append_rim_tail(n132, w, country)
+			return n132
+		153:
+			# CS L3240：9 + [Gos!=2] 10 + 亲中尾（1039/1040 未移植 TODO）
+			var n153: Array[int] = [DIPLO_BTN_TRADE9]
+			if country.government != 2:
+				n153.append(DIPLO_BTN_ECON10)
+				_append_rim_tail(n153, w, country)
+			return n153
 		_:
 			# 未移植分支 → 链尾块H（非洲区间）或 无按钮
 			var block := _africa_block_numbers(w, country)
@@ -1232,6 +1373,13 @@ func _africa_block_numbers(w: WorldState, country: CountryData) -> Array[int]:
 ## && sub∉{16,18} && !SEV && !OVD && 亲中
 ## TODO：gkchp 变体 (sub==10&&is_gkchp，is_gkchp 未建模) 未移植
 func _revint_ok(w: WorldState, country: CountryData) -> bool:
+	return _revint_core_ok(w, country) and country.has_tag("亲中")
+
+
+## revint 公共部分（CS L550 等）：ev548 && 中国.isRIM && IsSocialism(true)
+## && sub∉{16,18} && !SEV && !OVD
+## TODO：gkchp 变体 (sub==10&&is_gkchp，is_gkchp 未建模) 未移植
+func _revint_core_ok(w: WorldState, country: CountryData) -> bool:
 	var player := w.get_player_country()
 	if player == null:
 		return false
@@ -1241,7 +1389,17 @@ func _revint_ok(w: WorldState, country: CountryData) -> bool:
 		return false
 	if country.has_tag("sev") or country.has_tag("ovd"):
 		return false
-	return country.has_tag("亲中")
+	return true
+
+
+## revint econ 变体（CS L2525/L2557）：末尾 econ 而非亲中
+func _revint_econ_ok(w: WorldState, country: CountryData) -> bool:
+	return _revint_core_ok(w, country) and country.has_tag("econ")
+
+
+## revint Torg 变体（CS L2610）：末尾 对华贸易 而非亲中
+func _revint_torg_ok(w: WorldState, country: CountryData) -> bool:
+	return _revint_core_ok(w, country) and country.has_tag("对华贸易")
 
 
 ## revint sub==17 变体（CS L618/L2150）：ev548 && 中国.isRIM && sub==17 && !SEV && !OVD && 亲中
