@@ -1405,6 +1405,450 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array[int]:
 		166:
 			# CS L3809 块C：1067 未移植 TODO
 			return []
+		12:
+			# CS L805：9,19 + [revint]5000（68 未移植 TODO）
+			var n12: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_MIL19]
+			if _revint_ok(w, country):
+				n12.append(DIPLO_BTN_RIM5000)
+			return n12
+		13:
+			# CS L815：soc → 9,10,19 + [revint-okb&&亲中]5000；else 22/23 未移植 TODO
+			if not w.is_socialism(country, true):
+				return []
+			var n13: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
+			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+				n13.append(DIPLO_BTN_RIM5000)
+			return n13
+		14:
+			# CS L841：133/1078/56/25/70/53/119/120/ev36 未移植 TODO
+			# [sub==20&&puppet<0] 24；[亲中] 24,19 + [revint-okb&&puppet<0]5000；else 24,19
+			var n14: Array[int] = []
+			if country.sub_government == 20 and country.puppet_of < 0:
+				n14.append(DIPLO_BTN_TRADE24)
+			if country.has_tag("亲中"):
+				n14.append(DIPLO_BTN_TRADE24)
+				n14.append(DIPLO_BTN_MIL19)
+				if _revint_okb_ok(w, country) and country.puppet_of < 0:
+					n14.append(DIPLO_BTN_RIM5000)
+			else:
+				n14.append(DIPLO_BTN_TRADE24)
+				n14.append(DIPLO_BTN_MIL19)
+			return n14
+		15:
+			# CS L894：!7.NATO&&!2.okb&&!4.okb&&!5.okb&&!98.okb → 72/73 未移植 TODO
+			# else → 10,19 + [revint-!亲苏]5000
+			var c2 := w.get_country_by_legacy_index(2)
+			var c4b := w.get_country_by_legacy_index(4)
+			var c5 := w.get_country_by_legacy_index(5)
+			var c98 := w.get_country_by_legacy_index(98)
+			var n15: Array[int] = []
+			var c7b := w.get_country_by_legacy_index(7)
+			if not (c7b != null and c7b.has_tag("nato")) and not (c2 != null and c2.has_tag("okb")) \
+					and not (c4b != null and c4b.has_tag("okb")) and not (c5 != null and c5.has_tag("okb")) \
+					and not (c98 != null and c98.has_tag("okb")):
+				return n15  # 72/73 不结盟运动未移植 TODO
+			n15.append(DIPLO_BTN_ECON10)
+			n15.append(DIPLO_BTN_MIL19)
+			if _revint_noprosov_ok(w, country):
+				n15.append(DIPLO_BTN_RIM5000)
+			return n15
+		16:
+			# CS L926：dlc 未建模 → 非 dlc 分支 24（135/116 未移植 TODO）；
+			# [proprc&&parts] 分支 parts 未建模 → 不触发 TODO
+			return [DIPLO_BTN_TRADE24]
+		17:
+			# CS L950：parts 未建模(→真) → [!1.isASEAN] 1；116/137/138(dlc) 未移植 TODO
+			var p17 := w.get_player_country()
+			if p17 != null and not p17.has_tag("asean"):
+				return [DIPLO_BTN_MAOIST1]
+			return []
+		18:
+			# CS L986：整支在 dlc[3] 内 → 无按钮 TODO
+			return []
+		19:
+			# CS L1002：ev72/resultOfEvents/completedDecisions[14] 未建模 → 首分支未移植 TODO
+			# [亲中] → [!SEV&&!econ] 10 / else 19 + [revint sub17+econ+okb]5000
+			if not country.has_tag("亲中"):
+				return []
+			var p19 := w.get_player_country()
+			var n19: Array[int] = []
+			if not country.has_tag("sev") and not country.has_tag("econ"):
+				n19.append(DIPLO_BTN_ECON10)
+			else:
+				n19.append(DIPLO_BTN_MIL19)
+			if w.get_flag("event_done_548") and p19 != null and p19.has_tag("rim") \
+					and country.sub_government == 17 and not country.has_tag("sev") \
+					and not country.has_tag("ovd") and country.has_tag("econ") \
+					and country.has_tag("okb") and country.has_tag("亲中"):
+				n19.append(DIPLO_BTN_RIM5000)
+			return n19
+		20:
+			# CS L1037：parts 未建模(→真) → 19 + [revint]5000（31/32 未移植 TODO）
+			var n20: Array[int] = [DIPLO_BTN_MIL19]
+			if _revint_ok(w, country):
+				n20.append(DIPLO_BTN_RIM5000)
+			return n20
+		21:
+			# CS L1050：ev483 未建模 → else 分支；33/34/1009/1010/107 未移植 TODO
+			var p21 := w.get_player_country()
+			var n21: Array[int] = [DIPLO_BTN_TRADE24]
+			# sub∈{17,22,19} || ((1.sub∈{7,9}) && sub==9) → 10,19
+			if country.sub_government == 17 or country.sub_government == 22 or country.sub_government == 19 \
+					or (p21 != null and (p21.sub_government == 7 or p21.sub_government == 9) and country.sub_government == 9):
+				n21.append(DIPLO_BTN_ECON10)
+				n21.append(DIPLO_BTN_MIL19)
+				# revint 变体 (L1102): IsSocialism(true) && sub∉{1,18} && !SEV && !OVD && 亲中
+				if _revint_core_ok(w, country) and country.sub_government != 1 \
+						and country.sub_government != 18 and country.has_tag("亲中"):
+					n21.append(DIPLO_BTN_RIM5000)
+			return n21
+		22:
+			# CS L1108：1.isSEV&&puppet==11 → 24,10,19；else !ev454(未建模→真) → [puppet<0] 19 + [revint]5000
+			var p22 := w.get_player_country()
+			if p22 != null and p22.has_tag("sev") and country.puppet_of == 11:
+				return [DIPLO_BTN_TRADE24, DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
+			# 35/36/126 未移植 TODO
+			if country.puppet_of < 0:
+				var n22: Array[int] = [DIPLO_BTN_MIL19]
+				if _revint_ok(w, country):
+					n22.append(DIPLO_BTN_RIM5000)
+				return n22
+			return []
+		23:
+			# CS L1137：分支头需 !prosov；24,10,19 + [revint]5000
+			if country.has_tag("亲苏"):
+				return []
+			var n23: Array[int] = [DIPLO_BTN_TRADE24, DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
+			if _revint_ok(w, country):
+				n23.append(DIPLO_BTN_RIM5000)
+			return n23
+		24, 25:
+			# CS L1147：102/121 未移植 TODO；[亲中] 19 + [revint-okb&&亲中]5000（res437 视为 0）
+			if not country.has_tag("亲中"):
+				return []
+			var n24: Array[int] = [DIPLO_BTN_MIL19]
+			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+				n24.append(DIPLO_BTN_RIM5000)
+			return n24
+		26:
+			# CS L1175：based 未建模 → 1/123/148/149/53 分支不触发 TODO；
+			# 主分支 [revint-okb&&亲中]5000（50 未移植 TODO）
+			var n26: Array[int] = []
+			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+				n26.append(DIPLO_BTN_RIM5000)
+			return n26
+		30:
+			# CS L1217：38/39 未移植 TODO；[24] + soc → 19 + [revint-okb&&亲中]5000
+			var n30: Array[int] = [DIPLO_BTN_TRADE24]
+			if w.is_socialism(country, true):
+				n30.append(DIPLO_BTN_MIL19)
+				if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+					n30.append(DIPLO_BTN_RIM5000)
+			return n30
+		31:
+			# CS L1234：40/41 未移植 TODO；[revint]5000
+			var n31: Array[int] = []
+			if _revint_ok(w, country):
+				n31.append(DIPLO_BTN_RIM5000)
+			return n31
+		32, 42:
+			# CS L1243：puppet<0 → 10 + [32]19 + [revint]5000
+			if country.puppet_of >= 0:
+				return []
+			var n32: Array[int] = [DIPLO_BTN_ECON10]
+			if n == 32:
+				n32.append(DIPLO_BTN_MIL19)
+			if _revint_ok(w, country):
+				n32.append(DIPLO_BTN_RIM5000)
+			return n32
+		33:
+			# CS L1267：42/1061 未移植 TODO；亲中&&!1.isASEAN → 10,19 + [sub17 变体]5000
+			var p33 := w.get_player_country()
+			if not country.has_tag("亲中") or (p33 != null and p33.has_tag("asean")):
+				return []
+			var n33: Array[int] = [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
+			if _revint_sub17_ok(w, country):
+				n33.append(DIPLO_BTN_RIM5000)
+			return n33
+		34:
+			# CS L1291：43/44 未移植 TODO；9,19 + [revint-okb&&亲中]5000
+			var n34: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_MIL19]
+			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+				n34.append(DIPLO_BTN_RIM5000)
+			return n34
+		35:
+			# CS L1302：ev564 未建模(→!ev564) → 1016 未移植 TODO
+			return []
+		37:
+			# CS L1327：45/46 未移植 TODO；24,10,19 + [revint-okb&&亲中]5000
+			var n37: Array[int] = [DIPLO_BTN_TRADE24, DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
+			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+				n37.append(DIPLO_BTN_RIM5000)
+			return n37
+		38:
+			# CS L1345：ev461 未建模 → 首分支 48/1005 未移植 TODO；
+			# ev461&&亲中 → 10,19（119/120 未移植 TODO）
+			if w.get_flag("event_done_461") and country.has_tag("亲中"):
+				return [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
+			return []
+		39:
+			# CS L1366：49/148/149/53 全未移植 TODO
+			return []
+		40:
+			# CS L1395：sub==20 → 1019/1020 未移植 TODO；sub==10 → 9,10（ev563 未建模）
+			if country.sub_government == 10:
+				return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+			return []
+		41:
+			# CS L1435：ev403 未建模 → proprc 分支；101/110/111/70 未移植 TODO
+			# [Gos==1||sub==0] → 10 + 5001(soc500) + [revint-无soc]5000；else → 10
+			if not country.has_tag("亲中"):
+				return []
+			if country.government == 1 or country.sub_government == 0:
+				var n41: Array[int] = [DIPLO_BTN_ECON10]
+				if _soc500_ok(w, country):
+					n41.append(DIPLO_BTN_AU5001)
+				if _revint_nosoc_ok(w, country):
+					n41.append(DIPLO_BTN_RIM5000)
+				return n41
+			return [DIPLO_BTN_ECON10]
+		43, 96, 97:
+			# CS L1476：puppet!=1 → 97/98/99 未移植 TODO；[revint]5000
+			if country.puppet_of == 1:
+				return []
+			var n43: Array[int] = []
+			if _revint_ok(w, country):
+				n43.append(DIPLO_BTN_RIM5000)
+			return n43
+		44:
+			# CS L1489：1014/51/52/1015/119 未移植 TODO；亲中&&!soc_eu → 19 + [revint-okb&&亲中]5000
+			if not country.has_tag("亲中") or country.has_tag("soc_eu"):
+				return []
+			var n44: Array[int] = [DIPLO_BTN_MIL19]
+			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+				n44.append(DIPLO_BTN_RIM5000)
+			return n44
+		45:
+			# CS L1531：!94.cw(未建模→真) 且 (war19||!auth 视为真) → 9；54 未移植 TODO
+			# soc → 10 + [亲中] 19 + [revint]5000
+			var n45: Array[int] = [DIPLO_BTN_TRADE9]
+			if w.is_socialism(country, true):
+				n45.append(DIPLO_BTN_ECON10)
+				if country.has_tag("亲中"):
+					n45.append(DIPLO_BTN_MIL19)
+					if _revint_ok(w, country):
+						n45.append(DIPLO_BTN_RIM5000)
+			return n45
+		46:
+			# CS L1554：parts/ev31 → 55/1013/122 全未移植 TODO
+			return []
+		47:
+			# CS L1583：!1.isASEAN → 56(未移植 TODO)+[revint]5000；9,19（44 未移植 TODO）
+			var p47 := w.get_player_country()
+			var n47: Array[int] = []
+			if p47 == null or not p47.has_tag("asean"):
+				if _revint_ok(w, country):
+					n47.append(DIPLO_BTN_RIM5000)
+			n47.append(DIPLO_BTN_TRADE9)
+			n47.append(DIPLO_BTN_MIL19)
+			return n47
+		48:
+			# CS L1597：9 + [Gos!=3] 10 + [revint]5000
+			var n48: Array[int] = [DIPLO_BTN_TRADE9]
+			if country.government != 3:
+				n48.append(DIPLO_BTN_ECON10)
+				if _revint_ok(w, country):
+					n48.append(DIPLO_BTN_RIM5000)
+			return n48
+		52:
+			# CS L1609：ev497||sub==0 → 24 + [res497!=2(视为真)] 10 + [亲中] 5001,5000
+			if not w.get_flag("event_done_497") and country.sub_government != 0:
+				return []
+			var n52: Array[int] = [DIPLO_BTN_TRADE24]
+			n52.append(DIPLO_BTN_ECON10)
+			if country.has_tag("亲中"):
+				_append_rim_tail(n52, w, country)
+			return n52
+		49:
+			# CS L1631：24 + soc → 10 + [亲中] 19 + [revint]5000
+			var n49: Array[int] = [DIPLO_BTN_TRADE24]
+			if w.is_socialism(country, true):
+				n49.append(DIPLO_BTN_ECON10)
+				if country.has_tag("亲中"):
+					n49.append(DIPLO_BTN_MIL19)
+					if _revint_ok(w, country):
+						n49.append(DIPLO_BTN_RIM5000)
+			return n49
+		50:
+			# CS L1647：sub!=9 → 58(未移植 TODO) + [亲中] 10 + [soc] 19 + [revint-okb&&亲中]5000 + 24
+			if country.sub_government == 9:
+				return []
+			var n50: Array[int] = [DIPLO_BTN_TRADE24]
+			if country.has_tag("亲中"):
+				n50.append(DIPLO_BTN_ECON10)
+				if w.is_socialism(country, true):
+					n50.append(DIPLO_BTN_MIL19)
+					if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+						n50.append(DIPLO_BTN_RIM5000)
+			return n50
+		128:
+			# CS L1667：soc → 10,19 + [revint]5000；24
+			var n128: Array[int] = [DIPLO_BTN_TRADE24]
+			if w.is_socialism(country, true):
+				n128.append(DIPLO_BTN_ECON10)
+				n128.append(DIPLO_BTN_MIL19)
+				if _revint_ok(w, country):
+					n128.append(DIPLO_BTN_RIM5000)
+			return n128
+		51:
+			# CS L1695：!7.NATO && !modifies[49] → 60/34/61/75 全未移植 TODO
+			return []
+		53:
+			# CS L1719：ev499 未建模(→false) → 1058-1060 未移植 TODO
+			return []
+		54:
+			# CS L1778：9 + [auth&&!ev560(未建模→真)] → 1006/1007 未移植 TODO
+			# else → 10 + [sub!=11&&Gos!=3] 19 + [revint-okb&&亲中]5000
+			if w.is_authoritarian(country):
+				return [DIPLO_BTN_TRADE9]
+			var n54: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+			if country.sub_government != 11 and country.government != 3:
+				n54.append(DIPLO_BTN_MIL19)
+				if _revint_okb_ok(w, country) and country.has_tag("亲中"):
+					n54.append(DIPLO_BTN_RIM5000)
+			return n54
+		55:
+			# CS L1803：亲中 → 10,19 + [revint-okb]5000；else Gos==2 → 10（67 未移植 TODO）
+			if country.has_tag("亲中"):
+				var n55: Array[int] = [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
+				if _revint_okb_ok(w, country):
+					n55.append(DIPLO_BTN_RIM5000)
+				return n55
+			if country.government == 2:
+				return [DIPLO_BTN_ECON10]
+			return []
+		56:
+			# CS L1828：亲中 → 10 + 5001(soc500) + [revint]5000；else 1024/1032 未移植 TODO
+			if not country.has_tag("亲中"):
+				return []
+			var n56: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n56.append(DIPLO_BTN_AU5001)
+			if _revint_ok(w, country):
+				n56.append(DIPLO_BTN_RIM5000)
+			return n56
+		57:
+			# CS L1852：亲中 → 10 + 5001(soc500) + [revint-puppet<0]5000；else 1056 未移植 TODO
+			if not country.has_tag("亲中"):
+				return []
+			var n57: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n57.append(DIPLO_BTN_AU5001)
+			if _revint_puppet_ok(w, country):
+				n57.append(DIPLO_BTN_RIM5000)
+			return n57
+		58:
+			# CS L1871：ev458 未建模(→false) → 1003 未移植 TODO；ev458&&亲中 → 10+5001+5000
+			if not w.get_flag("event_done_458") or not country.has_tag("亲中"):
+				return []
+			var n58: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n58.append(DIPLO_BTN_AU5001)
+			if _revint_ok(w, country):
+				n58.append(DIPLO_BTN_RIM5000)
+			return n58
+		59:
+			# CS L1897：soc → 9,10 + [亲中] 5001,5000；sub==10||Gos==2 → 9,10；else → 9
+			#（1032/1043-1045 未移植 TODO）
+			if w.is_socialism(country, true):
+				var n59: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+				if country.has_tag("亲中"):
+					_append_rim_tail(n59, w, country)
+				return n59
+			if country.sub_government == 10 or country.government == 2:
+				return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+			return [DIPLO_BTN_TRADE9]
+		60:
+			# CS L1939：9 + 亲中 → 10,5001,5000（1054/1045 未移植 TODO）
+			var n60: Array[int] = [DIPLO_BTN_TRADE9]
+			if country.has_tag("亲中"):
+				_append_au_rim_tail(n60, w, country)
+			return n60
+		61:
+			# CS L1967：亲中&&puppet<0 → 10 + 5001(soc500) + [revint]5000
+			if not country.has_tag("亲中") or country.puppet_of >= 0:
+				return []
+			var n61: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n61.append(DIPLO_BTN_AU5001)
+			if _revint_ok(w, country):
+				n61.append(DIPLO_BTN_RIM5000)
+			return n61
+		62:
+			# CS L1982：亲中 → 10 + 5001(soc500) + [revint]5000
+			if not country.has_tag("亲中"):
+				return []
+			var n62: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n62.append(DIPLO_BTN_AU5001)
+			if _revint_ok(w, country):
+				n62.append(DIPLO_BTN_RIM5000)
+			return n62
+		63:
+			# CS L1997：分支头需 africaOff；亲中 → 10 + 5001(soc500) + [revint]5000
+			if not country.禁用非洲机制:
+				return _africa_block_numbers(w, country)
+			if not country.has_tag("亲中"):
+				return []
+			var n63: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n63.append(DIPLO_BTN_AU5001)
+			if _revint_ok(w, country):
+				n63.append(DIPLO_BTN_RIM5000)
+			return n63
+		64:
+			# CS L2012：亲中 → 10 + 5001(soc500) + [revint]5000；else 1032/data16 未移植 TODO
+			if not country.has_tag("亲中"):
+				return []
+			var n64: Array[int] = [DIPLO_BTN_ECON10]
+			if _soc500_ok(w, country):
+				n64.append(DIPLO_BTN_AU5001)
+			if _revint_ok(w, country):
+				n64.append(DIPLO_BTN_RIM5000)
+			return n64
+		65:
+			# CS L2035：puppet<0 → 9,10 + [亲中] 5001,5000（70 未移植 TODO）
+			if country.puppet_of >= 0:
+				return []
+			var n65: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+			if country.has_tag("亲中"):
+				_append_rim_tail(n65, w, country)
+			return n65
+		66:
+			# CS L2058：ev617 未建模(→!ev617) → 9 + [sub==7] 1032(未移植 TODO)；
+			# [亲中||res618==1] → 10 + 5001(soc500) + [revint]5000
+			var n66: Array[int] = [DIPLO_BTN_TRADE9]
+			if country.has_tag("亲中"):
+				n66.append(DIPLO_BTN_ECON10)
+				if _soc500_ok(w, country):
+					n66.append(DIPLO_BTN_AU5001)
+				if _revint_ok(w, country):
+					n66.append(DIPLO_BTN_RIM5000)
+			return n66
+		68:
+			# CS L2089：!亲美 → 9,10 + [亲中] 5001(soc500) + [revint-无proprc]5000；亲美 → 9
+			if country.has_tag("亲美"):
+				return [DIPLO_BTN_TRADE9]
+			var n68: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
+			if country.has_tag("亲中"):
+				if _soc500_ok(w, country):
+					n68.append(DIPLO_BTN_AU5001)
+				if _revint_core_ok(w, country):
+					n68.append(DIPLO_BTN_RIM5000)
+			return n68
+		150, 151:
+			# CS L1748/L1763：ev499 未建模(→false) → 10/5001/5000 分支不触发 TODO
+			return []
 		_:
 			# 未移植分支 → 链尾块H（非洲区间）或 无按钮
 			var block := _africa_block_numbers(w, country)
@@ -1594,6 +2038,30 @@ func _revint_torg_ok(w: WorldState, country: CountryData) -> bool:
 ## revint okb 变体（CS L3292/L3344/L3575）：末尾 okb 而非亲中
 func _revint_okb_ok(w: WorldState, country: CountryData) -> bool:
 	return _revint_core_ok(w, country) and country.has_tag("okb")
+
+
+## revint !亲苏 变体（CS L920）：末尾 !prosov 而非亲中
+func _revint_noprosov_ok(w: WorldState, country: CountryData) -> bool:
+	return _revint_core_ok(w, country) and not country.has_tag("亲苏")
+
+
+## revint 无 IsSocialism 变体（CS L1461）：sub∉{16,18} && !SEV && !OVD && 亲中（无 soc 检查）
+func _revint_nosoc_ok(w: WorldState, country: CountryData) -> bool:
+	var player := w.get_player_country()
+	if player == null:
+		return false
+	if not w.get_flag("event_done_548") or not player.has_tag("rim"):
+		return false
+	if country.sub_government == 16 or country.sub_government == 18:
+		return false
+	if country.has_tag("sev") or country.has_tag("ovd"):
+		return false
+	return country.has_tag("亲中")
+
+
+## revint puppet<0 变体（CS L1861）：末尾 puppetOf<0 而非亲中
+func _revint_puppet_ok(w: WorldState, country: CountryData) -> bool:
+	return _revint_core_ok(w, country) and country.puppet_of < 0
 
 
 ## revint sub==17 变体（CS L618/L2150）：ev548 && 中国.isRIM && sub==17 && !SEV && !OVD && 亲中
