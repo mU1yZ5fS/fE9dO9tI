@@ -372,6 +372,8 @@ func tick() -> void:
 	_daily_deficit_recovery(world)
 	_daily_science_gen(world)
 	_update_displays(world.数值表)
+	# 原版体制重算在日块（TimeScript data[52]/[54] 映射之后，num20 段），每日执行
+	_political_system_recalc(world.数值表, world)
 
 	if world.date.month != old_month:
 		_on_month_changed()
@@ -1179,8 +1181,9 @@ func _on_month_changed() -> void:
 		var soviet_country := w.get_country_by_legacy_index(7)
 		if soviet_country != null:
 			soviet_country.development = 0
-	# 原版月块（data[19]==1）：政治体制重算、人口增长、寡头成长
-	_political_system_recalc(d, w)
+	# 原版月块（data[19]==1）：政治路线重算、人口增长、寡头成长
+	# （体制重算在日块，见 tick；此处仅 data[56] 政治路线月块重算）
+	_update_political_line(d, w)
 	_monthly_population(d, w)
 	_monthly_oligarch(d, w)
 	# 政客：调查/监视、自动支持打压、职位 power、空缺派系领袖（TimeScript ~937, ~2172）
@@ -1499,27 +1502,22 @@ func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
 	# 国债利息（与 UI「债务损耗」对齐）
 	if loan > 0:
 		var interest: int = loan / 40
-		var usa_leader := 0
-		if w.empires.size() > 0 and w.empires[0] != null:
-			usa_leader = w.empires[0].current_leader
-		# 原版：里根(now_leader==3) 奇数月可豁免预算扣款
-		var skip_budget := (usa_leader == 3 and w.date != null and w.date.month % 2 != 0)
+		# 差异：此前移植的"里根(now_leader==3) 奇数月豁免贷款"查证无原版出处
+		# （TimeScript 全表无 empires[0].now_leader==3 判断；且修正索引后 3=蒙代尔非里根），已移除。
 		if interest <= 0:
-			if not skip_budget:
+			d[W.I_BUDGET] -= 1
+			if year >= 1983:
+				d[W.I_BUDGET] -= 2
+			elif year >= 1980:
 				d[W.I_BUDGET] -= 1
-				if year >= 1983:
-					d[W.I_BUDGET] -= 2
-				elif year >= 1980:
-					d[W.I_BUDGET] -= 1
 			if loan > 10:
 				d[W.I_LOAN] -= 1
 			if w.empires.size() > 1 and w.empires[1] != null:
 				w.empires[1].relations -= 2
 		else:
-			if not skip_budget:
-				d[W.I_BUDGET] -= interest
-				if year >= 1983:
-					d[W.I_BUDGET] -= 1
+			d[W.I_BUDGET] -= interest
+			if year >= 1983:
+				d[W.I_BUDGET] -= 1
 			if w.empires.size() > 1 and w.empires[1] != null:
 				w.empires[1].relations -= loan / 20
 			if loan > 10:
@@ -1671,45 +1669,91 @@ func _apply_envelope_loyalty(d: Array[int]) -> void:
 # ── 政治体制自动重算 ──
 
 func _political_system_recalc(d: Array[int], w: WorldState) -> void:
-	var score: int = (d[W.I_ECON_SYSTEM] - 9) + (d[W.I_PARTY_SYSTEM] - 5) \
-		+ (d[W.I_PRESS_POLICY] - 15) + (d[W.I_RELIGION] - 23) \
-		+ (d[W.I_TERRITORY] + d[W.I_MIL_DOCTRINE] - 48) / 2
-	if d[W.I_ECON_SYSTEM] == 11:
-		score += 1
+	# 原版 TimeScript.cs 月块体制重算（num20=5 逐项修正体系，:1265-1445），
+	# 2026-08 对齐审查重写：此前移植用 "score=(econ-9)+(party-5)+..." 数学公式与
+	# 分支阈值（score<=6/9/11/15/20），与原版 num20<=0/3/6/9/12 体系完全不符；
+	# 开局数据下两者恰都收敛到威权（num20=5-1-1-2-1=0 → 分支1），但政策变化后
+	# 结果分歧。逐字重写如下（差异：DevelopedConsumerism/事件 502/681/674/675 未移植 → 跳过）。
+	var num20 := 5
 	if d[W.I_ECON_SYSTEM] == 10:
-		score += 2
+		num20 -= 1
+	if d[W.I_ECON_SYSTEM] == 14 or d[W.I_ECON_SYSTEM] == 15:
+		if d[W.I_PRESS_POLICY] > 17:
+			num20 += 1
+		else:
+			num20 -= 1
+	if d[W.I_PARTY_SYSTEM] == 6:
+		num20 -= 1
+	if d[W.I_PARTY_SYSTEM] == 8:
+		num20 += 1
+	if d[W.I_PARTY_SYSTEM] == 9:
+		num20 += 2
+	if d[W.I_PRESS_POLICY] == 16:
+		num20 -= 1
+	if d[W.I_PRESS_POLICY] == 18:
+		num20 += 1
+	if d[W.I_PRESS_POLICY] == 19:
+		num20 += 3
+	if d[W.I_RELIGION] == 24 or d[W.I_RELIGION] == 29:
+		num20 -= 2
+	if d[W.I_RELIGION] == 25 or d[W.I_RELIGION] == 28:
+		num20 -= 1
+	if d[W.I_RELIGION] == 27:
+		num20 += 1
+	if d[W.I_TERRITORY] == 20 and d[W.I_MIL_DOCTRINE] == 30:
+		num20 -= 1
+	if d[W.I_TERRITORY] >= 22 and d[W.I_MIL_DOCTRINE] == 33:
+		num20 += 1
+	if d[W.I_TERRITORY] == 23:
+		num20 += 1
+	# DevelopedConsumerism（原版开局 0，GameStartScript.cs:127）端口无对应 → 跳过
+	if _mod_active(w, 40):
+		num20 -= 1
+	if _mod_active(w, 38) and num20 > 0:
+		num20 = 0
+	# event_done[502]/[681]/(674/675) 未移植 → 跳过
 
 	var new_system: int
 	var new_gosstroy: int
-	if d[W.I_PARTY_SYSTEM] <= 6 and d[W.I_ECON_SYSTEM] >= 14 \
-			and d[W.I_PRESS_POLICY] <= 16 and d[W.I_TERRITORY] <= 21 \
-			and (d[W.I_RELIGION] <= 24 or d[W.I_RELIGION] >= 28) \
-			and (d[W.I_MIL_DOCTRINE] <= 31 or d[W.I_MIL_DOCTRINE] >= 33):
+	if num20 <= 0:
 		new_system = 0; new_gosstroy = 0
-	# 原版 1183：system=0 的第二分支含 3 个子条件
-	elif (score <= 6 or (score <= 7 and d[W.I_ECON_SYSTEM] <= 11) \
-			or (score <= 9 and _mod_active(w, 40))) and d[W.I_PRESS_POLICY] < 18:
-		new_system = 0; new_gosstroy = 0
-	elif score <= 9 and d[W.I_ECON_SYSTEM] <= 11:
+	elif num20 <= 3 and d[W.I_ECON_SYSTEM] <= 11:
 		new_system = 1; new_gosstroy = 1
-	elif score <= 11:
-		new_system = 2; new_gosstroy = 1
-	elif score <= 15 and d[W.I_ECON_SYSTEM] > 11:
-		new_system = 3; new_gosstroy = 2
-	elif score <= 20 and d[W.I_ECON_SYSTEM] > 11:
-		new_system = 4; new_gosstroy = 3
-	elif d[W.I_ECON_SYSTEM] > 11:
+	elif num20 <= 6:
+		if d[W.I_ECON_SYSTEM] <= 11:
+			new_system = 2; new_gosstroy = 1
+		elif d[W.I_ECON_SYSTEM] <= 13 and num20 <= 4:
+			new_system = 2; new_gosstroy = 1
+		else:
+			new_system = 3; new_gosstroy = 2
+	elif num20 <= 9:
+		if d[W.I_ECON_SYSTEM] <= 13:
+			if d[W.I_ECON_SYSTEM] <= 11:
+				new_system = 2; new_gosstroy = 1
+			else:
+				new_system = 3; new_gosstroy = 2
+		else:
+			new_system = 4; new_gosstroy = 3
+	elif num20 <= 12:
+		if d[W.I_ECON_SYSTEM] <= 13:
+			if d[W.I_ECON_SYSTEM] <= 11:
+				new_system = 3; new_gosstroy = 2
+			else:
+				new_system = 4; new_gosstroy = 3
+		else:
+			new_system = 5; new_gosstroy = 3
+	elif d[W.I_ECON_SYSTEM] > 12:
 		new_system = 5; new_gosstroy = 3
+	elif d[W.I_ECON_SYSTEM] > 11:
+		new_system = 4; new_gosstroy = 3
 	else:
-		new_system = 2; new_gosstroy = 2
+		new_system = 3; new_gosstroy = 2
 
 	d[W.I_IDEOLOGY] = new_system
 	var pc := w.get_player_country()
 	if pc:
 		pc.government = new_gosstroy
-	# 月度只重算政治路线 data[56]（幂等派生值）。满足现状者 data[106] 不在月度增长——
-	# 原版月块不碰 data[106]，它只在切政策时 +=（见 change_policy），否则每月暴涨。
-	_update_political_line(d, w)
+	# 注意：data[56] 政治路线重算在月块（_on_month_changed 单独调用），不在此处
 
 
 ## 政治路线 data[56]：一党制(≤7)下每月跟随席位(support)最大的派系。

@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_089_era_of_the_end.gd" id="5_script"]
+
+[sub_resource type="Resource" id="Expr_relres"]
+script = ExtResource("3_expr")
+type = 14
+key = "relres"
+
+[sub_resource type="Resource" id="Expr_rel50"]
+script = ExtResource("3_expr")
+type = 8
+key = "1"
+value = 50.0
+
+[sub_resource type="Resource" id="Expr_agents100"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 100.0
+
+[sub_resource type="Resource" id="Expr_support_andropov"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_relres"), SubResource("Expr_rel50"), SubResource("Expr_agents100")])
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.11.10"
+
+[sub_resource type="Resource" id="E_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_script")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "支持安德罗波夫"
+disabled_text = "我们对苏共没有足够的影响力"
+enable_condition = SubResource("Expr_support_andropov")
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_089_era_of_the_end.gd 生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "支持谢尔比茨基"
+disabled_text = "我们对苏共没有足够的影响力"
+enable_condition = SubResource("Expr_support_andropov")
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_089_era_of_the_end.gd 生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "支持契尔年科"
+disabled_text = "我们对苏共没有足够的影响力"
+enable_condition = SubResource("Expr_support_andropov")
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_089_era_of_the_end.gd 生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_option")
+text = "不要介入，静待结果"
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_089_era_of_the_end.gd 生成）"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "era_of_the_end"
+source_event_number = 89
+title = "一个时代的终结"
+description = "来自苏联的紧急消息！今天，苏联领导人宣布列昂尼德·伊里奇·勃列日涅夫去世，他领导苏联接近20年。11月10日，这位苏联领导人在梦中死于突发性心力衰竭。在苏联人民哀悼之际，苏共展开了一场激烈的权力斗争，苏共中央总书记的主要竞争者是：尤里·安德罗波夫、弗拉基米尔·谢尔比茨基与康斯坦丁·契尔年科。如果我们的关系不太糟，那么我们可以支持其中一个候选人。"
+show_notification = false
+fire_only_once = true
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

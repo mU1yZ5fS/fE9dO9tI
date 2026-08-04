@@ -1,0 +1,127 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_086_steel_yuri.gd" id="5_script"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.7.1"
+
+[sub_resource type="Resource" id="Expr_leader0"]
+script = ExtResource("3_expr")
+type = 39
+key = "1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_prev85_0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "kazakh_german"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_prev85_1"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "kazakh_german"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_85done"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_prev85_0"), SubResource("Expr_prev85_1")])
+
+[sub_resource type="Resource" id="Expr_gate"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_leader0"), SubResource("Expr_85done")])
+
+[sub_resource type="Resource" id="Expr_agents100"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 100.0
+
+[sub_resource type="Resource" id="Expr_line3"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_party8"]
+script = ExtResource("3_expr")
+type = 1
+key = "party_system"
+value = 7.0
+
+[sub_resource type="Resource" id="Expr_oneparty"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line3"), SubResource("Expr_party8")])
+
+[sub_resource type="Resource" id="Expr_coalition67"]
+script = ExtResource("3_expr")
+type = 36
+value = 67.0
+
+[sub_resource type="Resource" id="Expr_party9"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_system"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_multiparty"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_coalition67"), SubResource("Expr_party9")])
+
+[sub_resource type="Resource" id="Expr_route"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_oneparty"), SubResource("Expr_multiparty")])
+
+[sub_resource type="Resource" id="Expr_opt0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents100"), SubResource("Expr_route")])
+
+[sub_resource type="Resource" id="E_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_script")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "推波助澜，让安德罗波夫的敌人行动（需要10特工网络和5百万预算）"
+disabled_text = "我们不知道该怎么处理这个"
+enable_condition = SubResource("Expr_opt0")
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_086_steel_yuri.gd 生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "发表揭露材料，火上浇油（需要7百万预算）"
+disabled_text = "我们不需要"
+enable_condition = SubResource("Expr_route")
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_086_steel_yuri.gd 生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "我们会把它留到将来…"
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_086_steel_yuri.gd 生成）"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "steel_yuri"
+source_event_number = 86
+title = "“钢铁尤里”的终结"
+description = "根据我方特工的情报，长期饱受肾病折磨的苏联克格勃主席尤里·安德罗波夫的健康状况正在急剧恶化。与此同时，克格勃内部的反对派正在与米哈伊尔·苏斯洛夫和弗拉基米尔·谢尔比茨基秘密联络。一场针对安德罗波夫的政治风暴正在酝酿……"
+show_notification = false
+fire_only_once = true
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_gate")])
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

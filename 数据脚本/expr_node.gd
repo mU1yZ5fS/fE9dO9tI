@@ -62,6 +62,8 @@ enum Type {
 	COALITION_SUPPORT_AT_LEAST,  # value=阈值 → 执政联盟支持率(原 summa_3_2) >= value（仅 party_system>7 时计算，否则 0）
 	EMPIRE_POWER_DIFFERENCE_AT_LEAST, # key=帝国编号 value=阈值 → influence_prc - empires[key].power >= value
 	DECISION_DONE,               # key=决策编号 → decisions.completed[int(key)] == true
+	# 领导人继任系统（2026-08 追加，尾追加不破坏旧 .tres 枚举整数）：
+	EMPIRE_LEADER_IS,            # key=帝国编号 value=领导人索引 → empires[int(key)].current_leader == int(value)
 }
 
 ## 节点类型

@@ -331,6 +331,14 @@ func evaluate(node: ExprNode) -> bool:
 				return false
 			var di := int(node.key)
 			return di >= 0 and di < ws.decisions.completed.size() and ws.decisions.completed[di]
+		ExprNode.Type.EMPIRE_LEADER_IS:
+			# 领导人继任系统：key=帝国编号 value=领导人索引（modify_choose 显示分支的 now_leader）
+			if ws == null or not node.key.is_valid_int():
+				return false
+			var ei := int(node.key)
+			if ei < 0 or ei >= ws.empires.size() or ws.empires[ei] == null:
+				return false
+			return ws.empires[ei].current_leader == int(node.value)
 		ExprNode.Type.MODIFIER_ACTIVE: return _is_modifier_active(node.key)
 		ExprNode.Type.MODIFIER_INACTIVE: return not _is_modifier_active(node.key)
 		ExprNode.Type.PREV_EVENT_RESULT_IS:

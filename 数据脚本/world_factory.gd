@@ -1003,13 +1003,43 @@ static func _init_empires(ws: WorldState) -> void:
 	usa.money = 1000
 	usa.power = ws.数值表[WorldState.I_USA_INFLUENCE]      # 原版 empires[0].power = data[10] = 280
 	usa.relations = ws.数值表[28]                            # 原版 empires[0].relations = data[28] = 700
-	usa.leaders = [EmpireLeader.new("Gerald Ford", 60)]
+	# 美国 8 位领导人（索引 = now_leader，modify_choose.cs:676-716 显示分支）。
+	# 开局 support 对齐 GameStartScript.cs:938-944（new_texts[0..3] 固定 5/4/3/2，4-7 无初始值）。
+	# 注：原版 1977 前显示"福特"、1977-1981 显示"卡特"是按日期的显示分支（modify_choose.cs:678-686），
+	# 不在 leaders 表内；1981 后按 now_leader 显示。current_leader 初始 0 = 里根。
+	usa.leaders = [
+		EmpireLeader.new("Ronald Reagan", 5),            # 0 罗纳德·里根（1981 后显示）
+		EmpireLeader.new("Jimmy Carter", 4),             # 1 吉米·卡特（1980 大选连任后）
+		EmpireLeader.new("George Bush", 3),              # 2 乔治·布什（1984 大选败者/继任）
+		EmpireLeader.new("Walter Mondale", 2),           # 3 沃尔特·蒙代尔（1984 大选胜者）
+		EmpireLeader.new("Michael Dukakis", 0),          # 4 迈克尔·杜卡基斯
+		EmpireLeader.new("Ron Paul", 0),                 # 5 罗纳德·欧内斯特·保罗
+		EmpireLeader.new("Ross Perot", 0),               # 6 罗斯·佩罗
+		EmpireLeader.new("Bernie Sanders", 0),           # 7 伯尼·桑德斯
+	]
 
 	var ussr := EmpireData.new(EmpireData.USSR)
 	ussr.money = 800
 	ussr.power = ws.数值表[WorldState.I_SOVIET_INFLUENCE]   # 原版 empires[1].power = data[2] = 300
 	ussr.relations = ws.数值表[29]                           # 原版 empires[1].relations = data[29] = 300
-	ussr.leaders = [EmpireLeader.new("Leonid Brezhnev", 75)]
+	# 苏联 9 位领导人（索引 = now_leader，modify_choose.cs:154-212 显示分支）。
+	# 开局 support 按 GameStartScript.cs:963-970 公式：data[95..100] 开局 0（GameState.cs:7850
+	# data=new int[150]），GameStartScript.cs:958-959 增量 data[95]++ / data[96]+=4，dlc[0]=true。
+	# 索引语义以 Event89.cs 判定为准（安德罗波夫胜→now_leader=1、谢尔比茨基胜→now_leader=3）：
+	#   leaders[1]=谢尔比茨基（data[97]+3）、leaders[3]=安德罗波夫（data[96]），
+	#   与 modify_choose 显示分支（1=安德罗波夫、3=谢尔比茨基）自洽。
+	# 雅科夫列夫(7)/利加乔夫(8) 无开局公式，取预留合理值（显示分支与未来事件用）。
+	ussr.leaders = [
+		EmpireLeader.new("Leonid Brezhnev", 20),         # 0 列昂尼德·勃列日涅夫（GameStartScript support=20）
+		EmpireLeader.new("Vladimir Shcherbitsky", 3),    # 1 弗拉基米尔·谢尔比茨基（data[97]+3）
+		EmpireLeader.new("Konstantin Chernenko", 3),     # 2 康斯坦丁·契尔年科（data[95]*3）
+		EmpireLeader.new("Yuri Andropov", 4),            # 3 尤里·安德罗波夫（data[96]）
+		EmpireLeader.new("Grigory Romanov", 0),          # 4 格里戈里·罗曼诺夫（data[98]）
+		EmpireLeader.new("Viktor Grishin", 1),           # 5 维克托·格里申（data[99]+1）
+		EmpireLeader.new("Mikhail Gorbachev", 0),        # 6 米哈伊尔·戈尔巴乔夫（data[100]）
+		EmpireLeader.new("Alexander Yakovlev", 30),      # 7 亚历山大·雅科夫列夫（Event117 北约分支）
+		EmpireLeader.new("Yegor Ligachev", 25),          # 8 叶戈尔·利加乔夫（预留）
+	]
 
 	ws.empires = [usa, ussr]
 	print("WorldFactory: 超级大国加载完成")

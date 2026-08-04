@@ -11,6 +11,22 @@ const PANEL_KEYS: Array[String] = ["交易", "影响", "领土", "形势", "凝�
 const 领导人中文名 := {
 	"Leonid Brezhnev": "列昂尼德·勃列日涅夫",
 	"Gerald Ford": "杰拉尔德·福特",
+	"Ronald Reagan": "罗纳德·里根",
+	"Jimmy Carter": "吉米·卡特",
+	"George Bush": "乔治·布什",
+	"Walter Mondale": "沃尔特·蒙代尔",
+	"Michael Dukakis": "迈克尔·杜卡基斯",
+	"Ron Paul": "罗纳德·欧内斯特·保罗",
+	"Ross Perot": "罗斯·佩罗",
+	"Bernie Sanders": "伯尼·桑德斯",
+	"Vladimir Shcherbitsky": "弗拉基米尔·谢尔比茨基",
+	"Konstantin Chernenko": "康斯坦丁·契尔年科",
+	"Yuri Andropov": "尤里·安德罗波夫",
+	"Grigory Romanov": "格里戈里·罗曼诺夫",
+	"Viktor Grishin": "维克托·格里申",
+	"Mikhail Gorbachev": "米哈伊尔·戈尔巴乔夫",
+	"Alexander Yakovlev": "亚历山大·雅科夫列夫",
+	"Yegor Ligachev": "叶戈尔·利加乔夫",
 }
 
 var _panels: Dictionary = {}  # key -> RichTextLabel
@@ -195,13 +211,69 @@ func _build_influence(w: WorldState) -> String:
 	s += _h("苏联领导人")
 	var ussr: EmpireData = w.empires[1] if w.empires.size() > 1 else null
 	s += "%s\n" % _leader_name(ussr, "列昂尼德·勃列日涅夫")
-	# 仅移植勃列日涅夫(current_leader==0)效果文案（modify_choose.cs:156-158）；
-	# 其余 8 位继任分支依赖未移植的继任系统，暂不列出（见记忆 faction-dynamic-options-blocked）
-	if ussr == null or ussr.current_leader == 0:
-		s += "提升苏联的非洲干涉行动花费\n若中苏关系尚未解冻：\n与美国的关系 +0.5；凝聚力 -0.2\n"
+	# 苏联 9 分支效果文案（modify_choose.cs:154-212 逐字；索引=now_leader）
+	var u_idx: int = ussr.current_leader if ussr != null else 0
+	match u_idx:
+		0:
+			s += "提升苏联的非洲干涉行动花费\n若中苏关系尚未解冻：\n与美国的关系 +0.5；凝聚力 -0.2\n"
+		1:
+			s += "若中苏关系尚未解冻：\n与美国的关系 +0.5\n若已恢复关系：\n加强改革派的权力\n"
+		2:
+			s += "与苏联的关系 +0.5\n若中苏关系解冻：\n加强温和派的权力\n"
+		3:
+			s += "若中苏关系尚未解冻：\n与美国的关系 +0.5；凝聚力 -0.2\n若已恢复关系：\n与苏联的关系 +0.5\n"
+		4:
+			s += "若中苏关系尚未解冻：\n特工网络 -0.5\n若已恢复关系：\n与苏联的关系 +0.5；特工网络 +0.5\n"
+		5:
+			s += "与苏联的关系 +0.5\n若中苏关系解冻：\n加强改革派的权力\n"
+		6:
+			s += "减少苏联的非洲干涉行动花费\n与苏联的关系 +0.5；自由化思潮 +0.5\n加强自由派的权力\n"
+		7:
+			s += "国家紧急状态委员会\n" if w.get_flag("is_gkchp") else ""
+		8:
+			s += "减少苏联的非洲干涉行动花费\n与苏联的关系 +0.5；自由化思潮 +0.5\n"
+	s += "\n"
+	s += _h("美国总统")
+	var usa: EmpireData = w.empires[0] if w.empires.size() > 0 else null
+	var year: int = w.date.year if w.date else 1976
+	# 美国总统显示分支（modify_choose.cs:676-686）：1977 前福特、1977-1981 卡特（按日期，不看 now_leader）
+	if year < 1977:
+		s += "杰拉尔德·福特\n"
+	elif year < 1981:
+		s += "%s\n" % _leader_name(usa, "吉米·卡特")
+		s += "与美国的关系 +1.0\n"
+	else:
+		s += "%s\n" % _leader_name(usa, "罗纳德·里根")
+		var a_idx: int = usa.current_leader if usa != null else 0
+		# 美国总统 8 分支效果文案（modify_choose.cs:688-755 逐字）
+		match a_idx:
+			0:
+				s += "美国的干涉行动花费 +0.5\n自由化思潮 +0.5\n"
+			1:
+				s += "与美国的关系 +1.0\n"
+			2:
+				s += "美国的干涉行动花费 +0.5\n与美国的关系 +0.5\n(若我们未处于非美国的军事联盟)\n"
+			3:
+				s += "西欧毛派行动效果 ×1.5\n每两月偿还一次贷款\n与美国的关系 +1.0\n"
+			4:
+				s += "美国储备金 +0.2\n美国国际影响力 -0.2\n苏联国际影响力 +0.1\n"
+			5:
+				s += "美国国际影响力 -0.4\n苏联国际影响力 +0.2\n中美关系 +0.2\n如果中国为自由主义：关系额外 +0.2\n中国对外干涉效果 ×2\n"
+			6:
+				s += "美国储备金 +0.1\n与美国关系 -0.1\n"
+			7:
+				s += "美国储备金 -0.2\n如果中国为改良主义\n中美关系 +0.2\n增强国内改革派 / 自由派势力\n"
 	s += "\n"
 	s += _h("军备竞赛")
-	s += "我们不参与军备竞赛"
+	# 苏美资金页（modify_choose.cs:315-336 ChinesePage==1）：科技 22 且 我方影响力 ≥ 美苏 power 之和
+	var tech22: bool = w.techs != null and w.techs.unlocked.size() > 22 and w.techs.unlocked[22]
+	var u_power: int = ussr.power if ussr != null else 0
+	var a_power: int = usa.power if usa != null else 0
+	if tech22 and w.influence_prc >= a_power + u_power:
+		s += "苏联的储备资金：\n%s\n" % _f1(float(ussr.money) / 10.0)
+		s += "美国的储备资金：\n%s\n" % _f1(float(usa.money) / 10.0)
+	else:
+		s += "我们不参与军备竞赛"
 	return s
 
 
