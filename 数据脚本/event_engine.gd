@@ -3,20 +3,19 @@
 # ============================================================================
 # 负责事件系统的全部运行时逻辑。
 #
-# 触发机制（两种路径）：
-#   【即时事件】mtth_base = 0
-#     条件满足 → 按 EventDef.show_notification 进入通知或直接切场景。
+# 触发机制（忠实复刻原版，2026-08-14 移除 MTTH 自造机制）：
+#   【确定性触发】条件满足（trigger_conditions 全真）→ 立即触发。
+#     原版 TimeScript.cs:10020-10724 为 else-if 条件链 + EventScript 地图标记；
+#     本引擎按 trigger_priority/编号顺序扫描，同一 tick 只触发第一个满足条件的事件。
 #
-#   【延时事件】mtth_base > 0
-#     MTTH 计时到期 → 进入"待处理"状态：
-#       1. 弹出通知提示（显示在 UI 上），默认给玩家 13 天缓冲期
-#       2. 玩家可以点击通知立即进入事件
-#       3. 到期若未点击，扣除超时代价并强制切场景
+# 待处理（pending）：原 EventScript 地图标记的移植——事件触发后进入待处理，
+#   给玩家 notification_days（原 104 单位/8 = 13 天）缓冲，超时扣
+#   timeout_agents_penalty/timeout_budget_penalty（原 data[9]-=20/data[8]-=5）。
+#   当前 83 个 .tres 均 show_notification=false（直接切事件），缓冲未启用。
 #
 # 架构：
 #     EventEngine (Autoload)
 #       ├── _events: event_id → EventDef
-#       ├── _mtth_timers: event_id → 累计月数
 #       ├── pending_event_id + _pending_deadline: 待处理事件
 #       └── 每 tick 由 GameManager 调用 check_and_fire()
 #
@@ -34,9 +33,6 @@ extends Node
 ## 旧事件资源没有指定时的原版缓冲天数。
 const PENDING_GRACE_DAYS: int = 13
 
-## 每 tick 经过的游戏月数（1 天 ≈ 1/30 月）
-const TICK_MONTHS: float = 1.0 / 30.0
-
 ## 事件触发信号（由 GameManager 连接处理场景切换）
 signal event_triggered(event_id: String, is_timeout: bool)
 
@@ -51,9 +47,6 @@ var _events: Dictionary = {}
 
 ## 按原版 else-if 链稳定排序的自动扫描序列。
 var _event_order: Array[EventDef] = []
-
-## MTTH 累计计时（event_id → 累计月数）
-var _mtth_timers: Dictionary = {}
 
 ## 待处理的延时事件 ID（空串 = 无）
 var pending_event_id: String = ""
@@ -106,7 +99,6 @@ func _scan_events() -> void:
 func reload_events() -> void:
 	_events.clear()
 	_event_order.clear()
-	_mtth_timers.clear()
 	_event_queue.clear()
 	pending_event_id = ""
 	_pending_deadline = -1
@@ -157,15 +149,13 @@ func check_and_fire() -> void:
 	if pending_event_id != "":
 		return
 
-	# 扫描所有事件
+	# 扫描所有事件：忠实复刻原版 else-if 链（同 tick 只触发第一个满足条件的事件）
 	for ev in _event_order:
 		var event_def := ev as EventDef
 		if not _evaluate_trigger(event_def):
 			continue
-		if event_def.mtth_base <= 0.0:
-			_dispatch_trigger(event_def)
-			return
-		_tick_mtth(event_def)
+		_dispatch_trigger(event_def)
+		return
 
 
 func _fire_immediate(event_def: EventDef) -> void:
@@ -178,26 +168,6 @@ func _dispatch_trigger(event_def: EventDef) -> void:
 		_enter_pending(event_def)
 	else:
 		_fire_immediate(event_def)
-
-
-func _tick_mtth(event_def: EventDef) -> void:
-	var effective_mtth := _calc_effective_mtth(event_def)
-	if not _mtth_timers.has(event_def.event_id):
-		_mtth_timers[event_def.event_id] = 0.0
-	_mtth_timers[event_def.event_id] += TICK_MONTHS / effective_mtth
-	if _mtth_timers[event_def.event_id] >= 1.0:
-		_mtth_timers[event_def.event_id] = 0.0
-		_dispatch_trigger(event_def)
-
-
-func _calc_effective_mtth(event_def: EventDef) -> float:
-	var mtth := maxf(event_def.mtth_base, 0.1)
-	for mod in event_def.mtth_modifiers:
-		var m := mod as MTTHModifier
-		# null condition 表示"始终生效"，短路求值避免调用 evaluate(null)
-		if m.condition == null or evaluate(m.condition):
-			mtth *= m.factor
-	return maxf(mtth, 0.05)
 
 
 func _enter_pending(event_def: EventDef) -> void:
@@ -845,17 +815,15 @@ func export_runtime_to_world(ws: WorldState) -> void:
 		return
 	ws.event_pending_id = pending_event_id
 	ws.event_pending_deadline = _pending_deadline
-	ws.event_mtth_timers = _mtth_timers.duplicate(true)
 	ws.event_chain_queue = _event_queue.duplicate()
 
 
-## 从存档恢复 pending / MTTH / 链队列
+## 从存档恢复 pending / 链队列
 func import_runtime_from_world(ws: WorldState) -> void:
 	if ws == null:
 		return
 	pending_event_id = ws.event_pending_id
 	_pending_deadline = ws.event_pending_deadline
-	_mtth_timers = ws.event_mtth_timers.duplicate(true) if ws.event_mtth_timers else {}
 	_event_queue.clear()
 	for eid in ws.event_chain_queue:
 		if str(eid) != "":

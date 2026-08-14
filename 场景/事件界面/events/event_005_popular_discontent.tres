@@ -17,7 +17,7 @@ target = "thought_freedom"
 script = ExtResource("3_expr")
 type = 1
 key = "people_support"
-value = -1.0
+value = 99.0
 
 [sub_resource type="Resource" id="Expr_freedom_1200"]
 script = ExtResource("3_expr")

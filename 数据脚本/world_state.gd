@@ -159,6 +159,7 @@ const 数值索引 := {
 	"budget_welfare": I_BUDGET_WELFARE, "福利预算": I_BUDGET_WELFARE,
 	"budget_diplomacy": I_BUDGET_DIPLO, "外交预算": I_BUDGET_DIPLO,
 	"data_41": 41,   # 原 data[41]（泰国选举干预标志，无正式命名键）
+	"data_149": 149, # 原 data[149]（苏斯洛夫/安德罗波夫继任路线：事件83=1、84=2、85=3，无正式命名键）
 	"gang_of_four_path": I_GANG_OF_FOUR_PATH, "四人帮路线": I_GANG_OF_FOUR_PATH,
 	"palestine_status": I_PALESTINE_STATUS, "巴以安排": I_PALESTINE_STATUS,
 	"post_mao_course": I_POST_MAO_COURSE, "毛后路线": I_POST_MAO_COURSE,
@@ -225,7 +226,6 @@ const 数值索引 := {
 @export var event_pending_id: String = ""
 ## GameDate.tick_count 截止值（旧存档的 YYYYMMDD 由 EventEngine 读档时迁移）
 @export var event_pending_deadline: int = -1
-@export var event_mtth_timers: Dictionary = {}
 @export var event_chain_queue: Array[String] = []
 
 # ── 政治家职位（dolshnost[8]，每槽记录持有人在 politicians 中的索引，-1=空缺） ──

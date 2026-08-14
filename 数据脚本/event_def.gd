@@ -4,14 +4,16 @@
 # 一个 .tres 文件 = 一个完整事件。包含：
 #   - 元数据（ID / 标题 / 描述 / 配图）
 #   - 触发条件（ExprNode 表达式树）
-#   - MTTH 计时参数
 #   - 选项列表（EventOption，含启用条件 + 效果 + 结果文本）
 #   - 事件链（触发后通知其他事件）
+#
+# 触发模型（2026-08-14 对齐原版）：条件满足 → 确定性立即触发（原版 TimeScript
+# else-if 链），无 MTTH 随机计时。原 MTTH 字段已移除。
 #
 # 设计原则：
 #   1. 数据与逻辑分离 —— 事件的所有信息在 .tres 中，引擎只解释执行
 #   2. 编辑器友好 —— 所有字段 @export，可在 Godot Inspector 中直接编辑
-#   3. 完全覆盖原版 —— 表达力足以描述原版全部 ~300 个事件的操作模式
+#   3. 完全覆盖原版 —— 表达力足以描述原版全部事件的操作模式
 #   4. 可扩展 —— CUSTOM_SCRIPT 效果节点和子类化保证不被数据模型限制
 #
 # 参考：
@@ -43,19 +45,11 @@ extends Resource
 
 ## 触发条件列表（AND 关系 —— 全部满足才可触发）。
 ## 为空数组 [] 表示不通过自动扫描触发（需由外部系统如 Decision、
-## queue_pending 等手动触发）。配合 MTTH 使用时应至少设置一个条件。
+## queue_pending 等手动触发）。
 @export var trigger_conditions: Array[ExprNode] = []
 
-## MTTH 基础值（月）。0 = 条件满足立即触发。
-## 典型值：政治事件 6~24 月，灾难事件 36~120 月。
-@export var mtth_base: float = 0.0
-
-## MTTH 修正因子列表。每个 MTTHModifier 在其 condition 满足时
-## 将 base * factor 累积到实际触发概率。
-@export var mtth_modifiers: Array[MTTHModifier] = []
-
-## 条件满足后是否先显示地图通知。原版普通事件默认先通知；
-## 选举、政变、战争结算等 Reelect 直接事件设为 false。
+## 条件满足后是否先显示地图通知。原版 EventScript 地图标记（104 单位缓冲）；
+## 选举、政变、战争结算等直接事件设为 false（当前 83 个事件均 false）。
 @export var show_notification: bool = true
 
 ## 原 EventScript.Reset 的 104 计时单位 / 每日 8 单位 = 13 个游戏日。
@@ -91,7 +85,6 @@ static func create_notification(p_id: String, p_title: String, p_desc: String) -
 	ev.event_id = p_id
 	ev.title = p_title
 	ev.description = p_desc
-	ev.mtth_base = 0.0
 	ev.fire_only_once = true
 	# 通知事件有一个"确认"选项
 	var opt := EventOption.new()

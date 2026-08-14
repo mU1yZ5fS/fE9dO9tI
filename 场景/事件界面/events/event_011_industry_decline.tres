@@ -31,7 +31,7 @@ result_text = "大量资金被紧急从预算中拨出，用于工业现代化�
 script = ExtResource("3_expr")
 type = 8
 key = "0"
-value = 600.0
+value = 60.0
 
 [sub_resource type="Resource" id="Expr_dev13"]
 script = ExtResource("3_expr")
@@ -86,7 +86,7 @@ result_text = "我们的招商引资活动非常成功！外国人全资建造�
 script = ExtResource("3_expr")
 type = 8
 key = "1"
-value = 700.0
+value = 70.0
 
 [sub_resource type="Resource" id="Expr_relres"]
 script = ExtResource("3_expr")

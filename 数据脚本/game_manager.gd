@@ -617,21 +617,16 @@ func adjust_loan(delta: int) -> bool:
 		return false
 	var d := world.数值表
 	if delta > 0:
-		# 借入：检查贷款上限
-		var usa_rel := 0
-		var ussr_rel := 0
-		if world.empires.size() > 0:
-			usa_rel = world.empires[0].relations
-		if world.empires.size() > 1:
-			ussr_rel = world.empires[1].relations
-		var max_loan := (usa_rel + ussr_rel) / 5
-		if d[W.I_LOAN] + delta > max_loan:
+		# 借入：检查贷款上限（原版 Plusmisnus_script.cs:195 `loan < planka`）
+		if d[W.I_LOAN] >= calc_budget_planka():
 			return false
 		d[W.I_LOAN] += delta
 		d[W.I_BUDGET] += delta
 		d[W.I_PARTY_SUPPORT] -= delta
 		# 借款思想自由：原版 data[4] += 10（Plusmisnus_script.cs:201），非 ×2.5
 		d[W.I_THOUGHT_FREEDOM] += delta
+		# 借款影响力：原版 influencePRC--（Plusmisnus_script.cs:200）
+		world.influence_prc -= 1
 	else:
 		# 还款：loan 为正才可还；零头(0<loan<10)只还剩余额并清零（原版:177-194）
 		if d[W.I_LOAN] <= 0:
@@ -643,12 +638,14 @@ func adjust_loan(delta: int) -> bool:
 		elif world.difficulty >= 2:
 			mult = 2
 		var budget_cost := repay_amount * mult
-		if d[W.I_BUDGET] < budget_cost:
-			return false
+		# 原版不检查预算余额（Plusmisnus:158-194 无条件扣减，可为负，由日块赤字恢复兜底）
 		d[W.I_LOAN] -= repay_amount
 		d[W.I_BUDGET] -= budget_cost
 		# 还款党支持：原版 data[1] += 5（Plusmisnus_script.cs:173/192），非 +10
 		d[W.I_PARTY_SUPPORT] += 5
+		# 还款影响力：原版 influencePRC++ 仅常规分支（:174），零头分支(:177-194)无
+		if repay_amount >= 10:
+			world.influence_prc += 1
 	_notify_stats()
 	return true
 
@@ -690,7 +687,7 @@ func adjust_reserve(delta: int) -> bool:
 const POLICY_LINE_REQ_ONEPARTY := {
 	10: [0, 1], 11: [0, 1], 12: [1, 2], 13: [2, 3], 14: [3, 4], 15: [4],  # 经济 data[16]（原版 :42 id11=极左/保守0,1）
 	6: [0], 7: [1, 2], 8: [3], 9: [4],                                # 党政 data[15]
-	16: [0, 1], 17: [0, 1, 2, 3], 18: [2, 3, 4], 19: [3, 4],          # 人权 data[17]
+	16: [0, 1, 2, 3], 17: [0, 1, 2, 3, 4], 18: [2, 3, 4], 19: [3, 4],  # 人权 data[17]（16/17 按原版中文块 :85-94：16=data[56]!=4、17=data[56]<=4；旧值 [0,1]/[0,1,2,3] 系误抄俄语块，2026-08-14 主控亲验修正）
 	20: [0, 1, 2, 3], 21: [2, 3], 22: [3, 4], 23: [4],                # 国家体制 data[18]
 	24: [0], 25: [0, 1], 26: [1, 2, 3], 27: [2, 3, 4], 28: [3, 4], 29: [4],  # 宗教 data[50]
 	30: [0], 31: [0, 1, 2], 32: [2, 3], 33: [3, 4],                   # 军事 data[51]
@@ -739,6 +736,12 @@ func check_policy_change(category_idx: int, target_val: int) -> Dictionary:
 	# 原版 uslovie_bool[3]：毛在世(data[38]<100)时恒为 false，不可切任何政策
 	# （Doctrine_button_script.cs:446-455；number_uslovie==4 需 4 条件全满足，见 :894）
 	res.mao_ok = is_mao_dead()
+	# 原作 :456-461 modifies[6] 覆盖：mod6 激活且目标∈{9,14,15,22,23,28,29}
+	# 或 (19 且 resultOfEvents[444]!=0) 时 uslovie_bool[3] 恒 false（"毛主席正看着你！"）。
+	# 事件 444 未接入 → completed_event_ids.get(444,-1) 恒 -1（原版初始态）→ !=0 恒真。
+	if _mod_active(world, 6) and (target_val in [9, 14, 15, 22, 23, 28, 29] \
+			or (target_val == 19 and world.completed_event_ids.get(444, -1) != 0)):
+		res.mao_ok = false
 	res.can = res.budget_ok and res.party_ok and res.leading_ok and res.mao_ok
 	return res
 
@@ -807,7 +810,9 @@ func _multiparty_seat_majority(d: Array[int]) -> bool:
 	total += maxi(d[W.I_SATISFIED], 0)  # 原版 summa 含 data[106]
 	if total <= 0:
 		return false
-	return float(allied) * 100.0 / float(total) > 66.0
+	# 原版整数除法：player_numbeer*100/summa > 66（Doctrine_button_script.cs:192/:630）
+	@warning_ignore("integer_division")
+	return allied * 100 / total > 66
 
 
 ## 一党制 uslovie_text[2] 逐字文案（原版 Doctrine_button_script.cs:37-173，基于 data[56] 派系）。
@@ -1502,8 +1507,24 @@ func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
 	# 国债利息（与 UI「债务损耗」对齐）
 	if loan > 0:
 		var interest: int = loan / 40
-		# 差异：此前移植的"里根(now_leader==3) 奇数月豁免贷款"查证无原版出处
-		# （TimeScript 全表无 empires[0].now_leader==3 判断；且修正索引后 3=蒙代尔非里根），已移除。
+		# 里根豁免（原版 TimeScript.cs:5514-5605）：empires[0].now_leader==3（=里根，1980 大选后）
+		# 且奇数月(data[20]%2!=0)时免预算扣息，仅保留本金递减与对苏关系惩罚。
+		# Godot 领导人索引 0=里根（world_factory.gd:1010-1011），原版 3=里根（Event402.cs:168）；
+		# Godot current_leader 初始即 0，故开局即生效（原版需 1980 大选，领导人继任模型差异另记）。
+		var usa: EmpireData = w.empires[0] if w.empires.size() > 0 else null
+		if usa != null and usa.current_leader == 0 and w.date.month % 2 != 0:
+			if interest <= 0:
+				if loan > 10:
+					d[W.I_LOAN] -= 1
+				if w.empires.size() > 1 and w.empires[1] != null:
+					w.empires[1].relations -= 2
+			else:
+				if w.empires.size() > 1 and w.empires[1] != null:
+					w.empires[1].relations -= loan / 20
+				if loan > 10:
+					@warning_ignore("integer_division")
+					d[W.I_LOAN] -= loan / 40 / 2 + 1
+			return
 		if interest <= 0:
 			d[W.I_BUDGET] -= 1
 			if year >= 1983:
@@ -1549,8 +1570,10 @@ func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
 func _influence_from_investments(d: Array[int], year: int) -> void:
 	# ─ 军费 ─
 	var army_year_cost := (year - 1976 + 6) * 10
-	var ind_mod := 1.0 - (100.0 - float(d[W.I_INDUSTRY])) / 400.0
-	d[W.I_ARMY] += int(float(d[W.I_BUDGET_ARMY] - army_year_cost) / 10.0 * ind_mod)
+	# 军力：原版整数除法 (data[71]-(year-1976+6)*10)/10（TimeScript.cs:9766）；
+	# 此前新增的 ind_mod（按工业缩放）在原版全库无出处，已移除。
+	@warning_ignore("integer_division")
+	d[W.I_ARMY] += (d[W.I_BUDGET_ARMY] - army_year_cost) / 10
 	d[W.I_MANPOWER] += d[W.I_BUDGET_ARMY] / 150
 	d[W.I_THOUGHT_FREEDOM] -= d[W.I_BUDGET_ARMY] / 80
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_ARMY] / 50
@@ -1594,15 +1617,17 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 	# ECO-POL-01：信封高低影响政客忠诚
 	_apply_envelope_loyalty(d)
 
-	# ─ 宣传支出（原版 8138-8146）──
-	d[W.I_MANPOWER] += d[W.I_BUDGET_PROPAGANDA] / 150
-	d[W.I_CORRUPTION] += d[W.I_BUDGET_PROPAGANDA] / 150
-	d[W.I_THOUGHT_FREEDOM] -= d[W.I_BUDGET_PROPAGANDA] / 100
+	# ─ 宣传支出（原版 9818-9827 + 兵源 9777-9780）──
+	d[W.I_CORRUPTION] -= d[W.I_BUDGET_PROPAGANDA] / 100   # 原版 :9818
+	d[W.I_MANPOWER] += d[W.I_BUDGET_PROPAGANDA] / 150     # 原版 :9776/:9819
+	d[W.I_CORRUPTION] += d[W.I_BUDGET_PROPAGANDA] / 150   # 原版 :9820
+	d[W.I_THOUGHT_FREEDOM] -= d[W.I_BUDGET_PROPAGANDA] / 100  # 原版 :9821
 	# 原版无条件：data[3] += (data[76]-70)/10（prop<70 时为负，扣民众支持）
-	d[W.I_PEOPLE_SUPPORT] += (d[W.I_BUDGET_PROPAGANDA] - 70) / 10
+	d[W.I_PEOPLE_SUPPORT] += (d[W.I_BUDGET_PROPAGANDA] - 70) / 10  # 原版 :9822
 	if d[W.I_BUDGET_PROPAGANDA] < 50:
-		d[W.I_CORRUPTION] += (50 - d[W.I_BUDGET_PROPAGANDA]) / 20
-		d[W.I_PEOPLE_SUPPORT] -= (50 - d[W.I_BUDGET_PROPAGANDA]) / 20
+		d[W.I_CORRUPTION] += (50 - d[W.I_BUDGET_PROPAGANDA]) / 20   # 原版 :9825
+		d[W.I_PEOPLE_SUPPORT] -= (50 - d[W.I_BUDGET_PROPAGANDA]) / 20  # 原版 :9826
+		d[W.I_MANPOWER] -= (50 - d[W.I_BUDGET_PROPAGANDA]) / 20     # 原版 :9777-9780
 
 	# ─ 农业支出 ─
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_AGRI] / 80
@@ -2371,44 +2396,41 @@ func _fortnight_military_doctrine(d: Array[int], _w: WorldState) -> void:
 				d[W.I_ECON_OPENNESS] += 10
 
 
-# ── 贸易计算（TimeScript 854-911 + 3247-3272行） ──
+# ── 贸易平衡（TimeScript.cs:4135-4167，双周块；原注释 854-911/3247-3272 系错误出处） ──
 
 func _fortnight_trade_balance(d: Array[int], w: WorldState) -> void:
+	# data[25] 贸易伙伴数：原版为静态初值 14 + 外交/事件增减；Godot 以国家标签动态重算（差异已注释）
 	d[W.I_TRADE_PARTNERS] = 0
-	var trade_income := d[W.I_INCOME]
 	var pc := w.get_player_country()
 	if pc == null:
 		return
 	for c in w.countries:
 		if c == pc or c.gwcode <= 0:
 			continue
-		var added := false
 		if c.has_tag("对华贸易"):
 			d[W.I_TRADE_PARTNERS] += 1
-			trade_income += 2
-			added = true
-		if not added and c.has_tag("econ") and pc.has_tag("econ"):
+		elif c.has_tag("econ") and pc.has_tag("econ"):
 			d[W.I_TRADE_PARTNERS] += 1
-			if c.government > 0:
-				trade_income += 2 + maxi(0, 3 - c.government)
-			else:
-				trade_income += 3
+	# 石油危机修正（原版 :4135-4139）：modifies[12] 激活时 data[23] -= data[23]/6
 	if _mod_active(w, 12):
-		trade_income -= trade_income / 6
-	var surplus := trade_income - d[W.I_IMPORT_NEEDS]
-	if surplus > 0:
-		d[W.I_BUDGET] += surplus / 2
-		d[W.I_PEOPLE_SUPPORT] += surplus / 3
-	elif surplus < 0:
-		d[W.I_BUDGET] += surplus / 2
-		d[W.I_PEOPLE_SUPPORT] += surplus / 3
-		d[W.I_LIVING] += surplus / 4
-	if d[W.I_TRADE_PARTNERS] <= 4:
-		d[W.I_THOUGHT_FREEDOM] -= -5 + d[W.I_TRADE_PARTNERS]
-		d[W.I_AGENTS] -= -5 + d[W.I_TRADE_PARTNERS]
-	elif d[W.I_TRADE_PARTNERS] > 12:
-		d[W.I_THOUGHT_FREEDOM] += d[W.I_TRADE_PARTNERS] - 12
-		d[W.I_AGENTS] -= d[W.I_TRADE_PARTNERS] - 12
+		d[W.I_INCOME] -= d[W.I_INCOME] / 6
+	# 贸易平衡（原版 :4140-4155）：顺差 budget+=(23-24)/10、people+=(23-24)/15；
+	# 逆差 budget-=(23-24)/10、people-=(23-24)/15、living-=(23-24)/20
+	@warning_ignore("integer_division")
+	var diff := d[W.I_INCOME] - d[W.I_IMPORT_NEEDS]
+	if diff > 0:
+		d[W.I_BUDGET] += diff / 10
+		d[W.I_PEOPLE_SUPPORT] += diff / 15
+	else:
+		d[W.I_BUDGET] -= diff / 10
+		d[W.I_PEOPLE_SUPPORT] -= diff / 15
+		d[W.I_LIVING] -= diff / 20
+	# 伙伴数效应（原版 :4156-4167）：≤10 → thought/agents -= (-9+data[25])；>18 → thought += data[25]-18
+	if d[W.I_TRADE_PARTNERS] <= 10:
+		d[W.I_THOUGHT_FREEDOM] -= -9 + d[W.I_TRADE_PARTNERS]
+		d[W.I_AGENTS] -= -9 + d[W.I_TRADE_PARTNERS]
+	elif d[W.I_TRADE_PARTNERS] > 18:
+		d[W.I_THOUGHT_FREEDOM] += d[W.I_TRADE_PARTNERS] - 18
 
 
 # ── 满意度/异见漂移（TimeScript 3273-3292行） ──

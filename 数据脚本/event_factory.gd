@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # EventFactory — 事件工厂（编程方式构建事件定义）
 # ============================================================================
 # 【已冻结 · 2026-08】不再扩展、不再用于生产事件。
@@ -374,7 +374,6 @@ static func create_event_120() -> EventDef:
 			+ "也取得了对这个国家相当程度的控制。借助这种影响力，我们能够决定新统一朝鲜"
 			+ "未来的发展道路。现在有四名候选人……")
 	ev.fire_only_once = true
-	ev.mtth_base = 0.0   # 由 Decision 直接触发，非 MTTH
 
 	# 选项0：金正日 — 始终可选
 	ev.options.append(option(
@@ -443,7 +442,6 @@ static func create_event_300() -> EventDef:
 	ev.title = "东方抉择"
 	ev.description = "中苏同盟已经名存实亡。东欧的社会主义国家必须在两个老大哥之间做出选择。"
 	ev.fire_only_once = true
-	ev.mtth_base = 0.0
 
 	ev.options.append(option(
 		"保持中立",
@@ -483,7 +481,6 @@ static func create_event_21() -> EventDef:
 			+ "others say it targets Zhou Rongxin... The masses do not yet know which Zhou is under attack, "
 			+ "but emotions are rising — we must decide how to respond.")
 	ev.fire_only_once = true
-	ev.mtth_base = 0.0
 	ev.trigger_conditions = [date_after("1976.4")] as Array[ExprNode]
 
 	ev.options.append(option(
@@ -527,7 +524,6 @@ static func create_event_22() -> EventDef:
 			+ "Square to the Monument to the people's heroes... The responsibility was placed on you and "
 			+ "the mayor of Beijing, Wu De; what line will we choose?")
 	ev.fire_only_once = true
-	ev.mtth_base = 0.0
 	ev.trigger_conditions = [date_after("1976.5")] as Array[ExprNode]
 
 	ev.options.append(option(
@@ -572,7 +568,6 @@ static func create_event_23() -> EventDef:
 			+ "completely destroyed. The destruction also took place in Tianjin and in Beijing... "
 			+ "According to preliminary data, from 200 to 600 thousand people died.")
 	ev.fire_only_once = true
-	ev.mtth_base = 0.0
 	ev.trigger_conditions = [date_after("1976.8")] as Array[ExprNode]
 
 	ev.options.append(option(
@@ -628,7 +623,6 @@ static func create_event_24() -> EventDef:
 			+ "excesses of the Cultural Revolution, a renewed radical course, limited modernization, "
 			+ "or large-scale market reform and opening to the world.")
 	ev.fire_only_once = true
-	ev.mtth_base = 0.0
 	ev.trigger_conditions = [date_after("1976.12")] as Array[ExprNode]
 	var transition_script := preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
 
@@ -677,7 +671,6 @@ static func create_event_25() -> EventDef:
 			+ "most immediate threat to your government. Crushing them requires military and reformist "
 			+ "support, while compromise risks giving the radicals the power they seek.")
 	ev.fire_only_once = true
-	ev.mtth_base = 0.0
 	ev.trigger_conditions = [date_after("1976.10")] as Array[ExprNode]
 	var transition_script := preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
 
@@ -721,7 +714,6 @@ static func create_event_26() -> EventDef:
 			+ "action against the opposition. Wang Dongxing and the 8341 Special Regiment remain loyal, "
 			+ "but the radicals are now stronger than they were in October.")
 	ev.fire_only_once = true
-	ev.mtth_base = 0.0
 	ev.trigger_conditions = [
 		date_after("1976.11"),
 		res_equals("gang_of_four_path", 3),
