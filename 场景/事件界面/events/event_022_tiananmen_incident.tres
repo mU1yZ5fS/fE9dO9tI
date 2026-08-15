@@ -1,68 +1,58 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/mtth_modifier.gd" id="1_hamft"]
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="2_26xx8"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="3_wtp08"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_k1moi"]
-[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="5_3e4a4"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_022_tiananmen.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_go142"]
-script = ExtResource("3_wtp08")
-key = "people_support"
-value = -250.0
-
-[sub_resource type="Resource" id="Resource_2xqf4"]
-script = ExtResource("3_wtp08")
-key = "diplo"
-value = 60.0
-
-[sub_resource type="Resource" id="Resource_dxjtg"]
-script = ExtResource("3_wtp08")
-key = "party_support"
-value = 100.0
-
-[sub_resource type="Resource" id="Resource_k4ld1"]
-script = ExtResource("2_26xx8")
-text = "Disperse protest with the help of the army and police"
-effects = Array[ExtResource("3_wtp08")]([SubResource("Resource_go142"), SubResource("Resource_2xqf4"), SubResource("Resource_dxjtg")])
-result_text = "Following Jiang Qing and Zhang Chunqiao's line, we first used radio appeals to separate mourners from provocateurs, then moved in city police and the Peking Garrison to clear the square. Clashes and beatings occurred, but no one was killed."
-
-[sub_resource type="Resource" id="Resource_qnvoa"]
-script = ExtResource("3_wtp08")
-key = "party_support"
-value = 50.0
-
-[sub_resource type="Resource" id="Resource_l3s7s"]
-script = ExtResource("3_wtp08")
-key = "people_support"
-value = -50.0
-
-[sub_resource type="Resource" id="Resource_uc8uy"]
-script = ExtResource("2_26xx8")
-text = "Call all to go away and disperse the remaining"
-effects = Array[ExtResource("3_wtp08")]([SubResource("Resource_qnvoa"), SubResource("Resource_l3s7s")])
-result_text = "At half past six in the evening, Wu De spoke over loudspeakers urging the crowd to disperse. Many left, some stayed. By night, city police cleared the remaining protest."
-
-[sub_resource type="Resource" id="Resource_2wgik"]
-script = ExtResource("3_wtp08")
-key = "party_support"
-value = -50.0
-
-[sub_resource type="Resource" id="Resource_d4n3b"]
-script = ExtResource("2_26xx8")
-text = "Call everyone to go away and cordon off the rest until they leave"
-effects = Array[ExtResource("3_wtp08")]([SubResource("Resource_2wgik")])
-result_text = "Wu De spoke over loudspeakers urging the crowd to go home. Many left, but some stayed. By night, police cleared the square. No one was killed."
-
-[sub_resource type="Resource" id="Resource_t6rfj"]
-script = ExtResource("5_3e4a4")
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
 type = 12
-key = "1976.5"
+key = "1976.4.5"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "在军警帮助下驱散骚乱"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_022_tiananmen.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "呼吁所有人离开并驱散其他人"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_022_tiananmen.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "呼吁所有人离开，拉封锁线直到他们走人"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_022_tiananmen.gd 动态生成）"
 
 [resource]
-script = ExtResource("4_k1moi")
-event_id = "tiananmen_incident"
-title = "Tiananmen incident"
-description = "Numerous attempts by the CCP to discredit the late Zhou Enlai have caused only discontent among the people. On April 4, on the day of the traditional holiday of remembrance of the departed, the citizens of Beijing carried wreaths in memory of Zhou Enlai to Tiananmen Square to the Monument to the people's heroes... The responsibility was placed on you and the mayor of Beijing, Wu De; what line will we choose?"
-trigger_conditions = Array[ExtResource("5_3e4a4")]([SubResource("Resource_t6rfj")])
-options = Array[ExtResource("2_26xx8")]([SubResource("Resource_k4ld1"), SubResource("Resource_uc8uy"), SubResource("Resource_d4n3b")])
+script = ExtResource("4_def")
+event_id = "event_022"
+source_event_number = 22
+trigger_priority = 2200
+title = "天安门事件"
+description = "中国共产党对周恩来纪念运动的多次压制反而在人民群众里引起了反对。在正值清明节的四月四日，北京市民带着纪念周恩来的挽联走进天安门广场到人民英雄纪念碑前。日落前有大约二百万人前来悼念，挽联堆了二十米高。此时中共中央政治局紧急会议在毛主席主持下召开，会议通过了镇压游行的决议，你和北京市长吴德被要求督办此事。趁夜你清理了挽联，但是第二天早上来继续悼念的人民要求归还它们，同时已经有人号召推翻毛泽东与江青的领导并回到真正的马克思列宁主义革命路线上来。你准备在事态难以控制后镇压，而汪东兴和叶剑英要求你尽快下令驱散群众。但是四人帮和吴德看起来并不想动手，而是希望以和平的方式解决。但无论如何，决定权在你。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

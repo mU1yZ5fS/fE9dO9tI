@@ -474,7 +474,7 @@ static func create_event_300() -> EventDef:
 
 static func create_event_21() -> EventDef:
 	var ev := EventDef.new()
-	ev.event_id = "wenhuibao_article"
+	ev.event_id = "event_021"
 	ev.title = "Mystery article about Zhou"
 	ev.description = ("On March 25, 1976, the Shanghai newspaper \"Wenhuibao\" printed an article calling "
 			+ "an unnamed Zhou a \"capitalist-roader\". Some read it as a posthumous strike on Zhou Enlai, "
@@ -516,7 +516,7 @@ static func create_event_21() -> EventDef:
 
 static func create_event_22() -> EventDef:
 	var ev := EventDef.new()
-	ev.event_id = "tiananmen_incident"
+	ev.event_id = "event_022"
 	ev.title = "Tiananmen incident"
 	ev.description = ("Numerous attempts by the CCP to discredit the late Zhou Enlai have caused only "
 			+ "discontent among the people. On April 4, on the day of the traditional holiday of remembrance "
@@ -561,7 +561,7 @@ static func create_event_22() -> EventDef:
 
 static func create_event_23() -> EventDef:
 	var ev := EventDef.new()
-	ev.event_id = "tangshan_earthquake"
+	ev.event_id = "event_023"
 	ev.title = "Tangshan earthquake"
 	ev.description = ("On July 28, a magnitude 8.2 earthquake on the Richter scale occurred in the city "
 			+ "of Tangshan, Hebei Province, at 03:42 local time, as a result of which the city was almost "
