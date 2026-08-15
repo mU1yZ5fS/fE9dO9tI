@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_587_ethiopia_teglachin.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.2.3"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帮本蒂一把"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_587_ethiopia_teglachin.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "门格斯图，非洲的列宁！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_587_ethiopia_teglachin.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "游击战士会把他们双双埋葬！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_587_ethiopia_teglachin.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "让苏联人自个头疼去吧！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_587_ethiopia_teglachin.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_587"
+source_event_number = 587
+trigger_priority = 58700
+title = "提格拉钦"
+description = "主席同志，是时候谈谈非洲（过去）最古老的君主制国家埃塞俄比亚了。自1974年的军事政变以来，该国经历着意识形态上的巨大变化。从资本主义的支持者到激进共产主义分子，所有人都希望得到临时军事行政委员会，也就是德尔格的青睐。除了平庸无力的“埃塞俄比亚第一”这样的爱国口号外，军委选择的是社会主义者，他们积极和全埃塞俄比亚社会主义运动和埃塞俄比亚人民革命党展开合作。其中，全埃社运支持临时军委，他们由苏联留学生和工人构成。而埃塞俄比亚人民革命党义正严辞的反对临时军委的长期存在，呼吁快速建立一个先锋党，他们支持毛泽东主席的理论，也支持阿尔巴尼亚的反修正主义思想。\n在1975年9月11日，临时军委正式宣布将走“埃塞俄比亚特色的共产主义道路”。他们公开支持，鼓励各个社会主义和共产主义政党加入群众组织临时办公室。以特法里·本蒂准将为首的温和派临时军委成员甚至准备和埃人革党达成协议，组建一个统一的社会主义的先锋党，用来加速解散临时军委。而这一决定遭到了实权人物门格斯图·海尔·马里亚姆的抵制，绰号“红色尼格斯”的他，曾亲手处死了第一任临时军委主席阿曼·迈克尔·安多姆，而他并不介意再次扫清一位敌人。他在担任副主席的时候，便公开拉偏架打击埃人革党。纵使门格斯图本人也不反对组建一支革命的先锋党，但门格斯图眼里容不得沙子，为此他大力支持由自己领导的“革命火焰”组织。双方的关系已经恶化到了极点。特法里·本蒂多次在会议上指控门格斯图滥杀无辜，而门格斯图则以“潜在的帝国主义者”为理由攻击特法里·本蒂，并派遣军事警察抓捕埃人革党成员。\n主席同志，尽管有些泥菩萨过河，但我们至少该表个态，对吧？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])
