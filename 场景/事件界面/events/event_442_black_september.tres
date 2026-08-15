@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_442_black_september.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "施压侯赛因，用特勤支援换取权力出让。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_442_black_september.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "各反对派将团结在一起组织人民阵线,圣裔滚远点！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_442_black_september.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "联系革命人民党、人民民主党还有激进共产党人，发起全民族的解放斗争。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_442_black_september.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "Jordan？打篮球的那个？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_442_black_september.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_442"
+source_event_number = 442
+trigger_priority = 44200
+title = "黑色九月所带来的"
+description = "现在，让我们把目光转向世界历史中最悠久的王朝、谢里夫所统治之地——哈希姆家族统治下的约旦。在仅约9万公里的土地上，穆罕默德的后裔在整个阿拉伯世界享受着血统所带来的巨大威望，拥有着自中世纪积累的庞大财富和不亚于沙特家族的话语权。作为先知血脉的延续者，哈希姆家族被视为阿拉伯辉煌时代的象征，其标志甚至被用作阿拉伯起义的标志。\n然而，尽管享有如此高的声誉，现任国王侯赛因却在政策上展现出与“大撒旦”西方世界的亲近。自20世纪50年代起，为了对抗日益扩散的纳赛尔主义，侯赛因积极寻求与西方国家及亲西阿拉伯国家的合作，并采取了自由主义倾向的立场。但讽刺的是，这位自称是民主拥趸的君主，出于对失去王位的担忧，于1957年解散了由纳赛尔主义者和左翼人士组成的第一届民选政府，并宣布全国进入戒严状态。此后，大量共产党人和纳赛尔主义者遭到逮捕或处决。与此同时，侯赛因通过军队、伊斯兰教徒以及保皇党的力量巩固了自己的统治基础，同时赦免那些愿意支持君主制框架的自由主义者，以此作为花瓶反对派来分化反对力量，掩盖其实质为独裁的事实。外交方面，侯赛因巧妙地游走于以色列、阿拉伯共和国以及阿拉伯君主国之间，保持着一种既非亲亦非疏的关系，以此来最大化自身利益。\n不过，或许即便是精明如侯赛因也没有预料到，他曾为了政治作秀而邀请进入国内的巴勒斯坦人最终会成为他最大的威胁之一。这群流亡者不同于以往任何时期所管辖过的群体，他们深刻感受到了外部世界尤其是西方强权带来的压迫感，因此成为了坚定地反对帝国主义及其代理人——即包括约旦在内的阿拉伯王国——的斗士。1970年的“黑色九月”事件就是这种矛盾激化的结果之一，双方的严重冲突导致许多人员伤亡并最终迫使巴解组织撤离至黎巴嫩境内。\n尽管如此，这并未阻止当地残留下来的激进分子继续策划针对王室的行动，前巴解的约旦成员很快成立了自己的组织，企图完成哈巴什和哈瓦特梅未成之业。面对日益增长的压力，侯赛因也开始尝试放宽一些限制措施，希望能够缓解紧张局势并与不同意见者达成某种程度上的和解。而随着我国在中东地区影响力逐渐增强，我们是否有机会促使这样一个长期以来偏向西方立场的小国做出更深层次的政治调整呢？"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

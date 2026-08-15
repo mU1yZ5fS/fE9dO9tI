@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_434_little_rome.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "谴责意大利新帝国主义死灰复燃"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_434_little_rome.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "立即向埃塞俄比亚提供援助"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_434_little_rome.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "向厄立特里亚提供援助，以交换关税减免"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_434_little_rome.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_434"
+source_event_number = 434
+trigger_priority = 43400
+title = "小罗马"
+description = "20世纪30年代末，意大利人便已通过改造当地基础设施，兴建各类建筑，从而将厄立特里亚的首都阿斯马拉成功打造为了“小罗马”。今天，阿斯马拉的基建仍延续意大利殖民地时代的原汁原味，其商店名字也是照搬的意大利名。例如“维多利亚酒吧”（BarVittoria）、“现代风糕点店”（Pasticceriamoderna）、“奶酪作坊”（Casadelfromaggio）与“五金店”（Ferramenta）。意大利披萨已经成为了无处不在的日常菜，并在当地打出了名气。在厄立特里亚人领导的独立战争已过去半年的背景下，新秩序民族革命先锋治下的意大利政府决定重返当地。尽管遭到联合国与苏联的抗议，意大利还是与厄立特里亚签订了新发展协定：作为交换意大利对当地的二度投资，包括改建道路、翻修建筑、大兴基建与提供军事援助的筹码；厄立特里亚承诺将为意大利企业开采当地资源提供税收优惠，以及49年的特许经营权。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
