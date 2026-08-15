@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_109_somalia.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.4.9"
+
+[sub_resource type="Resource" id="Expr_war15"]
+script = ExtResource("3_expr")
+type = 30
+value = 15.0
+
+[sub_resource type="Resource" id="Expr_not_war15"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_war15")])
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_not_war15")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "尽全力支持他们的政变"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_109_somalia.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "通过给苏联泼脏水，换取巴雷的谅解"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_109_somalia.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "什么都不做"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_109_somalia.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_109"
+source_event_number = 109
+trigger_priority = 10900
+title = "索马里的黄金时代"
+description = "在索马里灾难性的政治冒险后，西亚德·巴雷从索马里炙手可热的红星变为了人人喊打的灾星。为了维护自己的统治，他大力抓捕并处决参与欧加登战争的军官。一部分军官们认为，西亚德·巴雷故意将其他部落的士兵用作“炮灰”，而他自己的马烈汉部族的军官则得到了更安全的命令。至少是出于对巴雷的种族歧视政策的恼怒，以及欧加登惨败后对其政权的失望。由奥斯曼·伊罗和阿卜杜拉希·优素福·艾哈迈德等人意图推翻索马里政府，至少换上一个能够解决内部矛盾的更平等的政府。\n主席同志，也许是时候了？我们该给这个狂妄的索马里人一点东方教训？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
