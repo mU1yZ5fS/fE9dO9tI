@@ -261,6 +261,7 @@ func _process(delta: float) -> void:
 func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	world = WF.create_world(player_gwcode, p_difficulty)
 	_sync_date_to_data(world)
+	FocusSystem.init_for_new_game()
 	reset_map_runtime_state()
 	selected_country_gwcode = player_gwcode
 	is_playing = false
@@ -283,6 +284,9 @@ func load_game(path: String) -> void:
 	if loaded is WorldState:
 		world = loaded as WorldState
 		_sync_date_to_data(world)
+		# 旧档科技数组可能只有 27 槽（TECH_COUNT 已扩到 34），迁移补齐
+		if world.techs != null:
+			world.techs.ensure_size()
 		reset_map_runtime_state()
 		# 运行时缓存不序列化，读档后重建
 		world.rebuild_gwcode_index()
@@ -296,6 +300,7 @@ func load_game(path: String) -> void:
 		_tick_timer = 0.0
 		current_event_id = ""
 		event_is_timeout = false
+		FocusCatalog.ensure_built()
 		current_ending_id = -1
 		_pending_event_ending_id = -1
 		world_state_loaded.emit()
@@ -372,7 +377,8 @@ func tick() -> void:
 	_daily_deficit_recovery(world)
 	_daily_science_gen(world)
 	_update_displays(world.数值表)
-	# 原版体制重算在日块（TimeScript data[52]/[54] 映射之后，num20 段），每日执行
+	# 原版日块顺序：政治路线 data[56]（1146-1226）先于体制重算（1265-1445），每日执行。
+	_update_political_line(world.数值表, world)
 	_political_system_recalc(world.数值表, world)
 
 	if world.date.month != old_month:
@@ -420,36 +426,54 @@ func select_country(gwcode: int) -> void:
 
 # ── 科技 ──
 
-func _apply_tech(_tech_id: int) -> void:
-	if world == null or world.techs == null or world.techs.unlocked.size() < 24:
+func _apply_tech(tech_id: int) -> void:
+	if world == null or world.techs == null or world.techs.unlocked.size() < TechState.TECH_COUNT:
 		return
-	# TimeScript.cs:3134-3182 是一条按已解锁项检查的 if/else-if 链。
-	# 保留原作的顺序语义，不再把另一组“双周持续效果”重复施加一次。
-	var unlocked := world.techs.unlocked
+	# 原版 TimeScript.cs:5626-5722：按 num132（刚刚完成的科技编号）走 if/else-if 链，
+	# 只对“本次完成项”施加一次性效果。原移植按 unlocked 链判断会在后续科技完成时
+	# 重复施加首个已解锁项的效果，本步一并修正。
+	# 注1：原版 gameState.influencePRC 是独立累计字段（对应 world.influence_prc），
+	#     不是数值表 data[7]（全球影响力）。
+	# 注2：进口需求沿用本移植既有换算（原版 -15/-10 → 本端口 -3/-2）；
+	#     该单位问题（原版显示 /5，本端口显示 /10）与本次航天科技无关，另立步修正。
+	# 注3：原版 3/6/7 号还会往 old_modify_desc[15] 追加描述文案，
+	#     本端口没有对应文案存储，暂不移植。
 	var d := world.数值表
-	if unlocked[0]:
+	if tech_id == 0:
 		d[W.I_IMPORT_NEEDS] -= 3
-	elif unlocked[1]:
+	elif tech_id == 1:
 		d[W.I_IMPORT_NEEDS] -= 2
-	elif unlocked[2]:
-		d[W.I_INFLUENCE] += 10
-	elif unlocked[3]:
+	elif tech_id == 2:
+		world.influence_prc += 10
+	elif tech_id == 3:
 		d[W.I_IMPORT_NEEDS] -= 3
-	elif unlocked[4]:
+	elif tech_id == 4:
 		d[W.I_IMPORT_NEEDS] -= 2
-	elif unlocked[7]:
+	elif tech_id == 6:
+		pass  # 原版仅追加 old_modify_desc 文案，数值表无变化
+	elif tech_id == 7:
 		d[W.I_IMPORT_NEEDS] -= 2
-	elif unlocked[10]:
+	elif tech_id == 10:
 		d[W.I_IMPORT_NEEDS] -= 2
-		d[W.I_INFLUENCE] += 5
-	elif unlocked[12]:
+		world.influence_prc += 5
+	elif tech_id == 12:
 		d[W.I_IMPORT_NEEDS] -= 2
-	elif unlocked[13]:
+	elif tech_id == 13:
 		d[W.I_IMPORT_NEEDS] -= 2
-	elif unlocked[14]:
+	elif tech_id == 14:
 		d[W.I_IMPORT_NEEDS] -= 2
-	elif unlocked[23]:
-		d[W.I_INFLUENCE] += 5
+	elif tech_id == 23:
+		world.influence_prc += 5
+	elif tech_id == 28:
+		d[W.I_IMPORT_NEEDS] -= 2
+	elif tech_id == 30:
+		world.influence_prc += 10
+	elif tech_id == 31:
+		world.influence_prc += 5
+	elif tech_id == 32:
+		world.influence_prc += 5
+	elif tech_id == 33:
+		world.influence_prc += 10
 
 
 ## 公开方法（科研界面也需要读取效果描述）
@@ -488,6 +512,35 @@ func _start_initial_events() -> void:
 	if world.completed_event_ids.has("five_no"):
 		return
 	EventEngine.queue_pending("five_no")
+
+
+## 派系界面“选举”按钮（原版 ElectScript.OnMouseDown 手动选举，:35-43）
+## 原版 is_elect 由月块重置 → 用 flag 在 _on_month_changed 里复位。
+func manual_election() -> bool:
+	if world == null or current_event_id != "":
+		return false
+	var d := world.数值表
+	if d[W.I_PARTY_SYSTEM] <= 7:
+		return false
+	if world.get_flag("manual_election_used"):
+		return false
+	world.set_flag("manual_election_used", true)
+	d[W.I_BUDGET] -= 10  # 原版 data[8] -= 10
+	d[125] = 1           # 原版 data[125] = 1（Godot 未映射语义，保留槽位）
+	_notify_stats()
+	start_event("npc_elections")
+	return true
+
+
+## 派系界面“演讲”按钮（原版 speechscript.OnMouseDown，进入同一事件1；is_speech 永不复位）
+func manual_speech() -> bool:
+	if world == null or current_event_id != "":
+		return false
+	if world.get_flag("speech_done"):
+		return false
+	world.set_flag("speech_done", true)
+	start_event("npc_elections")
+	return true
 
 
 func clear_event() -> void:
@@ -596,8 +649,13 @@ func adjust_budget(category_idx: int, delta: int) -> bool:
 	if delta > 0:
 		if d[W.I_BUDGET] < delta:
 			return false
-		var planka := calc_budget_planka()
-		if d[category_idx] > planka / 6:
+		var limit6 := calc_budget_planka() / 6
+		# 原版 Plusmisnus_script.cs:79（普通+10）只检查当前值 <= planka2/6，
+		# 允许加到 planka2/6+10；Shift/Ctrl 分支(:87/:93)才检查 data[idx]+50/100 <= planka2/6。
+		if delta == 10:
+			if d[category_idx] > limit6:
+				return false
+		elif d[category_idx] + delta > limit6:
 			return false
 	if delta < 0 and d[category_idx] < -delta:
 		return false
@@ -617,8 +675,16 @@ func adjust_loan(delta: int) -> bool:
 		return false
 	var d := world.数值表
 	if delta > 0:
-		# 借入：检查贷款上限（原版 Plusmisnus_script.cs:195 `loan < planka`）
-		if d[W.I_LOAN] >= calc_budget_planka():
+		# 借入：检查贷款上限（原版 Plusmisnus_script.cs:195 `loan < planka`）。
+		# 原版 planka = (empires[0].relations + empires[1].relations) / 5，
+		# 不是投资总额 calc_budget_planka()（那是 11 项预算的上限，见 CheckPlanka）。
+		var loan_limit := 0
+		if world.empires.size() > 0:
+			loan_limit += world.empires[0].relations
+		if world.empires.size() > 1:
+			loan_limit += world.empires[1].relations
+		loan_limit = loan_limit / 5
+		if d[W.I_LOAN] >= loan_limit:
 			return false
 		d[W.I_LOAN] += delta
 		d[W.I_BUDGET] += delta
@@ -633,7 +699,8 @@ func adjust_loan(delta: int) -> bool:
 			return false
 		var repay_amount := mini(-delta, d[W.I_LOAN])
 		var mult := 1
-		if world.difficulty >= 3:
+		# 原版：diff==3 时 ×3，diff 2/4 时 ×2（Plusmisnus_script.cs:184-186）
+		if world.difficulty == 3:
 			mult = 3
 		elif world.difficulty >= 2:
 			mult = 2
@@ -752,7 +819,7 @@ func _policy_leading_ok(_category_idx: int, target_val: int, d: Array[int]) -> D
 	if party_sys <= 7:
 		# neutral_leading：满足现状者席位 ≥ 所有派系 → 中间派主导，任何政策都不可变
 		if _satisfied_leads(d):
-			return {"ok": false, "text": "满足现状者失去领导"}
+			return {"ok": false, "text": " 满 意 现 状 者 失 去 领 导"}
 		var line: int = d[W.I_POLITICAL_LINE]
 		var text: String = LEADING_TEXT_ONEPARTY.get(target_val, "")
 		if text == "":
@@ -815,33 +882,33 @@ func _multiparty_seat_majority(d: Array[int]) -> bool:
 	return allied * 100 / total > 66
 
 
-## 一党制 uslovie_text[2] 逐字文案（原版 Doctrine_button_script.cs:37-173，基于 data[56] 派系）。
+## 一党制 uslovie_text[2] 逐字文案（原版 Doctrine_button_script.cs:37-173，基于 data[56] 派系，含原版空格/|排版）。
 ## 与 POLICY_LINE_REQ_ONEPARTY 判定一一对应；10/15 的“并非新民主主义制度”尾注见 _policy_leading_ok。
 const LEADING_TEXT_ONEPARTY := {
-	10: "极左派/保守派领导\n并非\"新民主主义制度\"", 11: "极左派/保守派领导",
-	12: "保守派/温和派领导", 13: "温和派/改革派领导", 14: "改革派/自由派领导",
-	15: "自由派领导\n并非\"新民主主义制度\"",
-	6: "极左派领导", 7: "保守派/温和派领导", 8: "改革派领导", 9: "自由派领导",
-	16: "非自由派领导", 17: "任意派领导", 18: "温和派/改革派/自由派领导", 19: "改革派/自由派领导",
-	20: "极左派/保守派/温和派/改革派领导", 21: "温和派/改革派领导", 22: "改革派/自由派领导", 23: "自由派领导",
-	24: "极左派领导", 25: "极左派/保守派领导", 26: "保守派/温和派/改革派领导",
-	27: "温和派/改革派/自由派领导", 28: "改革派/自由派领导", 29: "自由派领导/威权主义且民族主义高涨",
-	30: "极左派领导", 31: "极左派/保守派/温和派领导", 32: "温和派/改革派领导", 33: "改革派/自由派领导",
+	10: " 极 左 派/ 保 守 派 领 导\n 并 非 \" 新 民 主 主 义 制 度\"", 11: " 极 左 派/ 保 守 派 领 导",
+	12: " 保 守 派/ 温 和 派 领 导", 13: " 温 和 派/ 改 革 派 领 导", 14: " 改 革 派/ 自 由 派 领 导",
+	15: " 自 由 派 领 导\n 并 非 \" 新 民 主 主 义 制 度\"",
+	6: " 极 左 派 领 导", 7: " 保 守 派/ 温 和 派 领 导", 8: " 改 革 派 领 导", 9: " 自 由 派 领 导",
+	16: " 非 自 由 派 领 导", 17: " 任 意 派 领 导", 18: " 温 和 派/ 改 革 派/ 自 由 派 领 导", 19: " 改 革 派/ 自 由 派 领 导",
+	20: " 极 左 派/ 保 守 派/ 温 和 派/ 改 革 派| 领 导", 21: " 温 和 派/ 改 革 派 领 导", 22: " 改 革 派/ 自 由 派 领 导", 23: " 自 由 派 领 导",
+	24: " 极 左 派 领 导", 25: " 极 左 派/ 保 守 派 领 导", 26: " 保 守 派/ 温 和 派/ 改 革 派 领 导",
+	27: " 温 和 派/ 改 革 派/ 自 由 派 领 导", 28: " 改 革 派/ 自 由 派 领 导", 29: " 自 由 派 领 导/| 威 权 主 义 且 民 族 主 义 高 涨",
+	30: " 极 左 派 领 导", 31: " 极 左 派/ 保 守 派/ 温 和 派 领 导", 32: " 温 和 派/ 改 革 派 领 导", 33: " 改 革 派/ 自 由 派 领 导",
 }
 
-## 多党 uslovie_text[2] 逐字文案（原版 :195-443，基于 data[52]/data[54] 路线）。
-## 统一尾注“且 我方党派联盟在全国人大中保有66%以上席位”（MULTIPARTY_SEAT_SUFFIX），此处仅存路线前缀。
+## 多党 uslovie_text[2] 逐字文案（原版 :195-443，基于 data[52]/data[54] 路线，含原版空格排版）。
+## 统一尾注“我 方 党 派 联 盟 …”见 MULTIPARTY_SEAT_SUFFIX，此处仅存路线前缀。
 const LEADING_TEXT_MULTIPARTY := {
-	10: "党派路线：社会主义", 11: "党派路线：社会主义", 12: "党派路线：社会主义/改良主义",
-	13: "党派路线：改良主义/实用主义", 14: "党派路线：实用主义/市场主义", 15: "党派路线：市场主义",
-	6: "党派路线：威权/强硬", 7: "党派路线：强硬/温和", 8: "党派路线：温和/民主", 9: "党派路线：民主",
-	16: "党派路线：威权/强硬", 17: "党派路线：强硬/温和", 18: "党派路线：温和", 19: "党派路线：民主",
-	20: "党派路线：威权/强硬", 21: "党派路线：强硬/温和/民主", 22: "党派路线：温和/民主", 23: "党派路线：民主",
-	24: "党派路线：威权", 25: "党派路线：威权/强硬", 26: "党派路线：强硬/温和",
-	27: "党派路线：温和/民主", 28: "党派路线：强硬/民主", 29: "党派路线：威权/强硬，实用主义/市场主义",
-	30: "党派路线：威权/强硬", 31: "党派路线：威权/民主", 32: "党派路线：温和/民主", 33: "党派路线：强硬/温和/民主",
+	10: " 党 派 路 线 ： 社 会 主 义  且", 11: " 党 派 路 线 ： 社 会 主 义  且", 12: " 党 派 路 线 ： 社 会 主 义/ 改 良 主 义  且",
+	13: " 党 派 路 线 ： 改 良 主 义/ 实 用 主 义  且", 14: " 党 派 路 线 ： 实 用 主 义/ 市 场 主 义  且", 15: " 党 派 路 线 ： 市 场 主 义  且",
+	6: " 党 派 路 线 ： 威 权/ 强 硬  且", 7: " 党 派 路 线 ： 强 硬/ 温 和  且", 8: " 党 派 路 线 ： 温 和/ 民 主  且", 9: " 党 派 路 线 ： 民 主  且",
+	16: " 党 派 路 线 ： 威 权/ 强 硬  且", 17: " 党 派 路 线 ： 强 硬/ 温 和  且", 18: " 党 派 路 线 ： 温 和  且", 19: " 党 派 路 线 ： 民 主  且",
+	20: " 党 派 路 线 ： 威 权/ 强 硬  且", 21: " 党 派 路 线 ： 强 硬/ 温 和/ 民 主  且", 22: " 党 派 路 线 ： 温 和/ 民 主  且", 23: " 党 派 路 线 ： 民 主  且",
+	24: " 党 派 路 线 ： 威 权  且", 25: " 党 派 路 线 ： 威 权/ 强 硬  且", 26: " 党 派 路 线 ： 强 硬/ 温 和  且",
+	27: " 党 派 路 线 ： 温 和/ 民 主  且", 28: " 党 派 路 线 ： 强 硬/ 民 主  且", 29: " 党 派 路 线 ： 威 权/ 强 硬 ，| 实 用 主 义/ 市 场 主 义  且",
+	30: " 党 派 路 线 ： 威 权/ 强 硬  且", 31: " 党 派 路 线 ： 威 权/ 民 主  且", 32: " 党 派 路 线 ： 温 和/ 民 主  且", 33: " 党 派 路 线 ： 强 硬/ 温 和/ 民 主  且",
 }
-const MULTIPARTY_SEAT_SUFFIX := " 且我方党派联盟在全国人大中保有66%以上席位"
+const MULTIPARTY_SEAT_SUFFIX := " 我 方 党 派 联 盟 在 全 国 人 大 中 保 有 66% 以 上 席 位"
 
 
 func change_policy(category_idx: int, target_val: int) -> bool:
@@ -855,6 +922,66 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	var d := world.数值表
 	var current_val: int = d[category_idx]
 	var diff := absi(target_val - current_val)
+	# 原版 Doctrine_button_script.cs:896-907：经济由计划转向市场（12→13+）时的特殊块。
+	if category_idx == W.I_ECON_SYSTEM and current_val <= 12 and target_val >= 13:
+		if d[W.I_REFORM_STAGE] < 2:
+			d[W.I_REFORM_STAGE] = 2
+		elif d[W.I_ALBANIA_BREAK] < 1:
+			# 原版 allcountries[20] = 阿尔巴尼亚（Country_en 第21行）；Torg/proprc → 标签
+			var albania := world.get_country_by_legacy_index(20)
+			if albania:
+				albania.set_tag("对华贸易", false)
+				albania.set_tag("亲中", false)
+	# 原版 :909-983：党政切换的派系重排（此处 current_val 仍旧值，与原版读旧 data[15] 一致）
+	if category_idx == W.I_PARTY_SYSTEM and world.factions.size() >= 5:
+		if current_val >= 6 and current_val <= 7 and target_val >= 8 and target_val <= 9:
+			# 一党 → 多党：解除异见联盟、未启用派系启用、异见席位逐次折半并入保守派
+			var transferred := 0
+			for i in world.factions.size():
+				var f: FactionData = world.factions[i]
+				if f.is_ally and i != FactionData.CONSERVATIVE:
+					f.is_ally = false
+				if f.ideology < 0:
+					f.ideology = 0
+				if f.is_enabled and i != FactionData.CONSERVATIVE and f.support > 0:
+					transferred += f.support / 2
+					f.support -= f.support / 2
+					f.ideology -= f.support / 2
+					transferred += f.support / 4
+					f.support -= f.support / 4
+					f.ideology -= f.support / 4
+				elif not f.is_enabled:
+					f.is_enabled = true
+				d[W.I_PARTY_BAN_COUNT] = 0
+			world.factions[FactionData.CONSERVATIVE].support += transferred
+			world.factions[FactionData.CONSERVATIVE].ideology += transferred
+			d[125] = 0  # 原版 data[125]（选举计时，Godot 未映射语义，保留槽位归零）
+		elif current_val >= 8 and current_val <= 9 and target_val >= 6 and target_val <= 7:
+			# 多党 → 一党：解除异见联盟、按基础意识形态复位席位
+			for i in world.factions.size():
+				var f2: FactionData = world.factions[i]
+				if f2.is_ally and i != FactionData.CONSERVATIVE:
+					f2.is_ally = false
+				if not f2.is_enabled:
+					f2.is_enabled = true
+					if f2.support <= 5:
+						var rv := randi_range(0, 9)
+						f2.support = 10 + rv
+						f2.ideology = f2.support
+				else:
+					f2.support = f2.ideology
+			world.factions[FactionData.CONSERVATIVE].is_enabled = true
+			world.factions[FactionData.MODERATE].is_enabled = true
+			world.factions[FactionData.REFORMIST].is_enabled = true
+			world.factions[0].support = 0
+			world.factions[FactionData.CONSERVATIVE].support = 50
+			world.factions[FactionData.MODERATE].support = 50
+			world.factions[FactionData.REFORMIST].support = 500
+			world.factions[FactionData.LIBERAL].support = 400
+			if d[W.I_ECON_DISPLAY] == 37:
+				world.factions[FactionData.REFORMIST].support = 200
+				world.factions[FactionData.LIBERAL].support = 700
+			d[W.I_PARTY_BAN_COUNT] = 0
 	d[W.I_BUDGET] -= diff * 50
 	if category_idx == W.I_ECON_SYSTEM:
 		d[W.I_LIVING] -= diff * 50
@@ -883,6 +1010,9 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	# 政策切换对政治家忠诚的位移（原版 :988-1116，按 traits[0] 分派；须在覆写旧值前）
 	_apply_policy_loyalty_shift(category_idx, target_val, delta)
 	d[category_idx] = target_val
+	# 原版 :1154-1185 切换后立即重算 data[52]/data[54] 显示等级；:1199-1382 立即重算政体（hooray）
+	_update_displays(d)
+	_political_system_recalc(d, world)
 	# TimeScript.cs:3786-3790：进入 data[15] > 7 后，autosave<=0 时立即进入一次选举。
 	# 年度 10 月 1 日选举仍由 _check_scheduled_events 单独处理。
 	if category_idx == W.I_PARTY_SYSTEM and current_val <= 7 and target_val > 7:
@@ -891,8 +1021,6 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	_apply_policy_satisfied_growth(d, world)
 	# FAC-05 / ECO-FAC-01：政策变更反馈派系 support / points
 	_apply_policy_faction_feedback(category_idx, current_val, target_val)
-	# FAC-08：改革路径可能解锁自由派
-	try_unlock_liberals()
 	_notify_stats()
 	return true
 
@@ -998,84 +1126,239 @@ func set_birth_policy(policy: int) -> void:
 	if world == null:
 		return
 	var d := world.数值表
-	# 原版 ChildScript：生育政策 = data[105]（同时作人口增长基数 0/1/2）
+	# 原版 ChildScript：按钮 this_number=1/2/3，data[105] 值域 1=一胎 2=二胎 3=无限制（开局=2）。
+	# UI 槽位传 0/1/2，此处 +1 对齐原版（ChildScript.cs:12-19）。
+	var target := policy + 1
 	# data[3] -= 50*(old-new)；data[8] -= 5*(4-new)
-	if policy < 0 or policy > 2 or W.I_BIRTH_POLICY >= d.size():
+	if target < 1 or target > 3 or W.I_BIRTH_POLICY >= d.size():
 		return
 	var old_policy: int = d[W.I_BIRTH_POLICY]
-	if old_policy == policy:
+	if old_policy == target:
 		return
-	d[W.I_PEOPLE_SUPPORT] -= 50 * (old_policy - policy)
-	d[W.I_BUDGET] -= 5 * (4 - policy)
-	d[W.I_BIRTH_POLICY] = policy
+	d[W.I_PEOPLE_SUPPORT] -= 50 * (old_policy - target)
+	d[W.I_BUDGET] -= 5 * (4 - target)
+	d[W.I_BIRTH_POLICY] = target
 	_notify_stats()
 
 
-func set_faction_ally(faction_idx: int, is_ally: bool) -> void:
+func set_faction_ally(faction_idx: int, want_ally: bool) -> void:
+	## 忠实移植原版 Party_ally_script.OnMouseDown()：
+	## 一党制(≤7)：免费 toggle；多党(>7)：仅 data[15]==8 时可结盟，按占比扣预算/特工等。
 	if world == null or faction_idx >= world.factions.size():
 		return
-	world.factions[faction_idx].is_ally = is_ally
-	# 原作 Party_ally_script.OnMouseDown：每次点击后按 party_number 重算执政路线 data[56]
-	#（一党制 ≤7：取 support 最大派系；多党 >7：_update_political_line no-op，走 is_faction_leading 读取路径）
+	var f: FactionData = world.factions[faction_idx]
+	var d := world.数值表
+	var total := 0
+	for x in world.factions:
+		total += maxi(x.support, 0)
+	@warning_ignore("integer_division")
+	var pct := int(float(f.support * 100) / float(total)) if total > 0 else 0
+
+	if d[W.I_PARTY_SYSTEM] > 7:
+		# 原版：已结盟再点不会取消（OnMouseDown 多党分支只处理未结盟）
+		if not f.is_ally and d[W.I_PARTY_SYSTEM] == 8 and f.is_enabled \
+				and d[W.I_AGENTS] >= pct and d[W.I_BUDGET] >= pct:
+			f.is_ally = true
+			if pct > 10:
+				d[W.I_PARTY_SUPPORT] -= pct * 5
+				d[W.I_PEOPLE_SUPPORT] -= pct
+				d[W.I_DIPLO] -= 10
+				d[W.I_BUDGET] -= pct
+				d[W.I_AGENTS] -= pct
+				d[W.I_THOUGHT_FREEDOM] -= pct
+			else:
+				d[W.I_PARTY_SUPPORT] -= 50
+				d[W.I_PEOPLE_SUPPORT] -= 10
+				d[W.I_DIPLO] -= 10
+				d[W.I_BUDGET] -= 10
+				d[W.I_AGENTS] -= 10
+				d[W.I_THOUGHT_FREEDOM] -= 10
+				if world.factions.size() > FactionData.CONSERVATIVE:
+					world.factions[FactionData.CONSERVATIVE].support += f.support
+				f.support = 0
+	else:
+		f.is_ally = want_ally if f.is_enabled else false
+	# 原版每次点击后都按 party_number 重算执政路线 data[56]
+	_update_political_line(d, world)
+	_notify_stats()
+
+
+## 原版 Party_zapret 保护规则：领袖 traits[0]=0→保护0；=20→保护1；1..3→保护 traits[0]+1
+func _faction_protected_by_leader(faction_idx: int) -> bool:
+	if world == null or world.leader == null:
+		return false
+	var t: int = world.leader.trait_personality
+	if t == 0:
+		return faction_idx == 0
+	if t == 20:
+		return faction_idx == FactionData.CONSERVATIVE
+	if t >= 1 and t <= 3:
+		return faction_idx == t + 1
+	return false
+
+
+## 原版 Party_zapret 能否禁止判定
+func _can_ban_faction(faction_idx: int) -> bool:
+	if world == null or faction_idx >= world.factions.size():
+		return false
+	var f: FactionData = world.factions[faction_idx]
+	var d := world.数值表
+	if not f.is_enabled:
+		return false
+	if d[W.I_PARTY_SUPPORT] <= 0 or d[W.I_PARTY_BAN_COUNT] >= 4 or d[W.I_PARTY_SYSTEM] == 9:
+		return false
+	if _faction_protected_by_leader(faction_idx):
+		return false
+	if d[W.I_PARTY_SYSTEM] > 7 and faction_idx == FactionData.CONSERVATIVE:
+		return false
+	return true
+
+
+## 原版 Party_zapret 能否解除禁止判定：多党下保守派(1)不可解禁
+func _can_unban_faction(faction_idx: int) -> bool:
+	if world == null:
+		return false
+	var d := world.数值表
+	return d[W.I_PARTY_SYSTEM] <= 7 or faction_idx != FactionData.CONSERVATIVE
+
+
+## UI 查询用的公开包装（不暴露下划线内部函数）
+func can_ban_faction(faction_idx: int) -> bool:
+	return _can_ban_faction(faction_idx)
+
+
+func can_unban_faction(faction_idx: int) -> bool:
+	return _can_unban_faction(faction_idx)
+
+
+func set_faction_enabled(faction_idx: int, want_enabled: bool) -> void:
+	## 忠实移植原版 Party_zapret.OnMouseDown() 的禁止/解禁语义。
+	if world == null or faction_idx >= world.factions.size():
+		return
+	var f: FactionData = world.factions[faction_idx]
+	if want_enabled == f.is_enabled:
+		return
+	if f.is_enabled:
+		if _can_ban_faction(faction_idx):
+			_ban_faction(faction_idx)
+	else:
+		if _can_unban_faction(faction_idx):
+			_unban_faction(faction_idx)
 	_update_political_line(world.数值表, world)
 	_notify_stats()
 
 
-func set_faction_enabled(faction_idx: int, is_enabled: bool) -> void:
-	if world == null or faction_idx >= world.factions.size():
-		return
-	# FAC-08：自由派从禁用→启用需满足解锁条件（禁止始终允许）
-	if is_enabled and faction_idx == FactionData.LIBERAL:
-		var f0: FactionData = world.factions[faction_idx]
-		if not f0.is_enabled:
-			if not try_unlock_liberals():
-				push_warning("GameManager: 自由派尚未满足解锁条件")
-				return
+func _ban_faction(faction_idx: int) -> void:
+	var f: FactionData = world.factions[faction_idx]
+	var d := world.数值表
+	var total := 0
+	for x in world.factions:
+		total += maxi(x.support, 0)
+	# 原版用 float 除法再转 int（截断），这里保持一致
+	var pct := int(float(f.support * 100) / float(total)) if total > 0 else 0
+	d[W.I_PARTY_BAN_COUNT] += 1
+	f.is_enabled = false
+	f.support = 0
+	f.is_ally = false
+	if d[W.I_PARTY_SYSTEM] > 7:
+		# 原版在此分支先置 ally=false 再判 ally，因此恒走 else：国际声望+10
+		d[W.I_DIPLO] += 10
+		d[W.I_PEOPLE_SUPPORT] -= pct * 20
+		d[W.I_THOUGHT_FREEDOM] += pct * 30
+		if d[W.I_PARTY_BAN_COUNT] >= 4:
+			_force_party_system_reset(d)
+	else:
+		d[W.I_THOUGHT_FREEDOM] += pct * 20
+		d[W.I_PARTY_SUPPORT] -= pct * 30
+		if f.ideology > 0:
+			_transfer_ideology_forward(faction_idx)
+
+
+func _unban_faction(faction_idx: int) -> void:
+	var f: FactionData = world.factions[faction_idx]
+	var d := world.数值表
+	if d[W.I_PARTY_SYSTEM] > 7:
+		d[W.I_PEOPLE_SUPPORT] += 40
+		d[W.I_THOUGHT_FREEDOM] += 60
+	else:
+		d[W.I_PARTY_SUPPORT] -= 150
+		if f.ideology > 0:
+			_transfer_ideology_backward(faction_idx)
+	d[W.I_PARTY_BAN_COUNT] -= 1
+	f.is_enabled = true
+	f.support = f.ideology if (f.ideology > 0 and d[W.I_PARTY_SYSTEM] <= 7) else 0
+
+
+## Party_zapret 禁止时把本派基础意识形态转移到下一个启用派系
+func _transfer_ideology_forward(faction_idx: int) -> void:
+	for k in range(faction_idx + 1, world.factions.size()):
+		var t: FactionData = world.factions[k]
+		if t.is_enabled:
+			t.support += world.factions[faction_idx].ideology
 			return
-	var was_enabled := world.factions[faction_idx].is_enabled
-	world.factions[faction_idx].is_enabled = is_enabled
-	# FAC-04：禁止派系连锁 — support 腰斩、points 清零、同派政客忠诚/权力下滑
-	if was_enabled and not is_enabled:
-		var f: FactionData = world.factions[faction_idx]
-		@warning_ignore("integer_division")
-		f.support = maxi(0, f.support / 2)
-		f.points = 0
-		f.is_ally = false
-		for p in world.politicians:
-			if p == null or p.name_display == "空位":
-				continue
-			if p.party_index() == faction_idx:
-				p.loyalty = maxi(0, p.loyalty - 150)
-				p.power = maxi(0, p.power - 50)
-	_notify_stats()
+	for k in range(faction_idx - 1, -1, -1):
+		var t: FactionData = world.factions[k]
+		if t.is_enabled:
+			t.support += world.factions[faction_idx].ideology
+			return
 
 
-## 执政联盟判定 — 对齐 GameState.IsFactionLeadeng（无 DLC 合作规则）
-## num == data[56] 政治路线，或 多党(data[15]>7) 且 保守+盟友启用派 support 占比 >66%
+## Party_zapret 解禁时从下一启用派系扣回基础意识形态（下限=目标派系 ideology）
+func _transfer_ideology_backward(faction_idx: int) -> void:
+	var base: int = world.factions[faction_idx].ideology
+	for k in range(faction_idx + 1, world.factions.size()):
+		var t: FactionData = world.factions[k]
+		if t.is_enabled:
+			t.support -= base
+			if t.support < t.ideology:
+				t.support = t.ideology
+			return
+	for k in range(faction_idx - 1, 0, -1):
+		var t: FactionData = world.factions[k]
+		if t.is_enabled:
+			t.support -= base
+			if t.support < t.ideology:
+				t.support = t.ideology
+			return
+
+
+## Party_zapret.cs:110-122 第4次禁止后的政党制度复位块
+func _force_party_system_reset(d: Array[int]) -> void:
+	if world.factions.size() < 5:
+		return
+	d[W.I_PARTY_SYSTEM] = 6
+	for i in world.factions.size():
+		var f: FactionData = world.factions[i]
+		if i != FactionData.CONSERVATIVE:
+			f.is_ally = false
+		if not f.is_enabled:
+			f.is_enabled = true
+			if f.support <= 5:
+				var rv := randi_range(0, 9)
+				f.support = 10 + rv
+				f.ideology = f.support
+	for i in world.factions.size():
+		world.factions[i].is_enabled = true
+	world.factions[0].support = 0
+	world.factions[1].support = 50
+	world.factions[2].support = 50
+	world.factions[3].support = 500
+	world.factions[4].support = 400
+	if d[W.I_ECON_DISPLAY] == 37:
+		world.factions[3].support = 200
+		world.factions[4].support = 700
+	d[W.I_PARTY_BAN_COUNT] = 0
+	world.数值表[170] = 999
+
+
+## 执政派系判定 — 原版 GameState.IsFactionLeadeng(num)：num == data[56]
 func is_faction_leading(faction_index: int) -> bool:
 	if world == null or faction_index < 0:
 		return false
 	var d := world.数值表
 	if d.size() <= W.I_POLITICAL_LINE:
 		return false
-	if d[W.I_POLITICAL_LINE] == faction_index:
-		return true
-	# 一党制及以下：仅政治路线算「执政」
-	if d[W.I_PARTY_SYSTEM] <= 7:
-		return false
-	var allied := 0
-	var total := 0
-	for i in world.factions.size():
-		var f: FactionData = world.factions[i]
-		total += maxi(f.support, 0)
-		# 原版：始终计入保守派(1)，另加 is_ally && is_enabled 且非 1
-		if i == FactionData.CONSERVATIVE:
-			allied += maxi(f.support, 0)
-		elif f.is_ally and f.is_enabled:
-			allied += maxi(f.support, 0)
-	if total <= 0:
-		return false
-	return float(allied) * 100.0 / float(total) > 66.0
+	return d[W.I_POLITICAL_LINE] == faction_index
 
 
 ## 毛是否已逝——全项目唯一权威谓词。
@@ -1112,28 +1395,8 @@ func faction_power_sum(faction_idx: int) -> int:
 	return total
 
 
-## FAC-08：自由派解锁条件（非事件路径的规则近似）
-## 原版主路径靠事件（如五中全会）与合作模式；此处提供可玩的改革解锁：
-## 政党制度≥联合政府(8) 或 经济体制≥国控资本主义(13) 或 思想自由≥400
-func try_unlock_liberals(force: bool = false) -> bool:
-	if world == null or world.factions.size() <= FactionData.LIBERAL:
-		return false
-	var f: FactionData = world.factions[FactionData.LIBERAL]
-	if f.is_enabled and not force:
-		return false
-	var d := world.数值表
-	var ok := force
-	if not ok and d.size() > W.I_PARTY_SYSTEM:
-		ok = d[W.I_PARTY_SYSTEM] >= 8 or d[W.I_ECON_SYSTEM] >= 13 or d[W.I_THOUGHT_FREEDOM] >= 400
-	if not ok:
-		return false
-	f.is_enabled = true
-	if f.support <= 0:
-		f.support = maxi(40, f.influence / 15) if f.influence > 0 else 40
-	# 确保有领袖
-	POL_SYS.fill_vacant_faction_leaders()
-	_notify_stats()
-	return true
+## 自由派启用/禁用完全复刻原版 Party_zapret 手动解禁与事件路径；
+## 原版不存在“改革路径自动解锁”规则，故此处不再提供任何自动解锁函数。
 
 
 ## 写数值表后统一：同步显示视图 + 广播刷新
@@ -1165,6 +1428,7 @@ func _on_month_changed() -> void:
 	var w := world
 	if w == null:
 		return
+	w.set_flag("manual_election_used", false)  # 原版月块 is_elect=false（TimeScript.cs:505-512）
 	var d := w.数值表
 	# TimeScript.cs:918-925：改革开放进入第二阶段后，等待满 6 个月才讨论外资。
 	# 原作仅在 54 号事件尚未完成时累计，事件引擎以 event_id 保存同一状态。
@@ -1186,11 +1450,11 @@ func _on_month_changed() -> void:
 		var soviet_country := w.get_country_by_legacy_index(7)
 		if soviet_country != null:
 			soviet_country.development = 0
-	# 原版月块（data[19]==1）：政治路线重算、人口增长、寡头成长
-	# （体制重算在日块，见 tick；此处仅 data[56] 政治路线月块重算）
-	_update_political_line(d, w)
+	# 原版月块（data[19]==1）：人口增长、寡头成长、外援 dota。
+	# （体制重算与政治路线 data[56] 都在日块，见 tick。）
 	_monthly_population(d, w)
 	_monthly_oligarch(d, w)
+	_monthly_foreign_aid(d, w)
 	# 政客：调查/监视、自动支持打压、职位 power、空缺派系领袖（TimeScript ~937, ~2172）
 	POL_SYS.monthly_politics(d, w)
 	# 半年：factionsPoints 积分（原版 data[19]==1 && month 1 或 7）+ 简化漂移
@@ -1215,9 +1479,10 @@ func _on_year_changed() -> void:
 	# 联合/人民民主(7/8) 额外腰斩（TimeScript 年滚 ~640）
 	if d[W.I_SATISFIED] > 1 and (d[W.I_PARTY_SYSTEM] == 7 or d[W.I_PARTY_SYSTEM] == 8):
 		d[W.I_SATISFIED] = d[W.I_SATISFIED] / 2
+	# 年度进口需求增量（原版 TimeScript.cs:514 data[24] += ImportChange；公式 GameState.cs:11-16）
+	d[W.I_IMPORT_NEEDS] += w.import_change()
 	# POL-05 / POL-12：年龄 +1、病弱/老死、任职年数（TimeScript 615–621 + DeathPolitics）
 	POL_SYS.annual_politics(d, w)
-	try_unlock_liberals()
 
 
 # ============================================================================
@@ -1245,7 +1510,7 @@ func fill_vacant_faction_leaders() -> void:
 	POL_SYS.fill_vacant_faction_leaders()
 
 
-# ── 每日：赤字恢复（原版 546-563，日块 Repaint(true)）──
+# ── 每日：赤字恢复（原版 399-411，日块 Repaint(true)）──
 ## 原版条件 data[36]+(data[8]+data[36])>=0 即 2*reserve+budget>=0。
 ## 储备耗尽仍赤字时：speed=0 + 强制跳转经济界面（原版 goto_economy）。
 func _daily_deficit_recovery(w: WorldState) -> void:
@@ -1264,10 +1529,10 @@ func _daily_deficit_recovery(w: WorldState) -> void:
 			call_deferred("_force_goto_economy")
 
 
-# ── 每日：科研点生成（原版 1224，日块）──
-## data[11] += data[73]/50，每日执行（原版日块，非月块）。
+# ── 每日：科研点生成（原版 1457-1458，日块）──
+## data[11] += data[73]/40，每日执行（原版日块，非月块）。
 func _daily_science_gen(w: WorldState) -> void:
-	w.数值表[W.I_SCIENCE] += w.数值表[W.I_BUDGET_SCIENCE] / 50
+	w.数值表[W.I_SCIENCE] += w.数值表[W.I_BUDGET_SCIENCE] / 40
 
 
 # ── 每日：开放度→显示等级映射（原版 1136-1167，日块）──
@@ -1282,7 +1547,7 @@ func _update_displays(d: Array[int]) -> void:
 	else: d[W.I_POLITICAL_DISPLAY] = 41
 
 
-# ── 月度：人口增长（原版 2280-2356，月块 data[19]==1）──
+# ── 月度：人口增长（原版 3038-3135，月块 data[19]==1）──
 func _monthly_population(d: Array[int], w: WorldState) -> void:
 	var pop_base: int = d[105]  # 人口增长基数（原版 data[105]，开局=2）
 	# 产值过低 → 人口下降
@@ -1330,7 +1595,7 @@ func _monthly_population(d: Array[int], w: WorldState) -> void:
 		d[W.I_POPULATION] -= 11
 
 
-# ── 月度：寡头成长（原版 1902-2123，月块 data[19]==1）──
+# ── 月度：寡头成长（原版 2559-2850，月块 data[19]==1）──
 func _monthly_oligarch(d: Array[int], w: WorldState) -> void:
 	var year: int = w.date.year
 	var econ := d[W.I_ECON_SYSTEM]
@@ -1447,7 +1712,7 @@ func _mod_active(w: WorldState, idx: int) -> bool:
 	return w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 
-# ── 双周：科研推进（原版 5458-5574，双周块）──
+# ── 双周：科研推进（原版 5608-5755，双周块）──
 func _fortnight_research_advance(d: Array[int], w: WorldState) -> void:
 	if w.techs == null:
 		return
@@ -1462,8 +1727,10 @@ func _fortnight_research_advance(d: Array[int], w: WorldState) -> void:
 		d[W.I_SCIENCE] = 300
 
 
-# ── 双周：已解锁科技持续加成（TimeScript 4936-5140行） ──
+# ── 双周：已解锁科技持续加成（TimeScript 4974-5263行） ──
 ## 原版每双周对所有已解锁科技重复施加效果（非一次性）。
+## 航天科技 27-33 本步补齐（原版 DLC02 内容，本移植按项目惯例无条件开放）。
+## 原版 empires[0]=USA、empires[1]=USSR；relations 均为 ×10 存储。
 func _apply_tech_periodic(w: WorldState) -> void:
 	if w.techs == null:
 		return
@@ -1475,7 +1742,7 @@ func _apply_tech_periodic(w: WorldState) -> void:
 	if u[1]: d[W.I_AGRICULTURE] += 2
 	if u[2]: d[W.I_LIVING] += 1; d[W.I_AGRICULTURE] += 1; d[W.I_BUDGET] += 1
 	if u[3]: d[W.I_LIVING] += 2; d[W.I_AGRICULTURE] += 1
-	if u[4]: d[W.I_LIVING] += 4; d[W.I_SCIENCE] += 5
+	if u[4]: d[W.I_LIVING] += 4; d[W.I_AGRICULTURE] += 5
 	if u[5]: d[W.I_LIVING] += 2; d[W.I_SCIENCE] += 10
 	if u[6]: d[W.I_LIVING] += 2; d[W.I_AGRICULTURE] += 1
 	if u[7]: d[W.I_LIVING] += 2; d[W.I_BUDGET] += 1
@@ -1495,15 +1762,42 @@ func _apply_tech_periodic(w: WorldState) -> void:
 	if u[21]: d[W.I_ARMY] += 2; d[W.I_PARTY_SUPPORT] += 3; d[W.I_PEOPLE_SUPPORT] += 1
 	if u[22]: d[W.I_PEOPLE_SUPPORT] += 2; d[W.I_THOUGHT_FREEDOM] -= 2; d[W.I_PARTY_SUPPORT] += 2
 	if u[23]: d[W.I_ARMY] += 4
-	if u[24]: d[W.I_ARMY] += 4; d[W.I_THOUGHT_FREEDOM] -= 2
+	if u[24]: d[W.I_ARMY] += 4; d[W.I_PEOPLE_SUPPORT] += 2
 	if u[25]: d[W.I_AGENTS] += 2; d[W.I_THOUGHT_FREEDOM] -= 2; d[W.I_PARTY_SUPPORT] += 3
 	if u[26]: d[W.I_ARMY] += 4; d[W.I_THOUGHT_FREEDOM] -= 2
+	# 航天科技（TimeScript.cs:5201-5263 逐条）
+	if u[27]: d[W.I_BUDGET] += 2; d[W.I_LIVING] += 2; d[W.I_PEOPLE_SUPPORT] += 2
+	if u[28]: d[W.I_ARMY] += 5; d[W.I_AGENTS] += 5
+	if u[29]:
+		d[W.I_ARMY] += 10
+		if w.empires.size() > 0:
+			w.empires[0].relations -= 5
+		if w.empires.size() > 1:
+			w.empires[1].relations -= 5
+	if u[30]:
+		d[W.I_PEOPLE_SUPPORT] += 3
+		# 原版不对称：美国 empire.power -1、苏联 empire.relations -1（照抄）
+		if w.empires.size() > 0:
+			w.empires[0].power -= 1
+		if w.empires.size() > 1:
+			w.empires[1].relations -= 1
+	if u[31]: d[W.I_ARMY] += 5; d[W.I_SCIENCE] += 5
+	if u[32]: d[W.I_AGRICULTURE] += 5; d[W.I_LIVING] += 5
+	if u[33]:
+		d[W.I_ARMY] += 5; d[W.I_INDUSTRY] += 5
+		if w.empires.size() > 0:
+			w.empires[0].relations -= 5
+		if w.empires.size() > 1:
+			w.empires[1].relations -= 5
 
 
-# ── 双周：贷款利息 + 外援(dota)（TimeScript 5365-5454 + 1620-1645） ──
+# ── 双周：贷款利息（TimeScript 5512-5605行；外援 dota 在月块 2295-2318，见 _monthly_foreign_aid） ──
 func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
 	var loan: int = d[W.I_LOAN]
 	var year: int = w.date.year if w.date else 1976
+	var pc := w.get_player_country()
+	# 原版对苏关系惩罚都包在 allcountries[1].isSEV 内（中国加入经互会才扣）
+	var china_in_sev := pc != null and pc.has_tag("sev")
 	# 国债利息（与 UI「债务损耗」对齐）
 	if loan > 0:
 		var interest: int = loan / 40
@@ -1516,10 +1810,10 @@ func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
 			if interest <= 0:
 				if loan > 10:
 					d[W.I_LOAN] -= 1
-				if w.empires.size() > 1 and w.empires[1] != null:
+				if china_in_sev and w.empires.size() > 1 and w.empires[1] != null:
 					w.empires[1].relations -= 2
 			else:
-				if w.empires.size() > 1 and w.empires[1] != null:
+				if china_in_sev and w.empires.size() > 1 and w.empires[1] != null:
 					w.empires[1].relations -= loan / 20
 				if loan > 10:
 					@warning_ignore("integer_division")
@@ -1533,39 +1827,48 @@ func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
 				d[W.I_BUDGET] -= 1
 			if loan > 10:
 				d[W.I_LOAN] -= 1
-			if w.empires.size() > 1 and w.empires[1] != null:
+			if china_in_sev and w.empires.size() > 1 and w.empires[1] != null:
 				w.empires[1].relations -= 2
 		else:
 			d[W.I_BUDGET] -= interest
 			if year >= 1983:
 				d[W.I_BUDGET] -= 1
-			if w.empires.size() > 1 and w.empires[1] != null:
+			elif year >= 1980:
+				# 反编译第二条件写作 >=1983（不可达冗余）；按原版语义应为 >=1980，
+				# 1980-1982 年额外扣 2（与利息<=0 分支相反，照抄原作行为）。
+				d[W.I_BUDGET] -= 2
+			if china_in_sev and w.empires.size() > 1 and w.empires[1] != null:
 				w.empires[1].relations -= loan / 20
 			if loan > 10:
 				d[W.I_LOAN] -= interest / 2 + 1
-	# 外援 dota（data[146] = 援助强度；贸易同盟国吃援助）
+
+
+## 月度外援 dota（原版 TimeScript.cs:2295-2318，月块 data[19]==1）。
+## data[146] = 援助强度；贸易同盟国吃援助，减美/苏势力、增中势力。
+func _monthly_foreign_aid(d: Array[int], w: WorldState) -> void:
 	var aid: int = d[W.I_FOREIGN_AID] if d.size() > W.I_FOREIGN_AID else 0
-	if aid > 0:
-		d[W.I_BUDGET] -= aid
-		d[W.I_AGENTS] -= aid
-		d[W.I_ARMY] -= aid
-		var ovd_alive := false
-		for x in w.countries:
-			if x != null and x.has_tag("ovd"):
-				ovd_alive = true
-				break
-		for c in w.countries:
-			if c == null or not c.has_tag("贸易同盟"):
-				continue
-			if ovd_alive:
-				c.sov_power = maxi(c.sov_power - 10, 0)
-			else:
-				c.usa_power = maxi(c.usa_power - 10, 0)
-			c.prc_power = mini(c.prc_power + 5, 1000)
+	if aid <= 0:
+		return
+	d[W.I_BUDGET] -= aid
+	d[W.I_AGENTS] -= aid
+	d[W.I_ARMY] -= aid
+	var ovd_alive := false
+	for x in w.countries:
+		if x != null and x.has_tag("ovd"):
+			ovd_alive = true
+			break
+	for c in w.countries:
+		if c == null or not c.has_tag("贸易同盟"):
+			continue
+		if ovd_alive:
+			c.sov_power = maxi(c.sov_power - 10, 0)
+		else:
+			c.usa_power = maxi(c.usa_power - 10, 0)
+		c.prc_power = mini(c.prc_power + 5, 1000)
 
 
 # ── 11项预算的完整月度效果 ──
-# 移植自 TimeScript.cs InfluenceFromInvestments() 第 8081 行起
+# 移植自 TimeScript.cs InfluenceFromInvestments() 第 9764-9870 行（调用点 5264）
 
 func _influence_from_investments(d: Array[int], year: int) -> void:
 	# ─ 军费 ─
@@ -1603,7 +1906,7 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 		d[W.I_CORRUPTION] -= 4
 
 	# ─ 科研经费 ─
-	# 科研点生成（data[11]+=data[73]/50）原版在日块（1224行），已移至 _daily_science_gen
+	# 科研点生成（data[11]+=data[73]/40）原版在日块（1457-1458行），已移至 _daily_science_gen
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_SCIENCE] / 50
 
 	# ─ 行政支出 ─
@@ -1614,8 +1917,6 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 	# ─ 高层福利(信封) ─
 	d[W.I_CORRUPTION] += d[W.I_BUDGET_ENVELOPE] / 25
 	d[W.I_PARTY_SUPPORT] += (d[W.I_BUDGET_ENVELOPE] - 61) / 5
-	# ECO-POL-01：信封高低影响政客忠诚
-	_apply_envelope_loyalty(d)
 
 	# ─ 宣传支出（原版 9818-9827 + 兵源 9777-9780）──
 	d[W.I_CORRUPTION] -= d[W.I_BUDGET_PROPAGANDA] / 100   # 原版 :9818
@@ -1669,32 +1970,10 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 	d[W.I_LIVING] -= d[W.I_CORRUPTION] / 50
 
 
-## ECO-POL-01：高层福利预算 → 政客忠诚微调
-func _apply_envelope_loyalty(d: Array[int]) -> void:
-	if world == null:
-		return
-	var env: int = d[W.I_BUDGET_ENVELOPE]
-	var delta := 0
-	if env >= 90:
-		delta = 8
-	elif env >= 70:
-		delta = 3
-	elif env <= 30:
-		delta = -8
-	elif env <= 50:
-		delta = -3
-	if delta == 0:
-		return
-	for p in world.politicians:
-		if p == null or p.name_display == "空位":
-			continue
-		p.loyalty += delta
-
-
 # ── 政治体制自动重算 ──
 
 func _political_system_recalc(d: Array[int], w: WorldState) -> void:
-	# 原版 TimeScript.cs 月块体制重算（num20=5 逐项修正体系，:1265-1445），
+	# 原版 TimeScript.cs 日块体制重算（num20=5 逐项修正体系，:1265-1445），
 	# 2026-08 对齐审查重写：此前移植用 "score=(econ-9)+(party-5)+..." 数学公式与
 	# 分支阈值（score<=6/9/11/15/20），与原版 num20<=0/3/6/9/12 体系完全不符；
 	# 开局数据下两者恰都收敛到威权（num20=5-1-1-2-1=0 → 分支1），但政策变化后
@@ -1778,28 +2057,59 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 	var pc := w.get_player_country()
 	if pc:
 		pc.government = new_gosstroy
-	# 注意：data[56] 政治路线重算在月块（_on_month_changed 单独调用），不在此处
+	# 原版 1440-1444：modifies[40] 激活且 Gosstroy==1 时强制覆盖为 data[14]=3 / Gosstroy=2
+	if _mod_active(w, 40) and pc != null and pc.government == 1:
+		d[W.I_IDEOLOGY] = 3
+		pc.government = 2
+	# 注意：data[56] 政治路线重算也在日块（tick 中先于本函数调用），不在此处
 
 
 ## 政治路线 data[56]：一党制(≤7)下每月跟随席位(support)最大的派系。
-## 对齐原版 TimeScript 月块 1071-1093（幂等派生值，每月重算无副作用）。
+## 对齐原版 TimeScript 日块 1146-1226（幂等派生值，每日重算无副作用）。
 ## 注意：满足现状者 data[106] 的增长【不在这里】——原版月块完全不碰 data[106]，
 ##       它只在切政策 Doctrine_button.OnMouseDown 时 += 一次（见 change_policy →
 ##       _apply_policy_satisfied_growth）。之前放在月度导致每月暴涨，即本次修复的 bug。
 func _update_political_line(d: Array[int], w: WorldState) -> void:
+	## 原版 Party_ally_script / Party_zapret 点击后与日块重算 data[56] 的算法，逐分支照抄。
 	if w.factions.is_empty() or d.size() <= W.I_POLITICAL_LINE:
 		return
-	# 多党/联合(>7)的路线判定含盟友权重，另循其它路径，这里只处理一党制
-	if d[W.I_PARTY_SYSTEM] > 7:
+	var p0: int = w.factions[0].support if w.factions.size() > 0 else 0
+	var p1: int = w.factions[1].support if w.factions.size() > 1 else 0
+	var p2: int = w.factions[2].support if w.factions.size() > 2 else 0
+	var p3: int = w.factions[3].support if w.factions.size() > 3 else 0
+	var p4: int = w.factions[4].support if w.factions.size() > 4 else 0
+	if d[W.I_PARTY_SYSTEM] <= 7:
+		if p0 >= p1 and p0 >= p2 and p0 >= p3 and p0 >= p4:
+			d[W.I_POLITICAL_LINE] = 0
+		elif p0 <= p1 and p1 >= p2 and p1 >= p3 and p1 >= p4:
+			d[W.I_POLITICAL_LINE] = 1
+		elif p2 >= p1 and p0 <= p2 and p2 >= p3 and p2 >= p4:
+			d[W.I_POLITICAL_LINE] = 2
+		elif p3 >= p1 and p3 >= p2 and p0 <= p3 and p3 >= p4:
+			d[W.I_POLITICAL_LINE] = 3
+		elif p4 >= p1 and p4 >= p2 and p4 >= p3 and p0 <= p4:
+			d[W.I_POLITICAL_LINE] = 4
 		return
-	var best_i := 0
-	var best_s := -1
+	# 多党(>7)：保守派支持 + 所有已结盟启用派系支持
+	var coalition := p1
 	for i in w.factions.size():
 		var f: FactionData = w.factions[i]
-		if f.support > best_s:
-			best_s = f.support
-			best_i = i
-	d[W.I_POLITICAL_LINE] = best_i
+		if i != FactionData.CONSERVATIVE and f.is_ally and f.is_enabled:
+			coalition += f.support
+	if coalition >= p0 and coalition >= p2 and coalition >= p3 and coalition >= p4:
+		d[W.I_POLITICAL_LINE] = 1
+	elif not w.factions[0].is_ally and w.factions[0].is_enabled and coalition <= p0 \
+			and p0 >= p2 and p0 >= p3 and p0 >= p4:
+		d[W.I_POLITICAL_LINE] = 0
+	elif not w.factions[2].is_ally and w.factions[2].is_enabled and p2 >= p0 \
+			and coalition <= p2 and p2 >= p3 and p2 >= p4:
+		d[W.I_POLITICAL_LINE] = 2
+	elif not w.factions[3].is_ally and w.factions[3].is_enabled and p3 >= p0 \
+			and p3 >= p2 and coalition <= p3 and p3 >= p4:
+		d[W.I_POLITICAL_LINE] = 3
+	elif not w.factions[4].is_ally and w.factions[4].is_enabled and p4 >= p0 \
+			and p4 >= p2 and p4 >= p3 and coalition <= p4:
+		d[W.I_POLITICAL_LINE] = 4
 
 
 ## 满足现状者 data[106] 增长——【仅切政策成功时】调用一次，对齐原版
@@ -1824,6 +2134,8 @@ func _apply_policy_satisfied_growth(d: Array[int], w: WorldState) -> void:
 		if w.factions.size() > FactionData.CONSERVATIVE:
 			cons = w.factions[FactionData.CONSERVATIVE].support
 		d[W.I_SATISFIED] += cons / 4
+		# 原版 :1407-1438：多党分支同样在加完 data[106] 后重算 data[56]
+		_update_political_line(d, w)
 	d[W.I_SATISFIED] = maxi(0, d[W.I_SATISFIED])
 
 
@@ -1916,7 +2228,129 @@ func _biannual_faction_drift(w: WorldState) -> void:
 		f.support = maxi(0, f.support)
 
 
-# ── 双周：经济体制效果（原版 3551-3664，双周块）──
+# ── 双周：生活水平上限调整（原版 3749-3752，双周块）──
+## 生活水平高于三产均值（扣除腐败）+20 时，向该上限回落 1/10。
+func _fortnight_living_cap(d: Array[int]) -> void:
+	@warning_ignore("integer_division")
+	var output_avg := (d[W.I_INDUSTRY] + d[W.I_AGRICULTURE] + d[W.I_SERVICES] - d[W.I_CORRUPTION]) / 3
+	if d[W.I_LIVING] > output_avg + 20:
+		d[W.I_LIVING] -= (output_avg + 20) / 10
+
+
+# ── 双周：allcountries[15] 内战压力（原版 3755-3779，生活上限之后、储备结算之前）──
+## 国家 15 处于内战时：美苏关系向 700 靠拢、预算-2、外交声誉向 400-600 区间靠拢。
+func _fortnight_cw_block(d: Array[int], w: WorldState) -> void:
+	var cw_country := w.get_country_by_legacy_index(15)
+	if cw_country == null or not cw_country.内战中:
+		return
+	if w.empires.size() > 1 and w.empires[1] != null and w.empires[1].relations < 700:
+		w.empires[1].relations += 5
+	if w.empires.size() > 0 and w.empires[0] != null and w.empires[0].relations < 700:
+		w.empires[0].relations += 5
+	d[W.I_BUDGET] -= 2
+	if d[W.I_DIPLO] > 600:
+		d[W.I_DIPLO] -= 2
+	elif d[W.I_DIPLO] < 400:
+		d[W.I_DIPLO] += 2
+
+
+# ── 双周：威权+市场体制的腐败微降（原版 3780-3787）──
+func _fortnight_ideology_corruption(d: Array[int]) -> void:
+	if d[W.I_IDEOLOGY] >= 4 and d[W.I_ECON_SYSTEM] >= 14:
+		d[W.I_CORRUPTION] -= 1
+
+
+# ── 双周：储备金影响（原版 TimeScript.cs:3788-3912，双周块）──
+## 除 UI 文案（经济.gd:_reserve_effect）外，原版还会真实结算：按年份/经济体制
+## 降低腐败，并把三产与生活同时推向（或拉离）储备金锚点。
+func _fortnight_reserve_effect(d: Array[int], year: int) -> void:
+	var reserve := d[W.I_RESERVE]
+	var econ := d[W.I_ECON_SYSTEM]
+	var v := 0
+	var corr := 0
+	@warning_ignore("integer_division")
+	if year < 1980:
+		if econ == 13:
+			corr = -(reserve / 400)
+			v = 1 if reserve >= 600 else -(3 - reserve / 150)
+		elif econ >= 14:
+			corr = -(reserve / 200)
+			v = 1 if reserve >= 750 else -(4 - reserve / 150)
+	elif econ == 13:
+		corr = -(reserve / 600)
+		v = 1 if reserve >= 750 else -(4 - reserve / 150)
+	elif econ == 14:
+		corr = -(reserve / 400)
+		v = 3 if reserve >= 1500 else -(7 - reserve / 150)
+	elif econ == 15:
+		corr = -(reserve / 200)
+		v = -(13 - reserve / 150)
+	elif econ == 12:
+		corr = -(reserve / 200)
+		v = 1 if reserve >= 600 else -(3 - reserve / 150)
+	if corr != 0 or v != 0:
+		d[W.I_CORRUPTION] += corr
+		d[W.I_LIVING] += v
+		d[W.I_SERVICES] += v
+		d[W.I_INDUSTRY] += v
+
+
+# ── 双周：人口超限特工惩罚（原版 TimeScript.cs:4538-4541，经济体制效果前）──
+## 人口超过 9307 的部分，每 200 扣 1 特工。
+func _fortnight_population_agent_penalty(d: Array[int]) -> void:
+	@warning_ignore("integer_division")
+	if (d[W.I_POPULATION] - 9307) / 200 > 0:
+		d[W.I_AGENTS] -= (d[W.I_POPULATION] - 9307) / 200
+
+
+# ── 双周：经济思想漂移（原版 TimeScript.cs:5311-5321，压力修正之后、工业衰减之前）──
+## 计划经济体制（<=12）下，思想自由按年份不同速率向 1000 靠拢。
+func _fortnight_econ_thought_drift(d: Array[int], year: int) -> void:
+	@warning_ignore("integer_division")
+	if d[W.I_ECON_SYSTEM] <= 11:
+		if year < 1980:
+			d[W.I_THOUGHT_FREEDOM] += (1000 - d[W.I_LIVING]) / 50
+		else:
+			d[W.I_THOUGHT_FREEDOM] += (1000 - d[W.I_LIVING]) / 40
+	elif d[W.I_ECON_SYSTEM] == 12:
+		if year < 1980:
+			d[W.I_THOUGHT_FREEDOM] += (1000 - d[W.I_LIVING]) / 70
+		else:
+			d[W.I_THOUGHT_FREEDOM] += (1000 - d[W.I_LIVING]) / 60
+
+
+# ── 双周：战后战争支持/兵源衰减（原版 TimeScript.cs:5878-5890，难度修正之后）──
+## 用双周入口快照 array9[31]/array9[57] 回落当前超过 700 的战争支持/兵源。
+func _fortnight_post_war_decay(d: Array[int], war_support_before: int, manpower_before: int) -> void:
+	@warning_ignore("integer_division")
+	if d[W.I_WAR_SUPPORT] >= 700:
+		d[W.I_WAR_SUPPORT] -= war_support_before / 40
+	if d[W.I_MANPOWER] >= 700:
+		d[W.I_MANPOWER] -= manpower_before / 40
+
+
+# ── 双周：预算增长回落（原版 TimeScript.cs:5903-5919，战后衰减之后）──
+## 本轮预算比入口快照多 50 以上时，扣掉增长额的 1/4，再扣当前预算的 1/20。
+## 原版内层 >50/>75/>100 为反编译不可达冗余（外层已 >50），只保留 /4 分支。
+func _fortnight_budget_growth_fallback(d: Array[int], budget_before: int) -> void:
+	@warning_ignore("integer_division")
+	if d[W.I_BUDGET] - budget_before > 50:
+		d[W.I_BUDGET] -= (d[W.I_BUDGET] - budget_before) / 4
+		d[W.I_BUDGET] -= d[W.I_BUDGET] / 20
+
+
+# ── 双周：人口预算加成（原版 TimeScript.cs:5928-5945，预算回落之后）──
+## 市场经济体制 13/14/15 按人口规模分别以 /3000、/2000、/1000 给预算加成。
+func _fortnight_population_budget_bonus(d: Array[int]) -> void:
+	if d[W.I_ECON_SYSTEM] == 13:
+		d[W.I_BUDGET] += int(round(float(d[W.I_POPULATION] - 9037) / 3000.0 + 1.0))
+	elif d[W.I_ECON_SYSTEM] == 14:
+		d[W.I_BUDGET] += int(round(float(d[W.I_POPULATION] - 9037) / 2000.0 + 1.0))
+	elif d[W.I_ECON_SYSTEM] == 15:
+		d[W.I_BUDGET] += int(round(float(d[W.I_POPULATION] - 9037) / 1000.0 + 1.0))
+
+
+# ── 双周：经济体制效果（原版 4538-4715，双周块）──
 ## 含 data[52]/data[54] 显示等级条件副效果。
 func _fortnight_econ_system_effect(d: Array[int]) -> void:
 	var econ := d[W.I_ECON_SYSTEM]
@@ -1924,9 +2358,9 @@ func _fortnight_econ_system_effect(d: Array[int]) -> void:
 		11:
 			d[W.I_BUDGET] += 1
 			d[W.I_THOUGHT_FREEDOM] -= 2
-			d[W.I_LIVING] += 4
+			d[W.I_LIVING] += 2
 			d[W.I_INDUSTRY] += 2
-			d[W.I_CORRUPTION] -= 5
+			d[W.I_CORRUPTION] -= 2
 			if d[W.I_ECON_DISPLAY] > 34:
 				d[W.I_ECON_OPENNESS] -= 50
 		10:
@@ -1996,37 +2430,67 @@ func _on_fortnight() -> void:
 		return
 	var d := w.数值表
 	var year := w.date.year
-	# TimeScript.cs:1224-1228：本次双周块入口快照，供 modifier[9/10] 与利润回落公式使用。
+	# TimeScript.cs:1224-1228：本次双周块入口快照，供 modifier[9/10]、战后衰减与预算回落使用。
+	# 同一份入口快照也持久化给经济界面悬浮提示的 ±变化（data_old 语义）。
+	w.记录入口快照()
 	var support_before := d[W.I_PEOPLE_SUPPORT]
 	var budget_before := d[W.I_BUDGET]
 	var freedom_before := d[W.I_THOUGHT_FREEDOM]
+	var war_support_before := d[W.I_WAR_SUPPORT]
+	var manpower_before := d[W.I_MANPOWER]
 
-	_update_modifier_population_industry_pressure(d, w)
-	_fortnight_industry_decay(d)
-	_fortnight_agriculture_decay(d)
-	_fortnight_services_decay(d)
-	_influence_from_investments(d, year)
-	_apply_tech_periodic(w)
-	_fortnight_loan_interest(d, w)
-	_fortnight_research_advance(d, w)
+	# 双周块按原版 TimeScript.cs 行序重排（本次审计对齐）：
+	# 生活上限 3749 → 储备结算 3788 → 贸易 4135 → 战争支持漂移 4168 →
+	# 领导人与军备资金 4318 → 人口特工惩罚/经济体制 4538 → 党政/舆论/领土漂移 4716 →
+	# 军事学说 4897 → 科技持续 4974 → 投资效果 5264 → 压力修正 5266 → 经济思想漂移 5311 →
+	# 工业 5323 → 服务业 5393 → 农业 5461 → 贷款 5512 → 科研 5608 → 难度 5757 →
+	# 战后衰减 5878 → 预算回落 5903 → 人口预算加成 5928。
+	# （TraitInfluence 4973 / MutualRelationsChange 5265 未移植，见审计报告；modifier 周期块另算。）
+	_fortnight_living_cap(d)
+	_fortnight_cw_block(d, w)
+	_fortnight_ideology_corruption(d)
+	_fortnight_reserve_effect(d, year)
 	_fortnight_trade_balance(d, w)
 	_fortnight_satisfaction_drift(d, w)
+	_fortnight_leader_effects(d, w)
+	_fortnight_population_agent_penalty(d)
+	_fortnight_econ_system_effect(d)
 	_fortnight_political_drift(d, w)
 	_fortnight_military_doctrine(d, w)
-	_fortnight_econ_system_effect(d)
+	_apply_tech_periodic(w)
+	_influence_from_investments(d, year)
+	_update_modifier_population_industry_pressure(d, w)
+	_fortnight_econ_thought_drift(d, year)
+	_fortnight_industry_decay(d)
+	_fortnight_services_decay(d)
+	_fortnight_agriculture_decay(d)
+	_fortnight_loan_interest(d, w)
+	_fortnight_research_advance(d, w)
 	_fortnight_difficulty_bonus(d, w)
+	_fortnight_post_war_decay(d, war_support_before, manpower_before)
+	# ModifiesChanges 原版在 5907（战后衰减 5878 之后、预算回落 5903 之前）调用；
+	# Godot 只移植了其中 modifier 0-17 的可确认部分，未移植项见审计报告。
 	_fortnight_modifiers(d, w, support_before, budget_before, freedom_before)
+	_fortnight_budget_growth_fallback(d, budget_before)
+	_fortnight_population_budget_bonus(d)
 	_check_coup(d, w)
+	# 原版 TimeScript.cs:5958：双周结算内 dlc[0] 时 FocusesResearching()
+	# （裁决 2026-08-16：Focus 默认开启）。
+	FocusSystem.tick()
 	WAR_SYS.fortnight_wars(w)
 	# 阴谋网也挂双周一次（原版 Death/Plot 在年/特定块；月结已跑，此处不重复击杀）
 	if current_event_id == "":
 		_check_endings(d, w, year)
 
 	w.flush_economy()
+	# 原版 TimeScript.cs:5943-5953：双周结束时写 data_old = 当前值 - 入口 array9。
+	# 结算一次后保持不变，期间玩家加减不再改动（与原版一致）。
+	w.结算两周变化()
 
 
 # ============================================================================
-# 修正双周效果 — 对齐 TimeScript.cs:2971-2988, 3304-3579
+# 修正双周效果 — 对齐 TimeScript.cs:5266-5310（modifies[4] 人口/工业压力）
+# 及 ModifiesInfuence.ModifiesChanges 的 modifier 周期块（原版 5907 调用）。
 # 内部数值为原版 ×10 量级（如 -5 工业 = -0.5 显示）
 # ============================================================================
 
@@ -2052,7 +2516,7 @@ func _fortnight_modifiers(
 		d: Array[int],
 		w: WorldState,
 		support_before: int,
-		budget_before: int,
+		_budget_before: int,
 		freedom_before: int
 ) -> void:
 	if w == null:
@@ -2064,10 +2528,6 @@ func _fortnight_modifiers(
 		if w.techs and w.techs.unlocked.size() > 10 and w.techs.unlocked[10]:
 			w.modifiers[0].is_active = false
 		d[W.I_INDUSTRY] -= 5
-
-	# 1 工业产能上限：科技 11 解除（上限在 clamp）。
-	if _mod_active(w, 1) and w.techs and w.techs.unlocked.size() > 11 and w.techs.unlocked[11]:
-		w.modifiers[1].is_active = false
 
 	# 2 社会动荡。
 	if _mod_active(w, 2):
@@ -2201,10 +2661,8 @@ func _fortnight_modifiers(
 		d[W.I_AGENTS] -= 10
 		d[W.I_MANPOWER] -= 3
 
-	# TimeScript.cs:3500-3514：本轮预算增长过快时的回落。
-	if d[W.I_BUDGET] - budget_before > 10:
-		d[W.I_BUDGET] -= (d[W.I_BUDGET] - budget_before) / 4
-		d[W.I_BUDGET] -= d[W.I_BUDGET] / 20
+	# 预算增长过快回落已拆到 _fortnight_budget_growth_fallback（TimeScript.cs:5903-5919），
+	# 在 _on_fortnight 中按原版位置（战后衰减之后、人口预算加成之前）单独调用。
 
 	# 13 工业创收。原作激活后不在此处自动解除。
 	if not _mod_active(w, 13):
@@ -2233,12 +2691,8 @@ func _fortnight_modifiers(
 		if not deng_valid:
 			w.modifiers[14].is_active = false
 
-	# 15 农业产能上限：当轮先限制至 700，再由科技 2 解除。
-	if _mod_active(w, 15):
-		if d[W.I_AGRICULTURE] > 700:
-			d[W.I_AGRICULTURE] = 700
-		if w.techs and w.techs.unlocked.size() > 2 and w.techs.unlocked[2]:
-			w.modifiers[15].is_active = false
+	# 15 上山下乡（原版 ModifiesInfuence.cs:1618+ 只有激活与文案/小数值效果，无封顶、无科技解除；
+	# Godot 早期版本自造的“>700 封顶 + 科技2解除”在原版全库无出处，已删除）。
 
 	# 16/17 对苏/对美关系受损。
 	if _mod_active(w, 16):
@@ -2256,24 +2710,10 @@ func _fortnight_modifiers(
 			d[W.I_BUDGET] -= (500 - usa_relation) / 50
 			d[W.I_AGENTS] -= (500 - usa_relation) / 100
 
-	_apply_modifier_caps(d, w)
 	_mirror_empires_to_data(world)
 
 
-func _apply_modifier_caps(d: Array[int], w: WorldState) -> void:
-	# 工业上限：mod1 激活 → 500，否则 1000
-	var ind_cap := 500 if _mod_active(w, 1) else 1000
-	if d[W.I_INDUSTRY] > ind_cap:
-		d[W.I_INDUSTRY] = ind_cap
-	# 农业上限：mod15 激活 → 700，否则 1000
-	var agri_cap := 700 if _mod_active(w, 15) else 1000
-	if d[W.I_AGRICULTURE] > agri_cap:
-		d[W.I_AGRICULTURE] = agri_cap
-	if d[W.I_SERVICES] > 1000:
-		d[W.I_SERVICES] = 1000
-
-
-# ── 产业自然衰减（TimeScript 5195-5260行） ──
+# ── 产业自然衰减（TimeScript 5323-5370行） ──
 
 func _fortnight_industry_decay(d: Array[int]) -> void:
 	var v := d[W.I_INDUSTRY]
@@ -2288,15 +2728,18 @@ func _fortnight_industry_decay(d: Array[int]) -> void:
 		d[W.I_LIVING] -= 2
 		d[W.I_ARMY] -= 2
 	elif v < 610:
-		d[W.I_INDUSTRY] -= 15
+		d[W.I_INDUSTRY] -= 8
 		d[W.I_PARTY_SUPPORT] -= 1
 	elif v < 710:
-		d[W.I_INDUSTRY] -= 22
+		d[W.I_INDUSTRY] -= 18
 	elif v < 810:
-		d[W.I_INDUSTRY] -= 28
-	else:
+		d[W.I_INDUSTRY] -= 25
+	elif v < 1100:
 		d[W.I_INDUSTRY] -= 40
 		d[W.I_AGENTS] += 5
+	else:
+		d[W.I_INDUSTRY] -= 80
+		d[W.I_AGENTS] += 10
 	if d[W.I_ECON_SYSTEM] < 13:
 		if d[W.I_AGRICULTURE] < 300:
 			d[W.I_INDUSTRY] -= 4
@@ -2305,7 +2748,7 @@ func _fortnight_industry_decay(d: Array[int]) -> void:
 	d[W.I_BUDGET] += d[W.I_INDUSTRY] / 50
 
 
-# ── 农业自然衰减（TimeScript 5319-5364行） ──
+# ── 农业自然衰减（TimeScript 5461-5505行） ──
 
 func _fortnight_agriculture_decay(d: Array[int]) -> void:
 	var v := d[W.I_AGRICULTURE]
@@ -2314,23 +2757,26 @@ func _fortnight_agriculture_decay(d: Array[int]) -> void:
 		d[W.I_PARTY_SUPPORT] -= 10
 		d[W.I_LIVING] -= 5
 	elif v < 410:
-		d[W.I_AGRICULTURE] -= 9
+		d[W.I_AGRICULTURE] -= 5
 		d[W.I_PARTY_SUPPORT] -= 5
 		d[W.I_LIVING] -= 2
 	elif v < 610:
-		d[W.I_AGRICULTURE] -= 15
+		d[W.I_AGRICULTURE] -= 9
 		d[W.I_PARTY_SUPPORT] -= 1
 	elif v < 710:
-		d[W.I_AGRICULTURE] -= 22
+		d[W.I_AGRICULTURE] -= 19
 	elif v < 810:
-		d[W.I_AGRICULTURE] -= 28
-	else:
+		d[W.I_AGRICULTURE] -= 26
+	elif v < 1100:
 		d[W.I_AGRICULTURE] -= 40
 		d[W.I_ARMY] += 5
+	else:
+		d[W.I_AGRICULTURE] -= 80
+		d[W.I_ARMY] += 10
 	d[W.I_BUDGET] += d[W.I_AGRICULTURE] / 100
 
 
-# ── 服务业自然衰减（TimeScript 5258-5318行） ──
+# ── 服务业自然衰减（TimeScript 5393-5438行） ──
 
 func _fortnight_services_decay(d: Array[int]) -> void:
 	var v := d[W.I_SERVICES]
@@ -2343,15 +2789,18 @@ func _fortnight_services_decay(d: Array[int]) -> void:
 		d[W.I_PARTY_SUPPORT] -= 5
 		d[W.I_LIVING] -= 2
 	elif v < 610:
-		d[W.I_SERVICES] -= 15
+		d[W.I_SERVICES] -= 8
 		d[W.I_PARTY_SUPPORT] -= 1
 	elif v < 710:
-		d[W.I_SERVICES] -= 22
+		d[W.I_SERVICES] -= 18
 	elif v < 810:
-		d[W.I_SERVICES] -= 28
-	else:
+		d[W.I_SERVICES] -= 25
+	elif v < 1100:
 		d[W.I_SERVICES] -= 40
 		d[W.I_LIVING] += 5
+	else:
+		d[W.I_SERVICES] -= 80
+		d[W.I_LIVING] += 10
 	if d[W.I_ECON_SYSTEM] < 13:
 		if d[W.I_AGRICULTURE] < 300:
 			d[W.I_SERVICES] -= 5
@@ -2360,7 +2809,7 @@ func _fortnight_services_decay(d: Array[int]) -> void:
 	d[W.I_BUDGET] += d[W.I_SERVICES] / 50
 
 
-# ── 军事学说周期效果（TimeScript 3806-3862行） ──
+# ── 军事学说周期效果（TimeScript 4897-4969行） ──
 
 func _fortnight_military_doctrine(d: Array[int], _w: WorldState) -> void:
 	var pop_excess := d[W.I_POPULATION] - 9307
@@ -2433,7 +2882,7 @@ func _fortnight_trade_balance(d: Array[int], w: WorldState) -> void:
 		d[W.I_THOUGHT_FREEDOM] += d[W.I_TRADE_PARTNERS] - 18
 
 
-# ── 满意度/异见漂移（TimeScript 3273-3292行） ──
+# ── 满意度/异见漂移（TimeScript 4168-4201行） ──
 
 func _fortnight_satisfaction_drift(d: Array[int], w: WorldState) -> void:
 	var ws := d[W.I_WAR_SUPPORT]
@@ -2453,7 +2902,109 @@ func _fortnight_satisfaction_drift(d: Array[int], w: WorldState) -> void:
 			w.empires[1].relations += (500 - ws) / 100
 
 
-# ── 政治满意度漂移（TimeScript 3665-3730行） ──
+# ── 双周：大国领导人与军备资金效果（TimeScript.cs:4318-4510） ──
+## 原版外层 if(!dlc[0])：dlc 是 new bool[5]（GlobalScript.cs:221），无任何 =true 写入点，
+## 默认 false → 该分支恒真。Godot 未建模 DLC 系统，按恒真移植。
+## now_leader 语义按 modify_choose.cs 显示索引（Event89.cs 也按 1=安德罗波夫/3=谢尔比茨基
+## 写 now_leader），与 leaders[] 数组下标解耦。
+func _fortnight_leader_effects(d: Array[int], w: WorldState) -> void:
+	if w.empires.size() < 2 or w.empires[0] == null or w.empires[1] == null:
+		return
+	var usa: EmpireData = w.empires[0]
+	var ussr: EmpireData = w.empires[1]
+	var player := w.get_player_country()
+	var china_in_sev: bool = player != null and player.has_tag("sev")
+	var relres: bool = w.get_flag("relres")
+
+	# data[69]>7 → 美国储备资金 += data[69]/7（TimeScript.cs:4318-4321）
+	if d[W.I_LOAN] > 7:
+		usa.money += d[W.I_LOAN] / 7
+
+	# 苏联领导人双周效果（TimeScript.cs:4324-4443）
+	match ussr.current_leader:
+		0:
+			ussr.money += 20
+			if not relres and not china_in_sev:
+				usa.relations += 5
+				d[W.I_MANPOWER] -= 2
+		1:
+			if not relres and not china_in_sev:
+				usa.relations += 5
+			else:
+				_politician_power_boost(w, [2])
+		2:
+			ussr.relations += 5
+			if relres or china_in_sev:
+				_politician_power_boost(w, [1])
+		3:
+			if not relres and not china_in_sev:
+				usa.relations += 5
+				d[W.I_MANPOWER] -= 2
+			else:
+				ussr.relations += 5
+		4:
+			if not relres and not china_in_sev:
+				d[W.I_AGENTS] -= 5
+			else:
+				ussr.relations += 5
+				d[W.I_AGENTS] += 5
+		5:
+			ussr.relations += 5
+			if relres or china_in_sev:
+				_politician_power_boost(w, [2])
+		6:
+			ussr.money -= 20
+			ussr.relations += 5
+			d[W.I_THOUGHT_FREEDOM] += 5
+			_politician_power_boost(w, [3])
+		8:
+			ussr.money -= 20
+			ussr.relations += 5
+			d[W.I_THOUGHT_FREEDOM] += 5
+
+	# 美国总统双周效果（TimeScript.cs:4444-4502）
+	var year := d[W.I_YEAR] if d.size() > W.I_YEAR else w.date.year
+	if year >= 1981 and usa.current_leader <= 0:
+		usa.money += 5
+		d[W.I_THOUGHT_FREEDOM] += 5
+	elif usa.current_leader == 1 or (year >= 1977 and year < 1981):
+		usa.relations += 10
+	elif usa.current_leader == 2:
+		usa.money += 5
+		if player != null and not player.has_tag("ovd") and not player.has_tag("okb"):
+			usa.relations += 5
+	elif usa.current_leader == 3:
+		usa.relations += 10
+	elif usa.current_leader == 4:
+		usa.money += 2
+		usa.power -= 2
+		ussr.power += 1
+	elif usa.current_leader == 5:
+		usa.power -= 4
+		ussr.power += 2
+		usa.relations += 2
+		if player != null and player.government == 3:
+			usa.relations += 2
+	elif usa.current_leader == 6:
+		usa.money += 1
+		usa.power -= 1
+	elif usa.current_leader == 7:
+		usa.money -= 2
+		if player != null and player.government == 2:
+			usa.relations += 2
+		_politician_power_boost(w, [2, 3])
+
+
+## TimeScript 领导人效果里的 politics.traits[0]∈set 循环：对应 Godot trait_personality。
+func _politician_power_boost(w: WorldState, personalities: Array[int]) -> void:
+	for p in w.politicians:
+		if p == null:
+			continue
+		if personalities.has(p.trait_personality):
+			p.power += 5
+
+
+# ── 政治满意度漂移（TimeScript 4716-4895行，党政/舆论/领土/宗教） ──
 
 func _fortnight_political_drift(d: Array[int], _w: WorldState) -> void:
 	var pd := d[W.I_POLITICAL_DISPLAY]
@@ -2509,10 +3060,21 @@ func _fortnight_political_drift(d: Array[int], _w: WorldState) -> void:
 			d[W.I_PARTY_SUPPORT] -= 5
 			if pd < 41:
 				d[W.I_POLITICAL_OPENNESS] += 30
+	# ── 宗教政策对政治开放度的漂移（原版 TimeScript.cs:4791-4815）──
+	match d[W.I_RELIGION]:
+		24, 25:
+			if pd > 38:
+				d[W.I_POLITICAL_OPENNESS] -= 15
+		28:
+			if pd < 40:
+				d[W.I_POLITICAL_OPENNESS] += 10
+		29:
+			if pd > 39:
+				d[W.I_POLITICAL_OPENNESS] -= 15
 
 
 
-# ── 难度修正（TimeScript 5589-5706行） ──
+# ── 难度修正（TimeScript 5757-5853行） ──
 
 func _fortnight_difficulty_bonus(d: Array[int], w: WorldState) -> void:
 	match w.difficulty:
