@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_125_india_peoples_war.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "押注联合阵线（印共（马）、印共及各小党派）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_125_india_peoples_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "尽全力支持统一的纳萨尔派组织印共（毛）发起人民解放战争"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_125_india_peoples_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "城市社会主义，农村资本主义"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_125_india_peoples_war.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_125"
+source_event_number = 125
+trigger_priority = 12500
+title = "不下地是学不会走路的"
+description = "在政府官员的不断辞职及随之而来的政治混乱后，印度人民的生活水平开始下降，人民也因此心怀怨恨，各种形式的共产主义力量也因此增长。这是我们让友好人士在印度掌权的机会，但并不是所有事都一帆风顺：有两个共产主义派别正在为国家未来的权力而斗争。首先是联合阵线，其中包括温和派的印共（马）和亲苏的印度共产党（前一个印共就是从它分裂出来的），各地方左翼自治政党与穆斯林少数党。他们明白，印度还没有为迈入社会主义做好准备，他们将首先推翻种姓制度与部族制度，并推行广泛的自治，强调城市居民的重要性。我们可以利用他们的力量，在与工会达成协议后，组织大规模罢工，然后依靠军方发动政变。另一股力量是截然不同的纳萨尔派组织，他们原本均是作为印共（马）分离组织，查鲁·马宗达所领导的印共（马列）的一部分，在马宗达去世后便发生分裂，就夺取政权与国家前途命运问题缺乏一致，只得各自为政。如果我们早已做好准备，实现了纳萨尔派组织的重组与再统一。那么便能在印度在全国范围内掀起农民游击战，发动纯粹的毛主义革命。当然，除却军事手段外，我们当然也有和平过渡的选择：如果我们放弃社会帝国主义的论调，与苏联的修正主义者联合起来，共同反对世界帝国主义这个共同的敌人，那么，我们就有足够的影响力，可以说服所有的共产主义势力分割印度的势力范围，在最需要他们的地方达成合作......"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]()
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
