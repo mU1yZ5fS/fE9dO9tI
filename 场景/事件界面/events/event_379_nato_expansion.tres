@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_379_nato_expansion.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "在帝修反面前，我们这次真的无能为力......"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_379_nato_expansion.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "强烈谴责这天杀的卡特-安德罗波夫协定！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_379_nato_expansion.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们将团结东欧一切反修反帝进步势力，同反动派斗争到底！（需要20.0百万{0}、15.0点{1}与40.0点{2}）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_379_nato_expansion.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_379"
+source_event_number = 379
+trigger_priority = 37900
+title = "苏修美帝，狼狈为奸"
+description = "主席同志！来自我国情报机构的最新消息。在苏联国内最近举行的一次政治局会议上，苏联新任领导人尤里·安德罗波夫竟认为：“出于遏制中华帝国主义势力扩张的需要，苏联有必要加入北约。”，显然，他们已经厌倦在阿富汗内战中同手握我国武器的毛派打游击战了。\n当然，介于北约完全是根植于西式民主制度的军事联盟，苏联加入北约这样异想天开的建议极大概率以失败告终。然而，美国总统吉米·卡特似乎对此是认真的：“不久后，北约本身也将迎来巨变”。\n介于我国在东欧有所布局，我们兴许可以为这“反华联盟”打上终（中）止符？让它胎死腹中？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

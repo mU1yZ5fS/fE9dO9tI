@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_395_horseshoe_theory.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持弗雷达的“左右联盟”计划，并以武装民族主义阵营的做法抢占制高点"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_395_horseshoe_theory.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "促成左翼活动家们的战略转移，并以提供援助的方式筹备其最后斗争"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_395_horseshoe_theory.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们不需要杂交怪胎的政治实验"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_395_horseshoe_theory.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_395"
+source_event_number = 395
+trigger_priority = 39500
+title = "马蹄铁理论真的可行？"
+description = "自弗朗切斯科·科西加上位并大规模推行国家恐怖主义政策以来，意大利的政治光谱便朝着倾向恐怖主义方向一去不复返。警方对国内左右翼激进主义组织的大扫除更是起到了另类萃取作用——因为“所有无武装的先知都失败了”，于是仅存的活动家只能是信奉“枪杆子里出政权”的武装组织。值此特殊背景，恐怖主义已然成为意大利激进派的政治底色，且在在我方人士干预、渗透与调解下发生优胜劣汰与合流趋势：民族毛泽东主义理论家弗朗哥·弗雷达的“左翼出人，右翼领导”联合构想与采取恐怖行动反对国家机器，走公社-法西斯联合之路的系列计划正逐步成为显学；以“红色旅”为代表的左翼城市游击队亦开始寻求同以“革命武装核心”为代表的极右翼军事小组达成某种程度的“停火”。毕竟同直接威胁自身生存的科西加体制相比，和自身一般在社会边缘流窜的游击队显然不足以被视为什么“重大威胁”。在这一基础上，促使该国的极端主义政治势力至少在反国家机器的基础上达成共识便有了可能——而这恰是当前支持科西加体制的各路中间派等对于国家安全推论的构想（即极左极右虽在理论上大相径庭，但在实践内一丘之貉，因此无必要予反民主者以民主）。既然他们如此设想，那我们大可让一切如其所愿：虽说让极左翼与极右翼间实现牢靠的政治团结并无可能，可两者共同敌视国家机器的政治立场足以引爆该国局势，并为我们所乐见的激进派上位创造无限可能。因此，只需要一份小小的临时停火协议、一场针对科西加体制的闪击战与一个足以担当大任接管国家政权的强大组织。我们便能实现亚平宁半岛力量对比的四两拔千斤。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

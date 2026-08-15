@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_394_italian_election_1979.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "扶持政坛老将天民党，我们需要稳定的政治合作伙伴"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_394_italian_election_1979.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持意大利共产党的“民主替代”计划，开启政治革新之路"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_394_italian_election_1979.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们得留意议会外激进派的声音，并借机强化地下网络"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_394_italian_election_1979.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "为该国极右翼运动的代表-意大利社会运动提供助力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_394_italian_election_1979.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "密切关注局势变化"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_394_italian_election_1979.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_394"
+source_event_number = 394
+trigger_priority = 39400
+title = "1979年意大利选举"
+description = "试图在两大党间达成“历史性妥协”计划的破产和天主教民主党政权在今年初就欧洲一体化与国有企业改革等问题上的一言堂做法事实上耗尽了意大利共产党的最后耐心。终于宣告了所谓“民族团结”阶段终结：1月31日，由于共产党重回反对派阵营，作为“弃权政府”领导人的朱利奥·安德烈奥蒂宣布辞职；而随后的数月内也未能产生一个足以得到广泛支持与普遍信任的政府组成模式：总统亚历山德罗·佩尔蒂尼即便是尝试将意大利民主社会党、意大利共和党带入联盟，也无济于事。根据恩里科·贝林格在1979年3月举行的共产党第十五次代表大会上传达的精神，党员应坚决拒斥一个没有共产党人参与的政府，并在回归反对派阵营的同时事实上奉行“民主替代”路线。至此将另起炉灶的计划上升为全党的统一行动（最终也促成了大联盟政府以一票之差被否决）。针对这一局势，总统决定解散提前解散众议院并举行大选，并试图寻找新的组合可能。如此做法在左翼激进分子刺杀阿尔多·莫罗，且共产党对此决策失当，反应消极而被千夫所指；以及政府对左翼运动持续施压，并加强社会管制的大背景下将成为改变力量对比的关键。分析人士认为，共产党极有可能不能重演它在1976年的辉煌成就。不过，直到结果水落石出前，都还没法完全下定论。而这就得看我们的布局能在多大程度上影响结果了。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])
