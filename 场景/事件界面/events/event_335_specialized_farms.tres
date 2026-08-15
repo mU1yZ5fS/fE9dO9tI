@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_335_specialized_farms.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.6.13"
+
+[sub_resource type="Resource" id="Expr_res2"]
+script = ExtResource("3_expr")
+type = 0
+key = "economy_system"
+value = 13
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date1"), SubResource("Expr_res2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "就这样吧，反正他们也剥削不了别人。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_335_specialized_farms.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "为他们减税，给他们雇佣工人和向国外销售产品的机会。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_335_specialized_farms.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "进行检查，增加税收。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_335_specialized_farms.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_335"
+source_event_number = 335
+trigger_priority = 33500
+title = "“专业化农场”"
+description = "农民群体中开始出现分化，或者说白了，就是阶层分化。目前，约20%的农场归富有的公民所有。由于这些农场大多与农业领域的特别部门有关，党决定将这些农场称为“专业化农场”。党需要决定如何处理这个问题，或是是否有必要处理这一问题？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
