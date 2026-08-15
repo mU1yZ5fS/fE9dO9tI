@@ -18,33 +18,34 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Arrest all four"
+text = "一个也别想跑！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
-result_text = "The Politburo meeting ended with the arrest of the radical leaders. Their network in Beijing and Shanghai was dismantled and the press launched a campaign against the Gang of Four."
+result_text = "最终华国锋对于极左势力夺权的焦虑还是占了上风。在他的授意下，8341部队的团长汪东兴与国防部长叶剑英进行了接洽。华国锋召开了政治局特别会议，在会期间命令首都军队逮捕了四位极左派领导人。在此之后，一波对忠心于他们的官员的逮捕浪潮席卷了北京，上海市区曾武装起来的工人民兵迫于压力终究还是未发一弹的缴了枪。宣传机关开始开动机器宣传“四人帮”（包括江青、王洪文、张春桥，姚文元）试图夺取党和国家最高领导权及迫害毛主席的罪行，但最终反革命阴谋被粉碎。同大多数党员一样，在盛大的庆祝仪式后，人民群众接受了他们的倒台，随着极左派的喑声，看起来长达十年之久的文化大革命就要结束了。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Arrest Wang Hongwen and Jiang Qing, compromise with the others"
+text = "抓捕江青和王洪文并和其他左派达成妥协"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
-result_text = "Jiang Qing and Wang Hongwen were arrested, while Yao Wenyuan and Zhang Chunqiao received government posts in exchange for loyalty. The radical bloc survived, but was weakened."
+result_text = "纵使情况危急，华国锋也不愿冒太大的险，综合考虑后他决定只在政治局特别会议上逮捕对当局构成最大威胁的江青和王洪文。在一个平静的夜晚，汪东兴率领8341部队的战士们不费吹灰之力的逮捕了江青王洪文二人。与此同时，华国锋向姚文元和张春桥等极左派团体中较次要的成员许诺以与江青王洪文切割关系和对现任中央班子的忠诚为代价换取在政府中的一席之地，他们最终也无一不屈服了。经过此事，左派的地位受到了削弱，不过他们现在虽不能夺取政权，但依然具有自己的影响力。此外，宣传机关开始批判江青和王洪文在文革期间大量迫害老干部和阴谋夺取政权的反革命行径，总的来说，他们的失败令大多数党员都松了一口气，局势也得以缓解，尽管许多人对一些激进分子仍然掌权感到紧张，认为所谓的阴谋者只是“替罪羊”罢了，文革的结局与这个国家的命运仍然不甚晴朗。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Reach a compromise and enlist radical support"
+text = "只要按既定方针办……"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
-result_text = "You allied with the radicals against the reformers, conceding the military council and foreign ministry while reviving the campaign against Deng Xiaoping."
+result_text = "对于改革派在军中势力的强大与可能到来的国内制度更迭的恐惧最终压倒了华国锋。以江青等人为代表的极左派有着天然的反改革派立场，因此，华国锋决定与他们合作。在毛泽东主席的侄子，毛远新同志的牵线搭桥下，江姚王张集团同意协助华国锋一同对抗改革派。此后，宣传口对外宣布未来党的路线是“紧密团结在以华国锋同志为主席的党中央周围，坚持‘按既定方针办’，坚持以阶级斗争为纲，坚持斗私批修，坚持无产阶级专政下的继续革命，把伟大的无产阶级文化大革命进行到底。”极左派也决定在首都重新组织一场规模浩大的造反派串联活动以配合华国锋进行政治施压，向改革派发出警告，终于在各方面的施压下，叶剑英元帅与他的同志们暂时平息了内心的躁动，改革派对极左派的行动被推迟了，紧张的政治空气也得以暂时缓解。然而，大部分党员对这种诡异的僵持局面并不满意，极左派正在尝试迅速积攒自己的力量，愤怒的改革派们也似乎并不打算放弃他们原本的目标，华国锋也不得不重新权衡利弊。这无一不预示着中国领导层对于毛泽东遗产的争夺战仍在继续……"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "Do not interfere in the party struggle"
+text = "不要干预党内路线斗争"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
-result_text = "Without intervention, the struggle at the top of the party ended your rule."
+result_text = "好吧…"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "gang_of_four"
 source_event_number = 25
-title = "Gang of four"
-description = "After Mao's death, the struggle inside the CCP has flared up again. Jiang Qing, Wang Hongwen, Zhang Chunqiao and Yao Wenyuan remain the strongest radical bloc and the most immediate threat to your government. Crushing them requires military and reformist support, while compromise risks giving the radicals the power they seek."
+trigger_priority = 2500
+title = "四人帮"
+description = "在全国人民的悲痛中，我们伟大的领袖毛泽东主席去世了。一切似乎如他临终前对未来的悲观判断一样，为了争夺舵手的政治遗产，中国共产党内又爆发了激烈的党内斗争。一方面，长期以来有四位支持文革路线的党内成员主张继续进行文化大革命。他们分别是江青，王洪文，张春桥与姚文元。江青是毛泽东主席的妻子和前中央文革小组的领导，她实际领导了这十年以来的文艺工作并由此赢得了不少威望；王洪文是自文革后一路晋升的年轻领导人，在第十次党代会后，他当选为中央委员会副主席，并被一度认为是毛泽东的接班人；此外还有为文革提供大量理论依据与宣传工作的张春桥和姚文元，他们在运动中也参加了大量的“夺权”活动。另一方面，在上世纪70年代初实行经济整顿而遭贬谪的前副总理邓小平为代表的改革派力量正在壮大，他们希望尽早结束文化大革命的混乱，并扭转长期以来的经济方针，进行政治解冻和经济改革且与西方国家采取保持良好关系。虽然毛主席逝世了，但极左派目前依然在中央把握重要权力。以叶剑英，李先念，邓小平为代表老干部集团则对极左派不满，传闻他们在厉兵秣马，准备用军队夺权。而有关地方造反派工人民兵正在派发枪支的传闻也不断出现。我国的政治局势已经到了无比危急的关头，对江姚王张四人作何处理将会是决定未来命运的关键抉择。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

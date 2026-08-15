@@ -6,68 +6,104 @@
 [ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
 [ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Expr_agents_30"]
+[sub_resource type="Resource" id="Expr_line_ge_3"]
 script = ExtResource("3_expr")
-key = "agents"
-value = 30.0
+type = 0
+key = "political_line"
+value = 3.0
 
-[sub_resource type="Resource" id="Expr_agents_50"]
+[sub_resource type="Resource" id="Expr_line_le_3"]
 script = ExtResource("3_expr")
-key = "agents"
-value = 50.0
+type = 1
+key = "political_line"
+value = 3.0
 
-[sub_resource type="Resource" id="Expr_budget_30"]
+[sub_resource type="Resource" id="Expr_line_ge_2"]
 script = ExtResource("3_expr")
-key = "budget"
-value = 30.0
+type = 0
+key = "political_line"
+value = 2.0
 
-[sub_resource type="Resource" id="Expr_reserve_30"]
-script = ExtResource("3_expr")
-key = "reserve"
-value = 30.0
-
-[sub_resource type="Resource" id="Expr_funds"]
-script = ExtResource("3_expr")
-type = 19
-children = Array[ExtResource("3_expr")]([SubResource("Expr_budget_30"), SubResource("Expr_reserve_30")])
-
-[sub_resource type="Resource" id="Expr_communists"]
+[sub_resource type="Resource" id="Expr_opt2"]
 script = ExtResource("3_expr")
 type = 18
-children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_50"), SubResource("Expr_funds")])
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_le_3"), SubResource("Expr_line_ge_2")])
+
+
+[sub_resource type="Resource" id="Expr_line_le_1"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_gov_eq_1"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 1.0
+target = "49"
+
+[sub_resource type="Resource" id="Expr_sub_eq_0"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 0.0
+target = "49"
+
+[sub_resource type="Resource" id="Expr_socialism_49"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_gov_eq_1"), SubResource("Expr_sub_eq_0")])
+
+
+[sub_resource type="Resource" id="Expr_opt3"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_le_1"), SubResource("Expr_socialism_49")])
+
 
 [sub_resource type="Resource" id="Effect_custom"]
 script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Do not interfere; Suharto is already doomed"
+text = "不要干预，苏哈托注定要失败"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Suharto resigned, the regime liberalized and free elections began under a more independent foreign policy."
+result_text = "苏哈托并未如我们所期望的那样选择坐以待毙，尽管波尼曼总司令拒绝执行镇压行动，但在澳大利亚的默许下，他选择重新给予如纳苏蒂安等强硬派军权以镇压反对派。很快，印尼进入了全国紧急状态。政府选择挑动印尼各族裔民众的内部矛盾，让抗议者将抗议对象从政府转向华裔人群。在全国各地的示威活动中，军方直接使用坦克和航空炸弹进行暴力清场，参与抗议的高校学生一律开除学籍，他们在身份上被定位为类似共产党人的“不可接触者”，将面临一系列社会歧视。在该国各地，分裂主义者的势力急剧加强了，而雅加达在民族矛盾激化的背景下得以公然推行大爪哇主义集权政策，美名其曰“第二次民族革命“——新秩序的未来是灰暗的，但是看起来他的慢性死亡还要过很久，也许是永远……"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Support the moderate-left opposition"
-disabled_text = "Requires at least 30 agents"
-enable_condition = SubResource("Expr_agents_30")
+text = "鼓动苏哈托内阁施压独裁者"
+disabled_text = "天下乌鸦一般黑！"
+enable_condition = SubResource("Expr_line_ge_3")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "A moderate-left coalition won the transition election and began introducing socialist management into the economy."
+result_text = "在社会动荡和经济危机的情况下，苏哈托的盟友拒绝在新内阁任职，而曾经被苏哈托牢牢控制的议会发出了弹劾威胁。面对弹劾威胁以及14名内阁成员拒绝组建新内阁的信，苏哈托决定辞职。次日上午9时，苏哈托发表了简短的辞职讲话。他立即被副总统苏达尔莫诺取代职责，后者试图维持“没有苏哈托的苏哈托体制“的尝试失败了，在选举中大败于日惹亲王哈孟古布沃诺十世与建设统一党形成的自由-保守主义联盟。新政府开始实行自由化，允许言论自由和媒体方面的自由。在东帝汶问题方面，授予东帝汶特别自治权作为即将进一步联邦化印尼为”印尼合众国“的试点。针对苏哈托时期的腐败审查也在准备中，只是在日惹亲王与伊斯兰民主派的政府下，潘查希拉似乎有朝一日也要成为程序正义的清算的牺牲品。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Help the communist underground reorganize"
-disabled_text = "Requires 50 agents and 30 budget or reserve"
-enable_condition = SubResource("Expr_communists")
+text = "支持印尼民主党并呼吁减少无意义的暴力"
+disabled_text = "过去的经验已经证明了这种模式的缺陷"
+enable_condition = SubResource("Expr_opt2")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The rebuilt Communist Party entered and won the election with Chinese help, opening a new socialist era in Indonesia."
+result_text = "我们选择帮助梅加瓦蒂和领导的印尼民主党，在我们的帮助下，我们的特工运用印尼国父苏加诺的旗号，将所有反对派聚集在梅加瓦蒂周围成功开展了一场和平革命。苏哈托政府全体辞职了，印尼民主党赢得了随后的全国大选。新政府对犯下暴行的苏哈托以及反动的旧统治集团展开公审并对军队展开清洗，以结束军队干政。此外，新政府还确立将对排华运动中受害的华人进行赔偿，并实行民族和解和各民族平等的政策。与此同时，新政府选择重新实施苏加诺的社会主义政策，解禁共产党，并结束经济危机。关于亚齐、巴布亚和东帝汶的问题的谈判也正在开展。印尼迎来了属于她的新时代。"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "是时候终结旧世界了！"
+disabled_text = "我们不能这么激进！"
+enable_condition = SubResource("Expr_opt3")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "由于我们支持的印尼共产党已经以北加里曼丹为基地对印度尼西亚进行了渗透，所以它能快速的将抗议者吸纳进党组织之中，在城市中展开街垒战和在农村开展人民战争，并且能够对政府设施进行许多袭击。在我们的支持下，人民民主党等左翼势力、印尼民主党内部的左翼派系以及各个温和反对派也被纳入印尼共的统一战线。很快，对抗转变为一场印尼国内的大型冲突，旧的反动统治集团和军队对共产党和反对派的壮大十分恐慌，在帝国主义势力的支持下，印尼专制政府对以共产党为首的反对派宣战。一场革命开始了！"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "indonesia_after_suharto"
 source_event_number = 28
-title = "The end of the Asian Pinochet"
-description = "Regional sanctions have wrecked Suharto's economic position and mass protests now threaten his government. China may leave the transition alone, organize a moderate-left alternative, or rebuild the destroyed communist underground."
+trigger_priority = 2800
+title = "“新秩序”的终结？"
+description = "苏哈托少将在1965年夺取印度尼西亚大权后的时期被称作“新秩序”时期。这一时期的特点是反共，以及指导式民主。共产党人在这一时期被大规模处决，幸存者不得不流亡中国和阿尔巴尼亚。仅在65—66年，就有约三百万人因为同情共产党而被杀。印尼少数民族也难逃厄运，其中包括华人，对他们的歧视仍然是合法的。苏哈托的压迫政权因美国支持和与东南亚国家有利可图的贸易得以维系。现在我们切断了印度尼西亚与其多数伙伴的联系，引发了印尼严重的经济和政治危机，苏哈托对权力的控制被削弱了。经济上外资外逃，导致印尼盾价值急剧下降，苏哈托不情愿地同意了国际货币基金组织更广泛的结构性改革方案，以换取430亿美元的外国援助。然而，印尼盾跌至危机前价值的六分之一，谣言和恐慌导致商店挤兑进一步推高了价格，严重影响了经济和民生。在这一情况下，民族矛盾开始加重，大学生开始组织全国性的示威活动。这些示威者抗议燃料和能源价格的大幅上涨，并要求苏哈托总统下台。于此同时，印尼几大城市也发生了排华运动。反对新秩序的民间左翼力量——印尼民主党如今也开始积极反对专制体制，该党原先被苏哈托选为御用反对派，但如今内部发生了一次内部洗牌，得益于局势，更大胆的成员们集中力量推举梅加瓦蒂——苏加诺总统的女儿，成为民主左翼反对派的头面领导人物，与此同时，在北加里曼丹重新革命后，印尼共产党秘密重建地下组织，如果条件允许，将能够发起一场革命，一雪1965之耻。我们该如何选择？"
 show_notification = false
-options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

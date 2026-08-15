@@ -18,35 +18,36 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Demand limited political liberalization"
+text = "要求有限政治自由化"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Kim Il-sung accepted limited rehabilitation, softer party-state control and partial contact with Japan and South Korea."
+result_text = "不想面对严重的经济问题，金日成不情愿地同意了我们的要求，放松了党国一体的控制，对为部分过去遭到镇压的人平反，并与日本和韩国进行了小规模接触。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Demand broad political and economic reforms"
+text = "要求高度的政治经济改革"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "If Chinese influence outweighs Soviet influence, Pyongyang will accept broad political and economic reform."
+result_text = "金日成不愿向我们做出让步，起初他想完全倒向苏联一边，以换取苏联的帮助，但我们的影响力要大得多，他不愿与我们对抗，最终同意了我们的要求。朝鲜进行了大规模的改革——放松了党和国家在媒体上的控制并引入了言论自由体制，在引入成本核算和公司自治的基础上开始了经济改革。对此，日本、韩国和美国都给予了我们积极的评价。美国总统指出，中国为世界民主斗争作出了突出贡献。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Demand special economic zones for Chinese companies"
-disabled_text = "Requires an economic system of at least 13"
+text = "要求为中国公司开放经济特区"
+disabled_text = "我们不会也不能以帝国主义的方式行事"
 enable_condition = SubResource("Expr_market")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Pyongyang opened special economic zones where Chinese enterprises receive preferential terms."
+result_text = "不想面对严重的经济问题，金日成不情愿地同意了我们的要求，同意开放外资企业可以经营的经济特区，中方也将享受优惠条件。我们的企业家非常满意，我们已经期待着获得新的利润。"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "Demand the greatest possible democratization"
+text = "要求最大规模的民主化"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Kim Il-sung rejected the maximal demand and sought Soviet protection."
+result_text = "金日成不愿向我们做出让步，所以他向苏联求助。苏联很高兴地增加了对朝鲜的物资援助，并向朝鲜派遣了一支小分队以建立军事基地。朝鲜以前在中国和苏联间保持中立，但他们现在已坚定地进入苏联的势力范围。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "pressure_north_korea"
 source_event_number = 29
-title = "Chinese imperialism"
-description = "Sanctions have exposed North Korea's dependence on Chinese trade and aid. We may demand political concessions, economic opening, or sweeping reform, but Soviet assistance gives Kim Il-sung an alternative."
+trigger_priority = 2900
+title = "中国帝国主义"
+description = "长期以来，朝鲜已经摆脱了马克思列宁主义，用独创的包含神秘主义、传统主义和对金日成个人崇拜元素的主体思想取而代之。所有这些都伴随着对金日成政治对手的周期性镇压。朝鲜的经济在很大程度上依赖于与中国的接触和我们的帮助，因此我们最近的制裁对它是一个沉重的打击。因此，我们可以要求朝鲜政府做出某些让步。但别忘了苏联也向朝鲜提供援助……"
 show_notification = false
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

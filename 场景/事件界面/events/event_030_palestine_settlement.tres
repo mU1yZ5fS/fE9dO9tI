@@ -12,27 +12,28 @@ custom_script = ExtResource("4_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Propose an Arab state in parts of Palestine"
+text = "提出在巴勒斯坦建立阿拉伯国"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "With sufficient Chinese influence, Israel and the PLO will agree on a Palestinian state in occupied territories."
+result_text = "会谈结束后，巴解组织领导人亚西尔·阿拉法特同意停止恐怖袭击，谴责恐怖分子，并承认以色列的生存权，以色列则同意在约旦河西岸、加沙和东耶路撒冷大部分地区逐步建立巴勒斯坦国（尽管后者的问题仍然是激烈辩论的议题）同时以色列军队将逐渐撤出上述区域。许多激进的阿拉伯组织称这一协议为背叛，并决定继续斗争直到以色列彻底毁灭。然而，这是阿拉伯世界的一次伟大胜利，也标志着阿拉伯世界与以色列关系正常化的开始。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Propose Arab autonomy pending a final settlement"
+text = "提出在进一步解决危机前建立阿拉伯人自治区"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Israel and the PLO agreed to a Palestinian National Administration for a five-year interim period."
+result_text = "会谈结束后，巴解组织领导人亚西尔·阿拉法特同意停止恐怖袭击，谴责恐怖分子，并承认以色列的生存权，而以色列则同意建立一个以西岸和加沙地带为基础的巴勒斯坦国政府，该政府将在巴勒斯坦阿拉伯人的地位得到确定之前执行自治权，至于阿拉伯人的地位则将在5年内决定。许多激进的阿拉伯组织称这一协议为背叛，并决定继续斗争直到以色列彻底毁灭。然而，我们希望这些协议最终能够解决冲突。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Propose a union state of Arabs and Jews"
+text = "建议建立阿拉伯人与犹太人的联合国家"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "With enough influence and an Arab union behind us, both sides may accept a neutral binational union."
+result_text = "会谈结束后，巴解组织领导人亚西尔·阿拉法特同意停止恐怖袭击，谴责恐怖主义分子，并承认以色列的生存权利。然而，会谈达成的进一步的进展完全出乎了世界各国的意料——双方同意建立一个巴勒斯坦和以色列之间的联合国家，该国将组织联合的军队，行政语言双语化，实施广泛的地方自治和坚定的外交中立。目前，部分激进的组织称这是一种背叛，但大多数人决定停止进行恐怖袭击。当然，建立一个新的国家本身将是困难的，同时还有许多冲突有待解决，但建立一个新国家的决定本身就表明双方朝着期待已久的和平迈出了坚定的步伐。"
 
 [resource]
 script = ExtResource("3_event")
 event_id = "palestine_settlement"
 source_event_number = 30
-title = "End of conflict?"
-description = "Israel's failure in Lebanon has created an opening for negotiations with the PLO. China can mediate a Palestinian state, interim autonomy, or a far more ambitious union state."
+trigger_priority = 3000
+title = "冲突结束？"
+description = "自从1948年以色列在前英属巴勒斯坦领土上建国以来，那里的阿拉伯人民实际上被剥夺了自决权，受到以色列当局的歧视，他们为摧毁以色列和在巴勒斯坦建立一个阿拉伯国家而战斗，他们得到阿拉伯邻国的支持。这一切导致了几场中东战争，巴勒斯坦解放组织不断炮击，对以色列进行恐怖袭击，以色列军队也予以回击。最后一次是在黎巴嫩，以色列完全失败，甚至没有得到美国的支持，现在以色列准备与巴解组织就巴勒斯坦人的地位进行谈判，我们可以在谈判中充当中间人。"
 show_notification = false
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

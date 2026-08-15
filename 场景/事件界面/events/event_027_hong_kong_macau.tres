@@ -12,27 +12,28 @@ custom_script = ExtResource("4_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Agree to transfer with broad autonomy"
+text = "同意交还港澳，并实施高度自治"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Britain and Portugal agreed to transfer Hong Kong and Macau on schedule with broad legal and economic autonomy."
+result_text = "经过长时间的谈判，你们终于和英国、葡萄牙的代表签署了一项协议，根据协议，香港将于1997年于新界租期结束的时候移交给中国，澳门则是在1999年。这两个前殖民地将获得广泛的自治，保留对法律和经济领域的控制权，而中华人民共和国中央政府将只处理国防和外交政策问题。当然，这将导致权力集中在当地的商业精英手中，但这已经无关紧要了，因为我们期待已久的兄弟团聚很快就会来临了！"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Agree to transfer with limited autonomy"
+text = "同意交还港澳，维持适当自治"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The colonies will return with limited economic and legal autonomy under joint local and CPC supervision."
+result_text = "经过长时间的谈判，你们终于和英国、葡萄牙的代表签署了一项协议，根据协议，香港将于1997年于新界租期结束的时候移交给中国，澳门则是在1999年。这两个前殖民地将获得有限的自治权，同时保留对经济和部分法律领域的控制权。行政权力将由地方选举管理机构和中国共产党的监督机构共同行使。这是我们外交上的胜利！"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Demand full integration while protecting foreign property"
+text = "要求完全交还港澳，只保留外国人的财产权"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Britain and Portugal accepted full integration, with foreign property protected inside special economic zones."
+result_text = "经过长时间的谈判，你们终于和英国、葡萄牙的代表签署了一项协议，根据协议，香港将于1997年于新界租期结束的时候移交给中国，澳门则是在1999年。这两个前殖民地将完全处于中华人民共和国的控制之下，只保留一些地方自治的形式。外国公民的私有财产将继续在将设立的经济特区的框架内工作，行政机构的费用将在殖民地转移时从英国和葡萄牙转由中国承担。党和人民正在庆祝我们外交上的巨大胜利！"
 
 [resource]
 script = ExtResource("3_event")
 event_id = "hong_kong_macau"
 source_event_number = 27
-title = "The fate of Hong Kong and Macau"
-description = "Britain and Portugal are prepared to negotiate the return of Hong Kong and Macau, but demand guarantees for foreign property and meaningful local autonomy. The exact constitutional arrangement remains ours to propose."
+trigger_priority = 2700
+title = "港澳之命运"
+description = "长期以来，中国的香港、澳门一直处于英葡的殖民统治之下。然而，葡萄牙的法西斯政权“新国家体制”于1974年被推翻，英国与香港毗邻的新界的99年租期即将到期，两国都受到1960年《联合国非殖民化宣言》的压力，所以他们准备妥协，这是我们得到理应属于我们的东西的机会。当然，如果他们不相信自己和外国公民的财产是不可侵犯的，他们就决不会主动交出殖民地，也不会试图实现港澳的广泛自治。"
 show_notification = false
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

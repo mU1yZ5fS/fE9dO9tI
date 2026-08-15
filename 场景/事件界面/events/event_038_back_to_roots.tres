@@ -102,33 +102,34 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Do not break what works"
-disabled_text = "The old system has outlived itself"
+text = "我们需要维持并深化分权计划经济体系"
+disabled_text = "旧制度已经过时了！"
 enable_condition = SubResource("Expr_keep")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The existing economic system was left unchanged while its gradual growth continued."
+result_text = "由中央、生产单位和地方政府共同协作的的分权式计划经济再次被强调。不久后，经中共中央和国务院批准，国家计委下达了从1974年便开始编订的第五个五年计划和国民经济发展十年规划。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Revive the planned system (-10 budget)"
-disabled_text = "The party is already committed to your reform course"
+text = "恢复中央计划经济体系（需要1百万预算）"
+disabled_text = "党会在你的领导下走向改革，而不是重蹈覆辙！"
 enable_condition = SubResource("Expr_plan")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "A Soviet-style planning commission was restored, reversing the economic experiments of the 1960s."
+result_text = "在之后的政治局会议上，我们决定重建在大跃进开展后逐渐被改革的中央计划经济体制，国家计委的权力再次扩大，新的经济和数学等方面的专家被邀请加入计委。不久后，经中共中央和国务院的批准，国家计委加强了经济集权化，随后计委下达了从1974年开始编订的第五个五年计划和国民经济发展十年规划。用于转型和成立管理机构的资金已经分配下去，鉴于苏联斯大林时期的经济制度和劳动纪律正在被恢复，地方上对经济权力的收回和服从上级的纪律规章的强化有所不满。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Prepare further large-scale reforms"
-disabled_text = "The current political settlement does not permit a reform commission"
+text = "为了社会主义现代化，让我们准备改革！"
+disabled_text = "打倒修正主义！"
 enable_condition = SubResource("Expr_reform")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "A special commission of leading reformers began preparing a new programme of economic transformation."
+result_text = "在宣布对我国的经济体制进行改革之后，您和最显赫的改革派联合组成了一个特别小组，并以刘少奇的经验制定了未来的经济改革章程，全党（或者说只是中派和右派）正在等待着小组的决定。经济上的“解冻”已经开始，过去国家对经济方面的压力正在放松，并缩小了对个体经营的限制；在部分农村地区，新“三自一包”的行为也被默许。不久后，经中共中央和国务院批准，随后计委下达了从1974年开始编订的第五个五年计划和国民经济发展十年规划，但内容却变得不再详细，仅仅是在大方向上做了一些模糊的指示。中央的保守派和部分地方干部对这种“走资”的政策有所不满，群众也对此有所疑虑。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "back_to_roots"
 source_event_number = 38
-title = "Back to the roots"
-description = "China's hybrid economic arrangements now face a strategic choice: preserve them, restore centralized planning, or prepare a deeper reform programme."
+trigger_priority = 3800
+title = "回归本源"
+description = "在50年代后期的大跃进运动以来，为了应对当时的形势，加上当时国家事实上无法负担中央计划经济，原本属于中央的经济权力被下放到地方，逐渐形成了分权式的计划经济体制。现在我们到达了一个新的历史节点，党内对经济体制的讨论也增加了。部分党员认为我们应该再次集权化，恢复中央计划经济体制，这能让我们的经济更好地协调发展；而改革派认为经济需要像刘少奇掌权时期那样进行一定放松甚至是进一步并且深化改革；当然，也有人认为经过了实践考验的分权式计划是当前的最好模式。我们应该如何选择？"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_econ_not_10")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

@@ -30,37 +30,38 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Continue Mao's work while phasing out the Cultural Revolution"
+text = "我们将尽快结束文革，以毛主席的遗志为准绳前进！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
-result_text = "You proclaimed loyalty to Mao's precepts and the Two Whatevers, while the remaining centres of the Cultural Revolution began to be dismantled."
+result_text = "你以“两个凡是”——“凡是毛主席做出的决策，我们都坚决维护；凡是毛主席的指示，我们都始终不渝地遵循。”为口号，庄严宣布了中国人民对毛主席的教导的忠贞不渝。尽管如此，苟延残喘至今的文化大革命中较近期的决定开始被大规模地取消，这当然使中国人民高兴了。但是，进一步坚持保守版本的毛泽东思想也引起了国内外人民和中国共产党中改革派的不满。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Continue the Cultural Revolution without its former excesses"
-disabled_text = "The Cultural Revolution has already exhausted its political base"
+text = "坚定的支持毛主席的决定，不偏不倚走无产阶级专政下继续革命路线，反对修正主义！"
+disabled_text = "文革已经得罪了所有人啦"
 enable_condition = SubResource("Expr_path_3")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
-result_text = "Relying on loyal radicals, you renewed the struggle against revisionism and attempted to rekindle the Cultural Revolution under tighter control."
+result_text = "依靠着忠诚的激进分子和基于口号“两个凡是”——“凡是毛主席做出的决策，我们都坚决维护；凡是毛主席的指示，我们都始终不渝地遵循。”你宣誓要对修正主义进行毫不妥协的斗争和忠诚于毛泽东思想和文化大革命的原则，你在考虑了以往的错误后，试图再一次点燃斗争的火焰。伴随着对修正主义者的镇压浪潮而来的是对新一轮文化大革命不满的人们发表的一次又一次的演讲。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "End the Cultural Revolution and reorganize the economy"
+text = "赶紧结束文革吧，经济还得再折腾折腾……"
 enable_condition = SubResource("Expr_path_not_3")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
-result_text = "You declared that the Cultural Revolution had fulfilled its tasks and promised economic modernization without yet defining its exact form."
+result_text = "你说文化大革命已经完成了它的历史任务，所以你开始消灭文化大革命的最后遗产。同时，您特别强调了中国调整经济结构和进行现代化建设的必要性，您还没有提出具体的措施，但改革派和人民正在等待着中国的改变，期望您让它变得更好。"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "End the Cultural Revolution and begin large-scale market reforms"
+text = "赶紧结束文革，我们要准备大的历史转折并进入国际市场！"
 enable_condition = SubResource("Expr_path_not_3")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
-result_text = "The remnants of the Cultural Revolution were dismantled and veteran reformers were promoted to prepare China for market reform and entry into the world economy."
+result_text = "你说要迅速消灭文化大革命的遗毒，这是党和人民都喜欢的。同时，您也谈到了中国经济进一步市场化改革的必要性，以及如何逐步进入世界市场的问题。为此，您开始积极推动赵紫阳、邓小平等老改革家回归，使他们回到了副总理的位置。人民在等待着中国的变化，但党内的保守派对你的决定表示不满。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "post_mao_course"
 source_event_number = 24
-title = "Wind of change?"
-description = "After Mao's death, power has finally concentrated in your hands. Every faction of the CCP now demands a decision on China's future: conservative Maoism without the excesses of the Cultural Revolution, a renewed radical course, limited modernization, or large-scale market reform and opening to the world."
+trigger_priority = 2400
+title = "变革之风？"
+description = "在毛主席死后，你终于掌握了权力，是时候勾勒未来的蓝图了。党内的派系有着各式各样的图纸。保守的毛派想要继续毛泽东的政策，但不包括那些有问题的实验，也就意味着结束文革和政治运动。改革派们当然要求结束文革并开始大规模改革毛主席曾试图干涉但失败的中国经济。所有温和派都相信中国需要变革，有些要求结束文革并进行小规模经济整顿，另一些人同样要求市场经济深度改革。然而激进的毛派并不打算和文革分道扬镳，他们顶着路线错误的威胁要求继续文革。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

@@ -41,41 +41,42 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Carefully strike the reformers"
+text = "小心地打击改革派"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "A cautious Politburo criticism weakened prominent reformers but also disappointed the public."
+result_text = "在下一次的中央政治局会议上，华国锋同志批评了一些改革派派别的成员对国内政治经济变化的需要过于草率，并敦促他们集体解决所有紧迫的问题，以防止党内分裂和犯下苏联赫鲁晓夫的“唯意志主义错误”。忠诚的保守派支持我们的“不给党带来不和谐”的建议，然而，思想自由的一方仍然坚持加快经济改革，但仍同意在保持党内民主的必要性上向我们作出让步。与此同时，那些在媒体上阅读会议记录的人对期待已久的变化的放缓并不满意，这些变化似乎在“四人帮”失败后已经开始了。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Promote only loyal conservatives"
+text = "他们爱嘛嘛，只要我们的人上来就行"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Loyal moderate conservatives were promoted without an open confrontation with the reform wing."
+result_text = "你不愿意改变已经很困难的局面，也不敢与最有影响的改革者进行公开对抗，而只把自己局限于提拔温和保守派的忠实成员，以防止进行草率的改革。改革派则反过来指责主席企图分裂党，并企图从不能代表广大民众利益的忠诚人士之中，创建自己的“新四人帮”。然而，也只是这样而已。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Strike reformers to clear the way for moderate conservatives"
+text = "狠打改革派，为温和派和保守派开路"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Security pressure checked reformist careers and strengthened the conservative centre."
+result_text = "在获得了温和保守派的多数人支持后，您在下一届党代会上批评了改革派的立场问题，并利用您在公安部内的影响力，开始积极干预各种不那么杰出的改革派的行动，同时，你也从温和的保守派中提拔您的亲信。当然，那些受到你批评的人们仍然不满意，党内的改革派也不满意。但你的地位得到了明显的巩固。"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "Build a strong alliance with reformers"
-disabled_text = "The current Maoist course rules out an alliance with reformers"
+text = "我们要坚定的与改革派站在一起！"
+disabled_text = "你不能和修正主义者谈判！"
 enable_condition = SubResource("Expr_reformer_alliance")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "A moderate-reformist alliance opened the party to figures such as Deng Xiaoping and Zhao Ziyang."
+result_text = "在下一次的政治局会议上，华国锋同志表示有必要继续对计划经济和社会经济体制进行改革，并设法与叶剑英和李先念进行谈判和以创造温和派和改革派间的联盟。像邓小平和赵紫阳一样，改革派利用自己的行动的自由，在积极地用温和的观点在党内宣传他们的主张。人们注意到改革正在发生，并期望他们的生活会变得更好，然而，保守派对这种状况感到不满。"
 
 [sub_resource type="Resource" id="Option_4"]
 script = ExtResource("1_option")
-text = "Preserve the unstable balance in the party"
+text = "不要打破脆弱的党内平衡"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The balance endured, though reformist-liberal forces continued to accumulate power."
+result_text = "在中共中央政治局和中共其他的机构中，改革派和自由派的情绪正在愈演愈烈，这让党内的老保守派非常愤怒，他们害怕失去自己的地位和影响力，也害怕中国走向修正主义。权力仍掌握在你手中，但还能持续多久呢？"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "enemies_of_my_enemies"
 source_event_number = 34
-title = "Enemies of my enemies"
-description = "With the Gang of Four removed, conservatives and reformers compete to define the new leadership. Every possible alliance will strengthen some rivals and alienate others."
+trigger_priority = 3400
+title = "我敌人的敌人"
+description = "在四人帮倒台后，你在名义上掌握了最高权力，但事实上你必须与那些帮助你得到权力的人分享它——在文化大革命期间为邓小平辩护，也是一个坚定的改革派的现任国防部长叶剑英，还有李先念，更温和些，但也支持改革派。另一方面，你最忠实的保守派支持者有三位——纪登奎、汪东兴和陈锡联。如果你不想被架空，你就应该打击改革派，并提拔你的支持者，然而，这种武断的行为会在党内引起不满吗？另一方面，如果你专注于改革，与改革派进行谈判可能会更有用些。尽管谁知道他们要的是什么……"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_gang_not_3")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

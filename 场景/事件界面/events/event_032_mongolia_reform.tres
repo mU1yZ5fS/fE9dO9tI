@@ -18,23 +18,24 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Watch the situation"
+text = "支持反泽登巴尔的反对派夺权"
+disabled_text = "我们不会知道那么多的……"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The Mongolian government accepted limited liberalization but remained oriented toward the Soviet Union."
+result_text = "由于泽登巴尔及其支持者在此前的影响力就已动摇，被平反的反对派与扎兰阿扎布得以拧成一股绳，在非常中央全会上，一群不满的党员攻击了泽登巴尔，指控他破坏党内民主、搞一言堂，并且导致民众贫困，造成了短缺经济。许多代表支持了这一不满，而泽登巴尔被从所有职位上移除并退休，他将呆在苏联治疗疾病。新的总书记是泽登巴尔的反对者达拉姆·图木尔奥其尔。之前因试图推行独立经济政策而蒙羞的鲁布桑策伦·曾德则担任总理。为了避免再出现类似泽登巴尔搞一言堂的情况，由主席、副主席、十六位常委和一位总书记组成的集体性的实体主席团将成为新的国家领导机构，扎兰阿扎布、丹巴、洛呼兹、宁布、苏尔玛扎布等人都将在其中任职。新的蒙古领导层结束了长期以来的亲苏政策并退出了经互会，开始向我们靠拢。与此同时，苏联驻军也开始撤出蒙古。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Use the situation for our own purposes"
-disabled_text = "Requires at least 40 agents"
+text = "北边的一片荒地不值得我们投入那么多！"
 enable_condition = SubResource("Expr_agents_40")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Pro-Chinese advocates gained access to Mongolian politics and media, weakening its automatic alignment with Moscow."
+result_text = "1984年8月23日，蒙古人民革命党中央委员会举行的非常全会解除了泽登巴尔担任的蒙古人民革命党中央委员会总书记和政治局委员的职务。同日，蒙古大人民呼拉尔第五次会议解除了泽登巴尔的大人民呼拉尔主席团主席职务。此后，泽登巴尔在苏联居住。蒙古第二号人物桑丕勒·扎兰阿扎布当选为蒙古人民革命党中央委员会总书记，同年12月12日被任命为大人民呼拉尔主席团主席。他结束了蒙古的亲苏政策，并开始寻求更加独立的政策。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "mongolia_reform"
 source_event_number = 32
-title = "Ulaanbaatar Spring?"
-description = "Chinese intervention has provoked mass demonstrations demanding reform and a less rigidly pro-Soviet policy. Mongolia is ready for limited liberalization, which our agents may exploit."
+trigger_priority = 3200
+title = "乌兰巴托的夜"
+description = "在1982年勃列日涅夫去世后，苏联新领导层认为尤睦佳·泽登巴尔的年迈以及他反复无常的行为正在成为一种负担。1984年8月9日，当泽登巴尔在莫斯科度假时，克里姆林宫的医生诊断他患有“过度劳累”，决定让他退休，由新领导人取代他。这位“红可汗”终于要下台了，我们是否要做些什么？"
 show_notification = false
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])
