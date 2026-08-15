@@ -104,6 +104,7 @@ const TXT_62_R4 := "最终，中央决定重新考虑内蒙古问题，并给出
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def == null or p_ws == null:
 		return
 	ws = p_ws

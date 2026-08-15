@@ -44,6 +44,7 @@ const TXT_P0_R3 := "在作为一名记者的同时，权永吉也是一位反美
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 6:
 		return
 	var korea := world.get_country_by_legacy_index(10)

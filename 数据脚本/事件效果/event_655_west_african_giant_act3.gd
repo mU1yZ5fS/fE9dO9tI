@@ -27,6 +27,7 @@ const TXT_R2_SUFFIX := "所有这些都是由于竞争中的政治偏见和缺�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	event_def.title = TXT_TITLE

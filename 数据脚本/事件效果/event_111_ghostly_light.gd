@@ -17,6 +17,7 @@ const TXT_R3 := "第二天，忠诚的军队进入北京，阴谋家被逮捕并
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var data := world.数值表

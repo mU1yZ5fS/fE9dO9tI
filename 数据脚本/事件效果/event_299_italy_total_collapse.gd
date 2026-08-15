@@ -21,6 +21,7 @@ const TXT_R_RIGHT := "根据投票结果显示，意大利社会运动领导的�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1

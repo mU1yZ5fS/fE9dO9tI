@@ -28,6 +28,7 @@ const TXT_R2 := "芬兰社会民主党与毛诺·科伊维斯托取得了压倒�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

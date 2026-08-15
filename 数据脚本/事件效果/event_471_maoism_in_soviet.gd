@@ -20,6 +20,7 @@ const TXT_R2 := "这些组织在这些年层出不穷，但相比苏联强大的
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 3:
 		return

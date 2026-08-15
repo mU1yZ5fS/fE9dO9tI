@@ -16,6 +16,7 @@ const TXT_R1 := "不久，北京和上海之间的第一条（也是唯一一条
 const TXT_R2 := "一项建设高速铁路的新计划被采纳，很快，各大城市之间的新高铁线路便纷纷开通。当然，一些经济学家会抱怨这是浪费钱，但人民是高兴的，他们的生活水平大大提高了，甚至连日本的工程师也开始了解起我国的高铁系统。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

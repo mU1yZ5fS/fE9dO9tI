@@ -16,6 +16,7 @@ const TXT_NAME_GERMANY := "统一德国"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var portugal := world.get_country_by_legacy_index(87)

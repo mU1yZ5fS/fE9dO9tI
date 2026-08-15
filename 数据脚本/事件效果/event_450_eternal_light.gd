@@ -26,6 +26,7 @@ const TXT_R2 := "直接和伊朗人闹翻实在是太不必要了，让别人头
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	var iran := world.get_country_by_legacy_index(14)
 	if event_def == null or iran == null or event_def.options.size() < 3:

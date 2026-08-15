@@ -29,6 +29,7 @@ const TXT_R3 := "面对国内日益加剧的动荡和不满情绪的与日俱增
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var data := world.数值表

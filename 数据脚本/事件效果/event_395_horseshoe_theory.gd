@@ -19,6 +19,7 @@ const TXT_R2 := "弗朗切斯科·科西加对国内的领导权仍牢不可破�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var italy := world.get_country_by_legacy_index(85)

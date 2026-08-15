@@ -27,6 +27,7 @@ const TXT_INTRO := "在国庆的早晨，整个城市都洋溢着喜庆的气氛
 
 ## 显示前动态钩子（game_manager.gd:494-497 调用 display_script.prepare）
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var leader_name := _leader_name(world)

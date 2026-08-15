@@ -20,6 +20,7 @@ const TXT_R4 := "{0}{1}同志在充分了解“上山下乡”政策实行情况
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null \

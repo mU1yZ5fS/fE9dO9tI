@@ -16,6 +16,7 @@ const TXT_R2 := "党支持抗议活动，并开始分裂。执政派系失去了
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var p15 := _find_politician(15, 15)

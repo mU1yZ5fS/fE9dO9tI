@@ -22,6 +22,7 @@ const TXT_R3 := "比起在航天领域花大笔大笔钱，我国还有别的事
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options

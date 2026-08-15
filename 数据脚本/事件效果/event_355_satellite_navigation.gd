@@ -16,6 +16,7 @@ const TXT_R1 := "部署该系统被认为过于昂贵且冒险，因此该项目
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var opt := event_def.options

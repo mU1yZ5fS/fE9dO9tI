@@ -13,6 +13,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def == null or p_ws == null:
 		return
 	if event_def.event_id != "formosa_winter" or event_def.options.size() < 3:

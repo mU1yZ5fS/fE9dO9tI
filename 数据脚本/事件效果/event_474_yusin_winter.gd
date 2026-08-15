@@ -17,6 +17,7 @@ const TXT_R2 := "10月18日，维新政权颁布戒严令，调出1，3，5空�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 3:
 		return

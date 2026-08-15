@@ -23,6 +23,7 @@ const TXT_R4 := "1977年注定是意大利的多事之秋。应当说，自1976�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1

@@ -21,6 +21,7 @@ const TXT_R2 := "我们必须承认现在的这些政策的确不妥，但这不
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 3:
 		return

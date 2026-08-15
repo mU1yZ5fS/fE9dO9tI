@@ -13,6 +13,7 @@ const TXT_R2 := "艾尔沙德总统感谢我们的帮助，并建议在中国和
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

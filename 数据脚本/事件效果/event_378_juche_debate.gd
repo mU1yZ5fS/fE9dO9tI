@@ -45,6 +45,7 @@ const TXT_WAR_DEF := "朝鲜"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 6:
 		return
 	var china := world.get_country_by_legacy_index(1)

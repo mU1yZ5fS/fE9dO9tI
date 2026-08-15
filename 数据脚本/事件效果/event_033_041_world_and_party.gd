@@ -44,6 +44,7 @@ const TXT_36_DESC_BASED_3 := "随着我们的资金通过叙利亚的渠道再�
 const TXT_36_DESC_DAWA := "除了复兴党和伊拉克的共产主义者以外，我们还有一个可能的战友。由神学生巴克尔·萨德尔依托列宁主义原则后改组的伊斯兰民粹主义政党——伊斯兰达瓦党（您在世界知识上看到的是另一种译名：伊斯兰号召党）是该国什叶派信徒的最大公约数。以全国近六成的民众为基本盘，该党是复兴主义政权的眼中钉，肉中刺。该党与伊朗的阿亚图拉霍梅尼关系紧密，其在什叶派民众中的强大号召力招致了复兴主义政府的担心和强力弹压。多名成员被伊拉克官方暗杀。达瓦党的纲领相对温和，其致力于推行一种夹带了伊斯兰主义元素的民主主义政策。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var dpre: Array[int] = world.数值表

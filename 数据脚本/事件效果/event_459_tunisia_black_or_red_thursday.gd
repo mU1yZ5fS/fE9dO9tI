@@ -21,6 +21,7 @@ const TXT_R3 := "随后，局势急转直下，彻底失控：数以万计的工
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 4:
 		return

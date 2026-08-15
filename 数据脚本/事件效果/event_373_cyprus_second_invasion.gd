@@ -20,6 +20,7 @@ const TXT_R2 := "针对土耳其对塞浦路斯发起军事行动一事，我国
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

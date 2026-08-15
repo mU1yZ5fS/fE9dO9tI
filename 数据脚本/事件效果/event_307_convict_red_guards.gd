@@ -17,6 +17,7 @@ const TXT_R2 := "红卫兵们被从监狱释放，官复原职。在党内的右
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var mod3 := _mod_active(3)

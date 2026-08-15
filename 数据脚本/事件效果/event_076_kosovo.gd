@@ -26,6 +26,7 @@ const TXT_R3 := "在政治局内部会议上，决定了利用南斯拉夫问题
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var data := world.数值表

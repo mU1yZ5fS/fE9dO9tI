@@ -13,6 +13,7 @@ const TXT_RESULT := "中东的局势还在持续的恶化……"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var c14 := world.get_country_by_legacy_index(14)

@@ -18,6 +18,7 @@ const TXT_R3 := "我们完全赞同以色列对核反应堆“塔木兹”的空
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var data := world.数值表

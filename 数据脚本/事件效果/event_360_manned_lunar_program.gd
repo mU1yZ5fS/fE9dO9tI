@@ -18,6 +18,7 @@ const TXT_R1 := "急着让一个人着陆月球被认为是没有希望的。相
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var opt := event_def.options

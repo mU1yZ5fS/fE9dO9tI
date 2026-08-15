@@ -21,6 +21,7 @@ const TXT_WAR_SIDE1_1 := "三党联合政府"
 const TXT_WAR_SIDE2_1 := "印共（毛）"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var china := world.get_country_by_legacy_index(1)

@@ -14,6 +14,7 @@ const TXT_R0_NEUTRAL := "在天民党、社会党等执政党均因群龙无首�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 1:
 		return
 	_enable(event_def.options[0], TXT_OPT0)

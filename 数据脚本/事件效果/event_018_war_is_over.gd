@@ -16,6 +16,7 @@ extends "res://数据脚本/event_script_base.gd"
 # ── 显示前动态文案（复刻 Event18.cs TextOfEvents + VariantsOfEvents） ──
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	d = world.数值表
 	var war_id: int = d[W.I_WAR_RESOLVE] if d.size() > W.I_WAR_RESOLVE else -1
 	var war := _get_war(war_id)

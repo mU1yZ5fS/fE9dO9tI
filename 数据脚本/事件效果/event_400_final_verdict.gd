@@ -115,6 +115,7 @@ func evaluate(world: WorldState) -> bool:
 	return italy.sub_government != 20
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var d := world.数值表

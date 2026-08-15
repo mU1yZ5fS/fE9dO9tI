@@ -20,6 +20,7 @@ const TXT_R1 := "很快，东欧国家的经济或多或少陷入了衰退，尤
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 2:
 		return

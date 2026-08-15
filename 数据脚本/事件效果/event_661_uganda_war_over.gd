@@ -30,6 +30,7 @@ const TXT_R0_ELSE := "乌干达或许是世界上最富饶的国家之一——�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	event_def.title = TXT_TITLE

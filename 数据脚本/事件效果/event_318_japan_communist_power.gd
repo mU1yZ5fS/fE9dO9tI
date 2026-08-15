@@ -18,6 +18,7 @@ const TXT_R1 := "借助我们大笔的经济援助，日共成功赢得竞选，
 const TXT_R2 := "夜间，日本坦克进入了东京及各大城市。第二天早上，全体日本政府成员在电视直播中被枪决。美军基地被封锁，美军也被迫撤离。受害者的人数尚未公布，但据我们的情报，受害者至多两三千。当然，新政府宣称要走向民族主义和独立，但在被国际孤立的背景下，他们被迫与我们合作，即使这对他们来说不是很愉快。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

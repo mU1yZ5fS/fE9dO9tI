@@ -27,6 +27,7 @@ const TXT_R2 := "参与行动的主要部队驻扎在布加勒斯特，作为政
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var result79: int = world.completed_event_ids.get("event_079", -1)

@@ -27,6 +27,7 @@ const TXT_R2 := "1977年3月18日，陆军上尉巴特米·基卡迪迪率领一
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

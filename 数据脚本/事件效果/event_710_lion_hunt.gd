@@ -21,6 +21,7 @@ const TXT_R1_PRE := "在战争开始前，我们紧急通过巴基斯坦—伊�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var syria := world.get_country_by_legacy_index(35)

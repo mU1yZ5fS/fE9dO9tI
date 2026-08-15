@@ -19,6 +19,7 @@ const TXT_R2 := "载人航天计划是没有希望的。复制“联盟”号是
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

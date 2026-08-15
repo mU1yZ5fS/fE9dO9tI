@@ -31,6 +31,7 @@ const TXT_RIGHT := "右翼在欧洲的优势使得新民主党抓住了左翼的
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var result93: int = world.completed_event_ids.get("event_093", -1)

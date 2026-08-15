@@ -16,6 +16,7 @@ const TXT_R1 := "我们的科学家很快研制出了世界上最新的化肥。
 const TXT_R2 := "我们的贸易代表团购买了国外最新的化肥样品，此后中国农业的发展可谓是一日千里。世界上也有越来越多的国家想和我们进行贸易。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

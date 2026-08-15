@@ -66,6 +66,7 @@ func evaluate(world: WorldState) -> bool:
 	return true
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var iraq := world.get_country_by_legacy_index(8)

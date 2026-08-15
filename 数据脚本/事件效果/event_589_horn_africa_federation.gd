@@ -22,6 +22,7 @@ const TXT_NAME_ETHIOPIA := "非洲之角联邦"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	event_def.description = TXT_DESC

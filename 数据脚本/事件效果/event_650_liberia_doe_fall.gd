@@ -39,6 +39,7 @@ const TXT_R3 := "我们的外交人员用简单易懂的方式向多伊表达了
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var china := world.get_country_by_legacy_index(1)

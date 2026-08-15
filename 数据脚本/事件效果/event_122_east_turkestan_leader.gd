@@ -16,6 +16,7 @@ const TXT_R1 := "维吾尔共和国重建后，包尔汉成为了这一角色—
 const TXT_R2 := "艾尔肯·阿力普提肯受邀参加维吾尔共和国的政府会议，这着实让国际社会感到意外。他最温和的同志也加入了他的阵营，此前，他们与北京当局签署了一项反对分裂势力与分裂主义的协议。在新政府于维吾尔地区掌握全权后，他们便迅速开始重振甚至培植起“被压抑”的维吾尔文化，特别是将书籍、报纸、媒体、广告全部改为维吾尔语，汉语学校也被维吾尔语学校取代。与此同时，政府也证明了其世俗性，没有沉迷于伊斯兰教，这让中国中央当局的焦虑有所缓解。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var usa := world.get_country_by_legacy_index(51)

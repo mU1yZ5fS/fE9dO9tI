@@ -79,6 +79,7 @@ const TXT_70_R3 := "根据你的命令，改革派的领导人被以捏造的罪
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def == null or p_ws == null:
 		return
 	ws = p_ws

@@ -14,6 +14,7 @@ const TXT_R2 := "在马科斯以压倒性的88%的选票赢得总统选举后，
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

@@ -16,6 +16,7 @@ const TXT_R1 := "不久，新的地铁线路开始建设。这是我们首次在
 const TXT_R2 := "苏联专家参与了我国地铁的建设。正因如此，我国地铁已经成为世界上最先进的地铁系统之一，这大大提高了市民的流动性，减少了道路的交通负荷。与苏联的关系也得到了显著改善。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

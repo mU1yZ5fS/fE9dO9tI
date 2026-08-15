@@ -26,6 +26,7 @@ const T_659_17 := "地处乌干达心脏地带、不与任何邻国接壤的卢�
 ##  - 死代码 result_num==5 跳过。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var data := world.数值表

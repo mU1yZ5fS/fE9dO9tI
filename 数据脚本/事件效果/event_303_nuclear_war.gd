@@ -14,6 +14,7 @@ const TXT_R1 := "你下达了命令，很快极左派的头目就被逮捕了。
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var agents := world.数值表[W.I_AGENTS] if world.数值表.size() > W.I_AGENTS else 0

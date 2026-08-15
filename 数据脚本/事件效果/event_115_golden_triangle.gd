@@ -21,6 +21,7 @@ const TXT_R2 := "在我们中华人民共和国、老挝、缅甸和泰国代表
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	event_def.description = TXT_DESC

@@ -31,6 +31,7 @@ const TXT_LABEL_AGENTS := "特工网络"
 const TXT_LABEL_ARMY := "军事实力"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var albania := world.get_country_by_legacy_index(20)

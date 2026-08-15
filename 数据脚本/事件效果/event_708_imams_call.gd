@@ -32,6 +32,7 @@ static var _opts_full: Array[EventOption] = []
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	if _opts_full.is_empty():

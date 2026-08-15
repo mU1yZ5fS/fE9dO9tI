@@ -32,6 +32,7 @@ func evaluate(world: WorldState) -> bool:
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 1:
 		return
 	event_def.title = T_663_0

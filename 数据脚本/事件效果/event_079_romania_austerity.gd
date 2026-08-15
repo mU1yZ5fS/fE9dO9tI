@@ -21,6 +21,7 @@ const TXT_R4 := "为此，罗马尼亚政府决定削减进口与政府预算，
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var data := world.数值表

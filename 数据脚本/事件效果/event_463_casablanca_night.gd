@@ -29,6 +29,7 @@ const TXT_R3 := "卡萨布兰卡的军人收到了行动指令。一瞬间，军
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 4:
 		return

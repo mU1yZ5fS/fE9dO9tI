@@ -24,6 +24,7 @@ const TXT_R3 := "得了吧！这些起来闹事的知识分子有多少是被中
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null \

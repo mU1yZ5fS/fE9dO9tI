@@ -15,6 +15,7 @@ const TXT_R3 := "民族解放阵线紧急会议任命改革派领袖沙德利·�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var data := world.数值表

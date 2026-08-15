@@ -27,6 +27,7 @@ const TXT_R4 := "虽说意大利的政治局势正持续升温，可该国内务
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	event_def.description = TXT_DESC1

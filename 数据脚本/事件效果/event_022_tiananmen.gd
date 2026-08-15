@@ -23,6 +23,7 @@ const TXT_R2 := "晚上六点半，吴德通过扩音器呼吁人群离开广场
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

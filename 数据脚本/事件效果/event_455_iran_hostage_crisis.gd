@@ -25,6 +25,7 @@ const TXT_R3 := "这一次进展在我们的意料之中，尽管卡特发誓他
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 4:
 		return

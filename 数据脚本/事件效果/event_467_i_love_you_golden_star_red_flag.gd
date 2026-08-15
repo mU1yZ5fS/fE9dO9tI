@@ -16,6 +16,7 @@ const TXT_R2 := "左派无限可分，这点果真是没错，直到人民社会
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 3:
 		return

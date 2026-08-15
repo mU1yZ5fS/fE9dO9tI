@@ -21,6 +21,7 @@ const TXT_R2 := "我们决定借题发挥，将尚未成形的“历史性妥协
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

@@ -13,6 +13,7 @@ const TXT_R1 := "在下一次党的会议上，提出了关于华国锋主席辞
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	_enable(event_def.options[0], TXT_OPT0)

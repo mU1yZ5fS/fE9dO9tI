@@ -50,6 +50,7 @@ const TXT_IDX_1350 := "我们决定不加干涉。值得注意的是，尽管葡
 ## 原文字符串附录（供自检）
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var d := world.数值表

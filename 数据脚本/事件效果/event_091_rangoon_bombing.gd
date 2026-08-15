@@ -15,6 +15,7 @@ const TXT_R2 := "作为对事件的回应，整个“文明世界”都对朝鲜
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var burma := world.get_country_by_legacy_index(33)

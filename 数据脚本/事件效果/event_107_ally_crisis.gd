@@ -38,6 +38,7 @@ const TXT_R4 := "结果，在没有遭到我方任何抵抗的情况下，该国
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var target := _target_country(world)

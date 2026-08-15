@@ -17,6 +17,7 @@ const TXT_R2 := "既然除了我们的情报人员没人知道这件事，我们
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 3:
 		return

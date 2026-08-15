@@ -40,6 +40,7 @@ const TXT_375_782 := "中国与美国一道向土耳其政府送去了军事与�
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def == null or p_ws == null:
 		return
 	if event_def.event_id != "event_375":

@@ -46,6 +46,7 @@ const TXT_1598 := "德国依然以邦联国家的形式存在。首先，不同�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	event_def.title = TXT_TITLE

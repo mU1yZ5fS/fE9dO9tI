@@ -16,6 +16,7 @@ const TXT_R1 := "通过同意改革者的提议，您批准了教育机构的有
 const TXT_R2 := "出乎所有人意料的是，您为引入私立教育开了绿灯。相当一部分教育机构已经私有化并转移到私人手中。新的教育机构已经开始积极购置现代化设备，开发实验教学方法，以创新吸引学生的注意力。然而，这样的决定在民众中引起了不同的反应。虽然富裕的部分人口欢迎这样的决定并高度赞赏教育质量，但其他人则抱怨学费太贵，并开始指责政府“背叛了革命的理念”。西方国家对改革表示欢迎，并且已经表现出对国际合作和学生交流的渴望，这将对教育质量和我国的形象产生积极的影响。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

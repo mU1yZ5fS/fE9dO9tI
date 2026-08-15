@@ -14,6 +14,7 @@ const T_498_7 := "我们无动于衷，很快，加什米总统在前往亚丁�
 ## 触发：TimeScript.cs:11142-11147 —— (日>=14 且 月>=6 且 年>=1978) || (月>=7 且 年>=1978) || 年>=1979。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var data := world.数值表

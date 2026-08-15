@@ -31,6 +31,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   influencePRC < 300 且 data[56] <= 1 → “他们不会信任我们的”
 ## .tres 只能存一个静态 disabled_text，因此在显示前按原版条件动态覆写。
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def.event_id == "event_449":
 		var iraq := p_ws.get_country_by_legacy_index(14)
 		var arg := ""

@@ -31,6 +31,7 @@ const TXT_R1_SPECIAL := "英明的领袖就要做出英明的决策，华国锋�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	event_def.title = TXT_TITLE

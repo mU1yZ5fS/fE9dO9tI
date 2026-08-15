@@ -96,6 +96,7 @@ const TXT_66_R3_P2 := "同志的回复是“无可奉告……”"
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def == null or p_ws == null:
 		return
 	ws = p_ws

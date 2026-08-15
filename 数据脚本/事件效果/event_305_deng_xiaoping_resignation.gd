@@ -12,6 +12,7 @@ const TXT_R1 := "对邓小平的思想和活动的一致批评始于党内会议
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	_enable(event_def.options[0], TXT_OPT0)

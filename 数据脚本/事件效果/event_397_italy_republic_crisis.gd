@@ -60,6 +60,7 @@ const TXT_IDX_1120 := "根据投票结果显示，意大利社会运动拿下了
 ## 原文字符串附录（供自检）
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

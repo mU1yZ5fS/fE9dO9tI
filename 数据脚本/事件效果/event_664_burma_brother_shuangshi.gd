@@ -25,6 +25,7 @@ const T_664_16 := "很快，克伦民族联盟领导人波妙便同老牌反共�
 ##  - 死代码 result_num==5 跳过。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

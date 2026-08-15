@@ -65,6 +65,7 @@ const TXT_IDX_1196 := "在工党举行的特别代表大会上，近期得势的
 ## 本恩设法在工会和党员中获得了大部分的支持，最终赢得了副领导人的位置。在大会上，本恩指控党内右翼背叛了劳工运动，批评他们“是社会民主主义者，而不是社会主义者”，背叛了工党的建立初衷，并开始提拔“硬左派”和马克思主义者，这显著加强了他的影响力，他开始对工党进行改革，要求工党融入工会和工人阶级，并加强党内民主。在富特和本恩的努力下，右翼对“战斗”派的打压并未成功，他们依旧在工党内部活动。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var d := world.数值表

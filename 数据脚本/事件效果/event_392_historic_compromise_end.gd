@@ -35,6 +35,7 @@ const TXT_R4 := "考虑到主要建制派政党无心在莫罗问题上同武装
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var r391 := int(world.completed_event_ids.get("event_391", 0))

@@ -19,6 +19,7 @@ const TXT_R2 := "我们的代表团去了苏联，在那里，尽管过去有些
 const TXT_R3 := "一些在美国购买农机的合同得以签订，尤其是一批约翰迪尔4440型号的最新拖拉机，这是世界上最先进的拖拉机型号之一。我们的农民也用上了高质量的建筑设备，故障报告极为罕见，进而促成了创纪录的收成。这一交易也改善了我们在国际市场上的形象，一些外国公司已表示有兴趣向我们出售他们的农业机械。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var data := world.数值表

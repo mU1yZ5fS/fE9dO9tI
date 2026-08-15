@@ -28,6 +28,7 @@ const TXT_R1_YUG := "在罢工、抗议和政府内部的不和的巨大压力�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	if world.get_flag("YugAgree"):

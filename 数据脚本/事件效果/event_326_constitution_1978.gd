@@ -24,6 +24,7 @@ const TXT_R3 := "自由派的宪法草案获得通过。这让很多党员和公
 const TXT_R4 := "目前党在团结上便已问题重重。每个派系都想争权夺利，不愿谈判。通过任何一版宪法都将大大加强某一派系的力量，这将导致另一场党内分裂与派系战争。我们可不想这么做。让我们等风平浪静之后再说吧。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var data := world.数值表

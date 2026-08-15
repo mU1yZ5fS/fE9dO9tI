@@ -16,6 +16,7 @@ const TXT_R2 := "自由派叛徒是失败的罪魁祸首！他们与帝国主义
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

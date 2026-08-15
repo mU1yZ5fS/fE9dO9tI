@@ -19,6 +19,7 @@ const TXT_R2 := "我们决定放弃发展航天飞机。太空中还有其他更
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

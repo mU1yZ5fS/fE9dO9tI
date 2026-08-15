@@ -16,6 +16,7 @@ const TXT_R1 := "中国商务人士通常会在一家香港餐馆里见面。至
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var mod3 := _mod_active(3)

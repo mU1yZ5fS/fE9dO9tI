@@ -57,6 +57,7 @@ const TXT_44_R1_C := "便对怀仁堂事变与苏联的“反党集团”实践�
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def == null or p_ws == null:
 		return
 	ws = p_ws

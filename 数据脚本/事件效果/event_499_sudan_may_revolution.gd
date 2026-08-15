@@ -44,6 +44,7 @@ const T_499_32 := "在看到社会主义的崭新形式后，加法尔·尼迈�
 ##    （flag 组 id 跳过军事联盟，只按中国 econ/sev 加入经济联盟）。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var data := world.数值表

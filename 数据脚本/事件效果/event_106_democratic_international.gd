@@ -15,6 +15,7 @@ const TXT_R2 := "我们支持民主国际的形成，并支持它随时准备在
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

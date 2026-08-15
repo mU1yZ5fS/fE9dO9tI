@@ -22,6 +22,7 @@ const T_665_12 := "1981年7月31日，一架属于巴拿马空军的飞机在塞
 ##  - 死代码 result_num==5 跳过。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	event_def.title = T_665_0

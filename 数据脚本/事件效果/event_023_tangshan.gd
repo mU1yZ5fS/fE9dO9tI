@@ -23,6 +23,7 @@ const TXT_R3 := "中央对河北省的问题置之不理，这对善后处理造
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options

@@ -26,6 +26,7 @@ const TXT_R3 := "考虑到这一“后卫计划”的规模巨大，且同意大
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var usa := world.get_country_by_legacy_index(51)

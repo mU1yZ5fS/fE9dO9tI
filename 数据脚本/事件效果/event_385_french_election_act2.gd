@@ -62,6 +62,7 @@ const TXT_R_NO_FMT := "选举结果表明，有51%的选民选择支持{1}，因
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	ws = world

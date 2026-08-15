@@ -20,6 +20,7 @@ const TXT_WAR_DEFENDER := "尼日利亚政府"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.is_empty():
 		return
 	event_def.title = TXT_TITLE

@@ -217,6 +217,7 @@ func _allowed10(a: Array) -> Array:
 	return arr
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var c := world.get_country_by_legacy_index(75)

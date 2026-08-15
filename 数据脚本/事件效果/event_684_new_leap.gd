@@ -19,6 +19,7 @@ const TXT_R3 := "《十年规划纲要》最终没能通过全国人大审核，
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options[1]

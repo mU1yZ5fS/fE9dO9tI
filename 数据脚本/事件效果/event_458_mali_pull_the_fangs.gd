@@ -22,6 +22,7 @@ const TXT_R3 := "2月28日，特拉奥雷总统以快打慢，他召开特别会
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 4:
 		return

@@ -38,6 +38,7 @@ const TXT_R3 := "莫莫与斯蒂文森集团的斗争仍在继续，并试图在
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	event_def.title = TXT_TITLE

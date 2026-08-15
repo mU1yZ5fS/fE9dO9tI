@@ -15,6 +15,7 @@ const TXT_R1 := "索平和贵敦各自的密谋都失败了，他们谋划的起
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 2:
 		return

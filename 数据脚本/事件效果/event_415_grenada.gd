@@ -55,6 +55,7 @@ const TXT_IDX_1298 := "我们对格林纳达政变不予置评。但显然，美
 ## 原文字符串附录（供自检）
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var d := world.数值表

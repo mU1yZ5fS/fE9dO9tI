@@ -12,6 +12,7 @@ const TXT_R2 := "结果，新民主党失去了49个席位，以微弱优势赢�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

@@ -33,6 +33,7 @@ const T_667_24 := "美国"
 ##  - 死代码 result_num==5 跳过。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	event_def.title = T_667_0

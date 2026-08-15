@@ -14,6 +14,7 @@ const TXT_R1 := "没必要劫机，这将破坏与苏联的关系。"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var opt := event_def.options

@@ -43,6 +43,7 @@ const TXT_372_705 := "近日爆发的三场军事冲突中"
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def == null or p_ws == null:
 		return
 	if event_def.event_id != "event_372":

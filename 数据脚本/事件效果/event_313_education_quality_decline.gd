@@ -16,6 +16,7 @@ const TXT_R1 := "我国教育状况并非尽善尽美，因此我们决定划拨
 const TXT_R2 := "根据党的决定，整个教育系统进行了大规模改革，价值存疑的科目的课时被削减，其余的课程也被改为更接轨现代科学成果的课程。同时，对确切科学领域的去意识形态化也在系统进行。依照预期，在几年内，我们便将感受到改革带来的强烈积极影响。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

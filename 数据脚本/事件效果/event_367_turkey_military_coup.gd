@@ -35,6 +35,7 @@ const TXT_R4 := "我们反对此次军事政变。中国外交部长宣称，此
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var opt := event_def.options

@@ -90,6 +90,7 @@ func evaluate(world: WorldState) -> bool:
 	return true
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 6:
 		return
 	var d := world.数值表

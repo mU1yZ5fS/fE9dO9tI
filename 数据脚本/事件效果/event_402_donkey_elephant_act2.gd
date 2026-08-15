@@ -57,6 +57,7 @@ const TXT_IDX_1156 := "选举结果表明，50.1%的选民支持布什。新任�
 ## Ach(Clone)
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var cond := false

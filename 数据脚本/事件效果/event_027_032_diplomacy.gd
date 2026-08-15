@@ -35,6 +35,7 @@ const TXT_28_WAR_SIDE2 := "印度尼西亚政府"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	if event_def.event_id == "south_korea_election" and event_def.options.size() >= 4:

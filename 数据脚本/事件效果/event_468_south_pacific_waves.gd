@@ -21,6 +21,7 @@ const TXT_R1_TAIL := "但愿这对我们的全球战略有好的影响。"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 2:
 		return

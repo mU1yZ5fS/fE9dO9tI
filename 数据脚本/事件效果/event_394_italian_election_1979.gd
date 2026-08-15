@@ -32,6 +32,7 @@ const TXT_R_PCI := "最终，选举结果如下：意大利共产党保持1976�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	if ws.get_flag("VasilyisGay"):

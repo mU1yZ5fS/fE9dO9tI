@@ -30,6 +30,7 @@ const TXT_R4 := "美国一得知委员会的提案，南斯拉夫就收到了向
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	event_def.description = TXT_DESC

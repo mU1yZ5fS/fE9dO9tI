@@ -18,6 +18,7 @@ const TXT_R2 := "12月10日当天中午，蒋伪政府全面动员，进行交�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 3:
 		return

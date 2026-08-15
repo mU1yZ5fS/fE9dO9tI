@@ -18,6 +18,7 @@ const TXT_R4 := "我们没有以任何方式干涉匈牙利的事务。该国设
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var data := world.数值表

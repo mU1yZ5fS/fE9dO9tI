@@ -29,6 +29,7 @@ const TXT_R4 := "在7月7日的参议院选举中，尼日利亚国民党赢得�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	event_def.title = TXT_TITLE

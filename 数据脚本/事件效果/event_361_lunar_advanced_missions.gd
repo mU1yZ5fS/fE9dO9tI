@@ -19,6 +19,7 @@ const TXT_R2 := "中国探月计划的成功继续令国际社会惊叹——中
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

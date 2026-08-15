@@ -15,6 +15,7 @@ const TXT_R3 := "光荣的主席万岁!光荣的中国共产党万岁!这一天�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var data := world.数值表

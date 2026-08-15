@@ -18,6 +18,7 @@ const TXT_R2_BEFORE := "我们一致认为第十九世班智达·韩波喇嘛，
 const TXT_R2_AFTER := "我们一致认为第二十世班智达·韩波喇嘛，占巴·扎木苏·额尔敦涅夫是西藏最合适的精神领袖。在经历了斯大林时代的镇压后，他没有成为反苏派或持不同政见者，而是去做了图书馆管理员，自行精进宗教与世俗理念的学习。作为新的韩波喇嘛，他因其博学和对宗教论著的出色理解而受到广泛尊重，他积极参加亚洲佛教和平会议，加入了苏联和平委员会。作为西藏的精神和政治领袖，他不仅积极帮助该地区的宗教和教育机构发展，还吸引藏人参加苏联和平基金会，特别是在西藏境内为来自世界各地的战争和冲突的受害者建立了慈善总部。中国领导人可以为自己对拯救人文的贡献感到自豪。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var tibet := world.get_country_by_legacy_index(69)

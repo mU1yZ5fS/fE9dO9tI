@@ -19,6 +19,7 @@ const TXT_R2 := "载人空间站需要恒河沙数的资源，而且几乎没什
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

@@ -20,6 +20,7 @@ const TXT_R2 := "中国领导人致函阿尔巴尼亚外交部慰问，并建议
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var done77: bool = world.completed_event_ids.has("event_077")

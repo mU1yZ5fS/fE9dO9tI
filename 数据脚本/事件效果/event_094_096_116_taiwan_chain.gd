@@ -84,6 +84,7 @@ const TXT116_R2 := "今天，我国领袖率领代表团对台北进行了历史
 # ============================================================================
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	match event_def.event_id:

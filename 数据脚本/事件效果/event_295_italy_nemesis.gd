@@ -16,6 +16,7 @@ const TXT_R2 := "意识到意大利的政治解冻与对安全机构的清洗将
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var budget := world.数值表[W.I_BUDGET] if world.数值表.size() > W.I_BUDGET else 0

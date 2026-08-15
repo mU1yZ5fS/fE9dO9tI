@@ -51,6 +51,7 @@ const TXT_R5_ELSE := "阿沃罗沃领导的统一党在参众两院及总统选�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.is_empty():
 		return
 	event_def.title = TXT_TITLE

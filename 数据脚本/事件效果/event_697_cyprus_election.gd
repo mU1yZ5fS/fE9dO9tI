@@ -11,6 +11,7 @@ const TXT_697_OPT1_DIS_B := "我们帮助一个无原则支持苏联的组织有
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
+	_bind_world()
 	if event_def == null or p_ws == null or event_def.options.size() < 2:
 		return
 	var line := p_ws.数值表[W.I_POLITICAL_LINE] if p_ws.数值表.size() > W.I_POLITICAL_LINE else 0

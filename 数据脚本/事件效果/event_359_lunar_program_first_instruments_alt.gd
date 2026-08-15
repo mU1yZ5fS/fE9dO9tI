@@ -16,6 +16,7 @@ const TXT_R1 := "中国的探月计划包括向月球发射飞行和进行轨道
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var opt := event_def.options

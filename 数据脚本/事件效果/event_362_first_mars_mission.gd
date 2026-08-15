@@ -19,6 +19,7 @@ const TXT_R2 := "飞往火星太冒险了，因此最好放弃。"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

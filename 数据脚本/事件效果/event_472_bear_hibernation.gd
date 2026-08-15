@@ -16,6 +16,7 @@ const TXT_R0 := "戈尔巴乔夫的“姿态”，被苏联共产党内的保守
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null:
 		return

@@ -23,6 +23,7 @@ const TXT_R2 := "选举已经结束，各党的战果如下：共和人民党赢
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options

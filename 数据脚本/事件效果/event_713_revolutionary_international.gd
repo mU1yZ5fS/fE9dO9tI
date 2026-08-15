@@ -33,6 +33,7 @@ const TXT_R1_MID := "主席“惩前毖后，治病救人”的最高指示，�
 ## 注意 resultOfEvents[] 未触发时原版为 int 默认 0；Godot completed_event_ids 缺省 -1，
 ## 故 540 用 get("event_540", 0) 对齐原版缺省语义，545/521 需真值 2 不受影响。
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null:
 		return
 	var leader_name := _leader_name(world)

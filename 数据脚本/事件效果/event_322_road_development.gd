@@ -16,6 +16,7 @@ const TXT_R1 := "我们的工业将资源投入到了混凝土和沥青的生产
 const TXT_R2 := "我们的工程师被派去西德学习他们建造高速公路的经验。很快，两国专家便回到中国开始工作。是的，这需要更多的资源，但现在，我国道路已成为全世界的模范——因为其是在世界上最好的基础上建造的，也只使用了现代技术。中德关系已变得更加友好，德国工程师和投资者业已想要参与我们的其他项目中去。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var data := world.数值表

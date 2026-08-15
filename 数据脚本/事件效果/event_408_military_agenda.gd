@@ -76,6 +76,7 @@ const TXT_IDX_1226 := "我们将稍后再议。"
 ## 原文字符串附录（供自检）
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var d := world.数值表

@@ -44,7 +44,7 @@ func _opt_independent(context: Dictionary) -> void:
 	var low_ideology: bool = d.size() > W.I_IDEOLOGY and d[W.I_IDEOLOGY] <= 3
 	if d.size() > W.I_TIBET_POLICY:
 		d[W.I_TIBET_POLICY] = 1 if low_ideology else 2
-	var use_part8: bool = d.size() > 62 and d[62] >= 2   # 原 data[62]（无端口命名键）
+	var use_part8: bool = d.size() > W.I_ARUNACHAL_STATUS and d[W.I_ARUNACHAL_STATUS] >= 2   # 原 data[62]
 	if usa != null:
 		if use_part8:
 			usa.parts.resize(9)

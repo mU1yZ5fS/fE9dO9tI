@@ -215,6 +215,7 @@ func _allowed10(a: Array) -> Array:
 	return arr
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options

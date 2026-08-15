@@ -15,6 +15,7 @@ const TXT_R1 := "什么都没发生，或许有一天，我们能够通过另一
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 
 	if event_def == null or event_def.options.size() < 2:
 		return

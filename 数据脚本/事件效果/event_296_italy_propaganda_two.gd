@@ -16,6 +16,7 @@ const TXT_R2 := "考虑到该名册同黑手党要员辛多纳的不可分关系
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var china := world.get_country_by_legacy_index(1)

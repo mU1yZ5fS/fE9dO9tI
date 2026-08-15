@@ -13,6 +13,7 @@ const TXT_R1 := "事实证明，指责其为自由派对彭真的事业和健康
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	_enable(event_def.options[0], TXT_OPT0)
