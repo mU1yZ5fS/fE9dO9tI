@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_358_lunar_program_first_instruments.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E358_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.6.1"
+
+[sub_resource type="Resource" id="E358_tech"]
+script = ExtResource("3_expr")
+type = 29
+value = 31.0
+
+[sub_resource type="Resource" id="E358_not_done359"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_359"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_358_lunar_program_first_instruments.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_358_lunar_program_first_instruments.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_358_lunar_program_first_instruments.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_358_lunar_program_first_instruments.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_358"
+source_event_number = 358
+trigger_priority = 35800
+title = "月球计划——第一批仪器"
+description = "科学家们已经提出了一个我们自己的项目，对地球唯一的天然卫星进行研究。第一阶段包括从飞行路线探索月球的简易设备，可能还包括一个着陆站。事实上，问题太多了——这个项目对我们来说太复杂了，有失败的可能。需要实施这一项目么？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E358_date"), SubResource("E358_tech"), SubResource("E358_not_done359")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

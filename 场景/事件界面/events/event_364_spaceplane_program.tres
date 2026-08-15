@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_364_spaceplane_program.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E364_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.10.1"
+
+[sub_resource type="Resource" id="E364_tech"]
+script = ExtResource("3_expr")
+type = 29
+value = 33.0
+
+[sub_resource type="Resource" id="E364_done363"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_363"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_364_spaceplane_program.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_364_spaceplane_program.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_364_spaceplane_program.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_364_spaceplane_program.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_364_spaceplane_program.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_364_spaceplane_program.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_364"
+source_event_number = 364
+trigger_priority = 36400
+title = "太空飞机计划"
+description = "航天飞机项目为美国创造的机遇是我们的军队和科学家感兴趣的。航天飞机将能让我们更频繁地执行发射任务，并与在轨卫星合作。我们有两个项目，一个小的，可以在明年完成，另一个大的，和美国的基本一样，但是需要更多的时间和资源来完成。也有对该计划的批评之声，他们认为该计划既不实用，又毫无前景......"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E364_date"), SubResource("E364_tech"), SubResource("E364_done363")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

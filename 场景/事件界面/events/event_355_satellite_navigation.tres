@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_355_satellite_navigation.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E355_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.6.1"
+
+[sub_resource type="Resource" id="E355_tech"]
+script = ExtResource("3_expr")
+type = 29
+value = 28.0
+
+[sub_resource type="Resource" id="E355_not354r2_c"]
+script = ExtResource("3_expr")
+type = 4
+value = 2.0
+ref_event_id = "event_354"
+
+[sub_resource type="Resource" id="E355_not354r2"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("E355_not354r2_c")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_355_satellite_navigation.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_355_satellite_navigation.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_355_satellite_navigation.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_355_satellite_navigation.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_355"
+source_event_number = 355
+trigger_priority = 35500
+title = "卫星导航网络"
+description = "一年多前，美国开始构建自己的卫星全球定位系统——GPS。情报部门还报告说，在今后几年里，苏联也将开始进行一个类似的项目。在大势所趋下，有些人建议我们构建一个属于我们中国自己的系统。当然，这需要资源，但回报将无可估计......"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E355_date"), SubResource("E355_tech"), SubResource("E355_not354r2")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])
