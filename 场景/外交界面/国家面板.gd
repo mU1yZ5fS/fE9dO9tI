@@ -10,6 +10,7 @@ extends CanvasLayer
 ##     政府类型 (TextureRect)
 ##     军事联盟 (TextureRect)
 ##     经济联盟 (TextureRect)
+##     贸易伙伴 (TextureRect)
 ##     在某国影响下 (TextureRect)
 ##     互动按钮 / 互动按钮2 / 互动按钮3 / 互动按钮4 (Button)
 ##     执行当前互动按钮所需条件及检查 (Label)
@@ -18,37 +19,84 @@ extends CanvasLayer
 
 const W = preload("res://数据脚本/world_state.gd")
 
-const GOV_ICONS := {
-	0: preload("res://资产/UI/外交/政府类型_激进左翼.png"),
-	1: preload("res://资产/UI/外交/政府类型_苏式社会主义.png"),
-	2: preload("res://资产/UI/外交/政府类型_国控社会主义.png"),
-	3: preload("res://资产/UI/外交/政府类型_社会民主主义.png"),
-	4: preload("res://资产/UI/外交/政府类型_自由主义.png"),
+## 子意识形态图标：原版最终显示的是 sub_znachki[SubGosstroy]
+## （CountryScript.cs:52，ChangeIcons() 末尾会调用 ChangeSubIcons() 覆盖政体图标）。
+## 文件按 Diplomacy.unity:182-205 的 sub_znachki 序列化顺序复制为 sub_00..sub_22.png。
+const SUB_ICONS := {
+	0: preload("res://资产/UI/外交/子意识形态图标/sub_00.png"),
+	1: preload("res://资产/UI/外交/子意识形态图标/sub_01.png"),
+	2: preload("res://资产/UI/外交/子意识形态图标/sub_02.png"),
+	3: preload("res://资产/UI/外交/子意识形态图标/sub_03.png"),
+	4: preload("res://资产/UI/外交/子意识形态图标/sub_04.png"),
+	5: preload("res://资产/UI/外交/子意识形态图标/sub_05.png"),
+	6: preload("res://资产/UI/外交/子意识形态图标/sub_06.png"),
+	7: preload("res://资产/UI/外交/子意识形态图标/sub_07.png"),
+	8: preload("res://资产/UI/外交/子意识形态图标/sub_08.png"),
+	9: preload("res://资产/UI/外交/子意识形态图标/sub_09.png"),
+	10: preload("res://资产/UI/外交/子意识形态图标/sub_10.png"),
+	11: preload("res://资产/UI/外交/子意识形态图标/sub_11.png"),
+	12: preload("res://资产/UI/外交/子意识形态图标/sub_12.png"),
+	13: preload("res://资产/UI/外交/子意识形态图标/sub_13.png"),
+	14: preload("res://资产/UI/外交/子意识形态图标/sub_14.png"),
+	15: preload("res://资产/UI/外交/子意识形态图标/sub_15.png"),
+	16: preload("res://资产/UI/外交/子意识形态图标/sub_16.png"),
+	17: preload("res://资产/UI/外交/子意识形态图标/sub_17.png"),
+	18: preload("res://资产/UI/外交/子意识形态图标/sub_18.png"),
+	19: preload("res://资产/UI/外交/子意识形态图标/sub_19.png"),
+	20: preload("res://资产/UI/外交/子意识形态图标/sub_20.png"),
+	21: preload("res://资产/UI/外交/子意识形态图标/sub_21.png"),
+	22: preload("res://资产/UI/外交/子意识形态图标/sub_22.png"),
 }
 
 const MIL_ALLIANCE_ICONS := {
+	# 顺序与原版 CountryScript.ChangeIcons 军事槽判定一致
+	# （NAZIMAO → FXSEU → OVD → RIM → OKB → NATO → SEATO → SENTO，:135-218）
+	"nazimao": preload("res://资产/UI/外交/军事联盟_欧罗巴解放阵线.png"),
+	"fxseu": preload("res://资产/UI/外交/军事联盟_欧洲社会国家组织.png"),
 	"ovd": preload("res://资产/UI/外交/军事联盟_华沙条约.png"),
+	"rim": preload("res://资产/UI/外交/军事联盟_革命国际.png"),
+	"okb": preload("res://资产/UI/外交/军事联盟_集体安全.png"),
 	"nato": preload("res://资产/UI/外交/军事联盟_北约.png"),
+	"seato": preload("res://资产/UI/外交/军事联盟_东南亚条约.png"),
+	"sento": preload("res://资产/UI/外交/军事联盟_中央条约.png"),
 }
 const MIL_ALLIANCE_NAMES := {
-	"ovd": "华沙条约", "nato": "北约", "okb": "OKB 军事联盟",
-	"seato": "东南亚条约", "sento": "中央条约",
+	"nazimao": "欧罗巴解放阵线", "fxseu": "欧洲社会国家组织",
+	"ovd": "华沙条约", "rim": "革命国际", "okb": "集体安全条约（由玩家组建）",
+	"nato": "北大西洋公约", "seato": "东约组织", "sento": "中央条约组织",
 }
 
 const ECON_ALLIANCE_ICONS := {
+	# 顺序与原版 CountryScript.ChangeIcons 经济槽判定一致（SEV → ECON → 石油 → 社会欧盟 → 欧共体 → 东盟）
 	"sev": preload("res://资产/UI/外交/经济联盟_经互会.png"),
+	"econ": preload("res://资产/UI/外交/经济联盟_双边经济.png"),
+	"oil": preload("res://资产/UI/外交/经济联盟_石油联盟.png"),
+	"soc_eu": preload("res://资产/UI/外交/经济联盟_社会主义欧盟.png"),
+	"eu": preload("res://资产/UI/外交/经济联盟_欧共体.png"),
+	"asean": preload("res://资产/UI/外交/经济联盟_东盟.png"),
 }
 const ECON_ALLIANCE_NAMES := {
-	"sev": "经互会", "econ": "双边经济协定", "asean": "东盟",
-	"eu": "欧共体", "soc_eu": "社会主义欧盟", "oil": "石油联盟",
+	"sev": "经济互助委员会", "econ": "经济合作组织（由玩家组建）", "asean": "东盟",
+	"eu": "欧洲经济共同体", "soc_eu": "社会主义联盟", "oil": "海湾合作委员会",
 }
 
+## 原版 Znach(3) 贸易伙伴图标：razmerika.png（CountryScript.cs:278-288）
+const TRADE_PARTNER_ICON := preload("res://资产/UI/外交/贸易伙伴_中国.png")
+const TRADE_PARTNER_NAME := "中国的贸易伙伴"
+
 const INFLUENCE_ICONS := {
+	# key 与 CountryData 势力圈返回码一致；法国=4（原版 PuppetIcons/21.png，
+	# CountryScript.cs:302-305）、南非=5（znachki[27]=南非傀儡.png，:391-395）
 	0: preload("res://资产/UI/外交/在某国影响下_美国.png"),
 	1: preload("res://资产/UI/外交/在某国影响下_苏联.png"),
 	2: preload("res://资产/UI/外交/在某国影响下_中国.png"),
+	4: preload("res://资产/UI/外交/在某国影响下_法国.png"),
+	5: preload("res://资产/UI/外交/在某国影响下_南非.png"),
 }
-const INFLUENCE_NAMES := {0: "美国", 1: "苏联", 2: "中国"}
+const INFLUENCE_NAMES := {
+	0: "在美国影响下", 1: "在苏联影响下", 2: "在我国影响下",
+	4: "在法国影响下", 5: "在南非影响下",
+}
 
 
 # ── 外交互动定义 ──
@@ -131,7 +179,7 @@ func _show_basic_panel(display_name: String) -> void:
 	var name_label := find_child("当前选中国家名称", true, false) as Label
 	if name_label:
 		name_label.text = display_name if display_name != "" else "未知国家"
-	for node_name in ["政府类型", "军事联盟", "经济联盟", "在某国影响下"]:
+	for node_name in ["政府类型", "军事联盟", "经济联盟", "贸易伙伴", "在某国影响下"]:
 		var icon := find_child(node_name, true, false) as TextureRect
 		if icon:
 			icon.visible = false
@@ -161,11 +209,12 @@ func _refresh_icons(country: CountryData) -> void:
 	var gov_icon := find_child("政府类型", true, false) as TextureRect
 	var mil_icon := find_child("军事联盟", true, false) as TextureRect
 	var econ_icon := find_child("经济联盟", true, false) as TextureRect
+	var trade_icon := find_child("贸易伙伴", true, false) as TextureRect
 	var inf_icon := find_child("在某国影响下", true, false) as TextureRect
 
-	# 政府类型 + 意识形态
+	# 子意识形态图标（原版 ChangeSubIcons 最终覆盖政体图标后的显示）+ 政体/意识形态 tooltip
 	if gov_icon:
-		var tex: Texture2D = GOV_ICONS.get(country.government)
+		var tex: Texture2D = SUB_ICONS.get(country.sub_government)
 		if tex:
 			gov_icon.texture = tex
 			var gov_label: String = CountryData.GOV_NAME.get(country.government, "")
@@ -215,13 +264,28 @@ func _refresh_icons(country: CountryData) -> void:
 		if not found:
 			econ_icon.visible = false
 
+	# 贸易伙伴（原版 Znach(3)：Torg → razmerika.png，CountryScript.cs:278-288）
+	if trade_icon:
+		if country.has_tag("对华贸易"):
+			trade_icon.texture = TRADE_PARTNER_ICON
+			trade_icon.tooltip_text = TRADE_PARTNER_NAME
+			trade_icon.visible = true
+		else:
+			trade_icon.visible = false
+
 	# 在某国影响下
 	if inf_icon:
 		var sphere := country.in_sphere_of_influence()
 		var tex: Texture2D = INFLUENCE_ICONS.get(sphere)
 		if tex:
 			inf_icon.texture = tex
-			inf_icon.tooltip_text = "在%s影响下" % INFLUENCE_NAMES.get(sphere, "")
+			var label: String = INFLUENCE_NAMES.get(sphere, "")
+			# 原版法国托管地特殊文案（CountryScript.cs:306-315）
+			if sphere == CountryData.SPHERE_FRANCE and country.原版序号 == 154:
+				label = "法国的一部分"
+			elif sphere == CountryData.SPHERE_FRANCE and country.原版序号 == 159:
+				label = "英-法共同托管"
+			inf_icon.tooltip_text = label
 			inf_icon.visible = true
 		else:
 			inf_icon.visible = false
@@ -532,6 +596,28 @@ func _build_story_actions(country: CountryData, w: WorldState, d: Array[int]) ->
 				w.set_flag("hk_macau_negotiated", true)
 				GameManager.start_event("hong_kong_macau")
 			))
+		84:  # 土耳其：大国梦 / 塞浦路斯链（DiploButtonScript this_type 94/95）
+			# 94 条件 Show L2387-2396：data[124] >= 1 且 data[124] != 100；效果 OnMouseDown L9988-9992
+			actions.append(_make_action("支持土耳其的大国梦", [
+				_cond("土耳其危机链已开启", func(): return d[124] >= 1),
+				_cond("土耳其大国梦尚未达成", func(): return d[124] != 100),
+			], "data[124]=10，进入土耳其大国梦事件",
+			func():
+				d[124] = 10
+				GameManager.start_event("event_372")
+			))
+			# 95 条件 Show L2397-2405：event_done[697] 且 data[127] != 100；
+			#    俄语 Show L7511-7522 为 (data[127]>=1 或 土耳其 Gosstroy==2) 且 data[127]!=100 且 年份>=1983。
+			#    项目沿用俄语分支，另加“塞浦路斯大选已结束”近似 event_done[697]。
+			actions.append(_make_action("介入塞浦路斯问题", [
+				_cond("塞浦路斯危机已开启", func(): return d[127] >= 1 or country.government == 2),
+				_cond("塞浦路斯安排尚未定型", func(): return d[127] != 100),
+				_cond("不早于 1983 年", func(): return w.date != null and w.date.year >= 1983),
+			], "data[127]=10，进入塞浦路斯事件",
+			func():
+				d[127] = 10
+				GameManager.start_event("event_374")
+			))
 		9:  # 蒙古
 			actions.append(_make_action("煽动温和改革抗议", [
 				_cond("特工网络 ≥ 100", func(): return d[W.I_AGENTS] >= 100),
@@ -563,6 +649,39 @@ func _build_story_actions(country: CountryData, w: WorldState, d: Array[int]) ->
 			func():
 				country.development = 1
 				GameManager.start_event("palestine_settlement")
+			))
+		38:  # 台湾：福尔摩沙之春外交入口（DiploButtonScript.cs:3701-3710 条件，11411-11415 效果）
+			actions.append(_make_action("封锁制裁台湾当局，以促使蒋伪政权倒台", [
+				_cond("已支持台湾美丽岛运动", func():
+					return w.completed_event_ids.has("formosa_winter") \
+						and int(w.completed_event_ids["formosa_winter"]) != 2),
+				_cond("尚未进入福尔摩沙之春", func():
+					return not w.completed_event_ids.has("formosa_spring")),
+				_cond("美国已失去对台湾的掌控", func(): return not country.has_tag("亲美")),
+			], "进入福尔摩沙之春事件",
+			func():
+				GameManager.start_event("formosa_spring")
+			))
+			# 原作 this_type==48：解放台海岛屿（DBS Show 1519-1531，OnMouseDown 9410-9422）
+			actions.append(_make_action("发动战略进攻，解放台海岛屿", [
+				_cond("至少 50 军事实力", func(): return d[W.I_ARMY] >= 500),
+				_cond("美国尚未与我关系正常化", func():
+					var usa := w.get_country_by_legacy_index(51)
+					return usa == null or not usa.has_tag("对华贸易")),
+				_cond("尚未发动进攻", func(): return country.development == 0),
+			], "军力 -50、对美关系清零、美国影响力 -5、自由化 -50、全球影响力 +5、data[63]=1",
+			func():
+				d[W.I_ARMY] -= 500
+				if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
+					w.empires[EmpireData.USA].relations = 0
+					w.empires[EmpireData.USA].power -= 50
+				d[W.I_THOUGHT_FREEDOM] -= 500
+				w.influence_prc += 50
+				d[W.I_PEOPLE_SUPPORT] += 100
+				d[W.I_PARTY_SUPPORT] += 200
+				d[W.I_DIPLO] += 200
+				d[W.I_TAIWAN_ISLANDS] = 1
+				country.development = 1
 			))
 		46:  # 韩国
 			actions.append(_make_action("施加经济与政治压力", [
@@ -605,6 +724,70 @@ func _build_story_actions(country: CountryData, w: WorldState, d: Array[int]) ->
 				d[W.I_AGENTS] -= 30
 				_add_story_relation(w, EmpireData.USSR, -50)
 				country.stability = 1
+			))
+			# 原作 this_type==29：推动中印关系正常化（DBS Show 1154-1163，OnMouseDown 9207-9210）
+			actions.append(_make_action("推动中印关系正常化", [
+				_cond("帮助英迪拉且未与巴基斯坦友好，或布托是巴基斯坦总理", func():
+					var pakistan := w.get_country_by_legacy_index(31)
+					return (d[W.I_INDIA_ELECTION] == 1 or d[W.I_INDIA_ELECTION] == 2 or d[W.I_INDIA_ELECTION] == 3) \
+						and (pakistan == null or not pakistan.has_tag("对华贸易")
+							or pakistan.government == 2 or w.is_socialism(pakistan, true))),
+				_cond("尚未与印度建立友好关系", func(): return not country.has_tag("对华贸易")),
+				_cond("尚未发动中印战争", func():
+					return (country.development == 0 and w.war_state == 0
+						and d[W.I_ARUNACHAL_STATUS] < 2)),
+				_cond("领土争端仍悬而未决", func(): return d[W.I_ARUNACHAL_STATUS] == 0),
+			], "建立友好关系并承认印度对藏南的实际控制（data[62]=1）",
+			func():
+				country.set_tag("对华贸易", true)
+				d[W.I_ARUNACHAL_STATUS] = 1
+			))
+			# 原作 this_type==89：以投资为筹码收回藏南（DBS Show 1182-1192，OnMouseDown 9219-9225）
+			actions.append(_make_action("以我国投资为筹码，收回藏南地区", [
+				_cond("中国全球影响力不低于 50", func(): return w.influence_prc >= 500),
+				_cond("预算 + 外汇储备 ≥ 25", func(): return d[W.I_BUDGET] + d[W.I_RESERVE] >= 250),
+				_cond("拥有对印战争理由", func(): return w.get_flag("cb_india")),
+			], "预算 -25，重建藏南实际控制（data[62]=3）",
+			func():
+				w.set_flag("cb_india", false)
+				d[W.I_ARUNACHAL_STATUS] = 3
+				d[W.I_BUDGET] -= 250
+			))
+		61:  # 上沃尔特/布基纳法索：非洲联盟建立决议入口
+			# 原版为 Decision 系统入口（GlobalScript.cs:56）；Godot 决议界面未移植，
+			# 故按同一条件链以 story action 暴露。效果由 event_500_african_union 结算。
+			actions.append(_make_action("建立非洲联盟", [
+				_cond("党内是极左派领导", func(): return w.has_revolutionary_leader()),
+				_cond("预算 + 外汇储备 ≥ 20", func(): return d[W.I_BUDGET] + d[W.I_RESERVE] >= 200),
+				_cond("军事实力 ≥ 30", func(): return d[W.I_ARMY] >= 300),
+				_cond("中国全球影响力 > 50", func(): return w.influence_prc > 500),
+				_cond("几内亚/加纳/上沃尔特等七国为社会主义且亲中或有贸易", func():
+					return w.african_proprc_ready()),
+				_cond("非洲有至少 6 个社会主义政权", func(): return w.african_socialism_count() >= 6),
+				_cond("非洲联盟尚未建立", func(): return not w.get_flag("event_done_500")),
+			], "进入非洲联盟建立事件（预算 -30、军力 -30、美苏关系各 -10、美苏影响力各 -20、中国影响力 +10）",
+			func():
+				GameManager.start_event("african_union")
+			))
+		84:  # 土耳其：大国梦与塞浦路斯调解入口（DiploButtonScript.cs:2387-2412 条件，9988-10002 效果）
+			actions.append(_make_action("支持土耳其的大国梦", [
+				_cond("土耳其危机已进入下一阶段", func(): return d.size() > 124 and d[124] >= 1),
+				_cond("大国梦尚未定型", func(): return d.size() > 124 and d[124] != 100),
+			], "data[124]=10；进入土耳其大国梦事件",
+			func():
+				if d.size() > 124:
+					d[124] = 10
+				GameManager.start_event("event_372")
+			))
+			actions.append(_make_action("调解塞浦路斯问题", [
+				_cond("塞浦路斯大选已结束", func():
+					return w.completed_event_ids.has("event_697")),
+				_cond("塞浦路斯路线尚未定型", func(): return d.size() > 127 and d[127] != 100),
+			], "data[127]=10；进入塞浦路斯调解事件",
+			func():
+				if d.size() > 127:
+					d[127] = 10
+				GameManager.start_event("event_374")
 			))
 	return actions
 
@@ -873,7 +1056,7 @@ func _set_war_active(w: WorldState, idx: int, value: bool) -> void:
 
 # 编号 5000 革命国际（休眠）：条件 DBS L5520-5538，效果 DBS L12585-12588。
 # 休眠守卫 uslovie[0]=event_done[548]，事件未移植→get_flag 默认 false。
-func _def_5000(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+func _def_5000(w: WorldState, _d: Array[int], country: CountryData) -> Dictionary:
 	var player := w.get_player_country()
 	var conds: Array = []
 	# uslovie[0]：event_done[548]（DBS L5524，事件未移植）

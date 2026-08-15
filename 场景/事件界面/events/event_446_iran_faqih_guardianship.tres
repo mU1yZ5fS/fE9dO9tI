@@ -1,0 +1,127 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_446_449_iran_chain.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_country_sub8"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 8.0
+target = "8"
+
+[sub_resource type="Resource" id="Expr_date_1979_12_11"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.12.11"
+
+[sub_resource type="Resource" id="Expr_date_1980_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.1"
+
+[sub_resource type="Resource" id="Expr_date_any"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date_1979_12_11"), SubResource("Expr_date_1980_1")])
+
+[sub_resource type="Resource" id="Expr_line_at_most_1"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_infl_at_least_150"]
+script = ExtResource("3_expr")
+type = 0
+key = "influence_prc"
+value = 150.0
+
+[sub_resource type="Resource" id="Expr_cond_opt0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_at_most_1"), SubResource("Expr_infl_at_least_150")])
+
+[sub_resource type="Resource" id="Expr_infl_at_least_200"]
+script = ExtResource("3_expr")
+type = 0
+key = "influence_prc"
+value = 200.0
+
+[sub_resource type="Resource" id="Expr_cond_opt1"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_at_most_1"), SubResource("Expr_infl_at_least_200")])
+
+[sub_resource type="Resource" id="Expr_line_at_least_0"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_infl_at_least_100"]
+script = ExtResource("3_expr")
+type = 0
+key = "influence_prc"
+value = 100.0
+
+[sub_resource type="Resource" id="Expr_cond_opt2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_at_least_0"), SubResource("Expr_infl_at_least_100")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "鼓动伊朗左翼和政府对抗"
+disabled_text = "我们还没胆大到这种程度！"
+enable_condition = SubResource("Expr_cond_opt0")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "在我方的支持下，以人民圣战者，伊朗共产主义者联盟，人民党左翼和“风暴”组织的成员形成了一支左翼同盟“伊朗爱国阵线”。这只组织开始着手训练其武装团体。同时，霍梅尼决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左派学生会产生了分裂，一部分机会主义者倒戈支持霍梅尼。随着革命卫队的坦克开进了大不里士，运动也渐渐消停。随后，大阿亚图拉沙里亚特马达里被软禁。伊朗的未来，似乎走向了一个不可控的地步……"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "不仅支持伊朗左翼，还要小心的剔除右派"
+disabled_text = "我们已经自身难保了！"
+enable_condition = SubResource("Expr_cond_opt1")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "在我方的支持下，以人民圣战者，伊朗共产主义者联盟，人民党左翼和“风暴”组织的成员形成了一支左翼同盟“伊朗爱国阵线”。这支组织开始着手训练其武装团体。我们的特工决定为革命力量送上一份大礼，在伊朗线人的帮助下，我们的特勤人员找到了努尔丁的住所，用包在鲜花里的炸药将这个叛徒送去了马克思那里。余下的人民党宣布作为温和力量加入伊朗爱国阵线。同时，霍梅尼决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左翼阵线更加团结，学生们占领壁垒，拿上63式和40火，做出要和政府决一死战的地步。在极度的高压和多方势力的威胁下，伊朗政府宣布停止围攻大不里士，双方将对新宪法作出更多讨论。看起来，神也不过如此。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "人民党迟早会坏了我们的事，最好现在就干掉他们"
+disabled_text = "不要破坏国际共运的团结！"
+enable_condition = SubResource("Expr_cond_opt2")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "我们的特工决定为伊朗人送上一份大礼，在伊朗线人的帮助下，我们的特勤人员找到了努尔丁的住所，用包在鲜花里的炸药将这个叛徒送去了马克思那里。同时，霍梅尼决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左派学生会产生了分裂，一部分机会主义者倒戈支持霍梅尼。随着革命卫队的坦克开进了大不里士，运动也渐渐消停。随后，大阿亚图拉沙里亚特马达里被软禁。伊朗的未来，似乎走向了一个不可控的地步……"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "口头支持双方冷处理"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "“我国不会允许这种对人民开火的暴行，”外交部长同志如是说道，“但同时，我们也呼吁伊朗方面冷静下来，不要在自己人身上浪费弹药，让伊朗人的子弹去杀伊朗人！”但霍梅尼显然没有听我们的，他决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左派学生会产生了分裂，一部分机会主义者倒戈支持霍梅尼。随着革命卫队的坦克开进了大不里士，运动也渐渐消停。随后，大阿亚图拉沙里亚特马达里被软禁。伊朗的未来，似乎走向了一个不可控的地步……"
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "伊朗？关我什么事？"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "霍梅尼决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左派学生会产生了分裂，一部分机会主义者倒戈支持霍梅尼。随着革命卫队的坦克开进了大不里士，运动也渐渐消停。随后，大阿亚图拉沙里亚特马达里被软禁。伊朗的未来，似乎走向了一个不可控的地步……我也希望，我们的不作为不会带来什么灾难性的后果。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "event_446"
+source_event_number = 446
+trigger_priority = 64
+title = "法基赫的监护"
+description = "伊朗最新的宪法颁布了。此部法案完全以古兰经为蓝本，其中最令世俗派和左翼难以接受的，则是委员会以53对8票通过了决议，批准了“法基赫的监护”这一什叶派法案，这意味着宗教学者将有机会以纠错人的身份介入伊朗的政治事务。显然这不会得到任何左翼的支持，在12月2日，以马苏德·拉贾维为首的伊朗人民圣战者走上街头，宣布要和这项反动法案做殊死搏斗。与此同时，伊斯兰阵营内部也爆发了冲突，一向以温和著称的大阿亚图拉沙里亚特马达里谴责霍梅尼曲解了教义。双方的支持者正在大不里士陷入紧张对峙。最出人意料的，还要属人民党的背叛。努尔丁·卡亚诺里宣布将支持霍梅尼的决定，人民党手下的学生也正在陷入左右为难的境地。主席同志，我们该怎么做？也许放任事态发展也不会更糟糕，但那些无辜的人也必须因此受难吗？"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_country_sub8"), SubResource("Expr_date_any")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

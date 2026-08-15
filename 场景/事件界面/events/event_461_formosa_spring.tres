@@ -1,42 +1,43 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
 [ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
-[ext_resource type="Script" path="res://数据脚本/事件效果/event_461_formosa_spring.gd" id="5_custom"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_460_461_formosa.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Fx0"]
-script = ExtResource("2_fx")
+[sub_resource type="Resource" id="Expr_prev_460_opt0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "formosa_winter"
+value = 0.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Opt0"]
-script = ExtResource("1_opt")
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
 text = "给台湾蒋伪政府当局以制裁与禁运，同时帮助左派组建统一的政党"
-effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
-result_text = "（结果由 event_461_formosa_spring.gd 动态生成）"
+disabled_text = "台湾左派的力量太弱了！"
+enable_condition = SubResource("Expr_prev_460_opt0")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "随着我们对台湾当局施加了巨大的压力，制裁和禁运迅速压垮了这个本就没有什么自给能力的小岛。在一次对抗政府的示威中。我们的特务借机煽风点火，在“你可听见人民的呼声”的歌声中，军警拒绝了接受蒋经国总统关于对人民开枪的指令，事实上发生了哗变。感到自己时日无多的蒋经国收拾了细软，逃往美国檀香山。我们的努力得到了回报，由吴荣元组建的“红统”派台湾劳动党事实上夺取了台湾的政治权利。作为推翻蒋氏暴政的英雄，以及对大陆美好生活的向往，台湾迅速决定了接受中华人民共和国管理的决定。外企被悉数收回，美国军队也悉数撤回。而和大陆之间的隔阂也被消除。尽管名义上台湾组建了自己的，独立于北京的政府，但是谁都知道，台湾和大陆再也不会分开了。"
 
-[sub_resource type="Resource" id="Fx1"]
-script = ExtResource("2_fx")
-type = 18
-custom_script = ExtResource("5_custom")
-
-[sub_resource type="Resource" id="Opt1"]
-script = ExtResource("1_opt")
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
 text = "给台湾蒋伪政府当局以制裁与禁运"
-effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
-result_text = "（结果由 event_461_formosa_spring.gd 动态生成）"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "随着我们对台湾当局施加了巨大的压力，制裁和禁运迅速压垮了这个本就没有什么自给能力的小岛。在一次对抗政府的示威中。我们的特务借机煽风点火，在“你可听见人民的呼声”的歌声中，军警拒绝了接受蒋经国总统关于对人民开枪的指令，事实上发生了哗变。感到自己时日无多的蒋经国收拾了细软，逃往美国檀香山。由倒蒋集团组成的大帐篷式政党“民主进步党”在大选中击溃了国民党。新他们立刻宣布将和“中华人民共和国展开深入的合作”。新政府立即着手驱赶美军士兵，并放弃了对于大陆的宣称。我们决定在和平对等的基础上吸纳台湾。他们会和祖国母亲团结在一起，直到永远。"
 
 [resource]
-script = ExtResource("4_def")
-event_id = "event_461"
+script = ExtResource("4_event")
+event_id = "formosa_spring"
 source_event_number = 461
 trigger_priority = 46100
 title = "福尔摩沙之春"
 description = "解放战争胜利后，国民党败逃到台湾岛，由于美国在台湾的基地和舰队，我们无法解放它，但现如今的情况已大有不同：美国这只曾经的雄鹰已然陨落，台湾岛的军事基地也撤离了，而我们在之前对美丽岛左派的援助也为我们在台湾争取到了足以和蒋伪政府抗衡的盟友。或许我们可以对台湾施加更大的压力以帮助日益中兴的台湾左派联盟推翻蒋伪政府并“回归”中国？"
-display_script = ExtResource("5_custom")
-trigger_conditions = Array[ExtResource("3_expr")]([])
 show_notification = false
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])
 fire_only_once = true
-options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

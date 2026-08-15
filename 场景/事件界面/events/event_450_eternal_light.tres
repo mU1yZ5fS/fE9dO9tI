@@ -10,12 +10,12 @@
 [sub_resource type="Resource" id="Expr_done447"]
 script = ExtResource("3_expr")
 type = 5
-ref_event_id = "save_iran_uprising"
+ref_event_id = "event_447"
 
 [sub_resource type="Resource" id="Expr_not448"]
 script = ExtResource("3_expr")
 type = 6
-ref_event_id = "iran_election_rebirth"
+ref_event_id = "event_448"
 
 [sub_resource type="Resource" id="Expr_no_iranrev"]
 script = ExtResource("3_expr")

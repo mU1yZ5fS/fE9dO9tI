@@ -1,0 +1,132 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_697_cyprus_election.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date_1983_2_13"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.2.13"
+
+[sub_resource type="Resource" id="Expr_date_1983_3_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.3.1"
+
+[sub_resource type="Resource" id="Expr_date_1984_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.1"
+
+[sub_resource type="Resource" id="Expr_date_any"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date_1983_2_13"), SubResource("Expr_date_1983_3_1"), SubResource("Expr_date_1984_1")])
+
+[sub_resource type="Resource" id="Expr_infl_500"]
+script = ExtResource("3_expr")
+key = "influence_prc"
+value = 500.0
+
+[sub_resource type="Resource" id="Expr_event_695_result_2"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_695"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_india_proprc"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "20"
+
+[sub_resource type="Resource" id="Expr_greece_gov2"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 2.0
+target = "45"
+
+[sub_resource type="Resource" id="Expr_socialist_count_3"]
+script = ExtResource("3_expr")
+type = 40
+keys = Array[String](["21", "29", "85", "86", "87", "92"])
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_opt0_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_infl_500"), SubResource("Expr_event_695_result_2"), SubResource("Expr_india_proprc"), SubResource("Expr_greece_gov2"), SubResource("Expr_socialist_count_3")])
+
+[sub_resource type="Resource" id="Expr_line_ge_1"]
+script = ExtResource("3_expr")
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_line_le_3"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_opt1_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_ge_1"), SubResource("Expr_line_le_3")])
+
+[sub_resource type="Resource" id="Expr_line_4"]
+script = ExtResource("3_expr")
+type = 21
+key = "political_line"
+value = 4.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "擦亮步枪，属于塞浦路斯人的理工学院起义时刻即将到来了！"
+disabled_text = "时机尚未成熟"
+enable_condition = SubResource("Expr_opt0_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "作为1974年反政变的中坚力量，EDEK虽不像AKEL那样拥有深厚的基层组织网络，但其独特优势在于拥有一支合法的武装力量和纪律严明的民兵队伍，这使其在特殊时期尤为关键。1974年政变爆发后不久，EDEK成员便迅速组织起防御与抵抗力量，投入对亲雅典军政府的希腊军官和极端民族主义武装的武装对抗之中。EDEK的多位领导人—譬如其青年组织的重要人物多罗斯·洛佐伊（DorosLoizou）就在护送利萨里德斯的过程中牺牲。因此，在整个1974—1981年间，塞浦路斯社会政治格局经历剧烈震荡、极端民族主义与左翼力量持续冲突之际，EDEK并没有像多数政党那样迅速收兵转向纯议会路线，而是凭借其在反政变和抵抗土耳其入侵中的实绩，吸纳了大量退伍人员、边境家庭以及激进青年。逐渐地，它由一个议会中声势有限的社会民主党派转变为一个武装力量与政治组织兼具的左翼爱国主义集团。由于党内强调反对外来干涉与维护塞浦路斯主权独立的纲领，其军事化队伍在部分地区事实上成为了比肩国民警卫队的“国中之军”。随着南北对峙固化、现政府在北部占领问题上的无力，社会各阶层对于现政府充满愤怒。由于EDEK与我方加强联络并调整战略，积聚力量并展开秘密扩张，不断强化其武装组织与政治动员能力。于今1983年，在全国政治危机与选举临近之际，EDEK以纪念多罗斯·洛佐伊烈士的名义发起代号为“正义复兴行动”的全国性行动。凭借1974反政变期间所积累的军事经验与动员网络，EDEK武装迅速占领尼科西亚、利马索尔和帕福斯等地的关键军政设施，并在不到72小时之内控制了全国主要通讯枢纽与战略要塞。各级军营都出现哗变现象，首都外围防线被迫中断抵抗，风雨飘摇的现政府由于突然袭击顷刻崩溃。EDEK的民兵随即拘捕了逃散的旧官僚集团成员，包括在他们眼中历来以“软弱”著称的AKEL党员。并向全国人民宣布了他们的新纲领：作为塞浦路斯工农群众的先锋队，EDEK将实行全面土地国有化、组建“人民自卫军”取代旧有武装体系，对腐败寡头统治进行全面清算，并废止1960年宪法，以此拒绝一切可能导致分裂的联邦体制方案。新政权尤其强调塞浦路斯领土的统一是该政权的首要目标，无论是十年还是五十年，他们都势必要让入侵者付出血的代价。人常言：血浓于水。|正是这血，将我们相连，|将我们捆绑，|也将我们咒诅。|——塞浦路斯主保圣人圣巴拿巴"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "我们需要支援AKEL，还要带上其他社会民主力量"
+disabled_text = "他们是一帮盗取共产党名号的大帐篷匪帮，不能支持他们！"
+enable_condition = SubResource("Expr_opt1_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "选举结果正式公布：AKEL-DIKO泛左翼爱国联盟再获全胜：乔治·瓦西利乌成功当选塞浦路斯历史上第三位总统，并兑现竞选承诺，大力扩张社会福利体系，推行针对性税制改革，核心目标在于切实减轻中低收入家庭的生活负担。新政府的首要施政任务之一，便是制定并落地一项全新的社会福利法案。该法案将进一步扩大对弱势群体的扶持范围，具体包括提高养老金发放标准、增加失业救济金额度，以及全面升级公共医疗服务质量。此外，瓦西利乌还计划推出一揽子面向中小企业的税收优惠政策，以此激发就业市场活力，推动本土创新。与此同时，自外部世界席卷而来的革命之风正将AKEL的政策路线不断推向激进。其中，长期负责对外联络事务的国际团结委员会（EPAL）与民主青年联合组织（EDON），其左翼倾向表现得尤为鲜明。二者率先向AKEL中央委员会提出倡议，呼吁其顺应当前国际形势，全力推进社会主义革命，并凭借联盟在议会中占据的绝对优势，将塞浦路斯彻底改造为一个人民共和国。这一倡议随即引发AKEL全党上下的激烈论争，党内迅速分裂为稳健派与国际派两大阵营。最终，中央委员会召开特别代表大会，就党的未来发展方向展开专题研讨。在EDON广泛的基层动员支持下，加之原塞浦路斯共产党老党员集体表态站队激进派，国际派成功掌握了大会的主导权。一份全新的AKEL斗争党纲也应运而生：全面国有化、亲苏外交路线、民主集中制等核心原则，被正式写入素来以“和平社会主义道路”为标榜的AKEL党章。而在塞浦路斯南部各地，土地改革计划已由现政府全面启动实施。曾是不结盟运动重要推手之一的塞浦路斯，最终还是投入了社会主义大家庭的怀抱。这一历史性转变，对于东地中海地区而言究竟是喜是忧呢……"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "帮助DISY获取胜利，我们能够理解他们为一个塞浦路斯的斗争。"
+disabled_text = "这群所谓的民主人士里面可是有不少的前法西斯分子"
+enable_condition = SubResource("Expr_line_4")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "选举结果宣布了AKEL-DIKO的泛左翼爱国联盟的大败：DISY党以一己之力，强势碾压AKEL、DIKO、EDEK三党，成功将前临时总统克莱里季斯推上正式总统的宝座。新政府迅速启动施政程序，着手改革国内现有的臃肿官僚体制，具体举措包括合并冗余政府部门、削减不必要的行政层级，以此全面提升政府的行政效率与政务透明度。这些改革的核心目标，一方面在于压缩财政支出，另一方面则是为私营部门营造更为宽松友好的营商环境。新政府同时推出放宽管控与普遍减税的组合政策，尤其着重降低个人所得税与企业税税率，以此刺激国内消费市场，推动本土产业（尤其是旅游业）高质量发展。此外，新政府还将加入欧共体列为施政的首要战略目标，积极追求与欧洲的一体化进程，而非延续前两届政府的施政路线——与第三世界国家加深关系。外界普遍认为，这一战略转向将为塞浦路斯带来更多的经济发展机遇与政治稳定保障。为此，新政府迅速启动与欧盟的入盟谈判，并承诺在国内推行一系列符合欧盟标准的配套改革，包括强化法治建设、改善人权状况，以及完善市场经济运行机制。AKEL-DIKO联盟的失败直接导致二者的政治同盟瓦解，令国家航向从传统泛左翼立场转向更加自由主义的路线。而此次惨败也引发了沦为在野党的两大政党进行反思。首先是AKEL内部，关于政党未来发展路线的争论愈演愈烈：一部分人主张重新调整未来竞选策略，适度向中间立场靠拢，以吸引更多中间选民的支持；另一部分人则主张坚守传统社会主义立场，认为政党应当更加旗帜鲜明地代表工人阶级的根本利益，唯有如此才能实现东山再起的目标。与此同时，DIKO党也试图重新定位自身的政治坐标，开始转向寻求与其他中间派政党的合作，以期在未来的选举中重新夺回政治影响力。不过，无论怎样，泛左联盟在当下塞浦路斯的失败已成定局。由此观之，在马卡里奥斯总统逝世后，失去“先总统政治卫士”的光环的AKEL，终究不过是一个正逐渐边缘化、社民化的共产党组织。而这，恐怕还远非其衰落进程的终点……"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "我们要不要也关心一下马耳他的政治？"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "毕竟那地方至少没有一堵隔离墙！在政局动荡的情况下，基普里亚努不得不继续从政。大选结果是民主党的斯皮罗斯·基普里亚努获胜（同时也得到了AKEL的支持），他获得了56.5%的选票，继续担任塞浦路斯总统。投票率为95.0%。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "event_697"
+source_event_number = 697
+trigger_priority = 186
+title = "爱神之吻"
+description = "对塞浦路斯而言，五月向来是万里无云、滴雨不降的晴朗时节。闷热凝滞的空气里，正悄然酝酿着即将到来的总统大选风云。接连不断的恐怖袭击，早已让被迫硬着头皮应对危局的总统基普里亚努心力交瘁；而针对其儿子的绑架案发生后，他更是彻底厌倦了政坛的尔虞我诈。尽管AKEL多次挽留，他还是毅然宣布，将不再参加1983年的总统大选。这意味着偏左翼的建制派政治联盟（AKEL-EDEK-DIKO）从此分道扬镳，为其他党派角逐权力中心提供了机会，但AKEL依然保持着和DIKO的小型联盟。在首轮全国大选的角逐中，作为建制派核心的AKEL，推出了一位持亲AKEL立场的独立人士——乔治·瓦西利乌作为本党总统候选人。他以税制改革、维护工人权益、增进公共福祉、和平解决塞浦路斯分裂问题为核心竞选纲领，一如既往地收获了大批工会组织与农村选民的坚定支持。而作为联盟新锐派的EDEK，则充分利用其领导人利萨里德斯曾是前总统马卡里奥斯核心亲信的独特政治资本，大张旗鼓地将自身定位为“左翼爱国者的联盟”与“正统派传人”。他们以强硬的希腊民族主义立场，搭配开放包容的思想讨论氛围，成功吸引了一众左翼知识分子精英与激进青年学生的拥护。此外，还有一支不可忽视的力量——民主大会党（DISY）。该党虽与昔日政变集团“进步阵线”有着千丝万缕的联系，如今却在温和鸽派人士、前众议院议长克莱里季斯的领导下，走上了更为稳健的发展道路。他们提出了三项清晰明确的核心施政纲领：推动经济稳定改革、争取加入欧共体、强化国民警卫队建设。该党观点不仅吸引了众多亲欧主义者的目光；克莱里季斯本人的右翼政治立场与自由企业理念，更成功将商人阶层、城市中产阶级与白领群体，牢牢团结在该党旗下。此外，克莱里季斯本人对于解决塞浦路斯分裂的独特优势是一大吸引力。最近的民意调查能够反应出，我们的潜在盟友AKEL——作为塞浦路斯建制派的重要组成部分，其影响力虽已不复往日一呼百应的盛景，却也绝非没有东山再起的可能。倘若能将EDEK与AKEL的力量重新整合，那么建制派依旧能够如我们所预期的那般，继续长期执掌国家政权。当然，外部因素的影响同样不容小觑，其中尤以希腊政局对塞浦路斯政局的牵动最为关键。若泛希腊社会主义运动（PASOK）能够持续稳定执政，塞浦路斯的国家发展方向，无疑将继续向左翼倾斜。反之，若希腊新民主党成功胜选上台，那么塞浦路斯DISY与亲欧派的势力，势必将得到前所未有的壮大；国内的法西斯主义势力，也极有可能借机抬头，兴风作浪。不过，我们仍有一定的操作空间，可以对塞浦路斯的内部事务施加影响。还望您审慎权衡，妥善规划，如何才能最大化地发挥我们在这个国家本就十分有限的影响力。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date_any")])
+show_notification = false
+display_script = ExtResource("5_custom")
+fire_only_once = true
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])
