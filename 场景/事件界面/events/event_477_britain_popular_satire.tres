@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_477_britain_popular_satire.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.3.1"
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 10
+target = "92"
+key = "对华贸易"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "这是我们该做的事，拨款拍部吧。（需要5百万预算）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_477_britain_popular_satire.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们可以引进这部片子（需要2百万预算）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_477_britain_popular_satire.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "拒绝这一提案"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_477_britain_popular_satire.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_477"
+source_event_number = 477
+trigger_priority = 47700
+title = "受欢迎的讽刺剧"
+description = "1980年，英国广播公司推出了一档受欢迎的电视节目《是，大臣》。《是，大臣》以一位英国内阁大臣在白厅的办公室为背景，讲述了行政事务大臣吉姆·哈克的执政生涯。他争取的各项改革措施都受到了英国公务员及各种利益团体的掣肘。行政事务部常务次官汉弗莱·阿普比爵士长袖善舞，善于通过复杂官僚程序拖延哈克的改革措施。行政事务大臣首席私人秘书伯纳德·伍利由于在业务上接受哈克的领导，人事上则受汉弗菜管理，因此立场常游走在二人之间。伯纳德经常在讨论过程中插科打诨，但往往在关键时刻给予哈克或汉弗菜意料之外的帮助。\n和一般的电视节目不同，这部剧的特点是他独特的选材。这部剧尖锐的批判了英国官场的黑暗，但又用一种诙谐的手段点破，使人忍俊不禁。\n主席同志，我们是否也该拍部类似的片子？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

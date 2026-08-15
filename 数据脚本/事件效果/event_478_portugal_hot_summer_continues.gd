@@ -1,0 +1,80 @@
+extends "res://数据脚本/event_script_base.gd"
+
+const S_14 := "燥热之夏的延续？"
+const S_15 := "葡萄牙在康乃馨革命后秩序仍旧动荡不安。温和左翼与温和右翼的政府不断更替施政，他们都没有为国家带来稳定；而在葡萄牙国内，极左翼与极右翼又相当活跃，这使得葡萄牙社会动荡不安。\n左翼方面，亲苏的正统派葡萄牙共产党是葡萄牙国内最强大的极左翼势力，它控制了工会，并在葡萄牙南方有大量支持者，军队内左翼和他们也较为亲近，不过他们过于痴迷议会斗争，缺乏破坏现状的动力，但由于形势的变化，他们很可能在苏联的支持下转向更积极的行动；反修派的政党较为分散，主要是葡共（重建）、葡共（马列）、无产阶级革命党-革命旅以及葡萄牙工人共产党，但葡工共过于右倾，为了反对亲苏的葡共，他们甚至宁愿与放弃马克思主义的社会党打交道，葡共（重建）、葡共（马列）和无产阶级革命党-革命旅则选择与其他极左派组织合流；值得关注的还有萨赖瓦·德·卡瓦略，一位曾经指挥了康乃馨革命的极左翼政治家，他在1976年总统选举失利后转向更加激进的武装斗争与合法斗争结合的斗争路线，他联合多个极左翼的政党团体【包括葡共（重建）、葡共（马列）和无产阶级革命党-革命旅】，组建了“全球项目”——一个集合法政党（人民团结力量）、城市游击队（4月25日人民力量）、统战军队内左翼于一体的秘密项目——准备更加深入地变革葡萄牙。右翼方面，葡萄牙也存在对康乃馨革命后局势不满的军队内右翼团体与新萨拉查主义的政党，但是他们与康乃馨革命后强大的左翼潮流明显不符，需要借助外部力量才能动摇局势……\n主席，我们应该怎么办？"
+const S_23 := "支持葡共的激进化"
+const S_24 := "支持极左翼的联合"
+const S_25 := "支持极右翼的联合"
+const S_32 := "我们无暇顾及"
+const S_33 := "我们无暇顾及"
+const S_34 := "我们无暇顾及"
+const S_36 := "不闻不问"
+const S_41 := "燥热之夏的延续？"
+const S_44 := "我们联系到葡萄牙共产党和与军队内左翼和葡共都保持了深入联系的瓦斯科·贡萨尔维斯同志，为他们送去了活动资金。比起各个四分五裂的“革命派”组织，他们起码更稳定，在民众中的支持率也更高，不是吗？不久后，有情报表明，苏联也给他们送去了指示以及更多的活动资金——他们开始更积极地参与工会活动，并同军队内左派联系，同时向政府施压，要求在革命委员会中任命更多的左派人士。葡萄牙的政治天平向左边稍稍倾斜了。"
+const S_50 := "我们联系到“全球项目”和与军队内左翼和多个极左翼的革命马克思主义政党或团体都保持了深入的联系的萨赖瓦·德·卡瓦略同志，为他们送去了活动资金。葡萄牙工人共产党在我们的支持下加入了“全球项目”，“全球项目”的合法政党人民团结力量开始更积极地与葡萄牙共产党在工会和民众之中竞争。他们决定更加深入地融入无产阶级，并在军队中深入发展成员，以争取对革命的支持。“全球项目”以合法政党人民团结力量的名义向政府施压，要求在革命委员会中任命更多的左派人士。葡萄牙的政治天平向左边稍稍倾斜了。"
+const S_57 := "我们联系到基督教民主党/葡萄牙右翼党/民族阵线的右翼三党联盟和阿尔波因·卡尔万、斯皮诺拉等新萨拉查主义组织/反共右翼人士，为他们送去了活动资金。他们自以为有了靠山，开始深入与对康乃馨革命之后的现状不满的群体和军队内右派联系。一方面，他们开始组建秘密右翼准军事组织；另一方面，他们向政府施压，要求在革命委员会中任命更多的右派人士。葡萄牙的政治天平向右边稍稍倾斜了。"
+const S_63 := "有情报表明，苏联给葡共和以贡萨尔维斯为首的军队内左翼代表送去了指示以及更多的活动资金——他们开始更积极地参与工会活动，并同军队内左派联系，同时向政府施压，要求在革命委员会中任命更多的左派人士。另一边，美国为了抵制苏联势力的扩张，开始积极援助基督教民主党/葡萄牙右翼党/民族阵线的右翼三党联盟和阿尔波因·卡尔万、斯皮诺拉等新萨拉查主义组织/反共右翼人士，为他们送去了活动资金。他们自以为有了靠山，开始深入与对康乃馨革命之后的现状不满的群体和军队内右派联系，并组建了秘密右翼准军事组织。葡萄牙未来的命运会如何？"
+
+
+## 原作 Event478.cs：燥热之夏的延续？（四选项）。
+## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1484-1486 ——
+##   !event_done[420] && !event_done[419] && c87.spec<=20 && 日期>=1980.4.20。
+## 差异：spec→special；选项0-2 显隐 prepare 动态改写；选项3 无效果但有结果文本。
+
+func prepare(event_def: EventDef, world: WorldState) -> void:
+	if event_def == null or world == null or event_def.options.size() < 4:
+		return
+	var opt := event_def.options
+	var can := world.数值表[W.I_BUDGET] + world.数值表[W.I_RESERVE] >= 50 \
+			and world.数值表[W.I_AGENTS] >= 50
+	if can:
+		_enable(opt[0], S_23)
+		_enable(opt[1], S_24)
+		_enable(opt[2], S_25)
+	else:
+		_disable(opt[0], S_32)
+		_disable(opt[1], S_33)
+		_disable(opt[2], S_34)
+	_enable(opt[3], S_36)
+
+
+func execute(context: Dictionary) -> void:
+	if not _bind_world():
+		return
+	var opt := int(context.get("option_index", -1))
+	match opt:
+		0:
+			_add(W.I_BUDGET, -50)
+			_add(W.I_AGENTS, -50)
+			context["result_text"] = S_44
+		1:
+			_add(W.I_BUDGET, -50)
+			_add(W.I_AGENTS, -50)
+			context["result_text"] = S_50
+		2:
+			_add(W.I_BUDGET, -50)
+			_add(W.I_AGENTS, -50)
+			context["result_text"] = S_57
+		3:
+			context["result_text"] = S_63
+
+
+func _add(index: int, delta: int) -> void:
+	if d.size() > index:
+		d[index] += delta
+
+
+func _enable(opt: EventOption, text: String) -> void:
+	opt.text = text
+	opt.disabled_text = ""
+	opt.enable_condition = null
+
+
+func _disable(opt: EventOption, text: String) -> void:
+	opt.text = text
+	opt.disabled_text = text
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.RESOURCE_AT_LEAST
+	n.key = "party_system"
+	n.value = 99999.0
+	opt.enable_condition = n

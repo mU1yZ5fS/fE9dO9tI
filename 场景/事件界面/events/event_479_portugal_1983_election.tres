@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_479_portugal_1983_election.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_419"
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.4.25"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "为共产党送上竞选资金并挑拨社会党与社会民主党的关系"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_479_portugal_1983_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们为什么要陪他们玩选举游戏？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_479_portugal_1983_election.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_479"
+source_event_number = 479
+trigger_priority = 47900
+title = "葡萄牙1983年议会选举"
+description = "葡萄牙上一次议会选举于1980年10月5日举行，弗朗西斯科·萨·卡内罗领导的民主联盟获胜。然而，1980年12月，萨·卡内罗和阿马罗·达科斯塔（国防部长）在卡马拉特的一次悲惨事故中丧生。政府两位最大人物的死亡将影响执政联盟的凝聚力。弗朗西斯科·平托·巴尔塞芒于1981年1月被任命为总理，但他从未成为两党认可的领导人，而是引起了执政联盟内部的强烈反对，这导致了政府中几位部长的辞职。此外，巴尔塞芒所遵循的右翼政策受到反对党的强烈反对，特别是葡共。1982年2月，由CGTP（隶属于共产党的工会）召集的总罢工彻底动摇了政府，部长们纷纷辞职。直到1982年12月，在当年的市政选举之后，平托·巴尔塞芒本人提交了总理辞呈——民主联盟走向了分崩离析。1983年1月，安东尼奥·拉马尔霍·埃内亚斯总统在拒绝由民主联盟重新组阁后决定提前举行选举。根据我们的分析，右翼很可能会在这次议会选举受挫，而以社会党和联合人民联盟（共产党领导的政党联盟）为代表的左翼势力有望获得大量选票。但是，考虑到中间派的社会民主党仍具有较大力量，以及社会党“把社会主义放到抽屉里“的政策，建立一个左翼政府仍然存在障碍。主席同志，我们是否要干预葡萄牙的这场大选？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

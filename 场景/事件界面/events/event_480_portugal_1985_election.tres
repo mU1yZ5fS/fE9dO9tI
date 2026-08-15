@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_480_portugal_1985_election.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_479"
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_479"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.10.6"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1"), SubResource("Expr_2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "接下来将发生什么？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_480_portugal_1985_election.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_480"
+source_event_number = 480
+trigger_priority = 48000
+title = "葡萄牙1985年议会选举"
+description = "社会党和社民党的“中央集团“终于解体了。两党在此前就已多次产生分歧，最后，因为社民党主席卡洛斯·莫塔·平托在1986年总统选举候选人问题上同联盟内大部分人都有分歧，他最终被迫辞职。社民党代表大会任命前财政部长阿尼巴尔·卡瓦科·席尔瓦取代了他的职位，成为该党新的主席。同时，苏亚雷斯总理决定进行部长改组，由鲁伊·马切特接替平托担任国防部长和副总理的职位。由于社民党党内和国家层面的权力更迭，中央集团两党间就继续组建联合政府展开谈判。在谈判失败后，社会民主党的部长们于6月13日向共和国总统提交了辞呈。12天后，社会党因为没能获得议会关于组建少数派政府的信任，马里奥·苏亚雷斯向共和国总统提交了辞呈，安东尼奥·拉马尔霍·埃内亚斯总统宣布将在10月6日提前举行立法选举。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])
