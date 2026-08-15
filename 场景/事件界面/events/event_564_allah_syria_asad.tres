@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_564_allah_syria_asad.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.6.1"
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.1.1"
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_2"), SubResource("Expr_3")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "还是帮帮阿萨德吧"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_564_allah_syria_asad.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "这个军头不除掉怎么行呢？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_564_allah_syria_asad.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_564"
+source_event_number = 564
+trigger_priority = 56400
+title = "安拉，叙利亚，阿萨德"
+description = "1970年“纠正运动”之后，阿萨德赶走了复兴社会党叙利亚支部的新左派，暂停并倒退了新左派过激的土改和国有化政策，进行实用主义政策，支持吸引外资，继续与苏联合作，引入家族政治，并将一部分阿拉伯社会主义者和科学社会主义者的党派组成亲政府的民族进步阵线，但是前任政府政策造成的后果并未完全退却。且1976年介入黎巴嫩内战和1979年的阿颇勒炮兵学校屠杀将叙利亚的反对派运动推上高潮，叙利亚局势变得愈发不稳定。\n主席同志，叙利亚是我们的老朋友，我们是否按照既往方针支持他们，亦或者，如果之前有帮助过反对派们，可以选择支持他们推翻阿萨德政权？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_1")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

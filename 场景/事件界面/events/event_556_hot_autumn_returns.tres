@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_556_hot_autumn_returns.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "“红色两年”（Biennio·Rosso）至此重回"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_556_hot_autumn_returns.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_556"
+source_event_number = 556
+trigger_priority = 55600
+title = "“火热之秋”的重临"
+description = "意大利建制派在1977年的戏剧性失败不仅使该国丧失了一劳永逸根除政治激进主义的良机，更在社会局势持续恶化的背景下让国内局势越发不可收拾：在70年代经济危机阴云尚在的背景下叫停中左翼议程，拒斥同持改良主义立场的“劳工代表”意大利共产党达成任何政治议程的强硬姿态，以及事实上率先朝国内主要工会开刀并削弱社会福利的财政紧缩政策只会使“不可能主义”与“议会外活动”越加脍炙人口。而意大利政界内本就猖獗的内幕交易与安保部门滥用例外状态，营造不自由民主的专断做法更是使其在国内主要人口中名誉扫地。最终导致了该国社会局势与政治版图的全面洗牌：不只是天主教民主党在内的保守主义政党民调持续走低，且以意大利共产党、意大利社会党为代表的世俗主义阵营内亦发生广泛叛离与激进转向，且越加支持“直接民主”与“政治替代”方案（意大利共产党更在这一进程内事实解体，并在乔治·纳波利塔诺主持下从中分裂出更亲近大西洋主义的意大利左翼民主党）。传统政治方案与相关共识则被市民阶层事实上摒弃，为呼吁政府迅速倒台的民粹主义之风取而代之。由左翼学生主导的文化团体，强硬派共产主义者筹建的政党，以及综合该国激进青年与蓝领工人的自治工会等新兴政治实体正借助机会迅速抢占政治空间，并在共产党内变节者的支持下大兴自管社会中心、工人委员会、甚至苏维埃等政治组织形式，打造同地方政府平行的“国中之国”的同时尝试直接动用武力解体意大利国家机器。意识到国内局势越发不可收拾，得到天民党等议会政党联合批准的《紧急状态法》至此轻易放行，“铁腕权臣”弗朗切斯科·科西加则被授予主持新体制的大权，并在国家安全部门与北约军队的支持下迅速开入早已因政治罢工、游行示威与占领社会运动失控的罗马、都灵、米兰、博洛尼亚等工业重镇。作为对国家派兵全面清场的回应，失业工人、激进学生与各派左翼组织等亦纷纷拿起武器。事实上拉开了欧洲大国的内战序幕。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

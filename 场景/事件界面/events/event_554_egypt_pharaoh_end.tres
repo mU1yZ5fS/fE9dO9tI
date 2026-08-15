@@ -1,0 +1,114 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_554_egypt_pharaoh_end.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_37"
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 0.0
+target = "30"
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 26
+key = "sub_government"
+value = 0.0
+target = "30"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_3"), SubResource("Expr_4")])
+
+[sub_resource type="Resource" id="Expr_5"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲美"
+target = "30"
+
+[sub_resource type="Resource" id="Expr_7"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.10.6"
+
+[sub_resource type="Resource" id="Expr_8"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.11.1"
+
+[sub_resource type="Resource" id="Expr_9"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.1.1"
+
+[sub_resource type="Resource" id="Expr_6"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_7"), SubResource("Expr_8"), SubResource("Expr_9")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "趁势帮助伊斯兰主义者夺取权力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_554_egypt_pharaoh_end.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "是时候了，让我们在北非发起一场革命！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_554_egypt_pharaoh_end.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "谴责伊斯兰恐怖主义"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_554_egypt_pharaoh_end.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "他杀死了法老，他不怕死"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_554_egypt_pharaoh_end.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_554"
+source_event_number = 554
+trigger_priority = 55400
+title = "埃及法老的终结"
+description = "在1977年事件后，埃及的问题仍未得到解决，其国内反对派的活动仍然活跃。从左翼到右翼，萨达特获得了广泛的反对者。1979年的埃及-以色列和平条约在阿拉伯国家，尤其是巴勒斯坦地区并不受欢迎，阿拉伯联盟也暂停了埃及的成员资格（直到1989年才恢复）。萨达特在国内外越来越不受欢迎。近段时间，埃及国内发生了部分骚乱，他将国内的动乱视为由叙利亚、利比亚和苏联的“境外势力”煽动，而非由埃及国内问题引起。因为此前萨达特采取扶持伊斯兰主义者的政策。萨达特扶持伊斯兰主义者并未能很好地打压左翼力量，因为他们将埃及的现有建制视为首要敌人，他这一政策终究是搬起石头砸了自己的脚——他们公开呼吁推翻埃及总统，用基于伊斯兰神权统治的政府取代现有的政治制度。\n1981年10月6日，萨达特在开罗举行的庆祝埃及穿越苏伊士运河的年度胜利阅兵式上被暗杀。哈立德·伊斯兰布利在埃及伊斯兰圣战组织的教令下，在看台前用突击步枪把萨达特打成了筛子。除萨达特外，还有11人被杀，包括古巴大使、一名阿曼将军、一名科普特东正教主教和埃及中央审计署负责人萨米尔·赫尔米。28人受伤，包括副总统胡斯尼·穆巴拉克、爱尔兰国防部长詹姆斯·塔利和四名美国军事联络官。据了解，伊斯兰主义者正在准备发起起义……\n如今，埃及国内陷入了更加混乱的状态，我们是否要做些什么？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_5"), SubResource("Expr_6")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

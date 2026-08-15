@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_538_peoples_revolution.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "是时候了，行动起来！帮助日本人民赢得真正的自由！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_538_peoples_revolution.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_538"
+source_event_number = 538
+trigger_priority = 53800
+title = "人民的革命！"
+description = "事实一再雄辩地证明，无产阶级的革命运动绝不会因为暂时的挫折就沉沦下去。进入八十年代后，伴随着革命阵营力量的不断增长与西方经济的衰退，资本主义各国的社会运动又一次兴起。而日本自然也无法独善其身。欧美伙伴的危机使得高度依赖其市场的日本经济严重下滑。企业的大幅亏损乃至倒闭引发了空前的失业潮，无数工人乃至城市市民失去工作流落街头，贫富差距不断拉大。农民因为产品滞销和物价爆炸大量涌入城市，进一步加剧了社会动荡。而政府面对不满人群的抗议也无能为力。而本就躁动不安的学生群体更是早就行动了起来，一如十五年前的安田讲堂斗争一样再次掀起了运动。很快，日本全国各地均爆发了大规模的集会示威乃至街头暴动。\n此时，日本革命共产党果断抓住这个时机，借助此前构建的组织网络，在青年学生、工人、农民之间开展了广泛的宣传活动。用通俗易懂的语言直截了当地告诉他们自身面临的问题以及自己能够做什么。很快，日本革命共产党便收获了一大批支持者。革命者的行为引起了日本政府的高度警惕，相关部门很快便组织了大批人员对他们在各地的活动分部进行查抄并逮捕了大批党员。但是政府又难以为本次行动给出足够令人信服的理由，只能用“疑似组织针对政府机关的极端暴力行为”为借口。这种莫须有的说法又反过来激起了大众的愤怒，各地的暴力冲突开始迅速升级。而美国此时正忙于欧洲局势，暂时难以对亚洲施以更多干预。主席同志，机不可失，失不再来！是时候让红旗再度飘扬了！我们应当立刻行动起来，帮助日本人民赢得这场最终斗争！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

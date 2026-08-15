@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_552_acceleration_strategy.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们当然会给戈尔巴乔夫先生为苏联经济“踩下油门”的机会……毕竟，中苏友谊万古长青！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_552_acceleration_strategy.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "好机会！我们将同我国合作伙伴一同行动。让苏联经济改革胎死腹中！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_552_acceleration_strategy.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "新方针？看来有必要与我们的美国朋友一起讨论对策……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_552_acceleration_strategy.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们将开出戈尔巴乔夫绝不会拒绝的提议……清党与腾笼换鸟的时候到了……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_552_acceleration_strategy.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "静观局势演变"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_552_acceleration_strategy.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_552"
+source_event_number = 552
+trigger_priority = 55200
+title = "加速发展战略？"
+description = "即便是在尤里·安德罗波夫的执政期间，就已经有相当数量的经济与社会学家被赋予推进苏联经济改革的“全权许可”。其中的一份关键文件《新西伯利亚宣言》指出：“苏联社会内的生产关系与目前生产力的发展存在显著滞后”。该文件的作者如此定义苏联国民经济内的其中某项关键问题，即“抓行政的手腕将纯粹的经济管理扼地太死，且集权的管理方式压过了分权的政策”。在过去的数十年间，苏联的经济增长率明显放缓，工业发展不均衡的现象也越加严重；由于缺少消费品，工人对劳动生产的结果毫无兴致。最重要的是，即便该国存在巨额投资，但目前投入生产的固定资产仍在迅速老化，可新技术的引进依然滞后。对此，苏联经济学家们确实认为，到了必须做出改变的时刻。为此，他们将在接下来举行的苏共中央四月全会上抛出对应的解决方案，这将成为接下来主导该国经济生活的主旋律。最终，苏共党内批准了所谓“加速发展战略”——其基本构思与华国锋曾筹划的“洋跃进”计划，以及罗马尼亚、波兰等政权70年代推行的“外债社会主义”颇有类似之处：国家将一次性扩大进口与预算支出，为国内制造业企业更新技术与扩大产量拨付巨额款项，从而实现苏联机械工程的跨越发展，相关支出则通过复兴的制造业筹款获利。预计该计划需要在短短五年内完成苏联机械工程的大跃进，以达到世界级水平。新任领导人戈尔巴乔夫则如此形容这一宏大计划：“我们得通过广泛运用科技革命最新成果，让社会主义经济制度契合当今模式，满足当代所需。因此，我们必须实现社会经济领域的显著跃进，除此之外别无他法。其中尤其是要以钢为纲，发展得要机械工程排头带。在接下来的25年内，我们必须得让工业产值增长率增长1.5倍或翻番，中心任务是加紧生产新一代机械设备。以鸟枪换炮的形式实现引进先进技术，显著提高劳动生产率与资本生产率，乃至减少原料浪费等多个目标”；这就事实上向国际社会表明了苏联经济内存在的问题，以及其试图发展外向型经济的渴望。作为世界经济的主要参与者，我们多少可以因势利导，让苏联新任领导人的改革计划成为我国获利的契机：我们既可以向苏方探出呼吁扩大合作的橄榄枝，以引荐技术与输送技术人员的方式深化双方间的经贸往来，并借机将我们的线人以交流名义安插在该国中，为未来的计划做准备；也可以试着在国际社会内造势，呼吁其他国家抵制苏联倡议，以软封锁方式使其经济计划流产，从而给本就疲软的苏联经济踩下刹车；又或者，最好的办法是效法美国与国际货币基金组织的先进经验，实施“援助换改革”的计划……不论如何，决定权在你。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

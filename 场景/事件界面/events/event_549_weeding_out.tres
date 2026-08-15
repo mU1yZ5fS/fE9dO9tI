@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_549_weeding_out.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "向泽登巴尔施压"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_549_weeding_out.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们无需管他"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_549_weeding_out.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_549"
+source_event_number = 549
+trigger_priority = 54900
+title = "铲除杂草"
+description = "长期以来，亲苏的尤睦佳·泽登巴尔统治着蒙古人民共和国。泽登巴尔在党内无法容忍同僚的批评甚至是建设性意见，并在政策上紧跟苏联的脚步。他先后于1959年（达希·丹巴）、1962年（达拉姆·图木尔奥其尔）、1963年（鲁布桑策伦·曾德）1964年（所谓的“洛呼兹、宁布、苏尔玛扎布反党集团”）打倒了希望让蒙古走自力更生、独立自主道路并结束极端亲苏的一批竞争对手，而苏联在稳固他的地位上也起了很大的作用。\n1981年蒙古人民革命党十八大后，泽登巴尔发起了“铲除杂草”运动，开始对领导层进行新一轮清洗。1982年，他清洗了时任科学院院长巴扎尔·锡林迪布，而如今他希望对国家的二号人物桑丕勒·扎兰阿扎布动手了。\n值得注意的是，1982年勃列日涅夫的塔什干讲话后，苏联便谋求与我们改善关系，而泽登巴尔并未领会（或不愿领会）这一新政策，并在国内继续维持着旧的对华政策，苏联对他并不满意。\n显然，现在是我们插手蒙古的一个重要机会，如果我们此前进行过一些布局，我们可以尝试帮助扎兰阿扎布，也许这将来会有用呢？"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

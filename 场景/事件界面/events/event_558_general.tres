@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_558_general.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "祝贺苏联领导层的革新！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_558_general.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "这是一场非法的，违宪的军事政变……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_558_general.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "兴许是个机会，我将亲自前往莫斯科会见利加乔夫"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_558_general.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们静观其变……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_558_general.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_558"
+source_event_number = 558
+trigger_priority = 55800
+title = "将军"
+description = "来自莫斯科的突发消息。由于苏联新任领导人米哈伊尔·戈尔巴乔夫上任伊始便遭遇接连不断的政治与外交失败，且无法拿出扭转内外交困境地的果断方案。导致他在领导层内已民心尽失。作为其政治盟友空降的“新思维”改革小组也只会让他的处境变得更糟，这些人同苏联绝大多数官员间多有龃龉：尤其是试图以管制民主与总统制为蓝本改组苏联体制，为此不惜加速苏联社会内矛盾爆发，事实上持亲大西洋主义立场的亚历山大·雅科夫列夫。终于，即便是曾支持戈尔巴乔夫上位，作为其重要盟友的老政治家安德烈·葛罗米柯与管理党务的前托木斯克党委第一书记叶戈尔·利加乔夫也选择抛弃了他。几乎是在四月全会结束后不久，戈尔巴乔夫的前盟友们便串通安德罗波夫提拔的“经济总督”（即尼古拉·雷日科夫、列昂尼德·阿巴尔金等）与部分保守派达成共识，趁戈尔巴乔夫一行出访欧美时召开政治局紧急会议：雅科夫列夫因涉嫌组织“间谍活动”被克格勃领导人切布里科夫下辖的安全人员逮捕并开除出党，戈尔巴乔夫在各地的支持者则被纷纷孤立，他们的精神领袖在返回后遭批评、扣上“唯意志论”的帽子后被开除。其空位则被各派共同推举的妥协，走保守改革路线的叶戈尔·利加乔夫接替：新任总书记声称将遵循集体领导原则，延续拓展经济自主权的试验，并在坚持列宁主义理论基础上修正戈尔巴乔夫改革路线——告别了有史以来最短命的苏联领导人后，我们总得站出来说几句……利加乔夫是苏式爱国主义的忠实拥趸，必然会竭尽所能巩固并拓展苏联势力范围。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])
