@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_595_land_and_freedom.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.7.15"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "将左翼反对派串联起来并为他们输送武器"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_595_land_and_freedom.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "这和其他非洲国家的政变有什么区别吗？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_595_land_and_freedom.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_595"
+source_event_number = 595
+trigger_priority = 59500
+title = "国土与自由"
+description = "让我们的视角重新看回肯尼亚。自1963年从英国手中独立以来，肯尼亚处于卢奥人-基库尤人政客的统治之下，对其他民族进行打压，卢奥人政客倾向于接近东方集团，而基库尤人则主张反共亲西方政策。但是在卢奥人政客因被排挤被迫退出政府组建肯尼亚人民联盟之后，肯尼亚政府基本由基库尤人把持。在这之后，打压卢奥人和左翼的政策导致了1969年基苏木大屠杀的发生，肯尼亚人民联盟被政府查禁和解散。1977年肯尼亚与坦桑尼亚的意识形态纠纷等问题最终两国关系破裂，自殖民时期开始互相合作的机构东非共同体解散。1978年肯尼亚国父乔莫·肯雅塔去世之后，他的副手丹尼尔·莫伊随即继任上位。在莫伊的任上，肯尼亚继续了专制和亲西方政策，尽管肯索战争的胜利加大了莫伊的威望，但是肯尼亚长期执行的打压反对派和工业化出现的各种不平等现象导致肯尼亚内部依旧使得肯尼亚具备了潜在的不稳定因素。尽管受到肯尼亚非洲民族联盟的镇压，但是肯尼亚左派仍未停止活动，在1974年，以马克思主义历史学家迈纳·瓦·基尼亚蒂为首的地下异见分子组建了毛派组织肯尼亚工人党，就在不久前，肯尼亚人民联盟的建立者奥金加·奥廷加和与前肯尼亚社会主义党领导人乔治·安尼奥那组建了肯尼亚非洲社会主义联盟以对抗执政党，但这一组织迅速被肯尼亚政府所镇压。根据情报显示1982年7月底，一名名叫希西家·奥丘卡的卢奥人空军一等兵士兵正在策划一场试图推翻莫伊的政变并成立了人民救赎委员会。该委员会包括了肯尼亚人民联盟的建立者奥金加·奥廷加和乔治·安尼奥那，迈纳·瓦·基尼亚蒂在内的肯尼亚左派，串联了数十名军人和军官，并决定在八月初发动政变。我们是否应该借此机会对肯尼亚进行干预，帮助肯尼亚重新与坦桑尼亚和好，或者干脆不管这件事？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

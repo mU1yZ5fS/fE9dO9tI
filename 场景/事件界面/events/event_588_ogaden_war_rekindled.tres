@@ -1,0 +1,113 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_588_ogaden_war_rekindled.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.6.1"
+
+[sub_resource type="Resource" id="Expr_som_sub10"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 10.0
+target = "42"
+
+[sub_resource type="Resource" id="Expr_som_prosov"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲苏"
+target = "42"
+
+[sub_resource type="Resource" id="Expr_not_som_prosov"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_som_prosov")])
+
+[sub_resource type="Resource" id="Expr_eth_prosov"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲苏"
+target = "41"
+
+[sub_resource type="Resource" id="Expr_eth_proprc"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "41"
+
+[sub_resource type="Resource" id="Expr_pair1"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_not_som_prosov"), SubResource("Expr_eth_prosov")])
+
+[sub_resource type="Resource" id="Expr_pair2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_not_som_prosov"), SubResource("Expr_eth_proprc")])
+
+[sub_resource type="Resource" id="Expr_pair3"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_som_prosov"), SubResource("Expr_eth_proprc")])
+
+[sub_resource type="Resource" id="Expr_bloc"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_pair1"), SubResource("Expr_pair2"), SubResource("Expr_pair3")])
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_som_sub10"), SubResource("Expr_bloc")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持索马里人的保家卫国"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_588_ogaden_war_rekindled.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持埃塞俄比亚人复仇"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_588_ogaden_war_rekindled.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "关我鸟事？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_588_ogaden_war_rekindled.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_588"
+source_event_number = 588
+trigger_priority = 58800
+title = "欧加登战火重燃"
+description = "主席同志，看来欧加登的后遗症并未就此了结。阿卜杜拉希·优素福上校曾担任索马里国民军的指挥官，正是他领导了1978年那场失败的政变，之后他立即逃往埃塞俄比亚。在埃塞俄比亚，优素福打造了为一个名为拯救索马里民主阵线（SSDF）的武装反对巴雷政权的组织。他领导了该组织，不久后开始与埃塞俄比亚军队联手骚扰索马里军队。\n同时，索马里也拒绝承认其在欧加登的惨败，宣传中仍然强调大索马里理念。近期，双方又一次在边境摩拳擦掌，颇有大打出手的劲头。而埃塞俄比亚这次先发制人，派出了大量部队越过边境，这很有可能变成又一次的欧加登战争，主席同志，一边是我们的老朋友，而另一边是苏联走狗，但他终究会是个麻烦的朋友，我们该帮谁呢？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

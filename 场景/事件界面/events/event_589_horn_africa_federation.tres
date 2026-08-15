@@ -1,0 +1,102 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_589_horn_africa_federation.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_som_proprc"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "42"
+
+[sub_resource type="Resource" id="Expr_eth_proprc"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "41"
+
+[sub_resource type="Resource" id="Expr_som_gov_not0"]
+script = ExtResource("3_expr")
+type = 26
+key = "government"
+value = 0.0
+target = "42"
+
+[sub_resource type="Resource" id="Expr_eth_gov_not0"]
+script = ExtResource("3_expr")
+type = 26
+key = "government"
+value = 0.0
+target = "41"
+
+[sub_resource type="Resource" id="Expr_mod6"]
+script = ExtResource("3_expr")
+type = 2
+key = "6"
+
+[sub_resource type="Resource" id="Expr_china_gov1"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 1.0
+target = "1"
+
+[sub_resource type="Resource" id="Expr_china_sub0"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 0.0
+target = "1"
+
+[sub_resource type="Resource" id="Expr_china_soc"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_china_gov1"), SubResource("Expr_china_sub0")])
+
+[sub_resource type="Resource" id="Expr_not_403"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_403"
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_som_proprc"), SubResource("Expr_eth_proprc"), SubResource("Expr_som_gov_not0"), SubResource("Expr_eth_gov_not0"), SubResource("Expr_mod6"), SubResource("Expr_china_soc"), SubResource("Expr_not_403")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "埃索情谊深，同志加兄弟！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_589_horn_africa_federation.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "还是暂时放一下这个想法吧……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_589_horn_africa_federation.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_589"
+source_event_number = 589
+trigger_priority = 58900
+title = "在同一面红旗之下"
+description = "1977年，古巴领导人菲德尔·卡斯特罗曾试图推动埃塞俄比亚与索马里两个亲苏的“社会主义国家”与南也门组成一个社会主义联盟，然而，在亲自见到了巴雷与门格斯图这两位“革命新星”后，大失所望的卡斯特罗终究还是放弃了这个异想天开的想法。此后没过多长时间，一场围绕着欧加登地区的血腥冲突就席卷了两国，联邦的构想也彻底被埃塞俄比亚与索马里间的血海深仇所埋葬。\n不过，在两位红皮独裁者都被革命所推翻、非洲之角换了新颜的今天，两国政府已经开展了密切的合作，并就欧加登问题展开了谈判。在谈判过程中，建立一个涵盖索马里与埃塞俄比亚的非洲之角联邦的提议又重新回到了两国人民的视线之内。也许我们可以推波助澜，完成古巴佬的未竟之事，让东非的这两个革命国家真正携起手来，化干戈为玉帛，结成一个独立、民主、平等、不结盟的社会主义联邦？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])
