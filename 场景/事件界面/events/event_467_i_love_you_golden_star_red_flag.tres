@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_467_i_love_you_golden_star_red_flag.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.6.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "马共的问题必须解决，不过我们需要清除一些障碍"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_467_i_love_you_golden_star_red_flag.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "劝说他们重新达成统一"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_467_i_love_you_golden_star_red_flag.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "还是不掺和的好"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_467_i_love_you_golden_star_red_flag.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_467"
+source_event_number = 467
+trigger_priority = 46700
+title = "我爱你金星红旗"
+description = "马共（马列）和马共（革命派）的代表来到了我们国家，找上了中共中央对外联络部，表达了与由于马来亚共产党再次统一的愿望。过去，由于马共北马来亚局肃反扩大化的错误与投机分子的影响，共产党内部也发生了分裂，原第八支队与第十二支队二区在70年代初分裂出去，分别建立了马来亚共产党（革命派）和马来亚共产党（马列），在为数不多的根据地上兄弟阋墙。再说说马来西亚国内的情况，作为亚洲四小龙之一，马来西亚迎来了自身经济的腾飞，但与绝大多数的新兴资本主义经济体一样，腾飞的代价便是贫富分化的极大加剧，这促使一度销声匿迹的左派力量重新壮大：合法范围内，马来西亚人民社会主义党等议会左翼政党正积极进行着宪制斗争；而非法范围内，马来亚共产党、北加里曼丹共产党及其武装部队和统战组织不断袭扰政府，马来亚民族解放军长征后一度失联的旧地下组织残余成员与前议会左翼政党成员们在受到文化大革命影响并激进化后组建的各地下组织也在秘密的协助马共进行斗争，但是这些组织与马共是平行关系，马共对他们缺乏有效的领导。主席同志，我们是否该帮他们一把？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

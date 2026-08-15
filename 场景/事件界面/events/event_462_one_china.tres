@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_462_one_china.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "结果将会如何？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_462_one_china.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_462"
+source_event_number = 462
+trigger_priority = 46200
+title = "一个中国?"
+description = "在我们消除威权分子的毒害并确立自由民主的政治体制后，美国与我们的关系日益升温，我们也不断加强与他们各方面的合作。随着时间的推移，我们开始再度审视两岸和平统一的可能性。令人欣喜的是，美国人出于战略需要，居然愿意帮助我们与台湾当局斡旋！这表明他们支持我们的统一。我们离统一，似乎只有一步之遥！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

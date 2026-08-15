@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_460_formosa_winter.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.12.10"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "联络美丽岛组织内的左派，他们说不定在未来会有用。（需要5特勤和10军事力量）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_460_formosa_winter.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "声援美丽岛组织"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_460_formosa_winter.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们心有余而力不足"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_460_formosa_winter.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_460"
+source_event_number = 460
+trigger_priority = 46000
+title = "福尔摩沙之冬"
+description = "在国民党治理下没有组个人党的自由，所谓的“党外”，指的就是一群非属国民党、进行反对国民党独裁统治、争取民主、自由运动的政治组织或个人。在早期，党外人士主要是通过创办杂志来宣传自己的政治主张。\n1979年5月中，黄信介申请创办一个新的杂志，杂志名称之由来，为周清玉提议取李双泽编曲，杨祖珺演唱的歌曲－《美丽岛》为名。6月2日，《美丽岛》杂志社以“形成没有党名的政党，主张实行国会全面改选与地方首长改选”为目的在台北市正式挂牌成立。在7月9日的会议上，该社正式确定许信良为社长，吕秀莲、黄天福担任副社长，张俊宏为总编辑，施明德为总经理。当时《美丽岛》旗下网罗了各派的党外人士，包括了当时倾向统一的社会主义团体“夏潮”、以及以康宁祥为代表的稳健派，但是主要还是以施明德等激进派为骨干。\n11月20日，“美丽岛政团”在台中市太平国小举办“美丽岛之夜”，会中开始筹划在世界人权日当天在高雄举行游行。而伪政府也正准备磨刀霍霍，给这群人一个下马威。12月9日，国民党政府紧急通过电视宣布将于高雄举行冬令宵禁演习，以避免“妨碍交通与社会秩序”为由，将在次日禁止任何示威游行活动，实为针对《美丽岛》可能举办的游行活动进行监控，高雄市政府警察局随即调集大批优势警力包围《美丽岛》杂志社高雄市服务处，阻挡其宣传车宣传游行。当日，两名《美丽岛》的义工姚国建和邱胜雄突破包围，驾驶两辆由“发财车”改装的宣传车行驶至高雄市街头进行宣传，在发传单告示次日活动时于鼓山分局附近被警察拦下，抢走扩音器、录音带等宣传工具，并逮捕两人施以殴打及刑求。《美丽岛》杂志社工作人员在得知消息后立即前往警察局要求放人，聚集群众于警局外，警察紧急封锁陆桥，避免更多民众进入，一直到次日凌晨，两人才被释放。这次的“鼓山事件”引起公愤，《美丽岛》杂志社高雄市服务处紧急动员各地党外人士前来声援。\n主席同志，我们该干什么？名义上我们应该做点什么，毕竟台湾是我们的一部分，对吧？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

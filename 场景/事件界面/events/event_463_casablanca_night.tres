@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_463_casablanca_night.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.6.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "在阿尔及利亚的帮助下，支持摩洛哥人民的斗争"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_463_casablanca_night.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "煽动西撒人阵起义"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_463_casablanca_night.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "借此机会，介入摩洛哥王国的局势"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_463_casablanca_night.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "这里是摩洛哥还是摩纳哥？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_463_casablanca_night.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_463"
+source_event_number = 463
+trigger_priority = 46300
+title = "卡萨布兰卡一夜"
+description = "自1975年摩洛哥发动“绿色进军”行动以来，该国事实上霸占了整个西撒哈拉地区，并且陷入了与萨基亚阿姆拉和里奥德奥罗人民解放阵线旷日持久的战争中。摩洛哥虽然在正面战场上节节取胜，但巨大的军事开支逐渐压垮了这个马格里布国家的经济。更为雪上加霜的是，摩洛哥赖以为生的磷酸盐矿迅速贬值，从原先的65美元一吨跌至31美元一吨。为了继续维持对西撒哈拉矿区的控制，哈桑二世不得不从国外借债，到了1981年摩洛哥的外债已经高达79亿美元。\n此时，在卡萨布兰卡爆发了大规模的警民冲突。大量失业的工人和矿工为了向当局表达对食物涨价的不满。一场和平请愿迅速扩大为了游行和打砸抢。该市的富人区和商业街遭到了近乎于疯狂的破坏。在其中还有人打出了要求哈桑二世下野的口号，双方的矛盾越发不可调和，似乎马上就要爆发。\n主席同志，我们要不要做点什么？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

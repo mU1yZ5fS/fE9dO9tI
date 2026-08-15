@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_469_red_hong_kong.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_brit_lost"]
+script = ExtResource("3_expr")
+type = 14
+key = "BritLost"
+
+[sub_resource type="Resource" id="Expr_hk_status"]
+script = ExtResource("3_expr")
+type = 1
+key = "hk_macau_status"
+value = 0
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_brit_lost"), SubResource("Expr_hk_status")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "重启对香港同志的援助活动，让帝国主义者看看我们的决心！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_469_red_hong_kong.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们应该冷静一些……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_469_red_hong_kong.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_469"
+source_event_number = 469
+trigger_priority = 46900
+title = "红色香江"
+description = "在1967年5月7日，距今约十五年，由九龙一家胶花厂的劳资纠纷发展而成的震动整个香港的五月风暴。香港的同志们一直坚持了七个多月，我们也曾为他们的斗争进行倾力援助。然而，随着抗英斗争的激化，香港的左派愈发开始倾向于与港英当局进行公开斗争，甚至于通过炸弹恐怖袭击的方式来对抗港英当局的反动镇压。最终，在时任总理周恩来的直接命令下，香港的左派同志最终停止了这场抵抗英国暴政的活动。\n现在，随着英国在马岛战争的失利，日不落帝国正在走向落幕。部分同志已经开始提出要重启对香港同志们的援助。这无疑是一个耗资巨大且短时间内不一定看到成效的事情，却能在很大程度上向世界展示我们对固有领土和世界革命的态度，但一些不那么激进党员有所顾虑，认为这么做会严重损害我们和西方世界的外交关系。又或者说，我们应该用更稳妥的方式来处理港澳问题?"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_brit_lost"), SubResource("Expr_hk_status"), SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

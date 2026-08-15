@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_458_mali_pull_the_fangs.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.2.28"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持特拉奥雷总统继续推进民族民主国家的建设"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_458_mali_pull_the_fangs.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持杜卡拉、巴加约科和登贝莱等同志进行军事革命"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_458_mali_pull_the_fangs.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "两拨人都不可信，组织一个革命派的统一阵线"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_458_mali_pull_the_fangs.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "马里的内政不由我们过问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_458_mali_pull_the_fangs.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_458"
+source_event_number = 458
+trigger_priority = 45800
+title = "拔掉獠牙"
+description = "在马里国父莫迪博·凯塔和执政党苏丹联盟-非洲民主联盟的领导下，马里在建国初期进行着非洲社会主义的建设，建立起党政军一体化领导和中央集权的体制，开展农业集体化和国营经济主导的计划经济的建设，尝试让国家经济脱离法国影响，组织大多由青年组织成员参与的人民民兵，并与中国和苏联等社会主义国家维持了良好关系，凯塔甚至还声明支持苏联对布拉格之春的干预。|1967年8月22日，凯塔与党内左翼成员结盟，发起了一场“积极革命”运动，以清除殖民遗毒和党内修正主义。他解散了政治局，成立全国革命保卫委员会，在全国推行马克思主义政治教育、打击殖民遗毒、倡导革命新文化并授权人民民兵打击殖民文化和修正主义者，这些政策引发了国内的不满；再加上由于干旱、国企效益不良、财政赤字巨大和通胀，导致马里的社会主义经济建设成果不理想，在1967年发生了经济困难。这些政策使得以穆萨·特拉奥雷为首的年轻军官集团于1968年拨乱反正，以“终结凯塔的独裁统治”为名推翻政府、废除宪法，解散人民民兵，建立起全国解放军事委员会的军事统治。新政府在延续凯塔部分“不过激”政策（如支持非洲民族主义运动，维持与中、苏的友好合作，继续国家主导的经济等）的同时，与法国恢复了友好关系。尽管军政府的反对派被送往位于该国北部的“劳动营”，国父凯塔也于1977年在监狱中去世，但该国依旧暗流涌动。|1974年，特拉奥雷政府颁布了一党制的新宪法，开始筹建相应的群众组织和新政党，推进政府向文官统治转型。但与此同时，全国解放军事委员会内分成了以特拉奥雷为首的主张推进向文官统治转型的一派和以国防、内政与安全部长基西马·杜卡拉、安全部门负责人吉科罗·巴加约科、公共工程部长卡里姆·登贝莱为首的反对权力向文官转型的一派。其中，后一派与我国和苏联的关系密切，并已经获得了马里全国工人联合会总书记赛义杜·迪亚洛的支持。今年起，两派的斗争已经转向白热化，1978年1月3日，特拉奥雷要求杜卡拉辞职，遭其拒绝（杜卡拉称“与总统共掌权，亦当共卸任”）。据传，反对派现在正准备对特拉奥雷采取“行动”，而特拉奥雷也已经对他们的活动愈加警惕。|与此同时，左翼力量主导着马里的建制外反对派的活动，他们分别是前执政党苏丹联盟-非洲民主联盟、分裂出各派的马里劳动党、亲苏的马里革命与民主党等组织以及其他工会和学生团体。|我们要不要做些什么？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

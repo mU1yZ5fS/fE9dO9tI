@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_468_south_pacific_waves.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_thai_cw"]
+script = ExtResource("3_expr")
+type = 25
+key = "cw"
+value = 1
+target = "34"
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.2.1"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_thai_cw"), SubResource("Expr_date")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "是时候了，马来亚和北加里曼丹的人民已经盼了很久了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_468_south_pacific_waves.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "让他们在议会斗吧，保全势力也好"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_468_south_pacific_waves.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_468"
+source_event_number = 468
+trigger_priority = 46800
+title = "南太平洋海涛翻腾"
+description = "主席同志，随着泰国革命的胜利，马来亚问题也摆在了我们眼前：原本因为“新村政策”力量大幅削弱的马来亚共产党、马来亚民族解放军和北加里曼丹共产党、北加里曼丹人民军在我们和泰国革命政权的协助下愈发壮大，马来西亚和新加坡政府不断敦促泰国革命政府停止对马来亚共产党和北加里曼丹共产党的援助。东南亚各个国家革命的成功以及他们对马来西亚的经济封锁使得马来西亚的经济陷入困境。加上马来西亚和新加坡对左翼运动的猎巫式镇压（大量温和派议会党甚至被直接查禁）使得民众越发不满——这些国家的左翼思潮像68运动时期一样再次流行起来了。学生运动、工人罢工和民众游行引来了政府的镇压，马来西亚像50年代一样开始实行紧急状态。现在，马来亚共产党主席陈平同志向中央委员会亲自发电，请泰国革命政府给马来亚民族解放阵线北马来半岛作为革命根据地，并恢复马来亚共产党对南泰马来族为主体地区的统治，泰国共产党中央委员会大部分人认同了这个提案。但这样的行为，基本等于让新生的革命政权走向新的战争。现在，主席同志，面对两边的压力，我们该如何抉择？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_thai_cw"), SubResource("Expr_date"), SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

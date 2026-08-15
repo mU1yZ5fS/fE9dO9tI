@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_471_maoism_in_soviet.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.9.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持他们的正义事业，并带上所有有志于此的革命小将们一同奋斗！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_471_maoism_in_soviet.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "帮助当局处理掉他们，以此为契机促进我国与苏联关系的亲善"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_471_maoism_in_soviet.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "还是让我们做个“逍遥派”吧，不要去碰这些麻烦事"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_471_maoism_in_soviet.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_471"
+source_event_number = 471
+trigger_priority = 47100
+title = "毛泽东思想在……苏联？"
+description = "如你所知，长期以来，苏联境内都不缺乏左翼异见者。而斯大林去世后，尼基塔·赫鲁晓夫开启的“去斯大林化”运动更是狠狠地挖了他们自己的墙角，为他们带来了支持反修正主义的左翼异见者。光是我国直接接触到的相关事件就有多起——1956年3月，格鲁吉亚爆发了反对去斯大林化的骚乱，这一起义被苏联当局动用军队残酷镇压，朱德同志与我国当时访苏的人民解放军代表团就曾亲历这一事件；1966年，阿尔巴尼亚发表公报公开了一个苏联地下组织——苏联革命共产党（布尔什维克），苏革共（布）在《纲领声明》中强烈谴责赫鲁晓夫集团和勃列日涅夫集团对斯大林的诽谤，反对和平共处、缓和以及苏共党领导层的奢侈生活，同时称赞阿尔巴尼亚和中国是社会主义仅留的堡垒，据称，该组织在哈萨克与远东存在活动迹象；60年代后期使馆革命的东风也曾吹到寒冷的北国，1967年1月25日，我使馆工作人员与准备回国参加文化革命的留学生在红场向列宁墓献花圈时朗诵《毛主席语录》、唱《国际歌》，被苏联军警和特务残酷镇压，还受到同情的苏联群众帮助突围，尽管有30多名学生受伤，但是他们回国后获得了热烈欢迎；此外，苏联各地还成立过各种地下的反修正主义小组，他们组织读书会，散发传单，编写纲领与宣言，有些领取过我国大使馆的宣传资料或读过毛主席著作，有些听过我国的广播，有些受到了我国留学生的影响，有些还向我党中央写过信件，勃列日涅夫集团在上台之初妄想与我国缓和时，还假惺惺地在我国代表团面前释放过一批这样的“红卫兵”。\n简单回顾历史后，请允许我报告关于苏联左翼异见组织的新动态。我们最近截获了一些非常有趣的新闻——在古比雪夫，存在一个新兴的反修异见组织“工人中心”，由石油工程师阿列克谢·拉兹拉茨基和工人格里戈里·伊萨耶夫领导，他们成功发动了十多次罢工，并组织了多个工厂委员会，分别于1976年和1979年发表了《革命共产主义运动宣言》与《第二个共产党宣言》。该组织支持斯大林与毛泽东的经验，支持无产阶级专政且赞扬文化大革命。从1980年代初开始，“工人中心”的活动分子就与从莫斯科到秋明州许多城市的支持者建立了联系。他们提出了建立非法的革命马克思主义组织的问题，有人建议将其称为无产阶级专政党。此时“工人中心”的活动家人数达到了数百人。此外，68运动与新左翼运动的风潮也对异见圈子有所影响，苏联境内也存在着许多支持新马克思主义、左翼社会民主主义、无政府主义、托洛茨基主义和新左翼的团体与圈子，他们之中的一些激进倾向或许也能为我们所用。\n知音难觅，我们要不要趁机做些什么？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

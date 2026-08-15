@@ -1,0 +1,129 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_464_unity_for_greater_victory.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_econ21"]
+script = ExtResource("3_expr")
+type = 10
+key = "econ"
+target = "21"
+
+[sub_resource type="Resource" id="Expr_econ17"]
+script = ExtResource("3_expr")
+type = 10
+key = "econ"
+target = "17"
+
+[sub_resource type="Resource" id="Expr_econ16"]
+script = ExtResource("3_expr")
+type = 10
+key = "econ"
+target = "16"
+
+[sub_resource type="Resource" id="Expr_dev17_3"]
+script = ExtResource("3_expr")
+type = 25
+key = "development"
+value = 3
+target = "17"
+
+[sub_resource type="Resource" id="Expr_and16"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_econ16"), SubResource("Expr_dev17_3")])
+
+[sub_resource type="Resource" id="Expr_or17"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_econ17"), SubResource("Expr_and16")])
+
+[sub_resource type="Resource" id="Expr_econ89"]
+script = ExtResource("3_expr")
+type = 10
+key = "econ"
+target = "89"
+
+[sub_resource type="Resource" id="Expr_econ88"]
+script = ExtResource("3_expr")
+type = 10
+key = "econ"
+target = "88"
+
+[sub_resource type="Resource" id="Expr_econ0"]
+script = ExtResource("3_expr")
+type = 10
+key = "econ"
+target = "0"
+
+[sub_resource type="Resource" id="Expr_econ1"]
+script = ExtResource("3_expr")
+type = 10
+key = "econ"
+target = "1"
+
+[sub_resource type="Resource" id="Expr_soc85"]
+script = ExtResource("3_expr")
+type = 10
+key = "soc_eu"
+target = "85"
+
+[sub_resource type="Resource" id="Expr_not_soc85"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_soc85")])
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_econ21"), SubResource("Expr_or17"), SubResource("Expr_econ89"), SubResource("Expr_econ88"), SubResource("Expr_econ0"), SubResource("Expr_econ1"), SubResource("Expr_not_soc85")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "建立一个类似于该申根协议的协议，只适用于我们军事联盟的成员"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_464_unity_for_greater_victory.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "为我们所有联盟的成员建立一个类似于该申根协议的协议"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_464_unity_for_greater_victory.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们可以稍后再议"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_464_unity_for_greater_victory.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_464"
+source_event_number = 464
+trigger_priority = 46400
+title = "团结起来，争取更大胜利"
+description = "主席同志！在布鲁塞尔的前欧洲共同体办公处中，我们找到了一项名为“申根协定”的秘密协定，其中包括在协定签字国之间不再对公民进行边境检查；外国人一旦获准进入“协议领土”内，即可在协定签字国领土上自由通行；设立警察合作与司法互助的制度，建立统一电脑系统，建立有关各类非法活动分子情况的共用档案库。我们现在的科技水平足够发达，而我们同盟内的国家也足够多，签发签证是一个巨大的问题。这个方案足够大胆，但或许会有很好的成效。不过定夺权在您手上。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_econ21"), SubResource("Expr_econ17"), SubResource("Expr_econ16"), SubResource("Expr_dev17_3"), SubResource("Expr_or17"), SubResource("Expr_and16"), SubResource("Expr_econ89"), SubResource("Expr_econ88"), SubResource("Expr_econ0"), SubResource("Expr_econ1"), SubResource("Expr_not_soc85"), SubResource("Expr_soc85"), SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
