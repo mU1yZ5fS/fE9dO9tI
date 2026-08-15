@@ -94,10 +94,16 @@ func _rebuild() -> void:
 			var foc: FocusDef = tree.get_layer(empire.current_layer)[empire.current_focus]
 			cur = "%s（第 %d/%d tick）" % [foc.title, foc.overtime, foc.time]
 		status.text = "第 %d/%d 层 · 正在研究：%s" % [empire.current_layer + 1, tree.layer_count(), cur]
+	var cumulative := 0
 	for layer: Array in tree.layers:
-		for foc: FocusDef in layer:
+		for j in layer.size():
+			var foc: FocusDef = layer[j]
 			if foc != null:
-				_grid.add_child(_make_cell(foc))
+				# 原版 FocusesScript.CreateCountryFocuses 的图标编号：
+				# num = focuses.Length - 1 - j（每层倒序填入全局数组）
+				var num := cumulative + layer.size() - 1 - j
+				_grid.add_child(_make_cell(foc, num))
+		cumulative += layer.size()
 		# 行尾补占位，保证每层独立成行
 		for i in range(COLUMNS - layer.size()):
 			var pad := Control.new()
@@ -105,12 +111,18 @@ func _rebuild() -> void:
 			_grid.add_child(pad)
 
 
-func _make_cell(foc: FocusDef) -> Button:
+func _make_cell(foc: FocusDef, global_num: int) -> Button:
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(210, 130)
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	b.tooltip_text = foc.desc if foc.desc != "" else foc.title
 	b.text = foc.title
+	# 原版 FocusButtoNScript.ChangeIcon：Resources.Load($"focusscene_sp\\{country}_{num}")
+	# 图标仅 1_0 与 1_10..1_15 存在（其余编号原版即加载失败 → 无图标，照旧）。
+	var tex := load("res://资产/UI/焦点/1_%d.png" % global_num)
+	if tex is Texture2D:
+		b.icon = tex
+		b.expand_icon = true
 	if foc.blocked:
 		b.modulate = Color(0.42, 0.42, 0.42, 1)
 	elif foc.overtime >= foc.time:
