@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_880_lancaster_house.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.12.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "殖民主义是活不久的"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_880_lancaster_house.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_880"
+source_event_number = 880
+trigger_priority = 8800
+title = "兰开斯特宫协议"
+description = "在数年的“丛林战争”后，罗得西亚已然筋疲力竭。因此，他们决定成立一个真正的多数派黑人政府，并寄希望于能够操纵选举从而继续维持自己的优势地位。\n1979年8月1日至7日，英联邦政府首脑会议在卢萨卡举行。英国政府邀请了未得到承认的津巴布韦罗得西亚政府新任总理阿贝尔.穆佐雷瓦主教和爱国阵线（津巴布韦非洲民族联盟-津巴布韦非洲联盟名称）领导人，参加在兰开斯特宫举行的制宪会议。会议的目的是讨论并就独立后的宪法条款达成一致，商定在英国统治下举行选举，使津巴布韦罗得西亚能够走向合法并获得国际社会承认的独立，各方通过政治手段解决分歧。会议于1979年9月10日正式开始。英国外交和联邦事务大臣卡林顿勋爵主持了这次会议。会议于1979年9月10日至12月15日举行，共举行了47场全体会议。1979年9月下旬，吉米·卡特总统在给参议员约翰-斯坦尼斯的一封信中称赞这次会议“迈出了重要的第一步”，但认为“未来还有许多艰难的谈判。”\n也许这次，种族主义政权真的要结束了。但我们能做什么呢？"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

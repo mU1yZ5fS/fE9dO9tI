@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_082_falklands_war.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.4.2"
+
+[sub_resource type="Resource" id="Expr_c71_gov0"]
+script = ExtResource("3_expr")
+type = 25
+target = "71"
+key = "government"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_c71_sub0"]
+script = ExtResource("3_expr")
+type = 25
+target = "71"
+key = "sub_government"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_c71_sub7"]
+script = ExtResource("3_expr")
+type = 27
+target = "71"
+key = "sub_government"
+value = 7.0
+
+[sub_resource type="Resource" id="Expr_any_c71"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_c71_gov0"), SubResource("Expr_c71_sub0"), SubResource("Expr_c71_sub7")])
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_any_c71")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "谁会赢？阿根廷的军政府，还是虚弱而遥远的英国？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_082_falklands_war.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_082"
+source_event_number = 82
+trigger_priority = 8200
+title = "福克兰群岛战争"
+description = "英国最近正在经历困难时刻，失去了它曾经显赫的影响力。由莱奥波尔多·加尔铁里领导的阿根廷军政府决定利用这一机会发动“小规模胜利战争”。4月2日，阿根廷伞兵登陆英属福克兰群岛，群岛的归属长期受阿根廷挑战，但小规模英国驻军的抵抗很快就被击溃了。作为回应，英国向群岛派出舰队，意在封锁群岛。看起来世界上又要爆发新的冲突了。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

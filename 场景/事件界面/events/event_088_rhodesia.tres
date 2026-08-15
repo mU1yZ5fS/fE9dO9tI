@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_088_rhodesia.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.3.10"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "继续支持他们的武装斗争"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_088_rhodesia.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "和新政府做朋友"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_088_rhodesia.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "什么都不做"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_088_rhodesia.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_088"
+source_event_number = 88
+trigger_priority = 880
+title = "那是怎样的时光啊"
+description = "主席同志，索尔兹伯里传来了惊人的消息，该国的种族主义政权坚冰正在消融。\n在国际社会的压力下，罗德西亚史密斯政府与非洲温和民族主义政党达成了“内部协议”。与此同时，政府继续与爱国阵线的武装抵抗作斗争，爱国阵线是由两个非洲领导党派组成的联盟：津巴布韦非洲人民联盟（ZAPU）和津巴布韦非洲民族联盟（ZANU）。我国一贯支持ZANU，而苏联支持ZAPU。\n早在1976年美国国务卿基辛格就提出过，想要解决罗得西亚问题不能通过暴力，只能通过建立行之有效的民主机构，一人一票决定该国的未来。这次签署的“内部解决方案”不可谓不进步：非洲人首次被纳入领导职位，同时建立了独立的公务员制度、司法机构、警察部队和军队。该解决方案还成立了一个由伊恩·史密斯和三名黑人政治家（穆佐雷瓦，西索尔和齐劳）组成的执行委员会，以及一个部长委员会，而史密斯保留了总理头衔。协议还指出，新政府的主要工作是起草国家宪法，在1979年4月举行选举，并与爱国阵线达成停火协议。据说该协议的另一个目标是希望结束该国的内战。选举结束后，穆佐雷瓦表示，他不希望这个国家成为“一个骗局、一个欺诈行为、一个仅有独立外表的空壳”，也不希望这个国家“成为另一个香蕉共和国”。\n很明显，这是种族主义政权开始消融的迹象。但我们该做些什么？也许我们应该像过去那样，积极的支持ZANU，也许还有ZAPU。或者顺应时代的潮流，我们该认识一位新朋友了，就像我们认识蒙博托那样。无论如何，还请您再三斟酌，这很有可能会象征着我们对民族解放运动的极速转向。对我们声誉的打击不亚于又一篇“三个世界理论”。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
