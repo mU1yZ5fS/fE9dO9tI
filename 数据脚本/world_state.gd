@@ -232,6 +232,17 @@ const 数值索引 := {
 @export var difficulty: int = 2
 @export var is_ironman: bool = false
 
+# ── DLC 开关（原版 GlobalScript.dlc: bool[5]，默认全 false）──
+# 裁决（2026-08-16）：Focus 默认开启 → dlc[0]=true；
+# 决议 45 条默认全部显示 → dlc[1..3]=true；dlc[4] 预留。
+# 旧存档缺字段时 Godot 取本默认值，自动获得全部决议（与裁决一致）。
+@export var dlc: Array[bool] = [true, true, true, true, false]
+
+# ── 中苏党际关系（原版 GameState.SOV_PRC_PartiesConnection）──
+# 原版开局 GameStartScript.cs:934 = gameState.data[30]；Focus 焦点可增减。
+# 新游戏在 world_factory 创建后同步 data[30]，旧存档无此字段取 0。
+@export var sov_prc_parties_connection: int = 0
+
 # ── 全局标记（替代原版散落 bool） ──
 @export var global_flags: Dictionary = {}
 
