@@ -10,6 +10,8 @@ const 科研场景 := "uid://d2qkifpx3o8pl"
 const 政治场景 := "uid://dsmslhxc0e8u5"
 const 概览场景 := "uid://cj3ye88n40e8y"
 const 战争场景 := "uid://bs6bexbaawcyw"
+const 决议场景 := "uid://b3dscn2yak71"
+const 焦点场景 := "uid://f0c0us7r331"
 
 
 func _ready() -> void:
@@ -26,6 +28,8 @@ func _ready() -> void:
 	_connect_nav("政治", 政治场景)
 	_connect_nav("战争", 战争场景)
 	_connect_nav("概览", 概览场景)
+	_connect_nav("决议", 决议场景)
+	_connect_nav("焦点", 焦点场景)
 	if GameManager.world != null:
 		_refresh()
 

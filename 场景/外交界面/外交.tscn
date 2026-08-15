@@ -55,6 +55,7 @@
 [ext_resource type="Texture2D" uid="uid://cchdlv7ltbfsg" path="res://资产/UI/外交/在某国影响下_苏联.png" id="53_leers"]
 [ext_resource type="Texture2D" uid="uid://eprjrxt2krfc" path="res://资产/UI/外交/国家互动按钮背景.png" id="54_32v34"]
 [ext_resource type="Texture2D" uid="uid://d0l4bgmlrwl12" path="res://资产/UI/外交/决议.png" id="55_vkq10"]
+[ext_resource type="Texture2D" path="res://资产/UI/外交/焦点.png" id="56_focus"]
 
 [sub_resource type="ShaderMaterial" id="star_mat"]
 render_priority = 0
@@ -588,12 +589,17 @@ flat = true
 icon_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="决议" type="TextureRect" parent="状态栏" unique_id=701327033]
+[node name="决议" type="TextureButton" parent="状态栏" unique_id=701327033]
 offset_left = 1800.0
 offset_right = 1880.0
 offset_bottom = 78.0
-texture = ExtResource("55_vkq10")
-expand_mode = 2
+texture_normal = ExtResource("55_vkq10")
+
+[node name="焦点" type="TextureButton" parent="状态栏" unique_id=701327034]
+offset_left = 1892.0
+offset_right = 1972.0
+offset_bottom = 78.0
+texture_normal = ExtResource("56_focus")
 
 [node name="地图模式" type="CanvasLayer" parent="." unique_id=17809947]
 script = ExtResource("9_13o5n")
@@ -1190,13 +1196,23 @@ offset_bottom = -72.0
 scale = Vector2(0.34, 0.34)
 texture = ExtResource("52_vkq10")
 
+[node name="贸易伙伴" type="TextureRect" parent="国家面板" unique_id=281754020]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 156.99999
+offset_top = -192.0
+offset_right = 276.99999
+offset_bottom = -72.0
+scale = Vector2(0.34, 0.34)
+
 [node name="在某国影响下" type="TextureRect" parent="国家面板" unique_id=441754020]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 245.99997
+offset_left = 203.99998
 offset_top = -192.0
-offset_right = 365.99997
+offset_right = 323.99998
 offset_bottom = -72.0
 scale = Vector2(0.34, 0.34)
 texture = ExtResource("53_leers")
