@@ -1,0 +1,98 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_530_japan_change_is_good.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_531"
+
+[sub_resource type="Resource" id="Expr_t0_2_0"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_527"
+
+[sub_resource type="Resource" id="Expr_t0_2_1"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_528"
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_2_0"), SubResource("Expr_t0_2_1")])
+
+[sub_resource type="Resource" id="Expr_t0_3"]
+script = ExtResource("3_expr")
+type = 26
+key = "sub_government"
+value = 8.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_t0_4"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.6.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2"), SubResource("Expr_t0_3"), SubResource("Expr_t0_4")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "促使社会党向公明党和民主社会党靠拢"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_530_japan_change_is_good.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "促使社会党向共产党靠拢"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_530_japan_change_is_good.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "关注局势变化"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_530_japan_change_is_good.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_530"
+source_event_number = 530
+trigger_priority = 53000
+title = "变则善，常变则至善"
+description = "1979年大选之后，在野党的内外问题愈发复杂和严重。其中社会党又是最突出的那一个。该党的派系斗争与路线论战并未随着派阀的解散而彻底结束，而这些争斗又反过来加深了城市市民眼中社会党的“主义”“斗士”“派阀”等形象标签——恰恰是他们所厌恶的点。公明党和民主社会党对于“社公民路线”也开始不再像以往一样热衷，转而在互相配合的同时与自由民主党进行接触，试图实现“自公民路线”。\n面对如此局面，社会党书记长飞鸟田一雄决心改革，在尝试修改纲领、调整路线的同时也与民主社会党和公明党展开积极洽谈。为了表明决心，社会党与日本共产党的关系开始愈发疏远，这让后者愤怒地指责这是社会党“在与自民党建立事实上的大联合的道路上迈出的第一步”。而诸多媒体对于“社公民路线”能否得到良好落实也提出了诸多质疑。\n针对当下的情况，我们的相关人员提供了两种方案：第一种是以公明党和民主社会党为主体，迫使社会党做出彻底的改变并在此基础上建立一个新的中道革新政党；第二种是依靠工会、青年组织、反战反核团体等社会组织，促使社会党向共产党靠拢以实现曾经的“社共共斗”构想。那么，您的选择是？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

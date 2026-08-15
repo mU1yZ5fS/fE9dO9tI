@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_508_chameleon_branch.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "62"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.2.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "扭转贝宁右转的方向！（需要8百万预算）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_508_chameleon_branch.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "将贝宁纳入经济互助委员会体系"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_508_chameleon_branch.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们无能为力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_508_chameleon_branch.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_508"
+source_event_number = 508
+trigger_priority = 50800
+title = "树枝不会在变色龙手里折断"
+description = "随着克雷库政权走社会主义道路以来已经过去了十余年。但贝宁的一切都说不上算多好，过于急切的追求工业化导致了经济发展的失衡。而公开反对法帝国主义则成为了压垮骆驼的最后一根稻草克雷库多次表示希望西方国家能帮助贝宁度过难关。他首先强调“贝宁革命的最终目的是社会主义，但社会主义要分阶段实现。”克雷库政权对小资产阶级和外国资本的态度也有了显著的转变。从一开始的完全打压与限制，再到仅在国家层面进行监管，最后则是开始准备扭转国有化进程。很明显，贝宁革命正在危机边缘，领导人同志，我们也许可以提供一笔无息贷款？这会为我们带来一个革命同志，同时狠狠的打苏联的脸。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

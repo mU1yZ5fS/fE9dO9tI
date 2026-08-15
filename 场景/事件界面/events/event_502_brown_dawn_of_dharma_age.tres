@@ -1,0 +1,97 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_502_brown_dawn_of_dharma_age.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_94"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_94"
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 1
+key = "party_system"
+value = 7.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们发动一轮新的整肃运动！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_502_brown_dawn_of_dharma_age.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "谁不改革，谁就下台……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_502_brown_dawn_of_dharma_age.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "让我们开始在社会里培育“保守革命”的原子"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_502_brown_dawn_of_dharma_age.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "这些流血看似是不必要的，但我们的确从中学到了很多……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_502_brown_dawn_of_dharma_age.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "现在我们仅仅需要击败对于总路线的怀疑就够了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_502_brown_dawn_of_dharma_age.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_502"
+source_event_number = 502
+trigger_priority = 50200
+title = "末法时代的黄褐色黎明"
+description = "主席同志！我们刚刚从天安门事件反革命分子与资产阶级自由化分子的夺权阴谋当中幸存下来。因此，在这一时刻，我们是否有必要仔细检查我们的路线，看看我们到底是哪里做错了以招致离权力中枢这么接近的动乱？党内保守派与温和派认为，虽然改革开放的本意是好的，但是在这一过程当中，步子迈的过火，要分清两种改革开放观，尤其是要采取政治运动来紧急给毒草来一场“倒春寒”。你的亲信则普遍认为，不能对保守派回到前文革时代的思想做任何让步，一定要深化改革，但应该完全保留我们在政治与文化领域的绝对支配。最后，我们还有一种比较边缘化但是在党外获得越来越多支持的思潮:那就是通过提倡民族主义，哪怕是极端民族主义来转移民众对于自由化改革的注意力，同时，还有一小部分对于我们处理天安门事件手段的持有异议的党员对这三种观点的愿景唯唯诺诺，仅赞同回击“极左派”的批判，希望时间抚平这事情对于我国自由化的创伤，假装无事发生继续推行自由化。不管你的决定是什么，我有预感，这个决定会为我国未来可能一百年会发生的所有事情埋下伏笔……"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_513_future_weapons.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 29
+value = 18.0
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们可以“借鉴”苏联的装备"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_513_future_weapons.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "让我们着手研发自己的武器"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_513_future_weapons.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "造不如买！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_513_future_weapons.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_513"
+source_event_number = 513
+trigger_priority = 51300
+title = "我们未来的武器"
+description = "同志！最近的军事委员会会议上提出了要研发并改进我们军事装备的问题。我军仍然大量装备56式半自动步枪和56式冲锋枪等落后的武器，而六三式质量过于难以保障从而被拒绝。54式重机枪，69式火箭筒甚至不能做到大量列装。很明显，如果我们卷入大规模的战争，我们很难相信中国人民解放军有能力打赢。因此我们迫切的需要最新的武器装备。一部分的方案是继续模仿并改进苏联的军事装备，就如现在一样，我们可以仿制更为先进的AK-74和PKM通用机枪。另一个方案则是开始研制小口径武器。早在1970年，中央军委常规兵器工业领导小组第六次会议上就明确指出要研制一种初速大、重量轻、杀伤威力大的步枪。\n最高领导人同志，我们正在期待您的意见……"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

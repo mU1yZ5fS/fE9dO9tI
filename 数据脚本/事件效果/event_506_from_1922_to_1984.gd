@@ -1,0 +1,203 @@
+extends "res://数据脚本/event_script_base.gd"
+
+## 原作 Event506.cs：从1922到1984（3选项）。
+## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
+## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+
+const TXT_TITLE := "从1922到1984"
+const TXT_DESC := "噩耗传来！中国人民的老朋友，几内亚人民的革命领袖塞古·杜尔死于一连串的心脏病并发症。随后，几内亚民主党选举了路易斯·兰萨那·贝阿沃吉作为总统。新总统相当软弱，这使得党内的右翼分子——兰萨纳·孔戴察觉到了可乘之机，他一直谋求向塞古·杜尔复仇。在美国的鼎力支持之下，孔戴掀起了一场反对贝阿沃吉总统的政变。事实上夺取了政权，原政府军仍然在负隅顽抗并呼吁世界各国的帮助。最高领导人同志，杜尔总统一直不希望西方势力染指他的祖国。几内亚是一块弹丸小国，但毛泽东主席也曾经鼎力支持过他们反抗葡萄牙干涉军。也许，到我们该出手的时候了？"
+const TXT_OPT0 := "开始组织一场反政变（需要2百万预算和10点军力）"
+const TXT_OPT0_DIS := "我们没有能力做这样的事"
+const TXT_OPT1 := "祝贺新政府"
+const TXT_OPT1_DIS := "我们做不到背叛盟友！"
+const TXT_OPT2 := "好吧，谁在乎呢？"
+const TXT_R0_A := "我们联络了内政部长阿卜杜拉耶·杜尔（杜尔的胞弟）和贝阿沃吉总统。表示了愿意为他们提供军事支持以促成反政变。二人欣然接受。很快，一批脸上涂着棕色迷彩的中国人民解放军士兵出现在了康康的街头，并与政变军发生了交火。几内亚人民军的六三式坦克攻入了反抗军据点，工人民兵也走上街头反抗军事管理。在我们的帮助下，几内亚人民军彻底打败了政变军官，他们要么逃入塞内加尔寻求政治避难，要么束手就擒期待政府的宽大处理。孔戴上校被当众处死，而群众为这一行为拍手叫好。经此一役，工人卫队的地位大大的提高了。几内亚人民反抗帝国主义干涉的伟业将会写入几内亚的历史书中，而杜尔的遗产也保住了。几内亚民主党宣布改为几内亚劳动党，党纲里不再宣称简单的“泛非主义”和科学社会主义，而是要在走马克思，列宁，毛泽东指出的路线的同时，继续致力于非洲国家的统一与解放。\n新政府宣布将扩大和我们的合作。尤其是在构建完善的工人阶级来对抗国家内部潜在的阶级敌人，防止资产阶级复辟。"
+const TXT_R1_A := "我们公开承认了孔戴上校的军政府，这招来了全非洲进步国家，甚至是扎伊尔的谴责。\n很快，政变军队攻占了全国，兰萨纳·孔戴上校组建了国家军事复兴委员会。并开始着手进行“去杜尔化”。大量谴责杜尔的或真或假的黑材料被大量公布，他的坟墓也从革命烈士陵园内迁出。"
+const TXT_R2_A := "很快，政变军队攻占了全国，兰萨纳·孔戴上校组建了国家军事复兴委员会。并开始着手进行“去杜尔化”。大量谴责杜尔的或真或假的黑材料被大量公布，他的坟墓也从革命烈士陵园内迁出。"
+
+func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
+	if event_def == null or world == null or event_def.options.size() < 3:
+		return
+	var opt := event_def.options
+	if ws.数值表[56] <= 2 and _tech(24) and _tag(68, "对华贸易"):
+		_enable(opt[0], TXT_OPT0)
+	else:
+		_disable(opt[0], TXT_OPT0_DIS)
+	if ws.数值表[56] > 1:
+		_enable(opt[1], TXT_OPT1)
+	else:
+		_disable(opt[1], TXT_OPT1_DIS)
+	_enable(opt[2], TXT_OPT2)
+
+func execute(context: Dictionary) -> void:
+	if not _bind_world():
+		return
+	var opt := int(context.get("option_index", -1))
+	var c68 := ws.get_country_by_legacy_index(68)
+	match opt:
+		0:
+			context["result_text"] = TXT_R0_A
+			_add(8, -(20))
+			_add(22, -(100))
+			ws.influence_prc += 50
+			_add_relation(0, -(100))
+			_add_power(0, -(50))
+			if c68 != null: c68.government = 1
+			if c68 != null: c68.sub_government = 1
+			if c68 != null: _leave_alliances(c68)
+			if c68 != null: c68.set_tag("对华贸易", true)
+			if c68 != null: c68.set_tag("亲中", true)
+			if ws.completed_event_ids.has("event_500")  and  int(ws.completed_event_ids.get("event_500", 0)) == 0:
+				if c68 != null: c68.set_tag("econ", true)
+				if c68 != null: c68.set_tag("au", true)
+		1:
+			context["result_text"] = TXT_R1_A
+			_add(8, -(10))
+			if c68 != null: c68.government = 0
+			if c68 != null: c68.sub_government = 7
+			if c68 != null: _leave_alliances(c68)
+			if c68 != null: c68.puppet_of = 21
+			if c68 != null: c68.set_tag("对华贸易", true)
+			_add_relation(0, 80)
+			_add_power(0, 50)
+		2:
+			context["result_text"] = TXT_R2_A
+			if c68 != null: c68.government = 0
+			if c68 != null: c68.sub_government = 7
+			if c68 != null: _leave_alliances(c68)
+			if c68 != null: c68.puppet_of = 21
+
+func _leader_name() -> String:
+	if ws != null and ws.leader != null and ws.leader.name_display != "":
+		return ws.leader.name_display
+	return "华国锋"
+
+
+func _office_name(pos: int) -> String:
+	if ws != null and ws.politics_positions.size() > pos:
+		var pi: int = ws.politics_positions[pos]
+		if pi >= 0 and pi < ws.politicians.size():
+			var p: PoliticianData = ws.politicians[pi]
+			if p != null and p.name_display != "":
+				return p.name_display
+	return "华国锋"
+
+
+func _event_result(event_id: String) -> int:
+	return ws.completed_event_ids.get(event_id, -1)
+
+
+func _mod_active(index: int) -> bool:
+	return index >= 0 and index < ws.modifiers.size() 		and ws.modifiers[index] != null and ws.modifiers[index].is_active
+
+
+## GameState.cs:4934-5028 ChineseSubGosstroy 完整移植（同 Event713）。
+func _chinese_sub_government() -> int:
+	var china := ws.get_country_by_legacy_index(1)
+	if china == null:
+		return 13
+	if d.size() <= W.I_TERRITORY:
+		return 13
+	var data := d
+	var result := 13
+	if china.government == 0:
+		if _event_result("event_674") == 2:
+			result = 9
+		elif china.has_tag("nazimao"):
+			result = 22
+		elif ws.completed_event_ids.has("event_912") and _event_result("event_912") == 0:
+			result = 19
+		elif data[W.I_PARTY_SYSTEM] == 8:
+			result = 20
+		elif ws.completed_event_ids.has("event_503") and _event_result("event_503") == 0:
+			result = 10
+		elif data[W.I_IDEOLOGY] <= 2 and data[W.I_ECON_SYSTEM] < 13 				and data[W.I_DIPLO] >= 700 and data[W.I_PARTY_SYSTEM] < 8 				and _mod_active(6) and _mod_active(3):
+			result = 0
+		elif (data[W.I_ECON_SYSTEM] >= 13 and data[W.I_WAR_SUPPORT] >= 700 and not _mod_active(6)) 				or _mod_active(38):
+			result = 9
+		elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_WAR_SUPPORT] >= 700 				and data[W.I_DIPLO] >= 700 and (_mod_active(6) or _mod_active(3)):
+			result = 10
+		elif data[W.I_ECON_SYSTEM] >= 13 and not _mod_active(6):
+			result = 7
+		else:
+			result = 13
+	elif china.government == 1:
+		if _mod_active(49):
+			result = 18
+		elif _mod_active(6) and _mod_active(3) and data[W.I_PARTY_SYSTEM] <= 7 				and data[W.I_ECON_SYSTEM] <= 12 and data[W.I_RELIGION] <= 25:
+			result = 17
+		elif data[W.I_IDEOLOGY] == 1 and not _mod_active(6) and data[W.I_RELIGION] <= 26:
+			result = 16
+		elif data[W.I_ECON_SYSTEM] < 13 and data[W.I_PRESS_POLICY] >= 17 				and data[W.I_IDEOLOGY] == 1 and data[W.I_RELIGION] <= 26:
+			result = 2
+		else:
+			result = 1
+	elif china.government == 2:
+		if _mod_active(40):
+			result = 8
+		elif data[W.I_IDEOLOGY] >= 2 and data[W.I_ECON_SYSTEM] >= 13 				and data[W.I_DIPLO] <= 700 and data[W.I_PARTY_SYSTEM] >= 8 				and data[W.I_PRESS_POLICY] >= 18 and not china.has_tag("ovd"):
+			result = 14
+		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] >= 12 				and data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 300 				and data[W.I_TERRITORY] > 21 and data[W.I_WAR_SUPPORT] >= 700:
+			result = 11
+		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] <= 14 				and data[W.I_DIPLO] >= 500 and data[W.I_ECON_SYSTEM] > 11 				and data[W.I_WAR_SUPPORT] >= 400:
+			result = 8
+		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] <= 13 				and data[W.I_PRESS_POLICY] > 17:
+			result = 3
+		elif data[W.I_PARTY_SYSTEM] <= 8 				and (data[W.I_ECON_SYSTEM] == 13 or data[W.I_ECON_SYSTEM] == 12) 				and data[W.I_WAR_SUPPORT] < 700 and not _mod_active(3) 				and data[W.I_PRESS_POLICY] >= 17:
+			result = 21
+		else:
+			result = 15
+	elif china.government != 3:
+		result = 13
+	elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 500:
+		result = 4
+	elif (data[W.I_PARTY_SYSTEM] <= 8 and data[W.I_PRESS_POLICY] <= 18) 			or data[W.I_WAR_SUPPORT] >= 700:
+		result = 12
+	elif data[W.I_ECON_SYSTEM] > 13 and data[W.I_DIPLO] < 700:
+		result = 6
+	else:
+		result = 5
+	return result
+
+
+func _tech(idx: int) -> bool:
+	return ws != null and ws.techs != null and idx >= 0 and idx < ws.techs.unlocked.size() and ws.techs.unlocked[idx]
+
+
+func _mod(idx: int) -> bool:
+	return ws != null and idx >= 0 and idx < ws.modifiers.size() and ws.modifiers[idx].is_active
+
+
+func _empire_rel(idx: int) -> int:
+	if ws != null and idx >= 0 and idx < ws.empires.size() and ws.empires[idx] != null:
+		return ws.empires[idx].relations
+	return 0
+
+
+func _empire_power(idx: int) -> int:
+	if ws != null and idx >= 0 and idx < ws.empires.size() and ws.empires[idx] != null:
+		return ws.empires[idx].power
+	return 0
+
+
+func _cf(idx: int, field: String) -> int:
+	var c := ws.get_country_by_legacy_index(idx)
+	if c == null:
+		return 0
+	match field:
+		"Gosstroy": return c.government
+		"SubGosstroy": return c.sub_government
+		"dev": return c.development
+		"spec": return c.special
+		"soc_stab": return c.social_stability
+		"stab": return c.stab
+		"puppetOf": return c.puppet_of
+		"prcpower": return c.prc_power
+		"prcinfl": return c.prc_influence
+	return 0
+
+
+func _tag(idx: int, tag: String) -> bool:
+	var c := ws.get_country_by_legacy_index(idx)
+	return c != null and c.has_tag(tag)

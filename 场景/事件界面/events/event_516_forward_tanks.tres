@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_516_forward_tanks.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "很明显，改进火炮能解决我们的问题！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_516_forward_tanks.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "122工程是我们值得借鉴的东西"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_516_forward_tanks.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们可以买点其他国家的坦克吗？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_516_forward_tanks.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_516"
+source_event_number = 516
+trigger_priority = 51600
+title = "前进，坦克！"
+description = "主席同志，随着中越战争的结束，我们不得不意识到一件事情，我们的坦克：仿制于T-54A的59式坦克实在是过于老旧，而独立研发的69式坦克在战争的表现虽然说不上是糟糕，也可以说是在面对反坦克武器时毫无招架之力，若是用这般的武器很难保证在未来战场上的优势。我们的坦克急需现代化，但问题是：从哪个方面？包头一机的方案为替换原有的火控系统和火炮，换装79型105毫米滑膛炮将会大大提高战斗力；也有人觉得应该借鉴在“二四会战”中的坦克样车，以122工程为蓝本，从而从根本上改进我国坦克；也有少部分人认为应当借助我们和西方国家的关系而购入新坦克。无论如何，中央军事委员会仍然在等待您的意见。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

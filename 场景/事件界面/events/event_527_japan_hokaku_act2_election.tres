@@ -1,0 +1,151 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_527_japan_hokaku_act2_election.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_t0_1_0_0"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_1_0_1_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_1_0_1"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_1_0_1_0")])
+
+[sub_resource type="Resource" id="Expr_t0_1_0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_1_0_0"), SubResource("Expr_t0_1_0_1")])
+
+[sub_resource type="Resource" id="Expr_t0_1_1_0"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_1_1_1"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_1_1_2"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_525"
+
+[sub_resource type="Resource" id="Expr_t0_1_1_3_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_525"
+
+[sub_resource type="Resource" id="Expr_t0_1_1_3"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_1_1_3_0")])
+
+[sub_resource type="Resource" id="Expr_t0_1_1"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_1_1_0"), SubResource("Expr_t0_1_1_1"), SubResource("Expr_t0_1_1_2"), SubResource("Expr_t0_1_1_3")])
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_1_0"), SubResource("Expr_t0_1_1")])
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.10.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "向社会党伸出援手"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_527_japan_hokaku_act2_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "助其他在野党一臂之力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_527_japan_hokaku_act2_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "帮助共产党"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_527_japan_hokaku_act2_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "为自由民主党提供帮助"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_527_japan_hokaku_act2_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "让我们观望局势发展"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_527_japan_hokaku_act2_election.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_527"
+source_event_number = 527
+trigger_priority = 52700
+title = "保革伯仲：第二幕"
+description = "因为在党总裁竞选中输给了大平正芳，自由民主党首相福田赳夫正式辞去党总裁的职务，其他内阁成员也随之辞职。而福田内阁也成为了日本宪法中唯一一个因执政党领导人选举失败而辞职的内阁。10月7日，新一届众议院选举即将开始。此时的自由民主党依旧深陷洛克希德丑闻之中。伴随着秘密津贴和空跑部委等违规行为的曝光，民众对执政党的批评愈演愈烈。此外大平正芳打着财政重建的旗号主张征收一般消费税，但遭到党内外强烈反对。虽然他本人最终撤回了提案，但这一行为致使许多人对执政党的不满加深了。\n在新的书记长飞鸟田一雄的带领下，社会党开始调整其原有路线，并与公明党和民主社会党正式建立了联系。但后两党对社会党目前的情况仍抱有疑虑。上届选举的结果以及社会党的内部纷争让两党中的一部分人开始尝试与自由民主党组成联盟（尽管他们仍未放弃“社公民路线”）。而日本共产党也积极拉拢城市市民的选票，试图进一步增强自身的实力。\n接下来，我们该选择行动方向了：是支援社会党完成参政交代的目标还是援助共产党扩大它的势力范围，亦或是对其他在野党给予更多帮助。又或者，我们可以继续向自由民主党伸出援手，毕竟现任总裁大平正芳是前田中角荣内阁的外交大臣，他积极参与到了中日邦交正常化的进程中并与我们建立了不错的关系。如果能够帮他一把，不仅可以进一步深化两国贸易关系，也能借此缓和与美国的关系。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

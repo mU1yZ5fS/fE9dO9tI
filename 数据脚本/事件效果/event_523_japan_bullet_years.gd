@@ -1,0 +1,175 @@
+extends "res://数据脚本/event_script_base.gd"
+
+## 原作 Event523.cs：日本的铅弹岁月（2选项）。
+## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
+## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+
+const TXT_TITLE := "日本的铅弹岁月"
+const TXT_DESC := "在60年代世界范围内的社会运动浪潮背景下，以1969年的安田讲堂事件为标志，第二次全学联风暴席卷日本。而在这些学生团体中，又以共产主义者同盟的赤军派、日本革命共产主义者同盟的中核派、革马派等组织最为活跃（这些团体大都以托洛茨基主义为指导，但具体细节上有诸多分歧且对立严重）。\n在整个60年代与70年代初，这些团体为了“实践革命”采取了一系列激进行动，包括侵入美军基地投掷燃烧瓶与炸弹、进行街头武装暴动、袭击警局抢夺武器等。同时由于它们的极度分裂与彼此对立，互相之间爆发过大量冲突，包括震惊日本的浅间山庄事件。最终在国际新左翼运动的逐步退潮与日本政府的巧妙打击下，至1976年，大大小小的团体已经基本被一网打尽，只剩下个别人员依旧试图有所行动。并且由于激进左派此前的一系列过激行动（以特拉维夫机场事件为代表），它们已经被普遍定性为恐怖组织。\n现在随着我们实力的不断增长，一些人提出了一个惊人的提议：尝试与幸存者建立联系并将残余的团体合并成为一个新组织，但不是要继续像之前一样只走盲动的激进暴力路线，而是让他们更多深入劳动者之中发展组织，同时凭借这些人过去对城市学生相关情况的了解重新打入校园当中，以便有朝一日再次唤醒学生们的热情。虽然它们过去失败了，但这次有了我们的指导，也许能够得到不一样的结果？但是大多数人对这一提议持反对态度：这些人不仅势单力薄，而且早已与日本社会之间产生了巨大隔阂，难以发挥太大作用。那么，我们应该怎么办？"
+const TXT_OPT0 := "与残余团体建立联系并尝试将它们合并"
+const TXT_OPT0_DIS := "我们不可能支持极左恐怖分子！"
+const TXT_OPT1 := "无视该建议"
+const TXT_R0_A := "多亏了出色的特勤帮助，我们成功与中核派、革马派与其他激进组织的残留成员建立联系。尽管彼此之间的意识形态存在巨大差异，但是谁又能拒绝长期且稳定的资金、武器和工具援助呢？\n在一次集体会议后，各个团体均同意暂时联合起来组成日本共产主义抵抗者同盟。为了彰显它的实力，该团体向自由民主党总部、美军基地均实施了炸弹袭击，这在社会上引起了不同的反应。同时在我们的帮助下，一批新的学生活动家开始深入日工劳动者等工人阶级现场发展组织，开展工会活动。整体而言，该团体开始从单纯的激进暴力全面转型成为一个“工人党”，并开始建立完整的组织体系。尽管内部依旧有着诸多矛盾，但至少最初的架构已经显现。至于未来如何，就不得而知了。"
+const TXT_R1_A := "支持这些团体不仅需要长期的援助，而且要冒着事情暴露之后被大批国家指责为“恐怖主义支持者”的风险，风险实在是太大了。况且为什么要这些没有系统理论基础、没有基层组织甚至没有统一指导的小团体给予帮助？与其从零开始手把手教育这些冒失的青年，还不如优先向那些势力更强，组织架构更完善的左翼组织伸出援手！\n最终，在缺乏外部支援以及日本警方的围堵下，日本国内的左翼激进团体陆续沉寂下去。一些势力相对较大的团体则开始顺应国际潮流的转向，转型成为关注环保问题、妇女权益、核风险等问题的新左翼团体。但无论如何，属于这些人的铅弹岁月，已经远去了……"
+
+func prepare(event_def: EventDef, world: WorldState) -> void:
+	_bind_world()
+	if event_def == null or world == null or event_def.options.size() < 2:
+		return
+	var opt := event_def.options
+	if ws.数值表[56] <= 1:
+		_enable(opt[0], TXT_OPT0)
+	else:
+		_disable(opt[0], TXT_OPT0_DIS)
+	_enable(opt[1], TXT_OPT1)
+
+func execute(context: Dictionary) -> void:
+	if not _bind_world():
+		return
+	var opt := int(context.get("option_index", -1))
+	var c44 := ws.get_country_by_legacy_index(44)
+	match opt:
+		0:
+			context["result_text"] = TXT_R0_A
+			# UNHANDLED: this.a.allcountries[44].prcpower = 10
+			_add(9, -(50))
+			_add(8, -(50))
+			_add(1, 50)
+			_add(3, 50)
+			_add(6, 5)
+		1:
+			context["result_text"] = TXT_R1_A
+
+func _leader_name() -> String:
+	if ws != null and ws.leader != null and ws.leader.name_display != "":
+		return ws.leader.name_display
+	return "华国锋"
+
+
+func _office_name(pos: int) -> String:
+	if ws != null and ws.politics_positions.size() > pos:
+		var pi: int = ws.politics_positions[pos]
+		if pi >= 0 and pi < ws.politicians.size():
+			var p: PoliticianData = ws.politicians[pi]
+			if p != null and p.name_display != "":
+				return p.name_display
+	return "华国锋"
+
+
+func _event_result(event_id: String) -> int:
+	return ws.completed_event_ids.get(event_id, -1)
+
+
+func _mod_active(index: int) -> bool:
+	return index >= 0 and index < ws.modifiers.size() 		and ws.modifiers[index] != null and ws.modifiers[index].is_active
+
+
+## GameState.cs:4934-5028 ChineseSubGosstroy 完整移植（同 Event713）。
+func _chinese_sub_government() -> int:
+	var china := ws.get_country_by_legacy_index(1)
+	if china == null:
+		return 13
+	if d.size() <= W.I_TERRITORY:
+		return 13
+	var data := d
+	var result := 13
+	if china.government == 0:
+		if _event_result("event_674") == 2:
+			result = 9
+		elif china.has_tag("nazimao"):
+			result = 22
+		elif ws.completed_event_ids.has("event_912") and _event_result("event_912") == 0:
+			result = 19
+		elif data[W.I_PARTY_SYSTEM] == 8:
+			result = 20
+		elif ws.completed_event_ids.has("event_503") and _event_result("event_503") == 0:
+			result = 10
+		elif data[W.I_IDEOLOGY] <= 2 and data[W.I_ECON_SYSTEM] < 13 				and data[W.I_DIPLO] >= 700 and data[W.I_PARTY_SYSTEM] < 8 				and _mod_active(6) and _mod_active(3):
+			result = 0
+		elif (data[W.I_ECON_SYSTEM] >= 13 and data[W.I_WAR_SUPPORT] >= 700 and not _mod_active(6)) 				or _mod_active(38):
+			result = 9
+		elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_WAR_SUPPORT] >= 700 				and data[W.I_DIPLO] >= 700 and (_mod_active(6) or _mod_active(3)):
+			result = 10
+		elif data[W.I_ECON_SYSTEM] >= 13 and not _mod_active(6):
+			result = 7
+		else:
+			result = 13
+	elif china.government == 1:
+		if _mod_active(49):
+			result = 18
+		elif _mod_active(6) and _mod_active(3) and data[W.I_PARTY_SYSTEM] <= 7 				and data[W.I_ECON_SYSTEM] <= 12 and data[W.I_RELIGION] <= 25:
+			result = 17
+		elif data[W.I_IDEOLOGY] == 1 and not _mod_active(6) and data[W.I_RELIGION] <= 26:
+			result = 16
+		elif data[W.I_ECON_SYSTEM] < 13 and data[W.I_PRESS_POLICY] >= 17 				and data[W.I_IDEOLOGY] == 1 and data[W.I_RELIGION] <= 26:
+			result = 2
+		else:
+			result = 1
+	elif china.government == 2:
+		if _mod_active(40):
+			result = 8
+		elif data[W.I_IDEOLOGY] >= 2 and data[W.I_ECON_SYSTEM] >= 13 				and data[W.I_DIPLO] <= 700 and data[W.I_PARTY_SYSTEM] >= 8 				and data[W.I_PRESS_POLICY] >= 18 and not china.has_tag("ovd"):
+			result = 14
+		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] >= 12 				and data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 300 				and data[W.I_TERRITORY] > 21 and data[W.I_WAR_SUPPORT] >= 700:
+			result = 11
+		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] <= 14 				and data[W.I_DIPLO] >= 500 and data[W.I_ECON_SYSTEM] > 11 				and data[W.I_WAR_SUPPORT] >= 400:
+			result = 8
+		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] <= 13 				and data[W.I_PRESS_POLICY] > 17:
+			result = 3
+		elif data[W.I_PARTY_SYSTEM] <= 8 				and (data[W.I_ECON_SYSTEM] == 13 or data[W.I_ECON_SYSTEM] == 12) 				and data[W.I_WAR_SUPPORT] < 700 and not _mod_active(3) 				and data[W.I_PRESS_POLICY] >= 17:
+			result = 21
+		else:
+			result = 15
+	elif china.government != 3:
+		result = 13
+	elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 500:
+		result = 4
+	elif (data[W.I_PARTY_SYSTEM] <= 8 and data[W.I_PRESS_POLICY] <= 18) 			or data[W.I_WAR_SUPPORT] >= 700:
+		result = 12
+	elif data[W.I_ECON_SYSTEM] > 13 and data[W.I_DIPLO] < 700:
+		result = 6
+	else:
+		result = 5
+	return result
+
+
+func _tech(idx: int) -> bool:
+	return ws != null and ws.techs != null and idx >= 0 and idx < ws.techs.unlocked.size() and ws.techs.unlocked[idx]
+
+
+func _mod(idx: int) -> bool:
+	return ws != null and idx >= 0 and idx < ws.modifiers.size() and ws.modifiers[idx].is_active
+
+
+func _empire_rel(idx: int) -> int:
+	if ws != null and idx >= 0 and idx < ws.empires.size() and ws.empires[idx] != null:
+		return ws.empires[idx].relations
+	return 0
+
+
+func _empire_power(idx: int) -> int:
+	if ws != null and idx >= 0 and idx < ws.empires.size() and ws.empires[idx] != null:
+		return ws.empires[idx].power
+	return 0
+
+
+func _cf(idx: int, field: String) -> int:
+	var c := ws.get_country_by_legacy_index(idx)
+	if c == null:
+		return 0
+	match field:
+		"Gosstroy": return c.government
+		"SubGosstroy": return c.sub_government
+		"dev": return c.development
+		"spec": return c.special
+		"soc_stab": return c.social_stability
+		"stab": return c.stab
+		"puppetOf": return c.puppet_of
+		"prcpower": return c.prc_power
+		"prcinfl": return c.prc_influence
+	return 0
+
+
+func _tag(idx: int, tag: String) -> bool:
+	var c := ws.get_country_by_legacy_index(idx)
+	return c != null and c.has_tag(tag)

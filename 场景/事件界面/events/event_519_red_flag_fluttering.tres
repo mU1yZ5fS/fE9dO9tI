@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_519_red_flag_fluttering.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 0
+key = "industry"
+value = 750.0
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 29
+value = 24.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "开始研发052型导弹驱逐舰"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_519_red_flag_fluttering.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "改造051型导弹驱逐舰"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_519_red_flag_fluttering.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "同时进行两个项目"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_519_red_flag_fluttering.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "导弹，导弹才是能决定未来的武器"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_519_red_flag_fluttering.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_519"
+source_event_number = 519
+trigger_priority = 51900
+title = "红旗飘舞随风扬"
+description = "随着我国工业实力进一步加强。在中央军事委员会上，中国人民解放军海军大将肖劲光提出了应当加强我国海军的实力，以防止美苏，尤其是美军对我国领海的侵犯。此话不假，我国装备的“四大金刚”（即鞍山，抚顺，长春和太原号）实在过于老旧，早在中苏蜜月期就作为两国友好的象征来到了中国。这一待就是二十来年，但这批驱逐舰实在是难以保障我国海军的实力。20世纪60年代末至70年代初，该型号军舰均进行了现代化改装，拆除了原有2座三联装533mm鱼雷发射管，改装了两座双联装上游一号\u00a0(SY-1)反舰导弹发射装置，由火炮鱼雷驱逐舰改装成导弹驱逐舰，1969年5月至1970年2月“抚顺”舰率先进行改装，其余三艘舰在1970年至1974年改装。但相比苏联太平洋舰队来说还是差的太远。因此，肖劲光大将提出特别拨款用来建造一批新的导弹驱逐舰。这是一个很诱人的决定，不仅能为加强我国的海防力量。还能好好利用051型导弹驱逐舰给我们带来的教训。最高领导人同志，中央军委的同志们在等待您投上庄严一票……"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

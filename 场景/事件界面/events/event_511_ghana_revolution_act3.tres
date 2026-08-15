@@ -1,0 +1,91 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_511_ghana_revolution_act3.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_510"
+
+[sub_resource type="Resource" id="Expr_t0_1_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 2.0
+ref_event_id = "event_509"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_1_0")])
+
+[sub_resource type="Resource" id="Expr_t0_2_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 1.0
+ref_event_id = "event_510"
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_2_0")])
+
+[sub_resource type="Resource" id="Expr_t0_3"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.4.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2"), SubResource("Expr_t0_3")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们将为加纳提供帮助"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_511_ghana_revolution_act3.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "邀请加纳加入经互会，在经互会体系内为加纳提供帮助"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_511_ghana_revolution_act3.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们无能为力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_511_ghana_revolution_act3.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_511"
+source_event_number = 511
+trigger_priority = 51100
+title = "黄金海岸的再革命？——第三幕"
+description = "两年以来，罗林斯将社会主义、民族主义和民粹主义混合起来的理念的实施并未能为加纳经济带来十分乐观的发展，政府补贴为财政带来了负担并造成了通货膨胀。有报告显示，罗林斯正在寻求外部的经济援助和投资，苏东阵营甚至是西方控制的IMF都将可能成为加纳的帮助者。很明显，现在正是我们掺和加纳的时候，应不应该为罗林斯提供一笔无息贷款？这将能为我们争取一个盟友，并保住非洲的一个进步政权。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
