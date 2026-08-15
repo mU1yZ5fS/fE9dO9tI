@@ -141,27 +141,27 @@ static func conservative() -> bool:
 
 
 static func weaker(against: int) -> bool:
-	return _power_of(1) < _power_of(against)
+	return FocusCatalog._power_of(1) < FocusCatalog._power_of(against)
 
 
 static func stronger(against: int) -> bool:
-	return _power_of(1) > _power_of(against)
+	return FocusCatalog._power_of(1) > FocusCatalog._power_of(against)
 
 
 static func china_weaker(against: int) -> bool:
-	return _power_of(2) < _power_of(against)
+	return FocusCatalog._power_of(2) < FocusCatalog._power_of(against)
 
 
 static func china_stronger(against: int) -> bool:
-	return _power_of(2) > _power_of(against)
+	return FocusCatalog._power_of(2) > FocusCatalog._power_of(against)
 
 
 static func p_power_more(politic: int, num: int) -> bool:
-	return _leader_support(politic) > num
+	return FocusCatalog._leader_support(politic) > num
 
 
 static func p_power_less(politic: int, num: int) -> bool:
-	return _leader_support(politic) < num
+	return FocusCatalog._leader_support(politic) < num
 
 
 static func right_equal(num: int) -> bool:
@@ -301,101 +301,101 @@ static func _build_start_focus() -> FocusTreeDef:
 
 	# ── 层 1 ──
 	var f := _mk("The congress continues", L1, 0)
-	f.condition = func() -> bool: return hist() or not_agressive() or reformost()
-	f.effects = [func(): add_to_right(1), func(): add_to_politician(3, 1), func(): add_modify(13)]
+	f.condition = func() -> bool: return FocusCatalog.hist() or FocusCatalog.not_agressive() or FocusCatalog.reformost()
+	f.effects = [func(): FocusCatalog.add_to_right(1), func(): FocusCatalog.add_to_politician(3, 1), func(): FocusCatalog.add_modify(13)]
 
 	f = _mk("New old", L1, 1)
-	f.condition = func() -> bool: return agressive()
-	f.effects = [func(): add_to_left(1), func(): add_to_politician(3, -2), func(): add_modify(14)]
+	f.condition = func() -> bool: return FocusCatalog.agressive()
+	f.effects = [func(): FocusCatalog.add_to_left(1), func(): FocusCatalog.add_to_politician(3, -2), func(): FocusCatalog.add_modify(14)]
 
 	f = _mk("Correcting wrong", L1, 2)
-	f.condition = func() -> bool: return conservative()
-	f.effects = [func(): add_to_left(1), func(): add_to_politician(2, 2), func(): add_to_politician(1, -1),
-		func(): add_to_politician(3, -1), func(): add_influence(-15), func(): add_parties_connection(15),
-		func(): add_modify(18)]
+	f.condition = func() -> bool: return FocusCatalog.conservative()
+	f.effects = [func(): FocusCatalog.add_to_left(1), func(): FocusCatalog.add_to_politician(2, 2), func(): FocusCatalog.add_to_politician(1, -1),
+		func(): FocusCatalog.add_to_politician(3, -1), func(): FocusCatalog.add_influence(-15), func(): FocusCatalog.add_parties_connection(15),
+		func(): FocusCatalog.add_modify(18)]
 
 	# ── 层 2 ──
 	f = _mk("Iron marshal", L2, 0)
-	f.condition = func() -> bool: return conservative() or (weaker(0) and stronger(2))
-	f.effects = [func(): add_to_left(1), func(): add_to_politician(2, 2), func(): add_to_politician(1, 1),
-		func(): add_modify(15)]
+	f.condition = func() -> bool: return FocusCatalog.conservative() or (FocusCatalog.weaker(0) and FocusCatalog.stronger(2))
+	f.effects = [func(): FocusCatalog.add_to_left(1), func(): FocusCatalog.add_to_politician(2, 2), func(): FocusCatalog.add_to_politician(1, 1),
+		func(): FocusCatalog.add_modify(15)]
 
 	f = _mk("New marshal", L2, 1)
-	f.condition = func() -> bool: return not_agressive() or (stronger(0) and stronger(2))
-	f.effects = [func(): add_to_politician(2, 1), func(): add_modify(16)]
+	f.condition = func() -> bool: return FocusCatalog.not_agressive() or (FocusCatalog.stronger(0) and FocusCatalog.stronger(2))
+	f.effects = [func(): FocusCatalog.add_to_politician(2, 1), func(): FocusCatalog.add_modify(16)]
 
 	f = _mk("Red marshal", L2, 2)
-	f.condition = func() -> bool: return agressive() or (weaker(0) and weaker(2))
-	f.effects = [func(): add_to_left(1), func(): add_to_politician(3, 1), func(): china_add_influence(-10),
-		func(): add_modify(17)]
+	f.condition = func() -> bool: return FocusCatalog.agressive() or (FocusCatalog.weaker(0) and FocusCatalog.weaker(2))
+	f.effects = [func(): FocusCatalog.add_to_left(1), func(): FocusCatalog.add_to_politician(3, 1), func(): FocusCatalog.china_add_influence(-10),
+		func(): FocusCatalog.add_modify(17)]
 
 	# ── 层 3 ──
 	f = _mk("Helsinki group", L3, 0)
-	f.condition = func() -> bool: return hist() or (stronger(2) and stronger(0))
-	f.effects = [func(): add_to_right(1), func(): add_to_politician(2, 1), func(): add_influence(-10)]
+	f.condition = func() -> bool: return FocusCatalog.hist() or (FocusCatalog.stronger(2) and FocusCatalog.stronger(0))
+	f.effects = [func(): FocusCatalog.add_to_right(1), func(): FocusCatalog.add_to_politician(2, 1), func(): FocusCatalog.add_influence(-10)]
 
 	f = _mk("Helsinki gang", L3, 1)
-	f.condition = func() -> bool: return agressive() or p_power_more(3, 7) or (weaker(2) and weaker(0))
-	f.effects = [func(): add_to_left(1), func(): add_to_politician(3, 1), func(): add_to_politician(4, 1)]
+	f.condition = func() -> bool: return FocusCatalog.agressive() or FocusCatalog.p_power_more(3, 7) or (FocusCatalog.weaker(2) and FocusCatalog.weaker(0))
+	f.effects = [func(): FocusCatalog.add_to_left(1), func(): FocusCatalog.add_to_politician(3, 1), func(): FocusCatalog.add_to_politician(4, 1)]
 
 	# ── 层 4 ──
 	f = _mk("Death of Biedić", L4, 0)
-	f.condition = func() -> bool: return hist() or (weaker(0) and weaker(2))
+	f.condition = func() -> bool: return FocusCatalog.hist() or (FocusCatalog.weaker(0) and FocusCatalog.weaker(2))
 	f.effects = []
 
 	f = _mk("Kremlin hand", L4, 1)
-	f.condition = func() -> bool: return agressive() or (stronger(0) and stronger(2))
-	f.effects = [func(): add_influence(10), func(): add_to_politician(3, -1), func(): add_to_politician(1, -1)]
+	f.condition = func() -> bool: return FocusCatalog.agressive() or (FocusCatalog.stronger(0) and FocusCatalog.stronger(2))
+	f.effects = [func(): FocusCatalog.add_influence(10), func(): FocusCatalog.add_to_politician(3, -1), func(): FocusCatalog.add_to_politician(1, -1)]
 
 	# ── 层 5 ──
 	f = _mk("The end of the president", L5, 0)
 	f.condition = func() -> bool:
-		return hist() or p_power_more(3, 8) or (left_equal(0) and right_equal(2)) or (stronger(0) and stronger(2))
-	f.effects = [func(): add_to_right(2), func(): add_to_politician(3, 2), func(): add_to_politician(2, 1)]
+		return FocusCatalog.hist() or FocusCatalog.p_power_more(3, 8) or (FocusCatalog.left_equal(0) and FocusCatalog.right_equal(2)) or (FocusCatalog.stronger(0) and FocusCatalog.stronger(2))
+	f.effects = [func(): FocusCatalog.add_to_right(2), func(): FocusCatalog.add_to_politician(3, 2), func(): FocusCatalog.add_to_politician(2, 1)]
 
 	f = _mk("As it was", L5, 1)
-	f.condition = func() -> bool: return p_power_less(3, 3) or (weaker(0) and weaker(2))
-	f.effects = [func(): add_to_politician(1, 1), func(): add_to_politician(2, -1)]
+	f.condition = func() -> bool: return FocusCatalog.p_power_less(3, 3) or (FocusCatalog.weaker(0) and FocusCatalog.weaker(2))
+	f.effects = [func(): FocusCatalog.add_to_politician(1, 1), func(): FocusCatalog.add_to_politician(2, -1)]
 
 	f = _mk("Soviet power", L5, 2)
 	f.condition = func() -> bool:
-		return agressive() or (p_power_more(3, 2) and p_power_less(3, 5)) or (weaker(0) and weaker(2))
-	f.effects = [func(): add_to_left(1), func(): add_to_politician(3, -3), func(): add_modify(19)]
+		return FocusCatalog.agressive() or (FocusCatalog.p_power_more(3, 2) and FocusCatalog.p_power_less(3, 5)) or (FocusCatalog.weaker(0) and FocusCatalog.weaker(2))
+	f.effects = [func(): FocusCatalog.add_to_left(1), func(): FocusCatalog.add_to_politician(3, -3), func(): FocusCatalog.add_modify(19)]
 
 	# ── 层 6 ──
 	f = _mk("Against the aggressor", L6, 0)
-	f.condition = func() -> bool: return hist() or (p_power_more(3, 9) and stronger(0))
-	f.effects = [func(): declare_ogaden_war()]
+	f.condition = func() -> bool: return FocusCatalog.hist() or (FocusCatalog.p_power_more(3, 9) and FocusCatalog.stronger(0))
+	f.effects = [func(): FocusCatalog.declare_ogaden_war()]
 
 	f = _mk("Not aggression", L6, 1)
-	f.condition = func() -> bool: return not_agressive() or (china_weaker(0) and china_weaker(1))
-	f.effects = [func(): add_influence(-10), func(): ogaden_attacker_influence(30), func(): declare_ogaden_war()]
+	f.condition = func() -> bool: return FocusCatalog.not_agressive() or (FocusCatalog.china_weaker(0) and FocusCatalog.china_weaker(1))
+	f.effects = [func(): FocusCatalog.add_influence(-10), func(): FocusCatalog.ogaden_attacker_influence(30), func(): FocusCatalog.declare_ogaden_war()]
 
 	f = _mk("Beat the aggressor", L6, 2)
 	f.condition = func() -> bool:
-		return (war_ogaden_going() and agressive()) or (war_ogaden_going() and stronger(0) and stronger(2))
-	f.effects = [func(): end_ogaden_war()]
+		return (FocusCatalog.war_ogaden_going() and FocusCatalog.agressive()) or (FocusCatalog.war_ogaden_going() and FocusCatalog.stronger(0) and FocusCatalog.stronger(2))
+	f.effects = [func(): FocusCatalog.end_ogaden_war()]
 
 	# ── 层 7 ──
 	f = _mk("The Fall of Yemen", L7, 0)
-	f.condition = func() -> bool: return hist() or weaker(0) or not_agressive()
-	f.effects = [func(): syemen_set_system(3)]
+	f.condition = func() -> bool: return FocusCatalog.hist() or FocusCatalog.weaker(0) or FocusCatalog.not_agressive()
+	f.effects = [func(): FocusCatalog.syemen_set_system(3)]
 
 	f = _mk("New Yemen", L7, 1)
-	f.condition = func() -> bool: return agressive() or (china_stronger(0) and china_stronger(1))
-	f.effects = [func(): syemen_set_system(1), func(): yemen_set_system(1), func(): add_influence(10)]
+	f.condition = func() -> bool: return FocusCatalog.agressive() or (FocusCatalog.china_stronger(0) and FocusCatalog.china_stronger(1))
+	f.effects = [func(): FocusCatalog.syemen_set_system(1), func(): FocusCatalog.yemen_set_system(1), func(): FocusCatalog.add_influence(10)]
 
 	f = _mk("State of the whole people", L7, 2)
 	f.condition = func() -> bool:
-		return hist() or (_leader_support(3) + _leader_support(6) + _leader_support(5) + _leader_support(4) > _leader_support(2))
-	f.effects = [func(): add_to_right(2), func(): add_to_politician(3, 1), func(): add_to_politician(4, 1),
-		func(): add_to_politician(6, 1), func(): add_to_politician(5, 1), func(): add_to_politician(2, 1)]
+		return FocusCatalog.hist() or (FocusCatalog._leader_support(3) + FocusCatalog._leader_support(6) + FocusCatalog._leader_support(5) + FocusCatalog._leader_support(4) > FocusCatalog._leader_support(2))
+	f.effects = [func(): FocusCatalog.add_to_right(2), func(): FocusCatalog.add_to_politician(3, 1), func(): FocusCatalog.add_to_politician(4, 1),
+		func(): FocusCatalog.add_to_politician(6, 1), func(): FocusCatalog.add_to_politician(5, 1), func(): FocusCatalog.add_to_politician(2, 1)]
 
 	f = _mk("Still developing", L7, 3)
 	f.condition = func() -> bool:
-		return agressive() or left_stronger_right() or (_leader_support(3) + _leader_support(6) + _leader_support(5) + _leader_support(4) < _leader_support(2))
-	f.effects = [func(): add_to_left(1), func(): add_to_right(-1), func(): add_to_politician(1, 1),
-		func(): add_to_politician(2, 2)]
+		return FocusCatalog.agressive() or FocusCatalog.left_stronger_right() or (FocusCatalog._leader_support(3) + FocusCatalog._leader_support(6) + FocusCatalog._leader_support(5) + FocusCatalog._leader_support(4) < FocusCatalog._leader_support(2))
+	f.effects = [func(): FocusCatalog.add_to_left(1), func(): FocusCatalog.add_to_right(-1), func(): FocusCatalog.add_to_politician(1, 1),
+		func(): FocusCatalog.add_to_politician(2, 2)]
 
 	tree.layers = [L1, L2, L3, L4, L5, L6, L7]
 	return tree
