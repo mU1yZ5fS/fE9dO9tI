@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_323_private_education.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.9.12"
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 0
+key = "economy_system"
+value = 13.0
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 7
+value = 4.0
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1"), SubResource("Expr_2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "教育不可私有！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_323_private_education.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "部分允许，但得处于国家控制之下。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_323_private_education.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "全面私有化教育领域。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_323_private_education.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_323"
+source_event_number = 323
+trigger_priority = 32300
+title = "私立教育"
+description = "在党员队伍之中，合法化私立教育的想法已开始浮现。一群党员提出将私立教育机构合法化的倡议，认为这将减轻国家的部分负担，提高教育质量并能引入新的教育方法。但另一方面，这将会削弱对国家教育的意识形态控制，因教育成本增高而加剧人口分层，并可能使党和底层造成差异。如果我们确实决定将教育私有化，那么就值得决定具体如何进行。一些人提议部分私有化，只允许政府颁发国家认证的机构开展工作，而另一些人则坚持认为，不应该由国家来实施不完全的改革，并呼吁放开私立教育管控。但哪怕在党内水火不容的保守派和极左派都在此时站在一起表示出坚决反对，并要求将那些提出“如此卑鄙的改革”的人开除出党。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
