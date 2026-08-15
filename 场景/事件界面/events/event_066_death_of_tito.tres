@@ -36,40 +36,38 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Express condolences, but no more"
+text = "发文表示悼念，但仅此而已"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China sent formal condolences without changing its relationship with Yugoslavia."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Lead the government delegation to Belgrade personally"
-disabled_text = "Political line must be above 1"
-enable_condition = SubResource("Expr_leader")
+text = "同志将亲率我国政府代表团飞往贝尔格莱德"
+disabled_text = "同志不能亲自飞去参加修正主义者铁托的葬礼！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The Chinese delegation restored diplomatic, economic and cultural relations with post-Tito Yugoslavia."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Send a delegation led by Ji Pengfei"
-disabled_text = "Political line must be above 0"
-enable_condition = SubResource("Expr_delegation")
+text = "派出国务院秘书长姬鹏飞率领的代表团。"
+disabled_text = "不许派代表团去贝尔格莱德！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China attended Tito's funeral but declined Yugoslav proposals for substantive negotiations."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "Make no response to Tito's death"
-disabled_text = "Political line must remain below 3"
-enable_condition = SubResource("Expr_ignore")
+text = "铁托死了？好吧，就这样吧，谁在乎呢？"
+disabled_text = "我们不能不回应他的死亡！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China ignored Tito's death entirely, surprising Yugoslavia and the wider world."
+result_text = "（结果由事件脚本动态生成）"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "death_of_tito"
 source_event_number = 66
 trigger_priority = 660
-title = "And after Tito — Tito!"
-description = "Josip Broz Tito has died. The funeral offers a rare chance to restore relations with Yugoslavia, but ideological objections remain strong."
+title = "在铁托之后——铁托啊！"
+description = "1980年1月3日，南斯拉夫社会主义联邦共和国的创始人、长期领导人、南斯拉夫共产主义者联盟中央委员会主席约瑟普·布罗兹·铁托元帅在卢布尔雅那的临床中心住院检查腿部血管。经过两次手术和左腿截肢，他的病情有所好转，但在2月份，铁托患上了肺炎：高烧和胃、肠、肺出血也导致败血症，3月份病情加重。今天走向了终结——贝尔格莱德时间15:05卢布尔雅那临床中心心血管疾病诊所，在他88岁生日的前三天，约瑟普·布罗兹·铁托去世了。葬礼将于5月8日举行，我们需要决定是否有必要派一个代表团去贝尔格莱德，或者他值得哀悼吗？尽管我们在思想上存在分歧，在外交上也存在差距，但铁托是反法西斯战争的英雄之一，给他一个铭记的义务是有道理的。苏联和美国已经宣布，他们将派出官方政府代表团参加葬礼，但美国总统卡特不会去贝尔格莱德…也许主席同志不应该去，而应该派出拥有有限权力的代表团团长姬鹏飞？"
+display_script = ExtResource("5_custom")
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

@@ -53,32 +53,31 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Do nothing; different views are the guarantee of democracy"
+text = "什么也不做。不同的观点是民主的保证"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Conservatives retained their posts, frustrating reformers and undermining the leadership's authority."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Attack the conservatives and promote active reformers"
-disabled_text = "Requires 650 party support and combined moderate-reformer power above the Maoists"
-enable_condition = SubResource("Expr_promote")
+text = "在党的全会上攻击保守派，支持改革派"
+disabled_text = "中国共产党可不会陪你玩过家家"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The Little Gang of Four was removed and its positions filled by reformers and their supporters."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Attack and remove the conservatives"
-disabled_text = "Requires 600 party support and combined moderate-reformer power above the Maoists"
-enable_condition = SubResource("Expr_remove")
+text = "在党的全会上攻击保守派"
+disabled_text = "中国共产党不会让你轻易的消灭他们"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The Little Gang of Four and its conservative network were stripped of party and government influence."
+result_text = "（结果由事件脚本动态生成）"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "little_gang_of_four"
 source_event_number = 69
 trigger_priority = 690
-title = "Another gang?"
-description = "Reform has begun, but the Little Gang of Four still occupies key posts. The Fifth Plenum offers a chance to remove or replace them."
+title = "另一个四人帮？"
+description = "主席同志，在你的努力下，我们终于铲除了文化大革命的遗毒，我们的国家正在走向光明的市场经济未来！然而，仍然有一些人不同意这样的发展，并竭尽全力抗议市场化政策的实施，破坏了我们良好的改革倡议。这些人主要是保守的毛派，由四名党内高层领导，他们拒绝进一步的改革。通过打击他们和他们的支持者，我们可以让更多的权力掌握在改革派手中。此外，在那些没有保守派的地方，我们将有可能促进对改革的积极支持者的产生，毕竟这些改革已在民众和官僚中受到欢迎。"
+display_script = ExtResource("5_custom")
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_reform")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

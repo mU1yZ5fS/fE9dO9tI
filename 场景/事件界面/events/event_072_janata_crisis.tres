@@ -36,32 +36,32 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Wish them good luck"
+text = "祝你好运，心情愉快"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Janata's coalition collapsed, reopening the way for Indira Gandhi and a pro-Soviet Indian course."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Support Janata's left wing"
-disabled_text = "Available only if Janata won the preceding election"
+text = "支持人民党左翼（需要6特工网络，10百万预算）"
+disabled_text = "人民党不会听我们的"
 enable_condition = SubResource("Expr_janata")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Chinese aid helped Janata's left wing purge dual-party rightists and preserve a left-oriented government."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Support Janata's right wing"
-disabled_text = "Available only if Janata won the preceding election"
+text = "支持人民党右翼（需要6特工网络，10百万预算）"
+disabled_text = "人民党不会听我们的"
 enable_condition = SubResource("Expr_janata")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Chinese aid helped Janata's right wing remove the left and establish a liberal Indian government."
+result_text = "（结果由事件脚本动态生成）"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "janata_crisis"
 source_event_number = 72
 trigger_priority = 720
-title = "Rescue the drowning"
-description = "India's Janata coalition is splitting between left and right. China may let it collapse or subsidize one wing's victory."
+title = "拯救落水者"
+description = "在1977年赢得印度大选后，印度人民党，实际上是从社会主义者到民族自由主义者的多个政党的联盟，面临着许多困难。最初，他们为了把英迪拉·甘地和国大党从权力中除名而团结起来，现在，在掌权之后，人民党受到了内部阴谋的困扰，这实际上使它的工作陷入瘫痪。以这种速度，甘地将不可避免地赢得即将在1980年1月举行的选举，这就结束了人民党在改善我们与印度关系方面取得的成功。如果我们帮助反对党并对其施加影响，那么我们可以帮助它巩固和保住权力…"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_result_min"), SubResource("Expr_result_max")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

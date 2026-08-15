@@ -123,50 +123,46 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Attend the Moscow Olympics with the best athletes"
-disabled_text = "Requires no reform opening and political line below 3"
-enable_condition = SubResource("Expr_moscow")
+text = "体育运动无关政治！我们将参加莫斯科奥运会并派出最好的运动员！（需要4百万预算）"
+disabled_text = "我们不能忽视西方的意见"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China rejected the American boycott and achieved third place in Moscow, greatly improving relations with the USSR."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Ignore both Moscow and Los Angeles"
-disabled_text = "Requires no reform opening and political line 1 or 2"
-enable_condition = SubResource("Expr_ignore_both")
+text = "我们不宣布抵制，但忽略这两场运动会…"
+disabled_text = "我们不能同时忽视这两场运动会！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China ignored both Olympic camps, baffling the IOC, the public and both superpowers."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Boycott officially, but let athletes compete in Moscow under the Olympic flag"
-disabled_text = "This compromise conflicts with the current political course"
-enable_condition = SubResource("Expr_olympic_flag")
+text = "我们宣布抵制，但让我们的运动员举着奥运会旗去莫斯科（需要4百万元预算）。"
+disabled_text = "这不是我们的政策！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Chinese athletes competed under the Olympic flag while China also attended the American alternative games."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "Boycott Moscow and send the team to the American alternative games"
-disabled_text = "Requires reform opening and political line at least 2"
-enable_condition = SubResource("Expr_usa_games")
+text = "我们宣布抵制苏联运动会，并将参赛队伍队派往美国（需要3百万预算）"
+disabled_text = "去美国？！你是认真的吗？…"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China joined the American boycott and sent its athletes to Philadelphia, sharply realigning superpower relations."
+result_text = "（结果由事件脚本动态生成）"
 
 [sub_resource type="Resource" id="Option_4"]
 script = ExtResource("1_option")
-text = "Revive GANEFO and invite the developing world"
-disabled_text = "Requires 20 budget or reserves, no reform opening, and political line below 3"
-enable_condition = SubResource("Expr_ganefo")
+text = "复兴新兴力量运动会（GANEFO），向发展中国家发出邀请（需要10百万预算）"
+disabled_text = "毛派的社会实验已经够多了！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China revived the Games of the New Emerging Forces as an alternative to both Olympic blocs."
+result_text = "（结果由事件脚本动态生成）"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "moscow_olympics"
 source_event_number = 65
 trigger_priority = 650
-title = "Goodbye, our sweet Mishka..."
-description = "The American boycott of the Moscow Olympics forces China to choose between Moscow, Washington, neutrality, an IOC compromise, or reviving GANEFO."
+title = "再见，我们亲爱的米沙…"
+description = "主席同志！1980年7月19日，第二十二届夏季奥运会开幕式将在莫斯科举行。苏联奋力争取到了奥运会主办权，在准备中花费了巨额资金，这些资金不得不从其他支出项目中提取（为了收回成本，苏联进行了大规模的奥运标志销售运动）。然而，美国领导层已经公开宣布抵制这届运动会，并呼吁其所有盟友也参加抵制，在费城组织所谓的“奥林匹克抵制运动会”（更广为人知的是“自由钟经典运动会”）。一些党员敦促我们以美国为榜样，派一支队伍去参加美国的运动会，抵制苏联的奥运会，但这会引起苏联的愤怒和人民的误解。也许你不应该加剧分裂，把我们的运动员送到莫斯科，尽管我们国家之间存在政治矛盾？体育无关政治，不是吗…"
+display_script = ExtResource("5_custom")
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

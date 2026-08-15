@@ -65,16 +65,16 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "War is hell"
+text = "战争即地狱"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Iraq invaded Iran, beginning a major regional war with both superpowers initially backing Baghdad."
+result_text = "（结果由事件脚本动态生成）"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "iran_iraq_war"
 source_event_number = 73
 trigger_priority = 730
-title = "Iran–Iraq War"
-description = "Iraq has attacked an isolated authoritarian Iran. The new war is now part of the global influence system."
+title = "两伊战争"
+description = "伊朗与伊拉克间的关系长期紧张，这主要是由于领土争端。1969年，伊朗根据1937年的协议控制了伊拉克的阿拉伯河，1971年伊朗占领了伊拉克宣称的霍尔木兹海峡内的三个岛屿。然而，伊朗伊斯兰革命胜利后，形势进一步恶化，霍梅尼想把革命传播到整个穆斯林世界，开始积极派遣煽动者和代理人到伊拉克。以及支持伊拉克库尔德人争取独立的斗争。作为对此的回应，同时考虑到伊朗军队因革命和伊斯兰清洗而混乱，萨达姆·侯赛因决定入侵伊朗，以占领石油资源丰富的胡兹斯坦省。9月22日中午左右，伊拉克军队入侵伊朗，遭遇了强烈的抵抗，目前正在伊朗领土内缓慢地进军。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_not_pro_usa"), SubResource("Expr_authoritarian")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0")])

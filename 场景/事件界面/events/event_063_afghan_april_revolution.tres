@@ -54,40 +54,40 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Do not interfere in Afghan affairs"
+text = "不干涉阿富汗事务"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The PDPA took power without our involvement, and Khalq began pressing its advantage over Parcham."
+result_text = "我们没有回应四月革命和阿富汗民主共和国的事件。当然，党对这种被动态度不满意。在阿富汗民主共和国，在革命期间获得权威的人民派，正积极地试图夺走旗帜派的权力。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Support opposition forces loyal to China"
-disabled_text = "Requires 30 agents"
+text = "支持阿富汗民主共和国中忠于我们的反对派"
+disabled_text = "我们帮不着他们"
 enable_condition = SubResource("Expr_agents_30")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China supplied Maoists, left oppositionists, moderate Islamists, and other anti-Soviet forces."
+result_text = "中国共产党领导层对苏维埃势力的扩大感到不满，决定向忠于中国的阿富汗反对派提供切实可行的支持。向毛派、左翼反对党、温和的伊斯兰主义者和其他反对势力提供武器和秘密援助。希望这能阻止苏联的扩张。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Establish relations with and support Khalq"
-disabled_text = "Requires 50 agents and political line below 3"
+text = "建立关系并支持人民派"
+disabled_text = "他们将不会合作"
 enable_condition = SubResource("Expr_khalq")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Chinese support helped Khalq pressure Parcham and consolidate its position in the DRA."
+result_text = "经过长期的争论，我们决定与阿富汗新政府建立关系，特别是与阿富汗人民民主党的人民派建立关系。事实证明，这比我们想象的要简单，因为阿富汗人民民主党没有参加苏中论战，而且在执政后名义上宣布了不结盟政策。人民派感谢我们的支持，显然，他们利用他们日益增长的力量向旗帜派施加压力，并在阿富汗民主共和国获得垄断权力。"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "Establish relations with and support Parcham"
-disabled_text = "Requires 60 agents and political line above 0"
+text = "建立关系并支持旗帜派"
+disabled_text = "他们将不会合作"
 enable_condition = SubResource("Expr_parcham")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Chinese support helped Parcham resist Khalq and slowed Hafizullah Amin's rise."
+result_text = "经过长期的争论，我们决定与阿富汗新政府建立关系，特别是与阿富汗人民民主党的旗帜派建立关系。事实证明，这比我们想象的要简单，因为阿富汗人民民主党没有参加苏中论战，而且在执政后名义上宣布了不结盟政策。在我们的支持下，旗帜派成功地克服了来自人民派日益增长的压力，特别地，旗帜派和一些人民派，减缓了塔拉基的亲密盟友哈菲祖拉·阿明的晋升速度，他不再受到党的信任。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "afghan_april_revolution"
 source_event_number = 63
 trigger_priority = 475
-title = "April revolution"
-description = "The PDPA has seized power in Afghanistan, but its Khalq and Parcham factions are already competing. China may cultivate either faction or a separate opposition."
+title = "四月革命"
+description = "紧急新闻！4月27日，在阿富汗，由于权力不稳定、贫困和人民对逮捕左翼反对派人民民主党领导人的不满，人民民主党事先策划了一场军事政变。人民对革命表示欢迎。执政后，以努尔·穆罕默德·塔拉基为首的阿富汗民主共和国开始了社会主义的建设和对苏联的定位。然而，阿富汗的未来仍不明朗，因为在人民民主党内，人民派和旗帜派之间仍然存在着压倒性的分裂，从1966年到1977年，这两个派系实际上是两个独立的派系。人民派主要由低收入者和半无产阶级组成，在以非法劳动为重点的反对活动中，主张进行革命斗争，现在寻求组织国家向社会主义和无产阶级专政的快速过渡。旗帜派在反对党的几年里把法律和议会斗争放在首位，现在代表着逐步的、全面的民主改革，并且普遍倾向于改良主义，认为阿富汗还没有准备好建设社会主义。同时，中国共产党对苏维埃在该地区的影响力扩大表示严重关切。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])
