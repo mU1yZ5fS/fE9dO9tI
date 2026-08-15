@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_696_congo_cultural_revolution.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.3.15"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们帮助老朋友减轻负担，支持恩古瓦比开展文化大革命！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_696_congo_cultural_revolution.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "显然，恩古瓦比掌权这么久都没搞出个名堂来，该消停消停了……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_696_congo_cultural_revolution.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们还有自己的事要忙……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_696_congo_cultural_revolution.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_696"
+source_event_number = 696
+trigger_priority = 69600
+title = "人民刚果的文化大革命"
+description = "刚果人民共和国成立后，国家并未就此稳定下来，劳动党党内斗争和南北两大部族的斗争交织在一起，继续动摇着这个新生的社会主义国家，马里安·恩古瓦比掌权不久，就粉碎了两次尤卢派的政变和党内由安吉·迪亚瓦拉领导的亲毛主义和格瓦拉主义的左翼反对派“二月二十二日运动”（M-22）的二月政变及其政变失败后的游击运动。为了重整国内秩序，恩古瓦比开展了清洗运动，党内只剩下不超过160人的党员。同时，为了在全国树立劳动党的领导地位，随后的人民政权化运动使得刚果建立了大批人民民主性质的新政权机构，废除了部族酋长的权力，成立了党委领导的各级机构。\n恩古瓦比执政到现在，刚果的社会主义建设情况一直不大乐观，经济衰退、财政拮据、债台高筑，到1977年，刚果财政赤字猛增到400多亿非洲法郎，外债累计800多亿非洲法郎。经济困难更加深内部矛盾，派别斗争愈演愈烈。1976年2月22日，恩古瓦比在向刚果全国人民发表讲话时说：“近几年中，我国政治形势的特点是，领导人之间发生争执，而不顾劳动人民的最高利益。”\n为了解决“政治领导不一致”，扭转“令人担忧的”国内形势，恩古瓦比于1975年12月主持召开了刚果劳动党中央特别会议，发表了《1975年12月12日声明》，宣布成立“革命特别参谋部”，以取代政治局，筹备召开刚果劳动党第二次全国代表大会和组织“革命政府”，并重申要在全国深入开展一场“从根本上说是‘文化革命’”的“彻底化运动”，一场类似文化大革命的政治运动被发动起来了。据恩古瓦比说，这一运动的目的是“揭发一切机会主义者、分裂主义者和一时的马克思主义者”。但是，这一运动目前似乎还只是止步于办公室清洗和党内整肃。\n恩克瓦比发动的“彻底化运动”从一开始就受到刚果劳动党内外反对派的激烈反对。1976年3月24日，刚果劳动党中央委员、“刚果社会主义青年联盟”第一书记奥卡班德和刚果工会主席孔多等人，在党中央书记皮埃尔·恩泽的支持下，煽动工人罢工，反对彻底化运动。恩古瓦比很快平息了工人罢工，并将恩泽等人开除出党。但斗争仍在继续，也许之后会有更大的阴谋的……\n是时候在刚果采取行动了，主席同志。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
