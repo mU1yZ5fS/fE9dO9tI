@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_487_return_of_imperial_eagle.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.9.26"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "为什么要支持一群法西斯余孽？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_487_return_of_imperial_eagle.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "帮雷默同志一把。这是组建反帝统一战线的必由之路！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_487_return_of_imperial_eagle.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "支持纳粹主义者干什么，还不如选德国的纳粹-毛主义者"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_487_return_of_imperial_eagle.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们永远做不到这种事！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_487_return_of_imperial_eagle.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_487"
+source_event_number = 487
+trigger_priority = 48700
+title = "帝国鹰的回归"
+description = "来自西德的消息，慕尼黑特雷津维泽的啤酒节展览场发生了一场爆炸，造成12人死亡，200多人受伤。死者包括涉嫌爆炸案的冈多夫·科勒，他与极右翼圈子关系密切，是新纳粹准军事组织“霍夫曼国防运动团体”的成员。据了解，这是二战结束以来新纳粹在该国实施的最致命袭击。我们是否可以趁此介入西德的局势，给他们来一些火上浇油？因此，请容我借此机会向您介绍一下西德极右翼运动的状况。\n1949年，奥托·恩斯特·雷默成立了社会主义帝国党，它很快就变成了一个新纳粹组织，从各个方面阻碍了波恩与西方阵营的关系，甚至苏联国家安全部也曾资助过该党。这位曾在东线作战并镇压1944年阴谋的前纳粹少将全心全意主张泛欧罗巴运动，反对“英美帝国主义和犹太复国主义”。社会主义帝国党本可能成为联邦德国的第三大党，但在1952年被强制解散，成为了联邦宪法法院的第一个受害者（第二个则是德国共产党），雷默被拘留，之后他移居海外活动。雷默一直希望能回到祖国，试图在那里恢复他的新纳粹活动。\n在此之后填补极右翼生态位空缺的则先后是德意志帝国党与德国国家民主党。国家民主党的许多年轻成员希望与该党系统性关联的民族社会主义延续者形象保持距离，试图以此开创一种能够对抗新左派学生运动的新动力。而1969年国家民主党未能在联邦选举中进入议会的惨败结果也给了青年派推动其结构、教条与话语向革命民族主义方向更新的机会。这导致了青年派与固守极右翼传统立场的领导层之间的冲突，最终使其于1972年分裂。\n社会学家亨宁·艾希伯格在国家民主党陷入分裂后成立了“新右翼行动”组织。受法国与意大利的革命民族主义者与六八运动的新左翼影响，该组织宣称“旧右翼的策略已经失败了”，提出了一套以反美反苏和“第三世界”民族主义为核心的“超越左右翼的民族革命”的“反帝解放民族主义”新右翼纲领，将德国称为第三世界被殖民国家，要求将占领国驱逐出两德，最终实现“德意志的重生与统一”，这使其成立两年后便因保守派出走而解体，剩余的多数成员则在亚历山大·爱泼斯坦领导下重组成了人民事业-民族革命建设组织（SdV-NRAO），该党决定打倒“苏帝走狗”民主德国与“美帝傀儡”黑红金三党的“伪爱国主义”，与这些“内部敌人”作斗争，在国际事务中打出中国牌。\n或许，我们应该利用这个机会尝试支持他们之中的某些势力⋯？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

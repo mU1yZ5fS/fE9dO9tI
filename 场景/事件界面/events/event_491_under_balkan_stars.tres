@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_491_under_balkan_stars.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_bulgaria_sub16"]
+script = ExtResource("3_expr")
+type = 25
+target = "6"
+key = "sub_government"
+value = 16.0
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.11.17"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_bulgaria_sub16"), SubResource("Expr_date")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帮他一把"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_491_under_balkan_stars.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们可以以后再做的，对吧？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_491_under_balkan_stars.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_491"
+source_event_number = 491
+trigger_priority = 49100
+title = "在巴尔干的繁星下"
+description = "日夫科夫的统治并非一帆风顺。早在1965年，保加利亚共产党内部就有过密谋推翻日夫科夫的计划。保共中央委员伊万·托多罗夫·格伦亚与一批军队指挥官被日夫科夫的修正主义政策所激怒，而他们决心借此机会一举挣脱苏联的枷锁。但一切都没有按计划进行，克格勃设法查破了他们的计划，大批涉案军官被查处。其中就包括了佩塔尔·潘切夫斯基。最近有消息称，日夫科夫正在谋求一劳永逸解决这个麻烦人物的方法。我们可以帮助佩塔尔，说不定他对我们的未来有帮助？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])
