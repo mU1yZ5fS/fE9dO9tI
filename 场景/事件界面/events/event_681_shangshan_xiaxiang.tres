@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_681_shangshan_xiaxiang.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.12.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "为什么要破坏仍行之有效的东西？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_681_shangshan_xiaxiang.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "近代的苦日子早过去了！孩子们，也该回城了，该回去读书了！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_681_shangshan_xiaxiang.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "实践表明，“上山下乡”政策还远远不够。为建设社会主义新农村，我们必须竭尽所能！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_681_shangshan_xiaxiang.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "“上山下乡”政策当然有其可取之处，尤其是其中算“政治账”的部分……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_681_shangshan_xiaxiang.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "“上山下乡”是唯意志论的表现，我们得用新思维取而代之！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_681_shangshan_xiaxiang.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_681"
+source_event_number = 681
+trigger_priority = 6810
+title = "广阔天地，大有作为"
+description = "“上山下乡”运动最早可以追溯到1955年。当时的中国领导层从苏联同期铺开的“处女地”运动与共青团员征召内得到了启发，并迅速实现了相关概念的中国化——其中最具代表性的观点则出自毛泽东主席之口：“农村是一个广阔的天地，到那里是可以大有作为的”。此后，以杨华为首的六十名北京青年组成了青年志愿垦荒队，远赴关东的北大荒去垦荒——当然，该阶段的上山下乡还只限于满足“开发东北、西北边陲地区”，充分发挥中国作为人力密集型国家的优势上，其规模也远未达到“文化大革命”时期的水平。真正意义上的“上山下乡”则在1968年内大规模铺开：出于恢复社会秩序，将活跃的青年群体从日趋激烈的“武斗”内隔离与保护，并将其稳妥安置的需要。我国将1968年在校的中学学生（即“老三届”）整个就近转移到了农村，就此开始了人类现代史上罕见的人口大迁移。据统计，1968至1977年间参与“上山下乡”的知识青年总人数达到1600多万，事实上转移了十分之一的城市人口。新一轮“上山下乡”运动试图在充分利用闲置劳动力开发农村的同时与“缩小三大差别”的理想实现综合，并对接发展劳动教育的政治实践。可考虑到彼时农村普遍落后的社会现实，与知识青年一代缺乏历练的客观情况。该政策的最终结果并不若我国领导层预设的那般理想。我们几乎可将“人民公社”的发展概况照搬过来分析：排除一部分适应新生活快速成长的人才与在“治病救人”泥潭内越陷越深的钻营偷闲者；仍有多数青年实际上处于“青黄不接”的状况：既缺乏适应农村生活的经验，同时也未接受成体系的教育培训，最终只能以心有余而力不足的状态参与国家建设，并不可避免地还念曾在城市的日子，并顺带美化起“资产阶级习气”来。可不论如何，他们的命运都事实上绑在了其所立足的土壤上。毕竟“上山下乡”运动的形象与效益，乃至青年对国家的态度完全取决于它所服务的社会基础：即农村社会究竟值不值得如此开发，如此投入，并放弃相应的潜在收益？随着我国步入新常态，且该政策的收效也显得越加孱弱，其规模也不若往昔。如今也有必要重新审视这一具有极强时代色彩的政策。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

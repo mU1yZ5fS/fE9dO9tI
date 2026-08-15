@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_709_tawakkalna.gd" id="5_custom"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_709_trigger.gd" id="6_trigger"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "沙特人有胜算吗？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_709_tawakkalna.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_709"
+source_event_number = 709
+trigger_priority = 7090
+title = "“托靠真主-6号”行动"
+description = "在粉碎了科威特的无谓挣扎后，伊拉克政府将目光放向了南部孱弱的沙特王国。占据了富庶肥饶的产油之地的沙特王国却屡屡向伊拉克的敌人们暗送秋波，也许在两伊战争之前，伊拉克还有求于沙特。现在，是时候让沙特人付出代价了。伊拉克军队决定执行“托靠真主-6号行动”，以武力攻取哈萨绿洲，彻底切断沙特的产油区。\n伊拉克军队已经开始动员了，国际观察家对沙特的抵抗力表示悲观。"
+trigger_script = ExtResource("6_trigger")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_710_lion_hunt.gd" id="5_custom"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_710_trigger.gd" id="6_trigger"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "中东就不能和平些吗……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_710_lion_hunt.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "没有理由不帮助我们的同志萨达姆！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_710_lion_hunt.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_710"
+source_event_number = 710
+trigger_priority = 7100
+title = "“猎狮”行动"
+description = "（描述由 event_710_lion_hunt.gd 的 prepare 按叙利亚政体动态生成）"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("6_trigger")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

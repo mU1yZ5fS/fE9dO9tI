@@ -172,6 +172,8 @@ const 数值索引 := {
 	"data_133": 133, # 原 data[133]（苏联重组战争前置状态，无正式命名键）
 	"data_149": 149, # 原 data[149]（苏斯洛夫/安德罗波夫继任路线：事件83=1、84=2、85=3，无正式命名键）
 	"data_52": I_ECON_DISPLAY,   # 原 data[52]（经济显示等级，Event999 宪法分支判定 data[52]==37）
+	"data_86": 86,               # 原 data[86]（南斯拉夫/科索沃事件链状态，Event76 使用）
+	"data_117": 117,             # 原 data[117]（伊拉克发展度哨兵，Event75 触发条件 data[117]!=9）
 	"data_170": 170,             # 原 data[170]（Event999 触发哨兵：==999 时开火，结果里清零）
 	"gang_of_four_path": I_GANG_OF_FOUR_PATH, "四人帮路线": I_GANG_OF_FOUR_PATH,
 	"palestine_status": I_PALESTINE_STATUS, "巴以安排": I_PALESTINE_STATUS,
