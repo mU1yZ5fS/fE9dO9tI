@@ -148,7 +148,7 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 				if leaders.size() > 4 and leaders[4] != null:
 					leaders[4].support += 1
 			_add_power(EmpireData.USSR, 50)
-			_set(147, 8)
+			_set_data(147, 8)
 			_apply_uk_crisis()
 			context["result_text"] = text
 		else:
@@ -162,7 +162,7 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 			uk.set_tag("对华贸易", false)
 			ws.influence_prc += 50
 			_add_power(EmpireData.USA, 50)
-			_set(147, 7)
+			_set_data(147, 7)
 			context["result_text"] = text
 	elif opt == 2:
 		var num := 0
@@ -189,7 +189,7 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 			uk.set_tag("eu", false)
 			uk.set_tag("对华贸易", false)
 			_add_power(EmpireData.USA, 50)
-			_set(147, 9)
+			_set_data(147, 9)
 			context["result_text"] = S_261
 		else:
 			var arg := S_272_1 if (not _part(c29, 0) and not _part(c166, 0)) else ""
@@ -209,7 +209,7 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 				return
 			if _raw(165) > _raw(162) and _raw(165) > _raw(163) and _raw(165) > _raw(164) and _raw(165) > _raw(166):
 				if _raw(165) < 100:
-					_set(165, 100)
+					_set_data(165, 100)
 				_apply_ireland_takeover(c29, 0, 9, true)
 				context["result_text"] = text
 				return
@@ -258,7 +258,7 @@ func _execute_cable_street(uk: CountryData, opt: int, context: Dictionary) -> vo
 				uk.set_tag("对华贸易", false)
 			ws.influence_prc += 50
 			_add_power(EmpireData.USA, 50)
-			_set(147, 9)
+			_set_data(147, 9)
 			context["result_text"] = S_368
 	elif opt == 1:
 		if uk != null:
@@ -269,7 +269,7 @@ func _execute_cable_street(uk: CountryData, opt: int, context: Dictionary) -> vo
 			uk.set_tag("eu", false)
 			uk.set_tag("对华贸易", false)
 		_add_power(EmpireData.USA, 50)
-		_set(147, 9)
+		_set_data(147, 9)
 		context["result_text"] = S_382
 	else:
 		context["result_text"] = S_54
@@ -281,7 +281,7 @@ func _apply_uk_crisis() -> void:
 	if not _part(c29, 0) and not _part(c166, 0) and not _war_going(86):
 		if _raw(165) > _raw(162) and _raw(165) > _raw(163) and _raw(165) > _raw(164) and _raw(165) > _raw(166):
 			if _raw(165) < 100:
-				_set(165, 100)
+				_set_data(165, 100)
 			_apply_ireland_takeover(c29, 0, 9, true)
 		else:
 			_apply_ireland_takeover(c29, 2, 3, false)
@@ -303,7 +303,7 @@ func _apply_ireland_takeover(c29: CountryData, gov: int, sub: int, vyshi: bool) 
 
 
 func _enqueue_war_over_86() -> void:
-	_set(W.I_WAR_RESOLVE, 86)
+	_set_data(W.I_WAR_RESOLVE, 86)
 	var war := _war(86)
 	if war != null:
 		war.infl1 = 1000
@@ -344,7 +344,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
