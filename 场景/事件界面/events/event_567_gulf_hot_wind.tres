@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_567_gulf_hot_wind.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们支持阿拉伯湾人民对封建买办势力的斗争！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_567_gulf_hot_wind.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "还得再等等……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_567_gulf_hot_wind.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_567"
+source_event_number = 567
+trigger_priority = 56700
+title = "自由的热风"
+description = "佐法尔解放阵线成立于1962年，是一个包含阿拉伯社会主义者、佐法尔分离主义者、民主主义者、共和派甚至是保守的部落首领的反对派大帐篷，其目标是佐法尔独立以及促进阿拉伯民族统一。1963年6月9日，佐解阵的“六·九革命”拉开了斗争的序幕。\n1967年，佐解阵受挫后，席卷世界的左翼浪潮以及南也门独立和“解放巴勒斯坦人民阵线”（人阵）的成立深刻地影响了佐解阵，在1968年的佐解阵二大上，佐解阵被改组为奉行马克思列宁主义和毛泽东思想的“解放被占领的阿拉伯湾人民阵线”（后来与阿湾民阵合并为“解放阿曼和阿拉伯湾人民阵线”，皆简称阿湾人阵），其目标也转向解放包含阿曼、阿联酋、卡塔尔和巴林在内的整个阿拉伯湾，并在苏联和中国的支持下展开斗争。随着苏联对阿湾人阵的全方位援助以及大力干预，阵线内的亲苏派逐渐压倒了亲华派，毛泽东思想被放弃了。\n不久后，阿湾人阵的群众基础逐渐陷入崩溃。阿湾人阵在内部叛乱的影响和封建买办与帝国主义的联合绞杀下逐渐陷入失败。1974年，阿湾人阵重组为解放阿曼人民阵线和解放巴林人民阵线两个组织，规模显著缩小。1975年，阿曼人阵的所有根据地沦陷。1976年1月，阿曼人阵撤入南也门，只有部分游击小组留在阿曼，在南也门的支持下继续开展小规模的游击斗争。\n如今，也门进入了我们的阵营，并已实现完全统一，我们是否要在阿曼人阵和巴林人阵的基础上重建阿湾人阵，重新塑造他们的意识形态并帮助阿拉伯湾的人民再次开展他们的斗争？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

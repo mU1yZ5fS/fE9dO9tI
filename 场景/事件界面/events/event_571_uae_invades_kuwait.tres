@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_571_uae_invades_kuwait.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "出乎意料！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_571_uae_invades_kuwait.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_571"
+source_event_number = 571
+trigger_priority = 57100
+title = "阿拉伯联合共和国入侵科威特"
+description = "数年前在伊拉克上台的穆希·阿卜杜勒--侯赛因·马什哈迪，几乎是在掌权同时便将自己打扮为新的艾哈迈德·贝克尔，并试图将伊拉克打造为阿拉伯世界的领头羊。在1979年时，他甚至保证提供与世界油价挂钩的无息贷款。\n而在阿拉伯联合共和国成立后，穆希被自己国内外的巨大声望冲昏了头脑。为了进一步巩固自己的地位，他对邻国科威特的油田动了歪脑筋。因此，他谴责科威特政府在临近两国边界的的鲁米利亚地区内盗采石油，并以此为由在阿拉伯国家国务委员会议上提出了为维护新生共和国利益而向科威特进行特别军事行动的议题，议题被全票通过，很快，阿联共便向与科威特的边界派出部队并要求科威特政府谈判。在第二天举行的谈判失败后，阿联共便开始向科威特领土进发。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

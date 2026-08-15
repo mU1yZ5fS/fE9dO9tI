@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_580_madagascar.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.5.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帮助拉齐拉卡偿还债务并提出自己的小要求"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_580_madagascar.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "与苏联一起帮助偿还债务"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_580_madagascar.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "联系法国人开始动手"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_580_madagascar.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "马尔加什？马达加斯加？到底哪里是哪里！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_580_madagascar.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_580"
+source_event_number = 580
+trigger_priority = 58000
+title = "哦，我们亲爱的祖国"
+description = "现在让我们的目光看向马达加斯加岛，自拉齐拉卡在1975年军队推举上位并在年底公投中胜选成为马达加斯加民主共和国总统之后，便依照《马达加斯加社会主义革命宪章》实行福科诺洛纳社会主义（村社社会主义的一种），将大量工厂进行国有化，进行土地改革，并以目前正处于民族民主革命阶段为由缓慢推广合作社，允许保留部分私有企业；扭转了马达加斯加共和国时期亲法亲西方的外交并开始向中国，苏联等社会主义国家靠拢；组建了马达加斯加革命先锋和由数个左翼政党组成的全国保卫革命阵线。但由于资金的缺乏和生活消费品的短缺导致了1978年的一次小型游行示威。现有可信情报显示拉齐拉卡正在决定接受国际货币基金组织的经济改革方案，这也就意味着马达加斯加可能要转向抛弃社会主义了。现在插手马达加斯加的事务对我们来说是绝好机会，我们是否要进行干预？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])
