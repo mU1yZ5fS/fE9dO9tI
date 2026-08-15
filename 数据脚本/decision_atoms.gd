@@ -1018,3 +1018,769 @@ static func is_science_done(cock: int, yes: bool) -> bool:
 		return false
 	var v := ws.techs.unlocked.size() > cock and ws.techs.unlocked[cock]
 	return v if yes else not v
+
+
+## HasLeader — 领袖六属性全等（QueryDecisions L1624-1644）
+static func has_leader(name1: int, name2: int, t0: int, t3: int, t1: int, t2: int) -> bool:
+	var ws := _ws()
+	if ws == null or ws.leader == null:
+		return false
+	var l: PoliticianData = ws.leader
+	return l.trait_background == t3 and l.trait_special == t2 and l.trait_alignment == t1 \
+		and l.trait_personality == t0 and l.name_last == name2 and l.name_first == name1
+
+
+## HasCorruptLeader — yes: leader.traits[2]==18
+static func has_corrupt_leader(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.leader != null and ws.leader.trait_special == 18
+	return v if yes else not v
+
+
+## AddLoyalityToAllPoliticians — 全体政治家 loyalty += num
+static func add_loyality_to_all_politicians(num: int) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	for p: PoliticianData in ws.politicians:
+		if p != null:
+			p.loyalty += num
+
+
+# ============================================================================
+# 第二批：version=2/3 决议原子（尾追加，不改第一批签名）
+# 字段依赖已在 WorldState 补齐（desnull/oil_prod/oil_eat/austerity/...）。
+# ============================================================================
+
+## CanCouponSystemPhaseOut — yes: (data[16]<14 && data[12]+data[13]>=1500) || data[16]>=14
+static func can_coupon_system_phase_out(yes: bool) -> bool:
+	var d := _d()
+	var v := (d.size() > W.I_ECON_SYSTEM and d[W.I_ECON_SYSTEM] < 14
+			and d.size() > W.I_INDUSTRY and d.size() > W.I_AGRICULTURE
+			and d[W.I_INDUSTRY] + d[W.I_AGRICULTURE] >= 1500) \
+		or (d.size() > W.I_ECON_SYSTEM and d[W.I_ECON_SYSTEM] >= 14)
+	return v if yes else not v
+
+
+## HasAnthemConfirmed — yes: AnthemCooldownTime<=0（4 年一次的国歌事件冷却）
+static func has_anthem_confirmed(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.anthem_cooldown_time <= 0
+	return v if yes else not v
+
+
+## HasAusterity / HasDevelopedConsumerism / HasNewEraCommuneMember /
+## HasPartyMeansParty / HasPartySubsidy / HasPlannedPriceReduction / HasT72 / HasPMC
+## — 原版统一模式：字段 > 0 为 true。
+static func has_austerity(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.austerity > 0
+	return v if yes else not v
+
+
+static func has_developed_consumerism(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.developed_consumerism > 0
+	return v if yes else not v
+
+
+static func has_new_era_commune_member(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.new_era_commune_member > 0
+	return v if yes else not v
+
+
+static func has_party_means_party(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.party_means_party > 0
+	return v if yes else not v
+
+
+static func has_party_subsidy(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.party_subsidy > 0
+	return v if yes else not v
+
+
+static func has_planned_price_reduction(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.planned_price_reduction > 0
+	return v if yes else not v
+
+
+static func has_t72(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.arms_purchase_agreement > 0
+	return v if yes else not v
+
+
+static func has_pmc(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.pmc > 0
+	return v if yes else not v
+
+
+## HasLeaderAsset — LeaderAsset >= num
+static func has_leader_asset(num: int) -> bool:
+	var ws := _ws()
+	return ws != null and ws.leader_asset >= num
+
+
+## HasOilEat — OilEat >= num（float）
+static func has_oil_eat(num: int) -> bool:
+	var ws := _ws()
+	return ws != null and ws.oil_eat >= float(num)
+
+
+## HasRevolutionaryLeader — yes: traits[0]==0 || (traits[0]==20 && data[56]==0 && country1.SubGosstroy==2)
+static func has_revolutionary_leader(yes: bool) -> bool:
+	var ws := _ws()
+	var china := _country(1)
+	var d := _d()
+	var t := ws.leader.trait_personality if (ws != null and ws.leader != null) else -1
+	var v := t == 0 or (t == 20 and d.size() > W.I_POLITICAL_LINE and d[W.I_POLITICAL_LINE] == 0
+			and china != null and china.sub_government == 2)
+	return v if yes else not v
+
+
+## HasSomeoneWonInTheWar — side!=0 → infl2>=900；side==0 → infl1>=900
+static func has_someone_won_in_the_war(war: int, side: int) -> bool:
+	var ws := _ws()
+	if ws == null or war < 0 or war >= ws.wars.size():
+		return false
+	if side != 0:
+		return ws.wars[war].infl2 >= 900
+	return ws.wars[war].infl1 >= 900
+
+
+## HasntJueQi — yes: !IndOpp
+static func hasnt_jue_qi(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and not ws.ind_opp
+	return v if yes else not v
+
+
+## HaveBeenZhuTi — yes: country1.SubGosstroy==19（主体思想）
+static func have_been_zhu_ti(yes: bool) -> bool:
+	var china := _country(1)
+	var v := china != null and china.sub_government == 19
+	return v if yes else not v
+
+
+## HaveFullChina — yes: data[62]>=2 && (data[64]==2 || completedDecisions[7])
+static func have_full_china(yes: bool) -> bool:
+	var d := _d()
+	var v := d.size() > W.I_ARUNACHAL_STATUS and d[W.I_ARUNACHAL_STATUS] >= 2 \
+		and d.size() > W.I_TAIWAN_STATUS and (d[W.I_TAIWAN_STATUS] == 2 or _completed(7))
+	return v if yes else not v
+
+
+## ISCIA — yes: country51.dev > 0（美国 CIA 政变状态）
+static func is_cia(yes: bool) -> bool:
+	var usa := _country(51)
+	var v := usa != null and usa.development > 0
+	return v if yes else not v
+
+
+## IsAfricanProprc — yes: 63/61/114/122/127/124 亲中且社会主义，且 68 有对华贸易且社会主义
+static func is_african_proprc(yes: bool) -> bool:
+	var ws := _ws()
+	var v := true
+	for idx in [63, 61, 114, 122, 127, 124]:
+		var c := _country(idx)
+		if c == null or not c.has_tag("亲中") or (ws != null and not ws.is_socialism(c, true)):
+			v = false
+			break
+	if v:
+		var c68 := _country(68)
+		if c68 == null or not c68.has_tag("对华贸易") or (ws != null and not ws.is_socialism(c68, true)):
+			v = false
+	return v if yes else not v
+
+
+## IsAfricanSocialism — 原版只统计区间内国家总数 >=6（名字 misleading，照抄）
+static func is_african_socialism(yes: bool) -> bool:
+	var ws := _ws()
+	if ws == null:
+		return false
+	var num := 0
+	for c: CountryData in ws.countries:
+		var i := c.原版序号
+		if ((i > 51 and i < 69) or (i > 105 and i < 109) or (i > 111 and i < 133)
+				or i == 41 or i == 42 or i == 99 or i == 100) and i != 128:
+			num += 1
+	var v := num >= 6
+	return v if yes else not v
+
+
+## IsAfterTheDay — yes: (y>=year && m>=month && d>=day) || (y>=year && m>=month+1) || y>=year+1
+static func is_after_the_day(yes: bool, year: int, month: int, day: int) -> bool:
+	var d := _d()
+	var yy := d[W.I_YEAR] if d.size() > W.I_YEAR else 0
+	var mm := d[W.I_MONTH] if d.size() > W.I_MONTH else 0
+	var dd := d[W.I_DAY] if d.size() > W.I_DAY else 0
+	var v := (yy >= year and mm >= month and dd >= day) \
+		or (yy >= year and mm >= month + 1) or yy >= year + 1
+	return v if yes else not v
+
+
+## IsChinaWarAliance — yes: country1.okb
+static func is_china_war_aliance(yes: bool) -> bool:
+	var china := _country(1)
+	var v := china != null and china.has_tag("okb")
+	return v if yes else not v
+
+
+## IsCorruptionLessThan / IsDebtLessThan / IsEnvelopeLessThan — 原版统一 yes→< num，!yes→> num
+static func is_corruption_less_than(yes: bool, num: int) -> bool:
+	var v: int = _d()[W.I_CORRUPTION] if _d().size() > W.I_CORRUPTION else 0
+	return v < num if yes else v > num
+
+
+static func is_debt_less_than(yes: bool, num: int) -> bool:
+	var v: int = _d()[W.I_LOAN] if _d().size() > W.I_LOAN else 0
+	return v < num if yes else v > num
+
+
+static func is_envelope_less_than(yes: bool, num: int) -> bool:
+	var v: int = _d()[W.I_BUDGET_ENVELOPE] if _d().size() > W.I_BUDGET_ENVELOPE else 0
+	return v < num if yes else v > num
+
+
+## IsReserveLessThan — yes: data[36] < num；!yes: > num
+static func is_reserve_less_than(yes: bool, num: int) -> bool:
+	var v: int = _d()[W.I_RESERVE] if _d().size() > W.I_RESERVE else 0
+	return v < num if yes else v > num
+
+
+## IsCouponSystemPhasedOut — yes: HasCouponSystemPhaseOut
+static func is_coupon_system_phased_out(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.has_coupon_system_phase_out
+	return v if yes else not v
+
+
+## IsIndustry — yes: data[12] >= how；!yes: < how
+static func is_industry(how: int, yes: bool) -> bool:
+	var v: int = _d()[W.I_INDUSTRY] if _d().size() > W.I_INDUSTRY else 0
+	return v >= how if yes else v < how
+
+
+## IsNoWars — yes: ingamewars[3,4,8,9,10,11,12,40,41,42] 全不进行
+static func is_no_wars(yes: bool) -> bool:
+	var ws := _ws()
+	var any_going := false
+	if ws != null:
+		for war_id in [3, 4, 8, 9, 10, 11, 12, 40, 41, 42]:
+			if war_id < ws.wars.size() and ws.wars[war_id].is_going:
+				any_going = true
+				break
+	var v := not any_going
+	return v if yes else not v
+
+
+## IsOARCreated — yes: GameState.OAR
+static func is_oar_created(yes: bool) -> bool:
+	var ws := _ws()
+	var v := ws != null and ws.oar
+	return v if yes else not v
+
+
+## IsOARfull — yes: 30/14/35/40/13 全 oar 且 13 无 parts[0/1]，且
+## ((18.oar && 54.oar && !54.parts[0]) || (54.parts[0] && 54.oar))，且 55.oar
+static func is_oar_full(yes: bool) -> bool:
+	var c13 := _country(13)
+	var c14 := _country(14)
+	var c18 := _country(18)
+	var c30 := _country(30)
+	var c35 := _country(35)
+	var c40 := _country(40)
+	var c54 := _country(54)
+	var c55 := _country(55)
+	var v := _oar_tag(c30) and _oar_tag(c14) and _oar_tag(c35) and _oar_tag(c40) \
+		and _oar_tag(c13) and c13 != null and c13.parts.size() > 1 and not c13.parts[0] and not c13.parts[1] \
+		and ((_oar_tag(c18) and _oar_tag(c54) and c54 != null and c54.parts.size() > 0 and not c54.parts[0])
+			or (c54 != null and c54.parts.size() > 0 and c54.parts[0] and _oar_tag(c54))) \
+		and _oar_tag(c55)
+	return v if yes else not v
+
+
+static func _oar_tag(c: CountryData) -> bool:
+	return c != null and c.has_tag("oar")
+
+
+## IsRael — yes: country37 亲中且非亲美
+static func is_rael(yes: bool) -> bool:
+	var c := _country(37)
+	var v := c != null and c.has_tag("亲中") and not c.has_tag("亲美")
+	return v if yes else not v
+
+
+## IsRealtions — yes: empires[empire].relations >= how；!yes: < how
+static func is_realtions(how: int, empire: int, yes: bool) -> bool:
+	var e := _empire(empire)
+	var v := e.relations if e != null else 0
+	return v >= how if yes else v < how
+
+
+## IsRevotionaryOARfull — yes: 16 国全部社会主义、非亲苏、SubGosstroy!=16、oar；
+## 且 101/105 SubGosstroy==17；且 resultOfEvents[437]!=1
+static func is_revotionary_oar_full(yes: bool) -> bool:
+	var ws := _ws()
+	var flag := true
+	if ws != null:
+		for num in [13, 14, 35, 36, 37, 40, 53, 54, 55, 93, 101, 102, 103, 104, 105, 24]:
+			var c := _country(num)
+			if c == null or not ws.is_socialism(c, true) or c.has_tag("亲苏") \
+					or c.sub_government == 16 or not c.has_tag("oar"):
+				flag = false
+				break
+		var c101 := _country(101)
+		var c105 := _country(105)
+		if c101 == null or c101.sub_government != 17 or c105 == null or c105.sub_government != 17:
+			flag = false
+		if _event_result(437, 1):
+			flag = false
+	return flag if yes else not flag
+
+
+## NoZhuTiWar — yes: ingamewars[70..75] 无进行
+static func no_zhu_ti_war(yes: bool) -> bool:
+	var ws := _ws()
+	var num := 0
+	if ws != null:
+		for war_id in range(70, 76):
+			if war_id < ws.wars.size() and ws.wars[war_id].is_going:
+				num += 1
+	var v := num == 0
+	return v if yes else not v
+
+
+## OnceAMonth — 恒 yes（原版就是传回参数）
+static func once_a_month(yes: bool) -> bool:
+	return yes
+
+
+## Oncein — yes: desnull[cock] <= 0（month 参数原版仅用于门槛文本）
+static func oncein(cock: int, yes: bool) -> bool:
+	var ws := _ws()
+	if ws == null or cock < 0 or cock >= ws.desnull.size():
+		return false
+	var v := ws.desnull[cock] <= 0
+	return v if yes else not v
+
+
+# ── 第二批效果原子 ──
+
+## AddAllAfrique — cum 1→sovpower 2→usapower 3→prcpower，区间 53..108，
+## 跳过 (69..105) 与 africaOff
+static func add_all_afrique(num: int, cum: int) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	for c: CountryData in ws.countries:
+		var i := c.原版序号
+		if i < 53 or i > 108:
+			continue
+		if (i < 69 or i > 105) and not c.禁用非洲机制:
+			if cum == 1:
+				c.sov_power += num
+			elif cum == 2:
+				c.usa_power += num
+			elif cum == 3:
+				c.prc_power += num
+
+
+## AddImport — data[6] += num（原版与 AddDiplo 同字段，照抄）
+static func add_import(num: int) -> void:
+	add_diplo(num)
+
+
+## AddLeaderAsset — 原版 delegate 实为 data[6] += num（方法名 misleading，照抄）
+static func add_leader_asset(num: int) -> void:
+	add_diplo(num)
+
+
+## AddNewModify — modifies[num].active = true
+static func add_new_modify(num: int) -> void:
+	var m := _mod(num)
+	if m != null:
+		m.is_active = true
+
+
+## AddOilEat — ArmyPower += num；OilEat > 200 时照加，否则钳到 200
+static func add_oil_eat(num: int) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	ws.army_power += num
+	if ws.oil_eat > 200.0:
+		ws.oil_eat += float(num)
+	else:
+		ws.oil_eat = 200.0
+
+
+## AddOilPrice — data[143]（油价）>=10 才加，否则 =10
+static func add_oil_price(num: int) -> void:
+	var d := _d()
+	if d.size() <= 143:
+		return
+	if d[143] + num >= 10:
+		d[143] += num
+	else:
+		d[143] = 10
+
+
+## AddOilPrud — OilProd += num；data[152]<1500 → +50（>1500 则 1450）
+static func add_oil_prud(num: int) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	ws.oil_prod += float(num)
+	var d := _d()
+	if d.size() > W.I_INDUSTRY_BASE and d[W.I_INDUSTRY_BASE] < 1500:
+		d[W.I_INDUSTRY_BASE] += 50
+		if d[W.I_INDUSTRY_BASE] > 1500:
+			d[W.I_INDUSTRY_BASE] = 1450
+
+
+## AddOldModify — modifies[num].active=true；num==58 → data[153]=12
+static func add_old_modify(num: int) -> void:
+	var m := _mod(num)
+	if m != null:
+		m.is_active = true
+	if num == 58:
+		var d := _d()
+		if d.size() > 153:
+			d[153] = 12
+
+
+## AddStabilityAfrique — 区间 53..108、跳过 (69..105) 与 africaOff → stab += num
+static func add_stability_afrique(num: int) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	for c: CountryData in ws.countries:
+		var i := c.原版序号
+		if i >= 53 and i <= 108 and (i < 69 or i > 105) and not c.禁用非洲机制:
+			c.stab += num
+
+
+## AddinflAlliance — cum 1/2/3 分别加 sovinfl / usainfl / prcinfl
+static func add_infl_alliance(num: int, cum: int) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	var china := _country(1)
+	if cum == 1:
+		for c: CountryData in ws.countries:
+			if c.has_tag("ovd") and _in_ovd_infl_list(c.原版序号):
+				c.sov_influence += num
+	elif cum == 2:
+		for c: CountryData in ws.countries:
+			if c.has_tag("seato"):
+				c.usa_influence += num
+	else:
+		for c: CountryData in ws.countries:
+			var k := c.原版序号
+			if c.has_tag("ovd") and china != null and china.has_tag("ovd"):
+				if _in_ovd_infl_list(k):
+					c.prc_influence += num
+			elif c.has_tag("seato"):
+				c.prc_influence += num
+
+
+static func _in_ovd_infl_list(i: int) -> bool:
+	return i == 8 or i == 11 or i == 14 or i == 12 or i == 31 or i == 32 or i == 22 \
+		or i == 33 or i == 37 or i == 43 or i == 42 or i == 23 or i == 35 \
+		or i == 96 or i == 97 or i == 98 or i == 95 or i == 49 or i == 50
+
+
+## AfricanAlliance — completedDecisions[36] = true
+static func african_alliance(_yes: bool = true) -> void:
+	_set_completed(36)
+
+
+## AllyWithOtherParties — factions 2..4 启用者全部 is_ally=true
+static func ally_with_other_parties(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	for i in range(2, ws.factions.size()):
+		if ws.factions[i].is_enabled:
+			ws.factions[i].is_ally = true
+
+
+## BlockForNewDemocracy — data[15]=7
+static func block_for_new_democracy(_num: int) -> void:
+	var d := _d()
+	if d.size() > W.I_PARTY_SYSTEM:
+		d[W.I_PARTY_SYSTEM] = 7
+
+
+## BlockForStatemoncap — data[16]=12
+static func block_for_statemoncap(_num: int) -> void:
+	var d := _d()
+	if d.size() > W.I_ECON_SYSTEM:
+		d[W.I_ECON_SYSTEM] = 12
+
+
+## BlockFreedom — completedDecisions[num]=true（原版 delegate 仅完成标记）
+static func block_freedom(num: int) -> void:
+	_set_completed(num)
+
+
+## CouponSystemWillPhaseOut — HasCouponSystemPhaseOut = true
+static func coupon_system_will_phase_out(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.has_coupon_system_phase_out = true
+
+
+## CreateBigOAR — 逐字对齐 QueryDecisions CreateBigOAR（other_text[6]=阿拉伯联合共和国）
+static func create_big_oar(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	var china := _country(1)
+	var c30 := _country(30)
+	for i in [13, 14, 30, 35, 40]:
+		var c := _country(i)
+		if c == null:
+			continue
+		for tag in ["亲苏", "亲美", "亲中", "sev", "ovd", "okb", "econ", "对华贸易", "oar"]:
+			c.set_tag(tag, false)
+	var c14 := _country(14)
+	if c14 != null and c14.parts.size() > 4 and c14.parts[4]:
+		c14.parts[4] = false
+		if c30 != null and c30.parts.size() > 1:
+			c30.parts[1] = true
+	elif c30 != null and c30.parts.size() > 0:
+		c30.parts[0] = true
+	if c30 != null:
+		c30.set_tag("对华贸易", true)
+		c30.set_tag("亲中", true)
+		c30.name = "阿拉伯联合共和国"
+		c30.government = 2
+		c30.sub_government = 3
+	_mod(46).is_active = true
+	if china != null:
+		if china.has_tag("okb"):
+			if c30 != null:
+				c30.set_tag("okb", true)
+				c30.set_tag("econ", true)
+		elif china.has_tag("ovd"):
+			if c30 != null:
+				c30.set_tag("ovd", true)
+				c30.set_tag("sev", true)
+		elif china.has_tag("sev"):
+			if c30 != null:
+				c30.set_tag("sev", true)
+		elif china.has_tag("econ"):
+			if c30 != null:
+				c30.set_tag("econ", true)
+
+
+## CreateNewLeader — 直接改写领袖字段 + LeaderAsset/MoneyLevel/modifies[65]/ServeRMB 清零
+static func create_new_leader(name1: int, name2: int, t0: int, t3: int, t1: int, t2: int, age: int) -> void:
+	var ws := _ws()
+	if ws == null or ws.leader == null:
+		return
+	ws.leader.name_first = name1
+	ws.leader.name_last = name2
+	ws.leader.trait_personality = t0
+	ws.leader.trait_background = t3
+	ws.leader.trait_alignment = t1
+	ws.leader.trait_special = t2
+	ws.leader.age = age
+	ws.leader_asset = 0
+	ws.money_level = 0
+	var m65 := _mod(65)
+	if m65 != null:
+		m65.is_active = false
+	ws.serve_rmb = false
+
+
+## CreateNewPolitician — 替换 power 最低且 traits[0]!=trait0 的槽位
+static func create_new_politician(name1: int, name2: int, t0: int, t3: int, t1: int, t2: int, age: int) -> void:
+	var ws := _ws()
+	if ws == null or ws.politicians.is_empty():
+		return
+	var num := 0
+	for i in ws.politicians.size():
+		var p: PoliticianData = ws.politicians[i]
+		if p != null and p.power < ws.politicians[num].power and p.trait_personality != t0:
+			num = i
+	GameManager.kill_politician(num)
+	if num < ws.politicians.size() and ws.politicians[num] != null:
+		var p2: PoliticianData = ws.politicians[num]
+		p2.name_first = name1
+		p2.name_last = name2
+		p2.age = age
+		p2.trait_personality = t0
+		p2.trait_background = t3
+		p2.trait_alignment = t1
+		p2.trait_special = t2
+		p2.power = 800
+		p2.loyalty = 800
+
+
+## DoTimer — desnull[cock] = month
+static func do_timer(cock: int, month: int) -> void:
+	var ws := _ws()
+	if ws != null and cock >= 0 and cock < ws.desnull.size():
+		ws.desnull[cock] = month
+
+
+## EliminateCorruptElements — traits[2]==18 的政治家全部 KillPerson
+static func eliminate_corrupt_elements(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	var targets: Array[int] = []
+	for i in ws.politicians.size():
+		var p: PoliticianData = ws.politicians[i]
+		if p != null and p.trait_special == 18:
+			targets.append(i)
+	for i in targets:
+		GameManager.kill_politician(i)
+
+
+## Get* — 原版固定值置位（值即持续月数/等级）
+static func get_austerity(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.austerity = 12
+
+
+static func get_developed_consumerism(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.developed_consumerism = 12
+
+
+static func get_mongolia(num: int) -> void:
+	_set_completed(num)
+
+
+static func get_new_era_commune_member(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.new_era_commune_member = 6
+
+
+static func get_pmc(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.pmc = 6
+
+
+static func get_party_means_party(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.party_means_party = 6
+
+
+static func get_party_subsidy(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.party_subsidy = 6
+
+
+static func get_planned_price_reduction(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.planned_price_reduction = 12
+
+
+static func get_t72(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws != null:
+		ws.arms_purchase_agreement = 3
+
+
+## MakeInWPO — allcountries[country].isOVD = yes
+static func make_in_wpo(yes: bool, country: int) -> void:
+	var c := _country(country)
+	if c != null:
+		c.set_tag("ovd", yes)
+
+
+## MercenaryRebellion — MilitaryService++；>=3 且 rng(0..3)==1 → 触发事件 692
+static func mercenary_rebellion(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	ws.military_service += 1
+	if ws.military_service >= 3 and ws.ensure_rng().randi_range(0, 3) == 1:
+		start_event(692)
+
+
+## OnAgentModif / OnArmyModif — 激活 modifies[47]/[48]
+static func on_agent_modif(_yes: bool = true) -> void:
+	var m := _mod(47)
+	if m != null:
+		m.is_active = true
+
+
+static func on_army_modif(_yes: bool = true) -> void:
+	var m := _mod(48)
+	if m != null:
+		m.is_active = true
+
+
+## OnSEATO — country51.cw=true；所有 SENTO 成员 LeaveSENTO().JoinASEAN()
+static func on_seato(_yes: bool = true) -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	var c51 := _country(51)
+	if c51 != null:
+		c51.内战中 = true
+	for c: CountryData in ws.countries:
+		if c.has_tag("sento"):
+			c.set_tag("sento", false)
+			c.set_tag("asean", true)
+
+
+## UniteArab — 逐字对齐 QueryDecisions UniteArab
+static func unite_arab() -> void:
+	var ws := _ws()
+	if ws == null:
+		return
+	var c54 := _country(54)
+	var c30 := _country(30)
+	if c54 != null and c54.parts.size() > 0:
+		c54.parts[0] = false
+	if c30 == null:
+		return
+	if c30.parts.size() > 2:
+		c30.parts[2] = true
+	c30.name = "阿拉伯革命社会主义\n联邦共和国"
+	c30.government = 1
+	c30.sub_government = 1
+	_leave_all_legacy(c30)
+	c30.set_tag("对华贸易", true)
+	c30.set_tag("亲中", true)
+	c30.set_tag("oar", true)
+	_join_all_legacy(c30)
+
+
+## LeaveAlliances 等价（对齐 event_script_base._leave_alliances 的标签清单）
+static func _leave_all_legacy(c: CountryData) -> void:
+	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
+			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
+			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
+		c.set_tag(tag, false)
+	c.puppet_of = -1
+
+
+## JoinAllOurAlliances(true) 等价（中国 econ→econ；否则 sev→sev）
+static func _join_all_legacy(c: CountryData) -> void:
+	var china := _country(1)
+	if china == null or c == null:
+		return
+	if china.has_tag("econ"):
+		c.set_tag("econ", true)
+	elif china.has_tag("sev"):
+		c.set_tag("sev", true)

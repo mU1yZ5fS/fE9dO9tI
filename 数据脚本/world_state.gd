@@ -243,6 +243,31 @@ const 数值索引 := {
 # 新游戏在 world_factory 创建后同步 data[30]，旧存档无此字段取 0。
 @export var sov_prc_parties_connection: int = 0
 
+# ── 决议系统原版字段（GameState.cs:7862-7984，决策原子直读直写）──
+# 旧存档缺字段时取声明默认值（与原版默认 0/false 一致）。
+@export var desnull: Array[int] = []          # 原版 int[50]，Oncein/DoTimer 计时器
+@export var oil_prod: float = 0.0             # 原版 OilProd（开局 GameStartScript:90 = 850）
+@export var oil_eat: float = 0.0              # 原版 OilEat（开局按 GameStartScript:824 公式）
+@export var army_power: int = 0               # 原版 ArmyPower
+@export var has_coupon_system_phase_out: bool = false
+@export var planned_price_reduction: int = 0
+@export var austerity: int = 0
+@export var developed_consumerism: int = 0
+@export var new_era_commune_member: int = 0
+@export var party_means_party: int = 0
+@export var party_subsidy: int = 0
+@export var arms_purchase_agreement: int = 0
+@export var pmc: int = 0
+@export var military_service: int = 0
+@export var leader_asset: int = 0
+@export var money_level: int = 0
+@export var new_politician: Array[bool] = []  # 原版 bool[8]（GetLinBiao 开关；Godot 政治家池已简化为直接换人）
+@export var anthem_cooldown_time: int = 0     # 原版 AnthemCooldownTime（HasAnthemConfirmed 用）
+@export var ind_opp: bool = false             # 原版 IndOpp（HasntJueQi 用）
+@export var oar: bool = false                 # 原版 OAR（阿拉伯革命社会主义共和国联盟已成立）
+@export var serve_rmb: bool = false            # 原版 ServeRMB（CreateNewLeader 清零）
+@export var leader_property: Array[bool] = []  # 原版 LeaderProperty[4]（决议 idx51 效果动态读）
+
 # ── 全局标记（替代原版散落 bool） ──
 @export var global_flags: Dictionary = {}
 
@@ -307,6 +332,12 @@ func _init() -> void:
 	数值表.resize(200)
 	politics_positions.resize(8)
 	politics_positions.fill(-1)
+	desnull.resize(50)
+	desnull.fill(0)
+	new_politician.resize(8)
+	new_politician.fill(false)
+	leader_property.resize(4)
+	leader_property.fill(false)
 
 
 # ── 玩法随机源 ──
