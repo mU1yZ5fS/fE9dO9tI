@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_100_government_crisis.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.12.10"
+
+[sub_resource type="Resource" id="Expr_c32_puppet"]
+script = ExtResource("3_expr")
+type = 28
+target = "32"
+key = "puppet_of"
+value = -1.0
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_c32_puppet")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "通过支持反对派来煽动反政府集会"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_100_government_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们在国内有自己的问题"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_100_government_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "拨款支持政府"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_100_government_crisis.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_100"
+source_event_number = 100
+trigger_priority = 10000
+title = "政府危机"
+description = "在没完没了的政变后，孟加拉国的军权暂时稳定了，“元老”侯赛因·穆罕默德·艾尔沙德成功拿下总统宝座。在两年的右翼独裁政权下，针对自由派和社会主义者的大规模压迫开始了，他们大部分都是左翼党派人民联盟的成员。同时，国内耕者无其田与高层权力腐败始终没解决。由此，难对付的反政府示威在全国开始了，诉求之一就是启动大选程序。依我之见如果我们支持努力改善对华关系的政府，我们就能稳定东南亚的政变温床，但是如果我们能更激烈地催化示威并组织反对派对抗艾尔沙德，忠诚于我们的人就能掌权，但是全世界会怎么看?还是我们干脆不要介入？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
