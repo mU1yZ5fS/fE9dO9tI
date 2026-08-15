@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_652_africa_battle_royale.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.4.1"
+
+[sub_resource type="Resource" id="Expr_subgov_not_12"]
+script = ExtResource("3_expr")
+type = 26
+key = "sub_government"
+value = 12.0
+target = "107"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帮助莫莫深化改革，并扫除塞拉利昂政坛的保守派！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_652_africa_battle_royale.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "是时候结束全国大会党政权的闹剧了！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_652_africa_battle_royale.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "与美国一起，支持强力手段稳定西非局势。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_652_africa_battle_royale.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "充耳不闻"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_652_africa_battle_royale.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_652"
+source_event_number = 652
+trigger_priority = 65200
+title = "非洲大逃杀"
+description = "进入20世纪80年代后，塞拉利昂的经济便持续下行，深受恶性通货膨胀与缺乏社会保障设施的困扰。也就在1985年内，塞拉利昂的通货膨胀率便高达76.6%。失业潮与国内经济长期缺乏有效投资的情况使该国大量青年沦为无业游民，并自发结成黑社会性质的组织谋求生计。糜烂的局势甚至让斯蒂文森都无法泰然处之，不得不在“蝗虫般的17年后”引咎辞职。大会党准备寄希望于来自强力机关的候选人约瑟夫·赛义杜·莫莫重振局势，并为经济改革做好了计划：出于平抑物价的需要，政府对投机倒把、囤积居奇、哄抬物价等行为严惩不贷；并决定改组缉私队伍，惩办走私者和驱逐违法的外商。可考虑到塞拉利昂国内利益团体早已在多年腐败统治下根深蒂固，如此改革仍显得浮于表面：且斯蒂文森的亲信们也不满于莫莫的“专断行径”。看起来塞拉利昂已来到了其历史拐点。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_subgov_not_12")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

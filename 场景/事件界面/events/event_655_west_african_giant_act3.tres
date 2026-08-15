@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_655_west_african_giant_act3.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.12.31"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持文官政府"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_655_west_african_giant_act3.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持军官集团"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_655_west_african_giant_act3.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "不过是非洲的一场政变罢了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_655_west_african_giant_act3.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_655"
+source_event_number = 655
+trigger_priority = 65500
+title = "西非巨人——第三幕"
+description = "尼日利亚经济在20世纪80年代进入了严重的衰退期。生活水平降到比以前更糟糕的地步，外债增加。70年代着重强调提供人民生活所需的发展计划，因为国家支持出口导向战略而被放弃。这也是一个冲突的时代，穷人抗议政府的政策，宗教冲突也不断增加，在经济衰退和政治上管理不善的刺激下进一步激化。自尼日利亚第二共和国的第二届政府上任三个月以来，国家的状况并未好转，局势反而更加尖锐和对立。此届文官政府也并未对此视而不见，他们制定了新的改革计划，并成立了一个新的部门——国家指导部，以遏制政府内部的腐败现象，他们制定了一个名为“道德革命”的新计划，以进行“反违纪战争”，但我们似乎要看不到他们的落地了——近期在尼日利亚与乍得的边境冲突中，文官政府同军方的意见分歧使得尼日利亚国内本就不算乐观的局势更加火上浇油。根据情报，陆军参谋易卜拉欣·巴班吉达少将和负责对乍得的军事行动的穆罕默杜·布哈里少将在尼日利亚商业大亨莫斯胡德·阿比奥拉的资助下拉起了一个军方的阴谋圈子，准备对文官政府发起政变。当然，文官政府方面也不缺少仍然支持政权的军事力量。\n我们是否要做些什么？毕竟，第二共和国的民主来之不易，但话又说回来，这也只不过是这片大陆无处不在的一场政变罢了……或许，这次也会有开明的军事政权？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

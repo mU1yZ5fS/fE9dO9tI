@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_657_fulani_jihad_embers.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_655_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_655"
+
+[sub_resource type="Resource" id="Expr_prc_100"]
+script = ExtResource("3_expr")
+type = 27
+key = "prc_power"
+value = 100.0
+target = "60"
+
+[sub_resource type="Resource" id="Expr_cw_1"]
+script = ExtResource("3_expr")
+type = 25
+key = "cw"
+value = 1.0
+target = "60"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "把斗争进行到底！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_657_fulani_jihad_embers.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_657"
+source_event_number = 657
+trigger_priority = 65700
+title = "富拉尼圣战的余烬"
+description = "这是尼日利亚独立以来宗教冲突最为严重的时期。扬塔特斯尼基于经济萧条和失业，在学生运动、失业的无产阶级乃至外国人中吸收了大量的支持者，并已经采取过多次成功的行动，誓要把堕落的西方毒瘤赶出尼日利亚。如今，他们基于北方的宗教保守主义和部分北方部族精英的支持，已经在北方建立了可观的地下网络和根据地，大有把“新富拉尼圣战”输出到全国的势头。尼日利亚军方已经决定对扬塔特斯尼运动进行最终的围剿和镇压。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_655_done"), SubResource("Expr_prc_100"), SubResource("Expr_cw_1")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])
