@@ -1,0 +1,88 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_497_congo_congress.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.10.17"
+
+[sub_resource type="Resource" id="Expr_c52_gov_1"]
+script = ExtResource("3_expr")
+type = 25
+target = "52"
+key = "government"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_c52_sub_not_16"]
+script = ExtResource("3_expr")
+type = 26
+target = "52"
+key = "sub_government"
+value = 16.0
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_c52_gov_1"), SubResource("Expr_c52_sub_not_16")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帮助契卡雅夺取权力，扭转刚果的政策"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_497_congo_congress.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持卡塔利的亲苏强硬派夺权，刚果不应该和法国人眉来眼去！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_497_congo_congress.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "支持萨苏的当权派"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_497_congo_congress.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们不关心刚果的局势"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_497_congo_congress.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_497"
+source_event_number = 497
+trigger_priority = 49700
+title = "恩古瓦比的大会？——第二幕"
+description = "尽管萨苏被视为刚果劳动党保守派的代表，但他既不是激进派，也不是理论家，他的政策通常以实用主义为标志——刚果仍与西方关系密切，经济领域的和法国保持了深入联系，萨苏表示，刚果和法国之间“没有乌云”。刚果通过法国发展并保持牢固的关系来维持经济的高速增长。在经济调整中，国企开始实行经理负责制和厂长负责制，鼓励物质刺激，一批绩效不良的国营企业被改组为刚果-法国的合资企业，法方派专家帮助管理。萨苏同国际货币基金组织谈判贷款，并允许来自法国和美国的外国投资者进行石油和矿产开采。他于1979年10月和1981年7月访问法国，寻求经济支持。法国的石油公司在刚果油田的开采中发挥了重要作用，他们使石油产量翻了一番，并通过预融资贷款支持刚果政府开支。1980年5月，萨苏与苏联签署了一项为期20年的友好协议，并于同年派出两个代表团访问中国，而中国政府的部长则回访了布拉柴维尔。然而，这些关系的经济影响仍然微乎其微：法国为该国提供了高达50%的对外援助，苏联和中国对刚果的援助比起法国而言更是微不足道。\n在这一情况下，刚果劳动党党内仍然存在反对派系。尽管这随着萨苏巩固权力和党内团结政策的推行，劳动党的宗派主义在80年代不那么明显，但其内部权力斗争仍在继续。萨苏将劳动党的第二号人物与党内理论家让-皮埃尔·蒂斯特雷·契卡雅视为眼中钉，他计划除掉这位令他头疼的人物；与此同时，党内还存在一个由弗朗索瓦·格扎维埃·卡塔利领导的强硬亲苏派，希望刚果与苏东阵营进行更深入的合作。在这场党代会上，劳动党各派将决出胜者。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])
