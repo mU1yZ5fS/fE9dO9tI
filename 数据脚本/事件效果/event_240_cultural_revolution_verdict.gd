@@ -41,7 +41,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 100
 				elif p.trait_personality == 1:
 					p.loyalty += 50
-			_set(W.I_POST_MAO_COURSE, 1)
+			_set_data(W.I_POST_MAO_COURSE, 1)
 			context["result_text"] = TXT_R0
 		1:
 			_add(W.I_PARTY_SUPPORT, -50)
@@ -58,7 +58,7 @@ func execute(context: Dictionary) -> void:
 				elif p.trait_personality > 0:
 					p.loyalty -= 200
 					p.power -= 100
-			_set(W.I_POST_MAO_COURSE, 2)
+			_set_data(W.I_POST_MAO_COURSE, 2)
 			context["result_text"] = TXT_R1
 		2:
 			_add(W.I_DIPLO, -10)
@@ -72,7 +72,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 20
 				elif p.trait_personality < 3:
 					p.loyalty += 100
-			_set(W.I_POST_MAO_COURSE, 3)
+			_set_data(W.I_POST_MAO_COURSE, 3)
 			context["result_text"] = TXT_R2
 		3:
 			_add(W.I_PEOPLE_SUPPORT, 80)
@@ -88,7 +88,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 50
 				elif p.trait_personality > 1:
 					p.loyalty += 100
-			_set(W.I_POST_MAO_COURSE, 4)
+			_set_data(W.I_POST_MAO_COURSE, 4)
 			context["result_text"] = TXT_R3
 
 
@@ -97,7 +97,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

@@ -22,28 +22,28 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			_set(W.I_MIL_DOCTRINE, 33)
+			_set_data(W.I_MIL_DOCTRINE, 33)
 			_add(W.I_PARTY_SUPPORT, -150)
 			_add(W.I_BUDGET, -50)
 			_add(W.I_PEOPLE_SUPPORT, 30)
 			_add(W.I_ARMY, 50)
 			context["result_text"] = TXT_R0
 		1:
-			_set(W.I_MIL_DOCTRINE, 32)
+			_set_data(W.I_MIL_DOCTRINE, 32)
 			_add(W.I_PARTY_SUPPORT, -50)
 			_add(W.I_BUDGET, -20)
 			_add(W.I_PEOPLE_SUPPORT, -25)
 			_add(W.I_ARMY, 50)
 			context["result_text"] = TXT_R1
 		2:
-			_set(W.I_MIL_DOCTRINE, 31)
+			_set_data(W.I_MIL_DOCTRINE, 31)
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_BUDGET, -5)
 			_add(W.I_PEOPLE_SUPPORT, -50)
 			_add(W.I_ARMY, 50)
 			context["result_text"] = TXT_R2
 		3:
-			_set(W.I_MIL_DOCTRINE, 30)
+			_set_data(W.I_MIL_DOCTRINE, 30)
 			_add(W.I_PARTY_SUPPORT, 150)
 			_add(W.I_PEOPLE_SUPPORT, -75)
 			_add(W.I_ARMY, 50)
@@ -72,7 +72,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

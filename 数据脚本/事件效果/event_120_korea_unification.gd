@@ -69,27 +69,27 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) != 0:
 			_enable(opt[0], TXT_OPT0)
 		else:
-			_disable(opt[0], TXT_OPT0_DIS)
+			_disable(opt[0], TXT_OPT1)
 		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) > 1:
 			_enable(opt[1], TXT_OPT1)
 		else:
-			_disable(opt[1], TXT_OPT1_DIS)
+			_disable(opt[1], TXT_OPT3)
 		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) < 3:
 			_enable(opt[2], TXT_OPT2)
 		else:
-			_disable(opt[2], TXT_OPT2_DIS)
+			_disable(opt[2], TXT_OPT5)
 		if _data_value(world, W.I_POLITICAL_LINE) < 2:
 			_enable(opt[3], TXT_OPT3)
 		else:
-			_disable(opt[3], TXT_OPT3_DIS)
+			_disable(opt[3], TXT_OPT7)
 		if _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) < 3:
 			_enable(opt[4], TXT_OPT4)
 		else:
-			_disable(opt[4], TXT_OPT4_DIS)
+			_disable(opt[4], TXT_OPT9)
 		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) > 1:
 			_enable(opt[5], TXT_OPT5)
 		else:
-			_disable(opt[5], TXT_OPT5_DIS)
+			_disable(opt[5], TXT_OPT11)
 
 
 func execute(context: Dictionary) -> void:

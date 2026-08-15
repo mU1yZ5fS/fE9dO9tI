@@ -34,7 +34,7 @@ const TXT_R_PCI := "最终，选举结果如下：意大利共产党保持1976�
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	if world.get_flag("VasilyisGay"):
+	if ws.get_flag("VasilyisGay"):
 		event_def.description = TXT_DESC_V
 	elif int(world.completed_event_ids.get("event_391", 0)) == 1 			and int(world.completed_event_ids.get("event_392", 0)) != 1:
 		event_def.description = TXT_DESC_391_1
@@ -125,7 +125,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -50)
 		_:
 			txt = ""
-	if world.get_flag("VasilyisGay"):
+	if ws.get_flag("VasilyisGay"):
 		# 原版 iron_and_blood 成就 Set(122)，跳过
 		txt += TXT_R_V
 		_add_power(EmpireData.USA, -20)

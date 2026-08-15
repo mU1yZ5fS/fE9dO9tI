@@ -20,7 +20,7 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_PARTY_SUPPORT, 1000)
 		_add(W.I_PEOPLE_SUPPORT, 1000)
 		_add(W.I_THOUGHT_FREEDOM, -1000)
-		_set(W.I_WAR_SUPPORT, 1000)
+		_set_data(W.I_WAR_SUPPORT, 1000)
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -100)
 		_add_relation(EmpireData.USA, -150)
@@ -32,7 +32,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

@@ -5,7 +5,11 @@ const TXT_372_699 := "在土耳其于{1}战败后，世界的命运将直接取�
 const TXT_372_700 := "库尔德斯坦必须获得完全独立！"
 const TXT_372_701 := "必须保证库尔德人的民族自治权！"
 const TXT_372_1012 := "忽略"
-const TXT_372_706 := "和平会议将在美国、苏联与中国三方的参与下在瑞士举行。其公布的结果如下：{1}{2}{3}{4}"
+const TXT_372_706 := "和平会议将在美国、苏联与中国三方的参与下在瑞士举行。其公布的结果如下：
+{1}
+{2}
+{3}
+{4}"
 const TXT_372_707 := "中东的四处库尔德人聚居区——即土耳其属库尔德斯坦、伊拉克属库尔德斯坦、叙利亚属库尔德斯坦与伊朗属库尔德斯坦，将被统一为单一的库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于土耳其的库尔德斯坦工人党、位于叙利亚的民主联盟党、位于伊朗的库尔德斯坦自由生活党、位于伊拉克的库尔德斯坦爱国联盟与库尔德斯坦民主党。因此，囊括左翼与民主党派政治力量的库尔德斯坦临时政府已经建立。"
 const TXT_372_708 := "由于土耳其国内爆发的大规模抗议运动，国家安全委员会政府最终倒台。在随后举行的选举中，土耳其工人党与共和人民党获得的选票旗鼓相当。因此，他们不得不达成协定，并建立由社会民主党人比伦特·埃杰维特领导的联合政府。"
 const TXT_372_709 := "根据相关协定，美苏两国的维和部队将在未来的两年内驻扎在土耳其。"
@@ -100,6 +104,37 @@ func _event_372(option_index: int, context: Dictionary) -> void:
 			_set_data124(1)
 			context["result_text"] = TXT_372_718
 
+
+
+
+## Event372.cs:72-78/96-102/123-129 的 string.Format(new_events_text[706], ...) 拼接。
+func _fmt372(main: String, second: String, third: String, fourth: String) -> String:
+	return TXT_372_706.replace("{1}", main).replace("{2}", second).replace("{3}", third).replace("{4}", fourth)
+
+
+func _t372_709(flag: bool) -> String:
+	return TXT_372_709 if flag else ""
+
+
+func _t372_748(flag: int) -> String:
+	return TXT_372_748 if flag > 0 else ""
+
+
+## Event372.cs:123-129 的 num3（708/719/713）选择。
+func _t372_num3(num: int, turkey: CountryData) -> String:
+	if num == 3 and turkey != null and not turkey.has_tag("nato"):
+		return TXT_372_708
+	if ws.influence_prc >= 800:
+		return TXT_372_719
+	return TXT_372_713
+
+
+## Event372.cs:123-129 的 {2}：d126>0 且土耳其非北约 → 708，否则 713。
+func _t372_708_or_713() -> String:
+	var turkey := ws.get_country_by_legacy_index(84)
+	if d.size() > 126 and d[126] > 0 and turkey != null and not turkey.has_tag("nato"):
+		return TXT_372_708
+	return TXT_372_713
 
 func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bool) -> void:
 	_add_data143(-7)

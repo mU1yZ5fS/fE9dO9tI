@@ -85,11 +85,11 @@ func execute(context: Dictionary) -> void:
 					p.power -= 500
 			if d[W.I_PRESS_POLICY] < 18:
 				d[W.I_PRESS_POLICY] += 1
-			_set(W.I_PARTY_SYSTEM, 6)
+			_set_data(W.I_PARTY_SYSTEM, 6)
 			if d[W.I_ECON_SYSTEM] > 11:
-				_set(W.I_ECON_SYSTEM, 11)
+				_set_data(W.I_ECON_SYSTEM, 11)
 			if d[W.I_RELIGION] > 25:
-				_set(W.I_RELIGION, 24)
+				_set_data(W.I_RELIGION, 24)
 			_add(W.I_PARTY_SUPPORT, -100)
 			_add(W.I_PEOPLE_SUPPORT, 100)
 			_add(W.I_THOUGHT_FREEDOM, -100)
@@ -108,7 +108,7 @@ func execute(context: Dictionary) -> void:
 				d[W.I_PRESS_POLICY] += 1
 			_set_mod_active(28, false)
 			if d[W.I_PARTY_SYSTEM] > 7:
-				_set(W.I_PARTY_SYSTEM, 7)
+				_set_data(W.I_PARTY_SYSTEM, 7)
 			_set_mod_active(29, true)
 			context["result_text"] = TXT_R1
 		2:
@@ -123,11 +123,11 @@ func execute(context: Dictionary) -> void:
 			_set_mod_active(28, false)
 			_set_mod_active(30, true)
 			if d[W.I_REFORM_STAGE] < 2:
-				_set(W.I_REFORM_STAGE, 2)
+				_set_data(W.I_REFORM_STAGE, 2)
 			if d[W.I_ECON_SYSTEM] == 11:
-				_set(W.I_ECON_SYSTEM, 12)
+				_set_data(W.I_ECON_SYSTEM, 12)
 			elif d[W.I_ECON_SYSTEM] < 13:
-				_set(W.I_ECON_SYSTEM, 13)
+				_set_data(W.I_ECON_SYSTEM, 13)
 			context["result_text"] = TXT_R2
 		3:
 			_add_faction_support(4, 50)
@@ -142,11 +142,11 @@ func execute(context: Dictionary) -> void:
 			_set_mod_active(28, false)
 			_set_mod_active(31, true)
 			if d[W.I_REFORM_STAGE] < 2:
-				_set(W.I_REFORM_STAGE, 2)
+				_set_data(W.I_REFORM_STAGE, 2)
 			if d[W.I_ECON_SYSTEM] < 14:
-				_set(W.I_ECON_SYSTEM, 14)
+				_set_data(W.I_ECON_SYSTEM, 14)
 			if d[W.I_PRESS_POLICY] < 17:
-				_set(W.I_PRESS_POLICY, 17)
+				_set_data(W.I_PRESS_POLICY, 17)
 			context["result_text"] = TXT_R3
 		4:
 			_add(W.I_PARTY_SUPPORT, 50)
@@ -171,7 +171,7 @@ func _add(index: int, delta: int) -> void:
 	if d.size() > index:
 		d[index] += delta
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

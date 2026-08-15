@@ -45,3 +45,85 @@ func prepare(_event_def: EventDef, _p_ws: WorldState) -> void:
 ## 效果入口（event_engine 的 CUSTOM_SCRIPT 效果调用；子类实现）
 func execute(_context: Dictionary) -> void:
 	pass
+
+
+# ============================================================================
+# 共享小助手（2026-08 集中到基类，消除各事件脚本重复定义/漏定义的 Parse Error）。
+# 子类可继续定义同名同签名方法覆盖；签名必须与此处一致。
+# ============================================================================
+
+## 选项启用（动态选项 prepare 用）
+func _enable(opt: EventOption, text: String) -> void:
+	if opt == null:
+		return
+	opt.text = text
+	opt.disabled_text = ""
+	opt.enable_condition = null
+
+
+## 选项禁用（RESOURCE_AT_LEAST party_system=99999 恒不满足）
+func _disable(opt: EventOption, text: String) -> void:
+	if opt == null:
+		return
+	opt.text = text
+	opt.disabled_text = text
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.RESOURCE_AT_LEAST
+	n.key = "party_system"
+	n.value = 99999.0
+	opt.enable_condition = n
+
+
+## 数值表加值
+func _add(index: int, delta: int) -> void:
+	if d.size() > index:
+		d[index] += delta
+
+
+## 数值表赋值（原 _set，改名避开 Object._set 虚方法签名冲突）
+func _set_data(index: int, value: int) -> void:
+	if d.size() > index:
+		d[index] = value
+
+
+## 数值表读取
+func _res(index: int) -> int:
+	if d.size() > index:
+		return d[index]
+	return 0
+
+
+## 帝国关系加减（0~1000 钳制）
+func _add_relation(empire_index: int, delta: int) -> void:
+	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
+		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
+
+
+## 帝国力量加减
+func _add_power(empire_index: int, delta: int) -> void:
+	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
+		ws.empires[empire_index].power += delta
+
+
+## Country.LeaveAlliances() 逐项映射
+func _leave_alliances(c: CountryData) -> void:
+	if c == null:
+		return
+	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
+			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
+			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
+		c.set_tag(tag, false)
+	c.puppet_of = -1
+
+
+## JoinAllOurAlliances(true) 简化映射（id 属 flag 组时仅加入经济联盟）
+func _join_alliances(c: CountryData) -> void:
+	if c == null:
+		return
+	var china := ws.get_country_by_legacy_index(1)
+	if china == null:
+		return
+	if china.has_tag("econ"):
+		c.set_tag("econ", true)
+	elif china.has_tag("sev"):
+		c.set_tag("sev", true)

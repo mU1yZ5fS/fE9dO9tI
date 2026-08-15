@@ -71,13 +71,13 @@ func execute(context: Dictionary) -> void:
 				_set_modifier(5, true)
 				context["result_text"] = TXT_R1_BAD
 		2:
-			_set(W.I_HK_MACAU_STATUS, 0)
+			_set_data(W.I_HK_MACAU_STATUS, 0)
 			var text := _leader_name() + TXT_R2_A
 			var hk := ws.get_country_by_legacy_index(51)
 			var china := ws.get_country_by_legacy_index(1)
 			if (hk != null and hk.has_tag("对华贸易")) or (china != null and china.has_tag("sev")):
 				text += TXT_R2_B
-				_set(W.I_HK_MACAU_STATUS, 1)
+				_set_data(W.I_HK_MACAU_STATUS, 1)
 			context["result_text"] = text
 		3:
 			_add(W.I_BUDGET, 40)
@@ -131,7 +131,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

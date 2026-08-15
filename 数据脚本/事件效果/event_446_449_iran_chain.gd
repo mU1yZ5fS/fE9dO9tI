@@ -280,3 +280,13 @@ func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
 		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
 		ws.数值表[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+
+
+## 外交部长姓名（politics_positions[2]），缺失回退"黄华"。
+func _foreign_minister_name() -> String:
+	if ws != null and ws.politics_positions.size() > 2:
+		var idx: int = ws.politics_positions[2]
+		if idx >= 0 and idx < ws.politicians.size() and ws.politicians[idx] != null \
+				and ws.politicians[idx].name_display != "":
+			return ws.politicians[idx].name_display
+	return "黄华"

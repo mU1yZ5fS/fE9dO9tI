@@ -53,7 +53,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

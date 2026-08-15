@@ -71,7 +71,7 @@ func execute(context: Dictionary) -> void:
 				_add_relation(EmpireData.USA, -250)
 				_add_power(EmpireData.USA, 10)
 				ws.influence_prc -= 5
-				_set(182, 0)
+				_set_data(182, 0)
 				_add(175, -999)
 				if italy != null:
 					italy.government = 0
@@ -105,7 +105,7 @@ func execute(context: Dictionary) -> void:
 				_add_relation(EmpireData.USA, -250)
 				_add_power(EmpireData.USA, 10)
 				ws.influence_prc -= 5
-				_set(182, 0)
+				_set_data(182, 0)
 				_add(175, -999)
 				if italy != null:
 					italy.government = 0
@@ -155,7 +155,7 @@ func execute(context: Dictionary) -> void:
 				portugal.special -= 5
 			context["result_text"] = TXT_R2
 		3:
-			_set(183, 3)
+			_set_data(183, 3)
 			context["result_text"] = TXT_R3
 
 
@@ -180,7 +180,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

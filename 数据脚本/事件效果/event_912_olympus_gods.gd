@@ -58,14 +58,14 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, 1000)
 			_add(W.I_PEOPLE_SUPPORT, 1000)
 			_add(W.I_THOUGHT_FREEDOM, -1000)
-			_set(W.I_WAR_SUPPORT, 1000)
+			_set_data(W.I_WAR_SUPPORT, 1000)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
-			_set(W.I_PARTY_SYSTEM, 6)
-			_set(W.I_ECON_SYSTEM, 10)
-			_set(W.I_PRESS_POLICY, 16)
-			_set(W.I_TERRITORY, 20)
-			_set(W.I_RELIGION, 29)
+			_set_data(W.I_PARTY_SYSTEM, 6)
+			_set_data(W.I_ECON_SYSTEM, 10)
+			_set_data(W.I_PRESS_POLICY, 16)
+			_set_data(W.I_TERRITORY, 20)
+			_set_data(W.I_RELIGION, 29)
 			_set_modifier_active(6, false)
 			var china := ws.get_country_by_legacy_index(1)
 			var korea := ws.get_country_by_legacy_index(10)
@@ -187,7 +187,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

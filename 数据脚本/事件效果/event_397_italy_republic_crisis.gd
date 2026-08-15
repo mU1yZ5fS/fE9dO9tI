@@ -51,6 +51,9 @@ const TXT_IDX_566 := "巧妇难为无米之炊，我们手头得有{0}百万才�
 const TXT_IDX_567 := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
 const TXT_IDX_1118 := "支持右派（需要10.0百万{0}与10.0点{1}）"
 const TXT_IDX_1102 := "不闻不问"
+const TXT_OPT0 := ["支持左派（需要10.0百万预算与10.0点特工网络）", "巧妇难为无米之炊，我们手头得有10百万才能干活......", "巧妇难为无米之炊，我们手头得有10支特工网络才能干活......"]
+const TXT_OPT1 := ["支持右派（需要10.0百万预算与10.0点特工网络）", "巧妇难为无米之炊，我们手头得有10百万才能干活......", "巧妇难为无米之炊，我们手头得有10支特工网络才能干活......"]
+const TXT_OPT2 := ["不闻不问"]
 const TXT_IDX_1119 := "根据投票结果显示，意大利共产党拿下了超过半数的议会席位，因此赢下选举。在如此大胜的背景下，由恩里科·贝林格领导的新政府得以建立，并宣布将对意大利现行的经济与军事政治一体化议程进行修订。然而，在意大利共产党内部。该党正因“接待”过多来自意大利社会党与天主教民主党的新人而陷入分裂危机，也许这很快便会对意大利历史上的第一个共产主义政府开一个残酷玩笑。"
 const TXT_IDX_1120 := "根据投票结果显示，意大利社会运动拿下了超过半数的议会席位，因此赢下选举。在如此大胜的背景下，由乔治·阿尔米兰特领导的新政府得以建立，并宣布将对意大利现行的经济与军事政治一体化议程进行修订。然而，在意大利社会运动内部。该党正因“接待”过多来自天主教民主党的新人而陷入分裂危机，也许这很快便会对意大利40年来的首个极端民族主义政府开一个残酷玩笑。"
 
@@ -59,14 +62,16 @@ const TXT_IDX_1120 := "根据投票结果显示，意大利社会运动拿下了
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var d := world.数值表
+	var data := world.数值表
 	var opt := event_def.options
-	if d.size() > 9:
-		var cond := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0) >= 100 and d[W.I_AGENTS] >= 100
-		if cond:
-			_enable(opt[0], TXT_OPT0[0])
-			_enable(opt[1], TXT_OPT1[0])
-		elif d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0) < 100:
+	var budget := data[W.I_BUDGET] if data.size() > W.I_BUDGET else 0
+	var reserve := data[W.I_RESERVE] if data.size() > W.I_RESERVE else 0
+	var agents := data[W.I_AGENTS] if data.size() > W.I_AGENTS else 0
+	if budget + reserve >= 100 and agents >= 100:
+		_enable(opt[0], TXT_OPT0[0])
+		_enable(opt[1], TXT_OPT1[0])
+	else:
+		if budget + reserve < 100:
 			_disable(opt[0], TXT_OPT0[1])
 			_disable(opt[1], TXT_OPT1[1])
 		else:

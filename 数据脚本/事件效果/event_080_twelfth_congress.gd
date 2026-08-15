@@ -106,7 +106,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_MANPOWER, -80)
 			_set_modifier(6, false)
 			# doctr[] 显示名：Godot 未建模，跳过
-			_set(W.I_MAO_HISTORY_LINE, 1)
+			_set_data(W.I_MAO_HISTORY_LINE, 1)
 			if ws.factions.size() > 1:
 				ws.factions[1].ideology = int(ws.factions[1].ideology * 0.95)
 			if ws.factions.size() > 0:
@@ -206,7 +206,7 @@ func _result_mod3_false_2(context: Dictionary, leader_name: String) -> void:
 	_overwrite_new_politician(21, 62, 1917, 3, 28, 30, 15, "李锐")
 	_overwrite_new_politician(23, 63, 1925, 3, 26, 4, 31, "刘宾雁")
 	_overwrite_new_politician(46, 64, 1932, 3, 21, 6, 11, "鲍彤")
-	_set(W.I_MAO_HISTORY_LINE, 2)
+	_set_data(W.I_MAO_HISTORY_LINE, 2)
 	for p in ws.politicians:
 		if p == null or PoliticianSystem.is_vacant_politician(p):
 			continue
@@ -462,7 +462,7 @@ func _add(index: int, delta: int) -> void:
 		d[index] += delta
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 

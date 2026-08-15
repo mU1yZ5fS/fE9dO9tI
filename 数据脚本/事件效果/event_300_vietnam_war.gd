@@ -33,7 +33,7 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			ws.war_state = 0
-			_set(W.I_WAR_PRESSURE, 5)
+			_set_data(W.I_WAR_PRESSURE, 5)
 			if vietnam != null:
 				vietnam.set_tag("ovd", true)
 				vietnam.set_tag("sev", true)
@@ -72,7 +72,7 @@ func _get_war(war_id: int) -> WarData:
 	return ws.wars[war_id]
 
 
-func _set(index: int, value: int) -> void:
+func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
