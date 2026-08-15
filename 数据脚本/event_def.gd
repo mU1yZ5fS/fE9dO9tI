@@ -76,6 +76,12 @@ extends Resource
 ## 用于按游戏状态动态改写 title/description/options 文案（原版 Event18 战争结算等）。
 @export var display_script: GDScript = null
 
+## 复杂触发条件钩子（可选，2026-08 尾追加字段，旧 .tres 不受影响）。
+## 指向 extends RefCounted 的脚本，引擎扫描时调用其 evaluate(world) -> bool。
+## 非空时优先于 trigger_conditions；仅当 ExprNode 无法表达的复合条件
+## 才使用（如 Event713 的 flag/num 循环统计）。见 event_engine._evaluate_trigger()。
+@export var trigger_script: GDScript = null
+
 
 # ── 工厂方法（方便代码中动态创建事件） ──
 

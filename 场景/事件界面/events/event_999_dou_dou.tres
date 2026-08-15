@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_999_dou_dou.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_data170"]
+script = ExtResource("3_expr")
+type = 21
+key = "data_170"
+value = 999.0
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "一切按计划进行……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_999_dou_dou.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "以快打慢，速战速决！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_999_dou_dou.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_999"
+source_event_number = 999
+trigger_priority = 9990
+title = "豆豆不能随便投……"
+description = "看起来我们的民主已进入了需要暂时让位给“国家主权”与“人民根本利益”的全新阶段：不论如何，政治多元化名存实亡，一党制政治框架已经重建。虽说国家传媒仍在忠实地追随总路线散播民主自由之声，可“公民同志们”们很快便会意识到当前发生了什么：机灵的小子们已开始宣布将组织自我解散，转入地下活动或宣布无限期暂停参政；更聪明的角色则直截了当地递上了入党申请与追求“独立人士”身份表忠心。只可惜，像他们这般开智的觉悟者还是太少：仍有相当数量的杂草死抱着“公民社会”、“宪政民主”的概念不放，成了未来的麻烦（不过也只是麻烦而已：没了公投与议会多数的暴民翻不起浪，警察同样能够牢牢掌控大局）。当然，问题还不止于此，重掌大权的党与国家本身同样需要时间调整状态并养好气力，免得重蹈国民党时代可笑“训政”的覆辙。因此，清理阶级队伍理所应当，将公务员与党的体制综合也是题中之义。若要再造领导权，就必须同时拴住基层并赢得精英，在民粹主义与密室政治两条大道上均达到极致。为此必须投入时间、金钱、效率、乃至生命，皆缺一不可。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_data170")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

@@ -1,0 +1,119 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_713_revolutionary_international.gd" id="5_custom"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_713_trigger.gd" id="6_trigger"]
+
+[sub_resource type="Resource" id="Expr_inf1000"]
+script = ExtResource("3_expr")
+type = 0
+key = "influence_prc"
+value = 1000.0
+
+[sub_resource type="Resource" id="Expr_dip901"]
+script = ExtResource("3_expr")
+type = 0
+key = "diplo"
+value = 901.0
+
+[sub_resource type="Resource" id="Expr_sum1000"]
+script = ExtResource("3_expr")
+type = 23
+keys = Array[String](["budget", "money_reserve"])
+value = 1000.0
+
+[sub_resource type="Resource" id="Expr_agents1000"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 1000.0
+
+[sub_resource type="Resource" id="Expr_army1000"]
+script = ExtResource("3_expr")
+type = 0
+key = "army"
+value = 1000.0
+
+[sub_resource type="Resource" id="Expr_r540_0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_540"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_r545_2"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_545"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_r521_2"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_521"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_d503"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_503"
+
+[sub_resource type="Resource" id="Expr_r503_0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_503"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_503_and_0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_d503"), SubResource("Expr_r503_0")])
+
+[sub_resource type="Resource" id="Expr_not_503_and_0"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_503_and_0")])
+
+[sub_resource type="Resource" id="Expr_opt1_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_inf1000"), SubResource("Expr_dip901"), SubResource("Expr_sum1000"), SubResource("Expr_agents1000"), SubResource("Expr_army1000"), SubResource("Expr_r540_0"), SubResource("Expr_r545_2"), SubResource("Expr_r521_2"), SubResource("Expr_not_503_and_0")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们应强烈谴责这一政治挑衅！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_713_revolutionary_international.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "批判的武器当然不能代替武器的批判，当然，物质力量只能用物质力量来摧毁！"
+enable_condition = SubResource("Expr_opt1_enable")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_713_revolutionary_international.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_713"
+source_event_number = 713
+trigger_priority = 7130
+title = "青出于蓝，而胜于蓝"
+description = "（描述由 event_713_revolutionary_international.gd 的 prepare 按领导人动态生成）"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("6_trigger")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

@@ -57,12 +57,16 @@ const I_AFGHAN_PARCHAM := 49   ## 阿富汗旗帜派势力（原 data[49]）
 const I_RELIGION := 50          ## 宗教政策
 const I_MIL_DOCTRINE := 51      ## 军事学说
 const I_ECON_DISPLAY := 52      ## 经济显示等级
+const I_PARTY_BAN_COUNT := 53   ## 已禁止派系数（原 data[53]，Party_zapret 禁止计数）
 const I_POLITICAL_DISPLAY := 54 ## 政治显示等级
 const I_POLITICAL_OPENNESS := 55 ## 政治开放度
 const I_POLITICAL_LINE := 56    ## 政治路线
 const I_MANPOWER := 57          ## 兵源
 const I_SOVIET_SUCCESSION := 59 ## 苏联领导层继承结果（原 data[59]，>0 表示勃列日涅夫已逝）
 const I_ALBANIA_BREAK := 60     ## 中阿决裂/阿尔巴尼亚路线状态（原 data[60]）
+const I_ARUNACHAL_STATUS := 62  ## 藏南/阿鲁纳恰尔状态（原 data[62]：0印度实控未承认、1承认、2/3已重建控制）
+const I_TAIWAN_ISLANDS := 63    ## 台海岛屿控制（原 data[63]：0国民党、1解放军）
+const I_TAIWAN_STATUS := 64     ## 台湾地位（原 data[64]：0现状、1独立主权、2省级特别行政区）
 const I_HK_MACAU_STATUS := 65   ## 港澳回归路线（原 data[65]）
 const I_XINJIANG_POLICY := 66   ## 新疆/维吾尔文化政策状态（原 data[66]）
 const I_TIBET_POLICY := 67      ## 西藏文化政策状态（原 data[67]）
@@ -92,7 +96,7 @@ const I_PROJECTION := 93        ## 投射力（原 data[93]）
 const I_AFGHAN_POLICY := 94     ## 阿富汗策略（原 data[94]）
 const I_SOVIET_SUCCESSOR_THIRD := 100 ## 苏联第三继承人权重（原 data[100]）
 const I_MAO_MAUSOLEUM := 104    ## 毛主席纪念堂状态（原 data[104]）
-const I_BIRTH_POLICY := 105     ## 生育政策/人口增长基数（原版 data[105]：0一胎 1二胎 2无限制）
+const I_BIRTH_POLICY := 105     ## 生育政策/人口增长基数（原版 data[105]：1一胎 2二胎 3无限制，开局=2）
 const I_SATISFIED := 106        ## 满意现秩序者
 const I_AFGHAN_WAR_PATH := 107  ## 阿富汗战争路线（原 data[107]）
 const I_OLIGARCH := 108         ## 寡头影响力
@@ -142,6 +146,9 @@ const 数值索引 := {
 	"manpower": I_MANPOWER, "兵源": I_MANPOWER,
 	"soviet_succession": I_SOVIET_SUCCESSION, "苏联继承": I_SOVIET_SUCCESSION,
 	"albania_break": I_ALBANIA_BREAK, "中阿决裂": I_ALBANIA_BREAK,
+	"arunachal_status": I_ARUNACHAL_STATUS, "藏南状态": I_ARUNACHAL_STATUS,
+	"taiwan_islands": I_TAIWAN_ISLANDS, "台海岛屿": I_TAIWAN_ISLANDS,
+	"taiwan_status": I_TAIWAN_STATUS, "台湾地位": I_TAIWAN_STATUS,
 	"hk_macau_status": I_HK_MACAU_STATUS, "港澳路线": I_HK_MACAU_STATUS,
 	"xinjiang_policy": I_XINJIANG_POLICY, "新疆文化政策": I_XINJIANG_POLICY,
 	"tibet_policy": I_TIBET_POLICY, "西藏文化政策": I_TIBET_POLICY,
@@ -159,7 +166,13 @@ const 数值索引 := {
 	"budget_welfare": I_BUDGET_WELFARE, "福利预算": I_BUDGET_WELFARE,
 	"budget_diplomacy": I_BUDGET_DIPLO, "外交预算": I_BUDGET_DIPLO,
 	"data_41": 41,   # 原 data[41]（泰国选举干预标志，无正式命名键）
+	"data_124": 124, # 原 data[124]（土耳其泛突厥/蒙古事件链标志，无正式命名键）
+	"data_126": 126, # 原 data[126]（土耳其海峡危机标志，无正式命名键）
+	"data_127": 127, # 原 data[127]（土耳其路线结果，无正式命名键）
+	"data_133": 133, # 原 data[133]（苏联重组战争前置状态，无正式命名键）
 	"data_149": 149, # 原 data[149]（苏斯洛夫/安德罗波夫继任路线：事件83=1、84=2、85=3，无正式命名键）
+	"data_52": I_ECON_DISPLAY,   # 原 data[52]（经济显示等级，Event999 宪法分支判定 data[52]==37）
+	"data_170": 170,             # 原 data[170]（Event999 触发哨兵：==999 时开火，结果里清零）
 	"gang_of_four_path": I_GANG_OF_FOUR_PATH, "四人帮路线": I_GANG_OF_FOUR_PATH,
 	"palestine_status": I_PALESTINE_STATUS, "巴以安排": I_PALESTINE_STATUS,
 	"post_mao_course": I_POST_MAO_COURSE, "毛后路线": I_POST_MAO_COURSE,
@@ -234,6 +247,16 @@ const 数值索引 := {
 
 # ── 数值表：唯一权威数据源 ──
 @export var 数值表: Array[int] = []
+
+# ── 双周入口快照（运行时，不序列化；对齐原版 TimeScript.cs:1224-1228 的 array9）──
+var 入口快照: Array[int] = []
+var 入口快照关系: Array[int] = [0, 0]
+var 入口快照影响: int = 0
+
+# ── 双周结算的 ±变化（对齐原版 data_old，序列化；仅用于经济界面悬浮提示） ──
+@export var 上期变化: Array[int] = []
+@export var 上期关系变化: Array[int] = [0, 0]
+@export var 上期影响变化: int = 0
 
 # ── 外交互动全局状态 ──
 ## 中国全球影响力累计值（原版 gameState.influencePRC）。
@@ -416,6 +439,21 @@ func get_flag(flag_name: String) -> bool:
 
 # ── 经济同步（轻量版，无数组拷贝） ──
 
+## 原版 GameState.ImportChange（GameState.cs:11-16）：按生活水平×人口与三产差计算
+## 进口需求年度增量；TimeScript.cs:514 每年 data[20]==13 时 data[24] += ImportChange。
+func import_change() -> int:
+	var d := 数值表
+	var pop: float = float(mini(d[I_POPULATION] if d.size() > I_POPULATION else 0, 1500))
+	var living := d[I_LIVING] if d.size() > I_LIVING else 0
+	var industry := d[I_INDUSTRY] if d.size() > I_INDUSTRY else 0
+	var agri := d[I_AGRICULTURE] if d.size() > I_AGRICULTURE else 0
+	var services := d[I_SERVICES] if d.size() > I_SERVICES else 0
+	var num := living * 2.0 / 1000.0 * pop - industry / 1000.0 * pop
+	var num2 := living / 1000.0 * pop - agri * 2.0 / 1000.0 * pop
+	var num3 := living / 1000.0 * pop - services / 1000.0 * pop
+	return int((num + num2 + num3) / 200.0)
+
+
 ## 每 tick 结束后由 GameManager 调用一次，合并多次修改。
 func flush_economy() -> void:
 	if _economy_dirty:
@@ -433,15 +471,66 @@ func _sync_economy() -> void:
 		player.economy = 玩家经济
 
 
+## 在双周 tick 入口记录当前状态快照。
+## 原版 TimeScript 在每 14 天周期开始时保存 array9，周期末写 data_old = 当前值 - array9；
+## 这里改为开始时记录、悬浮提示读取时按需做差，结果等价。
+func 记录入口快照() -> void:
+	入口快照 = 数值表.duplicate()
+	入口快照关系.clear()
+	for e in empires:
+		入口快照关系.append(e.relations)
+	while 入口快照关系.size() < 2:
+		入口快照关系.append(0)
+	入口快照影响 = influence_prc
+
+
+## 原版 data_old[idx] 的按需等价：自本双周入口以来的变化量。
+## 关系(28/29)与全球影响力(7)的原版取值来源不是 data 数组，单独处理。
+func 结算两周变化() -> void:
+	if 入口快照.size() == 0:
+		return
+	上期变化 = 数值表.duplicate()
+	for i in range(上期变化.size()):
+		if i < 入口快照.size():
+			上期变化[i] = 数值表[i] - 入口快照[i]
+	上期关系变化.clear()
+	for i in range(2):
+		var cur := 0
+		var before := 0
+		if empires.size() > i:
+			cur = empires[i].relations
+		if 入口快照关系.size() > i:
+			before = 入口快照关系[i]
+		上期关系变化.append(cur - before)
+	上期影响变化 = influence_prc - 入口快照影响
+
+
+## 原版 data_old[idx] 的等价读取；新游戏/读档缺失时返回 0（原版初值全 0）。
+## 关系(28/29)与全球影响力(7)的原版取值来源不是 data 数组，单独处理。
+func 两周变化(idx: int) -> int:
+	if idx == I_USA_RELATIONS or idx == I_USSR_RELATIONS:
+		var ei := 0 if idx == I_USA_RELATIONS else 1
+		if 上期关系变化.size() > ei:
+			return 上期关系变化[ei]
+		return 0
+	if idx == I_INFLUENCE:
+		return 上期影响变化
+	if idx >= 0 and idx < 上期变化.size():
+		return 上期变化[idx]
+	return 0
+
+
 ## 外部调用入口（WorldFactory / GameManager.load_game 后调用一次）
 func sync_economy() -> void:
 	_sync_economy()
 
 
-# ── 数值边界保护（移植自原版 TimeScript.BoundsOfVariables 5943-6046）──
+# ── 数值边界保护（移植自原版 TimeScript.BoundsOfVariables 6103-6199，调用点 6014）──
 
 ## 注意：原版只钳制以下项。Godot 早期版本额外钳制了 data[2/9/22/34/36/38/57/71-81]，
 ## 这些原版都不钳制（如 data[9] 特工允许为负，是合法显示状态）。已按原版对齐。
+## 2026-08 经济审计：三产/生活上限应为 1500（Godot 曾写成 1000/500，导致 >=1100 衰减档不可达），
+## data[7] influence 原版不钳制，已移除。
 
 ## 连续指标显示：内部 ×10 → "80.0"；预算/特工等同规则
 func display_meter(raw: int) -> String:
@@ -458,41 +547,40 @@ func display_relation(raw: int) -> String:
 
 
 func clamp_values() -> void:
-	var mod1_active: bool = modifiers.size() > 1 and modifiers[1] != null and modifiers[1].is_active
-	# data[12] 工业：modifier[1] 激活时上限 500，否则 1000
-	if 数值表[I_INDUSTRY] > 1000 and not mod1_active:
-		数值表[I_INDUSTRY] = 1000
-	elif 数值表[I_INDUSTRY] > 500 and mod1_active:
-		数值表[I_INDUSTRY] = 500
-	if 数值表[I_AGRICULTURE] > 1000:
-		数值表[I_AGRICULTURE] = 1000
-	if 数值表[I_SERVICES] > 1000:
-		数值表[I_SERVICES] = 1000
+	# data[12]/[13]/[68] 工业/农业/服务业：上限 1500
+	if 数值表[I_INDUSTRY] > 1500:
+		数值表[I_INDUSTRY] = 1500
+	if 数值表[I_AGRICULTURE] > 1500:
+		数值表[I_AGRICULTURE] = 1500
+	if 数值表[I_SERVICES] > 1500:
+		数值表[I_SERVICES] = 1500
+	# data[3]/[4]/[1] 民众支持/思想自由/党支持：上限 1000
 	if 数值表[I_PEOPLE_SUPPORT] > 1000:
 		数值表[I_PEOPLE_SUPPORT] = 1000
 	if 数值表[I_THOUGHT_FREEDOM] > 1000:
 		数值表[I_THOUGHT_FREEDOM] = 1000
 	if 数值表[I_PARTY_SUPPORT] > 1000:
 		数值表[I_PARTY_SUPPORT] = 1000
+	# data[4] 思想自由下限 0
 	if 数值表[I_THOUGHT_FREEDOM] < 0:
 		数值表[I_THOUGHT_FREEDOM] = 0
+	# data[26] 腐败下限 0，无上限
 	if 数值表[I_CORRUPTION] < 0:
-		数值表[I_CORRUPTION] = 0   # 原版仅下限 0，无上限
+		数值表[I_CORRUPTION] = 0
+	# data[5] 生活水平：0-1500
 	if 数值表[I_LIVING] < 0:
 		数值表[I_LIVING] = 0
-	elif 数值表[I_LIVING] > 1000:
-		数值表[I_LIVING] = 1000
-	if 数值表[I_INFLUENCE] < 0:
-		数值表[I_INFLUENCE] = 0
-	elif 数值表[I_INFLUENCE] > 1000:
-		数值表[I_INFLUENCE] = 1000
+	elif 数值表[I_LIVING] > 1500:
+		数值表[I_LIVING] = 1500
+	# data[108] 寡头 0-100
 	if 数值表[I_OLIGARCH] < 0:
 		数值表[I_OLIGARCH] = 0
 	elif 数值表[I_OLIGARCH] > 100:
 		数值表[I_OLIGARCH] = 100
+	# data[6] 外交声誉下限 -50，随后原版直接 return（因此 >1100 的钳制不可达）
 	if 数值表[I_DIPLO] < -50:
 		数值表[I_DIPLO] = -50
-		return  # 原版此处直接 return，跳过 >1100 钳制
+		return
 	if 数值表[I_DIPLO] > 1100:
 		数值表[I_DIPLO] = 1100
 
@@ -525,3 +613,63 @@ func is_authoritarian(country: CountryData) -> bool:
 	if country == null:
 		return false
 	return country.government == 0 and country.sub_government != 0
+
+
+# ── 非洲联盟决议谓词（GlobalScript.cs:56 的 Decision 条件链） ──
+## 原版入口在 Decision 系统（Godot 决议界面未移植），目前由外交面板故事行动调用
+## can_found_african_union() 作为同一条件链，然后 start_event("african_union")。
+## 各谓词逐项对应 QueryDecisions:
+##   HasRevolutionaryLeader(true)            → QueryDecisions.cs:1677-1696
+##   HasMoney(200) / HasArmy(300)            → QueryDecisions.cs:161-177 / 221-237
+##   IsChineseInfluenceLessThan(false, 500)  → QueryDecisions.cs:1494-1515
+##   IsAfricanProprc(true)                   → QueryDecisions.cs:5470-5499
+##   IsAfricanSocialism(true)                → QueryDecisions.cs:5502-5540
+
+func has_revolutionary_leader() -> bool:
+	if leader == null:
+		return false
+	if leader.trait_personality == 0:
+		return true
+	var player := get_player_country()
+	return leader.trait_personality == 20 \
+		and 数值表[I_POLITICAL_LINE] == 0 \
+		and player != null and player.sub_government == 2
+
+
+## 原版 IsAfricanProprc(true)：几内亚(68)为社会主义且有对华贸易，
+## 加纳(63)/上沃尔特-布基纳法索(61)/几内亚比绍(114)/坦桑尼亚(122)/赞比亚(124)/津巴布韦(127)
+## 为社会主义且亲中（Country_en 与 world_factory COUNTRY_NAMES 的 id 映射一致）。
+func african_proprc_ready() -> bool:
+	for legacy_idx in [63, 61, 114, 122, 127, 124]:
+		var c := get_country_by_legacy_index(legacy_idx)
+		if c == null or not c.has_tag("亲中") or not is_socialism(c, true):
+			return false
+	var guinea := get_country_by_legacy_index(68)
+	return guinea != null and guinea.has_tag("对华贸易") and is_socialism(guinea, true)
+
+
+## 原版 IsAfricanSocialism(true)：只数国家 id 落在范围集合内的数量，要求 >=6。
+func african_socialism_count() -> int:
+	var count := 0
+	for c in countries:
+		if c == null:
+			continue
+		var i := c.原版序号
+		if i == 41 or i == 42 or i == 52 \
+				or (i >= 56 and i <= 68) \
+				or (i >= 106 and i <= 108) \
+				or (i >= 112 and i <= 133 and i != 128) \
+				or i == 99 or i == 100:
+			count += 1
+	return count
+
+
+func can_found_african_union() -> bool:
+	if 数值表.size() <= I_BUDGET or 数值表.size() <= I_RESERVE or 数值表.size() <= I_ARMY:
+		return false
+	return has_revolutionary_leader() \
+		and 数值表[I_BUDGET] + 数值表[I_RESERVE] >= 200 \
+		and 数值表[I_ARMY] >= 300 \
+		and influence_prc > 500 \
+		and african_proprc_ready() \
+		and african_socialism_count() >= 6

@@ -239,12 +239,21 @@ func _clear_pending() -> void:
 # ========================================================================
 
 func _evaluate_trigger(event_def: EventDef) -> bool:
-	# 空触发条件 = 不通过自动扫描触发，必须由外部系统（Decision / queue_pending 等）手动触发
-	if event_def.trigger_conditions.is_empty():
-		return false
-
 	# fire_only_once 检查：通过 completed_event_ids 字典追踪
 	if event_def.fire_only_once and _is_event_already_done(event_def):
+		return false
+
+	# 复杂触发钩子优先（尾追加字段）：trigger_script.evaluate(world) -> bool。
+	# 仅当 ExprNode 无法表达的原版复合条件才挂钩子（如 Event713 的 flag/num 循环）。
+	if event_def.trigger_script != null:
+		var trigger_inst: RefCounted = event_def.trigger_script.new()
+		if trigger_inst != null and trigger_inst.has_method("evaluate"):
+			return bool(trigger_inst.evaluate(GameManager.world))
+		push_warning("EventEngine: %s 的 trigger_script 缺少 evaluate(world) 方法" % event_def.event_id)
+		return false
+
+	# 空触发条件 = 不通过自动扫描触发，必须由外部系统（Decision / queue_pending 等）手动触发
+	if event_def.trigger_conditions.is_empty():
 		return false
 
 	# AND 逻辑：所有条件必须满足
@@ -252,6 +261,16 @@ func _evaluate_trigger(event_def: EventDef) -> bool:
 		if not evaluate(cond):
 			return false
 	return true
+
+
+## 手动按钮触发前的公开包装：评估事件自动触发条件（无触发条件的事件视为可手动触发）。
+func can_trigger(event_id: String) -> bool:
+	var def := get_event(event_id)
+	if def == null:
+		return false
+	if def.trigger_conditions.is_empty() and def.trigger_script == null:
+		return true
+	return _evaluate_trigger(def)
 
 
 ## 检查事件是否已完成
@@ -309,6 +328,8 @@ func evaluate(node: ExprNode) -> bool:
 			if ei < 0 or ei >= ws.empires.size() or ws.empires[ei] == null:
 				return false
 			return ws.empires[ei].current_leader == int(node.value)
+		ExprNode.Type.SOCIALIST_COUNT_AT_LEAST:
+			return _socialist_count(node.keys) >= int(node.value)
 		ExprNode.Type.MODIFIER_ACTIVE: return _is_modifier_active(node.key)
 		ExprNode.Type.MODIFIER_INACTIVE: return not _is_modifier_active(node.key)
 		ExprNode.Type.PREV_EVENT_RESULT_IS:
@@ -625,6 +646,21 @@ func _is_faction_leading(faction_index: int) -> bool:
 func _country_has_tag(target: String, tag: String) -> bool:
 	var country := _resolve_country(target)
 	return country != null and country.has_tag(tag)
+
+
+## Event697.cs:26-33 的 num 计数：统计原版序号列表中 IsSocialism(true) 的国家数。
+func _socialist_count(legacy_indices: Array[String]) -> int:
+	var ws: WorldState = GameManager.world
+	if ws == null:
+		return 0
+	var count := 0
+	for token in legacy_indices:
+		if not token.is_valid_int():
+			continue
+		var country := ws.get_country_by_legacy_index(int(token))
+		if country != null and ws.is_socialism(country, true):
+			count += 1
+	return count
 
 
 func _get_country_field(target: String, field_name: String) -> int:

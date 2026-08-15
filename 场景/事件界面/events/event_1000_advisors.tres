@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_1000_advisors.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_party8"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_system"
+value = 8.0
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "将上述文件归档"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_1000_advisors.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "接受自由，就得接受一切"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_1000_advisors.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "于是我党成了共和国最后的压舱石？！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_1000_advisors.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_1000"
+source_event_number = 1000
+trigger_priority = 10000
+title = "开张圣听"
+description = "自改革步入深水区并打破政治垄断局面以来，社会风气便焕然一新，民间舆论更热烈非凡。顾问已从办公室留言箱中选取部分代表发言供您过目，以展现我国公民为适应民主社会而展开的各类生动实践——：\n“您好，民族监狱的狱卒，帝国主义的走狗，以及‘人道民主’波将金村的总设计师。幸好时间仍站在我们这一边，否则人们准会忘了您是如何在坟墓前轻吻那块木乃伊的脚，同时还信誓旦旦地喊‘高举思想伟大旗帜’，‘将革命进行到底’的糗样！听好了，新时代的赫鲁晓夫！我们可没玩完！且人们也都看着呢！既然你想要拿民意来玩游戏，那我们就用自己的‘民意’（Narodnik）和你奉陪到底！打倒叛徒与新沙皇！红色恐怖万岁！”——无产阶级战斗队副司令，“切剐剌”\n“给你个忠告，老伙计。如果你还想把这个国家给重新整顿起来的话，那确实没理由不听我们的。事情很简单：解散你的耍宝集团，取缔无聊的暴民组织，以及多跟我们这些老同志们叙叙旧，你得好好学学什么样的管理才更适合中国。如果你还执意于和那些那些顶着七十二个性别的妖魔鬼怪、拿西经投机倒把的巫婆神棍、以及叫嚣后现代的精神病们厮混的话。毛主席应该不会介意我们送你去向他老人家汇报工作的。”——中华爱国阵线组织处书记，“揭批查”\n“介于总统阁下的低劣文化水平，我也只能不厌其烦地重申历史经验：只要瞧瞧以往的光辉岁月，人们便会对中国应当实现的前途一目了然——所有抛弃统治权的丑角都失败了，所有摒弃民族根的败类也一样。摒弃平均主义乌托邦固然是正道，可宣称这是为争取人人平等、一人一票或文化启蒙等名词所做的必须。那就只会让接下来发生的一切成为国际笑话。人们不需要什么理想，启蒙，只需脚踏实地。新加坡和香港的案例足以证明：没有自由，只有面包，中华反而能更好。”——“超克”（Hyper·Cthulhu）文化研究小组发言人，“罗生门”\n“庸人遍地走，异议四处爬。用你们党内那些老东西最喜欢的话来说，这就是不知道要持续多久，起码要拿300年为培育‘公民’精神奠基的所谓‘民主主义初级阶段’罢。对此我只能说：长痛不如短痛，启蒙固然必要，可启蒙也得讲方法。首先便要确立真理面前人人平等的核心价值观。至于何为真理？废话，真理就在潘兴与三叉戟的射程范围之内！因此，作为打开这扇门的先驱。你当然知道怎么做对中国最棒！”——《民主之后》杂志编辑，“大觉醒”"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_party8")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

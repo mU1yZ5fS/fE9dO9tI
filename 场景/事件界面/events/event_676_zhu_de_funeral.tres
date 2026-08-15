@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_676_zhu_de_funeral.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.7.6"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "永别了，朱总司令！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_676_zhu_de_funeral.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_676"
+source_event_number = 676
+trigger_priority = 6760
+title = "再见，老总"
+description = "1976年7月6日，令人悲痛的事情发生了。中国共产党和中华人民共和国的主要领导人之一，中国人民解放军创始人之一，时任中共中央委员会委员，中央政治局委员，常委，全国人大常委会委员长朱德同志于当日下午三时一分因病医治无效在北京逝世，享年90岁。作为与毛主席并肩作战多年，甚至一度有着“朱不离毛，毛不离朱”的说法的，为人民革命与解放事业奉献出自己一生的革命战友，即便他在建国后很长一段时间内隐居避世，名声不显，以至于在晚年甚至面临着被批斗的威胁，但这些都无法抹去其为新中国成立所立下的汗马功劳以及党和人民心目中的地位。华国锋同志，作为毛主席所定的接班人，你有权利也有义务去参加这场葬礼，去和这位老前辈告别。并且在毛主席的嘱托下，务必办好相应事务。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

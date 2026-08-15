@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_435_soviet_number_two.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.1.1"
+
+[sub_resource type="Resource" id="Expr_agents"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 10.0
+
+[sub_resource type="Resource" id="Expr_budget_reserve"]
+script = ExtResource("3_expr")
+type = 23
+keys = Array[String](["budget", "money_reserve"])
+value = 50.0
+
+[sub_resource type="Resource" id="Expr_opt0_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents"), SubResource("Expr_budget_reserve")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "把各类信息散布出去，稍稍改变力量对比"
+disabled_text = "需要5.0百万预算与10.0点特工网络"
+enable_condition = SubResource("Expr_opt0_enable")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_435_soviet_number_two.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "发表批判波德戈尔内的大字报"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_435_soviet_number_two.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "什么都不做"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_435_soviet_number_two.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_435"
+source_event_number = 435
+trigger_priority = 4350
+title = "苏维埃的二号人物"
+description = "波德戈尔内曾是倒赫政变的积极参与者，他长期担任苏联国内的二号人物，甚至被尊称为“苏联主席”。在他担任最高苏维埃主席团主席的那段时间，他无时不刻都在拓展自己的权力，并提拔自己的亲信。他呼吁国家应维持在经济内的垄断地位，并不厌其烦地批判柯西金的经济改革计划；于此同时，他经常发表咄咄逼人的刺耳演讲：波德戈尔内认为向西方出口油气是“浪费西伯利亚的资源”，并积极反对缓和政策。这便导致他同安德罗波夫产生了冲突。在勃列日涅夫身体欠佳，波德戈尔内可能会借机混入苏联领导层，从而将“老近卫军”清理殆尽的情况下。安德罗波夫更是对波德戈尔内深恶痛绝。而在更“年轻”的政治家，波德戈尔内也同样不受欢迎：罗曼诺夫、戈尔巴乔夫、利加乔夫都对其持消极看法。甚至连谢尔比茨基都因他为乌克兰前任领导人谢列斯特（他被广泛认为是亲资产阶级异见分子的保护人，并积极推行反苏民族主义政策）做辩护而讨厌他。然而我们已经得知，勃列日涅夫与他的同事已经开始准备制定一部新宪法，在试图削弱最高苏维埃主席团主席权力的同时，试图让波德戈尔内引退。对此，我们并不能影响太多。但我们还是能够利用波德戈尔内听风是风，留意一切风吹草动的个性，以外交渠道向波德戈尔内的支持者们打小报告。从而改变些许局势。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

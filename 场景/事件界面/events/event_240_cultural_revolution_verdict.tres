@@ -1,0 +1,81 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_240_cultural_revolution_verdict.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.8.12"
+
+[sub_resource type="Resource" id="Expr_gof3"]
+script = ExtResource("3_expr")
+type = 21
+key = "gang_of_four_path"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_gof3")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "无产阶级文化大革命的使命已经圆满完成，我们将继续沿着毛主席的革命路线前进！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_240_cultural_revolution_verdict.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "无产阶级文化大革命是捍卫无产阶级专政的根本保障！必须不偏不倚的对抗一切修正主义！"
+disabled_text = "文革已经得罪了所有人啦"
+enable_condition = SubResource("Expr_gof3")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_240_cultural_revolution_verdict.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "文革已经得罪了所有人啦"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_240_cultural_revolution_verdict.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "你说文革已经完成了它的历史任务，所以你开始消灭文化大革命最后的遗产……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_240_cultural_revolution_verdict.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_240"
+source_event_number = 240
+trigger_priority = 2400
+title = "革命无罪，造反另说"
+description = "走资派意图破坏革命的企图已经被华国锋与极左派的联盟粉碎，确保了中国能继续行进在毛主席所指引的康庄大道上，而对这条道路的看法，华国锋不得不与他的“新朋友”好好的商量一会。\n如今军事阴谋集团早已全军覆没，中国的步伐逐渐来到了新的历史节点。在第十一届中国共产党全国人民代表大会上，十月的胜利者们必须重新评定毛主席的遗产，而对于其中的关键部分：无产阶级文化大革命——被毛主席生前称为“支持的人不多，反对的人不少”的“第二件事”——的看法将成为这次会议的焦点。\n华国锋自诩为毛主席“钦定”的接班人，声称自己确实紧跟着主席的路线，对于毛主席一切的革命指示绝不敢有半点违背，但他对于文化大革命的理解显然只局限于是一场大型“整风运动”。华国锋在会上表示目前一切现行反革命走资派已被肃清，毛主席生前的担忧已经解决，现在是时候该宣布文化大革命“胜利结束”。但极左派对此显然有不同看法，极左派的成员在毛主席生前都是文化大革命路线的积极拥护者与参与者，其代表也都是运动中的头面人物，他们声称文化大革命不仅仅只是对少数官僚的清洗，更是要给中国社会带来彻底改变，引导群众破除资产阶级法权、巩固无产阶级专政的关键战略，为了中国革命的未来，绝对不能停止文革，反而应该继续发扬下去。\n会议上的争论暂时还在以较平静的氛围下进行，但无论结果如何，这都将使华国锋与极左派的虚弱联盟产生不小的裂痕。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])
