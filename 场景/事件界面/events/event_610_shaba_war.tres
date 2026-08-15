@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_610_shaba_war.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.3.8"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持扎伊尔人民反抗苏联社会帝国主义的斗争"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_610_shaba_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "与蒙博托政权断交，支持安哥拉和古巴的军事行动"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_610_shaba_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "在卢蒙巴的旗帜下，整合刚果的革命者们"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_610_shaba_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "不闻不问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_610_shaba_war.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_610"
+source_event_number = 610
+trigger_priority = 61000
+title = "沙巴战争"
+description = "在蒙博托推翻了卡萨武布总统后，刚果民主共和国，或者说扎伊尔，已经步入了一个崭新的时代。一个以暴力，金钱和绝对的威权构成的新刚果。在蒙博托夺权后，他击败了老殖民主义者眷养的走狗，自己却在不自觉中在鸡蛋上跳舞。他一边接受华盛顿的善意，却也不介意向北京抛媚眼。他的人民革命运动更是一个意识形态大杂烩，所谓的“蒙博托主义”，“真实性运动”和黑人民族主义不过都是浮云，更有甚者称其为“丛林法西斯主义”。这样的一个政府没少为我们招黑。\n就是这样的地区才会被冷战热斗所裹挟，尤其是他的南部邻居-新生的安哥拉人民共和国几乎彻底击溃了扎伊尔所支持的安解阵。不论是意识形态还是背后的超级大国，安哥拉都有理由找该国的麻烦。古巴和苏联的秘密支持下，内图政权支持了逃亡到安哥拉的加丹加（扎伊尔的沙巴省）宪兵部队，塔纳尔·姆奔巴以此为基础组建了刚果民族解放阵线。据我们的军事教官和观察员所说，该组织背后的苏联意图凭借他们入侵扎伊尔。\n但是，我们也没少为支持扎伊尔的革命伙伴付出代价。阿尔巴尼亚领袖恩维尔·霍查多次谴责我们“把革命者与第三世界国家强绑定，忽视了其中潜在的反革命”。为此，我们应当转而支持基赞加先总理的卢蒙巴主义统一党和卡比拉的人民革命党。他们坚定的保持左翼立场，甚至不乏一些真正的马克思主义者。我们的盟友坦桑尼亚是他们坚强的后盾，如果能得到我们的背书，他们将如虎添翼。\n现在，外联部的同志已经将三份方案交给您了，还请您过目。不过请还小心行事，刚果毕竟是非洲的一个大国。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

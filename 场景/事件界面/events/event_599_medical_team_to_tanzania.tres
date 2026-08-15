@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_599_medical_team_to_tanzania.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_done598"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_598"
+
+[sub_resource type="Resource" id="Expr_war53"]
+script = ExtResource("3_expr")
+type = 30
+value = 53
+
+[sub_resource type="Resource" id="Expr_not_war53"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_war53")])
+
+[sub_resource type="Resource" id="Expr_c122_econ"]
+script = ExtResource("3_expr")
+type = 10
+key = "econ"
+target = "122"
+
+[sub_resource type="Resource" id="Expr_not_econ"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_c122_econ")])
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_done598"), SubResource("Expr_not_war53"), SubResource("Expr_not_econ")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们全部包下了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_599_medical_team_to_tanzania.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "与苏联一起偿还，并邀请其加入经互会"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_599_medical_team_to_tanzania.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "稍微帮他们解决一下"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_599_medical_team_to_tanzania.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_599"
+source_event_number = 599
+trigger_priority = 59900
+title = "医疗队员到坦桑"
+description = "自坦噶尼喀独立以来，坦噶尼喀总统朱利叶斯·尼雷尔便坚持社会主义立场，1964年坦噶尼喀和社会主义革命后的桑给巴尔合并为坦桑尼亚联合共和国，1967年坦桑尼亚总统尼雷尔颁布《阿鲁沙宣言》，坦桑尼亚开始实行乌贾马社会主义，并开始实行乌贾马式合作社，将企业大量收归国有，但由于尼雷尔对于建成乌贾马社会主义的期望过于急切，大量乌贾马村被行政命令建成，加上随之而来的1974-1975年严重干旱灾害，导致农业损失惨重，尼雷尔被迫仅保留小部分乌贾马村，并将之前建立的大量乌贾马村进行“村子化”（即退回初级合作社）。在坦桑尼亚成立之后，坦桑尼亚首先承认我们并与我国持续亲密的关系，我国一直在坦桑尼亚援助建设，建成了包括坦赞铁路等项目。\n在乌坦战争爆发之后，刚从1974-1975年严重干旱灾害中恢复过来的坦桑尼亚经济遭到了毁灭性打击：战争期间政府将大量资金投入于国防之中并暂停其他部门的所有工程，战争导致卡盖拉地区经济损失超一亿美元，而在战争之后，因军队规模的扩大所造成的巨量国防开销"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

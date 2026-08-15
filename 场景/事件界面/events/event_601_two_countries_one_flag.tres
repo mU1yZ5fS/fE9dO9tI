@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_601_two_countries_one_flag.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.11.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们支持路易斯·卡布拉尔总统抵抗政变"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_601_two_countries_one_flag.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持维埃拉，将佛得角裔精英赶出几内亚比绍"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_601_two_countries_one_flag.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "趁火打劫，让塞内加尔人动手"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_601_two_countries_one_flag.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "随他们去吧"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_601_two_countries_one_flag.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_601"
+source_event_number = 601
+trigger_priority = 60100
+title = "两个国家，一面旗帜"
+description = "独立之后，几内亚与佛得角非洲独立党在这片曾被葡萄牙殖民者所蹂躏的土地进行了一场独特的实验：佛得角共和国与几内亚比绍共和国——这两个“两具身体心连心”的姐妹共和国，不仅有着近乎一样的国旗与国歌，还有着同一个执政党，在曾共同抗击殖民者的历史所缔造的友谊基础上，两国政府也积极进行合作，以实现已写入两国宪法中的统一。\n然而，几内亚比绍的社会主义之路并不轻松，由于总统本人没有如倒在了独立前夕的国父、他的兄长阿米尔卡·卡布拉尔级别的威望来维系党内的团结，部分几内亚比绍军人也对佛得角血统的党员在几佛独立党中的重要地位颇有微词，再加上葡萄牙在几内亚比绍的漫长殖民地战争摧垮了当地的经济体系，大米的短缺与经济状况的恶化引起了广泛的不满。几佛独立党这栋大厦摇摇欲坠……\n根据科纳克里方面提供的消息，以几内亚比绍总理尼诺·维埃拉将军为首的部分军人正在筹划发动一场政变，“终结佛得角裔精英在几佛独立党中的主导地位，赶走仍在几内亚比绍的殖民主义者”，如果让他成功的话，那么无数革命者用鲜血换来的社会主义几内亚比绍，与两国统一的愿景将很有可能烟消云散，当然，我们也许可以祈祷几佛独立党中并不会出现一个军事独裁者。无论如何，决定权在你，主席同志。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

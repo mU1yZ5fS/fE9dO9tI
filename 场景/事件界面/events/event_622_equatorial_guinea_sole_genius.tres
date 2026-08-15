@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_622_equatorial_guinea_sole_genius.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "是时候帮助赤道几内亚的同志了！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_622_equatorial_guinea_sole_genius.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "你疯了吗？你明明知道马西埃根本就是个精神病"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_622_equatorial_guinea_sole_genius.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_622"
+source_event_number = 622
+trigger_priority = 62200
+title = "赤道几内亚唯一天才"
+description = "自1968年马西埃·恩圭马成为新独立的赤道几内亚总统之后，便受朝鲜影响，将赤道几内亚民众理念改组为全国统一劳动党，并宣称赤道几内亚正在进行社会主义建设。同样作为社会主义国家的我们自然应当为赤道几内亚的同志进行正确的指导。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

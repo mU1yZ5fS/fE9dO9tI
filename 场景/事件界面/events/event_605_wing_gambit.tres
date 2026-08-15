@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_605_wing_gambit.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_sa_sub10"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 10
+target = "131"
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.12.1"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_sa_sub10"), SubResource("Expr_date")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "承认新政府"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_605_wing_gambit.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "谴责政变"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_605_wing_gambit.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "承认新政府，并敦促曼德拉夫人选择更加正确的立场！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_605_wing_gambit.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_605"
+source_event_number = 605
+trigger_priority = 60500
+title = "后翼弃车？"
+description = "主席同志，我们刚刚得知来自阿扎尼亚的消息。如你所知，该国自从反对种族隔离的联军获得胜利以来政治局势一直不稳，该国的两大团体——提倡改良主义与和白人群体谈和的阿扎尼亚泛非大会与被温妮·曼德拉夺权带领的非国大已经冲突了有一段时间了，这导致了临时政府的停摆以及迟迟未能出台社会改造政策乃至一部宪法。就在今天，我们得知温妮·曼德拉成为了权力斗争的胜利者。现在在阿扎尼亚，非洲之矛民兵正在到处搜捕“帝国主义的第五纵队”，比如南非共产党，阿扎尼亚泛非主义大会与阿扎尼亚人民组织，指控他们名左实右，与希望种族隔离制度复辟的阿非利卡民族主义者沆瀣一气。温妮·曼德拉目前没有谴责社会主义国家当中的任何一个阵营，但我们要如何应对这一非洲铁娘子的崛起呢？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
