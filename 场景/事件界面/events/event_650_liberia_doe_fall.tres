@@ -1,0 +1,79 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_650_liberia_doe_fall.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.10.1"
+
+[sub_resource type="Resource" id="Expr_done696"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_696"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_done696")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们没必要搅混水……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_650_liberia_doe_fall.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "是时候发动政变推翻暴君了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_650_liberia_doe_fall.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "也许我们该致电华盛顿，要求多伊履行民主承诺"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_650_liberia_doe_fall.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "患难见真情，现在应该给多伊瞧瞧谁是最好的朋友了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_650_liberia_doe_fall.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_650"
+source_event_number = 650
+trigger_priority = 65000
+title = "谁成为战士，妈妈？"
+description = "我想您还记得多伊政权的“丰功伟绩”，经过了这位‘五星上将“折腾的利比里亚已是一落千丈：广泛的盗贼统治、接连不断的政变、遍布各地的无政府状态与时不时冒出的骇人听闻暴行近乎榨干了该国鲜血。我们可说“自由世界的非洲橱窗”已死，留下的大抵只是具被各地秃鹫分食的死尸。倘若放任当地情况恶化，利比里亚极有可能成为个充满部族军阀的非洲版缅甸。不过，现在仍有动手的机会。考虑到多伊曾许诺将在自己发动政变的5年后召开选举并准备放权结束军事统治，现在正是借题发挥的时候。不过，对利比里亚局势的贸然投资真的不会给当地招来下一个多伊吗？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])
