@@ -1,0 +1,141 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_421_eagle_falls.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Expr_n87_nato_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "87"
+
+[sub_resource type="Resource" id="Expr_n87_nato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n87_nato_c")])
+
+[sub_resource type="Resource" id="Expr_n21_nato_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "21"
+
+[sub_resource type="Resource" id="Expr_n21_nato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n21_nato_c")])
+
+[sub_resource type="Resource" id="Expr_n84_nato_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "84"
+
+[sub_resource type="Resource" id="Expr_n84_nato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n84_nato_c")])
+
+[sub_resource type="Resource" id="Expr_n86_nato_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "86"
+
+[sub_resource type="Resource" id="Expr_n86_nato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n86_nato_c")])
+
+[sub_resource type="Resource" id="Expr_n45_nato_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "45"
+
+[sub_resource type="Resource" id="Expr_n45_nato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n45_nato_c")])
+
+[sub_resource type="Resource" id="Expr_n92_nato_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "92"
+
+[sub_resource type="Resource" id="Expr_n92_nato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n92_nato_c")])
+
+[sub_resource type="Resource" id="Expr_n7_nato_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "7"
+
+[sub_resource type="Resource" id="Expr_n7_nato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n7_nato_c")])
+
+[sub_resource type="Resource" id="Expr_fn17_development_2"]
+script = ExtResource("3_expr")
+type = 26
+key = "development"
+value = 2.0
+target = "17"
+
+[sub_resource type="Resource" id="Expr_date_1984_1_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.1.1"
+
+[sub_resource type="Resource" id="Expr_n17_nato_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "17"
+
+[sub_resource type="Resource" id="Expr_n17_nato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n17_nato_c")])
+
+[sub_resource type="Resource" id="Expr_421_any"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date_1984_1_1"), SubResource("Expr_n17_nato")])
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n87_nato"), SubResource("Expr_n21_nato"), SubResource("Expr_n84_nato"), SubResource("Expr_n86_nato"), SubResource("Expr_n45_nato"), SubResource("Expr_n92_nato"), SubResource("Expr_n7_nato"), SubResource("Expr_fn17_development_2"), SubResource("Expr_421_any")])
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "美帝国主义的日子到头了！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_421_eagle_falls.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_421"
+source_event_number = 421
+trigger_priority = 42100
+title = "雄鹰陨落"
+description = "北大西洋公约组织被绝大多数的创始国抛弃，导致该组织内拥有强大军事实力的国家少之又少。只有美国、加拿大与德国还能在其中苟延残喘。\n今天，北大西洋理事会决定废除有关1949年建立北约的协定。北约在布鲁塞尔的总部也在各成员国的降旗仪式结束后被关闭。在此之后，美国退出了其他仿照北约模式建立的地区性联盟。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

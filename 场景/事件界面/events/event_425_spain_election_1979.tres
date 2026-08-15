@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_425_spain_election_1979.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Expr_date_1979_2_2"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.2.2"
+
+[sub_resource type="Resource" id="Expr_prev_result_424_1"]
+script = ExtResource("3_expr")
+type = 4
+value = 1.0
+ref_event_id = "event_424"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date_1979_2_2"), SubResource("Expr_prev_result_424_1")])
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "消灭卡里略（需要5.0百万{0}与10.0点{1}）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_425_spain_election_1979.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "观察局势"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_425_spain_election_1979.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_425"
+source_event_number = 425
+trigger_priority = 42500
+title = "1979年西班牙选举"
+description = "1978年12月6日，西班牙市民以88%的绝对多数，在全民公投中通过了西班牙的新民主宪法。为了庆祝这一胜利，苏亚雷斯宣布关闭制宪会议，并要求在1979年3月举行选举。从而获得进一步改革的信任授权。\n竞选活动再度活跃起来：该国的最大反对党依然是冈萨雷斯领导的西班牙工人社会党。而西班牙共产党方面，尽管卡里略向党员担保说：人们会考虑到该党多年的被迫害经历，从而多多少少会做出些“正确选择”。但根据社会学调查来看，该党的支持率不会超过10%。而该党内也有反对现任总书记行动的情绪——亲苏派谴责他的欧洲共产主义倾向；而欧洲共产主义派则斥责他同君主制合作，并背叛了共和主义理想。在年轻且富有活力的冈萨雷斯冉冉升起的背景下，卡里略就和长枪党人一样，宛如“来自过去的幽灵”。然而，推翻一个老牌共产党人并没有什么大意义。不过，考虑到专业人士也需要自己开路的问题，各类障碍依然可能成为其拦路虎。如果我们想要增强对西班牙共产主义运动的影响力，也许“带走”这个不幸老头是值得的？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

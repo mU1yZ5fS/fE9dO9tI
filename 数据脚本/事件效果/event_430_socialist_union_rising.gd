@@ -1,0 +1,148 @@
+extends "res://数据脚本/event_script_base.gd"
+
+## 原作 Event430.cs：社会主义联盟的勃兴（三选项）。
+## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1179-1181 —— ExprNode 组合。
+## 差异：cw→内战中；perevorot→政变中；isNATO/isSocEU/isEU/isSEV/okb/econ→标签；
+##  - LeaveAlliances→_leave_alliances；Torg→对华贸易；empires[1].leaders[6]→leaders[6]；
+##  - 原版 num/flag/flag2 死代码跳过；result_num 2 无额外效果。
+
+const TXT_TITLE := "社会主义联盟的勃兴"
+const TXT_DESC := "随着欧洲经济共同体越加难以保证其成员利益，且其超国家部门也更倾向于采取侵犯欧洲主权的新自由主义政策，相当数量的国家已在事实上游离其外，并拒绝参与欧洲经济共同体的相关事宜，主要大国的脱离更是使得基于资本主义的欧洲整合方案已在事实上破产。不过这并不代表欧洲联邦之梦的终结：随着以欧洲共产主义与民主社会主义为代表的人道主义左翼在欧洲取得突破性进展，有关欧洲各国应当在非市场经济治理、尊重主权与民主原则的基础上，实现另一类经济、政治与文化一体化的想法已日渐成熟。\n为此，意大利总理恩里科·贝林格、西班牙首相，以及法国总统乔治·马歇已于今日在西班牙首都马德里举行三国领导人联合会晤。就建立更加公正民主的欧洲新秩序问题达成相关共识，并顺势抛出实现“另类一体化”的计划。\n此后各方签署了《马德里条约》，并宣布致力于发展新式合作关系——最终目标是建立囊括大半个欧洲的超国家一体化组织“社会主义联盟”。不同于欧洲经济共同体，该组织决定以类似共产党政治局形式建立中央委员会的部门，对议会取而代之：其成员囊括参与国的领导人、政府部长与各国代表。社会主义联盟的主席则由各国则效法南斯拉夫联邦的轮值主席团经验，按照一年一度的“换岗”流程进行轮值。该组织的经济基础是带有国家干预因素的民主分权计划、平均持股的人民资本主义企业与私人市场要素的结合。这一模式足以将各地的经济特征合理整合为统一的欧洲经济。此外，该组织还制订了有关关税、移民与教育标准的相关制度。\n这不就是马克思期望的“共产主义的幽灵”吗？"
+const TXT_OPT0 := "支持社会主义联盟的建立，并与之签订贸易协定"
+const TXT_OPT1 := "谴责这一联盟在意识形态上的短视"
+const TXT_OPT2 := "静观其变"
+const TXT_IDX_1438 := "社会主义联盟的勃兴"
+const TXT_IDX_1440 := "支持社会主义联盟的建立，并与之签订贸易协定"
+const TXT_IDX_1441 := "谴责这一联盟在意识形态上的短视"
+const TXT_IDX_1442 := "静观其变"
+const TXT_IDX_1446 := "上述各国均退出了北约组织。"
+const TXT_IDX_1447 := "中国外交部祝贺欧洲各国打造了全新的联盟组织形式，并考虑与其确立新的贸易合作关系。\n{2}\n{1}"
+const TXT_IDX_1448 := "中国外交部谴责这一新联盟的“意识形态短视”，并认为“这将在其他政治力量参与其中时，导致欧洲局势不稳”。\n{2}\n{1}"
+const TXT_IDX_1449 := "我想知道这样的联盟将如何告终......\n{2}\n{1}"
+const TXT_APPEND_PT := "此外，在葡萄牙，不久前刚刚上台的社会党与联合人民联盟组成社会主义联合政府也表示，决定申请加入社会主义联盟。鉴于其最近宣布的政策和道路与社会主义联盟的理念十分贴近，申请很快就会通过。"
+const TXT_APPEND_UK := "刚刚赢得大选的英国工党政府看到了新兴社会主义联盟潜力，为更好贯彻“重建福利国家”的政策，主动申请加入社会主义联盟以寻求经济帮助。"
+
+func _add(index: int, delta: int) -> void:
+	if d.size() > index:
+		d[index] += delta
+
+
+func _raw(index: int) -> int:
+	if d.size() > index:
+		return d[index]
+	return 0
+
+
+func _add_relation(empire_index: int, delta: int) -> void:
+	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
+		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
+
+
+func _add_power(empire_index: int, delta: int) -> void:
+	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
+		ws.empires[empire_index].power += delta
+
+
+func _fmt(s: String, args: Array) -> String:
+	for i in args.size():
+		s = s.replace("{" + str(i) + "}", str(args[i]))
+	return s
+
+
+func _enable(opt: EventOption, text: String) -> void:
+	opt.text = text
+	opt.disabled_text = ""
+	opt.enable_condition = null
+
+
+func _disable(opt: EventOption, text: String) -> void:
+	opt.text = text
+	opt.disabled_text = text
+	var n := ExprNode.new()
+	n.type = ExprNode.Type.RESOURCE_AT_LEAST
+	n.key = "party_system"
+	n.value = 99999.0
+	opt.enable_condition = n
+
+
+func _leave_alliances(c: CountryData) -> void:
+	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
+			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
+			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
+		c.set_tag(tag, false)
+	c.puppet_of = -1
+
+
+func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: int,
+		usa_side: int, ussr_side: int, war_name: String, fortnight: int) -> void:
+	GameManager.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
+	if ws.wars.size() > war_id and ws.wars[war_id] != null:
+		ws.wars[war_id].name_war = war_name
+		ws.wars[war_id].fortnight_max = fortnight
+
+func execute(context: Dictionary) -> void:
+	if not _bind_world():
+		return
+	var opt := int(context.get("option_index", -1))
+	var italy := ws.get_country_by_legacy_index(85)
+	var france := ws.get_country_by_legacy_index(21)
+	var spain := ws.get_country_by_legacy_index(86)
+	var portugal := ws.get_country_by_legacy_index(87)
+	var turkey := ws.get_country_by_legacy_index(84)
+	var uk := ws.get_country_by_legacy_index(92)
+	if italy != null:
+		italy.内战中 = false
+		italy.政变中 = false
+	# 原版 flag/flag2 恒为 false，num 恒为 0，1443-1445 死代码，跳过。
+	var flag3 := (france != null and france.has_tag("nato")) \
+			or (spain != null and spain.has_tag("nato")) \
+			or (italy != null and italy.has_tag("nato"))
+	# 成就 Set(127)（iron_and_blood）为展示层成就，跳过。
+	if france != null:
+		_leave_alliances(france)
+	if spain != null:
+		_leave_alliances(spain)
+	if italy != null:
+		_leave_alliances(italy)
+	if italy != null:
+		italy.set_tag("soc_eu", true)
+	if france != null:
+		france.set_tag("soc_eu", true)
+	if spain != null:
+		spain.set_tag("soc_eu", true)
+	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null \
+			and ws.empires[EmpireData.USSR].leaders.size() > 6:
+		ws.empires[EmpireData.USSR].leaders[6].support += 999
+	if portugal != null and portugal.sub_government == 3 and not portugal.has_tag("econ") \
+			and not portugal.has_tag("eu") and not portugal.has_tag("okb") and not portugal.has_tag("sev"):
+		_leave_alliances(portugal)
+		portugal.set_tag("soc_eu", true)
+	if turkey != null and turkey.sub_government == 3 and not turkey.has_tag("econ") \
+			and not turkey.has_tag("eu") and not turkey.has_tag("okb") and not turkey.has_tag("sev"):
+		_leave_alliances(turkey)
+		turkey.set_tag("soc_eu", true)
+	_add_power(EmpireData.USA, -100)
+	var base := ""
+	if opt == 0:
+		base = TXT_IDX_1447
+	elif opt == 1:
+		base = TXT_IDX_1448
+	else:
+		base = TXT_IDX_1449
+	var text := base.replace("{1}", "").replace("{2}", TXT_IDX_1446 if flag3 else "")
+	if portugal != null and portugal.has_tag("soc_eu"):
+		text += TXT_APPEND_PT
+	if italy != null and italy.has_tag("soc_eu") and _raw(147) == 3:
+		text += "\n" + TXT_APPEND_UK
+		if uk != null:
+			uk.set_tag("soc_eu", true)
+			uk.set_tag("nato", false)
+	context["result_text"] = text
+	if opt == 0:
+		_add_relation(EmpireData.USA, -500)
+		for c in ws.countries:
+			if c != null and c.has_tag("soc_eu"):
+				c.set_tag("对华贸易", true)
+		return
+	if opt == 1:
+		_add_relation(EmpireData.USA, 300)

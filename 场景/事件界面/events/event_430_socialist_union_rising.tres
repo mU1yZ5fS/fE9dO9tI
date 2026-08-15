@@ -1,0 +1,101 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_430_socialist_union_rising.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Expr_f86_sub_government_3"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 3.0
+target = "86"
+
+[sub_resource type="Resource" id="Expr_f85_sub_government_14"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 14.0
+target = "85"
+
+[sub_resource type="Resource" id="Expr_f21_sub_government_14"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 14.0
+target = "21"
+
+[sub_resource type="Resource" id="Expr_prev_not_done_556"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_556"
+
+[sub_resource type="Resource" id="Expr_prev_not_done_396"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_396"
+
+[sub_resource type="Resource" id="Expr_fn85_sub_government_20"]
+script = ExtResource("3_expr")
+type = 26
+key = "sub_government"
+value = 20.0
+target = "85"
+
+[sub_resource type="Resource" id="Expr_date_1983_5_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.5.1"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_f86_sub_government_3"), SubResource("Expr_f85_sub_government_14"), SubResource("Expr_f21_sub_government_14"), SubResource("Expr_prev_not_done_556"), SubResource("Expr_prev_not_done_396"), SubResource("Expr_fn85_sub_government_20"), SubResource("Expr_date_1983_5_1")])
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持社会主义联盟的建立，并与之签订贸易协定"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_430_socialist_union_rising.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "谴责这一联盟在意识形态上的短视"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_430_socialist_union_rising.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "静观其变"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_430_socialist_union_rising.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_430"
+source_event_number = 430
+trigger_priority = 43000
+title = "社会主义联盟的勃兴"
+description = "随着欧洲经济共同体越加难以保证其成员利益，且其超国家部门也更倾向于采取侵犯欧洲主权的新自由主义政策，相当数量的国家已在事实上游离其外，并拒绝参与欧洲经济共同体的相关事宜，主要大国的脱离更是使得基于资本主义的欧洲整合方案已在事实上破产。不过这并不代表欧洲联邦之梦的终结：随着以欧洲共产主义与民主社会主义为代表的人道主义左翼在欧洲取得突破性进展，有关欧洲各国应当在非市场经济治理、尊重主权与民主原则的基础上，实现另一类经济、政治与文化一体化的想法已日渐成熟。\n为此，意大利总理恩里科·贝林格、西班牙首相，以及法国总统乔治·马歇已于今日在西班牙首都马德里举行三国领导人联合会晤。就建立更加公正民主的欧洲新秩序问题达成相关共识，并顺势抛出实现“另类一体化”的计划。\n此后各方签署了《马德里条约》，并宣布致力于发展新式合作关系——最终目标是建立囊括大半个欧洲的超国家一体化组织“社会主义联盟”。不同于欧洲经济共同体，该组织决定以类似共产党政治局形式建立中央委员会的部门，对议会取而代之：其成员囊括参与国的领导人、政府部长与各国代表。社会主义联盟的主席则由各国则效法南斯拉夫联邦的轮值主席团经验，按照一年一度的“换岗”流程进行轮值。该组织的经济基础是带有国家干预因素的民主分权计划、平均持股的人民资本主义企业与私人市场要素的结合。这一模式足以将各地的经济特征合理整合为统一的欧洲经济。此外，该组织还制订了有关关税、移民与教育标准的相关制度。\n这不就是马克思期望的“共产主义的幽灵”吗？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
