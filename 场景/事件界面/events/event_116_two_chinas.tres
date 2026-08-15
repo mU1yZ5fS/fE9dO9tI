@@ -1,0 +1,121 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_094_096_116_taiwan_chain.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date_1985"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.1"
+
+[sub_resource type="Resource" id="Expr_data107_eq_1"]
+script = ExtResource("3_expr")
+type = 21
+key = "afghan_war_path"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_event_95_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_095"
+
+[sub_resource type="Resource" id="Expr_event_96_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_096"
+
+[sub_resource type="Resource" id="Expr_taiwan_dev_0"]
+script = ExtResource("3_expr")
+type = 25
+target = "38"
+key = "development"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_taiwan_status_le_0"]
+script = ExtResource("3_expr")
+type = 1
+key = "taiwan_status"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_decision_6_done"]
+script = ExtResource("3_expr")
+type = 38
+key = "6"
+
+[sub_resource type="Resource" id="Expr_not_decision_6"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_decision_6_done")])
+
+[sub_resource type="Resource" id="Expr_decision_7_done"]
+script = ExtResource("3_expr")
+type = 38
+key = "7"
+
+[sub_resource type="Resource" id="Expr_not_decision_7"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_decision_7_done")])
+
+[sub_resource type="Resource" id="Expr_event_461_not_done"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "formosa_spring"
+
+[sub_resource type="Resource" id="Expr_diplo_le_500"]
+script = ExtResource("3_expr")
+type = 1
+key = "diplo"
+value = 500.0
+
+[sub_resource type="Resource" id="Expr_usa_relation_ge_600"]
+script = ExtResource("3_expr")
+type = 8
+key = "0"
+value = 600.0
+
+[sub_resource type="Resource" id="Expr_option_1_enabled"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_diplo_le_500"), SubResource("Expr_usa_relation_ge_600")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "保持原样"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由 event_094_096_116_taiwan_chain.gd 动态生成）"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "期待已久的统一时刻到了！"
+disabled_text = "他们不准备同意这样的协议"
+enable_condition = SubResource("Expr_option_1_enabled")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由 event_094_096_116_taiwan_chain.gd 动态生成）"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "承认彼此，结束敌意！"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由 event_094_096_116_taiwan_chain.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_event")
+display_script = ExtResource("5_custom")
+event_id = "event_116"
+source_event_number = 116
+trigger_priority = 11650
+title = "两个中国"
+description = "如你所知，解放战争胜利后，国民党败逃到台湾岛，西方社会长期认为他们是中国的合法政府。由于美国在台湾的基地和舰队，我们无法解放它，就像国民党无法反攻大陆一样，随着时间的推移，越来越多的国家承认中华人民共和国为中国唯一合法政府，尽管中华人民共和国和台湾政府都没有正式拒绝对全中国的主张。当然，我们之间的关系一直很糟糕，但是最近自由化和中国共产党结束了对权力的垄断之后，我们之间的关系明显升温。现在双方高层都在谈论期待已久的国家统一的可能性。但是，在这种情况下，台湾会旗帜鲜明地要求自治，我们需要在他们的根据地地位上与美国达成一致，而台湾人民成功地发展了他们的文化认同，这将如何影响这个国家已经不稳定的局势，目前还不知道。因此，有人建议我们与台湾相互承认对方为独立国家，建立睦邻友好关系。既然在这种情况下，美国的基地将继续存在，西方公司将免于官僚主义的大惊小怪，那就很好地暗示美国，年轻的民主需要钱……"
+fire_only_once = true
+show_notification = false
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date_1985"), SubResource("Expr_data107_eq_1"), SubResource("Expr_event_95_done"), SubResource("Expr_event_96_done"), SubResource("Expr_taiwan_dev_0"), SubResource("Expr_taiwan_status_le_0"), SubResource("Expr_not_decision_6"), SubResource("Expr_not_decision_7"), SubResource("Expr_event_461_not_done")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])
