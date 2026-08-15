@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_659_uganda_mustard_seed.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.2.20"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们没兴趣掺合乌干达的破事"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_659_uganda_mustard_seed.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "米尔顿·奥博特才是真正的社会主义者！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_659_uganda_mustard_seed.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "播下人民抵抗军这粒芥菜种吧"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_659_uganda_mustard_seed.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "与蒙博托总统一道支持阿明将军的残部"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_659_uganda_mustard_seed.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "联系各布干达人政党，促成他们与主要由布干达人组成的乌干达自由运动结成统一战线"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_659_uganda_mustard_seed.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_659"
+source_event_number = 659
+trigger_priority = 65900
+title = "播撒芥菜籽"
+description = "尽管阿明被推翻了，但除了政坛变换了几张面孔以外，乌干达的历史并没有走出阿明时代。事实证明了内部矛盾错综复杂的乌干达民族解放阵线临时政府根本无法胜任自己所肩负的庞大而复杂的任务。1979年5月29日，卢莱政府刚刚组成68天，即因为尤素夫·卢莱与保罗·穆万加间的矛盾而宣告下台。临时议会选择了戈弗雷·比奈萨为继任者，他组成的这一届政府依旧腐败、效率低下，社会治安恶劣，咖啡走私猖獗，法律、秩序完全失效。同时，新的斗争也在军事委员会中展开，1979年11月，比奈萨总统联合奥博特亲信、总参谋长奥约特-奥乔克解除了穆塞韦尼的国防部长职位。而排挤掉“左翼极端分子”的比奈萨又很快与穆万加和奥乔克起了矛盾，1980年5月13日，穆万加在军队支持下发动政变，软禁了比奈萨总统，宣布以自己为主席的乌干达民族解放阵线军事委员会接管政府，新政府决心使人民大会党重新回到执政轨道上。5月27日，奥博特回国，穆万加宣布将于12月举行大选。\n1980年12月10日，阿明倒台后的第一次大选在乌干达如期举行。共有四个主要政党参选：奥博特的人民大会党，天主教徒与温和派布干达人的民主党，穆塞韦尼（在副手卡特加亚强烈要求下参与竞选）的乌干达爱国运动（由救国阵线、乌干达劳动党和乌干达民族运动组成），布干达人新教徒的保皇派政党保守党（由声名狼藉的“唯有国王”党改组而来）。不出所料地，选举结果又一次令人失望了，人民大会党靠着一些手段轻松取得了议会的多数席位。就这样，在被推翻十年后，米尔顿·奥博特又一次回到了总统的宝座之上。选举后乌干达迅速涌现出了一批反对派武装，其中比较重要的有卢莱成立的乌干达自由战士，布干达人安德鲁·卡伊拉领导、热衷于城市袭击活动的乌干达自由运动，再加上在扎伊尔与苏丹支持下于西尼罗河地区卷土重来的阿明政权残军（约七千多武装人员，分裂为两个团体：前参谋长艾萨克·鲁马格少将领导的前乌干达国民军（FUNA），阿明政权财政部长、急于与阿明摆脱关系的摩西·阿里准将领导的乌干达民族拯救阵线（UNRF）），乌干达彻底陷入了混乱。\n怀着对新政府的彻底失望，约韦里·穆塞韦尼成立了一支以持久人民战争为纲领的游击队“人民抵抗军”，带着34人、27杆枪走进了卢韦罗丛林中。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

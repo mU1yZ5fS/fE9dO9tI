@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_663_burma_far_east_sparta_end.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "火药桶的最终结局都是如此……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_663_burma_far_east_sparta_end.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_663"
+source_event_number = 663
+trigger_priority = 66300
+title = "远东斯巴达的终结"
+description = "自1948年以来，缅甸国内便大小冲突不断：从共产党到民族分离武装你方唱罢我登场，共同撕裂着这个新生的政权。然而，由于缅甸政府的强力镇压，该国多少能维持一种“散而不倒”的状态。可如今，时代变了：反政府武装甚至打入了缅甸古都曼德勒，并逼迫该国政府不得不援引全国紧急状态。以“国家统一”为招牌的缅甸政府陷入了全面危机，缅甸内战也将迎来其最高峰。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])
