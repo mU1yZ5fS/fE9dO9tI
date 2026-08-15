@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_420_carnation_new_revolution.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_420"
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_419"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 27
+target = "87"
+key = "government"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.5.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持左翼团体（需要20.0百万预算与25.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_420_carnation_new_revolution.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持右翼团体（需要20.0百万预算与25.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_420_carnation_new_revolution.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "保持观望"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_420_carnation_new_revolution.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_420"
+source_event_number = 420
+trigger_priority = 42000
+title = "康乃“新”革命？"
+description = "六年时间过去了，葡萄牙的民主体制依然活在动荡之中。中左翼政府与中右翼政府如走马灯般频繁更迭，然而他们都不足以解决该国自旧体制下延续的社会经济问题，以及最终完成去殖民化的任务。政治不稳定为该国局势火上浇油——激进左右翼势力频繁发动恐怖袭击与各类反政府行动，从而严重打击了现政府在人民眼中的人气。民主派政治家设法激起公众对革命委员会的不满，并宣称后者“高居于民主政体之上，阻碍政治现代化”。然而，尽管其权力受到限制，但军方还是成功抵挡住了对自己的进攻。议会内的激进政党也越加强势。在他们的压力下，新加入葡萄牙革命委员会的军官均是极端反对当局自由主义政策的成员。以贡萨尔维斯与萨赖瓦·德卡瓦略为代表的极左翼政治家们纷纷回归。同时登场的还有极右翼反共产主义组织的领导人阿尔波因·卡尔万与斯皮诺拉。革命委员会正变得日益撕裂且激进化，政治家相互指责对方背叛了康乃馨革命。社会内也传出了军方将再度接管政权，重建国家秩序的流言。但这次，我们将如何干预葡萄牙？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_3")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
