@@ -12,9 +12,9 @@ type = 0
 key = "investment_delay"
 value = 6.0
 
-[sub_resource type="Resource" id="Expr_not_liberal"]
+[sub_resource type="Resource" id="Expr_line_ge_2"]
 script = ExtResource("3_expr")
-type = 22
+type = 0
 key = "political_line"
 value = 2.0
 
@@ -23,32 +23,33 @@ script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Postpone the question"
+text = "推迟这事"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The leadership postponed foreign investment while reformist frustration and public expectations continued to rise."
+result_text = "（结果由 event_053_062_reform_and_alliances.gd 动态生成）"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Open special economic zones"
+text = "开放经济特区"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Coastal special economic zones opened to foreign investment and won an enthusiastic response from Western governments and corporations."
+result_text = "新政府宣布沿海部分城市逐步对外开放。广东省的深圳、珠海、汕头和福建省的厦门将很快开放为经济特区，同时整个海南省将成为经济特区。美国和西欧国家对这一决定表示热烈欢迎，西方大型企业的负责人也表示热烈欢迎。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Open the SEZs and state enterprises to joint investment"
-disabled_text = "The current political line rejects such extensive foreign penetration"
-enable_condition = SubResource("Expr_not_liberal")
+text = "开放经济特区并对外资开放部分企业"
+disabled_text = "毛主席的棺材板压不住了！"
+enable_condition = SubResource("Expr_line_ge_2")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China opened both coastal zones and state joint ventures to foreign capital, accelerating reform and sharpening party conflict."
+result_text = "尽管一些改革派和温和派提出抗议，新政府最终还是决定向外资敞开中国经济的大门。按照计划，将很快在广东省的深圳、珠海、汕头，福建省的厦门开设经济特区，并且，整个海南省也被划为经济特区。同时，许多国有企业也按照合资计划对外资开放。尽管外国公司只能在经济特区直接开展业务，但讨论外资即将迅速深入我们经济已经成为可能，因为西方对我们的转型抱着极大的热情。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "reform_investment"
 source_event_number = 54
 trigger_priority = 540
-title = "Reform and openness: investment"
-description = "Six months into the opening course, the leadership must decide how far foreign capital may enter the Chinese economy."
+title = "改革开放：引资"
+description = "按照改革开放政策的政策框架下，吸引外资是重要的一环。改革派提议在沿海地区建立几个经济特区，为外国投资者提供税收的优惠、最低限度的国家控制和其他的政策优惠，让他们可以在那里建立自己的企业，并投资于合资企业。然而，除了建立经济特区之外，更激进的领导人提议，通过建立合资企业制度，进而全面开放经济，外国可以在我们的国有企业内投资，以换取利润分成。显而易见的，第二种选择的盈利能力更强，但党内的温和派，甚至一些改革派的人也批评它的措施过于激进。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_delay")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

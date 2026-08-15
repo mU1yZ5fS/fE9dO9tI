@@ -8,6 +8,7 @@
 
 [sub_resource type="Resource" id="Expr_year_1980"]
 script = ExtResource("3_expr")
+type = 0
 key = "year"
 value = 1980.0
 
@@ -19,11 +20,13 @@ value = 1979.0
 
 [sub_resource type="Resource" id="Expr_month_9"]
 script = ExtResource("3_expr")
+type = 0
 key = "month"
 value = 9.0
 
 [sub_resource type="Resource" id="Expr_day_16"]
 script = ExtResource("3_expr")
+type = 0
 key = "day"
 value = 16.0
 
@@ -59,32 +62,33 @@ script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Do not get involved"
+text = "最好还是不要介入"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Amin seized power and began broad repression while Moscow concealed its unease."
+result_text = "阿明上台后，针对他目前和潜在的政治对手，发起了广泛的肃清运动。尽管有“消灭封建领主”的政策，但在这一政策下，不仅仅是在“消灭封建领主”。尽管它假装一切都很好，但苏联似乎对政变有些不满。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Begin a secret rapprochement with the DRA (-20 budget)"
+text = "与阿富汗民主共和国秘密建立友好关系（需要2百万元预算）"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Secret Chinese contacts gave Amin an alternative partner, at the cost of worsening relations with Moscow."
+result_text = "阿明上台后，针对他目前和潜在的政治对手，发起了广泛的肃清运动。尽管有“消灭封建领主”的政策，但在这一政策下，不仅仅是在“消灭封建领主”。尽管它假装一切都很好，但苏联似乎对政变有些不满。我们的秘密大使和特勤处与阿明建立了联系，阿明对新盟友的获得非常满意。然而，与此同时，他开始要求我们向阿富汗提供物质援助。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Secretly agree with the USSR to remove Amin"
-disabled_text = "Requires reconciliation with the Soviet Union"
+text = "我们不信任他…最好秘密同意苏联撤换他，也许我们会从新政府那里得到一些东西"
+disabled_text = "不与苏联勾结！"
 enable_condition = SubResource("Expr_relres")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China quietly accepted a Soviet plan to replace Amin in exchange for influence with his successor."
+result_text = "（结果由 event_048_052_063_afghanistan.gd 动态生成）"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "afghan_amin_coup"
 source_event_number = 48
 trigger_priority = 480
-title = "Coups continue"
-description = "Hafizullah Amin has overthrown Taraki and begun repressing his rivals. Moscow distrusts him, creating an opening for Chinese diplomacy or collusion."
+title = "政变的延续"
+description = "四月革命后，人民民主党面临着许多困难，在快速壮大的人民派中，人民民主党创始人塔拉基和他的学生阿明之间的斗争已经开始。阿明是激进政治的支持者，赞同对封建残余势力的不懈斗争和对政治对手的严厉镇压。同时，作为一个狂热的普什图民族主义者（注释-阿富汗的主要民族），他在很大程度上阻碍了人民民主党的民族政策，试图将权力集中在自己手中，他在人民派和旗帜派之间维持了分裂。尽管苏联领导人一再警告塔拉基阿明的阴谋计划，但他直到最后一刻才注意到。9月14日，在看望塔拉基期间，阿明首次遭到袭击（尚不清楚是真的还是由阿明本人策划的），9月16日，阿明在人民民主党中央委员会全体会议上解除了塔拉基的职务，此前他曾与驻地的忠诚部队隔离。值得注意的是，尽管阿明试图与苏联保持良好关系，但根据我们的数据，他不完全反对与中国建立密切关系，这可能是我们的机会。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_khalq_greater")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

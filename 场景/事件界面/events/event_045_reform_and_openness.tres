@@ -22,18 +22,19 @@ script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Forward to the socialist market!"
+text = "向社会主义市场经济大步前进！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Enterprise autonomy, local initiative, market management, and private and cooperative rights were expanded. Albania broke with China in protest."
+result_text = "新政府决定减少中央政府在国有企业管理中的作用，鼓励地方政府采取行动，积极引进市场化经营方式，扩大私营企业和合作企业的权利。|对这一政策的不满来自一个意料之外的地方：在阿尔巴尼亚，恩维尔·霍查激烈批评我们的修正主义政策和对马克思主义的背叛，并切断了和我们的一切联系。嗯，他想走向孤立主义——这是他的权利。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "reform_and_openness"
 source_event_number = 45
 trigger_priority = 450
-title = "Reform and openness: the beginning"
-description = "The political decision has been made. The first concrete programme will reduce direct central management of enterprises and widen market activity."
+title = "改革开放：先声"
+description = "在宣告了市场改革进程之后，我们的经济学家制定了第一次改革的计划，并最终提交给中国共产党领导层批准。它包括扩大企业经营自主权，引入市场机制以调节他们的工作以及支持个体与集体所有制企业。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_stage_1")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0")])

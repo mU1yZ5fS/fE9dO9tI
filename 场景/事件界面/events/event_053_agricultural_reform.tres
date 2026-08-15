@@ -11,11 +11,43 @@ script = ExtResource("3_expr")
 type = 12
 key = "1979.1"
 
-[sub_resource type="Resource" id="Expr_private"]
+[sub_resource type="Resource" id="Expr_line_ge_2"]
 script = ExtResource("3_expr")
 type = 0
 key = "political_line"
 value = 2.0
+
+[sub_resource type="Resource" id="Expr_party_le_7"]
+script = ExtResource("3_expr")
+type = 1
+key = "party_system"
+value = 7.0
+
+[sub_resource type="Resource" id="Expr_private_branch1"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_ge_2"), SubResource("Expr_party_le_7")])
+
+[sub_resource type="Resource" id="Expr_coalition_67"]
+script = ExtResource("3_expr")
+type = 36
+value = 67.0
+
+[sub_resource type="Resource" id="Expr_party_ge_8"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_system"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_private_branch2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_coalition_67"), SubResource("Expr_party_ge_8")])
+
+[sub_resource type="Resource" id="Expr_private"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_private_branch1"), SubResource("Expr_private_branch2")])
 
 [sub_resource type="Resource" id="Expr_stage_zero"]
 script = ExtResource("3_expr")
@@ -23,56 +55,46 @@ type = 21
 key = "reform_stage"
 value = 0.0
 
-[sub_resource type="Resource" id="Expr_funds"]
-script = ExtResource("3_expr")
-type = 23
-keys = Array[String](["budget", "reserve"])
-value = 50.0
-
-[sub_resource type="Resource" id="Expr_collective"]
-script = ExtResource("3_expr")
-type = 18
-children = Array[ExtResource("3_expr")]([SubResource("Expr_stage_zero"), SubResource("Expr_funds")])
-
 [sub_resource type="Resource" id="Effect_custom"]
 script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Leave the communes as they are"
+text = "维持大寨模式的普及，但不额外拨款"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The communes remained intact, but weak agricultural output continued to depress living standards and public confidence."
+result_text = "我们决定不节外生枝，将资金投入到其他更要紧的地方去，继续缓慢而持续地推行大寨模式和农业机械化，虽然这引起了一些渴望得到属于自己的土地的农民和党内改革派的不满，但我们希望一切顺利。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Introduce the household responsibility system"
+text = "引入家庭联产承包合同"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Communes were divided into family farms with fixed state procurement obligations, raising food output and strengthening reformers."
+result_text = "我们最终决定解散人民公社，并将土地承包给各个独立的家庭，而这些承包者需要为我们提供按指定价格售卖的商品粮。重新拿到自己的土地（虽然并没有所有权）使得农民又对耕作产生了热情，这调动了农民们的积极性，我们也可以更好的稳定农村。当然，有一部分党员表示了不满，认为这是“重回资本主义道路的一大步”。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Introduce private farming"
-disabled_text = "The current political line will not surrender agriculture to private speculators"
+text = "引进私营农场"
+disabled_text = "我们不会把农业交给私人投机者！"
 enable_condition = SubResource("Expr_private")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Private landholding and agricultural credit raised productivity, but also speculation, corruption and party resistance."
+result_text = "在政治局和中央委员会长期的论战之后，我们终于克服了保守派和温和派的抵触心理，并宣布解散人民公社，全国耕地重新分配给各个家庭，且各个家庭拥有完全的产权。中国农业银行已经准备好了为农民提供贷款来让农民购买农机和化肥的准备，农民除了要将定量的商品粮卖给国家以外，可以自由处置剩下的粮食。这可以显著的提高我国的市场化水平，财政部也开始商定对这些新自耕农的税率了，但是很多人对此表示不满，一些人也开始暗中购买耕地了，人民正在期待我们的下一步改革。"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "Reorganize the communes into collective farms"
-disabled_text = "Requires the old course and at least 50 combined budget and reserves"
-enable_condition = SubResource("Expr_collective")
+text = "增加资金投入，加速大寨模式的普及和农业机械化工业化"
+disabled_text = "我们需要把钱浪费在这种地方吗？"
+enable_condition = SubResource("Expr_stage_zero")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "State-guided collective farms and machine-tractor stations overcame part of agriculture's technical backwardness at high political and financial cost."
+result_text = "我们最后决定拨款加速公社的集体化和机械化，党中央起草了一份新的人民公社条例，各地也对人民公社进行了重新改造：现在我们国家的农业由许多国家控制下的公社组成，我们会要求各个人民公社按照义务收购合同交售保质保量的粮食，蔬果和肉类，至于那些超产的部分我们则开放了国家管理下的集市来让他们自由交易，同时各大拖拉机厂和化肥厂也迎来了新一轮的大宗订单，这些是我们为了实现农业机械化所付出的努力，而它在未来肯定是硕果累累的，就是当下的财政支出有些大......"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "agricultural_reform"
 source_event_number = 53
 trigger_priority = 530
-title = "Agricultural reform"
-description = "The people's communes perform poorly. The leadership must choose between household contracts, private farms, collective farms, or no structural change."
+title = "农业改革"
+description = "目前，中国实行的人民公社制度确立于50年代后期。人民公社制度的确立经历多重波折，最终逐渐探索出了“大寨模式”，随后全国以这一模式为样板，发起了学大寨运动。1975年的全国农业学大寨会议曾提出要在全国建设“大寨县”（即实行大寨模式的县），陈永贵曾指出“大寨县”的标准：粮食亩产实现八百斤；科学种田；基本实现农业机械化，为农业现代化打下基础；干部参与劳动，落实“一二三”（即干部每年参加劳动的指标：县委书记100天，公社党委书记200天，大队支部书记300天）。但是，毛主席的去世使得党内对农业路线的争议再次浮出水面。极左派和保守派都要求继续实行毛主席定下的大寨路线，但他们对“大寨县”普及速度仍有争议，极左派支持大搞社会主义的农业机械化和现代化并进行农村工业化，保守派则认为大寨模式的普及不应该停止，但更多的资金应该用在其他地方（如现代化上）；另外，温和派和改革派想要再次实施类似刘少奇等人支持的“三自一包”的模式；而另一部分步子迈地更大的改革派甚至提议引入一套完善的私人农业体系。我们需要决定我们用以农业发展的资金最终流向哪部分人。主席同志，这是一场新的路线斗争，中国农业未来的命运在你手里！"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

@@ -17,65 +17,66 @@ type = 10
 key = "econ"
 target = "1"
 
-[sub_resource type="Resource" id="Expr_budget"]
-script = ExtResource("3_expr")
-type = 0
-key = "budget"
-value = 50.0
-
-[sub_resource type="Resource" id="Expr_reserve"]
-script = ExtResource("3_expr")
-type = 0
-key = "reserve"
-value = 50.0
-
-[sub_resource type="Resource" id="Expr_money"]
-script = ExtResource("3_expr")
-type = 19
-children = Array[ExtResource("3_expr")]([SubResource("Expr_budget"), SubResource("Expr_reserve")])
-
-[sub_resource type="Resource" id="Expr_army"]
+[sub_resource type="Resource" id="Expr_army_300"]
 script = ExtResource("3_expr")
 type = 0
 key = "army"
-value = 100.0
+value = 300.0
 
-[sub_resource type="Resource" id="Expr_agents"]
+[sub_resource type="Resource" id="Expr_agents_100"]
 script = ExtResource("3_expr")
 type = 0
 key = "agents"
+value = 100.0
+
+[sub_resource type="Resource" id="Expr_money_50"]
+script = ExtResource("3_expr")
+type = 23
 value = 50.0
+keys = Array[String](["budget", "reserve"])
+
+[sub_resource type="Resource" id="Expr_china_ovd"]
+script = ExtResource("3_expr")
+type = 10
+key = "ovd"
+target = "1"
+
+[sub_resource type="Resource" id="Expr_not_china_ovd"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_china_ovd")])
 
 [sub_resource type="Resource" id="Expr_ready"]
 script = ExtResource("3_expr")
 type = 18
-children = Array[ExtResource("3_expr")]([SubResource("Expr_money"), SubResource("Expr_army"), SubResource("Expr_agents")])
+children = Array[ExtResource("3_expr")]([SubResource("Expr_army_300"), SubResource("Expr_agents_100"), SubResource("Expr_money_50"), SubResource("Expr_not_china_ovd")])
 
 [sub_resource type="Resource" id="Effect_custom"]
 script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Create a collective security alliance"
-disabled_text = "Requires 50 budget or reserves, 100 army strength, and 50 agents"
+text = "建立军事联盟（需要5百万元预算，30军事实力，10特工网络）"
+disabled_text = "我们还没有准备好（需要5百万元预算，30军事实力，10特工网络）"
 enable_condition = SubResource("Expr_ready")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China and every pro-Chinese state entered a common military bloc independent of both NATO and the Warsaw Pact."
+result_text = "（结果由 event_053_062_reform_and_alliances.gd 动态生成）"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Remain outside military alliances"
+text = "什么都不做"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China kept its economic organization outside any military bloc."
+result_text = "中国继续脱离军事同盟。地球上的和平——和平高于一切。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "military_alliance"
 source_event_number = 60
 trigger_priority = 600
-title = "Military alliance"
-description = "Members of China's economic organization now ask for collective defense against the two established military blocs."
+title = "军事同盟"
+description = "在愉快地创建了我们自己的经济联盟后，一些党员提议将所有对我们友好的国家组成一个军事同盟以巩固我们的胜利果实，并在欧洲的北约和苏联的华约的军事基地的包围中占据一席之地。但追求实用主义的党员建议搁置这个提议，称我们考虑欠妥，这激进的行为会导致新的一轮有第三方力量参加的冷战。但是，我国现在比以往更为强大，额外的盟友也不会有什么影响，对吗？"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_china_econ")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])

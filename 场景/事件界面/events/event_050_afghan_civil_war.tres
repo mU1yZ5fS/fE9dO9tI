@@ -33,44 +33,45 @@ script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Stay out"
+text = "谁都不管，这可不关我们的事"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China stayed out while the Soviet-backed DRA fought the Mujahideen."
+result_text = "我们决定不参与阿富汗事务。与此同时，在这个国家，内战正如火如荼般的进行着，没有人能预料到战争的结果。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Aid the DRA in exchange for including Maoists in the PDPA alliance"
-disabled_text = "Requires reconciliation with the Soviet Union"
+text = "援助阿富汗民主共和国，交换条件是将毛派政党纳入与人民民主党的联盟"
+disabled_text = "苏联不允许我们进行如此深入的介入"
 enable_condition = SubResource("Expr_relres")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "The DRA ended its persecution of Maoists and accepted Chinese aid against the insurgency."
+result_text = "由于我们与苏联的关系，我们能够与阿富汗民主共和国谈判。为了换取我们的支持，他们停止了对前反对派毛派的迫害，并与他们组成了一个对抗伊斯兰主义和美帝国主义的进步力量联盟，只要毛派自己放下武器（他们不情愿，但同意了）。这是我们的外交胜利！与此同时，在这个国家，内战正如火如荼般的进行着，没有人能预料到战争的结果。"
 
 [sub_resource type="Resource" id="Option_2"]
 script = ExtResource("1_option")
-text = "Aid the DRA"
+text = "援助阿富汗民主共和国"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China supported the DRA despite domestic objections, strengthening its side in the civil war."
+result_text = "（结果由 event_048_052_063_afghanistan.gd 动态生成）"
 
 [sub_resource type="Resource" id="Option_3"]
 script = ExtResource("1_option")
-text = "Aid the Maoist rebels"
+text = "援助毛主义起义者"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "China backed a small Maoist insurgency against both the DRA and Islamist forces."
+result_text = "由于担心苏联势力的扩大，我们决定支持阿富汗的毛派组织同民主共和国和伊斯兰主义者进行武装斗争。当然，无论是苏联还是美国都不喜欢这样，而且阿富汗毛主义者并不代表着一支特别强大的力量，所以我们的许多力量将被派去支持他们……与此同时，在这个国家，内战正如火如荼般的进行着，没有人能预料到战争的结果。"
 
 [sub_resource type="Resource" id="Option_4"]
 script = ExtResource("1_option")
-text = "Sell weapons to the armed opposition on an American contract"
+text = "向武装反对派出售枪支，美国人愿意为之付钱"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "American money financed Chinese arms shipments to the Mujahideen through the Afghan frontier."
+result_text = "后来，美中以“发展经贸合作”为名，出人意料地迅速举行峰会，但实际目的完全不同。在秘密谈判中，美国代表团向中国提供了一份购买武器的合同，并将这些武器越过中国边境运送到邻国阿富汗，以支持圣战者反对苏联侵略，并对阿富汗民主共和国伪政权造成强力打击。中方接受了美方的建议，第一批武器计划在未来三个月内部署，但我们只会从中受益，我们的成本将由我们的新战略盟友承担。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "afghan_civil_war"
 source_event_number = 50
 trigger_priority = 500
-title = "Cursed mountain frontier"
-description = "The Soviet-backed Afghan government now faces a widening civil war. China must choose whether to aid the DRA, Maoists, or the American-supported opposition."
+title = "穷山恶水"
+description = "在最近导致阿富汗局势恶化的事件之后，美国支持的伊斯兰主义者和其他反动派的长期起义进入了白热化阶段。根据最近通过的计划，苏联应民主共和国政府的要求向阿富汗增兵，这已经在西方引起了一波愤怒。尽管民众最初与苏联军队的接触相当友好，但对他们的武装分子袭击事件却越来越频繁。与此同时，最初只包括保护重要目标的有限分遣队的任务正在逐步扩大，而且似乎最终将充分参与敌对行动。阿富汗战争已经开始，我们需要决定我们将支持谁。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_event_49"), SubResource("Expr_afghan_socialist")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

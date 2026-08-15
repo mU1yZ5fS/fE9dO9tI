@@ -16,18 +16,19 @@ script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "The revolution has reached its endgame"
+text = "——说来听听吧！"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Iran's strongest political force determined the outcome of the revolution."
+result_text = "（结果由 event_053_062_reform_and_alliances.gd 动态生成）"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "iranian_revolution_endgame"
 source_event_number = 58
 trigger_priority = 580
-title = "Iranian Revolution: endgame"
-description = "The Iranian crisis has reached its conclusion. The left, Shah, democratic opposition and Islamists now test the strength accumulated during the revolution."
+title = "伊朗革命：终局"
+description = "过去一年内，伊朗经历了一番大变故。各路反对派纷纷进军勤王，一次又一次的罢工冲蚀着沙阿最后的一丝威严。而大使馆的官员已经拍来了新的电报。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0")])

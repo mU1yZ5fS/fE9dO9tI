@@ -13,6 +13,7 @@ key = "1978.11"
 
 [sub_resource type="Resource" id="Expr_agents_30"]
 script = ExtResource("3_expr")
+type = 0
 key = "agents"
 value = 30.0
 
@@ -33,26 +34,28 @@ script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
+
 [sub_resource type="Resource" id="Option_0"]
 script = ExtResource("1_option")
-text = "Do not interfere"
+text = "不干涉"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Vietnam joined the CMEA, deepening its alignment with the Soviet Union."
+result_text = "1978年11月，越南加入经济互助委员会，导致中越两国关系进一步恶化。反越情绪已经在中国共产党内活跃成熟。希望这不会导致大规模冲突。"
 
 [sub_resource type="Resource" id="Option_1"]
 script = ExtResource("1_option")
-text = "Stop the accession process by every means available"
-disabled_text = "Requires 30 agents and a socialist Vietnam"
+text = "尽全力阻止整个进程"
+disabled_text = "我们管不着啊"
 enable_condition = SubResource("Expr_stop")
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
-result_text = "Our intervention mobilized advocates of a balanced course and postponed Vietnamese accession indefinitely."
+result_text = "我们的干预，和对越南支持温和路线的人的动员最终迫使黎笋和越共领导层无限期推迟加入经互会的计划，遵循更为平衡的外交政策。苏联当然不开心，但这至少帮助我们暂时避免越南和苏联进一步加深友好关系。"
 
 [resource]
 script = ExtResource("4_event")
 event_id = "vietnam_cmea"
 source_event_number = 43
 trigger_priority = 430
-title = "Expansion of the CMEA"
-description = "Vietnam plans to join the Soviet-led Council for Mutual Economic Assistance, marking a decisive step away from China."
+title = "经互会的扩张"
+description = "长期以来，越南一直试图在我们和苏联之间取得平衡，因为尽管我们与苏联存在分歧，但我们的志愿者们在印度支那战争中与社会主义越南并肩作战。但随着战争结束和越南统一，越南逐渐变得越来越亲苏联，越来越疏远我们。|黎笋1977年访问莫斯科后，越南与苏联又开始了一次友好关系，他日复一日地希望加入经互会。然而，该国部分领导人反对与苏联建立如此热烈的友好关系，因为越南没有特别的威胁，特别是在柬埔寨的波尔布特政权被推翻后。这是我们干预和制止苏联霸权扩散的机会。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])
+display_script = ExtResource("5_custom")
