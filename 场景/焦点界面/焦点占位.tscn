@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://f0cpd2xk9q73"]
+
+[node name="焦点占位" type="Control" unique_id=810001021]
+custom_minimum_size = Vector2(210, 130)
+offset_right = 210.0
+offset_bottom = 130.0
+mouse_filter = 2

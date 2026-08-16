@@ -72,6 +72,26 @@ offset_bottom = 130.0
 theme_override_font_sizes/font_size = 24
 text = "苏联"
 
+[node name="焦点滚动" type="ScrollContainer" parent="." unique_id=801328008]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -460.0
+offset_top = 150.0
+offset_right = 460.0
+offset_bottom = 1040.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="焦点网格" type="GridContainer" parent="焦点滚动" unique_id=801328009]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
 [connection signal="pressed" from="返回" to="." method="_on_返回_pressed"]
 [connection signal="pressed" from="美国" to="." method="_on_美国_pressed"]
 [connection signal="pressed" from="苏联" to="." method="_on_苏联_pressed"]

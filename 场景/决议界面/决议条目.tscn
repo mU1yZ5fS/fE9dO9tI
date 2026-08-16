@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3ntr2xk9q71"]
+
+[ext_resource type="Script" path="res://场景/决议界面/决议条目.gd" id="1_entry"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="2_font"]
+
+[node name="决议条目" type="Button" unique_id=810001001]
+custom_minimum_size = Vector2(920, 96)
+offset_right = 920.0
+offset_bottom = 96.0
+size_flags_horizontal = 3
+script = ExtResource("1_entry")
+
+[node name="标题" type="Label" parent="." unique_id=810001002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 8.0
+offset_right = -18.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+text = "决议标题"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+mouse_filter = 2
