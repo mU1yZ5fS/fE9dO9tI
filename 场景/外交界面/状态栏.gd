@@ -39,7 +39,7 @@ func _on_tick(_date: GameDate) -> void:
 
 
 func _refresh() -> void:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null:
 		return
 	# 刷新前强制从数值表同步显示视图，避免跨场景后读到旧缓存
@@ -69,7 +69,9 @@ func _label(label_name: String, text: String) -> void:
 
 func _connect_nav(btn_name: String, scene_uid: String) -> void:
 	var btn := find_child(btn_name, true, false)
-	if btn is Button and not btn.pressed.is_connected(_goto):
+	# 既有导航是 Button，本批新增的“决议/焦点”是 TextureButton——
+	# 两者都是 BaseButton 子类（gdd_0760_TextureButton.md:3），统一按 BaseButton 连接。
+	if btn is BaseButton and not btn.pressed.is_connected(_goto):
 		btn.pressed.connect(_goto.bind(scene_uid))
 
 
