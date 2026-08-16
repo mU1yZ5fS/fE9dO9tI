@@ -84,9 +84,12 @@ func _make_entry(def: DecisionDef) -> Button:
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(920, 96)
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	b.tooltip_text = def.desc
 	var done := DecisionSystem.is_completed(def.id)
-	var ready := not done and def.condition.is_valid() and def.condition.call()
+	var ready: bool = not done and def.condition.is_valid() and def.condition.call()
+	var state := "已完成" if done else ("条件未满足" if not ready else "可执行")
+	# 悬浮介绍：标题+描述+状态，多行自动换行（复用 BbcTooltip，460px 宽按 26 字/行折行）
+	b.tooltip_text = "%s\n\n%s\n\n【%s】" % [def.title, def.desc, state]
+	BbcTooltip.attach(b)
 	if done:
 		b.text = "%s（已完成）" % def.title
 		b.disabled = true

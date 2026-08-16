@@ -76,7 +76,7 @@ func _rebuild() -> void:
 	if GameManager == null or GameManager.world == null:
 		return
 	FocusSystem.repaint_blocked()
-	var ws := GameManager.world
+	var ws: WorldState = GameManager.world
 	if _view_country != 1:
 		if status != null:
 			status.text = "美国没有焦点树（原版 active_tree 未设置，只有苏联树）"
@@ -115,7 +115,18 @@ func _make_cell(foc: FocusDef, global_num: int) -> Button:
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(210, 130)
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	b.tooltip_text = foc.desc if foc.desc != "" else foc.title
+	# 悬浮介绍：标题+描述+研究状态，多行自动换行（复用 BbcTooltip）
+	var state: String
+	if foc.blocked:
+		state = "已封锁"
+	elif foc.overtime >= foc.time:
+		state = "已完成（%d/%d）" % [foc.overtime, foc.time]
+	elif foc.overtime > 0:
+		state = "进行中（%d/%d）" % [foc.overtime, foc.time]
+	else:
+		state = "未开始（%d/%d）" % [foc.overtime, foc.time]
+	b.tooltip_text = "%s\n\n%s\n\n【%s】" % [foc.title, foc.desc, state]
+	BbcTooltip.attach(b)
 	b.text = foc.title
 	# 原版 FocusButtoNScript.ChangeIcon：Resources.Load($"focusscene_sp\\{country}_{num}")
 	# 图标仅 1_0 与 1_10..1_15 存在（其余编号原版即加载失败 → 无图标，照旧）。
