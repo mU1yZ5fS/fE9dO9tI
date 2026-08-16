@@ -30,48 +30,42 @@ static func monthly_politics(d: Array[int], w: WorldState) -> void:
 		if is_vacant_politician(p):
 			continue
 
-		# POL-01 调查：满 7 结案（原版只清标志；副作用在开调查时已扣）
-		if p.is_under_investigation:
-			if p.investigator_index < 0:
-				p.investigator_index = 0
+		# POL-01 调查/监视推进 — 严格对齐 TimeScript.cs:2916-2938：
+		# 原版先判 sled<7 则 +1；>=7 的下一次月结才清零结案（即显示 0..7 共 8 个月历）。
+		if p.is_under_investigation and p.investigator_index < 7:
 			p.investigator_index += 1
-			if p.investigator_index >= 7:
-				p.investigator_index = 0
-				p.is_under_investigation = false
+		elif p.investigator_index >= 7:
+			p.investigator_index = 0
+			p.is_under_investigation = false
 
-		# POL-01 监视：满 7 解除
-		if p.is_under_surveillance:
+		if p.is_under_surveillance and p.days_surveillance < 7:
 			p.days_surveillance += 1
-			if p.days_surveillance >= 7:
-				p.days_surveillance = 0
-				p.is_under_surveillance = false
+		elif p.days_surveillance >= 7:
+			p.days_surveillance = 0
+			p.is_under_surveillance = false
 
-		# POL-02 自动支持（TimeScript ~2194）
+		# POL-02 自动支持 — 严格对齐 TimeScript.cs:2940-2956：
+		# 原版不检查资源，直接扣费；power += power/10 不带 abs。
 		if p.auto_support == 10:
-			if d[W.I_BUDGET] < 1 or d[W.I_AGENTS] < 5:
-				p.auto_support = 0
-			else:
-				d[W.I_BUDGET] -= 1
-				d[W.I_PARTY_SUPPORT] -= 20
-				d[W.I_AGENTS] -= 5
-				p.loyalty += 50
-				p.power += (1976 - w.date.year) * 5
-				@warning_ignore("integer_division")
-				p.power += absi(p.power / 10)
+			d[W.I_BUDGET] -= 1
+			d[W.I_PARTY_SUPPORT] -= 20
+			d[W.I_AGENTS] -= 5
+			p.loyalty += 50
+			p.power += (1976 - w.date.year) * 5
+			@warning_ignore("integer_division")
+			p.power += p.power / 10
 
-		# POL-02 自动打压（TimeScript ~2207）
+		# POL-02 自动打压 — 严格对齐 TimeScript.cs:2957-2965：
+		# 原版同样不检查资源；power>=10 时 power -= power/10（不带 abs）。
 		if p.auto_hound == 10:
-			if d[W.I_BUDGET] < 1 or d[W.I_AGENTS] < 20:
-				p.auto_hound = 0
-			else:
-				d[W.I_BUDGET] -= 1
-				d[W.I_PARTY_SUPPORT] -= 20
-				d[W.I_AGENTS] -= 20
-				p.loyalty -= 250
-				p.power -= (1976 - w.date.year) * 5
-				if p.power >= 10:
-					@warning_ignore("integer_division")
-					p.power -= absi(p.power / 10)
+			d[W.I_BUDGET] -= 1
+			d[W.I_PARTY_SUPPORT] -= 20
+			d[W.I_AGENTS] -= 20
+			p.loyalty -= 250
+			p.power -= (1976 - w.date.year) * 5
+			if p.power >= 10:
+				@warning_ignore("integer_division")
+				p.power -= p.power / 10
 
 		apply_monthly_position_power(w, i, p)
 		# ECO-POL-06：贪腐特质(18) 在职则抬腐败
@@ -136,28 +130,29 @@ static func annual_politics(d: Array[int], w: WorldState) -> void:
 	plot_politics(d, w)
 
 
-## POL-06 简化：对高 power 目标，若低忠诚他人 power 和过高则标记阴谋并可能削权/撤职/击杀
+## POL-06 阴谋 — 逐字对齐 TimeScript.PlotPolitics（TimeScript.cs:281-360）。
+## 谓词、抵抗、随机三连、击杀/撤职保护条件全部照抄；
+## 随机改走 WorldState 种子 RNG（三次独立抽取，存档续流可复现，等价替代 Unity Random）。
 static func plot_politics(d: Array[int], w: WorldState) -> void:
 	if not GameManager.is_mao_dead():
 		return
-	@warning_ignore("integer_division")
-	var to_kill: Array[int] = []
+	var rng := w.ensure_rng()
 	for i in w.politicians.size():
 		var target: PoliticianData = w.politicians[i]
 		if is_vacant_politician(target):
 			continue
-		if target.power <= 250 and target.trait_special != 16:
+		# 原版 TimeScript.cs:286：仅 power > 250 || gamerules[4]==1 进入（gamerules 未移植→0）
+		if target.power <= 250 and _game_rule(w, 4) != 1:
 			continue
 		var plot_power := 0
+		# 原版 TimeScript.cs:294 谓词：按对目标的关系矩阵（loyality_to_other[i]）
 		for j in w.politicians.size():
-			if j == i:
-				continue
 			var pol: PoliticianData = w.politicians[j]
 			if is_vacant_politician(pol) or pol.is_under_investigation:
 				continue
 			if pol.trait_special == 17 or pol.trait_special == 19:
 				continue
-			var rel: int = 500
+			var rel := 0
 			if i < pol.loyalty_matrix.size():
 				rel = pol.loyalty_matrix[i]
 			var joins := false
@@ -169,44 +164,75 @@ static func plot_politics(d: Array[int], w: WorldState) -> void:
 				joins = true
 			if joins:
 				plot_power += pol.power
+
 		var resist := 3.0
 		if target.trait_special == 14 or target.trait_special == 13:
 			resist = 5.0
 		elif target.trait_special == 12 or target.trait_alignment == 6:
 			resist = 2.0
-		for pos_id in mini(3, w.politics_positions.size()):
-			if w.politics_positions[pos_id] == i:
-				resist += 2.0 if pos_id == 0 else 1.0
+		if w.politics_positions[0] == i:
+			resist += 2.0
+		if w.politics_positions[1] == i:
+			resist += 1.0
+		if w.politics_positions[2] == i:
+			resist += 1.0
+
 		if float(plot_power) > resist * float(target.power):
 			target.is_conspiracy = true
-			var seed_v: int = abs(hash("%d-%d-%d-%d" % [w.date.year, w.date.month, i, plot_power]))
-			var r1: int = seed_v % 11
+			# 原版 TimeScript.cs:329：Random.Range(0,11)>data[57]/100 && ... 三连
+			var r1 := rng.randf() * 11.0
+			var r2 := rng.randf() * 22.0
+			var r3 := rng.randf() * 44.0
 			@warning_ignore("integer_division")
-			var r2: int = (seed_v / 11) % 22
-			@warning_ignore("integer_division")
-			var r3: int = (seed_v / 242) % 44
-			var man: int = d[W.I_MANPOWER]
-			@warning_ignore("integer_division")
-			if r1 > man / 100 and r2 > man / 50 and r3 > man / 25:
-				if float(plot_power) > resist * 4.0 * float(target.power):
-					var is_central := false
-					for pos_id2 in mini(3, w.politics_positions.size()):
-						if w.politics_positions[pos_id2] == i:
-							is_central = true
-							w.politics_positions[pos_id2] = -1
-					if is_central:
-						target.power = 100
-						target.you_fall = true
+			if r1 > d[W.I_MANPOWER] / 100 and r2 > d[W.I_MANPOWER] / 50 and r3 > d[W.I_MANPOWER] / 25:
+				if float(plot_power) > resist * 4.0 * float(target.power) \
+						and _plot_kill_allowed(w, i):
+					# 原版 TimeScript.cs:336-353：非中央职 KillPerson；中央职清职 power=100
+					if w.politics_positions[0] != i and w.politics_positions[1] != i \
+							and w.politics_positions[2] != i:
+						kill_politician(i)
 					else:
-						to_kill.append(i)
+						if w.politics_positions[0] == i:
+							w.politics_positions[0] = -1
+						if w.politics_positions[1] == i:
+							w.politics_positions[1] = -1
+						if w.politics_positions[2] == i:
+							w.politics_positions[2] = -1
+						target.power = 100
+						# 注意：原版此分支不置 you_fall（Godot 旧实现误置，已修正）
 				else:
+					# 原版 TimeScript.cs:356：power -= power/10，不置 you_fall
 					@warning_ignore("integer_division")
-					target.power -= absi(target.power / 10)
-					target.you_fall = true
+					target.power -= target.power / 10
 		else:
 			target.is_conspiracy = false
-	for idx in to_kill:
-		kill_politician(idx)
+
+
+## 阴谋击杀的历史保护条件 — 逐字对齐 TimeScript.cs:331-335（Button_Pol_Script num2 同款）。
+static func _plot_kill_allowed(w: WorldState, i: int) -> bool:
+	var d := w.数值表
+	var ev25 := w.completed_event_ids.has("gang_of_four")
+	var ev26 := w.completed_event_ids.has("weak_alliance")
+	var ev80 := w.completed_event_ids.has("event_80")  # 原版 event_done[80]，Godot 未移植 → 恒 false
+	var mod3: bool = GameManager._mod_active(w, 3)
+	var year_ok := d[W.I_YEAR] >= 1978
+	var basic := i > 5 and i != 7 and (i < 11 or i > 15) and i != 17
+	var e25a := ev25 and d[W.I_GANG_OF_FOUR_PATH] != 3 and (i < 12 or i > 15)
+	var e26a := ev26 and ((w.leader != null and w.leader.name_first != 0) or i == 1)
+	var y1 := year_ok and not ev80 and mod3 and i > 4
+	var y2 := year_ok and (ev80 or not mod3)
+	var e25b := ev25 and d[W.I_GANG_OF_FOUR_PATH] == 3 and (i < 1 or i > 4)
+	return (basic or e25a or e26a or y1 or y2 or e25b) and (i > 4 or not mod3)
+
+
+## 未移植的 gamerules 读取口（原版 ChoiceSystemController.cs:13-20,249-250）。
+static func _game_rule(w: WorldState, idx: int) -> int:
+	var v: Variant = w.global_flags.get("gamerule_%d" % idx, 0)
+	if v is int:
+		return v
+	if v is float:
+		return int(v)
+	return 0
 
 
 static func sync_in_power_flags(w: WorldState) -> void:
@@ -229,7 +255,7 @@ static func sync_in_power_flags(w: WorldState) -> void:
 ## POL-08：监视/再教育「发现·成功率」显示用（GameState.ChangeOfKilling）
 ## 返回 0.0~1.0 近似概率
 static func change_of_killing(politic_index: int) -> float:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null or politic_index < 0 or politic_index >= w.politicians.size():
 		return 0.0
 	var d := w.数值表
@@ -270,7 +296,7 @@ static func change_of_killing(politic_index: int) -> float:
 
 
 static func sum_loyalty_avg() -> int:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null or w.politicians.is_empty():
 		return 0
 	var s := 0
@@ -287,7 +313,9 @@ static func sum_loyalty_avg() -> int:
 
 
 static func apply_monthly_position_power(w: WorldState, pol_index: int, p: PoliticianData) -> void:
-	# TimeScript 2223–2237：地方 +10，首都 +15，总理/军委/外交 +20
+	# TimeScript.cs:2972-3010：地方 +10，首都 +15，总理/军委/外交 +20；
+	# 无职按 traits[2]：18 +4、19 -20、16 +1+腐败/50、其它 +1；
+	# 最后 1978 年起每年 power += (1976-year)/2（C# int 除法向零）。
 	@warning_ignore("integer_division")
 	var bonus := 0
 	for pos_id in w.politics_positions.size():
@@ -308,6 +336,11 @@ static func apply_monthly_position_power(w: WorldState, pol_index: int, p: Polit
 	elif p.trait_special == 16:
 		@warning_ignore("integer_division")
 		p.power += 1 + w.数值表[W.I_CORRUPTION] / 50
+	else:
+		p.power += 1
+	if w.数值表[W.I_YEAR] > 1977:
+		@warning_ignore("integer_division")
+		p.power += (1976 - w.数值表[W.I_YEAR]) / 2
 
 
 # ============================================================================
@@ -316,7 +349,7 @@ static func apply_monthly_position_power(w: WorldState, pol_index: int, p: Polit
 
 ## 死亡/再教育：清职与派系领袖，同槽补员（KillPerson → BalancePolitic）
 static func kill_politician(pol_index: int) -> void:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null or pol_index < 0 or pol_index >= w.politicians.size():
 		return
 	# POL-14：毛在世保护 politics[0]（data[38]!=100 时不可杀）
@@ -375,7 +408,7 @@ static func kill_politician(pol_index: int) -> void:
 ## position_id: 0总理 1军委 2外交 3首都 4北方 5西方 6南方 7东方
 ## 对齐 Button_Pol_Script num7/5/6/8-12（注意原版按钮编号与 dolshnost 索引映射）
 static func assign_politician_position(pol_index: int, position_id: int) -> bool:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null or pol_index < 0 or pol_index >= w.politicians.size():
 		return false
 	if position_id < 0 or position_id >= w.politics_positions.size():
@@ -401,21 +434,21 @@ static func assign_politician_position(pol_index: int, position_id: int) -> bool
 			w.politics_positions[other_central] = -1
 
 	# 前任惩罚表：prev_loyalty_delta, prev_matrix_delta, new_loyalty, wanted_bonus
-	# wanted 命中时 prev 额外 -400 loyalty 与 matrix（原版）
+	# prev_matrix_delta < 0 表示原版不扣关系矩阵（地方职 num9-12，Button_Pol_Script.cs:865-944）
 	var prev_loy := 250
-	var prev_mat := 50
+	var prev_mat := -1
 	var new_loy := 250
 	match position_id:
-		0:  # 总理 num7
+		0:  # 总理 num7（Button_Pol_Script.cs:823-843）
 			prev_loy = 800; prev_mat = 400; new_loy = 400
-		1:  # 军委 num5
+		1:  # 军委 num5（Button_Pol_Script.cs:773-797）
 			prev_loy = 700; prev_mat = 300; new_loy = 350
-		2:  # 外交 num6
+		2:  # 外交 num6（Button_Pol_Script.cs:798-822）
 			prev_loy = 600; prev_mat = 250; new_loy = 350
-		3:  # 首都 num8
+		3:  # 首都 num8（Button_Pol_Script.cs:844-864）
 			prev_loy = 250; prev_mat = 50; new_loy = 300
-		_:  # 地方 4-7
-			prev_loy = 150; prev_mat = 0; new_loy = 250
+		_:  # 地方 4-7（Button_Pol_Script.cs:865-944：只扣 loyalty，不动矩阵）
+			prev_loy = 150; prev_mat = -1; new_loy = 250
 
 	var prev_holder: int = w.politics_positions[position_id]
 	if prev_holder >= 0 and prev_holder < w.politicians.size() and prev_holder != pol_index:
@@ -423,10 +456,9 @@ static func assign_politician_position(pol_index: int, position_id: int) -> bool
 		if not is_vacant_politician(prev_pol):
 			var extra := 400 if prev_pol.wanted_position == position_id else 0
 			prev_pol.loyalty -= prev_loy + extra
-			if pol_index < prev_pol.loyalty_matrix.size():
-				prev_pol.loyalty_matrix[pol_index] = maxi(
-					0, prev_pol.loyalty_matrix[pol_index] - (prev_mat + extra)
-				)
+			# 原版矩阵无下限钳制；地方职不扣矩阵
+			if prev_mat >= 0 and pol_index < prev_pol.loyalty_matrix.size():
+				prev_pol.loyalty_matrix[pol_index] -= prev_mat + extra
 
 	w.politics_positions[position_id] = pol_index
 	pol.loyalty += new_loy
@@ -450,15 +482,34 @@ static func assign_politician_position(pol_index: int, position_id: int) -> bool
 	return true
 
 
-## 指定派系负责人后重算关系（FAC-07 半）
+## 派系领袖槽判定 — 改版口径（用户确认）：
+## 优先 PoliticianData.faction 显式 Party 槽（改版新增字段，与派系界面/事件脚本一致）；
+## faction 未显式指定时回退原版 traits[0] 映射（Button_Pol_Script.cs:947-967）：
+## 0→槽0；20→槽1；1→槽2；2→槽3；3→槽4。
+static func trait_faction_slot(p: PoliticianData) -> int:
+	if p == null:
+		return -1
+	if p.faction >= 0 and p.faction <= 4:
+		return p.faction
+	var t0 := p.trait_personality
+	if t0 <= 0:
+		return 0
+	if t0 == 20:
+		return 1
+	if t0 >= 1 and t0 <= 4:
+		return t0 + 1
+	return -1
+
+
+## 指定派系负责人（原版 num14，Button_Pol_Script.cs:945-976；槽位判定按改版 faction 口径）
 static func set_faction_leader_politician(pol_index: int) -> bool:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null or pol_index < 0 or pol_index >= w.politicians.size():
 		return false
 	var pol: PoliticianData = w.politicians[pol_index]
 	if is_vacant_politician(pol):
 		return false
-	var faction_id: int = pol.party_index()
+	var faction_id: int = trait_faction_slot(pol)
 	if faction_id < 0 or faction_id >= w.factions.size():
 		return false
 	var prev: int = w.factions[faction_id].leader_index
@@ -468,12 +519,10 @@ static func set_faction_leader_politician(pol_index: int) -> bool:
 		if pol_index < prev_pol.loyalty_matrix.size():
 			prev_pol.loyalty_matrix[pol_index] -= 500
 	w.factions[faction_id].leader_index = pol_index
-	# 同派小惩罚
+	# 原版 foreach 不排除本人：同 traits[0] 全员 -100，本人随后 +400（净 +300）
 	for i in w.politicians.size():
-		if i == pol_index:
-			continue
 		var other: PoliticianData = w.politicians[i]
-		if other != null and other.party_index() == faction_id:
+		if other != null and other.trait_personality == pol.trait_personality:
 			other.loyalty -= 100
 	pol.loyalty += 400
 	WorldFactory._calc_rel(w, pol_index)
@@ -487,9 +536,10 @@ static func set_faction_leader_politician(pol_index: int) -> bool:
 	return true
 
 
-## 空缺派系领袖：按 Party 槽从在世政客中选 power 最高者（POL-04）
+## 空缺派系领袖 — 对齐 TimeScript.cs:1051-1111 的「每槽只从本派选 power 最高者」；
+## 派系归属用改版 faction 字段（原版按 traits[0]，见 trait_faction_slot 说明）。
 static func fill_vacant_faction_leaders() -> void:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null:
 		return
 	for fi in w.factions.size():
@@ -505,22 +555,14 @@ static func fill_vacant_faction_leaders() -> void:
 		if f.leader_index >= 0:
 			continue
 		var best_idx := -1
-		var best_power := -1
-		var fallback_idx := -1
-		var fallback_power := -1
+		var best_power := 0
 		for i in w.politicians.size():
 			var p: PoliticianData = w.politicians[i]
 			if is_vacant_politician(p):
 				continue
-			var party: int = p.party_index()
-			if party == fi and p.power > best_power:
+			if trait_faction_slot(p) == fi and p.power > best_power:
 				best_power = p.power
 				best_idx = i
-			# 保守派空缺：允许 traits 映射到 0/1 的人作次选（简化 TimeScript 957）
-			if fi == 1 and (party == 0 or party == 1) and p.power > fallback_power:
-				fallback_power = p.power
-				fallback_idx = i
 		if best_idx >= 0:
 			f.leader_index = best_idx
-		elif fallback_idx >= 0:
-			f.leader_index = fallback_idx
+		# 原版找不到则保持 200（Godot -1 空缺），无兜底人选

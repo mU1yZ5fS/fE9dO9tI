@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 公共效果（三选项均执行）：稳定=100(SET)、覆写 politicians[0]→华国锋、politics_positions[1]=150。
 ## 分支：opt0/1/2 各自的资源增减 + politicians[1..4] 忠诚循环 + 动态文案。
 ## 因「覆写政治家」「仅 [1..4] 忠诚」不可声明式 → 全部走自定义脚本（含公共 stability，避免与 .tres 双写）。
-## 差异：iron_and_blood 成就 Set(222) 端口无成就系统 → 跳过；traits[2]=32 越界特殊特质逐字保留。
+## 差异：traits[2]=32 越界特殊特质逐字保留（成就 Set(222) 已接 Achievements，铁人门在模块内）。
 
 
 func execute(context: Dictionary) -> void:
@@ -12,7 +12,8 @@ func execute(context: Dictionary) -> void:
 		return
 	var opt := int(context.get("option_index", -1))
 
-	# 公共效果（Event3.cs:28-37，三选项均执行）
+	# 公共效果（Event3.cs:26-37，三选项均执行；原作 Set(222) 在稳定性覆写之前）
+	Achievements.set_achievement(222)  # 原作 Event3.cs:26-29 iron_and_blood → achievements.Set(222)
 	d[W.I_STABILITY] = 100
 	_install_hua_guofeng()
 
@@ -57,7 +58,6 @@ func _install_hua_guofeng() -> void:
 	ws.leader_politician_index = 0
 	if ws.politics_positions.size() > 1:
 		ws.politics_positions[1] = 150   # 原 politics_dolshnost[1]=150
-	# 差异：iron_and_blood 成就 Set(222) 端口无成就系统，跳过
 
 
 ## Event3.cs 三选项均对 politics[1..4] 施加相同忠诚增减

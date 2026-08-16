@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 ## 差异：
 ##  - VasilyisGay → ws.get_flag("VasilyisGay")；
-##  - 原版 iron_and_blood 成就 Set(122)，端口无成就系统，跳过；
+##  - 原版 iron_and_blood 成就 Set(122) 已接 Achievements；
 ##  - 原版 data[172]..data[182] 为 raw index，直访并注释；
 ##  - 原版 allcountries[85].inflCh → influence_china。
 
@@ -127,7 +127,8 @@ func execute(context: Dictionary) -> void:
 		_:
 			txt = ""
 	if ws.get_flag("VasilyisGay"):
-		# 原版 iron_and_blood 成就 Set(122)，跳过
+		# 原作 Event394.cs:179：VasilyisGay && iron_and_blood → achievements.Set(122)
+		Achievements.set_achievement(122)
 		txt += TXT_R_V
 		_add_power(EmpireData.USA, -20)
 		_add(172, 3)  # 原版 data[172]

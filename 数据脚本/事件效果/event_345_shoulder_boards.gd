@@ -46,6 +46,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	event_def.description = desc
 
 	var opt := event_def.options
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var pol := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
 	var res514 := int(world.completed_event_ids.get("event_514", 0))

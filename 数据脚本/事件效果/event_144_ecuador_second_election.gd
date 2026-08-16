@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - GetWinnerInAmerica / WantToLeave 逐行移植；
 ##  - 原版 string.Format 的 <color=red> 标签剥除，红字用 TXT_FRIEND / TXT_ENEMY 拼接；
-##  - 原版 iron_and_blood 成就 achievements.Set 未建模，跳过并注释；
+##  - iron_and_blood 成就已接 Achievements（Set 编号见 execute 内注释）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
 const TXT_TITLE := "二次选举"
@@ -271,5 +271,6 @@ func execute(context: Dictionary) -> void:
 		c.level_of_development += 10
 		_add_power(EmpireData.USA, -15)
 		_add_power(EmpireData.USSR, 5)
-		# 原版 iron_and_blood 成就 achievements.Set(95)，未建模跳过。
+		# 原作 Event144.cs:111：iron_and_blood → achievements.Set(95)
+		Achievements.set_achievement(95)
 		context["result_text"] = TXT_R3 + _friend_suffix(c)

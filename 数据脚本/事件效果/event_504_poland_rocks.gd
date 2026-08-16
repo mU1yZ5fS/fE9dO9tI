@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = TXT_R0_A
-			if this.a.empires[1].now_leader == 6:
+			if ws.empires[1].current_leader == 6:
 				context["result_text"] += TXT_R0_B
 			else:
 				context["result_text"] += TXT_R0_C
@@ -59,11 +59,11 @@ func execute(context: Dictionary) -> void:
 			if c2 != null: c2.sub_government = 12
 		1:
 			context["result_text"] = TXT_R1_A
-			if this.a.empires[1].now_leader == 6:
+			if ws.empires[1].current_leader == 6:
 				context["result_text"] += TXT_R1_B
 			else:
 				context["result_text"] += TXT_R1_C
-			if this.a.empires[1].now_leader == 6:
+			if ws.empires[1].current_leader == 6:
 				_add_relation(1, 80)
 			else:
 				_add_relation(1, -(80))

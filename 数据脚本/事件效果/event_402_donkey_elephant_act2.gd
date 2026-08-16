@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event402.cs：驴象之争-第二幕（一/三选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1251 —— DATE_AFTER 1984.11.1。
 ## 差异：now_leader→current_leader；completedDecisions[17]→ws.decisions.completed[17]；
-##  - iron_and_blood/成就跳过；选项显隐 prepare。
+##  - iron_and_blood 成就 Set(137) 已接 Achievements；选项显隐 prepare。
 
 const TXT_TITLE := [
 	"驴象之争-第二幕",
@@ -139,6 +139,7 @@ func execute(context: Dictionary) -> void:
 		if usa != null:
 			usa.current_leader = 3
 		_add(143, 3)
+		Achievements.set_achievement(137)  # 原作 Event402.cs:175 iron_and_blood → achievements.Set(137)
 		context["result_text"] = TXT_R[0]
 	else:
 		_add(143, -5)

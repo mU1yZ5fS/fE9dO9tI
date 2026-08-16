@@ -53,6 +53,9 @@ func _ready() -> void:
 	if 音效节点 is AudioStreamPlayer:
 		(音效节点 as AudioStreamPlayer).bus = "音效"
 
+	# 应用持久化音量（原版 voice_china 默认 5 → AudioSource.volume=0.05）
+	apply_voice()
+
 	_扫描专辑()
 	if not 专辑目录列表.is_empty():
 		选择专辑(0)   # 默认选第一张专辑并开始播放
@@ -198,6 +201,18 @@ func 切换循环() -> void:
 
 func 切换随机() -> void:
 	随机 = not 随机
+
+
+## 音量 0-100（原版 voice 字段，默认 5）应用到「背景音乐」总线。
+## 原版 AudioSource.volume = voice/100，即线性音量；Godot 总线用 dB，这里做 linear_to_db 转换。
+func apply_voice() -> void:
+	var 索引 := AudioServer.get_bus_index("背景音乐")
+	if 索引 < 0:
+		return
+	var 值: int = GameManager.voice if GameManager else 5
+	var 线性 := clampf(float(值) / 100.0, 0.0, 1.0)
+	AudioServer.set_bus_volume_db(索引, linear_to_db(clampf(线性, 0.001, 1.0)))
+	AudioServer.set_bus_mute(索引, 值 == 0)
 
 
 # =====================================================================

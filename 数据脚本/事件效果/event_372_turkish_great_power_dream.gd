@@ -155,6 +155,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		and not turkey.has_tag("亲美") and not turkey.has_tag("nato"):
 		# Event372.cs:70-89
 		_turkey_gov2_sub8()
+		Achievements.set_achievement(136)  # 原作 Event372.cs:84 iron_and_blood → achievements.Set(136)
 		ws.influence_prc += 100
 		_set_data124(100)
 		_set_part(turkey, 1)

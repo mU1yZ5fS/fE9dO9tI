@@ -13,7 +13,7 @@ custom_script = ExtResource("5_custom")
 
 [sub_resource type="Resource" id="Opt0"]
 script = ExtResource("1_opt")
-text = "Eux\u00a0vaincrons！"
+text = "Eux vaincrons！"
 effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
 result_text = "（结果由 event_606_la_patrie_ou_la_mort.gd 动态生成）"
 
@@ -22,7 +22,7 @@ script = ExtResource("4_def")
 event_id = "event_606"
 source_event_number = 606
 trigger_priority = 60600
-title = "La\u00a0Patrie\u00a0ou\u00a0la\u00a0Mort"
+title = "La Patrie ou la Mort"
 description = "尼日尔，一个命运多舛的西非国家。在独立后的前14年里，由哈马尼·迪奥里总统领导的一党文人政权统治。在他的统治下，尼日尔初步建立成了一个国家而非大部落，经济发展和工业化进程有所放缓。借助铀矿和在阿尔及利亚独立战争中支持法国，该国得到了法兰西的善意。除了和达荷美（也就是贝宁）的边界争端外，该国其他非洲国家的关系大多“积极”。在此期间，尼日尔一直是一党制国家，迪奥里躲过了1963年的预谋政变和1965年的暗杀企图，但一手造成的腐败，专制主义，饥荒和暴动葬送了他的王朝。最终以赛义尼·孔切上校和他的最高军事委员会接过了烂摊子随着铀价暴跌，经济繁荣结束，国际货币基金组织牵头的紧缩政策和私有化措施引起一些尼日尔人的反对。\n现在，随着孔切的战友一个接着一个都被送去见了戴高乐。马里，布基纳法索和贝宁正在准备中一场彻底推翻孔切政权的行动。"
 display_script = ExtResource("5_custom")
 trigger_conditions = Array[ExtResource("3_expr")]([])

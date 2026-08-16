@@ -35,7 +35,7 @@ func _on_date(_d: GameDate) -> void:
 
 
 func _refresh() -> void:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null:
 		return
 	w.sync_economy()

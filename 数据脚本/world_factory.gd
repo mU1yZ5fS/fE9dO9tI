@@ -54,6 +54,22 @@ const NAME_ALIASES := {
 ## 统一映射到 9000+ 原版序号，避免与 map_countries 0~960 冲突
 const FICTIONAL_COUNTRY_OFFSET := 9000
 
+## 强制走 9000+ 的原版 id：地图无真实区域，或与已有编号重名的分离实体。
+## 153「纳米比亚」与 128 重名；164/165 为安哥拉/尼日利亚分离政权——若不强制，
+## 名称前缀匹配会把它们吸到真实 gwcode，造成 gwcode 索引互相覆盖。
+const FORCE_9000_OFFSET_SLOTS := [
+	145, 150, 151, 153, 155, 156, 157, 159, 162, 163, 164, 165, 166,
+]
+
+## 9000+ 实体的中文名（逐行取自逆向 Assets/Resources/Country_en.txt 的 id 行）。
+const OFFSET_COUNTRY_NAMES_ZH := {
+	69: "西藏", 70: "维吾尔斯坦",
+	145: "格陵兰岛", 150: "南苏丹", 151: "达尔富尔",
+	153: "纳米比亚", 155: "塞舌尔", 156: "阿扎瓦德",
+	157: "库尔德斯坦二号", 159: "瓦努阿图", 162: "南极洲",
+	163: "加丹加", 164: "安哥拉独", 165: "尼日利亚独", 166: "北爱尔兰",
+}
+
 
 # ============================================================================
 # 国家与派系原始数据行字段索引常量
@@ -67,7 +83,13 @@ enum CountryRowField {
 	USA_POWER = 15,
 	PRC_POWER = 16,
 	GOVERNMENT = 17,
-	SUB_GOVERNMENT = 18
+	SUB_GOVERNMENT = 18,
+	# 以下 5 个字段只存在于 South_data.txt（原版 DLC00 补载，GameStartScript.cs:1719-1731）
+	LEVEL_OF_DEV = 19,
+	LEVEL_OF_UNSTAB = 20,
+	ELECTION_DAY = 21,
+	ELECTION_MONTH = 22,
+	ELECTION_YEAR = 23
 }
 
 enum FactionRowField {
@@ -84,6 +106,13 @@ enum FactionRowField {
 const TAG_FIELDS: Array[String] = [
 	"", "sev", "ovd", "亲美", "亲中", "亲苏",
 	"okb", "econ", "对华贸易", "美国盟友", "苏联盟友",
+]
+
+## Country.LeaveAlliances()（Country.cs:89-115）清除的联盟/外交标签，开局覆盖用
+const START_CLEAR_TAGS: Array[String] = [
+	"nato", "ovd", "sev", "eu", "soc_eu", "asean", "sento", "seato",
+	"okb", "econ", "oil", "oar", "eaf", "rim", "au",
+	"亲美", "亲苏", "亲中", "对华贸易", "美国盟友", "苏联盟友",
 ]
 
 
@@ -111,10 +140,12 @@ const DATA_VALUES := [
 
 
 # ============================================================================
-# 国家原始数据 -- 99 个国家，每个 19 字段
+# 国家原始数据 -- 主线 Country_data_1.txt（GameStartScript.cs:193-230，number=1）
+# 99 个国家，每个 19 字段；South_data.txt 的 71-83 见 SOUTH_COUNTRY_ROWS（24 字段）
 # [gwcode, sev, ovd, 亲美, 亲中, 亲苏, okb, econ, 对华贸易,
 #  美国盟友, 苏联盟友, unused, stability, development,
 #  sov_power, usa_power, prc_power, government, sub_government]
+# 注意：严禁抄 Country_data_1_d1.txt —— 原版运行时代码没有任何 _d1 引用。
 # ============================================================================
 const COUNTRY_ROWS := [
 	[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6],          # Luxemburg
@@ -127,8 +158,8 @@ const COUNTRY_ROWS := [
 	[8, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13],         # Iran
 	[9, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 16],         # Mongolia
 	[10, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],         # North Korea
-	[11, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],         # Vietnam
-	[12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13],        # Afghanistan
+	[11, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],         # Vietnam（0/10 左翼民族主义，主线 Country_data_1.txt:21；旧 1/1 系 d1 混入）
+	[12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15],        # Afghanistan（2/15 政治实用主义，主线 :23；旧 0/13 系 d1）
 	[13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15],        # Libya
 	[14, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],         # Iraq
 	[15, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 11],        # Yugoslavia
@@ -138,16 +169,16 @@ const COUNTRY_ROWS := [
 	[19, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15],        # India
 	[20, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],         # Albania
 	[21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6],         # France
-	[22, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],         # Laos
-	[23, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17],        # Kampuchea
-	[24, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],         # South Yemen
-	[25, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13],        # North Yemen
+	[22, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],         # Laos（亲苏+对华贸易，0/10 左翼民族主义，主线 :43；旧 1/1 系 d1）
+	[23, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],        # Kampuchea（0/10 左翼民族主义，主线 :45；旧 sub17 系 d1）
+	[24, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],         # South Yemen（对华贸易，主线 :47；旧 亲苏 系 d1）
+	[25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 8],         # North Yemen（2/8 左倾保守主义，主线 :49；旧 0/13 系 d1）
 	[26, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15],        # Finland
 	[27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5],         # Austria
 	[28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3],         # Sweden
 	[29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6],         # Ireland
 	[30, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5],         # Egypt
-	[31, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6],         # Pakistan
+	[31, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 8],         # Pakistan（2/8 左倾保守主义，主线 :61；旧 3/6 系 d1）
 	[32, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13],        # Bangladesh
 	[33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],        # Burma
 	[34, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6],         # Thailand
@@ -168,7 +199,7 @@ const COUNTRY_ROWS := [
 	[49, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15],        # Malaysia
 	[50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7],         # Indonesia
 	[51, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6],         # USA
-	[52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7],         # Singapore
+	[52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],         # Congo (Brazzaville)（主线 52=刚果（布），:103；开局覆盖加对华贸易）
 	[53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 600, 300, 400, 200, 50, 0, 13], # Sudan
 	[54, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 550, 400, 300, 0, 0, 0, 7],   # Morocco
 	[55, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 400, 300, 0, 0, 0, 0, 7],     # Tunisia
@@ -187,7 +218,7 @@ const COUNTRY_ROWS := [
 	[68, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 400, 300, 0, 0, 0, 2, 15],    # Guinea
 	[69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 400, 300, 0, 0, 0, 0, 13],    # Tibet
 	[70, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 400, 300, 0, 0, 0, 0, 13],    # Uyghuristan
-	[1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],          # China
+	[1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 17],          # China（1/17 毛主义，主线 :141；旧 sub1 系 d1）
 	[84, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6],         # Turkey
 	[85, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6],         # Italy
 	[86, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7],         # Spain
@@ -220,7 +251,29 @@ const COUNTRY_ROWS := [
 
 
 # ============================================================================
-# 国家英文名 -- 按内部 gwcode 索引（0-111）
+# South_data.txt（原版 GameStartScript.DLC00 补载，:1693-1731）— 南美 71-83
+# 24 字段：19 基础字段 + level_of_dev / level_of_unstab / 选举日 / 月 / 年
+# 注意：South_data 的 stab/dev/sov/usa/prc 字段（12-16）原值全为 0。
+# ============================================================================
+const SOUTH_COUNTRY_ROWS := [
+	[71, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 9, 60, 50, 24, 3, 1976],  # Argentina 阿根廷
+	[72, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 50, 50, 9, 7, 1978],   # Bolivia 玻利维亚
+	[73, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 65, 50, 15, 10, 1978],  # Brazil 巴西
+	[74, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 50, 50, 4, 1, 1978],   # Chile 智利
+	[75, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6, 60, 50, 4, 6, 1978],   # Colombia 哥伦比亚
+	[76, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 55, 50, 16, 7, 1978],  # Ecuador 厄瓜多尔
+	[77, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 50, 50, 15, 12, 1980], # Guyana 圭亚那
+	[78, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 70, 50, 22, 2, 2222],  # French Guyana 法属圭亚那
+	[79, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 50, 50, 12, 2, 1978],  # Paraguay 巴拉圭
+	[80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 8, 60, 50, 18, 5, 1980],  # Peru 秘鲁
+	[81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 50, 50, 25, 2, 1980],  # Surinam 苏里南
+	[82, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 9, 55, 50, 1, 9, 1976],   # Uruguay 乌拉圭
+	[83, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 60, 50, 3, 12, 1978],  # Venezuela 委内瑞拉
+]
+
+
+# ============================================================================
+# 国家英文名 -- 按原版 id 索引（0-166）
 # ============================================================================
 const COUNTRY_NAMES := {
 	0: "Luxemburg", 1: "China", 2: "Poland", 3: "Czechoslovakia",
@@ -236,39 +289,65 @@ const COUNTRY_NAMES := {
 	40: "Algeria", 41: "Ethiopia", 42: "Somalia", 43: "Nepal",
 	44: "Japan", 45: "Greece", 46: "South Korea", 47: "Philippines",
 	48: "Grenada", 49: "Malaysia", 50: "Indonesia", 51: "USA",
-	52: "Singapore", 53: "Sudan", 54: "Morocco", 55: "Tunisia",
+	52: "Congo", 53: "Sudan", 54: "Morocco", 55: "Tunisia",
 	56: "Niger", 57: "Chad", 58: "Mali", 59: "Mauritania",
 	60: "Nigeria", 61: "Upper Volta", 62: "Benin", 63: "Ghana",
 	64: "Côte d'Ivoire", 65: "CAR", 66: "Cameroon", 67: "Liberia",
 	68: "Guinea", 69: "Tibet", 70: "Uyghuristan",
 	71: "Argentina", 72: "Bolivia", 73: "Brazil", 74: "Chile",
-	75: "Colombia", 76: "Ecuador", 77: "Guyana", 78: "Guiana",
+	75: "Colombia", 76: "Ecuador", 77: "Guyana", 78: "French Guyana",
 	79: "Paraguay", 80: "Peru", 81: "Suriname", 82: "Uruguay",
 	83: "Venezuela",
 	84: "Turkey", 85: "Italy", 86: "Spain", 87: "Portugal",
 	88: "Belgium", 89: "Holland", 90: "Denmark", 91: "Norway",
-	92: "Great Britain", 93: "Lebanon", 94: "Divided Cyprus",
+	92: "Great Britain", 93: "Lebanon", 94: "Cyprus",
 	95: "Kurdistan", 96: "Sri Lanka", 97: "Bhutan", 98: "Slovakia",
 	99: "Eritrea", 100: "Tigray", 101: "Saudi Arabia", 102: "UAE",
 	103: "Qatar", 104: "Jordania", 105: "Oman", 106: "Djibouti",
 	107: "Sierra Leone", 108: "Togo", 109: "Basque Country",
-	110: "Catalonia", 111: "Ainu Utari",
+	110: "Catalonia", 111: "Brunei",
+	112: "Senegal", 113: "Gambia", 114: "Guinea-Bissau",
+	115: "Equatorial Guinea", 116: "Gabon",
+	117: "Congo, Democratic Republic of (Zaire)",
+	118: "Uganda", 119: "Kenya", 120: "Rwanda", 121: "Burundi",
+	122: "Tanzania (Tanganyika)", 123: "Angola", 124: "Zambia",
+	125: "Malawi", 126: "Mozambique", 127: "Zimbabwe (Rhodesia)",
+	128: "Namibia", 129: "Botswana", 130: "Swaziland (Eswatini)",
+	131: "South Africa", 132: "Lesotho", 133: "Madagascar (Malagasy)",
+	134: "Papua New Guinea", 135: "Australia", 136: "New Zealand",
+	137: "Canada", 138: "Cuba", 139: "Haiti", 140: "Mexico",
+	141: "Panama", 142: "Belize", 143: "Dominican Republic",
+	144: "Costa Rica", 145: "Greenland", 146: "Honduras",
+	147: "Nicaragua", 148: "El Salvador", 149: "Guatemala",
+	150: "South Sudan", 151: "Darfur", 152: "Jamaica",
+	153: "Namibia", 154: "New Caledonia and Dependencies",
+	155: "Seychelles", 156: "Azawad", 157: "Kurdistan II",
+	158: "Comoros", 159: "Vanuatu", 160: "Fiji", 161: "Solomon Islands",
+	162: "Antarctica", 163: "Katanga", 164: "Angola Independence",
+	165: "Nigeria Independence", 166: "Northern Ireland",
 }
 
 
 # ============================================================================
-# 特质中文名 — 对齐原版 Traits1_en + 中文版 level13 用词
-# 重要：traits[0] 用 Traits 表，不是 Party 派系表！
-#   Traits[0..3]: 0极左 1温和 2改革 3自由
-#   Party[0..4]:  0极左 1保守 2温和 3改革 4自由  （多一个「保守」，且 1 起错位）
-#   traits[0]→Party 槽：0→0，>0→traits[0]+1（见 Button_Pol_Script 指定派系领袖）
-# traits[1]: 4硬汉 5实用主义 6宽容 7科学家
-# traits[2]: 8苛刻 9和平 10小暴君 11经管学家 12傲慢 13偶像 14中华派 15西渐派 16谋士 17胆怯 18贪腐 19病弱
+# 特质中文名 — 逐字对齐原版 traits_en[44]（Stat.unity:55629 起 Politic_Manager.traits_en）。
+# 7/17/18 按原版为「重视技术/羞怯/贪污」（旧值 科学家/胆怯/贪腐 已修正）。
+# 重要：traits[0] 用 Traits 表（0-3/20），不是 Party 派系表！
+#   Traits[0]: 0极左 1温和 2改革 3自由 / 20保守（Button_Pol_Script num14 特殊映射）
+#   Party[0..4]: 0极左 1保守 2温和 3改革 4自由（改版显式 faction 字段）
+# traits[1]: 4硬汉 5实用主义 6宽容 7重视技术 21-25 等扩展
+# traits[2]: 8-19 特殊 / 30-43 扩展
+# traits[3]: 21-28/43 出身背景
+# ============================================================================
 const TRAIT_LABELS_ZH := {
 	0: "极左派", 1: "温和派", 2: "改革派", 3: "自由派",
-	4: "硬汉", 5: "实用主义", 6: "宽容", 7: "科学家",
+	4: "硬汉", 5: "实用主义", 6: "宽容", 7: "重视技术",
 	8: "苛刻", 9: "和平", 10: "小暴君", 11: "经管学家", 12: "傲慢", 13: "偶像",
-	14: "中华派", 15: "西渐派", 16: "谋士", 17: "胆怯", 18: "贪腐", 19: "病弱",
+	14: "中华派", 15: "西渐派", 16: "谋士", 17: "羞怯", 18: "贪污", 19: "病弱",
+	20: "保守派", 21: "党务干部", 22: "群众领袖", 23: "学生小将", 24: "工农劳模",
+	25: "军队将领", 26: "知识分子", 27: "科学家", 28: "野心家", 29: "享乐主义",
+	30: "阴谋论者", 31: "鼓动者", 32: "人民之友", 33: "外交人才", 34: "托派",
+	35: "投机分子", 36: "治军有方", 37: "平易近人", 38: "不屈不挠", 39: "主观主义",
+	40: "墙头草", 41: "一方诸侯", 42: "政治挂帅", 43: "特异人士",
 }
 
 ## Party 派系显示名（faction_leader / 派系界面用，与 traits[0] 不同表）
@@ -288,20 +367,23 @@ const FACTION_ROWS := [
 	[0, 0,  40,   0],   # 4 = 自由派
 ]
 
-# 派系领袖 politician 索引（Party 槽 0..4，非 traits[0] 直映）
-# 0极左=江青(1) 1保守=吴德(10) 2温和=陈云(15) 3改革=邓小平(12) 4自由=赵紫阳(13)
-const FACTION_LEADERS := [1, 10, 15, 12, 13]
+# 派系领袖 politician 索引，逐字对齐 GameStartScript.cs:535-539：
+# faction_leader[0]=1(江青) [1]=10(吴德) [2]=6(李先念) [3]=12(邓小平) [4]=13(赵紫阳)
+const FACTION_LEADERS := [1, 10, 6, 12, 13]
 
 
 # ============================================================================
-# 领导人初始设定（原版 Politics_leader1: 2;2;1;5;16;55 = 华国锋）
+# 领导人初始设定 — 逐字对齐 Resources/Politics_leader.txt: "2;2;20;21;5;16;1921"
+# = name_1=2; name_2=2; traits[0]=20; traits[1]=21; traits[2]=5; traits[3]=16; birth=1921
 # 领袖是独立实体（UI 选中码 150），不在 politics[18] 数组里
 # politics[0]=毛泽东（power 后改 99999），politics[1]=江青
-# leader.traits[0]=1 → Traits 表「温和派」（不是 Party「保守派」）
+# traits 显示按 traits_en：20=保守派 21=党务干部 5=实用主义 16=谋士
 # ============================================================================
 const LEADER_NAME := "华国锋"
 const LEADER_AGE := 55
-const LEADER_TRAITS := [1, 5, 16]  # Traits: 温和 / 实用主义 / 谋士
+const LEADER_TRAITS := [20, 21, 5, 16]
+const LEADER_NAME_FIRST := 2
+const LEADER_NAME_LAST := 2
 const LEADER_PORTRAIT_PATH := "res://资产/政治家/华国锋.png"
 ## 职位槽中表示「实权领袖本人」（原版 politics_dolshnost 值 150）
 const LEADER_POSITION_SENTINEL := -2
@@ -316,11 +398,16 @@ const START_MODIFIER_IDS := [0, 1, 2, 3, 6, 14, 15, 28, 54, 55, 61, 62, 64]
 
 
 # ============================================================================
-# 科技初始解锁状态（10 个槽位）
+# 科技初始解锁状态（与 TechState.TECH_COUNT=34 对齐）
 # ============================================================================
 const SCIENCE_UNLOCKED := [
 	false, false, false, false, false,
 	false, false, false, false, false,
+	false, false, false, false, false,
+	false, false, false, false, false,
+	false, false, false, false, false,
+	false, false, false, false, false,
+	false, false, false, false,
 ]
 
 
@@ -333,6 +420,11 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	ws.date = GameDate.new(4, 2, 1976)
 	ws.player_country_gwcode = player_gwcode
 	ws.difficulty = difficulty
+	# 铁人 = 难度 >= 2（GameStartScript.cs:120: iron_and_blood = diff >= 2；
+	# 本端口 0沙盒/1简单/2普通/3困难）
+	# 原版 GameStartScript.cs:1886-1888 若 gamerules 含 >1 则 iron_and_blood=false；
+	# gamerules 未移植，跳过（politician_system.gd:228 有未移植读取口）。
+	ws.is_ironman = difficulty >= 2
 	# 玩法随机源种子：开局取系统时间，暗杀等真随机；rng_state 随存档续流
 	ws.rng_seed = int(Time.get_unix_time_from_system())
 	ws.rng_state = 0
@@ -368,12 +460,22 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 # ============================================================================
 
 static func _build_countries(ws: WorldState) -> void:
-	for row in COUNTRY_ROWS:
+	# 行来源（与逆向加载顺序一致）：
+	#   1. Country_data_1.txt 主表（0-70、1、84-111 已在 COUNTRY_ROWS 中）
+	#   2. South_data.txt 南美 71-83（DLC00 补载）
+	#   3. Country_data_1.txt 112-166：原版 55 行字段完全同构，批量生成
+	var rows: Array = []
+	rows.append_array(COUNTRY_ROWS)
+	rows.append_array(SOUTH_COUNTRY_ROWS)
+	for i in range(112, 167):
+		rows.append([i, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13])
+
+	for row in rows:
 		var cd := CountryData.new()
 		cd.gwcode = row[CountryRowField.GWCODE]
 		cd.原版序号 = row[CountryRowField.GWCODE]
 
-		# 保存原始字段（调试/兼容用）
+		# 保存原始字段（调试/兼容用，只保留前 19 个原版基础字段）
 		cd.原始字段.resize(19)
 		for i in 19:
 			cd.原始字段[i] = row[i]
@@ -395,6 +497,14 @@ static func _build_countries(ws: WorldState) -> void:
 		# 政体
 		cd.government = row[CountryRowField.GOVERNMENT]
 		cd.sub_government = row[CountryRowField.SUB_GOVERNMENT]
+
+		# South_data 专属扩展字段（原版 DLC00，GameStartScript.cs:1729-1731）
+		if row.size() >= 24:
+			cd.level_of_development = row[CountryRowField.LEVEL_OF_DEV]
+			cd.level_of_instability = row[CountryRowField.LEVEL_OF_UNSTAB]
+			cd.next_election_day = row[CountryRowField.ELECTION_DAY]
+			cd.next_election_month = row[CountryRowField.ELECTION_MONTH]
+			cd.next_election_year = row[CountryRowField.ELECTION_YEAR]
 
 		ws.countries.append(cd)
 
@@ -446,7 +556,13 @@ static func _find_best_matching_gwcode(hr_name: String, name_to_gwcode: Dictiona
 # 匹配策略（按可靠性递减）：
 #   1. 别名表 NAME_ALIASES
 #   2. 规范化名精确匹配
-#   3. 规范化名双向 contains 兜底
+#   3. 规范化名前缀兜底
+
+static func _apply_offset_name(c: CountryData) -> void:
+	## 9000+ 实体没有 map_countries 中文名，回退到逆向 Country_en.txt 的中文名
+	if OFFSET_COUNTRY_NAMES_ZH.has(int(c.原版序号)):
+		c.chinese_name = String(OFFSET_COUNTRY_NAMES_ZH[int(c.原版序号)])
+
 
 static func _assign_real_gwcodes(ws: WorldState) -> void:
 	var map_countries := _load_json_as_dict(MAP_DIR + "/map_countries.json")
@@ -465,6 +581,14 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 	var matched := 0
 	var unmatched_log: Array[String] = []
 	for c in ws.countries:
+		var sid := int(c.原版序号)
+		# 地图无区域/同名分离实体：直接进 9000+，避免占用真实 gwcode
+		# （否则 153 纳米比亚会覆盖 128 的 gwcode、164/165 会被前缀吸到母国）
+		if FORCE_9000_OFFSET_SLOTS.has(sid):
+			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
+			_apply_offset_name(c)
+			unmatched_log.append("%s(idx=%d→gw=%d)" % [c.name, sid, c.gwcode])
+			continue
 		var hr_name := _normalize_country_name(c.name)
 		if NAME_ALIASES.has(hr_name):
 			hr_name = String(NAME_ALIASES[hr_name])
@@ -484,8 +608,9 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 			matched += 1
 		else:
 			# 关键：内部序号 70/100 与 G&W 墨西哥/哥伦比亚冲突 → 挪到 9000+
-			c.gwcode = FICTIONAL_COUNTRY_OFFSET + int(c.原版序号)
-			unmatched_log.append("%s(idx=%d→gw=%d)" % [c.name, c.原版序号, c.gwcode])
+			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
+			_apply_offset_name(c)
+			unmatched_log.append("%s(idx=%d→gw=%d)" % [c.name, sid, c.gwcode])
 
 	print("WorldFactory: gwcode 修正完成 %d/%d 匹配" % [matched, ws.countries.size()])
 	if unmatched_log.size() > 0 and unmatched_log.size() <= 40:
@@ -531,9 +656,9 @@ static func _build_factions(ws: WorldState) -> void:
 		fd.is_enabled = row[0] != 0
 		fd.is_ally = row[1] != 0
 		fd.ideology = row[2]
-		fd.influence = row[2]    # influence = ideology（原版逻辑）
+		fd.influence = row[2]    # 旧字段兼容：初始=ideology；增长/重算一律走 ideology
 		fd.support = row[3]      # ≡ party_number
-		fd.points = 0
+		fd.points = 0            # 已废弃自造字段，仅初始化保持旧档一致
 		ws.factions.append(fd)
 
 	# 派系领袖
@@ -552,10 +677,14 @@ static func _set_leader(ws: WorldState) -> void:
 	var leader := PoliticianData.new()
 	leader.name_display = LEADER_NAME
 	leader.age = LEADER_AGE
+	# Politics_leader.txt: traits[0..3] = 20, 21, 5, 16（保守/党务干部/实用主义/谋士）
 	leader.trait_personality = LEADER_TRAITS[0]
 	leader.trait_alignment = LEADER_TRAITS[1]
 	leader.trait_special = LEADER_TRAITS[2]
-	# 独立新游戏：华国锋显示为保守派（Party=1）；traits[0] 仍保留原版 1 供逻辑
+	leader.trait_background = LEADER_TRAITS[3]
+	leader.name_first = LEADER_NAME_FIRST
+	leader.name_last = LEADER_NAME_LAST
+	# 改版中文界面沿用真实姓名+照片；faction=1 仅作 Party 槽显示
 	leader.faction = 1
 	leader.power = 9999
 	leader.loyalty = 1000
@@ -571,7 +700,11 @@ static func _set_leader(ws: WorldState) -> void:
 # 我们用 -2 表示「实权领袖本人」担任该职
 # ============================================================================
 
-const INITIAL_POSITIONS := [-2, 0, 17, 10, 9, 15, 13, 3]
+# 逐字对齐 GameStartScript.cs:509-517：
+# dolshnost[0]=150(领袖) [1]=0(毛泽东) [2]=17(乔冠华) [3]=10(吴德)
+# [4]=9(陈锡联·北方) [5]=13(赵紫阳·西方) [6]=15(陈云·南方) [7]=3(张春桥·东方)
+# 我们用 -2 表示「实权领袖本人」（原版 150）
+const INITIAL_POSITIONS := [-2, 0, 17, 10, 9, 13, 15, 3]
 
 static func _init_positions(ws: WorldState) -> void:
 	ws.politics_positions.resize(8)
@@ -620,25 +753,37 @@ static func _compute_relation_score(source: PoliticianData, target: PoliticianDa
 	var score := 0
 	if source.trait_personality == target.trait_personality:
 		score += 500
+	# traits[0] 五派系矩阵（内部值 = 显示×10；0极左 20保守 1温和 2改革 3自由）
+	# 逐字对齐 GameState.CalcRel（GameState.cs:5801-5895）
 	match target.trait_personality:
 		0:
 			match source.trait_personality:
+				20: score += 80
 				1: score += 50
 				2: score -= 150
 				3: score -= 300
+		20:
+			match source.trait_personality:
+				0: score += 80
+				1: score += 25
+				2: score -= 80
+				3: score -= 200
 		1:
 			match source.trait_personality:
 				0: score += 50
+				20: score += 25
 				2: score -= 50
 				3: score -= 150
 		2:
 			match source.trait_personality:
 				0: score -= 150
+				20: score -= 50
 				1: score += 50
 				3: score += 100
 		3:
 			match source.trait_personality:
 				0: score -= 300
+				20: score -= 200
 				1: score -= 150
 				2: score += 100
 
@@ -794,51 +939,58 @@ static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 
 	# data[52] 经济显示档 / data[54] 政治显示档 / data[14] 意识形态 — 开局常量
 	match econ_display:
-		34:
+		34:  # 社会主义：显示值 [+25 +20 +15 -10 -15]，内部×10；20=保守
 			match pol.trait_personality:
 				0: score += 250
+				20: score += 200
 				1: score += 150
 				2: score -= 100
 				3: score -= 150
-		35:
+		35:  # 改良主义：[+10 +15 +25 +15 -10]
 			match pol.trait_personality:
 				0: score += 100
+				20: score += 150
 				1: score += 250
 				2: score += 150
 				3: score -= 100
-		36:
+		36:  # 实用主义：[-10 0 +5 +25 +5]；保守=0 不加分支（对齐 GameState.cs:5390-5408）
 			match pol.trait_personality:
 				0: score -= 100
-				1: score += 150
+				1: score += 50
 				2: score += 250
 				3: score += 50
-		37:
+		37:  # 市场：[-15 -10 -12.5 +15 +25]；保守-10 按用户意图值口径补（原版无 20 分支）
 			match pol.trait_personality:
 				0: score -= 150
-				1: score -= 100
+				20: score -= 100
+				1: score -= 125
 				2: score += 150
 				3: score += 250
 	match political_display:
-		38:
+		38:  # 威权：[+15 +8 -15 -20 +25]；20=保守（意图值口径，原版 20 分支反编译成重复 ==1）
 			match pol.trait_personality:
 				0: score += 150
+				20: score += 80
 				1: score -= 150
 				2: score -= 200
 				3: score += 250
-		39:
+		39:  # 强硬：[+10 +5 -5 -10 +5]
 			match pol.trait_personality:
 				0: score += 100
+				20: score += 50
 				1: score -= 50
 				2: score -= 100
 				3: score += 50
-		40:
+		40:  # 柔和：[-10 -5 +10 +15 0]
 			match pol.trait_personality:
 				0: score -= 100
+				20: score -= 50
 				1: score += 100
 				2: score += 150
-		41:
+		41:  # 民主：[-15 -10 -5 +15 +10]
 			match pol.trait_personality:
 				0: score -= 150
+				20: score -= 100
 				1: score -= 50
 				2: score += 150
 				3: score += 100
@@ -1066,6 +1218,13 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 	ws.数值表[WorldState.I_WAR_RESOLVE] = -1
 	ws.数值表[WorldState.I_MIL_INTERVENTION] = 0
 
+	# 原版 GameStartScript.cs:92-93：开局 is_elect=true、is_speech=true。
+	# Godot 映射：speech_done=true → 演讲按钮一次性锁定（原版 is_speech 永不复位）；
+	# manual_election_used=true → 选举按钮开局禁用，首个自然月切后由
+	# GameManager._on_month_changed 复位（对齐 TimeScript.cs:505-512）。
+	ws.set_flag("speech_done", true)
+	ws.set_flag("manual_election_used", true)
+
 	# 结局/配置区（原版 GameStartScript.cs:874-898 硬编码，data[160-184]）
 	# 主控 2026-08-14 亲读原版逐值核对；此前 Godot 全未初始化（全 0），已补齐。
 	ws.数值表[160] = 5500   # 苏联资金（原版 :874）
@@ -1099,6 +1258,11 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 	ws.数值表[48] = randi_range(1, 4)
 	ws.数值表[49] = randi_range(1, 4)
 
+	# 国家开局硬编码覆盖（GameStartScript.cs:574-814, 1020-1090，数据文件之后的最终开局值）
+	_apply_country_start_overrides(ws)
+	# 原版 GameState.FixSubs()（GameStartScript.cs:1682 调用，GameState.cs:4831-4856）
+	_fix_subs(ws)
+
 	# 难度调整
 	match difficulty:
 		0:  # 沙盒
@@ -1115,6 +1279,290 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 		3:  # 困难
 			ws.数值表[WorldState.I_SCIENCE] = 0
 
+
+# ============================================================================
+# 国家开局硬编码覆盖 -- GameStartScript.cs:574-814 整段移植
+# ============================================================================
+# 原版流程：先读 Country_data_1.txt / South_data.txt，随后无条件逐国覆盖
+# 政体/子意识形态/标签/傀儡。Godot 此前只搬了数值表 data[160-184]，
+# 缺这一段导致马来西亚、大洋洲、非洲、古巴等大量国家开局政体不符。
+# 说明：原版的国名覆盖（如 "扎 伊 尔 共 和 国"）未移植——Godot 的显示名
+# 走 map_countries 中文名/9000+ 中文回退，已优先于 c.name。
+# ============================================================================
+
+static func _legacy(ws: WorldState, id: int) -> CountryData:
+	var c := ws.get_country_by_legacy_index(id)
+	if c == null:
+		push_warning("WorldFactory: 开局覆盖找不到国家 id=%d" % id)
+	return c
+
+
+static func _set_gs(ws: WorldState, id: int, gov: int, sub: int) -> void:
+	var c := _legacy(ws, id)
+	if c != null:
+		c.government = gov
+		c.sub_government = sub
+
+
+static func _copy_gs(ws: WorldState, id: int, from_id: int) -> void:
+	var c := _legacy(ws, id)
+	var src := _legacy(ws, from_id)
+	if c != null and src != null:
+		c.government = src.government
+		c.sub_government = src.sub_government
+
+
+static func _set_tag(ws: WorldState, id: int, tag: String, value: bool) -> void:
+	var c := _legacy(ws, id)
+	if c != null:
+		c.set_tag(tag, value)
+
+
+static func _set_puppet(ws: WorldState, id: int, overlord_id: int) -> void:
+	var c := _legacy(ws, id)
+	if c != null:
+		c.puppet_of = overlord_id
+
+
+static func _clear_alliance_tags(c: CountryData) -> void:
+	## 对应原版 Country.LeaveAlliances()（Country.cs:89-115）
+	for t in START_CLEAR_TAGS:
+		c.tags.erase(t)
+	c.puppet_of = -1
+
+
+static func _leave_and_gs(ws: WorldState, id: int, gov: int, sub: int) -> void:
+	var c := _legacy(ws, id)
+	if c == null:
+		return
+	_clear_alliance_tags(c)
+	c.government = gov
+	c.sub_government = sub
+
+
+static func _apply_country_start_overrides(ws: WorldState) -> void:
+	# —— 无条件覆盖（GameStartScript.cs:574-814）——
+	_set_gs(ws, 11, 1, 16)                        # 越南 → 苏式社会主义（:574-575）
+	_set_gs(ws, 22, 1, 1)                         # 老挝 → 国控社会主义（:577-578）
+	_set_tag(ws, 25, "对华贸易", true)             # 北也门（:579）
+	_set_gs(ws, 27, 3, 4)                         # 奥地利 → 社会民主主义（:580-581）
+	_set_gs(ws, 30, 0, 20)                        # 埃及 → 宪政威权主义（:582-583）
+	_set_gs(ws, 31, 2, 15)                        # 巴基斯坦 → 政治实用主义（:584-585）
+	_set_gs(ws, 41, 2, 15)                        # 埃塞俄比亚（:587-588）
+	_set_gs(ws, 42, 0, 10)                        # 索马里 → 左翼民族主义（:590-591）
+	_set_gs(ws, 49, 0, 20)                        # 马来西亚 → 宪政威权主义（:592-593）
+	_set_tag(ws, 52, "对华贸易", true)             # 刚果（布）（:595）
+	_leave_and_gs(ws, 56, 0, 7)                   # 尼日尔，清联盟（:596-598）
+	_set_puppet(ws, 56, 21)
+	_leave_and_gs(ws, 59, 0, 10)                  # 毛里塔尼亚，清联盟+对华贸易（:600-603）
+	_set_tag(ws, 59, "对华贸易", true)
+	_leave_and_gs(ws, 60, 2, 8)                   # 尼日利亚，清联盟（:605-607）
+	_leave_and_gs(ws, 61, 0, 7)                   # 上沃尔特，清联盟+傀儡法国（:609-612）
+	_set_puppet(ws, 61, 21)
+	_leave_and_gs(ws, 64, 0, 7)                   # 科特迪瓦，清联盟+傀儡法国（:613-616）
+	_set_puppet(ws, 64, 21)
+	var c66 := _legacy(ws, 66)                    # 喀麦隆 sub7+傀儡法国（:617-618）
+	if c66 != null:
+		c66.sub_government = 7
+		c66.puppet_of = 21
+	_set_gs(ws, 67, 0, 20)                        # 利比里亚（:620-621）
+	_set_tag(ws, 68, "亲苏", false)               # 几内亚（:622-623）
+	_set_tag(ws, 68, "对华贸易", true)
+	_set_gs(ws, 92, 3, 4)                         # 英国 → 社会民主主义（:624-625）
+	_set_gs(ws, 94, 2, 8)                         # 塞浦路斯（:626-627）
+	_set_puppet(ws, 97, 19)                       # 不丹（:628）
+	_leave_and_gs(ws, 107, 0, 7)                  # 塞拉利昂（:629-631）
+	_set_puppet(ws, 108, 21)                      # 多哥（:632）
+	_set_gs(ws, 112, 3, 4)                        # 文莱，傀儡法国（:634-636）
+	_set_puppet(ws, 112, 21)
+	_set_gs(ws, 113, 0, 20)                       # 冈比亚 + 亲美（:637-639）
+	_set_tag(ws, 113, "亲美", true)
+	_set_gs(ws, 114, 1, 1)                        # 几内亚比绍 + 对华贸易（:640-642）
+	_set_tag(ws, 114, "对华贸易", true)
+	_set_gs(ws, 115, 0, 9)                        # 赤道几内亚（:643-644）
+	_set_gs(ws, 116, 0, 7)                        # 加蓬，傀儡法国（:645-647）
+	_set_puppet(ws, 116, 21)
+	_set_gs(ws, 117, 0, 7)                        # 扎伊尔 + 对华贸易（:649-651）
+	_set_tag(ws, 117, "对华贸易", true)
+	_set_gs(ws, 118, 0, 7)                        # 乌干达 + 亲苏（:653-655）
+	_set_tag(ws, 118, "亲苏", true)
+	_set_gs(ws, 119, 0, 20)                       # 肯尼亚 + 亲美（:656-658）
+	_set_tag(ws, 119, "亲美", true)
+	_set_gs(ws, 120, 0, 9)                        # 卢旺达（:659-660）
+	_set_gs(ws, 121, 0, 9)                        # 布隆迪（:661-662）
+	_set_gs(ws, 122, 1, 1)                        # 坦桑尼亚 + 亲中+对华贸易（:663-666）
+	_set_tag(ws, 122, "亲中", true)
+	_set_tag(ws, 122, "对华贸易", true)
+	_set_gs(ws, 123, 1, 1)                        # 安哥拉 + 亲苏（:667-669）
+	_set_tag(ws, 123, "亲苏", true)
+	_set_gs(ws, 124, 2, 15)                       # 赞比亚 + 亲中+对华贸易（:670-673）
+	_set_tag(ws, 124, "亲中", true)
+	_set_tag(ws, 124, "对华贸易", true)
+	# 125 马拉维：0/13 原值不变（:674-675）
+	_set_gs(ws, 126, 1, 1)                        # 莫桑比克 + 对华贸易（:676-678）
+	_set_tag(ws, 126, "对华贸易", true)
+	_set_gs(ws, 127, 0, 7)                        # 罗得西亚（津巴布韦），傀儡南非（:679-682）
+	_set_puppet(ws, 127, 131)
+	# 128 纳米比亚：0/13 原值不变
+	_set_gs(ws, 129, 0, 20)                       # 博茨瓦纳（:683-684）
+	_set_puppet(ws, 130, 131)                     # 斯威士兰：0/13 不变，傀儡南非（:685-688）
+	_set_gs(ws, 131, 0, 7)                        # 白人南非（:689-691）
+	_set_gs(ws, 132, 0, 7)                        # 莱索托，傀儡南非（:692-695）
+	_set_puppet(ws, 132, 131)
+	_set_gs(ws, 133, 2, 3)                        # 马达加斯加（:696-698）
+	_set_gs(ws, 134, 3, 5)                        # 巴新，傀儡澳大利亚+亲美（:699-702）
+	_set_puppet(ws, 134, 135)
+	_set_tag(ws, 134, "亲美", true)
+	_set_gs(ws, 135, 3, 6)                        # 澳大利亚 + 亲美（:703-705）
+	_set_tag(ws, 135, "亲美", true)
+	_set_gs(ws, 136, 3, 4)                        # 新西兰 + 亲美（:706-708）
+	_set_tag(ws, 136, "亲美", true)
+	_set_gs(ws, 137, 3, 6)                        # 加拿大 + 亲美+NATO（:709-712）
+	_set_tag(ws, 137, "亲美", true)
+	_set_tag(ws, 137, "nato", true)
+	_set_gs(ws, 138, 1, 2)                        # 古巴 → 马列主义 + 亲苏+经互会（:713-716）
+	_set_tag(ws, 138, "亲苏", true)
+	_set_tag(ws, 138, "sev", true)
+	_set_tag(ws, 139, "亲美", true)               # 海地：0/13 不变 + 亲美（:717-720）
+	_set_gs(ws, 140, 0, 20)                       # 墨西哥 + 亲美（:721-723）
+	_set_tag(ws, 140, "亲美", true)
+	_set_gs(ws, 141, 2, 3)                        # 巴拿马（:724-725）
+	_copy_gs(ws, 142, 92)                         # 伯利兹随英国（:726-727）
+	_set_gs(ws, 143, 0, 20)                       # 多米尼加 + 亲美（:728-730）
+	_set_tag(ws, 143, "亲美", true)
+	_set_gs(ws, 144, 3, 4)                        # 哥斯达黎加（:731-732）
+	_set_gs(ws, 145, 1, 1)                        # 格陵兰（:733-735；原版国名覆盖不移植）
+	_set_gs(ws, 146, 0, 7)                        # 洪都拉斯 + 亲美（:736-738）
+	_set_tag(ws, 146, "亲美", true)
+	_set_gs(ws, 147, 0, 7)                        # 尼加拉瓜 + 亲美（:739-741）
+	_set_tag(ws, 147, "亲美", true)
+	_set_gs(ws, 148, 0, 7)                        # 萨尔瓦多 + 亲美（:742-744）
+	_set_tag(ws, 148, "亲美", true)
+	_set_gs(ws, 149, 0, 7)                        # 危地马拉 + 亲美（:745-747）
+	_set_tag(ws, 149, "亲美", true)
+	# 150 南苏丹 / 151 达尔富尔：0/13 原值不变
+	_set_gs(ws, 152, 2, 3)                        # 牙买加（:748-749）
+	# 153 纳米比亚二号：0/13 原值不变
+	_copy_gs(ws, 154, 21)                         # 新喀里多尼亚随法国（:750-752）
+	_set_puppet(ws, 154, 21)
+	_set_gs(ws, 155, 3, 6)                        # 塞舌尔 + 亲美（:754-756）
+	_set_tag(ws, 155, "亲美", true)
+	# 156 阿扎瓦德 / 157 库尔德斯坦二号：0/13 原值不变
+	_set_gs(ws, 158, 2, 15)                       # 科摩罗（:757-758）
+	_copy_gs(ws, 159, 21)                         # 新赫布里底（瓦努阿图）随法国（:760-762）
+	_set_puppet(ws, 159, 21)
+	_set_gs(ws, 160, 3, 6)                        # 斐济（:764-765）
+	_copy_gs(ws, 161, 92)                         # 所罗门随英国（:767-768）
+	var c162 := _legacy(ws, 162)                  # 南极洲 → 托洛茨基主义（:769）
+	if c162 != null:
+		c162.sub_government = 18
+	# 167/168 原版解析不产生独立国家，不移植（:770-775）
+	_set_tag(ws, 15, "对华贸易", false)           # 南斯拉夫（:776）
+	var c5 := _legacy(ws, 5)                      # spec 归零（:777-779）
+	if c5 != null: c5.special = 0
+	var c21a := _legacy(ws, 21)
+	if c21a != null:
+		c21a.special = 0
+		c21a.social_stability = 0                  # （:780）
+	var c92a := _legacy(ws, 92)
+	if c92a != null: c92a.special = 0
+
+	# 北约（:781-793）
+	for nato_id in [0, 51, 92, 21, 87, 88, 89, 17, 84, 85, 45, 90, 91, 137]:
+		_set_tag(ws, nato_id, "nato", true)
+	# 欧共体（:794-802）
+	for eu_id in [0, 92, 21, 88, 89, 17, 85, 90, 29]:
+		_set_tag(ws, eu_id, "eu", true)
+
+	var c87 := _legacy(ws, 87)                    # 葡萄牙 spec/infl（:804-806）
+	if c87 != null:
+		c87.special = 40
+		c87.influence_china = 10
+		c87.influence_nato = 20
+	var c1 := _legacy(ws, 1)                      # 中国影响力/不稳定（:807-808）
+	if c1 != null:
+		c1.prc_influence = 0
+		c1.level_of_instability = 10
+	var c149 := _legacy(ws, 149)                  # 危地马拉/尼加拉瓜不稳定（:809-810）
+	if c149 != null: c149.level_of_instability = 200
+	var c147 := _legacy(ws, 147)
+	if c147 != null: c147.level_of_instability = 250
+	var c20 := _legacy(ws, 20)                    # 阿尔巴尼亚 → 马列主义（:814）
+	if c20 != null: c20.sub_government = 2
+
+	# dlc[3] 条件块（:815-831）。项目惯例：无 DLC 体系 → dlc[3] 视为恒真
+	# （见 event_007_diplo_crisis_usa.gd:12 注释）。modifies[51] 未建模、OilEat 未建模，跳过。
+	for asean_id in [50, 49, 34, 47]:
+		_set_tag(ws, asean_id, "asean", true)
+	for sento_id in [31, 8]:
+		_set_tag(ws, sento_id, "sento", true)
+	_set_puppet(ws, 22, 11)
+	ws.数值表[143] = 12
+
+	var c92b := _legacy(ws, 92)                   # （:871-872）
+	if c92b != null: c92b.influence_nato = 10
+	var c85 := _legacy(ws, 85)
+	if c85 != null: c85.level_of_development = 75
+
+	# —— 第二段无条件覆盖（GameStartScript.cs:1020-1090）——
+	# 原版在第一段之后、进入场景前还有这一段；上一轮漏移植导致
+	# 伊拉克/叙利亚/波兰/匈牙利/苏丹/乍得/马里/加纳等开局政体不符。
+	for africa_off_id in [53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68,
+			106, 107, 108, 112, 113, 114, 115, 116, 117, 118, 119, 122, 123, 124,
+			125, 126, 127, 128, 129, 130, 131, 132, 133]:
+		var ca := _legacy(ws, africa_off_id)
+		if ca != null: ca.禁用非洲机制 = true
+	var c33 := _legacy(ws, 33)                    # 缅甸（:1022）
+	if c33 != null: c33.influence_china = 50
+	_set_tag(ws, 53, "对华贸易", true)             # 苏丹（:1065）
+	_set_gs(ws, 58, 0, 7)                         # 马里 + 傀儡法国（:1066-1068）
+	_set_puppet(ws, 58, 21)
+	var c65 := _legacy(ws, 65)                    # 中非：sub13 + 傀儡法国（:1069-1071）
+	if c65 != null:
+		c65.sub_government = 13
+		c65.puppet_of = 21
+	_set_tag(ws, 42, "对华贸易", true)             # 索马里（:1072）
+	var c53 := _legacy(ws, 53)                    # 苏丹 sub10（:1073）
+	if c53 != null: c53.sub_government = 10
+	_set_gs(ws, 57, 0, 7)                         # 乍得 + 傀儡法国（:1074-1076）
+	_set_puppet(ws, 57, 21)
+	var c63 := _legacy(ws, 63)                    # 加纳 sub7 + 亲美（:1077/:1087）
+	if c63 != null: c63.sub_government = 7
+	_set_tag(ws, 63, "亲美", true)
+	_set_gs(ws, 2, 2, 21)                         # 波兰 → 革新社会主义（:1078-1079）
+	_set_gs(ws, 4, 2, 21)                         # 匈牙利 → 革新社会主义（:1080-1081）
+	_set_tag(ws, 35, "对华贸易", true)             # 叙利亚（:1082）
+	_set_gs(ws, 35, 2, 15)                        # 叙利亚 → 政治实用主义（:1083-1084）
+	_set_gs(ws, 14, 2, 15)                        # 伊拉克 → 政治实用主义（:1085-1086）
+	_set_gs(ws, 107, 2, 15)                       # 塞拉利昂 → 政治实用主义（:1088-1089）
+
+	# —— 项目增量（用户确认，2026-08-15）：开局吉布提/圭亚那属法国领土 ——
+	# 106 吉布提：原版地图在事件585前按法国着色（CountryScript.cs:4926-4933
+	#   this_number 106 → 21），本项目同时把 map_regions.json 的 522 区域归属法国，
+	#   这里补数据侧 puppet_of 对齐法国。
+	# 77 圭亚那：按用户要求开局属法国（map_regions.json 的 110/120 区域已归属 220）。
+	_set_puppet(ws, 106, 21)
+	_set_puppet(ws, 77, 21)
+
+	print("WorldFactory: 国家开局硬编码覆盖完成（GameStartScript.cs:574-814, 1020-1090）")
+
+
+## 原版 GameState.FixSubs()（GameState.cs:4831-4856）：
+## 按子意识形态把政体归位；原版显式跳过南美 71-83。
+static func _fix_subs(ws: WorldState) -> void:
+	for c in ws.countries:
+		var sid := int(c.原版序号)
+		if sid >= 71 and sid <= 83:
+			continue
+		var sub := c.sub_government
+		if c.government != 0 and sub in [0, 7, 9, 10, 13, 19, 20, 22]:
+			c.government = 0
+		elif c.government != 1 and sub in [1, 2, 16, 17, 18]:
+			c.government = 1
+		elif c.government != 2 and sub in [3, 8, 11, 15, 14, 21]:
+			c.government = 2
+		elif c.government != 3 and sub in [4, 5, 6, 12]:
+			c.government = 3
 
 
 # ============================================================================
@@ -1146,6 +1594,10 @@ static func _init_wars(ws: WorldState) -> void:
 		w.fortnight_elapsed = 0
 		w.diplo_done = [false, false]
 		ws.wars[iid] = w
+	# 原版 ingamewars 是 200 槽（GameState.cs:7824）。
+	# WarCatalog 只定义有静态规则/漂移的战争；其余槽保留 null，
+	# 运行时事件按原版直接写入对应槽（如 Event449→33、Event369→9、Event538→36）。
+	ws.wars.resize(maxi(max_id + 1, 200))
 	print("WorldFactory: 加载了 %d 个战争槽" % ws.wars.size())
 
 

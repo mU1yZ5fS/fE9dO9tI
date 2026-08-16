@@ -1,16 +1,19 @@
 extends Control
 ## 启动加载屏 —— 学习 HOI4:进主菜单前轮播插画 + 进度条。
-## 期间等待 GameManager 完成大地图解码/GPU 上传(其后台线程在 autoload _ready
-## 即启动,早于本屏,故那次上传卡顿被藏在这里),并线程预热首个游戏场景(外交)。
+## 期间并行完成三件事：
+##   1. GameManager 在 autoload _ready 已启动的大地图解码/GPU 上传；
+##   2. EventEngine 后台线程加载全部事件 .tres（原启动硬控主因，现每帧限量收尾）；
+##   3. 线程预热首个游戏场景(外交)。
 ## 布局在 启动加载.tscn,本脚本只做逻辑。
 
 const CONFIG_PATH := "res://资产/数据/启动加载配置.tres"
 const MAIN_MENU_UID := "uid://bydan4iqthbaa"
 const DIPLOMACY_PATH := "res://场景/外交界面/外交.tscn"
 
-# 进度权重:地图 60% + 预热资源 35% + 收尾 5%
-const W_MAP := 0.60
-const W_ASSETS := 0.35
+# 进度权重:地图 45% + 事件 35% + 预热资源 15% + 收尾 5%
+const W_MAP := 0.45
+const W_EVENTS := 0.35
+const W_ASSETS := 0.15
 const W_TAIL := 0.05
 
 @onready var _bg: TextureRect = $背景图
@@ -26,6 +29,9 @@ var _tip_timer := 0.0
 var _elapsed := 0.0
 
 var _map_ready := false
+var _events_ready := false
+var _events_done := 0
+var _events_total := 0
 var _warm_paths: Array[String] = [DIPLOMACY_PATH]
 var _warm_refs: Array = []          # 持有已加载资源,防止被资源缓存回收
 var _warm_taken: Dictionary = {}    # 已 load_threaded_get 过的路径,避免重复取回
@@ -51,6 +57,9 @@ func _ready() -> void:
 	else:
 		_map_ready = true
 
+	# 事件目录后台加载:与地图解码并行;进度条事件段由 signals 驱动。
+	_start_event_scan()
+
 	# 线程预热首个游戏场景(外交.tscn 会连带其 ~50 个依赖:UI/字体/gltf/地球.tres 等)
 	for p in _warm_paths:
 		ResourceLoader.load_threaded_request(p)
@@ -61,6 +70,42 @@ func _ready() -> void:
 
 func _on_map_ready() -> void:
 	_map_ready = true
+
+
+func _start_event_scan() -> void:
+	if EventEngine == null:
+		_events_ready = true
+		return
+	if EventEngine.events_ready:
+		_events_ready = true
+		_events_done = 1
+		_events_total = 1
+		return
+	if not EventEngine.events_scan_progress.is_connected(_on_events_progress):
+		EventEngine.events_scan_progress.connect(_on_events_progress)
+	if not EventEngine.events_scan_finished.is_connected(_on_events_finished):
+		EventEngine.events_scan_finished.connect(_on_events_finished)
+	EventEngine.start_async_scan()
+
+
+func _on_events_progress(done: int, total: int) -> void:
+	_events_done = done
+	_events_total = total
+
+
+func _on_events_finished() -> void:
+	_events_ready = true
+	if _events_total > 0:
+		_events_done = _events_total
+
+
+## 事件段完成比(0~1);启动屏没等到的极端兜底按 0 计,不让进度条虚满。
+func _events_progress() -> float:
+	if _events_ready:
+		return 1.0
+	if _events_total <= 0:
+		return 0.0
+	return clampf(float(_events_done) / float(_events_total), 0.0, 1.0)
 
 
 func _warm_politicians() -> void:
@@ -105,6 +150,8 @@ func _process(delta: float) -> void:
 	_elapsed += delta
 	_advance_carousel(delta)
 	_advance_tips(delta)
+	if EventEngine and not _events_ready:
+		EventEngine.poll_async_scan()
 	_update_progress(delta)
 	_maybe_finish()
 
@@ -162,9 +209,10 @@ func _finalize_warm(path: String) -> void:
 
 func _update_progress(delta: float) -> void:
 	var map_p := 1.0 if _map_ready else 0.0
+	var events_p := _events_progress()
 	var asset_p := _asset_progress()
-	var tail_p := 1.0 if (_map_ready and asset_p >= 0.999) else 0.0
-	var target := (map_p * W_MAP + asset_p * W_ASSETS + tail_p * W_TAIL) * 100.0
+	var tail_p := 1.0 if (_map_ready and _events_ready and asset_p >= 0.999) else 0.0
+	var target := (map_p * W_MAP + events_p * W_EVENTS + asset_p * W_ASSETS + tail_p * W_TAIL) * 100.0
 	# 缓动逼近 + 只增不减:避免大图上传瞬间进度回跳
 	var eased: float = lerpf(_bar.value, target, clampf(delta * 4.0, 0.0, 1.0))
 	_bar.value = maxf(_bar.value, eased)
@@ -173,8 +221,8 @@ func _update_progress(delta: float) -> void:
 func _maybe_finish() -> void:
 	if _finished:
 		return
-	var ready_all := _map_ready and _asset_progress() >= 0.999
+	var ready_all := _map_ready and _events_ready and _asset_progress() >= 0.999
 	if ready_all and _elapsed >= _config.min_display_seconds and _bar.value >= 99.0:
 		_finished = true
-		print("[启动加载] 预热完成,进入主菜单")
+		print("[启动加载] 地图+事件+预热完成,进入主菜单")
 		get_tree().change_scene_to_file(MAIN_MENU_UID)

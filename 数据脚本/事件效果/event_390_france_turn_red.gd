@@ -68,7 +68,7 @@ func _ussr_leader_text(world: WorldState) -> String:
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
-	var num := _calc_num(ws)
+	var _num := _calc_num(ws)
 	var france := ws.get_country_by_legacy_index(21)
 	var opt := int(context.get("option_index", -1))
 	if not ws.get_flag("YugAgree"):

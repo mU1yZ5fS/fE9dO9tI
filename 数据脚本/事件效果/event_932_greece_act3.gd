@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	var opt := int(context.get("option_index", -1))
-	var greece := ws.get_country_by_legacy_index(45)
+	var _greece := ws.get_country_by_legacy_index(45)
 	var result93: int = ws.completed_event_ids.get("event_093", -1)
 	var num := 0
 	var num2 := 0

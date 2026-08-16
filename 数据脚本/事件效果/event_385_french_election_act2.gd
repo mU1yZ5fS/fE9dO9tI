@@ -67,7 +67,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	ws = world
 	var press := _compute_press(world)
-	var france := world.get_country_by_legacy_index(21)
+	var _france := world.get_country_by_legacy_index(21)
 	var infl_ch := _infl_ch(world, press)
 	if world.get_flag("YugAgree"):
 		# 原版改写 new_events_text[958]；端口在 prepare 动态选用文本。
@@ -79,7 +79,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 
 func _prepare_opt385(opt: EventOption, world: WorldState, press: Array) -> void:
-	var france := world.get_country_by_legacy_index(21)
+	var _france := world.get_country_by_legacy_index(21)
 	var infl_ch := _infl_ch(world, press)
 	var fmt_text: String
 	if infl_ch == 0:
@@ -99,7 +99,7 @@ func _prepare_opt385(opt: EventOption, world: WorldState, press: Array) -> void:
 
 
 func _desc_text(world: WorldState, press: Array, infl_ch: int) -> String:
-	var france := world.get_country_by_legacy_index(21)
+	var _france := world.get_country_by_legacy_index(21)
 	var infl_nato := _infl_nato(world, press)
 	var res1: int = randi_range(28, 34)
 	var res2: int = randi_range(20, 26)
@@ -132,8 +132,8 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -50)
 		# 原版 data[131] = num
 		d[131] = num  # 原版 data[131]
-		var cand_ch := _cand_name(infl_ch)
-		var cand_nato := _cand_name(infl_nato)
+		var _cand_ch := _cand_name(infl_ch)
+		var _cand_nato := _cand_name(infl_nato)
 		var winner_name := _cand_name(num)
 		var winner_promise := _promise(num)
 		context["result_text"] = TXT_R_FMT.format([
@@ -148,6 +148,7 @@ func execute(context: Dictionary) -> void:
 				france.set_tag("亲美", true)
 			_add_power(EmpireData.USA, 50)
 			d[131] = 0  # 原版 data[131]
+			Achievements.set_achievement(115)  # 原作 Event385.cs:410-413 iron_and_blood → achievements.Set(115)
 			var portugal := ws.get_country_by_legacy_index(87)
 			if portugal != null:
 				portugal.special += 10
@@ -191,6 +192,7 @@ func execute(context: Dictionary) -> void:
 			if france != null:
 				france.set_tag("亲美", true)
 			_add_power(EmpireData.USA, 50)
+			Achievements.set_achievement(115)  # 原作 Event385.cs:457-460 achievements.Set(115)
 			d[131] = 0  # 原版 data[131]
 		elif infl_ch == 1:
 			if france != null:
@@ -221,10 +223,10 @@ func execute(context: Dictionary) -> void:
 
 func _compute_press(world: WorldState) -> Array:
 	var press: Array = [0, 0, 0, 0]
-	var france := world.get_country_by_legacy_index(21)
+	var _france := world.get_country_by_legacy_index(21)
 	var poland := world.get_country_by_legacy_index(2)
 	var hungary := world.get_country_by_legacy_index(4)
-	var ussr := world.get_country_by_legacy_index(7)
+	var _ussr := world.get_country_by_legacy_index(7)
 	var china := world.get_country_by_legacy_index(1)
 	var usa := world.get_country_by_legacy_index(51)
 	var iran := world.get_country_by_legacy_index(8)
@@ -342,7 +344,7 @@ func _compute_press(world: WorldState) -> Array:
 	return press
 
 
-func _infl_ch(world: WorldState, press: Array) -> int:
+func _infl_ch(_world: WorldState, press: Array) -> int:
 	if press[0] >= press[1] and press[0] >= press[2] and press[0] >= press[3]:
 		return 2
 	elif press[1] >= press[0] and press[1] >= press[2] and press[1] >= press[3]:

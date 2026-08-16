@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_646_healthcare_reform.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.1.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "人民卫生为人民，坚持将生命放在利益之上。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_646_healthcare_reform.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "承认现状，与时俱进。我们必须优化每一笔资金。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_646_healthcare_reform.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "同志们，既然如此，为何不再进一步呢"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_646_healthcare_reform.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_646"
+source_event_number = 646
+trigger_priority = 64600
+title = "济世悬壶，着手成春"
+description = "主席同志，现在让我们谈谈我国在医疗保健方面的制度建设。众所周知，我国的医疗健康制度分为城乡两部分。城市参照苏联经验，实施国企工人、集体产业下属工人与党员干部及工人与干部子女享受医疗保健制度，而农村则是以毛泽东主席“六二六指示”为依据开展了广泛的农村医疗保险合作运动，并培养了一批庞大的赤脚医生群体来进行大规模的流动性诊察、防疫、保健等农村基层医疗工作。无可否认的是，这套体制确实效果显著。到1976年时，整个中国的平均寿命已经提高到了69岁，甚至高于发达国家的平均水平。蒋介石集团统治时期的各种瘟疫和传染病几乎不再有大规模传染的现象，只有偶尔的地区性传播。卓越的卫生保健成就使得世界各国都来学习我们的工作经验，而世界卫生组织更是多次将中国的成就介绍给存在同样问题的发展中国家。除此之外，我国的卫生医疗体制还结合我国实际，发扬了我国的独特医学——中医。这一方面是响应毛泽东同志提出的“中西医结合”理念，另一方面也是针对我国当下现代医学人才不足的现状而做出的妥协。这一方法得到了包括我国尖端医学研究者的广大医疗人员的高度赞誉，走遍乡村的赤脚医生们常常带着“一针一草”作为必备工具。可以说，我国现有的医疗体制，不仅正确地配合了我国的政治工作，推动了我国医学进步，并且弘扬了我国的民族传统，将我国的医学事业逐步推向世界舞台。即使不能说是完美无缺的，也是极其符合我国需求的一套体制。\n然而，就最近几个开明派党员领袖的意见来看，他们对我国现行医疗体制是保持担忧的。在他们看来，城市全覆盖、全报销的公费医疗对我国政府的预算压力过大。而且他们指出，在整个文革时期，医疗保健方面的预算在政府总预算中的比例一度高达百分之十左右。而赤脚医生的文化水平过低，很难开展进一步培训，这就为医疗体制的提效提质造成了不小的阻力。因此，医疗体系的重新精简化势在必行，医疗队伍也要朝着专精化迈进。而为了减轻财政压力，城市方面要设置报销门槛，农村方面则是提高个人承担比例。改革派和开明派表示，这一改动并不会触动医疗的公共服务性质，且三级医疗卫生体系也继续存在，并提供更好的医疗服务。而极左派和部分保守派则谴责改革派成员的短视和逐利思想，他们认为这一改动最终会让医疗资源重新流回城市地区，加剧城乡发展的不平衡。总的来说，这两派的意见都各有其道理。主席同志，您怎么看？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

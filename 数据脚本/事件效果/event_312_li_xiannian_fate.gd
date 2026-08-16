@@ -21,7 +21,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if not _has_politician(world, 7, 7):
 		return false
-	var party_ok := data[W.I_PARTY_SUPPORT] <= 750 and (GameManager.is_faction_leading(0) or GameManager.is_faction_leading(1))
+	var party_ok: bool = data[W.I_PARTY_SUPPORT] <= 750 and (GameManager.is_faction_leading(0) or GameManager.is_faction_leading(1))
 	var chain_ok := (not _has_politician(world, 17, 17)) or world.completed_event_ids.has("event_311")
 	return party_ok or chain_ok
 

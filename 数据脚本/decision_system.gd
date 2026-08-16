@@ -13,7 +13,7 @@ extends RefCounted
 
 ## 决议是否已完成（原版 completedDecisions[idx]）
 static func is_completed(index: int) -> bool:
-	var ws := GameManager.world
+	var ws: WorldState = GameManager.world
 	if ws == null or ws.decisions == null:
 		return false
 	if index < 0 or index >= ws.decisions.completed.size():
@@ -35,7 +35,7 @@ static func is_ready(index: int) -> bool:
 ## 按原版 CreateDecisions 顺序返回可见决议（ready → unready → done）。
 static func ordered_defs() -> Array[DecisionDef]:
 	DecisionCatalog.rebuild()  # 原版每次 Repaint 重建三元分支
-	var ws := GameManager.world
+	var ws: WorldState = GameManager.world
 	var ready: Array[DecisionDef] = []
 	var unready: Array[DecisionDef] = []
 	var done: Array[DecisionDef] = []
@@ -63,7 +63,7 @@ static func execute(index: int) -> bool:
 	if not (def.condition.is_valid() and def.condition.call()):
 		return false
 	def.execute()
-	var ws := GameManager.world
+	var ws: WorldState = GameManager.world
 	if ws != null and ws.decisions != null:
 		while ws.decisions.completed.size() <= index:
 			ws.decisions.completed.append(false)

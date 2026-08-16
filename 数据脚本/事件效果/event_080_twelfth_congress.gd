@@ -38,15 +38,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var mod3 := _mod_active(world, 3)
 	if mod3:
 		event_def.description = TXT_DESC_MOD3
-		var arr: Array[EventOption] = []
-		arr.append(_opts_full[0])
-		arr.append(_opts_full[1])
-		event_def.options = arr
+		var arr_mod3: Array[EventOption] = []
+		arr_mod3.append(_opts_full[0])
+		arr_mod3.append(_opts_full[1])
+		event_def.options = arr_mod3
 		var num := _compute_num(world)
-		var data := world.数值表
-		var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-		var living := data[W.I_LIVING] if data.size() > W.I_LIVING else 0
-		var flag := line < 1 and living >= 500 and world.influence_prc >= 500 and num >= 15
+		var data_mod3 := world.数值表
+		var line_mod3 := data_mod3[W.I_POLITICAL_LINE] if data_mod3.size() > W.I_POLITICAL_LINE else 1
+		var living := data_mod3[W.I_LIVING] if data_mod3.size() > W.I_LIVING else 0
+		var flag := line_mod3 < 1 and living >= 500 and world.influence_prc >= 500 and num >= 15
 		if flag:
 			_enable(event_def.options[0], "中国人民的革命事业要排除万难，从胜利走向胜利！")
 			_disable(event_def.options[1], "革命气势已经不可阻挡！")

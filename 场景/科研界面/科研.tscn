@@ -37,6 +37,14 @@
 [ext_resource type="Texture2D" uid="uid://d0v8rbbnpw1dk" path="res://资产/UI/科研/军事科技_新式间谍装备.png" id="33_74ls4"]
 [ext_resource type="Texture2D" uid="uid://cpim4wd5cgwjo" path="res://资产/UI/科研/军事科技_现代间谍装备.png" id="34_006bw"]
 [ext_resource type="Texture2D" uid="uid://djhr83jlaffec" path="res://资产/UI/科研/军事科技_迎接信息化战争.png" id="35_q7mjd"]
+[ext_resource type="Texture2D" uid="uid://h3ful3cgix68" path="res://资产/UI/科研/航天科技_通讯卫星.png" id="36_0mczk"]
+[ext_resource type="Texture2D" uid="uid://c35t1rksivwmk" path="res://资产/UI/科研/航天科技_导航卫星.png" id="37_1mczk"]
+[ext_resource type="Texture2D" uid="uid://dtnewdki61lr0" path="res://资产/UI/科研/航天科技_军事卫星.png" id="38_2mczk"]
+[ext_resource type="Texture2D" uid="uid://b41urgleiemye" path="res://资产/UI/科研/航天科技_载人航天.png" id="39_3mczk"]
+[ext_resource type="Texture2D" uid="uid://dwkuhbxu7d6di" path="res://资产/UI/科研/航天科技_行星际飞行器.png" id="40_4mczk"]
+[ext_resource type="Texture2D" uid="uid://ddgo4kk5thnvi" path="res://资产/UI/科研/航天科技_轨道空间站.png" id="41_5mczk"]
+[ext_resource type="Texture2D" uid="uid://2kredme6a3hs" path="res://资产/UI/科研/航天科技_航天飞机.png" id="42_6mczk"]
+[ext_resource type="Texture2D" path="res://资产/UI/科研/科研提示板.png" id="43_7mczk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vg3t2"]
 bg_color = Color(0.2901961, 0.11764706, 0.19215687, 1)
@@ -125,6 +133,61 @@ theme_override_font_sizes/font_size = 56
 text = "11111"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="提示层" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="科研提示板" type="TextureRect" parent="提示层"]
+visible = false
+offset_left = 91.0
+offset_top = 789.0
+offset_right = 1711.0
+offset_bottom = 1057.0
+texture = ExtResource("43_7mczk")
+mouse_filter = 2
+
+[node name="提示标题" type="Label" parent="提示层"]
+visible = false
+offset_left = 662.0
+offset_top = 790.0
+offset_right = 1262.0
+offset_bottom = 840.0
+theme_override_colors/font_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 28
+text = "科技名称"
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+
+[node name="提示状态" type="RichTextLabel" parent="提示层"]
+visible = false
+offset_left = 462.0
+offset_top = 824.0
+offset_right = 1462.0
+offset_bottom = 872.0
+theme_override_colors/default_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/normal_font = ExtResource("5_4vumy")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+scroll_active = false
+mouse_filter = 2
+text = "[center][color=red]0.0[/color] 资金[/center]"
+
+[node name="提示描述" type="RichTextLabel" parent="提示层"]
+visible = false
+offset_left = 116.0
+offset_top = 868.0
+offset_right = 1701.0
+offset_bottom = 1041.0
+theme_override_colors/default_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/normal_font = ExtResource("5_4vumy")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+scroll_active = false
+autowrap_mode = 3
+mouse_filter = 2
+text = "科技介绍"
 
 [node name="科研关系_纵向" type="TextureRect" parent="." unique_id=1213856115]
 layout_mode = 0
@@ -1291,6 +1354,294 @@ offset_left = 687.0
 offset_top = 893.0
 offset_right = 746.0
 offset_bottom = 929.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 31
+text = "1976"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="航天科技" type="Control" parent="." unique_id=117949530]
+anchors_preset = 0
+offset_left = 472.0
+offset_top = 1008.0
+offset_right = 512.0
+offset_bottom = 1048.0
+
+[node name="科研关系_纵向_航天" type="TextureRect" parent="航天科技" unique_id=1675282970]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 48.0
+offset_right = 968.0
+offset_bottom = 1312.0
+texture = ExtResource("8_54mkj")
+
+[node name="通讯卫星" type="TextureButton" parent="航天科技" unique_id=555035970]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 48.0
+offset_right = 1044.0
+offset_bottom = 200.0
+texture_normal = ExtResource("36_0mczk")
+
+[node name="通讯卫星_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=585261281]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 123.0
+offset_right = 898.0
+offset_bottom = 148.0
+texture = ExtResource("10_y4ldg")
+
+[node name="通讯卫星_科研进度" type="ProgressBar" parent="航天科技" unique_id=295579397]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 56.0
+offset_right = 1036.0
+offset_bottom = 192.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
+fill_mode = 3
+show_percentage = false
+
+[node name="通讯卫星_解锁年份" type="Label" parent="航天科技" unique_id=368177673]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 157.0
+offset_right = 970.0
+offset_bottom = 193.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 31
+text = "1976"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="导航卫星" type="TextureButton" parent="航天科技" unique_id=525962438]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 232.0
+offset_right = 1044.0
+offset_bottom = 384.0
+texture_normal = ExtResource("37_1mczk")
+
+[node name="导航卫星_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=1046961923]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 307.0
+offset_right = 898.0
+offset_bottom = 332.0
+texture = ExtResource("12_7fiuk")
+
+[node name="导航卫星_科研进度" type="ProgressBar" parent="航天科技" unique_id=367164636]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 240.0
+offset_right = 1036.0
+offset_bottom = 376.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
+fill_mode = 3
+show_percentage = false
+
+[node name="导航卫星_解锁年份" type="Label" parent="航天科技" unique_id=540234113]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 341.0
+offset_right = 970.0
+offset_bottom = 377.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 31
+text = "1976"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="军事卫星" type="TextureButton" parent="航天科技" unique_id=2004668190]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 416.0
+offset_right = 1044.0
+offset_bottom = 568.0
+texture_normal = ExtResource("38_2mczk")
+
+[node name="军事卫星_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=655338548]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 491.0
+offset_right = 898.0
+offset_bottom = 516.0
+texture = ExtResource("12_7fiuk")
+
+[node name="军事卫星_科研进度" type="ProgressBar" parent="航天科技" unique_id=280342466]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 424.0
+offset_right = 1036.0
+offset_bottom = 560.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
+fill_mode = 3
+show_percentage = false
+
+[node name="军事卫星_解锁年份" type="Label" parent="航天科技" unique_id=380666409]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 525.0
+offset_right = 970.0
+offset_bottom = 561.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 31
+text = "1976"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="载人航天" type="TextureButton" parent="航天科技" unique_id=665935681]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 608.0
+offset_right = 1044.0
+offset_bottom = 760.0
+texture_normal = ExtResource("39_3mczk")
+
+[node name="载人航天_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=276435744]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 683.0
+offset_right = 898.0
+offset_bottom = 708.0
+texture = ExtResource("12_7fiuk")
+
+[node name="载人航天_科研进度" type="ProgressBar" parent="航天科技" unique_id=1354084990]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 616.0
+offset_right = 1036.0
+offset_bottom = 752.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
+fill_mode = 3
+show_percentage = false
+
+[node name="载人航天_解锁年份" type="Label" parent="航天科技" unique_id=1430763787]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 717.0
+offset_right = 970.0
+offset_bottom = 753.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 31
+text = "1976"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="行星际飞行器" type="TextureButton" parent="航天科技" unique_id=911397141]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 792.0
+offset_right = 1044.0
+offset_bottom = 944.0
+texture_normal = ExtResource("40_4mczk")
+
+[node name="行星际飞行器_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=1712186989]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 867.0
+offset_right = 898.0
+offset_bottom = 892.0
+texture = ExtResource("12_7fiuk")
+
+[node name="行星际飞行器_科研进度" type="ProgressBar" parent="航天科技" unique_id=175287495]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 800.0
+offset_right = 1036.0
+offset_bottom = 936.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
+fill_mode = 3
+show_percentage = false
+
+[node name="行星际飞行器_解锁年份" type="Label" parent="航天科技" unique_id=319447658]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 901.0
+offset_right = 970.0
+offset_bottom = 937.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 31
+text = "1976"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="轨道空间站" type="TextureButton" parent="航天科技" unique_id=1210300013]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 976.0
+offset_right = 1044.0
+offset_bottom = 1128.0
+texture_normal = ExtResource("41_5mczk")
+
+[node name="轨道空间站_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=550464748]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 1051.0
+offset_right = 898.0
+offset_bottom = 1076.0
+texture = ExtResource("12_7fiuk")
+
+[node name="轨道空间站_科研进度" type="ProgressBar" parent="航天科技" unique_id=361520430]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 984.0
+offset_right = 1036.0
+offset_bottom = 1120.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
+fill_mode = 3
+show_percentage = false
+
+[node name="轨道空间站_解锁年份" type="Label" parent="航天科技" unique_id=2119035747]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 1085.0
+offset_right = 970.0
+offset_bottom = 1121.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 31
+text = "1976"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="航天飞机" type="TextureButton" parent="航天科技" unique_id=864318950]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 1160.0
+offset_right = 1044.0
+offset_bottom = 1312.0
+texture_normal = ExtResource("42_6mczk")
+
+[node name="航天飞机_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=1503796854]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 1235.0
+offset_right = 898.0
+offset_bottom = 1260.0
+texture = ExtResource("12_7fiuk")
+
+[node name="航天飞机_科研进度" type="ProgressBar" parent="航天科技" unique_id=1087377632]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 1168.0
+offset_right = 1036.0
+offset_bottom = 1304.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
+fill_mode = 3
+show_percentage = false
+
+[node name="航天飞机_解锁年份" type="Label" parent="航天科技" unique_id=1666838822]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 1269.0
+offset_right = 970.0
+offset_bottom = 1305.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
 theme_override_font_sizes/font_size = 31

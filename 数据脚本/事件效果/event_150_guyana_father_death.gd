@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - GetWinnerInAmerica / WantToLeave 逐行移植；
 ##  - 原版 string.Format 的 <color=red> 标签剥除，红字用 TXT_FRIEND / TXT_ENEMY 拼接；
-##  - 原版 iron_and_blood 成就 achievements.Set 未建模，跳过并注释；
+##  - iron_and_blood 成就已接 Achievements（Set 编号见 execute 内注释）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
 const TXT_TITLE := "国父的逝世"
@@ -298,7 +298,8 @@ func execute(context: Dictionary) -> void:
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -5)
 		_add_power(EmpireData.USSR, 15)
-		# 原版 iron_and_blood 成就 achievements.Set(99)，未建模跳过。
+		# 原作 Event150.cs:143：iron_and_blood → achievements.Set(99)
+		Achievements.set_achievement(99)
 		context["result_text"] = TXT_R8 + _friend_suffix(c)
 		return
 	if c.sub_government == 9:
@@ -307,5 +308,6 @@ func execute(context: Dictionary) -> void:
 		c.level_of_development -= 5
 		_add_power(EmpireData.USA, 15)
 		_add_power(EmpireData.USSR, -5)
-		# 原版 iron_and_blood 成就 achievements.Set(100)，未建模跳过。
+		# 原作 Event150.cs:157：iron_and_blood → achievements.Set(100)
+		Achievements.set_achievement(100)
 		context["result_text"] = TXT_R9 + _friend_suffix(c)

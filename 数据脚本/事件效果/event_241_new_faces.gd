@@ -56,7 +56,7 @@ func execute(context: Dictionary) -> void:
 			var idx2 := _find_weakest_non_left_radical()
 			if idx2 >= 0:
 				PoliticianSystem.kill_politician(idx2)
-				_overwrite_politician(idx2, 43, 54, 1933, 0, 26, 5, 31, "马天水")
+				_overwrite_politician(idx2, 43, 54, 1933, 0, 26, 5, 31, "徐景贤")
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue

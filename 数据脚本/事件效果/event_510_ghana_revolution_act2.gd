@@ -40,11 +40,11 @@ func execute(context: Dictionary) -> void:
 	var c63 := ws.get_country_by_legacy_index(63)
 	match opt:
 		0:
-			if int(ws.completed_event_ids.get("event_509", 0))  not = 2:
+			if int(ws.completed_event_ids.get("event_509", 0)) != 2:
 				context["result_text"] = TXT_R0_A
 			else:
 				context["result_text"] = TXT_R0_B
-			if int(ws.completed_event_ids.get("event_509", 0))  not = 2:
+			if int(ws.completed_event_ids.get("event_509", 0)) != 2:
 				if c63 != null: _leave_alliances(c63)
 				if c63 != null: c63.government = 0
 				if c63 != null: c63.sub_government = 10
@@ -77,10 +77,11 @@ func execute(context: Dictionary) -> void:
 				if c63 != null: c63.set_tag("亲苏", true)
 				if c63 != null: c63.set_tag("对华贸易", false)
 		2:
-			if int(ws.completed_event_ids.get("event_509", 0))  not = 2:
+			if int(ws.completed_event_ids.get("event_509", 0)) != 2:
 				context["result_text"] = TXT_R2_A
-			context["result_text"] = TXT_R2_B
-			if int(ws.completed_event_ids.get("event_509", 0))  not = 2:
+			else:
+				context["result_text"] = TXT_R2_B
+			if int(ws.completed_event_ids.get("event_509", 0)) != 2:
 				if c63 != null: _leave_alliances(c63)
 				if c63 != null: c63.government = 0
 				if c63 != null: c63.sub_government = 10

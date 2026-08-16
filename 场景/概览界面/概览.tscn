@@ -497,26 +497,7 @@ theme_override_fonts/italics_font = ExtResource("6_j2qql")
 theme_override_fonts/mono_font = ExtResource("6_j2qql")
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
-text = "[color=red][font_size=30]当前数据相较于1976年的百分比[/font_size][/color]
-出口规模：
-96%
-进口需求：
-100%[0]
-
-
-[color=red][font_size=30]差额[/font_size][/color]
-相较于1975年的百分比：
--4%
-贸易利润
-每两周:-0.2
-人民支持度:
-每两周:-0.1
-生活水平:
-每两周:-0.1
-
-
-[color=red][font_size=30]世界市场参与[/font_size][/color]
-平衡主义"
+text = "尚未开始游戏"
 horizontal_alignment = 1
 
 [node name="显示影响概览" type="Button" parent="." unique_id=96887634]
@@ -549,24 +530,7 @@ theme_override_fonts/italics_font = ExtResource("6_j2qql")
 theme_override_fonts/mono_font = ExtResource("6_j2qql")
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
-text = "[color=red][font_size=30]全球影响[/font_size][/color]
-[color=darkred][font_size=25]苏联的世界影响力:[/font_size][/color]
-30.0
-[color=darkblue][font_size=25]美国的世界影响力:[/font_size][/color]
-28.0
-影响美苏在非洲的争夺结果
-
-
-[color=red][font_size=30]苏联领导人[/font_size][/color]
-列昂尼德·勃列日涅夫
-提升苏联的非洲干涉行动花费
-若中苏关系尚未解冻:
-与美国的关系+0.5;凝聚力-0.2
-[color=darkred]
-
-
-[color=red][font_size=30]军备竞赛[/font_size][/color]
-我们不参与军备竞赛"
+text = "尚未开始游戏"
 horizontal_alignment = 1
 
 [node name="显示领土概览" type="Button" parent="." unique_id=1825013116]
@@ -599,22 +563,7 @@ theme_override_fonts/italics_font = ExtResource("6_j2qql")
 theme_override_fonts/mono_font = ExtResource("6_j2qql")
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
-text = "[color=red][font_size=30]中国大陆[/font_size][/color]
-西藏是中国领土不可分割的一部分
-新疆是中国领土不可分割的一部分
-港澳地区被外国势力控制
-蒙古是亲苏的独立主权国家
-
-
-[color=red][font_size=30]台湾地区[/font_size][/color]
-中华民国-国民党统治
-（威权主义，少数国家承认）
-台湾岛屿：
-在国民党控制下
-
-
-[color=red][font_size=30]藏南地区[/font_size][/color]
-被印度实际控制，并未被我方承认"
+text = "尚未开始游戏"
 horizontal_alignment = 1
 
 [node name="显示形势概览" type="Button" parent="." unique_id=1212024508]
@@ -646,19 +595,7 @@ theme_override_fonts/italics_font = ExtResource("6_j2qql")
 theme_override_fonts/mono_font = ExtResource("6_j2qql")
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
-text = "[color=red][font_size=30]伊朗[/font_size][/color]
-沙阿政权依然巩固
-
-
-
-[color=red][font_size=30]阿富汗[/font_size][/color]
-毛主义者力量：3.0
-人民派力量：0.2
-旗帜派力量：0.4
-
-
-[color=red][font_size=30]美国总统[/font_size][/color]
-杰拉尔德·福特"
+text = "尚未开始游戏"
 horizontal_alignment = 1
 
 [node name="显示凝聚力概览" type="Button" parent="." unique_id=402819111]
@@ -690,23 +627,7 @@ theme_override_fonts/italics_font = ExtResource("6_j2qql")
 theme_override_fonts/mono_font = ExtResource("6_j2qql")
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
-text = "[color=red][font_size=30]世界观瞻[/font_size][/color]
-现状：
-多元一体理念（50.0/100.0）
-
-国家凝聚力（65.0/100.0）
-
-
-
-[color=red][font_size=30]特殊影响[/font_size][/color]
-无
-
-
-[color=red][font_size=30]人口[/font_size][/color]
-930.7百万（+0.0）
-工业+0.1；预算+0.0
-特工网络+0.0；军事实力+0.0
-人民支持度+0.0"
+text = "尚未开始游戏"
 horizontal_alignment = 1
 
 [node name="显示盟友概览" type="Button" parent="." unique_id=856656387]
@@ -737,9 +658,8 @@ theme_override_fonts/italics_font = ExtResource("6_j2qql")
 theme_override_fonts/mono_font = ExtResource("6_j2qql")
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
-text = "[color=red][font_size=30]中国人民的老朋友[/font_size][/color]
-我们不属于任何联盟
-"
+text = "尚未开始游戏"
+
 horizontal_alignment = 1
 
 [node name="修正显示区域" type="Control" parent="." unique_id=2077424178]

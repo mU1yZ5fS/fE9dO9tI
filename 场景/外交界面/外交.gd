@@ -4,6 +4,7 @@ extends Node3D
 ## 节点结构（来自 外交.tscn）：
 ##   外交 (Node3D, 本脚本)
 ##     地球 (MeshInstance3D + territory_map.gd)
+##       战争图标 (Node3D + 战争图标管理.gd) → 36 个 Sprite3D 战争小图标
 ##     主游戏ui (实例化)
 ##     时间 (CanvasLayer)
 ##       时间背景
@@ -12,6 +13,9 @@ extends Node3D
 ##       速度1~4 (ColorRect) → 速度档位指示灯
 ##       速度按钮1~4 (Button) → 切换速度档位
 ##     右侧栏 (CanvasLayer + 右侧栏.gd)
+##     预警图标 (CanvasLayer)
+##       科研未研究提示 (TextureRect) → 原版 alarmIcons[0]
+##       阴谋临近提示 (TextureRect) → 原版 alarmIcons[1]
 ##     ESC菜单 (CanvasLayer + esc菜单.gd)
 
 var ESC菜单_open: bool = false
@@ -20,6 +24,9 @@ var _resume_after_esc: bool = false
 var _speed_blocks: Array[ColorRect] = []
 const SPEED_BLOCK_ON := Color(0.92, 0.12, 0.12, 1.0)    # 亮红色
 const SPEED_BLOCK_OFF := Color(0.18, 0.08, 0.08, 0.55)   # 暗红色
+# 原版 Diplomacy.unity alarmIcons[0]/[1] 的 OkoshkoScript.text_en 文案
+const 科研未研究提示文本 := "<color=red>研究完成</color>. 前往科学界面并点击任意科技图标继续"
+const 阴谋临近提示文本 := "<color=red>有针对你的阴谋</color>. 提升党内支持度,政客的忠诚度,要不然干脆开始调查或清除惹麻烦的政客."
 
 func _ready() -> void:
 	# 始终处理，确保暂停时仍能接收 ESC 输入
@@ -48,9 +55,15 @@ func _ready() -> void:
 	if GameManager:
 		GameManager.date_changed.connect(_on_date_changed)
 		GameManager.world_state_loaded.connect(_on_world_loaded)
+		if not GameManager.tech_completed.is_connected(_on_tech_completed):
+			GameManager.tech_completed.connect(_on_tech_completed)
 		if GameManager.world != null:
 			_on_world_loaded()
-		_refresh_speed_indicator()
+
+	# 预警图标：挂 BbcTooltip 悬浮提示 + 按当前世界状态刷新可见性
+	_setup_alert_icons()
+	_refresh_alert_icons()
+	_refresh_speed_indicator()
 
 	# 连接事件通知信号 → 显示/隐藏提示弹窗
 	if EventEngine:
@@ -103,7 +116,7 @@ func _on_speed_pressed(speed: int) -> void:
 	_refresh_speed_indicator()
 
 func _refresh_speed_indicator() -> void:
-	var current := GameManager.speed if GameManager else 0
+	var current: int = GameManager.speed if GameManager else 0
 	for i in _speed_blocks.size():
 		_speed_blocks[i].color = SPEED_BLOCK_ON if (i + 1) <= current else SPEED_BLOCK_OFF
 
@@ -114,14 +127,43 @@ func _refresh_speed_indicator() -> void:
 func _on_world_loaded() -> void:
 	if GameManager.world:
 		_refresh_date(GameManager.world.date)
+	_refresh_alert_icons()
 
 func _on_date_changed(date: GameDate) -> void:
 	_refresh_date(date)
+	_refresh_alert_icons()
 
 func _refresh_date(date: GameDate) -> void:
 	var lbl := get_node_or_null("时间/时间")
 	if lbl is Label:
 		lbl.text = date.format()
+
+
+# ── 预警图标（原版 TimeScript alarmIcons[0]/[1]） ──
+
+func _setup_alert_icons() -> void:
+	var science := get_node_or_null("预警图标/科研未研究提示") as Control
+	if science:
+		science.tooltip_text = 科研未研究提示文本
+		BbcTooltip.attach(science)
+	var plot := get_node_or_null("预警图标/阴谋临近提示") as Control
+	if plot:
+		plot.tooltip_text = 阴谋临近提示文本
+		BbcTooltip.attach(plot)
+
+
+func _refresh_alert_icons() -> void:
+	var science := get_node_or_null("预警图标/科研未研究提示") as CanvasItem
+	if science:
+		science.visible = GameManager.science_alert_active() if GameManager else false
+	var plot := get_node_or_null("预警图标/阴谋临近提示") as CanvasItem
+	if plot:
+		plot.visible = GameManager.plot_alert_active() if GameManager else false
+
+
+func _on_tech_completed(_tech_id: int) -> void:
+	_refresh_alert_icons()
+
 
 # ── ESC 菜单 ──
 

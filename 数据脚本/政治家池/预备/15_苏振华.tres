@@ -17,5 +17,5 @@ trait_special = 11
 loyalty = 330
 power = 120
 age = 64
-faction = 1
+faction = 2
 wanted_position = 3

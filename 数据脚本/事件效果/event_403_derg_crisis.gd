@@ -93,6 +93,7 @@ const TXT_IDX_1169 := "为了取得更多的苏联援助，门格斯图别无选
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	if d.size() <= W.I_YEAR:
 		return false
@@ -120,6 +121,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var opt := event_def.options
 	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)

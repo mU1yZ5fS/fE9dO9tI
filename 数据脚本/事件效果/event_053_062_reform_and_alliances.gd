@@ -716,6 +716,7 @@ func _summa_3_2() -> int:
 			num += int(ws.factions[i].support)
 	if den == 0:
 		return 0
+	@warning_ignore("integer_division")
 	return num * 100 / den
 
 

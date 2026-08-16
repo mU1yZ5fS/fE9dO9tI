@@ -98,6 +98,7 @@ func _fmt(s: String, args: Array) -> String:
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	if d.size() <= W.I_YEAR:
 		return false
@@ -118,6 +119,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var italy := world.get_country_by_legacy_index(85)
 	var opt := event_def.options
@@ -146,33 +148,28 @@ func execute(context: Dictionary) -> void:
 			_add(178, 1)
 			_add(179, 2)
 			_add(W.I_BUDGET, -80)
-			context["result_text"] = _fmt(TXT_R[0], ["
-", _fm_name(), ""]) + _funeral_tail()
+			context["result_text"] = _fmt(TXT_R[0], ["\n", _fm_name(), ""]) + _funeral_tail()
 		elif opt == 1:
 			_add(W.I_DIPLO, -10)
 			_add(W.I_BUDGET, -80)
 			_add_relation(EmpireData.USA, -50)
 			_add_relation(EmpireData.USSR, 50)
 			_add(181, 2)
-			context["result_text"] = _fmt(TXT_R[1], ["
-", _fm_name(), ""]) + _funeral_tail()
+			context["result_text"] = _fmt(TXT_R[1], ["\n", _fm_name(), ""]) + _funeral_tail()
 		elif opt == 2:
 			_add_relation(EmpireData.USA, -10)
 			_add_relation(EmpireData.USSR, 50)
 			_add(W.I_DIPLO, -10)
-			context["result_text"] = _fmt(TXT_R[2], ["
-", _fm_name(), ""]) + _funeral_tail()
+			context["result_text"] = _fmt(TXT_R[2], ["\n", _fm_name(), ""]) + _funeral_tail()
 		elif opt == 3:
-			context["result_text"] = _fmt(TXT_R[3], ["
-", _fm_name(), ""]) + _funeral_tail()
+			context["result_text"] = _fmt(TXT_R[3], ["\n", _fm_name(), ""]) + _funeral_tail()
 		elif opt == 4:
 			_add_relation(EmpireData.USA, 50)
 			_add_relation(EmpireData.USSR, -10)
 			_add(W.I_DIPLO, 20)
 			if italy != null:
 				italy.set_tag("对华贸易", false)
-			context["result_text"] = _fmt(TXT_R[4], ["
-", _fm_name(), ""]) + _funeral_tail()
+			context["result_text"] = _fmt(TXT_R[4], ["\n", _fm_name(), ""]) + _funeral_tail()
 		if italy != null and italy.has_tag("soc_eu"):
 			_add(180, 1)
 			_add(179, 1)
@@ -191,6 +188,7 @@ func execute(context: Dictionary) -> void:
 		if italy != null and not italy.has_tag("eu"):
 			_add(179, 2)
 		if _raw(134) > 0:
+			@warning_ignore("integer_division")
 			_add(178, int(_raw(134) / 50))
 		if italy != null and italy.level_of_development > 60:
 			_add(181, 2)
@@ -229,15 +227,13 @@ func execute(context: Dictionary) -> void:
 					italy.government = 2
 					italy.sub_government = 14
 					italy.set_tag("亲美", false)
-				context["result_text"] += _fmt(TXT_R_APPEND[0], ["
-", _fm_name(), ""])
+				context["result_text"] += _fmt(TXT_R_APPEND[0], ["\n", _fm_name(), ""])
 			elif _raw(181) >= _raw(178) and _raw(181) >= _raw(179) and _raw(181) >= _raw(180):
 				if italy != null:
 					italy.government = 3
 					italy.sub_government = 4
 					italy.set_tag("亲美", false)
-				context["result_text"] += _fmt(TXT_R_APPEND[1], ["
-", _fm_name(), ""])
+				context["result_text"] += _fmt(TXT_R_APPEND[1], ["\n", _fm_name(), ""])
 			elif _raw(179) >= _raw(178) and _raw(179) >= _raw(181) and _raw(179) >= _raw(180):
 				if italy != null:
 					italy.government = 2
@@ -245,15 +241,13 @@ func execute(context: Dictionary) -> void:
 					italy.set_tag("亲美", false)
 					italy.set_tag("nato", false)
 					italy.set_tag("eu", false)
-				context["result_text"] += _fmt(TXT_R_APPEND[2], ["
-", _fm_name(), ""])
+				context["result_text"] += _fmt(TXT_R_APPEND[2], ["\n", _fm_name(), ""])
 			else:
 				if italy != null:
 					italy.government = 3
 					italy.sub_government = 4
 					italy.set_tag("亲美", false)
-				context["result_text"] += _fmt(TXT_R_APPEND[3], ["
-", _fm_name(), ""])
+				context["result_text"] += _fmt(TXT_R_APPEND[3], ["\n", _fm_name(), ""])
 		else:
 			if _raw(179) >= _raw(178) and _raw(179) >= _raw(181) and _raw(179) >= _raw(180):
 				if italy != null:
@@ -262,8 +256,7 @@ func execute(context: Dictionary) -> void:
 					italy.set_tag("亲美", false)
 					italy.set_tag("nato", false)
 					italy.set_tag("eu", false)
-				context["result_text"] += _fmt(TXT_R_APPEND[4], ["
-", _fm_name(), ""])
+				context["result_text"] += _fmt(TXT_R_APPEND[4], ["\n", _fm_name(), ""])
 			else:
 				if italy != null:
 					italy.government = 1
@@ -271,24 +264,20 @@ func execute(context: Dictionary) -> void:
 					italy.set_tag("亲美", false)
 					italy.set_tag("nato", false)
 					italy.set_tag("eu", false)
-				context["result_text"] += _fmt(TXT_R_APPEND[5], ["
-", _fm_name(), ""])
+				context["result_text"] += _fmt(TXT_R_APPEND[5], ["\n", _fm_name(), ""])
 	else:
 		if opt == 2:
 			_add_relation(EmpireData.USA, -10)
 			_add_relation(EmpireData.USSR, 50)
 			_add(W.I_DIPLO, -10)
-			context["result_text"] = _fmt(TXT_R[5], ["
-", _fm_name(), ""]) + _funeral_tail()
+			context["result_text"] = _fmt(TXT_R[5], ["\n", _fm_name(), ""]) + _funeral_tail()
 		elif opt == 3:
-			context["result_text"] = _fmt(TXT_R[6], ["
-", _fm_name(), ""]) + _funeral_tail()
+			context["result_text"] = _fmt(TXT_R[6], ["\n", _fm_name(), ""]) + _funeral_tail()
 		elif opt == 4:
 			_add_relation(EmpireData.USA, 50)
 			_add_relation(EmpireData.USSR, -10)
 			_add(W.I_DIPLO, 20)
-			context["result_text"] = _fmt(TXT_R[7], ["
-", _fm_name(), ""]) + _funeral_tail()
+			context["result_text"] = _fmt(TXT_R[7], ["\n", _fm_name(), ""]) + _funeral_tail()
 
 func _raw(i: int) -> int:
 	if d.size() > i:

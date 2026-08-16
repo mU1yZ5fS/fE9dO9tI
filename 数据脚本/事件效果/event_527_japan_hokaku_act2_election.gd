@@ -64,14 +64,14 @@ func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	var opt := int(context.get("option_index", -1))
-	var c44 := ws.get_country_by_legacy_index(44)
+	var _c44 := ws.get_country_by_legacy_index(44)
 	match opt:
 		0:
-			if int(ws.completed_event_ids.get("event_522", 0))  not = 0:
+			if int(ws.completed_event_ids.get("event_522", 0)) != 0:
 				context["result_text"] = TXT_R0_A
 			else:
 				context["result_text"] = TXT_R0_B
-			if int(ws.completed_event_ids.get("event_522", 0))  not = 0:
+			if int(ws.completed_event_ids.get("event_522", 0)) != 0:
 				# UNHANDLED: this.a.allcountries[44].Gosstroy = 2
 				# UNHANDLED: this.a.allcountries[44].SubGosstroy = 8
 				# UNHANDLED: this.a.allcountries[44].Vyshi = false

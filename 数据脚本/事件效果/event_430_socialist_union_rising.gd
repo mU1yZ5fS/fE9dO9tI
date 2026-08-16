@@ -97,7 +97,8 @@ func execute(context: Dictionary) -> void:
 	var flag3 := (france != null and france.has_tag("nato")) \
 			or (spain != null and spain.has_tag("nato")) \
 			or (italy != null and italy.has_tag("nato"))
-	# 成就 Set(127)（iron_and_blood）为展示层成就，跳过。
+	# 原作 Event430.cs:56：iron_and_blood → achievements.Set(127)
+	Achievements.set_achievement(127)
 	if france != null:
 		_leave_alliances(france)
 	if spain != null:

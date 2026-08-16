@@ -58,6 +58,7 @@ func _fmt(s: String, args: Array) -> String:
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	if d.size() <= W.I_YEAR:
 		return false

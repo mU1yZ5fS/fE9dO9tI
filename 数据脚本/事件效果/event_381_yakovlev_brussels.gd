@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 ## 差异：
 ##  - 标题按 c87.isNATO 动态改写；c7/c17 政体与 c17.parts[0] 逐项移植；
-##  - 原版 iron_and_blood 成就 Set(132)，端口无成就系统，跳过。
+##  - 原版 iron_and_blood 成就 Set(132) 已接 Achievements。
 
 const TXT_TITLE_NATO := "从里斯本到符拉迪沃斯托克"
 const TXT_TITLE_OTHER := "从波恩到符拉迪沃斯托克"
@@ -45,7 +45,8 @@ func execute(context: Dictionary) -> void:
 	if ussr != null:
 		ussr.government = 2
 		ussr.sub_government = 3
-	# 原版 iron_and_blood 成就 Set(132)，跳过
+	# 原作 Event381.cs:56：iron_and_blood → achievements.Set(132)
+	Achievements.set_achievement(132)
 	var germany := ws.get_country_by_legacy_index(17)
 	if germany != null:
 		if germany.parts.size() < 1:

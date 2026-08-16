@@ -1,22 +1,23 @@
 [gd_scene format=3 uid="uid://b6l0sieu63sgv"]
 
-[ext_resource type="Texture2D" uid="uid://dghufbk22c6mf" path="" id="1_cq6xe"]
-[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="" id="1_ioabl"]
-[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="" id="2_0f5pc"]
-[ext_resource type="Script" uid="uid://d2oyrxvvkv6pw" path="" id="2_d8khx"]
-[ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="" id="3_ioabl"]
-[ext_resource type="Texture2D" uid="uid://bbqmlpf484xsg" path="" id="4_d8khx"]
-[ext_resource type="Texture2D" uid="uid://cecvpe5obv57k" path="" id="5_v75l0"]
-[ext_resource type="Texture2D" uid="uid://ddlatnm5n6orn" path="" id="6_4lujy"]
-[ext_resource type="Texture2D" uid="uid://cyvh88oq1sybe" path="" id="7_cm5al"]
-[ext_resource type="Script" uid="uid://witg74bkog08" path="" id="7_v75l0"]
-[ext_resource type="Texture2D" uid="uid://gu82xjrtnb7e" path="" id="8_owh4n"]
-[ext_resource type="Texture2D" uid="uid://cp3ou6l8whjic" path="" id="12_cm5al"]
-[ext_resource type="Texture2D" uid="uid://l7yjfwrmjs3" path="" id="13_owh4n"]
-[ext_resource type="Texture2D" uid="uid://8eufacjq8ce2" path="" id="14_owh4n"]
-[ext_resource type="PackedScene" uid="uid://dvrbfsm4ixjq6" path="" id="15_5n7di"]
-[ext_resource type="PackedScene" uid="uid://er1exkjd2a6b" path="" id="17_ujnel"]
-[ext_resource type="Texture2D" uid="uid://cpwi1qdw7s3s" path="" id="18_upx2b"]
+[ext_resource type="Texture2D" uid="uid://dghufbk22c6mf" path="res://资产/UI/设置/设置背景图.png" id="1_cq6xe"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="1_ioabl"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="2_0f5pc"]
+[ext_resource type="Script" uid="uid://d2oyrxvvkv6pw" path="res://场景/设置界面/设置.gd" id="2_d8khx"]
+[ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="res://资产/UI/复用/向上箭头选中.png" id="3_ioabl"]
+[ext_resource type="Texture2D" uid="uid://bbqmlpf484xsg" path="res://资产/UI/设置/音频信息.png" id="4_d8khx"]
+[ext_resource type="Texture2D" uid="uid://cecvpe5obv57k" path="res://资产/UI/设置/减小1音量.png" id="5_v75l0"]
+[ext_resource type="Texture2D" uid="uid://ddlatnm5n6orn" path="res://资产/UI/设置/减小10音量.png" id="6_4lujy"]
+[ext_resource type="Texture2D" uid="uid://cyvh88oq1sybe" path="res://资产/UI/设置/增大1音量.png" id="7_cm5al"]
+[ext_resource type="Script" uid="uid://witg74bkog08" path="res://场景/音频系统/音频信息.gd" id="7_v75l0"]
+[ext_resource type="Texture2D" uid="uid://gu82xjrtnb7e" path="res://资产/UI/设置/增大10音量.png" id="8_owh4n"]
+[ext_resource type="Texture2D" uid="uid://cp3ou6l8whjic" path="res://资产/UI/设置/循环播放.png" id="12_cm5al"]
+[ext_resource type="Texture2D" uid="uid://l7yjfwrmjs3" path="res://资产/UI/设置/随机播放.png" id="13_owh4n"]
+[ext_resource type="Texture2D" uid="uid://8eufacjq8ce2" path="res://资产/UI/设置/歌名背景.png" id="14_owh4n"]
+[ext_resource type="PackedScene" uid="uid://dvrbfsm4ixjq6" path="res://场景/音乐界面/单曲.tscn" id="15_5n7di"]
+[ext_resource type="PackedScene" uid="uid://er1exkjd2a6b" path="res://场景/音乐界面/专辑.tscn" id="17_ujnel"]
+[ext_resource type="Texture2D" uid="uid://cpwi1qdw7s3s" path="res://资产/UI/设置/右翻页.png" id="18_upx2b"]
+[ext_resource type="Texture2D" uid="uid://cgkvinhaed2ke" path="res://资产/UI/加载/加载文本栏.png" id="19_rowbar"]
 
 [sub_resource type="Theme" id="Theme_34yt3"]
 default_font = ExtResource("1_ioabl")
@@ -37,7 +38,7 @@ grow_vertical = 2
 theme = SubResource("Theme_34yt3")
 script = ExtResource("2_d8khx")
 
-[node name="背景层" type="CanvasLayer" parent="."]
+[node name="背景层" type="CanvasLayer" parent="." unique_id=1624731568]
 layer = -1
 
 [node name="背景图" type="TextureRect" parent="背景层" unique_id=1670569175]
@@ -49,6 +50,221 @@ grow_vertical = 2
 texture = ExtResource("1_cq6xe")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="难度行" type="Control" parent="." unique_id=1532734649]
+anchors_preset = 0
+offset_left = 620.0
+offset_top = 16.0
+offset_right = 1360.0
+offset_bottom = 86.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="难度行" unique_id=282448271]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="标题" type="Label" parent="难度行" unique_id=117863248]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -3.0
+offset_right = 105.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "难度"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左" type="TextureButton" parent="难度行" unique_id=661832303]
+layout_mode = 0
+offset_left = 137.0
+offset_top = -8.0
+offset_right = 207.0
+offset_bottom = 62.0
+texture_normal = ExtResource("18_upx2b")
+ignore_texture_size = true
+stretch_mode = 5
+flip_h = true
+
+[node name="值" type="Label" parent="难度行" unique_id=1814204690]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 6.0
+offset_right = 495.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "斗私批修"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="成就" type="Label" parent="难度行" unique_id=1113928296]
+layout_mode = 0
+offset_left = 510.0
+offset_top = 3.0
+offset_right = 642.0
+offset_bottom = 57.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "成就：V"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="右" type="TextureButton" parent="难度行" unique_id=1717957552]
+layout_mode = 0
+offset_left = 654.0
+offset_top = -10.0
+offset_right = 724.0
+offset_bottom = 60.0
+texture_normal = ExtResource("18_upx2b")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="自动保存行" type="Control" parent="." unique_id=1988537364]
+anchors_preset = 0
+offset_left = 620.0
+offset_top = 96.0
+offset_right = 1360.0
+offset_bottom = 166.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="自动保存行" unique_id=979104435]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -15.0
+offset_right = 1.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="标题" type="Label" parent="自动保存行" unique_id=1527276434]
+layout_mode = 0
+offset_left = 12.0
+offset_top = -9.0
+offset_right = 108.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "自动存档"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左" type="TextureButton" parent="自动保存行" unique_id=596635248]
+layout_mode = 0
+offset_left = 136.0
+offset_top = -15.0
+offset_right = 206.0
+offset_bottom = 55.0
+texture_normal = ExtResource("18_upx2b")
+ignore_texture_size = true
+stretch_mode = 5
+flip_h = true
+
+[node name="值" type="Label" parent="自动保存行" unique_id=1809644610]
+layout_mode = 0
+offset_left = 269.0
+offset_top = -5.0
+offset_right = 477.0
+offset_bottom = 49.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "不自动保存"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="右" type="TextureButton" parent="自动保存行" unique_id=716894366]
+layout_mode = 0
+offset_left = 653.0
+offset_top = -18.0
+offset_right = 723.0
+offset_bottom = 52.0
+texture_normal = ExtResource("18_upx2b")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="保存槽位行" type="Control" parent="." unique_id=906031975]
+anchors_preset = 0
+offset_left = 620.0
+offset_top = 176.0
+offset_right = 1360.0
+offset_bottom = 246.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="保存槽位行" unique_id=1819444337]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -22.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="标题" type="Label" parent="保存槽位行" unique_id=1395237490]
+layout_mode = 0
+offset_left = 5.0
+offset_top = -14.0
+offset_right = 125.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "自动存档位"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左" type="TextureButton" parent="保存槽位行" unique_id=1407078200]
+layout_mode = 0
+offset_left = 134.0
+offset_top = -22.0
+offset_right = 204.0
+offset_bottom = 48.0
+texture_normal = ExtResource("18_upx2b")
+ignore_texture_size = true
+stretch_mode = 5
+flip_h = true
+
+[node name="值" type="Label" parent="保存槽位行" unique_id=1848110952]
+layout_mode = 0
+offset_left = 278.0
+offset_top = -13.0
+offset_right = 472.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "成就激活档位"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="右" type="TextureButton" parent="保存槽位行" unique_id=1087365211]
+layout_mode = 0
+offset_left = 653.0
+offset_top = -25.0
+offset_right = 723.0
+offset_bottom = 45.0
+texture_normal = ExtResource("18_upx2b")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="返回" type="TextureButton" parent="." unique_id=546953166]
 layout_mode = 0
@@ -121,6 +337,14 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="音量滑条" type="HSlider" parent="音频信息背景图" unique_id=1041726530]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 106.0
+offset_right = 440.0
+offset_bottom = 132.0
+value = 5.0
 
 [node name="循环播放" type="TextureButton" parent="." unique_id=1384500785]
 layout_mode = 0

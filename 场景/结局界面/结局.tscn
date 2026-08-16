@@ -33,16 +33,20 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
+offset_left = -900.0
 offset_top = -508.0
-offset_right = 220.0
+offset_right = 900.0
 offset_bottom = -439.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0.6522269, 2.7675183e-06, 4.3317675e-07, 1)
 theme_override_fonts/font = ExtResource("2_l6py3")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 50
 text = "一从大地起风雷"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="结局文案" type="Label" parent="." unique_id=1270958560]
+[node name="结局文案" type="RichTextLabel" parent="." unique_id=1270958560]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -53,8 +57,59 @@ offset_left = -624.0
 offset_top = -420.0
 offset_right = 632.0
 offset_bottom = 524.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_l6py3")
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
+
+[node name="DLC面板" type="Control" parent="." unique_id=1851497733]
+anchors_preset = 0
+offset_left = 620.0
+offset_top = 12.0
+offset_right = 1320.0
+offset_bottom = 76.0
+
+[node name="本体按钮" type="Button" parent="DLC面板" unique_id=354729020]
+layout_mode = 0
+offset_left = 1002.0
+offset_top = 42.0
+offset_right = 1162.0
+offset_bottom = 106.0
 theme_override_fonts/font = ExtResource("2_l6py3")
+theme_override_font_sizes/font_size = 24
+text = "本体"
+
+[node name="DLC一按钮" type="Button" parent="DLC面板" unique_id=402642995]
+layout_mode = 0
+offset_left = 997.0
+offset_top = 138.0
+offset_right = 1157.0
+offset_bottom = 202.0
+theme_override_fonts/font = ExtResource("2_l6py3")
+theme_override_font_sizes/font_size = 24
+text = "DLC 一"
+
+[node name="DLC二按钮" type="Button" parent="DLC面板" unique_id=737952712]
+layout_mode = 0
+offset_left = 997.0
+offset_top = 265.0
+offset_right = 1157.0
+offset_bottom = 329.0
+theme_override_fonts/font = ExtResource("2_l6py3")
+theme_override_font_sizes/font_size = 24
+text = "DLC 二"
+
+[node name="DLC三按钮" type="Button" parent="DLC面板" unique_id=967177298]
+layout_mode = 0
+offset_left = 997.0
+offset_top = 384.0
+offset_right = 1157.0
+offset_bottom = 448.0
+theme_override_fonts/font = ExtResource("2_l6py3")
+theme_override_font_sizes/font_size = 24
+text = "DLC 三"
 
 [node name="返回主菜单" type="TextureButton" parent="." unique_id=2071347647]
 layout_mode = 0
@@ -64,7 +119,7 @@ offset_right = 279.0
 offset_bottom = 160.0
 texture_normal = ExtResource("3_my560")
 
-[node name="翻页" type="TextureButton" parent="." unique_id=2026011206]
+[node name="右翻页" type="TextureButton" parent="." unique_id=2026011206]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -75,5 +130,21 @@ offset_left = -280.0
 offset_top = -200.0
 offset_right = 320.0
 offset_bottom = 400.0
+grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(0.2, 0.2)
 texture_normal = ExtResource("4_hkeae")
+
+[node name="左翻页" type="TextureButton" parent="." unique_id=2012073841]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 165.99997
+offset_top = -169.0
+offset_right = 766.0
+offset_bottom = 431.0
+grow_vertical = 0
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("4_hkeae")
+flip_h = true

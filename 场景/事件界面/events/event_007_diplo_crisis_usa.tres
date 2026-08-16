@@ -196,5 +196,5 @@ title = "外交危机"
 description = "我们与美国的关系达到了极低的水平。他们的宣传已经开始指责我们犯下了可能的和不可能的罪行，我们的情报部门告诉我们五角大楼中的骚动以及东南亚的美国军事基地的活动。如果我们不想要打第三次世界大战的话，就需要尽快纠正这种情况。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
 show_notification = false
-fire_only_once = false
+fire_only_once = true
 options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

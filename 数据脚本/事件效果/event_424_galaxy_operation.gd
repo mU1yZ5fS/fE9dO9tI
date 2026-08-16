@@ -98,6 +98,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var spain := world.get_country_by_legacy_index(86)
 	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
@@ -122,7 +123,7 @@ func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	var opt := int(context.get("option_index", -1))
-	var spain := ws.get_country_by_legacy_index(86)
+	var _spain := ws.get_country_by_legacy_index(86)
 	if opt == 0:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -150)

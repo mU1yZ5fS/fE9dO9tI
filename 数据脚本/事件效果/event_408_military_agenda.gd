@@ -79,6 +79,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var opt := event_def.options
 	var num := _okb_count()

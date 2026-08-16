@@ -37,6 +37,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if c41 != null and c41.parts.size() > 1 and c41.parts[1]:
 		return false
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	if d.size() <= 21:
 		return false

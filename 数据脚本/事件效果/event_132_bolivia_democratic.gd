@@ -74,7 +74,8 @@ func execute(context: Dictionary) -> void:
 				bolivia.set_tag("亲中", true)
 				bolivia.sub_government = 3
 				_leave_alliances(bolivia)
-				# iron_and_blood 成就 Set(90) 端口无成就系统，跳过
+				# 原作 Event132.cs:37：iron_and_blood → achievements.Set(90)
+				Achievements.set_achievement(90)
 				context["result_text"] = TXT_R0 + _proprc_suffix(bolivia)
 			else:
 				bolivia.level_of_instability -= 15

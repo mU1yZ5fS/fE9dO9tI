@@ -238,13 +238,11 @@ func _result_3(
 	_reward_separatist_states()
 	_start_neutral_wars(syria_neutral, iraq_neutral, iran_neutral, war3_bonus, false, 1)
 	var region := TXT_370_680
-		if d.size() > W.I_XINJIANG_POLICY and d.size() > W.I_TIBET_POLICY:
-			if d[W.I_XINJIANG_POLICY] > 0 and d[W.I_TIBET_POLICY] > 0:
+	if d.size() > W.I_XINJIANG_POLICY and d.size() > W.I_TIBET_POLICY:
+		if d[W.I_XINJIANG_POLICY] > 0 and d[W.I_TIBET_POLICY] > 0:
 			region = TXT_370_680
-			elif d[W.I_TIBET_POLICY] > 0:
+		elif d[W.I_TIBET_POLICY] > 0:
 			region = TXT_370_679
-			else:
-			region = TXT_370_680
 		else:
 			region = TXT_370_680
 	context["result_text"] = TXT_370_655.replace("{1}", region)

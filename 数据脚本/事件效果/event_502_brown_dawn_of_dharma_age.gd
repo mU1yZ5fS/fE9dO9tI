@@ -88,6 +88,7 @@ func execute(context: Dictionary) -> void:
 			_add(3, -(100))
 			_add(4, -(100))
 			if _mod(6):
+				pass
 				# 原版 GlobalScript.inst.gameState.doctr[6] = "无 产 阶 级 专 政"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 无产阶级专政
 				# 原版 GlobalScript.inst.gameState.doctr[8] = "人 民 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 人民民主制度
 				# 原版 GlobalScript.inst.gameState.doctr[9] = "协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制
@@ -100,6 +101,7 @@ func execute(context: Dictionary) -> void:
 				# 原版 GlobalScript.inst.gameState.doctr[22] = "联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制
 				# 原版 GlobalScript.inst.gameState.doctr[24] = "文 化 革 命"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 文化革命
 			else:
+				pass
 				# 原版 GlobalScript.inst.gameState.doctr[6] = " 一 党 制 共 和 国"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党制共和国
 				# 原版 GlobalScript.inst.gameState.doctr[7] = "一 党 独 大 式 民 主"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党独大式民主
 				# 原版 GlobalScript.inst.gameState.doctr[8] = " 宪 政 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 宪政民主制度
@@ -133,6 +135,7 @@ func execute(context: Dictionary) -> void:
 			_set_data(15, 6)
 			if ws.modifiers.size() > 6: ws.modifiers[6].is_active = false
 			if _mod(6):
+				pass
 				# 原版 GlobalScript.inst.gameState.doctr[6] = "无 产 阶 级 专 政"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 无产阶级专政
 				# 原版 GlobalScript.inst.gameState.doctr[8] = "人 民 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 人民民主制度
 				# 原版 GlobalScript.inst.gameState.doctr[9] = "协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制
@@ -145,6 +148,7 @@ func execute(context: Dictionary) -> void:
 				# 原版 GlobalScript.inst.gameState.doctr[22] = "联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制
 				# 原版 GlobalScript.inst.gameState.doctr[24] = "文 化 革 命"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 文化革命
 			else:
+				pass
 				# 原版 GlobalScript.inst.gameState.doctr[6] = " 一 党 制 共 和 国"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党制共和国
 				# 原版 GlobalScript.inst.gameState.doctr[7] = "一 党 独 大 式 民 主"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党独大式民主
 				# 原版 GlobalScript.inst.gameState.doctr[8] = " 宪 政 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 宪政民主制度
@@ -177,6 +181,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(1, -(50))
 			if ws.modifiers.size() > 6: ws.modifiers[6].is_active = false
 			if _mod(6):
+				pass
 				# 原版 GlobalScript.inst.gameState.doctr[6] = "无 产 阶 级 专 政"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 无产阶级专政
 				# 原版 GlobalScript.inst.gameState.doctr[8] = "人 民 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 人民民主制度
 				# 原版 GlobalScript.inst.gameState.doctr[9] = "协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制
@@ -189,6 +194,7 @@ func execute(context: Dictionary) -> void:
 				# 原版 GlobalScript.inst.gameState.doctr[22] = "联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制
 				# 原版 GlobalScript.inst.gameState.doctr[24] = "文 化 革 命"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 文化革命
 			else:
+				pass
 				# 原版 GlobalScript.inst.gameState.doctr[6] = " 一 党 制 共 和 国"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党制共和国
 				# 原版 GlobalScript.inst.gameState.doctr[7] = "一 党 独 大 式 民 主"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党独大式民主
 				# 原版 GlobalScript.inst.gameState.doctr[8] = " 宪 政 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 宪政民主制度

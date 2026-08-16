@@ -65,7 +65,7 @@ func _text_of_ending(world: WorldState) -> String:
 	var c92 := world.get_country_by_legacy_index(92)
 	var text := ""
 	var dev17 := c17.development if c17 != null else 0
-	var dev16 := c16.development if c16 != null else 0
+	var _dev16 := c16.development if c16 != null else 0
 	var g16 := c16.government if c16 != null else 0
 	var sg16 := c16.sub_government if c16 != null else 0
 	var g17 := c17.government if c17 != null else 0

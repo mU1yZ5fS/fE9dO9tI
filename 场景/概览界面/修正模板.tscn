@@ -30,13 +30,20 @@ theme_override_colors/font_color = Color(0.6, 0, 0, 1)
 theme_override_font_sizes/font_size = 22
 text = "修正名"
 
-[node name="效果" type="Label" parent="."]
-layout_mode = 0
+[node name="效果" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 80.0
 offset_top = 36.0
-offset_right = 472.0
-offset_bottom = 96.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 16
-text = "效果"
+offset_right = -8.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 autowrap_mode = 3

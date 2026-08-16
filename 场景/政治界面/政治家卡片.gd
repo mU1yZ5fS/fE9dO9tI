@@ -1,16 +1,25 @@
 extends Control
+## 政治家卡片。对齐原版 Politic_Script：
+## name + traits[0..3] 四行（Politic_Script.cs:56-69）+ 忠诚条（RepaintShkal）
+## 悬停提示对齐 OkoshkoScript other_text[350]（other_text_en.txt:350-355）。
 
 signal card_hovered(pol_index: int)
 signal card_unhovered()
 signal card_clicked(pol_index: int)
 
+## other_text_en.txt:351-355 的意向职位文案
+const WANTED_POSITION_LABELS := [
+	" 国 务 院 总 理", " 军 委 主 席", " 外 交 部 长", " 地 方 长 官", " 第 四 国 际",
+]
+
 var _pol_index: int = -1
 var _politician: PoliticianData
 
 @onready var _name_label: Label = $姓名
-@onready var _faction_label: Label = $派系
+@onready var _trait0_label: Label = $派系  # 原版 T1 = traits[0]
 @onready var _trait1_label: Label = $特质1
 @onready var _trait2_label: Label = $特质2
+@onready var _trait3_label: Label = get_node_or_null("特质3") as Label
 @onready var _loyalty_bar: ProgressBar = $忠诚度
 @onready var _portrait_container: Control = $人像
 
@@ -40,12 +49,30 @@ func refresh() -> void:
 	if _politician == null:
 		return
 	_name_label.text = _politician.name_display
-	_faction_label.text = _politician.ideology_label()
-	_trait1_label.text = _politician.alignment_label()
+	# 原版 Politic_Script.cs:58-61：T1..T4 = traits[0..3]；
+	# 改版口径：T1 由显式 faction 字段承载（与派系界面一致），T2..T4 用 traits_en 表。
+	_trait0_label.text = WorldFactory.PARTY_LABELS_ZH.get(_politician.party_index(), "未知")
+	_trait1_label.text = WorldFactory.TRAIT_LABELS_ZH.get(_politician.trait_alignment, "未知")
 	_trait2_label.text = WorldFactory.TRAIT_LABELS_ZH.get(_politician.trait_special, "未知")
+	if _trait3_label:
+		_trait3_label.text = _politician.background_label()
 	if _portrait_rect:
 		_portrait_rect.texture = _politician.portrait
+	_refresh_tooltip()
 	update_loyalty_bar(-1)
+
+
+## other_text_en.txt:350：意向职位 / 对领导人忠诚 / 年龄（OkoshkoScript 弹出提示）
+func _refresh_tooltip() -> void:
+	if _politician == null:
+		tooltip_text = ""
+		return
+	var wanted := " 地 方 长 官"
+	if _politician.wanted_position >= 0 and _politician.wanted_position < WANTED_POSITION_LABELS.size():
+		wanted = WANTED_POSITION_LABELS[_politician.wanted_position]
+	tooltip_text = "意 向 职 位 为 ：%s\n对 我 国 领 导 人 的 忠 诚 度 为 ：%s\n年 龄 ：%d 岁" % [
+		wanted, float(_politician.loyalty) / 10.0, _politician.age
+	]
 
 
 ## hover_target: -1=显示对领袖忠诚；>=0=显示本卡政客对 hover_target 的忠诚

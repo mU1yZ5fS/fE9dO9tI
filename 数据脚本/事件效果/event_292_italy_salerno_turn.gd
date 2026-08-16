@@ -110,7 +110,7 @@ func _add_power(empire_index: int, delta: int) -> void:
 
 
 func _mod_active(idx: int) -> bool:
-	var w := ws if ws != null else GameManager.world
+	var w: WorldState = ws if ws != null else GameManager.world
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

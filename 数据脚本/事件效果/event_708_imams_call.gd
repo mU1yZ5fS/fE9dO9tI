@@ -46,10 +46,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var special := done36 and result36 == 3 and iraq != null and iraq.prc_power >= 80
 	if special:
 		event_def.description = TXT_DESC_SPECIAL
-		var arr: Array[EventOption] = []
-		arr.append(_opts_full[0])
-		arr.append(_opts_full[1])
-		event_def.options = arr
+		var arr_special: Array[EventOption] = []
+		arr_special.append(_opts_full[0])
+		arr_special.append(_opts_full[1])
+		event_def.options = arr_special
 		_enable(event_def.options[0], "我们将坚定的支持伊拉克人民的斗争！")
 		_enable(event_def.options[1], "尝试置身事外")
 		return

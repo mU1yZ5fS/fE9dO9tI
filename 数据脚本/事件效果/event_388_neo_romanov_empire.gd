@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 ## 差异：
 ##  - 描述随机票数 prepare 用 randi_range 复现；
-##  - 原版 iron_and_blood 成就 Set(142)，端口无成就系统，跳过；
+##  - 原版 iron_and_blood 成就 Set(142) 已接 Achievements；
 ##  - 原版 ingamewars[22].usa_place 未建模，跳过。
 
 const TXT_TITLE := "新罗曼诺夫帝国"
@@ -99,7 +99,8 @@ func execute(context: Dictionary) -> void:
 			ws.set_flag("relres", false)
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
 				ws.empires[EmpireData.USSR].relations = 0
-			# 原版 iron_and_blood 成就 Set(142)，跳过
+			# 原作 Event388.cs:122：iron_and_blood → achievements.Set(142)
+			Achievements.set_achievement(142)
 			_start_war_388()
 			# 原版 if (c51.Torg) ingamewars[22].usa_place = 0；端口未建模，跳过
 			_add(W.I_PARTY_SUPPORT, 300)

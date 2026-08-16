@@ -19,3 +19,5 @@ power = 160
 age = 36
 faction = 0
 wanted_position = 3
+name_first = 1
+name_last = 41

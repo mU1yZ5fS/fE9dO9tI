@@ -52,6 +52,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			if d.size() > W.I_ENDING_ROUTE:
 				d[W.I_ENDING_ROUTE] = 6
+			# 原 Event111.cs:162：load_scene_after_click → data[35]=6。
+			GameManager.queue_ending_after_event(6)
 			context["result_text"] = TXT_R0
 		1:
 			_add(W.I_DIPLO, 70)

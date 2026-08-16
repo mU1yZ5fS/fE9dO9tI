@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - GetWinnerInAmerica / WantToLeave 逐行移植；
 ##  - 原版 string.Format 的 <color=red> 标签剥除，红字用 TXT_FRIEND / TXT_ENEMY 拼接；
-##  - 原版 iron_and_blood 成就 achievements.Set 未建模，跳过并注释；
+##  - iron_and_blood 成就已接 Achievements（Set 编号见 execute 内注释）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
 const TXT_TITLE := "第二次机会"
@@ -287,7 +287,8 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USA, 5)
 		# 原版此分支内 if (SubGosstroy != 6) 恒假，new_texts[502] 为死代码，已注释：
 		# TXT_R6_DEAD := "..."
-		# 原版 iron_and_blood 成就 achievements.Set(96)，未建模跳过。
+		# 原作 Event146.cs:128：iron_and_blood → achievements.Set(96)
+		Achievements.set_achievement(96)
 		context["result_text"] = TXT_R6 + _friend_suffix(c)
 		return
 	if c.sub_government == 7:
@@ -308,5 +309,6 @@ func execute(context: Dictionary) -> void:
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -15)
 		_add_power(EmpireData.USSR, 5)
-		# 原版 iron_and_blood 成就 achievements.Set(97)，未建模跳过。
+		# 原作 Event146.cs:160：iron_and_blood → achievements.Set(97)
+		Achievements.set_achievement(97)
 		context["result_text"] = TXT_R1 + _friend_suffix(c)

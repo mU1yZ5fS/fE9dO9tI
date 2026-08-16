@@ -60,7 +60,7 @@ var req: String = ""
 var result: String = ""
 
 
-func is_completed(time_ratio: float) -> bool:
+func is_completed(_time_ratio: float) -> bool:
 	## 颜色状态用（FocusButtoNScript.ChangeCondition）：
 	## overtime >= time → 已完成（红/蓝），> 0 → 进行中（黄）
 	return float(overtime) >= float(time)
@@ -68,33 +68,3 @@ func is_completed(time_ratio: float) -> bool:
 
 func tick() -> void:
 	overtime += 1
-
-
-# ============================================================================
-# FocusTreeDef — 分层树（原版 FocusTree.layers: List<List<Focus>>）
-# ============================================================================
-class_name FocusTreeDef
-extends RefCounted
-
-
-## 层列表：每层是 Array[FocusDef]，index_in_layer 由 build 时补
-var layers: Array[Array] = []
-
-
-func layer_count() -> int:
-	return layers.size()
-
-
-func get_layer(i: int) -> Array:
-	if i < 0 or i >= layers.size():
-		return []
-	return layers[i]
-
-
-## 供焦点界面按层/格绘制（原版 FocusesScript.CreateCountryFocuses 的双重循环）
-func all_focuses_flat() -> Array[FocusDef]:
-	var out: Array[FocusDef] = []
-	for layer in layers:
-		for f: FocusDef in layer:
-			out.append(f)
-	return out

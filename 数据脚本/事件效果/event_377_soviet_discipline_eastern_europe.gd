@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 描述按 c9.proprc/okb、data[132]、c6.proprc 三态动态改写；
 ##  - SOV_PRC_PartiesConnection → I_COMMUNICATIONS（见 event_435 约定）；
-##  - 成就 Set(142) 端口无成就系统，跳过；ingamewars[22].usa_place 未建模，跳过；
+##  - 成就 Set(142) 已接 Achievements；ingamewars[22].usa_place 未建模，跳过；
 ##  - war 22 覆盖 name_war/fortnight_max。
 
 const TXT_TITLE := "苏联“老大哥”教训“小弟”"
@@ -110,7 +110,8 @@ func execute(context: Dictionary) -> void:
 	else:
 		context["result_text"] = TXT_R2_FMT.format(["\n", TXT_RELRES if ws.get_flag("relres") else ""])
 		ws.empires[EmpireData.USSR].relations = 0
-		# 原版 iron_and_blood 成就 Set(142)，端口无成就系统，跳过
+		# 原作 Event377.cs:121：iron_and_blood → achievements.Set(142)
+		Achievements.set_achievement(142)
 		_start_war_377()
 		# 原版 if (c51.Torg) ingamewars[22].usa_place = 0；端口未建模 usa_place，跳过
 		if bulgaria != null:

@@ -50,7 +50,9 @@ func setup(p_war_id: int, war: WarData) -> void:
 	_set_label("左方参战势力名称", war.side1)
 	_set_label("右方参战势力名称", war.side2)
 	# 原作 UI 常显示整数档；内部仍是 0–1000，这里显示 ÷10 取整更贴近美术圆圈
+	@warning_ignore("integer_division")
 	_set_label("左方参战势力数值", str(war.infl1 / 10))
+	@warning_ignore("integer_division")
 	_set_label("右方参战势力数值", str(war.infl2 / 10))
 	_refresh_button_states()
 

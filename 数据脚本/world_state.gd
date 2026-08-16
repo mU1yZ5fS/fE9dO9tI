@@ -271,6 +271,11 @@ const 数值索引 := {
 # ── 全局标记（替代原版散落 bool） ──
 @export var global_flags: Dictionary = {}
 
+# ── 老系统数字事件状态覆盖（替代原版 event_done[]/resultOfEvents[] 直接写）──
+# 读取时优先于 EventEngine.completed_event_ids；旧存档缺字段取空字典（原版默认 false/0）。
+@export var event_done_overrides: Dictionary = {}
+@export var result_of_event_overrides: Dictionary = {}
+
 # ── 事件完成追踪（event_id → option_index：键存在=已完成，值=所选选项编号） ──
 @export var completed_event_ids: Dictionary = {}
 
@@ -480,6 +485,58 @@ func set_flag(flag_name: String, value: bool) -> void:
 
 func get_flag(flag_name: String) -> bool:
 	return global_flags.get(flag_name, false)
+
+
+# ── 原版数字事件状态查询（外交按钮老系统入口用） ──
+
+## 原版 event_done[N]：N 事件已完成。覆盖表 > 旧 flag > EventEngine 注册表。
+func event_done_num(num: int) -> bool:
+	if event_done_overrides.has(num):
+		return bool(event_done_overrides[num])
+	if global_flags.get("event_done_%d" % num, false):
+		return true
+	if EventEngine != null:
+		return EventEngine.event_done_by_number(num)
+	return false
+
+
+## 原版 resultOfEvents[N]：已完成事件的选项编号；未完成=0（原版 int 默认）。
+func result_of_event_num(num: int) -> int:
+	if result_of_event_overrides.has(num):
+		return int(result_of_event_overrides[num])
+	if EventEngine != null:
+		return EventEngine.result_of_event_by_number(num)
+	return 0
+
+
+func set_event_done_num(num: int, value: bool) -> void:
+	event_done_overrides[num] = value
+	if not value:
+		global_flags.erase("event_done_%d" % num)
+
+
+func set_result_of_event_num(num: int, value: int) -> void:
+	result_of_event_overrides[num] = value
+
+
+## 原版 ingamewars[i]（wars 数组即按战争 id 槽位存放）。
+func get_war(idx: int) -> WarData:
+	if idx >= 0 and idx < wars.size():
+		return wars[idx]
+	return null
+
+
+func war_going(idx: int) -> bool:
+	var war := get_war(idx)
+	return war != null and war.is_going
+
+
+## 原版 modifies[i].active。
+func modifier_active(mod_id: int) -> bool:
+	if mod_id >= 0 and mod_id < modifiers.size():
+		var slot := modifiers[mod_id]
+		return slot != null and slot.is_active
+	return false
 
 
 # ── 经济同步（轻量版，无数组拷贝） ──

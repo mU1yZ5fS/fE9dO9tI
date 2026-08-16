@@ -39,6 +39,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 	if event_def == null or world == null or event_def.options.size() < 6:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
 	var china := world.get_country_by_legacy_index(1)
@@ -283,3 +284,8 @@ func _disable(opt: EventOption, text: String) -> void:
 	n.value = 99999.0
 	opt.enable_condition = n
 
+
+## 原版 Event602.cs:110 —— this.a.empires[0].now_leader == 1
+func world_empire_leader_is(empire_index: int, leader_value: int) -> bool:
+	return ws.empires.size() > empire_index and ws.empires[empire_index] != null \
+			and ws.empires[empire_index].current_leader == leader_value

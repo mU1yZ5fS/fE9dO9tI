@@ -45,6 +45,9 @@ signal event_notification_dismissed()
 ## 事件定义注册表（event_id → EventDef）
 var _events: Dictionary = {}
 
+## 原版数字事件编号索引（source_event_number → EventDef）
+var _events_by_number: Dictionary = {}
+
 ## 按原版 else-if 链稳定排序的自动扫描序列。
 var _event_order: Array[EventDef] = []
 
@@ -62,42 +65,202 @@ var text_library: Node = null
 ## 依次立即触发队首事件。这让"事件A完成→立即弹事件B"成为可能。
 var _event_queue: Array[String] = []
 
+# ── 事件目录异步加载（启动加载屏调用；autoload _ready 只列目录不 load）──
+## 事件注册表是否已可用（同步或异步扫描完成后置 true）
+var events_ready := false
+
+var _scan_paths: PackedStringArray = []
+var _scan_cursor := 0
+var _scan_done := 0
+var _scan_total := 0
+var _scan_pending: Array[String] = []
+var _scan_running := false
+var _scan_finished := false
+var _scan_order: Dictionary = {}
+
+## 同时挂在 ResourceLoader 后台队列里的最大 .tres 数；防止一次排 500+ 请求。
+const ASYNC_BATCH_SIZE := 64
+
+## 每帧最多从后台队列收尾多少个文件；让进度条持续推进而不是再次一次性硬卡。
+const ASYNC_FINALIZE_PER_FRAME := 12
+
+signal events_scan_progress(done: int, total: int)
+signal events_scan_finished()
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	_scan_events()
+	# 启动期不再同步 load 531 个事件 .tres（曾是启动黑屏/硬控主因）。
+	# 只列目录，真正的加载交给 启动加载.gd 调 start_async_scan() 与地图预热并行。
+	_scan_paths = ResScan.list_files(scan_directory, [".tres"])
 
 
+## 同步扫描：热重载与“不经过启动屏直接跑场景”的兜底路径。
+## 正常启动路径请走 start_async_scan()，避免主线程一次性卡住。
 func _scan_events() -> void:
-	# 从磁盘加载 .tres 事件文件（这些文件应由 GenerateEvents 工具在编辑器中预生成）
-	# 用 ResScan 以兼容导出包（.tres 会被重映射为 .tres.remap）
 	var paths := ResScan.list_files(scan_directory, [".tres"])
 	if paths.is_empty() and DirAccess.open(scan_directory) == null:
 		push_warning("EventEngine: 事件目录不存在 %s —— 请在编辑器中运行 GenerateEvents 工具" % scan_directory)
+		_finish_scan()
 		return
-	var scan_order: Dictionary = {}
+	_clear_registries()
 	for path in paths:
 		var res := load(path)
 		if res is EventDef:
-			_events[res.event_id] = res
-			scan_order[res.event_id] = _event_order.size() * 10
-			_event_order.append(res)
-			print("EventEngine: 已加载事件 %s" % res.event_id)
+			_register_event(res)
 		else:
 			push_warning("EventEngine: 跳过非 EventDef 文件 %s" % path)
+	_finish_scan()
+
+
+## 启动屏调用：把事件 .tres 批量交给 ResourceLoader 后台线程，与地图解码并行。
+func start_async_scan() -> void:
+	if _scan_running or _scan_finished:
+		return
+	if _scan_paths.is_empty():
+		_scan_paths = ResScan.list_files(scan_directory, [".tres"])
+	if _scan_paths.is_empty() and DirAccess.open(scan_directory) == null:
+		push_warning("EventEngine: 事件目录不存在 %s —— 请在编辑器中运行 GenerateEvents 工具" % scan_directory)
+	_clear_registries()
+	_scan_cursor = 0
+	_scan_done = 0
+	_scan_total = _scan_paths.size()
+	_scan_pending.clear()
+	_scan_running = true
+	_scan_finished = false
+	events_ready = false
+	_refill_async_requests()
+	if _scan_total == 0 or _scan_done >= _scan_total:
+		_finish_scan()
+
+
+## 每帧由启动加载屏调用：只做状态轮询与限量收尾，不阻塞主线程。
+func poll_async_scan() -> void:
+	if not _scan_running:
+		return
+	var finalized := 0
+	var remaining: Array[String] = []
+	for p in _scan_pending:
+		if finalized >= ASYNC_FINALIZE_PER_FRAME:
+			remaining.append(p)
+			continue
+		var pr: Array = []
+		var st := ResourceLoader.load_threaded_get_status(p, pr)
+		if st == ResourceLoader.THREAD_LOAD_LOADED:
+			var res := ResourceLoader.load_threaded_get(p)
+			_finalize_async_path(p, res)
+			finalized += 1
+		elif st == ResourceLoader.THREAD_LOAD_FAILED or st == ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
+			# 后台失败时主线程同步重试一次；单个坏文件不会卡死整批。
+			_finalize_async_path(p, load(p))
+			finalized += 1
+		else:
+			remaining.append(p)
+	_scan_pending = remaining
+	_refill_async_requests()
+	if _scan_done >= _scan_total:
+		_finish_scan()
+
+
+func _refill_async_requests() -> void:
+	while _scan_pending.size() < ASYNC_BATCH_SIZE and _scan_cursor < _scan_paths.size():
+		var p := _scan_paths[_scan_cursor]
+		var err := ResourceLoader.load_threaded_request(p)
+		if err != OK:
+			_finalize_async_path(p, null)
+		else:
+			_scan_pending.append(p)
+		_scan_cursor += 1
+
+
+func _finalize_async_path(p: String, res: Resource) -> void:
+	_scan_done += 1
+	if res is EventDef:
+		_register_event(res)
+	elif res == null:
+		push_warning("EventEngine: 加载失败 %s" % p)
+	else:
+		push_warning("EventEngine: 跳过非 EventDef 文件 %s" % p)
+	events_scan_progress.emit(_scan_done, _scan_total)
+
+
+func _register_event(res: EventDef) -> void:
+	_events[res.event_id] = res
+	if res.source_event_number >= 0:
+		_events_by_number[res.source_event_number] = res
+	_scan_order[res.event_id] = _event_order.size() * 10
+	_event_order.append(res)
+	print("EventEngine: 已加载事件 %s" % res.event_id)
+
+
+func _clear_registries() -> void:
+	_events.clear()
+	_events_by_number.clear()
+	_event_order.clear()
+	_scan_order.clear()
+
+
+func _finish_scan() -> void:
 	_event_order.sort_custom(func(a: EventDef, b: EventDef) -> bool:
-		var pa: int = a.trigger_priority if a.trigger_priority >= 0 else int(scan_order.get(a.event_id, 100000))
-		var pb: int = b.trigger_priority if b.trigger_priority >= 0 else int(scan_order.get(b.event_id, 100000))
+		var pa: int = a.trigger_priority if a.trigger_priority >= 0 else int(_scan_order.get(a.event_id, 100000))
+		var pb: int = b.trigger_priority if b.trigger_priority >= 0 else int(_scan_order.get(b.event_id, 100000))
 		if pa == pb:
 			return a.event_id < b.event_id
 		return pa < pb
 	)
+	_scan_running = false
+	_scan_finished = true
+	events_ready = true
+	_scan_pending.clear()
 	print("EventEngine: 扫描完成，共 %d 个事件" % _events.size())
+	events_scan_finished.emit()
+
+
+## 兜底：任何入口在事件表未就绪时确保完成加载。
+## 若启动屏已开始异步扫描，则立即返回不阻塞，由启动屏负责等它完成。
+func ensure_events_ready() -> void:
+	if events_ready or _scan_running:
+		return
+	_scan_events()
+
+
+# ========================================================================
+# 原版数字事件编号查询（外交按钮等老系统入口使用 event_done[N]）
+# ========================================================================
+
+## 按原版 source_event_number 查事件定义；找不到返回 null。
+func get_event_by_number(num: int) -> EventDef:
+	ensure_events_ready()
+	return _events_by_number.get(num) as EventDef
+
+
+## 原版 event_done[N]：事件已完成（无论选择哪项）。
+func event_done_by_number(num: int) -> bool:
+	var ev := get_event_by_number(num)
+	if ev == null:
+		return false
+	return GameManager != null and GameManager.world != null \
+		and GameManager.world.completed_event_ids.has(ev.event_id)
+
+
+## 原版 resultOfEvents[N]：已完成事件的选项编号；未完成=0（原版 int 默认值）。
+func result_of_event_by_number(num: int) -> int:
+	var ev := get_event_by_number(num)
+	if ev == null:
+		return 0
+	if GameManager == null or GameManager.world == null:
+		return 0
+	return int(GameManager.world.completed_event_ids.get(ev.event_id, 0))
 
 
 ## 重新加载所有事件定义（热重载用）
 func reload_events() -> void:
+	_scan_running = false
+	_scan_finished = false
+	events_ready = false
+	_scan_pending.clear()
 	_events.clear()
+	_events_by_number.clear()
 	_event_order.clear()
 	_event_queue.clear()
 	pending_event_id = ""
@@ -122,6 +285,7 @@ func enqueue_chain(event_ids: Array[String]) -> void:
 
 
 func check_and_fire() -> void:
+	ensure_events_ready()
 	var ws: WorldState = GameManager.world
 	if ws == null:
 		return
@@ -182,6 +346,7 @@ func _enter_pending(event_def: EventDef) -> void:
 ## 手动将事件加入待处理队列（供外部系统如 Decision / 战争结束 使用）。
 ## 若已有待处理：战争结算优先覆盖；其它事件入链队列避免丢失。
 func queue_pending(event_id: String) -> void:
+	ensure_events_ready()
 	var event_def := _events.get(event_id) as EventDef
 	if event_def == null:
 		return
@@ -201,6 +366,7 @@ func queue_pending(event_id: String) -> void:
 
 ## 玩家点击通知：立即触发
 func accept_pending() -> void:
+	ensure_events_ready()
 	if pending_event_id == "":
 		return
 	var event_id := pending_event_id
@@ -213,6 +379,7 @@ func accept_pending() -> void:
 
 ## 超时强制触发
 func _force_fire_pending() -> void:
+	ensure_events_ready()
 	if pending_event_id == "":
 		return
 	var event_id := pending_event_id
@@ -265,6 +432,7 @@ func _evaluate_trigger(event_def: EventDef) -> bool:
 
 ## 手动按钮触发前的公开包装：评估事件自动触发条件（无触发条件的事件视为可手动触发）。
 func can_trigger(event_id: String) -> bool:
+	ensure_events_ready()
 	var def := get_event(event_id)
 	if def == null:
 		return false
@@ -474,6 +642,7 @@ func _run_custom_script(fx: EffectNode, context: Dictionary) -> void:
 
 
 func get_event(event_id: String) -> EventDef:
+	ensure_events_ready()
 	return _events.get(event_id)
 
 
@@ -505,7 +674,13 @@ func apply_event_option(event_def: EventDef, option_index: int) -> Dictionary:
 		"option_index": option_index,
 	}
 	execute(opt.effects, execution_context)
-	_mark_done(event_def, option_index)
+	# Event638/644 选项"再想想"复刻原版 event_done[n]=false：脚本置 skip_mark_done 时跳过完成标记。
+	# Event648 复刻原版 resultOfEvents[648]=2：脚本可置 result_index_override 覆盖记录结果号。
+	if not execution_context.get("skip_mark_done", false):
+		var mark_index: int = option_index
+		if execution_context.has("result_index_override"):
+			mark_index = int(execution_context.get("result_index_override", option_index))
+		_mark_done(event_def, mark_index)
 	# 事件改数后同步显示视图并通知状态栏
 	if GameManager and GameManager.has_method("_notify_stats"):
 		GameManager._notify_stats()

@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event1.cs：全国人大选举。五党得票权重→3000席归一化→胜负分支。
 ## 差异：influencePRC→ws.influence_prc；allcountries[51].isNATO(自由派×0.1)跳过(USA 恒 NATO，条件恒假)；
-##       data[125]/Debug.Log 跳过；惨败 data[35]=5→queue_ending_after_event(1)「人民的选择」(语义映射)。
+##       data[125]/Debug.Log 跳过；惨败 data[35]=5→queue_ending_after_event(5)「人民的选择」（见 _resolve_branch）。
 
 var _coalition: int = 0
 
@@ -192,7 +192,7 @@ func _resolve_branch(opt0: bool) -> String:
 		return "我们在选举中表现不佳，可那又如何？看看咱们的国号，瞧瞧建在连队内的党支部。只要红旗仍不倒，政权归属就不足以被视为问题……"
 	if _coalition > 1500:
 		return "我们的党派联盟在人大选举中获胜，向全中国与世界证明人民依然支持我们的领导！"
-	GameManager.queue_ending_after_event(1)   # 原 data[35]=5「人民的选择」(语义映射)
+	GameManager.queue_ending_after_event(5)   # 原 Event1.cs:451 load_scene_after_click → data[35]=5「人民的选择」
 	return "我们不止失去了议会多数，还没能赢得过半议席！真是耻辱！"
 
 

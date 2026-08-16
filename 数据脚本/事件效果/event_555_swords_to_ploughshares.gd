@@ -44,7 +44,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
-	var c1 := ws.get_country_by_legacy_index(1)
+	var _c1 := ws.get_country_by_legacy_index(1)
 	var c17 := ws.get_country_by_legacy_index(17)
 	var c85 := ws.get_country_by_legacy_index(85)
 	var c92 := ws.get_country_by_legacy_index(92)

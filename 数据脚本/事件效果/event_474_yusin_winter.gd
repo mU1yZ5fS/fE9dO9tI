@@ -21,6 +21,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 	if event_def == null or event_def.options.size() < 3:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var agents := d[W.I_AGENTS] if d.size() > W.I_AGENTS else 0
 	var army := d[W.I_ARMY] if d.size() > W.I_ARMY else 0

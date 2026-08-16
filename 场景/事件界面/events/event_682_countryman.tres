@@ -1,0 +1,86 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_682_countryman.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "梁漱溟的仁政最适用乡土中国"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_682_countryman.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "晏阳初的国民教育之路是治疗中国农村愚昧病的正途！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_682_countryman.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "国家强制力担保，管制经济护航，农村发展不愁"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_682_countryman.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "适应新时代的耕者有其田最有助于我国农民！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_682_countryman.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "是时候回归真正的社会主义了！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_682_countryman.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx5"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt5"]
+script = ExtResource("1_opt")
+text = "如果说农村问题不过是农业问题的话，那还要多想什么？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx5")])
+result_text = "（结果由 event_682_countryman.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_682"
+source_event_number = 682
+trigger_priority = 68200
+title = "我实在是个乡下人……"
+description = "随着我们事实上摒弃了依照毛主义逻辑发展发展乡村的旧有路线，现在，我们再次回到了对中国农村前途探讨的老生常谈上。不过，也没必要重新发明轮子。实际上，近代已有无数哲人开出了相应的药方。相当数量的方案更是在民国时期摊开的“乡村建设运动”内得以施行。“乡村建设派”及其领导人梁漱溟便是其中的弄潮，后者更是以最早对毛派农业政策发难而闻名于异见者群体：梁漱溟及其同路人对中国社会持伦理本位的态度，并将中国农村问题概括为重建文化秩序，形成“中式现代性”的改良方案：如果选择这一立场，那么我们将在事实上站在新儒家方，且对奠定现代中国基础的“新文化运动”持一定程度上的退行态度——这会在意识形态层面造成困扰；与之相对的替代则是同时代的杜威主义宠儿晏阳初，试图综合基督教教学、实业培训与平民教育方案改造农村的另一位近代知识分子。晏阳初自出走大陆后便背靠美国，在第三世界政权内推广其组织方案，由此积攒了相当经验与名气。通过他的联系，我们自然可以邀请太平洋对岸的朋友加入到描绘我国农村改革的蓝图当中，并为更大规模的经济改革与开放政策布局。当然，我们也没必要给这些失败者以第二次机会。最简单的方式当属摸着成功人士过河：韩国的新村运动已充分展示了其在培训农村劳动力，建立基层社会控制与促进经济增长方面的效益，展示了背靠国家资本主义制度下农村发展的可能前景——前提是我们仍有如此入局的能力。最后则是兼具怀旧情结与变革愿望的“代表人民的经济”，其思路基本上可分为“重提土地改革旧事”与“恢复真正的社会主义”两条路径：内涵也已写在脸上。如今所要做的便是在诸改革方案内选择其一，并由此确定未来农业的发展方向。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4"), SubResource("Opt5")])

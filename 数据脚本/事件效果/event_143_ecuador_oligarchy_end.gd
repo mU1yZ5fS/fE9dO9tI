@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - GetWinnerInAmerica / WantToLeave 逐行移植；
 ##  - 原版 string.Format 的 <color=red> 标签剥除，红字用 TXT_FRIEND / TXT_ENEMY 拼接；
-##  - 原版 iron_and_blood 成就 achievements.Set 未建模，跳过并注释；
+##  - 已核对原作本文件无 achievements 调用（2026-08-16）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
 const TXT_TITLE := "寡头政治的终结"

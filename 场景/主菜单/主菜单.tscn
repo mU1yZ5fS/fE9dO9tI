@@ -6,6 +6,17 @@
 [ext_resource type="Script" uid="uid://dprrkvl1dxnw8" path="res://场景/主菜单/主菜单.gd" id="2_qdl27"]
 [ext_resource type="Script" uid="uid://c8lq4p6d1xjda" path="res://场景/主菜单/版本信息.gd" id="5_xj33c"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBox_ach_panel"]
+content_margin_left = 32.0
+content_margin_top = 24.0
+content_margin_right = 32.0
+content_margin_bottom = 24.0
+bg_color = Color(0.973, 0.949, 0.867, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
 [node name="Control" type="Control" unique_id=1650672303]
 layout_mode = 3
 anchors_preset = 15
@@ -23,21 +34,17 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-expand_mode = 1
-stretch_mode = 0
 mouse_behavior_recursive = 2
 texture = ExtResource("1_ctmvk")
+expand_mode = 1
 
 [node name="开始游戏" type="Button" parent="." unique_id=878493979]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.391146
 anchor_top = 0.755556
 anchor_right = 0.624479
 anchor_bottom = 0.888889
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
 text = "开始游戏"
@@ -47,14 +54,11 @@ icon_alignment = 1
 
 [node name="关于" type="Button" parent="." unique_id=776111374]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.642188
 anchor_top = 0.827778
 anchor_right = 0.875521
 anchor_bottom = 0.961111
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
 rotation = -0.61086524
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
@@ -65,14 +69,11 @@ icon_alignment = 1
 
 [node name="退出" type="Button" parent="." unique_id=1820177510]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.766667
-anchor_top = 0.870370
+anchor_top = 0.87037
 anchor_right = 1.0
 anchor_bottom = 1.003704
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
 rotation = -0.61086524
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
@@ -83,14 +84,11 @@ icon_alignment = 1
 
 [node name="加载" type="Button" parent="." unique_id=510100475]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.184896
 anchor_top = 0.585185
 anchor_right = 0.418229
 anchor_bottom = 0.718519
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
 rotation = 0.61086524
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
@@ -101,14 +99,11 @@ icon_alignment = 1
 
 [node name="设置" type="Button" parent="." unique_id=2082171365]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.047396
-anchor_top = 0.629630
+anchor_top = 0.62963
 anchor_right = 0.280729
 anchor_bottom = 0.762963
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
 rotation = 0.61086524
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
@@ -117,16 +112,92 @@ icon = ExtResource("2_ngrxy")
 flat = true
 icon_alignment = 1
 
+[node name="成就" type="Button" parent="." unique_id=1337]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.76500005
+anchor_top = 0.34500003
+anchor_right = 1.0
+anchor_bottom = 0.47900003
+offset_left = -0.8000488
+offset_top = 0.39996338
+offset_right = -4.0
+offset_bottom = -0.32000732
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
+text = "成就"
+icon = ExtResource("2_ngrxy")
+flat = true
+icon_alignment = 1
+
+[node name="成就遮罩" type="ColorRect" parent="." unique_id=1338]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="成就弹窗" type="PopupPanel" parent="." unique_id=1339]
+size = Vector2i(1200, 780)
+theme_override_styles/panel = SubResource("StyleBox_ach_panel")
+
+[node name="布局" type="VBoxContainer" parent="成就弹窗" unique_id=1340]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 1168.0
+offset_bottom = 756.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="标题栏" type="HBoxContainer" parent="成就弹窗/布局" unique_id=1341]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="标题" type="Label" parent="成就弹窗/布局/标题栏" unique_id=1342]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 42
+text = "成就"
+
+[node name="计数" type="Label" parent="成就弹窗/布局/标题栏" unique_id=1343]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "0/24"
+
+[node name="关闭" type="Button" parent="成就弹窗/布局/标题栏" unique_id=1344]
+layout_mode = 2
+text = "关闭"
+
+[node name="说明" type="Label" parent="成就弹窗/布局" unique_id=1345]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 22
+text = "仅列出本端口已接线的成就；灰色为未解锁。条件摘要译自原版 Set 调用点。"
+
+[node name="列表滚动" type="ScrollContainer" parent="成就弹窗/布局" unique_id=1346]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="成就列表" type="VBoxContainer" parent="成就弹窗/布局/列表滚动" unique_id=1347]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
 [node name="版本信息" type="Label" parent="." unique_id=1449533189]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.682813
 anchor_top = 0.022222
 anchor_right = 0.991667
 anchor_bottom = 0.068519
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
 tooltip_auto_translate_mode = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 43
@@ -136,19 +207,16 @@ script = ExtResource("5_xj33c")
 
 [node name="版本信息2" type="Label" parent="." unique_id=1314310004]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.841146
 anchor_top = 0.074074
 anchor_right = 0.991667
-anchor_bottom = 0.120370
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-tooltip_text = "当前版本内容：基础UI骨架+MVP"
+anchor_bottom = 0.12037
+tooltip_text = "当前版本内容：90%改版内容+未知可能bug"
 mouse_filter = 1
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 43
-text = "v0.0.1星星之火"
+text = "v0.1东方红"
 horizontal_alignment = 2
 
 [connection signal="pressed" from="开始游戏" to="." method="_on_开始游戏_pressed"]
@@ -156,3 +224,5 @@ horizontal_alignment = 2
 [connection signal="pressed" from="退出" to="." method="_on_退出_pressed"]
 [connection signal="pressed" from="加载" to="." method="_on_加载_pressed"]
 [connection signal="pressed" from="设置" to="." method="_on_设置_pressed"]
+[connection signal="pressed" from="成就" to="." method="_on_成就_pressed"]
+[connection signal="pressed" from="成就弹窗/布局/标题栏/关闭" to="." method="_on_成就关闭_pressed"]

@@ -23,7 +23,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	var dv := world.数值表
+	var _dv := world.数值表
 	var r353 := _prev_result(world, "event_353")
 	if (r353 == 0 or r353 == 1) and _budget_reserve(world) >= 30:
 		_enable(opt[0], TXT_OPT0)

@@ -41,6 +41,27 @@ const MAP_RED := Color(0.78, 0.08, 0.06)
 const MAP_GREEN := Color(0.10, 0.55, 0.26)
 const MAP_PURPLE := Color(0.50, 0.22, 0.68)
 const MAP_CYAN := Color(0.12, 0.55, 0.62)
+
+# ── 原版 Repaint() 补充色（CountryScript.cs:4829-5220，按原数值换算）──
+## 南非影响：_MainColor2 = (0.25, 0.25, 0.25)（:5155-5158）
+const MAP_SOUTH_AFRICA := Color(0.25, 0.25, 0.25)
+## 伊拉克影响：_MainColor2 = (0.05882353, 0.125490189, 0.286274523)（:5159-5162）
+const MAP_IRAQ_SPHERE := Color(0.05882353, 0.125490189, 0.286274523)
+## 西班牙影响：_MainColor2 = (0.255, 0.55, 1)（:5163-5166）
+const MAP_SPAIN_SPHERE := Color(0.255, 0.55, 1.0)
+## 军事：NAZIMAO（:5018-5021）/ FXSEU（:5022-5025）/ AU（:5058-5061）/ RIM（:5062-5065）
+const MIL_NAZIMAO := Color(0.435, 0.6274, 1.0)
+const MIL_FXSEU := Color(0.47, 0.498, 0.584)
+const MIL_AU := Color(0.0, 0.0, 0.5)
+const MIL_RIM := Color(0.3, 1.0, 1.0)
+## 经济：BALECON（:5077-5080）与 Torg 组合/纯贸易（:5081-5110）
+const ECO_BALECON := Color(0.5, 0.25, 0.5)
+const ECO_EU_TORG := Color(1.0, 0.1, 0.0)
+const ECO_ASEAN_TORG := Color(0.0, 0.22, 0.6431)
+const ECO_SOCEU_TORG := Color(1.0, 0.1367925, 0.1367925)
+const ECO_SEV_TORG := Color(0.0, 1.0, 0.1)
+const ECO_TORG := Color(0.0, 0.0, 0.72)
+const ECO_OIL := Color(0.18, 0.18, 0.18)
 const PRC_GWCODE := 710
 const PALETTE_SIZE := 256
 
@@ -320,38 +341,85 @@ func _color_for_country(gwcode: int) -> Color:
 	
 	match color_mode:
 		ColorMode.GOVERNMENT:
-			if c.government < 0: return GOV_EXTREMIST
-			if c.has_tag("亲苏") or c.has_tag("ovd") or c.has_tag("sev") or c.has_tag("苏联盟友") or c.has_tag("亲中") or c.has_tag("对华贸易"):
+			# 政府模式只按政体/子意识形态判定，不套用亲苏/亲美等阵营标签
+			if c.sub_government in CountryData.EXTREMIST_SUBS:
+				return GOV_EXTREMIST
+			if c.government == 1 or c.sub_government == 0:
 				return GOV_SOCIALIST
-			if c.has_tag("亲美") or c.has_tag("美国盟友") or c.has_tag("nato") or c.has_tag("seato") or c.has_tag("sento"):
-				return GOV_LIBERAL
 			match c.government:
-				1: return GOV_SOCIALIST
 				2: return GOV_REFORM
 				3: return GOV_LIBERAL
 				_: return GOV_AUTHORITARIAN
 
 		ColorMode.INFLUENCE:
-			if c.has_tag("亲美") or c.has_tag("美国盟友"): return MAP_BLUE
-			if c.has_tag("亲苏") or c.has_tag("苏联盟友"): return MAP_RED
+			# 原版 Repaint map_type==3 顺序（CountryScript.cs:5150-5175）：
+			# 法国 → 南非 → 伊拉克 → 西班牙 → 美国 → 苏联 → 中国
+			if c.is_french_influence(): return MAP_PURPLE
+			if c.is_south_african_influence(): return MAP_SOUTH_AFRICA
+			if c.is_iraqi_influence(): return MAP_IRAQ_SPHERE
+			if c.is_spanish_influence(): return MAP_SPAIN_SPHERE
+			if c.has_tag("亲美") or (c.alliance_zone_counts() and c.has_tag("美国盟友")):
+				return MAP_BLUE
+			if c.has_tag("亲苏") or (c.alliance_zone_counts() and c.has_tag("苏联盟友")):
+				return MAP_RED
 			if c.has_tag("亲中"): return MAP_PRC
-			if c.has_tag("亲法"): return MAP_PURPLE
 
 		ColorMode.MILITARY:
-			if c.has_tag("nato") or c.has_tag("seato"): return MAP_BLUE
+			# 原版 Repaint map_type==0 顺序（CountryScript.cs:5018-5069）
+			if c.has_tag("nazimao"): return MIL_NAZIMAO
+			if c.has_tag("fxseu"): return MIL_FXSEU
+			if c.has_tag("nato"): return MAP_BLUE
+			if c.has_tag("seato"): return MAP_BLUE
 			if c.has_tag("sento"): return MAP_CYAN
 			if c.has_tag("ovd"): return MAP_RED
-			if c.has_tag("okb"): return MAP_PRC
 			if c.has_tag("oar"): return MAP_GREEN
+			if _is_iraq_syria_union(c): return MAP_GREEN
+			if c.has_tag("au"): return MIL_AU
+			if c.has_tag("rim"): return MIL_RIM
+			if c.has_tag("okb"): return MAP_PRC
 
 		ColorMode.ECONOMIC:
+			# 原版 Repaint map_type==2 顺序（CountryScript.cs:5075-5110）；
+			# Torg=对华贸易，按原版优先级叠加在联盟色之上。
+			var has_torg := c.has_tag("对华贸易")
+			if _balecon_active(c): return ECO_BALECON
+			if c.has_tag("eu") and has_torg: return ECO_EU_TORG
+			if c.has_tag("asean") and has_torg: return ECO_ASEAN_TORG
 			if c.has_tag("eu"): return MAP_BLUE
-			if c.has_tag("sev") or c.has_tag("soc_eu"): return MAP_RED
+			if c.has_tag("soc_eu") and has_torg: return ECO_SOCEU_TORG
+			if c.has_tag("soc_eu"): return MAP_RED
+			if c.has_tag("oil"): return ECO_OIL
 			if c.has_tag("asean"): return MAP_CYAN
+			if c.has_tag("sev") and has_torg: return ECO_SEV_TORG
+			if c.has_tag("sev"): return MAP_RED
 			if c.has_tag("econ"): return MAP_PRC
-			if c.has_tag("oil"): return Color(0.18, 0.18, 0.18)
+			if has_torg: return ECO_TORG
 
 	return BLOC_NEUTRAL
+
+
+## 原版巴尔干经济联盟判定（CountryScript.cs:5075-5080）：
+## 需要本国带 balecon 标签，且阿尔巴尼亚(20).spec == 1。
+func _balecon_active(c: CountryData) -> bool:
+	if not c.has_tag("balecon"):
+		return false
+	var ws := _get_world_state()
+	if ws == null:
+		return false
+	var albania := ws.get_country_by_legacy_index(20)
+	return albania != null and albania.special == 1
+
+
+## 原版军事地图的伊拉克-叙利亚联邦分支（CountryScript.cs:5053-5057）：
+## event_done[707] 且国家为 14/35 且 SubGosstroy==15 时按 OAR 色显示。
+func _is_iraq_syria_union(c: CountryData) -> bool:
+	var sid := int(c.原版序号)
+	if sid != 14 and sid != 35:
+		return false
+	if c.sub_government != 15:
+		return false
+	var ws := _get_world_state()
+	return ws != null and ws.get_flag("event_done_707")
 
 
 # ============================================================================

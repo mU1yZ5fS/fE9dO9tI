@@ -29,6 +29,43 @@ script = ExtResource("3_expr")
 type = 19
 children = Array[ExtResource("3_expr")]([SubResource("Expr_support_minus_freedom"), SubResource("Expr_support_negative"), SubResource("Expr_freedom_1200")])
 
+[sub_resource type="Resource" id="Expr_444_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_444"
+
+[sub_resource type="Resource" id="Expr_444_result0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_444"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_444_both"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_444_done"), SubResource("Expr_444_result0")])
+
+[sub_resource type="Resource" id="Expr_444_guard"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_444_both")])
+
+[sub_resource type="Resource" id="Expr_503_result0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_503"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_503_guard"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_503_result0")])
+
+[sub_resource type="Resource" id="Expr_trigger_final"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_trigger"), SubResource("Expr_444_guard"), SubResource("Expr_503_guard")])
+
 [sub_resource type="Resource" id="Effect_speech"]
 script = ExtResource("2_effect")
 type = 18
@@ -218,6 +255,6 @@ event_id = "popular_discontent"
 source_event_number = 5
 title = "民众不满"
 description = "人民对你政策不满，在全国范围内举行了大规模集会，在广场搭起帐篷营地，分发传单，甚至冲击地方政府建筑。来自不同团体的抗议者对你政府不同的方面不满，但一致要求体制民主化，以限制你在国家政治的影响力。"
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger_final")])
 options = Array[ExtResource("1_option")]([SubResource("Option_speech"), SubResource("Option_democratize"), SubResource("Option_army"), SubResource("Option_supporters"), SubResource("Option_agents")])
-fire_only_once = false
+fire_only_once = true

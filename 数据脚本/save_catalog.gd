@@ -13,13 +13,17 @@ const META_PATH := "user://saves/meta.json"
 const UI_SLOT_COUNT := 5
 const MAX_SLOTS := 10
 
-const DIFF_NAMES_ZH := ["沙盒", "简单", "标准", "困难", "文革"]
+## 对齐原作 DiffScript.cs / Savescript.cs 的中文难度显示名（逐字含原空格）。
+const DIFF_NAMES_ZH := [" 牛 棚 小 酌", " 上 山 下 乡", " 斗 私 批 修", " 造 反 有 理", " 浩 荡 文 革"]
+## data[14]（政体/意识形态）显示名。原作 GlobalScript.doctr[]，Godot 侧权威映射见
+## 场景/派系界面/派系.gd DOCTR_BASE 的 0-5（data[14] 只取 0-5）。
 const IDEOLOGY_NAMES_ZH := {
-	0: "马列主义",
-	1: "毛主义",
-	2: "修正主义",
-	3: "市场社会主义",
-	4: "其它",
+	0: "威权主义",
+	1: "保守社会主义",
+	2: "民族特色社会主义",
+	3: "邓式实用主义",
+	4: "社会民主主义",
+	5: "自由主义",
 }
 
 
@@ -102,26 +106,30 @@ static func meta_from_world(w: WorldState) -> Dictionary:
 	}
 
 
-static func format_opis(slot: int, meta: Dictionary = {}) -> String:
+static func format_opis(slot: int, meta: Dictionary = {}, 激活: bool = false) -> String:
+	# 对齐 Savescript.cs OnMouseEnter（解锁）与 LoadInScript.cs OnMouseEnter（激活）的中文描述：
+	# 首行只由槽位决定；有档再追加 体制/日期/难度/成就；空档追加「空档位」。
 	if meta.is_empty():
 		meta = get_slot_meta(slot)
-	var exists := slot_exists(slot)
-	if not exists and meta.is_empty():
-		return "槽位 %d\n（空）" % (slot + 1)
-	var iron := bool(meta.get("is_ironman", false))
-	var iron_line := "成就：可用" if iron else "成就：不可用"
+	var head := " 可 激 活 成 就" if 激活 and slot == 0 else " 不 可 激 活 成 就"
+	if not 激活:
+		head = " 可 解 锁 成 就" if slot == 0 else " 不 可 解 锁 成 就"
+	if not slot_exists(slot):
+		return head + "\n 空 档 位"
 	var y := int(meta.get("year", 0))
 	var mo := int(meta.get("month", 0))
 	var d := int(meta.get("day", 0))
-	var date_line := "日期：%d年%d月%d日" % [y, mo, d] if y > 0 else "日期：未知"
+	# 原作按 data19.data20.data21 = 日.月.年 显示
+	var date_line := "%d.%d.%d" % [d, mo, y] if y > 0 else "日期：未知"
 	var diff := int(meta.get("difficulty", 2))
 	var diff_name: String = DIFF_NAMES_ZH[diff] if diff >= 0 and diff < DIFF_NAMES_ZH.size() else str(diff)
 	var ideo := int(meta.get("ideology", 0))
-	var ideo_name: String = IDEOLOGY_NAMES_ZH.get(ideo, "意识形态 %d" % ideo)
-	var head := "槽位 %d · %s" % [slot + 1, "铁人" if iron else "普通"]
-	if not exists:
-		head += "\n（文件缺失）"
-	return "%s\n%s\n%s\n难度：%s\n%s" % [head, date_line, "体制参考：%s" % ideo_name, diff_name, iron_line]
+	var ideo_name: String = IDEOLOGY_NAMES_ZH.get(ideo, "体制 %d" % ideo)
+	var iron := bool(meta.get("is_ironman", slot == 0))
+	return "%s\n体制：%s\n日期：%s\n难度：%s\n成就：%s" % [
+		head, ideo_name, date_line, diff_name,
+		"[color=red] 可 解 锁 [/color]" if iron else "[color=red] 不 可 解 锁 [/color]",
+	]
 
 
 static func delete_slot(slot: int) -> bool:

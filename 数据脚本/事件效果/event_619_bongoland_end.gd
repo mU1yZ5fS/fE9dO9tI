@@ -29,6 +29,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
 	var budget := d[W.I_BUDGET] if d.size() > W.I_BUDGET else 0
@@ -258,4 +259,11 @@ func _disable(opt: EventOption, text: String) -> void:
 	n.key = "party_system"
 	n.value = 99999.0
 	opt.enable_condition = n
+
+
+## 原版 Event619.cs:85 —— this.a.empires[0].power 直访
+func _empire_power(idx: int) -> int:
+	if ws.empires.size() > idx and ws.empires[idx] != null:
+		return ws.empires[idx].power
+	return 0
 

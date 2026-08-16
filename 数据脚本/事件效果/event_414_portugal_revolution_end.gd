@@ -53,6 +53,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var opt := event_def.options
 	if d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0) >= 20 and d[W.I_AGENTS] >= 20:

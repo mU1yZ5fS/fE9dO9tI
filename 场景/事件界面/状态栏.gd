@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 func _refresh() -> void:
-	var w := GameManager.world
+	var w: WorldState = GameManager.world
 	if w == null:
 		return
 	# 刷新前强制从数值表同步显示视图，避免跨场景后读到旧缓存

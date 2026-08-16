@@ -62,9 +62,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var portugal := world.get_country_by_legacy_index(87)
 	var num := 100 - (portugal.special if portugal != null else 0)
+	@warning_ignore("integer_division")
 	num = int(num / 2)
 	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
 	if budget_reserve >= 200 - num and d[W.I_AGENTS] >= 250 - num:
@@ -86,6 +88,7 @@ func execute(context: Dictionary) -> void:
 	var num := 0
 	var num2 := 0
 	var num3 := 100 - (portugal.special if portugal != null else 0)
+	@warning_ignore("integer_division")
 	num3 = int(num3 / 2)
 	if opt == 0:
 		num += 2

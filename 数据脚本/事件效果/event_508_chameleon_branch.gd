@@ -68,10 +68,11 @@ func execute(context: Dictionary) -> void:
 			_add_power(1, 20)
 			if c62 != null: c62.set_tag("sev", true)
 		2:
-			if ws.数值表[131]  not = 2  or   not ws.get_flag("YugAgree"):
+			if ws.数值表[131] != 2 or not ws.get_flag("YugAgree"):
 				context["result_text"] = TXT_R2_A
-			context["result_text"] = TXT_R2_B
-			if ws.数值表[131]  not = 2  or   not ws.get_flag("YugAgree"):
+			else:
+				context["result_text"] = TXT_R2_B
+			if ws.数值表[131] != 2 or not ws.get_flag("YugAgree"):
 				if c62 != null: c62.government = 2
 				if c62 != null: c62.sub_government = 15
 				if c62 != null: _leave_alliances(c62)

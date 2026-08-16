@@ -74,6 +74,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.completed_event_ids.has("event_416"):
 		return false
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	if d.size() <= W.I_YEAR:
 		return false
@@ -90,6 +91,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var opt := event_def.options
 	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)

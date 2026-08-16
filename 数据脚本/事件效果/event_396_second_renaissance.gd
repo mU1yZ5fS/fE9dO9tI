@@ -42,6 +42,7 @@ const TXT_IDX_1111 := "政府军"
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	if d.size() <= 134:
 		return false

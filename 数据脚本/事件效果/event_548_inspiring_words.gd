@@ -30,7 +30,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
-	var c1 := ws.get_country_by_legacy_index(1)
+	var _c1 := ws.get_country_by_legacy_index(1)
 	if ws.get_flag("is_gkchp"):
 		for c in ws.countries:
 			var i := c.原版序号

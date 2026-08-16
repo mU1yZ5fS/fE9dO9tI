@@ -41,7 +41,7 @@ func execute(context: Dictionary) -> void:
 		if italy != null and italy.sub_government == 22:
 			eritrea.government = 22
 			eritrea.sub_government = 22
-	var war := null
+	var war: WarData = null
 	if ws.wars.size() > 26:
 		war = ws.wars[26]
 	var opt := int(context.get("option_index", -1))

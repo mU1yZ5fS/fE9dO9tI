@@ -54,7 +54,8 @@ func execute(context: Dictionary) -> void:
 		return
 	var opt := int(context.get("option_index", -1))
 	var c13 := ws.get_country_by_legacy_index(13)
-	var c41 := ws.get_country_by_legacy_index(41)
+	var _c41 := ws.get_country_by_legacy_index(41)
+	var c57 := ws.get_country_by_legacy_index(57)
 	match opt:
 		0:
 			var text0 := TXT_R0_0

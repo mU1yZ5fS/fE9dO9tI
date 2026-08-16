@@ -15,8 +15,8 @@ extends Resource
 @export var exit_year: int = 9999           # 最晚在场年份（自然退场）
 
 # ── 特质（对应原版 Politic.traits[4]，显示名见 Traits 表，不是 Party 表） ──
-# traits[0]: 0极左 1温和 2改革 3自由
-# traits[1]: 4硬汉 5实用主义 6宽容 7科学家（扩展 29/30/39-42）
+# traits[0]: 0极左 20保守 1温和 2改革 3自由
+# traits[1]: 4硬汉 5实用主义 6宽容 7重视技术（扩展 29/30/39-42）
 # traits[2]: 8-19 特殊
 # traits[3]: 21-28/43 出身背景（月度被动效果；暗杀硬目标判定 ==28）
 # Party 派系另有 0极左 1保守 2温和 3改革 4自由；映射见 party_index()
@@ -65,18 +65,28 @@ func _init() -> void:
 		loyalty_matrix[i] = 50
 
 
-## Party 槽：优先显式 faction；否则 traits[0] 启发式（0→0，>0→+1）
+## Party 槽：优先显式 faction；否则 traits[0] 启发式（0→0，20→1，1→2，2→3，3→4）
 func party_index() -> int:
 	if faction >= 0:
 		return faction
 	if trait_personality <= 0:
 		return 0
+	if trait_personality == 20:
+		return 1
 	return trait_personality + 1
 
 
 ## 卡片第一行：Party 派系名
 func ideology_label() -> String:
 	return WorldFactory.PARTY_LABELS_ZH.get(party_index(), "未知")
+
+
+## 第四槽背景标签：合法值域 21-28/43（traits[3]），0 或缺省一律显示「未知」，
+## 避免误落到 traits[0] 的「极左派」标签。
+func background_label() -> String:
+	if (trait_background >= 21 and trait_background <= 28) or trait_background == 43:
+		return WorldFactory.TRAIT_LABELS_ZH.get(trait_background, "未知")
+	return "未知"
 
 
 ## 卡片第二行：性格 traits[1]

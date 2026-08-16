@@ -15,6 +15,9 @@ const WF = preload("res://数据脚本/world_factory.gd")
 const WAR_SYS = preload("res://数据脚本/war_system.gd")
 const POL_SYS = preload("res://数据脚本/politician_system.gd")
 
+## 设置持久化文件。键名对齐原作 PlayerPrefs：voice_china / SavePosition / SavePlaceNum / our_diff_in。
+const SETTINGS_PATH := "user://settings.cfg"
+
 var world: WorldState
 var is_playing: bool = false
 var speed: int = 0
@@ -22,6 +25,16 @@ var selected_country_gwcode: int = -1
 var settings_return_scene: String = "uid://bydan4iqthbaa"
 ## 保存/加载界面返回目标（esc 进存档时设为外交等）
 var save_return_scene: String = "uid://bydan4iqthbaa"
+
+# ── 设置（对齐原版 GlobalScript/PlayerPrefs 默认值）──
+## 音乐音量 0-100。原版 GlobalScript.cs:249 默认 5。
+var voice: int = 5
+## 自动保存档位 0=不自动 1=每月 2=半年。原版 GlobalScript.autosavej 默认 0。
+var autosave_mode: int = 0
+## 自动保存/快速保存目标槽（原版编号 1-5，5=成就位）。原版 GlobalScript.savePlace 默认 5。
+var save_place: int = 5
+## 难度设置持久值。原版 GameState.diff 会被 PlayerPrefs our_diff_in 覆盖。
+var difficulty_setting: int = 2
 
 ## 外交（主游戏）场景是否处于激活状态。
 ## 只有外交场景激活时，时间才会流动 —— 与原版 Unity 行为一致
@@ -70,6 +83,7 @@ var _safe_max_tex_size: int = 4096
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_load_settings_config()
 	_load_tech_effects()
 	_preload_region_map()
 	if EventEngine:
@@ -251,9 +265,75 @@ func _process(delta: float) -> void:
 		return
 	_tick_timer += delta
 	var interval := TICK_INTERVALS[speed] if speed < TICK_INTERVALS.size() else 1.0
-	while _tick_timer >= interval:
+	while _tick_timer >= interval and is_playing:
 		_tick_timer -= interval
 		tick()
+		# tick 内可能触发事件/结局并 pause()：立刻丢弃补帧积压，禁止继续追赶日历。
+		if not is_playing or current_event_id != "":
+			_tick_timer = 0.0
+			break
+
+
+# ── 设置持久化（对齐原作 PlayerPrefs 键名语义）──
+
+func _load_settings_config() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) != OK:
+		# 无配置文件时保持原版默认：voice=5、autosavej=0、savePlace=5、diff=2。
+		return
+	voice = clampi(int(cfg.get_value("settings", "voice_china", 5)), 0, 100)
+	autosave_mode = clampi(int(cfg.get_value("settings", "SavePosition", 0)), 0, 2)
+	save_place = clampi(int(cfg.get_value("settings", "SavePlaceNum", 5)), 1, 5)
+	difficulty_setting = clampi(int(cfg.get_value("settings", "our_diff_in", 2)), 0, 4)
+
+
+func _save_settings_config() -> void:
+	var cfg := ConfigFile.new()
+	cfg.set_value("settings", "voice_china", voice)
+	cfg.set_value("settings", "SavePosition", autosave_mode)
+	cfg.set_value("settings", "SavePlaceNum", save_place)
+	cfg.set_value("settings", "our_diff_in", difficulty_setting)
+	if cfg.save(SETTINGS_PATH) != OK:
+		push_error("GameManager: 设置写入失败 " + SETTINGS_PATH)
+
+
+func set_voice(value: int) -> void:
+	voice = clampi(value, 0, 100)
+	_save_settings_config()
+
+
+func set_autosave_mode(value: int) -> void:
+	autosave_mode = clampi(value, 0, 2)
+	_save_settings_config()
+
+
+func set_save_place(value: int) -> void:
+	save_place = clampi(value, 1, 5)
+	_save_settings_config()
+
+
+func set_difficulty(value: int) -> void:
+	difficulty_setting = clampi(value, 0, 4)
+	if world != null:
+		world.difficulty = difficulty_setting
+	_save_settings_config()
+
+
+## 原作 savePlace 编号 5=成就位；本端口存档槽 0=成就位、1-4=普通位。
+func autosave_slot() -> int:
+	return 0 if save_place == 5 else save_place - 1
+
+
+## 原作 TimeScript.cs:6021-6030：autosavej==1 在 data[19]==1（每月 1 日），
+## autosavej==2 在 data[19]==1 且 data[20]%6==0（1 日且 6/12 月）自动写当前 savePlace。
+func _check_autosave() -> void:
+	if world == null or autosave_mode <= 0 or world.date.day != 1:
+		return
+	if autosave_mode == 2 and world.date.month % 6 != 0:
+		return
+	# 原作 AutoSaveMethod → Savescript.OnMouseDown：number==5 写当前 iron_and_blood，其余槽 False。
+	var iron_ov := 1 if (save_place == 5 and world.is_ironman) else 0
+	save_to_slot(autosave_slot(), iron_ov)
 
 
 # ── 公开 API ──
@@ -272,7 +352,9 @@ func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	current_ending_id = -1
 	_pending_event_ending_id = -1
 	world_state_loaded.emit()
-	call_deferred("_start_initial_events")
+	# 同步入队，避免 deferred 之前玩家点“演讲”等事件先占住 current_event_id，
+	# 导致五“不准”（周总理事件）初始事件被跳过、顺序错乱。
+	_start_initial_events()
 
 
 func load_game(path: String) -> void:
@@ -283,6 +365,12 @@ func load_game(path: String) -> void:
 	var loaded = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if loaded is WorldState:
 		world = loaded as WorldState
+		# 旧档/异常档防御：数值表不足 200 槽会令 tick 内 d[I_*] 越界，读档即补全。
+		if world.数值表.size() < 200:
+			world.数值表.resize(200)
+		# 读档后游戏内难度权威来自存档（原作 LoadInScript 用二进制存档覆盖 gameState.diff）；
+		# 同步到持久化难度，主菜单开新局时沿用。
+		difficulty_setting = world.difficulty
 		_sync_date_to_data(world)
 		# 旧档科技数组可能只有 27 槽（TECH_COUNT 已扩到 34），迁移补齐
 		if world.techs != null:
@@ -305,6 +393,9 @@ func load_game(path: String) -> void:
 		_pending_event_ending_id = -1
 		world_state_loaded.emit()
 		_notify_stats()
+		# 旧档兜底：若五“不准”（周总理事件）尚未完成/入队，读档后立即补队，
+		# 避免其在自动扫描中排到 popular_discontent 之后。
+		_start_initial_events()
 	else:
 		push_error("GameManager: 加载失败 %s" % path)
 
@@ -359,6 +450,11 @@ func load_from_slot(slot: int) -> bool:
 		push_error("GameManager: 槽位 %d 无存档" % slot)
 		return false
 	load_game(path)
+	if world != null:
+		# LoadInScript.cs:33：number != 5 时 iron_and_blood=false（原版 5=成就位；
+		# 本端口槽位 0=成就位、1-4=普通位，见 保存.gd/加载.gd SLOT_NODES）
+		if slot != 0:
+			world.is_ironman = false
 	return world != null
 
 
@@ -367,7 +463,7 @@ func delete_save_slot(slot: int) -> bool:
 
 
 func tick() -> void:
-	if world == null:
+	if world == null or current_event_id != "":
 		return
 	var old_month := world.date.month
 	var old_year := world.date.year
@@ -380,11 +476,21 @@ func tick() -> void:
 	# 原版日块顺序：政治路线 data[56]（1146-1226）先于体制重算（1265-1445），每日执行。
 	_update_political_line(world.数值表, world)
 	_political_system_recalc(world.数值表, world)
+	# 原版 TimeScript.cs:1452：体制重算后每日更新 leader.is_sagovor（本端口 leader.is_conspiracy）。
+	_plot_player_cause(world.数值表, world)
 
 	if world.date.month != old_month:
 		_on_month_changed()
 	if world.date.year != old_year:
 		_on_year_changed()
+
+	# 原版日块：party_number 每日按 party_ideology 重算（年度 /10 在同 tick 被本重算覆盖，
+	# 与 TimeScript.Repaint 中“先 /=10、后重算”的顺序一致），随后重算政治路线。
+	_sync_faction_numbers_from_ideology(world.数值表, world)
+	_update_political_line(world.数值表, world)
+	# 原版 data[19] % 7 == 0：已结盟派系 ideology 增长，并扣预算/特工。
+	if world.date.day % 7 == 0:
+		_weekly_ally_upkeep(world.数值表, world)
 
 	_check_scheduled_events()
 	_check_daily_conspiracy(world.数值表)
@@ -397,12 +503,20 @@ func tick() -> void:
 	if EventEngine:
 		EventEngine.check_and_fire()
 
+	# 原版 TimeScript.cs:11154-11166：无事件弹窗时按 DLC02→DLC03→DLC01 轮询 ReqEventForDLC02。
+	if current_event_id == "":
+		ReqEventTriggers.poll(world)
+
+	_check_periodic_achievements(world)
+
 	world.clamp_values()
 	world.clamp_empire_relations()
 	_mirror_empires_to_data(world)
 	world.sync_economy()
 	date_changed.emit(world.date)
 	stats_changed.emit()
+	# 原作自动存档在月块末尾（TimeScript.cs:6021-6030），所有月度效果结算后再写。
+	_check_autosave()
 
 
 ## GameDate 是日期权威源；原版公式/事件仍通过 data[19..21] 读日期。
@@ -481,6 +595,15 @@ func get_tech_effects(tech_id: int) -> Array:
 	return _tech_effects.get(tech_id, [])
 
 
+## 顶栏「科研未研究」提示图标判定。
+## 原版 TimeScript.cs:5605-5754：双周块 flag4=有科技正在研究；
+## !flag4 时 alarmIcons[0].SetActive(true)；全部科技完成时隐藏（5743-5746）。
+func science_alert_active() -> bool:
+	if world == null or world.techs == null:
+		return false
+	return not world.techs.is_researching() and not world.techs.is_all_researched()
+
+
 # ── 事件 ──
 
 func _on_event_triggered(event_id: String, is_timeout: bool) -> void:
@@ -543,6 +666,23 @@ func manual_speech() -> bool:
 	return true
 
 
+## 派系界面同盟按钮可用性 — 原版 ElectScript.OnMouseDown is_alliance 分支（:10-25）：
+## 经济同盟：event_done[59] 且中国未加入 sev/asean/econ/ovd；
+## 军事同盟：event_done[60] 且中国已建经济同盟(econ)且未加入 okb。
+func can_manual_alliance(is_military: bool) -> bool:
+	if world == null:
+		return false
+	var china := world.get_country_by_legacy_index(1)
+	if china == null:
+		return false
+	if is_military:
+		return world.completed_event_ids.has("military_alliance") \
+			and china.has_tag("econ") and not china.has_tag("okb")
+	return world.completed_event_ids.has("economic_union") \
+		and not china.has_tag("sev") and not china.has_tag("asean") \
+		and not china.has_tag("econ") and not china.has_tag("ovd")
+
+
 func clear_event() -> void:
 	# 战争结束事件关闭后结算槽位
 	if current_event_id == "war_is_over":
@@ -553,11 +693,18 @@ func clear_event() -> void:
 		var ending_id := _pending_event_ending_id
 		_pending_event_ending_id = -1
 		_trigger_ending(ending_id)
+	# 兜底：任何早期事件（如开局误触演讲）结束后，若五“不准”尚未完成/入队，立即补队。
+	_start_initial_events()
 
 
 ## 事件结果页确认后再进入结局，复现原版 Results_text 的 load_scene_after_click。
 func queue_ending_after_event(ending_id: int) -> void:
 	_pending_event_ending_id = ending_id
+
+
+## 非事件上下文（外交按钮等）的即时结局切换；原版 SceneManager.LoadScene("Ending") 语义。
+func trigger_ending(ending_id: int) -> void:
+	_trigger_ending(ending_id)
 
 
 # ── 时间控制 ──
@@ -1019,8 +1166,6 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 		world.set_flag("election_due", true)
 	# FAC-SAT：满足现状者仅在切政策成功时增长一次（对齐原版 Doctrine_button.OnMouseDown 1229/1253）
 	_apply_policy_satisfied_growth(d, world)
-	# FAC-05 / ECO-FAC-01：政策变更反馈派系 support / points
-	_apply_policy_faction_feedback(category_idx, current_val, target_val)
 	_notify_stats()
 	return true
 
@@ -1072,54 +1217,6 @@ func _apply_policy_loyalty_shift(category_idx: int, target_val: int, delta: int)
 		else:  # 原版 else：自由派(3) 及变体值
 			shift = delta * k
 		p.loyalty += shift
-
-
-## 政策值升高 = 更开放/市场化/多元；降低 = 更集中/管制
-## 反馈量按 |delta| * 步长，写入 support 与 points（FAC-01 积分体系）
-func _apply_policy_faction_feedback(category_idx: int, old_val: int, new_val: int) -> void:
-	if world == null or world.factions.is_empty():
-		return
-	var step := new_val - old_val
-	if step == 0:
-		return
-	var mag: int = absi(step)
-	# 各政策类别对「开放方向」的权重
-	var open_weight := 1
-	match category_idx:
-		W.I_ECON_SYSTEM:
-			open_weight = 3
-		W.I_PARTY_SYSTEM:
-			open_weight = 3
-		W.I_PRESS_POLICY:
-			open_weight = 2
-		W.I_RELIGION:
-			open_weight = 1
-		W.I_TERRITORY:
-			open_weight = 1
-		W.I_MIL_DOCTRINE:
-			open_weight = 1
-		_:
-			open_weight = 1
-	var dir := 1 if step > 0 else -1
-	var unit: int = mag * open_weight * 8
-	# 0极左 1保守 2温和 3改革 4自由
-	var deltas: Array[int] = [
-		-unit,           # 极左：开放则受损
-		-(unit * 2) / 3, # 保守
-		unit / 5,        # 温和：略受益
-		(unit * 2) / 3,  # 改革
-		unit,            # 自由：开放则受益
-	]
-	if dir < 0:
-		for i in deltas.size():
-			deltas[i] = -deltas[i]
-	@warning_ignore("integer_division")
-	for i in mini(world.factions.size(), deltas.size()):
-		var f: FactionData = world.factions[i]
-		if not f.is_enabled and deltas[i] > 0:
-			continue
-		f.support = maxi(0, f.support + deltas[i])
-		f.points = maxi(0, f.points + deltas[i] / 4)
 
 
 func set_birth_policy(policy: int) -> void:
@@ -1430,10 +1527,8 @@ func _on_month_changed() -> void:
 		return
 	w.set_flag("manual_election_used", false)  # 原版月块 is_elect=false（TimeScript.cs:505-512）
 	var d := w.数值表
-	# TimeScript.cs:918-925：改革开放进入第二阶段后，等待满 6 个月才讨论外资。
-	# 原作仅在 54 号事件尚未完成时累计，事件引擎以 event_id 保存同一状态。
-	if d[W.I_REFORM_STAGE] == 2 and not w.completed_event_ids.has("reform_investment"):
-		d[W.I_INVESTMENT_DELAY] += 1
+	# 原版 54 号事件触发就是 TimeScript.cs:10425 的 ev45 && data[16]>11，无 6 个月延迟；
+	# 早期误加的 investment_delay 等待已移除（trigger 在 event_054*.tres 里对齐）。
 	# TimeScript.cs:952-956：印度/越南外交操作的月度冷却与印度支援标记。
 	var vietnam := w.get_country_by_legacy_index(11)
 	if vietnam != null:
@@ -1457,10 +1552,6 @@ func _on_month_changed() -> void:
 	_monthly_foreign_aid(d, w)
 	# 政客：调查/监视、自动支持打压、职位 power、空缺派系领袖（TimeScript ~937, ~2172）
 	POL_SYS.monthly_politics(d, w)
-	# 半年：factionsPoints 积分（原版 data[19]==1 && month 1 或 7）+ 简化漂移
-	if w.date.month == 1 or w.date.month == 7:
-		_biannual_faction_points(d, w)
-		_biannual_faction_drift(w)
 	WAR_SYS.monthly_war_points()
 	w.flush_economy()
 
@@ -1471,7 +1562,9 @@ func _on_year_changed() -> void:
 		return
 	var d := w.数值表
 	@warning_ignore("integer_division")
-	# 派系 support 年度衰减（原版 party_number/=10）
+	# 派系 support 年度衰减（原版 party_number/=10）。
+	# 注意：原版同 tick 稍后会用 ideology 重算 party_number，一党制下此衰减会被覆盖；
+	# Godot 在 tick() 中同样先衰减、后 _sync_faction_numbers_from_ideology，保持一致。
 	for f in w.factions:
 		f.support = f.support / 10
 	# 满意现秩序者衰减（原版 835 年 /=10）
@@ -1483,6 +1576,13 @@ func _on_year_changed() -> void:
 	d[W.I_IMPORT_NEEDS] += w.import_change()
 	# POL-05 / POL-12：年龄 +1、病弱/老死、任职年数（TimeScript 615–621 + DeathPolitics）
 	POL_SYS.annual_politics(d, w)
+	# 1980-01-01 成就检查（TimeScript.cs:687-696：人口>=10000 → Set(63)；
+	# 工业/农业/服务业均>=700 → Set(62)；原作在 iron_and_blood 内，Achievements 内部有同守卫）。
+	if w.date.year == 1980:
+		if d[W.I_POPULATION] >= 10000:
+			Achievements.set_achievement(63)
+		if d[W.I_INDUSTRY] >= 700 and d[W.I_AGRICULTURE] >= 700 and d[W.I_SERVICES] >= 700:
+			Achievements.set_achievement(62)
 
 
 # ============================================================================
@@ -1731,6 +1831,1457 @@ func _fortnight_research_advance(d: Array[int], w: WorldState) -> void:
 ## 原版每双周对所有已解锁科技重复施加效果（非一次性）。
 ## 航天科技 27-33 本步补齐（原版 DLC02 内容，本移植按项目惯例无条件开放）。
 ## 原版 empires[0]=USA、empires[1]=USSR；relations 均为 ×10 存储。
+## TimeScript.cs:11173-11717 TraitInfluence 逐字移植。
+## 原版 dlc[0] 内的 gamerules[7]/[8] 分支因 gamerules 未移植而跳过（项目既有裁决）。
+func _fortnight_trait_influence(d: Array[int], w: WorldState) -> void:
+	for i in w.politicians.size():
+		var p: PoliticianData = w.politicians[i]
+		if p == null or PoliticianSystem.is_vacant_politician(p):
+			continue
+		if _mod_active(w, 14):
+			if p.trait_personality == 2:
+				p.power += 10
+			elif p.trait_personality == 3 and _faction_leader_slot(w, i) != 4:
+				p.power += 5
+		if _faction_leader_slot(w, i) >= 0:
+			p.power += 20
+		# dlc[0] 块：gamerules 未移植，跳过（TimeScript.cs:11208-11231）。
+		if _in_central_office(w, i):
+			_trait_influence_central(w, d, p)
+		if _is_foreign_minister(w, i):
+			_trait_influence_foreign(w, d, p, i)
+		if _is_premier(w, i):
+			_trait_influence_premier(w, d, p, i)
+		if _is_chairman(w, i):
+			_trait_influence_chairman(w, d, p, i)
+
+
+## TraitInfluence 的 traits[3]/traits[1]/traits[2] 中央职务块（TimeScript.cs:11233-11695）。
+func _trait_influence_central(w: WorldState, d: Array[int], p: PoliticianData) -> void:
+	if p.trait_personality == 0:
+		if _dv(d, 56) != 0:
+			_addi(d, 1, -2)
+		_addi(d, 5, 2)
+		_add_empire_relation(w, 1, 2)
+		_addi(d, 68, -1)
+		_addi(d, 26, -2)
+	elif p.trait_personality == 20:
+		if _dv(d, 56) == 1:
+			_addi(d, 1, 1)
+		_addi(d, 4, 1)
+		_addi(d, 5, 1)
+		_add_empire_relation(w, 1, 3)
+		_addi(d, 68, -1)
+		_addi(d, 26, -1)
+	elif p.trait_personality == 1:
+		if _dv(d, 56) != 2:
+			_addi(d, 1, 1)
+		else:
+			_addi(d, 1, 2)
+		_addi(d, 4, 1)
+		_addi(d, 5, 1)
+	elif p.trait_personality == 2:
+		if _dv(d, 56) != 3:
+			_addi(d, 1, 4)
+		else:
+			_addi(d, 1, 5)
+		_addi(d, 5, -2)
+		_addi(d, 4, 2)
+	elif p.trait_personality == 3:
+		if _dv(d, 56) != 4:
+			_addi(d, 1, 9)
+		else:
+			_addi(d, 1, 10)
+		_addi(d, 5, -5)
+		_addi(d, 4, 7)
+	match p.trait_background:
+		21:
+			_addi(d, W.I_PARTY_SUPPORT, 3)
+			_addi(d, W.I_PEOPLE_SUPPORT, -1)
+			_addi(d, W.I_THOUGHT_FREEDOM, -2)
+			if p.trait_personality == 1 or p.trait_personality == 2:
+				_addi(d, W.I_CORRUPTION, 1)
+			elif p.trait_personality == 3:
+				_addi(d, W.I_CORRUPTION, 2)
+		22:
+			_addi(d, W.I_PARTY_SUPPORT, -2)
+			_addi(d, W.I_PEOPLE_SUPPORT, 3)
+			_addi(d, W.I_ARMY, 1)
+			_addi(d, W.I_LIVING, 1)
+			_addi(d, W.I_CORRUPTION, -1)
+		23:
+			_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, -3)
+			_addi(d, W.I_CORRUPTION, -1)
+		24:
+			_addi(d, W.I_PEOPLE_SUPPORT, 3)
+			_addi(d, W.I_INDUSTRY, 1)
+			_addi(d, W.I_AGRICULTURE, 1)
+			_addi(d, W.I_SERVICES, 1)
+			_addi(d, W.I_LIVING, -1)
+		25:
+			_addi(d, W.I_PARTY_SUPPORT, -2)
+			_addi(d, W.I_PEOPLE_SUPPORT, -2)
+			_addi(d, W.I_THOUGHT_FREEDOM, -5)
+			_addi(d, W.I_ARMY, 1)
+			_addi(d, W.I_LIVING, -1)
+			if p.trait_personality != 0:
+				_addi(d, W.I_CORRUPTION, 1)
+		26:
+			_addi(d, W.I_LIVING, 1)
+			_addi(d, W.I_SCIENCE, 1)
+			if p.trait_personality == 0:
+				_addi(d, W.I_PARTY_SUPPORT, -2)
+				_addi(d, W.I_PEOPLE_SUPPORT, 2)
+				_addi(d, W.I_THOUGHT_FREEDOM, -2)
+			elif p.trait_personality == 20 or p.trait_personality == 1:
+				_addi(d, W.I_PARTY_SUPPORT, 1)
+				_addi(d, W.I_PEOPLE_SUPPORT, 1)
+				_addi(d, W.I_THOUGHT_FREEDOM, 1)
+			elif p.trait_personality == 2:
+				_addi(d, W.I_PARTY_SUPPORT, 2)
+				_addi(d, W.I_PEOPLE_SUPPORT, -2)
+				_addi(d, W.I_THOUGHT_FREEDOM, 1)
+			elif p.trait_personality == 3:
+				_addi(d, W.I_PARTY_SUPPORT, 4)
+				_addi(d, W.I_PEOPLE_SUPPORT, -4)
+				_addi(d, W.I_THOUGHT_FREEDOM, 2)
+		27:
+			_addi(d, W.I_PARTY_SUPPORT, 3)
+			_addi(d, W.I_PEOPLE_SUPPORT, 3)
+			_addi(d, W.I_ARMY, 1)
+			_addi(d, W.I_LIVING, 2)
+			_addi(d, W.I_SCIENCE, 6)
+		28:
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+			_addi(d, W.I_PEOPLE_SUPPORT, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, -2)
+			_addi(d, W.I_AGENTS, 3)
+		43:
+			_addi(d, W.I_SCIENCE, 5)
+	match p.trait_alignment:
+		4:
+			_addi(d, W.I_CORRUPTION, -1)
+			_addi(d, W.I_THOUGHT_FREEDOM, -5)
+			_addi(d, W.I_PARTY_SUPPORT, -2)
+		5:
+			_addi(d, W.I_PARTY_SUPPORT, 2)
+		6:
+			_addi(d, W.I_CORRUPTION, 1)
+			_addi(d, W.I_THOUGHT_FREEDOM, 5)
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+		7:
+			_addi(d, W.I_SCIENCE, 2)
+		29:
+			_addi(d, W.I_PARTY_SUPPORT, 3)
+			_addi(d, W.I_PEOPLE_SUPPORT, -5)
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
+			_add_empire_relation(w, 0, 2)
+			if d.size() > W.I_SERVICES:
+				d[W.I_SERVICES] += 1 if d[W.I_SERVICES] < 60 else -1
+			if d.size() > W.I_LIVING:
+				d[W.I_LIVING] += 2 if d[W.I_LIVING] < 50 else -2
+		30:
+			_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_PEOPLE_SUPPORT, -5)
+			_addi(d, W.I_MANPOWER, -3)
+			match p.trait_personality:
+				0: _addi(d, W.I_THOUGHT_FREEDOM, -5)
+				20: _addi(d, W.I_THOUGHT_FREEDOM, -3)
+				2: _addi(d, W.I_THOUGHT_FREEDOM, 3)
+				3: _addi(d, W.I_THOUGHT_FREEDOM, 5)
+			match p.trait_personality:
+				0, 1: _addi(d, W.I_WAR_SUPPORT, 3)
+				20: _addi(d, W.I_WAR_SUPPORT, 6)
+				2: _addi(d, W.I_WAR_SUPPORT, -3)
+				3: _addi(d, W.I_WAR_SUPPORT, -6)
+		39:
+			_addi(d, W.I_PARTY_SUPPORT, -2)
+			_addi(d, W.I_PEOPLE_SUPPORT, -1)
+			_addi(d, W.I_THOUGHT_FREEDOM, -5)
+			_addi(d, W.I_INDUSTRY, -1)
+			_addi(d, W.I_MANPOWER, -1)
+		40:
+			_addi(d, W.I_PARTY_SUPPORT, 3)
+			_addi(d, W.I_CORRUPTION, 1)
+		41:
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+			_addi(d, W.I_PEOPLE_SUPPORT, 2)
+			_addi(d, W.I_BUDGET, -3)
+			_addi(d, W.I_CORRUPTION, 1)
+			if p.trait_personality == 0 or p.trait_personality == 20:
+				_addi(d, W.I_THOUGHT_FREEDOM, -1)
+			elif p.trait_personality == 3:
+				_addi(d, W.I_THOUGHT_FREEDOM, 1)
+		42:
+			_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_PEOPLE_SUPPORT, 3)
+			if p.trait_personality == 0:
+				_addi(d, W.I_THOUGHT_FREEDOM, -3)
+	match p.trait_special:
+		8:
+			_addi(d, W.I_THOUGHT_FREEDOM, -10)
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+		9:
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
+			_addi(d, W.I_PARTY_SUPPORT, 3)
+		10:
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+			_addi(d, W.I_PEOPLE_SUPPORT, -5)
+		11:
+			_addi(d, W.I_BUDGET, 3)
+		12:
+			_addi(d, W.I_THOUGHT_FREEDOM, -3)
+			_addi(d, W.I_PARTY_SUPPORT, -4)
+		13:
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+		14:
+			_addi(d, W.I_PARTY_SUPPORT, 3)
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
+			_addi(d, W.I_WAR_SUPPORT, 6)
+		15:
+			_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
+			_addi(d, W.I_WAR_SUPPORT, -6)
+		16:
+			_addi(d, W.I_PARTY_SUPPORT, 4)
+			_addi(d, W.I_AGENTS, 3)
+		17:
+			_addi(d, W.I_THOUGHT_FREEDOM, 2)
+		18:
+			_addi(d, W.I_CORRUPTION, 3)
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+			_addi(d, W.I_BUDGET, -1)
+		19:
+			_addi(d, W.I_PARTY_SUPPORT, 1)
+			_addi(d, W.I_THOUGHT_FREEDOM, 2)
+		31:
+			match p.trait_personality:
+				0:
+					_addi(d, W.I_PARTY_SUPPORT, -2)
+					_addi(d, W.I_PEOPLE_SUPPORT, 5)
+					_addi(d, W.I_THOUGHT_FREEDOM, -2)
+				20:
+					_addi(d, W.I_PARTY_SUPPORT, 1)
+					_addi(d, W.I_PEOPLE_SUPPORT, 3)
+					_addi(d, W.I_THOUGHT_FREEDOM, -1)
+				1:
+					_addi(d, W.I_PARTY_SUPPORT, 4)
+					_addi(d, W.I_PEOPLE_SUPPORT, 1)
+					_addi(d, W.I_THOUGHT_FREEDOM, 2)
+				2:
+					_addi(d, W.I_PARTY_SUPPORT, 5)
+					_addi(d, W.I_PEOPLE_SUPPORT, -3)
+					_addi(d, W.I_THOUGHT_FREEDOM, 3)
+				3:
+					_addi(d, W.I_PARTY_SUPPORT, -3)
+					_addi(d, W.I_PEOPLE_SUPPORT, -5)
+					_addi(d, W.I_THOUGHT_FREEDOM, 5)
+		32:
+			_addi(d, W.I_PEOPLE_SUPPORT, 6)
+			_addi(d, W.I_THOUGHT_FREEDOM, -3)
+		33:
+			_addi(d, W.I_PARTY_SUPPORT, 1)
+			_add_empire_relation(w, 0, 1)
+			_add_empire_relation(w, 1, 1)
+		34:
+			_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_PEOPLE_SUPPORT, -2)
+			_addi(d, W.I_THOUGHT_FREEDOM, -5)
+			_addi(d, W.I_MANPOWER, -3)
+		35:
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+			_addi(d, W.I_PEOPLE_SUPPORT, -3)
+			_addi(d, W.I_AGENTS, 3)
+		36:
+			_addi(d, W.I_PARTY_SUPPORT, -2)
+			_addi(d, W.I_PEOPLE_SUPPORT, -2)
+			_addi(d, W.I_THOUGHT_FREEDOM, -5)
+			_addi(d, W.I_ARMY, 1)
+			_addi(d, W.I_LIVING, -1)
+		37:
+			_addi(d, W.I_PARTY_SUPPORT, 3)
+		38:
+			_addi(d, W.I_PARTY_SUPPORT, 2)
+			_addi(d, W.I_THOUGHT_FREEDOM, -3)
+			_addi(d, W.I_LIVING, -1)
+
+
+## TraitInfluence 外交部块（politics_dolshnost[2] == i，TimeScript.cs:11696-11717 之前）。
+func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i: int) -> void:
+	if _is_foreign_minister(w, i):
+		if p.trait_personality == 0:
+			_add_empire_relation(w, 0, -10)
+			if _dv(d, 6) < 700:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 900:
+				_addi(d, 6, 1)
+			_add_ideology_share(w, 0, 666)
+			_add_ideology_share(w, 1, 1000)
+		elif p.trait_personality == 20:
+			_add_empire_relation(w, 1, 5)
+			_add_empire_relation(w, 0, 2)
+			if _dv(d, 6) < 500:
+				_addi(d, 6, 3)
+			elif _dv(d, 6) < 700:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) > 1000:
+				_addi(d, 6, -1)
+			_add_ideology_share(w, 2, 1000)
+			_add_ideology_share(w, 1, 333)
+		elif p.trait_personality == 1:
+			_add_empire_relation(w, 1, 10)
+			_add_empire_relation(w, 0, -3)
+			if _dv(d, 6) < 500:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 700:
+				_addi(d, 6, 1)
+			elif _dv(d, 6) > 900:
+				_addi(d, 6, -1)
+			_add_ideology_share(w, 2, 333)
+			_add_ideology_share(w, 3, 666)
+			_add_ideology_share(w, 1, 2000)
+		elif p.trait_personality == 2:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, 5)
+			if _dv(d, 6) < 300:
+				_addi(d, 6, 1)
+			elif _dv(d, 6) > 700:
+				_addi(d, 6, -2)
+			elif _dv(d, 6) > 500:
+				_addi(d, 6, -1)
+			_add_ideology_share(w, 3, 666)
+			_add_ideology_share(w, 4, 666)
+		elif p.trait_personality == 3:
+			_add_empire_relation(w, 1, -10)
+			_add_empire_relation(w, 0, 12)
+			if _dv(d, 6) > 700:
+				_addi(d, 6, -3)
+			elif _dv(d, 6) > 500:
+				_addi(d, 6, -2)
+			elif _dv(d, 6) > 300:
+				_addi(d, 6, -1)
+			_add_ideology_share(w, 3, 666)
+			_add_ideology_share(w, 4, 666)
+		if p.trait_background == 21:
+			_add_empire_relation(w, 1, 5)
+			_add_empire_relation(w, 0, 2)
+			if _dv(d, 6) < 500:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 700:
+				_addi(d, 6, 1)
+			elif _dv(d, 6) > 900:
+				_addi(d, 6, -1)
+		elif p.trait_background == 22:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -8)
+			if _dv(d, 6) < 700:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 900:
+				_addi(d, 6, 1)
+		elif p.trait_background == 23:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -8)
+			if _dv(d, 6) < 700:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 900:
+				_addi(d, 6, 1)
+		elif p.trait_background == 24:
+			_add_empire_relation(w, 1, -2)
+			_add_empire_relation(w, 0, -5)
+			if _dv(d, 6) < 700:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 900:
+				_addi(d, 6, 1)
+		elif p.trait_background == 25:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+			if _dv(d, 6) < 500:
+				_addi(d, 6, 3)
+			elif _dv(d, 6) < 700:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) > 1000:
+				_addi(d, 6, -1)
+		elif p.trait_background == 26:
+			if p.trait_personality == 0:
+				_add_empire_relation(w, 1, -5)
+				_add_empire_relation(w, 0, -5)
+				_addi(d, 6, 1)
+			elif p.trait_personality == 20:
+				_add_empire_relation(w, 1, 4)
+				_add_empire_relation(w, 0, 2)
+			elif p.trait_personality == 1:
+				_add_empire_relation(w, 1, 6)
+				_add_empire_relation(w, 0, -2)
+			elif p.trait_personality == 2:
+				_add_empire_relation(w, 1, -3)
+				_add_empire_relation(w, 0, 5)
+				_addi(d, 6, -1)
+			elif p.trait_personality == 3:
+				_add_empire_relation(w, 1, -6)
+				_add_empire_relation(w, 0, 8)
+				_addi(d, 6, -2)
+		elif p.trait_background == 27:
+			_addi(d, 11, 6)
+		elif p.trait_background == 28:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+		elif p.trait_background == 43:
+			_addi(d, 11, 5)
+		if p.trait_alignment == 4:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+		elif p.trait_alignment == 5:
+			_add_empire_relation(w, 1, 5)
+			_add_empire_relation(w, 0, 5)
+			if _dv(d, 6) < 700:
+				_addi(d, 6, 1)
+			else:
+				_addi(d, 6, -1)
+		elif p.trait_alignment == 6:
+			_add_empire_relation(w, 1, 6)
+			_add_empire_relation(w, 0, 6)
+			if _dv(d, 6) > 600:
+				_addi(d, 6, -1)
+		elif p.trait_alignment == 7:
+			_addi(d, 11, 2)
+		elif p.trait_alignment == 29:
+			_add_empire_relation(w, 0, 6)
+			_addi(d, 6, -1)
+		elif p.trait_alignment == 30:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+			if _dv(d, 6) < 700:
+				_addi(d, 6, 1)
+			elif _dv(d, 6) > 900:
+				_addi(d, 6, -1)
+		elif p.trait_alignment == 39:
+			_addi(d, 8, -1)
+			if p.trait_personality == 0 or p.trait_personality == 20:
+				_addi(d, 6, 2)
+				_add_empire_relation(w, 1, 6)
+				_add_empire_relation(w, 0, -6)
+			elif p.trait_personality == 2 or p.trait_personality == 3:
+				_addi(d, 6, -2)
+				_add_empire_relation(w, 1, -6)
+				_add_empire_relation(w, 0, 6)
+		elif p.trait_alignment == 40:
+			if _rel(w, 1) < 400:
+				_add_empire_relation(w, 1, -3)
+			elif _rel(w, 1) > 600:
+				_add_empire_relation(w, 1, 3)
+			if _rel(w, 0) < 400:
+				_add_empire_relation(w, 0, -3)
+			elif _rel(w, 0) > 600:
+				_add_empire_relation(w, 0, 3)
+			if _dv(d, 6) > 900:
+				_addi(d, 6, 1)
+			elif _dv(d, 6) < 500:
+				_addi(d, 6, -1)
+		elif p.trait_alignment == 41:
+			_addi(d, 8, -1)
+			if p.trait_personality == 0:
+				_add_empire_relation(w, 1, -4)
+				_add_empire_relation(w, 0, -4)
+				_addi(d, 6, 1)
+			elif p.trait_personality == 20:
+				_add_empire_relation(w, 0, -1)
+			elif p.trait_personality == 1:
+				_add_empire_relation(w, 0, -1)
+			elif p.trait_personality == 2:
+				_add_empire_relation(w, 0, 3)
+				_addi(d, 6, -1)
+			elif p.trait_personality == 3:
+				_add_empire_relation(w, 1, -4)
+				_add_empire_relation(w, 0, 3)
+				_addi(d, 6, -2)
+		elif p.trait_alignment == 42:
+			_addi(d, 8, -1)
+			if p.trait_personality == 0:
+				_add_empire_relation(w, 1, -6)
+				_add_empire_relation(w, 0, -6)
+				_addi(d, 6, 5)
+				_add_ideology_share(w, 0, 1000)
+			elif p.trait_personality == 3:
+				_add_empire_relation(w, 1, -6)
+				_add_empire_relation(w, 0, 6)
+				_addi(d, 6, -5)
+				_add_ideology_share(w, 4, 1000)
+		if p.trait_special == 8:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+			if _dv(d, 6) < 500:
+				_addi(d, 6, 3)
+			elif _dv(d, 6) < 700:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 1000:
+				_addi(d, 6, 1)
+		elif p.trait_special == 9:
+			_add_empire_relation(w, 1, 4)
+			_add_empire_relation(w, 0, 4)
+			if _dv(d, 6) > 700:
+				_addi(d, 6, -1)
+		elif p.trait_special == 10:
+			_add_empire_relation(w, 1, -6)
+			_add_empire_relation(w, 0, -6)
+			_addi(d, 6, 2)
+		elif p.trait_special == 11:
+			_add_empire_relation(w, 1, -2)
+			_add_empire_relation(w, 0, -2)
+			_addi(d, 8, 2)
+		elif p.trait_special == 12:
+			_add_empire_relation(w, 1, -4)
+			_add_empire_relation(w, 0, -4)
+			_addi(d, 6, 1)
+		elif p.trait_special == 13:
+			_add_empire_relation(w, 1, 4)
+			_add_empire_relation(w, 0, 4)
+		elif p.trait_special == 14:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+			if _dv(d, 6) < 500:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 800:
+				_addi(d, 6, 1)
+			elif _dv(d, 6) > 900:
+				_addi(d, 6, -1)
+		elif p.trait_special == 15:
+			_add_empire_relation(w, 1, -6)
+			_add_empire_relation(w, 0, 6)
+			_addi(d, 6, -1)
+		elif p.trait_special == 16:
+			_add_empire_relation(w, 1, 4)
+			_add_empire_relation(w, 0, 4)
+		elif p.trait_special == 17:
+			_add_empire_relation(w, 1, -1)
+			_add_empire_relation(w, 0, -1)
+			_addi(d, 6, -1)
+		elif p.trait_special == 18:
+			_add_empire_relation(w, 1, -2)
+			_add_empire_relation(w, 0, -2)
+			_addi(d, 8, -1)
+		elif p.trait_special == 19:
+			_add_empire_relation(w, 1, -2)
+			_add_empire_relation(w, 0, -2)
+			_addi(d, 6, -1)
+		elif p.trait_special == 31:
+			if p.trait_personality == 0:
+				_add_empire_relation(w, 1, -3)
+				_add_empire_relation(w, 0, -3)
+				_addi(d, 6, 1)
+			elif p.trait_personality == 20:
+				_add_empire_relation(w, 1, 3)
+				_add_empire_relation(w, 0, 1)
+			elif p.trait_personality == 1:
+				_add_empire_relation(w, 1, 5)
+				_add_empire_relation(w, 0, -1)
+			elif p.trait_personality == 2:
+				_add_empire_relation(w, 1, -2)
+				_add_empire_relation(w, 0, 4)
+				_addi(d, 6, -1)
+			elif p.trait_personality == 3:
+				_add_empire_relation(w, 1, -4)
+				_add_empire_relation(w, 0, 6)
+				_addi(d, 6, -2)
+		elif p.trait_special == 32:
+			_add_empire_relation(w, 1, -4)
+			_add_empire_relation(w, 0, -4)
+		elif p.trait_special == 33:
+			_add_empire_relation(w, 1, 6)
+			_add_empire_relation(w, 0, 6)
+			if _dv(d, 6) < 500:
+				_addi(d, 6, 3)
+			elif _dv(d, 6) < 700:
+				_addi(d, 6, 2)
+			elif _dv(d, 6) < 900:
+				_addi(d, 6, 1)
+			elif _dv(d, 6) > 1000:
+				_addi(d, 6, -1)
+		elif p.trait_special == 34:
+			_add_empire_relation(w, 1, -5)
+			_add_empire_relation(w, 0, -1)
+		elif p.trait_special == 35:
+			_addi(d, 6, -1)
+			if _emp_pow(w, 1) > _emp_pow(w, 0):
+				_add_empire_relation(w, 1, 5)
+				_add_empire_relation(w, 0, -5)
+			else:
+				_add_empire_relation(w, 1, -5)
+				_add_empire_relation(w, 0, 5)
+		elif p.trait_special == 36:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+			_addi(d, 6, 1)
+		elif p.trait_special == 37:
+			_add_empire_relation(w, 1, 2)
+			_add_empire_relation(w, 0, 2)
+			_addi(d, 6, -1)
+		elif p.trait_special == 38:
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+			_addi(d, 6, 1)
+
+
+## TraitInfluence 的总理块 politics_dolshnost[1]（TimeScript.cs:12187-12658 逐字移植）。
+func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i: int) -> void:
+	if _is_premier(w, i):
+		if p.trait_personality == 0:
+			if _dv(d, 56) != 0:
+				_addi(d, 1, -6)
+			else:
+				_addi(d, 1, -3)
+			_addi(d, 5, 6)
+			_add_empire_relation(w, 1, 3)
+			_addi(d, 68, -1)
+			_addi(d, 26, -2)
+			_add_ideology_share(w, 0, 333)
+			_add_ideology_share(w, 1, 500)
+		elif p.trait_personality == 20:
+			if _dv(d, 56) != 1:
+				_addi(d, 1, 4)
+			else:
+				_addi(d, 1, 5)
+			_addi(d, 5, 4)
+			_addi(d, 4, 1)
+			_addi(d, 26, -1)
+			_add_empire_relation(w, 1, 5)
+			_add_ideology_share(w, 2, 2000)
+			_add_ideology_share(w, 1, 222)
+		elif p.trait_personality == 1:
+			if _dv(d, 56) != 2:
+				_addi(d, 1, 5)
+			else:
+				_addi(d, 1, 6)
+			_addi(d, 5, 2)
+			_addi(d, 4, 3)
+			_add_ideology_share(w, 2, 222)
+			_add_ideology_share(w, 3, 333)
+			_add_ideology_share(w, 1, 2000)
+		elif p.trait_personality == 2:
+			if _dv(d, 56) != 3:
+				_addi(d, 1, 6)
+			else:
+				_addi(d, 1, 7)
+			_addi(d, 5, -3)
+			_addi(d, 4, 5)
+			_add_ideology_share(w, 3, 222)
+			_add_ideology_share(w, 4, 333)
+		elif p.trait_personality == 3:
+			if _dv(d, 56) != 4:
+				_addi(d, 1, 8)
+			else:
+				_addi(d, 1, 10)
+			_addi(d, 5, -7)
+			_addi(d, 4, 5)
+			_addi(d, 8, 2)
+			_add_ideology_share(w, 3, 333)
+			_add_ideology_share(w, 4, 222)
+		if p.trait_background == 21:
+			_addi(d, 1, 5)
+			_addi(d, 3, -2)
+			_addi(d, 4, -3)
+			if p.trait_personality == 1  or  p.trait_personality == 2:
+				_addi(d, 26, 1)
+			elif p.trait_personality == 3:
+				_addi(d, 26, 2)
+		elif p.trait_background == 22:
+			_addi(d, 1, -4)
+			_addi(d, 3, 5)
+			_addi(d, 22, 5)
+			_addi(d, 5, 3)
+			_addi(d, 26, -2)
+		elif p.trait_background == 23:
+			_addi(d, 1, -5)
+			_addi(d, 4, -8)
+			_addi(d, 22, -3)
+			_addi(d, 26, -2)
+		elif p.trait_background == 24:
+			_addi(d, 1, -3)
+			_addi(d, 3, 5)
+			_addi(d, 12, 2)
+			_addi(d, 13, 2)
+			_addi(d, 68, 1)
+			_addi(d, 5, -3)
+		elif p.trait_background == 25:
+			_addi(d, 1, 5)
+			_addi(d, 4, -10)
+			_addi(d, 22, 12)
+			_addi(d, 5, -5)
+		elif p.trait_background == 26:
+			_addi(d, 22, -5)
+			_addi(d, 5, 3)
+			_addi(d, 11, 3)
+			if p.trait_personality == 0:
+				_addi(d, 1, -5)
+				_addi(d, 3, 2)
+				_addi(d, 4, -5)
+			elif p.trait_personality == 20  or  p.trait_personality == 1:
+				_addi(d, 1, 2)
+				_addi(d, 3, 2)
+				_addi(d, 4, 2)
+			elif p.trait_personality == 2:
+				_addi(d, 1, 4)
+				_addi(d, 3, -4)
+				_addi(d, 4, 4)
+			elif p.trait_personality == 3:
+				_addi(d, 1, 5)
+				_addi(d, 3, -5)
+				_addi(d, 4, 6)
+		elif p.trait_background == 27:
+			_addi(d, 1, 6)
+			_addi(d, 3, 6)
+			_addi(d, 22, 8)
+			_addi(d, 5, 2)
+			_addi(d, 11, 10)
+		elif p.trait_background == 28:
+			_addi(d, 1, -7)
+			_addi(d, 3, -5)
+			_addi(d, 4, -5)
+			_addi(d, 9, 6)
+		elif p.trait_background == 43:
+			_addi(d, 11, 8)
+		if p.trait_alignment == 4:
+			_addi(d, 26, -1)
+			_addi(d, 4, -7)
+			_addi(d, 1, -3)
+		elif p.trait_alignment == 5:
+			_addi(d, 1, 3)
+		elif p.trait_alignment == 6:
+			_addi(d, 26, 1)
+			_addi(d, 4, 7)
+			_addi(d, 1, 7)
+		elif p.trait_alignment == 7:
+			_addi(d, 11, 3)
+		elif p.trait_alignment == 29:
+			_addi(d, 1, 6)
+			_addi(d, 3, -8)
+			_addi(d, 4, 6)
+			_addi(d, 22, -6)
+			if _dv(d, 68) < 60:
+				_addi(d, 68, 2)
+			else:
+				_addi(d, 68, -2)
+			if _dv(d, 5) < 50:
+				_addi(d, 5, 4)
+			else:
+				_addi(d, 5, -4)
+		elif p.trait_alignment == 30:
+			_addi(d, 1, -6)
+			_addi(d, 3, -8)
+			_addi(d, 57, -5)
+			if p.trait_personality == 0:
+				_addi(d, 4, -8)
+			elif p.trait_personality == 20:
+				_addi(d, 4, -4)
+			elif p.trait_personality == 2:
+				_addi(d, 4, 4)
+			elif p.trait_personality == 3:
+				_addi(d, 4, 8)
+			if p.trait_personality == 0  or  p.trait_personality == 1:
+				_addi(d, 31, 5)
+			elif p.trait_personality == 20:
+				_addi(d, 31, 10)
+			elif p.trait_personality == 2:
+				_addi(d, 31, -5)
+			elif p.trait_personality == 3:
+				_addi(d, 31, -10)
+		elif p.trait_alignment == 39:
+			_addi(d, 1, -5)
+			_addi(d, 3, -3)
+			_addi(d, 4, -8)
+			_addi(d, 22, 3)
+			_addi(d, 9, 3)
+			_addi(d, 57, -2)
+			_addi(d, 8, -2)
+		elif p.trait_alignment == 40:
+			_addi(d, 1, 6)
+			_addi(d, 3, -3)
+			_addi(d, 26, 2)
+			if _dv(d, 51) == 30:
+				_addi(d, 22, 4)
+				_addi(d, 8, -4)
+			elif _dv(d, 51) == 31  or  _dv(d, 51) == 32:
+				_addi(d, 22, 2)
+				_addi(d, 8, -2)
+			elif _dv(d, 51) == 33:
+				_addi(d, 8, 3)
+				_addi(d, 4, 5)
+		elif p.trait_alignment == 41:
+			_addi(d, 8, -5)
+			_addi(d, 9, -4)
+			_addi(d, 4, -4)
+			_addi(d, 26, 3)
+			if _dv(d, 71) < 300:
+				_addi(d, 1, -8)
+				_addi(d, 22, 4)
+			else:
+				_addi(d, 1, -5)
+				_addi(d, 22, 8)
+		elif p.trait_alignment == 42:
+			_addi(d, 1, -8)
+			_addi(d, 22, 3 + d[76] / 200)
+			_addi(d, 9, -3)
+			if p.trait_personality == 0:
+				_add_ideology_share(w, 0, 500)
+			elif p.trait_personality == 3:
+				_add_ideology_share(w, 4, 500)
+		if p.trait_special == 8:
+			_addi(d, 4, -15)
+			_addi(d, 1, -7)
+			_addi(d, 22, 3)
+		elif p.trait_special == 9:
+			_addi(d, 4, 5)
+			_addi(d, 1, 6)
+			_addi(d, 22, -3)
+		elif p.trait_special == 10:
+			_addi(d, 1, -10)
+			_addi(d, 3, -10)
+			_addi(d, 22, 3)
+		elif p.trait_special == 11:
+			_addi(d, 8, 5)
+			_addi(d, 22, -5)
+		elif p.trait_special == 12:
+			_addi(d, 4, -5)
+			_addi(d, 1, -8)
+			_addi(d, 22, -3)
+		elif p.trait_special == 13:
+			_addi(d, 1, 12)
+		elif p.trait_special == 14:
+			_addi(d, 1, 5)
+			_addi(d, 4, 3)
+			_addi(d, 22, 3)
+			_addi(d, 31, 8)
+		elif p.trait_special == 15:
+			_addi(d, 1, -5)
+			_addi(d, 4, 3)
+			_addi(d, 22, -3)
+			_addi(d, 31, -8)
+		elif p.trait_special == 16:
+			_addi(d, 1, 6)
+			_addi(d, 9, 6)
+			_addi(d, 22, 3)
+		elif p.trait_special == 17:
+			_addi(d, 4, 5)
+			_addi(d, 22, -3)
+		elif p.trait_special == 18:
+			_addi(d, 26, 5)
+			_addi(d, 1, 7)
+			_addi(d, 8, -2)
+			_addi(d, 22, -3)
+		elif p.trait_special == 19:
+			_addi(d, 1, 2)
+			_addi(d, 4, 4)
+			_addi(d, 22, -2)
+		elif p.trait_special == 31:
+			_addi(d, 22, 3)
+			if p.trait_personality == 0:
+				_addi(d, 1, -4)
+				_addi(d, 3, 6)
+				_addi(d, 4, -4)
+			elif p.trait_personality == 20:
+				_addi(d, 1, 2)
+				_addi(d, 3, 4)
+				_addi(d, 4, -2)
+			elif p.trait_personality == 1:
+				_addi(d, 1, 5)
+				_addi(d, 3, 2)
+				_addi(d, 4, 3)
+			elif p.trait_personality == 2:
+				_addi(d, 1, 6)
+				_addi(d, 3, -3)
+				_addi(d, 4, 4)
+			elif p.trait_personality == 3:
+				_addi(d, 1, -5)
+				_addi(d, 3, -6)
+				_addi(d, 4, 8)
+		elif p.trait_special == 32:
+			_addi(d, 3, 12)
+			_addi(d, 4, -6)
+			_addi(d, 22, 5)
+		elif p.trait_special == 33:
+			_addi(d, 1, -3)
+			_addi(d, 22, -3)
+		elif p.trait_special == 34:
+			_addi(d, 1, -5)
+			_addi(d, 3, -3)
+			_addi(d, 4, -8)
+			_addi(d, 22, 2)
+			_addi(d, 57, -5)
+		elif p.trait_special == 35:
+			_addi(d, 1, -6)
+			_addi(d, 3, -4)
+			_addi(d, 9, 6)
+			_addi(d, 22, -3)
+		elif p.trait_special == 36:
+			_addi(d, 1, 6)
+			_addi(d, 4, -10)
+			_addi(d, 22, 10)
+			_addi(d, 5, -5)
+		elif p.trait_special == 37:
+			_addi(d, 1, 6)
+			_addi(d, 4, 2)
+			_addi(d, 22, 2)
+		elif p.trait_special == 38:
+			_addi(d, 1, 5)
+			_addi(d, 4, -6)
+			_addi(d, 22, 3)
+			_addi(d, 5, -2)
+
+## TraitInfluence 的主席块 politics_dolshnost[0]（TimeScript.cs:12659-13178 逐字移植）。
+func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, i: int) -> void:
+	if _is_chairman(w, i):
+		if p.trait_personality == 0:
+			if _dv(d, 56) != 0:
+				_addi(d, 1, -9)
+			else:
+				_addi(d, 1, -3)
+			_addi(d, 5, 5)
+			_add_empire_relation(w, 1, 3)
+			_add_empire_relation(w, 0, -12)
+			_addi(d, 68, -2)
+			_addi(d, 26, -4)
+			_add_ideology_share(w, 0, 333)
+			_add_ideology_share(w, 1, 500)
+		elif p.trait_personality == 20:
+			if _dv(d, 56) == 1:
+				_addi(d, 1, 2)
+			_addi(d, 5, 4)
+			_addi(d, 4, 3)
+			_addi(d, 26, -2)
+			_add_empire_relation(w, 1, 6)
+			_add_empire_relation(w, 0, 2)
+			_add_ideology_share(w, 2, 1000)
+			_add_ideology_share(w, 1, 222)
+		elif p.trait_personality == 1:
+			if _dv(d, 56) != 2:
+				_addi(d, 1, 5)
+			else:
+				_addi(d, 1, 7)
+			_addi(d, 5, 3)
+			_addi(d, 4, 7)
+			_add_empire_relation(w, 1, 12)
+			_add_empire_relation(w, 0, -3)
+			_add_ideology_share(w, 2, 222)
+			_add_ideology_share(w, 3, 333)
+			_add_ideology_share(w, 1, 1000)
+		elif p.trait_personality == 2:
+			if _dv(d, 56) != 3:
+				_addi(d, 1, 13)
+			else:
+				_addi(d, 1, 15)
+			_addi(d, 5, -7)
+			_addi(d, 4, 8)
+			_addi(d, 6, -1)
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, 5)
+			_add_ideology_share(w, 3, 222)
+			_add_ideology_share(w, 4, 333)
+		elif p.trait_personality == 3:
+			if _dv(d, 56) != 4:
+				_addi(d, 1, 27)
+			else:
+				_addi(d, 1, 30)
+			_addi(d, 5, -15)
+			_addi(d, 4, 22)
+			_addi(d, 8, 4)
+			_addi(d, 6, -2)
+			_add_empire_relation(w, 1, -10)
+			_add_empire_relation(w, 0, 12)
+			_add_ideology_share(w, 3, 333)
+			_add_ideology_share(w, 4, 222)
+		if p.trait_background == 21:
+			_addi(d, 1, 6)
+			_addi(d, 3, -2)
+			_addi(d, 4, -8)
+			if p.trait_personality == 1  or  p.trait_personality == 2:
+				_addi(d, 26, 2)
+			elif p.trait_personality == 3:
+				_addi(d, 26, 3)
+		elif p.trait_background == 22:
+			_addi(d, 1, -10)
+			_addi(d, 3, 12)
+			_addi(d, 22, 2)
+			_addi(d, 5, 5)
+			_addi(d, 26, -4)
+		elif p.trait_background == 23:
+			_addi(d, 1, -10)
+			_addi(d, 4, -12)
+			_addi(d, 26, -4)
+		elif p.trait_background == 24:
+			_addi(d, 1, -5)
+			_addi(d, 3, 12)
+			_addi(d, 12, 4)
+			_addi(d, 13, 4)
+			_addi(d, 68, 4)
+			_addi(d, 5, -5)
+		elif p.trait_background == 25:
+			_addi(d, 1, -6)
+			_addi(d, 3, -6)
+			_addi(d, 4, -10)
+			_addi(d, 22, 8)
+			_addi(d, 5, -6)
+			_add_empire_relation(w, 1, -5)
+			_add_empire_relation(w, 0, -5)
+			if p.trait_personality != 0:
+				_addi(d, 26, 2)
+		elif p.trait_background == 26:
+			_addi(d, 5, 5)
+			_addi(d, 11, 5)
+			if p.trait_personality == 0:
+				_addi(d, 1, -4)
+				_addi(d, 3, 4)
+				_addi(d, 4, -4)
+			elif p.trait_personality == 20  or  p.trait_personality == 1:
+				_addi(d, 1, 3)
+				_addi(d, 3, 3)
+				_addi(d, 4, 3)
+			elif p.trait_personality == 2:
+				_addi(d, 1, 6)
+				_addi(d, 3, -6)
+				_addi(d, 4, 6)
+			elif p.trait_personality == 3:
+				_addi(d, 1, 10)
+				_addi(d, 3, -10)
+				_addi(d, 4, 10)
+		elif p.trait_background == 27:
+			_addi(d, 1, 10)
+			_addi(d, 3, 10)
+			_addi(d, 22, 5)
+			_addi(d, 5, 8)
+			_addi(d, 11, 18)
+		elif p.trait_background == 28:
+			_addi(d, 1, -10)
+			_addi(d, 3, -8)
+			_addi(d, 4, -10)
+			_addi(d, 9, 9)
+			_add_empire_relation(w, 1, -5)
+			_add_empire_relation(w, 0, -5)
+		elif p.trait_background == 43:
+			_addi(d, 11, 15)
+		if p.trait_alignment == 4:
+			_addi(d, 26, -2)
+			_addi(d, 4, -15)
+			_addi(d, 1, -7)
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+		elif p.trait_alignment == 5:
+			_addi(d, 1, 7)
+			_add_empire_relation(w, 1, 5)
+			_add_empire_relation(w, 0, 5)
+		elif p.trait_alignment == 6:
+			_addi(d, 26, 2)
+			_addi(d, 4, 15)
+			_addi(d, 1, 15)
+			_add_empire_relation(w, 1, 6)
+			_add_empire_relation(w, 0, 6)
+			if _dv(d, 6) > 60:
+				_addi(d, 6, -1)
+		elif p.trait_alignment == 7:
+			_addi(d, 11, 9)
+		elif p.trait_alignment == 29:
+			_addi(d, 1, 8)
+			_addi(d, 3, -10)
+			_addi(d, 4, 10)
+			_add_empire_relation(w, 0, 10)
+			if _dv(d, 68) < 60:
+				_addi(d, 68, 4)
+			else:
+				_addi(d, 68, -4)
+			if _dv(d, 5) < 50:
+				_addi(d, 5, 6)
+			else:
+				_addi(d, 5, -6)
+		elif p.trait_alignment == 30:
+			_addi(d, 1, -8)
+			_addi(d, 3, -10)
+			_addi(d, 57, -6)
+			if p.trait_personality == 0:
+				_addi(d, 4, -10)
+			elif p.trait_personality == 20:
+				_addi(d, 4, -5)
+			elif p.trait_personality == 2:
+				_addi(d, 4, 5)
+			elif p.trait_personality == 3:
+				_addi(d, 4, 10)
+			if p.trait_personality == 0  or  p.trait_personality == 1:
+				_addi(d, 31, 6)
+			elif p.trait_personality == 20:
+				_addi(d, 31, 12)
+			elif p.trait_personality == 2:
+				_addi(d, 31, -6)
+			elif p.trait_personality == 3:
+				_addi(d, 31, -12)
+		elif p.trait_alignment == 39:
+			_addi(d, 1, -8)
+			_addi(d, 3, -5)
+			_addi(d, 4, -10)
+			_addi(d, 8, -5)
+			_addi(d, 12, -1)
+			_addi(d, 13, -1)
+			_addi(d, 68, 1)
+			_addi(d, 57, -3)
+		elif p.trait_alignment == 40:
+			_addi(d, 1, 8)
+			_addi(d, 8, -3)
+			_addi(d, 12, -2)
+			_addi(d, 13, -2)
+			_addi(d, 68, -2)
+			_addi(d, 26, 3)
+			if _dv(d, 17) <= 17:
+				_addi(d, 4, -5)
+			else:
+				_addi(d, 3, 5)
+			if _dv(d, 18) > 20:
+				_addi(d, 31, -3)
+			if _dv(d, 50) > 27:
+				_addi(d, 31, 3)
+		elif p.trait_alignment == 41:
+			_addi(d, 8, -8)
+			_addi(d, 26, 5)
+			_addi(d, 57, -5)
+			_addi(d, 68, 3)
+			if _dv(d, 75) < 100:
+				_addi(d, 1, -10)
+			else:
+				_addi(d, 1, -6)
+		elif p.trait_alignment == 42:
+			_addi(d, 1, -12)
+			_addi(d, 3, 8 + d[76] / 100)
+			_addi(d, 8, -5)
+			_addi(d, 12, -1)
+			if p.trait_personality == 0:
+				_addi(d, 4, -20)
+				_add_empire_relation(w, 1, -6)
+				_add_empire_relation(w, 0, -6)
+				_add_ideology_share(w, 0, 333)
+			elif p.trait_personality == 3:
+				_addi(d, 4, -5)
+				_add_empire_relation(w, 1, -6)
+				_add_empire_relation(w, 0, 6)
+				_add_ideology_share(w, 4, 333)
+		if p.trait_special == 8:
+			_addi(d, 4, -25)
+			_addi(d, 1, -15)
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+			_addi(d, 6, d[6] / 150)
+		elif p.trait_special == 9:
+			_addi(d, 4, 6)
+			_addi(d, 1, 8)
+			_add_empire_relation(w, 1, 4)
+			_add_empire_relation(w, 0, 4)
+		elif p.trait_special == 10:
+			_addi(d, 1, -16)
+			_addi(d, 3, -16)
+			_add_empire_relation(w, 1, -8)
+			_add_empire_relation(w, 0, -8)
+		elif p.trait_special == 11:
+			_addi(d, 8, 8)
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+		elif p.trait_special == 12:
+			_addi(d, 4, -8)
+			_addi(d, 1, -10)
+			_add_empire_relation(w, 1, -6)
+			_add_empire_relation(w, 0, -6)
+		elif p.trait_special == 13:
+			_addi(d, 1, 20)
+		elif p.trait_special == 14:
+			_addi(d, 1, 8)
+			_addi(d, 4, 10)
+			_addi(d, 31, 15)
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+			_addi(d, 6, d[6] / 150)
+		elif p.trait_special == 15:
+			_addi(d, 1, -8)
+			_addi(d, 4, 10)
+			_addi(d, 31, -15)
+			_add_empire_relation(w, 1, -6)
+			_add_empire_relation(w, 0, 6)
+			_addi(d, 6, -d[6] / 150)
+		elif p.trait_special == 16:
+			_addi(d, 1, 9)
+			_addi(d, 9, 6)
+			_add_empire_relation(w, 1, 4)
+			_add_empire_relation(w, 0, 4)
+		elif p.trait_special == 17:
+			_addi(d, 4, 8)
+			_add_empire_relation(w, 1, -1)
+			_add_empire_relation(w, 0, -1)
+		elif p.trait_special == 18:
+			_addi(d, 26, 10)
+			_addi(d, 1, 15)
+			_addi(d, 8, -3)
+		elif p.trait_special == 19:
+			_addi(d, 1, 4)
+			_addi(d, 4, 6)
+			_addi(d, 8, -1)
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+		elif p.trait_special == 31:
+			if p.trait_personality == 0:
+				_addi(d, 1, -5)
+				_addi(d, 3, 8)
+				_addi(d, 4, -6)
+			elif p.trait_personality == 20:
+				_addi(d, 1, 3)
+				_addi(d, 3, 5)
+				_addi(d, 4, -3)
+			elif p.trait_personality == 1:
+				_addi(d, 1, 6)
+				_addi(d, 3, 3)
+				_addi(d, 4, 3)
+			elif p.trait_personality == 2:
+				_addi(d, 1, 8)
+				_addi(d, 3, -5)
+				_addi(d, 4, 5)
+			elif p.trait_personality == 3:
+				_addi(d, 1, -8)
+				_addi(d, 3, -10)
+				_addi(d, 4, 10)
+		elif p.trait_special == 32:
+			_addi(d, 3, 20)
+			_addi(d, 4, -10)
+		elif p.trait_special == 33:
+			_addi(d, 1, 5)
+			_add_empire_relation(w, 0, 6)
+			_add_empire_relation(w, 1, 6)
+		elif p.trait_special == 34:
+			_addi(d, 1, -10)
+			_addi(d, 3, -8)
+			_addi(d, 4, -15)
+			_addi(d, 57, -6)
+		elif p.trait_special == 35:
+			_addi(d, 1, -8)
+			_addi(d, 3, -6)
+			_addi(d, 9, 6)
+		elif p.trait_special == 36:
+			_addi(d, 1, -4)
+			_addi(d, 3, -4)
+			_addi(d, 4, -10)
+			_addi(d, 22, 6)
+			_addi(d, 5, -5)
+			_add_empire_relation(w, 1, -3)
+			_add_empire_relation(w, 0, -3)
+		elif p.trait_special == 37:
+			_addi(d, 1, 8)
+			_addi(d, 4, 3)
+			_add_empire_relation(w, 1, 2)
+			_add_empire_relation(w, 0, 2)
+		elif p.trait_special == 38:
+			_addi(d, 1, 6)
+			_addi(d, 4, -8)
+			_addi(d, 5, -4)
+
+func _in_central_office(w: WorldState, idx: int) -> bool:
+	for pos in [3, 4, 5, 6, 7]:
+		if w.politics_positions.size() > pos and w.politics_positions[pos] == idx:
+			return true
+	return false
+
+
+func _is_foreign_minister(w: WorldState, idx: int) -> bool:
+	return w.politics_positions.size() > 2 and w.politics_positions[2] == idx
+
+func _is_premier(w: WorldState, idx: int) -> bool:
+	return w.politics_positions.size() > 1 and w.politics_positions[1] == idx
+
+
+func _is_chairman(w: WorldState, idx: int) -> bool:
+	return w.politics_positions.size() > 0 and w.politics_positions[0] == idx
+
+
+func _faction_leader_slot(w: WorldState, idx: int) -> int:
+	for fi in w.factions.size():
+		if w.factions[fi] != null and w.factions[fi].leader_index == idx:
+			return fi
+	return -1
+
+
+func _addi(d: Array, idx: int, delta: int) -> void:
+	if d.size() > idx:
+		d[idx] += delta
+
+
+func _add_ideology(w: WorldState, idx: int, delta: int) -> void:
+	if w.factions.size() > idx and w.factions[idx] != null:
+		w.factions[idx].ideology += delta
+
+func _ideology_total(w: WorldState) -> int:
+	var total := 0
+	for k in 5:
+		if w.factions.size() > k and w.factions[k] != null:
+			total += w.factions[k].ideology
+	return total
+
+
+@warning_ignore("integer_division")
+func _add_ideology_share(w: WorldState, idx: int, divisor: int) -> void:
+	if w.factions.size() > idx and w.factions[idx] != null:
+		w.factions[idx].ideology += _ideology_total(w) / divisor
+
+
+func _set_ideology(w: WorldState, idx: int, value: int) -> void:
+	if w.factions.size() > idx and w.factions[idx] != null:
+		w.factions[idx].ideology = value
+
+
+func _count_tag(w: WorldState, tag: String) -> int:
+	var count := 0
+	for c in w.countries:
+		if c != null and c.has_tag(tag):
+			count += 1
+	return count
+
+
+## ModifiesInfuence.cs:2362-2530 的 51 号修正石油消费公式。
+func _apply_modifier51_oil(d: Array, w: WorldState) -> void:
+	var ind := _dv(d, W.I_INDUSTRY)
+	var agr := _dv(d, W.I_AGRICULTURE)
+	var srv := _dv(d, W.I_SERVICES)
+	var army := _dv(d, W.I_ARMY)
+	var oil := 0.0
+	oil += float(ind) * 0.4
+	oil += (float(ind - 499) * 0.4) if ind >= 500 else 0.0
+	oil += (float(ind - 749) * 0.4) if ind >= 750 else 0.0
+	oil += (float(agr - 249) * 0.35) if agr >= 250 else 0.0
+	oil += (float(agr - 499) * 0.35) if agr >= 500 else 0.0
+	oil += (float(agr - 749) * 0.35) if agr >= 750 else 0.0
+	oil += (float(srv - 499) * 0.34) if srv >= 500 else 0.0
+	oil += (float(srv - 749) * 0.34) if srv >= 750 else 0.0
+	oil += 500.0 if army >= 1000 else float(army) * 0.5
+	oil += float(_dv(d, W.I_LIVING)) * 0.05
+	oil += float(w.army_power)
+	for tech in [[2, 35.0], [3, 30.0], [6, 20.0], [7, 40.0], [8, 25.0], [10, -20.0], [11, -35.0], [13, -60.0], [14, -60.0]]:
+		var tidx: int = tech[0]
+		if w.techs != null and w.techs.unlocked.size() > tidx and w.techs.unlocked[tidx]:
+			oil += float(tech[1])
+	if oil <= 200.0:
+		oil = 200.0
+	w.oil_eat = oil
+	var raw := float(_dv(d, 143))
+	var price := raw
+	if _mod_active(w, 58) and not _mod_active(w, 16) and _dv(d, 153) <= 0:
+		price -= 15.0
+	for idx in [14, 8, 35, 40, 30, 83, 52]:
+		var cc := w.get_country_by_legacy_index(idx)
+		if cc != null and cc.has_tag("亲中"):
+			price -= 1.0
+	if price < 10.0:
+		price = 10.0
+	if oil - w.oil_prod > 0.0:
+		d[W.I_BUDGET] -= int(price * 7.7 * (oil - w.oil_prod) / 10000.0)
+	else:
+		d[W.I_BUDGET] -= int(raw * 7.7 * (oil - w.oil_prod) / 10000.0)
+	var sov_price := raw
+	for idx in [14, 8, 35, 40, 30, 83]:
+		var cc := w.get_country_by_legacy_index(idx)
+		if cc != null and cc.has_tag("亲苏"):
+			sov_price -= 1.0
+	if sov_price < 10.0:
+		sov_price = 10.0
+	var d160 := _dv(d, 160)
+	if d160 > 0:
+		w.empires[EmpireData.USSR].money += int(raw * 7.7 * float(d160) / 100000.0)
+	else:
+		w.empires[EmpireData.USSR].money += int(sov_price * 7.7 * float(d160) / 100000.0)
+	var usa_price := raw
+	for idx in [14, 8, 35, 40, 30, 83]:
+		var cc := w.get_country_by_legacy_index(idx)
+		if cc != null and cc.has_tag("亲美"):
+			usa_price -= 1.0
+	if usa_price < 10.0:
+		usa_price = 10.0
+	var d161 := _dv(d, 161)
+	if d161 > 0:
+		w.empires[EmpireData.USA].money += int(raw * 7.7 * float(d161) / 100000.0)
+	else:
+		w.empires[EmpireData.USA].money += int(usa_price * 7.7 * float(d161) / 100000.0)
+	if raw - 50.0 > 0.0:
+		WAR_SYS.add_empire_power(EmpireData.USA, -((int(raw) - 10) / 3))
+		WAR_SYS.add_empire_power(EmpireData.USSR, (int(raw) - 10) / 3)
+	elif raw - 20.0 > 0.0 and raw - 50.0 <= 0.0:
+		WAR_SYS.add_empire_power(EmpireData.USA, (int(raw) - 10) / 3)
+		WAR_SYS.add_empire_power(EmpireData.USSR, (int(raw) - 10) / 3)
+	elif w.date.year < 1980:
+		WAR_SYS.add_empire_power(EmpireData.USA, (int(raw) - 10) / 2)
+		WAR_SYS.add_empire_power(EmpireData.USSR, -((int(raw) - 10) / 2))
+	else:
+		WAR_SYS.add_empire_power(EmpireData.USA, int(raw) - 10)
+		WAR_SYS.add_empire_power(EmpireData.USSR, -((int(raw) - 10) * 2))
+
+
+func _add_empire_relation(w: WorldState, idx: int, delta: int) -> void:
+	if w.empires.size() > idx and w.empires[idx] != null:
+		w.empires[idx].relations += delta
+
+func _rel(w: WorldState, idx: int) -> int:
+	if w.empires.size() > idx and w.empires[idx] != null:
+		return w.empires[idx].relations
+	return 0
+
+
+func _emp_pow(w: WorldState, idx: int) -> int:
+	if w.empires.size() > idx and w.empires[idx] != null:
+		return w.empires[idx].power
+	return 0
+
+
+## TimeScript.cs:9871-9990 MutualRelationsChange 逐字移植（dlc[0] 恒 true 分支）。
+func _fortnight_mutual_relations(d: Array[int], w: WorldState) -> void:
+	var china := w.get_country_by_legacy_index(1)
+	var science32: bool = w.techs != null and w.techs.unlocked.size() > 32 and w.techs.unlocked[32]
+	var div45 := 45 if not science32 else 40
+	var div40 := 40 if not science32 else 35
+	var div30 := 30 if not science32 else 25
+	var div15 := 15 if not science32 else 10
+	var div20 := 20 if not science32 else 15
+	var div25 := 25 if not science32 else 20
+	var base := _dv(d, W.I_BUDGET_DIPLO)
+	var usa := w.empires[0] if w.empires.size() > 0 else null
+	var ussr := w.empires[1] if w.empires.size() > 1 else null
+	if usa != null:
+		if china != null and china.has_tag("ovd") and usa.relations > 650:
+			usa.relations += base / div45
+		elif china != null and (china.has_tag("sev") or china.has_tag("okb")) and usa.relations > 650:
+			usa.relations += base / div40
+		elif ussr != null and ussr.relations > 750 and not _mod_active(w, 17):
+			usa.relations += base / div30
+		elif usa.relations < 200 and _mod_active(w, 17):
+			usa.relations += base / div15
+		elif usa.relations < 400:
+			usa.relations += base / div20
+		else:
+			usa.relations += base / div25
+	if ussr != null:
+		var usa_trade := w.get_country_by_legacy_index(51)
+		if china != null and (china.has_tag("亲美") or (usa_trade != null and usa_trade.development == 1)) and ussr.relations > 650:
+			ussr.relations += base / div45
+		elif usa_trade != null and (usa_trade.has_tag("对华贸易") or (china != null and china.has_tag("okb"))) and ussr.relations > 650:
+			ussr.relations += base / div40
+		elif usa != null and usa.relations > 750 and not _mod_active(w, 17):
+			ussr.relations += base / div30
+		elif ussr.relations < 200 and _mod_active(w, 17):
+			ussr.relations += base / div15
+		elif ussr.relations < 400:
+			ussr.relations += base / div20
+		else:
+			ussr.relations += base / div25
+	# dlc[0] 恒 true → 只移植 else 分支（TimeScript.cs:9935-9975）。
+	if usa != null and ussr != null:
+		if usa.relations < 750 and usa.relations > 700 and ussr.relations > 300:
+			ussr.relations -= 10
+		elif usa.relations > 650:
+			ussr.relations -= 5
+		if ussr.relations < 750 and ussr.relations > 650 and usa.relations > 350:
+			usa.relations -= 20
+		elif ussr.relations < 750 and ussr.relations > 650:
+			usa.relations -= 10
+	if usa != null and usa.relations < 700:
+		usa.relations += _dv(d, W.I_LOAN) / 20
+
+
 func _apply_tech_periodic(w: WorldState) -> void:
 	if w.techs == null:
 		return
@@ -1977,7 +3528,7 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 	# 2026-08 对齐审查重写：此前移植用 "score=(econ-9)+(party-5)+..." 数学公式与
 	# 分支阈值（score<=6/9/11/15/20），与原版 num20<=0/3/6/9/12 体系完全不符；
 	# 开局数据下两者恰都收敛到威权（num20=5-1-1-2-1=0 → 分支1），但政策变化后
-	# 结果分歧。逐字重写如下（差异：DevelopedConsumerism/事件 502/681/674/675 未移植 → 跳过）。
+	# 结果分歧。逐字重写如下（2026-08 补齐 DevelopedConsumerism 与事件 502/681/674/675 条件）。
 	var num20 := 5
 	if d[W.I_ECON_SYSTEM] == 10:
 		num20 -= 1
@@ -2010,12 +3561,25 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 		num20 += 1
 	if d[W.I_TERRITORY] == 23:
 		num20 += 1
-	# DevelopedConsumerism（原版开局 0，GameStartScript.cs:127）端口无对应 → 跳过
+	# TimeScript.cs:1333-1336：DevelopedConsumerism > 0 → num20++。
+	if w.developed_consumerism > 0:
+		num20 += 1
 	if _mod_active(w, 40):
 		num20 -= 1
 	if _mod_active(w, 38) and num20 > 0:
 		num20 = 0
-	# event_done[502]/[681]/(674/675) 未移植 → 跳过
+	# TimeScript.cs:1341-1349：event_done[502] && res502!=4 → num20-=3；
+	# 且 data[15]==8（政党制度8）再 -3。
+	if w.event_done_num(502) and w.result_of_event_num(502) != 4:
+		num20 -= 3
+		if d[W.I_PARTY_SYSTEM] == 8:
+			num20 -= 3
+	# TimeScript.cs:1350-1353：event_done[681] && res681==3 → num20--。
+	if w.event_done_num(681) and w.result_of_event_num(681) == 3:
+		num20 -= 1
+	# TimeScript.cs:1354-1357：(res675==2 || res674==2) && num20>0 → num20=0。
+	if (w.result_of_event_num(675) == 2 or w.result_of_event_num(674) == 2) and num20 > 0:
+		num20 = 0
 
 	var new_system: int
 	var new_gosstroy: int
@@ -2112,11 +3676,80 @@ func _update_political_line(d: Array[int], w: WorldState) -> void:
 		d[W.I_POLITICAL_LINE] = 4
 
 
+## 每日：一党制下把 party_number(=support) 按 party_ideology(=ideology) 重算。
+## 忠实移植原版 TimeScript.Repaint 日块（DLL 反编译 TimeScript.Repaint(bool)：
+## data[53] 重算段 + party_number 重算段；旧 Assets/Scripts/TimeScript.cs:1113-1171
+## 同源，但旧文本把 ref 写入误排成死局部变量，以 DLL 反编译语义为准）。
+## 原版每次日块先把 data[53] 置为当前禁用派系数；多党下禁用>=4 时政党制度退回 6；
+## 一党制：启用派系 support = ideology + 前方禁用派系转移额；负 ideology 归零。
+func _sync_faction_numbers_from_ideology(d: Array[int], w: WorldState) -> void:
+	if w == null or w.factions.is_empty() or d.size() <= W.I_PARTY_BAN_COUNT:
+		return
+	var disabled := 0
+	for f in w.factions:
+		if f != null and not f.is_enabled:
+			disabled += 1
+	d[W.I_PARTY_BAN_COUNT] = disabled
+	if d[W.I_PARTY_SYSTEM] > 7 and disabled >= 4:
+		d[W.I_PARTY_SYSTEM] = 6
+	if d[W.I_PARTY_SYSTEM] > 7:
+		return
+	var transferred: Array[int] = [0, 0, 0, 0, 0]
+	for i in w.factions.size():
+		var f: FactionData = w.factions[i]
+		if f == null:
+			continue
+		if f.ideology > 0 and not f.is_enabled:
+			var found := false
+			for k in range(i + 1, w.factions.size()):
+				var t: FactionData = w.factions[k]
+				if t != null and t.is_enabled and k < transferred.size():
+					transferred[k] = f.ideology
+					found = true
+					break
+			if not found:
+				for k in range(i - 1, 0, -1):
+					var t2: FactionData = w.factions[k]
+					if t2 != null and t2.is_enabled:
+						t2.support += f.ideology
+						break
+		elif f.ideology > 0 and f.is_enabled:
+			f.support = f.ideology + (transferred[i] if i < transferred.size() else 0)
+		elif f.ideology < 0:
+			f.ideology = 0
+
+
+## 每 7 天（原版 data[19] % 7 == 0）：一党制下每个已结盟派系
+##   ideology += (五个派系 ideology 之和) / 100
+##   预算 -1，特工网络 -2
+## 出处：原版 TimeScript.Repaint 日块；DLL 反编译 TimeScript 中
+## "if (this.global2.data[19] % 7 == 0) ... is_party_ally[num39]" 一段
+## （旧 Assets/Scripts/TimeScript.cs:3155-3170 的 ref 写入被误排，以 DLL 为准）。
+## 原版此段在 party_number 每日重算之后执行，所以本次增长下一日块才反映到 support。
+func _weekly_ally_upkeep(d: Array[int], w: WorldState) -> void:
+	if w == null or w.factions.is_empty() or d.size() <= W.I_AGENTS:
+		return
+	if d[W.I_PARTY_SYSTEM] > 7:
+		return
+	for f in w.factions:
+		if f == null or not f.is_ally:
+			continue
+		var ideo_sum := 0
+		for x in w.factions:
+			if x != null:
+				ideo_sum += x.ideology
+		@warning_ignore("integer_division")
+		var gain: int = ideo_sum / 100
+		f.ideology += gain
+		d[W.I_BUDGET] -= 1
+		d[W.I_AGENTS] -= 2
+
+
 ## 满足现状者 data[106] 增长——【仅切政策成功时】调用一次，对齐原版
 ## Doctrine_button_script.OnMouseDown（1229/1253）。放这里而非月度是本次修复关键。
-##   一党制(≤7)：data[106] += 当前政治路线派系的 ideology(influence)/4，随后重算政治路线
+##   一党制(≤7)：data[106] += 当前政治路线派系的 ideology/4，随后重算政治路线
 ##   多党(>7)：  data[106] += 保守派 support(party_number[1])/4
-## party_ideology 我方用 FactionData.influence（开局=原 ideology 列）。
+## party_ideology 我方以 FactionData.ideology 为准（influence 仅旧存档兼容，勿作增长源）。
 ## 顺序与原版一致：先用【旧】政治路线加 satisfied，再重算路线。
 func _apply_policy_satisfied_growth(d: Array[int], w: WorldState) -> void:
 	if w.factions.is_empty() or d.size() <= W.I_SATISFIED:
@@ -2124,7 +3757,7 @@ func _apply_policy_satisfied_growth(d: Array[int], w: WorldState) -> void:
 	@warning_ignore("integer_division")
 	if d[W.I_PARTY_SYSTEM] <= 7:
 		var line: int = clampi(d[W.I_POLITICAL_LINE], 0, w.factions.size() - 1)
-		var base_ideo: int = w.factions[line].influence
+		var base_ideo: int = w.factions[line].ideology
 		if base_ideo <= 0:
 			base_ideo = w.factions[line].support
 		d[W.I_SATISFIED] += base_ideo / 4
@@ -2137,95 +3770,6 @@ func _apply_policy_satisfied_growth(d: Array[int], w: WorldState) -> void:
 		# 原版 :1407-1438：多党分支同样在加完 data[106] 后重算 data[56]
 		_update_political_line(d, w)
 	d[W.I_SATISFIED] = maxi(0, d[W.I_SATISFIED])
-
-
-# ── 半年度：factionsPoints（TimeScript ~740–762，非合作模式也可用经济指标）──
-## 原版挂在 dlc[0]&&gamerules；本移植：始终按经济/党支持给积分，供 spend_faction_points 或自动折算。
-
-func _biannual_faction_points(d: Array[int], w: WorldState) -> void:
-	if w.factions.is_empty():
-		return
-	@warning_ignore("integer_division")
-	# 按 support 排序 (index, support)
-	var ranked: Array = []
-	for i in w.factions.size():
-		ranked.append([i, w.factions[i].support])
-	ranked.sort_custom(func(a, b) -> bool: return a[1] > b[1])
-
-	var people: int = d[W.I_PEOPLE_SUPPORT] / 100
-	var living: int = d[W.I_LIVING] / 100
-	var liberal: int = d[W.I_THOUGHT_FREEDOM] / 100
-	var party_u: int = d[W.I_PARTY_SUPPORT] / 100
-
-	# 最大 2 派：+民众支持/100、+生活/100
-	for k in mini(2, ranked.size()):
-		var idx: int = ranked[k][0]
-		w.factions[idx].points += people
-		w.factions[idx].points += living
-	# 最大 3 派：再 +生活（原版 top3 都加 living；top2 已加一次 → top3 再加 living 等价 top2 双倍）
-	if ranked.size() >= 3:
-		w.factions[ranked[2][0]].points += living
-	# 最小 2 派：+自由化；最小 3 派：+(10-民众)
-	var n := ranked.size()
-	for k in mini(2, n):
-		var idx2: int = ranked[n - 1 - k][0]
-		w.factions[idx2].points += liberal
-	for k in mini(3, n):
-		var idx3: int = ranked[n - 1 - k][0]
-		w.factions[idx3].points += 10 - people
-	# 非最大派：+党支持/100
-	var top_idx: int = ranked[0][0]
-	for i in w.factions.size():
-		if i != top_idx:
-			w.factions[i].points += party_u
-
-	# 自动轻量折算：积分≥10 时每半年自动花一轮，避免积分只涨不花
-	for i in w.factions.size():
-		var f: FactionData = w.factions[i]
-		if f.points >= 10 and f.is_enabled:
-			var chunks: int = f.points / 10
-			# 最多折 3 档，避免半年暴涨
-			chunks = mini(chunks, 3)
-			f.points -= 10 * chunks
-			f.support += chunks * 2
-
-
-# ── 半年度：派系支持漂移（路线/结盟微调，叠在积分折算之上）──
-
-func _biannual_faction_drift(w: WorldState) -> void:
-	var d := w.数值表
-	var political_line: int = d[W.I_POLITICAL_LINE]
-	var econ: int = d[W.I_ECON_SYSTEM]
-	var freedom: int = d[W.I_THOUGHT_FREEDOM]
-	# ECO-FAC-02：经济越开放(数值越大) / 思想自由越高，改革/自由略受益
-	var open_bias := 0
-	if econ >= 14:
-		open_bias = 2
-	elif econ >= 12:
-		open_bias = 1
-	elif econ <= 11:
-		open_bias = -1
-	if freedom >= 400:
-		open_bias += 1
-	elif freedom <= 150:
-		open_bias -= 1
-	for i in w.factions.size():
-		var f: FactionData = w.factions[i]
-		if f.id == political_line:
-			f.support += 2
-		else:
-			f.support -= 1
-		if f.is_ally:
-			f.support += 1
-		if not f.is_enabled:
-			f.support = maxi(0, f.support - 3)
-		# 开放偏向：3改革 +bias，4自由 +bias，0极左/1保守 -bias
-		if open_bias != 0:
-			if f.id >= 3:
-				f.support += open_bias
-			elif f.id <= 1:
-				f.support -= open_bias
-		f.support = maxi(0, f.support)
 
 
 # ── 双周：生活水平上限调整（原版 3749-3752，双周块）──
@@ -2457,8 +4001,10 @@ func _on_fortnight() -> void:
 	_fortnight_econ_system_effect(d)
 	_fortnight_political_drift(d, w)
 	_fortnight_military_doctrine(d, w)
+	_fortnight_trait_influence(d, w)
 	_apply_tech_periodic(w)
 	_influence_from_investments(d, year)
+	_fortnight_mutual_relations(d, w)
 	_update_modifier_population_industry_pressure(d, w)
 	_fortnight_econ_thought_drift(d, year)
 	_fortnight_industry_decay(d)
@@ -2709,6 +4255,471 @@ func _fortnight_modifiers(
 		else:
 			d[W.I_BUDGET] -= (500 - usa_relation) / 50
 			d[W.I_AGENTS] -= (500 - usa_relation) / 100
+
+	# ── 18-42：ModifiesInfuence.cs:1866-2260 ──
+	if _mod_active(w, 18):
+		d[W.I_THOUGHT_FREEDOM] += 2
+		d[W.I_AGENTS] += 2
+	elif _mod_active(w, 19):
+		d[W.I_MANPOWER] -= 2
+		_add_empire_relation(w, 0, 5)
+		d[W.I_THOUGHT_FREEDOM] += 2
+		d[W.I_BUDGET] += 2
+	elif _mod_active(w, 20):
+		_add_empire_relation(w, 0, -5)
+		_add_empire_relation(w, 1, 2)
+		d[W.I_ARMY] -= 2
+		d[W.I_BUDGET] += 2
+	if _mod_active(w, 21):
+		_add_empire_relation(w, 1, 2)
+		_add_empire_relation(w, 0, -2)
+		d[W.I_ARMY] -= 2
+		d[W.I_SCIENCE] += 5
+	elif _mod_active(w, 22):
+		d[W.I_THOUGHT_FREEDOM] += 2
+		_add_empire_relation(w, 1, -5)
+		d[W.I_AGENTS] += 2
+		d[W.I_MANPOWER] += 2
+	elif _mod_active(w, 23):
+		_add_empire_relation(w, 0, 5)
+		d[W.I_MANPOWER] -= 2
+		d[W.I_THOUGHT_FREEDOM] += 2
+		d[W.I_BUDGET] += 2
+	if _mod_active(w, 24):
+		d[W.I_PARTY_SUPPORT] += 2
+		d[W.I_THOUGHT_FREEDOM] += 2
+		d[W.I_BUDGET] += 2
+	elif _mod_active(w, 25):
+		d[W.I_SCIENCE] += 2
+		d[W.I_PEOPLE_SUPPORT] -= 2
+		d[W.I_THOUGHT_FREEDOM] -= 2
+		d[W.I_CORRUPTION] -= 2
+		d[W.I_BUDGET] -= 3
+	elif _mod_active(w, 26):
+		d[W.I_PARTY_SUPPORT] += 5
+		d[W.I_PEOPLE_SUPPORT] -= 5
+		d[W.I_THOUGHT_FREEDOM] -= 5
+		d[W.I_CORRUPTION] -= 5
+		d[W.I_LIVING] -= 5
+	elif _mod_active(w, 27):
+		d[W.I_ARMY] += 5
+		d[W.I_PEOPLE_SUPPORT] -= 2
+		d[W.I_CORRUPTION] -= 2
+		d[W.I_BUDGET] -= 2
+	if _mod_active(w, 28):
+		if w.event_done_num(326) and w.result_of_event_num(326) == 0 \
+				and _mod_active(w, 3) and _mod_active(w, 6) \
+				and d[W.I_RELIGION] <= 25 and d[W.I_PARTY_SYSTEM] == 6 and d[W.I_ECON_SYSTEM] <= 11:
+			_add_ideology(w, 0, 3)
+			d[W.I_PARTY_SUPPORT] -= 5
+			d[W.I_PEOPLE_SUPPORT] += 15
+			d[W.I_THOUGHT_FREEDOM] -= 15
+			d[W.I_CORRUPTION] -= 5
+			d[W.I_BUDGET] += 3
+			d[W.I_AGENTS] += 3
+			for p in w.politicians:
+				if p == null or PoliticianSystem.is_vacant_politician(p):
+					continue
+				if p.trait_personality == 0:
+					p.power += 30
+					p.loyalty += 30
+		else:
+			_add_ideology(w, 0, 1)
+			_add_ideology(w, 1, 1)
+			for p in w.politicians:
+				if p == null or PoliticianSystem.is_vacant_politician(p):
+					continue
+				if p.trait_personality == 0 or p.trait_personality == 20:
+					p.power += 10
+					p.loyalty += 10
+			d[W.I_PARTY_SUPPORT] -= 2
+			d[W.I_PEOPLE_SUPPORT] += 2
+			d[W.I_THOUGHT_FREEDOM] -= 2
+			d[W.I_CORRUPTION] -= 2
+			d[W.I_AGENTS] += 2
+			if not _mod_active(w, 6):
+				w.modifiers[28].is_active = false
+	elif _mod_active(w, 29):
+		_add_ideology(w, 0, -1)
+		_add_ideology(w, 3, -1)
+		_add_ideology(w, 4, -1)
+		d[W.I_SERVICES] += 2
+		d[W.I_INDUSTRY] += 2
+		d[W.I_LIVING] += 5
+		for p in w.politicians:
+			if p == null or PoliticianSystem.is_vacant_politician(p):
+				continue
+			if p.trait_personality != 1:
+				p.power -= 5
+		if d[W.I_PARTY_SYSTEM] > 7:
+			w.modifiers[29].is_active = false
+			w.modifiers[28].is_active = true
+	elif _mod_active(w, 30):
+		_add_ideology(w, 3, 1)
+		d[W.I_BUDGET] += 5
+		d[W.I_DIPLO] -= 2
+		_add_empire_relation(w, 0, 5)
+		for p in w.politicians:
+			if p == null or PoliticianSystem.is_vacant_politician(p):
+				continue
+			if p.trait_personality == 2:
+				p.power += 10
+		if d[W.I_ECON_SYSTEM] < 13:
+			w.modifiers[30].is_active = false
+			w.modifiers[28].is_active = true
+	elif _mod_active(w, 31):
+		_add_ideology(w, 4, 1)
+		_add_empire_relation(w, 0, 5)
+		for p in w.politicians:
+			if p == null or PoliticianSystem.is_vacant_politician(p):
+				continue
+			if p.trait_personality == 3:
+				p.power += 10
+		d[W.I_CORRUPTION] -= 2
+		d[W.I_OLIGARCH] -= 2
+		d[W.I_DIPLO] -= 2
+		if d[W.I_ECON_SYSTEM] < 14 or d[W.I_PRESS_POLICY] < 17:
+			w.modifiers[31].is_active = false
+			w.modifiers[28].is_active = true
+	if _mod_active(w, 32):
+		for p in w.politicians:
+			if p == null or PoliticianSystem.is_vacant_politician(p):
+				continue
+			if p.trait_personality == 0:
+				p.power += 10
+			else:
+				p.power -= 5
+		if _mod_active(w, 6):
+			d[W.I_PEOPLE_SUPPORT] += 10
+			d[W.I_THOUGHT_FREEDOM] -= 10
+			if w.event_done_num(670) and (w.result_of_event_num(670) == 0 or w.result_of_event_num(670) == 1):
+				d[W.I_AGENTS] += 2
+				d[W.I_ARMY] += 2
+			if w.event_done_num(444) and w.result_of_event_num(444) == 0 and d[W.I_PRESS_POLICY] == 19:
+				d[W.I_AGENTS] += 2
+				d[W.I_ARMY] += 2
+			# 复用函数开头声明的 player（w.get_player_country() 在同一轮内不变），
+			# 避免内层重复声明触发 GDScript “There is already a variable named player” 解析错误。
+			if player != null and player.has_tag("rim"):
+				d[W.I_AGENTS] += 2
+				d[W.I_ARMY] += 2
+		else:
+			d[W.I_PEOPLE_SUPPORT] -= 10
+			d[W.I_THOUGHT_FREEDOM] += 15
+		var china := w.get_player_country()
+		if china != null and w.is_socialism(china, true):
+			d[W.I_AGENTS] += 2
+			d[W.I_ARMY] += 2
+		if d[W.I_LIVING] > 1100:
+			d[W.I_AGENTS] += 2
+			d[W.I_ARMY] += 2
+	if _mod_active(w, 33):
+		d[W.I_PEOPLE_SUPPORT] += 2
+		d[W.I_LIVING] += 2
+		d[W.I_INDUSTRY] -= 2
+		d[W.I_SERVICES] += 2
+		d[W.I_ARMY] -= 5
+	if _mod_active(w, 34):
+		var r320 := w.result_of_event_num(320)
+		if r320 == 1:
+			d[W.I_AGRICULTURE] += 7
+			d[W.I_INDUSTRY] += 2
+			d[W.I_BUDGET] -= 3
+			d[W.I_WAR_SUPPORT] += 2
+			d[W.I_PEOPLE_SUPPORT] += 1
+		elif r320 == 2:
+			d[W.I_AGRICULTURE] += 3
+			d[W.I_INDUSTRY] += 5
+			d[W.I_BUDGET] -= 5
+			d[W.I_MANPOWER] += 2
+		elif r320 == 3:
+			d[W.I_AGRICULTURE] += 7
+			d[W.I_INDUSTRY] += 2
+			d[W.I_BUDGET] -= 3
+			d[W.I_WAR_SUPPORT] += 2
+			d[W.I_PEOPLE_SUPPORT] += 1
+			d[W.I_AGRICULTURE] += 3
+			d[W.I_INDUSTRY] += 5
+			d[W.I_BUDGET] -= 5
+			d[W.I_MANPOWER] += 2
+		elif r320 == 4:
+			d[W.I_SERVICES] += 1
+			d[W.I_INDUSTRY] += 1
+			d[W.I_BUDGET] += 2
+	if _mod_active(w, 35):
+		d[W.I_BUDGET] -= 5
+		d[W.I_INDUSTRY] += 5
+		d[W.I_LIVING] += 5
+		d[W.I_MANPOWER] += 2
+	if _mod_active(w, 36):
+		d[W.I_SCIENCE] += 5
+		WAR_SYS.add_empire_power(EmpireData.USA, 5)
+		WAR_SYS.add_empire_power(EmpireData.USSR, 5)
+	if _mod_active(w, 37):
+		d[W.I_CORRUPTION] -= 2
+		d[W.I_SERVICES] += 2
+		d[W.I_LIVING] += 5
+		d[W.I_THOUGHT_FREEDOM] += 5
+	if _mod_active(w, 38):
+		d[W.I_PARTY_SUPPORT] += 5
+		d[W.I_DIPLO] += 1
+		d[W.I_WAR_SUPPORT] += 1
+		if w.leader == null or w.leader.name_first != 32 or w.leader.name_last != 47:
+			w.modifiers[38].is_active = false
+	if _mod_active(w, 39):
+		var usa_rel := w.empires[EmpireData.USA].relations if w.empires.size() > EmpireData.USA else 0
+		if usa_rel < 150 and w.empires.size() > EmpireData.USA:
+			w.empires[EmpireData.USA].relations = 150
+		WAR_SYS.add_empire_power(EmpireData.USA, -5)
+		_add_empire_relation(w, 1, -5)
+		d[W.I_RESERVE] += 5
+	if _mod_active(w, 40):
+		if d[W.I_AGRICULTURE] < 400:
+			d[W.I_AGRICULTURE] = 400
+		if d[W.I_INDUSTRY] > 500:
+			d[W.I_INDUSTRY] = 500
+		if d[W.I_SERVICES] > 500:
+			d[W.I_SERVICES] = 500
+		if d[W.I_ARMY] > 2000:
+			d[W.I_ARMY] = 2000
+		_set_ideology(w, 0, 0)
+		d[W.I_WAR_SUPPORT] += 10
+		d[W.I_MANPOWER] += 5
+		d[W.I_AGRICULTURE] += 4
+		d[W.I_CORRUPTION] -= 5
+		d[W.I_THOUGHT_FREEDOM] -= 10
+		d[W.I_DIPLO] += 2
+	if _mod_active(w, 41):
+		_add_ideology(w, 3, 1)
+		d[W.I_AGENTS] += 10
+		WAR_SYS.add_empire_power(EmpireData.USA, 1)
+		_add_ideology(w, 4, 1)
+		for p in w.politicians:
+			if p == null or PoliticianSystem.is_vacant_politician(p):
+				continue
+			if p.trait_personality == 2:
+				p.power += 10
+
+	# ── 42-51：ModifiesInfuence.cs:2228-2420 ──
+	if _mod_active(w, 42):
+		var c21 := w.get_country_by_legacy_index(21)
+		if d[W.I_POLITICAL_DISPLAY] > 39 and not _mod_active(w, 17) \
+				and c21 != null and c21.has_tag("对华贸易"):
+			_add_empire_relation(w, 0, 4)
+			d[W.I_BUDGET] += 2
+			d[W.I_DIPLO] -= 1
+		WAR_SYS.add_empire_power(EmpireData.USA, 1)
+	if _mod_active(w, 43):
+		var c21 := w.get_country_by_legacy_index(21)
+		var china := w.get_player_country()
+		if c21 != null and c21.has_tag("对华贸易") and china != null \
+				and not china.has_tag("seato") and not china.has_tag("okb") and not china.has_tag("ovd") \
+				and (china.government == 2 or china.government == 3):
+			d[W.I_BUDGET] += 3
+			d[W.I_SCIENCE] += 4
+	if _mod_active(w, 44):
+		var c21 := w.get_country_by_legacy_index(21)
+		if not w.get_flag("YugAgree"):
+			if c21 != null and c21.has_tag("对华贸易") and d[W.I_ECON_DISPLAY] < 36 and not _mod_active(w, 16):
+				_add_empire_relation(w, 1, 4)
+				d[W.I_BUDGET] += 2
+				d[W.I_SCIENCE] += 2
+		else:
+			if c21 != null and c21.has_tag("对华贸易") and d[W.I_IDEOLOGY] < 2 and not _mod_active(w, 16):
+				_add_empire_relation(w, 1, 5)
+				d[W.I_BUDGET] += 6
+				d[W.I_SCIENCE] += 6
+		WAR_SYS.add_empire_power(EmpireData.USSR, 1)
+	var c21b := w.get_country_by_legacy_index(21)
+	var chinab := w.get_player_country()
+	if _mod_active(w, 44) and c21b != null and c21b.has_tag("对华贸易") \
+			and chinab != null and chinab.has_tag("okb") and d[W.I_INFLUENCE] >= 500:
+		d[W.I_MIL_INTERVENTION] += 5
+		d[W.I_BUDGET] += 2
+		_add_empire_relation(w, 0, -3)
+		_add_empire_relation(w, 1, -3)
+		WAR_SYS.add_empire_power(EmpireData.USA, -1)
+		WAR_SYS.add_empire_power(EmpireData.USSR, -1)
+	if _mod_active(w, 46):
+		d[W.I_BUDGET] += 6
+		d[W.I_ARMY] += 5
+		d[W.I_AGENTS] += 5
+		_add_empire_relation(w, 0, -5)
+		_add_empire_relation(w, 1, -5)
+		WAR_SYS.add_empire_power(EmpireData.USA, -1)
+		WAR_SYS.add_empire_power(EmpireData.USSR, -1)
+	if _mod_active(w, 47):
+		var okb47 := _count_tag(w, "okb")
+		if okb47 < 7:
+			d[W.I_BUDGET] -= 10
+		elif okb47 < 14:
+			d[W.I_BUDGET] -= 20
+		else:
+			d[W.I_BUDGET] -= 30
+		d[W.I_AGENTS] += okb47 * 2
+	if _mod_active(w, 48):
+		var okb48 := _count_tag(w, "okb")
+		if okb48 < 7:
+			d[W.I_BUDGET] -= 10
+		elif okb48 < 14:
+			d[W.I_BUDGET] -= 20
+		else:
+			d[W.I_BUDGET] -= 30
+		d[W.I_ARMY] += okb48
+	if _mod_active(w, 49):
+		d[W.I_MIL_INTERVENTION] += 30
+		d[W.I_AGENTS] += 20
+		_add_empire_relation(w, 0, -20)
+		_add_empire_relation(w, 1, -20)
+		if w.event_done_num(691):
+			d[W.I_BUDGET] -= 2
+			d[W.I_PARTY_SUPPORT] += 2
+			d[W.I_THOUGHT_FREEDOM] += 1
+			if d[W.I_WAR_SUPPORT] > 200:
+				d[W.I_WAR_SUPPORT] = 200
+			if w.result_of_event_num(691) == 1:
+				d[W.I_BUDGET] += 4
+				d[W.I_PARTY_SUPPORT] += 1
+				d[W.I_PEOPLE_SUPPORT] -= 1
+				d[W.I_DIPLO] += 2
+				d[W.I_THOUGHT_FREEDOM] += 4
+			elif w.result_of_event_num(691) == 2:
+				var ussr_leader := w.empires[EmpireData.USSR].current_leader if w.empires.size() > EmpireData.USSR else -1
+				if ussr_leader == 6 or ussr_leader == 7:
+					_add_empire_relation(w, 1, 1)
+	if _mod_active(w, 51):
+		_apply_modifier51_oil(d, w)
+
+	# ── 53/58/59/61/63/65：ModifiesInfuence.cs:2556-2890 ──
+	if _mod_active(w, 53):
+		var c17 := w.get_country_by_legacy_index(17)
+		if c17 != null and c17.parts.size() > 0 and not c17.parts[0]:
+			_add_ideology(w, 0, 1)
+			_add_ideology(w, 2, 1)
+			d[W.I_AGENTS] += 10
+			WAR_SYS.add_empire_power(EmpireData.USSR, 1)
+			for p in w.politicians:
+				if p == null or PoliticianSystem.is_vacant_politician(p):
+					continue
+				if p.trait_personality == 0 or p.trait_personality == 1:
+					p.power += 10
+		elif c17 != null and c17.parts.size() > 0 and c17.parts[0] \
+				and c17.has_tag("亲中") and c17.government == 1:
+			_add_ideology(w, 0, 1)
+			d[W.I_AGENTS] += 15
+			for p in w.politicians:
+				if p == null or PoliticianSystem.is_vacant_politician(p):
+					continue
+				if p.trait_personality == 0:
+					p.power += 10
+	if _mod_active(w, 58) and w.empires.size() > EmpireData.USSR \
+			and w.empires[EmpireData.USSR].relations >= 500 and _dv(d, 153) > 0:
+		d[153] -= 1
+		d[W.I_BUDGET] -= 5
+	var china59 := w.get_player_country()
+	if not _mod_active(w, 59) and china59 != null and china59.has_tag("okb"):
+		w.modifiers[59].is_active = true
+	if _mod_active(w, 59):
+		var okb59 := _count_tag(w, "okb")
+		var au59 := 0
+		var oar59 := _count_tag(w, "oar")
+		var rim59 := _count_tag(w, "rim")
+		for c in w.countries:
+			if c != null and c.has_tag("au") and (c.government == 1 or c.sub_government == 0) \
+					and w.event_done_num(500) and w.result_of_event_num(500) == 0:
+				au59 += 1
+		if okb59 > 0:
+			d[W.I_ARMY] += okb59 * 3
+			d[W.I_AGENTS] += okb59 * 2
+			d[W.I_MIL_INTERVENTION] += okb59
+		if au59 > 0:
+			d[W.I_ARMY] += au59 * 3
+			d[W.I_AGENTS] += au59 * 2
+			d[W.I_MIL_INTERVENTION] += au59
+		if oar59 > 0:
+			d[W.I_ARMY] += oar59 * 3
+			d[W.I_AGENTS] += oar59 * 2
+			d[W.I_MIL_INTERVENTION] += oar59
+		if rim59 > 0:
+			d[W.I_ARMY] += rim59 * 6
+			d[W.I_AGENTS] += rim59 * 4
+			d[W.I_MIL_INTERVENTION] += rim59 * 2
+	if _mod_active(w, 61):
+		match _dv(d, 185):
+			0:
+				d[W.I_MANPOWER] += 1
+			1:
+				d[W.I_PARTY_SUPPORT] += 1
+			2:
+				d[W.I_MANPOWER] += 2
+			3:
+				d[W.I_PEOPLE_SUPPORT] += 1
+			4:
+				d[W.I_WAR_SUPPORT] -= 1
+				if d[W.I_WAR_SUPPORT] > 700:
+					d[W.I_WAR_SUPPORT] -= 3
+			5:
+				pass
+			6:
+				var china61 := w.get_player_country()
+				if china61 != null and china61.sub_government == 19:
+					d[W.I_THOUGHT_FREEDOM] -= 2
+					d[W.I_DIPLO] += 2
+					d[W.I_WAR_SUPPORT] += 4
+	if _mod_active(w, 63):
+		if not w.event_done_num(687):
+			d[W.I_THOUGHT_FREEDOM] += 50
+			d[W.I_WAR_SUPPORT] -= 15
+			d[W.I_PARTY_SUPPORT] -= 10
+			d[W.I_PEOPLE_SUPPORT] += 30
+		else:
+			d[W.I_THOUGHT_FREEDOM] -= 30
+			d[W.I_WAR_SUPPORT] += 10
+			d[W.I_PARTY_SUPPORT] -= 10
+			d[W.I_PEOPLE_SUPPORT] += 30
+			for p in w.politicians:
+				if p == null or PoliticianSystem.is_vacant_politician(p):
+					continue
+				if p.trait_personality == 20:
+					p.power += 10
+	if w.money_level > 0 and not _mod_active(w, 65):
+		w.modifiers[65].is_active = true
+	elif w.money_level <= 0 and _mod_active(w, 65):
+		w.modifiers[65].is_active = false
+	if _mod_active(w, 65):
+		var ml := w.money_level
+		w.leader_asset += 10 * ml
+		d[W.I_PEOPLE_SUPPORT] -= 2 * ml
+		d[W.I_THOUGHT_FREEDOM] += 2 * ml
+		d[W.I_LIVING] -= 5 * ml
+		d[W.I_INDUSTRY] -= 4 * ml
+		d[W.I_AGRICULTURE] -= 4 * ml
+		d[W.I_SERVICES] -= 4 * ml
+		d[W.I_CORRUPTION] -= 2 * ml
+		if w.leader_property.size() > 1 and w.leader_property[1]:
+			d[W.I_BUDGET] -= 10
+			d[W.I_SCIENCE] += 5
+			d[W.I_MIL_INTERVENTION] += 10
+			_add_empire_relation(w, 1, -2)
+		if w.leader_property.size() > 2 and w.leader_property[2]:
+			d[W.I_BUDGET] -= 20
+			d[W.I_SCIENCE] += 5
+			d[W.I_MIL_INTERVENTION] += 10
+			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR].relations < 250:
+				w.empires[EmpireData.USSR].relations = 250
+			if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA].relations < 250:
+				w.empires[EmpireData.USA].relations = 250
+		if w.leader_property.size() > 3 and w.leader_property[3]:
+			d[W.I_BUDGET] -= 20
+			d[W.I_PARTY_SUPPORT] += 5
+			if d[W.I_PARTY_SUPPORT] < 400:
+				d[W.I_PARTY_SUPPORT] = 400
+			if d[W.I_PARTY_SYSTEM] > 7 and d[W.I_THOUGHT_FREEDOM] > 400:
+				d[W.I_THOUGHT_FREEDOM] = 400
+			d[W.I_MIL_INTERVENTION] += 10
+			_add_empire_relation(w, 1, -2)
+		if ml > 20 and d[W.I_MAO_MAUSOLEUM] != 9:
+			start_event("popular_discontent")
 
 	_mirror_empires_to_data(world)
 
@@ -3159,6 +5170,53 @@ func _check_coup(d: Array[int], w: WorldState) -> void:
 		start_event("congress_conspiracy")
 
 
+## TimeScript.PlotPlayerCause（TimeScript.cs:250-266）：按不忠势力判断「针对你的阴谋」，
+## 并把结果写到 leader.is_sagovor（本端口对应 leader.is_conspiracy）。
+## 谓词与 _check_coup（PlotPlayer）不同：trait_background=28 阈值 1500、
+## trait_alignment=41 阈值 1200、trait_special 16/35 阈值 300 等。
+func _plot_player_cause(d: Array[int], w: WorldState) -> void:
+	if w == null or w.leader == null:
+		return
+	var disloyal_power := 0
+	for p in w.politicians:
+		if p == null or p.is_under_investigation:
+			continue
+		if p.trait_special == 17 or p.trait_special == 19 or p.trait_alignment == 40:
+			continue
+		var dominated := false
+		if p.trait_background == 28 and p.loyalty < 1500:
+			dominated = true
+		elif p.trait_alignment == 41 and p.loyalty < 1200:
+			dominated = true
+		elif p.loyalty < 300 and (p.trait_special == 16 or p.trait_special == 35):
+			dominated = true
+		elif p.you_fall:
+			dominated = true
+		elif p.loyalty < 150 and p.trait_special != 9 and p.trait_special != 37:
+			dominated = true
+		elif p.loyalty < 50 and (p.trait_special == 9 or p.trait_special == 37):
+			dominated = true
+		if dominated:
+			disloyal_power += p.power
+	@warning_ignore("integer_division")
+	var threshold: int = d[W.I_PARTY_SUPPORT] / 4 * 3
+	@warning_ignore("integer_division")
+	w.leader.is_conspiracy = disloyal_power / 5 > threshold
+
+
+## 顶栏「阴谋临近」提示图标判定（TimeScript.AlarmIconChange 45-49 行）：
+## leader.is_sagovor（= leader.is_conspiracy）或党内支持-70 低于临界线时亮。
+func plot_alert_active() -> bool:
+	if world == null or world.leader == null:
+		return false
+	var d := world.数值表
+	var leader_threat: bool = world.leader.is_conspiracy
+	@warning_ignore("integer_division")
+	var party_threat: bool = _dv(d, W.I_PARTY_SUPPORT) - 70 \
+		<= 300 + _dv(d, W.I_THOUGHT_FREEDOM) / 5 - (_dv(d, W.I_PEOPLE_SUPPORT) - 500) / 5
+	return leader_threat or party_threat
+
+
 ## TimeScript.cs:891-894：这个支按每日判定，且同样进入事件 4，不是结局。
 func _check_daily_conspiracy(d: Array[int]) -> void:
 	if current_event_id != "":
@@ -3179,25 +5237,58 @@ func _check_scheduled_events() -> void:
 		start_event("npc_elections")
 
 
-func _check_endings(d: Array[int], _w: WorldState, year: int) -> void:
+func _dv(d: Array, idx: int) -> int:
+	return d[idx] if d.size() > idx else 0
+
+
+## TimeScript.cs 逐帧/逐块成就检查的移植子集（其余 9 个在 GameState.WarResult 各战争分支内，
+## 待战争胜利特效批移植时同步接线）。
+func _check_periodic_achievements(w: WorldState) -> void:
+	if w == null:
+		return
+	var d := w.数值表
+	# TimeScript.cs:5965：data[113..116] 全为 9 → Set(28)。
+	if _dv(d, 113) == 9 and _dv(d, 114) == 9 and _dv(d, 115) == 9 and _dv(d, 116) == 9:
+		Achievements.set_achievement(28)
+	# TimeScript.cs:3220：data[131]==1 且 44.sub∈{7,9}、86.sub==9、85.sub==9、87.sub==7 → Set(131)。
+	var c44 := w.get_country_by_legacy_index(44)
+	var c85 := w.get_country_by_legacy_index(85)
+	var c86 := w.get_country_by_legacy_index(86)
+	var c87 := w.get_country_by_legacy_index(87)
+	if _dv(d, 131) == 1 and c44 != null and (c44.sub_government == 9 or c44.sub_government == 7) \
+			and c86 != null and c86.sub_government == 9 \
+			and c85 != null and c85.sub_government == 9 \
+			and c87 != null and c87.sub_government == 7:
+		Achievements.set_achievement(131)
+	# TimeScript.cs:3257：台湾路线2/决议7 且 51 内战中 且 data[157]>0 → Set(155)。
+	var c51 := w.get_country_by_legacy_index(51)
+	var dec7 := w.decisions != null and w.decisions.completed.size() > 7 and w.decisions.completed[7]
+	if (_dv(d, W.I_TAIWAN_STATUS) == 2 or dec7) and c51 != null and c51.内战中 and _dv(d, 157) > 0:
+		Achievements.set_achievement(155)
+	# TimeScript.cs:3261/3265：data[143] <=10 / >=60 且 modifier51 激活 → Set(158)/Set(157)。
+	var mod51 := w.modifiers.size() > 51 and w.modifiers[51] != null and w.modifiers[51].is_active
+	if mod51 and _dv(d, 143) <= 10:
+		Achievements.set_achievement(158)
+	if mod51 and _dv(d, 143) >= 60:
+		Achievements.set_achievement(157)
+	# TimeScript.cs:3269：36/101/102/103/105 全亲中 → Set(156)。
+	var all_proprc := true
+	for idx in [36, 101, 102, 103, 105]:
+		var cc := w.get_country_by_legacy_index(idx)
+		if cc == null or not cc.has_tag("亲中"):
+			all_proprc = false
+			break
+	if all_proprc:
+		Achievements.set_achievement(156)
+
+
+func _check_endings(d: Array[int], _w: WorldState, _year: int) -> void:
+	# 原版自动结局只有 TimeScript.cs:705 的人口崩盘 ToEnding(4)。
+	# 1993 强制结局与预算/派系两个分支在原版源码无对应（grep 全量 0 命中），
+	# 属早期误植；正常终局走 1986-01-01 的 ending_choice 事件（in1992_script 语义）。
 	if d[W.I_POPULATION] < 6671:
 		_trigger_ending(4)
 		return
-	if year >= 1993:
-		if d[W.I_INFLUENCE] >= 800:
-			_trigger_ending(5)
-		elif d[W.I_ECON_SYSTEM] >= 13 and d[W.I_LIVING] >= 600:
-			_trigger_ending(6)
-		elif d[W.I_IDEOLOGY] == 0 and d[W.I_INFLUENCE] >= 500:
-			_trigger_ending(7)
-		else:
-			_trigger_ending(0)
-		return
-	if d[W.I_BUDGET] < -500 and d[W.I_RESERVE] <= 0 and d[W.I_LOAN] > 0:
-		_trigger_ending(3)
-		return
-	if d[W.I_PARTY_SUPPORT] <= 50 and d[W.I_THOUGHT_FREEDOM] >= 800:
-		_trigger_ending(1)
 
 
 func _trigger_ending(ending_id: int) -> void:

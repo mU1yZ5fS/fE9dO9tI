@@ -20,6 +20,8 @@ func _label(node_name: String, text: String) -> void:
 	var lbl := _find(node_name)
 	if lbl is Label:
 		lbl.text = text
+	elif lbl is RichTextLabel:
+		lbl.text = text
 
 
 func _set_visible(node_name: String, vis: bool) -> void:

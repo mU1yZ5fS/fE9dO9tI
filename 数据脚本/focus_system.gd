@@ -17,7 +17,7 @@ extends RefCounted
 
 ## 双周 tick 入口（GameManager._on_fortnight 调用）。
 static func tick() -> void:
-	var ws := GameManager.world
+	var ws: WorldState = GameManager.world
 	if ws == null or ws.empires.size() <= EmpireData.USSR:
 		return
 	var empire: EmpireData = ws.empires[EmpireData.USSR]
@@ -61,7 +61,7 @@ static func _focuses_ai_method(_ws: WorldState, empire: EmpireData, layer: Array
 
 ## UI 用：刷新本层 blocked 状态（原版 FocusesAIMethod 内联部分 + Repaint 语义）
 static func repaint_blocked() -> void:
-	var ws := GameManager.world
+	var ws: WorldState = GameManager.world
 	if ws == null or ws.empires.size() <= EmpireData.USSR:
 		return
 	var empire: EmpireData = ws.empires[EmpireData.USSR]
@@ -82,7 +82,7 @@ static func repaint_blocked() -> void:
 ## 新游戏初始化（GameManager.new_game 调用一次）：
 ## 原版 GameStartScript.cs:987（dlc[0] 时）→ USSRFocuses.Init()。
 static func init_for_new_game() -> void:
-	var ws := GameManager.world
+	var ws: WorldState = GameManager.world
 	if ws == null:
 		return
 	FocusCatalog.ensure_built()

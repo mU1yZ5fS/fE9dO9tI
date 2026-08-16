@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://f0cpd2xk9q73"]
+[gd_scene format=3 uid="uid://f0cpd2xlaq73"]
 
 [node name="焦点占位" type="Control" unique_id=810001021]
 custom_minimum_size = Vector2(210, 130)

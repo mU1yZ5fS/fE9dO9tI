@@ -18,7 +18,7 @@ func execute(context: Dictionary) -> void:
 
 	if not _bind_world():
 		return
-	var vietnam := _country(11)
+	var _vietnam := _country(11)
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:

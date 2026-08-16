@@ -49,7 +49,7 @@ layout_mode = 0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = 384.0
-offset_bottom = 56.0
+offset_bottom = 52.0
 texture = ExtResource("2_vbwtu")
 expand_mode = 1
 
@@ -58,7 +58,7 @@ layout_mode = 0
 offset_left = 21.0
 offset_top = 17.0
 offset_right = 379.0
-offset_bottom = 55.0
+offset_bottom = 51.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 24
@@ -69,18 +69,18 @@ vertical_alignment = 1
 [node name="左栏_当前选中政治家派系_背景" type="TextureRect" parent="." unique_id=68047835]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 64.0
+offset_top = 58.0
 offset_right = 384.0
-offset_bottom = 104.0
+offset_bottom = 94.0
 texture = ExtResource("2_vbwtu")
 expand_mode = 1
 
 [node name="左栏_当前选中政治家派系" type="Label" parent="." unique_id=1392277300]
 layout_mode = 0
 offset_left = 21.0
-offset_top = 65.0
+offset_top = 59.0
 offset_right = 379.0
-offset_bottom = 103.0
+offset_bottom = 93.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 24
@@ -91,18 +91,18 @@ vertical_alignment = 1
 [node name="左栏_当前选中政治家特质1_背景" type="TextureRect" parent="." unique_id=1476779546]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 112.0
+offset_top = 100.0
 offset_right = 384.0
-offset_bottom = 152.0
+offset_bottom = 136.0
 texture = ExtResource("2_vbwtu")
 expand_mode = 1
 
 [node name="左栏_当前选中政治家特质1" type="Label" parent="." unique_id=331105463]
 layout_mode = 0
 offset_left = 21.0
-offset_top = 113.0
+offset_top = 101.0
 offset_right = 379.0
-offset_bottom = 151.0
+offset_bottom = 135.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 24
@@ -113,18 +113,18 @@ vertical_alignment = 1
 [node name="左栏_当前选中政治家特质2_背景" type="TextureRect" parent="." unique_id=1491276248]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 160.0
+offset_top = 142.0
 offset_right = 384.0
-offset_bottom = 200.0
+offset_bottom = 178.0
 texture = ExtResource("2_vbwtu")
 expand_mode = 1
 
 [node name="左栏_当前选中政治家特质2" type="Label" parent="." unique_id=1505384348]
 layout_mode = 0
 offset_left = 21.0
-offset_top = 161.0
+offset_top = 143.0
 offset_right = 379.0
-offset_bottom = 199.0
+offset_bottom = 177.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 24
@@ -132,24 +132,49 @@ text = "谋士"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="左栏_当前选中政治家特质3_背景" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 184.0
+offset_right = 384.0
+offset_bottom = 220.0
+texture = ExtResource("2_vbwtu")
+expand_mode = 1
+
+[node name="左栏_当前选中政治家特质3" type="Label" parent="."]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 185.0
+offset_right = 379.0
+offset_bottom = 219.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+theme_override_font_sizes/font_size = 24
+text = "党务干部"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="左栏_当前选中政治家状态_背景" type="TextureRect" parent="." unique_id=347530814]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 208.0
+offset_top = 226.0
 offset_right = 384.0
 offset_bottom = 440.0
 texture = ExtResource("2_vbwtu")
 expand_mode = 1
 
-[node name="左栏_当前选中政治家状态" type="Label" parent="." unique_id=404018647]
+[node name="左栏_当前选中政治家状态" type="RichTextLabel" parent="." unique_id=404018647]
 layout_mode = 0
 offset_left = 21.0
-offset_top = 214.0
+offset_top = 232.0
 offset_right = 379.0
 offset_bottom = 434.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("3_uhnri")
-theme_override_font_sizes/font_size = 16
+theme_override_colors/default_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/normal_font = ExtResource("3_uhnri")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 text = "职务:
 主管:华东；
 尚未被纪律审查
@@ -543,6 +568,20 @@ icon = ExtResource("7_ejoel")
 flat = true
 icon_alignment = 1
 
+[node name="任命领袖军委" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 16.0
+offset_top = 1000.0
+offset_right = 368.0
+offset_bottom = 1060.0
+theme_override_colors/font_color = Color(0.2901961, 0, 0.60784316, 1)
+theme_override_fonts/font = ExtResource("3_uhnri")
+text = "任命领袖军委主席"
+icon = ExtResource("7_ejoel")
+flat = true
+icon_alignment = 1
+
 [node name="返回外交界面" type="TextureButton" parent="." unique_id=955857277]
 layout_mode = 0
 offset_left = 1752.0
@@ -641,7 +680,7 @@ offset_bottom = 321.0
 theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 34
-text = "陈云"
+text = "赵紫阳"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -654,7 +693,7 @@ offset_bottom = 372.0
 theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 34
-text = "赵紫阳"
+text = "陈云"
 horizontal_alignment = 1
 vertical_alignment = 1
 

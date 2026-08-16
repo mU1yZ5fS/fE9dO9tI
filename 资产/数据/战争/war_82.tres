@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 82
+name_zh = "缅 甸 内 战"
+name_en = ""
+fortnight_max = 48
+drift_infl1 = 0
+drift_infl2 = 0
+drift_extra_infl1 = 0
+drift_extra_infl2 = 0
+drift_extra_flag = ""
+default_side1 = "塔 马 刀"
+default_side2 = "克 伦 民 族 联 盟"
+default_usa_side = 1
+default_ussr_side = 0
+default_infl1 = 600
+default_infl2 = 400

@@ -80,6 +80,7 @@ func _fmt(s: String, args: Array) -> String:
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	if d.size() <= W.I_YEAR:
 		return false
@@ -96,6 +97,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var opt := event_def.options
 	if d.size() > W.I_POLITICAL_LINE:

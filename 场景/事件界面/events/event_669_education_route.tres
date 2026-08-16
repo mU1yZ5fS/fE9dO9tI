@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_669_education_route.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.10.12"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "向狂飙突进迈进！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_669_education_route.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "拨乱反正，正本清源，回归正统社会主义教育路线"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_669_education_route.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "尊重知识、尊重人才、尊师重教"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_669_education_route.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我有一点我自己的意见……应当全国学人民解放军！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_669_education_route.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_669"
+source_event_number = 669
+trigger_priority = 66900
+title = "如切如磋，如琢如磨"
+description = "主席同志，现在向您报告一下我国目前的教育情况。如您所见，自1949年新中国成立以来，我国根据实际情况，制定了一套重量轻质、倾向农村的德智体全面教育方案。对此，毛泽东也提出了教育的三个关键：“一是党委领导；二是群众路线；三是把教育和生产劳动起来。”而到了文革时期，“千钧霹雳开新宇，万里东风扫残云”的大背景来临，大革命的第一炮便是打向了我国教育阵线。首先是即墨第一中学的造反派夺权学校，要求国家改变现有体制——即苏联式教育体制和旧社会儒家教育方法结合的一种精英式教育。造反派认为现有教育体制下只会让农村为城市“输血”，将农村的人才资源源源不断地输出到城市，扩大城乡、工农差距，这显然是与党的承诺不符合的。除此之外，要求革命的学生也提出实施工农学结合，既是相应毛主席所说的“教育与生产劳动结合”的号召，也是为解决乡村教育一个长期顽疾——预算不足。还有对教材新编、师生关系民主化等激进要求都被造反派们一一摆在了台面上，而这最后得到了以毛泽东为中心的中央左派的集体支持。\n因此，一次前所未有的教育革新在我国各地推广开来。而事实证明，这一新式教育体制对高等教育体制目前还是消极作用的，对高校师资造成了不小的负面影响。但与其相对的是，中小学教育得到了迅速的发展。在工农小组进驻乡村小学后，和学校合作的各种农场工厂的创收使得不少财政窘迫的学校焕如新生，从而有余力实施那些一种被旧有领导层挂在嘴边的惠及政策。广大农村真正落实了如社会主义教育目标所预期的全免费教育，且日益兴盛的教育民主风也推动了教育学规律认知的进步，一些地方甚至着手让学生和老师一起备课、一起讲课，这大大改变了过去乡村师资力量不足的状况。而教材方面也有很大改善，原先“理论至上”的统一性教材交给各地进行因地制宜地自主制定，落后地区偏向实践方法补课，而发展较好的地区则侧重理论性，这无疑是我们教学实践的又一伟大创新。在如此的规划下，虽然我国高等教育方面发展并不显著，但广大农村和贫穷地区的教育事业得到了飞跃式的发展，已然是部分实现了毛泽东曾提出的“村村有中小，县市有大高”的宏伟目标。\n当然，对于这一制度不是说没有批评。实际上，教育政策是我国在文革时期最具争议的一个方面。理所应当的，高级知识分子屡次批评我国忽略高等教育，认为这种对数量的盲目堆积只会在增加我国财政负担、成为另一个“平等主义乌托邦”的同时打压真正需要投入的尖端科研领域。而党内亦有不少高级官员批评我国教育制度无非是又一次的“左倾浮夸风”错误，纷纷要求把重心放回高等学校，进而重建两套教育体制，以培养真正有利于我国先进科研事业发展的人才队伍。而党内极左派也针锋相对，表示现行体制是推动三大差别消亡的利器，并申明对现行无产阶级教育制度的破坏便是对共产主义信念的扭曲，也是对最广大人民的背叛。对此，各党各派各方势力都殷切看向党中央，盼望着一个最终裁决来定夺我国未来几十年的教育路线发展。为此，中央政治局已经整理了三份方案供您参考，请您对此进行表态。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

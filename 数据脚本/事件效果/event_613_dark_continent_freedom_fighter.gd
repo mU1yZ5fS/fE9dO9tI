@@ -17,6 +17,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
 	var opt := event_def.options

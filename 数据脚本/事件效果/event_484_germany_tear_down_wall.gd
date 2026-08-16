@@ -31,7 +31,7 @@ const S_143 := "我们下次再决定德国的命运。"
 ## 触发：无自动触发点——原版由 DiploButtonScript.cs:10229（this_type==116）手动
 ##   number_event=484 进入；Godot 侧 trigger_conditions=[]。
 ## 差异：
-##  - iron_and_blood 成就未移植，跳过；old_modify_texts[53]/desc[53] 为展示文案跳过；
+##  - iron_and_blood 成就已接 Achievements（Event484.cs:61）；old_modify_texts[53]/desc[53] 为展示文案跳过；
 ##  - prosov→亲苏、proprc→亲中、Torg→对华贸易；dev→development；JoinAllOurAlliances→_join_our_alliances。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -76,6 +76,9 @@ func execute(context: Dictionary) -> void:
 	var c17 := ws.get_country_by_legacy_index(17)
 	var c21 := ws.get_country_by_legacy_index(21)
 	var opt := int(context.get("option_index", -1))
+	# 原作 Event484.cs:61-64：result_num != 3 && iron_and_blood → achievements.Set(132)
+	if opt != 3:
+		Achievements.set_achievement(132)
 	if opt == 0:
 		if c16 == null or c17 == null:
 			return

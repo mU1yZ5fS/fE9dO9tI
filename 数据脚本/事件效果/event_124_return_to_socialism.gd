@@ -83,7 +83,7 @@ func _set_politician_by_slot(idx: int, name_first: int, name_last: int, traits: 
 
 
 func _set_politician(p: PoliticianData, name_first: int, name_last: int, traits: Array, age: int,
-		face_bounds: Array, jacket: int, face_type: int, face_max: Array) -> void:
+		_face_bounds: Array, jacket: int, face_type: int, face_max: Array) -> void:
 	if p == null:
 		return
 	p.name_first = name_first

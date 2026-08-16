@@ -25,6 +25,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 
 func _dyn_ok(w: WorldState) -> bool:
+	@warning_ignore("shadowed_variable_base_class")
 	var d := w.数值表
 	return d.size() > W.I_AGENTS and d[W.I_AGENTS] >= 50
 

@@ -10,6 +10,9 @@ const TXT_TITLE := [
 
 const TXT_DESC := [
 	"中央条约组织是20世纪50年代，由英国、美国与土耳其牵头组建的中东反苏政治军事联盟。尽管伊拉克在50年代末期离开了该组织，且该组织的支柱之一大英帝国已经崩溃。但中央条约组织依然继续存在了一段时间。{1}",
+	"然而巴基斯坦与伊朗的离开，为该组织钉上了棺材板的钉子。",
+	"然而巴基斯坦的离开，为该组织钉上了棺材板的钉子。",
+	"然而伊朗的离开，为该组织钉上了棺材板的钉子。",
 ]
 
 const TXT_OPT0 := [
@@ -30,6 +33,9 @@ func _fmt(s: String, args: Array) -> String:
 
 const TXT_IDX_1280 := "中央条约组织的解散"
 const TXT_IDX_1281 := "中央条约组织是20世纪50年代，由英国、美国与土耳其牵头组建的中东反苏政治军事联盟。尽管伊拉克在50年代末期离开了该组织，且该组织的支柱之一大英帝国已经崩溃。但中央条约组织依然继续存在了一段时间。{1}"
+const TXT_IDX_1282 := "然而巴基斯坦与伊朗的离开，为该组织钉上了棺材板的钉子。"
+const TXT_IDX_1283 := "然而巴基斯坦的离开，为该组织钉上了棺材板的钉子。"
+const TXT_IDX_1284 := "然而伊朗的离开，为该组织钉上了棺材板的钉子。"
 const TXT_IDX_1285 := "好的......"
 const TXT_IDX_1286 := "今天，由于中央条约组织的绝大多数成员都已离开了该组织。中央条约组织的常设部长理事会决定自我解散。"
 
@@ -40,6 +46,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.completed_event_ids.has("event_413"):
 		return false
+	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表
 	if d.size() <= W.I_YEAR:
 		return false
@@ -67,7 +74,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		num = 1
 	else:
 		num = 2
-	event_def.description = _fmt(TXT_DESC[0], [TXT_DESC[num]])
+	event_def.description = _fmt(TXT_DESC[0], ["\n", TXT_DESC[num + 1]])
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

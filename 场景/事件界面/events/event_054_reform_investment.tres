@@ -6,11 +6,21 @@
 [ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
 [ext_resource type="Script" path="res://数据脚本/事件效果/event_053_062_reform_and_alliances.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Expr_delay"]
+[sub_resource type="Resource" id="Expr_45_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "reform_and_openness"
+
+[sub_resource type="Resource" id="Expr_econ_ge_12"]
 script = ExtResource("3_expr")
 type = 0
-key = "investment_delay"
-value = 6.0
+key = "econ_system"
+value = 12.0
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_45_done"), SubResource("Expr_econ_ge_12")])
 
 [sub_resource type="Resource" id="Expr_line_ge_2"]
 script = ExtResource("3_expr")
@@ -51,5 +61,5 @@ source_event_number = 54
 trigger_priority = 540
 title = "改革开放：引资"
 description = "按照改革开放政策的政策框架下，吸引外资是重要的一环。改革派提议在沿海地区建立几个经济特区，为外国投资者提供税收的优惠、最低限度的国家控制和其他的政策优惠，让他们可以在那里建立自己的企业，并投资于合资企业。然而，除了建立经济特区之外，更激进的领导人提议，通过建立合资企业制度，进而全面开放经济，外国可以在我们的国有企业内投资，以换取利润分成。显而易见的，第二种选择的盈利能力更强，但党内的温和派，甚至一些改革派的人也批评它的措施过于激进。"
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_delay")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

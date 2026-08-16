@@ -852,7 +852,17 @@ func _refresh_modifiers() -> void:
 		if slot != null and slot.is_active and not seen.has(slot.id):
 			ids.append(slot.id)
 			seen[slot.id] = true
-	ids.sort()
+	# 64「最高领导人概况」：改版存在多个数据源尚未统一（faction/traits/LeaderAsset），
+	# 主人要求先注释掉，不显示在概览修正列表。
+	ids = ids.filter(func(id: int) -> bool: return id != 64)
+	# 生效中的修正排在前面；同组按 id 升序，保持目录阅读顺序
+	ids.sort_custom(func(a: int, b: int) -> bool:
+		var active_a := _modifier_is_active(w, a)
+		var active_b := _modifier_is_active(w, b)
+		if active_a != active_b:
+			return active_a
+		return a < b
+	)
 	if ids.is_empty():
 		var empty := Label.new()
 		empty.text = "暂无修正定义"

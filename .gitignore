@@ -1,35 +1,49 @@
 # Godot 4.7 项目 .gitignore
 
-# ── Godot 引擎生成 ──
+# ── Godot 引擎生成（Godot 4.1+ 官方建议，出处：gdd_0054_Version_control_systems.md）──
 .godot/
+*.translation
+
+# Godot 导入侧车文件（编辑器可重新生成）
 *.import
 
-# ── IDE / 工具链 ──
+# ── 构建 / 导出产物 ──
+/android/
+/build/
+*.pck
+
+# ── 编辑器 / IDE ──
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+
+# ── 本地工具与配置（含绝对路径，不可共享）──
+.mcp.json
+.dsh/
 .reasonix/
+reasonix.toml
 AGENTS.md
 godot_operations.gd
 godot_operations.gd.uid
 mcp_interaction_server.gd
 mcp_interaction_server.gd.uid
+__check_gd.py
 
-
-# ── 本地配置（含绝对路径，不可共享） ──
-.mcp.json
+# ── 临时 / 审计产物 ──
+tmp/
+__pycache__/
+/_audit_*
+*.tmp
+*.bak
+*.log
 
 # ── 系统 ──
-__pycache__/
 .DS_Store
 Thumbs.db
+Desktop.ini
 
-# ── 构建输出 ──
-/android/
-/build/
-*.pck
-
-资产/音频/专辑
+# ── 项目本地内容（不入库）──
 docs/
+资产/音频/专辑

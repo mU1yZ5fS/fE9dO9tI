@@ -71,6 +71,12 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = fortnight
 
+## 原作 Event422.cs:18-21：TextOfEvents 显示时 event_done[421] && iron_and_blood → Set(141)
+func prepare(_event_def: EventDef, world: WorldState) -> void:
+	if world != null and world.completed_event_ids.has("event_421"):
+		Achievements.set_achievement(141)
+
+
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return

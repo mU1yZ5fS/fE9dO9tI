@@ -27,7 +27,7 @@ func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	var opt := int(context.get("option_index", -1))
-	var c44 := ws.get_country_by_legacy_index(44)
+	var _c44 := ws.get_country_by_legacy_index(44)
 	match opt:
 		0:
 			context["result_text"] = TXT_R0_A

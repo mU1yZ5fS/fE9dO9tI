@@ -95,7 +95,8 @@ func execute(context: Dictionary) -> void:
 			chile.sub_government = 2
 			chile.set_tag("亲中", true)
 			_leave_alliances(chile)
-			# iron_and_blood 成就 Set(91) 端口无成就系统，跳过
+			# 原作 Event134.cs:54：iron_and_blood → achievements.Set(91)
+			Achievements.set_achievement(91)
 			context["result_text"] = TXT_R0 + _proprc_suffix(chile)
 		1:
 			_add(W.I_BUDGET, -25)

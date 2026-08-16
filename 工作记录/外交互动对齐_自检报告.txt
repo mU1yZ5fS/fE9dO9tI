@@ -1,0 +1,17 @@
+数据脚本/world_state.gd: tabs=True W=True brackets=True leftover=True
+数据脚本/event_engine.gd: tabs=True W=True brackets=True leftover=True
+数据脚本/country_data.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动_基础.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动_批1.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动_批2.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动_批3.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动_批4.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动_批5.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动_批6.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动目录.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/外交互动_补遗.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/国家面板_逐国链.gd: tabs=True W=True brackets=True leftover=True
+场景/外交界面/国家面板.gd: tabs=True W=True brackets=True leftover=True
+catalog: Unity中文Show 232 types / Godot _def 232 types; missing=[] extra=[]
+chain: C# Show=864 GD=864 diff=0
+FINAL: ALL

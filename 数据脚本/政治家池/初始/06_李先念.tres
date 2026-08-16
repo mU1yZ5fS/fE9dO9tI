@@ -14,6 +14,7 @@ exit_year = 9999
 trait_personality = 1
 trait_alignment = 4
 trait_special = 11
+trait_background = 21
 loyalty = 500
 power = 650
 age = 67

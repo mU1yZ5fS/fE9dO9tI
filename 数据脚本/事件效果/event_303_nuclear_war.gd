@@ -1,7 +1,7 @@
 ## 原作 Event303.cs：核战（核战争后果，两选项）。
 ## 触发：全目录搜索无 this_num_event = 303 / Reset(303)；链外 REST 段，原版无自动条件。
 ## 差异：load_scene_after_click→GameManager.queue_ending_after_event(7)；party_ideology[0]→factions[0].ideology；
-##  GameObject.Find("Ach(Clone)") / iron_and_blood 成就 Set(112) 未移植，跳过；文本来自 Events_text_en 索引 50-56。
+##  GameObject.Find("Ach(Clone)") / iron_and_blood 成就 Set(112) 已接 Achievements；文本来自 Events_text_en 索引 50-56。
 extends "res://数据脚本/event_script_base.gd"
 
 const TXT_TITLE := "核战"
@@ -50,7 +50,8 @@ func execute(context: Dictionary) -> void:
 				if p.trait_personality == 0:
 					p.loyalty -= 250
 					p.power -= 250
-			# iron_and_blood 成就未移植，跳过
+			# 原作 Event303.cs:57：iron_and_blood → achievements.Set(112)
+			Achievements.set_achievement(112)
 			context["result_text"] = TXT_R1
 
 
@@ -91,7 +92,7 @@ func _add_power(empire_index: int, delta: int) -> void:
 
 
 func _mod_active(idx: int) -> bool:
-	var w := ws if ws != null else GameManager.world
+	var w: WorldState = ws if ws != null else GameManager.world
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

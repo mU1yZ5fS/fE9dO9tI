@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3ntr2xk9q71"]
+[gd_scene format=3 uid="uid://d3ntr2xlaq71"]
 
 [ext_resource type="Script" path="res://场景/决议界面/决议条目.gd" id="1_entry"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="2_font"]
