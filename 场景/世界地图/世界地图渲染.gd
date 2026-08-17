@@ -547,7 +547,7 @@ func _update_day_night(delta: float) -> void:
 	mat.set_shader_parameter("day_night_enabled", day_night_enabled)
 	if not day_night_enabled: return
 
-	var gm := get_node_or_null("/root/GameManager")
+	var gm := GameManager
 	var speed: float = float(gm.speed) if (gm and gm.is_playing) else (1.0 if not gm else 0.0)
 	
 	_day_night_phase = fmod(_day_night_phase + delta * TAU / maxf(daylight_cycle_seconds, 1.0) * speed, TAU)
@@ -573,8 +573,7 @@ func _country_data(gwcode: int) -> CountryData:
 
 
 func _get_world_state() -> WorldState:
-	var gm := get_node_or_null("/root/GameManager")
-	return gm.get("world") if gm else null
+	return GameManager.world if GameManager else null
 
 
 # ── 调色板工具函数 ──
