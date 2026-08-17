@@ -49,6 +49,27 @@ const TXT_IDX_1209 := "我想知道，他们单打独斗能否成事？"
 
 ## 原文字符串附录（供自检）
 
+## 复杂触发条件：原版 ReqEventForDLC02.cs:1279-1281。
+##   !event_done[407] && data[21] > 1983 && allcountries[92].SubGosstroy == 18
+##   && allcountries[1].Gosstroy == 1 && allcountries[1].okb && !modifies[6].active
+func evaluate(world: WorldState) -> bool:
+	if world == null:
+		return false
+	if world.completed_event_ids.has("event_407"):
+		return false
+	var d := world.数值表
+	if d.size() <= W.I_YEAR or d[W.I_YEAR] <= 1983:
+		return false
+	var uk := world.get_country_by_legacy_index(92)
+	if uk == null or uk.sub_government != 18:
+		return false
+	var china := world.get_country_by_legacy_index(1)
+	if china == null or china.government != 1 or not china.has_tag("okb"):
+		return false
+	var mod6_active := world.modifiers.size() > 6 and world.modifiers[6] != null and world.modifiers[6].is_active
+	return not mod6_active
+
+
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:

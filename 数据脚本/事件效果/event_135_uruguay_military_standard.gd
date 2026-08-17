@@ -52,6 +52,40 @@ func _leave_alliances(c: CountryData) -> void:
 	c.puppet_of = -1
 
 
+func _d(index: int) -> int:
+	if d.size() > index:
+		return d[index]
+	return 0
+
+
+## Country.WantToLeave() 逐行移植（GameState.cs:7370-7394）。
+## 只调整亲中/对华贸易/亲美，不整体清空联盟。
+func _want_to_leave(c: CountryData) -> void:
+	if c == null:
+		return
+	var flag := true
+	var sub := c.sub_government
+	if sub == 0:
+		if _d(W.I_IDEOLOGY) > 2 or _d(W.I_ECON_SYSTEM) >= 13 or _d(W.I_DIPLO) < 700 or _d(W.I_PARTY_SYSTEM) >= 8:
+			flag = false
+	elif (sub >= 1 and sub <= 3) or sub == 8 or sub == 17:
+		if _d(W.I_IDEOLOGY) > 3 or _d(W.I_ECON_SYSTEM) > 13 or _d(W.I_DIPLO) < 500:
+			flag = false
+	elif sub >= 4 and sub <= 6:
+		var china := ws.get_country_by_legacy_index(1)
+		if _d(W.I_IDEOLOGY) < 2 or _d(W.I_ECON_SYSTEM) < 13 or _d(W.I_DIPLO) > 700 or _d(W.I_PARTY_SYSTEM) < 8 or _d(W.I_PRESS_POLICY) < 18 or (china != null and china.has_tag("ovd")):
+			flag = false
+	elif sub >= 7:
+		var china2 := ws.get_country_by_legacy_index(1)
+		if _d(W.I_IDEOLOGY) == 1 or _d(W.I_ECON_SYSTEM) <= 11 or _d(W.I_DIPLO) < 300 or (china2 != null and china2.has_tag("sev")):
+			flag = false
+	if c.has_tag("亲中"):
+		c.set_tag("对华贸易", flag)
+		c.set_tag("亲中", flag)
+		if c.has_tag("亲美"):
+			c.set_tag("亲美", not flag)
+
+
 func _proprc_suffix(c: CountryData) -> String:
 	return TXT_PROPRC_YES if c.has_tag("亲中") else TXT_PROPRC_NO
 
@@ -73,7 +107,7 @@ func execute(context: Dictionary) -> void:
 			uruguay.level_of_development += 5
 			uruguay.sub_government = 7
 			uruguay.set_tag("亲中", true)
-			_leave_alliances(uruguay)
+			_want_to_leave(uruguay)
 			context["result_text"] = TXT_R0 + _proprc_suffix(uruguay)
 		1:
 			uruguay.next_election_year = 1981
@@ -83,7 +117,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -5)
 			uruguay.level_of_instability -= 15
 			uruguay.set_tag("对华贸易", true)
-			_leave_alliances(uruguay)
+			_want_to_leave(uruguay)
 			context["result_text"] = TXT_R1 + _proprc_suffix(uruguay)
 		_:
 			uruguay.next_election_year = 1981

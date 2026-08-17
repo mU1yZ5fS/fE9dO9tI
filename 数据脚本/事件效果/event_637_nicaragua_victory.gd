@@ -81,17 +81,16 @@ func execute(context: Dictionary) -> void:
 	if opt != 3:
 		context["result_text"] = ""
 	var r636 := int(ws.completed_event_ids.get("event_636", 0))
-	var r637 := int(ws.completed_event_ids.get("event_637", 0))
-	if r637 != 3:
-		_run_victory_chain(context, nic, r636, false)
-	else:
-		_run_victory_chain(context, nic, r636, true)
+	# 原版 Results_text.cs:12 在选择后先把 resultOfEvents[637] 写成当前选项，再调用
+	# ResultsOfEvents；所以这里 alt 分支必须用当前 opt（选项3=支持索摩查），
+	# 不能用上一次完成记录（首次触发时恒 0，会让选项3错误走进非 alt 链）。
+	_run_victory_chain(context, nic, r636, opt == 3)
 
 
 func _run_victory_chain(context: Dictionary, nic: CountryData, r636: int, alt: bool) -> void:
 	var china := ws.get_country_by_legacy_index(1)
 	var pro_soviet := r636 == 1 or (china != null and china.has_tag("sev")) \
-		or int(ws.completed_event_ids.get("event_637", 0)) == 3
+		or alt
 	var mod3 := ws.modifiers.size() > 3 and ws.modifiers[3] != null and ws.modifiers[3].is_active
 	var mod6 := ws.modifiers.size() > 6 and ws.modifiers[6] != null and ws.modifiers[6].is_active
 	if not alt and r636 == 0 and mod3 and mod6 and nic.level_of_instability >= 500:

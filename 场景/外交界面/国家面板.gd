@@ -149,6 +149,18 @@ func _ready() -> void:
 	if earth and earth.has_signal("country_selected"):
 		earth.country_selected.connect(_on_country_selected)
 
+	# 实时刷新：贸易/联盟/影响力等由事件或外交互动改完后，面板保持打开也要立即更新
+	if GameManager:
+		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_on_stats_changed):
+			GameManager.stats_changed.connect(_on_stats_changed)
+		if GameManager.has_signal("world_state_loaded") and not GameManager.world_state_loaded.is_connected(_on_stats_changed):
+			GameManager.world_state_loaded.connect(_on_stats_changed)
+
+
+func _on_stats_changed() -> void:
+	if visible and _current_country != null:
+		_refresh(_current_country, "")
+
 
 func _on_country_selected(gwcode: int, country_name: String) -> void:
 	if gwcode <= 0 or GameManager.world == null:

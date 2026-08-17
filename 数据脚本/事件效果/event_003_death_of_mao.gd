@@ -45,15 +45,20 @@ func _install_hua_guofeng() -> void:
 		return
 	var p: PoliticianData = ws.politicians[0]
 	p.name_display = "华国锋"
-	var tex := load("res://资产/政治家/华国锋.png")
+	p.name_first = 2
+	p.name_last = 2
+	var tex := load("uid://cyfeyle661m17")
 	if tex != null:
 		p.portrait = tex
 	p.power = 700
 	p.age = d[W.I_YEAR] - 1941   # 原 age=(byte)(data[21]-1941)
-	p.trait_personality = 0      # 原 traits[0]=0
-	p.trait_alignment = 4        # 原 traits[1]=4
-	p.trait_special = 32         # 原 traits[2]=32（差异：端口特殊特质表 8-19，越界值逐字保留）
-	p.trait_background = 22      # 原 traits[3]=22
+	# 改版对齐：华国锋作为普通政客/领导人时，沿用开局 Leader 档案（保守/党务干部/实用主义/谋士），
+	# 显式 faction=1=保守派；不能沿用原版 Event3 的 traits（那是毛的 traits 残留，会造成派系/特质错乱）。
+	p.trait_personality = 20
+	p.trait_alignment = 21
+	p.trait_special = 5
+	p.trait_background = 16
+	p.faction = 1
 	ws.leader = p
 	ws.leader_politician_index = 0
 	if ws.politics_positions.size() > 1:

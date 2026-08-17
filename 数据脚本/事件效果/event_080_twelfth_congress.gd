@@ -416,6 +416,14 @@ func _overwrite_new_politician(
 	var idx := _weakest_not_personality(3)
 	if idx < 0 or idx >= ws.politicians.size():
 		return
+	# 防重名：若该历史人物已由预备池/其它事件登场，不再重复覆写。
+	for i in ws.politicians.size():
+		if i == idx:
+			continue
+		var other: PoliticianData = ws.politicians[i]
+		if other != null and not PoliticianSystem.is_vacant_politician(other) \
+				and other.name_display == display_name:
+			return
 	var p: PoliticianData = ws.politicians[idx]
 	if p == null:
 		return
@@ -432,6 +440,7 @@ func _overwrite_new_politician(
 	p.loyalty = 800
 	p.portrait = null
 	p.is_historical = false
+	p.faction = -1
 	p.faction = PoliticianSystem.trait_faction_slot(p)
 
 

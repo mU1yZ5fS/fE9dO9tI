@@ -284,6 +284,8 @@ const 数值索引 := {
 ## GameDate.tick_count 截止值（旧存档的 YYYYMMDD 由 EventEngine 读档时迁移）
 @export var event_pending_deadline: int = -1
 @export var event_chain_queue: Array[String] = []
+## 待显示通知队列（被 pending 挡住、稍后仍需出现提示图标的事件）
+@export var event_pending_queue: Array[String] = []
 
 # ── 政治家职位（dolshnost[8]，每槽记录持有人在 politicians 中的索引，-1=空缺） ──
 # 0=总理 1=军委主席 2=外交部长 3=首都 4=北方 5=西方 6=南方 7=东方

@@ -28,6 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://bojyve0hk82n4" path="res://资产/UI/派系/禁止.png" id="23_7ik0l"]
 [ext_resource type="Texture2D" uid="uid://drk7vm7tmdixy" path="res://资产/UI/派系/饼图背景.png" id="24_cw14h"]
 [ext_resource type="Texture2D" uid="uid://co6aal5apht58" path="res://资产/UI/派系/支持.png" id="27_t3xfp"]
+[ext_resource type="Texture2D" uid="uid://kwvpccpoe1ke" path="res://资产/UI/派系/生育政策按钮背景.png" id="29_5tyo3"]
 [ext_resource type="Texture2D" uid="uid://3ro3681budda" path="res://资产/UI/派系/右栏背景.png" id="29_xskvm"]
 [ext_resource type="Texture2D" uid="uid://vpxcj7guvu46" path="res://资产/UI/派系/右栏政策介绍.png" id="30_fxqvd"]
 [ext_resource type="Texture2D" uid="uid://c3wbwr2v5ukta" path="res://资产/UI/外交/右侧栏展开按钮.png" id="31_axfdf"]
@@ -828,7 +829,7 @@ offset_right = 1376.0
 offset_bottom = 338.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1120,6 +1121,10 @@ offset_right = 1408.0
 offset_bottom = 967.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.9490196, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 39
 toggle_mode = true
@@ -1136,6 +1141,10 @@ offset_right = 1409.0
 offset_bottom = 1012.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.9490196, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 39
 toggle_mode = true
@@ -1152,6 +1161,10 @@ offset_right = 1650.0
 offset_bottom = 1012.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.9490196, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 39
 toggle_mode = true
@@ -1162,53 +1175,65 @@ expand_icon = true
 
 [node name="演讲" type="Button" parent="." unique_id=1098271231]
 layout_mode = 0
-offset_left = 996.0
+offset_left = 951.0
 offset_top = 423.0
-offset_right = 1196.0
+offset_right = 1151.0
 offset_bottom = 453.0
 tooltip_text = "Update in May and November"
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 18
 text = "演讲"
+icon = ExtResource("29_5tyo3")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="经济同盟" type="Button" parent="." unique_id=1934683356]
 layout_mode = 0
-offset_left = 1214.0
+offset_left = 1176.0
 offset_top = 423.0
-offset_right = 1414.0
+offset_right = 1376.0
 offset_bottom = 453.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 18
 text = "经济同盟"
+icon = ExtResource("29_5tyo3")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="选举" type="Button" parent="." unique_id=1063187249]
 layout_mode = 0
-offset_left = 996.0
-offset_top = 374.0
-offset_right = 1196.0
-offset_bottom = 404.0
+offset_left = 951.0
+offset_top = 386.0
+offset_right = 1151.0
+offset_bottom = 416.0
 tooltip_text = "每年一次"
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 18
 text = "选举"
+icon = ExtResource("29_5tyo3")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="军事同盟" type="Button" parent="." unique_id=1187328431]
 layout_mode = 0
-offset_left = 1213.0
-offset_top = 380.0
-offset_right = 1413.0
-offset_bottom = 410.0
+offset_left = 1176.0
+offset_top = 386.0
+offset_right = 1376.0
+offset_bottom = 416.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 18
 text = "军事同盟"
+icon = ExtResource("29_5tyo3")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="右栏背景" type="TextureRect" parent="." unique_id=2104346500]
 layout_mode = 0

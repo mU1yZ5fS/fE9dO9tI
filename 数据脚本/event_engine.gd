@@ -65,6 +65,11 @@ var text_library: Node = null
 ## 依次立即触发队首事件。这让"事件A完成→立即弹事件B"成为可能。
 var _event_queue: Array[String] = []
 
+## 待处理通知队列：当已有 pending 事件时，后续 queue_pending 的请求先排到这里；
+## 当前 pending 清掉后逐个 _enter_pending，保证自动/拉美事件也会出现提示图标，
+## 而不是被当成事件链直接切场景。
+var _pending_queue: Array[String] = []
+
 # ── 事件目录异步加载（启动加载屏调用；autoload _ready 只列目录不 load）──
 ## 事件注册表是否已可用（同步或异步扫描完成后置 true）
 var events_ready := false
@@ -198,6 +203,7 @@ func _clear_registries() -> void:
 	_events_by_number.clear()
 	_event_order.clear()
 	_scan_order.clear()
+	_pending_queue.clear()
 
 
 func _finish_scan() -> void:
@@ -292,6 +298,16 @@ func check_and_fire() -> void:
 	if _is_event_in_progress():
 		return
 
+	# 优先处理待处理通知队列：这些是曾被 pending 挡住、需要显示提示图标的请求。
+	if _pending_queue.size() > 0 and pending_event_id == "" and not _is_event_in_progress():
+		var next_pending_id: String = _pending_queue.pop_front()
+		var next_pending_def := _events.get(next_pending_id) as EventDef
+		if next_pending_def != null:
+			_enter_pending(next_pending_def)
+		else:
+			push_warning("EventEngine: 待处理通知引用了不存在的事件 %s" % next_pending_id)
+		return
+
 	# 优先处理事件链队列：既无待处理事件、也无正在展示的事件时，
 	# 立即触发队首事件（事件A完成 → 立即弹事件B）。
 	if _event_queue.size() > 0 and pending_event_id == "" and not _is_event_in_progress():
@@ -328,10 +344,10 @@ func _fire_immediate(event_def: EventDef) -> void:
 
 
 func _dispatch_trigger(event_def: EventDef) -> void:
-	if event_def.show_notification:
-		_enter_pending(event_def)
-	else:
-		_fire_immediate(event_def)
+	# 原版 TimeScript 自动触发链全部走 events[0] 地图标记（EventScript.Reset → 104 单位缓冲），
+	# 因此自动扫描命中一律先进 pending 显示提示图标，而不是直接切事件场景。
+	# 手动事件（start_event / queue_pending / 事件链）不走本函数，仍按各自语义执行。
+	_enter_pending(event_def)
 
 
 func _enter_pending(event_def: EventDef) -> void:
@@ -344,7 +360,7 @@ func _enter_pending(event_def: EventDef) -> void:
 
 
 ## 手动将事件加入待处理队列（供外部系统如 Decision / 战争结束 使用）。
-## 若已有待处理：战争结算优先覆盖；其它事件入链队列避免丢失。
+## 若已有待处理：战争结算优先覆盖；其它事件入通知队列避免丢失。
 func queue_pending(event_id: String) -> void:
 	ensure_events_ready()
 	var event_def := _events.get(event_id) as EventDef
@@ -352,14 +368,14 @@ func queue_pending(event_id: String) -> void:
 		return
 	if pending_event_id != "":
 		if event_id == "war_is_over" and pending_event_id != "war_is_over":
-			# 把原待处理事件压回链，优先展示战争结束
-			if not _event_queue.has(pending_event_id):
-				_event_queue.push_front(pending_event_id)
+			# 把原待处理事件压回通知队列，优先展示战争结束
+			if not _pending_queue.has(pending_event_id):
+				_pending_queue.push_front(pending_event_id)
 			_clear_pending()
 			_enter_pending(event_def)
 			return
-		if not _event_queue.has(event_id):
-			_event_queue.append(event_id)
+		if not _pending_queue.has(event_id):
+			_pending_queue.append(event_id)
 		return
 	_enter_pending(event_def)
 
@@ -1027,6 +1043,7 @@ func export_runtime_to_world(ws: WorldState) -> void:
 	ws.event_pending_id = pending_event_id
 	ws.event_pending_deadline = _pending_deadline
 	ws.event_chain_queue = _event_queue.duplicate()
+	ws.event_pending_queue = _pending_queue.duplicate()
 
 
 ## 从存档恢复 pending / 链队列
@@ -1039,6 +1056,10 @@ func import_runtime_from_world(ws: WorldState) -> void:
 	for eid in ws.event_chain_queue:
 		if str(eid) != "":
 			_event_queue.append(str(eid))
+	_pending_queue.clear()
+	for eid in ws.event_pending_queue:
+		if str(eid) != "":
+			_pending_queue.append(str(eid))
 	if pending_event_id != "":
 		var edef := _events.get(pending_event_id) as EventDef
 		# 0.1.x 旧存档把截止值写成 YYYYMMDD，且跨月加法可能产生非法日期。

@@ -20,6 +20,8 @@ extends Node3D
 
 var ESC菜单_open: bool = false
 var _resume_after_esc: bool = false
+# 时间启停按钮引用（快捷键切换后同步按压态）
+var _time_toggle_btn: TextureButton = null
 # 速度指示灯块（ColorRect 数组）
 var _speed_blocks: Array[ColorRect] = []
 const SPEED_BLOCK_ON := Color(0.92, 0.12, 0.12, 1.0)    # 亮红色
@@ -44,6 +46,7 @@ func _ready() -> void:
 	# 连接时间启停按钮 → 切换播放/暂停
 	var btn := get_node_or_null("时间/时间启停")
 	if btn is TextureButton:
+		_time_toggle_btn = btn
 		btn.toggled.connect(_on_time_toggled)
 		# 按钮状态与 GameManager.is_playing 同步（从子界面返回时恢复原播放状态）
 		btn.set_pressed_no_signal(GameManager.is_playing if GameManager else false)
@@ -114,6 +117,38 @@ func _connect_speed_buttons() -> void:
 func _on_speed_pressed(speed: int) -> void:
 	GameManager.set_speed(speed)
 	_refresh_speed_indicator()
+
+
+## 时间控制快捷键（动作由 GameManager 在启动时注册，默认 空格=播放/暂停、1~4=速度档）。
+## 用 _unhandled_input：GUI 按钮消费按键时不再响应，与地图/相机输入同一约定。
+func _unhandled_input(event: InputEvent) -> void:
+	if ESC菜单_open:
+		return
+	if event is InputEventKey and event.is_echo():
+		return
+	if event.is_action_pressed("toggle_time"):
+		GameManager.toggle_play()
+		_sync_time_controls()
+	elif event.is_action_pressed("speed_1"):
+		GameManager.set_speed(1)
+		_refresh_speed_indicator()
+	elif event.is_action_pressed("speed_2"):
+		GameManager.set_speed(2)
+		_refresh_speed_indicator()
+	elif event.is_action_pressed("speed_3"):
+		GameManager.set_speed(3)
+		_refresh_speed_indicator()
+	elif event.is_action_pressed("speed_4"):
+		GameManager.set_speed(4)
+		_refresh_speed_indicator()
+
+
+## 播放/暂停状态变化后，按钮按压态与速度指示灯一起刷新。
+func _sync_time_controls() -> void:
+	if _time_toggle_btn:
+		_time_toggle_btn.set_pressed_no_signal(GameManager.is_playing if GameManager else false)
+	_refresh_speed_indicator()
+
 
 func _refresh_speed_indicator() -> void:
 	var current: int = GameManager.speed if GameManager else 0

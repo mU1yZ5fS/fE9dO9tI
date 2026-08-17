@@ -36,6 +36,18 @@ var save_place: int = 5
 ## 难度设置持久值。原版 GameState.diff 会被 PlayerPrefs our_diff_in 覆盖。
 var difficulty_setting: int = 2
 
+# ── 时间控制快捷键（设置界面可重绑）──
+const TIME_SHORTCUT_ACTIONS: Array[String] = ["toggle_time", "speed_1", "speed_2", "speed_3", "speed_4"]
+const TIME_SHORTCUT_DEFAULTS := {
+	"toggle_time": KEY_SPACE,
+	"speed_1": KEY_1,
+	"speed_2": KEY_2,
+	"speed_3": KEY_3,
+	"speed_4": KEY_4,
+}
+## 当前绑定：action → 物理键码（Key）。空字典时用 TIME_SHORTCUT_DEFAULTS 兜底。
+var time_shortcut_keys: Dictionary = {}
+
 ## 外交（主游戏）场景是否处于激活状态。
 ## 只有外交场景激活时，时间才会流动 —— 与原版 Unity 行为一致
 ## （原版 TimeScript 只在主地图场景的 Update() 中运行，切到子界面场景时自然暂停）。
@@ -84,6 +96,7 @@ var _safe_max_tex_size: int = 4096
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_load_settings_config()
+	_setup_time_shortcuts()
 	_load_tech_effects()
 	_preload_region_map()
 	if EventEngine:
@@ -280,11 +293,16 @@ func _load_settings_config() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(SETTINGS_PATH) != OK:
 		# 无配置文件时保持原版默认：voice=5、autosavej=0、savePlace=5、diff=2。
+		# 快捷键保持 TIME_SHORTCUT_DEFAULTS（time_shortcut_keys 留空，由 get 默认兜底）。
 		return
 	voice = clampi(int(cfg.get_value("settings", "voice_china", 5)), 0, 100)
 	autosave_mode = clampi(int(cfg.get_value("settings", "SavePosition", 0)), 0, 2)
 	save_place = clampi(int(cfg.get_value("settings", "SavePlaceNum", 5)), 1, 5)
 	difficulty_setting = clampi(int(cfg.get_value("settings", "our_diff_in", 2)), 0, 4)
+	for action in TIME_SHORTCUT_ACTIONS:
+		var code: int = int(cfg.get_value("time_shortcuts", action, TIME_SHORTCUT_DEFAULTS[action]))
+		if code != 0:
+			time_shortcut_keys[action] = code
 
 
 func _save_settings_config() -> void:
@@ -293,8 +311,54 @@ func _save_settings_config() -> void:
 	cfg.set_value("settings", "SavePosition", autosave_mode)
 	cfg.set_value("settings", "SavePlaceNum", save_place)
 	cfg.set_value("settings", "our_diff_in", difficulty_setting)
+	for action in TIME_SHORTCUT_ACTIONS:
+		cfg.set_value("time_shortcuts", action, int(time_shortcut_keys.get(action, TIME_SHORTCUT_DEFAULTS[action])))
 	if cfg.save(SETTINGS_PATH) != OK:
 		push_error("GameManager: 设置写入失败 " + SETTINGS_PATH)
+
+
+# ── 时间控制快捷键 ──
+
+## 注册动作并应用当前绑定。仅在本 Autoload _ready 调用一次；
+## 动作常驻全局 InputMap，但只有外交场景监听它们。
+func _setup_time_shortcuts() -> void:
+	for action in TIME_SHORTCUT_ACTIONS:
+		if not InputMap.has_action(action):
+			InputMap.add_action(action)
+	_apply_time_shortcuts()
+
+
+func _apply_time_shortcuts() -> void:
+	for action in TIME_SHORTCUT_ACTIONS:
+		InputMap.action_erase_events(action)
+		var code := get_time_shortcut_key(action)
+		if code == 0:
+			continue
+		var ev := InputEventKey.new()
+		ev.physical_keycode = code as Key
+		InputMap.action_add_event(action, ev)
+
+
+func get_time_shortcut_key(action: String) -> int:
+	return int(time_shortcut_keys.get(action, TIME_SHORTCUT_DEFAULTS.get(action, 0)))
+
+
+## 键位显示名：按物理键位转当前布局标签（中文输入法/不同布局下仍显示当前键帽）。
+func get_time_shortcut_label(action: String) -> String:
+	var code := get_time_shortcut_key(action)
+	if code == 0:
+		return "未设置"
+	var label_key := DisplayServer.keyboard_get_label_from_physical(code as Key)
+	return OS.get_keycode_string(label_key)
+
+
+## 设置界面重绑入口：写入内存 + 立即改 InputMap + 持久化。
+func rebind_time_shortcut(action: String, physical_keycode: int) -> void:
+	if not TIME_SHORTCUT_ACTIONS.has(action) or physical_keycode == 0:
+		return
+	time_shortcut_keys[action] = physical_keycode
+	_apply_time_shortcuts()
+	_save_settings_config()
 
 
 func set_voice(value: int) -> void:

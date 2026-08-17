@@ -35,9 +35,6 @@ script = ExtResource("2_nyx3b")
 [node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=399054322]
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
 offset_bottom = 78.0
 texture = ExtResource("3_j13k0")
 expand_mode = 1
@@ -360,9 +357,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_qatr3")
 expand_mode = 1
 stretch_mode = 6
-texture = ExtResource("2_qatr3")
 
 [node name="事件标题" type="Label" parent="." unique_id=114266937]
 layout_mode = 1
@@ -398,6 +395,7 @@ offset_left = -352.0
 offset_top = 661.0
 offset_right = -60.0
 offset_bottom = 953.0
+grow_horizontal = 0
 texture_normal = ExtResource("14_1vwpt")
 
 [node name="事件切换页面按钮2" type="TextureButton" parent="." unique_id=1266993698]
@@ -409,6 +407,7 @@ offset_left = -152.0
 offset_top = 641.0
 offset_right = -21.0
 offset_bottom = 772.0
+grow_horizontal = 0
 rotation = 3.1415927
 texture_normal = ExtResource("14_1vwpt")
 ignore_texture_size = true
@@ -423,6 +422,7 @@ offset_left = -378.0
 offset_top = 97.0
 offset_right = -44.0
 offset_bottom = 522.0
+grow_horizontal = 0
 
 [node name="事件选项" type="Control" parent="." unique_id=1724481168]
 visible = false
@@ -438,8 +438,9 @@ offset_right = 1221.0
 offset_bottom = 248.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_nyx3b")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "选项1文本"
+vertical_alignment = 1
 
 [node name="选项1" type="TextureButton" parent="事件选项" unique_id=1870156611]
 layout_mode = 0
@@ -460,8 +461,9 @@ offset_right = 1221.0
 offset_bottom = 376.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_nyx3b")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "选项1文本"
+vertical_alignment = 1
 
 [node name="选项2" type="TextureButton" parent="事件选项" unique_id=1886280644]
 layout_mode = 0
@@ -482,8 +484,9 @@ offset_right = 1221.0
 offset_bottom = 504.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_nyx3b")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "选项1文本"
+vertical_alignment = 1
 
 [node name="选项3" type="TextureButton" parent="事件选项" unique_id=2048283484]
 layout_mode = 0
@@ -504,8 +507,9 @@ offset_right = 1221.0
 offset_bottom = 632.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_nyx3b")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "选项1文本"
+vertical_alignment = 1
 
 [node name="选项4" type="TextureButton" parent="事件选项" unique_id=2137781419]
 layout_mode = 0
@@ -526,8 +530,9 @@ offset_right = 1221.0
 offset_bottom = 760.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_nyx3b")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "选项1文本"
+vertical_alignment = 1
 
 [node name="选项5" type="TextureButton" parent="事件选项" unique_id=186843578]
 layout_mode = 0
@@ -548,8 +553,9 @@ offset_right = 1221.0
 offset_bottom = 888.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_nyx3b")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "选项1文本"
+vertical_alignment = 1
 
 [node name="选项6" type="TextureButton" parent="事件选项" unique_id=1859314566]
 layout_mode = 0

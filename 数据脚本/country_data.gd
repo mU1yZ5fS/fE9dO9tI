@@ -84,7 +84,7 @@ const IDEOLOGY := {
 @export var 有驻军基地: bool = false   # 原 based
 @export var 君主制: bool = false       # 原 isMonatchy
 @export var 禁用非洲机制: bool = false # 原 africaOff
-@export var stab: int = 1              # 原 stab（0/1 稳定标志）
+@export var stab: int = 0              # 原 stab（C# int 默认 0；部分玩法按 0/1 标志，部分按稳定度数值）
 
 # ── 大国影响力 ──
 @export_category("大国影响力")

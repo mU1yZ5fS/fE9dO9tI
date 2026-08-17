@@ -60,6 +60,12 @@ func _ready() -> void:
 	if _btn_terrain != null:
 		_btn_terrain.visible = false
 	_connect_signals()
+	# 贸易/联盟/政体等标签变化时实时重建当前模式调色板
+	if GameManager:
+		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(refresh):
+			GameManager.stats_changed.connect(refresh)
+		if GameManager.has_signal("world_state_loaded") and not GameManager.world_state_loaded.is_connected(refresh):
+			GameManager.world_state_loaded.connect(refresh)
 	current_mode = DisplayMode.GOVERNMENT
 	_apply_mode()
 	_refresh_button_styles()

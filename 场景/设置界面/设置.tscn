@@ -266,6 +266,348 @@ texture_normal = ExtResource("18_upx2b")
 ignore_texture_size = true
 stretch_mode = 5
 
+[node name="窗口模式行" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 620.0
+offset_top = 256.0
+offset_right = 1360.0
+offset_bottom = 326.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="窗口模式行"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="标题" type="Label" parent="窗口模式行"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = -6.0
+offset_right = 125.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "窗口模式"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左" type="TextureButton" parent="窗口模式行"]
+layout_mode = 0
+offset_left = 134.0
+offset_top = -12.0
+offset_right = 204.0
+offset_bottom = 58.0
+texture_normal = ExtResource("18_upx2b")
+ignore_texture_size = true
+stretch_mode = 5
+flip_h = true
+
+[node name="值" type="Label" parent="窗口模式行"]
+layout_mode = 0
+offset_left = 278.0
+offset_top = -3.0
+offset_right = 472.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "全屏"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="右" type="TextureButton" parent="窗口模式行"]
+layout_mode = 0
+offset_left = 653.0
+offset_top = -15.0
+offset_right = 723.0
+offset_bottom = 55.0
+texture_normal = ExtResource("18_upx2b")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="走时间快捷键行" type="Control" parent="."]
+offset_left = 620.0
+offset_top = 502.0
+offset_right = 1360.0
+offset_bottom = 562.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="走时间快捷键行"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="重绑" type="Button" parent="走时间快捷键行"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 740.0
+offset_bottom = 60.0
+flat = true
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="标题" type="Label" parent="走时间快捷键行"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -3.0
+offset_right = 125.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "播放/暂停"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="值" type="Label" parent="走时间快捷键行"]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 6.0
+offset_right = 495.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "空格"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="速度1快捷键行" type="Control" parent="."]
+offset_left = 620.0
+offset_top = 566.0
+offset_right = 1360.0
+offset_bottom = 626.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="速度1快捷键行"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="重绑" type="Button" parent="速度1快捷键行"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 740.0
+offset_bottom = 60.0
+flat = true
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="标题" type="Label" parent="速度1快捷键行"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -3.0
+offset_right = 125.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "速度1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="值" type="Label" parent="速度1快捷键行"]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 6.0
+offset_right = 495.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="速度2快捷键行" type="Control" parent="."]
+offset_left = 620.0
+offset_top = 630.0
+offset_right = 1360.0
+offset_bottom = 690.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="速度2快捷键行"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="重绑" type="Button" parent="速度2快捷键行"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 740.0
+offset_bottom = 60.0
+flat = true
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="标题" type="Label" parent="速度2快捷键行"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -3.0
+offset_right = 125.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "速度2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="值" type="Label" parent="速度2快捷键行"]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 6.0
+offset_right = 495.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="速度3快捷键行" type="Control" parent="."]
+offset_left = 620.0
+offset_top = 694.0
+offset_right = 1360.0
+offset_bottom = 754.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="速度3快捷键行"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="重绑" type="Button" parent="速度3快捷键行"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 740.0
+offset_bottom = 60.0
+flat = true
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="标题" type="Label" parent="速度3快捷键行"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -3.0
+offset_right = 125.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "速度3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="值" type="Label" parent="速度3快捷键行"]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 6.0
+offset_right = 495.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="速度4快捷键行" type="Control" parent="."]
+offset_left = 620.0
+offset_top = 758.0
+offset_right = 1360.0
+offset_bottom = 818.0
+mouse_filter = 2
+
+[node name="行背景" type="TextureRect" parent="速度4快捷键行"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("19_rowbar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="重绑" type="Button" parent="速度4快捷键行"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 740.0
+offset_bottom = 60.0
+flat = true
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="标题" type="Label" parent="速度4快捷键行"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -3.0
+offset_right = 125.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "速度4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="值" type="Label" parent="速度4快捷键行"]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 6.0
+offset_right = 495.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="返回" type="TextureButton" parent="." unique_id=546953166]
 layout_mode = 0
 offset_left = 432.0
@@ -278,9 +620,9 @@ texture_hover = ExtResource("3_ioabl")
 [node name="音频信息背景图" type="TextureRect" parent="." unique_id=738632101]
 layout_mode = 0
 offset_left = 648.0
-offset_top = 256.0
+offset_top = 326.0
 offset_right = 1266.0
-offset_bottom = 422.0
+offset_bottom = 492.0
 texture = ExtResource("4_d8khx")
 script = ExtResource("7_v75l0")
 

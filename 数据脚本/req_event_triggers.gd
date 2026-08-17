@@ -252,11 +252,11 @@ static func _req_dlc01(w: WorldState) -> bool:
 # ============================================================================
 
 static func _start(num: int) -> bool:
+	# 原版 ReqEventForDLC02/TimeScript 轮询命中后走 events[0] 地图标记（EventScript.Reset），
+	# 因此这里不能直接 start_event，必须 queue_pending 让外交界面先出现提示图标。
 	var def: EventDef = EventEngine.get_event_by_number(num)
-	if def != null:
-		GameManager.start_event(def.event_id)
-	else:
-		GameManager.start_event("event_%d" % num)
+	var eid := def.event_id if def != null else "event_%d" % num
+	EventEngine.queue_pending(eid)
 	return true
 
 

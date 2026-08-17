@@ -576,6 +576,10 @@ class PieChart extends Control:
 				var angle := start_angle + sweep * float(seg) / 32.0
 				pts.append(center + Vector2(cos(angle), sin(angle)) * radius)
 			draw_colored_polygon(pts, s.color)
+			# 黑色描边：沿扇区轮廓（圆心→弧→圆心）画闭合折线，分隔相邻派系并突出外缘
+			var outline := pts.duplicate()
+			outline.append(pts[0])
+			draw_polyline(outline, Color.BLACK, 2.0, true)
 			start_angle += sweep
 
 

@@ -59,14 +59,23 @@ static func pick_replacement(
 		elif c == min_count:
 			underrepresented.append(f_id)
 
+	# 防重名：事件可能已把预备池里的历史人物（如陈永贵）写入政坛，
+	# 若预备池还留有同名模板，死亡补员时会再拉一个同名者。
+	var existing_names := {}
+	if GameManager != null and GameManager.world != null:
+		for p in GameManager.world.politicians:
+			if p == null or PoliticianSystem.is_vacant_politician(p) or p.name_display == "":
+				continue
+			existing_names[p.name_display] = true
+
 	var candidates: Array[PoliticianData] = []
 	for pd in reserve:
 		if pd == null:
 			continue
-		if pd.entry_year <= current_year:
+		if pd.entry_year <= current_year and not existing_names.has(pd.name_display):
 			candidates.append(pd)
 	if candidates.is_empty():
-		push_warning("PoliticianPool: 当前年份 %d 无可用候选人" % current_year)
+		push_warning("PoliticianPool: 当前年份 %d 无可用且不重名的候选人" % current_year)
 		return null
 
 	candidates.sort_custom(func(a: PoliticianData, b: PoliticianData) -> bool:
