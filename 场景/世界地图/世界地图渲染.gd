@@ -179,8 +179,12 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			_click_queued = true
-			_mouse_screen_pos = event.position
+			# GUI 控件（如国家面板的互动按钮/关闭按钮）消费点击：不排队选国，
+			# 否则按钮 pressed 与地图选国同时发生，面板会被背后国家选中信号顶掉。
+			# Viewport.gui_get_hovered_control() 出处：gdd_0774_Viewport.md。
+			if get_viewport().gui_get_hovered_control() == null:
+				_click_queued = true
+				_mouse_screen_pos = event.position
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			_mouse_moved = true
 	elif event is InputEventMouseMotion:
