@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##       Event33-41.cs / Results_text.cs:2907-3681。
 ## 差异：
 ##  - 事件36 选项3、事件37 选项0 的禁用文案由 prepare 动态设置；
-##  - OilProd 未建模，按项目约定跳过（modifier_catalog.gd:1037）；
+##  - OilProd 已建模（ws.oil_prod），Event36 两个选项各 +200；
 ##  - allcountries[69].numberOfSpecialEnding → tibet.special_ending。
 
 const TXT_36_R2_BASED := "意识到萨达姆的野心，以及出于在各个阵线上尽可能的反对苏联扩张，并且武装了伊拉克共产党之后，我们认为现在是时候将伊拉克掀个底朝天了。外联部的同志面见了两个伊拉克共产党的领导人们，流亡在叙利亚的左翼复兴党成员马哈茂德·拉沙德·谢赫·拉迪、法齐·穆特拉克·拉维和马哈茂德·沙姆萨博士；复兴党内的马克思主义异见者；伊拉克革命劳动党和伊拉克革命共产党的残余成员也纷纷表示了合作的意愿；阿拉伯社会主义行动党的伊拉克支部同意了展开外围的合作，但希望不要破坏其与巴勒斯坦方面的友好关系即不要过分刺激萨达姆。以及一部分仍然在活动的少数民族抵抗组织，如库尔德斯坦爱国联盟和库尔德斯坦民主同盟的代表。我们诚挚的邀请他们就组建反抗萨达姆的社会法西斯政权组建统一战线。作为回报，我国和叙利亚将不遗余力的援助他们，在北京和大马士革设立办公室，并在叙利亚设置训练基地，我们将承担一切武器。很快，多方就组建“伊拉克爱国民主同盟”达成了一致。他们甚至引入了一些毛主义原则如“三大纪律八项注意”，农村包围城市，日常召开的批判大会，对《选集》的研究和农村工作队。该组织的长期目标是建立一个科学社会主义的伊拉克共和国，短期目标则是在伊拉克北部建立稳定的解放区。库尔德人，伊拉克共产党的游击队和倒戈的部分政府军被改组为伊拉克人民解放军。由自斋月革命以来就抵抗着政府的老将，同时也是亚述少数族裔的阿卜约瑟夫指挥。复兴党当局对于我们支持武装反对派非常不高兴，他要求莫斯科方面为其提供更多装备，并且在复兴党的代表大会上一个一个揪出了他所认为的反对派，伊拉克陷入了新的一轮恐慌和不稳定中。伊拉克共产党也被勒令解散，新政府以前所未有的力量压制共产主义者。"
@@ -187,7 +187,7 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 				iraq.government = 2
 				iraq.sub_government = 15
 				iraq.set_tag("对华贸易", true)
-			# OilProd += 200f：项目未建模，跳过（modifier_catalog.gd:1037）
+			ws.oil_prod += 200.0  # Event36.cs result0：扩大石油出口
 			d[W.I_INFLUENCE] += 10
 			_add_empire_relation(EmpireData.USSR, -50)
 		1:
@@ -197,7 +197,7 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 				iraq.government = 0
 				iraq.sub_government = 10
 				iraq.set_tag("对华贸易", true)
-			# OilProd += 200f：项目未建模，跳过
+			ws.oil_prod += 200.0  # Event36.cs result1：扩大石油出口
 			d[W.I_INFLUENCE] += 10
 			_add_empire_relation(EmpireData.USSR, -50)
 		2:

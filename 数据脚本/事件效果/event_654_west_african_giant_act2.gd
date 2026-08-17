@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - TextOfEvents 按 c60.sub_government==12/4 动态拼接；string.Format 的 {1} 用 GDScript format 保留原格式串。
 ##  - VariantsOfEvents 按 c60.sub_government==12 分支为 4 选项，否则 6 选项；prepare 用静态缓存安全恢复 6 选项数组。
 ##  - 选项显隐 prepare 动态改写（data56 / modifies[3] / data31 / resultOfEvents[653] / num 社会主义+改良+左翼民族主义计数）。
-##  - OilProd += 100f：项目未建模，跳过（modifier_catalog.gd:1037）。
+##  - OilProd += 100f 已建模（ws.oil_prod）。
 ##  - 死代码 result 5 测试分支在 sub12 分支无效果；sub12 的 result 3 与 else 的 result 5 为纯文本选项，已复刻。
 
 static var _saved_full_options: Array[EventOption] = []
@@ -132,7 +132,7 @@ func execute(context: Dictionary) -> void:
 					nigeria.set_tag("对华贸易", true)
 				_add(W.I_BUDGET, -40)
 				_add(W.I_AGENTS, -40)
-				# OilProd += 100f：项目未建模，跳过
+				ws.oil_prod += 100.0  # Event654.cs OilProd
 				context["result_text"] = TXT_R0_SUB12
 			1:
 				if nigeria != null:
@@ -142,7 +142,7 @@ func execute(context: Dictionary) -> void:
 					nigeria.set_tag("对华贸易", true)
 				_add(W.I_BUDGET, -160)
 				_add(W.I_AGENTS, -160)
-				# OilProd += 100f：项目未建模，跳过
+				ws.oil_prod += 100.0  # Event654.cs OilProd
 				if nigeria != null:
 					nigeria.stab = 1
 				context["result_text"] = TXT_R1_SUB12
@@ -172,7 +172,7 @@ func execute(context: Dictionary) -> void:
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event654.cs OilProd
 			context["result_text"] = TXT_R0_ELSE
 		1:
 			if nigeria != null:
@@ -182,7 +182,7 @@ func execute(context: Dictionary) -> void:
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event654.cs OilProd
 			context["result_text"] = TXT_R1_ELSE
 		2:
 			if nigeria != null:
@@ -192,7 +192,7 @@ func execute(context: Dictionary) -> void:
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -160)
 			_add(W.I_AGENTS, -160)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event654.cs OilProd
 			context["result_text"] = TXT_R2_ELSE
 		3:
 			if nigeria != null:
@@ -202,7 +202,7 @@ func execute(context: Dictionary) -> void:
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -200)
 			_add(W.I_AGENTS, -200)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event654.cs OilProd
 			context["result_text"] = TXT_R3_ELSE
 		4:
 			if nigeria != null:

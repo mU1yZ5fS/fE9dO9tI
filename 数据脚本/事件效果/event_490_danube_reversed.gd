@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   （result>2 = 结果3 或 4，.tres 用 ANY(==3, ==4) 表达）。
 ## 差异：
 ##  - 描述按 resultOfEvents[79]==3 分支拼接（prepare）。
-##  - OilProd 未建模跳过；result0 三路政权分支逐字保留。
+##  - OilProd 已建模（ws.oil_prod），result1 炼油技术转让 +100；result0 三路政权分支逐字保留。
 ##  - IsSocialism(true,1) → world.is_socialism(c1, true)；
 ##    result79!=3 分支用 influence_prc > empires[1].power。
 
@@ -116,7 +116,7 @@ func execute(context: Dictionary) -> void:
 				romania.set_tag("对华贸易", true)
 				romania.set_tag("亲中", true)
 			_add(W.I_SCIENCE, 200)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event490.cs result1：炼油技术转让
 			context["result_text"] = TXT_R1
 		2:
 			context["result_text"] = TXT_R2

@@ -68,7 +68,7 @@ func execute(context: Dictionary) -> void:
 			if c13 != null: c13.sub_government = 10
 			ws.influence_prc += 10
 			_add_relation(0, -100)
-			# 原版 OilProd += 150f; OilProd 未移植，跳过
+			ws.oil_prod += 150.0  # Event512.cs result0：利比亚扩大合作
 		1:
 			_add(8, -30)
 			var text1 := TXT_R1_0

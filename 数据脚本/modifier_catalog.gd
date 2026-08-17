@@ -942,7 +942,7 @@ static func _effect_services(w: WorldState) -> String:
 	return "\n".join(parts)
 
 
-static func _services_coupon_text(w: WorldState, econ: int, sum: int) -> String:
+static func _services_coupon_text(_w: WorldState, econ: int, sum: int) -> String:
 	# ModifiesInfuence.cs:667-1196：票证制度按经济体制与工农产值分档。
 	if econ <= 11:
 		if sum < 400: return "人民支持度+0.3，凝聚力+0.3，预算+0.3"
@@ -1341,29 +1341,32 @@ static func _oil_numbers(w: WorldState) -> Dictionary:
 		if c != null and c.has_tag("亲中"):
 			domestic -= 1.0
 	domestic = maxf(domestic, 10.0)
-	# OilEat（GameStartScript.cs:824-828）
+	# OilEat（权威值 w.oil_eat 由 _apply_modifier51_oil 按 ModifiesInfuence.cs:2362-2420 每双周更新；
+	# 旧档/未结算时按 GameStartScript.cs:824-828 基础公式兜底，注意原版乘的是 data[5] 生活水平，不是人口）。
 	var industry := float(_raw(d, WorldState.I_INDUSTRY))
 	var agriculture := float(_raw(d, WorldState.I_AGRICULTURE))
 	var services := float(_raw(d, WorldState.I_SERVICES))
 	var army := float(_raw(d, WorldState.I_ARMY))
-	var population := float(_raw(d, WorldState.I_POPULATION))
-	var oil_eat := industry * 0.4
-	if industry >= 500.0:
-		oil_eat += (industry - 499.0) * 0.4
-	if industry >= 750.0:
-		oil_eat += (industry - 749.0) * 0.4
-	if agriculture >= 250.0:
-		oil_eat += (agriculture - 249.0) * 0.35
-	if agriculture >= 500.0:
-		oil_eat += (agriculture - 499.0) * 0.35
-	if agriculture >= 750.0:
-		oil_eat += (agriculture - 749.0) * 0.35
-	if services >= 500.0:
-		oil_eat += (services - 499.0) * 0.34
-	if services >= 750.0:
-		oil_eat += (services - 749.0) * 0.34
-	oil_eat += (1000.0 if army >= 2000.0 else army * 0.5)
-	oil_eat += population * 0.05
+	var living := float(_raw(d, WorldState.I_LIVING))
+	var oil_eat := w.oil_eat if (w != null and w.oil_eat > 0.0) else 0.0
+	if oil_eat <= 0.0:
+		oil_eat = industry * 0.4
+		if industry >= 500.0:
+			oil_eat += (industry - 499.0) * 0.4
+		if industry >= 750.0:
+			oil_eat += (industry - 749.0) * 0.4
+		if agriculture >= 250.0:
+			oil_eat += (agriculture - 249.0) * 0.35
+		if agriculture >= 500.0:
+			oil_eat += (agriculture - 499.0) * 0.35
+		if agriculture >= 750.0:
+			oil_eat += (agriculture - 749.0) * 0.35
+		if services >= 500.0:
+			oil_eat += (services - 499.0) * 0.34
+		if services >= 750.0:
+			oil_eat += (services - 749.0) * 0.34
+		oil_eat += (1000.0 if army >= 2000.0 else army * 0.5)
+		oil_eat += living * 0.05
 	var oil_prod := w.oil_prod if w != null else 0.0  # 开局 GameStartScript.cs:90 置 850；事件可改写
 	var num12 := 0.0
 	if oil_eat - oil_prod > 0.0:

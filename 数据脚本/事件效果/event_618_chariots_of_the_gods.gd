@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event618.cs：众神之战车（喀麦隆政变，四选项）。
 ## 触发：ReqEventForDLC02.cs:924-926 —— !event_done[617] && c66.SubGosstroy==7 && DATE_AFTER 1984.4.5。
-## 差异：OilProd 未建模跳过；IsSocialism(true,61)→ws.is_socialism(c61,true)；proprc→亲中。
+## 差异：OilProd 已建模（ws.oil_prod），result0成功线/1/2 各 +100；IsSocialism(true,61)→ws.is_socialism(c61,true)；proprc→亲中。
 
 const TXT_TITLE := "众神之战车"
 const TXT_DESC := "自喀麦隆独立以来，出身北方的阿赫马杜·阿希乔担任了该国23年的总统，在他任上，喀麦隆政府镇压了喀麦隆人民联盟发动的反帝反殖起义，并建立了由喀麦隆民族联盟主导的一党专制亲法政权。1982年11月4日，阿希乔以健康为由宣布辞职，但保留了执政党喀麦隆民族联盟主席的职位。不久后，出身南方的总理保罗·比亚继任总统。比亚继任后，他与阿希乔很快从合作关系走向了敌对。比亚进行了“解冻”改革，放松了一定言论管控，并计划在党内推行竞争性选举，这一改革方案遭到了仍掌握党权的阿希乔集团的反对，引发并扩大了比亚派和阿希乔派乃至于其背后所代表的南北部族之间的矛盾。不久，比亚在权力竞争中决出胜利，并通过发动舆论战继续打压反对派。阿希乔于1983年7月流亡海外，8月22日比亚通过公开指责阿希乔策划政变，将政府中几位阿希乔派高官解职。阿希乔在流亡中严厉批评比亚，并辞去了喀麦隆民族联盟主席的职务，比亚接任党的领导人，掌握了党权。今年二月，阿希乔因政变被缺席判处死刑，后改为无期徒刑。|在统治集团激烈的斗争中，比亚的权力仍然不稳固，有信息显示，喀麦隆将在近期发生政变。1975年以来，喀麦隆军队内的部分爱国进步低级军官组织了一个名为“为国家生存而战的年轻军官”（JOSE）的运动，该运动对现政权的政治经济政策以及腐败和部族主义充斥国家不满，在喀麦隆军中和民间已经发展一些秘密小组，运动中有部分成员是马克思主义者，他们的成员包括姆巴拉·盖兰迪上尉、弗雷德里克·戈迪以及来自民间的代表伊萨·阿杜姆等等。受到部分非洲国家的由进步青年军官主导的政变式革命影响（特别是上沃尔特的由托马斯·桑卡拉和布莱斯·孔波雷领导的革命，因为盖兰迪是孔波雷的同学），计划在近期通过政变甚至是城市游击运动进行夺权和革命。|我们是否要抓住机会，干预喀麦隆的局势？"
@@ -68,6 +68,7 @@ func execute(context: Dictionary) -> void:
 				ws.influence_prc += 20
 				_add_relation(EmpireData.USA, -50)
 				_add_power(EmpireData.USA, -20)
+				ws.oil_prod += 100.0  # Event618.cs result0 成功线：喀麦隆石油合作
 				var text := TXT_R0_SUC
 				if burkina != null and ws.is_socialism(burkina, true):
 					text += TXT_R0_SOC
@@ -96,12 +97,14 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -100)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -5)
+			ws.oil_prod += 100.0  # Event618.cs result1：阿希乔石油协议
 		2:
 			context["result_text"] = TXT_R2
 			if cameroon != null:
 				cameroon.set_tag("对华贸易", true)
 			ws.influence_prc += 10
 			_add(W.I_AGENTS, -30)
+			ws.oil_prod += 100.0  # Event618.cs result2：比亚石油协议
 		3:
 			context["result_text"] = TXT_R3
 

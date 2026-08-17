@@ -1491,6 +1491,7 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 		_leave_alliances(iraq)
 		iraq.puppet_of = 8
 		iraq.chinese_name = "伊拉克"
+		w.oil_prod += 100.0  # GameState.cs:4669：伊拉克油田权益
 		if d.size() > 117:
 			d[117] = 9
 	else:

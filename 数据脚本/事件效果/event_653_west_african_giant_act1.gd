@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs 11042-11046 —— (月>=7 且 年>=1979 或 年>=1980)。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线 / modifies[3] / data31 / modifies[6] / c1 严格社会主义）。
-##  - OilProd += 100f：项目未建模石油产量，跳过（modifier_catalog.gd:1037）。
+##  - OilProd += 100f 已建模（ws.oil_prod）。
 ##  - 死代码 result 5 测试分支跳过；result 0-4 均为实际选项。
 
 const TXT_TITLE := "西非巨人——第一幕"
@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -40)
 			_add(W.I_AGENTS, -40)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event653.cs OilProd
 			context["result_text"] = TXT_R0
 		1:
 			if nigeria != null:
@@ -85,7 +85,7 @@ func execute(context: Dictionary) -> void:
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -160)
 			_add(W.I_AGENTS, -160)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event653.cs OilProd
 			context["result_text"] = TXT_R1
 		2:
 			if nigeria != null:

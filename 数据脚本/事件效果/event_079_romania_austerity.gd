@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（原版 SetActive(false) 等价）。
 ##  - science[16]/science[25] → ws.techs.unlocked 下标（tech_state.gd）。
-##  - 原版 OilProd += 100f：项目未建模石油产量（modifier_catalog.gd:1037），跳过。
+##  - OilProd 已建模（ws.oil_prod），result0 炼油技术转让 +100。
 ##  - result2：原版 ResultsOfEvents 没有 result_num==2 分支（可点但无文案无效果），
 ##    逐字保留该行为（result_text 空串）。
 
@@ -70,7 +70,7 @@ func execute(context: Dictionary) -> void:
 				romania.government = 0
 				romania.sub_government = 10
 			_add(W.I_SCIENCE, 200)
-			# OilProd += 100f：项目未建模，跳过（modifier_catalog.gd:1037）
+			ws.oil_prod += 100.0  # Event79.cs result0：炼油技术转让
 			context["result_text"] = TXT_R0
 		1:
 			_add(W.I_BUDGET, -150)

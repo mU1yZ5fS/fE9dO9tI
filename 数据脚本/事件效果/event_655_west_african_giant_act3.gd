@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线）。
 ##  - 结果1/2 的布哈里声明按 c60.sub_government==12 动态拼接（原版 ?: 字符串）。
-##  - OilProd += 100f：项目未建模，跳过（modifier_catalog.gd:1037）。
+##  - OilProd += 100f 已建模（ws.oil_prod）。
 ##  - 死代码 result 5 测试分支跳过。
 
 const TXT_TITLE := "西非巨人——第三幕"
@@ -59,7 +59,7 @@ func execute(context: Dictionary) -> void:
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -150)
 			_add(W.I_AGENTS, -150)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event655.cs OilProd
 			context["result_text"] = TXT_R0
 		1:
 			if nigeria != null:
@@ -69,7 +69,7 @@ func execute(context: Dictionary) -> void:
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
-			# OilProd += 100f：项目未建模，跳过
+			ws.oil_prod += 100.0  # Event655.cs OilProd
 			var text1 := TXT_R1_BASE
 			if is_sub12:
 				text1 += TXT_R1_COND

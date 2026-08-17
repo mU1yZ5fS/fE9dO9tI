@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   ((年>=1978 月>=10 日>=8) || (年>=1978 月>=11) || 年>=1979)。
 ## 差异：
 ##  - data[8]+data[36] → 预算+外汇（W.I_BUDGET + W.I_RESERVE）；
-##  - data[69] 国债 → W.I_LOAN；OilProd 未建模，跳过（modifier_catalog.gd:1037）；
+##  - data[69] 国债 → W.I_LOAN；OilProd 已建模（ws.oil_prod）按分支 +500/600/400/1000/400；
 ##  - result2 标题切换 → context["result_title"]。
 
 const TXT_TITLE := "我们需要石油？"
@@ -79,7 +79,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -50)
 			_add(W.I_BUDGET, -80)
-			# OilProd += 500f：项目未建模，跳过（modifier_catalog.gd:1037）
+			ws.oil_prod += 500.0  # Event493.cs result0
 			context["result_text"] = TXT_R0
 		1:
 			var people := d[W.I_PEOPLE_SUPPORT] if d.size() > W.I_PEOPLE_SUPPORT else 0
@@ -88,18 +88,18 @@ func execute(context: Dictionary) -> void:
 			if (people >= 700 and living >= 600) or (people >= 500 and living >= 400 and mod3):
 				_add(W.I_BUDGET, -5)
 				_add(W.I_LIVING, -60)
-				# OilProd += 600f：项目未建模，跳过
+				ws.oil_prod += 600.0  # Event493.cs result1 大庆超额300%
 				context["result_text"] = TXT_R1_BEST
 			else:
 				_add(W.I_BUDGET, -5)
 				_add(W.I_LIVING, -50)
-				# OilProd += 400f：项目未建模，跳过
+				ws.oil_prod += 400.0  # Event493.cs result1 大庆超额143%
 				context["result_text"] = TXT_R1_OK
 		2:
 			context["result_title"] = TXT_TITLE_DAQING
 			_add(W.I_BUDGET, -50)
 			_add(W.I_LIVING, -50)
-			# OilProd += 1000f：项目未建模，跳过
+			ws.oil_prod += 1000.0  # Event493.cs result2 大庆超额400%
 			context["result_text"] = TXT_R2
 		3:
 			_add(W.I_LOAN, 50)
@@ -109,7 +109,7 @@ func execute(context: Dictionary) -> void:
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null \
 					and ws.empires[EmpireData.USSR].relations >= 500:
 				_add_relation(EmpireData.USSR, -50)
-			# OilProd += 400f：项目未建模，跳过
+			ws.oil_prod += 400.0  # Event493.cs result3
 			context["result_text"] = TXT_R3
 		4:
 			context["result_text"] = TXT_R4

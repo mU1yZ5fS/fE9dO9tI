@@ -29,7 +29,7 @@ const T_658_23 := "11月19日，FAN攻占了乍得东部重要城市阿贝歇，
 ## 触发：TimeScript.cs:11086-11091 —— (日>=29 且 月>=10 且 年>=1981) || (月>=11 且 年>=1981) || 年>=1982。
 ## 差异：
 ##  - 描述后缀与 opt1/opt2 文案按 resultOfEvents[512] / [561] 动态选择（缺省按原版 int 默认 0）。
-##  - OilProd += 100f 项目未建模（modifier_catalog.gd:1037），跳过。
+##  - OilProd += 100f 已建模（ws.oil_prod）。
 ##  - War 80：AmericanSupportDefender.SovietSupportAttacker → usa_side=1 / ussr_side=0。
 ##  - 死代码 result_num==5（button_text[5] 测试分支）跳过。
 
@@ -98,7 +98,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -150)
 			_add_relation(EmpireData.USA, 50)
 			_add_relation(EmpireData.USSR, 50)
-			# OilProd += 100f：项目未建模，跳过（modifier_catalog.gd:1037）
+			ws.oil_prod += 100.0  # Event658.cs OilProd
 			context["result_text"] = text
 		1:
 			_war_add(80, -50, 50)
@@ -113,7 +113,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -150)
 			_add(W.I_ARMY, -150)
 			_add_relation(EmpireData.USSR, 50)
-			# OilProd += 100f：项目未建模，跳过（modifier_catalog.gd:1037）
+			ws.oil_prod += 100.0  # Event658.cs OilProd
 			context["result_text"] = T_658_22
 		3:
 			context["result_text"] = T_658_23

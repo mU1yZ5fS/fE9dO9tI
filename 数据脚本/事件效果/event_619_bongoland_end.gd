@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event619.cs：“邦戈兰”的终结？（加蓬干预，五选项）。
 ## 触发：无自动触发点——原版由 DiploButtonScript.cs:4656-4658（this_type 外交按钮）手动 number_event=619。
-## 差异：based→有驻军基地；OilProd 未建模跳过；IsSocialism/IsAuthoritarianism→ws 谓词；name→chinese_name。
+## 差异：based→有驻军基地；OilProd 已建模（ws.oil_prod），result1三路/2/3/4 各 +100；IsSocialism/IsAuthoritarianism→ws 谓词；name→chinese_name。
 
 const TXT_TITLE := "“邦戈兰”的终结？"
 const TXT_DESC := "与大多数亲法的非洲专制政权类似，加蓬的“独立”是在亲法独裁者，所谓的“国父”莱昂·姆巴的领导下实现的。姆巴政权同法国签订了大量协议，使得法国在加蓬的政治、经济、军事和文化中保留了大量的控制权，并维持了驻军。尽管该国采取的是民主共和制，但当政的姆巴不断压制诸如温和左翼的加蓬民主与社会联盟、激进左翼的加蓬民族团结党与加蓬人民行动运动以及工会和加蓬学生总协会等反对团体和异见者，对他们进行残酷迫害。这一切在加蓬引起了大量不满，最终使得该国于1964年二月发生了由民主派、民族主义者和左翼力量支持的反帝反殖政变，成功软禁姆巴并成立了革命委员会和临时政府，但法国很快反应过来，派出军队推翻了新政府，复辟了姆巴政权。在政变失败后，一方面，加蓬的左翼反对派成立了由热尔曼·姆巴、马克·姆巴·恩东和马克·萨吐尼恩·恩南·恩圭马等人领导的具有非洲社会主义和马克思主义色彩的加蓬民族革命运动，他们在阿尔及利亚、加纳和刚果（布）的支持下尝试进行武装斗争，以推翻卖国政权；另一方面，当局也积极向反对党施压，企图将所有政治力量集中在自己的控制下。1967年，莱昂·姆巴去世，副总统邦戈继任。邦戈掌权后，将执政党加蓬民主同盟改组为加蓬民主党，并成功颁布确立了加蓬民主党的一党专制地位的新宪法。与此同时，邦戈披上了温和的外衣，宣布进行“民族和解”，大赦反对派，呼吁流亡的反对派回国，包括加蓬民族革命运动在内的多个反对派都回国了。其中部分声望较大的或听从邦戈的，被授予了一些官位，但不听指挥的，邦戈也对他们采取了“特别措施”（不幸的是，热尔曼·姆巴因发表将要参加总统大选的言论，被邦戈请的白人雇佣兵杀害）。|在邦戈的治下，加蓬背靠石油资源和法国的扶助，创造了六十至七十年代经济增长的“黄金时代”，成为了法国在中非地区的“模范殖民地”。但到了八十年代，伴随着经济危机，加蓬的反对派和异见者再度活跃起来，1981年，反对党全国复兴运动在巴黎成立，并公开宣称为推翻邦戈总统的政权和实现“民主、全国团结和发展”而战。1982年，他们散发了一些传单，很快导致部分成员被捕而转入地下，1985年2月，全国复兴运动主席保罗·姆巴·阿巴索贝在巴黎宣布成立流亡政府。此外，流亡国外的反对派也存在如加蓬学生总协会这类激进左翼团体。随着制裁的引入和该国经济的不断恶化，反对派的活动已经越来越活跃，加蓬国内的反对情绪很快被点燃。学运、工运频发，邦戈政权经历执政以来前所未有的社会动荡的严峻考验。利伯维尔连续发生学生罢课、职员与工人罢工和示威游行，要求提高工资和进行民主改革。多个反对派政党开始成立——温和左翼的加蓬人民联盟、加蓬进步党，激进左翼的加蓬社会主义党和由加蓬学生总协会改组的加蓬社会主义联盟，他们已经开始快速吸收支持者并向建制渗透；与此同时，力量最强大的全国复兴运动也开始分裂为偏右的“伐木者派”和偏左的“原始派”；在加蓬民主党和军队内部，同情反对派和支持民主变革的成员也开始出现。|该国的大致情况已经为您介绍完毕，请您在以下几个方案中进行选择。"
@@ -102,18 +102,21 @@ func execute(context: Dictionary) -> void:
 					gabon.sub_government = 8
 					gabon.set_tag("亲中", true)
 				ws.influence_prc += 10
+				ws.oil_prod += 100.0  # Event619.cs result1 社会主义分支：加蓬石油合作
 			elif ws.is_authoritarian(china):
 				if gabon != null:
 					gabon.government = 0
 					gabon.sub_government = 20
 					gabon.set_tag("亲中", true)
 				ws.influence_prc += 10
+				ws.oil_prod += 100.0  # Event619.cs result1 威权分支
 			else:
 				if gabon != null:
 					gabon.government = 3
 					gabon.sub_government = 5
 					gabon.set_tag("亲中", true)
 				ws.influence_prc += 10
+				ws.oil_prod += 100.0  # Event619.cs result1 其他分支
 		2:
 			context["result_text"] = TXT_R2
 			_add(W.I_BUDGET, -50)
@@ -125,6 +128,7 @@ func execute(context: Dictionary) -> void:
 				gabon.set_tag("对华贸易", true)
 				gabon.set_tag("亲中", true)
 			ws.influence_prc += 10
+			ws.oil_prod += 100.0  # Event619.cs result2
 		3:
 			context["result_text"] = TXT_R3
 			_add(W.I_BUDGET, -100)
@@ -136,6 +140,7 @@ func execute(context: Dictionary) -> void:
 				gabon.set_tag("对华贸易", true)
 				gabon.set_tag("亲中", true)
 			ws.influence_prc += 20
+			ws.oil_prod += 100.0  # Event619.cs result3
 		4:
 			context["result_text"] = TXT_R4
 			_add(W.I_BUDGET, -150)
@@ -149,6 +154,7 @@ func execute(context: Dictionary) -> void:
 				gabon.set_tag("亲中", true)
 				gabon.chinese_name = TXT_NAME_R4
 			ws.influence_prc += 20
+			ws.oil_prod += 100.0  # Event619.cs result4
 
 
 
