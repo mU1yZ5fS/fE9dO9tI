@@ -193,10 +193,13 @@ static func name_zh(id: int) -> String:
 		if w != null and w.completed_event_ids.has("event_687"):
 			return "“民族文化”复兴"
 	if id == 46 and w != null and _mod_active(w, 46):
-		# TimeScript.cs:611-613：埃及(30) 严格社会主义且 46 激活时改标题。
+		# TimeScript.cs:617-619：埃及(30) 严格社会主义且 46 激活时改标题。
 		var egypt := _country(w, 30)
 		if egypt != null and w.is_socialism(egypt, true):
 			return "阿拉伯革命社会主义共和国联盟"
+	if id == 28:
+		# TimeScript.cs:566-575：事件326选项0 + 文革 + 毛主义壁垒 + 一党制(6) 时改标题。
+		return "无产阶级宪法" if _is_proletarian_constitution(w) else "75宪法"
 	if NAME_ZH.has(id):
 		return NAME_ZH[id]
 	var def := get_def(id)
@@ -219,6 +222,8 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 			return _effect_13(w)
 		15:
 			return _effect_agriculture(w)
+		28:
+			return _effect_constitution(w)
 		44:
 			return _effect_france_mod44(w)
 		47:
@@ -685,6 +690,24 @@ static func _effect_money(_w: WorldState) -> String:
 static func _sci(w: WorldState, idx: int) -> bool:
 	return w != null and w.techs != null and idx >= 0 and idx < w.techs.unlocked.size() \
 		and w.techs.unlocked[idx]
+
+
+static func _is_proletarian_constitution(w: WorldState) -> bool:
+	# TimeScript.cs:566-575：事件326选项0 + 修正3/6 激活 + 宗教<=25 + 一党制6 + 计划体制<=11。
+	if w == null:
+		return false
+	var d := w.数值表
+	return _event_done(w, "event_326") and _event_result(w, "event_326") == 0 \
+		and _mod_active(w, 3) and _mod_active(w, 6) \
+		and _raw(d, WorldState.I_RELIGION) <= 25 \
+		and _raw(d, WorldState.I_PARTY_SYSTEM) == 6 \
+		and _raw(d, WorldState.I_ECON_SYSTEM) <= 11
+
+
+static func _effect_constitution(w: WorldState) -> String:
+	if _is_proletarian_constitution(w):
+		return "极左派+3，极左派力量+3，党内支持度-0.5，人民支持度+1.5，思想自由化-1.5，腐败-0.2，预算+0.3，特工网络+0.3"
+	return EFFECT_ZH[28].replace("|", "\n")
 
 
 static func _effect_automation(w: WorldState) -> String:
