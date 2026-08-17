@@ -89,8 +89,6 @@ var cached_color_palette_tex: ImageTexture = null
 var cached_diplomacy_scene: PackedScene = null
 
 var _map_preload_thread: Thread = null
-## 本机 GPU 安全纹理上限（主线程查询后缓存，供后台解码线程读取）
-var _safe_max_tex_size: int = 4096
 
 
 func _ready() -> void:
@@ -106,14 +104,7 @@ func _ready() -> void:
 func _preload_region_map() -> void:
 	if cached_region_map_image != null:
 		return
-	# 主线程查询本机 GPU 2D 纹理上限（RenderingServer 不可在子线程调用）。
-	# 取 min(GPU上限, 8192)：8192 已足够保真且显存可控；只支持 4096 的旧机自动降到 4096。
-	# 移动 GPU 常见上限仅 4096（见 Godot 文档 3D rendering limitations），超限会上传失败→采样全黑→地球全蓝。
-	var rd := RenderingServer.get_rendering_device()
-	if rd:
-		var gpu_limit := rd.limit_get(RenderingDevice.LIMIT_MAX_TEXTURE_SIZE_2D)
-		if gpu_limit > 0:
-			_safe_max_tex_size = mini(gpu_limit, 8192)
+	# 按原分辨率加载底图，不做 GPU 上限缩放/压缩。
 	_map_preload_thread = Thread.new()
 	_map_preload_thread.start(_decode_region_map)
 
@@ -132,12 +123,7 @@ func _decode_region_map() -> void:
 		call_deferred("_on_region_map_preloaded_failed")
 		return
 
-	# 按本机 GPU 安全上限缩放底图，避免在纹理上限较低的手机上上传失败（地球全蓝）。
-	# region 图为 id 编码图，只能用 INTERPOLATE_NEAREST，禁止插值/有损压缩以免 id 混色。
-	var max_size := _safe_max_tex_size
-	if img.get_width() > max_size or img.get_height() > max_size:
-		var ratio := float(max_size) / float(maxi(img.get_width(), img.get_height()))
-		img.resize(int(img.get_width() * ratio), int(img.get_height() * ratio), Image.INTERPOLATE_NEAREST)
+	# 按原分辨率加载，不缩放/压缩底图。
 
 	# 2. 加载与解析地图相关的 JSON 文件
 	const META_PATH := "res://资产/地图/map_meta.json"

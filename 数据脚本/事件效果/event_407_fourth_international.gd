@@ -57,8 +57,8 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.completed_event_ids.has("event_407"):
 		return false
-	var d := world.数值表
-	if d.size() <= W.I_YEAR or d[W.I_YEAR] <= 1983:
+	var data := world.数值表
+	if data.size() <= W.I_YEAR or data[W.I_YEAR] <= 1983:
 		return false
 	var uk := world.get_country_by_legacy_index(92)
 	if uk == null or uk.sub_government != 18:
