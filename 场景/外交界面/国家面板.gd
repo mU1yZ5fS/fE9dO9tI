@@ -361,7 +361,7 @@ func _on_action_hover(index: int) -> void:
 	var lines: PackedStringArray = []
 	for cond in conditions:
 		var met: bool = cond.check.call() if cond.has("check") else true
-		lines.append("%s  [%s]" % [cond.get("desc", ""), "满足" if met else "未满足"])
+		lines.append("%s  [%s]" % [cond.get("desc", ""), "√" if met else "×"])
 	if action.has("effect_desc"):
 		lines.append("\n效果：%s" % action.effect_desc)
 	var label := find_child("执行当前互动按钮所需条件及检查", true, false) as Label
