@@ -44,7 +44,7 @@
 [ext_resource type="Texture2D" uid="uid://dwkuhbxu7d6di" path="res://资产/UI/科研/航天科技_行星际飞行器.png" id="40_4mczk"]
 [ext_resource type="Texture2D" uid="uid://ddgo4kk5thnvi" path="res://资产/UI/科研/航天科技_轨道空间站.png" id="41_5mczk"]
 [ext_resource type="Texture2D" uid="uid://2kredme6a3hs" path="res://资产/UI/科研/航天科技_航天飞机.png" id="42_6mczk"]
-[ext_resource type="Texture2D" path="res://资产/UI/科研/科研提示板.png" id="43_7mczk"]
+[ext_resource type="Texture2D" uid="uid://b5pe8abpiemtx" path="res://资产/UI/科研/科研提示板.png" id="43_7mczk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vg3t2"]
 bg_color = Color(0.2901961, 0.11764706, 0.19215687, 1)
@@ -134,19 +134,19 @@ text = "11111"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="提示层" type="CanvasLayer" parent="."]
+[node name="提示层" type="CanvasLayer" parent="." unique_id=403998931]
 layer = 10
 
-[node name="科研提示板" type="TextureRect" parent="提示层"]
+[node name="科研提示板" type="TextureRect" parent="提示层" unique_id=392226900]
 visible = false
 offset_left = 91.0
 offset_top = 789.0
 offset_right = 1711.0
 offset_bottom = 1057.0
-texture = ExtResource("43_7mczk")
 mouse_filter = 2
+texture = ExtResource("43_7mczk")
 
-[node name="提示标题" type="Label" parent="提示层"]
+[node name="提示标题" type="Label" parent="提示层" unique_id=48448193]
 visible = false
 offset_left = 662.0
 offset_top = 790.0
@@ -158,36 +158,34 @@ theme_override_font_sizes/font_size = 28
 text = "科技名称"
 horizontal_alignment = 1
 vertical_alignment = 1
-mouse_filter = 2
 
-[node name="提示状态" type="RichTextLabel" parent="提示层"]
+[node name="提示状态" type="RichTextLabel" parent="提示层" unique_id=1151459217]
 visible = false
 offset_left = 462.0
 offset_top = 824.0
 offset_right = 1462.0
 offset_bottom = 872.0
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
 theme_override_fonts/normal_font = ExtResource("5_4vumy")
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
-scroll_active = false
-mouse_filter = 2
 text = "[center][color=red]0.0[/color] 资金[/center]"
+scroll_active = false
 
-[node name="提示描述" type="RichTextLabel" parent="提示层"]
+[node name="提示描述" type="RichTextLabel" parent="提示层" unique_id=1961879916]
 visible = false
 offset_left = 116.0
 offset_top = 868.0
 offset_right = 1701.0
 offset_bottom = 1041.0
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
 theme_override_fonts/normal_font = ExtResource("5_4vumy")
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
-scroll_active = false
-autowrap_mode = 3
-mouse_filter = 2
 text = "科技介绍"
+scroll_active = false
 
 [node name="科研关系_纵向" type="TextureRect" parent="." unique_id=1213856115]
 layout_mode = 0
@@ -322,9 +320,9 @@ show_percentage = false
 
 [node name="大跃进的遗产_解锁年份" type="Label" parent="农业科技" unique_id=113348136]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 157.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 193.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -361,9 +359,9 @@ show_percentage = false
 
 [node name="巩固农业设施_解锁年份" type="Label" parent="农业科技" unique_id=2119323444]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 341.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 377.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -400,9 +398,9 @@ show_percentage = false
 
 [node name="农业方法革新_解锁年份" type="Label" parent="农业科技" unique_id=1824177249]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 525.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -439,9 +437,9 @@ show_percentage = false
 
 [node name="发展农业机械化_解锁年份" type="Label" parent="农业科技" unique_id=-1294967293]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 525.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -478,9 +476,9 @@ show_percentage = false
 
 [node name="新型肥料与杀虫剂_解锁年份" type="Label" parent="农业科技" unique_id=-1294967290]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 717.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 753.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -517,9 +515,9 @@ show_percentage = false
 
 [node name="开垦处女地_解锁年份" type="Label" parent="农业科技" unique_id=-1294967287]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 901.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 937.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -556,9 +554,9 @@ show_percentage = false
 
 [node name="选育与基因研究_解锁年份" type="Label" parent="农业科技" unique_id=-1294967284]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 525.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -595,9 +593,9 @@ show_percentage = false
 
 [node name="新增研究设施_解锁年份" type="Label" parent="农业科技" unique_id=-1294967281]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 717.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 753.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -634,9 +632,9 @@ show_percentage = false
 
 [node name="遗传修饰_解锁年份" type="Label" parent="农业科技" unique_id=-1294967278]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 893.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 929.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -680,9 +678,9 @@ show_percentage = false
 
 [node name="改良流水线生产模式_解锁年份" type="Label" parent="工业科技" unique_id=-1294967275]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 157.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 193.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -719,9 +717,9 @@ show_percentage = false
 
 [node name="自研工业科技_解锁年份" type="Label" parent="工业科技" unique_id=-1294967272]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 341.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 377.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -758,9 +756,9 @@ show_percentage = false
 
 [node name="工业设施中国化_解锁年份" type="Label" parent="工业科技" unique_id=-1294967269]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 525.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -797,9 +795,9 @@ show_percentage = false
 
 [node name="电子工业中国化_解锁年份" type="Label" parent="工业科技" unique_id=-1294967266]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 525.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -836,9 +834,9 @@ show_percentage = false
 
 [node name="自动化生产控制_解锁年份" type="Label" parent="工业科技" unique_id=-1294967263]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 717.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 753.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -875,9 +873,9 @@ show_percentage = false
 
 [node name="中国版的OGAS_解锁年份" type="Label" parent="工业科技" unique_id=-1294967260]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 901.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 937.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -914,9 +912,9 @@ show_percentage = false
 
 [node name="现代制造业_解锁年份" type="Label" parent="工业科技" unique_id=-1294967257]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 525.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -953,9 +951,9 @@ show_percentage = false
 
 [node name="改进国内工业机械_解锁年份" type="Label" parent="工业科技" unique_id=-1294967254]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 717.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 753.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -992,9 +990,9 @@ show_percentage = false
 
 [node name="计算机化_解锁年份" type="Label" parent="工业科技" unique_id=-1294967251]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 893.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 929.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1038,9 +1036,9 @@ show_percentage = false
 
 [node name="加强军备开发_解锁年份" type="Label" parent="军事科技" unique_id=-1294967248]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 157.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 193.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1077,9 +1075,9 @@ show_percentage = false
 
 [node name="更新军队装备_解锁年份" type="Label" parent="军事科技" unique_id=-1294967245]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 341.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 377.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1116,9 +1114,9 @@ show_percentage = false
 
 [node name="情报部门新装备_解锁年份" type="Label" parent="军事科技" unique_id=-1294967242]
 layout_mode = 0
-offset_left = 463.0
+offset_left = 424.0
 offset_top = 525.0
-offset_right = 522.0
+offset_right = 554.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1155,9 +1153,9 @@ show_percentage = false
 
 [node name="发展海军与空军_解锁年份" type="Label" parent="军事科技" unique_id=-1294967239]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 525.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1194,9 +1192,9 @@ show_percentage = false
 
 [node name="发展核武器与导弹_解锁年份" type="Label" parent="军事科技" unique_id=-1294967236]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 717.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 753.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1233,9 +1231,9 @@ show_percentage = false
 
 [node name="指挥链与军事组织改革_解锁年份" type="Label" parent="军事科技" unique_id=-1294967233]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 200.0
 offset_top = 901.0
-offset_right = 298.0
+offset_right = 330.0
 offset_bottom = 937.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1272,9 +1270,9 @@ show_percentage = false
 
 [node name="新式间谍装备_解锁年份" type="Label" parent="军事科技" unique_id=-1294967230]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 525.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1311,9 +1309,9 @@ show_percentage = false
 
 [node name="现代间谍装备_解锁年份" type="Label" parent="军事科技" unique_id=-1294967227]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 717.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 753.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1350,9 +1348,9 @@ show_percentage = false
 
 [node name="迎接信息化战争_解锁年份" type="Label" parent="军事科技" unique_id=-1294967224]
 layout_mode = 0
-offset_left = 687.0
+offset_left = 648.0
 offset_top = 893.0
-offset_right = 746.0
+offset_right = 778.0
 offset_bottom = 929.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1404,9 +1402,9 @@ show_percentage = false
 
 [node name="通讯卫星_解锁年份" type="Label" parent="航天科技" unique_id=368177673]
 layout_mode = 0
-offset_left = 911.0
+offset_left = 872.0
 offset_top = 157.0
-offset_right = 970.0
+offset_right = 1002.0
 offset_bottom = 193.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1443,9 +1441,9 @@ show_percentage = false
 
 [node name="导航卫星_解锁年份" type="Label" parent="航天科技" unique_id=540234113]
 layout_mode = 0
-offset_left = 911.0
+offset_left = 872.0
 offset_top = 341.0
-offset_right = 970.0
+offset_right = 1002.0
 offset_bottom = 377.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1482,9 +1480,9 @@ show_percentage = false
 
 [node name="军事卫星_解锁年份" type="Label" parent="航天科技" unique_id=380666409]
 layout_mode = 0
-offset_left = 911.0
+offset_left = 872.0
 offset_top = 525.0
-offset_right = 970.0
+offset_right = 1002.0
 offset_bottom = 561.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1521,9 +1519,9 @@ show_percentage = false
 
 [node name="载人航天_解锁年份" type="Label" parent="航天科技" unique_id=1430763787]
 layout_mode = 0
-offset_left = 911.0
+offset_left = 872.0
 offset_top = 717.0
-offset_right = 970.0
+offset_right = 1002.0
 offset_bottom = 753.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1560,9 +1558,9 @@ show_percentage = false
 
 [node name="行星际飞行器_解锁年份" type="Label" parent="航天科技" unique_id=319447658]
 layout_mode = 0
-offset_left = 911.0
+offset_left = 872.0
 offset_top = 901.0
-offset_right = 970.0
+offset_right = 1002.0
 offset_bottom = 937.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1599,9 +1597,9 @@ show_percentage = false
 
 [node name="轨道空间站_解锁年份" type="Label" parent="航天科技" unique_id=2119035747]
 layout_mode = 0
-offset_left = 911.0
+offset_left = 872.0
 offset_top = 1085.0
-offset_right = 970.0
+offset_right = 1002.0
 offset_bottom = 1121.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")
@@ -1638,9 +1636,9 @@ show_percentage = false
 
 [node name="航天飞机_解锁年份" type="Label" parent="航天科技" unique_id=1666838822]
 layout_mode = 0
-offset_left = 911.0
+offset_left = 872.0
 offset_top = 1269.0
-offset_right = 970.0
+offset_right = 1002.0
 offset_bottom = 1305.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("5_4vumy")

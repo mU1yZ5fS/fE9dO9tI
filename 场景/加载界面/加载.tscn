@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://djov37gtg1wdr" path="res://资产/UI/复用/向上箭头选中.png" id="4_back_h"]
 [ext_resource type="Texture2D" uid="uid://cgkvinhaed2ke" path="res://资产/UI/加载/加载文本栏.png" id="5_bar"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="6_font"]
+[ext_resource type="Texture2D" uid="uid://dn5r2xt4xyu6h" path="res://资产/UI/概览/切换显示按钮背景.png" id="7_h6ymj"]
 
 [node name="加载" type="Control" unique_id=1361127058]
 layout_mode = 3
@@ -77,7 +78,10 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_font")
 theme_override_font_sizes/font_size = 20
 text = "可解锁成就存档位"
+icon = ExtResource("7_h6ymj")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="无成就存档位1" type="Button" parent="." unique_id=1585185336]
 layout_mode = 0
@@ -89,7 +93,10 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_font")
 theme_override_font_sizes/font_size = 20
 text = "无成就存档位#1"
+icon = ExtResource("7_h6ymj")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="无成就存档位2" type="Button" parent="." unique_id=1254868199]
 layout_mode = 0
@@ -101,7 +108,10 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_font")
 theme_override_font_sizes/font_size = 20
 text = "无成就存档位#2"
+icon = ExtResource("7_h6ymj")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="无成就存档位3" type="Button" parent="." unique_id=1435700591]
 layout_mode = 0
@@ -113,7 +123,10 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_font")
 theme_override_font_sizes/font_size = 20
 text = "无成就存档位#3"
+icon = ExtResource("7_h6ymj")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="无成就存档位4" type="Button" parent="." unique_id=387448069]
 layout_mode = 0
@@ -125,6 +138,9 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_font")
 theme_override_font_sizes/font_size = 20
 text = "无成就存档位#4"
+icon = ExtResource("7_h6ymj")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [connection signal="pressed" from="返回主菜单" to="." method="_on_返回主菜单_pressed"]

@@ -24,6 +24,7 @@ var _politician: PoliticianData
 @onready var _portrait_container: Control = $人像
 
 var _portrait_rect: TextureRect
+var _no_portrait_label: Label
 
 
 func _ready() -> void:
@@ -33,6 +34,15 @@ func _ready() -> void:
 	_portrait_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_portrait_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_portrait_container.add_child(_portrait_rect)
+	_no_portrait_label = Label.new()
+	_no_portrait_label.text = "无肖像"
+	_no_portrait_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_no_portrait_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_no_portrait_label.add_theme_font_size_override("font_size", 18)
+	_no_portrait_label.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4, 1))
+	_no_portrait_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_no_portrait_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_portrait_container.add_child(_no_portrait_label)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
@@ -50,14 +60,20 @@ func refresh() -> void:
 		return
 	_name_label.text = _politician.name_display
 	# 原版 Politic_Script.cs:58-61：T1..T4 = traits[0..3]；
-	# 改版口径：T1 由显式 faction 字段承载（与派系界面一致），T2..T4 用 traits_en 表。
+	# 项目字段映射：trait_personality=traits[0]、trait_alignment=traits[1]、
+	# trait_special=traits[2]、trait_background=traits[3]。
+	# 显示顺序按用户确认：T1=派系、T2=traits[3] 出身、T3=traits[1] 性格、T4=traits[2] 特殊。
 	_trait0_label.text = WorldFactory.PARTY_LABELS_ZH.get(_politician.party_index(), "未知")
-	_trait1_label.text = WorldFactory.TRAIT_LABELS_ZH.get(_politician.trait_alignment, "未知")
-	_trait2_label.text = WorldFactory.TRAIT_LABELS_ZH.get(_politician.trait_special, "未知")
+	_trait1_label.text = _politician.background_label()
+	_trait2_label.text = WorldFactory.TRAIT_LABELS_ZH.get(_politician.trait_alignment, "未知")
 	if _trait3_label:
-		_trait3_label.text = _politician.background_label()
+		_trait3_label.text = WorldFactory.TRAIT_LABELS_ZH.get(_politician.trait_special, "未知")
 	if _portrait_rect:
-		_portrait_rect.texture = _politician.portrait
+		var has_portrait := _politician.has_real_portrait()
+		_portrait_rect.visible = has_portrait
+		_portrait_rect.texture = _politician.portrait if has_portrait else null
+		if _no_portrait_label:
+			_no_portrait_label.visible = not has_portrait
 	_refresh_tooltip()
 	update_loyalty_bar(-1)
 

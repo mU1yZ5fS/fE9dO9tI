@@ -35,6 +35,9 @@ func _on_设置_pressed() -> void:
 
 
 func _on_退出_pressed() -> void:
-	#退出游戏
+	# ESC 菜单的“退出”回到主菜单，不是退出游戏
 	get_tree().paused = false
-	get_tree().quit()
+	if GameManager:
+		GameManager.reset_map_runtime_state()
+	get_tree().change_scene_to_file("uid://bydan4iqthbaa")
+	音频总管.play_button_click_sound()

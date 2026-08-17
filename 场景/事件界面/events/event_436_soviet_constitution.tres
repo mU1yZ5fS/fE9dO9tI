@@ -11,6 +11,12 @@ script = ExtResource("3_expr")
 type = 12
 key = "1977.10.1"
 
+[sub_resource type="Resource" id="Fx0_comms"]
+script = ExtResource("2_fx")
+type = 0
+key = "communications"
+value = 5.0
+
 [sub_resource type="Resource" id="Fx0"]
 script = ExtResource("2_fx")
 type = 18
@@ -19,8 +25,14 @@ custom_script = ExtResource("5_custom")
 [sub_resource type="Resource" id="Opt0"]
 script = ExtResource("1_opt")
 text = "不错，我们也可以学学这《1977年宪法》"
-effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0_comms"), SubResource("Fx0")])
 result_text = "（结果由 event_436_soviet_constitution.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1_comms"]
+script = ExtResource("2_fx")
+type = 0
+key = "communications"
+value = -5.0
 
 [sub_resource type="Resource" id="Fx1"]
 script = ExtResource("2_fx")
@@ -30,7 +42,7 @@ custom_script = ExtResource("5_custom")
 [sub_resource type="Resource" id="Opt1"]
 script = ExtResource("1_opt")
 text = "批判这篇投降消费主义的“新”宪法"
-effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1_comms"), SubResource("Fx1")])
 result_text = "（结果由 event_436_soviet_constitution.gd 动态生成）"
 
 [sub_resource type="Resource" id="Fx2"]

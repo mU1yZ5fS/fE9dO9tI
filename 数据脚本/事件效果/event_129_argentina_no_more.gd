@@ -65,12 +65,38 @@ func _add_power(empire_index: int, delta: int) -> void:
 		ws.empires[empire_index].power += delta
 
 
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
+func _d(index: int) -> int:
+	if d.size() > index:
+		return d[index]
+	return 0
+
+
+## Country.WantToLeave() 逐行移植（GameState.cs:7370-7394）。
+## 原版 Event129 结局调 WantToLeave，不是 LeaveAlliances——不能把亲中/对华贸易一锅清掉。
+func _want_to_leave(c: CountryData) -> void:
+	if c == null:
+		return
+	var flag := true
+	var sub := c.sub_government
+	if sub == 0:
+		if _d(W.I_IDEOLOGY) > 2 or _d(W.I_ECON_SYSTEM) >= 13 or _d(W.I_DIPLO) < 700 or _d(W.I_PARTY_SYSTEM) >= 8:
+			flag = false
+	elif (sub >= 1 and sub <= 3) or sub == 8 or sub == 17:
+		if _d(W.I_IDEOLOGY) > 3 or _d(W.I_ECON_SYSTEM) > 13 or _d(W.I_DIPLO) < 500:
+			flag = false
+	elif sub >= 4 and sub <= 6:
+		var china := ws.get_country_by_legacy_index(1)
+		if _d(W.I_IDEOLOGY) < 2 or _d(W.I_ECON_SYSTEM) < 13 or _d(W.I_DIPLO) > 700 or _d(W.I_PARTY_SYSTEM) < 8 or _d(W.I_PRESS_POLICY) < 18 or (china != null and china.has_tag("ovd")):
+			flag = false
+	elif sub >= 7:
+		var china2 := ws.get_country_by_legacy_index(1)
+		if _d(W.I_IDEOLOGY) == 1 or _d(W.I_ECON_SYSTEM) <= 11 or _d(W.I_DIPLO) < 300 or (china2 != null and china2.has_tag("sev")):
+			flag = false
+	if c.has_tag("亲中"):
+		c.set_tag("对华贸易", flag)
+		c.set_tag("亲中", flag)
+		if c.has_tag("亲美"):
+			c.set_tag("亲美", not flag)
 
 
 func _proprc_suffix(c: CountryData) -> String:
@@ -224,7 +250,7 @@ func execute(context: Dictionary) -> void:
 				argentina.set_tag("亲中", false)
 	argentina.government = 3
 	argentina.sub_government = winner
-	_leave_alliances(argentina)
+	_want_to_leave(argentina)
 	argentina.next_election_year = 1989
 	argentina.next_election_month = 7
 	argentina.next_election_day = 8
@@ -233,23 +259,23 @@ func execute(context: Dictionary) -> void:
 		argentina.level_of_development -= 5
 		_add_power(EmpireData.USA, -5)
 		_add_power(EmpireData.USSR, -5)
-		context["result_text"] = TXT_R4 + _proprc_suffix(argentina)
+		context["result_text"] = TXT_R4 + " <color=red>" + _proprc_suffix(argentina) + "</color>"
 	elif winner == 5:
 		argentina.level_of_instability -= 15
 		_add_power(EmpireData.USA, -15)
 		_add_power(EmpireData.USSR, -5)
-		context["result_text"] = TXT_R5 + _proprc_suffix(argentina)
+		context["result_text"] = TXT_R5 + " <color=red>" + _proprc_suffix(argentina) + "</color>"
 	elif winner == 3:
 		argentina.level_of_instability -= 5
 		argentina.level_of_development += 10
 		_add_power(EmpireData.USA, -10)
 		argentina.set_tag("亲美", false)
-		context["result_text"] = TXT_R3 + _proprc_suffix(argentina)
+		context["result_text"] = TXT_R3 + " <color=red>" + _proprc_suffix(argentina) + "</color>"
 	elif winner == 1:
 		argentina.level_of_instability -= 10
 		argentina.level_of_development += 5
 		_add_power(EmpireData.USA, -15)
 		_add_power(EmpireData.USSR, 5)
 		argentina.set_tag("亲美", false)
-		context["result_text"] = TXT_R1 + _proprc_suffix(argentina)
+		context["result_text"] = TXT_R1 + " <color=red>" + _proprc_suffix(argentina) + "</color>"
 

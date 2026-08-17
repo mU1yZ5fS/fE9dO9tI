@@ -65,7 +65,7 @@ children = Array[ExtResource("3_expr")]([SubResource("Expr_course_4"), SubResour
 [sub_resource type="Resource" id="Expr_keep"]
 script = ExtResource("3_expr")
 type = 19
-children = Array[ExtResource("3_expr")]([SubResource("Expr_keep_normal"), SubResource("Expr_both_others_disabled")])
+children = Array[ExtResource("3_expr")]([SubResource("Expr_course_not_4"), SubResource("Expr_reform_disabled")])
 
 [sub_resource type="Resource" id="Expr_plan"]
 script = ExtResource("3_expr")

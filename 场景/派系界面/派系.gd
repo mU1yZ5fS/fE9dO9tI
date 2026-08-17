@@ -423,6 +423,8 @@ func _refresh() -> void:
 	_label("中共党内派系", " 中 共 党 内 派 系" if not multi else " 人 大 党 派 组 织")
 	# 顶部按钮可用态：选举=多党制 且 本月尚未选举（原版 is_elect 月块复位）；
 	# 同盟按事件自动触发条件；演讲一次性（原版 is_speech 永不复位）。
+	# 演讲按钮在 派系.tscn 中 visible=false：开局 speech_done=true 且永不复位，
+	# 该入口原版即永久锁定，项目选择直接隐藏；此处仍维护 disabled 兜底。
 	var elect_btn := _find("选举") as Button
 	if elect_btn:
 		elect_btn.disabled = (not multi) or w.get_flag("manual_election_used") or GameManager.current_event_id != ""

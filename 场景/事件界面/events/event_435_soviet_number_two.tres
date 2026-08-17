@@ -41,6 +41,12 @@ enable_condition = SubResource("Expr_opt0_enable")
 effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
 result_text = "（结果由 event_435_soviet_number_two.gd 动态生成）"
 
+[sub_resource type="Resource" id="Fx1_comms"]
+script = ExtResource("2_fx")
+type = 0
+key = "communications"
+value = 5.0
+
 [sub_resource type="Resource" id="Fx1"]
 script = ExtResource("2_fx")
 type = 18
@@ -49,7 +55,7 @@ custom_script = ExtResource("5_custom")
 [sub_resource type="Resource" id="Opt1"]
 script = ExtResource("1_opt")
 text = "发表批判波德戈尔内的大字报"
-effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1_comms"), SubResource("Fx1")])
 result_text = "（结果由 event_435_soviet_number_two.gd 动态生成）"
 
 [sub_resource type="Resource" id="Fx2"]

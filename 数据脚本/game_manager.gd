@@ -60,8 +60,11 @@ var event_is_timeout: bool = false
 var current_ending_id: int = -1
 var _pending_event_ending_id: int = -1
 
-# 速度 → tick 间隔（秒）
-const TICK_INTERVALS: Array[float] = [0.0, 0.2, 0.1, 0.05, 0.03]
+# 速度 → tick 间隔（秒），对齐原版 TimeScript.Update / Diplomacy.unity Speed 按钮：
+#   now_time += speed*delta，now_time>=8 时推进 1 天 → 1 天 = 8/speed 秒。
+#   原版 speed：默认 4（2 秒/天），Speed(0)=16（0.5 秒/天），Speed(1)=24（1/3 秒/天），Speed(2)=32（0.25 秒/天）。
+#   Godot 档位 1-4 依次映射 4/16/24/32；最高档 0.25 秒/天，事件通知 13 天缓冲 ≈ 3.25 秒真实时间。
+const TICK_INTERVALS: Array[float] = [0.0, 2.0, 0.5, 1.0 / 3.0, 0.25]
 var _tick_timer: float = 0.0
 
 var _tech_effects: Dictionary = {}
@@ -76,6 +79,9 @@ var cached_map_regions: Dictionary = {}
 var cached_map_countries: Dictionary = {}
 var cached_region_owner: Dictionary = {}
 var cached_initial_owner: Dictionary = {}
+
+## 地图数据尚未预加载完成时，事件/外交请求的领土转移先挂在这里，等预加载完成后补执行。
+var _pending_map_owner_changes: Array = []
 
 var cached_region_map_image: Image = null
 var cached_owner_palette_image: Image = null
@@ -207,6 +213,9 @@ func _on_region_map_preloaded(
 	cached_owner_palette_tex = ImageTexture.create_from_image(cached_owner_palette_image)
 	cached_color_palette_tex = ImageTexture.create_from_image(cached_color_palette_image)
 
+	# 预加载前排队的地图归属变更（如提前触发的事件）在此补执行。
+	_flush_pending_map_owner_changes()
+
 	is_map_data_preloaded = true
 	map_data_preloaded.emit()
 	print("GameManager: 地图底图、数据加载及纹理分配全部完成")
@@ -216,6 +225,10 @@ func _on_region_map_preloaded_failed() -> void:
 	if _map_preload_thread != null:
 		_map_preload_thread.wait_to_finish()
 		_map_preload_thread = null
+	# 地图数据不可用：排队的领土变更无法落地，直接丢弃并记录，避免永远悬挂。
+	if not _pending_map_owner_changes.is_empty():
+		push_warning("GameManager: 地图预加载失败，丢弃 %d 条待补领土变更" % _pending_map_owner_changes.size())
+		_pending_map_owner_changes.clear()
 	is_map_data_preloaded = true
 	map_data_preloaded.emit()
 
@@ -242,6 +255,75 @@ func reset_map_runtime_state() -> void:
 			if cached_owner_palette_tex:
 				cached_owner_palette_tex.update(cached_owner_palette_image)
 		print("GameManager: 地图归属运行时状态与调色板已重置")
+
+
+## 事件/外交领土变更后同步地图归属缓存（预留 API：本期尚无调用方，后续领土转移事件接入）。
+## 世界地图渲染每次进入场景时从 cached_region_owner 复制，因此改这里即可让下次渲染生效。
+## 若外交场景常驻，可直接调用世界地图渲染节点的 transfer_* 方法；此处提供全局缓存入口。
+func transfer_map_owner(from_gwcode: int, to_gwcode: int) -> void:
+	if from_gwcode <= 0 or to_gwcode <= 0:
+		return
+	if cached_region_owner.is_empty():
+		_pending_map_owner_changes.append({"kind": "transfer", "from": from_gwcode, "to": to_gwcode})
+		return
+	for r_id in cached_region_owner:
+		if cached_region_owner[r_id] == from_gwcode:
+			cached_region_owner[r_id] = to_gwcode
+	_update_cached_owner_palette()
+	notify_stats_changed()
+
+
+func set_map_region_owner(region_ids: Array, to_gwcode: int) -> void:
+	if to_gwcode <= 0:
+		return
+	if cached_region_owner.is_empty():
+		_pending_map_owner_changes.append({"kind": "regions", "ids": region_ids.duplicate(), "to": to_gwcode})
+		return
+	for raw in region_ids:
+		var r_id := int(raw)
+		if cached_region_owner.has(r_id):
+			cached_region_owner[r_id] = to_gwcode
+	_update_cached_owner_palette()
+	notify_stats_changed()
+
+
+## 地图预加载完成时补执行之前排队的领土转移。
+func _flush_pending_map_owner_changes() -> void:
+	if _pending_map_owner_changes.is_empty():
+		return
+	var pending := _pending_map_owner_changes.duplicate()
+	_pending_map_owner_changes.clear()
+	for entry in pending:
+		if not entry is Dictionary:
+			continue
+		var kind := String(entry.get("kind", ""))
+		if kind == "transfer":
+			var from_gw := int(entry.get("from", 0))
+			var to_gw := int(entry.get("to", 0))
+			for r_id in cached_region_owner:
+				if cached_region_owner[r_id] == from_gw:
+					cached_region_owner[r_id] = to_gw
+		elif kind == "regions":
+			var ids: Array = entry.get("ids", [])
+			var to_gw := int(entry.get("to", 0))
+			for raw in ids:
+				var r_id := int(raw)
+				if cached_region_owner.has(r_id):
+					cached_region_owner[r_id] = to_gw
+	_update_cached_owner_palette()
+
+
+func _update_cached_owner_palette() -> void:
+	if cached_owner_palette_image == null:
+		return
+	cached_owner_palette_image.fill(Color.BLACK)
+	for r_id in cached_region_owner:
+		var val: int = cached_region_owner[r_id]
+		var col := Color8((val >> 16) & 0xFF, (val >> 8) & 0xFF, val & 0xFF)
+		if r_id > 0:
+			cached_owner_palette_image.set_pixel(r_id & 0xFF, (r_id >> 8) & 0xFF, col)
+	if cached_owner_palette_tex:
+		cached_owner_palette_tex.update(cached_owner_palette_image)
 
 
 func _load_tech_effects() -> void:
@@ -521,29 +603,30 @@ func tick() -> void:
 	_sync_date_to_data(world)
 
 	_daily_deficit_recovery(world)
-	_daily_science_gen(world)
-	_update_displays(world.数值表)
-	# 原版日块顺序：政治路线 data[56]（1146-1226）先于体制重算（1265-1445），每日执行。
-	_update_political_line(world.数值表, world)
-	_political_system_recalc(world.数值表, world)
-	# 原版 TimeScript.cs:1452：体制重算后每日更新 leader.is_sagovor（本端口 leader.is_conspiracy）。
-	_plot_player_cause(world.数值表, world)
 
-	if world.date.month != old_month:
-		_on_month_changed()
+	# 原版日块行序：年块(743) → 联盟日块(955) → 派系领袖补位(1051) →
+	# 派系席位重算(1114) → 政治路线(1173) → 显示等级(1237) → 体制重算(1269) →
+	# 阴谋判定(1453) → 科研点(1458) → 北欧联动(1648) → 月块(1680)。
 	if world.date.year != old_year:
 		_on_year_changed()
-
-	# 原版日块：party_number 每日按 party_ideology 重算（年度 /10 在同 tick 被本重算覆盖，
-	# 与 TimeScript.Repaint 中“先 /=10、后重算”的顺序一致），随后重算政治路线。
+	_daily_rim_and_alliance_checks(world)
+	fill_vacant_faction_leaders()
 	_sync_faction_numbers_from_ideology(world.数值表, world)
 	_update_political_line(world.数值表, world)
+	_update_displays(world.数值表)
+	_political_system_recalc(world.数值表, world)
+	_plot_player_cause(world.数值表, world)
+	_check_daily_conspiracy(world.数值表)
+	_daily_science_gen(world)
+	_daily_finland_linkage(world)
+	if world.date.month != old_month:
+		_on_month_changed()
+
 	# 原版 data[19] % 7 == 0：已结盟派系 ideology 增长，并扣预算/特工。
 	if world.date.day % 7 == 0:
 		_weekly_ally_upkeep(world.数值表, world)
 
 	_check_scheduled_events()
-	_check_daily_conspiracy(world.数值表)
 
 	if current_event_id == "" and world.date.day % 14 == 0:
 		_on_fortnight()
@@ -652,6 +735,19 @@ func science_alert_active() -> bool:
 	if world == null or world.techs == null:
 		return false
 	return not world.techs.is_researching() and not world.techs.is_all_researched()
+
+
+## 顶栏「政治局缺人」提示图标判定。
+## 用户口径：中央三职（总理/军委/外交）与地方主管（京畿/华北/华西/华南/华东）
+## 任一槽为 -1 空缺时显示。
+func political_bureau_vacancy_alert_active() -> bool:
+	const SLOT_COUNT := 8  # 与 WorldState._init 的 politics_positions.resize(8) 对齐
+	if world == null:
+		return false
+	for i in mini(SLOT_COUNT, world.politics_positions.size()):
+		if world.politics_positions[i] == -1:
+			return true
+	return false
 
 
 # ── 事件 ──
@@ -1553,6 +1649,11 @@ func _notify_stats() -> void:
 	stats_changed.emit()
 
 
+## 供外交互动/事件效果在直接修改 WorldState 后广播刷新（地图渲染、国家面板等监听）。
+func notify_stats_changed() -> void:
+	_notify_stats()
+
+
 ## 每日镜像：empires 权威 → 数值表[28/29/10/2]（原版 KumihaRepaint）
 func _mirror_empires_to_data(w: WorldState) -> void:
 	if w == null or w.数值表.size() <= 29:
@@ -1579,31 +1680,945 @@ func _on_month_changed() -> void:
 	var d := w.数值表
 	# 原版 54 号事件触发就是 TimeScript.cs:10425 的 ev45 && data[16]>11，无 6 个月延迟；
 	# 早期误加的 investment_delay 等待已移除（trigger 在 event_054*.tres 里对齐）。
-	# TimeScript.cs:952-956：印度/越南外交操作的月度冷却与印度支援标记。
-	var vietnam := w.get_country_by_legacy_index(11)
-	if vietnam != null:
-		vietnam.stability = 0
-	var india := w.get_country_by_legacy_index(19)
-	if india != null:
-		india.stability = 0
-		india.prc_power = 0
-	# TimeScript.cs:913-918：伊朗与苏联特殊外交槽每季度重置。
-	if w.date.month % 3 == 0:
-		var iran := w.get_country_by_legacy_index(8)
-		if iran != null:
-			iran.stability = 0
-		var soviet_country := w.get_country_by_legacy_index(7)
-		if soviet_country != null:
-			soviet_country.development = 0
-	# 原版月块（data[19]==1）：人口增长、寡头成长、外援 dota。
-	# （体制重算与政治路线 data[56] 都在日块，见 tick。）
-	_monthly_population(d, w)
+	# TimeScript.cs:1925：中国 level_of_unstab 月块重置（原版在 data[19]==1 月块内，非每日）。
+	var china_unstab := w.get_country_by_legacy_index(1)
+	if china_unstab != null:
+		china_unstab.level_of_instability = 10
+	# 原版 926-954 的各国 stab/cw 重置属于 1 月 1 日年块，已移至 _on_year_changed。
+	# 916-954 年块维护在 _yearly_jan1_maintenance；955-1048 RIM 日块在 _daily_rim_and_alliance_checks；
+	# 本函数保留季度/半年度条件与 1689+ 月维护。
+	_monthly_rim_and_alliance_cleanup(w)
+	# 原版月块（data[19]==1）行序：1682-2565 已由 _monthly_rim_and_alliance_cleanup 及其子函数执行；
+	# 2555-2851 寡头、2852-2913 后期维护、2914-3024 政客循环、3025 非洲政变、
+	# 3026-3037 事件清空与瑞士发展、3038-3135 人口增长。
 	_monthly_oligarch(d, w)
-	_monthly_foreign_aid(d, w)
-	# 政客：调查/监视、自动支持打压、职位 power、空缺派系领袖（TimeScript ~937, ~2172）
+	_monthly_late_maintenance(d, w)
 	POL_SYS.monthly_politics(d, w)
+	_monthly_african_coups(w)
+	_monthly_post_coups(w)
+	_monthly_population(d, w)
 	WAR_SYS.monthly_war_points()
 	w.flush_economy()
+
+
+## TimeScript.cs:955-1048：革命国际/亲中联盟日块（Repaint 每日执行，非月块）。
+## 含 1000-1015 全部国家 SubGosstroy 17/0 亲中退出与 AU 退出（此前遗漏）。
+func _daily_rim_and_alliance_checks(w: WorldState) -> void:
+	var d := w.数值表
+	var china := w.get_country_by_legacy_index(1)
+
+	# 957-983：RIM（革命国际）条件退出。
+	var rim_exit := china != null and china.has_tag("rim") and (
+		w.is_socialism(china, false)
+		or not _mod_active(w, 3)
+		or not _mod_active(w, 6)
+		or d[W.I_PARTY_SYSTEM] > 7
+		or d[W.I_ECON_SYSTEM] > 12
+		or d[W.I_RELIGION] > 25
+		or _country_tag(w, 51, "对华贸易")
+		or _country_dev_is(w, 51, 1)
+		or china.has_tag("seato")
+		or ((china.has_tag("sev") or china.has_tag("ovd")) and not w.event_done_num(380))
+	)
+	if rim_exit:
+		china.set_tag("rim", false)
+		w.influence_prc -= 3000
+		w.set_event_done_num(686, false)
+		for c in w.countries:
+			if c == null:
+				continue
+			if c.has_tag("rim") and c.puppet_of != 1:
+				c.set_tag("亲中", false)
+				c.set_tag("对华贸易", false)
+				c.set_tag("econ", false)
+				c.set_tag("okb", false)
+			elif c.puppet_of == 1:
+				c.set_tag("rim", false)
+
+	# 984-1000：事件713后革命国际扩张/清理。
+	if w.event_done_num(713):
+		for c in w.countries:
+			if c == null:
+				continue
+			if (c.sub_government == 17 or c.sub_government == 2) and c.原版序号 != 1 \
+					and c.puppet_of != 1 and not c.has_tag("亲苏") and not c.has_tag("亲美") \
+					and not c.has_tag("sev") and not c.has_tag("ovd") and not c.has_tag("rim"):
+				c.set_tag("亲中", false)
+				c.set_tag("对华贸易", false)
+				c.set_tag("econ", false)
+				c.set_tag("okb", false)
+				c.set_tag("rim", true)
+			elif c.原版序号 == 1 or c.puppet_of == 1:
+				c.set_tag("rim", false)
+
+	# 993-999：阿尔巴尼亚(20)亲中条件退出（cond_full 含 data[52]>36）。
+	var cond_soft := d[W.I_IDEOLOGY] > 3 or d[W.I_PARTY_SYSTEM] > 7 \
+		or d[W.I_ECON_SYSTEM] > 13 or d[W.I_RELIGION] > 28 \
+		or (china != null and china.has_tag("seato"))
+	var cond_full := cond_soft or d[W.I_ECON_DISPLAY] > 36
+	var albania := w.get_country_by_legacy_index(20)
+	if albania != null and d[W.I_ALBANIA_BREAK] == 0 and albania.has_tag("亲中") and cond_full:
+		albania.set_tag("亲中", false)
+		albania.set_tag("对华贸易", false)
+		albania.set_tag("econ", false)
+		albania.set_tag("okb", false)
+
+	# 1000-1015：全部国家——sub==17 用 cond_soft、sub==0 用 cond_full 退亲中；
+	# AU 国家在更宽条件下退出亲中/对华贸易/econ/okb 并扣影响力。
+	# 注：原版 TimeScript.cs:1014 循环体内还有一句 num10++（与 for 头叠加，实际只处理偶数序号），
+	# 判定为反编译噪音/原版笔误，本项目按“遍历全部国家”执行。
+	var cond_au := cond_soft or _country_tag(w, 51, "对华贸易") \
+		or _country_dev_is(w, 51, 1) or not _mod_active(w, 6)
+	for c in w.countries:
+		if c == null:
+			continue
+		if c.原版序号 != 1 and c.has_tag("亲中"):
+			if c.sub_government == 17 and cond_soft:
+				c.set_tag("亲中", false)
+			elif c.sub_government == 0 and cond_full:
+				c.set_tag("亲中", false)
+		if c.has_tag("au") and w.event_done_num(500) and cond_au \
+				and (c.has_tag("亲中") or c.has_tag("对华贸易") or c.has_tag("econ")):
+			c.set_tag("亲中", false)
+			c.set_tag("对华贸易", false)
+			c.set_tag("econ", false)
+			c.set_tag("okb", false)
+			w.influence_prc -= 50
+
+	# 1016-1019：菲律宾(24)亲中条件退出。
+	var c24 := w.get_country_by_legacy_index(24)
+	if c24 != null and c24.parts.size() > 0 and c24.parts[0] \
+			and c24.government == 1 and c24.has_tag("亲中") and cond_full:
+		c24.set_tag("亲中", false)
+
+	# 1020-1023：阿尔巴尼亚 econ/okb 残留清理。
+	if albania != null and d[W.I_ALBANIA_BREAK] == 0 and not albania.has_tag("亲中") \
+			and (albania.has_tag("econ") or albania.has_tag("okb")):
+		albania.set_tag("econ", false)
+		albania.set_tag("okb", false)
+
+	# 1025：ExportValue 每日重算（原版日块；完整 400 行版见 Phase 2，当前用核心版）。
+	_recalc_export_value(d, w)
+
+	# 1026-1029：多党制下 data[125]==4 的选举余波清空。
+	if d[W.I_PARTY_SYSTEM] > 7 and d.size() > 125 and d[125] == 4:
+		d[125] = 0
+
+	# 1028-1039：菲律宾(47)影响力达标时转亲中并触发事件441。
+	if d[37] >= 1000:
+		var c47 := w.get_country_by_legacy_index(47)
+		if c47 != null and not c47.has_tag("亲中") and not w.event_done_num(441):
+			c47.set_tag("亲中", true)
+			c47.government = 1
+			c47.set_tag("asean", false)
+			c47.sub_government = 17
+			c47.set_tag("亲美", false)
+			GameManager.start_event("event_441")
+
+	# 1040：非洲亲中支援（AfricanBotSupport 方法体 6200-6231，调用点是日块）。
+	_african_bot_support(d, w)
+
+	# 1040-1043：美国关系<=500 时取消对华贸易。
+	if w.empires.size() > 0 and w.empires[0] != null \
+			and w.empires[0].relations <= 500 and _country_tag(w, 51, "对华贸易"):
+		var usa51 := w.get_country_by_legacy_index(51)
+		if usa51 != null:
+			usa51.set_tag("对华贸易", false)
+
+	# 1045-1048：苏联关系<=500 时清除 relres 标志。
+	if w.empires.size() > 1 and w.empires[1] != null \
+			and w.empires[1].relations <= 500 and w.get_flag("relres"):
+		w.set_flag("relres", false)
+
+
+## TimeScript.cs:1648-1679：瑞典(28)/丹麦(90)/挪威(91) econ+okb 且事件686 时，
+## 芬兰(26) 脱离亲苏阵营转亲中（Repaint 日块，非月块）。
+func _daily_finland_linkage(w: WorldState) -> void:
+	var sweden := w.get_country_by_legacy_index(28)
+	var denmark := w.get_country_by_legacy_index(90)
+	var norway := w.get_country_by_legacy_index(91)
+	var finland := w.get_country_by_legacy_index(26)
+	if sweden != null and sweden.has_tag("econ") and sweden.has_tag("okb") \
+			and denmark != null and denmark.has_tag("econ") and denmark.has_tag("okb") \
+			and norway != null and norway.has_tag("econ") and norway.has_tag("okb") \
+			and finland != null and not finland.has_tag("okb") and w.event_done_num(686):
+		finland.set_tag("亲苏", false)
+		finland.set_tag("sev", false)
+		finland.set_tag("亲中", true)
+		finland.set_tag("对华贸易", true)
+		finland.set_tag("econ", true)
+		finland.set_tag("okb", true)
+		w.influence_prc += 50
+		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+			w.empires[EmpireData.USSR].relations -= 200
+			w.empires[EmpireData.USSR].power -= 50
+		var china_fin := w.get_country_by_legacy_index(1)
+		if china_fin != null and w.is_socialism(china_fin, true):
+			finland.government = 1
+			finland.sub_government = 1
+		elif china_fin != null and china_fin.government == 2:
+			finland.government = 2
+			finland.sub_government = 15
+		elif china_fin != null and china_fin.government == 3:
+			finland.government = 3
+			finland.sub_government = 5
+		else:
+			finland.government = 0
+			finland.sub_government = 20
+
+
+## TimeScript.cs:1490-1634 / 1636-1648 / 1689-2089：季度、半年度与月维护。
+## 注：916-954（政变/stab/war_active 重置）是 1 月 1 日年块，已移 _yearly_jan1_maintenance；
+## 955-1048 是日块，已移 _daily_rim_and_alliance_checks；1648-1679 北欧联动也是日块。
+func _monthly_rim_and_alliance_cleanup(w: WorldState) -> void:
+	var d := w.数值表
+	var china := w.get_country_by_legacy_index(1)
+
+	# 1490-1634：每季度 1 日维护（data[19]==1 && data[20]%3==0）。
+	if w.date.day == 1 and w.date.month % 3 == 0:
+		if w.event_done_num(36) and w.result_of_event_num(36) == 2:
+			var iraq_q := w.get_country_by_legacy_index(14)
+			if iraq_q != null:
+				iraq_q.stab = 0
+		for legacy_idx in [8, 24]:
+			var c_q := w.get_country_by_legacy_index(legacy_idx)
+			if c_q != null:
+				c_q.stab = 0
+		var ussr_q := w.get_country_by_legacy_index(7)
+		if ussr_q != null:
+			ussr_q.development = 0
+		for legacy_idx in [118, 112]:
+			var c_cw := w.get_country_by_legacy_index(legacy_idx)
+			if c_cw != null:
+				c_cw.内战中 = false
+		for legacy_idx in [139, 123]:
+			var c_based := w.get_country_by_legacy_index(legacy_idx)
+			if c_based != null:
+				c_based.有驻军基地 = false
+		# 事件677/678 未完成且国家29/166未分立时，按结果给 data[162..165] 各最多+1。
+		var c29 := w.get_country_by_legacy_index(29)
+		var c166 := w.get_country_by_legacy_index(166)
+		if w.event_done_num(677) and not w.event_done_num(678) \
+				and (c29 == null or c29.parts.size() == 0 or not c29.parts[0]) \
+				and (c166 == null or c166.parts.size() == 0 or not c166.parts[0]):
+			var r677 := w.result_of_event_num(677)
+			var inc_slots: Array[int] = []
+			match r677:
+				0: inc_slots = [163, 164, 165]
+				1: inc_slots = [162, 164, 165]
+				2: inc_slots = [162, 163, 165]
+				3: inc_slots = [162, 163, 164]
+				4: inc_slots = [162, 163, 164, 165]
+			for slot in inc_slots:
+				if slot < d.size() and d[slot] <= 100:
+					d[slot] += 1
+
+	# 1636-1648：每半年 1 日维护（data[19]==1 && data[20]%6==0）。
+	# 原版机制：6 月 1 日 / 12 月 1 日清除 126/149/147/66 的内战冷却标记，
+	# 因此“桑解阵(1043)”5 月按一次后，6 月 1 日冷却清空、6 月可再按。
+	if w.date.day == 1 and w.date.month % 6 == 0:
+		for legacy_idx in [126, 149, 147, 66]:
+			var c_h := w.get_country_by_legacy_index(legacy_idx)
+			if c_h != null:
+				if legacy_idx == 147 and c_h.内战中:
+					print("GameManager: 半年冷却重置 147 尼加拉瓜（桑解阵按钮可再按）")
+				c_h.内战中 = false
+		for legacy_idx in [60, 85]:
+			var c_hb := w.get_country_by_legacy_index(legacy_idx)
+			if c_hb != null:
+				c_hb.有驻军基地 = false
+		w.set_event_done_num(671, false)
+
+	# 1644-1647：年度抽出的两个“坏事件清空月”复位 bad_done（原版字段未建，用 flag）。
+	if w.date.day == 1 and d.size() > 121 \
+			and (w.date.month == d[119] or w.date.month == d[121]):
+		w.set_flag("bad_done", false)
+
+	# 1689-1740：月维护计时器与决议清理。
+	if d.size() > 44 and d[44] > 0:
+		d[44] -= 1
+	if w.event_done_num(36) and w.result_of_event_num(36) == 3 and w.date.month % 2 == 0:
+		var iraq_36 := w.get_country_by_legacy_index(14)
+		if iraq_36 != null:
+			iraq_36.stab = 0
+	# 1716-1760：决议计数器递减与对应决议清除。
+	if w.planned_price_reduction > 0:
+		w.planned_price_reduction -= 1
+	if w.austerity > 0:
+		w.austerity -= 1
+	if w.developed_consumerism > 0:
+		w.developed_consumerism -= 1
+	if w.new_era_commune_member > 0:
+		w.new_era_commune_member -= 1
+	if w.party_means_party > 0:
+		w.party_means_party -= 1
+	if w.party_subsidy > 0:
+		w.party_subsidy -= 1
+	if w.arms_purchase_agreement > 0:
+		w.arms_purchase_agreement -= 1
+	if w.pmc > 0:
+		w.pmc -= 1
+	var counter_decisions := [
+		[w.planned_price_reduction, 41],
+		[w.austerity, 42],
+		[w.developed_consumerism, 43],
+		[w.new_era_commune_member, 44],
+		[w.party_means_party, 45],
+		[w.party_subsidy, 46],
+		[w.arms_purchase_agreement, 47],
+		[w.pmc, 48],
+	]
+	for pair in counter_decisions:
+		var counter_val: int = pair[0]
+		var decision_idx: int = pair[1]
+		if counter_val <= 0 and w.decisions != null \
+				and w.decisions.completed.size() > decision_idx \
+				and w.decisions.completed[decision_idx]:
+			w.decisions.completed[decision_idx] = false
+	for decision_idx in [49, 50, 51, 52]:
+		if w.decisions != null and w.decisions.completed.size() > decision_idx:
+			w.decisions.completed[decision_idx] = false
+
+	# 1940-1976：月度递减/清零。
+	for slot in [167, 183, 144, 145, 142, 150, 151]:
+		if slot < d.size() and d[slot] > 0:
+			d[slot] -= 1
+	# 原版 TimeScript.cs:1896-1898 仅当 data[168] > 0 时清零。
+	if d.size() > 168 and d[168] > 0:
+		d[168] = 0
+	if china != null and china.has_tag("ovd") and china.has_tag("seato"):
+		if d.size() > 142:
+			d[141] = 0
+			d[142] = 0
+
+	# 1980-1995：帝国资金换油价冷却。
+	if w.empires.size() > 1 and w.empires[1] != null \
+			and w.empires[1].money >= 200 and (d.size() <= 150 or d[150] <= 0) \
+			and w.empires[1].power - 200 >= (w.empires[0].power if w.empires.size() > 0 else 0) \
+			and w.empires[1].power - 200 >= w.influence_prc and d[143] < 50:
+		w.empires[1].money -= 200
+		d[143] += 1
+		d[150] = 6
+	if w.empires.size() > 0 and w.empires[0] != null \
+			and w.empires[0].money >= 200 and (d.size() <= 151 or d[151] <= 0) \
+			and w.empires[0].power - 200 >= (w.empires[1].power if w.empires.size() > 1 else 0) \
+			and w.empires[0].power - 200 >= w.influence_prc and d[143] > 10:
+		w.empires[0].money -= 200
+		d[143] -= 1
+		d[151] = 6
+
+	# 2005-2070：国家36/123 与海湾 101-105 的影响衰减与亲中判定。
+	for legacy_idx in [36, 123]:
+		var c_infl := w.get_country_by_legacy_index(legacy_idx)
+		if c_infl == null:
+			continue
+		if c_infl.sov_influence > 0:
+			c_infl.sov_influence -= 1
+		if c_infl.usa_influence > 0:
+			c_infl.usa_influence -= 1
+		if c_infl.prc_influence > 0:
+			c_infl.prc_influence -= 1
+	for legacy_idx in range(101, 106):
+		if legacy_idx == 104:
+			continue
+		var c_gulf := w.get_country_by_legacy_index(legacy_idx)
+		if c_gulf == null:
+			continue
+		if c_gulf.sov_influence > 0:
+			c_gulf.sov_influence -= 1
+		if c_gulf.usa_influence > 0:
+			c_gulf.usa_influence -= 1
+		if c_gulf.prc_influence > 0:
+			c_gulf.prc_influence -= 1
+		if c_gulf.influence_china >= 1000 and not c_gulf.has_tag("亲中") \
+				and not w.event_done_num(568) and c_gulf.puppet_of < 0:
+			c_gulf.set_tag("亲中", true)
+	var c36 := w.get_country_by_legacy_index(36)
+	if c36 != null and c36.influence_china >= 1000 and not c36.has_tag("亲中") \
+			and not w.event_done_num(568) and c36.puppet_of < 0:
+		c36.set_tag("亲中", true)
+
+	# 2071-2090：desnull 递减与对应决议清除。
+	for desnull_idx in w.desnull.size():
+		if w.desnull[desnull_idx] > 0:
+			w.desnull[desnull_idx] -= 1
+		if desnull_idx in [24, 25, 26, 27, 28, 29, 30, 31, 32, 34] \
+				and w.desnull[desnull_idx] <= 0 \
+				and w.decisions != null and w.decisions.completed.size() > desnull_idx \
+				and w.decisions.completed[desnull_idx]:
+			w.decisions.completed[desnull_idx] = false
+	var kenya_infl := w.get_country_by_legacy_index(36)
+	if kenya_infl != null and kenya_infl.influence_nato > 0:
+		kenya_infl.influence_nato -= 1
+
+	# 1770-1881 事件686 月块（本项目先移植其中的芬兰 based 分支）。
+	_monthly_finland_linkage(w)
+	# 1898-1917：乌干达事件659/661 月块推进与开战。
+	_monthly_uganda_linkage(w, d)
+	# 2090-2300：事件418 中东影响力争夺。
+	_monthly_event418_mideast(w)
+	# 2299-2565：外援消耗、英法西葡政体、被美苏逐出联盟等月块维护。
+	_monthly_ejection_and_misc(w, d)
+
+
+## TimeScript.cs:2090-2300：事件418 中东影响力争夺（月块）。
+## 美苏各自用 money 拉拢中东六国与海湾/肯尼亚，降低中国影响力；中国按亲中/经济合作反向支持。
+func _monthly_event418_mideast(w: WorldState) -> void:
+	if not w.event_done_num(418):
+		return
+	var usa := w.empires[0] if w.empires.size() > 0 else null
+	var ussr := w.empires[1] if w.empires.size() > 1 else null
+	var middle_six := [14, 8, 30, 37, 35, 40]
+	var kenya := w.get_country_by_legacy_index(36)
+
+	var num59 := 0
+	if usa != null and usa.money >= 250:
+		for legacy_idx in middle_six:
+			var c_usa := w.get_country_by_legacy_index(legacy_idx)
+			if c_usa != null and c_usa.has_tag("亲美"):
+				num59 += 5
+		if kenya != null:
+			if kenya.has_tag("亲中"):
+				if usa.money >= 300:
+					@warning_ignore("integer_division")
+					num59 += usa.power / 25
+					kenya.influence_china -= num59
+					usa.money -= 300
+			elif kenya.influence_china > 200:
+				@warning_ignore("integer_division")
+				num59 += usa.power / 15
+				kenya.influence_china -= num59
+				usa.money -= 250
+		for legacy_idx in range(101, 106):
+			var c_gulf := w.get_country_by_legacy_index(legacy_idx)
+			if c_gulf == null:
+				continue
+			if c_gulf.has_tag("亲中"):
+				if usa.money >= 300:
+					@warning_ignore("integer_division")
+					num59 += usa.power / 25
+					c_gulf.influence_china -= num59
+					usa.money -= 300
+			elif c_gulf.influence_china > 200:
+				@warning_ignore("integer_division")
+				num59 += usa.power / 15
+				c_gulf.influence_china -= num59
+				usa.money -= 250
+
+	var num60 := 0
+	if ussr != null and ussr.money >= 250:
+		for legacy_idx in middle_six:
+			var c_ussr := w.get_country_by_legacy_index(legacy_idx)
+			if c_ussr != null and c_ussr.has_tag("亲苏"):
+				num60 += 5
+		if kenya != null:
+			if kenya.has_tag("亲中"):
+				if ussr.money >= 300:
+					@warning_ignore("integer_division")
+					num60 += ussr.power / 25
+					kenya.influence_china -= num60
+					ussr.money -= 300
+			elif kenya.influence_china > 200:
+				@warning_ignore("integer_division")
+				num60 += ussr.power / 15
+				kenya.influence_china -= num60
+				ussr.money -= 250
+		for legacy_idx in range(101, 106):
+			var c_gulf := w.get_country_by_legacy_index(legacy_idx)
+			if c_gulf == null:
+				continue
+			if c_gulf.has_tag("亲中"):
+				if ussr.money >= 300:
+					@warning_ignore("integer_division")
+					num60 += ussr.power / 25
+					c_gulf.influence_china -= num60
+					ussr.money -= 300
+			elif c_gulf.influence_china > 200:
+				@warning_ignore("integer_division")
+				num60 += ussr.power / 15
+				c_gulf.influence_china -= num60
+				ussr.money -= 250
+
+	var num61 := 0
+	for legacy_idx in middle_six:
+		var c_prc := w.get_country_by_legacy_index(legacy_idx)
+		if c_prc == null:
+			continue
+		if c_prc.has_tag("亲中"):
+			num61 += 15
+		if c_prc.has_tag("econ"):
+			num61 += 5
+	for legacy_idx in range(101, 106):
+		var c_gulf := w.get_country_by_legacy_index(legacy_idx)
+		if c_gulf != null:
+			c_gulf.influence_china += num61
+	if kenya != null:
+		kenya.influence_china += num61
+	for legacy_idx in range(101, 106):
+		var c_gulf := w.get_country_by_legacy_index(legacy_idx)
+		if c_gulf == null:
+			continue
+		c_gulf.influence_china = clampi(c_gulf.influence_china, 0, 1000)
+		if c_gulf.has_tag("亲中") and c_gulf.influence_china < 250:
+			c_gulf.set_tag("亲中", false)
+	if kenya != null:
+		kenya.influence_china = clampi(kenya.influence_china, 0, 1000)
+		if kenya.has_tag("亲中") and kenya.influence_china < 250:
+			kenya.set_tag("亲中", false)
+
+
+## TimeScript.cs:2299-2565：外援消耗、英法西葡政体、modifies 41/53、被美苏逐出联盟、OAR 等月块维护。
+func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
+	var china := w.get_country_by_legacy_index(1)
+
+	# 2299-2325：data[146] 外援消耗与贸易同盟国家影响。
+	if d.size() > W.I_FOREIGN_AID and d[W.I_FOREIGN_AID] > 0:
+		d[W.I_BUDGET] -= d[W.I_FOREIGN_AID]
+		d[W.I_AGENTS] -= d[W.I_FOREIGN_AID]
+		d[W.I_ARMY] -= d[W.I_FOREIGN_AID]
+		for c in w.countries:
+			if c == null or not c.has_tag("贸易同盟"):
+				continue
+			if china != null and china.has_tag("ovd"):
+				c.sov_influence -= 10
+			else:
+				c.usa_influence -= 10
+			c.prc_influence += 5
+
+	# 2326-2335：英国 spec 上限、1981.1 希腊入欧。
+	var britain := w.get_country_by_legacy_index(92)
+	if britain != null and britain.special > 1:
+		britain.special = 1
+	if w.date.year == 1981 and w.date.month == 1:
+		var greece := w.get_country_by_legacy_index(45)
+		if greece != null and greece.government == 3:
+			greece.set_tag("eu", true)
+			if w.empires.size() > 0 and w.empires[0] != null:
+				w.empires[0].power += 10
+
+	# 2336-2345：美国/苏联 spec 月度递减。
+	for legacy_idx in [51, 7]:
+		var c_spec := w.get_country_by_legacy_index(legacy_idx)
+		if c_spec != null and c_spec.special > 0:
+			c_spec.special -= 1
+
+	# 2346-2350：中国 parts[0..10] 全空 → 原版 ILoveSuckCocks() 刷新地图；
+	# 项目按惯例近似省略地图 parts 刷新（见 war_system 注释）。
+	# 2351-2355：1979.5 英国亲美路线（项目 dlc[3] 恒 false → 执行）。
+	if w.date.year == 1979 and w.date.month == 5:
+		if w.empires.size() > 0 and w.empires[0] != null:
+			w.empires[0].power += 10
+		if britain != null:
+			britain.sub_government = 12
+
+	# 2356-2361：modifies[41] 停用条件。
+	if d[W.I_DIPLO] >= 850 or (d.size() > 131 and (d[131] == 1 or d[131] == 2)):
+		w.modifiers[41].is_active = false
+	var egypt41 := w.get_country_by_legacy_index(30)
+	if egypt41 != null and not egypt41.has_tag("亲美"):
+		w.modifiers[41].is_active = false
+	var iran41 := w.get_country_by_legacy_index(8)
+	if iran41 != null and (iran41.government == 1 or iran41.sub_government == 20):
+		w.modifiers[41].is_active = false
+	if china != null and china.has_tag("sev"):
+		w.modifiers[41].is_active = false
+
+	# 2362-2377：东德(16)/西德(17) 对华贸易与 modifies[53] 停用。
+	var east_germany := w.get_country_by_legacy_index(16)
+	var west_germany := w.get_country_by_legacy_index(17)
+	if east_germany != null and east_germany.has_tag("亲苏") \
+			and (china == null or china.government != 1 or china.has_tag("asean") or not w.get_flag("relres")):
+		w.modifiers[53].is_active = false
+		east_germany.set_tag("对华贸易", false)
+	if east_germany != null and east_germany.has_tag("亲中") \
+			and (china == null or china.government != 1 or china.has_tag("asean")):
+		w.modifiers[53].is_active = false
+		east_germany.set_tag("对华贸易", false)
+	if west_germany != null and west_germany.parts.size() > 0 and west_germany.parts[0] \
+			and west_germany.government == 1 \
+			and (china == null or china.government != 1 or china.has_tag("asean")):
+		w.modifiers[53].is_active = false
+		west_germany.set_tag("对华贸易", false)
+
+	# 2378-2385：中国非 SEV 时，东欧 2..6 亲苏国取消对华贸易。
+	if china != null and not china.has_tag("sev"):
+		for legacy_idx in range(2, 7):
+			var c_ee := w.get_country_by_legacy_index(legacy_idx)
+			if c_ee != null and c_ee.has_tag("亲苏"):
+				c_ee.set_tag("对华贸易", false)
+
+	# 2386-2391：英国社会主义时巴基斯坦/伊朗退出 SENTO。
+	if britain != null and (britain.government == 1 or britain.sub_government == 3):
+		for legacy_idx in [31, 8]:
+			var c_sento := w.get_country_by_legacy_index(legacy_idx)
+			if c_sento != null:
+				c_sento.set_tag("sento", false)
+
+	# 2392-2470：data[139] 递减与被美苏逐出联盟。
+	if d.size() > 139 and d[139] > 0:
+		d[139] -= 1
+	var is_sev := china != null and china.has_tag("sev")
+	var is_asean := china != null and china.has_tag("asean")
+	var evict_pre := (d.size() > 140 and d[140] <= 0) \
+		and ((not _mod_active(w, 16) and is_sev) or (not _mod_active(w, 17) and is_asean))
+	var evict_bad := (d.size() > 140 and d[139] > 0) and (
+		(d[140] == 1 and is_sev and china.government != 3 and d[W.I_ECON_DISPLAY] != 37)
+		or (d[140] == 2 and is_asean and china.government != 1 and d[W.I_ECON_DISPLAY] != 34)
+	)
+	if (evict_pre or evict_bad) and d.size() > 139 and d[139] > 0:
+		d[139] = 0
+	var do_evict := d.size() > 139 and d[139] <= 0 and (
+		(is_sev and _mod_active(w, 16) and (d.size() <= 140 or d[140] <= 0))
+		or (is_asean and _mod_active(w, 17) and (d.size() <= 140 or d[140] <= 0))
+		or (d.size() > 140 and d[140] > 0)
+	)
+	if do_evict:
+		if is_asean:
+			if w.empires.size() > 0 and w.empires[0] != null:
+				w.empires[0].relations -= 300
+		else:
+			if w.empires.size() > 1 and w.empires[1] != null:
+				w.empires[1].relations -= 300
+			var ussr_ev := w.get_country_by_legacy_index(7)
+			if ussr_ev != null:
+				ussr_ev.set_tag("对华贸易", false)
+		if d.size() > 140:
+			d[140] = 0
+		if d.size() > 135 and d[135] > 0:
+			w.modifiers[47].is_active = true
+			d[135] = 0
+		if d.size() > 136 and d[136] > 0:
+			w.modifiers[48].is_active = true
+			d[136] = 0
+		if d.size() > 139:
+			d[139] = 0
+		var ussr_spec := w.get_country_by_legacy_index(7)
+		if ussr_spec != null:
+			ussr_spec.special = 0
+		var usa_spec := w.get_country_by_legacy_index(51)
+		if usa_spec != null:
+			usa_spec.special = 0
+		for c in w.countries:
+			if c == null or not c.has_tag("亲中"):
+				continue
+			if c.原版序号 < 2:
+				continue  # 原版 num70 从 2 起，跳过 0/1
+			if is_asean:
+				c.set_tag("asean", false)
+				c.set_tag("seato", false)
+				if w.empires.size() > 0 and w.empires[0] != null:
+					w.empires[0].power -= 5
+			else:
+				c.set_tag("ovd", false)
+				c.set_tag("sev", false)
+				if w.empires.size() > 1 and w.empires[1] != null:
+					w.empires[1].power -= 5
+		if d.size() > 137 and d[137] > 0:
+			d[137] = 0
+			for c in w.countries:
+				if c != null and c.has_tag("亲中"):
+					c.set_tag("econ", true)
+		if d.size() > 138 and d[138] > 0:
+			d[138] = 0
+			for c in w.countries:
+				if c != null and c.has_tag("亲中"):
+					c.set_tag("okb", true)
+		if china != null:
+			china.set_tag("ovd", false)
+			china.set_tag("asean", false)
+			china.set_tag("sev", false)
+			china.set_tag("seato", false)
+
+	# 2471-2475：1983.6 法国亲美路线（dlc[3] 恒 false → 执行）。
+	if w.date.year == 1983 and w.date.month == 6:
+		if w.empires.size() > 0 and w.empires[0] != null:
+			w.empires[0].power += 10
+		var france83 := w.get_country_by_legacy_index(21)
+		if france83 != null:
+			france83.sub_government = 12
+
+	# 2476-2494：苏联加入北约时按外交标记改战争阵营。
+	var ussr_nato := w.get_country_by_legacy_index(7)
+	if ussr_nato != null and ussr_nato.has_tag("nato"):
+		for i in w.wars.size():
+			var war_nato: WarData = w.wars[i]
+			if war_nato == null or not war_nato.is_going or i == 5:
+				continue
+			if war_nato.diplo_done[0]:
+				war_nato.usa_side = 1
+				war_nato.ussr_side = 1
+			elif war_nato.diplo_done[1]:
+				war_nato.usa_side = 0
+				war_nato.ussr_side = 0
+
+	# 2495-2502：1977 年后西班牙/葡萄牙自由化（dlc[3] 恒 false → 执行）。
+	if w.date.year > 1976:
+		var portugal := w.get_country_by_legacy_index(87)
+		if portugal != null:
+			portugal.sub_government = 6
+			portugal.government = 3
+		var spain := w.get_country_by_legacy_index(86)
+		if spain != null:
+			spain.sub_government = 5
+			spain.government = 3
+
+	# 2503-2509：dlc[3] 分支（项目 dlc[3] 恒 false → 跳过）。
+
+	# 2510-2550：OAR 成立后阿拉伯国家退出其它联盟。
+	if w.oar:
+		var egypt_oar := w.get_country_by_legacy_index(30)
+		if egypt_oar == null or egypt_oar.government == 1:
+			pass
+		else:
+			for legacy_idx in [14, 35, 40, 30, 13]:
+				var c_oar := w.get_country_by_legacy_index(legacy_idx)
+				if c_oar == null:
+					continue
+				if (c_oar.has_tag("okb") or c_oar.has_tag("ovd") or c_oar.has_tag("nato")) \
+						and c_oar.has_tag("oar"):
+					c_oar.set_tag("okb", false)
+					c_oar.set_tag("ovd", false)
+					c_oar.set_tag("nato", false)
+
+	# 2551-2555：1982.5 西班牙入北约。
+	if w.date.year == 1982 and w.date.month == 5:
+		var spain_nato := w.get_country_by_legacy_index(86)
+		if spain_nato != null and spain_nato.sub_government == 5:
+			spain_nato.set_tag("nato", true)
+
+	# 2556-2564：土耳其 sub==9 改名（new_events_text[784] 未建模 → 跳过）。
+	# DaysInSouthAmerica 未建模 → 跳过（项目月块不处理南美选举漂移）。
+
+
+## TimeScript.cs:1770-1881 事件686 月块中的芬兰(26)部分（1860-1890）：
+## 瑞典(28)/丹麦(90)/挪威(91) 都 based 且芬兰未 based 时，芬兰按苏联领导人转亲苏。
+## （1648-1679 三国 econ+okb 转亲中分支是日块，已移 _daily_finland_linkage。）
+## Phase 2 缺口：1772-1856 北欧 sovpower 累积/封顶/转 based 的 80 行尚未移植，
+## 目前三国“有驻军基地”主要靠外交/事件置位。
+func _monthly_finland_linkage(w: WorldState) -> void:
+	var sweden := w.get_country_by_legacy_index(28)
+	var denmark := w.get_country_by_legacy_index(90)
+	var norway := w.get_country_by_legacy_index(91)
+	var finland := w.get_country_by_legacy_index(26)
+
+	if sweden != null and sweden.有驻军基地 and denmark != null and denmark.有驻军基地 \
+			and norway != null and norway.有驻军基地 and finland != null and not finland.有驻军基地:
+		var ussr_now := w.empires[EmpireData.USSR].current_leader \
+			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null else -1
+		if ussr_now == 6:
+			finland.government = 2
+			finland.sub_government = 14
+		else:
+			finland.government = 1
+			finland.sub_government = 1
+		finland.set_tag("亲中", false)
+		finland.set_tag("亲苏", true)
+		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+			pass
+		var ussr_fin := w.get_country_by_legacy_index(7)
+		if ussr_fin != null and ussr_fin.has_tag("sev"):
+			finland.set_tag("sev", true)
+		if ussr_fin != null and ussr_fin.has_tag("ovd"):
+			finland.set_tag("ovd", true)
+		finland.有驻军基地 = true
+
+
+## TimeScript.cs:1898-1917：乌干达(118) 事件659/661 月块推进与战争 81 触发。
+func _monthly_uganda_linkage(w: WorldState, _d: Array[int]) -> void:
+	if not w.event_done_num(659) or w.event_done_num(661) or w.war_going(81):
+		return
+	var uganda := w.get_country_by_legacy_index(118)
+	if uganda == null:
+		return
+	uganda.influence_china += 15
+	uganda.prc_influence += 2
+	uganda.sov_influence -= 1
+	if uganda.influence_nato >= 1000:
+		var war81 := _war_at_ensure(w, 81)
+		if war81 != null:
+			war81.name_war = "乌 干 达 内 战"
+			war81.infl2 = 1000
+			w.数值表[W.I_WAR_RESOLVE] = 81
+			GameManager.start_event("event_661")
+	if uganda.prc_influence > 700:
+		while uganda.parts.size() <= 0:
+			uganda.parts.append(false)
+		uganda.parts[0] = true
+		GameManager.start_war(81, "阿 明 残 军", "政 府 军", 600, 400)
+	if uganda.sov_influence > 700:
+		while uganda.parts.size() <= 0:
+			uganda.parts.append(false)
+		uganda.parts[0] = true
+		GameManager.start_war(81, "布 干 达 武 装", "政 府 军", 600, 400)
+
+
+func _war_at_ensure(w: WorldState, idx: int) -> WarData:
+	while w.wars.size() <= idx:
+		w.wars.append(WarData.new())
+	return w.wars[idx]
+
+
+## TimeScript.cs:743-954：1 月 1 日年块（Repaint 内 data[19]==1 && data[20]==1）。
+## 原版这些内容只在每年 1 月 1 日执行一次，不是月块。
+func _yearly_jan1_maintenance(w: WorldState) -> void:
+	var d := w.数值表
+	var china := w.get_country_by_legacy_index(1)
+
+	# 745-754：意大利(85)发展度年增，美苏花钱换 data[160/161]。
+	var italy := w.get_country_by_legacy_index(85)
+	if italy != null:
+		italy.level_of_development += 10
+		if italy.level_of_development >= 100:
+			italy.level_of_development = 100
+	if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null \
+			and w.empires[EmpireData.USSR].money >= 200 and randi_range(0, 4) == 1:
+		w.empires[EmpireData.USSR].money -= 100
+		if d.size() > 160:
+			d[160] += 500
+	if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null \
+			and w.empires[EmpireData.USA].money >= 200 and randi_range(0, 4) == 1:
+		w.empires[EmpireData.USA].money -= 100
+		if d.size() > 161:
+			d[161] += 500
+
+	# 758-767：AnthemCooldownTime 年递减与决议39清除。
+	if w.anthem_cooldown_time > 0:
+		w.anthem_cooldown_time -= 1
+	if w.anthem_cooldown_time <= 0 and w.decisions != null \
+			and w.decisions.completed.size() > 39 and w.decisions.completed[39]:
+		w.decisions.completed[39] = false
+
+	# 768-776：中国发展度、英国/法国 special、菲律宾(24)亲中势力年重置/衰减。
+	if china != null:
+		china.development = 0
+	var britain := w.get_country_by_legacy_index(92)
+	if britain != null:
+		britain.special = 0
+	var france := w.get_country_by_legacy_index(21)
+	if france != null:
+		france.special = 0
+	var c24 := w.get_country_by_legacy_index(24)
+	if c24 != null and c24.prc_power > 0 and c24.prc_power < 100:
+		c24.prc_power -= 10
+
+	# 777-870：危地马拉(149)/尼加拉瓜(147)不稳定度年漂移。
+	var c149 := w.get_country_by_legacy_index(149)
+	if c149 != null and c149.level_of_instability > 0 and c149.level_of_instability < 1000:
+		c149.level_of_instability += 10
+		if w.is_socialism(c149, true) or c149.government == 2:
+			c149.level_of_instability -= 10
+			for idx_vyshi in [141, 140, 148, 147, 146, 144]:
+				var vc := w.get_country_by_legacy_index(idx_vyshi)
+				if vc != null and vc.has_tag("亲美"):
+					c149.level_of_instability -= 10
+		for idx_soc in [147, 148]:
+			var sc := w.get_country_by_legacy_index(idx_soc)
+			if sc != null and (w.is_socialism(sc, true) or sc.government == 2):
+				c149.level_of_instability += 25
+		for idx_pro in [138, 141]:
+			var pc := w.get_country_by_legacy_index(idx_pro)
+			if pc != null and pc.has_tag("亲中"):
+				c149.level_of_instability += 25
+	var c147 := w.get_country_by_legacy_index(147)
+	if c147 != null and c147.level_of_instability > 0 and c147.level_of_instability < 1000:
+		c147.level_of_instability += 10
+		if w.is_socialism(c147, true) or c147.government == 2:
+			c147.level_of_instability -= 10
+			for idx_vyshi in [141, 140, 148, 147, 146, 144]:
+				var vc := w.get_country_by_legacy_index(idx_vyshi)
+				if vc != null and vc.has_tag("亲美"):
+					c147.level_of_instability -= 10
+		for idx_soc in [149, 148]:
+			var sc := w.get_country_by_legacy_index(idx_soc)
+			if sc != null and (w.is_socialism(sc, true) or sc.government == 2):
+				c147.level_of_instability += 25
+		for idx_pro in [138, 141]:
+			var pc := w.get_country_by_legacy_index(idx_pro)
+			if pc != null and pc.has_tag("亲中"):
+				c147.level_of_instability += 25
+
+	# 871-886：伊拉克(14)/日本(44)/塞内加尔(112)年衰减。
+	var iraq := w.get_country_by_legacy_index(14)
+	if iraq != null and iraq.prc_power > 0 and w.event_done_num(36) \
+			and w.result_of_event_num(36) == 2 and not w.event_done_num(566):
+		iraq.prc_power -= 10
+	var japan := w.get_country_by_legacy_index(44)
+	if japan != null:
+		if japan.prc_power > 0:
+			japan.prc_power -= 10
+		if japan.prc_influence > 0:
+			japan.prc_influence -= 5
+	var senegal := w.get_country_by_legacy_index(112)
+	if senegal != null and senegal.level_of_instability > 0:
+		senegal.level_of_instability -= 100
+
+	# 887-894：葡萄牙(87)special 年增、中国对美/对华影响与中美基地标记年清。
+	var portugal := w.get_country_by_legacy_index(87)
+	if portugal != null and w.date.year != 1976:
+		portugal.special += 5
+	if china != null:
+		china.influence_nato = 0
+		china.influence_china = 0
+		china.有驻军基地 = false
+	if portugal != null:
+		portugal.有驻军基地 = false
+
+	# 897-906：1986 年西班牙(86)/葡萄牙(87)随卢森堡(0)欧盟状态入欧。
+	if w.date.year == 1986:
+		var luxemburg := w.get_country_by_legacy_index(0)
+		var spain := w.get_country_by_legacy_index(86)
+		var portugal_eu := w.get_country_by_legacy_index(87)
+		if luxemburg != null and luxemburg.has_tag("eu"):
+			if spain != null and spain.government == 3:
+				spain.join_eu()
+			if portugal_eu != null and portugal_eu.government == 3:
+				portugal_eu.join_eu()
+
+	# 907-914：中国在 SEATO 内时内战标记解除。
+	if china != null and china.has_tag("seato"):
+		var any_seato := false
+		for c in w.countries:
+			if c != null and c.has_tag("seato"):
+				any_seato = true
+				break
+		if any_seato:
+			china.内战中 = false
+
+	# 918-923：除意大利(85)外所有政变标记清除。
+	for c in w.countries:
+		if c != null and c.原版序号 != 85:
+			c.政变中 = false
+
+	# 926-942：各国 stab/prcpower/cw/影响年重置与衰减。
+	# 注意：原版这里清的是 Country.stab（外交按钮冷却标志），不是 port 的 stability 统计值。
+	for legacy_idx in [11, 19, 12, 21, 47, 51]:
+		var c_stab := w.get_country_by_legacy_index(legacy_idx)
+		if c_stab != null:
+			c_stab.stab = 0
+	var india := w.get_country_by_legacy_index(19)
+	if india != null:
+		india.prc_power = 0
+	var nigeria := w.get_country_by_legacy_index(60)
+	if nigeria != null and nigeria.prc_power > 0 and nigeria.prc_power < 100:
+		nigeria.prc_power -= 5
+	var burma := w.get_country_by_legacy_index(33)
+	if burma != null:
+		burma.内战中 = false
+	var thailand := w.get_country_by_legacy_index(34)
+	if burma != null and (thailand == null or not thailand.has_tag("亲中")) \
+			and burma.influence_china > 0 and burma.influence_china < 100:
+		burma.influence_china -= 5
+	var cameroon := w.get_country_by_legacy_index(66)
+	if cameroon != null and cameroon.level_of_instability > 0 \
+			and cameroon.level_of_instability < 100:
+		cameroon.level_of_instability -= 5
+
+	# 946-947：war_active 年度重置（扶持极左派冷却）。
+	for i in w.war_active.size():
+		w.war_active[i] = false
+
+	# 952-954：满意现秩序者 data[106] 与派系 party_number 年 /=10。
+	# Godot 侧由 _on_year_changed 随后对 factions.support 与 data[106] 执行同一衰减。
 
 
 func _on_year_changed() -> void:
@@ -1611,6 +2626,12 @@ func _on_year_changed() -> void:
 	if w == null:
 		return
 	var d := w.数值表
+	# 原版 TimeScript.cs:500-501：年滚时抽两个“坏事件清空月”（1-6 / 7-12），供月块 bad_done 复位。
+	if d.size() > 121:
+		d[119] = randi_range(1, 6)
+		d[121] = randi_range(7, 12)
+	# 原版 TimeScript.cs:743-954：1 月 1 日年块维护。
+	_yearly_jan1_maintenance(w)
 	@warning_ignore("integer_division")
 	# 派系 support 年度衰减（原版 party_number/=10）。
 	# 注意：原版同 tick 稍后会用 ideology 重算 party_number，一党制下此衰减会被覆盖；
@@ -1644,8 +2665,8 @@ func change_of_killing(politic_index: int) -> float:
 	return POL_SYS.change_of_killing(politic_index)
 
 
-func kill_politician(pol_index: int) -> void:
-	POL_SYS.kill_politician(pol_index)
+func kill_politician(pol_index: int, preferred_name: String = "") -> void:
+	POL_SYS.kill_politician(pol_index, preferred_name)
 
 
 func assign_politician_position(pol_index: int, position_id: int) -> bool:
@@ -1679,10 +2700,17 @@ func _daily_deficit_recovery(w: WorldState) -> void:
 			call_deferred("_force_goto_economy")
 
 
-# ── 每日：科研点生成（原版 1457-1458，日块）──
-## data[11] += data[73]/40，每日执行（原版日块，非月块）。
+# ── 每日：科研点生成（原版 1458-1488，日块）──
+## data[11] += data[73]/40；data[16]<=12 且事件92 时按 data[102] 修正。
 func _daily_science_gen(w: WorldState) -> void:
-	w.数值表[W.I_SCIENCE] += w.数值表[W.I_BUDGET_SCIENCE] / 40
+	var d := w.数值表
+	d[W.I_SCIENCE] += d[W.I_BUDGET_SCIENCE] / 40
+	if d[W.I_ECON_SYSTEM] <= 12 and w.event_done_num(92):
+		match _dv(d, 102):
+			1, 2, 3:
+				d[W.I_SCIENCE] -= 1
+			4:
+				d[W.I_SCIENCE] += 1
 
 
 # ── 每日：开放度→显示等级映射（原版 1136-1167，日块）──
@@ -1855,6 +2883,229 @@ func _monthly_oligarch(d: Array[int], w: WorldState) -> void:
 		d[W.I_DIPLO] += d[W.I_OLIGARCH] * 5
 		d[W.I_AGENTS] -= d[W.I_OLIGARCH] * 5
 		d[W.I_OLIGARCH] = 0
+
+
+## TimeScript.cs:2852-2913：改革阶段→美国关系、波兰 1983.7、中印战争(war==2)、
+## 瑞士/越南/印度/古巴月度重置、莫桑比克内战漂移、伊朗革命结算（月块）。
+func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
+	# 2852-2858：data[89]==2 且事件54 未完成 → 对美关系 +1。
+	if _dv(d, W.I_REFORM_STAGE) == 2 and not w.event_done_num(54):
+		_add_empire_relation(w, EmpireData.USA, 1)
+
+	# 2859-2863：1983.7 波兰 gov==0 且亲苏 → 军政体(2/21)。
+	if w.date.year == 1983 and w.date.month == 7:
+		var poland := w.get_country_by_legacy_index(2)
+		if poland != null and poland.government == 0 and poland.has_tag("亲苏"):
+			poland.government = 2
+			poland.sub_government = 21
+
+	# 2864-2896：中印边境战争(war_state==2)月度推进与胜利结算。
+	if w.war_state == 2:
+		if d[W.I_INDIA_WAR_PRESSURE] >= 1000:
+			w.influence_prc += 10
+			d[W.I_ARUNACHAL_STATUS] = 2
+			# 原版此处调 allcountries[1].ILoveSuckCocks() 刷新中国地图 parts；
+			# 项目既有裁决：地图 parts 刷新近似省略（见 _monthly_ejection_and_misc 注释）。
+			d[W.I_POPULATION] += 434
+			w.war_state = 0
+			GameManager.start_event("event_443")
+		d[W.I_POPULATION] -= 2
+		if d[W.I_INDIA_WAR_PRESSURE] >= 50:
+			d[W.I_INDIA_WAR_PRESSURE] -= 50
+		elif w.influence_prc >= 20:
+			w.influence_prc -= 20
+		if d[W.I_INDIA_WAR_PRESSURE] <= 0:
+			w.influence_prc -= 20
+			w.war_state = 0
+
+	# 2897-2901：瑞士(39)/古巴(138) 发展度、越南(11)/印度(19) stab 与印度亲中势力月重置。
+	var switzerland := w.get_country_by_legacy_index(39)
+	if switzerland != null:
+		switzerland.development = 0
+	var vietnam := w.get_country_by_legacy_index(11)
+	if vietnam != null:
+		vietnam.stab = 0
+	var india := w.get_country_by_legacy_index(19)
+	if india != null:
+		india.stab = 0
+		india.prc_power = 0
+	var cuba := w.get_country_by_legacy_index(138)
+	if cuba != null:
+		cuba.development = 0
+
+	# 2902-2908：莫桑比克(126) 内战期间不稳定度按美苏力量漂移。
+	var mozambique := w.get_country_by_legacy_index(126)
+	if mozambique != null and mozambique.parts.size() > 0 and mozambique.parts[0]:
+		if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
+			@warning_ignore("integer_division")
+			mozambique.level_of_instability -= w.empires[EmpireData.USA].power / 100
+		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+			@warning_ignore("integer_division")
+			mozambique.level_of_instability += w.empires[EmpireData.USSR].power / 100
+
+	# 2909-2913：伊朗革命进行中且事件58 未完成时，左右势力按美苏力量增长。
+	if w.get_flag("iranrev") and not w.event_done_num(58):
+		var ussr_power: int = w.empires[EmpireData.USSR].power \
+			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null else 0
+		var usa_power: int = w.empires[EmpireData.USA].power \
+			if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null else 0
+		@warning_ignore("integer_division")
+		d[W.I_IRAN_LEFT_SUPPORT] += ussr_power / 25 + 30
+		@warning_ignore("integer_division")
+		d[W.I_IRAN_SHAH_SUPPORT] += usa_power / 30
+
+
+## TimeScript.cs:3026-3037：7 月/1 月清空事件5/7/8/9/10，瑞士发展==1 清零（月块）。
+func _monthly_post_coups(w: WorldState) -> void:
+	if w.date.month == 7 or w.date.month == 1:
+		for event_idx in [5, 7, 8, 9, 10]:
+			w.set_event_done_num(event_idx, false)
+	var switzerland := w.get_country_by_legacy_index(39)
+	if switzerland != null and switzerland.development == 1:
+		switzerland.development = 0
+
+
+## TimeScript.cs:3025 调用 AfricanCoups()（方法体 6434-6525，月块内执行一次）。
+func _monthly_african_coups(w: WorldState) -> void:
+	for i in range(53, 153):
+		if not ((i < 69) or (i > 105 and i < 109) or (i > 111 and i < 134)):
+			continue
+		var c := w.get_country_by_legacy_index(i)
+		if c == null or c.禁用非洲机制:
+			continue
+		if d103_excluded(w, i):
+			continue
+		if i == 54 and not (w.event_done_num(463) and c.stab != 10):
+			continue
+		if i == 58 or i == 128 or i == 55 or i == 69 or i == 70:
+			continue
+
+		if not c.has_tag("亲美") and c.government != 3 and not c.has_tag("亲苏") \
+				and not c.has_tag("亲中") and c.sov_power > 300 and c.sov_power >= c.usa_power:
+			# 6438-6451：亲苏和平转向。
+			var roll := randi_range(80, 99)
+			@warning_ignore("integer_division")
+			if roll >= 50 and roll <= c.sov_power / 10:
+				c.set_tag("亲苏", true)
+				c.set_tag("对华贸易", false)
+				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+					w.empires[EmpireData.USSR].power += 1
+		elif not c.has_tag("亲美") and c.government != 1 and not c.has_tag("亲苏") \
+				and not c.has_tag("亲中") and c.usa_power > 300 and c.sov_power < c.usa_power:
+			# 6452-6465：亲美和平转向。
+			var roll := randi_range(80, 99)
+			@warning_ignore("integer_division")
+			if roll >= 50 and roll <= c.usa_power / 10:
+				c.set_tag("亲美", true)
+				c.set_tag("对华贸易", false)
+				if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
+					w.empires[EmpireData.USA].power += 1
+		elif not c.has_tag("亲苏") and c.sov_power > 300 and c.sov_power >= c.usa_power:
+			# 6466-6489：苏联策动政变。
+			c.stab -= c.sov_power
+			var ussr_power: int = w.empires[EmpireData.USSR].power \
+				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null else 0
+			var usa_power: int = w.empires[EmpireData.USA].power \
+				if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null else 0
+			if (c.stab < -200 and c.has_tag("亲中")) or c.stab < -300 \
+					or (c.stab < -200 and c.has_tag("亲美") and ussr_power > usa_power):
+				if c.has_tag("亲美"):
+					if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
+						w.empires[EmpireData.USA].power -= 5
+					c.set_tag("亲美", false)
+				if c.has_tag("亲中"):
+					w.influence_prc -= 5
+					c.set_tag("亲中", false)
+				c.government = randi_range(0, 2)
+				c.sub_government = _african_sub_gosstroy(c.government)
+				c.set_tag("亲苏", true)
+				c.set_tag("对华贸易", false)
+				c.stab = 100
+				c.development -= 200
+				@warning_ignore("integer_division")
+				c.usa_power -= c.usa_power / 2
+				@warning_ignore("integer_division")
+				c.prc_power -= c.prc_power / 2
+				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+					w.empires[EmpireData.USSR].power += 5
+		elif not c.has_tag("亲美") and c.usa_power > 300 and c.sov_power < c.usa_power:
+			# 6490-6519：美国策动政变。
+			c.stab -= c.usa_power
+			var ussr_power: int = w.empires[EmpireData.USSR].power \
+				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null else 0
+			var usa_power: int = w.empires[EmpireData.USA].power \
+				if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null else 0
+			if (c.stab < -200 and c.has_tag("亲中")) or c.stab < -300 \
+					or (c.stab < -200 and c.has_tag("亲苏") and usa_power > ussr_power):
+				if c.has_tag("亲苏"):
+					if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+						w.empires[EmpireData.USSR].power -= 5
+					c.set_tag("亲苏", false)
+				if c.has_tag("亲中"):
+					w.influence_prc -= 5
+					c.set_tag("亲中", false)
+				c.government = randi_range(0, 2)
+				if c.government == 1:
+					c.government = 3
+				c.sub_government = _african_sub_gosstroy(c.government)
+				c.set_tag("亲美", true)
+				c.stab = 100
+				c.set_tag("对华贸易", false)
+				c.development -= 200
+				@warning_ignore("integer_division")
+				c.sov_power -= c.sov_power / 2
+				@warning_ignore("integer_division")
+				c.prc_power -= c.prc_power / 2
+				if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
+					w.empires[EmpireData.USA].power += 5
+
+
+## 原版 GameState.cs:5057-5127 AfricanSubGosstroy 逐字移植。
+func _african_sub_gosstroy(gov: int) -> int:
+	if gov == 0:
+		var roll0 := randi_range(0, 5)
+		if roll0 == 0:
+			return 0
+		if roll0 == 1:
+			return 7
+		if roll0 == 2:
+			return 9
+		if roll0 == 3:
+			return 10
+		return 13
+	if gov == 1:
+		var roll1 := randi_range(0, 2)
+		if roll1 == 0:
+			return 1
+		if roll1 == 1:
+			return 2
+		return 16
+	if gov == 2:
+		var roll2 := randi_range(0, 4)
+		if roll2 == 0:
+			return 3
+		if roll2 == 1:
+			return 8
+		if roll2 == 2:
+			return 11
+		if roll2 == 3:
+			return 14
+		return 15
+	# gov == 3
+	var roll3 := randi_range(0, 3)
+	if roll3 == 0:
+		return 4
+	if roll3 == 1:
+		return 5
+	if roll3 == 2:
+		return 6
+	return 12
+
+
+## AfricanCoups 中 data[103]==15 时排除 61（上沃尔特）。
+func d103_excluded(w: WorldState, i: int) -> bool:
+	var d := w.数值表
+	return d.size() > 103 and d[103] == 15 and i == 61
 
 
 # ── 修正辅助：modifier 是否激活 ──
@@ -3332,6 +4583,291 @@ func _fortnight_mutual_relations(d: Array[int], w: WorldState) -> void:
 		usa.relations += _dv(d, W.I_LOAN) / 20
 
 
+## TimeScript.cs:6200-6231 AfricanBotSupport 逐字移植（调用点 TimeScript.cs:1040，每日一次）：
+## 外交支出 data[81] 对非洲亲中国家提供稳定/削弱美苏影响；支出不足时亲中势力回退。
+func _african_bot_support(d: Array[int], w: WorldState) -> void:
+	if w == null:
+		return
+	var science32: bool = w.techs != null and w.techs.unlocked.size() > 32 and w.techs.unlocked[32]
+	var base := _dv(d, W.I_BUDGET_DIPLO)
+	var usa := w.empires[0] if w.empires.size() > 0 else null
+	var ussr := w.empires[1] if w.empires.size() > 1 else null
+	for i in range(53, 109):
+		if i >= 69 and i <= 105:
+			continue
+		var c := w.get_country_by_legacy_index(i)
+		if c == null or c.禁用非洲机制:
+			continue
+		if c.has_tag("亲中"):
+			@warning_ignore("integer_division")
+			var bonus := base / 2 if science32 else base / 3
+			if c.stab < 1000:
+				c.stab += bonus
+			if c.usa_power > 0:
+				c.usa_power -= bonus
+			if c.sov_power > 0:
+				c.sov_power -= bonus
+			if _dv(d, W.I_ARMY) > (ussr.money if ussr != null else 0) and c.stab < 1000:
+				c.stab += 25
+			if _dv(d, W.I_ARMY) > (usa.money if usa != null else 0) and c.stab < 1000:
+				c.stab += 25
+		elif base < 50 and c.prc_power >= 500 and not science32:
+			c.prc_power -= 60 - base
+
+
+## ModifiesInfuence.cs:27-500 的 50 号修正「军事的发展进程」逐字移植。
+## 依据事件 513-521/540/544/545/685 与军购/PMC/机械陆军等状态，每双周结算一次。
+func _apply_modifier50_military(d: Array[int], w: WorldState) -> void:
+	if not _mod_active(w, 50):
+		return
+	if w.event_done_num(513) and w.techs != null and w.techs.unlocked.size() > 18 and w.techs.unlocked[18]:
+		if w.result_of_event_num(513) == 0:
+			d[W.I_ARMY] += 1
+		elif w.result_of_event_num(513) == 1:
+			d[W.I_ARMY] += 2
+	if w.event_done_num(514) and w.techs != null and w.techs.unlocked.size() > 23 and w.techs.unlocked[23]:
+		match w.result_of_event_num(514):
+			0:
+				d[W.I_PEOPLE_SUPPORT] += 1
+				d[W.I_THOUGHT_FREEDOM] -= 1
+				if d[W.I_DIPLO] > 900:
+					d[W.I_DIPLO] -= 1
+				elif d[W.I_DIPLO] < 700:
+					d[W.I_DIPLO] += 1
+			1:
+				d[W.I_PEOPLE_SUPPORT] += 1
+				d[W.I_THOUGHT_FREEDOM] += 1
+				d[W.I_DIPLO] -= 2
+			2:
+				d[W.I_PEOPLE_SUPPORT] += 1
+				d[W.I_THOUGHT_FREEDOM] -= 2
+				d[W.I_DIPLO] += 2
+	if w.event_done_num(345):
+		match w.result_of_event_num(345):
+			0:
+				d[W.I_PEOPLE_SUPPORT] += 3
+				d[W.I_ARMY] += 2
+				d[W.I_MIL_INTERVENTION] += 2
+			1:
+				d[W.I_BUDGET] -= 1
+				d[W.I_ARMY] += 5
+				d[W.I_MIL_INTERVENTION] += 2
+				d[W.I_CORRUPTION] += 2
+	if w.event_done_num(515) and w.result_of_event_num(515) == 0:
+		d[W.I_AGENTS] += 1
+		d[W.I_ARMY] += 2
+	if w.event_done_num(516):
+		match w.result_of_event_num(516):
+			0:
+				d[W.I_ARMY] += 3
+				d[W.I_BUDGET] -= 1
+			1:
+				d[W.I_ARMY] += 6
+				d[W.I_BUDGET] -= 2
+				d[W.I_MANPOWER] += 2
+	if w.event_done_num(517):
+		match w.result_of_event_num(517):
+			0:
+				d[W.I_ARMY] += 3
+				d[W.I_BUDGET] -= 2
+				d[W.I_PEOPLE_SUPPORT] += 2
+			1:
+				d[W.I_ARMY] += 5
+				d[W.I_BUDGET] -= 2
+				_add_empire_relation(w, 0, -2)
+				_add_empire_relation(w, 1, -2)
+			2:
+				d[W.I_ARMY] += 10
+				d[W.I_PEOPLE_SUPPORT] += 3
+				d[W.I_BUDGET] -= 3
+				_add_empire_relation(w, 0, -2)
+				_add_empire_relation(w, 1, -2)
+	if w.event_done_num(518):
+		match w.result_of_event_num(518):
+			0:
+				d[W.I_ARMY] += 2
+				d[W.I_PEOPLE_SUPPORT] += 2
+				d[W.I_BUDGET] -= 2
+				d[W.I_MIL_INTERVENTION] += 10
+			1:
+				d[W.I_ARMY] += 3
+				d[W.I_BUDGET] -= 2
+				_add_empire_relation(w, 0, -1)
+				_add_empire_relation(w, 1, -1)
+				d[W.I_MIL_INTERVENTION] += 10
+			2:
+				d[W.I_ARMY] += 8
+				d[W.I_PEOPLE_SUPPORT] += 2
+				d[W.I_BUDGET] -= 3
+				_add_empire_relation(w, 0, -1)
+				_add_empire_relation(w, 1, -1)
+				d[W.I_MIL_INTERVENTION] += 10
+	if w.event_done_num(519):
+		match w.result_of_event_num(519):
+			0:
+				d[W.I_ARMY] += 18
+				d[W.I_PEOPLE_SUPPORT] += 5
+				d[W.I_BUDGET] -= 4
+			1:
+				d[W.I_ARMY] += 15
+				d[W.I_PEOPLE_SUPPORT] += 2
+				d[W.I_BUDGET] -= 3
+			2:
+				d[W.I_ARMY] += 35
+				d[W.I_PEOPLE_SUPPORT] += 10
+				d[W.I_BUDGET] -= 5
+	if w.event_done_num(520):
+		match w.result_of_event_num(520):
+			0:
+				d[W.I_ARMY] += 20
+				d[W.I_PEOPLE_SUPPORT] += 5
+				_add_empire_relation(w, 0, -3)
+				_add_empire_relation(w, 1, -3)
+			1:
+				d[W.I_ARMY] += 50
+				d[W.I_BUDGET] -= 5
+				d[W.I_PEOPLE_SUPPORT] += 8
+				_add_empire_relation(w, 0, -4)
+				_add_empire_relation(w, 1, -4)
+			2:
+				d[W.I_ARMY] += 10
+				d[W.I_PEOPLE_SUPPORT] += 10
+				_add_empire_relation(w, 0, -2)
+				_add_empire_relation(w, 1, -2)
+	if w.event_done_num(521):
+		match w.result_of_event_num(521):
+			0:
+				d[W.I_ARMY] += 30
+				d[W.I_PEOPLE_SUPPORT] += 10
+				w.influence_prc += 5
+			1:
+				d[W.I_ARMY] += 30
+				d[W.I_MIL_INTERVENTION] += 20
+				d[W.I_PEOPLE_SUPPORT] += 10
+				w.influence_prc += 5
+			2:
+				d[W.I_ARMY] += 50
+				d[W.I_PEOPLE_SUPPORT] += 25
+				d[W.I_MIL_INTERVENTION] += 30
+				w.influence_prc += 10
+	if w.event_done_num(540):
+		match w.result_of_event_num(540):
+			0:
+				d[W.I_ARMY] += 4
+				d[W.I_MIL_INTERVENTION] += 2
+			1:
+				d[W.I_ARMY] += 2
+				d[W.I_MIL_INTERVENTION] += 2
+	if w.event_done_num(544):
+		match w.result_of_event_num(544):
+			0:
+				d[W.I_ARMY] += 7
+				d[W.I_DIPLO] -= 5
+			1:
+				d[W.I_ARMY] += 20
+				_add_empire_relation(w, 0, -2)
+				_add_empire_relation(w, 1, -2)
+			2:
+				d[W.I_ARMY] += 40
+				_add_empire_relation(w, 0, -4)
+				_add_empire_relation(w, 1, -4)
+	if w.event_done_num(545):
+		match w.result_of_event_num(545):
+			0:
+				d[W.I_ARMY] += 10
+			1:
+				d[W.I_LIVING] += 10
+				d[W.I_PEOPLE_SUPPORT] += 10
+				d[W.I_THOUGHT_FREEDOM] -= 5
+			2:
+				d[W.I_ARMY] += 20
+				d[W.I_LIVING] += 15
+				d[W.I_PEOPLE_SUPPORT] += 15
+				d[W.I_THOUGHT_FREEDOM] -= 10
+	if w.event_done_num(685):
+		match w.result_of_event_num(685):
+			0:
+				_add_empire_relation(w, 0, 2)
+				_add_empire_relation(w, 1, 2)
+				d[W.I_ARMY] -= 4
+				d[W.I_AGENTS] += 2
+				d[W.I_THOUGHT_FREEDOM] += 2
+				if d[W.I_DIPLO] > 900:
+					d[W.I_DIPLO] -= 2
+				elif d[W.I_DIPLO] < 500:
+					d[W.I_DIPLO] += 2
+			1:
+				_add_empire_relation(w, 0, 1)
+				_add_empire_relation(w, 1, 1)
+				d[W.I_ARMY] -= 2
+				if d[W.I_DIPLO] > 900:
+					d[W.I_DIPLO] -= 1
+				elif d[W.I_DIPLO] < 500:
+					d[W.I_DIPLO] += 1
+				d[W.I_BUDGET] -= 40
+				d[W.I_ARMY] += 20
+				d[W.I_PEOPLE_SUPPORT] += 10
+				d[W.I_LIVING] += 6
+				d[W.I_MIL_INTERVENTION] += 40
+				d[W.I_SCIENCE] += 100
+			2:
+				_add_empire_relation(w, 0, -1)
+				_add_empire_relation(w, 1, -1)
+				d[W.I_DIPLO] += 2
+	# 军购协定 / PMC / 机械陆军 / 军力封顶（ModifiesInfuence.cs:433-500）
+	# 433-442 取消分支：条件满足时清零协定/PMC 并撤销对应国策标记。
+	if w.arms_purchase_agreement > 0:
+		var ussr_c := w.get_country_by_legacy_index(7)
+		var china := w.get_country_by_legacy_index(1)
+		var usa_c := w.get_country_by_legacy_index(51)
+		var ussr_e := w.empires[EmpireData.USSR] if w.empires.size() > EmpireData.USSR else null
+		if ussr_c != null and ussr_c.sub_government != 21 \
+				and (china != null and (china.government == 3
+					or (usa_c != null and usa_c.has_tag("对华贸易"))
+					or (ussr_e != null and ussr_e.relations < 500))):
+			w.arms_purchase_agreement = 0
+			if w.decisions != null and w.decisions.completed.size() > 47:
+				w.decisions.completed[47] = false
+	if w.pmc > 0 and (d[W.I_ECON_SYSTEM] <= 13 or d[W.I_ARMY] < 50 or d[W.I_MIL_DOCTRINE] != 33):
+		w.pmc = 0
+		if w.decisions != null and w.decisions.completed.size() > 48:
+			w.decisions.completed[48] = false
+	if w.arms_purchase_agreement > 0:
+		d[W.I_BUDGET] -= 6
+		d[W.I_ARMY] += 12
+		d[W.I_SCIENCE] += 5
+		_add_empire_relation(w, 1, 8)
+		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+			w.empires[EmpireData.USSR].money += 6
+			w.empires[EmpireData.USSR].power += 1
+	if w.pmc > 0:
+		d[W.I_BUDGET] += 10
+		d[W.I_ARMY] -= 10
+		d[W.I_BUDGET] += 2
+		d[W.I_CORRUPTION] += 2
+		for ei in range(2):
+			if w.empires.size() > ei and w.empires[ei] != null:
+				if w.empires[ei].relations < 250:
+					w.empires[ei].relations = 250
+				elif w.empires[ei].relations > 750:
+					w.empires[ei].relations = 750
+	var c16 := w.get_country_by_legacy_index(16)
+	if c16 != null and c16.prc_influence != 0:
+		d[W.I_ARMY] += 5
+		d[W.I_AGENTS] += 3
+		d[W.I_MIL_INTERVENTION] += 10
+		d[W.I_BUDGET] -= 8
+		d[W.I_SCIENCE] -= 2
+		d[W.I_PEOPLE_SUPPORT] += 10
+	if d[W.I_ARMY] >= 2000:
+		@warning_ignore("integer_division")
+		var num41 := (d[W.I_ARMY] - 2000) / 100
+		d[W.I_ARMY] -= 10 * num41
+		d[W.I_BUDGET] += 2 * num41
+		d[W.I_AGENTS] += 2 * num41
+		d[W.I_RESERVE] += 2 * num41
+
+
 func _apply_tech_periodic(w: WorldState) -> void:
 	if w.techs == null:
 		return
@@ -3392,7 +4928,7 @@ func _apply_tech_periodic(w: WorldState) -> void:
 			w.empires[1].relations -= 5
 
 
-# ── 双周：贷款利息（TimeScript 5512-5605行；外援 dota 在月块 2295-2318，见 _monthly_foreign_aid） ──
+# ── 双周：贷款利息（TimeScript 5512-5605行；外援 dota 在月块 2295-2318，见 _monthly_ejection_and_misc） ──
 func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
 	var loan: int = d[W.I_LOAN]
 	var year: int = w.date.year if w.date else 1976
@@ -3442,30 +4978,6 @@ func _fortnight_loan_interest(d: Array[int], w: WorldState) -> void:
 				w.empires[1].relations -= loan / 20
 			if loan > 10:
 				d[W.I_LOAN] -= interest / 2 + 1
-
-
-## 月度外援 dota（原版 TimeScript.cs:2295-2318，月块 data[19]==1）。
-## data[146] = 援助强度；贸易同盟国吃援助，减美/苏势力、增中势力。
-func _monthly_foreign_aid(d: Array[int], w: WorldState) -> void:
-	var aid: int = d[W.I_FOREIGN_AID] if d.size() > W.I_FOREIGN_AID else 0
-	if aid <= 0:
-		return
-	d[W.I_BUDGET] -= aid
-	d[W.I_AGENTS] -= aid
-	d[W.I_ARMY] -= aid
-	var ovd_alive := false
-	for x in w.countries:
-		if x != null and x.has_tag("ovd"):
-			ovd_alive = true
-			break
-	for c in w.countries:
-		if c == null or not c.has_tag("贸易同盟"):
-			continue
-		if ovd_alive:
-			c.sov_power = maxi(c.sov_power - 10, 0)
-		else:
-			c.usa_power = maxi(c.usa_power - 10, 0)
-		c.prc_power = mini(c.prc_power + 5, 1000)
 
 
 # ── 11项预算的完整月度效果 ──
@@ -4055,6 +5567,7 @@ func _on_fortnight() -> void:
 	_apply_tech_periodic(w)
 	_influence_from_investments(d, year)
 	_fortnight_mutual_relations(d, w)
+	# AfricanBotSupport 的调用点在原版日块 TimeScript.cs:1040，已移入 _daily_rim_and_alliance_checks。
 	_update_modifier_population_industry_pressure(d, w)
 	_fortnight_econ_thought_drift(d, year)
 	_fortnight_industry_decay(d)
@@ -4067,6 +5580,7 @@ func _on_fortnight() -> void:
 	# ModifiesChanges 原版在 5907（战后衰减 5878 之后、预算回落 5903 之前）调用；
 	# Godot 只移植了其中 modifier 0-17 的可确认部分，未移植项见审计报告。
 	_fortnight_modifiers(d, w, support_before, budget_before, freedom_before)
+	_apply_modifier50_military(d, w)
 	_fortnight_budget_growth_fallback(d, budget_before)
 	_fortnight_population_budget_bonus(d)
 	_check_coup(d, w)
@@ -4908,19 +6422,30 @@ func _fortnight_military_doctrine(d: Array[int], _w: WorldState) -> void:
 
 # ── 贸易平衡（TimeScript.cs:4135-4167，双周块；原注释 854-911/3247-3272 系错误出处） ──
 
-func _fortnight_trade_balance(d: Array[int], w: WorldState) -> void:
-	# data[25] 贸易伙伴数：原版为静态初值 14 + 外交/事件增减；Godot 以国家标签动态重算（差异已注释）
-	d[W.I_TRADE_PARTNERS] = 0
+## 出口规模重算（原版 TimeScript.ExportValue，13180 起）。
+## 完整版约 400 行；此处先实现“按对华贸易/经济联盟/经互会成员数重算出口与伙伴数”的核心，
+## 让概览出口规模随外交关系变化，后续可按原版逐国加成继续细化。
+func _recalc_export_value(d: Array[int], w: WorldState) -> void:
 	var pc := w.get_player_country()
 	if pc == null:
 		return
+	d[W.I_TRADE_PARTNERS] = 0
+	d[W.I_INCOME] = _dv(d, W.I_EXPORT_BASE)  # 原版 ExportValue：data[23] = data[70]
 	for c in w.countries:
 		if c == pc or c.gwcode <= 0:
 			continue
-		if c.has_tag("对华贸易"):
+		var linked := c.has_tag("对华贸易") \
+			or (c.has_tag("econ") and pc.has_tag("econ")) \
+			or (c.has_tag("sev") and pc.has_tag("sev"))
+		if linked:
 			d[W.I_TRADE_PARTNERS] += 1
-		elif c.has_tag("econ") and pc.has_tag("econ"):
-			d[W.I_TRADE_PARTNERS] += 1
+			d[W.I_INCOME] += 10
+
+
+func _fortnight_trade_balance(d: Array[int], w: WorldState) -> void:
+	# 先按原版 ExportValue 重算出口规模与贸易伙伴数，再执行石油危机修正与顺逆差结算。
+	# 注意：_recalc_export_value 已归零并统计完三类贸易伙伴，这里绝不能再叠加旧循环。
+	_recalc_export_value(d, w)
 	# 石油危机修正（原版 :4135-4139）：modifies[12] 激活时 data[23] -= data[23]/6
 	if _mod_active(w, 12):
 		d[W.I_INCOME] -= d[W.I_INCOME] / 6
@@ -5267,7 +6792,7 @@ func plot_alert_active() -> bool:
 	return leader_threat or party_threat
 
 
-## TimeScript.cs:891-894：这个支按每日判定，且同样进入事件 4，不是结局。
+## TimeScript.cs:1453-1456：党内支持低于临界线时进入事件4（阴谋），每日判定。
 func _check_daily_conspiracy(d: Array[int]) -> void:
 	if current_event_id != "":
 		return
@@ -5289,6 +6814,16 @@ func _check_scheduled_events() -> void:
 
 func _dv(d: Array, idx: int) -> int:
 	return d[idx] if d.size() > idx else 0
+
+
+func _country_tag(w: WorldState, idx: int, tag: String) -> bool:
+	var c := w.get_country_by_legacy_index(idx)
+	return c != null and c.has_tag(tag)
+
+
+func _country_dev_is(w: WorldState, idx: int, dev: int) -> bool:
+	var c := w.get_country_by_legacy_index(idx)
+	return c != null and c.development == dev
 
 
 ## TimeScript.cs 逐帧/逐块成就检查的移植子集（其余 9 个在 GameState.WarResult 各战争分支内，

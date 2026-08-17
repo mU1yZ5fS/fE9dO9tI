@@ -347,8 +347,10 @@ static func apply_monthly_position_power(w: WorldState, pol_index: int, p: Polit
 # 死亡 / 任命 / 派系领袖
 # ============================================================================
 
-## 死亡/再教育：清职与派系领袖，同槽补员（KillPerson → BalancePolitic）
-static func kill_politician(pol_index: int) -> void:
+## 死亡/再教育：清职与派系领袖，同槽补员（KillPerson → BalancePolitic）。
+## preferred_name 非空时先从预备池点名补员（如舵手逝世→毛远新），
+## 点名失败（已入场/未到年份/池中无人）再走常规 underrepresented + priority 规则。
+static func kill_politician(pol_index: int, preferred_name: String = "") -> void:
 	var w: WorldState = GameManager.world
 	if w == null or pol_index < 0 or pol_index >= w.politicians.size():
 		return
@@ -365,16 +367,25 @@ static func kill_politician(pol_index: int) -> void:
 
 	var year: int = w.date.year if w.date else 1976
 	var existing_parties: Array[int] = []
+	var existing_names: Dictionary = {}
 	for i in w.politicians.size():
 		if i == pol_index:
 			continue
 		var other: PoliticianData = w.politicians[i]
 		if not is_vacant_politician(other):
 			existing_parties.append(other.party_index())
+			if other.name_display != "":
+				existing_names[other.name_display] = true
 
-	var replacement := PoliticianPool.pick_replacement(
-		w.politician_reserve, year, existing_parties
-	)
+	var replacement: PoliticianData = null
+	if preferred_name != "":
+		replacement = PoliticianPool.pick_named(
+			w.politician_reserve, preferred_name, year, existing_names
+		)
+	if replacement == null:
+		replacement = PoliticianPool.pick_replacement(
+			w.politician_reserve, year, existing_parties
+		)
 	if replacement != null:
 		# 保持 matrix 长度与槽位数一致
 		if replacement.loyalty_matrix.size() < w.politicians.size():

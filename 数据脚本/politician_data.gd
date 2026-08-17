@@ -94,6 +94,14 @@ func alignment_label() -> String:
 	return WorldFactory.TRAIT_LABELS_ZH.get(trait_alignment, "未知")
 
 
+## 是否拥有“真实人物肖像”。
+## 之前把所有 `N_N.png` 编号图一律判为无肖像，导致大量实际有肖像的人物也显示“无肖像”。
+## 现在改为：只要 portrait 非空就认为有肖像；确属错误复用的个例，应在对应
+## .tres 里把 portrait 置空（而不是在全局判定里按文件名误伤）。
+func has_real_portrait() -> bool:
+	return portrait != null
+
+
 ## 深拷贝
 func make_instance() -> PoliticianData:
 	var inst := duplicate(true) as PoliticianData

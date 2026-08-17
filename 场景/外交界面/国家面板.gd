@@ -160,6 +160,10 @@ func _ready() -> void:
 func _on_stats_changed() -> void:
 	if visible and _current_country != null:
 		_refresh(_current_country, "")
+		# 数值在日/月块变化后，悬停中的条件列表也要立即刷新。
+		for i in range(_buttons.size()):
+			if _buttons[i].is_hovered():
+				_on_action_hover(i)
 
 
 func _on_country_selected(gwcode: int, country_name: String) -> void:
@@ -212,6 +216,7 @@ func _show_basic_panel(display_name: String) -> void:
 	_current_actions.clear()
 	for btn in _buttons:
 		btn.visible = false
+		btn.disabled = true
 	_clear_condition_text()
 	visible = true
 
@@ -326,12 +331,26 @@ func _refresh_actions(country: CountryData) -> void:
 		if i < _current_actions.size():
 			_buttons[i].text = _current_actions[i].text
 			_buttons[i].visible = true
+			# 原版 Show 后按 uslovie_bool 置灰：条件不满足的按钮不可点击，
+			# 避免暂停状态下反复按（尤其贸易/同盟这类效果执行后条件即时翻转的动作）。
+			var all_ok := true
+			var conditions: Array = _current_actions[i].get("conditions", [])
+			for cond in conditions:
+				if cond.has("check"):
+					var ok: bool = bool(cond.check.call())
+					if not ok:
+						all_ok = false
+						break
+			_buttons[i].disabled = not all_ok
 		else:
 			_buttons[i].visible = false
+			_buttons[i].disabled = true
 
 
 func _on_action_pressed(index: int) -> void:
 	if index >= _current_actions.size():
+		return
+	if index < _buttons.size() and _buttons[index].disabled:
 		return
 	var action: Dictionary = _current_actions[index]
 	var conditions: Array = action.get("conditions", [])
@@ -343,14 +362,18 @@ func _on_action_pressed(index: int) -> void:
 		# 外交互动可能直接改写 empires[].relations，立即钳制到合法区间
 		if GameManager.world:
 			GameManager.world.clamp_empire_relations()
+		# 广播刷新：地图渲染/状态栏等监听 stats_changed 实时更新
+		if GameManager != null:
+			GameManager.notify_stats_changed()
 	# 剧情外交操作会立即切入事件场景，不能再刷新即将离树的国家面板。
 	if GameManager.current_event_id != "":
 		return
-	_refresh(_current_country, "")
-	# 重新用国名刷新（名称保持不变）
+	# 上面 notify_stats_changed() 已同步刷新过一次（display_name=""，会落到动态国名）；
+	# 这里再刷新一次是为了恢复地图传入的国名，并统一重建悬停条件文本。
 	var name_label := find_child("当前选中国家名称", true, false) as Label
-	if name_label and _current_country:
-		_refresh(_current_country, name_label.text)
+	_refresh(_current_country, name_label.text if name_label else "")
+	if index < _buttons.size() and _buttons[index].is_hovered():
+		_on_action_hover(index)
 
 
 func _on_action_hover(index: int) -> void:

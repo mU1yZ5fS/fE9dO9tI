@@ -248,7 +248,8 @@ static func can_intervene(war_id: int, action_id: int) -> bool:
 		if w.war_state == 1 and war_id == 1:
 			return false
 
-	# 非外交动作：data[0]（军事介入点）须 >= 10*中国不稳定度/10（即 >= level_of_instability）
+	# 非外交动作：data[0]（军事介入点）须 >= 10*中国不稳定度/10（即 >= level_of_instability），
+	# 对齐原版 WarButtonScript.CheckButtonAvailable。
 	if d[W.I_MIL_INTERVENTION] < china_unstab:
 		return false
 
@@ -491,7 +492,7 @@ static func apply_war_result(war_id: int) -> bool:
 	if war == null:
 		return false
 	var d := w.数值表
-	d[W.I_MIL_INTERVENTION] = 0
+	# 注意：原版 WarResult 不会把军事介入点清零；不要在这里重置 data[0]。
 	# 土耳其危机战争链（Event370 启动 10/11/12）走原版 GameState.cs WarResult
 	# 的独立阈值结算：infl1 >= 700 即土耳其方获胜，与通用 infl1>=1000 不同。
 	if war_id == 10 or war_id == 11 or war_id == 12:

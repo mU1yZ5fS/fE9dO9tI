@@ -23,11 +23,11 @@ var _option_labels: Array[Label] = []
 var _button_group: ButtonGroup
 
 @onready var _title: Label = $事件标题
-@onready var _desc: Label = $事件描述
+@onready var _desc: RichTextLabel = $事件描述
 @onready var _image: TextureRect = $事件图片
 @onready var _options_root: Control = $事件选项
 @onready var _result_root: Control = $事件结果
-@onready var _result_desc: Label = $事件结果/事件结果描述
+@onready var _result_desc: RichTextLabel = $事件结果/事件结果描述
 @onready var _next_button: TextureButton = $事件切换页面按钮
 @onready var _back_button: TextureButton = $事件切换页面按钮2
 
@@ -79,7 +79,7 @@ func _load_event() -> void:
 		return
 
 	_title.text = _event_def.title
-	_desc.text = _event_def.description
+	_desc.text = BbcTooltip.unity_color_to_bbcode(_event_def.description)
 	# 事件配图是可选资源；没有图时隐藏 TextureRect，避免显示空框。
 	if _event_def.image:
 		_image.texture = _event_def.image
@@ -97,7 +97,7 @@ func _setup_options() -> void:
 			_option_labels[i].visible = has_option
 		if i < _option_buttons.size():
 			var btn: TextureButton = _option_buttons[i]
-			btn.visible = has_option
+			btn.visible = false
 			if has_option:
 				var opt: EventOption = _event_def.options[i]
 				var can_select := true
@@ -105,6 +105,8 @@ func _setup_options() -> void:
 				if opt.enable_condition != null and EventEngine:
 					can_select = EventEngine.evaluate(opt.enable_condition)
 				_option_labels[i].text = opt.text if can_select else (opt.disabled_text if opt.disabled_text != "" else opt.text)
+				# 玩家选不了的选项不显示选框（只保留灰字提示，避免误导可点）。
+				btn.visible = can_select
 				btn.disabled = not can_select
 				btn.modulate = Color(0.55, 0.55, 0.55) if not can_select else Color.WHITE
 				btn.set_pressed_no_signal(false)
@@ -128,7 +130,7 @@ func _on_next_pressed() -> void:
 				_desc.hide()
 				_options_root.hide()
 				_back_button.hide()
-				_result_desc.text = _event_def.description
+				_result_desc.text = BbcTooltip.unity_color_to_bbcode(_event_def.description)
 				_result_root.show()
 				_page = Page.RESULT
 				return
@@ -147,7 +149,7 @@ func _on_next_pressed() -> void:
 			_back_button.hide()   # 结果页不能返回
 			_title.show()
 			_title.text = result.get("name", "")
-			_result_desc.text = result.get("text", "")
+			_result_desc.text = BbcTooltip.unity_color_to_bbcode(String(result.get("text", "")))
 			_result_root.show()
 			_page = Page.RESULT
 

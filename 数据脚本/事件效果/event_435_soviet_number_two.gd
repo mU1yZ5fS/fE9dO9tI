@@ -35,12 +35,10 @@ func execute(context: Dictionary) -> void:
 				d[W.I_AGENTS] -= 100
 			context["result_text"] = TXT_R0
 		1:
-			# Event435.cs result 1
+			# Event435.cs result 1（联络规模 +5 已改为 .tres 显式 ADD_RESOURCE）
 			_ussr_leader_add(3, 1)
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
 				ws.empires[EmpireData.USSR].relations = clampi(ws.empires[EmpireData.USSR].relations + 50, 0, 1000)
-			if d.size() > W.I_COMMUNICATIONS:
-				d[W.I_COMMUNICATIONS] += 5  # 原版 SOV_PRC_PartiesConnection += 5
 			context["result_text"] = TXT_R1
 		2:
 			# Event435.cs result 2：无效果

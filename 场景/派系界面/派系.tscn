@@ -1174,6 +1174,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="演讲" type="Button" parent="." unique_id=1098271231]
+visible = false
 layout_mode = 0
 offset_left = 951.0
 offset_top = 423.0

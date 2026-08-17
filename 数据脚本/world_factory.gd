@@ -57,8 +57,9 @@ const FICTIONAL_COUNTRY_OFFSET := 9000
 ## 强制走 9000+ 的原版 id：地图无真实区域，或与已有编号重名的分离实体。
 ## 153「纳米比亚」与 128 重名；164/165 为安哥拉/尼日利亚分离政权——若不强制，
 ## 名称前缀匹配会把它们吸到真实 gwcode，造成 gwcode 索引互相覆盖。
+## 155 塞舌尔 / 159 瓦努阿图已在地图数据补齐，改为正常匹配真实 gwcode（970/971）。
 const FORCE_9000_OFFSET_SLOTS := [
-	145, 150, 151, 153, 155, 156, 157, 159, 162, 163, 164, 165, 166,
+	145, 150, 151, 153, 156, 157, 162, 163, 164, 165, 166,
 ]
 
 ## 9000+ 实体的中文名（逐行取自逆向 Assets/Resources/Country_en.txt 的 id 行）。
@@ -435,6 +436,8 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	_assign_real_gwcodes(ws)
 	ws.rebuild_gwcode_index()
 	_fill_data_array(ws)
+	# 原版 GameStartScript.cs:90：开局 OilProd=850；OilEat 由 modifier51/经济计算按公式生成。
+	ws.oil_prod = 850.0
 	_build_politicians(ws)
 	_build_factions(ws)
 	_set_leader(ws)
@@ -702,7 +705,7 @@ static func _set_leader(ws: WorldState) -> void:
 
 # 逐字对齐 GameStartScript.cs:509-517：
 # dolshnost[0]=150(领袖) [1]=0(毛泽东) [2]=17(乔冠华) [3]=10(吴德)
-# [4]=9(陈锡联·北方) [5]=13(赵紫阳·西方) [6]=15(陈云·南方) [7]=3(张春桥·东方)
+# [4]=9(陈锡联·北方) [5]=13(赵紫阳·西方) [6]=15(韦国清·南方) [7]=3(张春桥·东方)
 # 我们用 -2 表示「实权领袖本人」（原版 150）
 const INITIAL_POSITIONS := [-2, 0, 17, 10, 9, 13, 15, 3]
 
@@ -1491,7 +1494,8 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	if c20 != null: c20.sub_government = 2
 
 	# dlc[3] 条件块（:815-831）。项目惯例：无 DLC 体系 → dlc[3] 视为恒真
-	# （见 event_007_diplo_crisis_usa.gd:12 注释）。modifies[51] 未建模、OilEat 未建模，跳过。
+	# （见 event_007_diplo_crisis_usa.gd:12 注释）。OilProd 已在 create_world 设置，
+	# OilEat 由 _apply_modifier51_oil / modifier_catalog 按原版公式动态计算。
 	for asean_id in [50, 49, 34, 47]:
 		_set_tag(ws, asean_id, "asean", true)
 	for sento_id in [31, 8]:
@@ -1536,13 +1540,13 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_gs(ws, 14, 2, 15)                        # 伊拉克 → 政治实用主义（:1085-1086）
 	_set_gs(ws, 107, 2, 15)                       # 塞拉利昂 → 政治实用主义（:1088-1089）
 
-	# —— 项目增量（用户确认，2026-08-15）：开局吉布提/圭亚那属法国领土 ——
+	# —— 项目增量（用户确认，2026-08-15）：开局吉布提属法国领土 ——
 	# 106 吉布提：原版地图在事件585前按法国着色（CountryScript.cs:4926-4933
 	#   this_number 106 → 21），本项目同时把 map_regions.json 的 522 区域归属法国，
-	#   这里补数据侧 puppet_of 对齐法国。
-	# 77 圭亚那：按用户要求开局属法国（map_regions.json 的 110/120 区域已归属 220）。
+	#   这里补数据侧 puppet_of 对齐法国；事件585触发后转移地图归属。
+	# 77 圭亚那：已按原版独立（Guyana 1966），map_regions.json 的圭亚那区域归属 110，
+	#   法属圭亚那区域 47 仍属法国 220，不再把 77 设为法国傀儡。
 	_set_puppet(ws, 106, 21)
-	_set_puppet(ws, 77, 21)
 
 	print("WorldFactory: 国家开局硬编码覆盖完成（GameStartScript.cs:574-814, 1020-1090）")
 

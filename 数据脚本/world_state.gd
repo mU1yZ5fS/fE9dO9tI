@@ -72,6 +72,7 @@ const I_XINJIANG_POLICY := 66   ## 新疆/维吾尔文化政策状态（原 data
 const I_TIBET_POLICY := 67      ## 西藏文化政策状态（原 data[67]）
 const I_SERVICES := 68          ## 服务业产值
 const I_LOAN := 69              ## 国债
+const I_EXPORT_BASE := 70       ## 出口规模基数（原 data[70]，ExportValue 的 data[23] 种子）
 const I_BUDGET_ARMY := 71       ## 预算: 军费
 const I_BUDGET_MGB := 72        ## 预算: 国安部
 const I_BUDGET_SCIENCE := 73    ## 预算: 科研
@@ -309,7 +310,7 @@ var 入口快照影响: int = 0
 ## 注：原版由 TimeScript 周期把它转化为各国 prc_power，此转化未移植 → 目前只累计。TODO
 @export var influence_prc: int = 0
 ## 扶持极左派冷却：[0]=西欧、[1]=东欧（原版 war_active[0]/[1]）。
-## 注：原版每年重置一次（TimeScript），年度重置未移植 → 目前只置位不重置。TODO
+## 每年由 GameManager._on_year_changed 重置（TimeScript.cs:946-947）。
 @export var war_active: Array[bool] = [false, false]
 
 # ── 玩家经济显示视图（只读镜像，非独立数据） ──

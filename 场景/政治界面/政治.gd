@@ -60,6 +60,7 @@ var _hover_target: int = -1
 # ── 实权领袖 ──
 @onready var _leader_portrait: TextureRect = $实权领袖肖像
 @onready var _leader_bg: TextureRect = $实权领袖背景
+var _leader_no_portrait_label: Label
 
 # ── 右栏 ──
 @onready var _budget_label: Label = $右栏数据/预算
@@ -105,6 +106,16 @@ func _ready() -> void:
 	_collect_cards()
 	_connect_buttons()
 	_setup_leader_click()
+	# 实权领袖无真实肖像时显示“无肖像”文字
+	_leader_no_portrait_label = Label.new()
+	_leader_no_portrait_label.text = "无肖像"
+	_leader_no_portrait_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_leader_no_portrait_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_leader_no_portrait_label.add_theme_font_size_override("font_size", 22)
+	_leader_no_portrait_label.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4, 1))
+	_leader_no_portrait_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_leader_no_portrait_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_leader_portrait.add_child(_leader_no_portrait_label)
 	GameManager.stats_changed.connect(_on_stats_changed)
 	_full_refresh()
 
@@ -239,12 +250,19 @@ func _refresh_positions() -> void:
 
 
 func _refresh_leader() -> void:
-	if _world.leader and _world.leader.portrait:
+	var has_portrait := false
+	if _world.leader and _world.leader.has_real_portrait():
 		_leader_portrait.texture = _world.leader.portrait
+		has_portrait = true
 	elif _world.leader_politician_index >= 0 and _world.leader_politician_index < _world.politicians.size():
 		var p: PoliticianData = _world.politicians[_world.leader_politician_index]
-		if p and p.portrait:
+		if p and p.has_real_portrait():
 			_leader_portrait.texture = p.portrait
+			has_portrait = true
+	if not has_portrait:
+		_leader_portrait.texture = null
+	if _leader_no_portrait_label:
+		_leader_no_portrait_label.visible = not has_portrait
 
 
 func _refresh_right_panel() -> void:
@@ -326,9 +344,10 @@ func _refresh_left_panel() -> void:
 
 
 func _refresh_traits(pol: PoliticianData) -> void:
-	# 原版 traits[0..3] 四行（Politic_Manager.cs:57-60 / 171-174）。
-	# 改版口径：T1=traits[0] 的显示改由显式 faction 字段承载（用户确认），
-	# T2/T3/T4 仍按原版 traits[1..3] 的 traits_en 表。
+	# 原版 traits[0..3] 四行（Politic_Script.cs:58-61）。
+	# 项目字段映射：trait_personality=traits[0]、trait_alignment=traits[1]、
+	# trait_special=traits[2]、trait_background=traits[3]。
+	# 显示顺序按用户确认：T1=派系、T2=traits[3] 出身、T3=traits[1] 性格、T4=traits[2] 特殊。
 	if pol == null:
 		_left_trait0.text = ""
 		_left_trait1.text = ""
@@ -337,10 +356,10 @@ func _refresh_traits(pol: PoliticianData) -> void:
 			_left_trait3.text = ""
 		return
 	_left_trait0.text = WorldFactory.PARTY_LABELS_ZH.get(pol.party_index(), "未知")
-	_left_trait1.text = WorldFactory.TRAIT_LABELS_ZH.get(pol.trait_alignment, "未知")
-	_left_trait2.text = WorldFactory.TRAIT_LABELS_ZH.get(pol.trait_special, "未知")
+	_left_trait1.text = pol.background_label()
+	_left_trait2.text = WorldFactory.TRAIT_LABELS_ZH.get(pol.trait_alignment, "未知")
 	if _left_trait3:
-		_left_trait3.text = pol.background_label()
+		_left_trait3.text = WorldFactory.TRAIT_LABELS_ZH.get(pol.trait_special, "未知")
 
 
 ## 原版 Politic_Manager.cs:157-166 的中文阴谋判定（仅在监视中评估）。

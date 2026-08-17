@@ -29,6 +29,7 @@ const SPEED_BLOCK_OFF := Color(0.18, 0.08, 0.08, 0.55)   # 暗红色
 # 原版 Diplomacy.unity alarmIcons[0]/[1] 的 OkoshkoScript.text_en 文案
 const 科研未研究提示文本 := "<color=red>研究完成</color>. 前往科学界面并点击任意科技图标继续"
 const 阴谋临近提示文本 := "<color=red>有针对你的阴谋</color>. 提升党内支持度,政客的忠诚度,要不然干脆开始调查或清除惹麻烦的政客."
+const 政治局缺人提示文本 := "<color=red>政治局缺人</color>. 有中央三职或主管职位空缺，请前往政治界面任命."
 
 func _ready() -> void:
 	# 始终处理，确保暂停时仍能接收 ESC 输入
@@ -97,7 +98,7 @@ func _on_time_toggled(button_pressed: bool) -> void:
 	if button_pressed:
 		GameManager.play()
 		if GameManager.speed == 0:
-			GameManager.set_speed(1)  # 默认正常速度（一秒一天）
+			GameManager.set_speed(1)  # 默认正常速度（原版 speed=4，两秒一天）
 			_refresh_speed_indicator()
 	else:
 		GameManager.pause()
@@ -185,6 +186,10 @@ func _setup_alert_icons() -> void:
 	if plot:
 		plot.tooltip_text = 阴谋临近提示文本
 		BbcTooltip.attach(plot)
+	var politburo := get_node_or_null("预警图标/政治局缺人提示") as Control
+	if politburo:
+		politburo.tooltip_text = 政治局缺人提示文本
+		BbcTooltip.attach(politburo)
 
 
 func _refresh_alert_icons() -> void:
@@ -194,6 +199,9 @@ func _refresh_alert_icons() -> void:
 	var plot := get_node_or_null("预警图标/阴谋临近提示") as CanvasItem
 	if plot:
 		plot.visible = GameManager.plot_alert_active() if GameManager else false
+	var politburo := get_node_or_null("预警图标/政治局缺人提示") as CanvasItem
+	if politburo:
+		politburo.visible = GameManager.political_bureau_vacancy_alert_active() if GameManager else false
 
 
 func _on_tech_completed(_tech_id: int) -> void:

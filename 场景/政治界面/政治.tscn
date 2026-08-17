@@ -5,11 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://cvjx2j0bi6k3l" path="res://资产/UI/政治/左栏背景.png" id="2_vbwtu"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="3_uhnri"]
 [ext_resource type="Texture2D" uid="uid://dnophrpyfwhhl" path="res://资产/UI/政治/实权领袖背景.png" id="4_x1jgi"]
-[ext_resource type="Texture2D" uid="uid://by1w0vtvm04ae" path="res://资产/UI/政治/行分隔箭头.png" id="5_ejoel"]
+[ext_resource type="Texture2D" uid="uid://c0he15pjigq7p" path="res://资产/UI/政治/行分隔箭头.png" id="5_ejoel"]
 [ext_resource type="PackedScene" uid="uid://b88f5esdeugoq" path="res://场景/政治界面/政治家卡片.tscn" id="6_hx4ig"]
 [ext_resource type="Texture2D" uid="uid://b03fhexcs37an" path="res://资产/UI/政治/操作按钮背景.png" id="7_ejoel"]
 [ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="8_hx4ig"]
-[ext_resource type="Texture2D" uid="uid://b4yiib86ebkfv" path="res://资产/UI/政治/中央职位背景.png" id="10_07vlq"]
+[ext_resource type="Texture2D" uid="uid://yomfjpbyl1rr" path="res://资产/UI/政治/中央职位背景.png" id="10_07vlq"]
 [ext_resource type="Texture2D" uid="uid://g224ia0w6f36" path="res://资产/UI/政治/地方职位背景.png" id="11_whbwe"]
 [ext_resource type="Script" uid="uid://dns8y0n8rvrim" path="res://数据脚本/game_ui_base.gd" id="12_inopw"]
 [ext_resource type="Texture2D" uid="uid://dvfsm4g8optn4" path="res://资产/UI/政治/右栏数据背景.png" id="13_rv0rt"]
@@ -106,7 +106,7 @@ offset_bottom = 135.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 24
-text = "硬汉"
+text = "群众领袖"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -128,7 +128,7 @@ offset_bottom = 177.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 24
-text = "谋士"
+text = "硬汉"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -150,7 +150,7 @@ offset_bottom = 219.0
 theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 24
-text = "党务干部"
+text = "病弱"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -693,7 +693,7 @@ offset_bottom = 372.0
 theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
 theme_override_fonts/font = ExtResource("3_uhnri")
 theme_override_font_sizes/font_size = 34
-text = "陈云"
+text = "韦国清"
 horizontal_alignment = 1
 vertical_alignment = 1
 

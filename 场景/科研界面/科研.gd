@@ -228,6 +228,8 @@ func _refresh() -> void:
 		# --- 年份标签：显示解锁年份或当前研究状态 ---
 		var lbl := _find(tech_name + "_解锁年份") as Label
 		if lbl:
+			# 年份/研究中/已完成统一水平居中，配合科研.tscn 中 130 宽的年份标签。
+			lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			if ts.unlocked[i]:
 				lbl.text = "已完成"
 			elif ts.in_progress[i]:

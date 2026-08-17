@@ -111,6 +111,11 @@ func _ready() -> void:
 		if not GameManager.is_map_data_preloaded:
 			# 如果 GameManager 还没预加载完，我们等待它的信号
 			await GameManager.map_data_preloaded
+		# 监听数据变更：外交互动/事件修改国家参数或地图归属后实时刷新
+		if not GameManager.stats_changed.is_connected(_on_stats_changed):
+			GameManager.stats_changed.connect(_on_stats_changed)
+		if not GameManager.world_state_loaded.is_connected(_on_stats_changed):
+			GameManager.world_state_loaded.connect(_on_stats_changed)
 		
 		# 检查是否成功加载了缓存，如果缓存底图有效，我们直接复用缓存，实现 O(1) 级的无缝加载
 		if GameManager.cached_region_map_image != null:
@@ -319,6 +324,20 @@ func refresh_palette() -> void:
 	if not _color_palette_image: return
 	_sync_color_palette_image()
 	_color_palette_tex.update(_color_palette_image)
+
+
+## GameManager.stats_changed / world_state_loaded 回调：
+## 同步地图归属缓存 + 重新生成着色调色板，让外交互动/事件改动实时生效。
+func _on_stats_changed() -> void:
+	if GameManager == null:
+		return
+	if GameManager.cached_region_owner.size() > 0:
+		_region_owner = GameManager.cached_region_owner.duplicate()
+		if _owner_palette_image:
+			_sync_owner_palette_image()
+			if _owner_palette_tex:
+				_owner_palette_tex.update(_owner_palette_image)
+	refresh_palette()
 
 
 func _sync_color_palette_image() -> void:
@@ -569,7 +588,20 @@ func country_name_for_gwcode(gwcode: int) -> String:
 
 func _country_data(gwcode: int) -> CountryData:
 	var ws := _get_world_state()
-	return ws.get_country_by_gwcode(gwcode) if ws else null
+	if ws == null:
+		return null
+	var cd := ws.get_country_by_gwcode(gwcode)
+	if cd != null:
+		return cd
+	# 兼容旧存档：旧档里 CountryData.gwcode 可能还是原版数组下标（如吉布提 106，
+	# 而地图 key 是 522）。按 map_countries 的 name_1976 回退查一次。
+	if _countries.has(gwcode):
+		var map_name: String = _countries[gwcode].get("name_1976", "")
+		if map_name != "":
+			var by_name := ws.get_country_by_tag(map_name)
+			if by_name != null:
+				return by_name
+	return null
 
 
 func _get_world_state() -> WorldState:

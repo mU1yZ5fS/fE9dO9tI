@@ -49,6 +49,7 @@
 [ext_resource type="Texture2D" uid="uid://deltg0ud2lhhg" path="res://资产/UI/外交/战争图标.png" id="29_waricon"]
 [ext_resource type="Script" uid="uid://dcelhgt2hg4h3" path="res://场景/外交界面/右侧栏.gd" id="32_yikjq"]
 [ext_resource type="Script" uid="uid://b7h4vxx2ippo7" path="res://场景/外交界面/esc菜单.gd" id="39_7aa6i"]
+[ext_resource type="Texture2D" uid="uid://0xnxua4djhn2" path="res://资产/UI/外交/ymmym.png" id="45_70jce"]
 [ext_resource type="Script" uid="uid://bb7ia3deyeqrp" path="res://场景/外交界面/国家面板.gd" id="45_pb6ma"]
 [ext_resource type="Texture2D" uid="uid://b2ncfaagxja6h" path="res://资产/UI/外交/国家面板背景.png" id="46_ve70n"]
 [ext_resource type="Texture2D" uid="uid://p74lr5feanj4" path="res://资产/UI/外交/国家面板关闭.png" id="47_vqwm3"]
@@ -884,9 +885,11 @@ icon_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="决议" type="TextureButton" parent="状态栏" unique_id=701327033]
-offset_left = 1768.0
-offset_right = 1854.0
-offset_bottom = 80.0
+offset_left = 1790.0
+offset_top = 8.0
+offset_right = 1876.0
+offset_bottom = 88.0
+scale = Vector2(0.78, 0.78)
 texture_normal = ExtResource("55_vkq10")
 
 [node name="焦点" type="TextureButton" parent="状态栏" unique_id=701327034]
@@ -1140,11 +1143,13 @@ texture_normal = ExtResource("12_0r3oo")
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_top = 597.0
+offset_top = 456.0
 offset_right = 28.0
-offset_bottom = 835.0
+offset_bottom = 694.0
+grow_horizontal = 0
 rotation = 3.1415927
 texture_normal = ExtResource("12_0r3oo")
+metadata/_edit_use_anchors_ = true
 
 [node name="全国形势展开" type="TextureButton" parent="右侧栏" unique_id=2134077641]
 visible = false
@@ -1191,7 +1196,6 @@ stretch_mode = 0
 [node name="预警图标" type="CanvasLayer" parent="." unique_id=7722001]
 
 [node name="科研未研究提示" type="TextureRect" parent="预警图标" unique_id=7722002]
-visible = false
 offset_left = 531.0
 offset_top = 181.0
 offset_right = 617.0
@@ -1199,12 +1203,18 @@ offset_bottom = 261.0
 texture = ExtResource("22_kexue")
 
 [node name="阴谋临近提示" type="TextureRect" parent="预警图标" unique_id=7722003]
-visible = false
 offset_left = 648.0
 offset_top = 181.0
 offset_right = 734.0
 offset_bottom = 261.0
 texture = ExtResource("23_yinmou")
+
+[node name="政治局缺人提示" type="TextureRect" parent="预警图标" unique_id=475102624]
+offset_left = 768.0
+offset_top = 180.0
+offset_right = 854.0
+offset_bottom = 260.0
+texture = ExtResource("45_70jce")
 
 [node name="提示弹窗" type="CanvasLayer" parent="." unique_id=229077533]
 visible = false

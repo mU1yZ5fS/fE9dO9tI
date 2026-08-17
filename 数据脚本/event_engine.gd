@@ -360,11 +360,13 @@ func _enter_pending(event_def: EventDef) -> void:
 
 
 ## 手动将事件加入待处理队列（供外部系统如 Decision / 战争结束 使用）。
-## 若已有待处理：战争结算优先覆盖；其它事件入通知队列避免丢失。
+## 全局去重：同一事件不能同时出现在当前 pending 或通知队列中，避免重复触发。
 func queue_pending(event_id: String) -> void:
 	ensure_events_ready()
 	var event_def := _events.get(event_id) as EventDef
 	if event_def == null:
+		return
+	if event_id == pending_event_id or _pending_queue.has(event_id):
 		return
 	if pending_event_id != "":
 		if event_id == "war_is_over" and pending_event_id != "war_is_over":
@@ -374,8 +376,7 @@ func queue_pending(event_id: String) -> void:
 			_clear_pending()
 			_enter_pending(event_def)
 			return
-		if not _pending_queue.has(event_id):
-			_pending_queue.append(event_id)
+		_pending_queue.append(event_id)
 		return
 	_enter_pending(event_def)
 
