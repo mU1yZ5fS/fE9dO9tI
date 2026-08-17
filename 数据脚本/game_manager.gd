@@ -4615,6 +4615,474 @@ func _african_bot_support(d: Array[int], w: WorldState) -> void:
 			c.prc_power -= 60 - base
 
 
+## ModifiesInfuence.cs:510-1198 的 2 号修正「服务业的发展进程」逐字移植。
+## 寡头三档 + 教育路线(669) + 高校招生(456) + 合作医疗(646) + 票证分档 + 六项国策。
+func _apply_modifier2_services(d: Array[int], w: WorldState) -> void:
+	var oligarch := _dv(d, W.I_OLIGARCH)
+	if oligarch < 54:
+		pass  # 投机倒把的商人还影响不到我们
+	elif oligarch < 72:
+		d[W.I_PEOPLE_SUPPORT] -= 5
+		d[W.I_THOUGHT_FREEDOM] += 10
+		d[W.I_LIVING] -= 5
+		d[W.I_AGENTS] -= 2
+	else:
+		d[W.I_PEOPLE_SUPPORT] -= 10
+		d[W.I_THOUGHT_FREEDOM] += 20
+		d[W.I_LIVING] -= 10
+		d[W.I_AGENTS] -= 2
+	# 教育路线（Event669）
+	if not w.event_done_num(669):
+		d[W.I_PEOPLE_SUPPORT] += 2
+		d[W.I_BUDGET] -= 1
+		d[W.I_INDUSTRY] += 2
+		d[W.I_AGRICULTURE] += 2
+		d[W.I_SCIENCE] += 5
+	elif w.result_of_event_num(669) == 0:
+		d[W.I_PEOPLE_SUPPORT] += 3
+		d[W.I_BUDGET] -= 2
+		d[W.I_INDUSTRY] += 3
+		d[W.I_AGRICULTURE] += 3
+		d[W.I_SCIENCE] += 10
+	elif w.result_of_event_num(669) == 1:
+		d[W.I_BUDGET] -= 1
+		d[W.I_CORRUPTION] += 1
+		d[W.I_SCIENCE] += 15
+	elif w.result_of_event_num(669) == 2:
+		d[W.I_BUDGET] += 2
+		d[W.I_OLIGARCH] += 1
+		d[W.I_CORRUPTION] += 1
+		d[W.I_SCIENCE] += 20
+	elif w.result_of_event_num(669) == 3:
+		d[W.I_ARMY] += 3
+		d[W.I_PEOPLE_SUPPORT] += 1
+		d[W.I_THOUGHT_FREEDOM] -= 1
+		d[W.I_SCIENCE] -= 20
+		d[W.I_MANPOWER] += 50
+		d[W.I_WAR_SUPPORT] += 50
+	# 高校招生（Event456）
+	if w.event_done_num(456) and w.result_of_event_num(456) == 0:
+		d[W.I_SCIENCE] += 20
+	elif w.event_done_num(456) and w.result_of_event_num(456) == 1:
+		d[W.I_SCIENCE] += 10
+	elif not w.event_done_num(456) or w.result_of_event_num(456) == 2:
+		d[W.I_AGRICULTURE] += 3
+		d[W.I_INDUSTRY] += 3
+	# 合作医疗（Event646）
+	if not w.event_done_num(646):
+		d[W.I_PEOPLE_SUPPORT] += 2
+		d[W.I_BUDGET] -= 1
+		d[W.I_INDUSTRY] += 2
+		d[W.I_AGRICULTURE] += 3
+		d[W.I_SERVICES] += 2
+	elif w.result_of_event_num(646) == 0:
+		d[W.I_PEOPLE_SUPPORT] += 2
+		d[W.I_BUDGET] -= 2
+		d[W.I_INDUSTRY] += 3
+		d[W.I_AGRICULTURE] += 4
+		d[W.I_SERVICES] += 3
+	elif w.result_of_event_num(646) == 1:
+		d[W.I_BUDGET] += 2
+		d[W.I_LIVING] += 1
+		d[W.I_OLIGARCH] += 1
+		d[W.I_SERVICES] += 1
+	# 票证制度自动废止（原版在 modifier2 块内，data16==15 时无需点决策40）
+	if _dv(d, W.I_ECON_SYSTEM) == 15 \
+			and (not w.has_coupon_system_phase_out
+				or (w.decisions != null and w.decisions.completed.size() > 40 and not w.decisions.completed[40])):
+		w.has_coupon_system_phase_out = true
+		if w.decisions != null and w.decisions.completed.size() > 40:
+			w.decisions.completed[40] = true
+	if not w.has_coupon_system_phase_out:
+		d[W.I_AGRICULTURE] += 1
+		d[W.I_PARTY_SUPPORT] += 2
+		_apply_coupon_tiers(d, w)
+	else:
+		d[W.I_CORRUPTION] -= 2
+		d[W.I_SERVICES] += 3
+		d[W.I_PEOPLE_SUPPORT] += 5
+		d[W.I_THOUGHT_FREEDOM] += 5
+	# 六项国策的取消条件（ModifiesInfuence.cs:1094-1130）
+	if w.planned_price_reduction > 0 and (_dv(d, W.I_ECON_SYSTEM) > 11 or _dv(d, W.I_RESERVE) <= 0):
+		w.planned_price_reduction = 0
+		_set_decision_flag(w, 41, false)
+	if w.austerity > 0 and (_dv(d, W.I_ECON_SYSTEM) > 13 or _dv(d, W.I_LOAN) <= 0):
+		w.austerity = 0
+		_set_decision_flag(w, 42, false)
+	if w.developed_consumerism > 0 and (_dv(d, W.I_ECON_SYSTEM) <= 13 or _dv(d, W.I_RESERVE) <= 0):
+		w.developed_consumerism = 0
+		_set_decision_flag(w, 43, false)
+	if w.new_era_commune_member > 0 and (_dv(d, W.I_BUDGET_ENVELOPE) > 0 or _dv(d, W.I_CORRUPTION) >= 50):
+		w.new_era_commune_member = 0
+		_set_decision_flag(w, 44, false)
+	if w.party_means_party > 0 and (_dv(d, W.I_BUDGET_ENVELOPE) < 100 or _dv(d, W.I_PARTY_SYSTEM) == 9):
+		w.party_means_party = 0
+		_set_decision_flag(w, 45, false)
+	if w.party_subsidy > 0 and (_dv(d, W.I_PARTY_SYSTEM) < 8 or _dv(d, W.I_RESERVE) <= 0):
+		w.party_subsidy = 0
+		_set_decision_flag(w, 46, false)
+	# 六项国策结算（ModifiesInfuence.cs:1132-1198）
+	if w.planned_price_reduction > 0:
+		d[W.I_BUDGET] -= 3
+		d[W.I_INDUSTRY] -= 3
+		d[W.I_AGRICULTURE] -= 3
+		d[W.I_SERVICES] -= 3
+		d[W.I_LIVING] += 20
+		d[W.I_PEOPLE_SUPPORT] += 20
+		d[W.I_THOUGHT_FREEDOM] -= 20
+		d[W.I_MANPOWER] += 10
+	if w.austerity > 0:
+		if d[W.I_PEOPLE_SUPPORT] > 650:
+			d[W.I_PEOPLE_SUPPORT] = 650
+		if d[W.I_LIVING] > 650:
+			d[W.I_LIVING] = 650
+		d[W.I_BUDGET] += 20
+		d[W.I_LIVING] -= 10
+		d[W.I_PEOPLE_SUPPORT] -= 10
+		d[W.I_THOUGHT_FREEDOM] += 10
+		d[W.I_MANPOWER] -= 10
+		d[W.I_SERVICES] -= 10
+		d[W.I_DIPLO] += 1
+		d[W.I_POPULATION] -= 2
+	if w.developed_consumerism > 0:
+		d[W.I_BUDGET] -= 25
+		d[W.I_LIVING] += 10
+		d[W.I_PEOPLE_SUPPORT] += 10
+		d[W.I_THOUGHT_FREEDOM] += 10
+		d[W.I_INDUSTRY] += 10
+		d[W.I_SERVICES] += 10
+		_add_empire_relation(w, EmpireData.USA, 2)
+	if w.new_era_commune_member > 0:
+		d[W.I_BUDGET] += 5
+		d[W.I_PARTY_SUPPORT] -= 25
+		d[W.I_PEOPLE_SUPPORT] += 10
+		d[W.I_CORRUPTION] -= 10
+		d[W.I_MANPOWER] += 5
+	if w.party_means_party > 0:
+		d[W.I_BUDGET] -= 10
+		d[W.I_PARTY_SUPPORT] += 20
+		d[W.I_PEOPLE_SUPPORT] -= 15
+		d[W.I_THOUGHT_FREEDOM] += 5
+		d[W.I_CORRUPTION] += 6
+		for p in w.politicians:
+			if p != null and not PoliticianSystem.is_vacant_politician(p):
+				p.loyalty += 10
+	if w.party_subsidy > 0:
+		d[W.I_BUDGET] -= 10
+		d[W.I_PARTY_SUPPORT] += 20
+		d[W.I_THOUGHT_FREEDOM] -= 5
+		d[W.I_CORRUPTION] += 5
+		d[W.I_MANPOWER] += 10
+		for p in w.politicians:
+			if p != null and not PoliticianSystem.is_vacant_politician(p):
+				p.loyalty += 10
+
+
+## 票证制度按经济体制与工农业产值分档结算（ModifiesInfuence.cs:670-1092）。
+func _apply_coupon_tiers(d: Array[int], w: WorldState) -> void:
+	var sum := _dv(d, W.I_INDUSTRY) + _dv(d, W.I_AGRICULTURE)
+	var econ := _dv(d, W.I_ECON_SYSTEM)
+	if econ <= 11:
+		if sum < 400:
+			d[W.I_PEOPLE_SUPPORT] += 3
+			d[W.I_MANPOWER] += 3
+			d[W.I_BUDGET] += 3
+		elif sum < 700:
+			d[W.I_PEOPLE_SUPPORT] += 2
+			d[W.I_MANPOWER] += 2
+			d[W.I_BUDGET] += 2
+		elif sum < 900:
+			d[W.I_PEOPLE_SUPPORT] += 1
+			d[W.I_MANPOWER] += 1
+			d[W.I_BUDGET] += 1
+		elif sum < 1300:
+			d[W.I_PEOPLE_SUPPORT] -= 1
+			d[W.I_BUDGET] += 1
+		elif sum < 1500:
+			d[W.I_PEOPLE_SUPPORT] -= 2
+			d[W.I_BUDGET] += 2
+		elif sum < 1600:
+			d[W.I_PEOPLE_SUPPORT] -= 1
+			d[W.I_CORRUPTION] += 1
+		elif sum < 1700:
+			d[W.I_PEOPLE_SUPPORT] -= 2
+			d[W.I_CORRUPTION] += 2
+		elif sum < 1800:
+			d[W.I_PEOPLE_SUPPORT] -= 3
+			d[W.I_CORRUPTION] += 3
+			d[W.I_THOUGHT_FREEDOM] += 2
+		elif sum < 1900:
+			d[W.I_PEOPLE_SUPPORT] -= 4
+			d[W.I_CORRUPTION] += 4
+			d[W.I_THOUGHT_FREEDOM] += 3
+		elif sum < 2000:
+			d[W.I_PEOPLE_SUPPORT] -= 5
+			d[W.I_CORRUPTION] += 5
+			d[W.I_THOUGHT_FREEDOM] += 4
+			if not w.event_done_num(5):
+				GameManager.start_event("popular_discontent")
+		else:
+			d[W.I_PEOPLE_SUPPORT] -= 6
+			d[W.I_CORRUPTION] += 6
+			d[W.I_THOUGHT_FREEDOM] += 5
+			if d[W.I_THOUGHT_FREEDOM] > 400 or not w.event_done_num(5):
+				GameManager.start_event("popular_discontent")
+	elif econ <= 13:
+		if sum < 400:
+			d[W.I_PARTY_SUPPORT] += 3
+			d[W.I_MANPOWER] += 3
+			d[W.I_BUDGET] += 3
+			d[W.I_THOUGHT_FREEDOM] += 3
+		elif sum < 700:
+			d[W.I_PARTY_SUPPORT] += 2
+			d[W.I_MANPOWER] += 2
+			d[W.I_BUDGET] += 2
+			d[W.I_THOUGHT_FREEDOM] += 2
+		elif sum < 900:
+			d[W.I_PARTY_SUPPORT] += 1
+			d[W.I_MANPOWER] += 1
+			d[W.I_BUDGET] += 1
+			d[W.I_THOUGHT_FREEDOM] += 1
+		elif sum < 1000:
+			d[W.I_PEOPLE_SUPPORT] -= 1
+			d[W.I_THOUGHT_FREEDOM] += 1
+			d[W.I_BUDGET] += 1
+		elif sum < 1100:
+			d[W.I_LIVING] -= 1
+			d[W.I_THOUGHT_FREEDOM] += 1
+		elif sum < 1200:
+			d[W.I_LIVING] -= 2
+			d[W.I_THOUGHT_FREEDOM] += 2
+		elif sum < 1300:
+			d[W.I_LIVING] -= 3
+			d[W.I_THOUGHT_FREEDOM] += 3
+		elif sum < 1400:
+			d[W.I_LIVING] -= 4
+			d[W.I_THOUGHT_FREEDOM] += 4
+			d[W.I_PEOPLE_SUPPORT] -= 1
+		elif sum < 1500:
+			d[W.I_LIVING] -= 5
+			d[W.I_THOUGHT_FREEDOM] += 5
+			d[W.I_PEOPLE_SUPPORT] -= 1
+		elif sum < 1600:
+			d[W.I_PEOPLE_SUPPORT] -= 1
+			d[W.I_CORRUPTION] += 1
+			d[W.I_LIVING] -= 5
+		elif sum < 1700:
+			d[W.I_PEOPLE_SUPPORT] -= 2
+			# 原版此处 data[26] += 2 出现两次、data[5] += 2（文案却写生活-0.5），逐字保留。
+			d[W.I_CORRUPTION] += 4
+			d[W.I_LIVING] += 2
+		elif sum < 1800:
+			d[W.I_PEOPLE_SUPPORT] -= 3
+			d[W.I_CORRUPTION] += 3
+			d[W.I_THOUGHT_FREEDOM] += 2
+		elif sum < 1900:
+			d[W.I_PEOPLE_SUPPORT] -= 4
+			d[W.I_CORRUPTION] += 4
+			d[W.I_THOUGHT_FREEDOM] += 3
+		elif sum < 2000:
+			d[W.I_PEOPLE_SUPPORT] -= 5
+			d[W.I_CORRUPTION] += 5
+			d[W.I_THOUGHT_FREEDOM] += 4
+			if not w.event_done_num(5):
+				GameManager.start_event("popular_discontent")
+		else:
+			d[W.I_PEOPLE_SUPPORT] -= 6
+			d[W.I_CORRUPTION] += 6
+			d[W.I_THOUGHT_FREEDOM] += 5
+			if d[W.I_THOUGHT_FREEDOM] > 400 or not w.event_done_num(5):
+				GameManager.start_event("popular_discontent")
+	elif econ == 14:
+		if sum < 400:
+			d[W.I_PEOPLE_SUPPORT] -= 3
+			d[W.I_THOUGHT_FREEDOM] += 3
+		elif sum < 700:
+			d[W.I_PEOPLE_SUPPORT] -= 2
+			d[W.I_THOUGHT_FREEDOM] += 2
+		elif sum < 900:
+			d[W.I_PEOPLE_SUPPORT] -= 1
+			d[W.I_THOUGHT_FREEDOM] += 1
+		elif sum < 1000:
+			d[W.I_PEOPLE_SUPPORT] -= 2
+			d[W.I_THOUGHT_FREEDOM] += 1
+			d[W.I_BUDGET] += 1
+		elif sum < 1100:
+			d[W.I_LIVING] -= 1
+			d[W.I_THOUGHT_FREEDOM] += 1
+		elif sum < 1200:
+			d[W.I_LIVING] -= 2
+			d[W.I_THOUGHT_FREEDOM] += 2
+		elif sum < 1300:
+			d[W.I_LIVING] -= 3
+			d[W.I_CORRUPTION] += 1
+		elif sum < 1400:
+			d[W.I_PEOPLE_SUPPORT] -= 2
+		elif sum < 1500:
+			d[W.I_LIVING] -= 4
+			d[W.I_CORRUPTION] += 2
+		elif sum < 1600:
+			# 原版此处没有 data[3] 扣减（文案写人民-0.1），逐字保留。
+			d[W.I_CORRUPTION] += 1
+			d[W.I_LIVING] -= 5
+		elif sum < 1700:
+			# 原版 data[3]-- 与 data[3] -= 2 连续执行（共 -3），无预算扣减。
+			d[W.I_PEOPLE_SUPPORT] -= 3
+			d[W.I_CORRUPTION] += 2
+		elif sum < 1800:
+			d[W.I_PEOPLE_SUPPORT] -= 3
+			d[W.I_CORRUPTION] += 3
+			d[W.I_THOUGHT_FREEDOM] += 2
+		elif sum < 1900:
+			d[W.I_PEOPLE_SUPPORT] -= 4
+			d[W.I_CORRUPTION] += 4
+			d[W.I_THOUGHT_FREEDOM] += 3
+			d[W.I_BUDGET] -= 2
+		elif sum < 2000:
+			d[W.I_PEOPLE_SUPPORT] -= 5
+			d[W.I_CORRUPTION] += 5
+			d[W.I_THOUGHT_FREEDOM] += 4
+			d[W.I_BUDGET] -= 3
+			if not w.event_done_num(5):
+				GameManager.start_event("popular_discontent")
+		else:
+			d[W.I_PEOPLE_SUPPORT] -= 6
+			d[W.I_CORRUPTION] += 6
+			d[W.I_THOUGHT_FREEDOM] += 5
+			d[W.I_BUDGET] -= 3
+			if d[W.I_THOUGHT_FREEDOM] > 400 or not w.event_done_num(5):
+				GameManager.start_event("popular_discontent")
+
+
+## ModifiesInfuence.cs:1618-1720 的 15 号修正「农业的发展进程」逐字移植。
+func _apply_modifier15_agriculture(d: Array[int], w: WorldState) -> void:
+	var ev681 := w.event_done_num(681)
+	var res681 := w.result_of_event_num(681)
+	var ev682 := w.event_done_num(682)
+	var res682 := w.result_of_event_num(682)
+	if not ev681 or res681 == 0:
+		d[W.I_AGRICULTURE] += 1
+		d[W.I_SCIENCE] -= 10
+		d[W.I_THOUGHT_FREEDOM] += 4
+	elif res681 == 1:
+		d[W.I_LIVING] -= 1
+		d[W.I_THOUGHT_FREEDOM] += 2
+	elif res681 == 2:
+		d[W.I_BUDGET] -= 7
+		d[W.I_PEOPLE_SUPPORT] += 4
+		d[W.I_AGRICULTURE] += 4
+		d[W.I_INDUSTRY] += 2
+		d[W.I_SERVICES] += 2
+		d[W.I_LIVING] += 4
+	elif res681 == 3:
+		d[W.I_BUDGET] += 1
+		d[W.I_AGRICULTURE] += 1
+		d[W.I_AGENTS] -= 2
+		d[W.I_THOUGHT_FREEDOM] -= 2
+		d[W.I_DIPLO] += 4
+		d[W.I_SCIENCE] -= 10
+		# 原版此处两行都是 empires[0].relations -= 10（美国扣两次，共 -20）。
+		_add_empire_relation(w, EmpireData.USA, -20)
+	elif res681 == 4 and not ev682:
+		d[W.I_AGRICULTURE] -= 1
+		d[W.I_THOUGHT_FREEDOM] += 3
+	elif res682 == 0:
+		d[W.I_BUDGET] -= 6
+		d[W.I_AGRICULTURE] += 2
+		d[W.I_LIVING] += 2
+		d[W.I_THOUGHT_FREEDOM] -= 4
+	elif res682 == 1:
+		d[W.I_BUDGET] += 2
+		d[W.I_AGRICULTURE] += 3
+		d[W.I_INDUSTRY] += 1
+		d[W.I_SERVICES] += 1
+		d[W.I_LIVING] += 1
+		d[W.I_THOUGHT_FREEDOM] += 12
+		d[W.I_DIPLO] -= 2
+		_add_empire_relation(w, EmpireData.USA, 2)
+		WAR_SYS.add_empire_power(EmpireData.USA, 1)
+		w.influence_prc -= 1
+	elif res682 == 2:
+		d[W.I_BUDGET] -= 4
+		d[W.I_AGRICULTURE] += 3
+		d[W.I_SERVICES] += 1
+		d[W.I_LIVING] += 1
+		d[W.I_AGENTS] += 1
+		d[W.I_THOUGHT_FREEDOM] -= 1
+	elif res682 == 3:
+		d[W.I_BUDGET] += 3
+		d[W.I_AGRICULTURE] += 5
+		d[W.I_INDUSTRY] -= 4
+		d[W.I_SERVICES] -= 2
+		d[W.I_LIVING] -= 1
+		d[W.I_THOUGHT_FREEDOM] += 2
+	elif res682 == 4:
+		d[W.I_BUDGET] -= 7
+		d[W.I_PEOPLE_SUPPORT] += 4
+		d[W.I_AGRICULTURE] += 4
+		d[W.I_INDUSTRY] += 2
+		d[W.I_SERVICES] += 2
+		d[W.I_LIVING] += 4
+	elif res682 == 5:
+		d[W.I_BUDGET] += 10
+		d[W.I_AGRICULTURE] += 3
+		d[W.I_INDUSTRY] += 2
+		d[W.I_LIVING] -= 6
+		d[W.I_PEOPLE_SUPPORT] -= 10
+		d[W.I_THOUGHT_FREEDOM] += 10
+		_add_empire_relation(w, EmpireData.USA, 2)
+		_add_empire_relation(w, EmpireData.USSR, 2)
+		w.influence_prc -= 1
+	# 公社路线（Event53 + Event682 交叉门控）
+	var ev53 := w.event_done_num(53)
+	var res53 := w.result_of_event_num(53)
+	if (not ev53 or res53 == 0) and (not ev682 or res682 == 4):
+		d[W.I_AGRICULTURE] += 1
+		d[W.I_INDUSTRY] += 1
+		d[W.I_LIVING] += 2
+		d[W.I_BUDGET] += 1
+	elif res53 == 1:
+		d[W.I_BUDGET] += 4
+		d[W.I_CORRUPTION] += 3
+		if _dv(d, W.I_BUDGET_WELFARE) <= 200:
+			d[W.I_AGRICULTURE] -= 2
+			d[W.I_LIVING] -= 2
+			d[W.I_SERVICES] -= 2
+		if _dv(d, W.I_BUDGET_WELFARE) > 200:
+			d[W.I_AGRICULTURE] += 2
+			d[W.I_LIVING] += 2
+			d[W.I_SERVICES] += 2
+	elif res53 == 2:
+		d[W.I_BUDGET] += 10
+		d[W.I_CORRUPTION] += 4
+		d[W.I_OLIGARCH] += 4
+		d[W.I_AGRICULTURE] -= 4
+		d[W.I_LIVING] -= 4
+		d[W.I_SERVICES] += 2
+	elif res53 == 3 and (not ev682 or res682 == 4):
+		d[W.I_AGRICULTURE] += 4
+		d[W.I_INDUSTRY] += 4
+		d[W.I_LIVING] += 4
+		d[W.I_BUDGET] += 2
+	# 农业科技三件套
+	if w.techs != null and w.techs.unlocked.size() > 3 and w.techs.unlocked[3]:
+		d[W.I_AGRICULTURE] += 6
+		d[W.I_INDUSTRY] += 4
+	if w.techs != null and w.techs.unlocked.size() > 6 and w.techs.unlocked[6]:
+		d[W.I_AGRICULTURE] += 3
+		d[W.I_LIVING] += 4
+	if w.techs != null and w.techs.unlocked.size() > 7 and w.techs.unlocked[7]:
+		d[W.I_AGRICULTURE] += 2
+		d[W.I_INDUSTRY] += 2
+		d[W.I_LIVING] += 4
+		d[W.I_BUDGET] += 3
+
+
+func _set_decision_flag(w: WorldState, idx: int, value: bool) -> void:
+	if w.decisions != null and idx >= 0 and idx < w.decisions.completed.size():
+		w.decisions.completed[idx] = value
+
+
 ## ModifiesInfuence.cs:27-500 的 50 号修正「军事的发展进程」逐字移植。
 ## 依据事件 513-521/540/544/545/685 与军购/PMC/机械陆军等状态，每双周结算一次。
 func _apply_modifier50_military(d: Array[int], w: WorldState) -> void:
@@ -5639,10 +6107,9 @@ func _fortnight_modifiers(
 			w.modifiers[0].is_active = false
 		d[W.I_INDUSTRY] -= 5
 
-	# 2 社会动荡。
+	# 2 服务业发展进程（ModifiesInfuence.cs:510-1198：寡头/教育/高考/医疗/票证/国策，动态结算）。
 	if _mod_active(w, 2):
-		d[W.I_PEOPLE_SUPPORT] -= 10
-		d[W.I_THOUGHT_FREEDOM] += 20
+		_apply_modifier2_services(d, w)
 
 	# 3 后毛时代效应。
 	if _mod_active(w, 3):
@@ -5750,18 +6217,15 @@ func _fortnight_modifiers(
 	# data[1]=0/忠诚±/激活均为该事件的一次性副作用；触发需 science[17]+体制10/11，
 	# TimeScript.cs:10810）。事件97未移植 → 恒不激活。原版无「econ==11 自动激活」
 	# 逻辑（开局 data[16]=11 即中式计划，此前误加致开局党内支持清零，已移除）。
+	# ModifiesInfuence.cs:1558-1570：每两周 +50（显示+5.0）；解除只在 Event112.cs:148。
 	if _mod_active(w, 11):
-		d[W.I_INDUSTRY] += 20
-		d[W.I_AGRICULTURE] += 20
+		d[W.I_INDUSTRY] += 50
+		d[W.I_SERVICES] += 50
+		d[W.I_AGRICULTURE] += 50
 		d[W.I_BUDGET] += 50
 		d[W.I_PARTY_SUPPORT] -= 50
-		d[W.I_LIVING] += 2
-		d[W.I_CORRUPTION] -= 1
-		if d[W.I_ECON_SYSTEM] > 11:
-			w.modifiers[11].is_active = false
-			d[W.I_PARTY_SUPPORT] += 500
-			d[W.I_AGENTS] -= 500
-			d[W.I_BUDGET] -= 500
+		d[W.I_LIVING] += 10
+		d[W.I_CORRUPTION] -= 10
 
 	# 12 政治危机的动态激活条件与完整代价。
 	var output_average := (d[W.I_INDUSTRY] + d[W.I_AGRICULTURE] + d[W.I_SERVICES] - d[W.I_CORRUPTION]) / 3
@@ -5801,8 +6265,10 @@ func _fortnight_modifiers(
 		if not deng_valid:
 			w.modifiers[14].is_active = false
 
-	# 15 上山下乡（原版 ModifiesInfuence.cs:1618+ 只有激活与文案/小数值效果，无封顶、无科技解除；
-	# Godot 早期版本自造的“>700 封顶 + 科技2解除”在原版全库无出处，已删除）。
+	# 15 农业发展进程（ModifiesInfuence.cs:1618-1720：下乡/乡建/公社/农业科技，动态结算；
+	# 无封顶、无科技解除——Godot 早期版本自造的“>700 封顶 + 科技2解除”在原版全库无出处，已删除）。
+	if _mod_active(w, 15):
+		_apply_modifier15_agriculture(d, w)
 
 	# 16/17 对苏/对美关系受损。
 	if _mod_active(w, 16):

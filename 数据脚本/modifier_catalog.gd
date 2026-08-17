@@ -188,10 +188,15 @@ static func all_ids() -> Array[int]:
 
 
 static func name_zh(id: int) -> String:
+	var w: WorldState = GameManager.world
 	if id == 63:
-		var w: WorldState = GameManager.world
 		if w != null and w.completed_event_ids.has("event_687"):
 			return "“民族文化”复兴"
+	if id == 46 and w != null and _mod_active(w, 46):
+		# TimeScript.cs:611-613：埃及(30) 严格社会主义且 46 激活时改标题。
+		var egypt := _country(w, 30)
+		if egypt != null and w.is_socialism(egypt, true):
+			return "阿拉伯革命社会主义共和国联盟"
 	if NAME_ZH.has(id):
 		return NAME_ZH[id]
 	var def := get_def(id)
@@ -206,12 +211,22 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 	match id:
 		1:
 			return _iraq_palestine_status(w)
+		2:
+			return _effect_services(w)
+		11:
+			return _effect_automation(w)
 		13:
 			return _effect_13(w)
+		15:
+			return _effect_agriculture(w)
+		44:
+			return _effect_france_mod44(w)
 		47:
 			return _effect_integration(w, true)
 		48:
 			return _effect_integration(w, false)
+		50:
+			return _effect_military(w)
 		51:
 			return _effect_oil(w)
 		52:
@@ -661,6 +676,296 @@ static func _effect_money(_w: WorldState) -> String:
 		level, level, _num(support_cost), _num(support_cost),
 		_num(living_cost), _num(industry_cost), _num(support_cost),
 	]
+
+
+# ============================================================================
+# 双周结算动态文案（ModifiesInfuence.ModifiesChanges 同款条件拼接）
+# ============================================================================
+
+static func _sci(w: WorldState, idx: int) -> bool:
+	return w != null and w.techs != null and idx >= 0 and idx < w.techs.unlocked.size() \
+		and w.techs.unlocked[idx]
+
+
+static func _effect_automation(w: WorldState) -> String:
+	if _mod_active(w, 11):
+		# ModifiesInfuence.cs:1560-1570：激活时覆盖为 +5.0 版本。
+		return "农业、工业和服务业+5.0|预算+5.0，生活水平+1.0，腐败-1.0|党内支持度-5.0|每两周"
+	return EFFECT_ZH[11].replace("|", "\n")
+
+
+static func _effect_france_mod44(w: WorldState) -> String:
+	if w != null and w.get_flag("YugAgree"):
+		# ModifiesInfuence.cs:2236-2239：南斯拉夫同意统一时改写条件与数值。
+		return "在党内路线比“中式社会主义”更激进，未遭受苏联禁运且与法国建立贸易关系时：|<color=lime>|与苏联关系+0.5;|预算+0.3;|科研点数+0.3|</color>||<color=#9370DB>苏联影响+0.1.</color>"
+	return EFFECT_ZH[44].replace("|", "\n")
+
+
+static func _effect_agriculture(w: WorldState) -> String:
+	var parts: Array[String] = ["根据农业发展情况获得效果"]
+	var ev681 := _event_done(w, "event_681")
+	var res681 := _event_result(w, "event_681")
+	var ev682 := _event_done(w, "event_682")
+	var res682 := _event_result(w, "event_682")
+	# ModifiesInfuence.cs:1620-1660
+	if not ev681 or res681 == 0:
+		parts.append("<color=red>|“上山下乡”政策及其后果</color>|农业+0.1，科技点-1，思想自由化+0.4")
+	elif res681 == 1:
+		parts.append("<color=red>|社会转型阵痛</color>|生活水平-0.1，思想自由化+0.2")
+	elif res681 == 2:
+		parts.append("<color=red>|社会主义新农村</color>|预算-0.7，人民支持度+0.4，农业+0.4，工业+0.2，服务业+0.2，生活水平+0.4")
+	elif res681 == 3:
+		parts.append("<color=red>|“牛棚”群岛</color>|预算+0.1，农业+0.1，特勤网络-0.2，思想自由化-0.2，外交声誉+0.4，科技点-1，与美国关系-1，与苏联关系-1")
+	elif res681 == 4 and not ev682:
+		parts.append("<color=red>|人心思变</color>|农业-0.1，思想自由化+0.3")
+	elif res682 == 0:
+		parts.append("<color=red>|乡村建设理论</color>|预算-0.6，农业+0.2，生活水平+0.2，思想自由化-0.4")
+	elif res682 == 1:
+		parts.append("<color=red>|长期乡建合同</color>|预算+0.2，农业+0.3，工业+0.1，服务业+0.1，生活水平+0.1，思想自由化+1.2，外交声誉-0.2，与美关系+0.2，美国国际影响力+0.1，中国国际影响力-0.1")
+	elif res682 == 2:
+		parts.append("<color=red>|“新”新村运动</color>|预算-0.4，农业+0.3，服务业+0.1，生活水平+0.1，特勤网络+0.1，思想自由化-0.1")
+	elif res682 == 3:
+		parts.append("<color=red>|新乔治主义社会</color>|预算+0.3，农业+0.5，工业-0.4，服务业-0.2，生活水平-0.1，思想自由化+0.2")
+	elif res682 == 4:
+		parts.append("<color=red>|社会主义新农村</color>|预算-0.7，人民支持度+0.4，农业+0.4，工业+0.2，服务业+0.2，生活水平+0.4")
+	elif res682 == 5:
+		parts.append("<color=red>|水稻共和国</color>|预算+1，农业+0.3，工业+0.2，生活水平-0.6，人民支持度-1.0，思想自由化+1.0，与美关系+0.2，与苏关系+0.2，国际影响力-0.1")
+	# ModifiesInfuence.cs:1662-1700
+	var ev53 := _event_done(w, "agricultural_reform")
+	var res53 := _event_result(w, "agricultural_reform")
+	if (not ev53 or res53 == 0) and (not ev682 or res682 == 4):
+		parts.append("<color=red>|缓慢推进集体化的公社：</color>|农业+0.1，工业+0.1，生活水平+0.2，预算+0.1")
+	elif res53 == 1:
+		parts.append("<color=red>|家庭联产承包责任制：</color>|预算+0.4，腐败+0.3|若福利投资低于20，则农业-0.2，生活水平-0.2，服务业-0.2|若福利投资高于20，则农业+0.2，生活水平+0.2，服务业+0.2")
+	elif res53 == 2:
+		parts.append("<color=red>|私人农场：</color>|农业-0.4，生活水平-0.4，预算+1.0，服务业+0.2，腐败+0.4，寡头+4")
+	elif res53 == 3 and (not ev682 or res682 == 4):
+		parts.append("<color=red>|快速推进集体化的公社：</color>|农业+0.4，工业+0.4，生活水平+0.4，预算+0.2")
+	# ModifiesInfuence.cs:1702-1717
+	if _sci(w, 3):
+		parts.append("<color=red>|农业机械化：</color>|农业+0.6，工业+0.4")
+	if _sci(w, 6):
+		parts.append("<color=red>|普及化肥与杀虫剂：</color>|农业+0.3，生活水平+0.4")
+	if _sci(w, 7):
+		parts.append("<color=red>|转基因技术：</color>|农业+0.2，工业+0.2，生活水平+0.5，预算+0.3")
+	return "\n".join(parts)
+
+
+static func _effect_military(w: WorldState) -> String:
+	var parts: Array[String] = ["根据军事发展情况获得效果"]
+	if _event_done(w, "event_513") and _sci(w, 18):
+		if _event_result(w, "event_513") == 0:
+			parts.append("<color=red>|仿制苏械：</color>|军力+0.1")
+		elif _event_result(w, "event_513") == 1:
+			parts.append("<color=red>|自研军械：</color>|军力+0.2")
+	if _event_done(w, "event_514") and _sci(w, 23):
+		match _event_result(w, "event_514"):
+			0:
+				parts.append("<color=red>|新式军装：</color>|人民支持度+0.1，思想自由化-0.1，国际声望高于90/低于70时，国际声望-0.1/+0.1")
+			1:
+				parts.append("<color=red>|西式军装：</color>|人民支持度+0.1，思想自由化+0.1，国际声望-0.2")
+			2:
+				parts.append("<color=red>|65式军装：</color>|人民支持度+0.1，思想自由化-0.2，国际声望+0.2")
+	if _event_done(w, "event_345"):
+		if _event_result(w, "event_345") == 0:
+			parts.append("<color=red>|没有军衔的军队：</color>|人民支持度+0.3，军力+0.2，干涉点数+0.2")
+		elif _event_result(w, "event_345") == 1:
+			parts.append("<color=red>|恢复军衔：</color>|军力+0.5，干涉点数+0.2，腐败+0.2，资金-0.1")
+	if _event_done(w, "event_515") and _event_result(w, "event_515") == 0:
+		parts.append("<color=red>|无人飞行器：</color>|军力+0.2，特工网络+0.1")
+	if _event_done(w, "event_516"):
+		if _event_result(w, "event_516") == 0:
+			parts.append("<color=red>|改进坦克：</color>|军力+0.3，预算-0.1")
+		elif _event_result(w, "event_516") == 1:
+			parts.append("<color=red>|自研坦克：</color>|军力+0.6，预算-0.2，凝聚力+0.2")
+	if _event_done(w, "event_517"):
+		match _event_result(w, "event_517"):
+			0:
+				parts.append("<color=red>|新式歼击机：</color>|军力+0.3，人民支持度+0.2，预算-0.2，军武援助效果+1")
+			1:
+				parts.append("<color=red>|新式轰炸机：</color>|军力+0.5，预算-0.2，与美苏关系-0.2，军武援助效果+1")
+			2:
+				parts.append("<color=red>|新式歼击机与轰炸机：</color>|军力+1.0，人民支持度+0.2，预算-0.3，与美苏关系-0.2，军武援助效果+2")
+	if _event_done(w, "event_518"):
+		match _event_result(w, "event_518"):
+			0:
+				parts.append("<color=red>|隐身歼击机：</color>|军力+0.2，人民支持度+0.2，预算-0.2，干预点数+1.0")
+			1:
+				parts.append("<color=red>|隐身轰炸机：</color>|军力+0.3，预算-0.2，与美苏关系-0.1，干预点数+1.0")
+			2:
+				parts.append("<color=red>|隐身歼击机与轰炸机：</color>|军力+0.8，人民支持度+0.2，预算-0.3，与美苏关系-0.1，干预点数+2.0")
+	if _event_done(w, "event_519"):
+		match _event_result(w, "event_519"):
+			0:
+				parts.append("<color=red>|新型导弹驱逐舰：</color>|军力+1.8，人民支持度+0.5，预算-0.4")
+			1:
+				parts.append("<color=red>|改造导弹驱逐舰：</color>|军力+1.5，人民支持度+0.2，预算-0.3")
+			2:
+				parts.append("<color=red>|改造与新型导弹驱逐舰：</color>|军力+3.5，人民支持度+1.0，预算-0.5")
+	if _event_done(w, "event_520"):
+		match _event_result(w, "event_520"):
+			0:
+				parts.append("<color=red>|093核潜艇：</color>|军力+2.0，人民支持度+0.5，美苏关系-0.3")
+			1:
+				parts.append("<color=red>|094核潜艇与巨浪-2型潜射导弹：</color>|军力+4.0，人民支持度+0.8，美苏关系-0.4，预算-0.5")
+			2:
+				parts.append("<color=red>|092核潜艇：</color>|军力+1.0，人民支持度+1.0，美苏关系-0.2")
+	if _event_done(w, "event_521"):
+		match _event_result(w, "event_521"):
+			0:
+				parts.append("<color=red>|导弹驱逐舰：</color>|军力+3.0，人民支持度+1.0，影响力+0.5")
+			1:
+				parts.append("<color=red>|航空母舰：</color>|军力+3.0，干涉点数+2.0，人民支持度+1.0，影响力+0.5，军武支援效果+1")
+			2:
+				parts.append("<color=red>|导弹驱逐舰与航空母舰：</color>|军力+5.0，人民支持度+2.5，干涉点数+3.0，影响力+1.0，军武支援效果+2")
+	if _event_done(w, "event_540"):
+		if _event_result(w, "event_540") == 0:
+			parts.append("<color=red>|自研直升机：</color>|军力+0.4，干涉点数+0.2")
+		elif _event_result(w, "event_540") == 1:
+			parts.append("<color=red>|法式直升机：</color>|军力+0.2，干涉点数+0.1")
+	if _event_done(w, "event_544"):
+		match _event_result(w, "event_544"):
+			0:
+				parts.append("<color=red>|核防御措施：</color>|军力+0.7，外交声誉-0.5")
+			1:
+				parts.append("<color=red>|核威慑措施：</color>|军力+2.0，美苏关系-0.2")
+			2:
+				parts.append("<color=red>|核防御与核威慑措施：</color>|军力+4.0，美苏关系-0.4，可禁运美苏")
+	if _event_done(w, "event_545"):
+		match _event_result(w, "event_545"):
+			0:
+				parts.append("<color=red>|军用运输机：</color>|军力+1.0，支援战争消耗的干涉点数-0.2")
+			1:
+				parts.append("<color=red>|民用运输机：</color>|生活水平+1.0，人民支持度+1.0，思想自由化-0.5")
+			2:
+				parts.append("<color=red>|军用与民用运输机：</color>|军力+2.0，生活水平+1.5，人民支持度+2.0，思想自由化-1.0，支援战争消耗的干涉点数-0.5")
+	if _event_done(w, "event_685"):
+		match _event_result(w, "event_685"):
+			0:
+				parts.append("<color=red>|参与SALT机制</color>|中美关系+0.2，中苏关系+0.2，军事实力-0.4，特勤网络+0.2，思想自由化+0.2，外交声誉高于90.0时：外交声誉-0.2，外交声誉低于50.0时：外交声誉+0.2，核战必定不会赢得胜利")
+			1:
+				parts.append("<color=red>|参与弱化的SALT机制</color>|中美关系+0.1，中苏关系+0.1，军事实力-0.2，外交声誉高于90.0时：外交声誉-0.1，外交声誉低于50.0时：外交声誉+0.1")
+				parts.append("<color=red>|军备发展新方针：贯彻质量制胜</color>|预算-4.0，军力+2.0，人民支持度+1.0，生活水平+0.6，干涉点数+4.0，军武支援效果+2.0，外交声誉+0.1，科技点+10.0")
+			2:
+				parts.append("<color=red>|自行其是的世界第三极</color>|中美关系-1，中苏关系-1，外交声誉+0.2")
+	if w != null and w.arms_purchase_agreement > 0:
+		parts.append("<color=red>|T-72坦克军购协定：</color>|预算-0.6，军力+1.2，科技点数+0.5，中苏关系+0.8，苏联储备金+0.6，苏联国际影响力+0.1")
+	if w != null and w.pmc > 0:
+		parts.append("<color=red>|“第五纵队”：</color>|预算+1.0，军事实力-1.0，特勤网络+0.2，军事援助效果+2，特勤援助效果+2，人道援助效果+2，与美苏的关系下限为25.0，上限为75.0，腐败+0.2")
+	var c16 := _country(w, 16)
+	if c16 != null and c16.prc_influence != 0:
+		parts.append("<color=red>|现代化的机械陆军：</color>|军力+0.5，特工网络+0.3，干涉点数+1.0，预算-0.8，科技点数-0.2，人民支持度+1.0")
+	return "\n".join(parts)
+
+
+static func _effect_services(w: WorldState) -> String:
+	if w == null:
+		return EFFECT_ZH[2].replace("|", "\n")
+	var d: Array[int] = w.数值表 if w != null else []
+	var parts: Array[String] = ["根据服务业的发展情况获得效果"]
+	var oligarch := _raw(d, WorldState.I_OLIGARCH)
+	if oligarch < 54:
+		parts.append("<color=red>受到管控的私有制：</color>投机倒把的商人还影响不到我们")
+	elif oligarch < 72:
+		parts.append("<color=red>逐渐崛起的寡头：</color>人民支持度-0.5，思想自由化+1，生活水平-0.5")
+	elif oligarch >= 72:
+		parts.append("<color=red>寡头执政：</color>人民支持度-1，思想自由化+2，生活水平-1")
+	var ev669 := _event_done(w, "event_669")
+	var res669 := _event_result(w, "event_669")
+	if not ev669:
+		parts.append("<color=red>|无产阶级教育路线：</color>预算-0.1，工业+0.2，农业+0.2，人民支持度+0.2，科技点数+0.5")
+	elif res669 == 0:
+		parts.append("<color=red>|无产阶级教育路线：</color>预算-0.2，工业+0.3，农业+0.3，人民支持度+0.3，科技点数+1")
+	elif res669 == 1:
+		parts.append("<color=red>|正统社会主义教育路线：</color>预算-0.1，腐败+0.1，科技点数+1.5")
+	elif res669 == 2:
+		parts.append("<color=red>|混合式教育体制改革：</color>预算+0.2，寡头力量+0.1，腐败+0.2，科技点数+2")
+	elif res669 == 3:
+		parts.append("<color=red>|全民军事化教育：</color>军事力量+0.3，人民支持度+1，思想自由化-1，科技点数-2，凝聚力+0.5，民族情绪+0.5")
+	var ev456 := _event_done(w, "event_456")
+	var res456 := _event_result(w, "event_456")
+	if ev456 and res456 == 0:
+		parts.append("<color=red>|全国高校统一招生考试：</color>科技点数+2")
+	elif ev456 and res456 == 1:
+		parts.append("<color=red>|预科制度：</color>科技点数+1")
+	elif not ev456 or res456 == 2:
+		parts.append("<color=red>|无产阶级推荐制：</color>农业+0.3，工业+0.3")
+	var ev646 := _event_done(w, "event_646")
+	var res646 := _event_result(w, "event_646")
+	if not ev646:
+		parts.append("<color=red>|合作医疗：</color>预算-0.1，工业+0.2，农业+0.3，人民支持度+0.2，服务业+0.2")
+	elif res646 == 0:
+		parts.append("<color=red>|精进的合作医疗：</color>预算-0.2，工业+0.3，农业+0.4，人民支持度+0.2，服务业+0.3")
+	elif res646 == 1:
+		parts.append("<color=red>|市场化改革医疗：</color>预算+0.2，生活水平+0.1，寡头力量+0.1，服务业+0.1")
+	# 原版 ModifiesInfuence.cs:1086-1093：data[16]==15 时票证制度自动废止。
+	var phase_out := w.has_coupon_system_phase_out or _raw(d, WorldState.I_ECON_SYSTEM) == 15
+	if not phase_out:
+		parts.append("<color=red>|票证制度：</color>农业+0.1，党内支持度+0.2，不同经济模式下随着发展程度的不同有额外加成|<color=lime>当前额外加成：</color>" + _services_coupon_text(w, _raw(d, WorldState.I_ECON_SYSTEM), _raw(d, WorldState.I_INDUSTRY) + _raw(d, WorldState.I_AGRICULTURE)))
+	else:
+		parts.append("<color=red>|自由供应：</color>腐败-0.2，服务业+0.3，人民支持度+0.5，思想自由化+0.5，“普遍的贫困”的触发阈值生活水平提高10.0且效果翻倍")
+	if w.planned_price_reduction > 0:
+		parts.append("<color=red>|计划性降价：</color>预算-0.3，三大产业-0.3，生活水平+2.0，人民支持度+2.0，思想自由化-2.0，凝聚力+1.0")
+	if w.austerity > 0:
+		parts.append("<color=red>|自力更生：</color>预算+2.0，生活水平-1.0，人民支持度-1.0，思想自由化+1.0，凝聚力-1.0，服务业-1.0，外交声誉+0.1，人口-0.2百万，生活水平与人民支持度不会超过65.0")
+	if w.developed_consumerism > 0:
+		parts.append("<color=red>|发达消费主义：</color>预算-2.5，生活水平+1.0，人民支持度+1.0，思想自由化+1.0，工业+1.0，服务业+1.0，美国好感度+0.2")
+	if w.new_era_commune_member > 0:
+		parts.append("<color=red>|我们是新时代的公社社员！：</color>预算+0.5，党内团结度-2.5，人民支持度+1.0，腐败-1.0，凝聚力+0.5")
+	if w.party_means_party > 0:
+		parts.append("<color=red>|政党即派对：</color>预算-1，党内团结度+2.0，人民支持度-1.5，思想自由化+0.5，腐败+0.6，政客忠诚度+1，领导人个人资产规模+0.4")
+	if w.party_subsidy > 0:
+		parts.append("<color=red>|政党补助金：</color>预算-1.0，党内团结度+2.0，思想自由化-0.5，腐败+0.5，政客忠诚度+1，领导人个人资产规模+0.2，凝聚力+1.0")
+	return "\n".join(parts)
+
+
+static func _services_coupon_text(w: WorldState, econ: int, sum: int) -> String:
+	# ModifiesInfuence.cs:667-1196：票证制度按经济体制与工农产值分档。
+	if econ <= 11:
+		if sum < 400: return "人民支持度+0.3，凝聚力+0.3，预算+0.3"
+		if sum < 700: return "人民支持度+0.2，凝聚力+0.2，预算+0.2"
+		if sum < 900: return "人民支持度+0.1，凝聚力+0.1，预算+0.1"
+		if sum < 1300: return "人民支持度-0.1，预算+0.1"
+		if sum < 1500: return "人民支持度-0.2，预算+0.2"
+		if sum < 1600: return "人民支持度-0.1，腐败+0.1"
+		if sum < 1700: return "人民支持度-0.2，腐败+0.2"
+		if sum < 1800: return "人民支持度-0.3，腐败+0.3，思想自由化+0.2"
+		if sum < 1900: return "人民支持度-0.4，腐败+0.4，思想自由化+0.3"
+		if sum < 2000: return "人民支持度-0.5，腐败+0.5，思想自由化+0.4，更容易引发人民不满"
+		return "人民支持度-0.6，腐败+0.6，思想自由化+0.5，更容易引发人民不满"
+	if econ <= 13:
+		if sum < 400: return "党内支持度+0.3，凝聚力+0.3，思想自由化+0.3，预算+0.3"
+		if sum < 700: return "党内支持度+0.2，凝聚力+0.2，思想自由化+0.2，预算+0.2"
+		if sum < 900: return "党内支持度+0.1，凝聚力+0.1，思想自由化+0.1，预算+0.1"
+		if sum < 1000: return "人民支持度-0.1，思想自由化+0.1，预算+0.1"
+		if sum < 1100: return "生活水平-0.1，思想自由化+0.1"
+		if sum < 1200: return "生活水平-0.2，思想自由化+0.2"
+		if sum < 1300: return "生活水平-0.3，思想自由化+0.3"
+		if sum < 1400: return "生活水平-0.4，思想自由化+0.4，人民支持度-0.1"
+		if sum < 1500: return "生活水平-0.5，思想自由化+0.5，人民支持度-0.1"
+		if sum < 1600: return "人民支持度-0.1，腐败+0.1，生活水平-0.5"
+		if sum < 1700: return "人民支持度-0.2，腐败+0.2，生活水平-0.5，思想自由化+0.2"
+		if sum < 1800: return "人民支持度-0.3，腐败+0.3，思想自由化+0.2"
+		if sum < 1900: return "人民支持度-0.4，腐败+0.4，思想自由化+0.3"
+		if sum < 2000: return "人民支持度-0.5，腐败+0.5，思想自由化+0.4，更容易引发人民不满"
+		return "人民支持度-0.6，腐败+0.6，思想自由化+0.5，更容易引发人民不满"
+	if econ == 14:
+		if sum < 400: return "人民支持度-0.3，思想自由化+0.3"
+		if sum < 700: return "人民支持度-0.2，思想自由化+0.2"
+		if sum < 900: return "人民支持度-0.1，思想自由化+0.1"
+		if sum < 1000: return "人民支持度-0.2，思想自由化+0.1，预算+0.1"
+		if sum < 1100: return "生活水平-0.1，思想自由化+0.1"
+		if sum < 1200: return "生活水平-0.2，思想自由化+0.2"
+		if sum < 1300: return "生活水平-0.3，腐败+0.1"
+		if sum < 1400: return "人民支持度-0.2"
+		if sum < 1500: return "生活水平-0.4，腐败+0.2"
+		if sum < 1600: return "人民支持度-0.1，腐败+0.1，生活水平-0.5"
+		if sum < 1700: return "人民支持度-0.2，腐败+0.2，预算-0.1"
+		if sum < 1800: return "人民支持度-0.3，腐败+0.3，思想自由化+0.2"
+		if sum < 1900: return "人民支持度-0.4，腐败+0.4，+0.3思想自由化，预算-0.2"
+		if sum < 2000: return "人民支持度-0.5，腐败+0.5，+0.4思想自由化，预算-0.3，更容易引发人民不满"
+		return "人民支持度-0.6，腐败+0.6，+0.5思想自由化，预算-0.3，更容易引发人民不满"
+	return "自由供应：腐败-0.2，服务业+0.3，人民支持度+0.5，思想自由化+0.5"
 
 
 # ============================================================================
