@@ -30,6 +30,14 @@ const SPEED_BLOCK_OFF := Color(0.18, 0.08, 0.08, 0.55)   # 暗红色
 const 科研未研究提示文本 := "<color=red>研究完成</color>. 前往科学界面并点击任意科技图标继续"
 const 阴谋临近提示文本 := "<color=red>有针对你的阴谋</color>. 提升党内支持度,政客的忠诚度,要不然干脆开始调查或清除惹麻烦的政客."
 const 政治局缺人提示文本 := "<color=red>政治局缺人</color>. 有中央三职或主管职位空缺，请前往政治界面任命."
+# 预警图标点击跳转目标（复用状态栏场景 UID）
+const 科研场景 := "uid://d2qkifpx3o8pl"
+const 政治场景 := "uid://dsmslhxc0e8u5"
+
+# 可互动国家提示缓存
+var _interactive_countries: Array[CountryData] = []
+var _interactive_popup: Panel = null
+var _interactive_list: VBoxContainer = null
 
 func _ready() -> void:
 	# 始终处理，确保暂停时仍能接收 ESC 输入
@@ -80,6 +88,131 @@ func _ready() -> void:
 	var notify_btn := get_node_or_null("提示弹窗/TextureButton")
 	if notify_btn is TextureButton:
 		notify_btn.pressed.connect(_on_event_notify_clicked)
+
+	# 事件缩小时显示“继续事件”按钮
+	_refresh_resume_event_button()
+
+	# 可互动国家提示（点击时即时刷新，避免每次数值变化全量扫描）
+	_create_interactive_countries_ui()
+	_refresh_interactive_countries()
+
+# ── 可互动国家提示 ──
+
+func _create_interactive_countries_ui() -> void:
+	var layer := get_node_or_null("预警图标") as CanvasLayer
+	if layer == null:
+		return
+	if not layer.has_node("可互动国家按钮"):
+		var btn := Button.new()
+		btn.name = "可互动国家按钮"
+		btn.text = "可互动国家（0）"
+		btn.position = Vector2(24, 140)
+		btn.pressed.connect(_on_interactive_countries_pressed)
+		layer.add_child(btn)
+	if _interactive_popup == null:
+		_interactive_popup = Panel.new()
+		_interactive_popup.name = "可互动国家弹窗"
+		_interactive_popup.position = Vector2(24, 180)
+		_interactive_popup.size = Vector2(360, 520)
+		_interactive_popup.visible = false
+		layer.add_child(_interactive_popup)
+		var scroll := ScrollContainer.new()
+		scroll.set_anchors_preset(Control.PRESET_FULL_RECT)
+		scroll.offset_bottom = -32.0
+		_interactive_popup.add_child(scroll)
+		_interactive_list = VBoxContainer.new()
+		_interactive_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		scroll.add_child(_interactive_list)
+		var close_btn := Button.new()
+		close_btn.text = "关闭"
+		close_btn.position = Vector2(292, 6)
+		close_btn.pressed.connect(func() -> void: _interactive_popup.visible = false)
+		_interactive_popup.add_child(close_btn)
+
+
+func _refresh_interactive_countries(_unused = null) -> void:
+	var btn := get_node_or_null("预警图标/可互动国家按钮") as Button
+	if btn == null:
+		return
+	_interactive_countries.clear()
+	var w: WorldState = GameManager.world if GameManager else null
+	if w != null:
+		var panel := get_node_or_null("国家面板")
+		if panel != null and panel.has_method("_build_actions_v2"):
+			for country in w.countries:
+				if country == null:
+					continue
+				var actions: Array = panel._build_actions_v2(country)
+				var has_available := false
+				for action in actions:
+					if action is Dictionary and _action_available(action):
+						has_available = true
+						break
+				if has_available:
+					_interactive_countries.append(country)
+	btn.text = "可互动国家（%d）" % _interactive_countries.size()
+
+
+func _action_available(action: Dictionary) -> bool:
+	var conditions: Array = action.get("conditions", [])
+	for cond in conditions:
+		if cond is Dictionary and cond.has("check"):
+			var check: Callable = cond["check"]
+			if not check.call():
+				return false
+	return true
+
+
+func _on_interactive_countries_pressed() -> void:
+	音频总管.play_button_click_sound()
+	_refresh_interactive_countries()
+	if _interactive_list == null:
+		return
+	for child in _interactive_list.get_children():
+		child.queue_free()
+	for country in _interactive_countries:
+		var b := Button.new()
+		b.text = country.display_name()
+		b.pressed.connect(_on_interactive_country_pressed.bind(country))
+		_interactive_list.add_child(b)
+	if _interactive_popup:
+		_interactive_popup.visible = true
+
+
+func _on_interactive_country_pressed(country: CountryData) -> void:
+	if _interactive_popup:
+		_interactive_popup.visible = false
+	var panel := get_node_or_null("国家面板")
+	if panel != null and panel.has_method("_on_country_selected"):
+		panel._on_country_selected(country.gwcode, country.display_name())
+
+
+# ── 事件缩小恢复 ──
+
+## 事件场景点“缩小查看地图”后回到外交，这里显示继续按钮；正常完成事件后自动隐藏。
+func _refresh_resume_event_button() -> void:
+	var layer := get_node_or_null("预警图标") as CanvasLayer
+	if layer == null:
+		return
+	var btn := layer.get_node_or_null("继续事件按钮") as Button
+	var should_show := GameManager != null and GameManager.current_event_id != "" \
+			and GameManager.current_ending_id < 0
+	if should_show:
+		if btn == null:
+			btn = Button.new()
+			btn.name = "继续事件按钮"
+			btn.text = "继续事件"
+			btn.position = Vector2(24, 96)
+			btn.pressed.connect(_on_resume_event_pressed)
+			layer.add_child(btn)
+		btn.visible = true
+	elif btn != null:
+		btn.visible = false
+
+
+func _on_resume_event_pressed() -> void:
+	音频总管.play_button_click_sound()
+	get_tree().change_scene_to_file("uid://bheujwt4qte1y")
 
 # ── 国家选择 ──
 
@@ -164,10 +297,12 @@ func _on_world_loaded() -> void:
 	if GameManager.world:
 		_refresh_date(GameManager.world.date)
 	_refresh_alert_icons()
+	_refresh_interactive_countries()
 
 func _on_date_changed(date: GameDate) -> void:
 	_refresh_date(date)
 	_refresh_alert_icons()
+	_refresh_interactive_countries()
 
 func _refresh_date(date: GameDate) -> void:
 	var lbl := get_node_or_null("时间/时间")
@@ -182,14 +317,29 @@ func _setup_alert_icons() -> void:
 	if science:
 		science.tooltip_text = 科研未研究提示文本
 		BbcTooltip.attach(science)
+		science.mouse_filter = Control.MOUSE_FILTER_STOP
+		if not science.gui_input.is_connected(_on_alert_icon_input.bind(科研场景)):
+			science.gui_input.connect(_on_alert_icon_input.bind(科研场景))
 	var plot := get_node_or_null("预警图标/阴谋临近提示") as Control
 	if plot:
 		plot.tooltip_text = 阴谋临近提示文本
 		BbcTooltip.attach(plot)
+		plot.mouse_filter = Control.MOUSE_FILTER_STOP
+		if not plot.gui_input.is_connected(_on_alert_icon_input.bind(政治场景)):
+			plot.gui_input.connect(_on_alert_icon_input.bind(政治场景))
 	var politburo := get_node_or_null("预警图标/政治局缺人提示") as Control
 	if politburo:
 		politburo.tooltip_text = 政治局缺人提示文本
 		BbcTooltip.attach(politburo)
+		politburo.mouse_filter = Control.MOUSE_FILTER_STOP
+		if not politburo.gui_input.is_connected(_on_alert_icon_input.bind(政治场景)):
+			politburo.gui_input.connect(_on_alert_icon_input.bind(政治场景))
+
+
+func _on_alert_icon_input(event: InputEvent, scene_uid: String) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		音频总管.play_button_click_sound()
+		get_tree().change_scene_to_file(scene_uid)
 
 
 func _refresh_alert_icons() -> void:

@@ -3,6 +3,8 @@ extends Control
 ## 事件场景逻辑。三页状态机。
 ## 仅使用 EventDef + EventEngine 新系统。
 
+const 外交场景 := "uid://vq6jexkk5tru"
+
 enum Page { INTRO, OPTIONS, RESULT }
 
 ## 当前展示的事件定义。由 GameManager.current_event_id 定位，
@@ -48,7 +50,30 @@ func _ready() -> void:
 	_back_button.hide()   # INTRO 页不需要返回按钮
 	_options_root.hide()
 	_result_root.hide()
+	_create_minimize_button()
 	_load_event()
+
+
+## 缩小键：不结束事件，直接切回外交场景查看地图；外交场景会显示“继续事件”按钮。
+func _create_minimize_button() -> void:
+	var btn := Button.new()
+	btn.name = "缩小查看地图按钮"
+	btn.text = "缩小查看地图"
+	btn.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	btn.offset_left = -200.0
+	btn.offset_top = -64.0
+	btn.offset_right = -24.0
+	btn.offset_bottom = -24.0
+	btn.pressed.connect(_on_minimize_pressed)
+	add_child(btn)
+
+
+func _on_minimize_pressed() -> void:
+	# 已进入结局流程时不允许缩小，避免跳过结局
+	if GameManager == null or GameManager.current_ending_id >= 0:
+		return
+	音频总管.play_button_click_sound()
+	get_tree().change_scene_to_file(外交场景)
 
 
 func _collect_option_nodes() -> void:
