@@ -72,10 +72,11 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R0_B
 			if int(ws.completed_event_ids.get("event_522", 0)) != 0:
-				# UNHANDLED: this.a.allcountries[44].Gosstroy = 2
-				# UNHANDLED: this.a.allcountries[44].SubGosstroy = 8
-				# UNHANDLED: this.a.allcountries[44].Vyshi = false
-				# UNHANDLED: this.a.allcountries[44].Torg = true
+				if _c44 != null:
+					_c44.government = 2
+					_c44.sub_government = 8
+					_c44.set_tag("亲美", false)
+					_c44.set_tag("对华贸易", true)
 				_add(8, -(40))
 				_add(9, -(40))
 				_add(1, 50)
@@ -84,10 +85,11 @@ func execute(context: Dictionary) -> void:
 				ws.influence_prc += 30
 				_add_relation(0, -(100))
 			else:
-				# UNHANDLED: this.a.allcountries[44].Gosstroy = 2
-				# UNHANDLED: this.a.allcountries[44].SubGosstroy = 8
-				# UNHANDLED: this.a.allcountries[44].Vyshi = false
-				# UNHANDLED: this.a.allcountries[44].Torg = true
+				if _c44 != null:
+					_c44.government = 2
+					_c44.sub_government = 8
+					_c44.set_tag("亲美", false)
+					_c44.set_tag("对华贸易", true)
 				_add(8, -(80))
 				_add(9, -(80))
 				_add(1, 50)
@@ -97,8 +99,9 @@ func execute(context: Dictionary) -> void:
 				_add_relation(0, -(100))
 		1:
 			context["result_text"] = TXT_R1_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 6
+			if _c44 != null:
+				_c44.government = 3
+				_c44.sub_government = 6
 			_add(8, -(30))
 			_add(9, -(30))
 			_add(1, -(50))
@@ -108,8 +111,9 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 20
 		2:
 			context["result_text"] = TXT_R2_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 6
+			if _c44 != null:
+				_c44.government = 3
+				_c44.sub_government = 6
 			_add(8, -(30))
 			_add(9, -(30))
 			_add(1, -(50))
@@ -119,9 +123,10 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 20
 		3:
 			context["result_text"] = TXT_R3_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 6
-			# UNHANDLED: this.a.allcountries[44].prcinfl += 20
+			if _c44 != null:
+				_c44.government = 3
+				_c44.sub_government = 6
+				_c44.prc_influence += 20
 			_add(8, -(30))
 			_add(9, -(30))
 			_add(1, -(50))

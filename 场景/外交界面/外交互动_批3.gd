@@ -178,6 +178,9 @@ func _def_80(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	if sub_ch < 19:
 		# CountryData.IDEOLOGY 已按 other_text 索引映射（sub<10→idx+13，10..17→idx+82，18→182）。
 		opis += "| 当 前 我 国 政 体 为 ：" + str(CountryData.IDEOLOGY.get(sub_ch, ""))
+	elif sub_ch == 19:
+		# 原版三元表达式 fallback：非 <19 且非 20/21/22 时显示"封建社会主义"。
+		opis += "| 当 前 我 国 政 体 为 ：封 建 社 会 主 义"
 	elif sub_ch == 20:
 		opis += "| 当 前 我 国 政 体 为 ：宪 政 威 权 主 义"
 	elif sub_ch == 21:
@@ -615,9 +618,8 @@ func _def_143(w: WorldState, country: CountryData, caption: String) -> Dictionar
 
 # ============================================================================
 # 编号 144 · 散播其余派系的黑材料
-# DiploButtonScript Show L3437-3476 / OnMouseDown 无
-# 说明：原版 OnMouseDown 无独立 type144 的 else if 块；JSON onmouse 为空，
-#       按本批规范效果置空 Callable（外层 142-144 组公共收尾不在此实现）。
+# DiploButtonScript Show L3437-3476 / OnMouseDown L11048-11079（type144 回落分支）。
+# 142-144 组对非安哥拉国家的公共收尾在 DBS L11088-11102，type144 一并执行。
 # ============================================================================
 func _def_144(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var c123 := c(w, 123)
@@ -630,18 +632,45 @@ func _def_144(w: WorldState, country: CountryData, caption: String) -> Dictionar
 		var opis := "散 播 其 余 派 系 的 黑 材 料|安 人 运 力 量：%d.%d安 盟 力 量：%d.%d安 解 阵 力 量：%d.%d" % [pp / 10, absi(pp % 10), sp / 10, absi(sp % 10), up / 10, absi(up % 10)]
 		conds.append(cond("至 少5 特 工 网 络", func(): return d(w, 9) >= 50))
 		conds.append(cond(" 每 3 月 一 次", func(): return c123 != null and c123.prc_influence <= 0))  # other_text[450]
-		var empty_eff := func():
-			pass
-		return make_def(caption, opis, conds, empty_eff)
+		var eff := func():
+			set_d(w, 9, d(w, 9) - 50)
+			if c123 == null:
+				return
+			c123.prc_influence = 3
+			if res(w, 638) == 0:
+				if c123.sov_power > 10:
+					c123.sov_power -= 10
+				if c123.usa_power > 10:
+					c123.usa_power -= 10
+			elif res(w, 638) == 1:
+				if c123.prc_power > 10:
+					c123.prc_power -= 10
+				if c123.usa_power > 10:
+					c123.usa_power -= 10
+			elif res(w, 638) == 2:
+				if c123.prc_power > 10:
+					c123.prc_power -= 10
+				if c123.sov_power > 10:
+					c123.sov_power -= 10
+		return make_def(caption, opis, conds, eff)
 	var infl := country.influence_china / 10.0
 	var opis2 := " 投 资 %s 石 油 生 产%s对 该 国 的 影 响 力 ： %.1f" % [country.display_name(), "\n", infl]  # other_text[455]
 	conds.append(cond(" 3 百 万 预 算", func(): return d(w, 8) + d(w, 36) >= 30))  # other_text[456]
 	conds.append(cond(" 每 3 月 一 次", func(): return country.prc_influence <= 0))  # other_text[450]
 	conds.append(cond(" 对 该 国 的 影 响 力 低 于 100.0", func(): return country.influence_china < 1000))  # other_text[452]
 	conds.append(cond(" 海 湾 合 作 委 员 会 已 经 建 立", func(): return ev(w, 418)))  # other_text[451]
-	var empty_eff2 := func():
-		pass
-	return make_def(caption, opis2, conds, empty_eff2)
+	var eff2 := func():
+		set_d(w, 8, d(w, 8) - 30)
+		country.prc_influence = 3
+		country.influence_china += 200
+		if country.influence_china > 1000:
+			country.influence_china = 1000
+		if country.influence_china >= 1000:
+			w.influence_prc += 10
+			add_rel(w, 0, -100)
+			add_rel(w, 1, -100)
+			set_tag(country, "亲中", true)
+	return make_def(caption, opis2, conds, eff2)
 
 
 # ============================================================================

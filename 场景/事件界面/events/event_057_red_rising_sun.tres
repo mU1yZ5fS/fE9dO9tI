@@ -56,5 +56,5 @@ source_event_number = 57
 trigger_priority = 5700
 title = "红色旭日"
 description = "不久日本将举行众议院选举。由于政府不稳定和腐败丑闻的背景，日本共产党在近期逐渐获得人民支持，其他一些中左翼的反对派也是如此。假如我们对日共有影响力，就可以帮助他们的竞选活动。如果他们胜选了，我们可以与历史对手改善关系，并最终使美军基地撤出日本。"
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+trigger_conditions = Array[ExtResource("3_expr")]([])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])

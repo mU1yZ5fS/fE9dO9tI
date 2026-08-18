@@ -24,10 +24,11 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = TXT_R0_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 2
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 8
-			# UNHANDLED: this.a.allcountries[44].Vyshi = false
-			# UNHANDLED: this.a.allcountries[44].Torg = true
+			if _c44 != null:
+				_c44.government = 2
+				_c44.sub_government = 8
+				_c44.set_tag("亲美", false)
+				_c44.set_tag("对华贸易", true)
 			_add(1, 50)
 			_add(3, 50)
 			_add(6, 5)

@@ -312,7 +312,7 @@ func _event_59(option_index: int, context: Dictionary) -> void:
 				if country.has_tag("亲中") and not country.has_tag("亲美") and not country.has_tag("亲苏"):
 					country.set_tag("econ", true)
 					country.social_stability = 1000
-					names.append(country.name)
+					names.append(country.chinese_name if country.chinese_name.strip_edges() != "" else country.name)
 			_change_all_politicians(100, 0)
 			context["result_text"] = TXT_59_R1_BASE + _join_names(names)
 		2:
@@ -378,7 +378,7 @@ func _event_60(option_index: int, context: Dictionary) -> void:
 			if country.has_tag("sev"):
 				country.set_tag("sev", false)
 				country.set_tag("econ", true)
-			names.append(country.name)
+			names.append(country.chinese_name if country.chinese_name.strip_edges() != "" else country.name)
 	_change_all_politicians(100, 0)
 	context["result_text"] = TXT_60_R0_BASE + _join_names(names) + TXT_60_R0_TAIL
 	# 原版 Event60 的 old_modify_desc[59] 动态描述（按联盟成员统计）建模说明，

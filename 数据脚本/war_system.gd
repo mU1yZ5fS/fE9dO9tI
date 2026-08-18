@@ -29,6 +29,11 @@ static func monthly_war_points() -> void:
 		if war != null and war.is_going:
 			any_war = true
 			break
+	# TimeScript.cs:3354-3355：每月无条件 data[0] += data[81] / 50（外交预算贡献）。
+	if d.size() > W.I_BUDGET_DIPLO:
+		@warning_ignore("integer_division")
+		d[W.I_MIL_INTERVENTION] += d[W.I_BUDGET_DIPLO] / 50
+	# TimeScript.cs:3697-3699：存在进行中的战争时额外 data[0] += influencePRC / 12。
 	if any_war:
 		@warning_ignore("integer_division")
 		d[W.I_MIL_INTERVENTION] += d[W.I_INFLUENCE] / 12
@@ -1870,6 +1875,7 @@ static func _apply_war33_result(war: WarData, d: Array[int]) -> void:
 	var iraq := w.get_country_by_legacy_index(14)
 	if war.infl1 >= 900:
 		d[W.I_INFLUENCE] += 50
+		w.set_flag("iranrev", false)
 		if iran != null:
 			_leave_alliances(iran)
 			iran.government = 1
@@ -1884,7 +1890,12 @@ static func _apply_war33_result(war: WarData, d: Array[int]) -> void:
 			if iran != null:
 				iraq.government = iran.government
 				iraq.sub_government = iran.sub_government
+		# GameState.cs:1779-1782：战争33胜利时把战争3影响力钳到伊朗方胜利。
+		if w.wars.size() > 3 and w.wars[3] != null and w.wars[3].is_going:
+			w.wars[3].infl1 = 1000
+			w.wars[3].infl2 = 0
 	else:
+		w.set_flag("iranrev", false)
 		if iran != null:
 			iran.government = 0
 			iran.sub_government = 20
@@ -2848,7 +2859,7 @@ static func _apply_war6_result(war: WarData, _d: Array[int]) -> void:
 	if c71 != null and c71.parts.size() > 0:
 		c71.parts[0] = false
 	if war.infl1 >= 400:
-		w.set_flag("britain_lost_falklands", true)
+		w.set_flag("BritLost", true)
 		add_empire_power(EmpireData.USA, -20)
 	else:
 		add_empire_power(EmpireData.USA, 20)
@@ -4807,7 +4818,7 @@ static func apply_war_side1_victory(war_id: int, war: WarData, d: Array[int]) ->
 					afghanistan.set_tag("对华贸易", true)
 				d[W.I_INFLUENCE] += 100
 		6:
-			w.set_flag("britain_lost_falklands", true)
+			w.set_flag("BritLost", true)
 			add_empire_power(EmpireData.USA, -20)
 		70, 71, 72, 73, 74, 75, 90:
 			_route_victory_effects(w, war_id, d)
@@ -4896,7 +4907,7 @@ static func apply_war_draw(war_id: int, war: WarData, d: Array[int]) -> void:
 			w.set_flag("israel_lost_lebanon_war", true)
 		6:
 			if war.infl1 >= 400:
-				w.set_flag("britain_lost_falklands", true)
+				w.set_flag("BritLost", true)
 				add_empire_power(EmpireData.USA, -20)
 			else:
 				add_empire_power(EmpireData.USA, 20)
