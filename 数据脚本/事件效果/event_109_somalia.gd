@@ -49,6 +49,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -50)
 			if somalia != null:
 				somalia.set_tag("亲中", true)
+				somalia.set_tag("亲苏", false)
 				somalia.set_tag("对华贸易", true)
 				somalia.government = 1
 				somalia.sub_government = 1
@@ -63,6 +64,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_DIPLO, 30)
 			if somalia != null:
 				somalia.set_tag("亲中", true)
+				somalia.set_tag("亲苏", false)
 				somalia.set_tag("对华贸易", true)
 				somalia.government = 0
 				somalia.sub_government = 10

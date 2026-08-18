@@ -215,6 +215,9 @@ func _on_region_map_preloaded(
 
 	# 预加载前排队的地图归属变更（如提前触发的事件）在此补执行。
 	_flush_pending_map_owner_changes()
+	# 读档/继续游戏时，地图数据刚重建，需把存档中持久化的归属覆盖重新套上，
+	# 否则独立后的领土会显示回初始宗主国（例如吉布提又变法国）。
+	_apply_map_owner_overrides()
 
 	is_map_data_preloaded = true
 	map_data_preloaded.emit()
@@ -254,7 +257,26 @@ func reset_map_runtime_state() -> void:
 					cached_owner_palette_image.set_pixel(r_id & 0xFF, (r_id >> 8) & 0xFF, col)
 			if cached_owner_palette_tex:
 				cached_owner_palette_tex.update(cached_owner_palette_image)
-		print("GameManager: 地图归属运行时状态与调色板已重置")
+	# 读档后先回到初始归属，再把存档中记录的领土变更覆盖回去。
+	_apply_map_owner_overrides()
+	print("GameManager: 地图归属运行时状态与调色板已重置")
+
+
+## 将世界存档中的地图归属覆盖应用到当前缓存。地图归属不是 WorldState 直接序列化的，
+## 所以事件/外交改地图时必须写入 world.map_owner_overrides，读档/重建缓存后靠本方法恢复。
+func _apply_map_owner_overrides() -> void:
+	if world == null or world.map_owner_overrides.is_empty():
+		return
+	if cached_region_owner.is_empty():
+		return
+	var changed := false
+	for raw in world.map_owner_overrides:
+		var r_id := int(raw)
+		if cached_region_owner.has(r_id):
+			cached_region_owner[r_id] = int(world.map_owner_overrides[raw])
+			changed = true
+	if changed:
+		_update_cached_owner_palette()
 
 
 ## 事件/外交领土变更后同步地图归属缓存（预留 API：本期尚无调用方，后续领土转移事件接入）。
@@ -269,6 +291,7 @@ func transfer_map_owner(from_gwcode: int, to_gwcode: int) -> void:
 	for r_id in cached_region_owner:
 		if cached_region_owner[r_id] == from_gwcode:
 			cached_region_owner[r_id] = to_gwcode
+			_persist_map_owner_override(r_id, to_gwcode)
 	_update_cached_owner_palette()
 	notify_stats_changed()
 
@@ -278,13 +301,62 @@ func set_map_region_owner(region_ids: Array, to_gwcode: int) -> void:
 		return
 	if cached_region_owner.is_empty():
 		_pending_map_owner_changes.append({"kind": "regions", "ids": region_ids.duplicate(), "to": to_gwcode})
+		# 地图尚未加载也要先记录到存档覆盖，避免加载后丢失。
+		for raw in region_ids:
+			_persist_map_owner_override(int(raw), to_gwcode)
 		return
 	for raw in region_ids:
 		var r_id := int(raw)
 		if cached_region_owner.has(r_id):
 			cached_region_owner[r_id] = to_gwcode
+			_persist_map_owner_override(r_id, to_gwcode)
 	_update_cached_owner_palette()
 	notify_stats_changed()
+
+
+func _persist_map_owner_override(r_id: int, to_gwcode: int) -> void:
+	if world != null:
+		world.map_owner_overrides[r_id] = to_gwcode
+
+
+## 旧档兼容：在地图归属持久化功能加入前，Event585 已让吉布提独立、Event589/1035 已成立
+## 非洲之角联邦，但存档没有 map_owner_overrides，读档会回到初始归属。这里按国家状态识别补写。
+func _migrate_legacy_map_owner_overrides() -> void:
+	const DJIBOUTI_REGION_IDS := [366, 367, 368, 370, 376, 2032]
+	const SOMALIA_REGION_IDS := [30, 31, 32, 33, 34, 35, 45, 46, 1466, 2028, 2029, 2030, 2031, 4115]
+	if world == null:
+		return
+	# 吉布提独立（Event585）：吉布提区域从法国 220 改为 522。
+	var c106 := world.get_country_by_legacy_index(106)
+	if c106 != null and c106.puppet_of < 0 and c106.chinese_name == "吉布提共和国":
+		for r_id in DJIBOUTI_REGION_IDS:
+			if not world.map_owner_overrides.has(r_id):
+				world.map_owner_overrides[r_id] = 522
+	# 非洲之角联邦（Event589）：索马里区域并入埃塞俄比亚 530；若 1035 已推动，吉布提也并入 530。
+	var c41 := world.get_country_by_legacy_index(41)
+	if c41 != null and c41.parts.size() > 0 and c41.parts[0] and c41.sub_government == 17:
+		c41.gov_names[1] = "非洲之角联邦"
+		for gn_key in c41.gov_names:
+			c41.gov_names[gn_key] = "非洲之角联邦"
+		for r_id in SOMALIA_REGION_IDS:
+			if not world.map_owner_overrides.has(r_id):
+				world.map_owner_overrides[r_id] = 530
+		if c41.parts.size() > 1 and c41.parts[1]:
+			for r_id in DJIBOUTI_REGION_IDS:
+				if not world.map_owner_overrides.has(r_id):
+					world.map_owner_overrides[r_id] = 530
+
+
+## 旧档兼容：早期端口误用 "vietnam_peace" 作为越南和平标志，原版字段名是 "vietnampeace"。
+## 读档时把旧键迁移到统一键，避免柬越和解/不战选项后仍触发柬越战争。
+func _migrate_legacy_global_flags() -> void:
+	if world == null:
+		return
+	if world.global_flags.has("vietnam_peace"):
+		var old_val := bool(world.global_flags.get("vietnam_peace", false))
+		if old_val:
+			world.set_flag("vietnampeace", true)
+		world.global_flags.erase("vietnam_peace")
 
 
 ## 地图预加载完成时补执行之前排队的领土转移。
@@ -303,6 +375,7 @@ func _flush_pending_map_owner_changes() -> void:
 			for r_id in cached_region_owner:
 				if cached_region_owner[r_id] == from_gw:
 					cached_region_owner[r_id] = to_gw
+					_persist_map_owner_override(r_id, to_gw)
 		elif kind == "regions":
 			var ids: Array = entry.get("ids", [])
 			var to_gw := int(entry.get("to", 0))
@@ -310,6 +383,7 @@ func _flush_pending_map_owner_changes() -> void:
 				var r_id := int(raw)
 				if cached_region_owner.has(r_id):
 					cached_region_owner[r_id] = to_gw
+					_persist_map_owner_override(r_id, to_gw)
 	_update_cached_owner_palette()
 
 
@@ -512,6 +586,10 @@ func load_game(path: String) -> void:
 		# 旧档科技数组可能只有 27 槽（TECH_COUNT 已扩到 34），迁移补齐
 		if world.techs != null:
 			world.techs.ensure_size()
+		# 旧档兼容：地图归属持久化功能上线前触发的吉布提独立，补写覆盖，读档后不再变回法国。
+		_migrate_legacy_map_owner_overrides()
+		# 旧档兼容：越南和平标志统一为原版字段名 vietnampeace。
+		_migrate_legacy_global_flags()
 		reset_map_runtime_state()
 		# 运行时缓存不序列化，读档后重建
 		world.rebuild_gwcode_index()
@@ -936,14 +1014,13 @@ func calc_budget_planka() -> int:
 	return total
 
 
-## 调整预算类别。category_idx 为 71-81 或 93（国际援助），delta 为增减量。
+## 调整预算类别。category_idx 为 71-81，delta 为增减量。
 ## 返回 false 表示余额不足或超过 planka 上限。
 func adjust_budget(category_idx: int, delta: int) -> bool:
 	if world == null:
 		return false
 	var d := world.数值表
-	var is_budget_category := (category_idx >= W.I_BUDGET_ARMY and category_idx <= W.I_BUDGET_DIPLO) \
-		or category_idx == W.I_INTERNATIONAL_AID
+	var is_budget_category := category_idx >= W.I_BUDGET_ARMY and category_idx <= W.I_BUDGET_DIPLO
 	if not is_budget_category:
 		return false
 	if delta > 0:
@@ -5558,6 +5635,9 @@ func _influence_from_investments(d: Array[int], year: int) -> void:
 		d[W.I_DIPLO] -= 2
 	elif d[W.I_BUDGET_DIPLO] < 60:
 		d[W.I_DIPLO] -= 1
+	# 每 5 点外交支出 +0.1 军事介入点（内部 ×10，显示 0.1 = 内部 1）
+	@warning_ignore("integer_division")
+	d[W.I_MIL_INTERVENTION] += d[W.I_BUDGET_DIPLO] / 5
 
 	# ─ 腐败扣预算/生活水平（原版 8186-8187，投资块末尾，用投资后腐败值）──
 	d[W.I_BUDGET] -= d[W.I_CORRUPTION] / 10

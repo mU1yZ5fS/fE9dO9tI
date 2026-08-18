@@ -230,7 +230,7 @@ func _event_56(option_index: int) -> void:
 	match option_index:
 		0:
 			_add_data({W.I_PARTY_SUPPORT: -150, W.I_INFLUENCE: -20})
-			ws.set_flag("vietnam_peace", true)
+			ws.set_flag("vietnampeace", true)
 		1:
 			_add_data({W.I_PARTY_SUPPORT: 50, W.I_WAR_PRESSURE: 200, W.I_DIPLO: 20})
 			_add_empire_relation(EmpireData.USSR, -200)

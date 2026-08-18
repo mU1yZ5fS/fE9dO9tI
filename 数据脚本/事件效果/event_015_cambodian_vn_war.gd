@@ -3,7 +3,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event15.cs：柬越战争。逐字中文 + 完整效果复刻。
 ## 差异：
 ##  - 触发：TimeScript.cs:10134（!vietnampeace && !event_done[15] && 日期>=1978.12.25）。
-##    vietnampeace 端口无对应 → 视为 false（默认未和平，行为一致）；fire_only_once=true 表达 !event_done[15]。
+##    vietnampeace 由 event_452 成功和解时 set_flag("vietnampeace", true) 表达；
+##    .tres 已加 NOT_HAS_FLAG("vietnampeace")，避免和解后仍触发战争。
 ##  - party_change[2]=1f（派系支持缓冲）：端口无等价 → 跳过。
 
 

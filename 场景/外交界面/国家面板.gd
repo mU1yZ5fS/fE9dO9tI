@@ -94,10 +94,11 @@ const INFLUENCE_ICONS := {
 	2: preload("res://资产/UI/外交/在某国影响下_中国.png"),
 	4: preload("res://资产/UI/外交/在某国影响下_法国.png"),
 	5: preload("res://资产/UI/外交/在某国影响下_南非.png"),
+	# 6 澳大利亚影响：原版 znachki[26]，暂缺对应图标资源，待补充后加 preload。
 }
 const INFLUENCE_NAMES := {
 	0: "在美国影响下", 1: "在苏联影响下", 2: "在我国影响下",
-	4: "在法国影响下", 5: "在南非影响下",
+	4: "在法国影响下", 5: "在南非影响下", 6: "在澳大利亚影响下",
 }
 
 
@@ -441,7 +442,7 @@ func _build_actions(country: CountryData) -> Array[Dictionary]:
 		actions.append(_make_action(restore_text, [
 			_cond("不早于 1979 年", func(): return w.date != null and w.date.year >= 1979),
 			_cond("党内支持与通信结构达到当前阶段门槛", func(): return _meets_soviet_reconciliation_threshold(w, d)),
-			_cond("未挑起对越战争", func(): return w.get_flag("vietnam_peace")),
+			_cond("未挑起对越战争", func(): return w.get_flag("vietnampeace")),
 			_cond("对苏关系 ≥ 70", func(): return w.empires[1].relations >= 700 if w.empires.size() > 1 else false),
 			_cond("尚未恢复关系", func(): return not w.get_flag("relres")),
 		], "对苏关系 +5、对美关系 -5，解锁中苏和解事件分支",

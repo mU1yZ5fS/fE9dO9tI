@@ -109,6 +109,7 @@ func _event_33(option_index: int) -> void:
 				pakistan.sub_government = 3
 				pakistan.set_tag("亲美", false)
 				pakistan.set_tag("亲中", true)
+				pakistan.set_tag("sento", false)  # 帮助布托后巴基斯坦退出中央条约（CENTO）
 				pakistan.prc_power = 1000
 			_subtract_faction_fraction(FactionData.LIBERAL, 0.25)
 		2:

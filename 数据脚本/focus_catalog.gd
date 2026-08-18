@@ -223,7 +223,7 @@ static func china_add_influence(num: int) -> void:
 static func add_parties_connection(num: int) -> void:
 	var ws := _ws()
 	if ws != null:
-		ws.sov_prc_parties_connection += num
+		ws.数值表[WorldState.I_COMMUNICATIONS] += num
 
 
 static func declare_ogaden_war() -> void:

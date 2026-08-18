@@ -161,6 +161,7 @@ const SPHERE_CHINA := 2
 const SPHERE_NEUTRAL := 3
 const SPHERE_FRANCE := 4
 const SPHERE_SOUTH_AFRICA := 5
+const SPHERE_AUSTRALIA := 6
 
 ## 原版地图影响模式/国家面板的法国判定（CountryScript.cs:302-305, 5150-5153）：
 ## puppetOf == 21，或法国自身保持中立（不亲中/不亲苏/不亲美）时显示法国势力。
@@ -170,6 +171,11 @@ func is_french_influence() -> bool:
 	if puppet_of == 21:
 		return true
 	return 原版序号 == 21 and not has_tag("亲中") and not has_tag("亲苏") and not has_tag("亲美")
+
+
+## 原版澳大利亚势力（CountryScript.cs:379）：puppetOf == 135 时显示澳大利亚影响。
+func is_australian_influence() -> bool:
+	return puppet_of == 135
 
 
 ## 原版南非判定（CountryScript.cs:391-395, 5155-5158）：
@@ -212,6 +218,7 @@ func alliance_zone_counts() -> bool:
 ## 法国 → 南非 → 美国 → 苏联 → 中国，其余中立。
 func in_sphere_of_influence() -> int:
 	if is_french_influence(): return SPHERE_FRANCE
+	if is_australian_influence(): return SPHERE_AUSTRALIA
 	if is_south_african_influence(): return SPHERE_SOUTH_AFRICA
 	if has_tag("亲美") or (alliance_zone_counts() and has_tag("美国盟友")): return SPHERE_USA
 	if has_tag("亲苏") or (alliance_zone_counts() and has_tag("苏联盟友")): return SPHERE_USSR

@@ -38,7 +38,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var korea := world.get_country_by_legacy_index(10)
 	var desc := TXT_DESC_BASE
 	var res378 := int(world.completed_event_ids.get("event_378", 0))
-	if world.get_flag("vietnam_peace") and res378 != 2 and (korea == null or korea.puppet_of != 1):
+	if world.get_flag("vietnampeace") and res378 != 2 and (korea == null or korea.puppet_of != 1):
 		desc += TXT_DESC_VISITS
 	else:
 		desc += TXT_DESC_NO_VISITS

@@ -17,6 +17,11 @@ type = 22
 key = "post_mao_course"
 value = 2.0
 
+[sub_resource type="Resource" id="Expr_modifier_3_inactive"]
+script = ExtResource("3_expr")
+type = 3
+key = "3"
+
 [sub_resource type="Resource" id="Expr_line_at_least_2"]
 script = ExtResource("3_expr")
 key = "political_line"
@@ -55,5 +60,5 @@ source_event_number = 39
 trigger_priority = 3900
 title = "《党的若干历史问题的决议》起草委员会"
 description = "老一代领导人的离去，文化大革命的结束与体制改革的进行事实上在国内开了逐渐脱离毛泽东既定路线的先例，并为一系列不稳定因素持续加码。组织部与公安部传来的消息更是令人不安：部分地方党组织与活动人士已开始借结束文革之势炮击建国以来的一系列历史，试图将我国建国以来的历史描述成“漆黑一片”，“过错是主要的，成就是靠纠偏得来的”，并试图将中国社会的一系列灾害与责任归咎于已逝的“舵手”毛泽东以推进自身乐见的政治议程。而上述现象甚至得到了某些在毛时代遭遇打压的老干部的默许以至支持：他们显然是出于复仇情绪或政治野心对此乐见其成。与此同时，虽说我党已剔除了国内最激进的政治活动家，可深受毛时代思想与政治实践影响的政治新人们仍在相当规模的党政机器内活跃，且围绕毛泽东形成的个人崇拜也开始被我国人民选择性诠释进行“暗度陈仓”——一如文化大革命时期的效忠行动那般。若纵容上述现象继续发展，我们极有可能重蹈匈牙利的覆辙，在同一条阴沟内翻船。中共中央政治局与书记处已决定在整顿党籍与规范社会秩序的同时起草一份文件，以彻底解决这一问题：如你所料，我们曾在革命战争时期以一纸《关于若干历史问题的决议》奠定了毛泽东与其思想的霸权，并将党内早期风云人物系数边缘化。而现在，是时候对1949年以来在毛泽东领导下的中华人民共和国和中国共产党走过的道路进行正式评估，并以新版总路线对其取而代之了。当然，我们绝不能对冠以《关于建国以来党的若干历史问题的决议》之名的高规格的文件有所马虎：毕竟，这可是我们时代的《联共（布）党史简明教程》与未来新党纲的潜在原型，并极有可能决定未来数十年内我国的政治基调。"
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_course_not_2")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_course_not_2"), SubResource("Expr_modifier_3_inactive")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

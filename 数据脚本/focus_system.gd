@@ -90,9 +90,8 @@ static func init_for_new_game() -> void:
 		ws.empires[EmpireData.USSR].active_focus_tree = "Start Focus"
 		ws.empires[EmpireData.USSR].current_layer = 0
 		ws.empires[EmpireData.USSR].current_focus = -1
-	# 原版 GameStartScript.cs:934：SOV_PRC_PartiesConnection = data[30]
-	if ws.数值表.size() > WorldState.I_COMMUNICATIONS:
-		ws.sov_prc_parties_connection = ws.数值表[WorldState.I_COMMUNICATIONS]
+	# 原版 GameStartScript.cs:934：SOV_PRC_PartiesConnection = data[30]；
+	# 本项目已统一以 data[30]（I_COMMUNICATIONS）为唯一权威，不再保留镜像字段。
 	# 原版 GameStartScript.cs:90：OilProd = 850（决议 HasOilEat 依赖的初始口径）
 	if ws.oil_prod == 0.0:
 		ws.oil_prod = 850.0

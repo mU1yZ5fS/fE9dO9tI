@@ -6,40 +6,10 @@
 [ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
 [ext_resource type="Script" path="res://数据脚本/事件效果/event_033_041_world_and_party.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Expr_year_1978"]
-script = ExtResource("3_expr")
-type = 0
-key = "year"
-value = 1978.0
-
-[sub_resource type="Resource" id="Expr_year_1977"]
-script = ExtResource("3_expr")
-type = 21
-key = "year"
-value = 1977.0
-
-[sub_resource type="Resource" id="Expr_month_9"]
-script = ExtResource("3_expr")
-type = 21
-key = "month"
-value = 9.0
-
-[sub_resource type="Resource" id="Expr_day_22"]
-script = ExtResource("3_expr")
-type = 21
-key = "day"
-value = 22.0
-
-[sub_resource type="Resource" id="Expr_1977_date"]
-script = ExtResource("3_expr")
-type = 18
-children = Array[ExtResource("3_expr")]([SubResource("Expr_year_1977"), SubResource("Expr_month_9"), SubResource("Expr_day_22")])
-
-
 [sub_resource type="Resource" id="Expr_date"]
 script = ExtResource("3_expr")
-type = 19
-children = Array[ExtResource("3_expr")]([SubResource("Expr_year_1978"), SubResource("Expr_1977_date")])
+type = 12
+key = "1977.1.18"
 
 
 [sub_resource type="Resource" id="Expr_agents_20"]

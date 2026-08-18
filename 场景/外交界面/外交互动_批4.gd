@@ -858,6 +858,8 @@ func _def_1034(w: WorldState, _country: CountryData, caption: String) -> Diction
 # DBS Show L4353-4366 / OnMouseDown L11805-11811
 # ============================================================================
 func _def_1035(w: WorldState, _country: CountryData, caption: String) -> Dictionary:
+	const DJIBOUTI_REGION_IDS := [366, 367, 368, 370, 376, 2032]
+	const HORN_FEDERATION_GWCODE := 530
 	var c41 := c(w, 41)
 	var c106 := c(w, 106)
 	var opis := " 督 促 吉 布 提 加 入 非 洲 之 角 联 邦"
@@ -874,8 +876,15 @@ func _def_1035(w: WorldState, _country: CountryData, caption: String) -> Diction
 		_add_d(w, 8, -100)
 		set_parts(c41, 0, false)
 		set_parts(c41, 1, true)
+		# 确保世界地图/国家面板显示“非洲之角联邦”（政体名优先于 chinese_name）。
+		# 原版 name 固定为联邦名，不随政体变化，因此覆盖全部政体名。
+		for gn_key in c41.gov_names:
+			c41.gov_names[gn_key] = "非洲之角联邦"
 		if c106 != null:
 			c106.leave_alliances()
+		# Godot 地图显示增量：吉布提区域并入非洲之角联邦（530）。
+		if GameManager != null:
+			GameManager.set_map_region_owner(DJIBOUTI_REGION_IDS, HORN_FEDERATION_GWCODE)
 	return make_def(caption, opis, conds, eff)
 
 

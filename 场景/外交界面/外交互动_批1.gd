@@ -202,12 +202,12 @@ func _def_4(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	conds.append(cond(" 不 早 于 1979 年", func(): return d(w, W.I_YEAR) >= 1979))
 	if early:
 		if w.leader != null and w.leader.trait_personality == 0 and w.leader.trait_alignment == 4 and w.leader.trait_special == 8:
-			conds.append(cond(" 党 内 团 结 度 至 少 90\n 联 络 机 构 的 规 模 至 少 为 10", func(): return d(w, W.I_PARTY_SUPPORT) >= 900 and w.sov_prc_parties_connection >= 100))
+			conds.append(cond(" 党 内 团 结 度 至 少 90\n 联 络 机 构 的 规 模 至 少 为 10", func(): return d(w, W.I_PARTY_SUPPORT) >= 900 and d(w, W.I_COMMUNICATIONS) >= 100))
 		else:
-			conds.append(cond(" 党 内 团 结 度 至 少 70\n 联 络 机 构 的 规 模 至 少 为 20", func(): return d(w, W.I_PARTY_SUPPORT) >= 700 and w.sov_prc_parties_connection >= 200))
+			conds.append(cond(" 党 内 团 结 度 至 少 70\n 联 络 机 构 的 规 模 至 少 为 20", func(): return d(w, W.I_PARTY_SUPPORT) >= 700 and d(w, W.I_COMMUNICATIONS) >= 200))
 	else:
-		conds.append(cond(" 党 内 团 结 度 至 少 90\n 联 络 机 构 的 规 模 至 少 为 25", func(): return d(w, W.I_PARTY_SUPPORT) >= 900 and w.sov_prc_parties_connection >= 250))
-	conds.append(cond("未 与 越 南 开 战", func(): return fl(w, "vietnam_peace")))
+		conds.append(cond(" 党 内 团 结 度 至 少 90\n 联 络 机 构 的 规 模 至 少 为 25", func(): return d(w, W.I_PARTY_SUPPORT) >= 900 and d(w, W.I_COMMUNICATIONS) >= 250))
+	conds.append(cond("未 与 越 南 开 战", func(): return fl(w, "vietnampeace")))
 	if not fl(w, "relres"):
 		conds.append(cond(" 中 苏 关 系 至 少 为 70", func(): return rel(w, 1) >= 700))
 	else:
@@ -330,7 +330,7 @@ func _def_6(w: WorldState, _country: CountryData, caption: String) -> Dictionary
 # DBS Show L196-L214 / OnMouseDown L8803-L8810
 # ============================================================================
 func _def_7(w: WorldState, country: CountryData, caption: String) -> Dictionary:
-	var conn: int = w.sov_prc_parties_connection
+	var conn: int = d(w, W.I_COMMUNICATIONS)
 	var opis := " 恢 复 被 破 坏 的 沟 通 机 构| 规 模 ：%d.%d" % [int(conn / 10.0), absi(conn % 10)]
 	var conds: Array = []
 	conds.append(cond(" 至 少%d.%d  特 工 网 络" % [int(conn / 20.0), absi(int(conn / 2.0) % 10)], func(): return d(w, W.I_AGENTS) >= int(conn / 2.0)))
@@ -339,7 +339,7 @@ func _def_7(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var eff := func():
 		set_d(w, W.I_AGENTS, d(w, W.I_AGENTS) - int(conn / 2.0))
 		set_d(w, W.I_BUDGET, d(w, W.I_BUDGET) - int(conn / 4.0))
-		w.sov_prc_parties_connection += 30
+		_add_d(w, W.I_COMMUNICATIONS, 30)
 		add_rel(w, 1, 50)
 		country.development = 1
 	return make_def(caption, opis, conds, eff)
@@ -590,7 +590,7 @@ func _def_16(w: WorldState, _country: CountryData, caption: String) -> Dictionar
 func _def_17(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var conds: Array = []
 	if not has(country, "亲中"):
-		conds.append(cond(" 未 与 越 南 开 战", func(): return fl(w, "vietnam_peace")))
+		conds.append(cond(" 未 与 越 南 开 战", func(): return fl(w, "vietnampeace")))
 	else:
 		conds.append(cond(" 越 南 受 中 国 的 影 响", func(): return has(country, "亲中")))
 	conds.append(cond(" 尚 未 深 化 经 贸 关 系", func(): return not has(country, "对华贸易")))

@@ -26,8 +26,8 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or event_def.options.size() < 3:
 		return
-	var r25 := int(ws.completed_event_ids.get("event_025", 0))
-	var r26 := int(ws.completed_event_ids.get("event_026", 0))
+	var r25 := int(ws.completed_event_ids.get("gang_of_four", 0))
+	var r26 := int(ws.completed_event_ids.get("weak_alliance", 0))
 	var line := _res(W.I_POLITICAL_LINE)
 	var mod3 := ws.modifiers.size() > 3 and ws.modifiers[3] != null and ws.modifiers[3].is_active
 	var desc := TXT_DESC_C

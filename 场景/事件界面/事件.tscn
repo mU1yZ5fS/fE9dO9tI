@@ -363,10 +363,10 @@ stretch_mode = 6
 
 [node name="事件标题" type="Label" parent="." unique_id=114266937]
 layout_mode = 1
-offset_left = 523.0
+offset_left = 58.0
 offset_top = 87.0
-offset_right = 1283.0
-offset_bottom = 137.0
+offset_right = 1500.0
+offset_bottom = 150.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_nyx3b")
 theme_override_font_sizes/font_size = 55

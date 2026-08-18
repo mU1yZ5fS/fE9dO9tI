@@ -24,8 +24,6 @@ static func monthly_war_points() -> void:
 	if w == null:
 		return
 	var d := w.数值表
-	@warning_ignore("integer_division")
-	d[W.I_MIL_INTERVENTION] += d[W.I_PROJECTION] / 50
 	var any_war := false
 	for war in w.wars:
 		if war != null and war.is_going:
@@ -1932,7 +1930,8 @@ static func _apply_war35_result(war: WarData, d: Array[int]) -> void:
 	if w == null:
 		return
 	var indo := w.get_country_by_legacy_index(50)
-	var timor := w.get_country_by_legacy_index(128)
+	# 注意：原 128 是纳米比亚，不是东帝汶；东帝汶在本项目无独立国家实体（地图区域开局归印尼），
+	# 因此不再对 128 做“东帝汶”改名/设置，避免误改纳米比亚。
 	if war.infl1 >= 850:
 		add_empire_power(EmpireData.USA, -50)
 		d[W.I_INFLUENCE] += 40
@@ -1951,16 +1950,6 @@ static func _apply_war35_result(war: WarData, d: Array[int]) -> void:
 			indo.parts[0] = true
 			indo.social_stability = 1000
 			indo.prc_power = 1000
-		if timor != null:
-			timor.name = "东帝汶"
-			timor.chinese_name = "东帝汶"
-			timor.禁用非洲机制 = true
-			timor.government = 1
-			timor.sub_government = 17
-			timor.set_tag("对华贸易", true)
-			timor.set_tag("亲中", true)
-			_join_all_our_alliances(w, timor)
-			timor.social_stability = 1000
 	else:
 		if indo != null:
 			indo.government = 0
@@ -1969,13 +1958,6 @@ static func _apply_war35_result(war: WarData, d: Array[int]) -> void:
 			if indo.parts.size() <= 0:
 				indo.parts.resize(1)
 			indo.parts[0] = true
-		if timor != null:
-			timor.name = "东帝汶"
-			timor.chinese_name = "东帝汶"
-			timor.禁用非洲机制 = true
-			timor.government = 1
-			timor.sub_government = 2
-			timor.social_stability = 1000
 
 
 ## 战争 37 号结算：GameState.cs:1877-1934。
@@ -4653,7 +4635,7 @@ static func _war73_victory(w: WorldState, d: Array[int]) -> void:
 	_puppet_to_china(w, 47, "吕 宋 （ 军 管 区 ）", [])
 	_puppet_to_china(w, 49, "南 洋 特 别 行 政 区 （ 军 管 区 ）", [0])
 	_puppet_to_china(w, 50, "三 佛 齐 （ 军 管 区 ）", [0])
-	_puppet_to_china(w, 128, "东 帝 汶 （ 军 管 区 ）", [])
+	# 原 128 是纳米比亚，不是东帝汶；东帝汶无独立实体，移除误操作，避免把纳米比亚变成东帝汶。
 	_puppet_to_china(w, 134, "昆 仑 （ 军 管 区 ）", [0])
 	_war_victory_common(w, d)
 	_set_decision(w, 37, false)

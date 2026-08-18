@@ -27,7 +27,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	var c8 := world.get_country_by_legacy_index(8)
-	var r37 := int(ws.completed_event_ids.get("event_37", 0))
+	var r37 := int(ws.completed_event_ids.get("egyptian_unrest", 0))
 	if ws.influence_prc >= 500 and d[W.I_WAR_SUPPORT] >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != 13:
 		_enable(opt[0], TXT_OPT0)
 	else:
@@ -65,7 +65,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -100)
 			context["result_text"] = TXT_R0
 		1:
-			var r37 := int(ws.completed_event_ids.get("event_37", 0))
+			var r37 := int(ws.completed_event_ids.get("egyptian_unrest", 0))
 			if r37 == 2:
 				_add(W.I_BUDGET, -150)
 				_add(W.I_AGENTS, -150)

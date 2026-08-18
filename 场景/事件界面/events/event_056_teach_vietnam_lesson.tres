@@ -11,6 +11,16 @@ script = ExtResource("3_expr")
 type = 12
 key = "1979.2"
 
+[sub_resource type="Resource" id="Expr_no_vietnam_peace"]
+script = ExtResource("3_expr")
+type = 15
+key = "vietnampeace"
+
+[sub_resource type="Resource" id="Expr_war1_active"]
+script = ExtResource("3_expr")
+type = 30
+value = 1.0
+
 [sub_resource type="Resource" id="Expr_china_sev"]
 script = ExtResource("3_expr")
 type = 10
@@ -60,5 +70,5 @@ source_event_number = 56
 trigger_priority = 560
 title = "给越南点教训？"
 description = "越南在印度支那的扩张，并对我们的柬埔寨朋友发起了侵略，这并不让我们高兴。鉴于越南黎笋集团的亲苏排华路线，他们的扩张对我们很是不利。再加上我们与越南的边境冲突和越南对华人的迫害，不少党员认为应该“给越南人一些教训”，以击垮“白眼狼”。我们可以用边境冲突为借口发起战争，夺取边境地区，并消灭到来的越南军队，尽可能地向越南境内推进，并为我们的柬埔寨盟友分担压力。这样的一击将使得越南领导层严肃地重新考虑其对苏和对华政策，也可以为我们与西方的缓和甚至是交好打下基础。主席同志，我们该如何选择？"
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_no_vietnam_peace"), SubResource("Expr_war1_active")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])

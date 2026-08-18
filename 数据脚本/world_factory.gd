@@ -1377,8 +1377,8 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_puppet(ws, 97, 19)                       # 不丹（:628）
 	_leave_and_gs(ws, 107, 0, 7)                  # 塞拉利昂（:629-631）
 	_set_puppet(ws, 108, 21)                      # 多哥（:632）
-	_set_gs(ws, 112, 3, 4)                        # 文莱，傀儡法国（:634-636）
-	_set_puppet(ws, 112, 21)
+	_set_gs(ws, 111, 3, 4)                        # 文莱，归属英国（原代码误写 112 且设为法国，已修正）
+	_set_puppet(ws, 111, 92)
 	_set_gs(ws, 113, 0, 20)                       # 冈比亚 + 亲美（:637-639）
 	_set_tag(ws, 113, "亲美", true)
 	_set_gs(ws, 114, 1, 1)                        # 几内亚比绍 + 对华贸易（:640-642）
@@ -1407,7 +1407,8 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_tag(ws, 126, "对华贸易", true)
 	_set_gs(ws, 127, 0, 7)                        # 罗得西亚（津巴布韦），傀儡南非（:679-682）
 	_set_puppet(ws, 127, 131)
-	# 128 纳米比亚：0/13 原值不变
+	# 128 纳米比亚：被南非吞并（傀儡南非；地图归属见 map_regions.json）
+	_set_puppet(ws, 128, 131)
 	_set_gs(ws, 129, 0, 20)                       # 博茨瓦纳（:683-684）
 	_set_puppet(ws, 130, 131)                     # 斯威士兰：0/13 不变，傀儡南非（:685-688）
 	_set_gs(ws, 131, 0, 7)                        # 白人南非（:689-691）
@@ -1432,6 +1433,7 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_tag(ws, 140, "亲美", true)
 	_set_gs(ws, 141, 2, 3)                        # 巴拿马（:724-725）
 	_copy_gs(ws, 142, 92)                         # 伯利兹随英国（:726-727）
+	_set_puppet(ws, 142, 92)
 	_set_gs(ws, 143, 0, 20)                       # 多米尼加 + 亲美（:728-730）
 	_set_tag(ws, 143, "亲美", true)
 	_set_gs(ws, 144, 3, 4)                        # 哥斯达黎加（:731-732）
@@ -1457,6 +1459,7 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_puppet(ws, 159, 21)
 	_set_gs(ws, 160, 3, 6)                        # 斐济（:764-765）
 	_copy_gs(ws, 161, 92)                         # 所罗门随英国（:767-768）
+	_set_puppet(ws, 161, 92)
 	var c162 := _legacy(ws, 162)                  # 南极洲 → 托洛茨基主义（:769）
 	if c162 != null:
 		c162.sub_government = 18

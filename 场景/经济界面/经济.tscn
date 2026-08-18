@@ -1262,82 +1262,20 @@ text = "10.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="国际援助背景图标" type="TextureRect" parent="." unique_id=2002845319]
-layout_mode = 0
-offset_left = 496.0
-offset_top = 795.0
-offset_right = 966.0
-offset_bottom = 941.0
-texture = ExtResource("29_qmdo1")
-
-[node name="国际援助+" type="Button" parent="." unique_id=1691928388]
-layout_mode = 0
-offset_left = 911.0
-offset_top = 791.0
-offset_right = 967.0
-offset_bottom = 886.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("6_7gbkt")
-theme_override_font_sizes/font_size = 55
-text = "+"
-icon = ExtResource("20_0enth")
-flat = true
-icon_alignment = 1
-
-[node name="国际援助-" type="Button" parent="." unique_id=1893550770]
-layout_mode = 0
-offset_left = 703.0
-offset_top = 791.0
-offset_right = 759.0
-offset_bottom = 886.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("6_7gbkt")
-theme_override_font_sizes/font_size = 55
-text = "-"
-icon = ExtResource("20_0enth")
-flat = true
-icon_alignment = 1
-
-[node name="国际援助数值" type="Label" parent="." unique_id=1810227244]
-layout_mode = 0
-offset_left = 783.0
-offset_top = 802.0
-offset_right = 894.0
-offset_bottom = 875.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("6_7gbkt")
-theme_override_font_sizes/font_size = 64
-text = "10.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="国际援助" type="Label" parent="." unique_id=814942308]
-layout_mode = 0
-offset_left = 760.0
-offset_top = 890.0
-offset_right = 916.0
-offset_bottom = 935.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("6_7gbkt")
-theme_override_font_sizes/font_size = 39
-text = "国际援助"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="寡头状态背景" type="TextureRect" parent="." unique_id=1259812963]
 layout_mode = 0
-offset_left = 528.0
-offset_top = 824.0
-offset_right = 930.0
-offset_bottom = 903.0
+offset_left = 536.0
+offset_top = 831.0
+offset_right = 938.0
+offset_bottom = 910.0
 texture = ExtResource("30_a182h")
 
 [node name="寡头状态文本" type="Label" parent="." unique_id=1337611574]
 layout_mode = 0
-offset_left = 536.0
-offset_top = 832.0
-offset_right = 920.0
-offset_bottom = 896.0
+offset_left = 544.0
+offset_top = 839.0
+offset_right = 928.0
+offset_bottom = 903.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_7gbkt")
 theme_override_font_sizes/font_size = 23

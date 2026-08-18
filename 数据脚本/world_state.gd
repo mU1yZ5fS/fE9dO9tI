@@ -93,8 +93,6 @@ const I_REFORM_STAGE := 89      ## 改革阶段（原 data[89]）
 const I_MAO_HISTORY_LINE := 90  ## 毛泽东历史评价路线（原 data[90]）
 const I_INDIA_ELECTION := 91    ## 印度大选结果（原 data[91]）
 const I_REFORM_MOMENTUM := 92   ## 政策改革方向累计值（原 data[92]）
-const I_PROJECTION := 93        ## 投射力/国际援助（原 data[93]，经济界面第 12 项预算）
-const I_INTERNATIONAL_AID := 93 ## 国际援助（与 I_PROJECTION 同槽）
 const I_AFGHAN_POLICY := 94     ## 阿富汗策略（原 data[94]）
 const I_SOVIET_SUCCESSOR_THIRD := 100 ## 苏联第三继承人权重（原 data[100]）
 const I_MAO_MAUSOLEUM := 104    ## 毛主席纪念堂状态（原 data[104]）
@@ -134,8 +132,6 @@ const 数值索引 := {
 	"mil_intervention": I_MIL_INTERVENTION, "军事介入点": I_MIL_INTERVENTION,
 	"war_resolve": I_WAR_RESOLVE, "战争结算": I_WAR_RESOLVE,
 	"korea_result": I_KOREA_RESULT, "朝鲜战争结果": I_KOREA_RESULT,
-	"projection": I_PROJECTION, "投射力": I_PROJECTION,
-	"international_aid": I_INTERNATIONAL_AID, "国际援助": I_INTERNATIONAL_AID,
 	"war_support": I_WAR_SUPPORT,
 	"naxalite_power": I_NAXALITE_POWER, "纳萨尔派力量": I_NAXALITE_POWER,
 	"population": I_POPULATION, "人口": I_POPULATION,
@@ -242,9 +238,8 @@ const 数值索引 := {
 @export var dlc: Array[bool] = [true, true, true, true, false]
 
 # ── 中苏党际关系（原版 GameState.SOV_PRC_PartiesConnection）──
+# 统一以 data[30]（I_COMMUNICATIONS）为唯一权威，不再保留镜像字段。
 # 原版开局 GameStartScript.cs:934 = gameState.data[30]；Focus 焦点可增减。
-# 新游戏在 world_factory 创建后同步 data[30]，旧存档无此字段取 0。
-@export var sov_prc_parties_connection: int = 0
 
 # ── 决议系统原版字段（GameState.cs:7862-7984，决策原子直读直写）──
 # 旧存档缺字段时取声明默认值（与原版默认 0/false 一致）。
@@ -273,6 +268,9 @@ const 数值索引 := {
 
 # ── 全局标记（替代原版散落 bool） ──
 @export var global_flags: Dictionary = {}
+## 地图归属运行时覆盖（region_id -> gwcode）。地图本身不随 WorldState 序列化，
+## 事件/外交改变地图归属后写这里，读档/重进场景时恢复，避免独立领土又变回原宗主国。
+@export var map_owner_overrides: Dictionary = {}
 
 # ── 老系统数字事件状态覆盖（替代原版 event_done[]/resultOfEvents[] 直接写）──
 # 读取时优先于 EventEngine.completed_event_ids；旧存档缺字段取空字典（原版默认 false/0）。

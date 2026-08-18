@@ -64,9 +64,9 @@ offset_bottom = 72.0
 
 [node name="决议条目图标" type="TextureRect" parent="." unique_id=194156979]
 layout_mode = 0
-offset_left = 821.0
-offset_top = 5.0
-offset_right = 1064.0
-offset_bottom = 233.0
+offset_left = 825.0
+offset_top = 12.0
+offset_right = 1059.0
+offset_bottom = 231.0
 expand_mode = 1
 stretch_mode = 5

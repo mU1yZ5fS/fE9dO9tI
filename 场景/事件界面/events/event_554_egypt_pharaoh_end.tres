@@ -9,7 +9,7 @@
 [sub_resource type="Resource" id="Expr_1"]
 script = ExtResource("3_expr")
 type = 5
-ref_event_id = "event_37"
+ref_event_id = "egyptian_unrest"
 
 [sub_resource type="Resource" id="Expr_3"]
 script = ExtResource("3_expr")
