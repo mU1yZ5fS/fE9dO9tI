@@ -55,7 +55,7 @@ const NAME_ALIASES := {
 const FICTIONAL_COUNTRY_OFFSET := 9000
 
 ## 强制走 9000+ 的原版 id：地图无真实区域，或与已有编号重名的分离实体。
-## 153「纳米比亚」与 128 重名；164/165 为安哥拉/尼日利亚分离政权——若不强制，
+## 153「阿扎尼亚」（原 Country_en.txt 误写为与 128 重名的纳米比亚，按需求修正）；164/165 为安哥拉/尼日利亚分离政权——若不强制，
 ## 名称前缀匹配会把它们吸到真实 gwcode，造成 gwcode 索引互相覆盖。
 ## 155 塞舌尔 / 159 瓦努阿图已在地图数据补齐，改为正常匹配真实 gwcode（970/971）。
 const FORCE_9000_OFFSET_SLOTS := [
@@ -66,7 +66,7 @@ const FORCE_9000_OFFSET_SLOTS := [
 const OFFSET_COUNTRY_NAMES_ZH := {
 	69: "西藏", 70: "维吾尔斯坦",
 	145: "格陵兰岛", 150: "南苏丹", 151: "达尔富尔",
-	153: "纳米比亚", 155: "塞舌尔", 156: "阿扎瓦德",
+	153: "阿扎尼亚", 155: "塞舌尔", 156: "阿扎瓦德",
 	157: "库尔德斯坦二号", 159: "瓦努阿图", 162: "南极洲",
 	163: "加丹加", 164: "安哥拉独", 165: "尼日利亚独", 166: "北爱尔兰",
 }
@@ -321,7 +321,7 @@ const COUNTRY_NAMES := {
 	144: "Costa Rica", 145: "Greenland", 146: "Honduras",
 	147: "Nicaragua", 148: "El Salvador", 149: "Guatemala",
 	150: "South Sudan", 151: "Darfur", 152: "Jamaica",
-	153: "Namibia", 154: "New Caledonia and Dependencies",
+	153: "Azania", 154: "New Caledonia and Dependencies",
 	155: "Seychelles", 156: "Azawad", 157: "Kurdistan II",
 	158: "Comoros", 159: "Vanuatu", 160: "Fiji", 161: "Solomon Islands",
 	162: "Antarctica", 163: "Katanga", 164: "Angola Independence",
@@ -587,7 +587,7 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 	for c in ws.countries:
 		var sid := int(c.原版序号)
 		# 地图无区域/同名分离实体：直接进 9000+，避免占用真实 gwcode
-		# （否则 153 纳米比亚会覆盖 128 的 gwcode、164/165 会被前缀吸到母国）
+		# （否则 153 阿扎尼亚会覆盖 128 的 gwcode、164/165 会被前缀吸到母国）
 		if FORCE_9000_OFFSET_SLOTS.has(sid):
 			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
 			_apply_offset_name(c)
