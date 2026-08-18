@@ -1216,6 +1216,43 @@ offset_right = 854.0
 offset_bottom = 260.0
 texture = ExtResource("45_70jce")
 
+[node name="继续事件按钮" type="Button" parent="预警图标"]
+visible = false
+offset_left = 24.0
+offset_top = 96.0
+offset_right = 144.0
+offset_bottom = 132.0
+text = "继续事件"
+
+[node name="可互动国家按钮" type="Button" parent="预警图标"]
+offset_left = 24.0
+offset_top = 140.0
+offset_right = 184.0
+offset_bottom = 176.0
+text = "可互动国家（0）"
+
+[node name="可互动国家弹窗" type="Panel" parent="预警图标"]
+visible = false
+offset_left = 24.0
+offset_top = 180.0
+offset_right = 384.0
+offset_bottom = 700.0
+
+[node name="可互动国家列表" type="ItemList" parent="预警图标/可互动国家弹窗"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="关闭" type="Button" parent="预警图标/可互动国家弹窗"]
+offset_left = 292.0
+offset_top = 6.0
+offset_right = 352.0
+offset_bottom = 38.0
+text = "关闭"
+
 [node name="提示弹窗" type="CanvasLayer" parent="." unique_id=229077533]
 visible = false
 

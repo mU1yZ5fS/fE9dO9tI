@@ -36,8 +36,6 @@ const 政治场景 := "uid://dsmslhxc0e8u5"
 
 # 可互动国家提示缓存
 var _interactive_countries: Array[CountryData] = []
-var _interactive_popup: Panel = null
-var _interactive_list: VBoxContainer = null
 
 func _ready() -> void:
 	# 始终处理，确保暂停时仍能接收 ESC 输入
@@ -90,45 +88,29 @@ func _ready() -> void:
 		notify_btn.pressed.connect(_on_event_notify_clicked)
 
 	# 事件缩小时显示“继续事件”按钮
+	var resume_btn := get_node_or_null("预警图标/继续事件按钮") as Button
+	if resume_btn and not resume_btn.pressed.is_connected(_on_resume_event_pressed):
+		resume_btn.pressed.connect(_on_resume_event_pressed)
 	_refresh_resume_event_button()
 
 	# 可互动国家提示（点击时即时刷新，避免每次数值变化全量扫描）
-	_create_interactive_countries_ui()
+	var inter_btn := get_node_or_null("预警图标/可互动国家按钮") as Button
+	if inter_btn and not inter_btn.pressed.is_connected(_on_interactive_countries_pressed):
+		inter_btn.pressed.connect(_on_interactive_countries_pressed)
+	var close_btn := get_node_or_null("预警图标/可互动国家弹窗/关闭") as Button
+	if close_btn and not close_btn.pressed.is_connected(_close_interactive_popup):
+		close_btn.pressed.connect(_close_interactive_popup)
+	var item_list := get_node_or_null("预警图标/可互动国家弹窗/可互动国家列表") as ItemList
+	if item_list and not item_list.item_activated.is_connected(_on_interactive_country_item_activated):
+		item_list.item_activated.connect(_on_interactive_country_item_activated)
 	_refresh_interactive_countries()
 
 # ── 可互动国家提示 ──
 
-func _create_interactive_countries_ui() -> void:
-	var layer := get_node_or_null("预警图标") as CanvasLayer
-	if layer == null:
-		return
-	if not layer.has_node("可互动国家按钮"):
-		var btn := Button.new()
-		btn.name = "可互动国家按钮"
-		btn.text = "可互动国家（0）"
-		btn.position = Vector2(24, 140)
-		btn.pressed.connect(_on_interactive_countries_pressed)
-		layer.add_child(btn)
-	if _interactive_popup == null:
-		_interactive_popup = Panel.new()
-		_interactive_popup.name = "可互动国家弹窗"
-		_interactive_popup.position = Vector2(24, 180)
-		_interactive_popup.size = Vector2(360, 520)
-		_interactive_popup.visible = false
-		layer.add_child(_interactive_popup)
-		var scroll := ScrollContainer.new()
-		scroll.set_anchors_preset(Control.PRESET_FULL_RECT)
-		scroll.offset_bottom = -32.0
-		_interactive_popup.add_child(scroll)
-		_interactive_list = VBoxContainer.new()
-		_interactive_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		scroll.add_child(_interactive_list)
-		var close_btn := Button.new()
-		close_btn.text = "关闭"
-		close_btn.position = Vector2(292, 6)
-		close_btn.pressed.connect(func() -> void: _interactive_popup.visible = false)
-		_interactive_popup.add_child(close_btn)
-
+func _close_interactive_popup() -> void:
+	var popup := get_node_or_null("预警图标/可互动国家弹窗") as Panel
+	if popup:
+		popup.visible = false
 
 func _refresh_interactive_countries(_unused = null) -> void:
 	var btn := get_node_or_null("预警图标/可互动国家按钮") as Button
@@ -166,22 +148,23 @@ func _action_available(action: Dictionary) -> bool:
 func _on_interactive_countries_pressed() -> void:
 	音频总管.play_button_click_sound()
 	_refresh_interactive_countries()
-	if _interactive_list == null:
+	var popup := get_node_or_null("预警图标/可互动国家弹窗") as Panel
+	var item_list := get_node_or_null("预警图标/可互动国家弹窗/可互动国家列表") as ItemList
+	if popup == null or item_list == null:
 		return
-	for child in _interactive_list.get_children():
-		child.queue_free()
+	item_list.clear()
 	for country in _interactive_countries:
-		var b := Button.new()
-		b.text = country.display_name()
-		b.pressed.connect(_on_interactive_country_pressed.bind(country))
-		_interactive_list.add_child(b)
-	if _interactive_popup:
-		_interactive_popup.visible = true
+		item_list.add_item(country.display_name())
+	popup.visible = true
 
 
-func _on_interactive_country_pressed(country: CountryData) -> void:
-	if _interactive_popup:
-		_interactive_popup.visible = false
+func _on_interactive_country_item_activated(index: int) -> void:
+	if index < 0 or index >= _interactive_countries.size():
+		return
+	var country: CountryData = _interactive_countries[index]
+	var popup := get_node_or_null("预警图标/可互动国家弹窗") as Panel
+	if popup:
+		popup.visible = false
 	var panel := get_node_or_null("国家面板")
 	if panel != null and panel.has_method("_on_country_selected"):
 		panel._on_country_selected(country.gwcode, country.display_name())
@@ -191,23 +174,12 @@ func _on_interactive_country_pressed(country: CountryData) -> void:
 
 ## 事件场景点“缩小查看地图”后回到外交，这里显示继续按钮；正常完成事件后自动隐藏。
 func _refresh_resume_event_button() -> void:
-	var layer := get_node_or_null("预警图标") as CanvasLayer
-	if layer == null:
+	var btn := get_node_or_null("预警图标/继续事件按钮") as Button
+	if btn == null:
 		return
-	var btn := layer.get_node_or_null("继续事件按钮") as Button
 	var should_show := GameManager != null and GameManager.current_event_id != "" \
 			and GameManager.current_ending_id < 0
-	if should_show:
-		if btn == null:
-			btn = Button.new()
-			btn.name = "继续事件按钮"
-			btn.text = "继续事件"
-			btn.position = Vector2(24, 96)
-			btn.pressed.connect(_on_resume_event_pressed)
-			layer.add_child(btn)
-		btn.visible = true
-	elif btn != null:
-		btn.visible = false
+	btn.visible = should_show
 
 
 func _on_resume_event_pressed() -> void:

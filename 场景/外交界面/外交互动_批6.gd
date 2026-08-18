@@ -79,11 +79,11 @@ const OT := {
 	146: " 离 开 “ 狩 猎 俱 乐 部 ”",
 	147: " 我 们 已 经 加 入 该 组 织",
 	159: " 支 持 埃 塞 俄 比 亚 人 民 解 放 阵 线 内 的 左 翼{0}左 翼 影 响 力 ： {1}",
-	160: " 支 持 埃 塞 俄 比 亚 民 主 联 盟 内 的 右 翼{0}右 翼 影 响 力 ： {2}",
+	160: " 支 持 埃 塞 俄 比 亚 民 主 联 盟 内 的 右 翼{0}右 翼 影 响 力 ： {1}",
 	163: " 支 持 提 格 雷 人 民 解 放 阵 线 内 的 左 翼{0}左 翼 影 响 力 ： {1}",
-	164: " 支 持 提 格 雷 人 民 解 放 阵 线 内 的 右 翼{0}右 翼 影 响 力 ： {2}",
+	164: " 支 持 提 格 雷 人 民 解 放 阵 线 内 的 右 翼{0}右 翼 影 响 力 ： {1}",
 	167: " 支 持 厄 立 特 里 亚 人 民 解 放 阵 线 内 的 左 翼 民 族 主 义 者{0}左 翼 影 响 力 ： {1}",
-	168: " 支 持 厄 立 特 里 亚 解 放 阵 线 内 的 右 翼 民 族 主 义 者{0}右 翼 影 响 力 ： {2}",
+	168: " 支 持 厄 立 特 里 亚 解 放 阵 线 内 的 右 翼 民 族 主 义 者{0}右 翼 影 响 力 ： {1}",
 	169: " 其 中 一 派 已 完 全 掌 权",
 	170: " 左 翼 影 响 力 低 于 100.0",
 	171: " 5 百 万 预 算",
@@ -957,7 +957,8 @@ func _def_111(w: WorldState, country: CountryData, caption: String) -> Dictionar
 # DBS Show L2747-L2760 / OnMouseDown L10207-L10213
 # ============================================================================
 func _def_113(w: WorldState, country: CountryData, caption: String) -> Dictionary:
-	var opis: String = String(OT[177]) % ["\n", str(country.influence_nato)]
+	# 用 format 而非 %：OT[177] 含字面百分号，% 运算符会把 % 当格式符报 incomplete format。
+	var opis: String = String(OT[177]).format(["\n", str(country.influence_nato)])
 	var conds: Array = []
 	conds.append(cond(OT[178], func(): return d(w, 8) + d(w, 36) >= 30 and d(w, 9) >= 30))
 	conds.append(cond(OT[179], func(): return not mod(w, 3)))
