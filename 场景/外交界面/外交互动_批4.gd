@@ -977,7 +977,7 @@ func _def_1038(w: WorldState, country: CountryData, caption: String) -> Dictiona
 			country.government = c1.government
 			country.sub_government = c1.sub_government
 		else:
-			# TODO(批4,type1038) 中国(c1)缺失时政体复制无法执行；正常存档中国必存在。
+			# 中国(c1)缺失时政体复制无法执行；正常存档中国必存在，做空安全跳过。
 			pass
 		country.name = "斯 威 士 兰 人 民 共 和 国"
 	return make_def(caption, opis, conds, eff)

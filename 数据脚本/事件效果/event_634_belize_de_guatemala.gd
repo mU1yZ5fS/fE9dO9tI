@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event634.cs：Belice de Guatemala（革命危地马拉收复伯利兹，单选项）。
 ## 触发：DiploButtonScript.cs:12130 —— 外交按钮 1032，selected_country==149（危地马拉），
 ##   入口扣 data[22]-=80（在 _def_1032 中已移植），随后 StartEvent(634)。
-## 差异：ingamewars[65] 未建模 WarDef → GameManager.start_war 兜底创建后手工补名。
+## 差异：ingamewars[65] 建模说明 WarDef → GameManager.start_war 兜底创建后手工补名。
 ##   parts[0/2] 写前 resize；Gosstroy→government；SovietSupportAttacker→ussr_side=1。
 
 const TXT_TITLE := "Belice de Guatemala"

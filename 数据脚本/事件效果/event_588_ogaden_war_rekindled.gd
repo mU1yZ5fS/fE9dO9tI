@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   日期>=1982.6.1 && c42.SubGosstroy==10
 ##   && ((!c42.亲苏 && c41.亲苏) || (!c42.亲苏 && c41.亲中) || (c42.亲苏 && c41.亲中))。
 ## 差异：
-##  - 原版 !c42.parts[0] && !c42.parts[2] 端口未建模 → 恒真跳过（脚本头注释保留）；
+##  - 原版 !c42.parts[0] && !c42.parts[2] 由 CountryData.parts 建模；
 ##  - Attacker/Defender 用 new_events_text[794]/[795] = 索马里/埃塞俄比亚；
 ##  - SovietSupportAttacker/Defender → ussr_side 0/1，美国不介入 → usa_side=-1；
 ##  - TickTime(16/4) → fortnight_max=16/4。

@@ -623,12 +623,12 @@ func _money_ok(amount: int) -> bool:
 
 
 func _game_rule(idx: int) -> int:
-	# 复用 PoliticianSystem 的未移植 gamerules 读取口，避免双份实现
+	# 复用 PoliticianSystem 的移植说明 gamerules 读取口，避免双份实现
 	return PoliticianSystem._game_rule(_world, idx)
 
 
 func _leader_property(idx: int) -> bool:
-	# 原版 Event712（未移植）设置 LeaderProperty[0..3]；默认 false。
+	# 原版 Event712（移植说明）设置 LeaderProperty[0..3]；默认 false。
 	return _world.get_flag("leader_property_%d" % idx)
 
 

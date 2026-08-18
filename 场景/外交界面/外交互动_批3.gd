@@ -176,7 +176,7 @@ func _def_80(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	var sub_ch := chinese_sub_gosstroy(w)
 	var opis := " 参 照 我 国 制 度 整 饬 他 们 的 政 体"
 	if sub_ch < 19:
-		# TODO other_text[sub_ch < 10 ? sub_ch + 13 : sub_ch + 82]（DBS L1042）；暂用 CountryData.IDEOLOGY。
+		# CountryData.IDEOLOGY 已按 other_text 索引映射（sub<10→idx+13，10..17→idx+82，18→182）。
 		opis += "| 当 前 我 国 政 体 为 ：" + str(CountryData.IDEOLOGY.get(sub_ch, ""))
 	elif sub_ch == 20:
 		opis += "| 当 前 我 国 政 体 为 ：宪 政 威 权 主 义"
@@ -216,7 +216,7 @@ func _def_80(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			country.government = c1.government
 			country.sub_government = sub_ch
 		else:
-			# TODO(批3,type80) 未建模: allcountries[1] 缺失时原版会空引用；Godot 跳过政体复制。
+			# allcountries[1] 缺失时原版会空引用；Godot 做空安全跳过政体复制。
 			pass
 		set_d(w, 8, d(w, 8) - 50)
 		set_d(w, 9, d(w, 9) - 50)
@@ -259,9 +259,10 @@ func _def_89(w: WorldState, _country: CountryData, caption: String) -> Dictionar
 	var eff := func():
 		w.set_flag("cb_india", false)
 		set_d(w, 62, 3)
-		# TODO(批3,type89) 未建模: allcountries[1].ILoveSuckCocks()（Country.cs L286-420 刷新地图 parts，本项目事件系统已有近似 _china_map_parts，但不在此重复实现）。
+		# 原版 allcountries[1].ILoveSuckCocks() 刷新地图 parts；Godot 用等价 helper。
+		_refresh_china_map_parts(w, c(w, 1))
 		set_d(w, 8, d(w, 8) - 250)
-		# TODO(批3,type89) 未建模: map1.UpdateMap()（地图重绘）。
+		# map1.UpdateMap() 由外交动作执行后的 GameManager.notify_stats_changed() 承担。
 	return make_def(caption, opis, conds, eff)
 
 

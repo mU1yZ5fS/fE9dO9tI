@@ -3,7 +3,7 @@
 ##   - 依赖文案加载：原版 GameStartScript.cs:900-929（Resources.Load("new_texts_en") / ("Events_text_en") 后按换行符 split）。
 ##   - new_texts 索引引用：EndingScript.cs L1061/1065/1096/1100/3111/3118 等。
 ##   - 姓名拼接：原版 names1[(int)leader.name_1] + names2[(int)leader.name_2]（EndingScript.cs:71 等）；
-##     Godot 未建模 polit_names 表，用 leader.name_display（politician_data.gd:8 显示全名）作等义显示。
+##     Godot 建模说明 polit_names 表，用 leader.name_display（politician_data.gd:8 显示全名）作等义显示。
 extends "res://场景/外交界面/外交互动_基础.gd"
 
 

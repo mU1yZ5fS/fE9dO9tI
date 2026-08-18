@@ -76,7 +76,7 @@ func _route_3(w: WorldState) -> Dictionary:
 	return {"name": name, "text": text}
 
 
-## 原作 EndingScript.cs L3730-3738（data[35]==4，种族灭绝；iron_and_blood 成就 TODO）。
+## 原作 EndingScript.cs L3730-3738（data[35]==4，种族灭绝；iron_and_blood 成就 注）。
 func _route_4(w: WorldState) -> Dictionary:
 	var name := " 种 族 灭 绝"
 	var text := " 在 你 的 领 导 下 ， 曾 是 世 界 上 第 一 人 口 大 国 的 中 国 ， 人 口 急 剧 减 少 。 这 是 不 可 忽 视 的 ， 人 们 越 发 指 责 你 犯 下 了 种 族 灭 绝 的 罪 行 ， 最 终 党 受 够 了 ， 逮 捕 了 你 ， 并 把 你 送 上 法 庭 。"
@@ -99,7 +99,7 @@ func _route_7(w: WorldState) -> Dictionary:
 	return {"name": NEW_EVENTS_TEXT_533, "text": NEW_EVENTS_TEXT_534}
 
 
-## 原作 EndingScript.cs L3755-3763（data[35]==8，未知世界的故事；iron_and_blood 成就 TODO）。
+## 原作 EndingScript.cs L3755-3763（data[35]==8，未知世界的故事；iron_and_blood 成就 注）。
 func _route_8(w: WorldState) -> Dictionary:
 	var name := " 未 知 世 界 的 故 事"
 	var text := " 毛 泽 东 复 活 以 及 政 府 密 谋 暗 杀 失 败 的 消 息 被 公 布 在 报 纸 上 。 这 成 为 了 引 爆 民 众 不 满 的 导 火 索 。 全 国 各 地 大 批 愤 怒 的 群 众 结 社 加 入 “ 毛 泽 东 ” 的 阵 营 ， 并 在 各 大 城 市 游 行 示 威 ， 他 们 高 呼 ： “ 谁 反 对 毛 主 席 ， 谁 就 是 在 反 对 新 中 国 ， 反 对 人 民 ！ ” “ 坚 决 打 倒 反 动 派 ！ ” “ 毛 泽 东 ” 进 行 了 一 篇 煽 动 性 极 强 演 讲 ， 赢 得 大 多 数 人 的 支 持 。 而 在 一 次 群 众 与 政 府 无 意 中 的 流 血 冲 突 后 ， 一 场 全 国 性 的 拥 护 毛 泽 东 、 反 对 修 正 派 的 热 潮 也 被 引 爆 了 。 群 众 运 动 转 为 武 装 斗 争 ， 并 在 “ 毛 泽 东 ” 的 指 挥 及 部 分 军 队 的 支 持 下 夺 得 大 部 分 政 权 。 新 的 中 国 共 产 党 建 立 了 ， 中 华 人 民 共 和 国 国 号 也 加 入 “ 革 命 ” 二 字 ， “ 毛 泽 东 ” 再 度 成 为 国 家 领 袖 。 新 的 政 治 体 系 正 在 建 立 起 来 ， 而 你 也 被 作 为 反 动 派 头 目 与 前 政 府 高 官 一 同 被 枪 决 、 铭 刻 在 历 史 的 耻 辱 柱 上 。 "
@@ -173,7 +173,7 @@ func _route_14(w: WorldState) -> Dictionary:
 	return {"name": " 枪 杆 子 里 出 政 权 … …", "text": "显 而 易 见 ， 你 没 法 在 专 业 领 域 内 胜 过 职 业 人 士 ： 打 着 “ 争 国 权 除 国 贼 ” 的 现 代 版 闯 王 队 伍 兵 不 血 刃 地 解 除 了 首 都 武 装 ， 轻 易 对 你 与 中 国 的 主 要 领 导 层 实 现 了 “ 反 隔 离 ” 。 你 也 就 成 了 现 代 版 的 东 罗 马 末 代 皇 帝 ， 只 能 以 绥 靖 手 段 对 其 诉 求 一 让 再 让 — — 而 这 不 过 是 慢 性 死 亡 而 已 ： 不 久 后 ， 你 与 你 的 支 持 者 们 也 纷 纷 退 休 ， 并 被 置 于 软 禁 状 态 ， 最 终 只 得 在 朝 鲜 的 调 解 下 以 非 政 治 身 份 释 放 并 引 至 平 壤 。 可 惜 ， 鸭 绿 江 对 岸 同 志 的 雪 中 送 炭 也 没 法 将 你 完 全 拽 出 这 个 烂 摊 子 ： 载 有 你 与 中 国 主 要 领 导 人 的 航 班 在 飞 跃 渤 海 上 空 时 离 奇 失 踪 ， 为 这 场 军 事 政 变 彻 底 画 上 了 句 号 。 接 下 来 便 请 欣 赏 发 生 在 中 国 全 境 的 新 一 轮 血 腥 鏖 战 罢 … …"}
 
 
-## 原作 EndingScript.cs L3843-3869（data[35]==5，多党选战四结局；party_number[i] → _pn，iron_and_blood 成就 TODO）。
+## 原作 EndingScript.cs L3843-3869（data[35]==5，多党选战四结局；party_number[i] → _pn，iron_and_blood 成就 注）。
 func _route_5(w: WorldState) -> Dictionary:
 	var name := ""
 	var text := ""

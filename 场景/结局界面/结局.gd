@@ -9,7 +9,7 @@ extends Control
 ##   - 折行：EndingScript.cs Text L4077-4121（'|'→换行，91 列空格处折行）→ Godot RichTextLabel autowrap_mode=3 + '|'→'\n'。
 ## 数据接口：结局内容_*.gd（见 工作记录/结局对齐规范.md 第2节）。
 ## 批D 已收口：data[35] 事件触发点由 GameManager.queue_ending_after_event 统一接线；
-## achievements 结局成就仍为 TODO（见成就对齐台账）。
+## achievements 结局成就仍为 注（见成就对齐台账）。
 
 const 胜利内容 := preload("res://场景/结局界面/结局内容_本体_胜利.gd")
 const 轮播1 := preload("res://场景/结局界面/结局内容_本体_轮播1.gd")

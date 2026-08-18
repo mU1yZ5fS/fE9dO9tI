@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event97.cs：自动化？（两选项）。
 ## 触发：TimeScript.cs:10808-10814 —— science[17] && (data[16]==10 || data[16]==11)。
-## 差异：doctr[10]/[11] 显示名（new_events_text[360/361]）Godot 未建模，跳过。
+## 差异：doctr[10]/[11] 显示名（new_events_text[360/361]）Godot 建模说明，跳过。
 
 const TXT_R0 := "我国的经济规划自动化项目现在已正式启动，区域性计算机中枢正在积极建设和投入运行，各计算中枢之间的协调网络正在逐步建立。统计部门已经预测我们的生产力会有大幅度的提高，供给也会得到改善，但是并不是所有的党员都对你们的创新感到满意。"
 
@@ -26,7 +26,7 @@ func execute(context: Dictionary) -> void:
 				else:
 					p.loyalty -= 500
 			_set_modifier(11, true)
-			# doctr[10]/[11] = new_events_text[360/361]：显示名未建模，跳过
+			# doctr[10]/[11] = new_events_text[360/361]：显示名建模说明，跳过
 			context["result_text"] = TXT_R0
 		1:
 			context["result_text"] = TXT_R1

@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event444.cs：漫长的革命（2选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:442-445 —— modifies[3] 且 modifies[6] 且 modifies[11] 且 年>=1985 且 !is_gkchp（.tres ExprNode 表达）。
-## 差异：doctr[] 显示文案表未建模，跳过；traits[0]→trait_personality、traits[1]→trait_alignment；
+## 差异：doctr[] 显示文案表建模说明，跳过；traits[0]→trait_personality、traits[1]→trait_alignment；
 ##   loyality→loyalty；KillPerson→PoliticianSystem.kill_politician（同槽补员，先收集下标再杀）。
 
 const TXT_TITLE := "漫长的革命"
@@ -38,7 +38,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			# 原版 doctr[6]/doctr[19]/doctr[24] 为显示文案表赋值，Godot 未建模，跳过。
+			# 原版 doctr[6]/doctr[19]/doctr[24] 为显示文案表赋值，Godot 建模说明，跳过。
 			d[W.I_PEOPLE_SUPPORT] = 1000
 			d[W.I_PARTY_SYSTEM] = 6
 			d[W.I_PRESS_POLICY] = 19

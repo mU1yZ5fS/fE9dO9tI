@@ -500,6 +500,11 @@ func load_game(path: String) -> void:
 		# 旧档/异常档防御：数值表不足 200 槽会令 tick 内 d[I_*] 越界，读档即补全。
 		if world.数值表.size() < 200:
 			world.数值表.resize(200)
+		# Godot 改版无 DLC 购买限制：读档也强制 0-3 号 DLC 全免费（dlc[4] 预留保持原值）。
+		if world.dlc.size() < 4:
+			world.dlc.resize(4)
+		for i in 4:
+			world.dlc[i] = true
 		# 读档后游戏内难度权威来自存档（原作 LoadInScript 用二进制存档覆盖 gameState.diff）；
 		# 同步到持久化难度，主菜单开新局时沿用。
 		difficulty_setting = world.difficulty
@@ -931,13 +936,15 @@ func calc_budget_planka() -> int:
 	return total
 
 
-## 调整预算类别。category_idx 为 71-81 之一，delta 为增减量。
+## 调整预算类别。category_idx 为 71-81 或 93（国际援助），delta 为增减量。
 ## 返回 false 表示余额不足或超过 planka 上限。
 func adjust_budget(category_idx: int, delta: int) -> bool:
 	if world == null:
 		return false
 	var d := world.数值表
-	if category_idx < W.I_BUDGET_ARMY or category_idx > W.I_BUDGET_DIPLO:
+	var is_budget_category := (category_idx >= W.I_BUDGET_ARMY and category_idx <= W.I_BUDGET_DIPLO) \
+		or category_idx == W.I_INTERNATIONAL_AID
+	if not is_budget_category:
 		return false
 	if delta > 0:
 		if d[W.I_BUDGET] < delta:
@@ -1098,7 +1105,7 @@ func check_policy_change(category_idx: int, target_val: int) -> Dictionary:
 	res.mao_ok = is_mao_dead()
 	# 原作 :456-461 modifies[6] 覆盖：mod6 激活且目标∈{9,14,15,22,23,28,29}
 	# 或 (19 且 resultOfEvents[444]!=0) 时 uslovie_bool[3] 恒 false（"毛主席正看着你！"）。
-	# 事件 444 未接入 → completed_event_ids.get(444,-1) 恒 -1（原版初始态）→ !=0 恒真。
+	# 事件 444 未启用 → completed_event_ids.get(444,-1) 恒 -1（原版初始态）→ !=0 恒真。
 	if _mod_active(world, 6) and (target_val in [9, 14, 15, 22, 23, 28, 29] \
 			or (target_val == 19 and world.completed_event_ids.get(444, -1) != 0)):
 		res.mao_ok = false
@@ -2204,8 +2211,8 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 
 	# 2346-2350：中国 parts[0..10] 全空 → 原版 ILoveSuckCocks() 刷新地图；
 	# 项目按惯例近似省略地图 parts 刷新（见 war_system 注释）。
-	# 2351-2355：1979.5 英国亲美路线（项目 dlc[3] 恒 false → 执行）。
-	if w.date.year == 1979 and w.date.month == 5:
+	# 2351-2355：1979.5 英国亲美路线（原版 !dlc[3] 分支；Godot 改版 dlc[3]=true 全免费 → 不执行）。
+	if w.date.year == 1979 and w.date.month == 5 and not w.dlc[3]:
 		if w.empires.size() > 0 and w.empires[0] != null:
 			w.empires[0].power += 10
 		if britain != null:
@@ -2329,8 +2336,8 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 			china.set_tag("sev", false)
 			china.set_tag("seato", false)
 
-	# 2471-2475：1983.6 法国亲美路线（dlc[3] 恒 false → 执行）。
-	if w.date.year == 1983 and w.date.month == 6:
+	# 2471-2475：1983.6 法国亲美路线（原版 !dlc[3] 分支；Godot 改版 dlc[3]=true 全免费 → 不执行）。
+	if w.date.year == 1983 and w.date.month == 6 and not w.dlc[3]:
 		if w.empires.size() > 0 and w.empires[0] != null:
 			w.empires[0].power += 10
 		var france83 := w.get_country_by_legacy_index(21)
@@ -2351,8 +2358,8 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 				war_nato.usa_side = 0
 				war_nato.ussr_side = 0
 
-	# 2495-2502：1977 年后西班牙/葡萄牙自由化（dlc[3] 恒 false → 执行）。
-	if w.date.year > 1976:
+	# 2495-2502：1977 年后西班牙/葡萄牙自由化（原版 !dlc[3] 分支；Godot 改版 dlc[3]=true 全免费 → 不执行）。
+	if w.date.year > 1976 and not w.dlc[3]:
 		var portugal := w.get_country_by_legacy_index(87)
 		if portugal != null:
 			portugal.sub_government = 6
@@ -2362,7 +2369,13 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 			spain.sub_government = 5
 			spain.government = 3
 
-	# 2503-2509：dlc[3] 分支（项目 dlc[3] 恒 false → 跳过）。
+	# 2503-2509：dlc[3] 分支（Godot 改版 dlc[3]=true 全免费 → 执行）。
+	# 原版：1984 年土耳其 sub==7 时改开化（SubGosstroy=6、Gosstroy=3）。
+	if w.dlc[3]:
+		var turkey84 := w.get_country_by_legacy_index(84)
+		if turkey84 != null and turkey84.sub_government == 7 and w.date.year == 1984:
+			turkey84.sub_government = 6
+			turkey84.government = 3
 
 	# 2510-2550：OAR 成立后阿拉伯国家退出其它联盟。
 	if w.oar:
@@ -2380,20 +2393,20 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 					c_oar.set_tag("ovd", false)
 					c_oar.set_tag("nato", false)
 
-	# 2551-2555：1982.5 西班牙入北约。
-	if w.date.year == 1982 and w.date.month == 5:
+	# 2551-2555：1982.5 西班牙入北约（原版 !dlc[3] 分支；Godot 改版 dlc[3]=true 全免费 → 不执行）。
+	if w.date.year == 1982 and w.date.month == 5 and not w.dlc[3]:
 		var spain_nato := w.get_country_by_legacy_index(86)
 		if spain_nato != null and spain_nato.sub_government == 5:
 			spain_nato.set_tag("nato", true)
 
-	# 2556-2564：土耳其 sub==9 改名（new_events_text[784] 未建模 → 跳过）。
-	# DaysInSouthAmerica 未建模 → 跳过（项目月块不处理南美选举漂移）。
+	# 2556-2564：土耳其 sub==9 改名（new_events_text[784] 建模说明 → 跳过）。
+	# DaysInSouthAmerica 建模说明 → 跳过（项目月块不处理南美选举漂移）。
 
 
 ## TimeScript.cs:1770-1881 事件686 月块中的芬兰(26)部分（1860-1890）：
 ## 瑞典(28)/丹麦(90)/挪威(91) 都 based 且芬兰未 based 时，芬兰按苏联领导人转亲苏。
 ## （1648-1679 三国 econ+okb 转亲中分支是日块，已移 _daily_finland_linkage。）
-## Phase 2 缺口：1772-1856 北欧 sovpower 累积/封顶/转 based 的 80 行尚未移植，
+## Phase 2 缺口：1772-1856 北欧 sovpower 累积/封顶/转 based 的 80 行尚移植说明，
 ## 目前三国“有驻军基地”主要靠外交/事件置位。
 func _monthly_finland_linkage(w: WorldState) -> void:
 	var sweden := w.get_country_by_legacy_index(28)
@@ -3133,7 +3146,7 @@ func _fortnight_research_advance(d: Array[int], w: WorldState) -> void:
 ## 航天科技 27-33 本步补齐（原版 DLC02 内容，本移植按项目惯例无条件开放）。
 ## 原版 empires[0]=USA、empires[1]=USSR；relations 均为 ×10 存储。
 ## TimeScript.cs:11173-11717 TraitInfluence 逐字移植。
-## 原版 dlc[0] 内的 gamerules[7]/[8] 分支因 gamerules 未移植而跳过（项目既有裁决）。
+## 原版 dlc[0] 内的 gamerules[7]/[8] 分支因 gamerules 移植说明而跳过（项目既有裁决）。
 func _fortnight_trait_influence(d: Array[int], w: WorldState) -> void:
 	for i in w.politicians.size():
 		var p: PoliticianData = w.politicians[i]
@@ -3146,7 +3159,7 @@ func _fortnight_trait_influence(d: Array[int], w: WorldState) -> void:
 				p.power += 5
 		if _faction_leader_slot(w, i) >= 0:
 			p.power += 20
-		# dlc[0] 块：gamerules 未移植，跳过（TimeScript.cs:11208-11231）。
+		# dlc[0] 块：gamerules 移植说明，跳过（TimeScript.cs:11208-11231）。
 		if _in_central_office(w, i):
 			_trait_influence_central(w, d, p)
 		if _is_foreign_minister(w, i):
@@ -6019,7 +6032,7 @@ func _on_fortnight() -> void:
 	# 军事学说 4897 → 科技持续 4974 → 投资效果 5264 → 压力修正 5266 → 经济思想漂移 5311 →
 	# 工业 5323 → 服务业 5393 → 农业 5461 → 贷款 5512 → 科研 5608 → 难度 5757 →
 	# 战后衰减 5878 → 预算回落 5903 → 人口预算加成 5928。
-	# （TraitInfluence 4973 / MutualRelationsChange 5265 未移植，见审计报告；modifier 周期块另算。）
+	# （TraitInfluence 4973 / MutualRelationsChange 5265 移植说明，见审计报告；modifier 周期块另算。）
 	_fortnight_living_cap(d)
 	_fortnight_cw_block(d, w)
 	_fortnight_ideology_corruption(d)
@@ -6046,9 +6059,15 @@ func _on_fortnight() -> void:
 	_fortnight_difficulty_bonus(d, w)
 	_fortnight_post_war_decay(d, war_support_before, manpower_before)
 	# ModifiesChanges 原版在 5907（战后衰减 5878 之后、预算回落 5903 之前）调用；
-	# Godot 只移植了其中 modifier 0-17 的可确认部分，未移植项见审计报告。
+	# Godot 只移植了其中 modifier 0-17 的可确认部分，移植说明项见审计报告。
 	_fortnight_modifiers(d, w, support_before, budget_before, freedom_before)
 	_apply_modifier50_military(d, w)
+	# 原版 ModifiesInfuence.cs:502-508：每轮双周强制激活修正 1 与 50。
+	# （Godot 改版 dlc[3]=true 全 DLC 免费，开局已激活 50；这里保留原版强制激活作双保险。）
+	if w.modifiers.size() > 1 and not _mod_active(w, 1):
+		w.modifiers[1].is_active = true
+	if w.modifiers.size() > 50 and not _mod_active(w, 50):
+		w.modifiers[50].is_active = true
 	_fortnight_budget_growth_fallback(d, budget_before)
 	_fortnight_population_budget_bonus(d)
 	_check_coup(d, w)
@@ -6215,7 +6234,7 @@ func _fortnight_modifiers(
 
 	# 11 自动化计划经济（OGAS）。原版唯一激活入口 = 事件97选项0（Event97.cs:58：
 	# data[1]=0/忠诚±/激活均为该事件的一次性副作用；触发需 science[17]+体制10/11，
-	# TimeScript.cs:10810）。事件97未移植 → 恒不激活。原版无「econ==11 自动激活」
+	# TimeScript.cs:10810）。事件97移植说明 → 恒不激活。原版无「econ==11 自动激活」
 	# 逻辑（开局 data[16]=11 即中式计划，此前误加致开局党内支持清零，已移除）。
 	# ModifiesInfuence.cs:1558-1570：每两周 +50（显示+5.0）；解除只在 Event112.cs:148。
 	if _mod_active(w, 11):
@@ -6956,7 +6975,7 @@ func _fortnight_satisfaction_drift(d: Array[int], w: WorldState) -> void:
 
 # ── 双周：大国领导人与军备资金效果（TimeScript.cs:4318-4510） ──
 ## 原版外层 if(!dlc[0])：dlc 是 new bool[5]（GlobalScript.cs:221），无任何 =true 写入点，
-## 默认 false → 该分支恒真。Godot 未建模 DLC 系统，按恒真移植。
+## 默认 false → 该分支恒真。Godot 建模说明 DLC 系统，按恒真移植。
 ## now_leader 语义按 modify_choose.cs 显示索引（Event89.cs 也按 1=安德罗波夫/3=谢尔比茨基
 ## 写 now_leader），与 leaders[] 数组下标解耦。
 func _fortnight_leader_effects(d: Array[int], w: WorldState) -> void:

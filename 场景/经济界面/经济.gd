@@ -21,6 +21,7 @@ const 预算项 := {
 	"服务业支出": W.I_BUDGET_SERVICES,
 	"宣传支出": W.I_BUDGET_PROPAGANDA,
 	"福利支出": W.I_BUDGET_WELFARE,
+	"国际援助": W.I_INTERNATIONAL_AID,
 }
 
 const STEP := 10

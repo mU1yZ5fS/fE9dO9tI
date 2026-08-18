@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event682.cs：我实在是个乡下人……（乡土中国决策触发，六选项）。
 ## 触发：GlobalScript.cs:58 Decision「乡土中国」→ decision_catalog.gd d38（HasChosenInTheEvent(681,4)
 ##   + 非毛主义 + 党支持<800 + 预算>=200），d38.effects 里 A.start_event(682) 已就位。
-## 差异：doctr[13] 显示文案表未建模，跳过并留原文；结果后的 old_modify_desc[15] 整段为
+## 差异：doctr[13] 显示文案表建模说明，跳过并留原文；结果后的 old_modify_desc[15] 整段为
 ##   display-only 文案（按 r681/r682/r53 + 科技 3/6/7 重建），按项目惯例跳过，仅留溯源。
 
 const TXT_TITLE := "我实在是个乡下人……"
@@ -117,7 +117,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_THOUGHT_FREEDOM, 80)
 			_set_data(W.I_ECON_SYSTEM, 13)
-			# 原版 doctr[13] = "新乔治主义社会"：显示文案表未建模，跳过。
+			# 原版 doctr[13] = "新乔治主义社会"：显示文案表建模说明，跳过。
 		4:
 			context["result_text"] = TXT_R4_FMT.replace("{0}{1}", leader)
 			_add(W.I_BUDGET, -200)

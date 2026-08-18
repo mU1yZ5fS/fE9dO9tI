@@ -8,7 +8,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 原版 traits[0]=0（性格）、traits[3]=24（背景）、traits[1]=7（倾向）、
 ##    traits[2]=11（特长）→ PoliticianData: trait_personality / trait_background /
 ##    trait_alignment / trait_special（字段注释见 politician_data.gd:23-26）。
-##  - NewPolitician[] 标记仅用于原版 UI 刷新，Godot 未建模，跳过。
+##  - NewPolitician[] 标记仅用于原版 UI 刷新，Godot 建模说明，跳过。
 ##  - party_change[] 仅 UI 摆动数值，跳过。
 ##  - “找最弱且非 traits[0]==0 的槽”循环：原版 num 从 0 起且不校验 num 本人，
 ##    逐字保留（本实现用空位/边界保护）。

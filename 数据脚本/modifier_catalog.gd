@@ -7,6 +7,7 @@ extends RefCounted
 ## 运行时激活状态仍看 WorldState.modifiers；本类负责定义与展示资源。
 
 const MOD_DIR := "res://资产/数据/修正/"
+const W = preload("res://数据脚本/world_state.gd")
 
 static var _by_id: Dictionary = {}  # int -> ModifierDef
 static var _loaded: bool = false
@@ -622,8 +623,8 @@ static func _effect_anthem(w: WorldState) -> String:
 
 static func _effect_italy(w: WorldState) -> String:
 	var d: Array[int] = w.数值表 if w != null else []
-	# 原版“事件结算分”由意大利事件链累计；Godot 未移植该事件链，
-	# 结算分与当前分都读 data[172..182] 的当前值（world_factory 已初始化）。
+	# 意大利事件链已移植（event_399 等直接写 data[172..182]）；
+	# 结算分与当前分都读这些槽的当前值（world_factory 已初始化）。
 	var dc := _raw(d, 175)
 	var pci := _raw(d, 176)
 	var msi := _raw(d, 177)
@@ -664,22 +665,60 @@ static func _effect_leader(w: WorldState) -> String:
 	# 不能用 trait_personality 直接当派系索引——开局华国锋 faction=1=保守派，
 	# 而 traits[0]=20 是「保守派」特质的 traits 表编号，两者不是同一张表。
 	var party_label: String = leader.ideology_label()
-	# LeaderAsset/MoneyLevel/ServeRMB 在原版 ModifyButtonScript.cs:1329 是独立字段，
-	# 本工程尚未建模（event_304/094 等均已注释跳过），不能拿 power 冒充资产规模。
-	return "此处记录了我国最高领导人的概况\n姓名：%s\n政治立场：%s\n资产规模：未建模（原版 LeaderAsset）\n公众形象：未建模\n社会声望：未建模\n任职年限：%d年" % [
-		leader.name_display, party_label, leader.years_in_power,
+	# 资产规模/公众形象/社会声望按原版 ModifyButtonScript.cs:1245-1280 计算。
+	var asset_f := float(w.leader_asset) / 10.0
+	var public_image := _leader_public_image(w.leader_asset)
+	var social_prestige := _leader_social_prestige(w)
+	var base := "此处记录了我国最高领导人的概况\n姓名：%s\n政治立场：%s\n资产规模：%s 亿\n公众形象：%s\n社会声望：%s\n任职年限：%d年" % [
+		leader.name_display, party_label, String.num(asset_f, 1),
+		public_image, social_prestige, leader.years_in_power,
 	]
+	return base + _leader_property_lines(w, leader)
 
 
-static func _effect_money(_w: WorldState) -> String:
-	# Godot 无 MoneyLevel/LeaderAsset（event_094 注释已声明跳过），按 0 级显示。
-	var level := 0
-	var support_cost := 0.0
-	var industry_cost := 0.0
-	var living_cost := 0.0
+static func _leader_public_image(asset: int) -> String:
+	if asset <= 0:
+		return " <color=lime>两袖清风</color>"
+	if asset <= 500:
+		return " <color=green>党管干部</color>"
+	if asset <= 1500:
+		return " <color=yellow>一方豪强</color>"
+	if asset <= 3000:
+		return " <color=orange>资本大鳄</color>"
+	return " <color=red>当代傅满洲</color>"
+
+
+static func _leader_social_prestige(w: WorldState) -> String:
+	if w.money_level > 14:
+		return " <color=red>“老大哥”</color>"
+	if _raw(w.数值表, W.I_PEOPLE_SUPPORT) < 400:
+		return " <color=orange>臭名昭著</color>"
+	if _raw(w.数值表, W.I_PEOPLE_SUPPORT) < 700:
+		return " <color=yellow>毁誉参半</color>"
+	return " <color=lime>好评如潮</color>"
+
+
+static func _leader_property_lines(w: WorldState, leader: PoliticianData) -> String:
+	if w.money_level <= 0:
+		return ""
+	var s := ""
+	if w.leader_property.size() > 1 and w.leader_property[1]:
+		s += "\n<color=yellow>空中霸主，铁路帝王：</color>%s 先生在交通体系内打造的个人圈子当然不只限于个人享受那么简单——预算-1.0，与苏联关系-0.2，科研点+0.5，干预点数+1.0，可免费监视政治局内的政客" % leader.name_display
+	if w.leader_property.size() > 2 and w.leader_property[2]:
+		s += "\n<color=yellow>白道宗师，黑道救主：</color>%s 先生亲自领导并指挥的“各路诸侯”与“地下军队”令人印象深刻——预算-2.0；强化“破财消灾”决议的效果；与超级大国的关系不会跌破25.0；可无视外交声誉与非社会主义政权建立友好关系；可免费调查政治局内的政客；可在阴谋事件内无条件取得政治辩论胜利" % leader.name_display
+	if w.leader_property.size() > 3 and w.leader_property[3]:
+		s += "\n<color=yellow>志向高远，胸怀广阔：</color>预算-2.0，党内支持度+0.5；党内支持度不会跌破40.0；若在多党制环境下，思想自由化不会高于40.0；可以免费扶持政客；强化“破财消灾”决议的效果；与%s 同政治派系的政客，其出现病弱属性的阈值将变为88岁" % leader.name_display
+	return s
+
+
+static func _effect_money(w: WorldState) -> String:
+	var level := w.money_level if w != null else 0
+	var support_cost := 0.2 * float(level)
+	var industry_cost := 0.4 * float(level)
+	var living_cost := 0.5 * float(level)
 	return "生财有道等级：%d级\n个人资产规模+%d\n人民支持度-%s\n思想自由化+%s\n人民生活水平-%s\n三大产业-%s\n腐败+%s" % [
-		level, level, _num(support_cost), _num(support_cost),
-		_num(living_cost), _num(industry_cost), _num(support_cost),
+		level, level, String.num(support_cost, 1), String.num(support_cost, 1),
+		String.num(living_cost, 1), String.num(industry_cost, 1), String.num(support_cost, 1),
 	]
 
 

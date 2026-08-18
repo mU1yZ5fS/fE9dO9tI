@@ -141,7 +141,7 @@ static func plot_politics(d: Array[int], w: WorldState) -> void:
 		var target: PoliticianData = w.politicians[i]
 		if is_vacant_politician(target):
 			continue
-		# 原版 TimeScript.cs:286：仅 power > 250 || gamerules[4]==1 进入（gamerules 未移植→0）
+		# 原版 TimeScript.cs:286：仅 power > 250 || gamerules[4]==1 进入（gamerules 移植说明→0）
 		if target.power <= 250 and _game_rule(w, 4) != 1:
 			continue
 		var plot_power := 0
@@ -213,7 +213,7 @@ static func _plot_kill_allowed(w: WorldState, i: int) -> bool:
 	var d := w.数值表
 	var ev25 := w.completed_event_ids.has("gang_of_four")
 	var ev26 := w.completed_event_ids.has("weak_alliance")
-	var ev80 := w.completed_event_ids.has("event_80")  # 原版 event_done[80]，Godot 未移植 → 恒 false
+	var ev80 := w.completed_event_ids.has("event_80")  # 原版 event_done[80]，Godot 移植说明 → 恒 false
 	var mod3: bool = GameManager._mod_active(w, 3)
 	var year_ok := d[W.I_YEAR] >= 1978
 	var basic := i > 5 and i != 7 and (i < 11 or i > 15) and i != 17
@@ -225,7 +225,7 @@ static func _plot_kill_allowed(w: WorldState, i: int) -> bool:
 	return (basic or e25a or e26a or y1 or y2 or e25b) and (i > 4 or not mod3)
 
 
-## 未移植的 gamerules 读取口（原版 ChoiceSystemController.cs:13-20,249-250）。
+## 移植说明的 gamerules 读取口（原版 ChoiceSystemController.cs:13-20,249-250）。
 static func _game_rule(w: WorldState, idx: int) -> int:
 	var v: Variant = w.global_flags.get("gamerule_%d" % idx, 0)
 	if v is int:

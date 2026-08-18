@@ -10,7 +10,7 @@ const MODIFIER_ITEM := preload("res://场景/概览界面/修正模板.tscn")
 
 const PANEL_KEYS: Array[String] = ["交易", "影响", "领土", "形势", "凝聚力", "盟友"]
 
-## 领导人英文名→中文显示（数据层存英文名 world_factory.gd:1002/1008；继任未移植时回退原名）
+## 领导人英文名→中文显示（数据层存英文名 world_factory.gd:1002/1008；继任移植说明时回退原名）
 const 领导人中文名 := {
 	"Leonid Brezhnev": "列昂尼德·勃列日涅夫",
 	"Gerald Ford": "杰拉尔德·福特",
@@ -244,7 +244,7 @@ func _import_change(w: WorldState) -> int:
 
 
 ## 事件完成：优先 EventEngine 的 completed_event_ids（event_engine.gd:246-279），
-## 未移植数字事件按项目惯例回退 global_flags 的 event_done_XXX（国家面板.gd:983 同例）。
+## 移植说明数字事件按项目惯例回退 global_flags 的 event_done_XXX（国家面板.gd:983 同例）。
 func _evt_done(w: WorldState, id) -> bool:
 	var event_id: String = 事件ID映射.get(id, str(id))
 	if w.completed_event_ids.has(event_id):
@@ -252,7 +252,7 @@ func _evt_done(w: WorldState, id) -> bool:
 	return w.get_flag("event_done_%s" % str(id))
 
 
-## 事件结果：completed_event_ids 值为选项号；未移植数字事件读 global_flags 的 result_XXX。
+## 事件结果：completed_event_ids 值为选项号；移植说明数字事件读 global_flags 的 result_XXX。
 func _evt_result(w: WorldState, id) -> int:
 	var event_id: String = 事件ID映射.get(id, str(id))
 	if w.completed_event_ids.has(event_id):

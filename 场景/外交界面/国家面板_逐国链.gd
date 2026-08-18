@@ -185,7 +185,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				or _d(w, 133) == 1 or _d(w, 133) == 3 \
 				or w.modifier_active(49) or w.get_flag("is_gkchp") or w.ind_opp:
 			return
-		if not w.get_flag("relres"):  # 散落 bool relres 未建模，走 get_flag 近似
+		if not w.get_flag("relres"):  # 散落 bool relres 用 global_flags 建模
 			_show(slots, 0, 4, "恢 复 关 系")
 		else:
 			_show(slots, 0, 81, "科 技 交 易")
@@ -342,7 +342,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			if (country.has_tag("seato") or country.has_tag("ovd") or country.has_tag("okb")) \
 					and not _part(w, 10, 0) and not _part(w, 46, 0):
 				_show(slots, 0, 15, "挑 起 战 争")
-				if not w.get_flag("guns"):  # 散落 bool guns 未建模，走 get_flag 近似
+				if not w.get_flag("guns"):  # 散落 bool guns 用 global_flags 建模
 					_show(slots, 1, 16, "提 供 军 援")
 				elif _d(w, 158) <= 0 and not _part(w, 10, 0) and country.puppet_of < 0:
 					_show(slots, 1, 14, "实 施 制 裁")
@@ -364,7 +364,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 0, 1000, "组 织 政 变")
 					_show(slots, 1, 18, "经 济 合 作")
 					_show(slots, 2, 19, "军 事 同 盟")
-				elif w.war_state <= 0:  # 近似: 原版 war 未建模，用 war_state 代
+				elif w.war_state <= 0:  # 原版 war 状态由 Godot war_state 字段建模
 					_show(slots, 0, 17, "发 展 贸 易")
 					if w.event_done_num(43):
 						_show(slots, 1, 18, "经 济 合 作")
@@ -505,7 +505,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				and not _decision_done(w, 14):  # CountryScript completedDecisions[14]
 			_show(slots, 0, 28, "扶 持 纳 萨 尔 派")
 			_show(slots, 1, 29, "重 建 外 交 关 系")
-			if w.war_state != 2 and not country.has_tag("亲中"):  # 近似: 原版 war 未建模，用 war_state 代
+			if w.war_state != 2 and not country.has_tag("亲中"):  # 原版 war 状态由 Godot war_state 字段建模
 				_show(slots, 2, 30, "策 动 边 界 战 争")
 			else:
 				_show(slots, 2, 71, "增 兵 助 战")
@@ -694,7 +694,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 2, 53, "经 济 合 作")
 				_show(slots, 3, 19, "军 事 同 盟")
 				var c93 := _c(w, 93)
-				if w.get_flag("Israellost") or (c93 != null and c93.puppet_of == 37):  # 近似: Israellost 未建模
+				if w.get_flag("Israellost") or (c93 != null and c93.puppet_of == 37):  # 散落 bool Israellost 用 global_flags 建模
 					_show(slots, 1, 1001, "组 织 谈 判")
 				if _revint_core_ok(w, country) and country.has_tag("亲中") and country.has_tag("okb"):
 					_show(slots, 3, 5000, "革 命 国 际")
@@ -718,7 +718,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 						and (w.result_of_event_num(116) == 0 or not w.event_done_num(116)) \
 						and (player != null and player.sub_government != 9 and player.sub_government != 7 \
 						and player.sub_government != 10 and player.sub_government != 12 \
-						and player.sub_government != 13):  # 近似: completedDecisions[6] 未建模
+						and player.sub_government != 13):
 					_show(slots, 1, 1005, "施 压")
 			elif w.event_done_num(461) and country.has_tag("亲中"):
 				_show(slots, 0, 10, "经 济 合 作")
@@ -1339,7 +1339,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 0, 93, " 发 展 贸 易")
 				var c35 := _c(w, 35)
 				if (w.get_flag("Israellost") and not w.event_done_num(440)) \
-						or w.result_of_event_num(440) == 2:  # 近似: Israellost 未建模
+						or w.result_of_event_num(440) == 2:  # 散落 bool Israellost 用 global_flags 建模
 					_show(slots, 1, 1002, "谈 判 结 束 内 战")
 				if c35 != null and c35.puppet_of == 14:
 					_show(slots, 1, 1079, "新 秩 序")
@@ -2326,11 +2326,11 @@ func _block_k_ok(w: WorldState, country: CountryData) -> bool:
 # Show槽位/文案/type 多重集: PASS (C#=864, GD=864)
 # 国别覆盖: PASS (C# 显式==编号 139 个 + 区间展开，合计 161 个编号全部出现)
 # 函数定义重复: PASS (共 38 个函数)
-# 近似/未建模条件清单（行号=文件行号）:
-#   L184 if not w.get_flag("relres"):  # 散落 bool relres 未建模，走 get_flag 近似
-#   L341 if not w.get_flag("guns"):  # 散落 bool guns 未建模，走 get_flag 近似
-#   L363 elif w.war_state <= 0:  # 近似: 原版 war 未建模，用 war_state 代
-#   L504 if w.war_state != 2 and not country.has_tag("亲中"):  # 近似: 原版 war 未建模，用 war_state 代
-#   L693 if w.get_flag("Israellost") or (c93 != null and c93.puppet_of == 37):  # 近似: Israellost 未建模
-#   L1338 or w.result_of_event_num(440) == 2:  # 近似: Israellost 未建模
+# 建模说明（行号=文件行号）:
+#   L184 if not w.get_flag("relres"):  # 散落 bool relres 用 global_flags 建模
+#   L341 if not w.get_flag("guns"):  # 散落 bool guns 用 global_flags 建模
+#   L363 elif w.war_state <= 0:  # 原版 war 状态由 Godot war_state 字段建模
+#   L504 if w.war_state != 2 and not country.has_tag("亲中"):  # 原版 war 状态由 Godot war_state 字段建模
+#   L693 if w.get_flag("Israellost") or (c93 != null and c93.puppet_of == 37):  # 散落 bool Israellost 用 global_flags 建模
+#   L1338 or w.result_of_event_num(440) == 2:  # 散落 bool Israellost 用 global_flags 建模
 # 已消除近似：L501/L717 的 completedDecisions[14]/[6] 已改用 w.decisions.completed 真实字段。

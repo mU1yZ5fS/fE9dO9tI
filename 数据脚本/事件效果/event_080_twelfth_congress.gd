@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - modifies[3] 激活分支：2 选项；常规分支：3 选项。prepare 动态替换 options。
 ##  - num 计分逐项移植（TimeScript.cs:10719-10844 同款国家检查）。
 ##  - 原版 LeaderAsset / MoneyLevel / ServeRMB / doctr[] / party_change[]
-##    为显示或未建模字段，跳过；数值效果全部保留。
+##    为显示或建模说明字段，跳过；数值效果全部保留。
 ##  - result0（极左派胜利）的领袖轮换：leader ↔ politics[2] 逐字段交换，
 ##    faction_leader[0]=1，随后原版 KillPerson(2)（同序保留）。
 ##  - result2 新政治家姓名取自 polit_names1/2_en.txt：乔石/李锐/刘宾雁/鲍彤。
@@ -106,7 +106,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USSR, 100)
 			_add(W.I_MANPOWER, -80)
 			_set_modifier(6, false)
-			# doctr[] 显示名：Godot 未建模，跳过
+			# doctr[] 显示名：Godot 建模说明，跳过
 			_set_data(W.I_MAO_HISTORY_LINE, 1)
 			if ws.factions.size() > 1:
 				ws.factions[1].ideology = int(ws.factions[1].ideology * 0.95)
@@ -127,7 +127,7 @@ func _result_mod3_0(context: Dictionary) -> void:
 	_add(W.I_PEOPLE_SUPPORT, 300)
 	_add(W.I_THOUGHT_FREEDOM, -100)
 	_add(W.I_DIPLO, 100)
-	# LeaderAsset / MoneyLevel / ServeRMB：显示字段未建模，跳过
+	# LeaderAsset / MoneyLevel / ServeRMB：显示字段建模说明，跳过
 	if ws.modifiers.size() > 65 and ws.modifiers[65] != null:
 		ws.modifiers[65].is_active = false
 	_swap_leader_with_politician(2)

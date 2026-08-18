@@ -113,7 +113,7 @@ const TECH_EFFECTS: Array[String] = [
 ]
 
 # 悬停提示：modifies[51] 激活时的额外石油消耗行（原版 other_text[433+编号]）
-# 注：modifies[51] 尚未建模（world_factory.gd:1445），恒不显示；保留映射便于日后补。
+# 注：modifies[51] 尚建模说明（world_factory.gd:1445），恒不显示；保留映射便于日后补。
 const TECH_OIL_LINES: Dictionary = {
 	2: "<color=red>石 油 消 费 +35</color>",
 	3: "<color=red>石 油 消 费 +30</color>",
@@ -297,7 +297,7 @@ func _tooltip_status(ts: TechState, i: int) -> String:
 		s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=red] 只能研究单个项目 [/color]" % [money_s, elapsed, days]
 	else:
 		# 原版对 17 号（中国版OGAS）有 data[118]==0 的“尚未宣告建设全面自动化”门，
-		# 由 Event110 写入 data[118]=1 后解锁；Event110 尚未移植，本端口保持可研究，不显示该门。
+		# 由 Event110 写入 data[118]=1 后解锁；Event110 尚移植说明，本端口保持可研究，不显示该门。
 		var dep: int = ts.TECH_DEPENDENCY[i] if i < ts.TECH_DEPENDENCY.size() else -1
 		if dep != -1 and (dep >= ts.unlocked.size() or not ts.unlocked[dep]):
 			s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=red] 不可研究 [/color]" % [money_s, elapsed, days]
@@ -317,7 +317,7 @@ func _tooltip_status(ts: TechState, i: int) -> String:
 
 
 ## T3：介绍文案 + 影响Buff（原版 RepaintPlashka 的 T3.text）
-## 原版 modifies[51] 激活时追加“石油消费”行；该修正尚未建模（world_factory.gd:1445），
+## 原版 modifies[51] 激活时追加“石油消费”行；该修正尚建模说明（world_factory.gd:1445），
 ## 保留检查点，恒为 false。
 func _tooltip_desc(w: WorldState, _ts: TechState, i: int) -> String:
 	var text: String = TECH_DESC[i] if i < TECH_DESC.size() else ""

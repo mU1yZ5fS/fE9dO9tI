@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 描述随机票数 prepare 用 randi_range 复现；
 ##  - 原版 iron_and_blood 成就 Set(142) 已接 Achievements；
-##  - 原版 ingamewars[22].usa_place 未建模，跳过。
+##  - ingamewars[22].usa_place → WarData.usa_side（c51 对华贸易时置 0）。
 
 const TXT_TITLE := "新罗曼诺夫帝国"
 const TXT_DESC_FMT := "更让人始料不及的事发生了，苏联领导人格里戈里·罗曼诺夫宣称：“一些处于社会主义大家庭的国家已经表达了加入苏联的期望。出于尊重其自决权的需要，我们绝不能否认他们的要求。但事关重大，有必要为此举行一场全民公投。”\n长久以来，保加利亚便已为成为苏联的第16个加盟共和国做足了准备，驱动其加入苏联的原因很可能是其欠苏联的外债。然而，现在该国已经举行了公投，其中有{1}%的公民支持加入苏联。\n长期以来，蒙古便被看作是“主权最名不副其实的社会主义国家”，在苏联军队的监管下，那里甚至连分离主义团体产生的苗头都没有。驻守在外贝加尔湖军区的苏军牢牢把控当地局势。因此结果显而易见，有{2}%的公民支持加入苏联。\n而在相对“叛逆”得多的波兰境内，问题则要复杂的多。已经数次失去主权的国家绝不会轻易再度灭亡。但这次，华沙并没有什么新闻。因为有{2}%的公民支持波兰成为苏联境内的苏维埃共和国。\n所以究竟发生了什么，为什么发生了这种事，这些问题均悬而未决。因此，美国和西方国家指责苏联伪造全民公决结果并借机吞并这些国家。而苏联则称西方言行不一。\n可我们对此应该怎么做？毕竟在此次扩张后，我们与苏联之间的边界扩大了许多倍。"
@@ -102,7 +102,9 @@ func execute(context: Dictionary) -> void:
 			# 原作 Event388.cs:122：iron_and_blood → achievements.Set(142)
 			Achievements.set_achievement(142)
 			_start_war_388()
-			# 原版 if (c51.Torg) ingamewars[22].usa_place = 0；端口未建模，跳过
+			var usa388 := ws.get_country_by_legacy_index(51)
+			if ws.wars.size() > 22 and ws.wars[22] != null and usa388 != null and usa388.has_tag("对华贸易"):
+				ws.wars[22].usa_side = 0
 			_add(W.I_PARTY_SUPPORT, 300)
 			_add(W.I_ARMY, -750)
 

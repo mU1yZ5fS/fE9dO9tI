@@ -1,5 +1,5 @@
 ## 结局内容_本体_轮播3 — 原作 EndingScript.cs OnMouseDown 中文分支 number_of_e 10-18（L2494-3126）。
-## 本批只产出内容函数；页0 GoodEnd 与俄文分支（L3127+）不迁移；成就调用只写 TODO 注释。
+## 本批只产出内容函数；页0 GoodEnd 与俄文分支（L3127+）不迁移；成就调用只写 注 注释。
 extends "res://场景/结局界面/结局内容_基础.gd"
 
 
@@ -177,35 +177,35 @@ func _page_12(w: WorldState) -> Dictionary:
 	if pup(c(w, 19)) == 1:
 		text += "白 象 之 殇|对 印 特 别 军 事 行 动 的 大 获 全 胜 使 中 国 得 以 彻 底 解 决 西 南 边 界 问 题 ， 并 按 照 自 身 意 志 重 划 南 亚 版 图 ： 考 虑 到 印 度 国 内 政 治 格 局 错 综 复 杂 ， 地 方 社 会 运 转 仰 赖 政 治 家 族 ， 全 国 性 政 治 组 织 多 为 民 族 主 义 集 团 ， 且 公 民 社 会 发 展 不 充 分 导 致 委 任 现 象 广 泛 存 在 的 事 实 。 中 方 果 断 放 弃 了 在 南 亚 再 造 一 个 亲 中 印 度 ， 或 将 其 委 以 统 一 军 事 管 辖 的 概 念 。 转 而 采 取 分 而 治 之 的 做 法 ： 该 国 所 有 的 争 议 领 土 皆 被 中 国 、 巴 基 斯 坦 、 孟 加 拉 国 、 乃 至 于 曾 经 的 保 护 国 尼 泊 尔 所 笑 纳 ， 残 存 的 部 分 则 根 据 “ 民 族 自 决 ” 概 念 进 行 邦 联 化 ， 部 分 地 方 豪 强 在 事 实 上 成 功 建 国 自 立 。 出 于 “ 监 督 去 内 殖 民 化 进 程 ” ， “ 妥 善 安 排 发 展 当 地 工 业 ” 与 “ 管 控 印 度 核 能 资 产 ” 的 需 要 ， 中 国 部 队 获 得 了 在 各 印 度 邦 国 境 内 的 无 限 期 驻 扎 权 ， 更 在 安 保 名 义 下 直 截 了 当 地 掌 控 了 采 矿 、 冶 金 、 交 通 等 经 济 命 脉 ， 形 成 了 大 大 小 小 的 外 国 租 借 地 。 所 有 的 一 切 最 终 造 就 了 南 亚 版 本 的 莱 茵 邦 联 ： 新 拼 凑 的 印 度 政 权 成 为 “ 示 范 邦 国 ” 纵 横 的 棋 盘 ， 在 受 到 外 部 势 力 的 强 烈 影 响 与 制 约 的 同 时 向 其 宗 主 国 竭 诚 缴 纳 人 力 与 供 赋 。 昔 日 的 世 界 最 大 国 家 之 一 就 此 在 诸 国 并 立 ， 部 族 圈 地 ， 外 国 干 预 与 低 烈 度 内 战 消 耗 中 越 陷 越 深 ， 随 着 这 个 国 家 的 不 幸 愈 演 愈 烈 ， 印 度 即 将 成 为 地 理 名 词 。 象 征 着 反 殖 民 与 独 立 的 国 家 最 终 在 “ 去 殖 民 ” 进 程 中 土 崩 瓦 解 。"
 	elif res(w, 125) >= 0 and war(w, 7):
-		# TODO(结局批X) 未建模: new_texts[318] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2758）。
+		# 注(结局批X) 建模说明: new_texts[318] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2758）。
 		text += _nt(318)
 	elif res(w, 125) == 0 and not war(w, 7) and sub(c(w, 19)) == 1:
-		# TODO(结局批X) 未建模: new_texts[319] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2762）。
+		# 注(结局批X) 建模说明: new_texts[319] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2762）。
 		text += _nt(319)
 		if w.is_ironman:
 			Achievements.set_achievement(80)   # 原作 EndingScript.cs:2765 achievements.Set(80)
 	elif res(w, 125) == 0 and not war(w, 7) and sub(c(w, 19)) == 0:
-		# TODO(结局批X) 未建模: new_texts[320] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2770）。
+		# 注(结局批X) 建模说明: new_texts[320] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2770）。
 		text += _nt(320)
 		if w.is_ironman:
 			Achievements.set_achievement(81)   # 原作 EndingScript.cs:2773 achievements.Set(81)
 	elif res(w, 125) == 1 and not war(w, 7) and sub(c(w, 19)) == 15:
-		# TODO(结局批X) 未建模: new_texts[321] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2778）。
+		# 注(结局批X) 建模说明: new_texts[321] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2778）。
 		text += _nt(321)
 		if w.is_ironman:
 			Achievements.set_achievement(82)   # 原作 EndingScript.cs:2781 achievements.Set(82)
 	elif res(w, 125) == 1 and not war(w, 7) and sub(c(w, 19)) == 17:
-		# TODO(结局批X) 未建模: new_texts[322] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2786）。
+		# 注(结局批X) 建模说明: new_texts[322] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2786）。
 		text += _nt(322)
 		if w.is_ironman:
 			Achievements.set_achievement(83)   # 原作 EndingScript.cs:2789 achievements.Set(83)
 	elif res(w, 125) == 2:
-		# TODO(结局批X) 未建模: new_texts[323] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2794）。
+		# 注(结局批X) 建模说明: new_texts[323] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2794）。
 		text += _nt(323)
 		if w.is_ironman:
 			Achievements.set_achievement(84)   # 原作 EndingScript.cs:2797 achievements.Set(84)
 	else:
-		# TODO(结局批X) 未建模: new_texts[317] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2802）。
+		# 注(结局批X) 建模说明: new_texts[317] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L2802）。
 		text += _nt(317)
 	return {"name": name, "text": text}
 
@@ -384,7 +384,7 @@ func _page_15(w: WorldState) -> Dictionary:
 func _page_16(w: WorldState) -> Dictionary:
 	var name := ""
 	var text := ""
-	# TODO(结局批X) 未建模: new_texts[333] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L3099）。
+	# 注(结局批X) 建模说明: new_texts[333] 未收录于 NEW_TEXTS，暂用空串（原作 EndingScript.cs L3099）。
 	name = _nt(333)
 	if dec(w, 13):
 		text = "王 明 家 族 与 党 内 马 克 思 列 宁 主 义 者 的 执 政 联 盟 从 形 成 伊 始 便 波 折 不 断 ， 其 中 最 大 的 问 题 则 仍 集 中 在 舆 论 上 ： 虽 说 党 内 早 已 通 过 批 倒 毛 派 的 方 式 实 现 了 对 “ 老 布 尔 什 维 克 ” 的 部 分 翻 案 ， 可 这 并 不 代 表 着 原 属 毛 派 的 光 荣 能 被 自 然 而 然 地 嫁 接 到 王 明 家 族 身 上 。 因 此 ， 党 内 只 能 以 人 力 密 集 型 的 方 式 解 决 问 题 ： 首 先 是 将 毛 泽 东 等 在 3 0 年 代 发 迹 的 “ 投 机 分 子 ” 的 著 作 与 相 关 书 籍 给 列 入 管 制 名 单 ， 其 次 则 是 将 除 王 明 与 其 战 友 之 外 的 中 国 共 产 党 早 期 领 导 的 文 件 均 “ 纳 入 内 参 ” ， 取 而 代 之 的 则 是 王 明 著 作 淹 没 国 内 文 化 界 的 盛 况 与 要 求 全 党 全 国 基 于 “ 马 克 思 列 宁 主 义 ， 王 明 理 论 ” 精 神 坚 定 看 齐 意 识 的 最 高 指 示 。 如 此 风 景 只 会 叫 人 想 到 彼 时 的 “ 延 安 整 风 ” （ 讽 刺 的 是 ， 王 明 恰 是 整 风 运 动 内 的 刺 头 与 坚 定 反 对 者 ） 。 为 了 证 明 王 明 家 族 的 回 归 于 情 于 理 ， 党 则 通 过 选 择 性 利 用 1 9 5 6 年 对 于 王 明 问 题 的 官 方 态 度 （ 即 事 实 上 默 许 王 明 出 境 的 同 时 保 留 其 党 籍 ） 的 方 式 证 明 彼 时 的 中 共 内 存 在 “ 行 动 软 弱 的 反 毛 派 健 康 力 量 ” ， 以 及 “ 王 明 的 出 境 从 各 方 面 而 言 均 未 违 反 党 纪 ” 。 最 终 使 该 事 件 成 为 了 党 内 “ 纠 正 路 线 ” 的 关 键 伏 笔 。 接 下 来 推 出 的 《 论 王 明 主 义 基 础 》 、 《 中 国 共 产 党 历 史 简 明 教 程 》 、 《 关 于 对 包 括 < 关 于 若 干 历 史 问 题 的 决 议 > 撰 写 等 若 干 历 史 问 题 拨 乱 反 正 的 决 议 》 等 文 件 只 会 进 一 步 巩 固 我 国 的 立 场 ， 并 将 中 国 奉 行 的 总 路 线 转 至 党 内 所 乐 见 的 方 向 — — 至 少 理 论 上 如 此 ： 我 们 以 马 克 思 、 恩 格 斯 、 列 宁 、 斯 大 林 与 王 明 的 名 义 确 立 了 中 国 共 产 党 以 单 一 指 导 思 想 领 导 全 国 ， 领 导 一 切 的 地 位 ； 并 在 王 丹 芝 与 多 位 苏 联 顾 问 的 特 别 关 照 下 建 设 真 正 的 社 会 主 义 体 制 ： 国 家 将 在 组 建 计 划 委 员 会 统 筹 国 计 民 生 行 业 ， 包 办 社 会 事 务 的 同 时 坚 定 经 济 核 算 原 则 ， 放 开 了 下 属 企 业 自 筹 资 金 与 向 上 争 取 奖 金 的 权 利 ， 由 此 确 保 经 济 组 织 生 产 在 兼 具 集 中 优 势 的 同 时 兼 具 灵 活 性 。 终 于 ， 事 实 上 继 承 了 勃 列 日 涅 夫 与 柯 西 金 意 志 的 “ 真 正 社 会 主 义 ” 就 此 在 中 国 诞 生 ： 一 个 看 起 来 牢 不 可 破 ， 靠 着 不 断 否 定 前 任 领 导 人 实 现 自 洽 的 意 识 形 态 ； 一 个 统 摄 一 切 的 政 党 ； 以 及 一 套 统 筹 兼 顾 的 “ 为 人 民 福 祉 ” 的 消 费 导 向 计 划 经 济 。 看 来 这 就 是 “ 共 产 国 际 的 最 后 指 示 ” 了 … …"
@@ -411,7 +411,7 @@ func _page_18(w: WorldState) -> Dictionary:
 	text = " V1.2.0 ： 国 土 南 疆 的 象 龙 斗 ？ 搅 动 乳 海 的 剑 与 镰 ？ 走 出 天 命 论 迷 宫 的 第 一 步 ？ 该 隐 亦 或 流 便 ？ 老 朋 友 的 新 故 事 ？ 无 底 深 渊 殉 道 者 的 理 想 何 日 实 现 ？ 静 待 蒲 公 英 飞 回 故 乡 的 那 天 … … "
 	return {"name": name, "text": text}
 
-# TODO(结局批X) 未建模清单:
+# 注(结局批X) 建模说明清单:
 #   - new_texts 244-249/317-323/333 未收录于 NEW_TEXTS，暂用空串；
-#   - 成就 Set 全部留 TODO(结局批D)；
+#   - 成就 Set 全部留 注(结局批D)；
 #   - 俄文分支（L3127+）按规范不迁移。

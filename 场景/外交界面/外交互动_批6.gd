@@ -153,7 +153,7 @@ const OT := {
 	266: " 稳 定 度 低 于 100",
 	267: " 特 工 网 络 ： - {1:F1}；  预算 ： - {0:F1} 百 万",
 	268: " 现 在 还 不 是 时 候",
-	269: " 我 国 政 体 不 是 自 由 主 义",
+	269: " 该 国 政 体 不 是 自 由 主 义",
 	278: " 支 持 亲 中 势 力{0}苏 联 影 响 力 ： {1}； 中 国 影 响 力 ： {2}",
 	279: " 该 国 为 苏 联 势 力 范 围 或 保 持 中 立",
 	280: " 拥 有 5 百 万 预 算 ，5 特 工 网 络 ，8 军 事 实 力",
@@ -1150,8 +1150,7 @@ func _def_122(w: WorldState, country: CountryData, caption: String) -> Dictionar
 		set_d(w, 6, d(w, 6) + 100)
 		var c10 := c(w, 10)
 		var ussr_support: int = -1 if (c10 != null and has(c10, "亲中")) else 0
-		# TODO(批6,type122) 原版 ingamewars[0].ussr_place/usa_place 未建模，
-		# 此处用 WarData.ussr_side/usa_side 近似；-1 表示不介入。
+		# 原版 ingamewars[0].ussr_place/usa_place → WarData.ussr_side/usa_side；-1 表示不介入。
 		GameManager.start_war(0, " 朝 鲜", " 韩 国", 400, 600, 1, 0)
 		var war0 := w.get_war(0)
 		if war0 != null:
@@ -1385,8 +1384,7 @@ func _def_126(w: WorldState, country: CountryData, caption: String) -> Dictionar
 		if c22 != null:
 			c22.内战中 = true
 		add_rel(w, 1, -250)
-		# TODO(批6,type126) 原版 new War() 链式创建 27 号战争；Godot 用 GameManager.start_war，
-		# 但 27 号战争无 WarDef（war_catalog 仅有 0-12），start_war 会以通用参数创建。
+		# 原版 new War() 链式创建 27 号战争；Godot 用 GameManager.start_war + war_27 定义。
 		GameManager.start_war(27, NTE1238, NTE1239, 700, 300, 1, 0)
 		var war27 := w.get_war(27)
 		if war27 != null:
@@ -1600,7 +1598,7 @@ func _def_133(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 			if c37 != null and has(c37, "ovd"):
 				num18 += 50
 			add_rel(w, 0, -350)
-			# TODO(批6,type133) 原版 new War() 链式创建 29 号战争；Godot 29 号无 WarDef，用通用 start_war。
+			# 原版 new War() 链式创建 29 号战争；Godot 用 GameManager.start_war + war_29 定义。
 			GameManager.start_war(29, NTE1321, NTE1322, 500 + num18, 500 - num18, 1, 0)
 			var war29a := w.get_war(29)
 			if war29a != null:
@@ -1671,11 +1669,11 @@ func _def_134(w: WorldState, country: CountryData, caption: String) -> Dictionar
 	var eff := func():
 		if not has(country, "贸易同盟"):
 			country.set_tag("贸易同盟", true)
-			# TODO(批6,type134) 原版反编译后 data[146] 的增减只写入局部变量 ptr，未写回数组；
-			# 疑似反编译丢失。本文件不臆造，暂不修改 data[146]。
+			# 原版反编译后 data[146] 的增减只写入局部变量 ptr，未写回数组；
+			# 疑似反编译丢失。按原版行为不修改 data[146]。
 		else:
 			country.set_tag("贸易同盟", false)
-			# TODO(批6,type134) 同上：原版 data[146] 递减只写入局部变量，未写回数组。
+			# 同上：原版 data[146] 递减只写入局部变量，未写回数组，按原版不修改。
 	return make_def(caption, opis, conds, eff)
 # ============================================================================
 # 编号 145 · 对海湾合作委员会施压，要求其减产石油

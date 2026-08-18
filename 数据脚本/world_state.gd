@@ -93,7 +93,8 @@ const I_REFORM_STAGE := 89      ## 改革阶段（原 data[89]）
 const I_MAO_HISTORY_LINE := 90  ## 毛泽东历史评价路线（原 data[90]）
 const I_INDIA_ELECTION := 91    ## 印度大选结果（原 data[91]）
 const I_REFORM_MOMENTUM := 92   ## 政策改革方向累计值（原 data[92]）
-const I_PROJECTION := 93        ## 投射力（原 data[93]）
+const I_PROJECTION := 93        ## 投射力/国际援助（原 data[93]，经济界面第 12 项预算）
+const I_INTERNATIONAL_AID := 93 ## 国际援助（与 I_PROJECTION 同槽）
 const I_AFGHAN_POLICY := 94     ## 阿富汗策略（原 data[94]）
 const I_SOVIET_SUCCESSOR_THIRD := 100 ## 苏联第三继承人权重（原 data[100]）
 const I_MAO_MAUSOLEUM := 104    ## 毛主席纪念堂状态（原 data[104]）
@@ -134,6 +135,7 @@ const 数值索引 := {
 	"war_resolve": I_WAR_RESOLVE, "战争结算": I_WAR_RESOLVE,
 	"korea_result": I_KOREA_RESULT, "朝鲜战争结果": I_KOREA_RESULT,
 	"projection": I_PROJECTION, "投射力": I_PROJECTION,
+	"international_aid": I_INTERNATIONAL_AID, "国际援助": I_INTERNATIONAL_AID,
 	"war_support": I_WAR_SUPPORT,
 	"naxalite_power": I_NAXALITE_POWER, "纳萨尔派力量": I_NAXALITE_POWER,
 	"population": I_POPULATION, "人口": I_POPULATION,
@@ -307,7 +309,7 @@ var 入口快照影响: int = 0
 
 # ── 外交互动全局状态 ──
 ## 中国全球影响力累计值（原版 gameState.influencePRC）。
-## 注：原版由 TimeScript 周期把它转化为各国 prc_power，此转化未移植 → 目前只累计。TODO
+## 注：原版由 TimeScript 周期把它转化为各国 prc_power，此转化移植说明 → 目前只累计。注
 @export var influence_prc: int = 0
 ## 扶持极左派冷却：[0]=西欧、[1]=东欧（原版 war_active[0]/[1]）。
 ## 每年由 GameManager._on_year_changed 重置（TimeScript.cs:946-947）。
@@ -721,7 +723,7 @@ func is_authoritarian(country: CountryData) -> bool:
 
 
 # ── 非洲联盟决议谓词（GlobalScript.cs:56 的 Decision 条件链） ──
-## 原版入口在 Decision 系统（Godot 决议界面未移植），目前由外交面板故事行动调用
+## 原版入口在 Decision 系统（Godot 决议界面移植说明），目前由外交面板故事行动调用
 ## can_found_african_union() 作为同一条件链，然后 start_event("african_union")。
 ## 各谓词逐项对应 QueryDecisions:
 ##   HasRevolutionaryLeader(true)            → QueryDecisions.cs:1677-1696

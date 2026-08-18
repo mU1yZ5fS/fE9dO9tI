@@ -1,7 +1,7 @@
 ## 结局内容 批A — GoodEnd 自动胜利结局（EndingScript.cs GoodEnd 中文分支）。
 ## 源码出处：EndingScript.cs L57-995；本文件迁移 L59-863 中文分支（PlayerPrefs.GetInt("language") == 0）。
 ## 俄文 else 分支 L865-992 不迁移；L993 渲染行 this.text_t.text = this.Text(...) 由主控渲染层统一处理。
-## 未建模说明：polit_names（names1/names2）未建模，用 _leader_name(w) 等义显示（原显式空格排版本行已注明）；
+## 建模说明说明：polit_names（names1/names2）建模说明，用 _leader_name(w) 等义显示（原显式空格排版本行已注明）；
 ##   politics_dolshnost == 150 → w.politics_positions == -2（LEADER_POS 哨兵，见 场景/政治界面/政治.gd）。
 extends "res://场景/结局界面/结局内容_基础.gd"
 

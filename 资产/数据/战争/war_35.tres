@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 35
+name_zh = "印度尼西亚革命"
+name_en = "Indonesian Revolution"
+fortnight_max = 20
+drift_infl1 = 0
+drift_infl2 = 0
+drift_extra_infl1 = 0
+drift_extra_infl2 = 0
+drift_extra_flag = ""
+default_side1 = "印度尼西亚反对派"
+default_side2 = "印度尼西亚政府"
+default_usa_side = 1
+default_ussr_side = 0
+default_infl1 = 300
+default_infl2 = 700

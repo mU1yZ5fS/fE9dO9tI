@@ -369,7 +369,7 @@ func _event_95_result_3(context: Dictionary) -> void:
 
 
 ## 在 Event95 option0 设定数据后调用 ChineseSubGosstroy（Gosstroy==2）。
-## 移植 GameState.cs:4934-5070 中与该状态相关的分支；其余未移植分支在 Godot 中恒不命中。
+## 移植 GameState.cs:4934-5070 中与该状态相关的分支；其余移植说明分支在 Godot 中恒不命中。
 func _chinese_sub_government_after_95_option0(china: CountryData) -> int:
 	# Unity 此时 data[14]=3, data[16]=13, data[6]<=699, data[15]=8, data[17]=18。
 	if d[W.I_IDEOLOGY] >= 2 and d[W.I_ECON_SYSTEM] >= 13 and d[W.I_DIPLO] <= 700 \
@@ -501,7 +501,7 @@ func _event_116_result_2(context: Dictionary) -> void:
 
 ## Event116.cs:65 allcountries[1].ILoveSuckCocks()。
 ## Country.cs:286-420 依据 IndOpp/GKChP/藏南/台湾地位等刷新中国地图 parts。
-## Godot 未移植 IndOpp/is_gkchp 字段，这里用 global_flags 同名键近似；其余按原版分支。
+## Godot 移植说明 IndOpp/is_gkchp 字段，这里用 global_flags 同名键近似；其余按原版分支。
 func _china_map_parts(china: CountryData) -> void:
 	if china.parts.size() < 16:
 		china.parts.resize(16)

@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event4.cs：党内阴谋四选项。政治家清洗循环 + 选项0胜负(惨败进结局2) + 党支持分段。
 ## 差异：opt0 胜利条件 LeaderProperty[2] OR 支端口无等价 → 丢弃，仅留 party_support>500 && 忠诚>600者>=4。
 ##       惨败原 data[35]=2 → queue_ending_after_event(2)「军事政变」(语义映射)。
-##       opt3 原依 modifies[3] 有两段文案/不同扣值 → 取默认(未激活)分支。event_done[444] 未移植 → 门槛仅 people_support>=700。
+##       opt3 原依 modifies[3] 有两段文案/不同扣值 → 取默认(未激活)分支。event_done[444] 移植说明 → 门槛仅 people_support>=700。
 
 
 func execute(context: Dictionary) -> void:

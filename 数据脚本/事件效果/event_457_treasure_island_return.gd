@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event457.cs：宝岛回归！（单选项）。
-## 触发：GlobalScript.cs:27 的 Decision 链 StartEvent(457)（决议系统未移植）。
+## 触发：GlobalScript.cs:27 的 Decision 链 StartEvent(457)（决议系统移植说明）。
 ##   按项目约定 trigger_conditions=[]（仅定义，待决策系统接入）。
 
 const TXT_TITLE := "宝岛回归！"

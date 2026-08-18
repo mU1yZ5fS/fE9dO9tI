@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event87.cs：加利利的和平（黎巴嫩战争，单选项）。
 ## 触发：TimeScript.cs:10710-10716 ——
 ##   (日>=6 且 月>=6 且 年>=1982 或 年>=1983) && !IndOpp
-##   （IndOpp 端口未建模 → 视为恒真，沿用 event_009 既有约定）。
+##   （IndOpp 由 WorldState.ind_opp 建模）。
 ## 效果：ingamewars[4] 黎巴嫩战争，以色列(650) vs 巴解组织(350)，
 ##   ussr_place=1、usa_place=0 → Godot ussr_side=1 / usa_side=0。
 

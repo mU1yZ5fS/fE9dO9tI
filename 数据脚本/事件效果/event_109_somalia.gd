@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event109.cs：索马里的黄金时代（巴雷政变风波，三选项）。
 ## 触发：TimeScript.cs:10959-10965 ——
-##   !c42.parts[0] && !c42.parts[2]（端口未建模→恒真）&& !wars[15].is_going
+##   !c42.parts[0] && !c42.parts[2]（端口建模说明→恒真）&& !wars[15].is_going
 ##   && ((日>=9 且 月>=4 且 年>=1978) || (月>=5 且 年>=1978) || 年>=1979)。
 ## 差异：选项0/1 按 agents/influence 动态显隐；<color> 标签去除；
 ##   EstablishGovernment(ProChina) → set_tag("亲中", true)。

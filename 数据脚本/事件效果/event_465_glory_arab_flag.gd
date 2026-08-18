@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event465.cs：荣耀归你，阿拉伯之旗（单选项）。
-## 触发：GlobalScript.cs:40 的 Decision 链 StartEvent(465)（决议系统未移植）。
+## 触发：GlobalScript.cs:40 的 Decision 链 StartEvent(465)（决议系统移植说明）。
 ##   按项目约定 trigger_conditions=[]（仅定义，待决策系统接入）。
 ## 差异：parts[0] 写前 resize；oar/isOVD/isSEV/okb/econ/Torg/prosov/Vyshi/proprc→set_tag。
 

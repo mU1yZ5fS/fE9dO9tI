@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 触发：TimeScript.cs:10083 自动触发（empires[1].relations<=0 && !event_done[8] &&
 ##    !event_done[473]），每半年(1月/7月1日)重置可重复（TimeScript.cs:3029）。端口 008 的
 ##    trigger_conditions = EMPIRE_RELATION_AT_MOST(1,0) + PREV_EVENT_NOT_DONE(event_473)，
-##    473 未移植前视为恒真。
+##    473 移植说明前视为恒真。
 ##  - dlc[3]（DLC 购买标志）：端口无 DLC 体系 → 视为恒真（同 game_manager.gd:2225 先例）。
 ##  - opt3 的 data[111]++：反编译为死代码（ptr 局部变量自增未写回 data），跳过。
 ##  - button_text[5]=""（空按钮占位）：无实际内容，跳过。

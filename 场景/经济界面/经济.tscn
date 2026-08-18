@@ -1263,7 +1263,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="国际援助背景图标" type="TextureRect" parent="." unique_id=2002845319]
-visible = false
 layout_mode = 0
 offset_left = 496.0
 offset_top = 795.0
@@ -1272,7 +1271,6 @@ offset_bottom = 941.0
 texture = ExtResource("29_qmdo1")
 
 [node name="国际援助+" type="Button" parent="." unique_id=1691928388]
-visible = false
 layout_mode = 0
 offset_left = 911.0
 offset_top = 791.0
@@ -1287,7 +1285,6 @@ flat = true
 icon_alignment = 1
 
 [node name="国际援助-" type="Button" parent="." unique_id=1893550770]
-visible = false
 layout_mode = 0
 offset_left = 703.0
 offset_top = 791.0
@@ -1302,7 +1299,6 @@ flat = true
 icon_alignment = 1
 
 [node name="国际援助数值" type="Label" parent="." unique_id=1810227244]
-visible = false
 layout_mode = 0
 offset_left = 783.0
 offset_top = 802.0
@@ -1316,7 +1312,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="国际援助" type="Label" parent="." unique_id=814942308]
-visible = false
 layout_mode = 0
 offset_left = 760.0
 offset_top = 890.0

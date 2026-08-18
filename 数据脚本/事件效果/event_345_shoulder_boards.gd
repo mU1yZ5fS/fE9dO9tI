@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 原版 VariantsOfEvents 动态销毁按钮：按 data[56]（政治路线）、resultOfEvents[514]、modifies[6].active
 ##    决定两个按钮文案/可用性，这里在 prepare 动态 _enable/_disable 复刻；
 ##  - 原版 TextOfEvents 按 vietnampeace / resultOfEvents[378] / allcountries[10].puppetOf 动态拼描述；
-##    vietnampeace 端口未建模 → 用 global_flags 同名键近似（项目既有约定）；
+##    vietnampeace 端口建模说明 → 用 global_flags 同名键近似（项目既有约定）；
 ##  - 原版对 old_modify_desc[50] 的拼接是展示文案，Godot 由修正目录统一管理，这里跳过并注释原文。
 
 const TXT_TITLE := "肩上的那块牌子"

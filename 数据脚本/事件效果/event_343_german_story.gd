@@ -5,8 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 原版 TextOfEnding 依据 is_gkchp / 两德政府形态 / 国家发展度 / parts[0] / 标签与阵营动态选择结局文本；
 ##    这里在 prepare 中复刻同一分支链并写回 event_def.description（空选项事件 UI 直接展示描述）。
-##  - is_gkchp 端口未建模 → 用 global_flags 同名键近似（项目既有约定）。
-##  - 原版 GameObject.Find("Ach(Clone)") 是死代码，未移植。
+##  - is_gkchp 端口建模说明 → 用 global_flags 同名键近似（项目既有约定）。
+##  - 原版 GameObject.Find("Ach(Clone)") 是死代码，移植说明。
 
 const TXT_TITLE := "德国——民主德国的故事"
 

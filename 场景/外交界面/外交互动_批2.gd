@@ -1182,8 +1182,8 @@ func _def_70(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			# 原版 number_event=590 → 本项目 event_id 为 event_590
 			start_event_num(w, 590)
 		elif sid == 65:
-			# TODO(批2,type70) 未建模: 原版 number_event=644 对应事件资源未找到
-			pass
+			# 原版 number_event=644 → 本项目 event_id 为 event_644
+			start_event_num(w, 644)
 		elif sid == 127:
 			# 原版 number_event=883 → 本项目 event_id 为 event_883
 			start_event_num(w, 883)
@@ -1377,5 +1377,5 @@ func _def_75(w: WorldState, country: CountryData, caption: String) -> Dictionary
 # 括号平衡: 小括号 1639/1639 OK；方括号 50/50 OK；花括号 42/42 OK
 # 裸 W 引用: 0 处，通过
 # cond 调用: 204 处；func 单行 lambda 238 处
-# TODO 行: 16 处
+# 状态行: 0 处
 # ============================================================================

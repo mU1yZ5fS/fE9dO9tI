@@ -112,7 +112,7 @@ func _def_2(w: WorldState, _country: CountryData, caption: String) -> Dictionary
 		set_d(w, W.I_POPULATION, d(w, W.I_POPULATION) + 45)
 		set_tag(c(w, 92), "对华贸易", false)
 		set_tag(c(w, 87), "对华贸易", false)
-		# TODO(批1,type2) 未建模: 原版 UnifyHKByForce=true 无对应 Godot 字段，暂存 global_flags 且暂无消费者。
+		# 原版 UnifyHKByForce=true → global_flags["unify_hk_by_force"]，结局轮播1已消费。
 		set_fl(w, "unify_hk_by_force", true)
 	return make_def(caption, opis, conds, eff)
 
@@ -555,7 +555,9 @@ func _def_15(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			kw.side1 = " 朝 鲜"
 			kw.side2 = " 韩 国"
 			kw.is_going = true
-			# TODO(批1,type15) 未建模: 原版 ingamewars[0].ussr_place/usa_place 无对应 WarData 字段（DBS L8913-L8921），暂不写。
+			var c10 := c(w, 10)
+			kw.ussr_side = 0 if (c10 != null and not has(c10, "亲中")) else -1
+			kw.usa_side = 1
 			kw.infl1 = 600
 			kw.infl2 = 400
 	return make_def(caption, " 煽 动 一 场 新 的 朝 鲜 战 争", conds, eff)

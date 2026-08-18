@@ -9,6 +9,8 @@ extends Control
 
 const DIPLOMACY_SCENE := "uid://vq6jexkk5tru"
 const ENTRY := preload("res://场景/决议界面/决议条目.tscn")
+const ENTRY_W := 1068.0
+const ENTRY_H := 236.0
 
 var _refresh_queued: bool = false
 
@@ -43,6 +45,7 @@ func _rebuild_list() -> void:
 	var empty := get_node_or_null("决议滚动/空提示") as Label
 	if list == null or not is_instance_valid(list):
 		return
+	list.alignment = BoxContainer.ALIGNMENT_CENTER
 	for c in list.get_children():
 		list.remove_child(c)
 		c.queue_free()
@@ -52,15 +55,25 @@ func _rebuild_list() -> void:
 	if empty != null:
 		empty.visible = defs.is_empty()
 	for def: DecisionDef in defs:
-		var item := ENTRY.instantiate() as Button
+		var item := ENTRY.instantiate() as Control
+		# 条目视觉宽 1068 高 236；取消宽锚点，避免在 VBox 里被拉偏
+		item.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		item.anchor_right = 0.0
+		item.anchor_bottom = 0.0
+		item.offset_left = 0.0
+		item.offset_top = 0.0
+		item.offset_right = ENTRY_W
+		item.offset_bottom = ENTRY_H
+		item.custom_minimum_size = Vector2(ENTRY_W, ENTRY_H)
+		item.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		list.add_child(item)
 		if item.has_method("setup"):
 			item.setup(def)
-		if not item.pressed.is_connected(_on_entry_pressed):
-			item.pressed.connect(_on_entry_pressed.bind(def.id))
+		if item.has_signal("exec_requested"):
+			item.exec_requested.connect(_on_entry_exec)
 
 
-func _on_entry_pressed(decision_id: int) -> void:
+func _on_entry_exec(decision_id: int) -> void:
 	音频总管.play_button_click_sound()
 	DecisionSystem.execute(decision_id)
 	# stats_changed → deferred rebuild；这里主动排一次刷新兜底

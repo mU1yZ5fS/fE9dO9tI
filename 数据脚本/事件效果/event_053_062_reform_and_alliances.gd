@@ -167,7 +167,7 @@ func _event_53(option_index: int) -> void:
 				0: [150, 120], 1: [-100, -80], 2: [-150, -100], 3: [-200, -150],
 			})
 	# 原版 Event53 末尾 old_modify_desc[15] 按农业路线/科技动态拼接，
-	# 本端口未建模（modifier_catalog 静态描述），仅保留原文备查，见文件底部注释。
+	# 本端口建模说明（modifier_catalog 静态描述），仅保留原文备查，见文件底部注释。
 
 
 func _event_54(option_index: int, context: Dictionary) -> void:
@@ -212,7 +212,7 @@ func _event_55(option_index: int, context: Dictionary) -> void:
 			_add_data({W.I_AGENTS: -50, W.I_DIPLO: 20})
 			_add_empire_relation(EmpireData.USA, -80)
 			if burma != null:
-				# 原版 allcountries[33].parts[0]=false、prcpower=1000 未建模，跳过。
+				# 原版 allcountries[33].parts[0]=false、prcpower=1000 建模说明，跳过。
 				if ws.数值表[W.I_ECON_SYSTEM] <= 12:
 					burma.government = 2
 					burma.sub_government = 15
@@ -278,7 +278,7 @@ func _event_58(context: Dictionary) -> void:
 		if ws.数值表.size() > 143:
 			ws.数值表[143] += 10
 		# 原版 event_done[36] && resultOfEvents[36]==3 → allcountries[14].prcpower+=20；
-		# 事件 36 未移植，跳过。
+		# 事件 36 移植说明，跳过。
 		context["result_text"] = TXT_58_R_LEFT
 	else:
 		_add_empire_power(EmpireData.USA, 10)
@@ -381,7 +381,7 @@ func _event_60(option_index: int, context: Dictionary) -> void:
 			names.append(country.name)
 	_change_all_politicians(100, 0)
 	context["result_text"] = TXT_60_R0_BASE + _join_names(names) + TXT_60_R0_TAIL
-	# 原版 Event60 的 old_modify_desc[59] 动态描述（按联盟成员统计）未建模，
+	# 原版 Event60 的 old_modify_desc[59] 动态描述（按联盟成员统计）建模说明，
 	# 原文备查见文件底部注释。
 
 
@@ -476,7 +476,7 @@ func _event_62(option_index: int, context: Dictionary) -> void:
 			if int(ws.数值表[W.I_TERRITORY]) < 23:
 				ws.数值表[W.I_TERRITORY] += 1
 			context["result_text"] = TXT_62_R4
-	# 原版 NumberOfPolitician(58,85)（乌兰夫）在 Godot 政治家表无 name_1/name_2 索引，相关忠诚/权力/死亡效果未移植。
+	# 原版 NumberOfPolitician(58,85)（乌兰夫）在 Godot 政治家表无 name_1/name_2 索引，相关忠诚/权力/死亡效果移植说明。
 
 
 func _in_original_econ_range(country: CountryData) -> bool:

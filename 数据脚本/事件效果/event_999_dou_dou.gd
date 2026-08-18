@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10020-10024 —— data[170] == 999（哨兵值，结果里清零）。
 ## 差异记录：
 ##  - 原版 result 3/4/5 为不可达“测试”分支（kolvo_variant=2），按死代码跳过。
-##  - party_change[] 仅 UI 摆动数值，Godot 未建模，跳过（与 event_020 同类约定）。
+##  - party_change[] 仅 UI 摆动数值，Godot 建模说明，跳过（与 event_020 同类约定）。
 ##  - show_notification=false：沿用现存 101 个事件的统一约定（原版地图标记机制未启用）。
 ##  - <color> 标签去除：事件 UI Label 未开 bbcode，颜色不渲染，文本逐字保留。
 ##  - 原版字符间空格排版在 Godot 不再保留（既有约定，下同）。

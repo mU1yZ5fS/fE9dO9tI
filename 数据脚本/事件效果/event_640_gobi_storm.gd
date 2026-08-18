@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event640.cs：打倒社帝马前卒！（中蒙战争，单选项）。
 ## 触发：DiploButtonScript.cs:12234 —— 外交按钮 1052，selected_country==9，手动触发。
-## 差异：ingamewars[69] 未建模 WarDef → GameManager.start_war 兜底创建后补名；
+## 差异：ingamewars[69] 已有 war_69 WarDef，仍按 start_war 参数覆盖；
 ##   usa_place=0（仅 c51.Torg 时）→ WarData.usa_side=0；relres→global_flags。
 
 const TXT_TITLE := "打倒社帝马前卒！"

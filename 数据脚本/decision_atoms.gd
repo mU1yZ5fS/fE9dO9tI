@@ -954,8 +954,8 @@ static func kill_the_leader_of_the_faction(num: int) -> void:
 
 
 ## GetLinBiao — 逐字对齐 QueryDecisions GetLinBiao（L2994 之后效果区）。
-## 差异声明：NewPolitician[5..7] 开关 Godot 政治家池无对应（项目未建模），
-## 按项目先例（原版字段未建模 → 跳过并注明）省略该标记，其余照抄。
+## 差异声明：NewPolitician[5..7] 开关 Godot 政治家池无对应（项目建模说明），
+## 按项目先例（原版字段建模说明 → 跳过并注明）省略该标记，其余照抄。
 static func get_lin_biao(_yes: bool = true) -> void:
 	var ws := _ws()
 	if ws == null:

@@ -1,15 +1,10 @@
-[gd_resource type="Resource" script_class="EventDef" format=3]
+[gd_resource type="Resource" script_class="EventDef" format=3 uid="uid://d24eyrj417mq1"]
 
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
-[ext_resource type="Script" path="res://数据脚本/expr_node.gd" id="3_expr"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="4_event"]
-[ext_resource type="Script" path="res://数据脚本/事件效果/event_024_026_political_transition.gd" id="5_custom"]
-
-[sub_resource type="Resource" id="Expr_date"]
-script = ExtResource("3_expr")
-type = 12
-key = "1976.10"
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="1_option"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" uid="uid://b7cdt240a50rk" path="res://数据脚本/事件效果/event_024_026_political_transition.gd" id="5_custom"]
 
 [sub_resource type="Resource" id="Effect_transition"]
 script = ExtResource("2_effect")
@@ -40,6 +35,16 @@ text = "不要干预党内路线斗争"
 effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
 result_text = "好吧…"
 
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.10"
+
+[sub_resource type="Resource" id="Expr_event24_done"]
+script = ExtResource("3_expr")
+type = 10
+ref_event_id = "post_mao_course"
+
 [resource]
 script = ExtResource("4_event")
 event_id = "gang_of_four"
@@ -47,5 +52,5 @@ source_event_number = 25
 trigger_priority = 2500
 title = "四人帮"
 description = "在全国人民的悲痛中，我们伟大的领袖毛泽东主席去世了。一切似乎如他临终前对未来的悲观判断一样，为了争夺舵手的政治遗产，中国共产党内又爆发了激烈的党内斗争。一方面，长期以来有四位支持文革路线的党内成员主张继续进行文化大革命。他们分别是江青，王洪文，张春桥与姚文元。江青是毛泽东主席的妻子和前中央文革小组的领导，她实际领导了这十年以来的文艺工作并由此赢得了不少威望；王洪文是自文革后一路晋升的年轻领导人，在第十次党代会后，他当选为中央委员会副主席，并被一度认为是毛泽东的接班人；此外还有为文革提供大量理论依据与宣传工作的张春桥和姚文元，他们在运动中也参加了大量的“夺权”活动。另一方面，在上世纪70年代初实行经济整顿而遭贬谪的前副总理邓小平为代表的改革派力量正在壮大，他们希望尽早结束文化大革命的混乱，并扭转长期以来的经济方针，进行政治解冻和经济改革且与西方国家采取保持良好关系。虽然毛主席逝世了，但极左派目前依然在中央把握重要权力。以叶剑英，李先念，邓小平为代表老干部集团则对极左派不满，传闻他们在厉兵秣马，准备用军队夺权。而有关地方造反派工人民兵正在派发枪支的传闻也不断出现。我国的政治局势已经到了无比危急的关头，对江姚王张四人作何处理将会是决定未来命运的关键抉择。"
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_event24_done")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

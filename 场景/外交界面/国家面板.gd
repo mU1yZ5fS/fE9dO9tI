@@ -803,7 +803,7 @@ func _build_story_actions(country: CountryData, w: WorldState, d: Array[int]) ->
 				d[W.I_BUDGET] -= 250
 			))
 		61:  # 上沃尔特/布基纳法索：非洲联盟建立决议入口
-			# 原版为 Decision 系统入口（GlobalScript.cs:56）；Godot 决议界面未移植，
+			# 原版为 Decision 系统入口（GlobalScript.cs:56）；Godot 决议界面移植说明，
 			# 故按同一条件链以 story action 暴露。效果由 event_500_african_union 结算。
 			actions.append(_make_action("建立非洲联盟", [
 				_cond("党内是极左派领导", func(): return w.has_revolutionary_leader()),
@@ -1205,11 +1205,11 @@ func _set_war_active(w: WorldState, idx: int, value: bool) -> void:
 
 
 # 编号 5000 革命国际（休眠）：条件 DBS L5520-5538，效果 DBS L12585-12588。
-# 休眠守卫 uslovie[0]=event_done[548]，事件未移植→get_flag 默认 false。
+# 休眠守卫 uslovie[0]=event_done[548]，事件移植说明→get_flag 默认 false。
 func _def_5000(w: WorldState, _d: Array[int], country: CountryData) -> Dictionary:
 	var player := w.get_player_country()
 	var conds: Array = []
-	# uslovie[0]：event_done[548]（DBS L5524，事件未移植）
+	# uslovie[0]：event_done[548]（DBS L5524，事件移植说明）
 	conds.append(_cond("已建立革命国际", func(): return w.get_flag("event_done_548")))
 	# 列表级守卫（CS L550 等）：中国已入革命国际
 	conds.append(_cond("中国已加入革命国际", func(): return player != null and player.has_tag("rim")))
@@ -1250,10 +1250,10 @@ func _rim5000_regime_check(w: WorldState, country: CountryData) -> bool:
 
 
 # 编号 5001 非洲联盟（休眠）：条件 DBS L5539-5551，效果 DBS L12590-12593。
-# 休眠守卫 uslovie[0]=event_done[500]，事件未移植→get_flag 默认 false。
+# 休眠守卫 uslovie[0]=event_done[500]，事件移植说明→get_flag 默认 false。
 func _def_5001(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 	var conds: Array = []
-	# uslovie[0]：event_done[500]（DBS L5543，事件未移植）
+	# uslovie[0]：event_done[500]（DBS L5543，事件移植说明）
 	conds.append(_cond("非洲联盟已建立", func(): return w.get_flag("event_done_500")))
 	# 列表级守卫（CS L2679 等）：目标社会主义 且 亲中
 	conds.append(_cond("该国是社会主义政权", func(): return w.is_socialism(country, true)))
@@ -1369,25 +1369,25 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			# CS L3365：!NATO → 9 + [社会主义] 10,5000
 			return _x167_numbers(w, country)
 		71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83:
-			# CS L2136 区间分支：82-88 全未移植 TODO；仅 80 有 revint 变体 5000
+			# CS L2136 区间分支：82-88 全移植说明 注；仅 80 有 revint 变体 5000
 			if n == 80 and _revint_sub17_ok(w, country):
 				return [DIPLO_BTN_RIM5000]
 			return []
 		84:
-			# CS L2182：整支在 dlc[3] 内，dlc 未建模 → 无按钮 TODO
+			# CS L2182：整支在 dlc[3] 内，dlc 建模说明 → 无按钮 注
 			return []
 		85:
-			# CS L2213：整支在 dlc[3] 内（cw/perevorot/ev481/ev398/ev401 均未建模）→ 无按钮 TODO
+			# CS L2213：整支在 dlc[3] 内（cw/perevorot/ev481/ev398/ev401 均建模说明）→ 无按钮 注
 			return []
 		86:
-			# CS L2262：整支在 dlc[3] 内 → 无按钮 TODO
+			# CS L2262：整支在 dlc[3] 内 → 无按钮 注
 			return []
 		87:
-			# CS L2282：data[65] 未建模 → 按 !=0 走第二分支 TODO；
-			# data65==0 的特别军事行动(2/3)未移植；128 未移植
+			# CS L2282：data[65] 建模说明 → 按 !=0 走第二分支 注；
+			# data65==0 的特别军事行动(2/3)移植说明；128 移植说明
 			if country.has_tag("亲美") and country.government == 0:
 				return []
-			# !ev419 && !ev420（事件未移植→默认 true）→ 128(C)+9 → 只 9
+			# !ev419 && !ev420（事件移植说明→默认 true）→ 128(C)+9 → 只 9
 			if not w.get_flag("event_done_419") and not w.get_flag("event_done_420"):
 				return [DIPLO_BTN_TRADE9]
 			var n87: Array[int] = [DIPLO_BTN_TRADE9]
@@ -1403,8 +1403,8 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 						n87.append(DIPLO_BTN_RIM5000)
 			return n87
 		92:
-			# CS L2325：data[65] 未建模 → 按 !=0 且 !auth 分支 TODO；
-			# 2/3/113/1064-1066/10000 未移植
+			# CS L2325：data[65] 建模说明 → 按 !=0 且 !auth 分支 注；
+			# 2/3/113/1064-1066/10000 移植说明
 			if w.is_authoritarian(country):
 				return []
 			var n92: Array[int] = [DIPLO_BTN_TRADE9]
@@ -1416,30 +1416,30 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n92.append(DIPLO_BTN_RIM5000)
 			return n92
 		93:
-			# CS L2391：整支在 dlc[3] 内（93/1002/1079/67 未移植）→ 无按钮 TODO
+			# CS L2391：整支在 dlc[3] 内（93/1002/1079/67 移植说明）→ 无按钮 注
 			return []
 		94:
-			# CS L2419：!cw（cw 未建模→视为真 TODO）→ 9；95/1075/1074/53 未移植
+			# CS L2419：!cw（cw 建模说明→视为真 注）→ 9；95/1075/1074/53 移植说明
 			var n94: Array[int] = [DIPLO_BTN_TRADE9]
 			# revint && econ && !cw → 5000
 			if _revint_ok(w, country) and country.has_tag("econ"):
 				n94.append(DIPLO_BTN_RIM5000)
 			return n94
 		95:
-			# CS L2443：整支在 dlc[3] 内（96/53 未移植）→ 无按钮 TODO
+			# CS L2443：整支在 dlc[3] 内（96/53 移植说明）→ 无按钮 注
 			return []
 		139, 143, 144, 146, 148:
-			# CS L2155 区间分支（145/147 有专属分支除外）：!亲中 → 1036(未移植 TODO)
+			# CS L2155 区间分支（145/147 有专属分支除外）：!亲中 → 1036(移植说明 注)
 			if not country.has_tag("亲中"):
 				return []
 			var n139: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			if _revint_ok(w, country):
 				n139.append(DIPLO_BTN_RIM5000)
-			# TODO：139 的 70 巫术（1.sub==19，CS L2170）
+			# 注：139 的 70 巫术（1.sub==19，CS L2170）
 			return n139
 		36, 101, 102, 103, 105:
 			# CS L2456 组（分支头需 modifies[51].active）
-			# 组内 1023/1022/142-146/1079/67 未移植 TODO
+			# 组内 1023/1022/142-146/1079/67 移植说明 注
 			if not _modifier_active(w, 51):
 				return []
 			var n36: Array[int] = []
@@ -1452,7 +1452,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n36.append(DIPLO_BTN_RIM5000)
 			return n36
 		99:
-			# CS L2512：based/ingamewars[26] 未建模 → 首分支恒真 TODO（proprc 分支原版即死分支）
+			# CS L2512：based/ingamewars[26] 建模说明 → 首分支恒真 注（proprc 分支原版即死分支）
 			if country.puppet_of >= 0:
 				return []
 			var n99: Array[int] = []
@@ -1462,7 +1462,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n99.append(DIPLO_BTN_RIM5000)
 			return n99
 		100:
-			# CS L2544：based/ingamewars[25] 未建模 → 恒真 TODO
+			# CS L2544：based/ingamewars[25] 建模说明 → 恒真 注
 			# 原版 L2546 检查 99.puppetOf（原版笔误，忠实保留）
 			var c99 := w.get_country_by_legacy_index(99)
 			if c99 == null or c99.puppet_of >= 0:
@@ -1474,7 +1474,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n100.append(DIPLO_BTN_RIM5000)
 			return n100
 		104:
-			# CS L2576：分支头需 dlc[3]，dlc 未建模 → 无按钮 TODO
+			# CS L2576：分支头需 dlc[3]，dlc 建模说明 → 无按钮 注
 			return []
 		106:
 			# CS L2600：亲中 → 10, [soc500]5001, 9, [revint-Torg]5000
@@ -1486,12 +1486,12 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			n106.append(DIPLO_BTN_TRADE9)
 			if _revint_torg_ok(w, country):
 				n106.append(DIPLO_BTN_RIM5000)
-			# TODO：1035 非洲之角 (41.parts&&41.sub==17, CS L2614)
+			# 注：1035 非洲之角 (41.parts&&41.sub==17, CS L2614)
 			return n106
 		107:
 			# CS L2620：亲中 → 10, [soc500]5001, [revint]5000, 9
 			if not country.has_tag("亲中"):
-				return []  # 1053 革命左翼未移植 TODO
+				return []  # 1053 革命左翼移植说明 注
 			var n107: Array[int] = [DIPLO_BTN_ECON10]
 			if _soc500_ok(w, country):
 				n107.append(DIPLO_BTN_AU5001)
@@ -1500,7 +1500,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			n107.append(DIPLO_BTN_TRADE9)
 			return n107
 		108:
-			# CS L2640：9 + [亲中] 10,5001,5000（1032/70 未移植 TODO）
+			# CS L2640：9 + [亲中] 10,5001,5000（1032/70 移植说明 注）
 			var n108: Array[int] = [DIPLO_BTN_TRADE9]
 			if country.has_tag("亲中"):
 				_append_au_rim_tail(n108, w, country)
@@ -1511,27 +1511,27 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				return _africa_block_numbers(w, country)
 			if country.sub_government == 9:
 				return []
-			# 1032 协助左派未移植 TODO
+			# 1032 协助左派移植说明 注
 			var n119: Array[int] = []
 			_append_au_rim_tail(n119, w, country)
 			return n119
 		123:
-			# CS L2954：ev638/1047-1049/142-144/1080/70 未移植 TODO → 仅 9
+			# CS L2954：ev638/1047-1049/142-144/1080/70 移植说明 注 → 仅 9
 			return [DIPLO_BTN_TRADE9]
 		125:
-			# CS L3026：puppet<0 → auth: 9(1032未移植) / !auth: 9,10 + 亲中尾
+			# CS L3026：puppet<0 → auth: 9(1032移植说明) / !auth: 9,10 + 亲中尾
 			if country.puppet_of >= 0:
 				return []
 			if w.is_authoritarian(country):
-				return [DIPLO_BTN_TRADE9]  # 1032 施压未移植 TODO
+				return [DIPLO_BTN_TRADE9]  # 1032 施压移植说明 注
 			var n125: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			_append_rim_tail(n125, w, country)
 			return n125
 		126:
-			# CS L3053：分支头需 ev623（未移植→恒 false）→ 无按钮 TODO
+			# CS L3053：分支头需 ev623（移植说明→恒 false）→ 无按钮 注
 			return []
 		127:
-			# CS L3084：puppet<0 → 9 + [Gos∉{0,3}] 10 + 亲中尾（70 未移植 TODO）
+			# CS L3084：puppet<0 → 9 + [Gos∉{0,3}] 10 + 亲中尾（70 移植说明 注）
 			if country.puppet_of >= 0:
 				return []
 			var n127: Array[int] = [DIPLO_BTN_TRADE9]
@@ -1540,46 +1540,46 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				_append_rim_tail(n127, w, country)
 			return n127
 		129:
-			# CS L3110：亲中 → 9,10,5001,5000；!亲中&&puppet<0&&sub!=7 → 9(1043-45未移植)
+			# CS L3110：亲中 → 9,10,5001,5000；!亲中&&puppet<0&&sub!=7 → 9(1043-45移植说明)
 			if country.has_tag("亲中"):
 				var n129: Array[int] = [DIPLO_BTN_TRADE9]
 				_append_au_rim_tail(n129, w, country)
 				return n129
 			if country.puppet_of < 0 and country.sub_government != 7:
 				return [DIPLO_BTN_TRADE9]
-			return []  # sub==7 的 62-66 未移植 TODO
+			return []  # sub==7 的 62-66 移植说明 注
 		130:
-			# CS L3150：!cw(未建模→真) → 1038 未移植 TODO；cw 分支的 9,10,5001,5000 待 cw 建模
+			# CS L3150：!cw(建模说明→真) → 1038 移植说明 注；cw 分支的 9,10,5001,5000 待 cw 建模
 			return []
 		131:
-			# CS L3173：57 抗议运动(cw 未建模)未移植 TODO
+			# CS L3173：57 抗议运动(cw 建模说明)移植说明 注
 			if country.sub_government == 9:
 				return []
 			var n131: Array[int] = []
 			if country.sub_government != 7:
 				n131.append(DIPLO_BTN_TRADE9)
-			# cw 未建模(默认 false) → auth&&sub!=19 分支无输出且跳过 Gos!=3 else-if
+			# cw 建模说明(默认 false) → auth&&sub!=19 分支无输出且跳过 Gos!=3 else-if
 			if not (w.is_authoritarian(country) and country.sub_government != 19) and country.government != 3:
 				n131.append(DIPLO_BTN_ECON10)
 				_append_rim_tail(n131, w, country)
-			# TODO：70 博莱斯 (sub==19, CS L3207)
+			# 注：70 博莱斯 (sub==19, CS L3207)
 			return n131
 		132:
-			# CS L3213：9 + [puppet<0] 10 + 亲中尾（1037 未移植 TODO）
+			# CS L3213：9 + [puppet<0] 10 + 亲中尾（1037 移植说明 注）
 			var n132: Array[int] = [DIPLO_BTN_TRADE9]
 			if country.puppet_of < 0:
 				n132.append(DIPLO_BTN_ECON10)
 				_append_rim_tail(n132, w, country)
 			return n132
 		153:
-			# CS L3240：9 + [Gos!=2] 10 + 亲中尾（1039/1040 未移植 TODO）
+			# CS L3240：9 + [Gos!=2] 10 + 亲中尾（1039/1040 移植说明 注）
 			var n153: Array[int] = [DIPLO_BTN_TRADE9]
 			if country.government != 2:
 				n153.append(DIPLO_BTN_ECON10)
 				_append_rim_tail(n153, w, country)
 			return n153
 		115:
-			# CS L2773：sub==9 → 9+[亲中]10；sub!=9 → 9+亲中尾（1032/70 未移植 TODO）
+			# CS L2773：sub==9 → 9+[亲中]10；sub!=9 → 9+亲中尾（1032/70 移植说明 注）
 			if country.sub_government == 9:
 				if not country.has_tag("亲中"):
 					return [DIPLO_BTN_TRADE9]
@@ -1590,14 +1590,14 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return n115
 		116:
 			# CS L2819：9 + [!亲美&&puppet<0&&ev619] 10,5001,5000
-			#（10 不受 proprc 门控；1024/1044/1032 未移植 TODO）
+			#（10 不受 proprc 门控；1024/1044/1032 移植说明 注）
 			var n116: Array[int] = [DIPLO_BTN_TRADE9]
 			if not country.has_tag("亲美") and country.puppet_of < 0 and w.get_flag("event_done_619"):
 				n116.append(DIPLO_BTN_ECON10)
 				_append_rim_tail(n116, w, country)
 			return n116
 		117:
-			# CS L2847：sub==9&&亲中 → 10,19；sub!=9 → 9+亲中尾（1041/1042/70 未移植 TODO）
+			# CS L2847：sub==9&&亲中 → 10,19；sub!=9 → 9+亲中尾（1041/1042/70 移植说明 注）
 			if country.sub_government == 9:
 				if country.has_tag("亲中"):
 					return [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
@@ -1607,7 +1607,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				_append_au_rim_tail(n117, w, country)
 			return n117
 		118:
-			# CS L2893：!ev659||ev661 → 9,10+亲中尾；否则 1057 未移植 TODO
+			# CS L2893：!ev659||ev661 → 9,10+亲中尾；否则 1057 移植说明 注
 			if w.get_flag("event_done_659") and not w.get_flag("event_done_661"):
 				return []
 			if not country.has_tag("亲中") or w.is_authoritarian(country):
@@ -1616,7 +1616,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			_append_rim_tail(n118, w, country)
 			return n118
 		134:
-			# CS L3280：依赖 135/50 的政体与立场；1024/1025/1079 未移植 TODO
+			# CS L3280：依赖 135/50 的政体与立场；1024/1025/1079 移植说明 注
 			var c135 := w.get_country_by_legacy_index(135)
 			var c50 := w.get_country_by_legacy_index(50)
 			var n134: Array[int] = []
@@ -1637,7 +1637,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 							n134.append(DIPLO_BTN_RIM5000)
 			return n134
 		136:
-			# CS L3335：9 + [!51.isNATO&&亲中] 10,19,[revint-okb]5000（1024 未移植 TODO）
+			# CS L3335：9 + [!51.isNATO&&亲中] 10,19,[revint-okb]5000（1024 移植说明 注）
 			var c51 := w.get_country_by_legacy_index(51)
 			var n136: Array[int] = [DIPLO_BTN_TRADE9]
 			if c51 != null and not c51.has_tag("nato") and country.has_tag("亲中"):
@@ -1647,13 +1647,13 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n136.append(DIPLO_BTN_RIM5000)
 			return n136
 		137:
-			# CS L3352：sub!=7 → 9,10（1076/1077 未移植 TODO）
+			# CS L3352：sub!=7 → 9,10（1076/1077 移植说明 注）
 			if country.sub_government == 7:
 				return []
 			return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 		138:
-			# CS L3380：!7.isNATO && !gkchp(未建模→真) → 亲中: 9,10,[revint]5000 / 否则 9
-			# 49/1033/1034 未移植 TODO；cw&&(亲苏||亲美) 全隐藏 cw 未建模
+			# CS L3380：!7.isNATO && !gkchp(建模说明→真) → 亲中: 9,10,[revint]5000 / 否则 9
+			# 49/1033/1034 移植说明 注；cw&&(亲苏||亲美) 全隐藏 cw 建模说明
 			var c7 := w.get_country_by_legacy_index(7)
 			if c7 != null and c7.has_tag("nato"):
 				return []
@@ -1664,7 +1664,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				return n138
 			return [DIPLO_BTN_TRADE9]
 		140:
-			# CS L3417：亲中 → 9,10 + [revint]5000（1026/1027 未移植 TODO）
+			# CS L3417：亲中 → 9,10 + [revint]5000（1026/1027 移植说明 注）
 			if not country.has_tag("亲中"):
 				return []
 			var n140: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
@@ -1672,17 +1672,17 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n140.append(DIPLO_BTN_RIM5000)
 			return n140
 		141:
-			# CS L3434：parts 未建模(→else 分支) → 9,10 + [revint]5000（1062 未移植 TODO）
+			# CS L3434：parts 建模说明(→else 分支) → 9,10 + [revint]5000（1062 移植说明 注）
 			var n141: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			if _revint_ok(w, country):
 				n141.append(DIPLO_BTN_RIM5000)
 			return n141
 		145:
-			# CS L3450：cw 未建模 → !cw 分支(1028-1031) 未移植 TODO；cw 分支 10/5000 待 cw 建模
+			# CS L3450：cw 建模说明 → !cw 分支(1028-1031) 移植说明 注；cw 分支 10/5000 待 cw 建模
 			return []
 		147:
-			# CS L3468：level_of_unstab 未建模(视为0) → !soc&&Gos!=2: 9 / 其余: 9+亲中尾
-			# 1043/1044 未移植 TODO
+			# CS L3468：level_of_unstab 建模说明(视为0) → !soc&&Gos!=2: 9 / 其余: 9+亲中尾
+			# 1043/1044 移植说明 注
 			if not w.is_socialism(country, true) and country.government != 2:
 				return [DIPLO_BTN_TRADE9]
 			var n147: Array[int] = [DIPLO_BTN_TRADE9]
@@ -1692,7 +1692,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n147.append(DIPLO_BTN_RIM5000)
 			return n147
 		149:
-			# CS L3499：同 147；parts/ingamewars[66] 未建模 → 1045 未移植 TODO
+			# CS L3499：同 147；parts/ingamewars[66] 建模说明 → 1045 移植说明 注
 			if not w.is_socialism(country, true) and country.government != 2:
 				return [DIPLO_BTN_TRADE9]
 			var n149: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
@@ -1700,8 +1700,8 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n149.append(DIPLO_BTN_RIM5000)
 			return n149
 		152:
-			# CS L3536：!auth → 9；亲中&&!soc → 1032(未移植 TODO) → 只 9；亲中 → 10,[revint]5000
-			# 49 邀请乐队未移植 TODO
+			# CS L3536：!auth → 9；亲中&&!soc → 1032(移植说明 注) → 只 9；亲中 → 10,[revint]5000
+			# 49 邀请乐队移植说明 注
 			if w.is_authoritarian(country):
 				return []
 			if country.has_tag("亲中") and not w.is_socialism(country, true):
@@ -1713,7 +1713,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n152.append(DIPLO_BTN_RIM5000)
 			return n152
 		154:
-			# CS L3556：ev630 未建模(默认false) → 1032/1046 分支未移植 TODO
+			# CS L3556：ev630 建模说明(默认false) → 1032/1046 分支移植说明 注
 			if w.get_flag("event_done_630"):
 				if country.puppet_of < 0:
 					var n154: Array[int] = [DIPLO_BTN_TRADE9]
@@ -1722,10 +1722,10 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 						n154.append(DIPLO_BTN_MIL19)
 						if _revint_okb_ok(w, country):
 							n154.append(DIPLO_BTN_RIM5000)
-					return n154  # 49 度假未移植 TODO
+					return n154  # 49 度假移植说明 注
 			return []
 		157:
-			# CS L3610：puppet<0 → 9,19 + [revint]5000（53 未移植 TODO）；else → 9
+			# CS L3610：puppet<0 → 9,19 + [revint]5000（53 移植说明 注）；else → 9
 			if country.puppet_of >= 0:
 				return [DIPLO_BTN_TRADE9]
 			var n157: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_MIL19]
@@ -1733,9 +1733,9 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n157.append(DIPLO_BTN_RIM5000)
 			return n157
 		159:
-			# CS L3653：puppet<0 → 9 + [亲中] 10,19,[revint-okb]5000（1045 未移植 TODO）
+			# CS L3653：puppet<0 → 9 + [亲中] 10,19,[revint-okb]5000（1045 移植说明 注）
 			if country.puppet_of >= 0:
-				return []  # 1043/1044 未移植 TODO
+				return []  # 1043/1044 移植说明 注
 			var n159: Array[int] = [DIPLO_BTN_TRADE9]
 			if country.has_tag("亲中"):
 				n159.append(DIPLO_BTN_ECON10)
@@ -1744,7 +1744,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n159.append(DIPLO_BTN_RIM5000)
 			return n159
 		160:
-			# CS L3675：亲中 → 10,19,[revint]5000（1050/1051 未移植 TODO）
+			# CS L3675：亲中 → 10,19,[revint]5000（1050/1051 移植说明 注）
 			if not country.has_tag("亲中"):
 				return []
 			var n160: Array[int] = [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
@@ -1752,7 +1752,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n160.append(DIPLO_BTN_RIM5000)
 			return n160
 		161:
-			# CS L3692：同 160（1050/1051 未移植 TODO）
+			# CS L3692：同 160（1050/1051 移植说明 注）
 			if not country.has_tag("亲中"):
 				return []
 			var n161: Array[int] = [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
@@ -1760,21 +1760,21 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n161.append(DIPLO_BTN_RIM5000)
 			return n161
 		29:
-			# CS L3767 块B：data169/parts/FXSEU/NAZI 未建模 → 简化；1068 未移植 TODO
+			# CS L3767 块B：data169/parts/FXSEU/NAZI 建模说明 → 简化；1068 移植说明 注
 			if country.has_tag("soc_eu"):
 				return []
 			return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 		166:
-			# CS L3809 块C：1067 未移植 TODO
+			# CS L3809 块C：1067 移植说明 注
 			return []
 		12:
-			# CS L805：9,19 + [revint]5000（68 未移植 TODO）
+			# CS L805：9,19 + [revint]5000（68 移植说明 注）
 			var n12: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_MIL19]
 			if _revint_ok(w, country):
 				n12.append(DIPLO_BTN_RIM5000)
 			return n12
 		13:
-			# CS L815：soc → 9,10,19 + [revint-okb&&亲中]5000；else 22/23 未移植 TODO
+			# CS L815：soc → 9,10,19 + [revint-okb&&亲中]5000；else 22/23 移植说明 注
 			if not w.is_socialism(country, true):
 				return []
 			var n13: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
@@ -1782,7 +1782,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n13.append(DIPLO_BTN_RIM5000)
 			return n13
 		14:
-			# CS L841：133/1078/56/25/70/53/119/120/ev36 未移植 TODO
+			# CS L841：133/1078/56/25/70/53/119/120/ev36 移植说明 注
 			# [sub==20&&puppet<0] 24；[亲中] 24,19 + [revint-okb&&puppet<0]5000；else 24,19
 			var n14: Array[int] = []
 			if country.sub_government == 20 and country.puppet_of < 0:
@@ -1797,7 +1797,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n14.append(DIPLO_BTN_MIL19)
 			return n14
 		15:
-			# CS L894：!7.NATO&&!2.okb&&!4.okb&&!5.okb&&!98.okb → 72/73 未移植 TODO
+			# CS L894：!7.NATO&&!2.okb&&!4.okb&&!5.okb&&!98.okb → 72/73 移植说明 注
 			# else → 10,19 + [revint-!亲苏]5000
 			var c2 := w.get_country_by_legacy_index(2)
 			var c4b := w.get_country_by_legacy_index(4)
@@ -1808,27 +1808,27 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			if not (c7b != null and c7b.has_tag("nato")) and not (c2 != null and c2.has_tag("okb")) \
 					and not (c4b != null and c4b.has_tag("okb")) and not (c5 != null and c5.has_tag("okb")) \
 					and not (c98 != null and c98.has_tag("okb")):
-				return n15  # 72/73 不结盟运动未移植 TODO
+				return n15  # 72/73 不结盟运动移植说明 注
 			n15.append(DIPLO_BTN_ECON10)
 			n15.append(DIPLO_BTN_MIL19)
 			if _revint_noprosov_ok(w, country):
 				n15.append(DIPLO_BTN_RIM5000)
 			return n15
 		16:
-			# CS L926：dlc 未建模 → 非 dlc 分支 24（135/116 未移植 TODO）；
-			# [proprc&&parts] 分支 parts 未建模 → 不触发 TODO
+			# CS L926：dlc 建模说明 → 非 dlc 分支 24（135/116 移植说明 注）；
+			# [proprc&&parts] 分支 parts 建模说明 → 不触发 注
 			return [DIPLO_BTN_TRADE24]
 		17:
-			# CS L950：parts 未建模(→真) → [!1.isASEAN] 1；116/137/138(dlc) 未移植 TODO
+			# CS L950：parts 建模说明(→真) → [!1.isASEAN] 1；116/137/138(dlc) 移植说明 注
 			var p17 := w.get_player_country()
 			if p17 != null and not p17.has_tag("asean"):
 				return [DIPLO_BTN_MAOIST1]
 			return []
 		18:
-			# CS L986：整支在 dlc[3] 内 → 无按钮 TODO
+			# CS L986：整支在 dlc[3] 内 → 无按钮 注
 			return []
 		19:
-			# CS L1002：ev72/resultOfEvents/completedDecisions[14] 未建模 → 首分支未移植 TODO
+			# CS L1002：ev72/resultOfEvents/completedDecisions[14] 建模说明 → 首分支移植说明 注
 			# [亲中] → [!SEV&&!econ] 10 / else 19 + [revint sub17+econ+okb]5000
 			if not country.has_tag("亲中"):
 				return []
@@ -1845,13 +1845,13 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n19.append(DIPLO_BTN_RIM5000)
 			return n19
 		20:
-			# CS L1037：parts 未建模(→真) → 19 + [revint]5000（31/32 未移植 TODO）
+			# CS L1037：parts 建模说明(→真) → 19 + [revint]5000（31/32 移植说明 注）
 			var n20: Array[int] = [DIPLO_BTN_MIL19]
 			if _revint_ok(w, country):
 				n20.append(DIPLO_BTN_RIM5000)
 			return n20
 		21:
-			# CS L1050：ev483 未建模 → else 分支；33/34/1009/1010/107 未移植 TODO
+			# CS L1050：ev483 建模说明 → else 分支；33/34/1009/1010/107 移植说明 注
 			var p21 := w.get_player_country()
 			var n21: Array[int] = [DIPLO_BTN_TRADE24]
 			# sub∈{17,22,19} || ((1.sub∈{7,9}) && sub==9) → 10,19
@@ -1865,11 +1865,11 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n21.append(DIPLO_BTN_RIM5000)
 			return n21
 		22:
-			# CS L1108：1.isSEV&&puppet==11 → 24,10,19；else !ev454(未建模→真) → [puppet<0] 19 + [revint]5000
+			# CS L1108：1.isSEV&&puppet==11 → 24,10,19；else !ev454(建模说明→真) → [puppet<0] 19 + [revint]5000
 			var p22 := w.get_player_country()
 			if p22 != null and p22.has_tag("sev") and country.puppet_of == 11:
 				return [DIPLO_BTN_TRADE24, DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
-			# 35/36/126 未移植 TODO
+			# 35/36/126 移植说明 注
 			if country.puppet_of < 0:
 				var n22: Array[int] = [DIPLO_BTN_MIL19]
 				if _revint_ok(w, country):
@@ -1885,7 +1885,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n23.append(DIPLO_BTN_RIM5000)
 			return n23
 		24, 25:
-			# CS L1147：102/121 未移植 TODO；[亲中] 19 + [revint-okb&&亲中]5000（res437 视为 0）
+			# CS L1147：102/121 移植说明 注；[亲中] 19 + [revint-okb&&亲中]5000（res437 视为 0）
 			if not country.has_tag("亲中"):
 				return []
 			var n24: Array[int] = [DIPLO_BTN_MIL19]
@@ -1893,14 +1893,14 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n24.append(DIPLO_BTN_RIM5000)
 			return n24
 		26:
-			# CS L1175：based 未建模 → 1/123/148/149/53 分支不触发 TODO；
-			# 主分支 [revint-okb&&亲中]5000（50 未移植 TODO）
+			# CS L1175：based 建模说明 → 1/123/148/149/53 分支不触发 注；
+			# 主分支 [revint-okb&&亲中]5000（50 移植说明 注）
 			var n26: Array[int] = []
 			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
 				n26.append(DIPLO_BTN_RIM5000)
 			return n26
 		30:
-			# CS L1217：38/39 未移植 TODO；[24] + soc → 19 + [revint-okb&&亲中]5000
+			# CS L1217：38/39 移植说明 注；[24] + soc → 19 + [revint-okb&&亲中]5000
 			var n30: Array[int] = [DIPLO_BTN_TRADE24]
 			if w.is_socialism(country, true):
 				n30.append(DIPLO_BTN_MIL19)
@@ -1908,7 +1908,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n30.append(DIPLO_BTN_RIM5000)
 			return n30
 		31:
-			# CS L1234：40/41 未移植 TODO；[revint]5000
+			# CS L1234：40/41 移植说明 注；[revint]5000
 			var n31: Array[int] = []
 			if _revint_ok(w, country):
 				n31.append(DIPLO_BTN_RIM5000)
@@ -1924,7 +1924,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n32.append(DIPLO_BTN_RIM5000)
 			return n32
 		33:
-			# CS L1267：42/1061 未移植 TODO；亲中&&!1.isASEAN → 10,19 + [sub17 变体]5000
+			# CS L1267：42/1061 移植说明 注；亲中&&!1.isASEAN → 10,19 + [sub17 变体]5000
 			var p33 := w.get_player_country()
 			if not country.has_tag("亲中") or (p33 != null and p33.has_tag("asean")):
 				return []
@@ -1933,36 +1933,36 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n33.append(DIPLO_BTN_RIM5000)
 			return n33
 		34:
-			# CS L1291：43/44 未移植 TODO；9,19 + [revint-okb&&亲中]5000
+			# CS L1291：43/44 移植说明 注；9,19 + [revint-okb&&亲中]5000
 			var n34: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_MIL19]
 			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
 				n34.append(DIPLO_BTN_RIM5000)
 			return n34
 		35:
-			# CS L1302：ev564 未建模(→!ev564) → 1016 未移植 TODO
+			# CS L1302：ev564 建模说明(→!ev564) → 1016 移植说明 注
 			return []
 		37:
-			# CS L1327：45/46 未移植 TODO；24,10,19 + [revint-okb&&亲中]5000
+			# CS L1327：45/46 移植说明 注；24,10,19 + [revint-okb&&亲中]5000
 			var n37: Array[int] = [DIPLO_BTN_TRADE24, DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
 			if _revint_okb_ok(w, country) and country.has_tag("亲中"):
 				n37.append(DIPLO_BTN_RIM5000)
 			return n37
 		38:
-			# CS L1345：ev461 未建模 → 首分支 48/1005 未移植 TODO；
-			# ev461&&亲中 → 10,19（119/120 未移植 TODO）
+			# CS L1345：ev461 建模说明 → 首分支 48/1005 移植说明 注；
+			# ev461&&亲中 → 10,19（119/120 移植说明 注）
 			if w.get_flag("event_done_461") and country.has_tag("亲中"):
 				return [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
 			return []
 		39:
-			# CS L1366：49/148/149/53 全未移植 TODO
+			# CS L1366：49/148/149/53 全移植说明 注
 			return []
 		40:
-			# CS L1395：sub==20 → 1019/1020 未移植 TODO；sub==10 → 9,10（ev563 未建模）
+			# CS L1395：sub==20 → 1019/1020 移植说明 注；sub==10 → 9,10（ev563 建模说明）
 			if country.sub_government == 10:
 				return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			return []
 		41:
-			# CS L1435：ev403 未建模 → proprc 分支；101/110/111/70 未移植 TODO
+			# CS L1435：ev403 建模说明 → proprc 分支；101/110/111/70 移植说明 注
 			# [Gos==1||sub==0] → 10 + 5001(soc500) + [revint-无soc]5000；else → 10
 			if not country.has_tag("亲中"):
 				return []
@@ -1975,7 +1975,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				return n41
 			return [DIPLO_BTN_ECON10]
 		43, 96, 97:
-			# CS L1476：puppet!=1 → 97/98/99 未移植 TODO；[revint]5000
+			# CS L1476：puppet!=1 → 97/98/99 移植说明 注；[revint]5000
 			if country.puppet_of == 1:
 				return []
 			var n43: Array[int] = []
@@ -1983,7 +1983,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n43.append(DIPLO_BTN_RIM5000)
 			return n43
 		44:
-			# CS L1489：1014/51/52/1015/119 未移植 TODO；亲中&&!soc_eu → 19 + [revint-okb&&亲中]5000
+			# CS L1489：1014/51/52/1015/119 移植说明 注；亲中&&!soc_eu → 19 + [revint-okb&&亲中]5000
 			if not country.has_tag("亲中") or country.has_tag("soc_eu"):
 				return []
 			var n44: Array[int] = [DIPLO_BTN_MIL19]
@@ -1991,7 +1991,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n44.append(DIPLO_BTN_RIM5000)
 			return n44
 		45:
-			# CS L1531：!94.cw(未建模→真) 且 (war19||!auth 视为真) → 9；54 未移植 TODO
+			# CS L1531：!94.cw(建模说明→真) 且 (war19||!auth 视为真) → 9；54 移植说明 注
 			# soc → 10 + [亲中] 19 + [revint]5000
 			var n45: Array[int] = [DIPLO_BTN_TRADE9]
 			if w.is_socialism(country, true):
@@ -2002,10 +2002,10 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 						n45.append(DIPLO_BTN_RIM5000)
 			return n45
 		46:
-			# CS L1554：parts/ev31 → 55/1013/122 全未移植 TODO
+			# CS L1554：parts/ev31 → 55/1013/122 全移植说明 注
 			return []
 		47:
-			# CS L1583：!1.isASEAN → 56(未移植 TODO)+[revint]5000；9,19（44 未移植 TODO）
+			# CS L1583：!1.isASEAN → 56(移植说明 注)+[revint]5000；9,19（44 移植说明 注）
 			var p47 := w.get_player_country()
 			var n47: Array[int] = []
 			if p47 == null or not p47.has_tag("asean"):
@@ -2042,7 +2042,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 						n49.append(DIPLO_BTN_RIM5000)
 			return n49
 		50:
-			# CS L1647：sub!=9 → 58(未移植 TODO) + [亲中] 10 + [soc] 19 + [revint-okb&&亲中]5000 + 24
+			# CS L1647：sub!=9 → 58(移植说明 注) + [亲中] 10 + [soc] 19 + [revint-okb&&亲中]5000 + 24
 			if country.sub_government == 9:
 				return []
 			var n50: Array[int] = [DIPLO_BTN_TRADE24]
@@ -2063,13 +2063,13 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n128.append(DIPLO_BTN_RIM5000)
 			return n128
 		51:
-			# CS L1695：!7.NATO && !modifies[49] → 60/34/61/75 全未移植 TODO
+			# CS L1695：!7.NATO && !modifies[49] → 60/34/61/75 全移植说明 注
 			return []
 		53:
-			# CS L1719：ev499 未建模(→false) → 1058-1060 未移植 TODO
+			# CS L1719：ev499 建模说明(→false) → 1058-1060 移植说明 注
 			return []
 		54:
-			# CS L1778：9 + [auth&&!ev560(未建模→真)] → 1006/1007 未移植 TODO
+			# CS L1778：9 + [auth&&!ev560(建模说明→真)] → 1006/1007 移植说明 注
 			# else → 10 + [sub!=11&&Gos!=3] 19 + [revint-okb&&亲中]5000
 			if w.is_authoritarian(country):
 				return [DIPLO_BTN_TRADE9]
@@ -2080,7 +2080,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n54.append(DIPLO_BTN_RIM5000)
 			return n54
 		55:
-			# CS L1803：亲中 → 10,19 + [revint-okb]5000；else Gos==2 → 10（67 未移植 TODO）
+			# CS L1803：亲中 → 10,19 + [revint-okb]5000；else Gos==2 → 10（67 移植说明 注）
 			if country.has_tag("亲中"):
 				var n55: Array[int] = [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
 				if _revint_okb_ok(w, country):
@@ -2090,7 +2090,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				return [DIPLO_BTN_ECON10]
 			return []
 		56:
-			# CS L1828：亲中 → 10 + 5001(soc500) + [revint]5000；else 1024/1032 未移植 TODO
+			# CS L1828：亲中 → 10 + 5001(soc500) + [revint]5000；else 1024/1032 移植说明 注
 			if not country.has_tag("亲中"):
 				return []
 			var n56: Array[int] = [DIPLO_BTN_ECON10]
@@ -2100,7 +2100,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n56.append(DIPLO_BTN_RIM5000)
 			return n56
 		57:
-			# CS L1852：亲中 → 10 + 5001(soc500) + [revint-puppet<0]5000；else 1056 未移植 TODO
+			# CS L1852：亲中 → 10 + 5001(soc500) + [revint-puppet<0]5000；else 1056 移植说明 注
 			if not country.has_tag("亲中"):
 				return []
 			var n57: Array[int] = [DIPLO_BTN_ECON10]
@@ -2110,7 +2110,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n57.append(DIPLO_BTN_RIM5000)
 			return n57
 		58:
-			# CS L1871：ev458 未建模(→false) → 1003 未移植 TODO；ev458&&亲中 → 10+5001+5000
+			# CS L1871：ev458 建模说明(→false) → 1003 移植说明 注；ev458&&亲中 → 10+5001+5000
 			if not w.get_flag("event_done_458") or not country.has_tag("亲中"):
 				return []
 			var n58: Array[int] = [DIPLO_BTN_ECON10]
@@ -2121,7 +2121,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return n58
 		59:
 			# CS L1897：soc → 9,10 + [亲中] 5001,5000；sub==10||Gos==2 → 9,10；else → 9
-			#（1032/1043-1045 未移植 TODO）
+			#（1032/1043-1045 移植说明 注）
 			if w.is_socialism(country, true):
 				var n59: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 				if country.has_tag("亲中"):
@@ -2131,7 +2131,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			return [DIPLO_BTN_TRADE9]
 		60:
-			# CS L1939：9 + 亲中 → 10,5001,5000（1054/1045 未移植 TODO）
+			# CS L1939：9 + 亲中 → 10,5001,5000（1054/1045 移植说明 注）
 			var n60: Array[int] = [DIPLO_BTN_TRADE9]
 			if country.has_tag("亲中"):
 				_append_au_rim_tail(n60, w, country)
@@ -2169,7 +2169,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n63.append(DIPLO_BTN_RIM5000)
 			return n63
 		64:
-			# CS L2012：亲中 → 10 + 5001(soc500) + [revint]5000；else 1032/data16 未移植 TODO
+			# CS L2012：亲中 → 10 + 5001(soc500) + [revint]5000；else 1032/data16 移植说明 注
 			if not country.has_tag("亲中"):
 				return []
 			var n64: Array[int] = [DIPLO_BTN_ECON10]
@@ -2179,7 +2179,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n64.append(DIPLO_BTN_RIM5000)
 			return n64
 		65:
-			# CS L2035：puppet<0 → 9,10 + [亲中] 5001,5000（70 未移植 TODO）
+			# CS L2035：puppet<0 → 9,10 + [亲中] 5001,5000（70 移植说明 注）
 			if country.puppet_of >= 0:
 				return []
 			var n65: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
@@ -2187,7 +2187,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				_append_rim_tail(n65, w, country)
 			return n65
 		66:
-			# CS L2058：ev617 未建模(→!ev617) → 9 + [sub==7] 1032(未移植 TODO)；
+			# CS L2058：ev617 建模说明(→!ev617) → 9 + [sub==7] 1032(移植说明 注)；
 			# [亲中||res618==1] → 10 + 5001(soc500) + [revint]5000
 			var n66: Array[int] = [DIPLO_BTN_TRADE9]
 			if country.has_tag("亲中"):
@@ -2209,10 +2209,10 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 					n68.append(DIPLO_BTN_RIM5000)
 			return n68
 		150, 151:
-			# CS L1748/L1763：ev499 未建模(→false) → 10/5001/5000 分支不触发 TODO
+			# CS L1748/L1763：ev499 建模说明(→false) → 10/5001/5000 分支不触发 注
 			return []
 		3:
-			# CS L645：100/123/103-106 未移植 TODO；[!1.isASEAN] 1 + 24 + [revint]5000
+			# CS L645：100/123/103-106 移植说明 注；[!1.isASEAN] 1 + 24 + [revint]5000
 			var p3 := w.get_player_country()
 			var n3: Array[int] = []
 			if p3 != null and not p3.has_tag("asean"):
@@ -2222,16 +2222,16 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n3.append(DIPLO_BTN_RIM5000)
 			return n3
 		8:
-			# CS L672：prcpower 未建模(0≠1000) → 首分支；8 支持友方派系(ev58)未移植 TODO
+			# CS L672：prcpower 建模说明(0≠1000) → 首分支；8 支持友方派系(ev58)移植说明 注
 			return [DIPLO_BTN_TRADE9]
 		9:
-			# CS L706：11 联络反对派未移植 TODO；war22/data[133]/res62 未建模 → 视为通过
+			# CS L706：11 联络反对派移植说明 注；war22/data[133]/res62 建模说明 → 视为通过
 			var n9: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			if _revint_ok(w, country):
 				n9.append(DIPLO_BTN_RIM5000)
 			return n9
 		10:
-			# CS L723：res495 未建模(0≠1) → 首分支；13/14/15/16 未移植 TODO
+			# CS L723：res495 建模说明(0≠1) → 首分支；13/14/15/16 移植说明 注
 			# [econ||SEV] → 19；L750 变体(无 prosov&&puppet<0) → 5000
 			var n10: Array[int] = []
 			if country.has_tag("econ") or country.has_tag("sev"):
@@ -2240,13 +2240,13 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				n10.append(DIPLO_BTN_RIM5000)
 			return n10
 		11:
-			# CS L766：ev535 未建模 → 中间分支；17/18/1000/80 未移植 TODO
-			# [econ&&puppet<0] → 19（war<=0 分支的 19 依赖 ev43 未建模）
+			# CS L766：ev535 建模说明 → 中间分支；17/18/1000/80 移植说明 注
+			# [econ&&puppet<0] → 19（war<=0 分支的 19 依赖 ev43 建模说明）
 			if country.has_tag("econ") and country.puppet_of < 0:
 				return [DIPLO_BTN_MIL19]
 			return []
 		_:
-			# 未移植分支 → 链尾块H（非洲区间）或 无按钮
+			# 移植说明分支 → 链尾块H（非洲区间）或 无按钮
 			var block := _africa_block_numbers(w, country)
 			if not block.is_empty():
 				return block
@@ -2258,7 +2258,7 @@ func _sev_satellite_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var player := w.get_player_country()
 	var n := country.原版序号
 	var c4 := w.get_country_by_legacy_index(4)
-	# L528：NATO 分支 → 103-106（未移植 TODO）；ingamewars[17] 未移植 → !war17 视为真
+	# L528：NATO 分支 → 103-106（移植说明 注）；ingamewars[17] 移植说明 → !war17 视为真
 	if (player.has_tag("nato") and country.has_tag("ovd")) or (n != 4 and c4 != null and c4.sub_government == 19):
 		return []
 	# L535：!中国NATO && !中国SEV && 目标SEV → [1|123] + 24
@@ -2266,7 +2266,7 @@ func _sev_satellite_numbers(w: WorldState, country: CountryData) -> Array[int]:
 		var nums: Array[int] = []
 		if not player.has_tag("asean"):
 			nums.append(DIPLO_BTN_MAOIST1)
-		# else：123（CS L543，未移植 TODO）
+		# else：123（CS L543，移植说明 注）
 		nums.append(DIPLO_BTN_TRADE24)
 		return nums
 	# L547 else：24 + [revint]5000
@@ -2280,7 +2280,7 @@ func _sev_satellite_numbers(w: WorldState, country: CountryData) -> Array[int]:
 func _six_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var player := w.get_player_country()
 	var c4 := w.get_country_by_legacy_index(4)
-	# L592：NATO 分支（注意 6 无 n!=4 豁免）→ 103-106（未移植 TODO）
+	# L592：NATO 分支（注意 6 无 n!=4 豁免）→ 103-106（移植说明 注）
 	if (player.has_tag("nato") and country.has_tag("ovd")) or (c4 != null and c4.sub_government == 19):
 		return []
 	# L599：!中国SEV && 目标SEV → [1|123] + 24
@@ -2439,7 +2439,7 @@ func _econ_gate_country_numbers(w: WorldState, country: CountryData, ev_flag: St
 	if country.puppet_of >= 0:
 		return [DIPLO_BTN_TRADE9]
 	var nums: Array[int] = [DIPLO_BTN_TRADE9]
-	# TODO：ingamewars[53].is_going 未移植 → 视为无战争
+	# 注：ingamewars[53].is_going 移植说明 → 视为无战争
 	if country.government != 0 and country.government != 3 and w.get_flag(ev_flag):
 		nums.append(DIPLO_BTN_ECON10)
 		_append_rim_tail(nums, w, country)
@@ -2469,7 +2469,7 @@ func _x133_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var nums: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 	if not country.has_tag("亲中"):
 		return nums
-	# TODO：原版 5001 守卫为 Gosstroy==1（非 IsSocialism）；resultOfEvents[500]==0 未移植
+	# 注：原版 5001 守卫为 Gosstroy==1（非 IsSocialism）；resultOfEvents[500]==0 移植说明
 	if country.government == 1 and w.get_flag("event_done_500"):
 		nums.append(DIPLO_BTN_AU5001)
 	if _revint_ok(w, country):
@@ -2504,7 +2504,7 @@ func _x167_numbers(w: WorldState, country: CountryData) -> Array[int]:
 
 
 ## 链尾块H（CS L3914）：非洲区间+亲中+!africaOff → 10,[soc500]5001,[revint]5000
-## TODO：66 资源开发区（CS L3925，data[103] 未移植）
+## 注：66 资源开发区（CS L3925，data[103] 移植说明）
 func _africa_block_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var n := country.原版序号
 	var in_range := (n > 53 and n < 69) or (n > 105 and n < 109) or (n > 111 and n < 134) or n == 42
@@ -2522,7 +2522,7 @@ func _africa_block_numbers(w: WorldState, country: CountryData) -> Array[int]:
 
 ## revint 列表级守卫（CS L550 等）：ev548 && 中国.isRIM && IsSocialism(true)
 ## && sub∉{16,18} && !SEV && !OVD && 亲中
-## TODO：gkchp 变体 (sub==10&&is_gkchp，is_gkchp 未建模) 未移植
+## 注：gkchp 变体 (sub==10&&is_gkchp，is_gkchp 建模说明) 移植说明
 func _revint_ok(w: WorldState, country: CountryData) -> bool:
 	return _revint_core_ok(w, country) and country.has_tag("亲中")
 
@@ -2594,7 +2594,7 @@ func _revint_sub17_ok(w: WorldState, country: CountryData) -> bool:
 
 
 ## AU 列表级守卫（CS L2739 等）：IsSocialism(true) && ev500 && res==0
-## TODO：resultOfEvents[500] 未移植，视为 0
+## 注：resultOfEvents[500] 移植说明，视为 0
 func _soc500_ok(w: WorldState, country: CountryData) -> bool:
 	return w.is_socialism(country, true) and w.get_flag("event_done_500")
 

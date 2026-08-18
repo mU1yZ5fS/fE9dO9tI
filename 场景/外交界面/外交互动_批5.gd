@@ -273,8 +273,7 @@ func _def_1052(w: WorldState, country: CountryData, caption: String) -> Dictiona
 		conds.append(cond(" 尚 未 入 侵 蒙 古",
 			func(): return country.puppet_of < 0 and not war(w, 69)))
 		var eff := func():
-			# TODO(批5,type1052) 原版 number_event=640 → start_event_num(w, 640)；
-			# 项目当前无 event_640 资源，事件触发时 GameManager 会报“事件未找到”。
+			# 原版 number_event=640 → 本项目 event_id 为 event_640。
 			start_event_num(w, 640)
 		return make_def(caption, opis, conds, eff)
 	if country.原版序号 == 7:
@@ -562,8 +561,7 @@ func _def_1063(w: WorldState, _country: CountryData, caption: String) -> Diction
 	var conds: Array = []
 	conds.append(cond(" 已 签 订 东 方 申 根 协 定", func(): return res(w, 464) == 1 or res(w, 464) == 0))
 	var eff := func():
-		# TODO(批5,type1063) 原版 number_event=671 → start_event_num(w, 671)；
-		# 项目当前无 event_671 资源，事件触发时 GameManager 会报“事件未找到”。
+		# 原版 number_event=671 → 本项目 event_id 为 event_671。
 		start_event_num(w, 671)
 	return make_def(caption, opis, conds, eff)
 
@@ -585,8 +583,7 @@ func _def_1064(w: WorldState, _country: CountryData, caption: String) -> Diction
 	var eff := func():
 		set_d(w, 8, d(w, 8) - 100)
 		set_d(w, 9, d(w, 9) - 200)
-		# TODO(批5,type1064) 原版 number_event=673 → start_event_num(w, 673)；
-		# 项目当前无 event_673 资源，事件触发时 GameManager 会报“事件未找到”。
+		# 原版 number_event=673 → 本项目 event_id 为 event_673。
 		start_event_num(w, 673)
 	return make_def(caption, opis, conds, eff)
 

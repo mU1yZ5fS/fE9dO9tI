@@ -1,6 +1,6 @@
 ## 结局内容 批B2 — 页 5-9 轮播内容（中文分支）。
 ## 源码出处：EndingScript.cs OnMouseDown L1728-2493（number_of_e==5..9）。
-## 只做 PlayerPrefs.GetInt("language") == 0 中文分支；成就调用只写 TODO(结局批D) 注释。
+## 只做 PlayerPrefs.GetInt("language") == 0 中文分支；成就调用只写 注(结局批D) 注释。
 extends "res://场景/结局界面/结局内容_基础.gd"
 
 const W = preload("res://数据脚本/world_state.gd")

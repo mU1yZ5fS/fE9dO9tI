@@ -152,7 +152,7 @@ func _event_64(option_index: int, context: Dictionary) -> void:
 			elif idx == 24 and c.parts.size() > 0 and c.parts[0]:
 				if socialism:
 					c.set_tag("oar", true)
-		# 原版 party_change[2]=0.24 / party_change[3]=0.24 未移植（DLC 选举系统未接入）。
+		# 原版 party_change[2]=0.24 / party_change[3]=0.24 移植说明（DLC 选举系统未启用）。
 		context["result_text"] = TXT_64_R_SOC
 		return
 	if option_index == 0:

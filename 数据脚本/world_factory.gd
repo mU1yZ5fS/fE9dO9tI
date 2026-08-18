@@ -393,9 +393,10 @@ const LEADER_POSITION_SENTINEL := -2
 # ============================================================================
 # 初始修正 ID 列表
 # ============================================================================
-# 对齐 GameStartScript.cs:72-84：0,1,2,3,6,14,15,28,54,55,61,62,64（dlc[3] 的 42/50/56 因 dlc 未建模不加）。
+# 对齐 GameStartScript.cs:72-84：0,1,2,3,6,14,15,28,54,55,61,62,64；
+# 另按 dlc[3] 恒真（Godot 改版全 DLC 免费可玩）补 42/50/56（GameStartScript.cs:87-89）。
 # 旧值 [0,1,3,6,14,15,54,55,59] 缺 2/28/61/62/64 且多 59，2026-08-14 主控亲验修正。
-const START_MODIFIER_IDS := [0, 1, 2, 3, 6, 14, 15, 28, 54, 55, 61, 62, 64]
+const START_MODIFIER_IDS := [0, 1, 2, 3, 6, 14, 15, 28, 42, 50, 54, 55, 56, 61, 62, 64]
 
 
 # ============================================================================
@@ -424,7 +425,7 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	# 铁人 = 难度 >= 2（GameStartScript.cs:120: iron_and_blood = diff >= 2；
 	# 本端口 0沙盒/1简单/2普通/3困难）
 	# 原版 GameStartScript.cs:1886-1888 若 gamerules 含 >1 则 iron_and_blood=false；
-	# gamerules 未移植，跳过（politician_system.gd:228 有未移植读取口）。
+	# gamerules 移植说明，跳过（politician_system.gd:228 有移植说明读取口）。
 	ws.is_ironman = difficulty >= 2
 	# 玩法随机源种子：开局取系统时间，暗杀等真随机；rng_state 随存档续流
 	ws.rng_seed = int(Time.get_unix_time_from_system())
@@ -1289,7 +1290,7 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 # 原版流程：先读 Country_data_1.txt / South_data.txt，随后无条件逐国覆盖
 # 政体/子意识形态/标签/傀儡。Godot 此前只搬了数值表 data[160-184]，
 # 缺这一段导致马来西亚、大洋洲、非洲、古巴等大量国家开局政体不符。
-# 说明：原版的国名覆盖（如 "扎 伊 尔 共 和 国"）未移植——Godot 的显示名
+# 说明：原版的国名覆盖（如 "扎 伊 尔 共 和 国"）移植说明——Godot 的显示名
 # 走 map_countries 中文名/9000+ 中文回退，已优先于 c.name。
 # ============================================================================
 

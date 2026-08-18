@@ -219,6 +219,70 @@ func set_parts(country: CountryData, idx: int, value: bool) -> void:
 	country.parts[idx] = value
 
 
+## 原版 Country.ILoveSuckCocks()（Country.cs L286-420）的 Godot 等价实现：
+## 按 IndOpp/GKChP/藏南/台湾地位等刷新中国地图 parts。
+func _refresh_china_map_parts(w: WorldState, china: CountryData) -> void:
+	if china == null:
+		return
+	if china.parts.size() < 16:
+		china.parts.resize(16)
+	var data := w.数值表
+	var d62 := data[62] if data.size() > 62 else 0
+	var d64 := data[64] if data.size() > 64 else 0
+	var d130 := data[130] if data.size() > 130 else 0
+	var dec7 := false
+	if w.decisions != null and w.decisions.completed.size() > 7:
+		dec7 = w.decisions.completed[7]
+	var c19 := c(w, 19)
+	var c33 := c(w, 33)
+	if w.get_flag("IndOpp"):
+		_clear_china_parts(china, true)
+		china.parts[15] = true
+	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == 19 \
+			and c33 != null and c33.puppet_of == 1 and c33.sub_government == 19:
+		_clear_china_parts(china, true)
+		china.parts[14] = true
+	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == 19:
+		_clear_china_parts(china, true)
+		china.parts[13] = true
+	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == 19:
+		_clear_china_parts(china, true)
+		china.parts[12] = true
+	elif w.get_flag("is_gkchp"):
+		_clear_china_parts(china, true)
+		china.parts[11] = true
+	elif d130 == 1 and d62 >= 2 and (d64 == 2 or dec7):
+		_clear_china_parts(china, false)
+		china.parts[0] = true
+	elif d130 == 1 and (d62 == 2 or d62 == 3):
+		_clear_china_parts(china, false)
+		china.parts[2] = true
+	elif d62 >= 2 and (d64 == 2 or dec7):
+		_clear_china_parts(china, false)
+		china.parts[6] = true
+	elif d130 == 1 and (d64 == 2 or dec7):
+		_clear_china_parts(china, false)
+		china.parts[3] = true
+	elif d130 == 1:
+		_clear_china_parts(china, false)
+		china.parts[4] = true
+	elif d64 == 2 or dec7:
+		_clear_china_parts(china, false)
+		china.parts[5] = true
+	elif d62 >= 2:
+		_clear_china_parts(china, false)
+		china.parts[1] = true
+	else:
+		_clear_china_parts(china, false)
+		china.parts[10] = true
+
+
+func _clear_china_parts(china: CountryData, clear_all: bool) -> void:
+	for i in china.parts.size():
+		if clear_all or i < 7 or i > 9:
+			china.parts[i] = false
+
+
 func soc(w: WorldState, country: CountryData, strict: bool) -> bool:
 	return w.is_socialism(country, strict)
 

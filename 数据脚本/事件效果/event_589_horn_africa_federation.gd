@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10908-10913 —— 无日期条件：
 ##   c42.亲中 && c41.亲中 && c42.Gosstroy!=0 && c41.Gosstroy!=0
 ##   && modifies[6].is_active && (c1.Gosstroy==1 || c1.SubGosstroy==0)
-##   && !event_done[403]；parts[0/1/2] 未建模 → 恒真跳过。
+##   && !event_done[403]；parts[0/1/2] 由 CountryData.parts 建模。
 ## 差异：
 ##  - EstablishGovernment(ProChina) → 只设 亲中=true、亲苏/亲美=false（不设 government）；
 ##  - c41.name = "非洲之角联邦" → chinese_name（既有约定）；

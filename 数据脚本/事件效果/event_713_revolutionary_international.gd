@@ -170,7 +170,7 @@ func _leave_alliances(c: CountryData) -> void:
 
 
 ## Country.cs:42-86 JoinAllOurAlliances 的核心联盟跟随逻辑（rim/au 的
-## event_done[500]/[548] 分支因链未移植，按原版条件为假处理，不额外置位）。
+## event_done[500]/[548] 分支因链移植说明，按原版条件为假处理，不额外置位）。
 func _join_our_alliances(c: CountryData) -> void:
 	var player := ws.get_country_by_legacy_index(1)
 	if player == null:

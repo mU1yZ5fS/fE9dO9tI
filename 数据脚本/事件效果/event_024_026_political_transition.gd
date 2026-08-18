@@ -47,8 +47,7 @@ func _apply_event_24(option_index: int) -> void:
 				W.I_THOUGHT_FREEDOM: 100,
 			})
 			_set_modifier(3, false)
-			_change_loyalty_custom({0: -100, 20: -50})
-			_change_loyalty_above(1, 100)
+			_change_loyalty_24_3()
 			_add_faction_ideology({2: 300, 3: 800, 4: 300})
 			d[W.I_POST_MAO_COURSE] = 4
 
@@ -146,6 +145,21 @@ func _change_loyalty_power_24_1() -> void:
 		elif politician.trait_personality > 0:
 			politician.loyalty -= 200
 			politician.power -= 100
+
+
+## Event24 result3：原版 Event24.cs ResultsOfEvents 的 traits 分支
+##  if traits[0]==0 → loyalty -= 100；if traits[0]==20 → loyalty -= 50；
+##  else if traits[0]>1 → loyalty += 100（20 不进入该分支）。
+func _change_loyalty_24_3() -> void:
+	for politician in ws.politicians:
+		if politician == null:
+			continue
+		if politician.trait_personality == 0:
+			politician.loyalty -= 100
+		if politician.trait_personality == 20:
+			politician.loyalty -= 50
+		elif politician.trait_personality > 1:
+			politician.loyalty += 100
 
 
 func _change_loyalty_24_2_style() -> void:

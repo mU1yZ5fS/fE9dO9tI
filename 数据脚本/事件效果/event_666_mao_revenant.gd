@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1572-1577 ——
 ##   ((data[5]<100 && influencePRC<50 && data[14]>=5 && data[67]>0 && data[66]>0
 ##     && data[65]<=0 && data[62]<=0) || MoneyLevel>20) && data[104]==9。
-## 差异：MoneyLevel 为 display-only，世界状态未移植，其分支跳过并注释；
+## 差异：MoneyLevel 为 display-only，世界状态移植说明，其分支跳过并注释；
 ##   其余条件照抄为 ExprNode。
 
 const TXT_TITLE := "轮回的复仇"

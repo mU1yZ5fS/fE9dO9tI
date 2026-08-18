@@ -213,14 +213,14 @@ const DOCTR_MOD6 := {
 	13: "国家监护资本主义", 14: "社会主义导向市场", 15: "左翼小政府", 21: "改良区域自治制度", 22: "联邦制", 24: "文化革命",
 }
 
-# ── 状态位读取（映射 WorldState；数字事件未移植 → 恒默认）──
+# ── 状态位读取（映射 WorldState；数字事件移植说明 → 恒默认）──
 func _mod_active(w: WorldState, n: int) -> bool:
 	return w != null and w.modifiers.size() > n and w.modifiers[n] != null and w.modifiers[n].is_active
 
 func _dec_done(w: WorldState, n: int) -> bool:
 	return w != null and w.decisions != null and w.decisions.completed.size() > n and w.decisions.completed[n]
 
-# 数字键事件（444/502/503/550/551/682…）在本移植中未接入（completed_event_ids 用字符串键）
+# 数字键事件（444/502/503/550/551/682…）在本移植中未启用（completed_event_ids 用字符串键）
 # → resultOfEvents 恒 -1、event_done 恒 false，与原版 GameStartScript.cs:48-51 初始态一致。
 func _evt_result(w: WorldState, n: int) -> int:
 	return w.completed_event_ids.get(n, -1) if w != null else -1
@@ -237,7 +237,7 @@ func doctr_name(w: WorldState, id: int) -> String:
 
 
 ## 忠实移植 Doctrine_script.cs OnMouseDown()：按 this_number 与真实状态位生成有序选项 [{id,text}]。
-## 数字事件（444/503/550/551/682）未移植 → _evt_* 恒 -1/false，与原版开局初始态一致。
+## 数字事件（444/503/550/551/682）移植说明 → _evt_* 恒 -1/false，与原版开局初始态一致。
 ## 开局态 modifies[6]=true、completedDecisions/其余 modifies 全 false → 各类满编选项。
 func _build_options(w: WorldState, num: int) -> Array[Dictionary]:
 	var o: Array[Dictionary] = []
@@ -476,7 +476,7 @@ func _refresh() -> void:
 
 
 ## 派系席位百分比 hover 文案。逐字移植原版 leading_script.cs 中文块。
-## 差异：is_konst_max 未移植 → 多党“法定多数”行缺失（Godot 无该字段），其余逐字。
+## 差异：is_konst_max 移植说明 → 多党“法定多数”行缺失（Godot 无该字段），其余逐字。
 func _leading_tooltip(w: WorldState) -> String:
 	var total := 0
 	for f in w.factions:

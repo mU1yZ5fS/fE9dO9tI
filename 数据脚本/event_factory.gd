@@ -1,4 +1,4 @@
-﻿# ============================================================================
+# ============================================================================
 # EventFactory — 事件工厂（编程方式构建事件定义）
 # ============================================================================
 # 【已冻结 · 2026-08】不再扩展、不再用于生产事件。
@@ -623,7 +623,8 @@ static func create_event_24() -> EventDef:
 			+ "excesses of the Cultural Revolution, a renewed radical course, limited modernization, "
 			+ "or large-scale market reform and opening to the world.")
 	ev.fire_only_once = true
-	ev.trigger_conditions = [date_after("1976.12")] as Array[ExprNode]
+	# 原版 TimeScript.cs:10201：1976.12 后 且 data[84]（gang_of_four_path）!= 3。
+	ev.trigger_conditions = [all_of([date_after("1976.12"), res_not_equals("gang_of_four_path", 3)])] as Array[ExprNode]
 	var transition_script := preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
 
 	ev.options.append(option(

@@ -158,7 +158,7 @@ func _event_43(option_index: int) -> void:
 func _event_44(option_index: int, context: Dictionary) -> void:
 	match option_index:
 		0:
-			# 原版 result0 共同效果：LeaderAsset/MoneyLevel/ServeRMB 未建模，跳过。
+			# 原版 result0 共同效果：LeaderAsset/MoneyLevel/ServeRMB 建模说明，跳过。
 			_set_modifier_active(3, false)
 			_add_data({W.I_PARTY_SUPPORT: 100, W.I_INFLUENCE: -20,
 				W.I_THOUGHT_FREEDOM: 70, W.I_PEOPLE_SUPPORT: 60, W.I_DIPLO: -20})
@@ -217,7 +217,7 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 			_kill_politician_if_exists(6, 6)
 			ws.数值表[W.I_PARTY_SYSTEM] = 7
 			PoliticianSystem.sync_in_power_flags(ws)
-	# 原版 NewPolitician[4]=false / party_change[] 仅 UI 缓冲，未建模。
+	# 原版 NewPolitician[4]=false / party_change[] 仅 UI 缓冲，建模说明。
 
 
 func _event_45() -> void:

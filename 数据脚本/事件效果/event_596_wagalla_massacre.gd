@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event596.cs：瓦加拉大屠杀（event_596，三选项）。
-## 触发：TimeScript.cs:10929-10934 —— 日期>=1984.2.10 && IsSocialism(false,119)（肯尼亚非社会主义）&& c42.SubGosstroy==10 && (c42.亲中||c42.亲苏)；c41/c42 parts 未建模恒真跳过。
+## 触发：TimeScript.cs:10929-10934 —— 日期>=1984.2.10 && IsSocialism(false,119)（肯尼亚非社会主义）&& c42.SubGosstroy==10 && (c42.亲中||c42.亲苏)；c41/c42 parts 建模说明恒真跳过。
 ## 差异：
 ##  - 原版 SubGosstroy!=10 分支的空白禁用选项在 .tres 中保留空 text 的 _disable 实现；
 ##  - AmericanSupportDefender.SovietSupportAttacker → usa_side=1/ussr_side=0；

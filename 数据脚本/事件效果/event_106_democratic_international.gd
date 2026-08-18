@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event106.cs：民主国际（贾姆巴反共大会，三选项）。
 ## 触发：TimeScript.cs:10878-10884 ——
 ##   (月>=6 且 年>=1985 或 年>=1986) && !c7.isNATO && c51.isNATO
-##   （is_gkchp/IndOpp 端口未建模 → 视为恒真，沿用既有约定）。
+##   （is_gkchp/IndOpp 端口建模说明 → 视为恒真，沿用既有约定）。
 ## 差异：选项1 按 data[9]>=100 动态显隐；国家循环字段映射
 ##   sovalliance→苏联盟友、Vyshi→亲美、dev→development、stab→stability。
 

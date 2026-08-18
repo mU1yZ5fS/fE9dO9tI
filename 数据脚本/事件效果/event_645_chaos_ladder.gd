@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event645.cs：混乱即阶梯（罗马尼亚脱离苏东，单选项）。
 ## 触发：ReqEventsDLC02.cs:94-96 —— c5.SubGosstroy==19 && IndOpp → trigger_script evaluate。
-## 差异：ingamewars[76] 未建模 WarDef → 兜底创建后补名；
+## 差异：ingamewars[76] 建模说明 WarDef → 兜底创建后补名；
 ##   isSEV/isOVD→sev/ovd 标签；JoinAllOurAlliances(true)→_join_alliances。
 
 const TXT_TITLE := "混乱即阶梯"

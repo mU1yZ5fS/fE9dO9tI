@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - OAR → ws flag "oar"；allcountries[15].cw → legacy 15 内战中
 ##  - allcountries[1]（中国）isASEAN/isSEATO：项目无对应 tag → 差异注释，按假跳过
-##  - resultOfEvents[46]==2 / event_done[455]：未移植事件 → 按假跳过（注释差异）
+##  - resultOfEvents[46]==2 / event_done[455]：移植说明事件 → 按假跳过（注释差异）
 ##  - allcountries[84].Gosstroy → legacy 84 government；allcountries[8] → legacy 8
 ##  - allcountries[51].SubGosstroy=12 → legacy 51（美国）sub_government=12
 
@@ -45,7 +45,7 @@ func execute(context: Dictionary) -> void:
 			num2 += 1
 		if player.has_tag("seato"):
 			num2 += 1
-	# 差异：resultOfEvents[46]==2（未移植事件 46）→ num++ 跳过
+	# 差异：resultOfEvents[46]==2（移植说明事件 46）→ num++ 跳过
 	var w5 := ws.wars[5] if ws.wars.size() > 5 else null
 	if w5 != null and w5.is_going:
 		num += 1
@@ -59,7 +59,7 @@ func execute(context: Dictionary) -> void:
 		num2 += 1
 	else:
 		num += 1
-	# 差异：event_done[455]/resultOfEvents[455]（未移植事件 455）→ 跳过
+	# 差异：event_done[455]/resultOfEvents[455]（移植说明事件 455）→ 跳过
 
 	context["result_title"] = "驴象之争"
 	if opt == 0 and num2 >= num:

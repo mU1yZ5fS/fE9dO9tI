@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event635.cs：Belice de Guatemala（危地马拉军政府声索伯利兹，三选项）。
 ## 触发：ReqEventsDLC02.cs:981-984 —— IsAuthoritarianism(149) && BritLost && DATE_AFTER 1983.1.1。
 ##   IsAuthoritarianism 无单一 ExprNode → trigger_script evaluate。
-## 差异：ingamewars[66] 未建模 WarDef → GameManager.start_war 兜底创建后手工补名；
+## 差异：ingamewars[66] 建模说明 WarDef → GameManager.start_war 兜底创建后手工补名；
 ##   AmericanSupportAttacker→usa_side=1、SovietSupportDefender→ussr_side=2。
 
 const TXT_TITLE := "Belice de Guatemala"
