@@ -87,12 +87,6 @@ func _ready() -> void:
 	if notify_btn is TextureButton:
 		notify_btn.pressed.connect(_on_event_notify_clicked)
 
-	# 事件缩小时显示“继续事件”按钮
-	var resume_btn := get_node_or_null("预警图标/继续事件按钮") as Button
-	if resume_btn and not resume_btn.pressed.is_connected(_on_resume_event_pressed):
-		resume_btn.pressed.connect(_on_resume_event_pressed)
-	_refresh_resume_event_button()
-
 	# 可互动国家提示（点击时即时刷新，避免每次数值变化全量扫描）
 	var inter_btn := get_node_or_null("预警图标/可互动国家按钮") as Button
 	if inter_btn and not inter_btn.pressed.is_connected(_on_interactive_countries_pressed):
@@ -123,6 +117,9 @@ func _refresh_interactive_countries(_unused = null) -> void:
 		if panel != null and panel.has_method("_build_actions_v2"):
 			for country in w.countries:
 				if country == null:
+					continue
+				# 只提示玩家能在地图上点击/打开面板的真实国家；9000+ 为虚构/分离实体（厄立特里亚/提格雷等）
+				if country.gwcode <= 0 or country.gwcode >= 9000:
 					continue
 				var actions: Array = panel._build_actions_v2(country)
 				var has_available := false
@@ -169,22 +166,6 @@ func _on_interactive_country_item_activated(index: int) -> void:
 	if panel != null and panel.has_method("_on_country_selected"):
 		panel._on_country_selected(country.gwcode, country.display_name())
 
-
-# ── 事件缩小恢复 ──
-
-## 事件场景点“缩小查看地图”后回到外交，这里显示继续按钮；正常完成事件后自动隐藏。
-func _refresh_resume_event_button() -> void:
-	var btn := get_node_or_null("预警图标/继续事件按钮") as Button
-	if btn == null:
-		return
-	var should_show := GameManager != null and GameManager.current_event_id != "" \
-			and GameManager.current_ending_id < 0
-	btn.visible = should_show
-
-
-func _on_resume_event_pressed() -> void:
-	音频总管.play_button_click_sound()
-	get_tree().change_scene_to_file("uid://bheujwt4qte1y")
 
 # ── 国家选择 ──
 

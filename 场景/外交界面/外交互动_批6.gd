@@ -875,11 +875,11 @@ func _def_107(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 func _def_110(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var opis := ""
 	if country.原版序号 == 41:
-		opis = OT[159] % ["\n", str(float(country.influence_china) / 10.0)]
+		opis = String(OT[159]).format(["\n", str(float(country.influence_china) / 10.0)])
 	elif country.原版序号 == 99:
-		opis = OT[167] % ["\n", str(float(country.influence_china) / 10.0)]
+		opis = String(OT[167]).format(["\n", str(float(country.influence_china) / 10.0)])
 	elif country.原版序号 == 100:
-		opis = OT[163] % ["\n", str(float(country.influence_china) / 10.0)]
+		opis = String(OT[163]).format(["\n", str(float(country.influence_china) / 10.0)])
 	var conds: Array = []
 	conds.append(cond(OT[170], func(): return country.influence_china < 1000))
 	conds.append(cond(OT[171], func(): return d(w, 8) + d(w, 36) >= 50))
@@ -917,11 +917,11 @@ func _def_110(w: WorldState, country: CountryData, caption: String) -> Dictionar
 func _def_111(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var opis := ""
 	if country.原版序号 == 41:
-		opis = OT[160] % ["\n", str(float(country.influence_nato) / 10.0)]
+		opis = String(OT[160]).format(["\n", str(float(country.influence_nato) / 10.0)])
 	elif country.原版序号 == 99:
-		opis = OT[168] % ["\n", str(float(country.influence_nato) / 10.0)]
+		opis = String(OT[168]).format(["\n", str(float(country.influence_nato) / 10.0)])
 	elif country.原版序号 == 100:
-		opis = OT[164] % ["\n", str(float(country.influence_nato) / 10.0)]
+		opis = String(OT[164]).format(["\n", str(float(country.influence_nato) / 10.0)])
 	var conds: Array = []
 	conds.append(cond(OT[174], func(): return country.influence_nato < 1000))
 	conds.append(cond(OT[171], func(): return d(w, 8) + d(w, 36) >= 50))
