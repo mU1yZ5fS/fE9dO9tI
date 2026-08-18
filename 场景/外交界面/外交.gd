@@ -4,7 +4,8 @@ extends Node3D
 ## 节点结构（来自 外交.tscn）：
 ##   外交 (Node3D, 本脚本)
 ##     地球 (MeshInstance3D + territory_map.gd)
-##       战争图标 (Node3D + 战争图标管理.gd) → 36 个 Sprite3D 战争小图标
+##       战争图标 (Node3D + 战争图标管理.gd) → 37 个 Sprite3D 通用槽
+##         （v2：按 war_icon_anchors.json 的参战国语义锚点动态定位；点击仅高亮选国）
 ##     主游戏ui (实例化)
 ##     时间 (CanvasLayer)
 ##       时间背景
@@ -36,6 +37,7 @@ const 政治场景 := "uid://dsmslhxc0e8u5"
 
 # 可互动国家提示缓存
 var _interactive_countries: Array[CountryData] = []
+
 
 func _ready() -> void:
 	# 始终处理，确保暂停时仍能接收 ESC 输入
@@ -98,6 +100,9 @@ func _ready() -> void:
 	if item_list and not item_list.item_activated.is_connected(_on_interactive_country_item_activated):
 		item_list.item_activated.connect(_on_interactive_country_item_activated)
 	_refresh_interactive_countries()
+
+	# 战争图标 v2：点击图标只高亮参战国（不切场景、不弹文本面板）。
+	_connect_war_icon_click()
 
 # ── 可互动国家提示 ──
 
@@ -365,3 +370,22 @@ func _trigger_test_event() -> void:
 	GameManager.world.set_data_value("money", 300)
 	# 直接启动即时事件
 	GameManager.start_event("korea_unification")
+
+
+# ============================================================================
+# 战争图标 v2：点击图标只高亮参战国（不切场景、不弹文本面板）
+# ============================================================================
+
+func _connect_war_icon_click() -> void:
+	var icons := get_node_or_null("地球/战争图标")
+	if icons == null:
+		return
+	if icons.has_signal("war_icon_clicked") 			and not icons.war_icon_clicked.is_connected(_on_war_icon_clicked):
+		icons.war_icon_clicked.connect(_on_war_icon_clicked)
+
+
+func _on_war_icon_clicked(info: Dictionary) -> void:
+	音频总管.play_button_click_sound()
+	var earth := get_node_or_null("地球")
+	if earth != null and earth.has_method("highlight_country"):
+		earth.highlight_country(int(info.get("a_gw", 0)))

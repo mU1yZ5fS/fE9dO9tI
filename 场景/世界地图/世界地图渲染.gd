@@ -3,6 +3,8 @@ extends MeshInstance3D
 
 signal country_selected(gwcode: int, country_name: String)
 signal region_selected(region_id: int, gwcode: int, country_name: String)
+## 地区/国家数据就绪（战争图标管理器据此计算语义锚点位置）。
+signal map_data_ready
 
 # ── 数据源 ──
 @export_file("*.json") var meta_path: String = "res://资产/地图/map_meta.json"
@@ -139,11 +141,13 @@ func _ready() -> void:
 			_inject_dynamic_textures()
 			set_process(day_night_enabled)
 			print("[TerritoryMap] 共享缓存加载完成 regions=%d countries=%d" % [_region_owner.size(), _countries.size()])
+			map_data_ready.emit()
 			return
 
 	# Fallback 机制：仅在独立测试场景、GameManager 不存在或预加载失败时同步加载
 	_meta = _load_json(meta_path)
 	_build_region_data(_load_json(regions_path), _load_json(countries_path))
+	map_data_ready.emit()
 
 	# 按原分辨率加载底图，不做 GPU 上限缩放/压缩。
 	var thread := Thread.new()
@@ -240,14 +244,23 @@ func _physics_process(_delta: float) -> void:
 	_mouse_moved = false # 重置移动标志
 
 	var hit := _raycast_screen(_mouse_screen_pos)
+	# 战争图标/卫星等 Area3D 覆盖层：只交给它们自己的 input_event 处理，
+	# 不把点击穿透成“选中背后的国家地块”。
+	var hit_ui := false
+	if not hit.is_empty():
+		hit_ui = hit.get("collider") is Area3D
+
 	if _click_queued:
 		_click_queued = false
-		if not hit.is_empty():
+		if not hit.is_empty() and not hit_ui:
 			if _test_mode_enabled:
 				_transfer_region_at_3d_to_prc(hit.position)
 			else:
 				select_at_3d(hit.position)
 
+	if hit_ui:
+		_clear_hover()
+		return
 	if not hit.is_empty():
 		_update_hover(hit.position)
 	else:
@@ -588,6 +601,73 @@ func country_name_for_gwcode(gwcode: int) -> String:
 	
 	var c: Dictionary = _countries.get(gwcode, {})
 	return c.get("name_zh", c.get("name_1976", ""))
+
+
+## 战争图标 v2：语义锚点 → 地图地块质心（不记死经纬度）。
+## 数据源就是 map_countries.json 的 regions + map_regions.json 的 latitude/longitude。
+
+## 国家的全部地块 id（战争图标锚点用）。
+func country_region_ids(gwcode: int) -> Array[int]:
+	var out: Array[int] = []
+	if not _countries.has(gwcode):
+		return out
+	var raw: Array = _countries[gwcode].get("regions", [])
+	for r in raw:
+		out.append(int(r))
+	return out
+
+
+## 地块中心经纬度；无数据返回 (INF, INF)。
+func region_latlon(region_id: int) -> Vector2:
+	if not _regions.has(region_id):
+		return Vector2(INF, INF)
+	var r: Dictionary = _regions[region_id]
+	if not r.has("latitude") or not r.has("longitude"):
+		return Vector2(INF, INF)
+	return Vector2(float(r["latitude"]), float(r["longitude"]))
+
+
+## 国家质心经纬度：优先按当前领土归属（_region_owner）算，领土易主后图标跟着走；
+## 若当前已无地块，回退到静态 map_countries.regions；再没有返回 (INF, INF)。
+func country_centroid(gwcode: int) -> Vector2:
+	var region_ids: Array[int] = []
+	for rid in _region_owner:
+		if int(_region_owner[rid]) == gwcode:
+			region_ids.append(int(rid))
+	if region_ids.is_empty():
+		region_ids = country_region_ids(gwcode)
+	var lat_total := 0.0
+	var lon_total := 0.0
+	var count := 0
+	for rid in region_ids:
+		var ll := region_latlon(rid)
+		if ll.x == INF or ll.y == INF:
+			continue
+		lat_total += ll.x
+		lon_total += ll.y
+		count += 1
+	if count == 0:
+		return Vector2(INF, INF)
+	return Vector2(lat_total / count, lon_total / count)
+
+
+## 经纬度 → 球面坐标。与 region_id_at_3d 的 u/v 公式严格互逆。
+func latlon_to_sphere_pos(lat: float, lon: float, radius: float = 0.501) -> Vector3:
+	var u := (lon + 180.0) / 360.0
+	var v := (90.0 - lat) / 180.0
+	var theta := (1.0 - v) * PI
+	var phi := u * TAU
+	return Vector3(
+		sin(phi) * sin(theta),
+		-cos(theta),
+		cos(phi) * sin(theta)
+	) * radius
+
+
+## 战争图标点击联动：只高亮国家，不弹国家面板（由调用方决定）。
+func highlight_country(gwcode: int) -> void:
+	_selected_gwcode = gwcode
+	_apply_selection_shader()
 
 
 func _country_data(gwcode: int) -> CountryData:
