@@ -324,6 +324,15 @@ func _persist_map_owner_override(r_id: int, to_gwcode: int) -> void:
 func _migrate_legacy_map_owner_overrides() -> void:
 	const DJIBOUTI_REGION_IDS := [366, 367, 368, 370, 376, 2032]
 	const SOMALIA_REGION_IDS := [30, 31, 32, 33, 34, 35, 45, 46, 1466, 2028, 2029, 2030, 2031, 4115]
+	# 台湾全部地块（map_countries.json gwcode=713）。原版 CountryScript.cs:4881：
+	# completedDecisions[7] 成立时把 38 号台湾地图对象重绘为中国(1)。
+	const TAIWAN_REGION_IDS := [2058, 2059, 2060, 2061, 2062, 2063, 2064, 2065, 2066,
+		2067, 2068, 2069, 2070, 2071, 2072, 2073, 3088, 3320, 3331, 3332]
+	# 巴斯克四省 / 加泰罗尼亚四省（map_regions.json 中 owner_1976_gwcode=230 的对应省）。
+	# 原作 Event426.cs:71-72 设 allcountries[86].parts[0/1]=true，由 MapChangesScript.ShowParts
+	# 切换 country_basks.png / katalonia.png 覆盖层；Godot 无覆盖层，改用归属转移 + 9000+ 虚拟国。
+	const BASQUE_REGION_IDS := [625, 626, 2521, 3415]
+	const CATALONIA_REGION_IDS := [629, 637, 2500, 2501]
 	if world == null:
 		return
 	# 吉布提独立（Event585）：吉布提区域从法国 220 改为 522。
@@ -345,6 +354,30 @@ func _migrate_legacy_map_owner_overrides() -> void:
 			for r_id in DJIBOUTI_REGION_IDS:
 				if not world.map_owner_overrides.has(r_id):
 					world.map_owner_overrides[r_id] = 530
+	# 台湾解放（Event643 启动的 75 号战争胜利 → completedDecisions[7]）：台湾地块归中国 710。
+	if world.decisions != null and world.decisions.completed.size() > 7 and world.decisions.completed[7]:
+		for r_id in TAIWAN_REGION_IDS:
+			if not world.map_owner_overrides.has(r_id):
+				world.map_owner_overrides[r_id] = 710
+	# 西班牙内战漩涡（Event426）：巴斯克/加泰罗尼亚 parts 标记 → 转移对应省到 9109/9110。
+	var spain := world.get_country_by_legacy_index(86)
+	if spain != null:
+		var basque_gw := 9109
+		var catalonia_gw := 9110
+		var basque_c := world.get_country_by_legacy_index(109)
+		var catalonia_c := world.get_country_by_legacy_index(110)
+		if basque_c != null and basque_c.gwcode > 0:
+			basque_gw = basque_c.gwcode
+		if catalonia_c != null and catalonia_c.gwcode > 0:
+			catalonia_gw = catalonia_c.gwcode
+		if spain.parts.size() > 0 and spain.parts[0]:
+			for r_id in BASQUE_REGION_IDS:
+				if not world.map_owner_overrides.has(r_id):
+					world.map_owner_overrides[r_id] = basque_gw
+		if spain.parts.size() > 1 and spain.parts[1]:
+			for r_id in CATALONIA_REGION_IDS:
+				if not world.map_owner_overrides.has(r_id):
+					world.map_owner_overrides[r_id] = catalonia_gw
 
 
 ## 旧档兼容：早期端口误用 "vietnam_peace" 作为越南和平标志，原版字段名是 "vietnampeace"。
@@ -588,6 +621,8 @@ func load_game(path: String) -> void:
 			world.techs.ensure_size()
 		# 旧档兼容：地图归属持久化功能上线前触发的吉布提独立，补写覆盖，读档后不再变回法国。
 		_migrate_legacy_map_owner_overrides()
+		# 旧档兼容：修正早期 war_*.tres 中误配的战争超时（999=无超时，-1=仅影响力结束）。
+		WAR_SYS.migrate_legacy_war_timeouts(world)
 		# 旧档兼容：越南和平标志统一为原版字段名 vietnampeace。
 		_migrate_legacy_global_flags()
 		reset_map_runtime_state()
@@ -1505,6 +1540,8 @@ func set_faction_ally(faction_idx: int, want_ally: bool) -> void:
 				f.support = 0
 	else:
 		f.is_ally = want_ally if f.is_enabled else false
+		# 点击支持后立即按 ideology 同步一次 support，避免派系界面要等下一个日块才看到变化。
+		_sync_faction_numbers_from_ideology(d, world)
 	# 原版每次点击后都按 party_number 重算执政路线 data[56]
 	_update_political_line(d, world)
 	_notify_stats()
@@ -5866,6 +5903,9 @@ func _weekly_ally_upkeep(d: Array[int], w: WorldState) -> void:
 		f.ideology += gain
 		d[W.I_BUDGET] -= 1
 		d[W.I_AGENTS] -= 2
+	# 原版本次增长要等下一个日块重算才反映到 party_number；端口在此同步一次，
+	# 让派系界面/饼图在同一个 tick 就能看到变化（不影响后续日块的幂等重算）。
+	_sync_faction_numbers_from_ideology(d, w)
 
 
 ## 满足现状者 data[106] 增长——【仅切政策成功时】调用一次，对齐原版

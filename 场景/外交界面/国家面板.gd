@@ -732,6 +732,10 @@ func _build_story_actions(country: CountryData, w: WorldState, d: Array[int]) ->
 				d[W.I_DIPLO] += 200
 				d[W.I_TAIWAN_ISLANDS] = 1
 				country.development = 1
+				# data[63]=1 表示台海岛屿解放。map_regions.json 中金门县(2917)已属中国 710，
+				# 澎湖县(3088)开局属台湾 713；原作靠地图 parts 覆盖层变色，Godot 无覆盖层，
+				# 等价实现为把澎湖地块转移给中国。
+				GameManager.set_map_region_owner([2917, 3088], 710)
 			))
 		46:  # 韩国
 			actions.append(_make_action("施加经济与政治压力", [

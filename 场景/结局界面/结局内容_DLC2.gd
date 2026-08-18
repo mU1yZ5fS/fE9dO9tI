@@ -385,7 +385,7 @@ func _ending_15(w: WorldState) -> Dictionary:
 	return {"name": name, "text": text}
 
 ## 原作 Ending16.cs TextOfEnding L7-12（page 6，见 _ending_16 标题）。
-func _ending_16(w: WorldState) -> Dictionary:
+func _ending_16(_w: WorldState) -> Dictionary:
 	# 原版仅取成就对象引用，无效果（Ending16.cs L9）。
 	var name := "未 定 内 容"
 	var text := " 等 待 补 充 中"

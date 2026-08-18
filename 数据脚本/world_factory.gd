@@ -1584,7 +1584,7 @@ static func _init_wars(ws: WorldState) -> void:
 		for i in 7:
 			var empty := WarData.new()
 			empty.name_war = "战争 #%d" % i
-			empty.fortnight_max = 48
+			empty.fortnight_max = 999
 			ws.wars.append(empty)
 		print("WorldFactory: WarCatalog 空，创建 %d 个占位战争槽" % ws.wars.size())
 		return
@@ -1598,7 +1598,7 @@ static func _init_wars(ws: WorldState) -> void:
 		var w := WarData.new()
 		w.is_going = false
 		w.name_war = def.name_zh if def else ("战争 #%d" % iid)
-		w.fortnight_max = def.fortnight_max if def else 48
+		w.fortnight_max = def.fortnight_max if def else 999
 		w.fortnight_elapsed = 0
 		w.diplo_done = [false, false]
 		ws.wars[iid] = w

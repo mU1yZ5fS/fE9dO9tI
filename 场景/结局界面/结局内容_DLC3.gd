@@ -61,13 +61,8 @@ func _ending_17(w: WorldState) -> Dictionary:
 	}
 	# 原版仅取成就对象引用，无效果（Ending17.cs L14）。
 	if res(w, 424) == 1:
-		var num := 0
-		if _has(w, 86, "nato") and _has(w, 86, "eu"):
-			num = 1474
-		elif _has(w, 86, "nato"):
-			num = 1475
-		elif _has(w, 86, "eu"):
-			num = 1476
+		# 原版 num（1474/1475/1476）只传给 1473 的 string.Format；
+		# 1473 文本实际仅含 {0} 占位符，额外实参无渲染效果，故此处不保留死变量。
 		if _sub(w, 86) == 3:
 			name = _net(1464)
 			text = _net(1465)  # 原版 string.Format 无占位符，直接赋值
@@ -135,7 +130,6 @@ func _ending_17(w: WorldState) -> Dictionary:
 			name = _net(1490)
 			text = _net(1491)
 		return {"name": name, "text": text}
-	return {"name": name, "text": text}
 
 ## 原作 Ending18.cs TextOfEnding L12-L134（中文分支；Update() 不迁移）。
 func _ending_18(w: WorldState) -> Dictionary:
@@ -239,17 +233,11 @@ func _ending_19(w: WorldState) -> Dictionary:
 			name = _net(1496)
 			text = " 回 归 康 乃 馨 革 命 的 初 心 ！||由 社 会 党 和 共 产 党 领 导 的 联 合 政 府 回 到 了 康 乃 馨 革 命 时 代 对 社 会 主 义 的 呼 吁 ， 开 始 重 启 被 逆 转 的 社 会 主 义 改 革 。 国 家 继 续 和 平 赎 买 企 业 5 1 % 的 股 份 ， 对 关 键 行 业 、 交 通 与 基 础 设 施 实 行 国 有 化 ， 此 外 ， 银 行 、 电 力 工 业 、 石 油 、 冶 金 与 铁 路 均 成 为 了 国 营 部 门 。 政 府 引 入 了 干 预 性 产 业 政 策 ， 并 加 强 工 人 的 经 济 权 力 ， 推 广 工 人 持 股 制 度 ， 进 行 经 济 民 主 化 。 税 收 政 策 也 得 以 改 订 ， 葡 萄 牙 开 始 实 行 累 进 税 制 ， 富 人 被 征 收 更 高 的 税 ， 以 建 立 福 利 国 家 。 管 理 委 员 会 如 雨 后 春 笋 般 涌 现 ， 旨 在 确 保 工 人 与 农 民 对 雇 佣 与 解 雇 劳 动 者 的 主 导 权 ， 新 成 立 的 委 员 会 对 企 业 家 与 商 人 具 有 更 大 的 约 束 权 ， 这 也 导 致 资 本 的 外 逃 问 题 的 发 生 。 在 该 国 农 村 ， 也 正 在 开 展 温 和 化 的 土 地 改 革 ， 农 民 被 鼓 励 以 自 愿 原 则 组 织 合 作 社 。 同 时 左 翼 联 盟 政 府 也 进 行 了 一 定 政 治 改 革 ， 以 加 强 政 治 的 民 主 ， 新 的 制 度 更 加 分 权 化 ， 强 调 地 方 与 中 央 的 协 作 。 右 翼 对 这 一 “ 共 产 ” 指 数 过 高 的 政 府 很 不 满 意 ， 他 们 组 成 了 新 的 民 主 联 盟 ， 团 结 在 因 社 会 主 义 改 革 而 利 益 受 损 的 保 守 派 群 体 周 围 ， 准 备 发 起 “ 反 攻 ” 。"
 			return {"name": name, "text": text}
-		var num := 0
-		if _has(w, 87, "eu") and _has(w, 87, "nato"):
-			num = 1502
-		elif _has(w, 87, "eu"):
-			num = 1503
-		elif _has(w, 87, "nato"):
-			num = 1504
+		# 原版 num（1502/1503/1504）只传给 1501 的 string.Format；
+		# 1501 文本无占位符，额外实参无渲染效果，故此处不保留死变量。
 		name = _net(1500)
 		text = _net(1501)  # 原版 string.Format 无占位符，直接赋值
 		return {"name": name, "text": text}
-	return {"name": name, "text": text}
 
 ## 原作 Ending20.cs TextOfEnding L12-L182（中文分支；Update() 不迁移）。
 func _ending_20(w: WorldState) -> Dictionary:

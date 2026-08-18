@@ -6,8 +6,8 @@ extends Resource
 @export var id: int = 0
 @export var name_zh: String = ""
 @export var name_en: String = ""
-## -1 = 仅影响力结束（阿富汗）
-@export var fortnight_max: int = 48
+## -1 = 仅影响力结束；默认 999 对齐原作 warinwars.fortnight_max=999（无 TickTime 则无超时）
+@export var fortnight_max: int = 999
 @export var drift_infl1: int = 0
 @export var drift_infl2: int = 0
 @export var drift_extra_infl1: int = 0

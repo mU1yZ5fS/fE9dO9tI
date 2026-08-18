@@ -51,6 +51,13 @@ const TXT_IDX_592 := "预算"
 const TXT_IDX_593 := "特工网络"
 const TXT_IDX_594 := "军事实力"
 
+## 地图归属：巴斯克四省 / 加泰罗尼亚四省（map_regions.json owner=230 的对应省）。
+## 原作 Event426.cs:71-72 仅置 allcountries[86].parts[0/1]，由 MapChangesScript.ShowParts
+## 切 country_basks.png / katalonia.png 覆盖层。Godot 地图无覆盖层，等价实现为
+## 把对应地块转移到巴斯克国/加泰罗尼亚（9000+ 虚拟 gwcode，与 WorldFactory 偏移一致）。
+const BASQUE_REGION_IDS := [625, 626, 2521, 3415]
+const CATALONIA_REGION_IDS := [629, 637, 2500, 2501]
+
 func _add(index: int, delta: int) -> void:
 	if d.size() > index:
 		d[index] += delta
@@ -166,6 +173,9 @@ func execute(context: Dictionary) -> void:
 		if catalonia != null:
 			catalonia.stability = 1000
 			catalonia.social_stability = 1000
+		# 地图上让巴斯克/加泰罗尼亚四省从西班牙(230)转移出去。
+		GameManager.set_map_region_owner(BASQUE_REGION_IDS, basque.gwcode if basque != null and basque.gwcode > 0 else 9109)
+		GameManager.set_map_region_owner(CATALONIA_REGION_IDS, catalonia.gwcode if catalonia != null and catalonia.gwcode > 0 else 9110)
 	if opt == 0:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -50)

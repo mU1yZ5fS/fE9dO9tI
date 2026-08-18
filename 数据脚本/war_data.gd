@@ -11,8 +11,8 @@ extends Resource
 @export var infl1: int = 0
 @export var infl2: int = 0
 @export var fortnight_elapsed: int = 0
-## 开战时从 WarDef 拷贝；-1 = 仅 infl 结束
-@export var fortnight_max: int = 48
+## 开战时从 WarDef 拷贝；-1 = 仅 infl 结束；999 = 无超时（原作 warinwars.fortnight_max 默认值）
+@export var fortnight_max: int = 999
 ## 0 = 支持 side1，1 = 支持 side2
 @export var usa_side: int = 0
 @export var ussr_side: int = 0

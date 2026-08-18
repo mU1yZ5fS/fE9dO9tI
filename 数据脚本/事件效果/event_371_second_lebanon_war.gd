@@ -29,7 +29,9 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			ws.set_flag("israellost", false)
-			_start_war(4, TXT_WAR4_SIDE1, TXT_WAR4_SIDE2, 600, 400, 0, 1, TXT_WAR4_NAME, 12)
+			# 原版 TickTime(12)，但 TimeScript.WorldWarsDone 对 war4 直接按 fortnight_go>=24 判定，
+			# 有效超时=24。
+			_start_war(4, TXT_WAR4_SIDE1, TXT_WAR4_SIDE2, 600, 400, 0, 1, TXT_WAR4_NAME, 24)
 			context["result_text"] = TXT_R0
 
 

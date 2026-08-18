@@ -168,3 +168,7 @@ func _start_war(war_id: int, side1: String, side2: String, war_name: String, inf
 	GameManager.start_war(war_id, side1, side2, infl1, infl2, 2, 2)
 	if ws.wars.size() > war_id and ws.wars[war_id] != null:
 		ws.wars[war_id].name_war = war_name
+		# Event641 的 war70 TickTime(4) 与 Event642 的 TickTime(12) 不同源；
+		# WarCatalog 默认 4 对齐 Event641，这里覆盖为 Event642 的 12。
+		if war_id == 70:
+			ws.wars[war_id].fortnight_max = 12

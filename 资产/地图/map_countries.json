@@ -6334,5 +6334,31 @@
     "capital": null,
     "region_count": 7,
     "name_zh": "瓦努阿图"
+  },
+  "9109": {
+    "gwcode": 9109,
+    "name_1976": "Basque Country",
+    "regions": [
+      625,
+      626,
+      2521,
+      3415
+    ],
+    "capital": null,
+    "region_count": 4,
+    "name_zh": "巴斯克国"
+  },
+  "9110": {
+    "gwcode": 9110,
+    "name_1976": "Catalonia",
+    "regions": [
+      629,
+      637,
+      2500,
+      2501
+    ],
+    "capital": null,
+    "region_count": 4,
+    "name_zh": "加泰罗尼亚"
   }
 }

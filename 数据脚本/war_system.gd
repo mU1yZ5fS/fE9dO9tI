@@ -13,6 +13,11 @@ extends RefCounted
 const W = preload("res://数据脚本/world_state.gd")
 const WF = preload("res://数据脚本/world_factory.gd")
 
+## 西班牙 parts 对应的地图地块（与 event_426_spanish_civil_war_vortex.gd / GameManager 迁移一致）。
+const SPAIN_BASQUE_REGION_IDS: Array[int] = [625, 626, 2521, 3415]
+const SPAIN_CATALONIA_REGION_IDS: Array[int] = [629, 637, 2500, 2501]
+const SPAIN_GWCODE := 230
+
 
 # ============================================================================
 # 月度/双周循环
@@ -120,6 +125,44 @@ static func apply_war_drift_extra(w: WorldState, war: WarData, def: WarDef) -> v
 				war.infl2 -= delta565
 		_:
 			pass
+
+
+## 旧档兼容：把历史错误写死的 fortnight_max 修正为原版有效超时值。
+## 只迁移“旧值 == 已知错误值”的槽位，避免覆盖事件运行时正确写入的 20/24 等值。
+## 出处：warinwars.fortnight_max 默认 999 + TickTime 逐场 + TimeScript.WorldWarsDone 硬门槛。
+static func migrate_legacy_war_timeouts(w: WorldState) -> void:
+	if w == null:
+		return
+	const OLD_TO_NEW := {
+		4: {12: 24},        # Event371 TickTime12，但 WorldWarsDone 硬门槛 24
+		8: {48: 20},        # Event367 TickTime(20)
+		9: {10: 12},        # Event369 TickTime10，但 WorldWarsDone 硬门槛 12
+		15: {4: 16},        # Event588 分支 TickTime4，但 WorldWarsDone 硬门槛 16
+		18: {4: 8},         # Event382 分支 TickTime4，但 WorldWarsDone result382==1 门槛 8
+		29: {48: 15},       # DiploButtonScript TickTime(15)
+		30: {48: -1},       # 无 TickTime → 原版默认 999（无超时）
+		31: {48: -1},
+		32: {48: -1},
+		49: {48: -1},
+		68: {48: -1},
+		79: {48: -1},
+		80: {48: -1},
+		81: {48: -1},
+		82: {48: -1},
+		83: {48: -1},
+		84: {48: 4},        # Event667 TickTime(4)
+		86: {48: -1},
+		87: {48: -1},
+	}
+	for war_id in OLD_TO_NEW:
+		if war_id >= w.wars.size():
+			continue
+		var war: WarData = w.wars[war_id]
+		if war == null:
+			continue
+		var mapping: Dictionary = OLD_TO_NEW[war_id]
+		if mapping.has(war.fortnight_max):
+			war.fortnight_max = int(mapping[war.fortnight_max])
 
 
 ## 每日：战争达结算条件 → 记录待结算战争并触发战争结束事件
@@ -1172,6 +1215,21 @@ static func _war26_result(w: WorldState, d: Array[int]) -> void:
 				c41.set_tag("对华贸易", true)
 
 
+## 西班牙分离主义地块回落：parts 清 false 时把对应省归还西班牙(230)。
+## 对应 MapChangesScript.ShowParts 关闭 country_basks.png / katalonia.png 覆盖层。
+static func _revert_spain_parts_map(w: WorldState, revert_basque: bool, revert_catalonia: bool) -> void:
+	if w == null:
+		return
+	var spain := w.get_country_by_legacy_index(86)
+	var spain_gw := SPAIN_GWCODE
+	if spain != null and spain.gwcode > 0:
+		spain_gw = spain.gwcode
+	if revert_basque:
+		GameManager.set_map_region_owner(SPAIN_BASQUE_REGION_IDS, spain_gw)
+	if revert_catalonia:
+		GameManager.set_map_region_owner(SPAIN_CATALONIA_REGION_IDS, spain_gw)
+
+
 ## GameState.cs:1627-1730 —— 西班牙内战。
 static func _war30_result(w: WorldState, war: WarData, _d: Array[int]) -> bool:
 	var spain := _wc(w, 86)
@@ -1212,6 +1270,7 @@ static func _war30_result(w: WorldState, war: WarData, _d: Array[int]) -> bool:
 					spain.parts[0] = false
 				if spain.parts.size() > 1:
 					spain.parts[1] = false
+				_revert_spain_parts_map(w, true, true)
 				spain.name = "长 枪 党 西 班 牙"
 				spain.government = 0
 				spain.sub_government = 7
@@ -1235,6 +1294,7 @@ static func _war31_result(w: WorldState, d: Array[int]) -> void:
 	else:
 		if spain != null and spain.parts.size() > 0:
 			spain.parts[0] = false
+			_revert_spain_parts_map(w, true, false)
 		var c109 := w.get_country_by_legacy_index(109)
 		if c109 != null:
 			c109.set_tag("对华贸易", false)
@@ -1253,6 +1313,7 @@ static func _war32_result(w: WorldState, d: Array[int]) -> void:
 	else:
 		if spain != null and spain.parts.size() > 1:
 			spain.parts[1] = false
+			_revert_spain_parts_map(w, false, true)
 		var c110 := w.get_country_by_legacy_index(110)
 		if c110 != null:
 			c110.set_tag("对华贸易", false)
@@ -4676,6 +4737,9 @@ static func _war74_victory(w: WorldState, d: Array[int]) -> void:
 static func _war75_victory(w: WorldState, d: Array[int]) -> void:
 	_set_d(d, W.I_TAIWAN_STATUS, 2)
 	_set_decision(w, 7, true)
+	# 原版 CountryScript.cs:4881：completedDecisions[7] 成立后台湾地图对象(38)重绘为中国(1)。
+	# Godot 无 parts 覆盖层，等价实现为台湾全部地块 713 → 710（含金马澎）。
+	GameManager.transfer_map_owner(713, 710)
 	_war_victory_common(w, d)
 
 

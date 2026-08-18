@@ -99,7 +99,7 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_BUDGET, -30)
 				_add(W.I_AGENTS, -30)
 				_add(W.I_INFLUENCE, -10)
-				_start_war_382(200, 800, 1, 1)
+				_start_war_382(200, 800, 1, 1, 8)  # 原版 TickTime(4)，但 TimeScript WorldWarsDone 对 result382==1 的有效阈值是 8
 		2:
 			context["result_text"] = TXT_R2
 			var romania := ws.get_country_by_legacy_index(5)
@@ -128,11 +128,11 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R3
 
 
-func _start_war_382(infl1: int, infl2: int, usa_side: int, ussr_side: int) -> void:
+func _start_war_382(infl1: int, infl2: int, usa_side: int, ussr_side: int, tick: int = 20) -> void:
 	GameManager.start_war(18, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, usa_side, ussr_side)
 	if ws.wars.size() > 18 and ws.wars[18] != null:
 		ws.wars[18].name_war = TXT_WAR_NAME
-		ws.wars[18].fortnight_max = 20
+		ws.wars[18].fortnight_max = tick
 
 
 func _add(index: int, delta: int) -> void:

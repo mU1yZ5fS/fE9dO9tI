@@ -106,7 +106,9 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_DIPLO, 20)
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, -200)
-			_start_war(9, TXT_WAR9_SIDE1, TXT_WAR9_SIDE2, 800 - num, 200 + num, 0, 1, TXT_WAR9_NAME, 10)
+			# 原版 TickTime(10)，但 TimeScript.WorldWarsDone 对 war9 另有 fortnight_go>=12 门槛，
+			# 有效超时 = max(10,12)=12。
+			_start_war(9, TXT_WAR9_SIDE1, TXT_WAR9_SIDE2, 800 - num, 200 + num, 0, 1, TXT_WAR9_NAME, 12)
 			context["result_text"] = TXT_R1
 		2:
 			context["result_text"] = TXT_R2

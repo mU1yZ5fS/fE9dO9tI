@@ -358,6 +358,8 @@ func _ready() -> void:
 			tip_node.tooltip_text = pair[1]
 	GameManager.world_state_loaded.connect(_refresh)
 	GameManager.date_changed.connect(func(_d): _refresh())
+	if not GameManager.stats_changed.is_connected(_refresh):
+		GameManager.stats_changed.connect(_refresh)
 	_ensure_pie_chart()
 	for cat_name in 政策类别:
 		var btn := _find(cat_name + "切换")

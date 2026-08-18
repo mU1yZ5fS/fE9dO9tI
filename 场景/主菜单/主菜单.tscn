@@ -216,7 +216,7 @@ tooltip_text = "当前版本内容：90%改版内容+未知可能bug"
 mouse_filter = 1
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 43
-text = "v0.1.7东方红"
+text = "v0.1.8东方红"
 horizontal_alignment = 2
 
 [connection signal="pressed" from="开始游戏" to="." method="_on_开始游戏_pressed"]
