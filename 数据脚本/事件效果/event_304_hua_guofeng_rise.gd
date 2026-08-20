@@ -1,6 +1,6 @@
 ## 原作 Event304.cs：华国锋的崛起（逼华国锋下台，两选项）。
 ## 触发：全目录搜索无 this_num_event = 304 / Reset(304)；链外 REST 段，原版无自动条件。
-## 差异：faction_leader[1..3]→factions[i].leader_index；KillPerson→GameManager.kill_politician；
+## 差异：faction_leader[1..3]→factions[i].leader_index；KillPerson→game.kill_politician；
 ##  LeaderAsset/MoneyLevel/ServeRMB 显示字段跳过；文本来自 Events_text_en 索引 57-62。
 extends "res://数据脚本/event_script_base.gd"
 
@@ -35,7 +35,7 @@ func execute(context: Dictionary) -> void:
 				var p := ws.politicians[num]
 				if p != null:
 					_set_leader_from(p)
-					GameManager.kill_politician(num)
+					game.kill_politician(num)
 					_set_mod_active(65, false)
 			# LeaderAsset/MoneyLevel/ServeRMB 为显示字段，跳过
 			context["result_text"] = TXT_R1

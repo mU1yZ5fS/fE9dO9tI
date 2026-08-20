@@ -681,6 +681,8 @@ func _run_custom_script(fx: EffectNode, context: Dictionary) -> void:
 	context["effect"] = fx
 	if world != null:
 		context["world"] = world
+	if not context.has("game") and gm != null:
+		context["game"] = GameService.new(gm)
 	if executor.has_method("_bind_world"):
 		executor.exec_context = context
 	executor.execute(context)
@@ -727,6 +729,7 @@ func apply_event_option(event_def: EventDef, option_index: int) -> Dictionary:
 	var execution_context: Dictionary = {
 		"event_id": event_def.event_id,
 		"option_index": option_index,
+		"game": GameService.new(gm) if gm != null else null,
 	}
 	execute(opt.effects, execution_context)
 	# Event638/644 选项"再想想"复刻原版 event_done[n]=false：脚本置 skip_mark_done 时跳过完成标记。

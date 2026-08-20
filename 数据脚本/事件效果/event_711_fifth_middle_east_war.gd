@@ -15,7 +15,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var opt := int(context.get("option_index", -1))
 	if opt == 0:
-		GameManager.start_war(4, "伊拉克", "以色列", 700, 300, 0, 0)
+		game.start_war(4, "伊拉克", "以色列", 700, 300, 0, 0)
 		if ws.wars.size() > 4 and ws.wars[4] != null:
 			ws.wars[4].name_war = "第五次中东战争"
 			ws.wars[4].fortnight_max = 24  # 原版 TickTime(24)

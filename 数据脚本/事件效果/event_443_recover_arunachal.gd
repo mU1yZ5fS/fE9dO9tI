@@ -26,7 +26,7 @@ func execute(context: Dictionary) -> void:
 			# 对应原版 ILoveSuckCocks() 的 parts 重绘（data.arunachal_status>=2 分支），
 			# 战争胜利已由月度结算转移过一次，此处幂等补执行（读档后覆盖仍在）。
 			if GameManager != null:
-				GameManager.set_map_region_owner([43], 710)
+				game.set_map_region_owner([43], 710)
 			context["result_text"] = TXT_R0
 
 

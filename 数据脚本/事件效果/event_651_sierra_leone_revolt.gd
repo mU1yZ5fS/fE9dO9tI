@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:11027-11033 —— (月>=5 且 年>=1982 或 年>=1983)。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线）。
-##  - War 77：GameManager.start_war(77,...) + fortnight_max=40（TickTime(40)），
+##  - War 77：game.start_war(77,...) + fortnight_max=40（TickTime(40)），
 ##    SovietSupportDefender/AmericanSupportAttacker → ussr_side = GameConstants.WarSide.SIDE2 / usa_side = GameConstants.WarSide.SIDE1。
 ##  - c107=塞拉利昂；c107.parts[0]=true 保留。
 
@@ -64,7 +64,7 @@ func execute(context: Dictionary) -> void:
 				while sierra.parts.size() <= 0:
 					sierra.parts.append(false)
 				sierra.parts[0] = true
-			GameManager.start_war(77, "人民党", "政府军", 200, 800, 0, 1)
+			game.start_war(77, "人民党", "政府军", 200, 800, 0, 1)
 			if ws.wars.size() > 77 and ws.wars[77] != null:
 				ws.wars[77].name_war = "塞拉利昂内战"
 				ws.wars[77].fortnight_max = 40

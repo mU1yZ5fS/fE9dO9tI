@@ -26,4 +26,4 @@ func execute(context: Dictionary) -> void:
 		# Godot 设 I_ENDING_ROUTE=8 并排队结局（结局界面无 8 时回退 0）。
 		if d.size() > W.I_ENDING_ROUTE:
 			d.ending_route = 8
-		GameManager.queue_ending_after_event(8)
+		game.queue_ending_after_event(8)

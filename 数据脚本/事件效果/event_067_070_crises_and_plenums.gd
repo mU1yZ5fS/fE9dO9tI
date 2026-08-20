@@ -316,7 +316,7 @@ func _event_70(option_index: int, context: Dictionary) -> void:
 
 func _remove_deng_if_modifier_active() -> void:
 	if ws.modifiers.size() > 14 and ws.modifiers[14] != null and ws.modifiers[14].is_active:
-		GameManager.kill_politician(12)
+		game.kill_politician(12)
 		ws.modifiers[14].is_active = false
 
 

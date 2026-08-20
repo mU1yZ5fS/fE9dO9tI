@@ -99,14 +99,14 @@ func _start_war_50(somalia: CountryData, branch: int) -> void:
 	var prosov := somalia != null and somalia.has_tag("亲苏")
 	if branch == 0:
 		if prosov:
-			GameManager.start_war(50, "索马里", "肯尼亚", 750, 250, 1, 0)
+			game.start_war(50, "索马里", "肯尼亚", 750, 250, 1, 0)
 		else:
-			GameManager.start_war(50, "索马里", "肯尼亚", 700, 300, 1, -1)
+			game.start_war(50, "索马里", "肯尼亚", 700, 300, 1, -1)
 	else:
 		if prosov:
-			GameManager.start_war(50, "索马里", "肯尼亚", 550, 450, 1, 0)
+			game.start_war(50, "索马里", "肯尼亚", 550, 450, 1, 0)
 		else:
-			GameManager.start_war(50, "索马里", "肯尼亚", 450, 550, 1, -1)
+			game.start_war(50, "索马里", "肯尼亚", 450, 550, 1, -1)
 	if ws.wars.size() > 50 and ws.wars[50] != null:
 		ws.wars[50].name_war = WAR50_NAME
 		ws.wars[50].fortnight_max = 24

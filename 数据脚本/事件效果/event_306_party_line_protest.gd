@@ -37,7 +37,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			var num := _find_politician(15, 15)
 			if num >= 0:
-				GameManager.kill_politician(num)
+				game.kill_politician(num)
 			context["result_text"] = TXT_R1
 		2:
 			var num2 := _find_politician(15, 15)
@@ -52,7 +52,7 @@ func execute(context: Dictionary) -> void:
 				var p := ws.politicians[num2]
 				if p != null:
 					_set_leader_from(p)
-					GameManager.kill_politician(num2)
+					game.kill_politician(num2)
 					_set_mod_active(65, false)
 			# LeaderAsset/MoneyLevel/ServeRMB 为显示字段，跳过
 			context["result_text"] = TXT_R2

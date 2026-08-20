@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event563.cs：“拯救”的悲剧（阿尔及利亚内战，3选项）。
 ## 触发：无自动触发（DiploButtonScript.cs:11527 外交按钮 number_event=563）。
-## 差异：ingamewars[40] → GameManager.start_war。
+## 差异：ingamewars[40] → game.start_war。
 
 const TXT_OPT0_DIS := "宗教分子的统治和FLN有很大区别吗？"
 const TXT_OPT1_DIS := "我们不能把运动交给资产阶级！"
@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 
 
 func _start_war40(side2: String, usa_side: int, ussr_side: int) -> void:
-	GameManager.start_war(40, "FLN", side2, 700, 300, usa_side, ussr_side)
+	game.start_war(40, "FLN", side2, 700, 300, usa_side, ussr_side)
 	if ws.wars.size() > 40 and ws.wars[40] != null:
 		ws.wars[40].name_war = "阿尔及利亚内战"
 		ws.wars[40].fortnight_max = 20

@@ -16,7 +16,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	if opt == 0:
 		if ws.wars.size() <= 4:
-			GameManager.start_war(4, "以色列", "巴解组织", 650, 350, 0, 1)
+			game.start_war(4, "以色列", "巴解组织", 650, 350, 0, 1)
 		var war := ws.wars[4] if ws.wars.size() > 4 else null
 		if war != null:
 			war.name_war = "黎巴嫩战争"

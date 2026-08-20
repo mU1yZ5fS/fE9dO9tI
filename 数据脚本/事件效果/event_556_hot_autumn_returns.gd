@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event556.cs：“火热之秋”的重临（意大利内战，1选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1219-1221 —— 复杂条件见 evaluate()。
-## 差异：ingamewars[23] → GameManager.start_war；inflNATO→usa_influence；
+## 差异：ingamewars[23] → game.start_war；inflNATO→usa_influence；
 ##   YugAgree→ws.get_flag("YugAgree")；spec→special；IsSocialism→is_socialism。
 
 const TXT_R0_WORKER := "正如风云激荡的20世纪60年代那般，工人主义的旗帜再度成为意大利极左翼活动家们的首选：借助“火热之秋”时期打出的声望与70年代的苦心经营，以及意大利成气候的极左翼社会运动事实上皆汇入主张自治、反科层与反国家的“工人主义”系组织的社会基础。这一政治倾向自然而然地成为了意大利极左翼运动的主流。而意大利共产党在推进社会主义议程层面的惨痛失败，将自身降格为现代社会民主党与该党在起义期间成为资产阶级国家傀儡的事实更给“正统派社会主义者”们以致命一击，导致激进主义者们直接涌入推崇工人自发性，试图采取新组织形式策动革命的新平台。于是，继承“持续斗争”、“工人自主”等团体衣钵的新兴组织工人联盟“自主”得以借各地自管社会中心的拥护迅速取得左翼阵营内部领导权，并同时将回归“政治路线为主，武装斗争为辅”观点的“前线”、共产主义战斗队与争取共产主义的武装无产者等一系列亲工人主义武装组织收入麾下。其对外发言人安东尼奥·奈格里已以博洛尼亚苏维埃为中心宣布成立意大利苏维埃联邦，表示将彻底纠正“斯大林-陶里亚蒂主义路线”下压制工人自主，事实上将共产主义降为党政官僚下政治附庸的公式与历史错误；并以“列宁、法农与毛泽东”，“十月起义同文化大革命”的名义开启意大利无产者作为自为阶级的全新征程。"
@@ -109,7 +109,7 @@ func execute(context: Dictionary) -> void:
 
 
 func _start_war23(num: int, ussr_side: int) -> void:
-	GameManager.start_war(23, "左翼激进派", "民族团结政府", 300 - num, 700 + num, 1, ussr_side)
+	game.start_war(23, "左翼激进派", "民族团结政府", 300 - num, 700 + num, 1, ussr_side)
 	if ws.wars.size() > 23 and ws.wars[23] != null:
 		ws.wars[23].name_war = "意大利内战"
 		ws.wars[23].fortnight_max = 30

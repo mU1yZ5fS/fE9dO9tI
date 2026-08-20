@@ -80,7 +80,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var chad := ws.get_country_by_legacy_index(57)
 	_set_part(chad, 0, true)
-	GameManager.start_war(80, T_658_16, T_658_17, 500, 500, 1, 0)
+	game.start_war(80, T_658_16, T_658_17, 500, 500, 1, 0)
 	if ws.wars.size() > 80 and ws.wars[80] != null:
 		ws.wars[80].name_war = T_658_15
 	var r512 := int(ws.completed_event_ids.get("event_512", 0))

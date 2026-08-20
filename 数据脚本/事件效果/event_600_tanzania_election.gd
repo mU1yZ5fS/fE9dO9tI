@@ -188,7 +188,7 @@ func _establish_prosoviet(c: CountryData) -> void:
 	c.set_tag("亲美", false)
 
 func _start_war(war_id: int, war_name: String, side1: String, side2: String, infl1: int, infl2: int, usa_side: int, ussr_side: int, tick_time: int) -> void:
-	GameManager.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
+	game.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
 	var war := _get_war(war_id)
 	if war != null:
 		war.name_war = war_name

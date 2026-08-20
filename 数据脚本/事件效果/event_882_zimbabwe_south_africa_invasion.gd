@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - level_of_unstab→level_of_instability；resultOfEvents[609]==0 缺省按原版 0；
 ##  - War().Name(...).Attacker(...).Defender(...).TickTime(24)
-##    .AmericanSupportAttacker.SovietSupportDefender → GameManager.start_war()
+##    .AmericanSupportAttacker.SovietSupportDefender → game.start_war()
 ##    后覆盖 name_war/fortnight_max。
 
 const TXT_R0 := "赞比亚和坦桑尼亚惊恐的看着津巴布韦的现状，并呼吁联合国介入。但在如此多的“神秘人”的帮助下，谁还能阻挡伟大的白人酋长们呢？"
@@ -34,7 +34,7 @@ func execute(context: Dictionary) -> void:
 		# 原版 resultOfEvents[609]==0 缺省为 0（未触发时同样成立）
 		if ws.completed_event_ids.get("event_609", 0) == 0:
 			num = 50
-		GameManager.start_war(44, WAR_SIDE1, WAR_SIDE2, 700 - num, 300 + num, 0, 1)
+		game.start_war(44, WAR_SIDE1, WAR_SIDE2, 700 - num, 300 + num, 0, 1)
 		if ws.wars.size() > 44 and ws.wars[44] != null:
 			ws.wars[44].name_war = WAR_NAME
 			ws.wars[44].fortnight_max = 24

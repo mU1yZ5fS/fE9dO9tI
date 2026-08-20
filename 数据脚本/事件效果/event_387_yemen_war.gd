@@ -101,7 +101,7 @@ func execute(context: Dictionary) -> void:
 
 
 func _start_war_387(infl1: int, infl2: int) -> void:
-	GameManager.start_war(21, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, 0, 1)
+	game.start_war(21, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, 0, 1)
 	if ws.wars.size() > 21 and ws.wars[21] != null:
 		ws.wars[21].name_war = TXT_WAR_NAME
 		ws.wars[21].fortnight_max = 20

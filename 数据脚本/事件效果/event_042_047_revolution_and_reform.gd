@@ -364,13 +364,13 @@ func _find_politician(name_first: int, name_last: int) -> int:
 func _kill_politician_if_exists(name_first: int, name_last: int) -> void:
 	var idx := _find_politician(name_first, name_last)
 	if idx >= 0:
-		GameManager.kill_politician(idx)
+		game.kill_politician(idx)
 
 
 func _kill_faction_leader(faction_index: int) -> void:
 	var idx := _faction_leader_index(faction_index)
 	if idx >= 0:
-		GameManager.kill_politician(idx)
+		game.kill_politician(idx)
 
 
 func _faction_leader_index(faction_index: int) -> int:

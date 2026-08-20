@@ -341,13 +341,13 @@ func _start_neutral_wars(
 		usa_side = GameConstants.WarSide.NONE         # Event370 result1 亲中胜利分支：仅 SovietSupportDefender
 	var ussr_side := 1
 	if syria_neutral:
-		GameManager.start_war(10, TXT_370_664, TXT_370_665, infl_base, 1000 - infl_base, usa_side, ussr_side)
+		game.start_war(10, TXT_370_664, TXT_370_665, infl_base, 1000 - infl_base, usa_side, ussr_side)
 	if iraq_neutral:
 		var infl1 := infl_base + war3_bonus
-		GameManager.start_war(11, TXT_370_664, TXT_370_667, infl1, 1000 - infl1, usa_side, ussr_side)
+		game.start_war(11, TXT_370_664, TXT_370_667, infl1, 1000 - infl1, usa_side, ussr_side)
 	if iran_neutral:
 		var infl1 := infl_base + war3_bonus
-		GameManager.start_war(12, TXT_370_664, TXT_370_669, infl1, 1000 - infl1, usa_side, ussr_side)
+		game.start_war(12, TXT_370_664, TXT_370_669, infl1, 1000 - infl1, usa_side, ussr_side)
 
 
 func _turkey_torg_false() -> void:

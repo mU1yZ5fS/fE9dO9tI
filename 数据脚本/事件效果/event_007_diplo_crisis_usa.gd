@@ -49,7 +49,7 @@ func _opt_detente(context: Dictionary) -> void:
 # 选项2：向帝国主义者发射核武器！（Event7.cs result 2：load_scene_after_click → 结局）
 func _opt_nuke(context: Dictionary) -> void:
 	context["result_text"] = "紧张度提升"
-	GameManager.queue_ending_after_event(3)
+	game.queue_ending_after_event(3)
 
 
 # 选项3：一点都不在乎（Event7.cs result 3：激活修正17「美国禁运」+ 东盟分支）

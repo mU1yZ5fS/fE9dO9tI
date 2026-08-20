@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs 11035-11039 —— (月>=4 且 年>=1985 或 年>=1986) && c107.sub_government != GameConstants.SubGovernment.NEOLIBERAL。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线 / c107 对华贸易 / c107 内战 / c13 利比亚对华贸易 / c51 美国发展度与美领导人）。
-##  - War 78：GameManager.start_war(78,...) + fortnight_max=40（TickTime(40)）；
+##  - War 78：game.start_war(78,...) + fortnight_max=40（TickTime(40)）；
 ##    AmericanSupportDefender.SovietSupportAttacker → usa_side = GameConstants.WarSide.SIDE2 / ussr_side = GameConstants.WarSide.SIDE1；
 ##    仅 AmericanSupportDefender 的分支 usa_side = GameConstants.WarSide.SIDE2 / ussr_side = GameConstants.WarSide.NONE（原版 War 默认 -1）。
 ##  - 死代码 result 5 测试分支跳过；result 3 是实际选项（充耳不闻），效果已复刻。
@@ -100,10 +100,10 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -50)
 			var text := TXT_R1_INTRO
 			if sierra != null and sierra.内战中:
-				GameManager.start_war(78, TXT_WAR78_CW_ATTACKER, TXT_WAR78_CW_DEFENDER, 200, 800, 1, 0)
+				game.start_war(78, TXT_WAR78_CW_ATTACKER, TXT_WAR78_CW_DEFENDER, 200, 800, 1, 0)
 				text += TXT_R1_CW
 			else:
-				GameManager.start_war(78, TXT_WAR78_NO_CW_ATTACKER, TXT_WAR78_NO_CW_DEFENDER, 200, 800, 1, -1)
+				game.start_war(78, TXT_WAR78_NO_CW_ATTACKER, TXT_WAR78_NO_CW_DEFENDER, 200, 800, 1, -1)
 				if ws.wars.size() > 78 and ws.wars[78] != null:
 					ws.wars[78].ussr_side = GameConstants.WarSide.NONE
 				text += TXT_R1_NO_CW

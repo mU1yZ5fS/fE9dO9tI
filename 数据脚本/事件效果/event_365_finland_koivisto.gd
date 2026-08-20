@@ -127,7 +127,7 @@ func _budget_reserve(world: WorldState) -> int:
 
 
 func _faction_leading(i: int) -> bool:
-	return GameManager != null and GameManager.is_faction_leading(i)
+	return GameManager != null and game.is_faction_leading(i)
 
 
 func _faction_leading_0_1_2() -> bool:
@@ -151,7 +151,7 @@ func _establish_proamerican(c: CountryData) -> void:
 
 
 func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: int, usa_side: int, ussr_side: int, war_name: String, tick_time: int) -> void:
-	GameManager.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
+	game.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
 	if ws.wars.size() > war_id and ws.wars[war_id] != null:
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time

@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 
 func _start_war_15(somalia: CountryData, num: int, infl1: int, infl2: int, tick: int) -> void:
 	var ussr_side := 0 if somalia != null and somalia.has_tag("亲苏") else 1
-	GameManager.start_war(15, "索马里", "埃塞俄比亚", infl1 + num, infl2 - num, -1, ussr_side)
+	game.start_war(15, "索马里", "埃塞俄比亚", infl1 + num, infl2 - num, -1, ussr_side)
 	if ws.wars.size() > 15 and ws.wars[15] != null:
 		ws.wars[15].name_war = WAR15_NAME
 		ws.wars[15].fortnight_max = tick

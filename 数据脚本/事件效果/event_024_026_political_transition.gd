@@ -90,7 +90,7 @@ func _apply_event_25(option_index: int) -> void:
 		3:
 			# 原版 SceneManager.LoadScene("Ending")；项目用 queue_ending_after_event(2) 替代。
 			d.ending_route = 2
-			GameManager.queue_ending_after_event(2)
+			game.queue_ending_after_event(2)
 	PoliticianSystem.sync_in_power_flags(ws)
 
 
@@ -248,7 +248,7 @@ func _add_empire_relation(empire_index: int, delta: int) -> void:
 
 func _kill_many(indexes: Array[int]) -> void:
 	for index in indexes:
-		GameManager.kill_politician(index)
+		game.kill_politician(index)
 
 
 func _remake_as_wang_dongxing(index: int) -> void:

@@ -24,7 +24,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if data.diplomatic_reputation >= 700 and data.econ_system > 13 and GameManager.is_faction_leading(4):
+	if data.diplomatic_reputation >= 700 and data.econ_system > 13 and game.is_faction_leading(4):
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

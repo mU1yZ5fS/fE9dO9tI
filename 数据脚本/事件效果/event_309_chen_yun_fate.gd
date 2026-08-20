@@ -1,6 +1,6 @@
 ## 原作 Event309.cs：陈云的命运（清算陈云，两选项）。
 ## 触发：全目录搜索无 this_num_event = 309 / Reset(309)；链外 REST 段，原版无自动条件。
-## 差异：KillPerson→GameManager.kill_politician；文本来自 Events_text_en 索引 92-97。
+## 差异：KillPerson→game.kill_politician；文本来自 Events_text_en 索引 92-97。
 extends "res://数据脚本/event_script_base.gd"
 
 const TXT_R0 := "阴谋失败了，陈云受到了其余党员的保护。"
@@ -37,7 +37,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 250
 					p.power -= 250
 			if num >= 0:
-				GameManager.kill_politician(num)
+				game.kill_politician(num)
 			context["result_text"] = TXT_R1
 
 

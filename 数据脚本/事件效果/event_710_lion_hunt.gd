@@ -52,7 +52,7 @@ func execute(context: Dictionary) -> void:
 
 func _start_war(infl1: int, infl2: int) -> void:
 	# Event710.cs：AmericanSupportAttacker.SovietSupportDefender.TickTime(24)
-	GameManager.start_war(89, "叙利亚", "伊拉克", infl1, infl2, 0, 1)
+	game.start_war(89, "叙利亚", "伊拉克", infl1, infl2, 0, 1)
 	if ws.wars.size() > 89 and ws.wars[89] != null:
 		ws.wars[89].name_war = "叙利亚-伊拉克战争"
 		ws.wars[89].fortnight_max = 24

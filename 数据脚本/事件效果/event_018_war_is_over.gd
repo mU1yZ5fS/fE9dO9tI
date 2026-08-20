@@ -91,19 +91,19 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = _war39_result_text(war)
 		return
 	context["result_text"] = "另一场战争结束了。"
-	# 差异：原版此处追加 WarResult 结算文案；端口结算效果由 GameManager.resolve_war_finished
+	# 差异：原版此处追加 WarResult 结算文案；端口结算效果由 game.resolve_war_finished
 	# （事件关闭后）执行，无结算文案。
 	if _is_mongol_defeat(war_id, war):
 		context["result_title"] = "真该死！"
 		context["result_text"] = "出乎我们的意料，孱弱的蒙古军队设法逼退了中国人民解放军。由于战争初期的失误指挥，我们的先遣部队在乌兰巴托残酷的巷战中损失惨痛。而蒙古民众也并不相信我们能为他们带来解放。纷纷拿起苏制装备躲进山区里，或是骑在马上把我们的巡逻队员绞杀至死。极端民族主义组织“白色十字”甚至成功的暗杀了我们指挥对蒙作战的军事首长。苏联以自愿报名为由派遣了成建制的“志愿军”，古巴和法国的雇佣兵也通过苏联来到蒙古，在各个地方运用他们在非洲学到的知识，打击我们的战士。在惨痛的绞肉战后，这场军事冒险在丢下几万具尸体后惨败收场。最耻辱的莫过于蒙古甚至设法攻克了二连浩特，当着我们全体电视观众的面把我们的国旗扯下并点燃。在各国的斡旋和美国的武力威胁下，我们只得灰溜溜的撤出蒙古。蒙古政府把这次胜利比做二十一世纪的土木堡之战。他们增加了军费，甚至采购了导弹。等等，门口的敲门声是？"
 		# 原 Event18.cs:143：data.war_resolve==69 && ingamewars[69].infl1<1000 → data.ending_route=11 + load_scene_after_click。
 		# Godot 用 queue_ending_after_event 复现「结果页确认后进结局」。
-		GameManager.queue_ending_after_event(11)
+		game.queue_ending_after_event(11)
 	elif _is_ussr_victory(war_id, war):
 		context["result_title"] = "真该死！"
 		context["result_text"] = "苏联通过背靠北约盟友，将亚洲大战变为了不亚于日俄战争的残酷绞肉机。虽然我们的海军得以封锁库页岛，并将苏联的海军困死在港口内；但我们的陆军并没能在各个方向取得进展，他们只能困守海参崴和伯力。此后，苏联人更是借助美方导弹平台轰炸我核心工业区与关键城市，甚至让北京也陷入威胁当中。在付出数十万人的伤亡后，我们不得不回到谈判桌上同苏联达成妥协，而作为战争的发起者的你定没有好下场……"
 		# 原 Event18.cs:151：data.war_resolve==70 && ingamewars[70].infl1<1000 → data.ending_route=12 + load_scene_after_click。
-		GameManager.queue_ending_after_event(12)
+		game.queue_ending_after_event(12)
 
 
 # ── 分支判定辅助（逐字复刻 Event18.cs 条件） ──

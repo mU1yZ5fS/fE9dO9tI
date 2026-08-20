@@ -33,24 +33,24 @@ func _right_choice(context: Dictionary) -> void:
 		return
 	# 事件581 结果2 → 结局13（in1992_script.cs:51-57）
 	if EventEngine != null and EventEngine.result_of_event_by_number(581) == 2:
-		GameManager.queue_ending_after_event(13)
+		game.queue_ending_after_event(13)
 		return
 	# 人民支持不足 → 结局1（in1992_script.cs:58-64）
 	if d.people_support < 300 or (d.people_support < 500 and ws.difficulty == 4):
-		GameManager.queue_ending_after_event(1)
+		game.queue_ending_after_event(1)
 		return
 	# 党内支持不足 → 结局2（in1992_script.cs:65-71）
 	if d.party_support < 300 or (d.party_support < 500 and ws.difficulty == 4):
-		GameManager.queue_ending_after_event(2)
+		game.queue_ending_after_event(2)
 		return
 	# 特定体制组合 → 结局9（in1992_script.cs:72-78）
 	if d.party_system == 9 and d.econ_system == 15 and d.press_policy == 19 \
 			and _modifier_active(5) and d.oligarch >= 100:
-		GameManager.queue_ending_after_event(9)
+		game.queue_ending_after_event(9)
 		return
 	# 兜底：世界收尾更新后进 GoodEnd（in1992_script.cs:79-137）
 	_apply_farewell_updates()
-	GameManager.queue_ending_after_event(0)
+	game.queue_ending_after_event(0)
 
 
 func _apply_farewell_updates() -> void:

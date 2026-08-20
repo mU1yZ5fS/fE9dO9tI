@@ -352,9 +352,7 @@ func _on_tech_pressed(tech_index: int) -> void:
 	# start_research 返回花费的预算金额；年份超前时内部施加原版超前惩罚
 	var money_cost: int = ts.start_research(tech_index, d.science, w.date.year, w.date.month)
 	if money_cost > 0:
-		d.science = 0            # 科研点全部消耗
-		d.budget -= money_cost   # 扣除预算
-		w.sync_economy()              # 直接写数值表不会置 dirty，强制同步显示视图
+		GameManager.apply_research_cost(money_cost)
 	_refresh()
 
 

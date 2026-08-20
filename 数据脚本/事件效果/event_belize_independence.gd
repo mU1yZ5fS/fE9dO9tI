@@ -20,5 +20,5 @@ func execute(context: Dictionary) -> void:
 		belize.government = GameConstants.Government.LIBERAL
 		belize.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 		if GameManager != null:
-			GameManager.set_map_region_owner(BELIZE_REGION_IDS, BELIZE_GWCODE)
+			game.set_map_region_owner(BELIZE_REGION_IDS, BELIZE_GWCODE)
 	context["result_text"] = TXT_RESULT

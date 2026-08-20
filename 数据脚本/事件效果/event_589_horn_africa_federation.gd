@@ -56,7 +56,7 @@ func execute(context: Dictionary) -> void:
 				_join_all_our_alliances(ethiopia)
 			# 地图合并：索马里区域并入埃塞俄比亚（联邦）。
 			if GameManager != null:
-				GameManager.set_map_region_owner(SOMALIA_REGION_IDS, HORN_FEDERATION_GWCODE)
+				game.set_map_region_owner(SOMALIA_REGION_IDS, HORN_FEDERATION_GWCODE)
 			context["result_text"] = TXT_R0
 		1:
 			context["result_text"] = TXT_R1

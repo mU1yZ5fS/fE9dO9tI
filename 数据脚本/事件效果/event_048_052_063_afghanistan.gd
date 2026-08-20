@@ -206,7 +206,7 @@ func _event_52(option_index: int) -> void:
 func _start_afghan_war(
 		side1: String, side2: String, infl1: int, infl2: int,
 		usa_side: int, ussr_side: int, apply_regional_modifiers: bool) -> void:
-	GameManager.start_war(5, side1, side2, infl1, infl2, usa_side, maxi(ussr_side, 0))
+	game.start_war(5, side1, side2, infl1, infl2, usa_side, maxi(ussr_side, 0))
 	var war := _war(5)
 	if war == null:
 		return

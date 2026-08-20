@@ -41,7 +41,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		else:
 			_disable(opt[0], TXT_DIS_SEV)
 	else:
-		if world.influence_prc >= 500 and _d(W.I_AGENTS) >= 150 and _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 100 				and (GameManager.is_faction_leading(0) or GameManager.is_faction_leading(1) or GameManager.is_faction_leading(2)):
+		if world.influence_prc >= 500 and _d(W.I_AGENTS) >= 150 and _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 100 				and (game.is_faction_leading(0) or game.is_faction_leading(1) or game.is_faction_leading(2)):
 			_enable(opt[0], TXT_OPT0_DEFAULT)
 		elif world.influence_prc < 500:
 			_disable(opt[0], TXT_DIS_INFLUENCE.format([50]))

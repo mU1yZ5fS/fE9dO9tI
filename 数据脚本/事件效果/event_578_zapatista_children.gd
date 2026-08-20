@@ -67,7 +67,7 @@ func execute(context: Dictionary) -> void:
 			var num := 0
 			if c140 != null and c140.stab == 1:
 				num = 100
-			GameManager.start_war(45, WAR45_SIDE1, WAR45_SIDE2, 800 - num, 200 + num, 0, 1)
+			game.start_war(45, WAR45_SIDE1, WAR45_SIDE2, 800 - num, 200 + num, 0, 1)
 			if ws.wars.size() > 45 and ws.wars[45] != null:
 				ws.wars[45].name_war = WAR45_NAME
 				ws.wars[45].fortnight_max = 24

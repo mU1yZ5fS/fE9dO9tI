@@ -32,7 +32,7 @@ func execute(context: Dictionary) -> void:
 			nigeria.parts.append(false)
 		nigeria.parts[0] = true
 		nigeria.set_tag("对华贸易", false)
-	GameManager.start_war(79, TXT_WAR_ATTACKER, TXT_WAR_DEFENDER, 400, 600, 1, 1)
+	game.start_war(79, TXT_WAR_ATTACKER, TXT_WAR_DEFENDER, 400, 600, 1, 1)
 	if ws.wars.size() > 79 and ws.wars[79] != null:
 		ws.wars[79].name_war = TXT_WAR_NAME
 		ws.wars[79].fortnight_max = 999

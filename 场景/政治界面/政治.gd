@@ -796,13 +796,13 @@ func _on_support() -> void:
 	var d := _world
 	# num0：LeaderProperty[3] 免费（Button_Pol_Script.cs:609-613）
 	if not _leader_property(3):
-		d.budget -= 1
-		d.agents -= 5
-	d.party_support -= 20
+		GameManager.add_budget(-1)
+		GameManager.add_agents(-5)
+	GameManager.add_party_support(-20)
 	var year: int = d.year
-	pol.power += (year - 1976) * 5
-	pol.loyalty += 50
-	pol.power += absi(pol.power / 10)
+	GameManager.add_politician_power(pol, (year - 1976) * 5)
+	GameManager.add_politician_loyalty(pol, 50)
+	GameManager.add_politician_power(pol, absi(pol.power / 10))
 	_after_operation()
 
 
@@ -814,13 +814,13 @@ func _on_suppress() -> void:
 		return
 	var d := _world
 	# num1（Button_Pol_Script.cs:619-627）
-	d.budget -= 1
-	d.party_support -= 20
-	d.agents -= 20
-	pol.loyalty -= 50
+	GameManager.add_budget(-1)
+	GameManager.add_party_support(-20)
+	GameManager.add_agents(-20)
+	GameManager.add_politician_loyalty(pol, -50)
 	var year: int = d.year
-	pol.power -= (year - 1976) * 5
-	pol.power -= absi(pol.power / 10)
+	GameManager.add_politician_power(pol, -((year - 1976) * 5))
+	GameManager.add_politician_power(pol, -absi(pol.power / 10))
 	_after_operation()
 
 
@@ -834,12 +834,12 @@ func _on_assassinate() -> void:
 	var idx := _selected_pol_index
 	# num2 扣费（Button_Pol_Script.cs:654-662）。enabled 保证 !is_sledstvie → 实际恒走 else -100
 	if pol.is_under_investigation:
-		d.agents -= 60
+		GameManager.add_agents(-60)
 	else:
-		d.agents -= 100
-	d.budget -= 20
+		GameManager.add_agents(-100)
+	GameManager.add_budget(-20)
 	# 原版成功与失败分支各 +100，合计恒 +100；提到 roll 前等价（Button_Pol_Script.cs:665/708）
-	d.thought_freedom += 100
+	GameManager.add_thought_freedom(100)
 
 	var success_rate: float = GameManager.change_of_killing(idx)
 	var roll: float = _world.ensure_rng().randf()
@@ -850,17 +850,17 @@ func _on_assassinate() -> void:
 		else:
 			_apply_trait_loyalty(pol, -5)
 		if d.size() > 110:
-			d.political_repression_count += 1
+			GameManager.add_political_repression_count(1)
 		# 原版 Button_Pol_Script.cs:686-689：iron_and_blood 且 data.political_repression_count>=44 → Set(24)。
 		if d.size() > 110 and d.political_repression_count >= 44:
 			Achievements.set_achievement(24)
 		# 原版被杀者任中央职时置 data.get_data_by_index(114/115/116)=9（Button_Pol_Script.cs:691-702）
 		if _world.politics_positions[0] == idx:
-			d.killed_premier_flag = 9
+			GameManager.set_politician_killed_flag(0)
 		if _world.politics_positions[1] == idx:
-			d.killed_military_flag = 9
+			GameManager.set_politician_killed_flag(1)
 		if _world.politics_positions[2] == idx:
-			d.killed_foreign_flag = 9
+			GameManager.set_politician_killed_flag(2)
 		GameManager.kill_politician(idx)
 	else:
 		# 原版失败：全员 -100，目标额外 -400，you_fall=true（Button_Pol_Script.cs:708-716）
@@ -868,8 +868,8 @@ func _on_assassinate() -> void:
 			if p == null:
 				continue
 			p.loyalty -= 100
-		pol.loyalty -= 400
-		pol.you_fall = true
+		GameManager.add_politician_loyalty(pol, -400)
+		GameManager.set_politician_you_fall(pol, true)
 	_after_operation()
 
 
@@ -879,18 +879,17 @@ func _on_investigate() -> void:
 		return
 	if GameManager.is_mao_protected(_selected_pol_index):
 		return
-	var d := _world
 	var idx := _selected_pol_index
 	# num3（Button_Pol_Script.cs:718-747）：免费判定用 LeaderProperty[1]（原版如此，勿按 tooltip 改）
-	pol.is_under_investigation = true
-	pol.investigator_index = 0
+	GameManager.set_politician_investigation(pol, true)
+	GameManager.set_politician_investigator(pol, 0)
 	if not _leader_property(1):
-		d.agents -= 20
+		GameManager.add_agents(-20)
 	if _faction_leader_slot_of(idx) >= 0:
 		_apply_trait_loyalty(pol, -1000)
 	else:
 		_apply_trait_loyalty(pol, -100)
-	pol.loyalty -= 2000
+	GameManager.add_politician_loyalty(pol, -2000)
 	_after_operation()
 
 
@@ -900,12 +899,11 @@ func _on_surveil() -> void:
 		return
 	if GameManager.is_mao_protected(_selected_pol_index):
 		return
-	var d := _world
 	# num4（Button_Pol_Script.cs:748-756）
-	pol.is_under_surveillance = true
-	pol.days_surveillance = 0
+	GameManager.set_politician_surveillance(pol, true)
+	GameManager.set_politician_surveillance_days(pol, 0)
 	if not _leader_property(1):
-		d.agents -= 30
+		GameManager.add_agents(-30)
 	_after_operation()
 
 
@@ -914,7 +912,7 @@ func _on_auto_support() -> void:
 	if pol == null:
 		return
 	# num15：0 <-> 10（Button_Pol_Script.cs:628-639）
-	pol.auto_support = 10 if pol.auto_support == 0 else 0
+	GameManager.toggle_politician_auto_support(pol)
 	_after_operation()
 
 
@@ -925,7 +923,7 @@ func _on_auto_suppress() -> void:
 	if GameManager.is_mao_protected(_selected_pol_index):
 		return
 	# num16：0 <-> 10（Button_Pol_Script.cs:640-651）
-	pol.auto_hound = 10 if pol.auto_hound == 0 else 0
+	GameManager.toggle_politician_auto_hound(pol)
 	_after_operation()
 
 
@@ -935,13 +933,7 @@ func _on_assign_leader_cmc() -> void:
 	# Godot 适配：领袖是独立对象且无矩阵槽，跳过该矩阵惩罚并保留其余数值。
 	if _selected_pol_index != LEADER_SELECT:
 		return
-	var prev: int = _world.politics_positions[1]
-	if prev >= 0 and prev < _world.politicians.size():
-		_world.politicians[prev].loyalty -= 1000
-	_world.politics_positions[1] = LEADER_POS
-	for i in range(3, _world.politics_positions.size()):
-		if _world.politics_positions[i] == LEADER_POS:
-			_world.politics_positions[i] = -1
+	GameManager.assign_leader_cmc()
 	_after_operation()
 
 

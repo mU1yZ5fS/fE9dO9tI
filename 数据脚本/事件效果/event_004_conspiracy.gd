@@ -49,7 +49,7 @@ func _option_debate(context: Dictionary) -> void:
 		d.party_support = 0
 		d.people_support = 0
 		context["result_text"] = "在密谋者讲出他们的控告前你就用批评和反控告批判了他们。但是，你的名誉显然不大好，大多数党员受够了你的领导。大多数出席全会的党员支持了密谋者，你被解职并被踢出中央委员会，丢到了一个偏远的清水衙门。"
-		GameManager.queue_ending_after_event(2)   # 原 data.ending_route=2「军事政变」
+		game.queue_ending_after_event(2)   # 原 data.ending_route=2「军事政变」
 
 
 ## 党支持分段（Event4.cs:102 整数除法逐字）

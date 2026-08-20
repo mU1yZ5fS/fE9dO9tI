@@ -225,7 +225,7 @@ func _apply_wp_to_nato() -> void:
 
 
 func _start_war_379(infl1: int, infl2: int) -> void:
-	GameManager.start_war(17, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, 1, 1)
+	game.start_war(17, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, 1, 1)
 	if ws.wars.size() > 17 and ws.wars[17] != null:
 		ws.wars[17].name_war = TXT_WAR_NAME
 		ws.wars[17].fortnight_max = 20

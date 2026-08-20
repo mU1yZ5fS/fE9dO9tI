@@ -58,7 +58,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_enable(opt[1], event_def.options[1].text)
 	var relres: bool = world.get_flag("relres")
 	var war22 := world.wars[22] if world.wars.size() > 22 else null
-	if relres and world.influence_prc >= 750 and _d(W.I_ARMY) >= 750 			and GameManager.is_faction_leading(0) 			and (war22 == null or not war22.is_going) and _d(133) == 0:  # 原版 data.soviet_reorganization_war_state
+	if relres and world.influence_prc >= 750 and _d(W.I_ARMY) >= 750 			and game.is_faction_leading(0) 			and (war22 == null or not war22.is_going) and _d(133) == 0:  # 原版 data.soviet_reorganization_war_state
 		_enable(opt[2], TXT_OPT2_RELRES.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif not relres and world.influence_prc >= 950 and _d(W.I_ARMY) >= 750:
 		_enable(opt[2], TXT_OPT2_NORELRES.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
@@ -152,7 +152,7 @@ func execute(context: Dictionary) -> void:
 
 
 func _start_war_377() -> void:
-	GameManager.start_war(22, TXT_WAR_ATT, TXT_WAR_DEF, 250, 750, -1, -1)
+	game.start_war(22, TXT_WAR_ATT, TXT_WAR_DEF, 250, 750, -1, -1)
 	if ws.wars.size() > 22 and ws.wars[22] != null:
 		ws.wars[22].name_war = TXT_WAR_NAME
 		ws.wars[22].fortnight_max = 500

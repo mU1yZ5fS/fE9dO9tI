@@ -27,7 +27,7 @@ func execute(context: Dictionary) -> void:
 	if opt != 0:
 		return
 	context["result_text"] = TXT_R0
-	GameManager.start_war(87, "北爱尔兰", "爱尔兰", 500, 500, 2, -1)
+	game.start_war(87, "北爱尔兰", "爱尔兰", 500, 500, 2, -1)
 	if ws.wars.size() > 87 and ws.wars[87] != null:
 		ws.wars[87].name_war = "爱尔兰统一战争"
 	var northern := ws.get_country_by_legacy_index(166)

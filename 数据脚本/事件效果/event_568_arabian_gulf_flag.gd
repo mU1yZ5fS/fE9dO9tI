@@ -38,7 +38,7 @@ func execute(context: Dictionary) -> void:
 		c36.set_tag("亲中", false)
 	if d.size() > 143:
 		d.oil_price += 10   # 原 data.oil_price（无命名键，同 Event114 约定）
-	GameManager.start_war(43, WAR43_SIDE1, WAR43_SIDE2, 700 - num, 300 + num, 0, -1)
+	game.start_war(43, WAR43_SIDE1, WAR43_SIDE2, 700 - num, 300 + num, 0, -1)
 	if ws.wars.size() > 43 and ws.wars[43] != null:
 		ws.wars[43].name_war = WAR43_NAME
 		ws.wars[43].fortnight_max = 24

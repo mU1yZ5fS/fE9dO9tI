@@ -53,7 +53,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[1], TXT_DIS_IDEOLOGY)
 	var mod6: bool = ws.modifiers.size() > 6 and ws.modifiers[6] != null and ws.modifiers[6].is_active
-	if china != null and (china.has_tag("okb") or china.has_tag("seato")) 			and nkorea != null and not nkorea.has_tag("okb") and _d(W.I_ARMY) >= 250 			and (mod6 and GameManager.is_faction_leading(0) or (china != null and china.government == GameConstants.Government.LIBERAL)):
+	if china != null and (china.has_tag("okb") or china.has_tag("seato")) 			and nkorea != null and not nkorea.has_tag("okb") and _d(W.I_ARMY) >= 250 			and (mod6 and game.is_faction_leading(0) or (china != null and china.government == GameConstants.Government.LIBERAL)):
 		_enable(opt[2], event_def.options[2].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif china == null or (not china.has_tag("okb") and not china.has_tag("seato")):
 		_disable(opt[2], TXT_DIS_NO_ALLIANCE)
@@ -61,7 +61,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[2], TXT_DIS_NK_ALLIANCE)
 	elif _d(W.I_ARMY) < 250:
 		_disable(opt[2], TXT_DIS_ARMY.format([25]))
-	elif not mod6 or not GameManager.is_faction_leading(0):
+	elif not mod6 or not game.is_faction_leading(0):
 		if not mod6:
 			_disable(opt[2], TXT_DIS_NO_MOD)
 		else:
@@ -96,7 +96,7 @@ func execute(context: Dictionary) -> void:
 	if nkorea != null:
 		nkorea.government = GameConstants.Government.AUTHORITARIAN
 		nkorea.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
-	if GameManager.is_faction_leading(0):
+	if game.is_faction_leading(0):
 		_add(W.I_PARTY_SUPPORT, 100)
 	else:
 		_add(W.I_PARTY_SUPPORT, -200)
@@ -114,7 +114,7 @@ func execute(context: Dictionary) -> void:
 					pol.loyalty -= 200
 		1:
 			context["result_text"] = TXT_R1
-			if GameManager.is_faction_leading(0):
+			if game.is_faction_leading(0):
 				_add(W.I_PARTY_SUPPORT, 300)
 			else:
 				_add(W.I_PARTY_SUPPORT, 200)
@@ -157,9 +157,9 @@ func execute(context: Dictionary) -> void:
 			_start_war_378(700 - num, 300 + num)
 		3:
 			context["result_text"] = TXT_R3
-			if GameManager.is_faction_leading(0):
+			if game.is_faction_leading(0):
 				_add(W.I_PARTY_SUPPORT, -300)
-			elif GameManager.is_faction_leading(1):
+			elif game.is_faction_leading(1):
 				_add(W.I_PARTY_SUPPORT, 50)
 			else:
 				_add(W.I_PARTY_SUPPORT, 200)
@@ -184,9 +184,9 @@ func execute(context: Dictionary) -> void:
 				nkorea.set_tag("sev", true)
 			_add(W.I_DIPLO, -20)
 			_add_relation(EmpireData.USSR, 100)
-			if GameManager.is_faction_leading(0):
+			if game.is_faction_leading(0):
 				_add(W.I_PARTY_SUPPORT, -300)
-			elif GameManager.is_faction_leading(1):
+			elif game.is_faction_leading(1):
 				_add(W.I_PARTY_SUPPORT, 50)
 			else:
 				_add(W.I_PARTY_SUPPORT, 200)
@@ -204,7 +204,7 @@ func skorea_country() -> CountryData:
 
 
 func _start_war_378(infl1: int, infl2: int) -> void:
-	GameManager.start_war(16, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, -1, 1)
+	game.start_war(16, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, -1, 1)
 	if ws.wars.size() > 16 and ws.wars[16] != null:
 		ws.wars[16].name_war = TXT_WAR_NAME
 		ws.wars[16].fortnight_max = 40

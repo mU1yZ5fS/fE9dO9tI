@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			context["result_text"] = TXT_R1_PRE + _leader_name() + TXT_R1_POST
 			# 原版 ingamewars[70]：雪耻之战，中国(500) vs 苏联(500)，AmericanSupportDefender、SovietSupportDefender
-			GameManager.start_war(70, "中华人民共和国", "苏联", 500, 500, 2, 2)
+			game.start_war(70, "中华人民共和国", "苏联", 500, 500, 2, 2)
 			if ws.wars.size() > 70 and ws.wars[70] != null:
 				ws.wars[70].name_war = "雪耻之战"
 			_add(W.I_PARTY_SUPPORT, 300)

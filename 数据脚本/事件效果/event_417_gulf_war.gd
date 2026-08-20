@@ -84,7 +84,7 @@ func execute(context: Dictionary) -> void:
 	if iraq != null:
 		iraq.set_tag("亲苏", false)
 	_add(143, 3)
-	GameManager.start_war(28, "伊拉克", "科威特", 600, 400, 0, 1)
+	game.start_war(28, "伊拉克", "科威特", 600, 400, 0, 1)
 	if ws.wars.size() > 28 and ws.wars[28] != null:
 		ws.wars[28].name_war = "伊拉克入侵科威特"
 		ws.wars[28].fortnight_max = 25

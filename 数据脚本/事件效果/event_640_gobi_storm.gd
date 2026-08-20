@@ -26,7 +26,7 @@ func execute(context: Dictionary) -> void:
 		return
 	context["result_text"] = TXT_R_PRE + _leader_name() + TXT_R_POST
 	# 原版 ingamewars[69]：中蒙战争，中国(650) vs 蒙古(350)，SovietSupportDefender
-	GameManager.start_war(69, "中华人民共和国", "蒙古人民共和国", 650, 350, -1, 2)
+	game.start_war(69, "中华人民共和国", "蒙古人民共和国", 650, 350, -1, 2)
 	if ws.wars.size() > 69 and ws.wars[69] != null:
 		ws.wars[69].name_war = "中蒙战争"
 	var usa := ws.get_country_by_legacy_index(51)

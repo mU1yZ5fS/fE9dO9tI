@@ -12,7 +12,7 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = "你在全国直播的情况下亲自与北京的抗议者进行了交谈，并承诺尽一切努力改变政策，考虑到所有公民的利益，最后建立真正的民主机制（不过，你并不急于执行）。不过看来人民已经对你的承诺感到了厌倦，他们对你态度冷漠并要求你直接辞职。对你失去了信心的党最后决定罢免你并将你逮捕，之后他们重新组织了一个新的政府领导全国并开始筹划全国选举，而你只能在监狱里蹲着。"
 		d.party_support = 0
 		d.people_support = 0
-		GameManager.queue_ending_after_event(1)
+		game.queue_ending_after_event(1)
 		return
 
 	context["result_text"] = "你亲自与全国各地的抗议者进行了交谈。你承诺将尽一切努力改变政策，考虑到所有公民的利益，并建立真正的民主机制。（不过，你并不急于执行）。看来你已经成功地说服了人民，抗议活动正在慢慢地减少。"

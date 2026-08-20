@@ -187,7 +187,7 @@ func execute(context: Dictionary) -> void:
 
 
 func _start_war_376(infl1: int, infl2: int, usa_side: int, ussr_side: int) -> void:
-	GameManager.start_war(15, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, usa_side, ussr_side)
+	game.start_war(15, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, usa_side, ussr_side)
 	if ws.wars.size() > 15 and ws.wars[15] != null:
 		ws.wars[15].name_war = TXT_WAR_NAME
 		ws.wars[15].fortnight_max = 16

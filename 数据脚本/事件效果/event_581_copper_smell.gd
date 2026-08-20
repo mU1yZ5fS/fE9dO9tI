@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 选项显隐 prepare 动态改写；resultOfEvents[352]/[361]/[500] 缺省按原版 int 默认 0；
 ##  - names1+names2 → _leader_name()（同 Event650 约定）；data.industry → W.I_INDUSTRY；
 ##  - JoinECON → 仅 econ 标签 + social_stability=1000；name → chinese_name；
-##  - load_scene_after_click + data.ending_route=13 → GameManager.queue_ending_after_event(13)。
+##  - load_scene_after_click + data.ending_route=13 → game.queue_ending_after_event(13)。
 
 
 
@@ -92,7 +92,7 @@ func execute(context: Dictionary) -> void:
 				c124.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				_leave_alliances(c124)
 				c124.set_tag("对华贸易", true)
-			GameManager.queue_ending_after_event(13)
+			game.queue_ending_after_event(13)
 			_add(W.I_BUDGET, 100)
 			_add(W.I_AGENTS, -50)
 			context["result_text"] = TXT_R2

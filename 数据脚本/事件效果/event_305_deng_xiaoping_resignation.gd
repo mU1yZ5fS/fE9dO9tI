@@ -1,6 +1,6 @@
 ## 原作 Event305.cs：小平的辞呈？（打倒邓小平，两选项）。
 ## 触发：全目录搜索无 this_num_event = 305 / Reset(305)；链外 REST 段，原版无自动条件。
-## 差异：KillPerson→GameManager.kill_politician；文本来自 Events_text_en 索引 63-68。
+## 差异：KillPerson→game.kill_politician；文本来自 Events_text_en 索引 63-68。
 extends "res://数据脚本/event_script_base.gd"
 
 const TXT_R0 := "小平是中国的未来！毛主义的恐怖将留在过去！自由和开放的光明未来在等待着我们！"
@@ -25,7 +25,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			var num := _find_politician(13, 13)
 			if num >= 0:
-				GameManager.kill_politician(num)
+				game.kill_politician(num)
 			context["result_text"] = TXT_R1
 
 

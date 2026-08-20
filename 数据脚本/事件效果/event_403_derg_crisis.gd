@@ -218,7 +218,7 @@ func _raw(i: int) -> int:
 	return 0
 
 func _start_war(war_id: int, war_name: String, side1: String, side2: String, infl1: int, infl2: int, fortnight: int) -> void:
-	GameManager.start_war(war_id, side1, side2, infl1, infl2, 1, 0)
+	game.start_war(war_id, side1, side2, infl1, infl2, 1, 0)
 	if ws.wars.size() > war_id and ws.wars[war_id] != null:
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = fortnight

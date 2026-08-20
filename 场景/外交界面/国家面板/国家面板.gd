@@ -443,7 +443,7 @@ func _def_9(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 		conds.append(_cond("魁 北 克 政 府 不 亲 美", func(): return not country.has_tag("亲美")))
 	return {
 		"caption": "发展贸易", "opis": opis, "conditions": conds, "dormant": false,
-		"effect": func(): country.set_tag("对华贸易", true),
+		"effect": func(): GameManager.set_country_tag(country, "对华贸易", true),
 	}
 
 
@@ -530,7 +530,7 @@ func _def_24(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 		conds.append(_cond("该 国 不 受 苏 联 的 影 响", func(): return not country.has_tag("亲苏")))
 	return {
 		"caption": "发展贸易", "opis": "深化经贸关系", "conditions": conds, "dormant": false,
-		"effect": func(): country.set_tag("对华贸易", true),
+		"effect": func(): GameManager.set_country_tag(country, "对华贸易", true),
 	}
 
 
@@ -597,15 +597,15 @@ func _def_10(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	var eff := func():
 		if player != null and player.has_tag("sev"):
 			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
-				w.empires[EmpireData.USSR].power += 20
-			w.influence_prc += 10
-			country.set_tag("sev", true)
+				GameManager.add_empire_power(w.empires[EmpireData.USSR], 20)
+			GameManager.add_influence_prc(10)
+			GameManager.set_country_tag(country, "sev", true)
 		else:
-			d.people_support += 20
-			w.influence_prc += 20
-			country.set_tag("econ", true)
-			country.social_stability = 1000
-			d.party_support += 30
+			GameManager.add_people_support(20)
+			GameManager.add_influence_prc(20)
+			GameManager.set_country_tag(country, "econ", true)
+			GameManager.set_country_social_stability(country, 1000)
+			GameManager.add_party_support(30)
 	return {
 		"caption": "经济合作", "opis": "允许该国加入我国经济联盟，建立全面战略合作伙伴关系",
 		"conditions": conds, "dormant": false, "effect": eff,
@@ -634,18 +634,18 @@ func _def_19(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	var eff := func():
 		if player != null and player.has_tag("ovd"):
 			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
-				w.empires[EmpireData.USSR].power += 20
-			w.influence_prc += 10
-			country.set_tag("ovd", true)
+				GameManager.add_empire_power(w.empires[EmpireData.USSR], 20)
+			GameManager.add_influence_prc(10)
+			GameManager.set_country_tag(country, "ovd", true)
 			if country.has_tag("亲中"):
-				country.prc_influence = 500
+				GameManager.set_country_influence(country, "prc", 500)
 			elif country.has_tag("亲苏"):
-				country.sov_influence = 500
+				GameManager.set_country_influence(country, "sov", 500)
 		else:
-			w.influence_prc += 20
-			country.set_tag("okb", true)
+			GameManager.add_influence_prc(20)
+			GameManager.set_country_tag(country, "okb", true)
 			if country.social_stability <= 0:
-				country.social_stability = 1000
+				GameManager.set_country_social_stability(country, 1000)
 	return {
 		"caption": "军事同盟", "opis": "邀请该国参与我国军事联盟，实现合作无上限，保障地区安全稳定",
 		"conditions": conds, "dormant": false, "effect": eff,
@@ -699,11 +699,11 @@ func _def_1(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 					pen = 75
 				elif usa.current_leader == 5:
 					pen = 100
-				usa.power -= pen
-				usa.relations -= 200
+				GameManager.add_empire_power(usa, -pen)
+				GameManager.add_empire_relations(usa, -200)
 			_set_war_active(w, 0, true)
 			if player != null and player.has_tag("rim"):
-				w.influence_prc += 25
+				GameManager.add_influence_prc(25)
 		else:
 			# 原版怪异逻辑：读 empires[0](美).now_leader 却扣 empires[1](苏).power（忠实保留，八荣八耻①，DBS L8647-8654）
 			var usa := _empire(w, EmpireData.USA)
@@ -712,15 +712,15 @@ func _def_1(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 			if usa != null and usa.current_leader == 5:
 				pen = 100
 			if ussr != null:
-				ussr.power -= pen
-				ussr.relations -= 200
+				GameManager.add_empire_power(ussr, -pen)
+				GameManager.add_empire_relations(ussr, -200)
 			_set_war_active(w, 1, true)
 			# DBS L8657-8660：completedDecisions[9] → influencePRC += 25
 			if w.decisions != null and w.decisions.completed.size() > 9 and w.decisions.completed[9]:
-				w.influence_prc += 25
-		d.agents -= 50
-		d.budget -= 30
-		d.army -= 50
+				GameManager.add_influence_prc(25)
+		GameManager.add_agents(-50)
+		GameManager.add_budget(-30)
+		GameManager.add_army(-50)
 	return {
 		"caption": "扶持极左派", "opis": "支持毛派组织",
 		"conditions": conds, "dormant": false, "effect": eff,
@@ -771,8 +771,8 @@ func _def_5000(w: WorldState, _d: WorldState, country: CountryData) -> Dictionar
 	# uslovie[2]：!isRIM（DBS L5536）
 	conds.append(_cond("尚未加入", func(): return not country.has_tag("rim")))
 	var eff := func():
-		w.influence_prc += 50
-		country.set_tag("rim", true)
+		GameManager.add_influence_prc(50)
+		GameManager.set_country_tag(country, "rim", true)
 	return {
 		"caption": "革命国际",
 		"opis": "邀请该国加入革命国际主义运动，为争得新世界而战！",
@@ -809,8 +809,8 @@ func _def_5001(w: WorldState, d: WorldState, country: CountryData) -> Dictionary
 	# uslovie[3]：data.diplomatic_reputation>790（DBS L5549）
 	conds.append(_cond("外交声誉高于 79", func(): return d.diplomatic_reputation > 790))
 	var eff := func():
-		w.influence_prc += 30
-		country.set_tag("au", true)
+		GameManager.add_influence_prc(30)
+		GameManager.set_country_tag(country, "au", true)
 	return {
 		"caption": "非洲联盟",
 		"opis": "邀请该国加入非洲联盟，投身于非洲革命与解放的伟大事业中",

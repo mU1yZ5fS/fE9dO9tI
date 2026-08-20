@@ -31,9 +31,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[1], TXT_DIS_AGENTS.format([20]))
 	var mod6: bool = ws.modifiers.size() > 6 and ws.modifiers[6] != null and ws.modifiers[6].is_active
-	if _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 250 and _d(W.I_AGENTS) >= 150 and _d(W.I_INFLUENCE) >= 700 			and (mod6 or GameManager.is_faction_leading(0)):
+	if _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 250 and _d(W.I_AGENTS) >= 150 and _d(W.I_INFLUENCE) >= 700 			and (mod6 or game.is_faction_leading(0)):
 		_enable(opt[2], event_def.options[2].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
-	elif not mod6 and not GameManager.is_faction_leading(0):
+	elif not mod6 and not game.is_faction_leading(0):
 		_disable(opt[2], TXT_DIS_MOD)
 	elif _d(W.I_INFLUENCE) < 700:
 		_disable(opt[2], TXT_DIS_INFLUENCE.format([30]))
@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 
 
 func _start_war_383(infl1: int, infl2: int, usa_side: int, ussr_side: int) -> void:
-	GameManager.start_war(19, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, usa_side, ussr_side)
+	game.start_war(19, TXT_WAR_ATT, TXT_WAR_DEF, infl1, infl2, usa_side, ussr_side)
 	if ws.wars.size() > 19 and ws.wars[19] != null:
 		ws.wars[19].name_war = TXT_WAR_NAME
 		ws.wars[19].fortnight_max = 11

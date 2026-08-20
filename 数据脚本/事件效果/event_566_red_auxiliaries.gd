@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 效果：ingamewars[42] = War().Name("伊拉克内战").Attacker("复兴党")
 ##   .Defender("伊拉克爱国同盟").AttackerInfluence(700-num).DefenderInfluence(300+num)
 ##   .TickTime(24).AmericanSupportAttacker（num = c14.prcpower/10 整数除法）。
-## 差异：Godot 用 GameManager.start_war + fortnight_max=24（原版 TickTime(24)）；
+## 差异：Godot 用 game.start_war + fortnight_max=24（原版 TickTime(24)）；
 ##   AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1（攻击方=复兴党）。
 
 const TXT_RESULT := "中东的局势还在持续的恶化……"
@@ -33,7 +33,7 @@ func execute(context: Dictionary) -> void:
 		if c14 != null:
 			@warning_ignore("integer_division")
 			num = c14.prc_power / 10
-		GameManager.start_war(
+		game.start_war(
 			42, "复兴党", "伊拉克爱国同盟",
 			700 - num, 300 + num, 0, -1
 		)

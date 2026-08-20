@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 		return
 	if d.size() > 143:
 		d.oil_price += 3   # 原 data.oil_price（无命名键）
-	GameManager.start_war(28, WAR28_SIDE1, WAR28_SIDE2, 950, 50, 1, 1)
+	game.start_war(28, WAR28_SIDE1, WAR28_SIDE2, 950, 50, 1, 1)
 	if ws.wars.size() > 28 and ws.wars[28] != null:
 		ws.wars[28].name_war = WAR28_NAME
 		ws.wars[28].fortnight_max = 25

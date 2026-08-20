@@ -22,5 +22,5 @@ func execute(context: Dictionary) -> void:
 		solomon.government = GameConstants.Government.LIBERAL
 		solomon.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 		if GameManager != null:
-			GameManager.set_map_region_owner(SOLOMON_REGION_IDS, SOLOMON_GWCODE)
+			game.set_map_region_owner(SOLOMON_REGION_IDS, SOLOMON_GWCODE)
 	context["result_text"] = TXT_RESULT

@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 
 
 func _start_war41(side2: String, usa_side: int, ussr_side: int) -> void:
-	GameManager.start_war(41, "叙利亚政府军", side2, 700, 300, usa_side, ussr_side)
+	game.start_war(41, "叙利亚政府军", side2, 700, 300, usa_side, ussr_side)
 	if ws.wars.size() > 41 and ws.wars[41] != null:
 		ws.wars[41].name_war = "叙利亚内战"
 		ws.wars[41].fortnight_max = 24

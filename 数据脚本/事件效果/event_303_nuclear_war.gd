@@ -1,6 +1,6 @@
 ## 原作 Event303.cs：核战（核战争后果，两选项）。
 ## 触发：全目录搜索无 this_num_event = 303 / Reset(303)；链外 REST 段，原版无自动条件。
-## 差异：load_scene_after_click→GameManager.queue_ending_after_event(7)；party_ideology[0]→factions[0].ideology；
+## 差异：load_scene_after_click→game.queue_ending_after_event(7)；party_ideology[0]→factions[0].ideology；
 ##  GameObject.Find("Ach(Clone)") / iron_and_blood 成就 Set(112) 已接 Achievements；文本来自 Events_text_en 索引 50-56。
 extends "res://数据脚本/event_script_base.gd"
 
@@ -28,7 +28,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			GameManager.queue_ending_after_event(7)
+			game.queue_ending_after_event(7)
 			context["result_text"] = TXT_R0
 		1:
 			if ws.factions.size() > 0 and ws.factions[0] != null:

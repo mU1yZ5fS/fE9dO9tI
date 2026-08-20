@@ -27,6 +27,19 @@ var ws: WorldState = null
 ## 数值表快捷引用（= ws，引用语义，修改即写回）
 var d: WorldState = null
 
+## 事件脚本可用的 GameService 门面；优先取 context 注入，缺省回退到 GameManager。
+var _game_service: GameService = null
+var game: GameService:
+	get:
+		if _game_service == null:
+			if exec_context.has("game") and exec_context["game"] is GameService:
+				_game_service = exec_context["game"] as GameService
+			elif GameManager != null:
+				_game_service = GameService.new(GameManager)
+		return _game_service
+	set(value):
+		_game_service = value
+
 ## 最近一次 execute(context) 的上下文。EventEngine 执行 CUSTOM_SCRIPT 前会注入。
 ## 用于让事件脚本通过 context["world"] 拿到 WorldState，避免直接依赖 GameManager。
 var exec_context: Dictionary = {}
@@ -42,6 +55,8 @@ func _bind_world() -> bool:
 	if ws == null:
 		return false
 	d = ws
+	if exec_context.has("game") and exec_context["game"] is GameService:
+		_game_service = exec_context["game"] as GameService
 	return true
 
 

@@ -56,7 +56,7 @@ func _kill_faction_leader_if_valid(faction_index: int) -> void:
 		return
 	var idx := ws.factions[faction_index].leader_index
 	if idx >= 0 and idx < ws.politicians.size():
-		GameManager.kill_politician(idx)
+		game.kill_politician(idx)
 
 
 func _faction_leader_or(faction_index: int, fallback: int) -> int:

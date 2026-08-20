@@ -127,7 +127,7 @@ func execute(context: Dictionary) -> void:
 
 
 func _start_war88(infl1: int, infl2: int) -> void:
-	GameManager.start_war(88, "什叶派武装", "伊拉克", infl1, infl2, 0, 0)
+	game.start_war(88, "什叶派武装", "伊拉克", infl1, infl2, 0, 0)
 	if ws.wars.size() > 88 and ws.wars[88] != null:
 		ws.wars[88].name_war = "伊拉克什叶派起义"
 		ws.wars[88].fortnight_max = 100  # 原版 TickTime(100)

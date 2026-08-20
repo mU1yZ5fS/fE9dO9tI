@@ -230,7 +230,7 @@ func _event_94_result_3(context: Dictionary) -> void:
 	# 原版 data.ending_route=1 → load_scene_after_click → SceneManager.LoadScene("Ending")
 	# 项目语义映射：结局 1（人民的选择）。见 event_001/event_005 同类迁移。
 	d.ending_route = 1
-	GameManager.queue_ending_after_event(1)
+	game.queue_ending_after_event(1)
 
 
 ## 当前国家领袖显示名（Event95 描述插姓名时兜底；94 成功后领袖已换为自由派）。

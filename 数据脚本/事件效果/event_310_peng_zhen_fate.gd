@@ -30,7 +30,7 @@ func execute(context: Dictionary) -> void:
 				if p != null and minp != null and p.power < minp.power:
 					num = i
 			if num >= 0 and num < ws.politicians.size():
-				GameManager.kill_politician(num)
+				game.kill_politician(num)
 				var p2 := ws.politicians[num]
 				if p2 != null:
 					p2.name_first = 27
@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 250
 					p.power -= 250
 			if num2 >= 0:
-				GameManager.kill_politician(num2)
+				game.kill_politician(num2)
 			context["result_text"] = TXT_R1
 
 

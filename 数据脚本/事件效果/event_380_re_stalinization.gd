@@ -57,7 +57,7 @@ func execute(context: Dictionary) -> void:
 					pol.loyalty -= 200
 				elif pol != null:
 					pol.loyalty -= 350
-			if GameManager.is_faction_leading(0):
+			if game.is_faction_leading(0):
 				_add(W.I_PARTY_SUPPORT, 300)
 			else:
 				_add(W.I_PARTY_SUPPORT, -300)
@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 					pol.loyalty += 200
 				elif pol != null:
 					pol.loyalty += 350
-			if GameManager.is_faction_leading(0):
+			if game.is_faction_leading(0):
 				_add(W.I_PARTY_SUPPORT, -300)
 			else:
 				_add(W.I_PARTY_SUPPORT, 150)

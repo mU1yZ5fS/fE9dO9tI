@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event463.cs：卡萨布兰卡一夜（摩洛哥干预四选项）。
 ## 触发：ReqEventForDLC02.cs:402-404 —— DATE_AFTER 1981.6.1；fire_only_once 承担 !event_done[463]。
-## 差异：level_of_dev→level_of_development；开战按项目约定 GameManager.start_war(39,...)
+## 差异：level_of_dev→level_of_development；开战按项目约定 game.start_war(39,...)
 ##   后覆盖 name_war/fortnight_max（TickTime 20）；AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE1，
 ##   relres→ussr_side = GameConstants.WarSide.SIDE2。
 
@@ -89,7 +89,7 @@ func execute(context: Dictionary) -> void:
 			var c86 := _country(86)
 			if c86 != null and c86.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				num += 30
-			GameManager.start_war(39, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 700 - num, 300 + num, 0)
+			game.start_war(39, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 700 - num, 300 + num, 0)
 			var war := _get_war(39)
 			if war != null:
 				war.name_war = TXT_WAR_NAME

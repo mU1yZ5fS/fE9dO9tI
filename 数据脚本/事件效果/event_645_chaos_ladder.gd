@@ -17,7 +17,7 @@ func execute(context: Dictionary) -> void:
 	context["result_text"] = TXT_R0
 	# 原版 ingamewars[76]：喀尔巴阡行动，罗马尼亚(300) vs 华沙条约(700)，
 	#   AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE2、SovietSupportDefender → ussr_side=2
-	GameManager.start_war(76, "罗马尼亚", "华沙条约", 300, 700, 1, 2)
+	game.start_war(76, "罗马尼亚", "华沙条约", 300, 700, 1, 2)
 	if ws.wars.size() > 76 and ws.wars[76] != null:
 		ws.wars[76].name_war = "喀尔巴阡行动"
 	_add(W.I_PARTY_SUPPORT, 300)

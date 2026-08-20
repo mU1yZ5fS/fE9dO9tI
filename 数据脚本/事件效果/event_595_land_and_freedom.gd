@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			GameManager.start_war(51, "肯尼亚军队", "人民救赎委员会", 750, 250, 0, 1)
+			game.start_war(51, "肯尼亚军队", "人民救赎委员会", 750, 250, 0, 1)
 			if ws.wars.size() > 51 and ws.wars[51] != null:
 				ws.wars[51].name_war = WAR51_NAME
 				ws.wars[51].fortnight_max = 24

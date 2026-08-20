@@ -40,7 +40,7 @@ func execute(context: Dictionary) -> void:
 				var fl: PoliticianData = ws.politicians[fl_idx]
 				if ws.leader != null:
 					PoliticianSystem.copy_leader_profile(ws.leader, fl)
-				GameManager.kill_politician(fl_idx)
+				game.kill_politician(fl_idx)
 			# 原版 LeaderAsset = 0; MoneyLevel = 0; ServeRMB = false 为 display-only，跳过
 			if ws.modifiers.size() > 65: ws.modifiers[65].is_active = false
 			# 原版 GlobalScript.inst.gameState.ServeRMB = false；display-only / 修正文案由 Godot 静态维护，跳过。文本: 

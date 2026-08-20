@@ -105,7 +105,7 @@ func _event_72(option_index: int, context: Dictionary) -> void:
 func _event_73(context: Dictionary) -> void:
 	# Event73.cs TextOfEvents 中 Gosstroy==1 分支随后被无条件覆盖，原版即死代码；本版只采用第二段描述。
 	# 原版销毁按钮1-3的文案保留在常量 TXT_73_OPT1_HIDDEN / TXT_73_OPT2_HIDDEN / TXT_73_OPT3_HIDDEN 中以备溯源。
-	GameManager.start_war(3, "Iraq", "Iran", 500, 500, 0, 0)
+	game.start_war(3, "Iraq", "Iran", 500, 500, 0, 0)
 	context["result_text"] = TXT_73_R0
 
 

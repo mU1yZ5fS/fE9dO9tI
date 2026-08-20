@@ -297,7 +297,7 @@ func _event_39(option_index: int, context: Dictionary) -> void:
 			_change_politicians({0: [100, 30], 1: [60, 20], 2: [50, 0], 3: [-100, -30]})
 			var kill_index := _find_politician(13, 13)
 			if kill_index >= 0:
-				GameManager.kill_politician(kill_index)
+				game.kill_politician(kill_index)
 		1:
 			_add_data({W.I_PARTY_SUPPORT: 100, W.I_PEOPLE_SUPPORT: 50,
 				W.I_DIPLO: -30, W.I_COMMUNICATIONS: 20})

@@ -54,7 +54,7 @@ func execute(context: Dictionary) -> void:
 		_leave_alliances(c106)
 	# 地图归属必须无条件执行：即使旧存档缺 106 号国，领土也要从法国 220 转给吉布提 522。
 	if GameManager != null:
-		GameManager.set_map_region_owner([366, 367, 368, 370, 376, 2032], 522)
+		game.set_map_region_owner([366, 367, 368, 370, 376, 2032], 522)
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:

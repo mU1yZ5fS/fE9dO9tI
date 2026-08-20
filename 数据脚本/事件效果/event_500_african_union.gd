@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## HasArmy/IsChineseInfluenceLessThan/IsAfricanProprc/IsAfricanSocialism/AfricanAlliance 链）。
 ## Godot 决议界面移植说明，事件本体按手动事件（trigger_conditions 空）移植；
 ## 入口暂由外交面板对原版序号 61（上沃尔特/布基纳法索）的 story action 调用
-## GameManager.start_event("african_union")，条件与上述 Decision 链逐项一致。
+## game.start_event("african_union")，条件与上述 Decision 链逐项一致。
 ## 效果逐字对齐 Event500.cs ResultsOfEvents(result_num==0)。
 ## result_num==5 为空结果，Godot 不建无效果选项。
 

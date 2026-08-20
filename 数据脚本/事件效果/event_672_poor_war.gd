@@ -75,7 +75,7 @@ func evaluate(world: WorldState) -> bool:
 
 
 func _start_war(infl1: int, infl2: int) -> void:
-	GameManager.start_war(85, "马里", "布基纳法索", infl1, infl2, 1, 2)
+	game.start_war(85, "马里", "布基纳法索", infl1, infl2, 1, 2)
 	if ws.wars.size() > 85 and ws.wars[85] != null:
 		ws.wars[85].name_war = "马里-布基纳法索战争"
 

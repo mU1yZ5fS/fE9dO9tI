@@ -42,7 +42,7 @@ func execute(context: Dictionary) -> void:
 			d.set_data_by_index(idx, 100)
 	context["result_text"] = TXT_R0
 	# 原版 ingamewars[86]：北爱尔兰冲突，爱尔兰武装(400-num) vs 英国(600+num)，AmericanSupportDefender
-	GameManager.start_war(86, "爱尔兰武装", "英国", 400 - num, 600 + num, 2, -1)
+	game.start_war(86, "爱尔兰武装", "英国", 400 - num, 600 + num, 2, -1)
 	if ws.wars.size() > 86 and ws.wars[86] != null:
 		ws.wars[86].name_war = "北爱尔兰冲突"
 	var ireland := ws.get_country_by_legacy_index(29)

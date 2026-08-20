@@ -158,7 +158,7 @@ func _war_stats() -> void:
 
 func _start_war(war_id: int, side1: String, side2: String, war_name: String, infl1: int = 500, infl2: int = 500) -> void:
 	# 原版全部为 SovietSupportDefender.AmericanSupportDefender → usa_side=2、ussr_side=2
-	GameManager.start_war(war_id, side1, side2, infl1, infl2, 2, 2)
+	game.start_war(war_id, side1, side2, infl1, infl2, 2, 2)
 	if ws.wars.size() > war_id and ws.wars[war_id] != null:
 		ws.wars[war_id].name_war = war_name
 		# Event641 的 war70 TickTime(4) 与 Event642 的 TickTime(12) 不同源；

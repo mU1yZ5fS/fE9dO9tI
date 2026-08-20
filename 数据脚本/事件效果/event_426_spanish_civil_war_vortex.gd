@@ -74,7 +74,7 @@ func _fmt(s: String, args: Array) -> String:
 
 func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: int,
 		usa_side: int, ussr_side: int, war_name: String, fortnight: int) -> void:
-	GameManager.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
+	game.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
 	if ws.wars.size() > war_id and ws.wars[war_id] != null:
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = fortnight
@@ -137,8 +137,8 @@ func execute(context: Dictionary) -> void:
 			catalonia.stability = 1000
 			catalonia.social_stability = 1000
 		# 地图上让巴斯克/加泰罗尼亚四省从西班牙(230)转移出去。
-		GameManager.set_map_region_owner(BASQUE_REGION_IDS, basque.gwcode if basque != null and basque.gwcode > 0 else 9109)
-		GameManager.set_map_region_owner(CATALONIA_REGION_IDS, catalonia.gwcode if catalonia != null and catalonia.gwcode > 0 else 9110)
+		game.set_map_region_owner(BASQUE_REGION_IDS, basque.gwcode if basque != null and basque.gwcode > 0 else 9109)
+		game.set_map_region_owner(CATALONIA_REGION_IDS, catalonia.gwcode if catalonia != null and catalonia.gwcode > 0 else 9110)
 	if opt == 0:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -50)

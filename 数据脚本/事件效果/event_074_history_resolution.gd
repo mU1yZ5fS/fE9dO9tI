@@ -41,7 +41,7 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc -= 50
 			_politicians({0: [0, -300], 1: [0, -300], 2: [0, -300], 3: [0, 150]})
 			# 差异：load_scene_after_click → 原版触发事件4（党内阴谋）
-			GameManager.start_event("congress_conspiracy")
+			game.start_event("congress_conspiracy")
 			context["result_text"] = "1981年6月27日至29日，中国共产党第十一届中央委员会第六次全体会议在北京隆重召开。然而，我们准备推出的文件却招致了相当争议，最终只能让全会以微弱多数通过。《决议》对建国三十二年来党的重大历史事件特别是“文化大革命”作出了总结，并给予毛泽东同志“人造奶油共产主义者”与“20世纪版秦始皇、李自成与洪秀全”的评价。"
 		3:
 			var line: int = d.political_line if d.size() > W.I_POLITICAL_LINE else 0

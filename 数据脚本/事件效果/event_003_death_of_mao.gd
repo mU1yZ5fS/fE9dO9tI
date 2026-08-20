@@ -46,7 +46,7 @@ func _replace_mao_with_mao_yuanxin() -> void:
 		return
 	# 移除毛泽东槽，固定点名补入毛远新（原版死亡补员后极左派槽由毛远新接任）。
 	# 若毛远新已入场/未到年份/池中无人，才回退常规补员规则。
-	GameManager.kill_politician(0, "毛远新")
+	game.kill_politician(0, "毛远新")
 	if ws.politicians.size() > 0 and ws.politicians[0] != null:
 		var p: PoliticianData = ws.politicians[0]
 		# Event3.cs:30-37 逐字段覆写：

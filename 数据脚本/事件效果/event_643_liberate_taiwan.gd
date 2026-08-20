@@ -16,7 +16,7 @@ func execute(context: Dictionary) -> void:
 		return
 	context["result_text"] = TXT_R0
 	# 原版 ingamewars[75]：第三次中国内战，中国(700) vs 中华民国(300)，美苏均支持防守方
-	GameManager.start_war(75, "中华人民共和国", "中华民国", 700, 300, 2, 2)
+	game.start_war(75, "中华人民共和国", "中华民国", 700, 300, 2, 2)
 	if ws.wars.size() > 75 and ws.wars[75] != null:
 		ws.wars[75].name_war = "第三次中国内战"
 	_add(W.I_PARTY_SUPPORT, 300)

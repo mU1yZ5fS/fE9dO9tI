@@ -95,7 +95,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			if c140 != null:
 				_set_part(c140, 1, true)
-			GameManager.start_war(46, WAR46_SIDE1, WAR46_SIDE2, 500, 500, 0, 1)
+			game.start_war(46, WAR46_SIDE1, WAR46_SIDE2, 500, 500, 0, 1)
 			if ws.wars.size() > 46 and ws.wars[46] != null:
 				ws.wars[46].name_war = WAR46_NAME
 				ws.wars[46].fortnight_max = 24
@@ -108,7 +108,7 @@ func execute(context: Dictionary) -> void:
 		2:
 			if c140 != null:
 				_set_part(c140, 1, true)
-			GameManager.start_war(47, WAR47_SIDE1, WAR47_SIDE2, 800, 200, 0, -1)
+			game.start_war(47, WAR47_SIDE1, WAR47_SIDE2, 800, 200, 0, -1)
 			if ws.wars.size() > 47 and ws.wars[47] != null:
 				ws.wars[47].name_war = WAR47_NAME
 				ws.wars[47].fortnight_max = 24
