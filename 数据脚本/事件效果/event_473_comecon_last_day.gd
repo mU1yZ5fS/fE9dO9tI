@@ -6,9 +6,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：empires[1].leaders[6].support-- 按索引守护；isSEV/prosov/econ/proprc→set_tag；
 ##   resultOfEvents[62] 用项目 event_id=inner_mongolia_problem。
 
-const TXT_TITLE := "经互会的最后一日"
-const TXT_DESC := "随着苏联内部危机的进一步加剧，戈尔巴乔夫无力继续担当“社会主义大家庭”的家长这一任务。在宣布苏联军队撤出东欧国家之后，经互会的去留也被提上了日程。在布达佩斯召开的大会上，苏联领导人米哈伊尔·戈尔巴乔夫宣布了惊人的消息：经互会将解散，各个成员国将自行寻找处理未来。也许我们可以趁机做点什么？"
-const TXT_OPT0 := "趁机招揽经互会前成员国"
 const TXT_OPT1_0 := "这就是和修正主义者沆瀣一气的下场！"
 const TXT_OPT1_12 := "我们只能惊恐的看着老朋友的离去"
 const TXT_OPT1_3 := "或许他们也和我们一样改革的话就好了"
@@ -28,7 +25,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var d := world.数值表
 	var line56 := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if line56 <= 0:
 		_enable(opt[1], TXT_OPT1_0)
 	elif line56 == 1 or line56 == 2:
@@ -123,25 +120,16 @@ func _collapse_soviet_power() -> void:
 			ws.empires[EmpireData.USSR].power = 0
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

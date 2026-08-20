@@ -7,17 +7,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 选项显隐 prepare 动态改写（data56 政治路线 + modifies[3]）。
 ##  - LeaveAlliances() 逐项清标签；puppetOf=21 → puppet_of=21（法国）。
 
-const TXT_TITLE := "恩古瓦比的大会？——第一幕"
 
-const TXT_DESC := "在雍比的治下，刚果的右转是显而易见的，明显“向西方摇摆”，企图求助于法国的经济援助以摆脱经济困境，并与美国重新建立了外交关系，但收效甚微，并鼓励外资进入刚果。雍比以“清算刺杀恩古瓦比总统的‘反动势力’”为由展开了全国的大清洗，不久前被恩古瓦比大赦出狱的来自前M-22集团的幸存者也因此再度入狱，前总统马桑巴-代巴也被作为替罪羊处决。这使得他和作为党内保守派代表的军事委员会第一副主席和国防部长德尼·萨苏-恩格索之间的冲突越来越大。皮埃尔·安加上尉发表了一份题为“是什么使我们分裂以及在革命进程中避免危机的手段”的文件，其中谴责了萨苏为取代雍比而进行秘密活动，并强调他作为国防部长，在1977年3月18日未能保护恩古瓦比总统，他的疏忽大意导致了总统的死亡。党的军事委员会把作为第一副主席的萨苏停职了。\n萨苏开始与党的前二号人物和理论家让-皮埃尔·蒂斯特雷·契卡雅结盟，开始反击，他们动员刚果劳动党的群众组织（工会、青年组织和妇女组织）要求召开自军事委员会成立以来一直处于休眠状态的刚果劳动党中央委员会会议。雍比与他的前任截然相反的尚武特质使其与民众疏离，不受群众欢迎，萨苏派也开始借助传单谴责他的“腐化”并暗示他参与暗杀恩古瓦比的活动。萨苏派和雍比派之间的冲突很快将决出胜负，日益失去民心的雍比似乎已经失去了靠自己反击的力量……\n主席同志，我们是否要做些什么？"
 
-const TXT_OPT0 := "让我们帮助雍比的改革派"
 const TXT_OPT0_DIS := "为什么要支持一伙叛徒？"
-const TXT_OPT1 := "既然雍比那么想要法国的帮助，那就满足他……"
 const TXT_OPT1_DIS := "我们是不会让法国人回去的！"
-const TXT_OPT2 := "支持萨苏-恩格索和蒂斯特雷·契卡雅一派"
 const TXT_OPT2_DIS := "为什么要支持一伙教条主义者？"
-const TXT_OPT3 := "没理由帮助一群墙头草"
 
 const TXT_R0 := "在我们的支持下，雍比召集了一批支持他的军官以及一批劳动党的改革派成员，对萨苏派进行武力的突袭，并引发了两派的街头火并。由于雍比对帝国主义的较好态度，美、法和扎伊尔也决定支持雍比。在各方支持下，雍比成功清理了保守派成员，树立了刚果劳动党改革派的领导地位。他没有忘记是谁支持了他，刚果决定与和中国和西方展开更大规模的合作，并继续进行经济改革。在这一情况下，刚果劳动党军事委员会的专制仍将继续。"
 
@@ -37,18 +31,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
 	var opt := event_def.options
 	if line >= 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line > 2 and not mod3:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line < 2:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -113,11 +107,5 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

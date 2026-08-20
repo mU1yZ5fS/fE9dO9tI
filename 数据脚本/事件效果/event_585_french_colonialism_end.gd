@@ -8,14 +8,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - proprc → 亲中；names1+names2 → _leader_name()；
 ##  - resultOfEvents 缺省按原版 int 默认 0 处理。
 
-const TXT_TITLE := "法兰西殖民主义的终结"
 
-const TXT_DESC := "主席同志，在1977年5月8日，法国阿法尔和伊萨斯领地举行了第三次独立公投。之前的公投是在1958年和1967年举行的，因为法国人从中做梗而独立未遂。这次公投则支持从法国独立。有98.8%的选民支持脱离法国，正式标志着吉布提的独立。我们不能忘记是因为是索马里大力支持的FLNC（索马里沿海解放阵线）开展了武装斗争，从而促使法国放弃这块领土。伊萨族政治家哈桑·古莱德·阿普蒂敦在1958年的公投中就开始反对法国统治，他带领着人民争取独立联盟参选，并顺利成为第一任总统。\n当然，哈桑·古莱德·阿普蒂敦只能代表南部的伊萨族，而不能代表北部的阿法尔人，这也为潜在的冲突酝酿了契机。"
 
-const TXT_OPT0 := "这是帝国主义的终结！"
-const TXT_OPT1 := "派遣大使，借机施加我们的影响力"
 const TXT_OPT1_DIS := "我们没有兴趣参与他们的事情"
-const TXT_OPT2 := "秘密联络反对派"
 const TXT_OPT2_DIS := "他们还是太弱小了"
 
 const TXT_R0 := "又一个国家从帝国主义的压迫中解放了出来。"
@@ -34,15 +29,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var data := world.数值表
 	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if line <= 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	var ussr_rel := world.empires[EmpireData.USSR].relations if world.empires.size() > EmpireData.USSR \
 			and world.empires[EmpireData.USSR] != null else 0
 	if ussr_rel <= 700:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 

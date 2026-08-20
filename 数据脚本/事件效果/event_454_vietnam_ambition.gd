@@ -6,14 +6,10 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：描述按 resultOfEvents[56] 动态（原事件56在项目 event_id=teach_vietnam_lesson）；
 ##   name 改 chinese_name；isSEV→set_tag("sev")；Torg→set_tag("对华贸易")。
 
-const TXT_TITLE := "越南的野心"
 const TXT_DESC_A := "越南成功击溃民主柬埔寨政府并挫败我们的进攻后，野心极度膨胀。在苏联的支持下，黎笋、凯山·丰威汉和韩桑林在胡志明市进行了一周的秘密协商和谈判，最终，三方签订了关于成立印度支那民主共和国联邦的协议。十日后，在印度支那联合人民军（主要是越南人民军）的监督下，三国通过一场超过90%支持率的全民公投，正式宣布成立印度支那民主共和国联邦，首都为胡志明市；同时，越南共产党、柬埔寨人民革命党和老挝人民革命党在一场联合代表大会中再次统一为印度支那共产党。新的“联邦政府“表示，三国的整合是长期性的，要经过从邦联到联邦缓慢整合的过程。苏联承认了联邦，并表示这是解决印度支那民族问题的最佳方案；新的印度支那政府宣布将加快和经互会的一体化，老挝和柬埔寨也正式融入了经互会体系；双方也将开展大规模军事合作，苏联军事基地正在处于筹备过程中，同时苏联将参与”柬埔寨平叛“。我们支持的民主柬埔寨联合政府谴责了这个所谓的联邦，称这是越南对主权国家的公然吞并。除了苏东阵营的国家外，大多国家都未承认这印度支那的合并。这对我国无疑是坏事，这证明，苏联对我们正式完成了南北合围。我们应该对这一“联邦”有所表示了。"
 const TXT_DESC_B := "越南成功击溃民主柬埔寨政府后，野心极度膨胀。在苏联的支持下，黎笋、凯山·丰威汉和韩桑林在胡志明市进行了一周的秘密协商和谈判，最终，三方签订了关于成立印度支那民主共和国联邦的协议。十日后，在印度支那联合人民军（主要是越南人民军）的监督下，三国通过一场超过90%支持率的全民公投，正式宣布成立印度支那民主共和国联邦，首都为胡志明市；同时，越南共产党、柬埔寨人民革命党和老挝人民革命党在一场联合代表大会中再次统一为印度支那共产党。新的“联邦政府“表示，三国的整合是长期性的，要经过从邦联到联邦缓慢整合的过程。苏联承认了联邦，并表示这是解决印度支那民族问题的最佳方案；新的印度支那政府宣布将加快和经互会的一体化，老挝和柬埔寨也正式融入了经互会体系；双方也将开展大规模军事合作，苏联军事基地正在处于筹备过程中，同时苏联将参与”柬埔寨平叛“。我们曾经支持的民主柬埔寨联合政府谴责了这个所谓的联邦，称这是越南对主权国家的公然吞并。除了苏东阵营的国家外，大多国家都未承认这印度支那的合并。这对我国无疑是坏事，这证明，苏联对我们正式完成了南北合围。我们应该对这一“联邦”有所表示了。"
-const TXT_OPT0 := "谴责这一联邦"
-const TXT_OPT1 := "为新联邦欢呼"
 const TXT_OPT1_DIS_A := "你还嫌不够丢脸吗？！"
 const TXT_OPT1_DIS_B := "我们不可能为修正主义者欢呼！"
-const TXT_OPT2 := "保持沉默"
 const TXT_R0 := "我国外交部声明：“越南肆意侵略主权国家，支持傀儡政府，践踏国际秩序，应该受到强烈谴责！民主柬埔寨联合政府为民族解放的斗争是完全正义的！“印支方面并未对此做出回应，但是，我们南北边境紧张的局势也并未得到缓和。"
 const TXT_NAME_CAMBODIA := "印支联邦柬埔寨区"
 const TXT_NAME_FED := "印度支那联邦"
@@ -36,14 +32,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if world.数值表.size() > W.I_POLITICAL_LINE:
 		line56 = world.数值表[W.I_POLITICAL_LINE]
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if res56 == 0 and line56 >= 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif res56 == 1:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 
@@ -101,25 +97,16 @@ func _indochina_torg(v: bool, l: bool, k: bool) -> void:
 	_tag(23, "对华贸易", k)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

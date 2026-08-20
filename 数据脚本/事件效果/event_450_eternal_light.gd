@@ -5,16 +5,12 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && ingamewars[3].is_going && DATE_AFTER 1982.5.1；fire_only_once 承担 !event_done[450]。
 ## 差异：iranrev→global_flags；战争3为既有两伊战争；结果0按 SubGosstroy 动态插入领袖名。
 
-const TXT_TITLE := "永恒之光"
 const TXT_DESC_NCRI := "自伊朗——伊拉克爆发大规模冲突以来，拉贾维和前总统巴尼萨德尔的伊朗全国抵抗委员会NCRI，已融入了包括人民圣战者，库尔德斯坦民主党，民族阵线、共产主义者联盟等倒霍力量。虽然其人数众多，但缺少强有力的支持。而伊拉克同时也陷入了和伊朗的堑壕战中，如果能得到NCRI，那么对于快速结束两伊战争也会有很大帮助。而随着伊拉克倒向我们，也许组建一支伊朗人自己的反神权武装力量或许也是可行的？"
 const TXT_DESC_BAZARGAN := "自伊朗——伊拉克爆发大规模冲突以来，普兰·巴扎尔甘和前总统巴尼萨德尔的伊朗人民革命阵线，已融入了包括人民敢死游击队（德赫加尼派），伊朗人民敢死游击队组织（少数派），工人阶级解放斗争组织（佩卡尔），伊朗共产主义者联盟，伊朗劳动者党，伊朗劳动党（风暴）等组织和其他小型共产主义团体，以及库尔德民主党和俾路支解放阵线等力量。虽然其人数众多，但缺少强有力的支持。而伊拉克同时也陷入了和伊朗的堑壕战中，如果能得到革命阵线，那么对于快速结束两伊战争也会有很大帮助。而随着伊拉克倒向我们，也许组建一支伊朗人自己的反神权武装力量或许也是可行的？"
 const TXT_DESC_HAVARI := "自伊朗——伊拉克爆发大规模冲突以来，阿里·哈瓦里和前总统巴尼萨德尔的伊朗人民革命阵线，已融入了伊朗人民党，人民敢死游击队组织（多数派），库尔德抵抗运动等力量。虽然其人数众多，但缺少强有力的支持。而伊拉克同时也陷入了和伊朗的堑壕战中，如果能得到革命阵线，那么对于快速结束两伊战争也会有很大帮助。而随着伊拉克倒向我们，也许组建一支伊朗人自己的反神权武装力量或许也是可行的？"
-const TXT_OPT0 := "在我们的帮助下，组建伊朗民族解放军"
 const TXT_OPT0_DIS := "这是否太激进了？"
-const TXT_OPT1 := "是时候执行计划了，执行“烈日行动”！"
 const TXT_OPT1_DIS_A := "为什么我们要把自己变得像帝国主义者一样？"
 const TXT_OPT1_DIS_B := "没有人会支持我们把轰炸机开到伊朗上空去！"
-const TXT_OPT2 := "我们暂时没有这个意向"
 const TXT_R0_NAME_NCRI := "拉贾维"
 const TXT_R0_NAME_BAZARGAN := "普兰·巴扎尔甘"
 const TXT_R0_NAME_OTHER := "阿里·哈瓦里"
@@ -36,18 +32,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		line56 = world.数值表[W.I_POLITICAL_LINE]
 	var opt := event_def.options
 	if line56 <= 1 and iran.has_tag("亲中"):
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	var pak := world.get_country_by_legacy_index(31)
 	var china := world.get_country_by_legacy_index(1)
 	if line56 < 1 and pak != null and pak.has_tag("亲中") and iran.has_tag("亲中") and china != null and china.has_tag("okb"):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif line56 > 1:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 
@@ -91,25 +87,16 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

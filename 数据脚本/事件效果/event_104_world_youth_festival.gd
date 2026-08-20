@@ -86,11 +86,5 @@ func _mod_active(index: int) -> bool:
 		and ws.modifiers[index] != null and ws.modifiers[index].is_active
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

@@ -7,15 +7,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - YugAgree → ws.get_flag("YugAgree")；
 ##  - 描述与选项按 YugAgree 动态改写；result<4 扣除资源后返回对应文本。
 
-const TXT_TITLE := "法国选举"
 const TXT_DESC_YUG := "自上次总统选举以来，法国国内的政治局势发生了显著变化。\n由法国社会党领导人弗朗索瓦·密特朗与法国共产党前领导人乔治·马歇在1972年建立的左翼总纲领联盟已经成了徒有其表的联合。在接下来的选举中，法国左派只能各自为战，且无法提名单一候选人。在这一情况下，法国共产党新任总书记正尝试与社会党及其左翼达成更深入的合作，以追求“共同反对资本主义”的目标促进左翼力量的壮大和团结，以追求社会变革。\n法国右翼一方的局势也并不明朗。由法国民主联盟提名的现任总统瓦莱里·吉斯卡尔·德斯坦，将与身为戴高乐主义者，来自保卫共和联盟的前总理雅克·希拉克对垒。\n现在，是时候让我们寻找最值得支持的棋子了。首位候选人密特朗因其可疑的观点，以及同样阴云密布的过去而并不受左派欢迎。罗兰·勒罗伊领导的法共新任领导层表现出的革新以及与社会党的团结态度也吸引了一部分支持者。\n瓦莱里·吉斯卡尔·德斯坦则在其任期中选择同勃列日涅夫交好，但更倾向于奉行亲美政策，并带领法国完全回归北约。这让他同试图延续戴高乐政策的雅克·希拉克格格不入。\n我们应当支持谁？"
-const TXT_DESC := "自上次总统选举以来，法国国内的政治局势发生了显著变化。\n由法国社会党领导人弗朗索瓦·密特朗与法国共产党领导人乔治·马歇在1972年建立的左翼总纲领联盟已经成了徒有其表的联合。在接下来的选举中，法国左派只能各自为战，且无法提名单一候选人。前脚在上次代表大会上摆脱苏联共产党控制的乔治·马歇，后脚便谴责社会党领导人的立场“和右翼毫无区别”。\n法国右翼一方的局势也并不明朗。由法国民主联盟提名的现任总统瓦莱里·吉斯卡尔·德斯坦，将与身为戴高乐主义者，来自保卫共和联盟的前总理雅克·希拉克对垒。\n现在，是时候让我们寻找最值得支持的棋子了。首位候选人密特朗因其可疑的观点，以及同样阴云密布的过去而并不受左派欢迎。然而，乔治·马歇与法国共产党在此方面也同样失败——该党已经成为了数起与移民事件相关的被告，并成为苏联侵略性外交政策的受害者。\n瓦莱里·吉斯卡尔·德斯坦则在其任期中选择同勃列日涅夫交好，但更倾向于奉行亲美政策，并带领法国完全回归北约。这让他同试图延续戴高乐政策的雅克·希拉克格格不入。\n我们应当支持谁？"
-const TXT_OPT0 := "我们选择支持密特朗"
 const TXT_OPT1_YUG := "我们选择支持勒罗伊"
-const TXT_OPT1 := "我们选择支持马歇"
-const TXT_OPT2 := "我们选择支持吉斯卡尔·德斯坦"
-const TXT_OPT3 := "我们选择支持希拉克"
-const TXT_OPT4 := "忽略"
 const TXT_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
 const TXT_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
 const TXT_R0 := "我们为弗朗索瓦·密特朗开展竞选活动提供了赞助，让我们瞧瞧法国人有没有把这笔钱花在刀刃上。首轮选举将在四月举行，第二轮选举（如果没有候选人获得超过50%的选票，则进行此轮选举）则被安排在五月。"
@@ -37,16 +30,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	if world.get_flag("YugAgree"):
 		event_def.description = TXT_DESC_YUG
-	else:
-		event_def.description = TXT_DESC
-	_prepare_cost(opt[0], TXT_OPT0)
+	_prepare_cost(opt[0], event_def.options[0].text)
 	if world.get_flag("YugAgree"):
 		_prepare_cost(opt[1], TXT_OPT1_YUG)
 	else:
-		_prepare_cost(opt[1], TXT_OPT1)
-	_prepare_cost(opt[2], TXT_OPT2)
-	_prepare_cost(opt[3], TXT_OPT3)
-	_enable(opt[4], TXT_OPT4)
+		_prepare_cost(opt[1], event_def.options[1].text)
+	_prepare_cost(opt[2], event_def.options[2].text)
+	_prepare_cost(opt[3], event_def.options[3].text)
+	_enable(opt[4], event_def.options[4].text)
 
 
 func _prepare_cost(opt: EventOption, text: String) -> void:
@@ -76,9 +67,6 @@ func execute(context: Dictionary) -> void:
 		_: context["result_text"] = TXT_R4
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:

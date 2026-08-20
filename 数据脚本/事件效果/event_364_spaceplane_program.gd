@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event364.cs：太空飞机计划。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "太空飞机计划"
 
-const TXT_DESC := "航天飞机项目为美国创造的机遇是我们的军队和科学家感兴趣的。航天飞机将能让我们更频繁地执行发射任务，并与在轨卫星合作。我们有两个项目，一个小的，可以在明年完成，另一个大的，和美国的基本一样，但是需要更多的时间和资源来完成。也有对该计划的批评之声，他们认为该计划既不实用，又毫无前景......"
 
 const TXT_OPT0 := "设计个小的。"
 const TXT_OPT0_DIS := "没有这么做的资源。"
@@ -70,19 +68,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

@@ -4,8 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录 grep 无任何自动触发点，原版无自动条件（测试事件，手动触发），
 ##   故 trigger_conditions=[]。
 
-const TXT_TITLE := "测试"
-const TXT_DESC := "测试事件"
 const TXT_OPT := "测试"
 const TXT_R := "测试"
 

@@ -34,6 +34,3 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = S_34
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta

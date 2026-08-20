@@ -148,7 +148,6 @@ func _action_available(action: Dictionary) -> bool:
 
 
 func _on_interactive_countries_pressed() -> void:
-	音频总管.play_button_click_sound()
 	_refresh_interactive_countries()
 	var popup := get_node_or_null("预警图标/可互动国家弹窗") as Panel
 	var item_list := get_node_or_null("预警图标/可互动国家弹窗/可互动国家列表") as ItemList
@@ -296,7 +295,6 @@ func _setup_alert_icons() -> void:
 
 func _on_alert_icon_input(event: InputEvent, scene_uid: String) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		音频总管.play_button_click_sound()
 		get_tree().change_scene_to_file(scene_uid)
 
 
@@ -385,7 +383,6 @@ func _connect_war_icon_click() -> void:
 
 
 func _on_war_icon_clicked(info: Dictionary) -> void:
-	音频总管.play_button_click_sound()
 	var earth := get_node_or_null("地球")
 	if earth != null and earth.has_method("highlight_country"):
 		earth.highlight_country(int(info.get("a_gw", 0)))

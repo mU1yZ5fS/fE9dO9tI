@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://c8e4f2a6b0d17"]
+
+[ext_resource type="Script" path="res://场景/科研界面/科技条目.gd" id="1_entry"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vg3t2"]
+bg_color = Color(0.2901961, 0.11764706, 0.19215687, 1)
+
+[node name="科技条目" type="Control"]
+script = ExtResource("1_entry")
+
+[node name="按钮" type="TextureButton" parent="."]
+layout_mode = 0
+offset_right = 180.0
+offset_bottom = 152.0
+
+[node name="是否可科研状态" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 75.0
+offset_right = 34.0
+offset_bottom = 100.0
+
+[node name="科研进度" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 146.0
+offset_top = 8.0
+offset_right = 172.0
+offset_bottom = 144.0
+theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
+fill_mode = 3
+show_percentage = false
+
+[node name="解锁年份" type="Label" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 109.0
+offset_right = 138.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 31
+text = "1976"
+horizontal_alignment = 1
+vertical_alignment = 1

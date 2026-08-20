@@ -8,21 +8,13 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - modifies[3]/[6].active → ws.modifiers[3]/[6].is_active；
 ##  - Torg → 对华贸易；proprc → 亲中；name → chinese_name；puppetOf → puppet_of。
 
-const TXT_TITLE := "最后的殖民地远征"
 
-const TXT_DESC := "在国父巴泰勒米·波冈达因空难去世后，戴维·达科的掌控了中非执政党黑非洲社会发展运动（MESAN）和国家的权力，并排挤了阿贝尔·贡巴的更支持泛非主义和社会主义的派系（他在被排挤后出走成立了中非民主发展运动，但很快被查禁），逐渐建立了MESAN的一党制霸权。\n1966年1月1日，让-贝德尔·博卡萨上校在一夜之间发起了不流血的政变，推翻了中非共和国总统戴维·达科。他效仿利比亚卡扎菲上校的革命指挥委员会，组建了革命委员会，废除了1959宪法并解散了议会，将所有的立法和行政权力都集中在了自己手上。1972年3月4日，博卡萨成为了终身总统；1976年12月4日，他以拿破仑为先例，把自己加冕为中非帝国的博卡萨一世皇帝。\n当然，中非的爱国人士也一直在为推翻博卡萨进行着地下活动。在马里安·恩古瓦比总统的支持下，布拉柴维尔的革命政权为中非的马克思主义左翼反对派提供了帮助，成功将克劳德-理查德·古昂加领导的中非人民解放阵线与阿贝尔·贡巴领导的民族解放革命委员会合并为乌班吉爱国阵线/劳动党。如今，它已经发展了相当规模的地下组织，正在计划动员民众进行起义和暴动——中非人民早就对这个暴君不满了。\n法国人最开始支持博卡萨政权，但是他越来越飘忽不定的古怪政策和残暴专制最终使法国越来越不满，他们很有可能会对这个政权采取措施，换一位更可靠的代理人。\n现在正是我们插手中非的时候了！"
 
-const TXT_OPT0 := "在刚果的帮助下，直接支持乌班吉爱国阵线/劳动党的民众起义计划"
 const TXT_OPT0_DIS := "不能接受这一极左冒进计划！"
-const TXT_OPT1 := "革命不是一蹴而就的，让我们联系乌班吉爱国阵线/劳动党，帮助他们进行长期渗透"
 const TXT_OPT1_DIS := "我们不会做这种费力不讨好的事"
-const TXT_OPT2 := "既然法国人要放弃博卡萨了，那我们为什么不去支持他？毕竟他早就说要建立“科学的社会主义”了！"
 const TXT_OPT2_DIS := "我们不能支持那个暴君！"
-const TXT_OPT3 := "谴责法非关系和法帝推行新殖民主义"
 const TXT_OPT3_DIS := "我们没必要为了这点小事得罪法国人！"
-const TXT_OPT4 := "在法国采取行动后发表支持的声明"
 const TXT_OPT4_DIS := "我们不能支持帝国主义者！"
-const TXT_OPT5 := "我们不关心那个内陆国！"
 
 const TXT_R0_A := "我们通过布拉柴维尔向乌班吉爱国阵线/劳动党提供了军事支援，并帮助他们联系了来自前非洲民主联盟-乌班吉沙里支部的希莱尔·科塔林博拉和他的关系网，以及中非出身的几内亚民主党和非洲团结党员、卢蒙巴政府的礼宾总管安德蕾·玛德琳·布鲁安，扩充了革命力量。1979年1月17日，通过发动总罢工和组建武装民兵，乌班吉爱国阵线/劳动党在班吉发动了武装起义，爱国阵线的民兵和“帝国”军队在班吉直接进行了巷战。"
 const TXT_R0_CONGO := "|由于刚果同乌班吉爱国阵线/劳动党和我们的盟友关系，在班吉的巷战进行的同时，刚果国家人民军也直接越过边境，开入了班吉，同革命民兵一起作战。最终，乌班吉爱国阵线/劳动党的武装革命民兵和刚果国家人民军一起推翻了班吉的反动政权，博卡萨也在行动中被俘，并被公审判处死刑。阿贝尔·贡巴宣告了中非人民共和国的成立。克劳德-理查德·古昂加被选为中非新总统，阿贝尔·贡巴当选人民议会主席并继续作为乌班吉爱国阵线/劳动党的领导人，希莱尔·科塔林博拉则被选为政府总理，被称为“卢蒙巴的缪斯”的安德蕾·玛德琳·布鲁安被选为副总理，负责妇女革命工作。新政府宣布将在马克思列宁主义和泛非主义的道路上建设新中非，结束法帝国主义在中非肆意妄为的历史，扩大与我们的合作。\n社会主义阵营很快承认了中非的新政权。革命在中非的胜利也令法国猝不及防——在广泛的压力下，法国也放弃了对中非的干预计划，事实上承认了新政权。至少又有一个国家投入了社会主义的怀抱！"
@@ -43,27 +35,27 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c21 := world.get_country_by_legacy_index(21)
 	var opt := event_def.options
 	if line <= 1:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line <= 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line != 0 and line != 4 and (not _mod_active(3) or not _mod_active(6)) \
 			and c21 != null and c21.has_tag("对华贸易") and _tech(23):
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if line <= 1:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 	if line >= 2:
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
-	_enable(opt[5], TXT_OPT5)
+	_enable(opt[5], event_def.options[5].text)
 
 
 func execute(context: Dictionary) -> void:

@@ -2,12 +2,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event334.cs：专利法。触发：ReqEventForDLC02.cs:577-580 —— econ_system>12 且日期>=1984.2.11。
 
-const TXT_TITLE := "专利法"
 
-const TXT_DESC := "我国工业蒸蒸日上，一些我国自创的工业设计也出现了。无论如何......如果我们进入国际专利制度，我们就能从别人在其他国家应用我国的发明这一事实中获利。另一方面，我们自己也得破点费，因为我们生产了大量的仿制设备......"
 
-const TXT_OPT0 := "不签署。"
-const TXT_OPT1 := "进入专利体系。"
 
 const TXT_R0 := "专利法只会妨碍我们。是的，要是我们签署了专利法，我们就可以坐等利润滚滚来，但我们先得为“窃取”来的技术付出巨额代价。是谁提出了这个想法，真是胡说八道！？"
 const TXT_R1 := "中华人民共和国很快就加入了世界专利体系。当然，这一开始就引起了诸多冲突，但在头一年，我国的发明就被外国应用，先前的后果是可以接受的。我国的名声也变好了些......"
@@ -47,9 +43,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -57,14 +50,8 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(index: int) -> bool:

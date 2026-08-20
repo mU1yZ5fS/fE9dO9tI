@@ -5,9 +5,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##   按项目约定 trigger_conditions=[]（仅定义，待决策系统接入）。
 ## 差异：names1/names2 拼接→ws.leader.name_display。
 
-const TXT_TITLE := "一个中国?"
-const TXT_DESC := "在我们消除威权分子的毒害并确立自由民主的政治体制后，美国与我们的关系日益升温，我们也不断加强与他们各方面的合作。随着时间的推移，我们开始再度审视两岸和平统一的可能性。令人欣喜的是，美国人出于战略需要，居然愿意帮助我们与台湾当局斡旋！这表明他们支持我们的统一。我们离统一，似乎只有一步之遥！"
-const TXT_OPT0 := "结果将会如何？"
 const TXT_R0_P1 := "当地时间"
 const TXT_R0_NIAN := "年"
 const TXT_R0_YUE := "月"
@@ -32,25 +29,16 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

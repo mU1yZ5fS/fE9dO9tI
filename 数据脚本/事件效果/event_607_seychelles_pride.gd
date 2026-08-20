@@ -4,12 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:884-886 —— DATE_AFTER 1977.6.1；fire_only_once 承担 !event_done[607]。
 ## 差异：原版 button[1] 无条件 Destroy，prepare 恒 _disable；proprc→亲中、Torg→对华贸易。
 
-const TXT_TITLE := "自豪吧，塞舌尔"
-const TXT_DESC := "主席同志，让我们把视野转向印度洋的一个不知名小国：塞舌尔。在1974年当地代表与英国的协议中，塞舌尔于1976年6月成为独立的共和国；而在该国内部主要有两大党派：一个是亲英的执政党塞舌尔民主党，其党首詹姆斯·曼卡姆一直以来担任塞舌尔的总督和首相，并于1976年独立时担任塞舌尔总统，另一个则是反对与英国合作的左翼政党塞舌尔人民联盟党，其党首弗朗斯-阿尔贝·勒内在1976年独立时任塞舌尔总理。\n但就在最近，有消息称塞舌尔人民联盟党有部分人员在坦桑尼亚接受军事培训，考虑到曼卡姆即将前往伦敦参加英联邦政府首脑会议，近日定会发生一起政变。"
-const TXT_OPT0 := "让我们为塞舌尔的同志们帮上一忙"
 const TXT_OPT0_DIS := "我们的力量还是不够"
 const TXT_OPT1_DIS := "我们为什么要帮助英帝国主义者助纣为虐？"
-const TXT_OPT2 := "拭目以待"
 const TXT_R0 := "6月5日，在总统曼卡姆出国期间，近百名塞舌尔人民联合党的士兵与部分我们的特勤占领了首都所在岛马埃岛的战略要地，警局全部被攻下，并逮捕了六名英国军官顾问，这些顾问及其家属和塞舌尔最高法院首席大法官奥布莱恩·奎因被驱逐到欧洲。塞舌尔人民联合党党首和总理勒内宣誓就任新总统并组建了新的政府但其承诺1979年会再次进行选举；其宣布自己是印度洋社会主义和坦桑尼亚式的泛非主义者，并非苏联式的共产主义者，但其与社会主义阵营尤其对中国保持密切联系。勒内对我们提供的帮助表示十分感激，并开始对部分领域实行中国模式，我们和坦桑尼亚也开始对其进行援助，包括不限于帮助建设房屋，派遣军事顾问，派遣医疗队等。"
 const TXT_R2 := "6月5日，在总统曼卡姆出国期间，近百名塞舌尔人民联合党的士兵占领了首都所在岛马埃岛的战略要地，警局大部分被攻下，仅在有大量军火库的一个警局里发生激烈的交火，警员和士兵各有一人死亡，最终逮捕了六名英国军官顾问，这些顾问及其家属和塞舌尔最高法院首席大法官奥布莱恩·奎因被驱逐到欧洲。塞舌尔人民联合党党首和总理勒内宣誓就任新总统并组建了新的政府；其宣布自己是印度洋社会主义和泛非主义者，并非苏联式的共产主义者，并宣布于1979年进行大选，但其与社会主义阵营保持密切关系。坦桑尼亚以及数个社会主义阵营国家开始对其进行援助。"
 
@@ -24,11 +20,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var agents := d[W.I_AGENTS] if d.size() > W.I_AGENTS else 0
 	var opt := event_def.options
 	if budget + agents >= 20 and agents >= 20:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 
@@ -63,17 +59,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

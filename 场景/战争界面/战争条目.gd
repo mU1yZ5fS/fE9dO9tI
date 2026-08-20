@@ -64,18 +64,15 @@ func _set_label(node_name: String, text: String) -> void:
 
 
 func _refresh_button_states() -> void:
-	if GameManager == null:
-		return
 	for n in _LEFT_BTNS.keys():
 		var btn := find_child(n, true, false)
 		if btn is Button:
-			btn.disabled = not GameManager.can_intervene(war_id, int(_LEFT_BTNS[n]))
+			btn.disabled = not WarSystem.can_intervene(war_id, int(_LEFT_BTNS[n]))
 	for n in _RIGHT_BTNS.keys():
 		var btn := find_child(n, true, false)
 		if btn is Button:
-			btn.disabled = not GameManager.can_intervene(war_id, int(_RIGHT_BTNS[n]))
+			btn.disabled = not WarSystem.can_intervene(war_id, int(_RIGHT_BTNS[n]))
 
 
 func _on_action(action_id: int) -> void:
-	音频总管.play_button_click_sound()
 	action_pressed.emit(war_id, action_id)

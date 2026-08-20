@@ -4,13 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:839-841 —— DATE_AFTER 1981.7.30；fire_only_once 承担 !event_done[597]。
 ## 差异：proprc→亲中；Gosstroy→government；原版 puppetOf=21 照抄（项目按原版序号存宗主）。
 
-const TXT_TITLE := "社会主义，亦或死亡"
-const TXT_DESC := "相对政变与政治危机频繁的其他西非国家来说，尽管达乌达·贾瓦拉总统领导的人民进步党政府在政治上没有什么建树，但独立前十五年，冈比亚的政治局势都保持了一种相对稳定的状态。然而，随着70年代末全球经济的衰退，冈比亚的形势急剧恶化。通货膨胀大幅上涨，失业率上升，再加上席卷西非的大旱导致作为冈比亚经济唯一支柱的经济作物花生的减产，大量小资产阶级破产，绝大多数人陷入赤贫状态。与此同时，统治阶级却仍深陷于官僚主义和腐败的酒池肉林中。这一切都助长了社会思潮的激进化。左翼青年团体的思想急剧向马列主义转变，对激进左翼的同情也在冈比亚野战部队（得益于该国的陆上邻国只有签署了共同防御条约的塞内加尔，贾瓦拉总统并没有设立常规军队，只有这支数百人的用以维持治安的警察部队）中蔓延。\n1980年初，对资本主义感到幻灭的企业家吉布里尔·乔治创建了以马列主义与非洲社会主义为指导思想的“冈比亚社会主义革命党”，该党一经成立便很快就在失业工人和激进学生中获得了强大的影响力，在因为对资产阶级民主制感到幻灭而转向共产主义的前国民大会党活动家库科伊·桑巴·萨尼扬入党后，该党迅速转变为一个依照列宁主义原则而组织的先锋党。\n1981年7月30日晚，乘贾瓦拉总统在英国参加查尔斯王储的婚礼之机，冈比亚革命社会主义党在宪兵部队副司令乌斯曼·博容与半数宪兵部队的支持下发起了革命，起义军迅速占领了军械库、机场、广播中心，监狱中的左翼异见者被释放，萨尼扬在广播中宣布推翻“充斥着部族主义、腐败与压迫的”贾瓦拉政府，将权力移交给国家革命委员会，并承诺结束“失业、不公正、部族主义、裙带关系与腐败”，很快，冈比亚的几个重要城市就落入了革命社会主义党的掌控中，忠诚于政府的宪兵部队簇集于副总统哈桑·穆萨·卡马拉周边，守住了中央银行与部分政府设施，并向身处伦敦的贾瓦拉总统告知了这起事件。\n贾瓦拉则向英国与塞内加尔请求了帮助，据可靠消息，塞内加尔总统阿卜杜·迪乌夫已经向冈比亚边境调动了大批部队。主席同志，又到了选择的时候了，我们是否应该支持萨尼扬和冈比亚革命（也许这对我们来说有点太超出能力范围了），亦或者对此置之不理，毕竟没人会在意这个小国所发生的一切……"
-const TXT_OPT0 := "支持冈比亚革命社会主义党"
 const TXT_OPT0_DIS := "这与我们无关……"
-const TXT_OPT1 := "联系几内亚与几内亚比绍，让他们拉冈比亚社会主义革命党一把"
 const TXT_OPT1_DIS := "我们鞭长莫及…"
-const TXT_OPT2 := "这不过是非洲大陆上又一场稀松平常的军事政变……"
 const TXT_R0 := "1981年7月31日午夜，三百名塞内加尔伞兵在冈比亚西海岸詹布尔村登陆，向首都班珠尔进发。在云杜姆机场，他们与叛乱者展开了交火，尽管叛军的抵抗比预想的要强大，最终还是被攻破。与此同时，近三千名塞内加尔特遣队乘坐重型装甲车从南部开往班珠尔、布里卡马和塞瑞库达。在人民日报上，我们热烈欢呼了“非洲大陆的又一场社会主义革命”的发生。\n然而，在塞内加尔的压倒性优势下，萨尼扬和他的支持者自然不会有任何翻盘的机会。几天之内，叛军就彻底被镇压，乌斯曼·博容在战斗中阵亡，萨尼扬被迫流亡，据事后统计，有数百人死亡，三千多名涉嫌参与叛乱者被捕，连合法反对党领袖也被绳之以法。直到起义军被镇压，我们的援助都没有顺利送达。而贾瓦拉在回国后就立即同塞内加尔签订了合作条约，统一两国的军队与货币，成立塞内冈比亚邦联，该邦联自然是塞内加尔主导的。贾瓦拉同我国断绝了外交关系，并再次同中华民国复交。"
 const TXT_R1 := "1981年7月31日午夜左右，三百名塞内加尔伞兵在冈比亚西海岸詹布尔村附近登陆，向首都班珠尔进发。在中途，他们遭遇了几内亚比绍空降兵的攻击。与此同时，近三千名塞内加尔特遣队乘坐重型装甲车从南部开往班珠尔、布里卡马和塞瑞库达，塞古·杜尔与路易斯·卡布拉尔严厉谴责了“塞内加尔对他国的侵略”行径，并在我们的支持下，于他们国家与塞内加尔的边境集结了一支规模庞大的联合部队。在塞内加尔干涉军开入冈比亚后，联军向塞内加尔发起了进攻。但愿他们能取得胜利。"
 const TXT_WAR_NAME := "冈比亚战争"
@@ -29,14 +24,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var guinea_bissau := world.get_country_by_legacy_index(114)
 	var opt := event_def.options
 	if line < 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line < 2 and guinea_bissau != null and guinea_bissau.has_tag("亲中") and guinea_bissau.government == 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 
@@ -70,17 +65,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

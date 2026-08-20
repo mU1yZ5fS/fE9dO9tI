@@ -4,10 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "交城的山水实呀实在美"
-const TXT_DESC := "主席同志，现在你大权在握，但是为何不考虑下未来呢？十年，二十年也许可以想象，但是五十年，一百年之后还会有和你一样卓越的人保护我国革命的遗产吗？也许，我们看向东方的邻国以及遥远的罗马尼亚的经验不仅仅要从他们经济改革的试点触发，还要从他们的政治上学习。作为“英明领袖”，我们抓纲治国的“纲”，何必需要僵化于“两个凡是”呢？一切由你决定…"
-const TXT_OPT0 := "这正是我在期待的，让我们开始吧……"
-const TXT_OPT1 := "你在说什么？希望你不是要让我背离毛主席的路线！"
 const TXT_R0_A := "很快，一揽子改革计划开始了，你的雕像已经开始修建，对于您的个人崇拜的民谣与民俗故事已经在民间流传开来，你被誉为“黄土高原的天才”，“世界最著名革命家”、“毛泽东思想的永恒火焰”，是“前所未有的最天真、最自然、最有感情也最纯粹的革命者”…而在党内，已经有传言说你会培养你的儿子为唯一接班人。更有甚者认为你死后，会被安葬在一个纪念堂当中。在路线上，我们也开始了基于人民为主体叙事，批判其他社会主义国家党务精英化，强调反对社会帝国主义与美国帝国主义，将自力更生放在第一位的“民族特色社会主义”的建设-不过，我们自然需要花不少资源来平息并且党内对这些变化不满的人，但是在最有可能形成威胁的两翼消失后，党内已经很少有异议能够挑战到你了。"
 const TXT_R1_A := "主席同志，那只是个建议，你一向生活民主作风，包容党内各派思想，谦逊而富有智慧，我知道你自然不会选择这条邪路的，这真是个糟糕的笑话。"
 
@@ -16,8 +12,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

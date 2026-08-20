@@ -1,0 +1,141 @@
+[gd_scene load_steps=5 format=3 uid="uid://c9b4f1a2d3e45"]
+
+[ext_resource type="Script" path="res://场景/复用/导航栏.gd" id="1_nav"]
+[ext_resource type="Texture2D" uid="uid://bqaw1khohkkov" path="res://资产/UI/主游戏UI/切场景菜单背景.png" id="2_navbg"]
+[ext_resource type="Texture2D" uid="uid://d0l4bgmlrwl12" path="res://资产/UI/外交/决议.png" id="3_dec"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="4_font"]
+
+[node name="导航栏" type="CanvasLayer"]
+script = ExtResource("1_nav")
+
+[node name="切场景菜单背景" type="TextureRect" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 71.0
+offset_bottom = 159.0
+texture = ExtResource("2_navbg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="世界地图" type="Button" parent="."]
+offset_left = 56.0
+offset_top = 80.0
+offset_right = 335.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 45
+text = "世界地图"
+icon = ExtResource("2_navbg")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+metadata/screen_id = "diplomacy"
+metadata/scene_uid = "uid://vq6jexkk5tru"
+
+[node name="派系" type="Button" parent="."]
+offset_left = 366.0
+offset_top = 80.0
+offset_right = 645.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 45
+text = "派系"
+icon = ExtResource("2_navbg")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+metadata/screen_id = "faction"
+metadata/scene_uid = "uid://dly5fmobnogab"
+
+[node name="经济" type="Button" parent="."]
+offset_left = 676.0
+offset_top = 80.0
+offset_right = 955.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 45
+text = "经济"
+icon = ExtResource("2_navbg")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+metadata/screen_id = "economy"
+metadata/scene_uid = "uid://btldk7ul11cqn"
+
+[node name="科学" type="Button" parent="."]
+offset_left = 986.0
+offset_top = 80.0
+offset_right = 1265.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 45
+text = "科学"
+icon = ExtResource("2_navbg")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+metadata/screen_id = "science"
+metadata/scene_uid = "uid://d2qkifpx3o8pl"
+
+[node name="概览" type="Button" parent="."]
+offset_left = 1296.0
+offset_top = 80.0
+offset_right = 1575.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 45
+text = "概览"
+icon = ExtResource("2_navbg")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+metadata/screen_id = "overview"
+metadata/scene_uid = "uid://cj3ye88n40e8y"
+
+[node name="政治" type="Button" parent="."]
+offset_left = 1606.0
+offset_top = 80.0
+offset_right = 1885.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 45
+text = "政治"
+icon = ExtResource("2_navbg")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+metadata/screen_id = "politics"
+metadata/scene_uid = "uid://dsmslhxc0e8u5"
+
+[node name="战争" type="Button" parent="."]
+offset_left = 1916.0
+offset_top = 80.0
+offset_right = 2195.0
+offset_bottom = 145.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 45
+text = "战争"
+icon = ExtResource("2_navbg")
+flat = true
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+metadata/screen_id = "war"
+metadata/scene_uid = "uid://bs6bexbaawcyw"
+
+[node name="决议" type="TextureButton" parent="."]
+offset_left = 1790.0
+offset_top = 8.0
+offset_right = 1876.0
+offset_bottom = 88.0
+scale = Vector2(0.78, 0.78)
+texture_normal = ExtResource("3_dec")
+metadata/screen_id = "decision"
+metadata/scene_uid = "uid://b3dscn2yak71"
+metadata/is_extra = true

@@ -9,10 +9,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - JoinAllOurAlliances(true)/JoinOurEconomicAlliance(true) 按玩家联盟标签近似映射；
 ##  - 原版按钮销毁（parts[0] 分支隐藏 opt4/opt5）以置空文本+禁用来近似。
 
-const TXT_TITLE := "韩朝统一，不再分离"
 const TXT_DESC_SIX := "在我们的帮助下，韩国被内部左翼分子推翻，并与朝鲜和平统一，但是按照协定，朝鲜半岛将会进行一场宪政大会，在这场大会上的获胜者将会统领朝鲜。由于我们为半岛的社会主义事业做的巨大贡献，我们在这场大会上拥有举足轻重的话语权，我们可以决定谁来统领朝鲜半岛。这次大会我们有六个人选。第一个是北朝鲜内部主管意识形态方面的黄长烨。第二个是南韩的左翼温和政治家金哲。第三个则是金日成接班人之一的金英柱。第四个是南韩著名劳工运动者和工人诗人朴劳解。第五个是来自南韩的反对主体思想的马克思主义理论家蔡万洙。第六个人是南韩马克思主义经济学教授尹素英。"
 const TXT_DESC_UNIFIED := "在我们的帮助下，朝鲜半岛最终取得了统一。起先苏联并不愿介入这场新冲突，朝鲜也缺乏其他强力盟友，但无所谓，我们会出手，朝鲜只有，也只能是依靠我们，才能得以取胜。与此同时，通过战争统一的朝鲜民主主义人民共和国，在社会的各个领域都充溢着我国派出的专家、顾问与军事参谋，我们也因而在这里取得了举足轻重的话语权。得益于此，我们将有权决定新生统一朝鲜未来的发展道路。共有四位领导人可供选择——其中两位是金日成的儿子：金日成指定的接班人金正日，和被我们捏住把柄的金平日；而另外两位则来自南方：一是所谓“南朝鲜主体思想派”的领导人金荣焕，一是视主体思想为反无产阶级理论的反美左翼工会主义者权永吉。"
-const TXT_OPT0 := "支持黄长烨的温和主体思想"
 const TXT_OPT1 := "没有文化大革命，非极左派主导"
 const TXT_OPT2 := "支持金哲的进步派系"
 const TXT_OPT3 := "没有文化大革命，非极左/保守派主导"
@@ -50,7 +48,6 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var korea := world.get_country_by_legacy_index(10)
 	var parts0 := korea != null and korea.parts.size() > 0 and korea.parts[0]
 	var opt := event_def.options
-	event_def.title = TXT_TITLE
 	if parts0:
 		event_def.description = TXT_DESC_UNIFIED
 		_enable(opt[0], TXT_P0_OPT0)
@@ -68,7 +65,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		event_def.description = TXT_DESC_SIX
 		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) != 0:
-			_enable(opt[0], TXT_OPT0)
+			_enable(opt[0], event_def.options[0].text)
 		else:
 			_disable(opt[0], TXT_OPT1)
 		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) > 1:
@@ -249,6 +246,3 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta

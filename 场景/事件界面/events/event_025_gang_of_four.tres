@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="EventDef" format=3 uid="uid://d24eyrj417mq1"]
 
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="1_option"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="2_effect"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="3_expr"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="4_event"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/core/event_def.gd" id="4_event"]
 [ext_resource type="Script" uid="uid://b7cdt240a50rk" path="res://数据脚本/事件效果/event_024_026_political_transition.gd" id="5_custom"]
 
 [sub_resource type="Resource" id="Effect_transition"]

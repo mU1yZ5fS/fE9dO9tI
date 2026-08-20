@@ -4,11 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：由 Decision(GlobalScript.cs:34) 手动触发（印度人民战争），原版无自动条件；
 ## 故 trigger_conditions 为空，本脚本按原版复刻选项显隐与结果效果。
 
-const TXT_TITLE := "不下地是学不会走路的"
-const TXT_DESC := "在政府官员的不断辞职及随之而来的政治混乱后，印度人民的生活水平开始下降，人民也因此心怀怨恨，各种形式的共产主义力量也因此增长。这是我们让友好人士在印度掌权的机会，但并不是所有事都一帆风顺：有两个共产主义派别正在为国家未来的权力而斗争。首先是联合阵线，其中包括温和派的印共（马）和亲苏的印度共产党（前一个印共就是从它分裂出来的），各地方左翼自治政党与穆斯林少数党。他们明白，印度还没有为迈入社会主义做好准备，他们将首先推翻种姓制度与部族制度，并推行广泛的自治，强调城市居民的重要性。我们可以利用他们的力量，在与工会达成协议后，组织大规模罢工，然后依靠军方发动政变。另一股力量是截然不同的纳萨尔派组织，他们原本均是作为印共（马）分离组织，查鲁·马宗达所领导的印共（马列）的一部分，在马宗达去世后便发生分裂，就夺取政权与国家前途命运问题缺乏一致，只得各自为政。如果我们早已做好准备，实现了纳萨尔派组织的重组与再统一。那么便能在印度在全国范围内掀起农民游击战，发动纯粹的毛主义革命。当然，除却军事手段外，我们当然也有和平过渡的选择：如果我们放弃社会帝国主义的论调，与苏联的修正主义者联合起来，共同反对世界帝国主义这个共同的敌人，那么，我们就有足够的影响力，可以说服所有的共产主义势力分割印度的势力范围，在最需要他们的地方达成合作......"
-const TXT_OPT0 := "押注联合阵线（印共（马）、印共及各小党派）"
-const TXT_OPT1 := "尽全力支持统一的纳萨尔派组织印共（毛）发起人民解放战争"
-const TXT_OPT2 := "城市社会主义，农村资本主义"
 const TXT_OPT1_DIS := "纳萨尔派不会听我们的"
 const TXT_OPT2_DIS := "中国在经互会中、军事实力大于25、世界影响力大于35"
 const TXT_R0 := "联合阵线因该国困难的政治经济形势而闻名遐迩，在我们的支持下，联合阵线与许多工会结成了联盟，组织了多次罢工，政府因此辞职。在由此产生的权力真空中，联合阵线的武装力量与普通工人一起控制了各城市的行政中心，宣布以联合阵线联盟为基础，组建一个临时政府，并在奥姆普拉卡西·马尔霍特拉将军、阿伦·斯里达尔·维迪亚、斯里尼瓦沙·库玛拉赞·辛格·克里希纳斯瓦米·桑搭吉等将军的支持下，将整个军队拉拢到了他们这边。在军队的支持下，他们开始对异议人士进行迫害，取缔了各反对党，并为社会主义改革做准备。然而，改革还没来得及开始，纳萨尔派地下组织就因这事实上的政变而联合起来，宣布新政府是修正主义的篡权者，是苏中两国的修正主义者的提线木偶，背叛了毛泽东主席的事业，纳萨尔派开始对新政府进行游击战争。右翼叛乱分子也加入了游击队的行列，为了共同的事业，他们与纳萨尔派达成了不可言说的协议。我们需要拯救印度！"
@@ -26,13 +21,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var china := world.get_country_by_legacy_index(1)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if int(world.completed_event_ids.get("event_466", 0)) == 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if world.数值表[W.I_ARMY] >= 250 and (world.数值表[W.I_INFLUENCE] >= 350 or world.influence_prc >= 350) and china != null and china.has_tag("sev"):
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 
@@ -53,19 +48,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(index: int) -> bool:

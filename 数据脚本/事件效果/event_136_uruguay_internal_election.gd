@@ -10,22 +10,14 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 已核对原作本文件无 achievements 调用（2026-08-16）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
-const TXT_TITLE := "皮诺切特的失败翻版"
-const TXT_DESC := "格雷戈里奥·阿尔瓦雷斯原本是军政府中的激进派。军队因他被任命为陆军司令官而陷入分裂。1978年3月3日，他发布了第7738号法令，根该据法令，信息与国防局（IDS）将隶属于他的指挥。而时任信息与国防局主任阿莫里·柏兰特将军拒绝执行该文件，他因此被处以六十天拘役并最终辞职。1980年，他试图组织一场宪法公投，按预期，公投后将只有三个合法政党得以保留，也只有一位候选人能被推选出来，军队权力也将写入宪法。而1980年公投反而表明了乌拉圭公民对恢复民主生活的意愿，此后，阿尔瓦雷斯中将不愿接受这一结果，并试图逼迫所谓的国家委员会将共和国总统职位移交给他，从而推迟恢复民主的进程。此时，他在军队中的对手是乌戈·梅迪纳将军，而后者更倾向于将权力移交给平民。由于乌拉圭的军队精英们正陷入内斗，试图干预战时最高统帅选举的机会比比皆是。"
-const TXT_OPT0 := "“稍微”帮助乌戈·梅迪纳（右翼独裁主义）"
 const TXT_OPT0_DIS := "我们与乌拉圭军政府内部没有任何联系"
-const TXT_OPT1 := "推动军方维持文官政府的形象（自由主义）"
 const TXT_OPT1_DIS := "乌拉圭的文官政府不够强大"
-const TXT_OPT2 := "保持距离"
 const TXT_R0 := "在内部选举期间，格雷戈里奥·阿尔瓦雷斯实际上已经下台，军队总司令一职由乌戈·梅迪纳接任。与此同时，亲民主派势力也赢得了议会的多数席位。作为军方与政界人士为摆脱独裁统治而进行的谈判的一部分，梅迪纳是武装部队内部最愿意进行对话的人，他也同意在1984年11月组织全国选举，保证议员在选举之前的享有一系列权利与权力，并逐步推进民主化进程。然而，作为一名军队将领，梅迪纳遭到了指控，称其在向独裁统治期间严重侵犯人权的军方人员发出传票所引发的危机中发挥了关键作用。而梅迪纳说，传票正放在他办公室的一个保险箱里，他也不会交出传票，并暗中威胁要拒不从命，这演变成了一种体制危机，最终，“逾期法”出台，任何人都无法因其军政府期间所犯的罪行被定罪。"
 const TXT_R1 := "直到他去世为止，阿尔贝托·德米切利都允许亲民主派在政府内站稳脚跟，亲民主党派在内部议会选举中也赢得了大多数席位，这些事实都能让我们使军方理解维持文职政府的面具的必要性。格雷戈里奥·阿尔瓦雷斯直截了当地建立一个毫不掩饰的军政府的想法被否决了，他本人也被罢免。政客们同军方敲定，最高法院院长拉斐尔·阿迭戈·布鲁诺将接管行政权力。在其任期内，他负责处理乌拉圭近些年来最有争议的问题之一，即“逾期法”（该法使任何人都无法因其军政府期间所犯的罪行被定罪），他在发言中确定该法符合宪法。尽管接受了文官政府的存在，但国家安全委员会（KOSEN）与军方仍掌握着权力，副总统职位依然空缺。在他执政期间，布鲁诺致力于重塑并优化乌拉圭的法律体制，以便为国家向民主与自由选举的过渡做准备，选举定于1984年11月举行。"
 const TXT_R2 := "在阿尔瓦雷斯执政期间，该国国内以及阿根廷的政治活动家是镇压的首要对象，他被指控在军营与秘密基地中犯下了反人类罪。政治反对派与军政府的反对者也被镇压、绑架或暗杀。对失踪人员下落的调查仍在进行之中。由于他持续镇压工会，他失去了许多民众的支持，军方的很多人也不再拥护他，所以，他立刻同意在1984年11月举行议会与总统选举，在此之前，他便在1982年举行了内部选举，亲民主力量赢得了这次选举。阿尔瓦雷斯在蒙得维的亚的住所成了示威者的活动中心，他们为在1973-1985年间的军官-文官统治下的下落不明的反对派而抗议。"
 const TXT_FRIEND := "新政府决心和我们做朋友。"
 const TXT_ENEMY := "新政府不想和我们做朋友。"
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -34,14 +26,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _set_next_election(c: CountryData, year: int, month: int, day: int) -> void:
@@ -220,14 +206,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var r135 := int(world.completed_event_ids.get("event_135", 0))
 	var opt := event_def.options
 	if r135 <= 1:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if r135 == 0:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

@@ -133,6 +133,5 @@ func _on_entry_action(war_id: int, action_id: int) -> void:
 
 
 func _on_debug_start(war_id: int) -> void:
-	音频总管.play_button_click_sound()
 	if GameManager:
 		GameManager.debug_start_war(war_id)

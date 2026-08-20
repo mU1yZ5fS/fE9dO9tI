@@ -8,7 +8,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##    usalliance→美国盟友、sovalliance→苏联盟友、proprc→亲中、
 ##    Gosstroy→government、SubGosstroy→sub_government、soc_stab→social_stability。
 
-const TXT_TITLE := "盟友危机"
 
 const TXT_DESC_BASE := "众所周知，我们的集团是最民主、最平等的……这就产生了后果。"
 const TXT_DESC_TAIL := "最近一直在奉行越来越独立于我们政策，想进行一些改革的不忠势力正在其政治体系中获得权力。"
@@ -17,14 +16,10 @@ const TXT_DESC_SU := "但更糟糕的是他们与苏联的外交调情！如果�
 const TXT_DESC_OKB := "\n这一切都是在我们盟国政府即将宣布中立政策的背景下发生的，这意味着一件事：他们想离开我们的军事同盟"
 const TXT_DESC_ECON := "\n而这一切发生的背景是，我们的盟友政府正狂热地切断与我们的所有贸易关系，宣布调整其经济方向，这意味着一件事：他们想离开我们的经济联盟。"
 
-const TXT_OPT0 := "派军队迫使该国回到我们的路线上（需要20军事实力，需要3百万预算）"
 const TXT_OPT0_DIS := "我们的军队没有足够的力量和权威"
 const TXT_OPT1_OKB := "组织一场亲中派政变（需要10特工网络，需要3百万预算）"
 const TXT_OPT1_NOT_OKB := "组织一场亲中派政变（需要20特工网络，需要3百万预算）"
 const TXT_OPT1_DIS := "我们的情报机构对此无能为力"
-const TXT_OPT2 := "在经济上约束该国，提供财政援助和优惠贷款（需要10百万预算）"
-const TXT_OPT3 := "不要妨碍独立的政治，以换取该国留在我们集团（需要5特工网络，需要1百万预算）"
-const TXT_OPT4 := "我们必须尊重他们的选择"
 
 const TXT_R0_A := "在演习的掩护下，我们的部队进入了这个国家，迅速解除了他们的武装，逮捕了政府并镇压了不满情绪。新政府得到了财政援助以巩固他们的忠诚，"
 const TXT_R0_B := "。再次回到我们身边，但我们的外交声誉仍有许多不足之处。"
@@ -43,7 +38,6 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var target := _target_country(world)
 	var tname := target.display_name() if target != null else "盟国"
-	event_def.title = TXT_TITLE
 	var desc := TXT_DESC_BASE + tname + TXT_DESC_TAIL
 	if target != null and target.has_tag("美国盟友"):
 		desc += TXT_DESC_US
@@ -61,7 +55,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var okb := target != null and target.has_tag("okb")
 	var opt := event_def.options
 	if army >= 200 and okb:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if agents >= 100 and okb:
@@ -70,12 +64,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], TXT_OPT1_NOT_OKB)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 	if agents >= 50:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT1_DIS)
-	_enable(opt[4], TXT_OPT4)
+	_enable(opt[4], event_def.options[4].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -212,16 +206,7 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

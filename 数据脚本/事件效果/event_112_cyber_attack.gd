@@ -9,7 +9,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - relres → global flag；modifies[3]/[11] → modifiers 槽 active。
 ##  - data12/13/68 → 工业/农业/服务业产值。
 
-const TXT_TITLE := "来自0和1的冲击"
 
 const TXT_DESC_494 := "主席同志，预料之中的大规模计算机网络攻击来临了!全国各地的部门间组织都收到了影响。基层企业之间的信息被破坏，食品被运送到有中断的地区，商店里的队伍越来越长。根据管理者们的保证，我们的设备遭到了来自外部的计算机攻击。情报机构认为，这些人是我们的外部对手，担心我们在世界舞台上的影响力不可避免地增长，所以他们与自动化的敌人合谋，试图通过破坏IECS来打击我们的经济。\n然而，考虑到我们之前已经建立了关于IECS系统的初步防护，也提前准备了关于IECS网络被攻击的应急预案，并在攻击来临时及时的执行了预案，这些攻击者攻击造成的损失没有预想中的那么大。专家建议继续升级规划系统的特殊保护防火墙，但这需要一些时间。但是，我们可以请求苏联专家的支持，这将使我们能够迅速地使设备恢复运作。还是……自动化真的只是乌托邦吗?"
 
@@ -20,7 +19,6 @@ const TXT_OPT0_OTHER := "继续升级我们的自动化系统的防护系统"
 const TXT_OPT1_494 := "为发展提供资金，并要求苏联专家提供援助(需要25百万预算)"
 const TXT_OPT1_OTHER := "继续升级我们的自动化系统的防护系统，并要求苏联科学家提供援助"
 const TXT_OPT1_DIS := "苏维埃不会帮助我们"
-const TXT_OPT2 := "看来中国还没有准备好应对这种变化，有必要放慢自动化进程"
 const TXT_OPT2_DIS := "我们不能放弃我们的成就!"
 
 const TXT_R0_494 := "我们着手于继续升级并完善我们的“中国长城”防火墙系统，以提高IECS应对外部攻击的能力。得以于之前的防护系统，我们的经济所遭到的损失并不算严重。"
@@ -35,7 +33,6 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var is_494 := _is_494_route(world)
-	event_def.title = TXT_TITLE
 	event_def.description = TXT_DESC_494 if is_494 else TXT_DESC_OTHER
 
 	var data := world.数值表
@@ -51,7 +48,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if (line > 0 and party < 8) or (coal > 66 and party > 7):
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 
@@ -164,6 +161,3 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta

@@ -6,11 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：usa_place=1→usa_side=1；开战按项目约定 GameManager.start_war(34,...) 后覆盖
 ##   name_war/fortnight_max（TickTime 20）；button_text[5]/result_num==5 死代码跳过。
 
-const TXT_TITLE := "南太平洋海涛翻腾"
-const TXT_DESC := "主席同志，随着泰国革命的胜利，马来亚问题也摆在了我们眼前：原本因为“新村政策”力量大幅削弱的马来亚共产党、马来亚民族解放军和北加里曼丹共产党、北加里曼丹人民军在我们和泰国革命政权的协助下愈发壮大，马来西亚和新加坡政府不断敦促泰国革命政府停止对马来亚共产党和北加里曼丹共产党的援助。东南亚各个国家革命的成功以及他们对马来西亚的经济封锁使得马来西亚的经济陷入困境。加上马来西亚和新加坡对左翼运动的猎巫式镇压（大量温和派议会党甚至被直接查禁）使得民众越发不满——这些国家的左翼思潮像68运动时期一样再次流行起来了。学生运动、工人罢工和民众游行引来了政府的镇压，马来西亚像50年代一样开始实行紧急状态。现在，马来亚共产党主席陈平同志向中央委员会亲自发电，请泰国革命政府给马来亚民族解放阵线北马来半岛作为革命根据地，并恢复马来亚共产党对南泰马来族为主体地区的统治，泰国共产党中央委员会大部分人认同了这个提案。但这样的行为，基本等于让新生的革命政权走向新的战争。现在，主席同志，面对两边的压力，我们该如何抉择？"
-const TXT_OPT0 := "是时候了，马来亚和北加里曼丹的人民已经盼了很久了"
 const TXT_OPT0_DIS := "他们根本没有这样的势力基础"
-const TXT_OPT1 := "让他们在议会斗吧，保全势力也好"
 const TXT_R0 := "世界各国人民的解放一直都是我们的夙愿，我们的兄弟党即将迎来自己民族的解放，我们怎么可能撒手不管！我们积极辅助了泰马两党的北马来根据地政权的转移工作。马来政府对我们的行为十分恼火，已经对我们的行为下了最后通牒，但是这又如何呢？一个买办政府是挡不住人民战争的汪洋大海的！新生的泰人民政权已经准备好投入进这一场兄弟民族的革命中去了，我们更应该履行无产阶级国际主义。同志们，向吉隆坡，进攻！"
 const TXT_WAR_NAME := "马来亚内战"
 const TXT_WAR_SIDE1 := "马来亚民族解放同盟"
@@ -29,10 +25,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var res467 := int(world.completed_event_ids.get("event_467", 0))
 	var opt := event_def.options
 	if done467 and res467 == 0:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[1], event_def.options[1].text)
 
 
 
@@ -79,25 +75,16 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

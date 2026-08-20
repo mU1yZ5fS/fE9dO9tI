@@ -6,15 +6,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##   后覆盖 name_war/fortnight_max（TickTime 20）；AmericanSupportAttacker→usa_side=0，
 ##   relres→ussr_side=1。
 
-const TXT_TITLE := "卡萨布兰卡一夜"
-const TXT_DESC := "自1975年摩洛哥发动“绿色进军”行动以来，该国事实上霸占了整个西撒哈拉地区，并且陷入了与萨基亚阿姆拉和里奥德奥罗人民解放阵线旷日持久的战争中。摩洛哥虽然在正面战场上节节取胜，但巨大的军事开支逐渐压垮了这个马格里布国家的经济。更为雪上加霜的是，摩洛哥赖以为生的磷酸盐矿迅速贬值，从原先的65美元一吨跌至31美元一吨。为了继续维持对西撒哈拉矿区的控制，哈桑二世不得不从国外借债，到了1981年摩洛哥的外债已经高达79亿美元。\n此时，在卡萨布兰卡爆发了大规模的警民冲突。大量失业的工人和矿工为了向当局表达对食物涨价的不满。一场和平请愿迅速扩大为了游行和打砸抢。该市的富人区和商业街遭到了近乎于疯狂的破坏。在其中还有人打出了要求哈桑二世下野的口号，双方的矛盾越发不可调和，似乎马上就要爆发。\n主席同志，我们要不要做点什么？"
-const TXT_OPT0 := "在阿尔及利亚的帮助下，支持摩洛哥人民的斗争"
 const TXT_OPT0_DIS := "推翻国王，有谁有这个胆子？"
-const TXT_OPT1 := "煽动西撒人阵起义"
 const TXT_OPT1_DIS := "我们没有能力做这种事"
-const TXT_OPT2 := "借此机会，介入摩洛哥王国的局势"
 const TXT_OPT2_DIS := "摩洛哥人不想听我们的话！"
-const TXT_OPT3 := "这里是摩洛哥还是摩纳哥？"
 const TXT_R0 := "在我们特工的帮助下，运动迅速从卡萨布兰卡蔓延到了全国各大城市。摩洛哥人民力量社会主义同盟没有错过这次机会，在运动中迅速确认了自己的领导地位。随着斗争愈演愈烈，王室感受到了自己时日无多，哈桑二世快速完成了退位并请求新政府的宽恕。然而作为又一位昏庸无能的君主，他的请求被置之不理。在拉巴特的一间地下室里，迟来的保王党人只找到了被打成筛子一般的几具尸体。就这样，统治了摩洛哥数十载的阿拉维王室如风般飘散了。在王室的尸体上，摩洛哥民主共和国从中涅槃，并开始着手收回外企的垄断公司。\n新生的摩洛哥政府决定和西撒哈拉展开谈判，在一系列激烈的辩论和让步后，西撒人阵同意以联邦实体的身份加入摩洛哥。西撒人阵将作为西撒哈拉地区唯一合法的政党，直接统治西撒哈拉地区而不必听从摩洛哥方面的指示。摩洛哥宣布停止沙墙的建设，双方也确定了新的“摩洛哥人”身份。尽管相当多的人谴责西撒人阵背叛了过去的理想，但撒哈拉的局势或多或少稳定下来了。"
 const TXT_NAME_FED := "摩洛哥西撒哈拉民主联邦"
 const TXT_R1 := "我们在西撒哈拉的布局为我们带来了介入混乱局势的机会。趁着摩洛哥本土陷入混乱的时机，西撒人阵总书记在廷杜夫发表了《告被占领的撒哈拉阿拉伯同胞的信》。其中声泪俱下的控诉了摩洛哥王室在西撒哈拉的暴行，如：强制驱逐原住民，强迫劳役和不公正对待。“但是这一切就要结束了”，RASD的电台如是说道，“在我们阿拉伯兄弟们的帮助下，阵线已经重整旗鼓，做好了为1975年复仇的准备。”在广播结束后的半天内，大量的土制火箭弹从阿尔及利亚和尚未被占领的西撒哈拉领土射向北部。阿尤恩的损失尤为严重。西撒人阵的战士们乘着bmp步战车和皮卡车攻入北部和沿海的城市。摩洛哥政府宣布进入紧急状态，开始调兵遣将准备镇压新的一轮叛乱。"
@@ -39,18 +33,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var morocco := world.get_country_by_legacy_index(54)
 	var opt := event_def.options
 	if morocco != null and morocco.内战中 and line56 < 3:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line56 <= 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line56 != 2:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 
@@ -120,25 +114,16 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

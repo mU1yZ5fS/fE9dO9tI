@@ -9,20 +9,14 @@ extends "res://数据脚本/event_script_base.gd"
 ##    仅 AmericanSupportDefender 的分支 usa_side=1 / ussr_side=-1（原版 War 默认 -1）。
 ##  - 死代码 result 5 测试分支跳过；result 3 是实际选项（充耳不闻），效果已复刻。
 
-const TXT_TITLE := "非洲大逃杀"
-const TXT_DESC := "进入20世纪80年代后，塞拉利昂的经济便持续下行，深受恶性通货膨胀与缺乏社会保障设施的困扰。也就在1985年内，塞拉利昂的通货膨胀率便高达76.6%。失业潮与国内经济长期缺乏有效投资的情况使该国大量青年沦为无业游民，并自发结成黑社会性质的组织谋求生计。糜烂的局势甚至让斯蒂文森都无法泰然处之，不得不在“蝗虫般的17年后”引咎辞职。大会党准备寄希望于来自强力机关的候选人约瑟夫·赛义杜·莫莫重振局势，并为经济改革做好了计划：出于平抑物价的需要，政府对投机倒把、囤积居奇、哄抬物价等行为严惩不贷；并决定改组缉私队伍，惩办走私者和驱逐违法的外商。可考虑到塞拉利昂国内利益团体早已在多年腐败统治下根深蒂固，如此改革仍显得浮于表面：且斯蒂文森的亲信们也不满于莫莫的“专断行径”。看起来塞拉利昂已来到了其历史拐点。"
 
-const TXT_OPT0 := "帮助莫莫深化改革，并扫除塞拉利昂政坛的保守派！"
 const TXT_OPT0_DIS := "我们无能为力"
-const TXT_OPT1 := "是时候结束全国大会党政权的闹剧了！"
 const TXT_OPT1_DIS_BACKSTAB := "我们可不能背刺合作伙伴"
 const TXT_OPT1_DIS_NOONE := "我们没找到合适的人选"
 const TXT_OPT1_DIS_INTERFERE := "这是对外国内政的激进干涉！"
-const TXT_OPT2 := "与美国一起，支持强力手段稳定西非局势。"
 const TXT_OPT2_DIS_BACKSTAB := "我们可不能背刺合作伙伴"
 const TXT_OPT2_DIS_BUSY := "美国可没有闲心多管闲事"
 const TXT_OPT2_DIS_IMPERIAL := "绝不能支持美帝国主义代理人"
-const TXT_OPT3 := "充耳不闻"
 
 const TXT_R0 := "您决定亲自致电莫莫，表示中国将拨付低息贷款解决塞拉利昂目前的经济问题。莫莫对此则表示无比感激，顺势深化了先前早已建立的中-塞友好关系：仰仗中国的经济援助与政治支持，莫莫政府得以全面推进其改革政策并剔除保守派。资金的流入缓解了长期缺乏有效投资的问题，让该国得以逐步解决社保，教育与水电供应问题。塞拉利昂全国大会党政权就此稳定了下来，不至跌入暴力深渊。"
 const TXT_R1_INTRO := "如今全国大会党政权已是风雨飘摇，正是入局的好机会——受够了斯蒂文森集团腐败统治的中国决定借题发挥，通过扶持塞拉利昂境内革命者的方式彻底终结这一盗贼体制。"
@@ -41,8 +35,6 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	event_def.title = TXT_TITLE
-	event_def.description = TXT_DESC
 	var sierra := world.get_country_by_legacy_index(107)
 	var libya := world.get_country_by_legacy_index(13)
 	var usa_country := world.get_country_by_legacy_index(51)
@@ -51,13 +43,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var sierra_torg := sierra != null and sierra.has_tag("对华贸易")
 	if sierra_torg:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	var sierra_cw := sierra != null and sierra.内战中
 	var libya_torg := libya != null and libya.has_tag("对华贸易")
 	if line <= 2 and (sierra_cw or libya_torg) and not sierra_torg:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif sierra_torg:
 		_disable(opt[1], TXT_OPT1_DIS_BACKSTAB)
 	elif not sierra_cw and not libya_torg:
@@ -70,14 +62,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		usa_leader = world.empires[EmpireData.USA].current_leader
 	var usa_leader_ok := usa_leader == 0 or usa_leader == 2
 	if line >= 3 and usa_dev_ok and usa_leader_ok and not sierra_torg:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	elif sierra_torg:
 		_disable(opt[2], TXT_OPT2_DIS_BACKSTAB)
 	elif not usa_dev_ok or not usa_leader_ok:
 		_disable(opt[2], TXT_OPT2_DIS_BUSY)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_IMPERIAL)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -164,11 +156,5 @@ func _set_parts(c: CountryData, index: int, value: bool) -> void:
 	c.parts[index] = value
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

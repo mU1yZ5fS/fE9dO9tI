@@ -8,20 +8,15 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 描述按 resultOfEvents[582] 动态拼接（缺省按原版 int 默认 0）；
 ##  - science[24] → ws.techs.unlocked[24]；Torg → 对华贸易；proprc → 亲中；puppetOf → puppet_of。
 
-const TXT_TITLE := "从今打碎暴虐的锁链"
 
 const TXT_DESC_A := "在戴维·达科重新成为总统后，中非的政治和经济改革进行得并不成功。1981年9月1日，安德烈·科林巴将军发动了一场不流血政变，推翻了达科总统。随后成立的民族复兴军事委员会作为新的统治机构暂停了宪法，并限制了政党活动。科林巴的军政府继续维持亲法政策，并承诺一段时间后举行选举，同时消除政府的腐败，但在接下来的几年里，腐败加剧：科林巴政府的许多成员，是与他同民族的亚科马族，他们在中非共和国经济的公共部门、私营和半国营部门获得了许多有利可图的职位，这导致了中非共和国所谓的“南方人”（亚科马族）和“北方人”（格巴亚族）之间的关系紧张，军政府也不断推迟着选举计划。\n在这一情况下，中非也并不缺乏反对派。前总理、民粹主义者昂热-费利克斯·帕塔塞于1978年在巴黎成立了中左翼的反对党“中非人民解放运动”，帕塔塞曾反对博卡萨政权，并认为达科重建共和国后的选举不公正（他在那次选举位列第二），而现在，他也反对科林巴的腐败军政府，如今，该组织已经争取了弗朗索瓦·博齐泽将军等少数中非现政权军官的支持，正在准备政变计划。阿贝尔·贡巴领导的乌班吉爱国阵线/劳动党也仍在积极反对中非现政权，为实现民族解放、摆脱新殖民主义统治也采取了许多斗争，"
 const TXT_DESC_WEAK := "不过，该组织是否有足够力量掌权仍待商榷。"
 const TXT_DESC_STRONG := "并已经渗透了国家机器。"
 const TXT_DESC_TAIL := "\n现在正是我们干预中非的时候！"
 
-const TXT_OPT0 := "让我们支持帕塔塞的政变计划"
 const TXT_OPT0_DIS := "我们不能把手伸那么远！"
-const TXT_OPT1 := "反对派团结起来！让我们串联反对派共抗法帝走狗"
 const TXT_OPT1_DIS := "我们无能为力了"
-const TXT_OPT2 := "让我们提醒一下科林巴总统帕塔塞的政变计划"
 const TXT_OPT2_DIS := "我们做不到那个！"
-const TXT_OPT3 := "这地方没什么好干预的"
 
 const TXT_R0 := "我们联络了帕塔塞，表示愿意向他提供支持，他欣然接受。很快，中非人民解放运动发动了政变，帕塔塞指控科林巴犯了叛国罪，并在广播公告中宣布中非权力更迭。由于我们与苏丹的较好关系，我们涂着棕色迷彩的中共中央警卫团得以经苏丹抵达中非并空降班吉，与博齐泽将军进行里应外合，成功推翻了军政府，并将科林巴逮捕。新成立的中非人民解放运动领导的民族团结临时政府宣布将结束法帝国主义在中非肆意妄为的历史，扩大与我们的合作，为了彰显自身恢复民主化的功劳，新政府合法化了乌班吉爱国阵线/劳动党。"
 const TXT_R1 := "在我们的施压和调解下，两派力量就推翻军政府达成了共识。通过发动总罢工和组建武装民兵，乌班吉爱国阵线/劳动党的军人地下党员在班吉发动了政变，并在广播公告中宣布中非权力更迭。通过发动总罢工和组建武装民兵，爱国阵线/劳动党的力量和军政府的部队在班吉直接进行了巷战。与此同时，中非人民解放运动也发动了政变，帕塔塞指控科林巴犯了叛国罪。博齐泽将军也里应外合，最终，军政府成功被推翻，科林巴也被逮捕。阿贝尔·贡巴宣告了中非人民共和国的成立。克劳德-理查德·古昂加被选为民族团结政府主席，阿贝尔·贡巴被选为总统并继续作为乌班吉爱国阵线/劳动党的领导人，希莱尔·科塔林博拉被选为政府总理，被称为“卢蒙巴的缪斯”的安德蕾·玛德琳·布鲁安被选为副总理，负责妇女革命工作，昂热-费利克斯·帕塔塞则被选为人民议会主席。新政府宣布将在马克思主义和泛非主义的道路上建设新中非，结束法帝国主义在中非肆意妄为的历史，扩大与我们的合作。"
@@ -47,18 +42,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c52 := world.get_country_by_legacy_index(52)
 	var opt := event_def.options
 	if line <= 2 and world.influence_prc >= 500 and _tech(24) and c53 != null and c53.has_tag("对华贸易"):
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line <= 1 and world.influence_prc >= 500 and r582 == 1 and world.is_socialism(c52, true):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line > 1:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:

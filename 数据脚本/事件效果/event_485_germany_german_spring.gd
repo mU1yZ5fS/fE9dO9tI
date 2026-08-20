@@ -140,14 +140,8 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
 func _add_power(empire_index: int, delta: int) -> void:
@@ -155,14 +149,6 @@ func _add_power(empire_index: int, delta: int) -> void:
 		ws.empires[empire_index].power = clampi(ws.empires[empire_index].power + delta, 0, 1000)
 
 
-func _leave_alliances(c: CountryData) -> void:
-	if c == null:
-		return
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
 
 func _join_our_alliances(c: CountryData) -> void:

@@ -9,17 +9,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - JoinECON → 仅 econ 标签 + social_stability=1000；name → chinese_name；
 ##  - load_scene_after_click + data[35]=13 → GameManager.queue_ending_after_event(13)。
 
-const TXT_TITLE := "铜臭味"
 
-const TXT_DESC := "主席同志，赞比亚总统肯尼斯·卡翁达的特使正在等着被您接见。不出意外的话，他是来向您申请一批紧急贷款，用以拯救该国岌岌可危的经济。卡翁达总统本人也将在晚些时候亲自到访我国。\n赞比亚自独立以来便确定了“人道社会主义”的路线，即通过社会主义的路线实现人的全面发展。其中揉杂了大量的基督教元素，民族主义，非洲部族传统，一部分的空想社会主义元素，对中国新民主主义和无产阶级文化大革命中积极因素的接纳等。上述种种构成了该国独特的社会主义思想。\n该国拥有世界上首屈一指的铜矿，曾让这个国家一度超越撒哈拉以南（南非除外）的大多数国家。高达740美元的人均收入让同为“非洲橱窗”的准资本主义国家科特迪瓦都显得如此捉襟见肘。坐拥多国投资更是让该国的收入翻了一番又一番。成也铜矿败也铜矿。随着铜价在70年代后期迅速贬值，该国发展不完全不充分的弊端逐渐显现。过度依赖于矿冶业的发展导致该国的工业农业几乎不能自给；首都卢萨卡除外的地区的发展可以用“不存在”一言蔽之。农业高度依赖外国进口和国家补贴，以及困难的商品交换进一步拖垮了这个小国脆弱的经济。对玉米的补贴甚至达到了惊人的60亿克瓦查，而该国最近一年的收入也不过45亿克瓦查。各项福利措施反而进一步加大了贫富差距。占全国人口的2%的富人和60%的穷人同样享有占国民总收入的20%。根据1980年国际劳工组织专家对赞比亚的评估，两极分化已经到了一个极度危险的程度。同时，弗雷德里克·奇卢巴，前工人运动活动家，该国最大的政治反对派也希望得到超级大国的背书，作为工人代表的他最知道底层人需要什么。也许他会是个更好的选择？\n赞比亚的联合民族独立党已经难以恢复独立时的荣光，也许在这种时候，我们该来点转变了。"
 
-const TXT_OPT0 := "为赞比亚提供一笔无息贷款"
 const TXT_OPT0_DIS := "他是独裁暴君，不是朋友"
-const TXT_OPT1 := "赞比亚是我们的老朋友，卡翁达不是。"
 const TXT_OPT1_DIS := "不，不能这么做"
-const TXT_OPT2 := "恩科洛索，赞比亚宇航员"
 const TXT_OPT2_DIS := "等等，谁？"
-const TXT_OPT3 := "我们什么都不需要做"
 
 const TXT_R0_A := "在为这位非洲南端的反帝斗士接风洗尘的招待宴上，"
 const TXT_R0_B := "同志发表了“勿忘坦赞铁路精神”的演讲。其中高度赞扬了卡翁达总统为发展赞比亚作出的突出贡献，称联合民族独立党是赞比亚建设的领军人。在演讲的最后，"
@@ -44,18 +38,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var r361 := int(world.completed_event_ids.get("event_361", 0))
 	var opt := event_def.options
 	if line < 3:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line >= 2 and c131 != null and (c131.sub_government == 7 or c131.sub_government == 9):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if data.size() > W.I_INDUSTRY and data[W.I_INDUSTRY] >= 1200 and r352 == 2 and r361 >= 0 and r361 <= 1:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:

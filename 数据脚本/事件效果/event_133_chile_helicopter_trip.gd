@@ -3,11 +3,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event133.cs：直升机之旅（3 选项）。
 ## 触发：原版未发现自动触发条件（trigger_conditions 为空），疑由未逆向的选举/地图系统手动触发。
 
-const TXT_TITLE := "直升机之旅"
-const TXT_DESC := "1973年9月，智利发生军事政变，社会主义者萨尔瓦多·阿连德被推翻，奥古斯托·皮诺切特将军领导的军政府夺取政权。新政权立即叫停了阿连德推行的改革，并开始大规模镇压反对派，甚至促成政变的基督教民主党也被一同打倒。据智利移民传言与外国媒体报道，在政变后的头几天，有3225人被杀，另有37000人遭到大肆迫害。社会保障政策的取消、市场对外企的完全开放以及新自由主义改革的推行使该国大批人民陷入贫困，反对独裁者的在野势力因此风生水起。反对派主要有两股势力：由基督教民主同盟与激进党领导的民主联盟（AD）；以及亲苏联的智利共产党和左翼革命运动领导的人民民主运动（MDP）。这两股势力彼此合作，但路线不同。前者寻求以宪法手段逼迫皮诺切特和平交权；后者要求以武装斗争暴力推翻军政府。中国是最早承认皮诺切特政权的国家之一，甚至还将基督教民主党的前任大使驱逐出境，这让智利的毛主义反对派切断了与我们的联系。因此，如果我们想要介入智利，我们要么得寻找军政府的薄弱链条，要么就得默默忍受民主联盟和人民民主运动。"
-const TXT_OPT0 := "假借加强双边关系为由渗透军政府的体系（保持原意识形态）"
-const TXT_OPT1 := "开始恢复与民主联盟和人民民主运动的联系（新法西斯主义）"
-const TXT_OPT2 := "保持距离"
 const TXT_PROPRC_YES := "新政府决心和我们做朋友。"
 const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_R0 := "从我国外交部与解放军的报告中可以毫不费力地看出，皮诺切特和他最亲密的支持者、政变计划的制定者、空军司令古斯塔沃·李之间的矛盾正在不断激化。作为一名新法西斯主义者与法团主义者，李对“芝加哥男孩”的新自由主义改革与皮诺切特日益想要独揽大权耿耿于怀。我们让皮诺切特相信他有必要和法西斯组织“祖国与自由”（PIL）的领导人罗伯托·蒂姆保持亲密，并向皮诺切特保证公众对他的支持，以防止民众试图将他驱逐出军政府。解放军同智利军队的积极合作使我们拉拢了许多中层军官，甚至一些将领，使我们能够及时了解独裁者的最新动向。在一次军政府会议上，皮诺切特逼迫李辞职，但后者拒绝下台，转而向我方及他本人的支持者寻求帮助。祖国与自由准军事组织封锁了圣地亚哥驻军，中国武官发出了“中式警告”，最终迫使皮诺切特退让。经过此事，我国在智利的影响作用得到空前的增强。"
@@ -30,19 +25,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _leave_alliances(c: CountryData) -> void:

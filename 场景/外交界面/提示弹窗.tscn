@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://ctr7ixroussot"]
+
+[ext_resource type="Texture2D" uid="uid://crutkal5vpaum" path="res://资产/UI/外交/事件提示.png" id="20_5vmhw"]
+[ext_resource type="Texture2D" uid="uid://6rbxehretlq7" path="res://资产/UI/外交/事件提示覆盖.png" id="21_ah3d2"]
+
+[node name="提示弹窗" type="CanvasLayer"]
+visible = false
+
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=739753704]
+offset_left = 401.0
+offset_top = 180.0
+offset_right = 482.7232
+offset_bottom = 261.0
+texture_normal = ExtResource("20_5vmhw")
+texture_pressed = ExtResource("21_ah3d2")
+texture_hover = ExtResource("21_ah3d2")
+ignore_texture_size = true
+stretch_mode = 0
+

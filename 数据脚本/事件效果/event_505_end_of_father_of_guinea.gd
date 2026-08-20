@@ -4,13 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "几内亚之父的终结"
-const TXT_DESC := "主席同志，来自科纳克里的紧急报道。由于塞古·杜尔总统灾难性的经济政策，导致几内亚经济水平暴跌，而政府又限制私人企业的发展。着导致了小商贩的大规模罢工，而且正有激进化的倾向。杜尔总统本人对社会主义本就有极大的热情，但这可能会成为他的转折点。他很有可能会为了经济援助而转向美国。几内亚毕竟曾经作为非洲反殖民运动的桥头堡，常常支持我国的行动。也行我们应当拉这位“几内亚之父”一把？"
-const TXT_OPT0 := "承担几内亚的债务（需要5百万预算）"
 const TXT_OPT0_DIS := "我们不能帮助这样一个好斗分子"
-const TXT_OPT1 := "火上浇油，推翻杜尔政府"
 const TXT_OPT1_DIS := "为什么要这么做？"
-const TXT_OPT2 := "几内亚在哪？我得换一张大点的世界地图了"
 const TXT_R0_A := "我们决定支持杜尔总统的社会革命政策。这个成效是立竿见影的，杜尔总统立刻宣布脱离苏联的影响而倒向我们。并着手构建自己的社会主义社会。得益于我们为几内亚做担保。几内亚大胆的收回了所有的铝矿和钻石矿。为了防止潜在的反革命政变。杜尔总统宣布开始新的一轮“人民革命”，着手组建工人卫队和独立的矿工工会以保护自己的权力。相信在不远的未来，几内亚会脱下“极不发达国家”的帽子。"
 const TXT_R1_A := "我们向美国人秘密传递了这一条消息。在中情局的里挑外拨下，这场示威游行最终演化成了要求杜尔总统下台的暴力抗争。最终，总统卫队的首领兰萨纳·孔戴上校成立了国家军事复兴委员会，并积极向美国靠拢。"
 const TXT_R1_B := "杜尔总统设法察觉了一场推翻他的阴谋，在苏联的支持下，几内亚人民军粉碎了政变。主谋被丢入动物园中喂狮子。杜尔对我们的行为很是沮丧，宣布驱逐了我们的大使。"
@@ -22,14 +17,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if ws.数值表[56] <= 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if ws.数值表[56] > 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

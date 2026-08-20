@@ -4,14 +4,10 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1239-1241 —— c17.isNATO && (1983.10.22 或 1984+)。
 ## 差异：isNATO/isSocEU→has_tag；data[147] raw index；empires[0].now_leader→current_leader。
 
-const TXT_TITLE := "铸剑为犁"
 const TXT_DESC := ""
-const TXT_OPT0 := "让我们帮助示威者，尝试推进和平进程"
 const TXT_OPT0_DIS := "我们无法插手"
-const TXT_OPT1 := "我们将声援欧洲人民，呼吁结束冷战的对抗"
 const TXT_OPT1_DIS_0 := "只是声援吗？"
 const TXT_OPT1_DIS_1 := "我们怎么能和美国对着干？"
-const TXT_OPT2 := "我们无能为力"
 const TXT_R0_A := "在我们的帮助下，示威者提出了让政府下台的口号，并组织了由主张和平的左翼政党广泛参与的人民阵线。西欧的局势也有利于西德的和平运动，这促使了运动的扩大化。西欧的各个进步政权参与到这场示威之中，他们施压德国政府并大力资助民众的抗议，推进示威的激进化，并在经济上向西德施压。一些抗议者开始质疑西德的警察制度和社会上大量未被清算的纳粹余孽，并抨击西德的制度威胁了民主；工会也宣布进行罢工，学生再次走向街头。和平示威很快转向了类似68运动时的更为激烈的对抗，政府无法驱散示威者，基民盟/基社盟内阁宣布辞职，并重新召开大选。
 参与示威的左翼政党组织的人民阵线以略微的优势赢得了联邦德国大选，这一选举结果彻底动摇了西德自战后以来的政治格局，组成了西德第一个纯左翼的政府。新政府宣布将退出北约、终止双重决议并对西德政治开展改革，进行更加深度的去纳粹化和转型，并将致力于德国的中立化统一，推进欧洲的无核化。西德和平抗议的成功也促使东方集团内部爆发了新一轮和平运动。"
 const TXT_R0_A_SOCEU := "
@@ -30,11 +26,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var line := d[W.I_POLITICAL_LINE]
 	if line <= 2 and ws.influence_prc >= 500:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line > 0 and line < 4:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif line == 0:
 		_disable(opt[1], TXT_OPT1_DIS_0)
 	else:

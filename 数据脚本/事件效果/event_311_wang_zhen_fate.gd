@@ -4,10 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:504-507 —— NumberOfPolitician(17,17)>=0 且 年>=1981 且 ((党内支持<=750 且 (路线0或1)) 或 event_done[310])。
 ## 差异：KillPerson→GameManager.kill_politician；文本来自 Events_text_en 索引 104-109。
 
-const TXT_TITLE := "王震的命运"
-const TXT_DESC := "关于王震将军的不利材料已落入你手中。这些指控相当严重，从性犯罪到与有组织犯罪都有涉及。这将是将反对社会和政治自由化的自由派改革支持者从党内清除出去的绝佳机会。但是，我们真的要触及毛泽东同志的老同事么？"
-const TXT_OPT0 := "按表不发"
-const TXT_OPT1 := "提出诉讼"
 const TXT_R0 := "关于王震的不利材料被送往档案馆，但在那里它们意外丢失了。"
 const TXT_R1 := "你下令开始对王震提起刑事诉讼。面对一切证据确凿的指控，一位前军人，现在的前党员，站在法庭上，疾呼他的敌人捏造了所有案件。但这只不过是为自己徒劳地开脱罢了，因此，王震很快便因与毒贩有牵连和犯下叛国罪而被枪决。"
 
@@ -61,17 +57,8 @@ func _disable(opt: EventOption, text: String) -> void:
 	n.value = 99999.0
 	opt.enable_condition = n
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _find_politician(name1: int, name2: int) -> int:
 	for i in ws.politicians.size():

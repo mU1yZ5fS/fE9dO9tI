@@ -4,9 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "保革伯仲：第二幕"
-const TXT_DESC := "多亏了我们的协助，社会党的内部问题得到了解决，其与公明党和民主社会党的联盟也更加稳固了。在非武装中立与护宪平和主义的总方针下，联合政府对日本社会展开了一系列变革：大企业污染问题得到治理，劳工权益得到进一步保障，新的福利政策得以出台。同时针对当前日本社会的情况，作为政府主导力量的社会党也对原先自己提出的激进一些方针进行了灵活调整，在尽量不触及其支持者基本盘的同时争取市民的更多支持。主流媒体均认为只要不出现重大突发变故，联合政府还将继续平稳运转下去。"
-const TXT_OPT0 := "拭目以待！"
 const TXT_R0_A := "社会党席位虽有所下滑，但仍有165席。联合政府的另外两党公明党与民主社会党各自拿下60席和35席，共产党32席，新自由俱乐部4席，无所属议员21席。自由民主党遭受进一步失败，只获得192席。\n新政府由飞鸟田一雄领导，宣布将延续非武装积极中立路线，完成自卫队的彻底改组，加速推动国有化进程，保护劳工阶层。在外交上，新政府将进一步加强与苏联和社会主义阵营的关系，发展同其他左翼政党的关系。并且就落实上一届政府任期中与美国达成的《日美安保条约》问题开展外交活动。据报道，不久日美双方就将签署一份最终协议。根据协议内容，驻日美军将在未来五年内分批次撤出日本。"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -14,7 +11,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 1:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

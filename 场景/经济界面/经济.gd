@@ -86,14 +86,12 @@ func _on_budget_adjust(idx: int, delta: int) -> void:
 	var amount := mag if delta > 0 else -mag
 	if GameManager.adjust_budget(idx, amount):
 		_refresh()
-		音频总管.play_button_click_sound()
 
 
 func _on_loan_adjust(delta: int) -> void:
 	# 贷款分支原版无 Shift/Ctrl，固定 ±10
 	if GameManager.adjust_loan(delta):
 		_refresh()
-		音频总管.play_button_click_sound()
 
 
 func _on_reserve_adjust(delta: int) -> void:
@@ -101,7 +99,6 @@ func _on_reserve_adjust(delta: int) -> void:
 	var amount := mag if delta > 0 else -mag
 	if GameManager.adjust_reserve(amount):
 		_refresh()
-		音频总管.play_button_click_sound()
 
 
 func _refresh() -> void:

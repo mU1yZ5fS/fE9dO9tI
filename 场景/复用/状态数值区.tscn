@@ -1,0 +1,369 @@
+[gd_scene load_steps=15 format=3 uid="uid://8cda01e84fe50"]
+
+[ext_resource type="Script" path="res://场景/复用/状态数值区.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cna2yftijoqqi" path="res://资产/UI/主游戏UI/状态栏背景.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://dy8kecb6d4loa" path="res://资产/UI/主游戏UI/状态背景.png" id="3_ibg"]
+[ext_resource type="Texture2D" uid="uid://ck3yssxxbuhru" path="res://资产/UI/主游戏UI/党内支持度.png" id="4_ps1"]
+[ext_resource type="Texture2D" uid="uid://bp4vslkj6seye" path="res://资产/UI/主游戏UI/人民支持度.png" id="5_ps2"]
+[ext_resource type="Texture2D" uid="uid://b6bb575lb8cw0" path="res://资产/UI/主游戏UI/思想自由度.png" id="6_tf"]
+[ext_resource type="Texture2D" uid="uid://cbi2105s7kje2" path="res://资产/UI/主游戏UI/生活水平.png" id="7_lv"]
+[ext_resource type="Texture2D" uid="uid://cjr8ydvc7fuh0" path="res://资产/UI/主游戏UI/国际声望.png" id="8_dip"]
+[ext_resource type="Texture2D" uid="uid://cq007uywcr5pc" path="res://资产/UI/主游戏UI/特工网络.png" id="9_ag"]
+[ext_resource type="Texture2D" uid="uid://cw0u78fykq5ws" path="res://资产/UI/主游戏UI/全球影响力.png" id="10_glb"]
+[ext_resource type="Texture2D" uid="uid://ccqh1h787cp5c" path="res://资产/UI/主游戏UI/与苏联关系.png" id="11_ussr"]
+[ext_resource type="Texture2D" uid="uid://b5rynoptf3d37" path="res://资产/UI/主游戏UI/与美国关系.png" id="12_usa"]
+[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="13_bud"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="14_font"]
+
+[node name="状态栏" type="CanvasLayer"]
+script = ExtResource("1_script")
+
+
+[node name="状态栏背景" type="TextureRect" parent="." unique_id=889964788]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 78.0
+texture = ExtResource("2_bg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="状态背景" type="TextureRect" parent="." unique_id=1723743526]
+offset_left = 40.0
+offset_top = 16.0
+offset_right = 246.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="党内支持度图标" type="TextureRect" parent="." unique_id=2125867107]
+offset_left = 44.0
+offset_top = 22.0
+offset_right = 90.0
+offset_bottom = 65.0
+texture = ExtResource("4_ps1")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="党内支持度" type="Label" parent="." unique_id=1643391853]
+offset_left = 73.0
+offset_top = 13.0
+offset_right = 222.0
+offset_bottom = 88.0
+scale = Vector2(0.8, 0.8)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="人民支持度背景" type="TextureRect" parent="." unique_id=681511685]
+offset_left = 216.0
+offset_top = 16.0
+offset_right = 422.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="人民支持度图标" type="TextureRect" parent="." unique_id=1681287202]
+offset_left = 224.0
+offset_top = 22.0
+offset_right = 270.0
+offset_bottom = 65.0
+texture = ExtResource("5_ps2")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="人民支持度" type="Label" parent="." unique_id=1292264510]
+offset_left = 256.0
+offset_top = 16.0
+offset_right = 405.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="思想自由度背景" type="TextureRect" parent="." unique_id=187159611]
+offset_left = 392.0
+offset_top = 16.0
+offset_right = 598.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="思想自由度图标" type="TextureRect" parent="." unique_id=1104369500]
+offset_left = 400.0
+offset_top = 22.0
+offset_right = 446.0
+offset_bottom = 65.0
+texture = ExtResource("6_tf")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="思想自由度" type="Label" parent="." unique_id=226494158]
+offset_left = 431.99997
+offset_top = 16.0
+offset_right = 581.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="生活水平背景" type="TextureRect" parent="." unique_id=1116127364]
+offset_left = 568.0
+offset_top = 16.0
+offset_right = 774.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="生活水平图标" type="TextureRect" parent="." unique_id=1222034765]
+offset_left = 576.0
+offset_top = 22.0
+offset_right = 622.0
+offset_bottom = 65.0
+texture = ExtResource("7_lv")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="生活水平" type="Label" parent="." unique_id=1203176126]
+offset_left = 608.0
+offset_top = 16.0
+offset_right = 757.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="国际声望背景" type="TextureRect" parent="." unique_id=404047648]
+offset_left = 744.0
+offset_top = 16.0
+offset_right = 950.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="国际声望图标" type="TextureRect" parent="." unique_id=1488817966]
+offset_left = 752.0
+offset_top = 22.0
+offset_right = 798.0
+offset_bottom = 65.0
+texture = ExtResource("8_dip")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="国际声望" type="Label" parent="." unique_id=651908015]
+offset_left = 784.0
+offset_top = 16.0
+offset_right = 933.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="特工网络背景" type="TextureRect" parent="." unique_id=1169541535]
+offset_left = 920.0
+offset_top = 16.0
+offset_right = 1126.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="特工网络图标" type="TextureRect" parent="." unique_id=245982223]
+offset_left = 926.0
+offset_top = 22.0
+offset_right = 972.0
+offset_bottom = 65.0
+texture = ExtResource("9_ag")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="特工网络" type="Label" parent="." unique_id=343037206]
+offset_left = 952.0
+offset_top = 16.0
+offset_right = 1101.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="全球影响力背景" type="TextureRect" parent="." unique_id=1919406467]
+offset_left = 1096.0
+offset_top = 16.0
+offset_right = 1302.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="全球影响力图标" type="TextureRect" parent="." unique_id=1537892696]
+offset_left = 1104.0
+offset_top = 22.0
+offset_right = 1150.0
+offset_bottom = 65.0
+texture = ExtResource("10_glb")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="全球影响力" type="Label" parent="." unique_id=886299265]
+offset_left = 1132.0
+offset_top = 16.0
+offset_right = 1281.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="预算背景" type="TextureRect" parent="." unique_id=1543093443]
+offset_left = 1624.0
+offset_top = 16.0
+offset_right = 1830.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="与苏联关系背景" type="TextureRect" parent="." unique_id=1958045172]
+offset_left = 1272.0
+offset_top = 16.0
+offset_right = 1478.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="与苏联关系图标" type="TextureRect" parent="." unique_id=409706325]
+offset_left = 1280.0
+offset_top = 22.0
+offset_right = 1326.0
+offset_bottom = 65.0
+texture = ExtResource("11_ussr")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="与苏联关系" type="Label" parent="." unique_id=1986263323]
+offset_left = 1311.0
+offset_top = 16.0
+offset_right = 1460.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="与美国关系背景" type="TextureRect" parent="." unique_id=1648606778]
+offset_left = 1448.0
+offset_top = 16.0
+offset_right = 1654.0
+offset_bottom = 90.0
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("3_ibg")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="与美国关系图标" type="TextureRect" parent="." unique_id=2071862037]
+offset_left = 1456.0
+offset_top = 22.0
+offset_right = 1502.0
+offset_bottom = 65.0
+texture = ExtResource("12_usa")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="与美国关系" type="Label" parent="." unique_id=1659164133]
+offset_left = 1487.0
+offset_top = 16.0
+offset_right = 1636.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+
+[node name="预算图标" type="TextureRect" parent="." unique_id=1010910792]
+offset_left = 1632.0
+offset_top = 24.0
+offset_right = 1678.0
+offset_bottom = 67.0
+texture = ExtResource("13_bud")
+metadata/_edit_use_anchors_ = true
+
+
+[node name="预算" type="Label" parent="." unique_id=1845588919]
+offset_left = 1661.0
+offset_top = 16.0
+offset_right = 1810.0
+offset_bottom = 91.0
+scale = Vector2(0.71, 0.71)
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 45
+text = "100.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+

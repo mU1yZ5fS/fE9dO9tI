@@ -9,15 +9,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - Torg → 对华贸易；proprc → 亲中；prosov → 亲苏；
 ##  - influencePRC vs empires[1].power → ws.influence_prc vs ws.empires[USSR].power。
 
-const TXT_TITLE := "红海的十字路口"
 
-const TXT_DESC := "随着索马里同胞在欧加登战争耻辱性的大败后，吉布提的政局陷入了动荡之中。一荣俱荣一损俱损，欧加登的伊萨族政府越来越受到该国境内另一个民族族群阿法尔人的敌视。他们被现任政府歧视，同工不同酬，甚至被限制了自己的居住区。而受到胜利的鼓舞，埃塞俄比亚试图在吉布提施加自己的影响力，乃至推翻现任合法政府。也许我们可以试着介入这场事件，让天平稍稍转向？"
 
-const TXT_OPT0 := "向古莱德透露政变的信息"
 const TXT_OPT0_DIS := "我们要是早点干涉就好了……"
-const TXT_OPT1 := "让我们支持埃塞俄比亚同志！"
 const TXT_OPT1_DIS := "爱莫能助啊……"
-const TXT_OPT2 := "额，这又是啥地方？"
 
 const TXT_R0 := "我们向古莱德透露了政变的消息，在我们特勤人员和军事观察家的帮助下，政府军击溃并确保了该国北部的稳定。古莱德总统很感谢我们的帮助，他越来的越倒向我国。在最近，他正式宣布把原全国独立联盟，索马里解放阵线，吉布提解放运动，人民解放运动等组织的部分人士和革命军人整合为吉布提人民争取进步同盟。其中揉杂了索马里民族主义，社会主义，市场经济，阶级斗争等各式各样的思想，但我们至少收获了一个盟友。"
 const TXT_R1_FAIL := "尽管我们支持了埃塞俄比亚同志推翻帝国主义代理人的方案，甚至还有苏联帮助，他们仍然不过放了几枪几炮就走了。\n真的是，我才不怕打，一听到打我就高兴，吉布提算什么打……"
@@ -58,14 +53,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
 	var opt := event_def.options
 	if line != 0 and line != 4:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line <= 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 func execute(context: Dictionary) -> void:

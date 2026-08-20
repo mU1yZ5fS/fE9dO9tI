@@ -27,10 +27,18 @@ var ws: WorldState = null
 ## 数值表快捷引用（= ws.数值表，引用语义，修改即写回）
 var d: Array[int] = []
 
+## 最近一次 execute(context) 的上下文。EventEngine 执行 CUSTOM_SCRIPT 前会注入。
+## 用于让事件脚本通过 context["world"] 拿到 WorldState，避免直接依赖 GameManager。
+var exec_context: Dictionary = {}
+
 
 ## execute 开头调用：绑定 ws / d。WorldState 未就绪返回 false，调用方直接 return。
+## 优先使用 EventEngine 注入的 context["world"]；旧调用点没有 context 时回退到 GameManager.world。
 func _bind_world() -> bool:
-	ws = GameManager.world
+	if exec_context.has("world") and exec_context["world"] is WorldState:
+		ws = exec_context["world"] as WorldState
+	else:
+		ws = GameManager.world
 	if ws == null:
 		return false
 	d = ws.数值表

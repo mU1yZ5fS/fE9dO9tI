@@ -83,7 +83,6 @@ func _连接设置选择器() -> void:
 
 
 func _on_选择器左_pressed(行: String) -> void:
-	音频总管.play_button_click_sound()
 	match 行:
 		"难度行":
 			_change_difficulty(-1)
@@ -94,7 +93,6 @@ func _on_选择器左_pressed(行: String) -> void:
 
 
 func _on_选择器右_pressed(行: String) -> void:
-	音频总管.play_button_click_sound()
 	match 行:
 		"难度行":
 			_change_difficulty(1)
@@ -125,7 +123,6 @@ func _连接窗口模式选择器() -> void:
 ## （window_width/height_override，本地文档 gdd_1421_ProjectSettings.md L2596-2608）；
 ## project.godot 里 override=1280x720 是"能正常切出全屏"的关键，不能删。
 func _on_窗口模式切换() -> void:
-	音频总管.play_button_click_sound()
 	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED:
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
@@ -229,7 +226,6 @@ func _刷新槽位显示() -> void:
 
 
 func _on_播放单曲(索引: int) -> void:
-	音频总管.play_button_click_sound()
 	音频总管.播放曲目(索引)
 
 
@@ -287,13 +283,11 @@ func _总页数() -> int:
 
 
 func _on_专辑右翻页_pressed() -> void:
-	音频总管.play_button_click_sound()
 	专辑页码 = (专辑页码 + 1) % _总页数()
 	_刷新专辑槽位()
 
 
 func _on_专辑左翻页_pressed() -> void:
-	音频总管.play_button_click_sound()
 	var 页数 := _总页数()
 	专辑页码 = (专辑页码 - 1 + 页数) % 页数
 	_刷新专辑槽位()
@@ -303,7 +297,6 @@ func _on_专辑左翻页_pressed() -> void:
 func _on_专辑槽位_按下(槽序号: int) -> void:
 	var 专辑索引 := 专辑页码 * _获取专辑槽位().size() + 槽序号
 	if 专辑索引 < 音频总管.专辑总数():
-		音频总管.play_button_click_sound()
 		音频总管.选择专辑(专辑索引)
 
 
@@ -314,13 +307,11 @@ func _on_专辑变更() -> void:
 
 
 func _on_循环播放_pressed() -> void:
-	音频总管.play_button_click_sound()
 	音频总管.切换循环()
 	_刷新按钮外观()
 
 
 func _on_随机播放_pressed() -> void:
-	音频总管.play_button_click_sound()
 	音频总管.切换随机()
 	_刷新按钮外观()
 
@@ -339,7 +330,6 @@ func _连接时间快捷键行() -> void:
 
 
 func _on_快捷键重绑_pressed(action: String) -> void:
-	音频总管.play_button_click_sound()
 	_rebinding_action = action
 	_refresh_time_shortcut_rows()
 
@@ -381,4 +371,3 @@ func _on_返回_pressed() -> void:
 		return_scene = "uid://bydan4iqthbaa"
 	get_tree().paused = false
 	get_tree().change_scene_to_file(return_scene)
-	音频总管.play_button_click_sound()

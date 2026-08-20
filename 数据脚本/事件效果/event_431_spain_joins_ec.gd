@@ -4,18 +4,12 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1414-1416 —— ExprNode 组合。
 ## 差异：Gosstroy→government；SubGosstroy→sub_government；isEU→标签 eu。
 
-const TXT_TITLE := "西班牙加入欧洲经济共同体"
-const TXT_DESC := "西班牙工人社会党对欧洲一体化的态度发生了显著转变。如果说在之前，该党还会在马克思主义意识形态的影响下，将这样的联盟称之为“隐蔽的帝国主义”，而现在，社会党人则成为了加入欧洲经济共同体的排头兵。然而对他们来说，与他们结成执政联盟的共产党人是他们在当前局势下的最大挑战。共产党人绝对不会冒这个险。因此，冈萨雷斯不得不重新召开议会选举，从而让社会党人在其中获得绝对多数。\n在此之后，该国就加入欧洲经济共同体的问题举行了一场全民公投。而许多政治力量，包括来自左翼与右翼的激进派，呼吁反对该国的一体化进程。但结果会如何呢？"
-const TXT_OPT0 := "观察局势"
 const TXT_RESULT := "54%的西班牙人在投票中支持加入欧洲经济共同体。该国就此拥抱了欧洲一体化的道路。为了加入欧洲共同体，西班牙社会党人不得不在意识形态与实践上做出妥协：退休年龄被延迟，政府减少对经济的干预，中央银行的独立权限扩大，社会支出也被减少。出于适应上述变化的需要，该党将党纲内所有与马克思主义和无产阶级有关的内容删除殆尽。"
 const TXT_IDX_1450 := "西班牙加入欧洲经济共同体"
 const TXT_IDX_1451 := "西班牙工人社会党对欧洲一体化的态度发生了显著转变。如果说在之前，该党还会在马克思主义意识形态的影响下，将这样的联盟称之为“隐蔽的帝国主义”，而现在，社会党人则成为了加入欧洲经济共同体的排头兵。然而对他们来说，与他们结成执政联盟的共产党人是他们在当前局势下的最大挑战。共产党人绝对不会冒这个险。因此，冈萨雷斯不得不重新召开议会选举，从而让社会党人在其中获得绝对多数。\n在此之后，该国就加入欧洲经济共同体的问题举行了一场全民公投。而许多政治力量，包括来自左翼与右翼的激进派，呼吁反对该国的一体化进程。但结果会如何呢？"
 const TXT_IDX_1380 := "观察局势"
 const TXT_IDX_1452 := "54%的西班牙人在投票中支持加入欧洲经济共同体。该国就此拥抱了欧洲一体化的道路。为了加入欧洲共同体，西班牙社会党人不得不在意识形态与实践上做出妥协：退休年龄被延迟，政府减少对经济的干预，中央银行的独立权限扩大，社会支出也被减少。出于适应上述变化的需要，该党将党纲内所有与马克思主义和无产阶级有关的内容删除殆尽。"
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _raw(index: int) -> int:
@@ -24,14 +18,8 @@ func _raw(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _fmt(s: String, args: Array) -> String:

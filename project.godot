@@ -21,10 +21,44 @@ buses/default_bus_layout="uid://cj7b8uqaaherh"
 
 [autoload]
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 EventEngine="*uid://cq6ffym63pyt0"
 GameManager="*uid://ci37skps0qpd1"
-Achievements="*res://数据脚本/achievements.gd"
+Achievements="*uid://cocdd117gg3ye"
 "音频总管"="*uid://dcs43210kry7n"
+按钮特效="*uid://b5p6g4wirepeq"
 
 [display]
 

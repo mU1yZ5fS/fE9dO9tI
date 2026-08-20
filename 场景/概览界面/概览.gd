@@ -158,7 +158,6 @@ func _ensure_modifier_list() -> void:
 
 
 func _on_tab_pressed(key: String) -> void:
-	音频总管.play_button_click_sound()
 	_show_tab(key)
 	_refresh_panel(key)
 

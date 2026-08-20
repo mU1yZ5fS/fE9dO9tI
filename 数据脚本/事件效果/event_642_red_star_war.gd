@@ -5,22 +5,15 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：puppetOf→puppet_of；proprc/okb→亲中/okb；战争 70-74/90 无 WarDef → 兜底创建后补名；
 ##   选项5 completedDecisions[37]=false → ws.decisions.completed[37]=false。
 
-const TXT_TITLE := "红星照我去战斗"
-const TXT_DESC := "华国锋同志，是时候了，当你做出这个决定的时候就表明您已经下定了决心。总参谋部提出了诸多计划，其中都旨在各个阵线上或多或少的挫败我们的敌人。这是其中的一些计划，还请您过目……"
-const TXT_OPT0 := "中南半岛是迫在眉睫的问题"
 const TXT_OPT0_DIS := "我们用四百亿买到了值得的东西"
-const TXT_OPT1 := "跨过鸭绿江！"
 const TXT_OPT1_DIS := "我们不再有关于天池的问题了"
 const TXT_OPT2_NANYANG := "下南洋，再一次"
 const TXT_OPT2_JAPAN := "我们必须做好全国总动员，挽弓射日！"
 const TXT_OPT2_DIS_0 := "我们无能为力"
 const TXT_OPT2_DIS_1 := "我们已经夺回了过去本来就属于中华的传统势力范围——东瀛和南洋"
-const TXT_OPT3 := "翻过喜马拉雅山"
 const TXT_OPT3_DIS_0 := "1962只是撞大运了！"
 const TXT_OPT3_DIS_1 := "南亚是我们的老朋友"
-const TXT_OPT4 := "针对社会帝国主义的最后一战"
 const TXT_OPT4_DIS := "卧薪尝胆……苏联会为自己的轻率付出代价！"
-const TXT_OPT5 := "我只是不小心按到了传呼铃而已，给我杯茶吧。"
 const TXT_WAR_TAIL := "\n我会给军区首长们传达您的指令，各个军工厂已经开始全速运转，各地民兵，入伍和复员工作也在有条不紊的进行中。但是我还是想提醒您，由于先军政策及民族主义宣传的影响，我们的战争机器一旦开动起来，就很难再刹得住车。\n[color=red]我们再见了亲爱的妈妈，请你吻别您的儿子吧……[/color]"
 const TXT_R0_PRE := "华国锋同志，如您所料，越南黎笋修正主义集团贼心不死，胃口堪比沙皇。他们在将老挝、柬埔寨纳入其势力范围，拼凑其所谓“印度支那联邦”后便得陇望蜀，抛出了组建东南亚版苏联的狼子野心，"
 const TXT_R0_THAI_SOC := "而在不久前背叛我们的白眼狼泰国共产党也深受与越南的边境冲突之扰，"
@@ -52,11 +45,11 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	var india := ws.get_country_by_legacy_index(19)
 	var pakistan := ws.get_country_by_legacy_index(31)
 	if vietnam == null or vietnam.puppet_of != 1:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if korea == null or korea.puppet_of != 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	var sea_free := (philippines == null or philippines.puppet_of != 1) \
@@ -76,7 +69,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		_disable(opt[2], TXT_OPT2_DIS_1)
 	var pak_ok := pakistan != null and pakistan.has_tag("亲中")
 	if (india == null or india.puppet_of != 1) and pak_ok:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	elif not pak_ok:
 		_disable(opt[3], TXT_OPT3_DIS_0)
 	else:
@@ -89,10 +82,10 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 			and (vietnam != null and vietnam.puppet_of == 1) \
 			and (japan != null and japan.puppet_of == 1) \
 			and parts_ok and _res(W.I_ARMY) >= 5000:
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
-	_enable(opt[5], TXT_OPT5)
+	_enable(opt[5], event_def.options[5].text)
 
 
 func execute(context: Dictionary) -> void:

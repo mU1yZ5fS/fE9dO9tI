@@ -5,11 +5,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##   evaluate(world) 表达；fire_only_once 承担 !event_done[475]。
 ## 差异：based→有驻军基地；EstablishGovernment(ProChina) 在 Godot 侧以亲中/对华贸易标签近似。
 
-const TXT_TITLE := "谁是我的敌人？"
-const TXT_DESC := "在军委政权倒台后，新生的埃塞俄比亚就两个在推翻门格斯图武装斗争中的少数民族武装：提人阵和厄人阵的未来进行了长时间的讨论。在新生的政权中，有人认为应当组建一个民主的联邦，也有人支持列宁式的民族自决。作为推翻门格斯图政权的始作俑者，我们应当有始有终的解决埃塞俄比亚问题。"
-const TXT_OPT0 := "我们希望他们能组建一个联邦"
-const TXT_OPT1 := "两地应当得到自由—独立建国的自由！"
-const TXT_OPT2 := "厄立特里亚值得独立，但提人阵将会进入新政府"
 const TXT_R0 := "在武汉，埃塞俄比亚人民革命党，厄立特里亚人民解放阵线和提格雷人民解放阵线就组建统一的埃塞俄比亚联邦民主共和国达成了协议。埃塞俄比亚的各个少数民族得到了极大的自治权。民族谅解协定将会给埃塞俄比亚创造新的未来。尽管有些极端民族主义者拒绝这一协定，但大部分人都很满意，这也就够了，美苏对我们的行为很满意。"
 const TXT_R1 := "在武汉，埃塞俄比亚人民革命党，厄立特里亚人民解放阵线和提格雷人民解放阵线就各自成立单独的国家达成了协定。各国确定了自己的领土实际控制范围。这似乎给埃塞俄比亚造成了不小的麻烦，毕竟厄立特里亚是他们为数不多的港口，而现在，埃塞俄比亚很明显失去了海岸线……\n埃塞俄比亚境内对这一“卖国”决定感到非常不满，但我们的新盟友会解决这些问题的，对吧？"
 const TXT_R2 := "在武汉，埃塞俄比亚人民革命党和提格雷人民解放阵线就组建统一的埃塞俄比亚联邦民主共和国达成了协议。埃塞俄比亚的各个少数民族得到了极大的自治权。而厄立特里亚人民解放阵线则在埃塞政府的同意下脱离埃塞而独立。各国确定了自己的领土实际控制范围。这似乎给埃塞俄比亚造成了不小的麻烦，毕竟厄立特里亚是他们为数不多的港口，而现在，埃塞俄比亚很明显失去了海岸线……"
@@ -73,25 +68,16 @@ func _setup_breakaway(c: CountryData, ethiopia: CountryData) -> void:
 	c.有驻军基地 = true
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

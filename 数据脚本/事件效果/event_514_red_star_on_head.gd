@@ -4,13 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "一颗红星头上戴，革命红旗挂两边"
-const TXT_DESC := "随着军队的装备进一步发展，另一个问题开始浮现：65式军装实在是太不军装了。客观上来说，这件衣服确实极有革命性，但作战能力实在堪忧。无法起到迷彩的功能不说，在分工极强的军队容易造成指挥系统的混乱。因此很多人提议研发一款作战服以取代65式军装。也有人支持保留革命的象征——65式军装和56式半自动步枪已经成为了世人对中国的固有印象。也有人建议加速废除65式军装，坚定的和过去切割。很明显，这将会决定我们武装力量的未来。"
-const TXT_OPT0 := "开始研发迷彩，但保留65式"
 const TXT_OPT0_DIS := "总得变点什么"
-const TXT_OPT1 := "加速研发新军装"
 const TXT_OPT1_DIS := "这东西的审美似乎不符合我们的标准"
-const TXT_OPT2 := "保留旧设计"
 const TXT_OPT2_DIS := "旧时代已经过去了！"
 const TXT_R0_A := "在意识到军人需要更实用的军装的情况下，我们决定着手研发80式迷彩服，将用于发配海陆双军的士兵们。这套军服将更注重实用性，也为未来可能的改装做好了准备。但65式军装将作为常服配发给一般士兵，在日常和阅兵式上，65式军装仍然是解放军战士的象征。"
 const TXT_R1_A := "我们决定和过去做坚决的割裂。在本年度的军需单中，不再配发65式军装，80式迷彩服和80式军装将取代他们。这一系列军装更强调实用性和外观，有不少人需要花时间去习惯大檐帽，帽徽和西式礼服。但他们总归会习惯的。"
@@ -22,15 +17,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if ws.数值表[56] <= 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if ws.数值表[56] >= 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if ws.数值表[56] <= 2:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 

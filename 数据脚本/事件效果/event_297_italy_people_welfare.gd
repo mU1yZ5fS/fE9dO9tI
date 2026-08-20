@@ -4,15 +4,9 @@
 ##  now_leader→current_leader；inflCh→influence_china；isNATO/isEU/isSocEU 映射为 nato/eu/soc_eu。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "人民的福祉是最高的法律"
-const TXT_DESC := "功夫不负有心人，在意大利的持久耕耘终究是让我们钓上了大鱼：根据我国驻意大利特工的消息，数位因仕途不顺而陷入经济困境，急需流动资金偿债的军情与安全局职员决定“干一笔大的”。于是，他们看准了正密切关注博洛尼亚爆炸案的各国暗线，并笃定要将手头情报卖个好价钱——而我们的同志对此自是照单全收。此外，这些“鼹鼠”还同时安排了我方人士同极右翼组织民族先锋队活动家，兼“新秩序”政治运动成员文森佐·文奇格拉的会面。他此前曾策划了多起恐怖袭击（主要是炸弹袭击）事件，并于1979年末宣布偃旗息鼓。文奇格拉不仅声称其用于制造爆炸案的炸药来自于驻意北约军事设施，且北约组织与意大利政界精英皆对自身展开的恐怖行为熟视无睹，甚至在特定情况下大开绿灯；更在谈话中透露了意大利存在一个“平行于武装力量的秘密网络”；“作为70年代以来各类袭击事件幕后主使的政治-军事复合体”；其活动宗旨便是“代表北大西洋联盟平衡该国政治，并在苏联占领的最坏境地下开辟敌后战场”，为此应“动用通讯设备、军械和炸药将自身武装到牙齿，作为隐形的准军事组织活动”。所有的一切同“鼹鼠”们送上的辅助材料们（即意大利当局同各派极右翼组织达成的秘密有机政治协议与配套措施——民族先锋队便借助这一身份多次摆脱调查，并无法无天。相关事宜皆出自极端大西洋主义者朱塞佩·阿洛亚将军之手，他自60年代开始便缔造了新法西斯主义团体与意大利武装部队的联盟，并在接近北约军事基地的区块内为前者提供庇护）共同揭露了如此真相：即北大西洋联盟对于意大利内政的干预程度之深，以至足以在无视该国民选机构与政治代表的情况下自行其是；而这一干预的表现形式则是国家主导下的政治恐怖与无差别袭击，旨在达成恐吓该国选民，孤立激进活动家，污名化极端主义情绪，助长社会保守主义情绪，为国家安全机构扩张背书等多重目的。不过，随着我们在意大利的布局已然进入收网阶段，这支“秘密军队”显然不能再像往日那般胡作非为。不论是借助文奇格拉的口供与相关丑闻掀起舆论风暴，促成意大利内部的反大西洋主义爆发，以“体面”地结束北约于地中海地区的军事存在；还是直接基于军事部署的相关情报协助盟友设计斩首行动，为意大利的斗争上猛料。我们都能在这一过程中受益颇丰。又或者选择将这些材料秘密归档的同时，用重金说服“鼹鼠”们同我国做长期买卖。说不定他们能够带来更多惊喜……"
-const TXT_OPT0 := "立刻向意大利媒体透露相关情报，并掀起反北约运动"
 const TXT_OPT0_DIS := "我们可不能给战略合作伙伴背后一刀"
-const TXT_OPT1 := "同苏东集团达成共识，它们一定乐见于此"
 const TXT_OPT1_DIS := "苏联人可不会听我们的"
-const TXT_OPT2 := "利用相关情报对意大利国防设施予以痛击"
 const TXT_OPT2_DIS := "意大利激进主义者已全军覆没"
-const TXT_OPT3 := "无须打草惊蛇，我们应当利用利用同“鼹鼠”的关系并继续深耕"
 const TXT_OPT1_DIS_A := "苏联人可不会听我们的"
 const TXT_OPT1_DIS_B := "我们可不能给战略合作伙伴背后一刀"
 const TXT_OPT2_DIS_A := "意大利激进主义者已全军覆没"
@@ -36,22 +30,22 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var italy_radical := italy != null and (italy.内战中 or italy.政变中)
 	var opt := event_def.options
 	if usa_free:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if usa_free and relres:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif not relres:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
 	if usa_free and italy_radical:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	elif not italy_radical:
 		_disable(opt[2], TXT_OPT2_DIS_A)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_B)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -176,9 +170,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -186,18 +177,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

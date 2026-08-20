@@ -8,7 +8,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - data[155]/data[156] 随机值用 randi_range 复现；
 ##  - 原版 Debug.Log 跳过；empires[1].leaders[4].support 直访判空。
 
-const TXT_TITLE := "向红看齐？"
 const TXT_DESC_YUG_FMT := "1981年举行的上届法国议会选举中，左翼联盟以巨大优势获胜。其中，社会党获得了{1}%的选票，而共产党收获{2}%的支持。因此，罗兰·勒罗伊总统不得不在多党联合政府框架下执政，该国政府由共产党人古斯塔夫·安萨尔领导。\n过去的两年内，法国社会主义政府引入了一系列的激进改革：该国已经准备了一部新教育法，关键部门与经济领域已被国有化，左翼控制的工会权力已经大大扩展；选举上，改革也开始倾向下层阶级，资产阶级的媒体权限限制被限制，并被课以重税。然而，改革者遭遇到了来自欧洲一体化结构的障碍，后者完全是基于自由主义经济原则运行的组织，并积极阻碍法兰西银行的工作。\n在内部，共产党和社会党的右翼开始反对政府的激进政策，他们以激进改革导致的形势恶化为由，积极阻碍改革。\n需要注意的是，右翼政党绝不会轻易接受自己的失败，他们试图通过动员选民并发起罢工和抗议来对抗政府的激进主义政策。而对产业与银行部门的国有化导致了资本外流与税源减少的问题，并引起了通货膨胀。右翼已经团结起来，开始阻止左翼政府的行动。现在，法国比以往任何时候都要更接近政治危机。\n目前，还很难对罗兰·勒罗伊的选举承诺以及其呼吁在法国建设社会主义的理念下定论。但各种情况已经表面，权力关系的演变正朝着不利于他的局势而发展。"
 const TXT_DESC_FMT := "1981年举行的上届法国议会选举中，左翼联盟以巨大优势获胜。其中，社会党获得了{1}%的选票，而共产党收获{2}%的支持。因此，乔治·马歇总统不得不在多党联合政府框架下执政，他所属的政党也只能占据财政、教育、工业三大部长的席位，以及一系列的次要议席。该国政府由社会党人皮埃尔·莫鲁瓦领导。\n过去的两年内，法国社会主义政府引入了一系列的激进改革：该国已经准备了一部新教育法，关键部门与经济领域已被国有化，社会改革则在凯恩斯主义的指导下推进。然而，改革者遭遇到了来自欧洲一体化结构的障碍，后者完全是基于自由主义经济原则运行的组织，并积极阻碍法兰西银行的工作。\n需要注意的是，右翼绝不会轻易接受自己的失败，他们试图通过动员选民与抗议来对抗政府的激进主义政策，对产业与银行部门的国有化导致了资本外流与税源减少。\n目前，还很难对乔治·马歇的选举承诺，以及其呼吁在法国建设民主社会主义的理念下定论。但各种情况已经表面，权力关系的演变正朝着不利于他的局势而发展。"
 const TXT_1052 := "为法国共产党提供财政与特工支持，以交换该党回归无产阶级专政原则，并带领法国退出北约与欧共体"
@@ -16,7 +15,6 @@ const TXT_1053 := "建议马歇与经济互助委员会深化联系"
 const TXT_1054 := "党内的改革派与自由派不会允许我们这么做的......"
 const TXT_OPT0_DEFAULT := "为法国渡过困难提供援助"
 const TXT_OPT0_YUG := "动员苏东阵营向法国政府共同提供援助并邀请其成为经济互助委员会观察员国"
-const TXT_OPT1 := "不闻不问"
 const TXT_DIS_INFLUENCE := "中国的国际影响力应高于{0}......"
 const TXT_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
 const TXT_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
@@ -53,7 +51,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			_disable(opt[0], TXT_DIS_AGENTS.format([15]))
 		else:
 			_disable(opt[0], TXT_1054)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[1], event_def.options[1].text)
 
 
 func _ussr_leader_text(world: WorldState) -> String:
@@ -158,9 +156,6 @@ func _calc_num(world: WorldState) -> int:
 	return num
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -169,9 +164,6 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

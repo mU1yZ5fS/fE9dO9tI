@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event356.cs：载人航天计划。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "载人航天计划"
 
-const TXT_DESC := "苏联和美国已经将他们的宇航员送入了地球轨道，甚至是更远的地方。中国作为一个太空强国，自当奋起直追，这便意味着我们必须重复他们的成就。至少这是科学家们想要的......这也有助于你的政治声誉。这里有两个建议——将我们本国的FSW可返回式卫星改装为单个载人太空舱，或者在情报部门的帮助下获取苏联联盟号飞船的蓝图，以便在其基础上创建自己的类似级别的飞船。或者你可以再次取消载人航天项目......"
 
 const TXT_OPT0 := "自行改装卫星。"
 const TXT_OPT0_DIS := "太危险，又没用"
@@ -71,19 +69,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

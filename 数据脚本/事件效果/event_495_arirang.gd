@@ -8,12 +8,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - name → name/chinese_name；Torg → set_tag("对华贸易", true)；
 ##  - parts[0] 用 _set_part 置位；LeaveAlliances() → _leave_alliances。
 
-const TXT_TITLE := "阿里郎，阿里郎"
 
-const TXT_DESC := "在韩国阳光政策的推出和朝鲜的改革之后，半岛问题和平解决的曙光已经出现。主席同志，我们是否应该帮他们一把来解决半岛问题，或者就这样维持不变？"
 
-const TXT_OPT0 := "下次再说"
-const TXT_OPT1 := "平等地位谈判"
 
 const TXT_R0 := "但是我答应，下次政治局会议的时候一定会提到这件事的…下次一定！"
 
@@ -33,8 +29,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
 
 
 func execute(context: Dictionary) -> void:

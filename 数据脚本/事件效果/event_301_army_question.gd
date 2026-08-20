@@ -3,12 +3,7 @@
 ## 差异：data[28] 用 W.I_USA_RELATIONS；文本来自 Events_text_en 索引 30-39。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "军队问题？"
-const TXT_DESC := "在与越南的战争中，解放军展示了自己远不是最好的一面。不幸的是，我们不能再否认事实了，因此，军队现代化已刻不容缓。当然，我们可以自力更生，但有些党员建议我们寻求旧敌的帮助......"
-const TXT_OPT0 := "军队没有问题。要为战败负责的是党内的叛徒，我们得处理他们！"
-const TXT_OPT1 := "确实，我们需要重整武备。下令紧急启动军队现代化和新型武器的研制。"
 const TXT_OPT1_DIS := "真是不幸，我们没有现代化军队的力量。"
-const TXT_OPT2 := "让我们转而向美国寻求帮助。"
 const TXT_OPT2_DIS := "帝国主义者的帮助绝不可接受！"
 const TXT_R0 := "很明显，我们的军队已表现出了最好的一面，他们英勇地同敌人作战。但是，对失败负有责任的人就藏在党内，他们需要被加急处理！"
 const TXT_R1 := "我们决定紧急开始军队现代化建设。几个月后，79式坦克和歼8截击机便进入了测试阶段。军队内部也开始了人事变动，所有表现不佳的部队指挥官都被降职或送去再培训。"
@@ -24,13 +19,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var industry := world.数值表[W.I_INDUSTRY] if world.数值表.size() > W.I_INDUSTRY else 0
 	var usa_rel := world.数值表[W.I_USA_RELATIONS] if world.数值表.size() > W.I_USA_RELATIONS else 0
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if budget + reserve >= 50 and industry >= 500:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if usa_rel >= 700 and budget + reserve >= 80:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 
@@ -69,9 +64,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -79,18 +71,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

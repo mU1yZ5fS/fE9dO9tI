@@ -4,13 +4,8 @@
 ##  IsSocialism/IsAuthoritarianism 用 ws.is_socialism/ws.is_authoritarian；d[134]/d[176]/d[177] 用 raw index。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "“总崩溃”"
-const TXT_DESC := "第一共和国终结了，人民对于现存体制的信任已然跌落谷底。可古话说得好，有破终有立，且生活仍要继续。自该国的政治丑闻全面爆发以来，意大利的政治版图便发生了令人印象深刻的重组：由于意大利的中间派事实上在反腐调查中灭绝，国内的意识形态力量对比自然走向极化。绝大多数的政治资源不仅向现存的主流议会政党内富集（主要是意大利共产党与意大利社会运动，它们和传统政治力量相比更倾向于选择极端主义立场。出于团结该国主要选民的需要，两党均建立了以自身为核心的联合竞选名单，并确立了在左翼/右翼“联盟”旗帜下建立共识，团结一致，联合治理的基本路线），更促成了民粹主义情绪与新党运动借机迅速崛起。在国家引入比例代表制并放松政治管制的大背景下，所有的一切都为为即将到来的特别大选增添了未知数。考虑到本次大选将为第二共和国的未来定调，我们自然有理由做出干涉，得在参选者中货比三家。确保有助于中方的政治力量登上前台。"
-const TXT_OPT0 := "我们将支持意大利共产党领导的“左翼”派系为该国带来进步与革新"
 const TXT_OPT0_DIS := "一头羊领导的狮群，远不如一头狮率领的羊群"
-const TXT_OPT1 := "我们需要关注意大利社会运动领导的“右翼”派系，终结无政府状态。"
 const TXT_OPT1_DIS := "一头羊领导的狮群，远不如一头狮率领的羊群"
-const TXT_OPT2 := "我们应静观其变"
 const TXT_OPT0_DIS_A := "一头羊领导的狮群，远不如一头狮率领的羊群"
 const TXT_OPT0_DIS_B := "意大利不需要长颈鹿"
 const TXT_OPT1_DIS_A := "一头羊领导的狮群，远不如一头狮率领的羊群"
@@ -31,18 +26,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var war := world.数值表[W.I_WAR_SUPPORT] if world.数值表.size() > W.I_WAR_SUPPORT else 0
 	var opt := event_def.options
 	if line >= 2 and line <= 3 and d176 > 0:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	elif d176 <= 0:
 		_disable(opt[0], TXT_OPT0_DIS_A)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS_B)
 	if diplo >= 800 and war > 300 and line <= 3 and d177 > 0:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif d177 <= 0:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -136,9 +131,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -146,18 +138,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

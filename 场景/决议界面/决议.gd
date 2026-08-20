@@ -74,12 +74,10 @@ func _rebuild_list() -> void:
 
 
 func _on_entry_exec(decision_id: int) -> void:
-	音频总管.play_button_click_sound()
 	DecisionSystem.execute(decision_id)
 	# stats_changed → deferred rebuild；这里主动排一次刷新兜底
 	_request_refresh()
 
 
 func _on_返回_pressed() -> void:
-	音频总管.play_button_click_sound()
 	get_tree().change_scene_to_file(DIPLOMACY_SCENE)

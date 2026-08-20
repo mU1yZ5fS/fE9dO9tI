@@ -4,17 +4,10 @@
 ##  is_party_enabled[0]→factions[0].is_enabled；empires[1].leaders[6].support 按原样。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "和平长入社会主义：第一幕"
-const TXT_DESC := "自帕尔米罗·陶里亚蒂提出“萨莱诺转向”，多次叫停基层左翼组织对民族解放委员会的自发起义与抵抗，并带领意大利共产党积极参与第一共和国建制以来。意共便事实上告别了经典共产主义路线。比战后初期东欧的“人民民主”模式更进一步——陶里亚蒂不仅呼吁社会主义同议会共和国，乃至与资产阶级民主政党的多阶级联合形式相适应；更为捍卫国家统一的最高利益，以司法部长兼意共党魁的身份呼吁和平，且对法西斯主义者持怀柔立场。而在欧洲共产党与工人党情报局于1956年停止活动后，该党更将“萨莱诺转向”发明为“意大利社会主义”独立于莫斯科的起源，并在国际共运多中心论的掩护下试图从因波匈事件与“秘密报告”而声名狼藉的苏联处夺取领导权。因此，意大利共产党在“大论战”期间自然选择多头下注：既同南斯拉夫铁托主义者们交谈甚欢，亦“同情”彼时坚持“阶级斗争”经典理论的我国领导集体，坚决抗议苏方将我们孤立于社会主义阵营外的敌对行为。作为陶里亚蒂时代党校的总负责人，恩里科·贝林格显然充分继承了老同志们衣钵，更决心借助第二次梵蒂冈大公会议与1968年运动期间刮来的天主教改良新风与亲左翼情绪热风将“意大利社会主义”发扬光大，而共产党政府的形成更是让其底气十足：贝林格不仅对1977年的马德里三方会谈故事重提，以老大哥姿态要求法国共产党、西班牙共产党等西欧共产党（期间还特别批评试图在苏意两党间斡旋的法共“教条主义”领导人乔治·马歇）同罗马的“结构改革”路线看齐，至此事实恢复标榜同时痛击“社会民主主义与苏东共产主义”，走人道民主之路的激进派“欧洲共产主义”立场；更同步开启了浩浩荡荡的元首外交——贝林格上任伊始便亲自出访南斯拉夫、奥地利、瑞典与阿拉伯国家，并计划前往我国，显然试图在传统阵营外寻求建立自己的圈子。与此同时，温和的国内改造亦在进行：出于避免智利悲剧需要，意共暂时冻结社会改革进程，转而专注重整内务机构。除标榜忠于宪法的卡宾枪骑兵外，持保守立场的军方领导层开始被边缘化；前内务部长弗朗切斯科·科西加设计的镇压常态化机制开始解体。官商间裙带关系亦遭打击。值此特殊时期，我们或许能够对意大利局势有所发言。考虑到意共目前仍未牢固掌控第二世界的心脏，一切皆有可能——不论是水到渠成卖人情，还是见缝插针挖墙脚，都有助于逐步确立中国对意大利事务的主动权。"
-const TXT_OPT0 := "我们将同新意大利政府建立战略合作伙伴关系，为社会转型提供全面支持。"
 const TXT_OPT0_DIS := "我们怎能支持陶里亚蒂的徒子徒孙？！"
-const TXT_OPT1 := "派出专家学习意共经验，并以合作协定递上恢复两党关系的橄榄枝。"
 const TXT_OPT1_DIS := "只要意共不迷途知返，我们绝不会停印《意共反华言论选》！"
-const TXT_OPT2 := "莫斯科当然不会满意这种“叛逆游击队员”，基层干部们也不会容忍这种尾巴主义——是时候用特殊手段“恢复革命性”了"
 const TXT_OPT2_DIS := "和超级大国狼狈为奸？你要背叛和平共处五项原则！"
-const TXT_OPT3 := "想想我们的口号：土地归农民，工厂归工人，政权归苏维埃，铁拳归修正主义者！"
 const TXT_OPT3_DIS := "我们没法指望在意大利发动一场革命"
-const TXT_OPT4 := "让我们见识下“议会共产党人”如何表演……"
 const TXT_OPT1_DIS_A := "只要意共不迷途知返，我们绝不会停印《意共反华言论选》！"
 const TXT_OPT1_DIS_B := "意共拒绝将自己的社会主义同极权主义等量齐观"
 const TXT_OPT2_DIS_A := "和超级大国狼狈为奸？你要背叛和平共处五项原则！"
@@ -37,26 +30,26 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var tech19 := world.techs != null and world.techs.unlocked.size() > 19 and world.techs.unlocked[19]
 	var opt := event_def.options
 	if line >= 1 and line <= 3:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line >= 3 and not world.is_socialism(china, true) and not world.is_authoritarian(china):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif line < 3:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
 	if line <= 2 and relres and res65 != 2 and res65 != 3 and (_mod_active(53) or tech19):
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	elif line > 2:
 		_disable(opt[2], TXT_OPT2_DIS_A)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_B)
 	if line <= 1:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
-	_enable(opt[4], TXT_OPT4)
+	_enable(opt[4], event_def.options[4].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -144,9 +137,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -154,18 +144,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

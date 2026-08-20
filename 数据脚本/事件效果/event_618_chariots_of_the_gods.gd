@@ -4,15 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:924-926 —— !event_done[617] && c66.SubGosstroy==7 && DATE_AFTER 1984.4.5。
 ## 差异：OilProd 已建模（ws.oil_prod），result0成功线/1/2 各 +100；IsSocialism(true,61)→ws.is_socialism(c61,true)；proprc→亲中。
 
-const TXT_TITLE := "众神之战车"
-const TXT_DESC := "自喀麦隆独立以来，出身北方的阿赫马杜·阿希乔担任了该国23年的总统，在他任上，喀麦隆政府镇压了喀麦隆人民联盟发动的反帝反殖起义，并建立了由喀麦隆民族联盟主导的一党专制亲法政权。1982年11月4日，阿希乔以健康为由宣布辞职，但保留了执政党喀麦隆民族联盟主席的职位。不久后，出身南方的总理保罗·比亚继任总统。比亚继任后，他与阿希乔很快从合作关系走向了敌对。比亚进行了“解冻”改革，放松了一定言论管控，并计划在党内推行竞争性选举，这一改革方案遭到了仍掌握党权的阿希乔集团的反对，引发并扩大了比亚派和阿希乔派乃至于其背后所代表的南北部族之间的矛盾。不久，比亚在权力竞争中决出胜利，并通过发动舆论战继续打压反对派。阿希乔于1983年7月流亡海外，8月22日比亚通过公开指责阿希乔策划政变，将政府中几位阿希乔派高官解职。阿希乔在流亡中严厉批评比亚，并辞去了喀麦隆民族联盟主席的职务，比亚接任党的领导人，掌握了党权。今年二月，阿希乔因政变被缺席判处死刑，后改为无期徒刑。|在统治集团激烈的斗争中，比亚的权力仍然不稳固，有信息显示，喀麦隆将在近期发生政变。1975年以来，喀麦隆军队内的部分爱国进步低级军官组织了一个名为“为国家生存而战的年轻军官”（JOSE）的运动，该运动对现政权的政治经济政策以及腐败和部族主义充斥国家不满，在喀麦隆军中和民间已经发展一些秘密小组，运动中有部分成员是马克思主义者，他们的成员包括姆巴拉·盖兰迪上尉、弗雷德里克·戈迪以及来自民间的代表伊萨·阿杜姆等等。受到部分非洲国家的由进步青年军官主导的政变式革命影响（特别是上沃尔特的由托马斯·桑卡拉和布莱斯·孔波雷领导的革命，因为盖兰迪是孔波雷的同学），计划在近期通过政变甚至是城市游击运动进行夺权和革命。|我们是否要抓住机会，干预喀麦隆的局势？"
-const TXT_OPT0 := "支持JOSE运动发起的革命！"
 const TXT_OPT0_DIS := "我们不能支持阴谋小帮派集团"
-const TXT_OPT1 := "浑水摸鱼，支持阿希乔总统的复辟"
 const TXT_OPT1_DIS := "我们为什么要在两个亲法分子里选一个？"
-const TXT_OPT2 := "为比亚总统提供情报"
 const TXT_OPT2_DIS := "我们为什么要帮那个亲法分子？"
-const TXT_OPT3 := "我们没必要管他们"
 const TXT_R0_SUC := "一切按计划进行。在我方的支持下，JOSE很快发动其旗下的部队行动，政变军队很快突袭了总统府、总参谋部、国家广播电台、机场以及其他的重要设施，UPC也很快利用其地下网络，动员工人发起罢工，组建工人民兵，并调动人民解放阵线的力量配合行动。最终，在雅温得经过几天的激烈战斗后，政变方取得了胜利，比亚、阿希乔统治集团被公审，喀麦隆民族联盟被取缔。姆巴拉·盖兰迪被任命为新总统，JOSE与UPC的成员都进入了新的政府。仿照布基纳法索的模式，全国革命委员会以及各地的保卫革命委员会成立了，并开始仿照他们的模式进行改革。|"
 const TXT_R0_SOC := "新政府很快开始进行土地改革、国有化、建设基础设施以及推广社会保障政策，宣扬爱国主义和社会主义，并打击部族主义和腐败，推进自力更生，废除封建酋长权力和封建习俗，对各级政府和部队进行审查和更新。政变期间的民兵被保留且制度化，同各级保卫革命委员会一起成为保卫国家和社会主义的群众武装和监督力量。在人事上，勒内·旺利-马萨加和保罗-伯纳德·科马尤等UPC激进派成员被重用，而西奥多·马伊·马蒂普和亚伯拉罕·恩根坎等UPC温和派则被边缘化。在外交上，喀麦隆宣布脱离法非关系，走激进的反帝反殖路线，并开始同我国及布基纳法索等反帝革命国家结盟的同时建立经济合作机制，达成了合作协定。不过，JOSE与UPC二者在合作、权力分配、革命方针乃至于最终的组织合并上仍存在一定分歧，依托于军事政变进行的革命将走向何处，我们走着瞧。"
 const TXT_R0_NON := "新政府很快开始进行土地改革、国有化、建设基础设施以及推广社会保障政策，推行混合经济，宣扬爱国主义和发展主义，并打击部族主义和腐败，引入旨在规范和稳固公务员群体的干部门册与薪资等级制。在人事上，勒内·旺利-马萨加和保罗-伯纳德·科马尤等UPC激进派成员被边缘化，而西奥多·马伊·马蒂普和亚伯拉罕·恩根坎等UPC温和派被重用。外交上，喀麦隆并未转向过于激进的立场，只是在强调主权的立场上继续同法国以及非洲亲法政权和平共处，甚至为促进经济发展开设了经济特区，吸纳邻国投资与鼓励国内经济作物出口，事实上承认原法非体系下的旧有国际分工关系。如今的喀麦隆已然在我们的指导下走上和平巩固爱国、主权与社会主义之路，并能在站稳脚跟的基础上充分保存其革命成就——尽管并不是所有人都对这样的革命成果满意。"
@@ -32,18 +26,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
 	var opt := event_def.options
 	if line <= 2 and ws.influence_prc >= 500:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line > 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line > 1:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 
@@ -110,17 +104,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

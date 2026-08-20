@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event363.cs：轨道空间站。。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "轨道空间站。"
 
-const TXT_DESC := "我们的载人计划已经接近一个新的阶段——建立轨道载人空间站。是的，这个项目相当复杂，但苏联在创建DOS系列空间站方面有成功经验。已有人提议将我们的空间站与苏联的和平号空间站结合起来，和平号空间站也正在准备发射。第一个国际空间站的建立将极大地拉近我们两国的距离！"
 
 const TXT_OPT0 := "创建自己的空间站。"
 const TXT_OPT0_DIS := "太复杂了。"
@@ -73,19 +71,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

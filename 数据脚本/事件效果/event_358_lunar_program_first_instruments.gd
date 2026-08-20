@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event358.cs：月球计划——第一批仪器。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "月球计划——第一批仪器"
 
-const TXT_DESC := "科学家们已经提出了一个我们自己的项目，对地球唯一的天然卫星进行研究。第一阶段包括从飞行路线探索月球的简易设备，可能还包括一个着陆站。事实上，问题太多了——这个项目对我们来说太复杂了，有失败的可能。需要实施这一项目么？"
 
 const TXT_OPT0 := "也发射登陆站。"
 const TXT_OPT0_DIS := "太复杂了。"
@@ -58,19 +56,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

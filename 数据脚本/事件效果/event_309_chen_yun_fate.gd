@@ -3,10 +3,6 @@
 ## 差异：KillPerson→GameManager.kill_politician；文本来自 Events_text_en 索引 92-97。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "陈云的命运"
-const TXT_DESC := "一些党员开始密谋反对陈云。当然，这是一位从革命斗争年代就为我党呕心沥血的老党员，但是在我们胜利以后，他反复强调要在经济中实行市场机制。他也是要为所谓“大跃进”负责的人之一，这场运动不能说是完全成功，也许陈云的过错便在于它的失败......"
-const TXT_OPT0 := "放他一马"
-const TXT_OPT1 := "看来我们找到罪魁祸首了"
 const TXT_R0 := "阴谋失败了，陈云受到了其余党员的保护。"
 const TXT_R1 := "在下一次党的会议上，陈云被指责要为大跃进政策的失败负责。在那之后，他被拘留了，很快便被立案，该案最后以射杀一个害虫、一个亲西方的机会主义者而告终。"
 
@@ -15,8 +11,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	_enable(event_def.options[0], TXT_OPT0)
-	_enable(event_def.options[1], TXT_OPT1)
+	_enable(event_def.options[0], event_def.options[0].text)
+	_enable(event_def.options[1], event_def.options[1].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -61,9 +57,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -71,18 +64,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

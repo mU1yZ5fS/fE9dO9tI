@@ -11,20 +11,15 @@ extends "res://数据脚本/event_script_base.gd"
 
 static var _saved_full_options: Array[EventOption] = []
 
-const TXT_TITLE := "西非巨人——第二幕"
 const TXT_DESC_INTRO := "尼日利亚第二共和国的第二次大选即将开始，这届选举的局势同上次大选截然不同——"
 const TXT_DESC_SUB12 := "尼日利亚各方面相比上次大选都有所退行。同许多当代非洲国家类似，尼日利亚政府广泛干预社会经济，官员徇私舞弊，导致腐败泛滥。沙加里政府治理无能，经济措施失当，政府制订依赖石油税收的投资计划（尽管取得了一定成果），因石油价格下跌，导致了财政的紧张，并引发了外汇危机和经济滞涨。沙加里不得不实施受国际货币基金组织支持的经济自由化计划，却引发民众贫困及不满，失业现象大幅增加。除了经济萧条，尼日利亚工业、农业也得到了衰退，国家变得更加依赖进口了。在这种情况下，国民党政治家却趁机捞取利益，甚至想利用权力推迟大选，增加政府的任期时间。\n在选举上，尼日利亚国民党和尼日利亚人民党的执政联盟早已破裂，主要反对党尼日利亚统一党正在尝试推进同尼日利亚人民党、人民救国党和大尼日利亚人民党部分成员一起建立一个进步党团联盟，共同对抗保守派。而掌权的国民党也正打算使用一些“非正常”方式来赢得大选……"
 const TXT_DESC_SUB4 := "阿沃罗沃政府在上台后尝试推进社会福利建设，推广免费教育和免费医疗，以及投资开展农村发展计划并加强基础设施建设，但这些计划依赖石油税收，因石油价格下跌，导致了财政的紧张，并引发了外汇危机和经济滞涨，使得福利主义改革计划无法完全落实。阿沃罗沃不得不实施受国际货币基金组织支持的经济自由化计划，却引发民众贫困及不满，失业现象大幅增加。阿沃罗沃尝试通过修改宪法来恢复第一共和国的更分权的大区模式和其打压北方、强化约鲁巴部族政治地位的企图最终使得进步派联盟最终走向了破裂。\n在选举上，由于进步派力量的执政地位，尼日利亚人民党和人民救国党的力量都得到了增强，他们决定单独参加大选；另一方面，阿沃罗沃的失败进步改革也强化了民间对反对党尼日利亚国民党的呼声。"
 const TXT_DESC_MID_FMT := "在国内矛盾的背景下，反建制力量也得以壮大。扬塔特斯尼组织吸引了大批不满现状的年轻人和失业者，力量不断增强，导致尼日利亚国内的宗教关系紧张。1980年，扬塔特斯尼在卡诺发起了一场暴动，最终导致军队介入，这便是扬塔特斯尼叛乱的开端。{1}虽然马尔瓦在暴动被镇压后不久去世，但他的亲密弟子穆萨·阿里·苏莱曼成为了继任者。在1982年，迈杜古里和卡杜纳等地也爆发了扬塔特斯尼的追随者制造的骚乱。\n也许，现在是我们插手的时候了？"
 const TXT_DESC_MID_COND := "事后，沙加里政府宣布驱逐尼日利亚的西非移民（因为扬塔特斯尼中有来自尼日尔和喀麦隆等地的人），这遭到了国际社会的广泛谴责。"
 
-const TXT_OPT0 := "支持沙加里维持权力"
 const TXT_OPT0_DIS := "我们不会支持保守派"
-const TXT_OPT1 := "我们支持进步派党团联盟的最终实现"
 const TXT_OPT1_DIS := "我们没必要把资源浪费在非洲的选举事务上……"
-const TXT_OPT2 := "何不支持扬塔特斯尼组织？"
 const TXT_OPT2_DIS := "我们不会去找他们！"
-const TXT_OPT3 := "非洲的民主和大选本就是儿戏……我不是说过我对这个尼什么不感兴趣了吗？"
 
 const TXT_ELSE0 := "支持国民党"
 const TXT_ELSE0_DIS := "我们没必要把资源浪费在非洲的选举事务上……"
@@ -54,7 +49,6 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.is_empty():
 		return
-	event_def.title = TXT_TITLE
 	var nigeria := world.get_country_by_legacy_index(60)
 	var is_sub12 := nigeria != null and nigeria.sub_government == 12
 	var desc := TXT_DESC_INTRO
@@ -76,18 +70,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		if event_def.options.size() > 4:
 			event_def.options.resize(4)
 		if line >= 2:
-			_enable(opt[0], TXT_OPT0)
+			_enable(opt[0], event_def.options[0].text)
 		else:
 			_disable(opt[0], TXT_OPT0_DIS)
 		if line <= 2 and line >= 1:
-			_enable(opt[1], TXT_OPT1)
+			_enable(opt[1], event_def.options[1].text)
 		else:
 			_disable(opt[1], TXT_OPT1_DIS)
 		if line <= 3 and line >= 1 and not _modifier_active(world, 3) and war_support >= 600 and prev_653 != 3:
-			_enable(opt[2], TXT_OPT2)
+			_enable(opt[2], event_def.options[2].text)
 		else:
 			_disable(opt[2], TXT_OPT2_DIS)
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 		return
 	if event_def.options.size() < 6 and _saved_full_options.size() >= 6:
 		event_def.options = _saved_full_options.duplicate()
@@ -263,6 +257,3 @@ func _leave_alliances(c: CountryData) -> void:
 	c.puppet_of = -1
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta

@@ -15,7 +15,6 @@ extends "res://数据脚本/event_script_base.gd"
 
 const ARRAY_LOYALISTS := [9, 10, 11, 22, 23, 31, 32, 33, 34, 43, 47, 49, 50, 96, 97, 128]
 
-const TXT_OPT0 := "我们应强烈谴责这一政治挑衅！"
 const TXT_OPT1_A := "批判的武器当然不能代替武器的批判，当然，物质力量只能用物质力量来摧毁！"
 const TXT_OPT1_B := "君子报仇，十年不晚……"
 const TXT_OPT1_C := "这太疯狂了！我想我们确实活在一个公理得胜的时代"
@@ -189,14 +188,8 @@ func _join_our_alliances(c: CountryData) -> void:
 		c.set_tag("asean", true)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
 func _leader_name(world: WorldState) -> String:

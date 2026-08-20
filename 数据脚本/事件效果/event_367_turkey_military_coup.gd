@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event367.cs：土耳其军事政变。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "土耳其军事政变"
 
-const TXT_DESC := "主席同志！来自土耳其的最新消息！在9月12日，国家安全委员会在国家电视台前宣布发动军事政变。前者由该国武装部队司令凯南·埃夫伦领导，并解散了土耳其议会与苏莱曼·德米雷尔领导的政府。军官团宣布在国内禁止罢工与工会运动，同时暂停了该国大多数政党的获得，乃至正延续的凯末尔世俗化改革。在近期公布的相关文件中，新政府表示将遵守与土耳其有关的全部条约与政治联盟，其中也包括北约。\n议会内的所有政党均遭到了镇压。\n根据目前的处境，我们可以考虑采取以下措施。"
 
 const TXT_OPT0 := "组织反军政府的民主派地下起义（需要25.0百万预算、15.0点特工网络与20.0点军事实力）"
 const TXT_OPT0_DIS := "地下网络实力过于弱小！"
@@ -156,19 +154,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

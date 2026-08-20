@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://b7x8m3ewpxfnf"]
+
+[ext_resource type="Texture2D" uid="uid://diua4ymip00ij" path="res://资产/UI/外交/时间背景.png" id="5_yed75"]
+[ext_resource type="Texture2D" uid="uid://c3nbbvgm6qtnf" path="res://资产/UI/外交/时间暂停.png" id="6_ggi5h"]
+[ext_resource type="Texture2D" uid="uid://dwg7rfsovkabs" path="res://资产/UI/外交/时间启动.png" id="7_sb0bh"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="17_v5qqf"]
+[sub_resource type="StyleBoxEmpty" id="blank_style"]
+
+
+[node name="时间" type="CanvasLayer"]
+
+
+[node name="时间背景" type="TextureRect" parent="." unique_id=2119637277]
+offset_left = 17.0
+offset_top = 171.0
+offset_right = 321.0
+offset_bottom = 276.0
+texture = ExtResource("5_yed75")
+
+[node name="时间启停" type="TextureButton" parent="." unique_id=83343456]
+offset_left = 24.0
+offset_top = 177.0
+offset_right = 77.0
+offset_bottom = 230.0
+scale = Vector2(1.8, 1.8)
+toggle_mode = true
+texture_normal = ExtResource("6_ggi5h")
+texture_pressed = ExtResource("7_sb0bh")
+
+[node name="时间" type="Label" parent="." unique_id=1700078695]
+offset_left = 135.0
+offset_top = 229.0
+offset_right = 303.0
+offset_bottom = 252.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 25
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="速度1" type="ColorRect" parent="." unique_id=1001]
+offset_left = 167.0
+offset_top = 200.0
+offset_right = 189.0
+offset_bottom = 218.0
+color = Color(0.9, 0.85, 0.2, 1)
+
+[node name="速度2" type="ColorRect" parent="." unique_id=1002]
+offset_left = 195.0
+offset_top = 200.0
+offset_right = 217.0
+offset_bottom = 218.0
+color = Color(0.9, 0.85, 0.2, 1)
+
+[node name="速度3" type="ColorRect" parent="." unique_id=1003]
+offset_left = 223.0
+offset_top = 200.0
+offset_right = 245.0
+offset_bottom = 218.0
+color = Color(0.9, 0.85, 0.2, 1)
+
+[node name="速度4" type="ColorRect" parent="." unique_id=1004]
+offset_left = 251.0
+offset_top = 200.0
+offset_right = 273.0
+offset_bottom = 218.0
+color = Color(0.9, 0.85, 0.2, 1)
+
+[node name="速度按钮1" type="Button" parent="." unique_id=2001]
+offset_left = 163.0
+offset_top = 196.0
+offset_right = 193.0
+offset_bottom = 222.0
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_styles/normal = SubResource("blank_style")
+flat = true
+
+[node name="速度按钮2" type="Button" parent="." unique_id=2002]
+offset_left = 191.0
+offset_top = 196.0
+offset_right = 221.0
+offset_bottom = 222.0
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_styles/normal = SubResource("blank_style")
+flat = true
+
+[node name="速度按钮3" type="Button" parent="." unique_id=2003]
+offset_left = 219.0
+offset_top = 196.0
+offset_right = 249.0
+offset_bottom = 222.0
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_styles/normal = SubResource("blank_style")
+flat = true
+
+[node name="速度按钮4" type="Button" parent="." unique_id=2004]
+offset_left = 247.0
+offset_top = 196.0
+offset_right = 277.0
+offset_bottom = 222.0
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_styles/normal = SubResource("blank_style")
+flat = true
+

@@ -5,12 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：soc_stab→social_stability；proprc→亲中、sovalliance→苏联盟友、usalliance→美国盟友；
 ##   isSocEU→soc_eu 标签。
 
-const TXT_TITLE := "团结起来，争取更大胜利"
-const TXT_DESC := "主席同志！在布鲁塞尔的前欧洲共同体办公处中，我们找到了一项名为“申根协定”的秘密协定，其中包括在协定签字国之间不再对公民进行边境检查；外国人一旦获准进入“协议领土”内，即可在协定签字国领土上自由通行；设立警察合作与司法互助的制度，建立统一电脑系统，建立有关各类非法活动分子情况的共用档案库。我们现在的科技水平足够发达，而我们同盟内的国家也足够多，签发签证是一个巨大的问题。这个方案足够大胆，但或许会有很好的成效。不过定夺权在您手上。"
-const TXT_OPT0 := "建立一个类似于该申根协议的协议，只适用于我们军事联盟的成员"
 const TXT_OPT0_DIS := "我们没有军事联盟"
-const TXT_OPT1 := "为我们所有联盟的成员建立一个类似于该申根协议的协议"
-const TXT_OPT2 := "我们可以稍后再议"
 const TXT_R0 := "我们与军事联盟国家之间的会议在上海举行，结束时签署了所谓的上海协定，这意味着创建一个我们联盟国家之间的简化的护照和签证控制空间的前景，并完全排斥外国护照的需要。协议逐渐开始生效，人民满意了，但也开始被外国文化冲昏头脑，对我们的国家原则产生了怀疑。现在，罪犯和持不同政见者更容易逃离中国，走私者也更容易把他们的货物走私到我们这里。但我们的盟友国家之间的联系已经进一步加强，旅游业的利润将补充我们的预算。"
 const TXT_R1 := "我们与所有联盟国家之间的会议在上海举行，结束时签署了所谓的上海协定，这意味着创建一个我们联盟国家之间的简化的护照和签证控制空间的前景，并完全排斥外国护照的需要。协议逐渐开始生效，人民满意了，但也开始被外国文化冲昏头脑，对我们的国家原则产生了怀疑。现在，罪犯和持不同政见者更容易逃离中国，走私者也更容易把他们的货物走私到我们这里。但我们的盟友国家之间的联系已经进一步加强，旅游业的利润将补充我们的预算。"
 const TXT_R2 := "既然除了我们的情报人员没人知道这件事，我们可以暂且搁置，日后再讨论"
@@ -24,11 +19,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var china := world.get_country_by_legacy_index(1)
 	var opt := event_def.options
 	if china != null and china.has_tag("okb"):
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[1], event_def.options[1].text)
+	_enable(opt[2], event_def.options[2].text)
 
 
 
@@ -79,25 +74,16 @@ func _shengen_loop(military_only: bool) -> void:
 			_add(W.I_BUDGET, -30)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

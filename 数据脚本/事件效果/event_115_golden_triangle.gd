@@ -7,13 +7,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - result 5 为死代码（button_text[5]=""）→ 跳过；
 ##  - traits[0]==0 → trait_personality==0；loyality→loyalty。
 
-const TXT_TITLE := "金三角"
-const TXT_DESC := "主席同志，正如我们的情报部门所知，在缅甸、老挝和泰国等最近成为我们势力范围的山区，有一个庞大的网络参与毒品的生产和销售，称为“金三角”。这个网络非常有利于这些国家和周边国家的腐败，而且它还由一位著名的掸族成员领导，他主张掸族与缅甸分离。考虑到这一切，部分党员和将军提出协助这些国家对毒品贩子进行调查和军事行动。然而,有另一组人声称，在多年的内战中掸族一直未能实现独立于缅甸的梦想，也不太可能成功。但是他们与引人注目的一个毒贩集团有联系，这些毒品主要销往西方国家。在这方面，他们提出帮助金三角组织保护和销售商品，这将帮助我们得到资金，破坏西方国家的生活。"
 
-const TXT_OPT0 := "这不是我们的事务"
-const TXT_OPT1 := "与毒贩达成协议（-1特工网络）"
 const TXT_OPT1_DIS := "中国人民打击毒贩子可不是为了让我们与他们眉来眼去的"
-const TXT_OPT2 := "帮助盟国打击毒品贩子（-2特工网络，-2军事力量）"
 
 const TXT_R0 := "一切顺其自然。"
 const TXT_R1 := "尽管有原则的党员在得知这项协议后提出抗议，我们仍然能够与坤沙合作，坤沙认为最好不要拒绝这种帮助。现在，国安部特工和解放军人员参与保护鸦片工业，并帮助向西方走私毒品，在我们的坚持下，绝大多数“货物”现在都到了西方。西方国家海洛因销售的激增并没有严重地影响其经济和人民的健康，这需要这些国家的警察付出更多的努力，并需要更多的预算资金。掸族分裂分子对缅甸政府军发动了新的进攻，虽然没有取得多大的胜利。由于我们严守秘密，并没有留下可以用于公开指责我们的材料，但是缅甸当局仍然猜测并减少两国的贸易往来，我们的一些地方官员和有关官员也决定加入这一有利可图的生意。希望我们的利润能弥补这个损失。"
@@ -24,18 +19,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	event_def.description = TXT_DESC
 	var data := world.数值表
 	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
 	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
 	var coal := _coalition_percent(world)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if (line >= 2 and party < 8) or (coal > 66 and party > 7):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -105,11 +99,5 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

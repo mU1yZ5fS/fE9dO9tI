@@ -4,11 +4,8 @@
 ##  禁用项文本按 data[56]>2 / 预算+储备<50 两分支复刻；文本来自 Events_text_en 索引 85-91、122 与 Event308.cs 内联。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "大圈"
 const TXT_DESC_INACTIVE := "文革失败后，红卫兵被遣散，其中一些人锒铛入狱。几年来，极左派在现代中国已无立足之地，如今，他们在香港成立了犯罪集团，其在东南亚和北美国家的影响力也愈发强大。我们可以与他们建立合作关系，以更好地影响外国政策。当然，天上不会掉馅饼，黑手党也会想干涉我党事务。"
 const TXT_DESC_ACTIVE := "文革的混乱时期，全国一些地区的造反派被大规模镇压，其中就有一批在广州的造反派出逃到了港澳地区。如今，他们在香港成立了犯罪集团，其在东南亚和北美国家的影响力也愈发强大。我们可以与他们建立合作关系，以更好地影响外国政策。当然，天上不会掉馅饼，黑手党也会想干涉我党事务。"
-const TXT_OPT0 := "没这个必要。"
-const TXT_OPT1 := "开始与麻匪洽谈。"
 const TXT_OPT1_DIS_LINE := "这种想法是文明国家无法接受的！"
 const TXT_OPT1_DIS_BUDGET := "我们绝对没有那么多钱。"
 const TXT_R0 := "我们不能同黑手党同流合污。最好还是把他们成员的名单交给外国警方。"
@@ -28,9 +25,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var reserve := world.数值表[W.I_RESERVE] if world.数值表.size() > W.I_RESERVE else 0
 	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if budget + reserve >= 50 and line <= 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif line > 2:
 		_disable(opt[1], TXT_OPT1_DIS_LINE)
 	else:
@@ -69,9 +66,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -79,18 +73,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

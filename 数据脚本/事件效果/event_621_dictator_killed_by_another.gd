@@ -4,15 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:934-936 —— IsAuthoritarianism(115) && DATE_AFTER 1979.8.1。
 ## 差异：Torg→对华贸易、proprc→亲中；puppetOf=21 照抄。
 
-const TXT_TITLE := "一个独裁者将会被另一个独裁者杀死"
-const TXT_DESC := "自1968年独立以来，赤道几内亚便一直处于马西埃·恩圭马的统治。在其治下，知识分子大量被屠杀，以芳族为尊并屠杀和排斥其他民族。在1979年6月，由于军队欠饷，数十个军官要求支付薪水却惨遭马西埃杀害，马西埃的侄子，国防副部长奥比昂·恩圭马因此策划了一场政变试图推翻马西埃的统治，但是失败了。不过马西埃并未发现奥比昂是政变策划者。之后马西埃谋杀了他的数个家人，其中就包括奥比昂的兄弟。此举导致了赤道几内亚执政核心圈子的恐慌，有传闻奥比昂即将发动政变推翻马西埃。在此关键时刻，我们可以选择帮助奥比昂来推翻马西埃；如果我们真的很想和马西埃拉近关系的话，也可以帮助他稳定政权；以及，我们或许可以借助周边邻国的法军力量来平定这个西非的小黑斑？"
-const TXT_OPT0 := "支持奥比昂"
 const TXT_OPT0_DIS := "为什么要帮助独裁者的亲戚？"
-const TXT_OPT1 := "帮助马西埃"
 const TXT_OPT1_DIS := "为什么要协助这个疯子？"
-const TXT_OPT2 := "电话请转给爱丽舍宫"
 const TXT_OPT2_DIS := "我们为何要帮助帝国主义者进行侵略？"
-const TXT_OPT3 := "赤道几内亚？这个国家在哪里？"
 const TXT_R0 := "我们决定帮助他们解决马西埃这个疯子，8月3日，听命于奥比昂的军队占领了首都马拉博并宣告马西埃被推翻，但是与此同时仍然发电报给马西埃要求其投降。在马西埃拒绝之后，由涂成黑脸的中国特勤和一些奥比昂的士兵将马西埃进行秘密绑架并送回了政变军所控制的地区，听闻马西埃被捕的消息，剩余原本支持马西埃的军队放下武器投降，奥比昂最终政变成功。在审判之前由于赤道几内亚根本没有宪法，不得不使用西班牙的军事法律对其进行审判。最终以种族灭绝罪，大规模谋杀等罪名判处马西埃等高层死刑。奥比昂很感激我们，选择扩大与我们的合作。之后在全民公投中通过了新宪法，以奥比昂为主的“民选”政府代替了政变时期的军事委员会，赤道几内亚终于恢复正常了……吗？"
 const TXT_R1 := "我们将我们获悉的情报转交给了马西埃。8月2日，马西埃提前动手，以邀请聚餐为由把试图发动政变的军官聚集起来，正当聚餐达到高潮之际，马西埃以上厕所为由离开了，随后总统卫队闯了进来，将在场所有军官全部扫成了马蜂窝。在第二天，马西埃宣布破获了以奥比昂为首的反对马西埃的势力，并宣布由于其叛国而被枪决。在此之后，马西埃很感激我们的行动，开始扩大与我们的合作。"
 const TXT_R2 := "在我们与爱丽舍宫的协商之后，两国就解决赤道几内亚人道主义问题一事达成共识：出兵解决马西埃。第二天，从利伯维尔国际机场出发的法军空降兵空降到赤几首都马拉博，宣布法军正式接管赤道几内亚并开始将赤道几内亚从混乱中拯救出来。在老家别墅的马西埃知道消息后立刻向法军投降，法军兵不血刃的拿下了整个赤道几内亚。前赤道几内亚驻加篷大使克莱门特·阿特巴成为了赤道几内亚的新总统。国防副部长则奥比昂宣布对阿巴特总统和法军保持忠诚，马西埃则被送到法国接受法国军事法庭审判，最终以种族灭绝罪，大规模谋杀等罪名判处马西埃死刑。在此次行动后，赤道几内亚宣布扩大与我们和法国的合作，法军继续驻扎在马拉博。"
@@ -32,20 +26,20 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var gabon := world.get_country_by_legacy_index(116)
 	var opt := event_def.options
 	if line > 1:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line > 0 and war_support >= 700:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if france != null and france.has_tag("对华贸易") \
 			and cameroon != null and cameroon.puppet_of == 21 \
 			and gabon != null and gabon.puppet_of == 21:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 
@@ -91,17 +85,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

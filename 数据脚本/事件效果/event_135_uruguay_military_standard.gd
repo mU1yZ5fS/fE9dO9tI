@@ -3,11 +3,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event135.cs：军事标准（3 选项）。
 ## 触发：原版未发现自动触发条件（trigger_conditions 为空），疑由未逆向的选举/地图系统手动触发。
 
-const TXT_TITLE := "军事标准"
-const TXT_DESC := "\"1972年，胡安·马里亚·博达贝里当选为乌拉圭总统，帕切科的独裁统治与恐怖主义威胁造成的体制危机正困扰着该国。他延续了前政府的专制执政方法，暂停公民自由，禁止工会，监禁并杀害反对派人士，并任命军官担任大多数政府高层职位。1973年6月27日，博达贝里解散了国会，中止了宪法，并授权军警采取他们认为任何必要的行动以止暴制乱。在接下来的三年中，在国家安全委员会（KOSENA）的协助下，博达贝里通过法令进行统治着国家。日复一日，博达贝里变得比他的军方伙伴更为独裁。1976年6月，他制定了一部新的法团主义宪法，该宪法将永久取缔各党派，并确定军队将在权力机构中永存。这甚至要比军方想要的还要过分，他们因此迫使他辞职。他的继任者阿尔贝托·德米切利颁布了《一号组织法》，暂停了宪法第77条所规定的普选，《二号组织法》也随之出台，宪法中从未有过的国家委员会得以设立，并赋予其任命共和国总统、国家委员会主席及成员、最高法院、争议及行政案件法院以及选举法院成员的权力。不过，他却拒绝颁布下一部《组织法》，根据这已法律，新一轮的政治镇压应当开始，为此，他受到了被军队罢免的威胁。\""
-const TXT_OPT0 := "通过贿赂和逼迫，在必要时说服军方给老头子一个交代（右翼独裁主义）"
-const TXT_OPT1 := "抓住时机展开双边贸易（保持原意识形态）"
-const TXT_OPT2 := "保持距离"
 const TXT_PROPRC_YES := "新政府决心和我们做朋友。"
 const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_R0 := "为了为新一轮多余的清洗做辩护，德米切利批准了1972年博达贝里政府制定的《国家发展计划》。这是一套实用主义的经济政策，旨在于技术官僚的领导下，对国家经济及其运作的基础进行彻底地重新规划。改革则是为了将对外贸易的生产结构、国民收入分配、市场需求与相对价格转化为广泛的经济自由化与对外开放的框架。在1973年至1985年间统治乌拉圭的文官或军政府之中，德米切利较为温和，哪怕他执政期间推行的措施被民主派支持者视为对反政府人士的压制，但在禁止前政治家从事政治活动的程度上，他并不同意其军方同行的意见。他编写的法学书籍多年来也一直是共和国大学法学系的教学与参考资料。"
@@ -29,19 +24,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _leave_alliances(c: CountryData) -> void:

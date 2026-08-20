@@ -4,12 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "来自未来？"
-const TXT_DESC := "1973年的赎罪日战争中，以色列的新型武器在战场上大放异彩，这就是遥控飞行器。看起来像个玩具，却能做到侦查的效果。而这样的武器获得了不少观察员的认同，认为这样的武器会在未来发挥作用。也有人不这么认为，对于现在我国的电子业来说，还是太复杂了。"
-const TXT_OPT0 := "投入资金研究无人机"
 const TXT_OPT0_DIS := "无论是刀还是刀乐，总之就是——没有"
-const TXT_OPT1 := "转行研究航模"
-const TXT_OPT2 := "算了吧"
 const TXT_R0_A := "我们决定将资金投资在刀刃上，开始着手研究无人飞行器，这对我们的电子业提出了巨大的要求。但成果是显著的，绰号“红小兵”的无人侦察飞行器除开噪声问题外，没有过分的烦恼。而这个问题将会在未来得到解决，我们的侦察和测绘能力显著增强了，而具有察打一体的型号正在研发中。也许在未来，农民也可以在拖拉机站领到农用无人机，这将显著的解放生产力和劳作精力。"
 const TXT_R1_A := "我们决定把这项技术用在研究航模上，事实证明这是个极为正确的决定。我们的“耐摔王”型无人飞行器很快成为了全国孩子都梦寐以求的儿童节礼物。其中模仿三叉戟客机的一款销量尤其高，这是什么原因呢？"
 const TXT_R2_A := "没有必要研究这种武器，我们的战士无比英勇，用无人机的是一等一的孬种！"
@@ -20,11 +15,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if ws.数值表[8] + ws.数值表[36] >= 50:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[1], event_def.options[1].text)
+	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

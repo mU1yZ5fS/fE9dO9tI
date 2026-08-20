@@ -11,17 +11,11 @@ extends "res://数据脚本/event_script_base.gd"
 const TXT_TITLE := "我们需要石油？"
 const TXT_TITLE_DAQING := "大庆：王进喜的遗产"
 
-const TXT_DESC := "随着我国工业的飞速发展，另一项问题开始浮出水面：我国的石油储量越显尴尬。工业的运转需要石油的润滑，一旦石油储备见底，我们所遇到的危机可能就不只是工厂停工了。为此，我们的委员会出台了一些方案。我们可以采购更新更好的开采工具，也可以发动“石油会战”来鼓舞我们的石油工人。或者直接买外国人的会更好？无论如何，决定权在您的手上！"
 
-const TXT_OPT0 := "采购最新的开采设备"
 const TXT_OPT0_DIS := "可惜我们没有这么多钱"
-const TXT_OPT1 := "在中宣部和各级党委的鼓动下，号召工人"
-const TXT_OPT2 := "设备号召两手抓，这是社会主义建设所必要的！"
 const TXT_OPT2_DIS_POOR := "我们没有钱"
 const TXT_OPT2_DIS_FAITH := "越奉献越成功……道理很好听，可惜没人信了"
-const TXT_OPT3 := "呼吁外国的帮助"
 const TXT_OPT3_DIS := "想法很好，但没人愿意帮一个恶霸"
-const TXT_OPT4 := "没有这个必要"
 
 const TXT_R0 := "我们和美国以及苏联的石油开采公司达成了协议。最终，我们得以凭借一笔优惠的价格的到了一批优质的钻头和钻井平台。凭借他们，我们一定能克服石油短缺的问题。"
 
@@ -52,21 +46,21 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		usa_rel = world.empires[EmpireData.USA].relations
 	var opt := event_def.options
 	if money >= 80:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[1], event_def.options[1].text)
 	if money >= 50 and mod3:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	elif money < 50:
 		_disable(opt[2], TXT_OPT2_DIS_POOR)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_FAITH)
 	if ussr_rel >= 500 or usa_rel >= 500:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
-	_enable(opt[4], TXT_OPT4)
+	_enable(opt[4], event_def.options[4].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -131,11 +125,5 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

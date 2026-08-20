@@ -6,11 +6,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - LeaveAlliances→_leave_alliances；Torg→对华贸易；empires[1].leaders[6]→leaders[6]；
 ##  - 原版 num/flag/flag2 死代码跳过；result_num 2 无额外效果。
 
-const TXT_TITLE := "社会主义联盟的勃兴"
-const TXT_DESC := "随着欧洲经济共同体越加难以保证其成员利益，且其超国家部门也更倾向于采取侵犯欧洲主权的新自由主义政策，相当数量的国家已在事实上游离其外，并拒绝参与欧洲经济共同体的相关事宜，主要大国的脱离更是使得基于资本主义的欧洲整合方案已在事实上破产。不过这并不代表欧洲联邦之梦的终结：随着以欧洲共产主义与民主社会主义为代表的人道主义左翼在欧洲取得突破性进展，有关欧洲各国应当在非市场经济治理、尊重主权与民主原则的基础上，实现另一类经济、政治与文化一体化的想法已日渐成熟。\n为此，意大利总理恩里科·贝林格、西班牙首相，以及法国总统乔治·马歇已于今日在西班牙首都马德里举行三国领导人联合会晤。就建立更加公正民主的欧洲新秩序问题达成相关共识，并顺势抛出实现“另类一体化”的计划。\n此后各方签署了《马德里条约》，并宣布致力于发展新式合作关系——最终目标是建立囊括大半个欧洲的超国家一体化组织“社会主义联盟”。不同于欧洲经济共同体，该组织决定以类似共产党政治局形式建立中央委员会的部门，对议会取而代之：其成员囊括参与国的领导人、政府部长与各国代表。社会主义联盟的主席则由各国则效法南斯拉夫联邦的轮值主席团经验，按照一年一度的“换岗”流程进行轮值。该组织的经济基础是带有国家干预因素的民主分权计划、平均持股的人民资本主义企业与私人市场要素的结合。这一模式足以将各地的经济特征合理整合为统一的欧洲经济。此外，该组织还制订了有关关税、移民与教育标准的相关制度。\n这不就是马克思期望的“共产主义的幽灵”吗？"
-const TXT_OPT0 := "支持社会主义联盟的建立，并与之签订贸易协定"
-const TXT_OPT1 := "谴责这一联盟在意识形态上的短视"
-const TXT_OPT2 := "静观其变"
 const TXT_IDX_1438 := "社会主义联盟的勃兴"
 const TXT_IDX_1440 := "支持社会主义联盟的建立，并与之签订贸易协定"
 const TXT_IDX_1441 := "谴责这一联盟在意识形态上的短视"
@@ -22,9 +17,6 @@ const TXT_IDX_1449 := "我想知道这样的联盟将如何告终......\n{2}\n{1
 const TXT_APPEND_PT := "此外，在葡萄牙，不久前刚刚上台的社会党与联合人民联盟组成社会主义联合政府也表示，决定申请加入社会主义联盟。鉴于其最近宣布的政策和道路与社会主义联盟的理念十分贴近，申请很快就会通过。"
 const TXT_APPEND_UK := "刚刚赢得大选的英国工党政府看到了新兴社会主义联盟潜力，为更好贯彻“重建福利国家”的政策，主动申请加入社会主义联盟以寻求经济帮助。"
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _raw(index: int) -> int:
@@ -33,14 +25,8 @@ func _raw(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _fmt(s: String, args: Array) -> String:

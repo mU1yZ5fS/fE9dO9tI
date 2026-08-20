@@ -4,10 +4,6 @@
 ##  GameObject.Find("Ach(Clone)") / iron_and_blood 成就 Set(112) 已接 Achievements；文本来自 Events_text_en 索引 50-56。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "核战"
-const TXT_DESC := "我们的核打击并非毫无后果。就在第二天，联合国安理会便召开了紧急会议，决定了我们的命运，据情报机构报告称，苏美两国的核导弹已经瞄准了我们，两国军队也收到了对中华人民共和国发动军事行动的计划。当然，谁都打不垮我们的革命精神，我们要反抗全世界，因为我们能把他们变成一滩放射性灰烬。但是，悄悄把那些把世界推到毁灭边缘的疯子赶下台，向全人类作出让步是个值当的打算么？"
-const TXT_OPT0 := "和平解决方案已无可能！"
-const TXT_OPT1 := "逮捕激进派。"
 const TXT_OPT1_DIS := "但是下令核打击的是我们，不是极左派......"
 const TXT_R0 := "我们的城市已成为废土，但我们的导弹也在向敌人飞去。你和你的同僚们躲在地堡里。但是如雪花般飞来的关于数千万人死亡的报道让你无法理智地做出决定，你头痛欲裂，核战不会有赢家，世界将永不会重归常态的想法已无法抑制......"
 const TXT_R1 := "你下达了命令，很快极左派的头目就被逮捕了。联合国、苏联和美国都收到报告说，正是这些罪犯要对核打击负责，这群要为国际社会负责的党员也已被消灭。你已准备好以严重的经济与名誉损失的形式承担所有后果。此外，国际机构肯定会要求我国大幅裁减军队，并销毁所有核武器。但这对世界来说只是微不足道的代价。让极左派准备好上国际法庭吧。"
@@ -19,9 +15,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var agents := world.数值表[W.I_AGENTS] if world.数值表.size() > W.I_AGENTS else 0
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if agents >= 150:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 
@@ -71,9 +67,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -81,18 +74,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

@@ -31,7 +31,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2b87v")
 
-[node name="背景层" type="CanvasLayer" parent="."]
+[node name="背景层" type="CanvasLayer" parent="." unique_id=1089011141]
 layer = -1
 
 [node name="背景" type="TextureRect" parent="背景层" unique_id=449705355]
@@ -132,7 +132,7 @@ text = "硬汉"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="左栏_当前选中政治家特质3_背景" type="TextureRect" parent="."]
+[node name="左栏_当前选中政治家特质3_背景" type="TextureRect" parent="." unique_id=66561641]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 184.0
@@ -141,7 +141,7 @@ offset_bottom = 220.0
 texture = ExtResource("2_vbwtu")
 expand_mode = 1
 
-[node name="左栏_当前选中政治家特质3" type="Label" parent="."]
+[node name="左栏_当前选中政治家特质3" type="Label" parent="." unique_id=283654651]
 layout_mode = 0
 offset_left = 21.0
 offset_top = 185.0
@@ -173,8 +173,6 @@ theme_override_colors/default_color = Color(0.2901961, 0.10980392, 0.19215687, 1
 theme_override_fonts/normal_font = ExtResource("3_uhnri")
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
-fit_content = true
-scroll_active = false
 text = "职务:
 主管:华东；
 尚未被纪律审查
@@ -182,6 +180,8 @@ text = "职务:
 留置后的影响力未知
 影响力:120.0
 强影响力"
+fit_content = true
+scroll_active = false
 
 [node name="实权领袖背景" type="TextureRect" parent="." unique_id=357871974]
 layout_mode = 0
@@ -568,7 +568,7 @@ icon = ExtResource("7_ejoel")
 flat = true
 icon_alignment = 1
 
-[node name="任命领袖军委" type="Button" parent="."]
+[node name="任命领袖军委" type="Button" parent="." unique_id=898666235]
 visible = false
 layout_mode = 0
 offset_left = 16.0

@@ -4,14 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "整个波兰都在摇滚！"
-const TXT_DESC := "在波兰的联合政府成立之后，情况并没有得到明显的好转：该国巨大积累的外债在拉科夫斯基政府下情况没有得到改观，政府内的局势已经达到了沸点：通货膨胀导致的物价飞涨，基本生活物品短缺，联合政府不得不重新考虑紧缩政策与冻结工资等一系列不得人心的政策来解决现有的问题的。在新的色姆选举时，色姆内几乎没有联合政府的成员！在这种情况下，统一工人党内部的亚历山大·克瓦希涅夫斯基为首的青年派已经夺取了党内领导权，宣布建立“民主左派联盟”，但是对波兰统一工人党的命运采取任何声明！主席同志，这很有可能是东欧多米诺骨牌的第一张…"
-const TXT_OPT0 := "天要下雨，娘要嫁人…"
-const TXT_OPT1 := "支持波兰政局的革新"
 const TXT_OPT1_DIS := "我们不可能为修正主义吹哨"
-const TXT_OPT2 := "为波兰提供慷慨的财政援助以及帮助政府稳定"
 const TXT_OPT2_DIS := "我很反修，让走资派滚"
-const TXT_OPT3 := "支持右翼候选人推翻波兰政局"
 const TXT_OPT3_DIS := "苏联不会就眼睁睁看着的"
 const TXT_R0_A := "很快，新的总统选举发生，亚历山大·克瓦希涅夫斯基率领的“民主左派联盟”打着反对紧缩和腐败的工会领导层，以及自由意志社会主义的口号赢得了选举，但是一上台，该政府立即开始大规模私有化，聘请芝加哥经济学派，实行“休克疗法”….食物价格开始以1000%的速度飙升。"
 const TXT_R0_B := "\n莫斯科对发生的事情表示欢迎。克瓦希涅夫斯基正在试图向莫斯科宣誓表示自我为“社会主义开放与活力的橱窗”-而与此同时，戈尔巴乔夫计划将波兰作为寻访东欧的第一站，他称呼发生在哪里的事情是“未来走向民主和平的新社会主义世界的前兆”。"
@@ -27,17 +21,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if ws.数值表[56] > 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if ws.数值表[56] != 0:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if ws.empires[1].current_leader == 6 and ws.数值表[56] >= 3:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 

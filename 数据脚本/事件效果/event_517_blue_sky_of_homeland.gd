@@ -4,15 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "我爱祖国的蓝天"
-const TXT_DESC := "最高领导人同志，正如你所知，1964年航空研究院就提出了要在米格-21基础上研制高空高速歼击机。1965年5月17日，罗瑞卿同志就批准新歼的战技指标和研制任务，并正式命名为歼-8。由沈阳飞机设计研究所承担具体任务。1968年7月，首批2架歼-8总装完毕。1969年7月5日，原型机由尹玉焕驾驶首飞成功。但是由于未能满足创立之初的目标：超视距空战而长期被搁置。随着我们技术的进一步提升，列装这类飞机已变为可能。但问题也在于此，美国空军早在1976年就开始列装更为先进的F-15战斗机，如果我们想要和他们做好竞争的准备，应该现在就研发更好更新的歼击机。同时，空军也在抱怨强-5过于老旧，而轰-六又是个十足的油老虎，应当对这些机型进行改进。这肯定会是项漫长的工程，无论如何，中央军事委员会希望听听您的意见。"
-const TXT_OPT0 := "我们应当开始研发新的歼击机"
 const TXT_OPT0_DIS := "我们的工业水平不支持我们做这些"
-const TXT_OPT1 := "别忘了研发轰炸机！"
 const TXT_OPT1_DIS := "我们的工业水平不支持我们做这些"
-const TXT_OPT2 := "我全都要！"
 const TXT_OPT2_DIS := "我们的工业水平不支持我们做这些"
-const TXT_OPT3 := "用我们现在的就够了。"
 const TXT_R0_A := "在中央军事委员会的特别会议上，会议决定开始研发新型的第三代战斗机，假想敌为美军的F-15和苏联的mig-29战斗机。中国航空研究院606所紧锣密鼓的为其研制了涡扇-10型轮扇发动机和配套的全权数字发动机控制系统。能提供惊人的89.17千牛顿力。更大的弹仓和更快的速度决定了它的优势。该型飞机被命名为歼10。在不久的将来，也许会彻底取代歼8在中国人民解放军空军中的地位，但这都是后话了。"
 const TXT_R0_B := "可惜的是，我们尊敬的"
 const TXT_R0_C := ""
@@ -30,18 +24,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if ws.数值表[12] >= 600:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if ws.数值表[12] >= 600:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if ws.数值表[12] >= 800:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

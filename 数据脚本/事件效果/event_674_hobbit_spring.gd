@@ -5,11 +5,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && c87.sub∈{7,9} && 1985.11 起 && num(sub22计数)<3（num>=3 走 675）→ trigger_script evaluate。
 ## 差异：isFXSEU→fxseu 标签；LeaveAlliances→_leave_alliances；result2 中国转 gov0/sub9。
 
-const TXT_TITLE := "霍比特之春"
-const TXT_DESC := "由于极右翼政治势力在欧洲主要国家内的崛起，我们所熟知的雅尔塔-波茨南体系已摇摇欲坠，世界似乎退回到了20世纪30年代的模样：今天，英国，法国，意大利，西班牙与葡萄牙五国代表齐聚马德里，商讨欧洲统一事宜。此后，上述国家便以法国在五十年代提出的《欧洲防务共同体》计划为蓝本建立了堪称二代《钢铁条约》的所谓“欧洲社会国家组织”：该组织将为各国提供“充分保障国家主权的平台”，并确保其成员可在经济、政治与军事上共进退；且所有加入“欧洲社会国家组织”的政权都需遵守1962年3月1日奥斯瓦尔德·莫斯利、让·蒂里亚特等人签署的《威尼斯宣言》：即认同罗马传统，具有共同历史纽带，要求选举产生欧洲议会、彻底清算战后世界秩序（即终结美苏政治集团并瓦解联合国）与清除美国与苏联在欧洲的军事存在。最后，欧洲极右翼政客们以号召欧洲各国“回归文明怀抱，痛打洋基尼格罗人和苏维埃野蛮人”的演讲结束了会议。雅尔塔体系迎来了一个对手，我们又该如何回应？"
-const TXT_OPT0 := "强烈谴责这一声明"
-const TXT_OPT1 := "今昔是何年？"
-const TXT_OPT2 := "热烈欢迎政治多极化时代的到来！并向欧洲极右翼表达合作意愿！"
 const TXT_OPT2_DIS := "你没发烧吧？"
 const TXT_R0 := "中国外交部紧跟世界主要国家步伐，严正谴责了新法西斯主义者的所作所为。对此，欧洲社会国家组织对外发言人皮埃尔·西多斯只是以一句：“亚洲人依然没有看清历史并选对（右）边，如有必要，重提开化使命旧事也并非不可。”草草回应。\n不论如何，欧洲社会国家组织的成立都为世界各地的新法西斯主义者与多边主义派系打了强心针。国际局势预计将在相当一段时间内保持“沸腾”。"
 const TXT_R1 := "看起来，法西斯主义确实还没有完全成为“历史名词”……\n不论如何，欧洲社会国家组织的成立都为世界各地的新法西斯主义者与多边主义派系打了强心针。国际局势预计将在相当一段时间内保持“沸腾”。"
@@ -36,11 +31,11 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	if china != null and (china.sub_government == 9 \
 			or (ws.is_authoritarian(china) and _res(W.I_WAR_SUPPORT) >= 700)) \
 			and china.sub_government != 19:
-		_enable(event_def.options[2], TXT_OPT2)
+		_enable(event_def.options[2], event_def.options[2].text)
 	else:
 		_disable(event_def.options[2], TXT_OPT2_DIS)
-	_enable(event_def.options[0], TXT_OPT0)
-	_enable(event_def.options[1], TXT_OPT1)
+	_enable(event_def.options[0], event_def.options[0].text)
+	_enable(event_def.options[1], event_def.options[1].text)
 
 
 func execute(context: Dictionary) -> void:

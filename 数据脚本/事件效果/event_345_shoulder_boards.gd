@@ -8,7 +8,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##    vietnampeace 端口建模说明 → 用 global_flags 同名键近似（项目既有约定）；
 ##  - 原版对 old_modify_desc[50] 的拼接是展示文案，Godot 由修正目录统一管理，这里跳过并注释原文。
 
-const TXT_TITLE := "肩上的那块牌子"
 
 const TXT_DESC_BASE := "随着我国军队的进一步发展，也许是时候谈谈一个被遗忘的问题了。主席同志，作为中央军委的一员，您应该知晓我国军队与他国军队的一个显著特征：我国没有军衔的概念，至少在过去的一段时间内没有。在1955年开始，我国短暂的实行过军衔制，效法苏联设立了多个军种和军衔。但随着我国在各个方向上试图击溃苏联所代表的一切，军衔自然作为修正主义的一部分被打倒。毛泽东主席在讲话中多次强调，高级干部要注意学习马列主义，防止脱离群众,加强干部特别是高级干部的革命化建设。1964年前后，他认为，军队高级干部工资过高，和一般干部和人民群众差距太大，难以体验人民群众的疾苦，容易脱离群众，产生资产阶级思想，因此提出了军队高级干部减薪问题，以此作为防止修正主义的一项措施。\n在林彪取代彭德怀主持军委工作后，大力宣扬“突出政治”。在这种观念影响下，一些人认为，军衔制等级分明，不符合人民解放军官兵一致的原则，不利于干部和士兵打成一片，因此也不利于继承光荣传统。这种对“革命化”建设的片面理解，加之人民军队几十年战争时期没有军衔制度而取得革命的胜利，也使许多人认为实行军衔制并无必要。\n"
 const TXT_DESC_VISITS := "在我国回到了世界舞台后，大量的军事代表团也曾来我国访问。他们对于我们缺少军衔这一点感到十分不解。解放军的空军大校在会见伊朗空军代表团时曾被问到“你的上级呢？”这样让人啼笑皆非的问题，险些导致外交纠纷。因此，有些同志认为我们该考虑恢复军衔了。"
@@ -34,7 +33,6 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	event_def.title = TXT_TITLE
 	var korea := world.get_country_by_legacy_index(10)
 	var desc := TXT_DESC_BASE
 	var res378 := int(world.completed_event_ids.get("event_378", 0))
@@ -110,11 +108,5 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

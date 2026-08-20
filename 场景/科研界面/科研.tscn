@@ -7,12 +7,9 @@
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="5_4vumy"]
 [ext_resource type="Texture2D" uid="uid://ka0km240wql3" path="res://资产/UI/科研/科研预算背景.png" id="5_afeuu"]
 [ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="6_5jtnw"]
-[ext_resource type="Texture2D" uid="uid://iimulmmd2hkh" path="res://资产/UI/科研/科研关系竖线.png" id="8_54mkj"]
 [ext_resource type="Texture2D" uid="uid://gi5c5ivj8uuk" path="res://资产/UI/科研/农业科技_大跃进的遗产.png" id="9_py5tl"]
 [ext_resource type="Texture2D" uid="uid://ca775o76xtwbm" path="res://资产/UI/科研/农业科技_巩固农业设施.png" id="10_bb3wn"]
-[ext_resource type="Texture2D" uid="uid://bl7cnhx586y6f" path="res://资产/UI/科研/是否可科研状态_是.png" id="10_y4ldg"]
 [ext_resource type="Texture2D" uid="uid://b5xx6fe3r8v3s" path="res://资产/UI/科研/农业科技_农业方法革新.png" id="11_daoj1"]
-[ext_resource type="Texture2D" uid="uid://bd2unn1elyw3m" path="res://资产/UI/科研/是否可科研状态_否.png" id="12_7fiuk"]
 [ext_resource type="Texture2D" uid="uid://d0qnbsexx6jni" path="res://资产/UI/科研/农业科技_发展农业机械化.png" id="12_bb3wn"]
 [ext_resource type="Texture2D" uid="uid://ctdh8xves6v84" path="res://资产/UI/科研/农业科技_新型肥料与杀虫剂.png" id="13_2ihq2"]
 [ext_resource type="Texture2D" uid="uid://bsodgaprgd0rm" path="res://资产/UI/科研/农业科技_选育与基因研究.png" id="13_daoj1"]
@@ -45,9 +42,8 @@
 [ext_resource type="Texture2D" uid="uid://ddgo4kk5thnvi" path="res://资产/UI/科研/航天科技_轨道空间站.png" id="41_5mczk"]
 [ext_resource type="Texture2D" uid="uid://2kredme6a3hs" path="res://资产/UI/科研/航天科技_航天飞机.png" id="42_6mczk"]
 [ext_resource type="Texture2D" uid="uid://b5pe8abpiemtx" path="res://资产/UI/科研/科研提示板.png" id="43_7mczk"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vg3t2"]
-bg_color = Color(0.2901961, 0.11764706, 0.19215687, 1)
+[ext_resource type="PackedScene" uid="uid://c8e4f2a6b0d17" path="res://场景/科研界面/科技条目.tscn" id="87_entry"]
+[ext_resource type="Script" uid="uid://c83ufj468hcky" path="res://场景/科研界面/科研关系线.gd" id="88_rel"]
 
 [node name="Control" type="Control" unique_id=81003301]
 layout_mode = 3
@@ -187,104 +183,8 @@ bbcode_enabled = true
 text = "科技介绍"
 scroll_active = false
 
-[node name="科研关系_纵向" type="TextureRect" parent="." unique_id=1213856115]
-layout_mode = 0
-offset_left = 960.0
-offset_top = 112.0
-offset_right = 1000.0
-offset_bottom = 560.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_纵向4" type="TextureRect" parent="." unique_id=1782869191]
-layout_mode = 0
-offset_left = 960.0
-offset_top = 1112.0
-offset_right = 1000.0
-offset_bottom = 1560.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_纵向2" type="TextureRect" parent="." unique_id=1327207727]
-layout_mode = 0
-offset_left = 728.0
-offset_top = 480.0
-offset_right = 768.0
-offset_bottom = 928.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_纵向5" type="TextureRect" parent="." unique_id=1986337096]
-layout_mode = 0
-offset_left = 736.0
-offset_top = 1488.0
-offset_right = 776.0
-offset_bottom = 1936.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_纵向3" type="TextureRect" parent="." unique_id=1643208679]
-layout_mode = 0
-offset_left = 1176.0
-offset_top = 480.0
-offset_right = 1216.0
-offset_bottom = 928.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_纵向6" type="TextureRect" parent="." unique_id=1438221750]
-layout_mode = 0
-offset_left = 1184.0
-offset_top = 1480.0
-offset_right = 1224.0
-offset_bottom = 1928.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_横向" type="TextureRect" parent="." unique_id=1927774368]
-layout_mode = 0
-offset_left = 1291.4536
-offset_top = 472.0
-offset_right = 1331.4536
-offset_bottom = 1088.3715
-rotation = 1.5707964
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_横向2" type="TextureRect" parent="." unique_id=516573710]
-layout_mode = 0
-offset_left = 1296.0
-offset_top = 1480.0
-offset_right = 1336.0
-offset_bottom = 2096.3716
-rotation = 1.5707964
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_纵向7" type="TextureRect" parent="." unique_id=1670103680]
-layout_mode = 0
-offset_left = 960.0
-offset_top = 2104.0
-offset_right = 1000.0
-offset_bottom = 2552.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_纵向8" type="TextureRect" parent="." unique_id=2069045330]
-layout_mode = 0
-offset_left = 736.0
-offset_top = 2480.0
-offset_right = 776.0
-offset_bottom = 2928.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_纵向9" type="TextureRect" parent="." unique_id=804185894]
-layout_mode = 0
-offset_left = 1184.0
-offset_top = 2472.0
-offset_right = 1224.0
-offset_bottom = 2920.0
-texture = ExtResource("8_54mkj")
-
-[node name="科研关系_横向3" type="TextureRect" parent="." unique_id=48254052]
-layout_mode = 0
-offset_left = 1296.0
-offset_top = 2472.0
-offset_right = 1336.0
-offset_bottom = 3088.3716
-rotation = 1.5707964
-texture = ExtResource("8_54mkj")
+[node name="科研关系线" type="Node2D" parent="." unique_id=1937715074]
+script = ExtResource("88_rel")
 
 [node name="农业科技" type="Control" parent="." unique_id=1234245710]
 anchors_preset = 0
@@ -292,356 +192,86 @@ offset_left = 472.0
 offset_right = 512.0
 offset_bottom = 40.0
 
-[node name="大跃进的遗产" type="TextureButton" parent="农业科技" unique_id=912267196]
-layout_mode = 0
+[node name="大跃进的遗产" parent="农业科技" unique_id=197835481 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 48.0
 offset_right = 596.0
 offset_bottom = 200.0
-texture_normal = ExtResource("9_py5tl")
+tech_name = "大跃进的遗产"
+button_texture = ExtResource("9_py5tl")
 
-[node name="大跃进的遗产_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=1440806928]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 123.0
-offset_right = 450.0
-offset_bottom = 148.0
-texture = ExtResource("10_y4ldg")
-
-[node name="大跃进的遗产_科研进度" type="ProgressBar" parent="农业科技" unique_id=395826357]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 56.0
-offset_right = 588.0
-offset_bottom = 192.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="大跃进的遗产_解锁年份" type="Label" parent="农业科技" unique_id=113348136]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 157.0
-offset_right = 554.0
-offset_bottom = 193.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="巩固农业设施" type="TextureButton" parent="农业科技" unique_id=1529545373]
-layout_mode = 0
+[node name="巩固农业设施" parent="农业科技" unique_id=1253751864 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 232.0
 offset_right = 596.0
 offset_bottom = 384.0
-texture_normal = ExtResource("10_bb3wn")
+tech_name = "巩固农业设施"
+button_texture = ExtResource("10_bb3wn")
 
-[node name="巩固农业设施_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=1365820886]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 307.0
-offset_right = 450.0
-offset_bottom = 332.0
-texture = ExtResource("12_7fiuk")
-
-[node name="巩固农业设施_科研进度" type="ProgressBar" parent="农业科技" unique_id=40571495]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 240.0
-offset_right = 588.0
-offset_bottom = 376.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="巩固农业设施_解锁年份" type="Label" parent="农业科技" unique_id=2119323444]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 341.0
-offset_right = 554.0
-offset_bottom = 377.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="农业方法革新" type="TextureButton" parent="农业科技" unique_id=1909527392]
-layout_mode = 0
+[node name="农业方法革新" parent="农业科技" unique_id=1664440881 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 416.0
 offset_right = 596.0
 offset_bottom = 568.0
-texture_normal = ExtResource("11_daoj1")
+tech_name = "农业方法革新"
+button_texture = ExtResource("11_daoj1")
 
-[node name="农业方法革新_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=1733682233]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 491.0
-offset_right = 450.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="农业方法革新_科研进度" type="ProgressBar" parent="农业科技" unique_id=519188849]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 424.0
-offset_right = 588.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="农业方法革新_解锁年份" type="Label" parent="农业科技" unique_id=1824177249]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 525.0
-offset_right = 554.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="发展农业机械化" type="TextureButton" parent="农业科技" unique_id=342062371]
-layout_mode = 0
+[node name="发展农业机械化" parent="农业科技" unique_id=1115651672 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 416.0
 offset_right = 372.0
 offset_bottom = 568.0
-texture_normal = ExtResource("12_bb3wn")
+tech_name = "发展农业机械化"
+button_texture = ExtResource("12_bb3wn")
 
-[node name="发展农业机械化_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=-1294967295]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 491.0
-offset_right = 226.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="发展农业机械化_科研进度" type="ProgressBar" parent="农业科技" unique_id=-1294967294]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 424.0
-offset_right = 364.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="发展农业机械化_解锁年份" type="Label" parent="农业科技" unique_id=-1294967293]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 525.0
-offset_right = 330.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="新型肥料与杀虫剂" type="TextureButton" parent="农业科技" unique_id=2089644209]
-layout_mode = 0
+[node name="新型肥料与杀虫剂" parent="农业科技" unique_id=957914089 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 608.0
 offset_right = 372.0
 offset_bottom = 760.0
-texture_normal = ExtResource("13_2ihq2")
+tech_name = "新型肥料与杀虫剂"
+button_texture = ExtResource("13_2ihq2")
 
-[node name="新型肥料与杀虫剂_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=-1294967292]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 683.0
-offset_right = 226.0
-offset_bottom = 708.0
-texture = ExtResource("12_7fiuk")
-
-[node name="新型肥料与杀虫剂_科研进度" type="ProgressBar" parent="农业科技" unique_id=-1294967291]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 616.0
-offset_right = 364.0
-offset_bottom = 752.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="新型肥料与杀虫剂_解锁年份" type="Label" parent="农业科技" unique_id=-1294967290]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 717.0
-offset_right = 330.0
-offset_bottom = 753.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="开垦处女地" type="TextureButton" parent="农业科技" unique_id=1755609512]
-layout_mode = 0
+[node name="开垦处女地" parent="农业科技" unique_id=1353828458 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 792.0
 offset_right = 372.0
 offset_bottom = 944.0
-texture_normal = ExtResource("14_barmv")
+tech_name = "开垦处女地"
+button_texture = ExtResource("14_barmv")
 
-[node name="开垦处女地_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=-1294967289]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 867.0
-offset_right = 226.0
-offset_bottom = 892.0
-texture = ExtResource("12_7fiuk")
-
-[node name="开垦处女地_科研进度" type="ProgressBar" parent="农业科技" unique_id=-1294967288]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 800.0
-offset_right = 364.0
-offset_bottom = 936.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="开垦处女地_解锁年份" type="Label" parent="农业科技" unique_id=-1294967287]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 901.0
-offset_right = 330.0
-offset_bottom = 937.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="选育与基因研究" type="TextureButton" parent="农业科技" unique_id=1678782759]
-layout_mode = 0
+[node name="选育与基因研究" parent="农业科技" unique_id=745368393 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 416.0
 offset_right = 820.0
 offset_bottom = 568.0
-texture_normal = ExtResource("13_daoj1")
+tech_name = "选育与基因研究"
+button_texture = ExtResource("13_daoj1")
 
-[node name="选育与基因研究_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=-1294967286]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 491.0
-offset_right = 674.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="选育与基因研究_科研进度" type="ProgressBar" parent="农业科技" unique_id=-1294967285]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 424.0
-offset_right = 812.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="选育与基因研究_解锁年份" type="Label" parent="农业科技" unique_id=-1294967284]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 525.0
-offset_right = 778.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="新增研究设施" type="TextureButton" parent="农业科技" unique_id=825305285]
-layout_mode = 0
+[node name="新增研究设施" parent="农业科技" unique_id=1086525571 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 608.0
 offset_right = 820.0
 offset_bottom = 760.0
-texture_normal = ExtResource("16_2e0e8")
+tech_name = "新增研究设施"
+button_texture = ExtResource("16_2e0e8")
 
-[node name="新增研究设施_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=-1294967283]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 683.0
-offset_right = 674.0
-offset_bottom = 708.0
-texture = ExtResource("12_7fiuk")
-
-[node name="新增研究设施_科研进度" type="ProgressBar" parent="农业科技" unique_id=-1294967282]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 616.0
-offset_right = 812.0
-offset_bottom = 752.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="新增研究设施_解锁年份" type="Label" parent="农业科技" unique_id=-1294967281]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 717.0
-offset_right = 778.0
-offset_bottom = 753.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="遗传修饰" type="TextureButton" parent="农业科技" unique_id=1382876949]
-layout_mode = 0
+[node name="遗传修饰" parent="农业科技" unique_id=767537275 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 784.0
 offset_right = 820.0
 offset_bottom = 936.0
-texture_normal = ExtResource("17_d6p7u")
-
-[node name="遗传修饰_是否可科研状态" type="TextureRect" parent="农业科技" unique_id=-1294967280]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 859.0
-offset_right = 674.0
-offset_bottom = 884.0
-texture = ExtResource("12_7fiuk")
-
-[node name="遗传修饰_科研进度" type="ProgressBar" parent="农业科技" unique_id=-1294967279]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 792.0
-offset_right = 812.0
-offset_bottom = 928.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="遗传修饰_解锁年份" type="Label" parent="农业科技" unique_id=-1294967278]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 893.0
-offset_right = 778.0
-offset_bottom = 929.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
+tech_name = "遗传修饰"
+button_texture = ExtResource("17_d6p7u")
 
 [node name="工业科技" type="Control" parent="." unique_id=1201367591]
 anchors_preset = 0
@@ -650,356 +280,86 @@ offset_top = 1008.0
 offset_right = 512.0
 offset_bottom = 1048.0
 
-[node name="改良流水线生产模式" type="TextureButton" parent="工业科技" unique_id=1161775299]
-layout_mode = 0
+[node name="改良流水线生产模式" parent="工业科技" unique_id=453803055 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 48.0
 offset_right = 596.0
 offset_bottom = 200.0
-texture_normal = ExtResource("18_nle5s")
+tech_name = "改良流水线生产模式"
+button_texture = ExtResource("18_nle5s")
 
-[node name="改良流水线生产模式_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967277]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 123.0
-offset_right = 450.0
-offset_bottom = 148.0
-texture = ExtResource("10_y4ldg")
-
-[node name="改良流水线生产模式_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967276]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 56.0
-offset_right = 588.0
-offset_bottom = 192.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="改良流水线生产模式_解锁年份" type="Label" parent="工业科技" unique_id=-1294967275]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 157.0
-offset_right = 554.0
-offset_bottom = 193.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="自研工业科技" type="TextureButton" parent="工业科技" unique_id=607868656]
-layout_mode = 0
+[node name="自研工业科技" parent="工业科技" unique_id=2029777339 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 232.0
 offset_right = 596.0
 offset_bottom = 384.0
-texture_normal = ExtResource("19_86rxl")
+tech_name = "自研工业科技"
+button_texture = ExtResource("19_86rxl")
 
-[node name="自研工业科技_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967274]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 307.0
-offset_right = 450.0
-offset_bottom = 332.0
-texture = ExtResource("12_7fiuk")
-
-[node name="自研工业科技_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967273]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 240.0
-offset_right = 588.0
-offset_bottom = 376.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="自研工业科技_解锁年份" type="Label" parent="工业科技" unique_id=-1294967272]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 341.0
-offset_right = 554.0
-offset_bottom = 377.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="工业设施中国化" type="TextureButton" parent="工业科技" unique_id=863786418]
-layout_mode = 0
+[node name="工业设施中国化" parent="工业科技" unique_id=1183777166 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 416.0
 offset_right = 596.0
 offset_bottom = 568.0
-texture_normal = ExtResource("20_rx1we")
+tech_name = "工业设施中国化"
+button_texture = ExtResource("20_rx1we")
 
-[node name="工业设施中国化_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967271]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 491.0
-offset_right = 450.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="工业设施中国化_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967270]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 424.0
-offset_right = 588.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="工业设施中国化_解锁年份" type="Label" parent="工业科技" unique_id=-1294967269]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 525.0
-offset_right = 554.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="电子工业中国化" type="TextureButton" parent="工业科技" unique_id=450662893]
-layout_mode = 0
+[node name="电子工业中国化" parent="工业科技" unique_id=1081775178 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 416.0
 offset_right = 372.0
 offset_bottom = 568.0
-texture_normal = ExtResource("21_epajj")
+tech_name = "电子工业中国化"
+button_texture = ExtResource("21_epajj")
 
-[node name="电子工业中国化_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967268]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 491.0
-offset_right = 226.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="电子工业中国化_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967267]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 424.0
-offset_right = 364.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="电子工业中国化_解锁年份" type="Label" parent="工业科技" unique_id=-1294967266]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 525.0
-offset_right = 330.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="自动化生产控制" type="TextureButton" parent="工业科技" unique_id=70845618]
-layout_mode = 0
+[node name="自动化生产控制" parent="工业科技" unique_id=82891492 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 608.0
 offset_right = 372.0
 offset_bottom = 760.0
-texture_normal = ExtResource("26_5ctrl")
+tech_name = "自动化生产控制"
+button_texture = ExtResource("26_5ctrl")
 
-[node name="自动化生产控制_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967265]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 683.0
-offset_right = 226.0
-offset_bottom = 708.0
-texture = ExtResource("12_7fiuk")
-
-[node name="自动化生产控制_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967264]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 616.0
-offset_right = 364.0
-offset_bottom = 752.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="自动化生产控制_解锁年份" type="Label" parent="工业科技" unique_id=-1294967263]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 717.0
-offset_right = 330.0
-offset_bottom = 753.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="中国版的OGAS" type="TextureButton" parent="工业科技" unique_id=2034281387]
-layout_mode = 0
+[node name="中国版的OGAS" parent="工业科技" unique_id=267818151 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 792.0
 offset_right = 372.0
 offset_bottom = 944.0
-texture_normal = ExtResource("22_86rxl")
+tech_name = "中国版的OGAS"
+button_texture = ExtResource("22_86rxl")
 
-[node name="中国版的OGAS_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967262]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 867.0
-offset_right = 226.0
-offset_bottom = 892.0
-texture = ExtResource("12_7fiuk")
-
-[node name="中国版的OGAS_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967261]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 800.0
-offset_right = 364.0
-offset_bottom = 936.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="中国版的OGAS_解锁年份" type="Label" parent="工业科技" unique_id=-1294967260]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 901.0
-offset_right = 330.0
-offset_bottom = 937.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="现代制造业" type="TextureButton" parent="工业科技" unique_id=1173952171]
-layout_mode = 0
+[node name="现代制造业" parent="工业科技" unique_id=1642930259 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 416.0
 offset_right = 820.0
 offset_bottom = 568.0
-texture_normal = ExtResource("23_0cg41")
+tech_name = "现代制造业"
+button_texture = ExtResource("23_0cg41")
 
-[node name="现代制造业_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967259]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 491.0
-offset_right = 674.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="现代制造业_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967258]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 424.0
-offset_right = 812.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="现代制造业_解锁年份" type="Label" parent="工业科技" unique_id=-1294967257]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 525.0
-offset_right = 778.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="改进国内工业机械" type="TextureButton" parent="工业科技" unique_id=1046613715]
-layout_mode = 0
+[node name="改进国内工业机械" parent="工业科技" unique_id=668283324 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 608.0
 offset_right = 820.0
 offset_bottom = 760.0
-texture_normal = ExtResource("24_ckr4w")
+tech_name = "改进国内工业机械"
+button_texture = ExtResource("24_ckr4w")
 
-[node name="改进国内工业机械_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967256]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 683.0
-offset_right = 674.0
-offset_bottom = 708.0
-texture = ExtResource("12_7fiuk")
-
-[node name="改进国内工业机械_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967255]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 616.0
-offset_right = 812.0
-offset_bottom = 752.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="改进国内工业机械_解锁年份" type="Label" parent="工业科技" unique_id=-1294967254]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 717.0
-offset_right = 778.0
-offset_bottom = 753.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="计算机化" type="TextureButton" parent="工业科技" unique_id=2010368791]
-layout_mode = 0
+[node name="计算机化" parent="工业科技" unique_id=1997937259 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 784.0
 offset_right = 820.0
 offset_bottom = 936.0
-texture_normal = ExtResource("25_oi1ie")
-
-[node name="计算机化_是否可科研状态" type="TextureRect" parent="工业科技" unique_id=-1294967253]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 859.0
-offset_right = 674.0
-offset_bottom = 884.0
-texture = ExtResource("12_7fiuk")
-
-[node name="计算机化_科研进度" type="ProgressBar" parent="工业科技" unique_id=-1294967252]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 792.0
-offset_right = 812.0
-offset_bottom = 928.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="计算机化_解锁年份" type="Label" parent="工业科技" unique_id=-1294967251]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 893.0
-offset_right = 778.0
-offset_bottom = 929.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
+tech_name = "计算机化"
+button_texture = ExtResource("25_oi1ie")
 
 [node name="军事科技" type="Control" parent="." unique_id=1133990878]
 anchors_preset = 0
@@ -1008,356 +368,86 @@ offset_top = 2000.0
 offset_right = 512.0
 offset_bottom = 2040.0
 
-[node name="加强军备开发" type="TextureButton" parent="军事科技" unique_id=1130677173]
-layout_mode = 0
+[node name="加强军备开发" parent="军事科技" unique_id=541049299 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 48.0
 offset_right = 596.0
 offset_bottom = 200.0
-texture_normal = ExtResource("27_7fiuk")
+tech_name = "加强军备开发"
+button_texture = ExtResource("27_7fiuk")
 
-[node name="加强军备开发_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967250]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 123.0
-offset_right = 450.0
-offset_bottom = 148.0
-texture = ExtResource("10_y4ldg")
-
-[node name="加强军备开发_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967249]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 56.0
-offset_right = 588.0
-offset_bottom = 192.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="加强军备开发_解锁年份" type="Label" parent="军事科技" unique_id=-1294967248]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 157.0
-offset_right = 554.0
-offset_bottom = 193.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="更新军队装备" type="TextureButton" parent="军事科技" unique_id=1408767710]
-layout_mode = 0
+[node name="更新军队装备" parent="军事科技" unique_id=438246542 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 232.0
 offset_right = 596.0
 offset_bottom = 384.0
-texture_normal = ExtResource("28_ig3b0")
+tech_name = "更新军队装备"
+button_texture = ExtResource("28_ig3b0")
 
-[node name="更新军队装备_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967247]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 307.0
-offset_right = 450.0
-offset_bottom = 332.0
-texture = ExtResource("12_7fiuk")
-
-[node name="更新军队装备_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967246]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 240.0
-offset_right = 588.0
-offset_bottom = 376.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="更新军队装备_解锁年份" type="Label" parent="军事科技" unique_id=-1294967245]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 341.0
-offset_right = 554.0
-offset_bottom = 377.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="情报部门新装备" type="TextureButton" parent="军事科技" unique_id=625208298]
-layout_mode = 0
+[node name="情报部门新装备" parent="军事科技" unique_id=2097067683 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 416.0
 offset_top = 416.0
 offset_right = 596.0
 offset_bottom = 568.0
-texture_normal = ExtResource("29_go5jp")
+tech_name = "情报部门新装备"
+button_texture = ExtResource("29_go5jp")
 
-[node name="情报部门新装备_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967244]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 491.0
-offset_right = 450.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="情报部门新装备_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967243]
-layout_mode = 0
-offset_left = 562.0
-offset_top = 424.0
-offset_right = 588.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="情报部门新装备_解锁年份" type="Label" parent="军事科技" unique_id=-1294967242]
-layout_mode = 0
-offset_left = 424.0
-offset_top = 525.0
-offset_right = 554.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="发展海军与空军" type="TextureButton" parent="军事科技" unique_id=1342038757]
-layout_mode = 0
+[node name="发展海军与空军" parent="军事科技" unique_id=1204604350 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 416.0
 offset_right = 372.0
 offset_bottom = 568.0
-texture_normal = ExtResource("30_x5wro")
+tech_name = "发展海军与空军"
+button_texture = ExtResource("30_x5wro")
 
-[node name="发展海军与空军_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967241]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 491.0
-offset_right = 226.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="发展海军与空军_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967240]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 424.0
-offset_right = 364.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="发展海军与空军_解锁年份" type="Label" parent="军事科技" unique_id=-1294967239]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 525.0
-offset_right = 330.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="发展核武器与导弹" type="TextureButton" parent="军事科技" unique_id=1318757673]
-layout_mode = 0
+[node name="发展核武器与导弹" parent="军事科技" unique_id=1913603742 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 608.0
 offset_right = 372.0
 offset_bottom = 760.0
-texture_normal = ExtResource("31_f2sby")
+tech_name = "发展核武器与导弹"
+button_texture = ExtResource("31_f2sby")
 
-[node name="发展核武器与导弹_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967238]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 683.0
-offset_right = 226.0
-offset_bottom = 708.0
-texture = ExtResource("12_7fiuk")
-
-[node name="发展核武器与导弹_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967237]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 616.0
-offset_right = 364.0
-offset_bottom = 752.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="发展核武器与导弹_解锁年份" type="Label" parent="军事科技" unique_id=-1294967236]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 717.0
-offset_right = 330.0
-offset_bottom = 753.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="指挥链与军事组织改革" type="TextureButton" parent="军事科技" unique_id=1859853938]
-layout_mode = 0
+[node name="指挥链与军事组织改革" parent="军事科技" unique_id=1495322444 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 192.0
 offset_top = 792.0
 offset_right = 372.0
 offset_bottom = 944.0
-texture_normal = ExtResource("32_eiakt")
+tech_name = "指挥链与军事组织改革"
+button_texture = ExtResource("32_eiakt")
 
-[node name="指挥链与军事组织改革_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967235]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 867.0
-offset_right = 226.0
-offset_bottom = 892.0
-texture = ExtResource("12_7fiuk")
-
-[node name="指挥链与军事组织改革_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967234]
-layout_mode = 0
-offset_left = 338.0
-offset_top = 800.0
-offset_right = 364.0
-offset_bottom = 936.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="指挥链与军事组织改革_解锁年份" type="Label" parent="军事科技" unique_id=-1294967233]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 901.0
-offset_right = 330.0
-offset_bottom = 937.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="新式间谍装备" type="TextureButton" parent="军事科技" unique_id=189184571]
-layout_mode = 0
+[node name="新式间谍装备" parent="军事科技" unique_id=175005954 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 416.0
 offset_right = 820.0
 offset_bottom = 568.0
-texture_normal = ExtResource("33_74ls4")
+tech_name = "新式间谍装备"
+button_texture = ExtResource("33_74ls4")
 
-[node name="新式间谍装备_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967232]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 491.0
-offset_right = 674.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="新式间谍装备_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967231]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 424.0
-offset_right = 812.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="新式间谍装备_解锁年份" type="Label" parent="军事科技" unique_id=-1294967230]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 525.0
-offset_right = 778.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="现代间谍装备" type="TextureButton" parent="军事科技" unique_id=311973116]
-layout_mode = 0
+[node name="现代间谍装备" parent="军事科技" unique_id=100215297 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 608.0
 offset_right = 820.0
 offset_bottom = 760.0
-texture_normal = ExtResource("34_006bw")
+tech_name = "现代间谍装备"
+button_texture = ExtResource("34_006bw")
 
-[node name="现代间谍装备_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967229]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 683.0
-offset_right = 674.0
-offset_bottom = 708.0
-texture = ExtResource("12_7fiuk")
-
-[node name="现代间谍装备_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967228]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 616.0
-offset_right = 812.0
-offset_bottom = 752.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="现代间谍装备_解锁年份" type="Label" parent="军事科技" unique_id=-1294967227]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 717.0
-offset_right = 778.0
-offset_bottom = 753.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="迎接信息化战争" type="TextureButton" parent="军事科技" unique_id=1402860683]
-layout_mode = 0
+[node name="迎接信息化战争" parent="军事科技" unique_id=537383222 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 640.0
 offset_top = 784.0
 offset_right = 820.0
 offset_bottom = 936.0
-texture_normal = ExtResource("35_q7mjd")
-
-[node name="迎接信息化战争_是否可科研状态" type="TextureRect" parent="军事科技" unique_id=-1294967226]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 859.0
-offset_right = 674.0
-offset_bottom = 884.0
-texture = ExtResource("12_7fiuk")
-
-[node name="迎接信息化战争_科研进度" type="ProgressBar" parent="军事科技" unique_id=-1294967225]
-layout_mode = 0
-offset_left = 786.0
-offset_top = 792.0
-offset_right = 812.0
-offset_bottom = 928.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="迎接信息化战争_解锁年份" type="Label" parent="军事科技" unique_id=-1294967224]
-layout_mode = 0
-offset_left = 648.0
-offset_top = 893.0
-offset_right = 778.0
-offset_bottom = 929.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
+tech_name = "迎接信息化战争"
+button_texture = ExtResource("35_q7mjd")
 
 [node name="航天科技" type="Control" parent="." unique_id=117949530]
 anchors_preset = 0
@@ -1366,286 +456,68 @@ offset_top = 1008.0
 offset_right = 512.0
 offset_bottom = 1048.0
 
-[node name="科研关系_纵向_航天" type="TextureRect" parent="航天科技" unique_id=1675282970]
-layout_mode = 0
-offset_left = 928.0
-offset_top = 48.0
-offset_right = 968.0
-offset_bottom = 1312.0
-texture = ExtResource("8_54mkj")
-
-[node name="通讯卫星" type="TextureButton" parent="航天科技" unique_id=555035970]
-layout_mode = 0
+[node name="通讯卫星" parent="航天科技" unique_id=2059484701 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 864.0
 offset_top = 48.0
 offset_right = 1044.0
 offset_bottom = 200.0
-texture_normal = ExtResource("36_0mczk")
+tech_name = "通讯卫星"
+button_texture = ExtResource("36_0mczk")
 
-[node name="通讯卫星_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=585261281]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 123.0
-offset_right = 898.0
-offset_bottom = 148.0
-texture = ExtResource("10_y4ldg")
-
-[node name="通讯卫星_科研进度" type="ProgressBar" parent="航天科技" unique_id=295579397]
-layout_mode = 0
-offset_left = 1010.0
-offset_top = 56.0
-offset_right = 1036.0
-offset_bottom = 192.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="通讯卫星_解锁年份" type="Label" parent="航天科技" unique_id=368177673]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 157.0
-offset_right = 1002.0
-offset_bottom = 193.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="导航卫星" type="TextureButton" parent="航天科技" unique_id=525962438]
-layout_mode = 0
+[node name="导航卫星" parent="航天科技" unique_id=945559187 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 864.0
 offset_top = 232.0
 offset_right = 1044.0
 offset_bottom = 384.0
-texture_normal = ExtResource("37_1mczk")
+tech_name = "导航卫星"
+button_texture = ExtResource("37_1mczk")
 
-[node name="导航卫星_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=1046961923]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 307.0
-offset_right = 898.0
-offset_bottom = 332.0
-texture = ExtResource("12_7fiuk")
-
-[node name="导航卫星_科研进度" type="ProgressBar" parent="航天科技" unique_id=367164636]
-layout_mode = 0
-offset_left = 1010.0
-offset_top = 240.0
-offset_right = 1036.0
-offset_bottom = 376.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="导航卫星_解锁年份" type="Label" parent="航天科技" unique_id=540234113]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 341.0
-offset_right = 1002.0
-offset_bottom = 377.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="军事卫星" type="TextureButton" parent="航天科技" unique_id=2004668190]
-layout_mode = 0
+[node name="军事卫星" parent="航天科技" unique_id=381311650 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 864.0
 offset_top = 416.0
 offset_right = 1044.0
 offset_bottom = 568.0
-texture_normal = ExtResource("38_2mczk")
+tech_name = "军事卫星"
+button_texture = ExtResource("38_2mczk")
 
-[node name="军事卫星_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=655338548]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 491.0
-offset_right = 898.0
-offset_bottom = 516.0
-texture = ExtResource("12_7fiuk")
-
-[node name="军事卫星_科研进度" type="ProgressBar" parent="航天科技" unique_id=280342466]
-layout_mode = 0
-offset_left = 1010.0
-offset_top = 424.0
-offset_right = 1036.0
-offset_bottom = 560.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="军事卫星_解锁年份" type="Label" parent="航天科技" unique_id=380666409]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 525.0
-offset_right = 1002.0
-offset_bottom = 561.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="载人航天" type="TextureButton" parent="航天科技" unique_id=665935681]
-layout_mode = 0
+[node name="载人航天" parent="航天科技" unique_id=1568820501 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 864.0
 offset_top = 608.0
 offset_right = 1044.0
 offset_bottom = 760.0
-texture_normal = ExtResource("39_3mczk")
+tech_name = "载人航天"
+button_texture = ExtResource("39_3mczk")
 
-[node name="载人航天_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=276435744]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 683.0
-offset_right = 898.0
-offset_bottom = 708.0
-texture = ExtResource("12_7fiuk")
-
-[node name="载人航天_科研进度" type="ProgressBar" parent="航天科技" unique_id=1354084990]
-layout_mode = 0
-offset_left = 1010.0
-offset_top = 616.0
-offset_right = 1036.0
-offset_bottom = 752.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="载人航天_解锁年份" type="Label" parent="航天科技" unique_id=1430763787]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 717.0
-offset_right = 1002.0
-offset_bottom = 753.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="行星际飞行器" type="TextureButton" parent="航天科技" unique_id=911397141]
-layout_mode = 0
+[node name="行星际飞行器" parent="航天科技" unique_id=1886957456 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 864.0
 offset_top = 792.0
 offset_right = 1044.0
 offset_bottom = 944.0
-texture_normal = ExtResource("40_4mczk")
+tech_name = "行星际飞行器"
+button_texture = ExtResource("40_4mczk")
 
-[node name="行星际飞行器_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=1712186989]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 867.0
-offset_right = 898.0
-offset_bottom = 892.0
-texture = ExtResource("12_7fiuk")
-
-[node name="行星际飞行器_科研进度" type="ProgressBar" parent="航天科技" unique_id=175287495]
-layout_mode = 0
-offset_left = 1010.0
-offset_top = 800.0
-offset_right = 1036.0
-offset_bottom = 936.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="行星际飞行器_解锁年份" type="Label" parent="航天科技" unique_id=319447658]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 901.0
-offset_right = 1002.0
-offset_bottom = 937.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="轨道空间站" type="TextureButton" parent="航天科技" unique_id=1210300013]
-layout_mode = 0
+[node name="轨道空间站" parent="航天科技" unique_id=517559459 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 864.0
 offset_top = 976.0
 offset_right = 1044.0
 offset_bottom = 1128.0
-texture_normal = ExtResource("41_5mczk")
+tech_name = "轨道空间站"
+button_texture = ExtResource("41_5mczk")
 
-[node name="轨道空间站_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=550464748]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 1051.0
-offset_right = 898.0
-offset_bottom = 1076.0
-texture = ExtResource("12_7fiuk")
-
-[node name="轨道空间站_科研进度" type="ProgressBar" parent="航天科技" unique_id=361520430]
-layout_mode = 0
-offset_left = 1010.0
-offset_top = 984.0
-offset_right = 1036.0
-offset_bottom = 1120.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="轨道空间站_解锁年份" type="Label" parent="航天科技" unique_id=2119035747]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 1085.0
-offset_right = 1002.0
-offset_bottom = 1121.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="航天飞机" type="TextureButton" parent="航天科技" unique_id=864318950]
-layout_mode = 0
+[node name="航天飞机" parent="航天科技" unique_id=2065880949 instance=ExtResource("87_entry")]
+anchors_preset = 0
 offset_left = 864.0
 offset_top = 1160.0
 offset_right = 1044.0
 offset_bottom = 1312.0
-texture_normal = ExtResource("42_6mczk")
-
-[node name="航天飞机_是否可科研状态" type="TextureRect" parent="航天科技" unique_id=1503796854]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 1235.0
-offset_right = 898.0
-offset_bottom = 1260.0
-texture = ExtResource("12_7fiuk")
-
-[node name="航天飞机_科研进度" type="ProgressBar" parent="航天科技" unique_id=1087377632]
-layout_mode = 0
-offset_left = 1010.0
-offset_top = 1168.0
-offset_right = 1036.0
-offset_bottom = 1304.0
-theme_override_styles/background = SubResource("StyleBoxFlat_vg3t2")
-fill_mode = 3
-show_percentage = false
-
-[node name="航天飞机_解锁年份" type="Label" parent="航天科技" unique_id=1666838822]
-layout_mode = 0
-offset_left = 872.0
-offset_top = 1269.0
-offset_right = 1002.0
-offset_bottom = 1305.0
-theme_override_colors/font_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
-theme_override_fonts/font = ExtResource("5_4vumy")
-theme_override_font_sizes/font_size = 31
-text = "1976"
-horizontal_alignment = 1
-vertical_alignment = 1
+tech_name = "航天飞机"
+button_texture = ExtResource("42_6mczk")
 
 [node name="移动视角摄像机" type="Camera2D" parent="." unique_id=718388811]
 position = Vector2(970, 556)

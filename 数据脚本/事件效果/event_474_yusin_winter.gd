@@ -4,13 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:1439-1441 —— DATE_AFTER 1979.10.10；fire_only_once 承担 !event_done[474]。
 ## 差异：SubGosstroy→sub_government；Torg→对华贸易。
 
-const TXT_TITLE := "维新之冬"
-const TXT_DESC := "根据我们和朝鲜特工所知道的消息，韩国的维新政体持续了多年，期间反对声音不断，在1979年9月，因反对党党首金泳三议员被驱逐出国会而导致反对派抗议规模越来越大，釜山和马山的工人，学生和市民开始上街抗议，要求维新政权下台。10月，抗议规模越来越大，甚至有了全国抗议的可能。\n我们是否应该帮釜马的市民们一把，让南朝鲜独裁政权垮台，亦或者是选择支持朴正熙政权？"
-const TXT_OPT0 := "给市民们输送武器"
 const TXT_OPT0_DIS := "我们有心无力啊"
-const TXT_OPT1 := "支持朴正熙政权"
 const TXT_OPT1_DIS := "我们不能帮助这个独裁者"
-const TXT_OPT2 := "与我无关"
 const TXT_R0 := "在我们和朝鲜特工的帮助下，釜马地区的市民拿到了枪，开始反抗维新政权。但是与此同时，南朝鲜伪军第1，3，5空输特战旅团和海军陆战队第一师开始对釜马地区发起进攻，最后被平息，有五百多人被杀害，三千多人被捕。在之后，情报部长金载圭在宫井洞将朴正熙和车智澈杀死，成立以郑升和为首的新政府，但是随后便被保安司令部全斗换发动的政变赶下台。"
 const TXT_R1 := "我们选择高调支持韩国。之后维新政权颁布戒严令，并调出1，3，5空输特战旅团和海军陆战队第一师进行镇压，最终有约一千人被捕，釜马事件平息。与此同时，我们提前获悉了韩国情报部长金载圭试图刺杀朴正熙，并提醒了朴正熙，最后金载圭在宫井洞被捕并被处死。韩国很感激我们，并开始与我们进行贸易，我们也顺水推舟，帮助韩国与朝鲜进行联系，并再次进行南北谈判，朝鲜对我们的行为略有不满。"
 const TXT_R2 := "10月18日，维新政权颁布戒严令，调出1，3，5空输特战旅团和海军陆战队第一师进行镇压，最终有约一千人被捕，釜马事件平息。10月26日，情报部长金载圭在宫井洞将朴正熙，车智澈杀死，随后被捕并被秘密审判处决，在12月12日，保安司令部长官全斗焕发动政变，夺取了政权。"
@@ -28,14 +23,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var line56 := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
 	var opt := event_def.options
 	if agents >= 50 and army >= 50:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if agents >= 50 and line56 >= 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 
@@ -67,25 +62,16 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

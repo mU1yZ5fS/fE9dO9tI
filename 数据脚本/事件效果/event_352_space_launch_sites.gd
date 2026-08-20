@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event352.cs：航天发射场。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "航天发射场"
 
-const TXT_DESC := "目前，我国只有一个航天发射场——酒泉卫星发射中心。科学家和军方提出了建立新的宇航中心的建议。我们的国家很幸运——我们有两个现成的项目：将太原导弹基地改建为卫星发射中心，或复工于1972年停止建设的西昌卫星发射中心。然而，两个项目可能都需要足够的资源......"
 
 const TXT_OPT0 := "重建西昌卫星发射中心。"
 const TXT_OPT0_DIS := "我们分身乏力"
@@ -79,19 +77,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

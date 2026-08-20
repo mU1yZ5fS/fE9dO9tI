@@ -32,9 +32,6 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_modifier(index: int, active: bool) -> void:

@@ -9,14 +9,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - AmericanSupportAttacker.SovietSupportDefender → usa_side=0/ussr_side=1；
 ##    仅 AmericanSupportAttacker → usa_side=0/ussr_side=-1；TickTime(24) → fortnight_max=24。
 
-const TXT_TITLE := "在那墨西哥城"
 
-const TXT_DESC := "主席同志！来自墨西哥城的消息。今天，墨西哥城发生里氏7.8级大地震。墨西哥政府虽然开展了救灾行动。但是，很明显政府的救灾行动更关注的是保护公私财产，他们对于墨西哥底层人民的生命毫不在乎，米格尔·德拉马德里政府因为应对不利、腐败以及其他渎职行为，其救灾政策遭致了墨西哥社会乃至国际社会的广泛批评。事实上，人民已经开始自发地组织成一系列搜救协调队伍自主进行灾后重建。墨西哥城是一个有着1800万人口的大城市，也许，我们能做些什么……当然，这不一定道德。"
 
-const TXT_OPT0 := "让我们致以墨西哥人民最真切的问候……"
-const TXT_OPT1 := "让我们开始最后的行动吧，打倒PRI，摧毁这个畸形的怪胎。"
 const TXT_OPT1_DIS := "我们不能干涉主权国家的内政"
-const TXT_OPT2 := "是时候打倒共济会的傀儡了！"
 const TXT_OPT2_DIS := "21世纪回不到19世纪。"
 
 const TXT_R0_BASE := "由国家地震局组建的中国地震代表团在12月份访问了墨西哥城。对墨西哥城地震发生的原因以及过程进行了科学的判断和分析，我们得以从墨西哥城地址中得到经验，吸取教训。在12月171日，中国地震代表团团长谢礼立副教授应墨西哥国家电视台的邀请作了长达22分钟的电视直播讲话。转达了中国广大地震科学工作者对墨西哥地震学家和地震工程师以及广大墨西哥人民的慰问……\n因为在地震过程中失败的领导和日益崩溃的救济局势，米格尔·德拉马德里完全失去了人民的一切信任，预计，下一任总统会是"
@@ -53,16 +48,16 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var r577 := int(world.completed_event_ids.get("event_577", 0))
 	var r578 := int(world.completed_event_ids.get("event_578", 0))
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if line == 0 and num >= 7 and c140 != null and c140.parts.size() > 0 and c140.parts[0] \
 			and world.influence_prc >= 1000:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if data.size() > W.I_WAR_SUPPORT and data[W.I_WAR_SUPPORT] >= 700 \
 			and c1 != null and c1.sub_government == 9 and c140 != null and c140.stab == 2 \
 			and r577 == 3 and r578 == 2:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 

@@ -8,19 +8,15 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - Gosstroy → government；Vyshi → 亲美；Torg → 对华贸易；puppetOf → puppet_of；
 ##  - LeaveAlliances 用基类 _leave_alliances。
 
-const TXT_TITLE := "我们将会获得胜利，并且我们赢得过胜利"
 
 const TXT_DESC_BASE := "澳大利亚正遭遇堪比1923年墨尔本警察罢工的动荡：学生已在大学内搭好帐篷准备持久战，各地工会也开始组织全国总罢工，人们打着“不是我的共和国！”的旗号纷纷走上街头，斗争局势愈演愈烈。"
 const TXT_DESC_R2 := "|澳大利亚的一些地方甚至出现类似“红军旅”的城市游击队与针对公安部门的恐怖行动。新任总理约·比耶克·彼德森试图平息混乱的举动的举动只会给局势火上浇油：他在电视上将旧澳大利亚宪法撕成碎片，并手持猎枪宣布自己维持秩序的决心被广泛视为“独裁主义第一步”。新打着“矿工”和“农民”旗号的民兵与各地警察已得到额外授权，并开入城区压制群众运动。"
 const TXT_DESC_R1 := "|我们的老朋友也借助广泛的抗议运动和城市游击队的威势建立起了工会网络，并自发夺取了悉尼与墨尔本的市政厅。启动了对资产阶级生产资料的社会化。"
 const TXT_DESC_TAIL := "|主席同志，时不我待。"
 
-const TXT_OPT0 := "支持澳大利亚人民的正义事业！"
 const TXT_OPT0_DIS_NO := "我们没有干涉澳洲的跳板……"
 const TXT_OPT0_DIS_RIOT := "骚乱不足以成事"
-const TXT_OPT1 := "支持澳大利亚共和国维护秩序，并建议其走分化工会运动的红色托利路线"
 const TXT_OPT1_DIS := "怎能同法西斯主义狼狈为奸？！"
-const TXT_OPT2 := "我们无能为力"
 
 const TXT_R0_INTRO := "我们的临门一脚给了彼德森政府致命一击：由于澳洲社会主义者愈加倾向于从亚红色政权获取支持，而包括美国在内的盟友均处于“天高皇帝远”的状态。他很快便辞去总理一职并流亡美国，军队也因领导层的混乱而只得接受最近发出的命令：待在自己的兵营里以避免“无望的血腥冲突”。澳大利亚社会主义者的胜利已成定局："
 const TXT_R0_TROT := "最终，“革命马克思主义”元老汤姆·O·林肯得以执掌澳洲大权，并以澳洲托派组织和抗议期间的革命阵线为蓝本合并各派社会主义组织，形成了大洋洲版本的德国统一社会党。基于澳大利亚“工会强，党却弱而杂”的客观特点，试图在大洋洲扮演二号列宁的林肯很快便碰上了自己的“工人反对派”……"
@@ -49,16 +45,16 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	event_def.description = desc
 	var opt := event_def.options
 	if line < 2 and (r573 == 1 or r573 == 2) and c50 != null and c50.government == 1:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	elif c50 == null or c50.government != 1:
 		_disable(opt[0], TXT_OPT0_DIS_NO)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS_RIOT)
 	if line > 1 and r573 == 0:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 func execute(context: Dictionary) -> void:

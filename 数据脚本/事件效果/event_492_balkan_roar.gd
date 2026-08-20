@@ -10,17 +10,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - prosov/isSEV/isOVD/isASEAN/isSEATO/Torg/proprc/isBALECON → has_tag/set_tag；
 ##  - spec → special；relres → ws.get_flag("relres")；IsSocialism(true,1) → ws.is_socialism(c1, true)。
 
-const TXT_TITLE := "狂风怒吼，巴尔干咆哮"
 
-const TXT_DESC := "随着苏联影响力的进一步衰退，一度被视为稳定与发展的保加利亚人民共和国也开始暗流涌动。民族主义者，改革派，正统派共产主义者都试图踢开日夫科夫掌握大权。由于日夫科夫的政策，保加利亚的经济一直处于下滑阶段。内部的局势似乎已经到了一个引爆点，而我们只需要扇下风，不需放屁，试看天翻地覆。"
 
-const TXT_OPT0 := "是时候了，动手吧！"
 const TXT_OPT0_DIS := "没人会听我们的话"
-const TXT_OPT1 := "在我们盟友的帮助下，向保加利亚施压"
 const TXT_OPT1_DIS := "我们在巴尔干没有话语权"
-const TXT_OPT2 := "邀请保加利亚借鉴我们和铁托的经验开始改革"
 const TXT_OPT2_DIS := "我们不想也不可能联络修正主义者"
-const TXT_OPT3 := "什么都不需要做"
 
 const TXT_R0_WIN := "在我们的支持下，驻扎在索非亚的保加利亚人民军发生了哗变。由于事先的打点，大部分军队没有对此作出回应。支持政变的部队切断了所有通往首都的桥梁与道路，广播电台和电视塔被占领，机场也被封锁。而佩塔尔本人亲自率领了一支部队，他们冲进了保加利亚共产党中央委员会的办公室，一举抓获了日夫科夫和其余的政治局常委。在一场迅速的审判后，日夫科夫和他的亲属被判贪污与通敌罪。他本人被用从他家中抄出的黄金砸死，他的尸体被丢入黑海中。日夫科夫就这样被遗忘了，而他的子女将被下放到林场中劳动改造。\n佩塔尔·潘切夫斯基宣布对保加利亚实施军事管制，并开始着手清除苏联影响力。他宣布将会在保加利亚重建最符合季米特洛夫，斯大林与毛泽东的共产主义保加利亚。首当其冲的便是退出华沙条约组织与经济互助委员会。1965年的政变也被平反，政变的参与者被无罪释放，托多罗夫被当作民族英雄而纪念，四月七日改为国家假日。工业方面，以工人委员会为核心的企业管理系统也被介绍进来，专门为经互会设立的企业也被“保加利亚化”了。由于苏联援助的撤离，新领导层希望中华人民共和国能为新保加利亚提供必要的援助。\n"
 
@@ -49,18 +43,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var mod6 := world.modifiers.size() > 6 and world.modifiers[6] != null and world.modifiers[6].is_active
 	var opt := event_def.options
 	if bulgaria != null and bulgaria.内战中 and world.is_socialism(china, true) and mod6:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if albania != null and albania.special == 1 and world.influence_prc >= 800:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line >= 2 and econ >= 13 and world.get_flag("relres"):
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -157,16 +151,7 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

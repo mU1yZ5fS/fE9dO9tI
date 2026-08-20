@@ -5,9 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 说明：原版触发中的 (resultOfEvents[361]<=1 || resultOfEvents[358]<=1 || resultOfEvents[359]<=1)
 ## 恒为真（358/359 各只有 0/1 两个选项，<=1 必真），故 .tres 仅保留日期条件。
 
-const TXT_TITLE := "月球计划——载人登月"
 
-const TXT_DESC := "每个人都明白太空计划的最后阶段是什么——中国宇航员登陆月球。但是，正如美国太空计划所表明的那样，这更多像是一种政治行动，在科学上的好处可以忽略不计。那么，我们是现在就要登月，还是继续为月球站制定长期计划要更好一些呢？"
 
 const TXT_OPT0 := "我们要在20世纪80年代末登上月球！"
 const TXT_OPT0_DIS := "登月没有必要。"
@@ -59,19 +57,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

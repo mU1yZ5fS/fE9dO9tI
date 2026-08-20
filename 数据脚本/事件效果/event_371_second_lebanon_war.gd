@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event371.cs：复仇战争？。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "复仇战争？"
 
-const TXT_DESC := "在以色列于黎巴嫩战争战败后，巴勒斯坦地区的局势便没有发生什么大变化。巴解组织与以色列之间的谈判仍停滞不前，穆斯林与基督教徒的冲突仍在继续，叙利亚在黎巴嫩的军事存在也无法使当地恢复和平。\n在近期事件的大背景下，被战争战败所激怒的以色列，又一次以反恐之名对黎巴嫩发动了入侵。彼时叙利亚仍身陷与土耳其冲突的泥潭，这次冲突将如何发展？"
 
 const TXT_OPT0 := "战争即地狱"
 const TXT_WAR4_NAME := "第二次黎巴嫩战争"
@@ -51,19 +49,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

@@ -4,16 +4,10 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:899-901 —— DATE_AFTER 1977.3.8；fire_only_once 承担 !event_done[610]。
 ## 差异：names1+names2→_foreign_minister_name()；AmericanSupportAttacker→usa_side=0；TickTime(9/6)→fortnight_max。
 
-const TXT_TITLE := "沙巴战争"
-const TXT_DESC := "在蒙博托推翻了卡萨武布总统后，刚果民主共和国，或者说扎伊尔，已经步入了一个崭新的时代。一个以暴力，金钱和绝对的威权构成的新刚果。在蒙博托夺权后，他击败了老殖民主义者眷养的走狗，自己却在不自觉中在鸡蛋上跳舞。他一边接受华盛顿的善意，却也不介意向北京抛媚眼。他的人民革命运动更是一个意识形态大杂烩，所谓的“蒙博托主义”，“真实性运动”和黑人民族主义不过都是浮云，更有甚者称其为“丛林法西斯主义”。这样的一个政府没少为我们招黑。\n就是这样的地区才会被冷战热斗所裹挟，尤其是他的南部邻居-新生的安哥拉人民共和国几乎彻底击溃了扎伊尔所支持的安解阵。不论是意识形态还是背后的超级大国，安哥拉都有理由找该国的麻烦。古巴和苏联的秘密支持下，内图政权支持了逃亡到安哥拉的加丹加（扎伊尔的沙巴省）宪兵部队，塔纳尔·姆奔巴以此为基础组建了刚果民族解放阵线。据我们的军事教官和观察员所说，该组织背后的苏联意图凭借他们入侵扎伊尔。\n但是，我们也没少为支持扎伊尔的革命伙伴付出代价。阿尔巴尼亚领袖恩维尔·霍查多次谴责我们“把革命者与第三世界国家强绑定，忽视了其中潜在的反革命”。为此，我们应当转而支持基赞加先总理的卢蒙巴主义统一党和卡比拉的人民革命党。他们坚定的保持左翼立场，甚至不乏一些真正的马克思主义者。我们的盟友坦桑尼亚是他们坚强的后盾，如果能得到我们的背书，他们将如虎添翼。\n现在，外联部的同志已经将三份方案交给您了，还请您过目。不过请还小心行事，刚果毕竟是非洲的一个大国。"
-const TXT_OPT0 := "支持扎伊尔人民反抗苏联社会帝国主义的斗争"
 const TXT_OPT0_DIS_A := "他？他杀死了卢蒙巴！"
 const TXT_OPT0_DIS_B := "我看不出来他和法西斯的区别"
-const TXT_OPT1 := "与蒙博托政权断交，支持安哥拉和古巴的军事行动"
 const TXT_OPT1_DIS := "和那个邪恶帝国沆瀣一气，你疯了！"
-const TXT_OPT2 := "在卢蒙巴的旗帜下，整合刚果的革命者们"
 const TXT_OPT2_DIS := "愿每个卢蒙巴都遇上自己的蒙博托"
-const TXT_OPT3 := "不闻不问"
 const TXT_R0_A := "我们坚定的支持扎伊尔人民反抗苏联社会帝国主义的斗争，除了增加了一批在扎伊尔的军事教官，并提供了价值200万人民币的军火外，"
 const TXT_R0_B := "和迟浩田副参谋长前去金沙萨访问了扎伊尔总统。在我们的官方报纸上也发表了支持扎伊尔的声明。蒙博托总统感谢了我们的支持，并大力扩大了和我们的多方合作。我们的社会学家也得以更深入的了解神秘的刚果与“真实性运动”的真谛。\n清晨，FNLC的士兵们骑着自行车越过安哥拉-扎伊尔边境，发动了三管齐下的攻击。\n蒙博托了谴责入侵，并在3月10日表示，基森奇，迪洛洛和卡潘加被“古巴雇佣军”“轰炸”。他指责古巴政府参与其中，并请求西方列强提供援助。美国大使馆证实了这些城镇已被占领，并宣布卡潘加的八名美国传教士被软禁。\n扎伊尔武装部队FAZ的行动基本上无效。第一个接触的部队，即开曼尼奥拉师第11旅，接受了新训练，在遇到FNLC部队后不久就分崩离析了。然而，FNLC所希望的民众起义也没有实现。尽管大多数居民更喜欢FNLC部队而不是政府军队，人们普遍害怕即将来到的暴力，选择呆在家里。一场战争就这样爆发了。"
 const TXT_WAR0_NAME := "沙巴战争"
@@ -42,21 +36,21 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
 	var opt := event_def.options
 	if line != 0 and line != 4:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	elif line == 0:
 		_disable(opt[0], TXT_OPT0_DIS_A)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS_B)
 	if line < 3 and line > 0 and world.empires.size() > EmpireData.USSR \
 			and world.empires[EmpireData.USSR] != null and world.empires[EmpireData.USSR].relations > 500:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line < 2:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 
@@ -114,17 +108,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

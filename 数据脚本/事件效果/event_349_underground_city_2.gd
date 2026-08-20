@@ -2,13 +2,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event349.cs：地下城市（第二版）。选项0原版按 budget+reserve>=80 且 industry>=500 动态启用/销毁。触发：ReqEventForDLC02.cs:617-620 —— 日期>=1979.6.24。
 
-const TXT_TITLE := "地下城市"
 
-const TXT_DESC := "在过去10年里，北京附近建起了一个巨大的防空洞系统，在与美国或苏联发生核战争的情况下，此处可以为数十万人提供避难所。近年来，国际局势逐渐改善，因此人们便开始怀疑起这一防空洞系统的必要性。我们是否应当把它们转交给民政当局？"
 
-const TXT_OPT0 := "我们需要扩建北京的防空洞，并在其他城市建设类似的设施。"
-const TXT_OPT1 := "把防空洞留给军队，但停止无意义的建设。"
-const TXT_OPT2 := "最好将其转为民用。"
 
 const TXT_R0 := "当然，世界或许风平浪静，但我们必须时刻备战。北京的防空洞将被扩建，所有主要城市附近也将建立起类似的系统。我们的目标是从帝国主义的核打击中拯救数千万人！"
 const TXT_R1 := "防空洞是必需的。但是进一步的建设需要太多的资源，其必要性有些值得怀疑。因此，把防空洞留给军方吧，但再去扩建它就没什么意义了。"
@@ -21,7 +16,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if _dyn_ok(world):
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], "没有这么做的资源。")
 
@@ -74,9 +69,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -84,14 +76,8 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(index: int) -> bool:

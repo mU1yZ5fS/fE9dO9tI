@@ -4,13 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录检索 this_num_event/Reset/event_done/resultOfEvents/StartEvent
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 
-const TXT_TITLE := "两个也门间的战争？"
 const TXT_DESC_PROPRC := "北也门与南也门曾在1972年爆发了一场冲突。最终，对抗以双方签署《开罗合约》结束，并在合约中表达了两国实现统一的愿望。然而，在接下来的数年内，两国均没有为统一采取决定性的行动。\n而现在，北也门政府正控诉其南方邻居正支持名为“民族民主阵线”的革命组织。而在双方的边界上，时常能够听到枪声，看起来这场冲突将发展为一场全面战争。既然南也门已经加强了与我们的合作，那么一个由南方主导统一的也门对我们是有利的。另外，自20世纪60年代以来，苏联便已经在南也门这里派驻部队，并建立了海军基地，如果战争爆发，苏联人显然会帮助南也门。"
-const TXT_DESC := "北也门与南也门曾在1972年爆发了一场冲突。最终，对抗以双方签署《开罗合约》结束，并在合约中表达了两国实现统一的愿望。然而，在接下来的数年内，两国均没有为统一采取决定性的行动。\n而现在，北也门政府正控诉其南方邻居正支持名为“民族民主阵线”的革命组织。而在双方的边界上，时常能够听到枪声。\n看起来这场冲突将发展为一场全面战争，但我们可以试着帮忙“拉偏架”。毕竟，也门是美苏两国的兵家必争之地。自20世纪60年代以来，苏联便已经在这里派驻部队，并建立了海军基地。我们可以试着借机将苏联人赶出这一地区。"
-const TXT_OPT0 := "在冲突中支持北也门（需要5.0点{1}与10.0点{2}）"
-const TXT_OPT1 := "在冲突中支持南也门（需要5.0点{1}与10.0点{2}）"
-const TXT_OPT2 := "也门人不打也门人！"
-const TXT_OPT3 := "忽略"
 const TXT_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
 const TXT_DIS_ARMY := "军事实力必须高于{0}点......"
 const TXT_DIS_BETRAY_N := "背叛盟友？你疯了吗？！"
@@ -38,16 +32,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var north := world.get_country_by_legacy_index(25)
 	if south != null and south.has_tag("亲中"):
 		event_def.description = TXT_DESC_PROPRC
-	else:
-		event_def.description = TXT_DESC
 	var opt := event_def.options
-	_prepare_yemen(opt[0], TXT_OPT0, south != null and south.has_tag("亲中"), TXT_DIS_BETRAY_N)
-	_prepare_yemen(opt[1], TXT_OPT1, north != null and north.has_tag("亲中"), TXT_DIS_BETRAY_S)
+	_prepare_yemen(opt[0], event_def.options[0].text, south != null and south.has_tag("亲中"), TXT_DIS_BETRAY_N)
+	_prepare_yemen(opt[1], event_def.options[1].text, north != null and north.has_tag("亲中"), TXT_DIS_BETRAY_S)
 	if north != null and north.has_tag("亲中") and south != null and south.has_tag("亲中"):
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_DIS_TALK)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func _prepare_yemen(opt: EventOption, text: String, is_proprc: bool, dis_betray: String) -> void:
@@ -123,9 +115,6 @@ func _leave_alliances(c: CountryData) -> void:
 	c.puppet_of = -1
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -134,9 +123,6 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
 func _enable(opt: EventOption, text: String) -> void:

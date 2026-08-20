@@ -10,16 +10,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - JoinAllOurAlliances(true)：id67 属 flag 组（军事联盟分支跳过），
 ##    只按 c1.econ/c1.isSEV 加入经济联盟。
 
-const TXT_TITLE := "谁成为战士，妈妈？"
 
-const TXT_DESC := "我想您还记得多伊政权的“丰功伟绩”，经过了这位‘五星上将“折腾的利比里亚已是一落千丈：广泛的盗贼统治、接连不断的政变、遍布各地的无政府状态与时不时冒出的骇人听闻暴行近乎榨干了该国鲜血。我们可说“自由世界的非洲橱窗”已死，留下的大抵只是具被各地秃鹫分食的死尸。倘若放任当地情况恶化，利比里亚极有可能成为个充满部族军阀的非洲版缅甸。不过，现在仍有动手的机会。考虑到多伊曾许诺将在自己发动政变的5年后召开选举并准备放权结束军事统治，现在正是借题发挥的时候。不过，对利比里亚局势的贸然投资真的不会给当地招来下一个多伊吗？"
 
-const TXT_OPT0 := "我们没必要搅混水……"
-const TXT_OPT1 := "是时候发动政变推翻暴君了"
 const TXT_OPT1_DIS := "我们没处插针"
-const TXT_OPT2 := "也许我们该致电华盛顿，要求多伊履行民主承诺"
 const TXT_OPT2_DIS := "美国没心思对私生子的生活指手画脚"
-const TXT_OPT3 := "患难见真情，现在应该给多伊瞧瞧谁是最好的朋友了"
 const TXT_OPT3_DIS := "我想我们确实是活在更开明的时代"
 
 const TXT_R0 := "显然，人们没法指望并不懂得治国的多伊能在选举上做出什么名堂：靠着猖獗的欺诈与胁迫投票的手段，多伊成功以“等额选举”方式获得压倒性选票，最终实现连任。然而，如此露骨的政治欺诈显然不会使人满意——即便是作为多伊最大靠山的华盛顿当局也愈加不满于该国持续恶化的治安环境，并认为多伊政府难以担当其西非战略的大任。显然，如今的利比里亚总统已是众叛亲离，其垮台也不过时间问题……"
@@ -49,15 +43,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var ethiopia := world.get_country_by_legacy_index(41)
 	var c117 := world.get_country_by_legacy_index(117)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if burkina != null and burkina.has_tag("亲中"):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	var usa_leader3 := world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null \
 			and world.empires[EmpireData.USA].current_leader == 3
 	if china != null and china.government == 3 and usa != null and usa.development == 1 and usa_leader3:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	var cond := liberia != null and liberia.has_tag("对华贸易") \
@@ -65,7 +59,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			and ethiopia != null and ethiopia.sub_government == 19 \
 			and c117 != null and c117.sub_government == 19
 	if cond:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 
@@ -195,16 +189,7 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

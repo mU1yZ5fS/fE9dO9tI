@@ -8,15 +8,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##    SovietSupportDefender/AmericanSupportAttacker → ussr_side=1 / usa_side=0。
 ##  - c107=塞拉利昂；c107.parts[0]=true 保留。
 
-const TXT_TITLE := "树丛恶魔"
 
-const TXT_DESC := "塞拉利昂自1961年独立后便长期为政治问题所困扰：虽说该国以英联邦内的“狮子山”与“河里淘钻”之国闻名，但该国似乎并没有配得上如此财富的手腕。自塞拉利昂国父米尔顿·马盖与其弟相继被反英情绪绊倒后，最高权力便落入了全国大会党党魁萨卡·斯蒂文森手中。斯蒂文森自诩将走一条社会主义道路，并对该国发起了令人印象深刻的革新：塞拉利昂脱离了英联邦框架，正式转为共和体制；随后便是在不结盟旗下同我国建交，并对英国产业坚决没收，将其转为民族资产。可他也就到此为止了——斯蒂文森的一党制构型与其内部的贪污腐败“盛况”只会叫人想到扎伊尔的大酋长，被塞拉利昂回收的民族资产也事实上成为了“家天下”私产。与此同时，当局的胃口竟仍无法满足，甚至将黑手伸向了教育与医疗经费。这只会让塞拉利昂全国变成个火药桶——也就在今天，斯蒂文森的对头塞拉利昂人民党借势发起了全国暴乱。后者成功聚集了大量对斯蒂文森部族不满的门德人，并背靠英美国家的支持预备起事。如果我们想要在钻石之国立足的话，现在也是时候了。"
 
-const TXT_OPT0 := "支持斯蒂文森维持国内秩序，打击新殖民主义者的代理人！"
 const TXT_OPT0_DIS := "我们没必要染黑自己的手"
-const TXT_OPT1 := "支持塞拉利昂人民党，并协助其发动反政府起义！"
 const TXT_OPT1_DIS := "真的要支持外国代理人摘桃子吗？"
-const TXT_OPT2 := "充耳不闻"
 
 const TXT_R0 := "我们坚决控诉塞拉利昂反对派不识大体并有意识充当外国势力侵略走卒的行为，并向政府送去了援助。斯蒂文森对此表示相当感动，并顺势同中国建立了合作伙伴关系。虽说塞拉利昂的暴乱迅速演变为了双边无差别攻击的大规模流血事件，可斯蒂文森还是能够背靠我国援助，以及自己同军方的关系牢牢掌握大局。国际社会对此则表示“高度关切”并附上谴责——当然也就到此为止了。"
 
@@ -33,14 +28,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 2
 	var opt := event_def.options
 	if line != 0 and line != 4:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line >= 3:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -94,11 +89,5 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

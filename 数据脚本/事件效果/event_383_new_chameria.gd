@@ -4,11 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录检索 this_num_event/Reset/event_done/resultOfEvents/StartEvent
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 
-const TXT_TITLE := "新查梅尼亚"
-const TXT_DESC := "对南斯拉夫作战的胜利让阿尔巴尼亚领导层认为，建立大阿尔巴尼亚的时机已到。因此，只需要将伊庇鲁斯北部的一部分土地吞并，便能实现这一梦想。该地区目前处于希腊治下，被阿尔巴尼亚人称之为查梅尼亚。\n第二次世界大战期间，当地居民积极支持德国与意大利侵略者。因此在1945年后，查梅尼亚的许多阿尔巴尼亚人与希腊穆斯林被驱逐到了阿尔巴尼亚。霍查主义领导层试图暂时搁置这一话题，但在见到希腊退出北约且美国第六舰队撤出的事实后，便决定故事重提。根据我们的情报，西古里米已经组建了由40-50人构成的所谓“查梅尼亚解放军”，并打算利用他们策动起义。后者计划在占领沿海小镇伊古迈尼察后，便呼吁阿尔巴尼亚军以“保护当地居民免遭希腊君主制法西斯分子威胁”为名，将军队开入查梅尼亚。\n事实上，君主制在希腊早已成为了历史，而目前执掌希腊的政府则是囊括共产党人的左翼联盟。但阿尔巴尼亚复仇主义者对此并没有什么兴趣。"
-const TXT_OPT0 := "不关我事"
-const TXT_OPT1 := "消灭这些跳梁小丑并对阿尔巴尼亚实施制裁"
-const TXT_OPT2 := "希腊目前是假左派当道。因此，有必要将反修事业进行到底（需要15.0百万{0}与35.0点{1}）"
 const TXT_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
 const TXT_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
 const TXT_DIS_MOD := "需要拥有修正效果“毛主义的壁垒”或极左派在党内为主流......"
@@ -30,14 +25,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if _d(W.I_AGENTS) >= 350:
-		_enable(opt[1], TXT_OPT1.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[1], event_def.options[1].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	else:
 		_disable(opt[1], TXT_DIS_AGENTS.format([20]))
 	var mod6: bool = ws.modifiers.size() > 6 and ws.modifiers[6] != null and ws.modifiers[6].is_active
 	if _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 250 and _d(W.I_AGENTS) >= 150 and _d(W.I_INFLUENCE) >= 700 			and (mod6 or GameManager.is_faction_leading(0)):
-		_enable(opt[2], TXT_OPT2.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[2], event_def.options[2].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif not mod6 and not GameManager.is_faction_leading(0):
 		_disable(opt[2], TXT_DIS_MOD)
 	elif _d(W.I_INFLUENCE) < 700:
@@ -94,9 +89,6 @@ func _leave_alliances(c: CountryData) -> void:
 	c.puppet_of = -1
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -105,14 +97,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

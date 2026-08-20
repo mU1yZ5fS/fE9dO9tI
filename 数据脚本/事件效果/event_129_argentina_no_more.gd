@@ -3,13 +3,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event129.cs：我们不能再忍受了（5 选项）。
 ## 触发：原版未发现自动触发条件（trigger_conditions 为空），疑由未逆向的选举/地图系统手动触发。
 
-const TXT_TITLE := "我们不能再忍受了"
-const TXT_DESC := "随着1981年多党联合参政的政局形成，集会权与言论自由权得以恢复，新任阿根廷央行行长接手了一个在高企利率下挣扎的经济体，并改变了紧缩的货币政策，开始了经济自由化的尝试。6年来，断断续续的工资冻结、产量限制政策与戒严性措施使得人均GDP触底了1968年以来的最低水平，实际工资水平更是仅为约40%。军政府希望无限期推迟选举，而要求举行选举的示威活动迅速进行，1982年12月16日，五月广场举行的抗议活动被警察暴力镇压，造成了一名示威者死亡的流血事件。在销毁了约3万名政治异见者失踪的证据后，军政府开始了向民主化过渡的准备。然而，1983年2月，布宜诺斯艾利斯警察署长拉蒙·坎普斯公开承认了这些事实，并表示“失踪者实际已经死亡”。对坎普斯的采访激起了广泛民愤，迫使当局颁布了一项新法律：取消对政党的绝大多数限制，并恢复人权，同时召开选举。选举基于1957年所谓“解放革命”的军事独裁时期强加的宪法文本，规定总统由间接选举、任期六年、不可连任。选举的主要候选党派如下：社会民主主义的激进公民联盟（CRU）、庇隆主义中间派的正义党（JP）、工会-工团主义的不妥协党（NP）。与此同时，庇隆主义极左派组织“蒙东内罗斯”创建了合法的真庇隆党（APP），挤进了选举的门槛。"
-const TXT_OPT0 := "劳尔·阿方辛，激进公民联盟（社会民主主义）"
-const TXT_OPT1 := "伊塔洛·卢德尔，正义党（温和主义）"
-const TXT_OPT2 := "奥斯卡·阿伦德，不妥协党（民主社会主义）"
-const TXT_OPT3 := "马里奥·菲尔梅尼奇，真庇隆党（国控社会主义）"
-const TXT_OPT4 := "保持距离"
 const TXT_PROPRC_YES := "新政府决心和我们做朋友。"
 const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_OPT3_DIS := "庇隆主义极左派已全军覆没"
@@ -24,14 +17,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var argentina := world.get_country_by_legacy_index(71)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
+	_enable(opt[2], event_def.options[2].text)
 	if argentina != null and argentina.government == 3:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
-	_enable(opt[4], TXT_OPT4)
+	_enable(opt[4], event_def.options[4].text)
 
 
 func _enable(opt: EventOption, text: String) -> void:
@@ -50,19 +43,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _d(index: int) -> int:

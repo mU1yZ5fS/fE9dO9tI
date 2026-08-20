@@ -4,9 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:914-916 —— c163.parts[0] && (c117.SubGosstroy==15 || c117.SubGosstroy==17)。
 ##  parts[0] ExprNode 不支持 → trigger_script=evaluate()（同文件）。
 
-const TXT_TITLE := "叛徒去死"
-const TXT_DESC := "在沙巴战争之后，刚果民族解放阵线艰难的维持着所谓“加丹加人民共和国”的政府班子。但随着刚果的彻底解放。这一政权的地位略显尴尬，其原因有三：体量太小，政局不稳，依赖外援。更别提刚果新政府从他国获得了大量的军火，他们也渴望收复故土。就在近日，刚果官方宣布展开收复失地的“帕特里克·卢蒙巴”行动，旨在一举击溃境外势力扶植的伪政权。"
-const TXT_OPT0 := "骄傲的站起身，说你是刚果人！"
 const TXT_R0_A := "得益于坦桑尼亚和卢旺达联军的支持，刚果政府如同秋风扫落叶般击溃了弱小的“加丹加人民共和国”。午夜，共计2000名卢旺达和刚果的伞兵空降在了“首都”卢本巴希，一举夺下了“阿格施蒂纽·内图国际机场”。在中心城区，联军同叛乱者展开了交火，尽管加丹加人民军的抵抗力度比预想的要强大，最终还是被攻破。与此同时，近一万名刚果人民革命军精锐乘坐重型装甲车从北部。在卢旺达和坦桑尼亚的压倒性优势下，姆奔巴和他的军队自然不会有任何翻盘的机会。几天之内，“加丹加人民共和国”总统蒙古亚宣布辞职并呼吁军队停止抵抗，姆奔巴也已自杀。而试图最后捞一笔的苏联人则损失惨重，不得不坐在谈判桌前签署了和约，并施压安哥拉和古巴人不再干涉刚果内政。\n刚果给予了加丹加地区的自治权，并开始了社会主义改造。丰富的资源定能为刚果的发展添一把柴。原先的加丹加宪兵成员也因为叛国罪而被处死。再也没有也不会有红色冲伯了！"
 const TXT_R0_B := "得益于坦桑尼亚和卢旺达联军的支持，刚果政府如同秋风扫落叶般击溃了弱小的“加丹加人民共和国”。午夜，共计2000名卢旺达和刚果的伞兵空降在了“首都”卢本巴希，一举夺下了“阿格施蒂纽·内图·国际机场”。在中心城区，他们同叛乱者展开了交火，尽管加丹加人民军的抵抗力度比预想的要强大，最终还是被攻破。与此同时，近一万名刚果人民革命军精锐乘坐重型装甲车从北部。在卢旺达和坦桑尼亚的压倒性优势下，姆奔巴和他的支持者自然不会有任何翻盘的机会。几天之内，“加丹加人民共和国”总统蒙古亚宣读了辞职书和投降信，姆奔巴也已自杀。而试图最后捞一笔的苏联人则损失惨重，不得不坐在谈判桌前签署了和约，并施压安哥拉和古巴人不再干涉刚果内政。\n为了征收合理的“军费”，出兵的两个国家决定帮卡比拉政府实行为其20年的“托管”。大量的钻石，铀矿，钴和铜被运出加丹加省。卢旺达一年的出口量比自己本土的产量还高！卡比拉被反对派指责为“又一个冲伯”，“背叛了先总理的理想”。但只要詹姆斯太上皇一日坐阵金沙萨，这些都不过是无关痛痒的小问题。"
 
@@ -45,17 +42,8 @@ func evaluate(world: WorldState) -> bool:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

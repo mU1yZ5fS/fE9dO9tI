@@ -7,11 +7,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - SOV_PRC_PartiesConnection → I_COMMUNICATIONS（见 event_435 约定）；
 ##  - 原版 result2 num7 五项条件逐项移植；Debug.Log 跳过。
 
-const TXT_TITLE := "苏修美帝，狼狈为奸"
-const TXT_DESC := "主席同志！来自我国情报机构的最新消息。在苏联国内最近举行的一次政治局会议上，苏联新任领导人尤里·安德罗波夫竟认为：“出于遏制中华帝国主义势力扩张的需要，苏联有必要加入北约。”，显然，他们已经厌倦在阿富汗内战中同手握我国武器的毛派打游击战了。\n当然，介于北约完全是根植于西式民主制度的军事联盟，苏联加入北约这样异想天开的建议极大概率以失败告终。然而，美国总统吉米·卡特似乎对此是认真的：“不久后，北约本身也将迎来巨变”。\n介于我国在东欧有所布局，我们兴许可以为这“反华联盟”打上终（中）止符？让它胎死腹中？"
-const TXT_OPT0 := "在帝修反面前，我们这次真的无能为力......"
-const TXT_OPT1 := "强烈谴责这天杀的卡特-安德罗波夫协定！"
-const TXT_OPT2 := "我们将团结东欧一切反修反帝进步势力，同反动派斗争到底！（需要20.0百万{0}、15.0点{1}与40.0点{2}）"
 const TXT_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
 const TXT_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
 const TXT_DIS_ARMY := "军事实力必须高于{0}点......"
@@ -43,14 +38,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
 	var poland := world.get_country_by_legacy_index(2)
 	var hungary := world.get_country_by_legacy_index(4)
 	var romania := world.get_country_by_legacy_index(5)
 	var czech := world.get_country_by_legacy_index(3)
 	if (poland != null and poland.has_tag("亲中")) or (hungary != null and not hungary.has_tag("亲苏")) 			or (romania != null and romania.has_tag("亲中")) or (czech != null and czech.development > 0) 			and _d(W.I_ARMY) >= 400 and _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 200 and _d(W.I_AGENTS) >= 150:
-		_enable(opt[2], TXT_OPT2.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[2], event_def.options[2].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif _d(W.I_BUDGET) + _d(W.I_RESERVE) < 30:
 		_disable(opt[2], TXT_DIS_BUDGET.format([20]))
 	elif _d(W.I_AGENTS) < 150:
@@ -259,9 +254,6 @@ func _establish_government(c: CountryData, kind: String) -> void:
 		c.set_tag("亲美", false)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -270,14 +262,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

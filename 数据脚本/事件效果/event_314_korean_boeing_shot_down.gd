@@ -4,11 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:514-517 —— 日>=1 月>=9 年>=1983 且 苏联(7)非北约 且 朝鲜(10)!parts[0] 且 战争90未进行。
 ## 差异：isNATO→has_tag("nato")，parts 字段映射 CountryData.parts；文本来自 Events_text_en 索引 126-133。
 
-const TXT_TITLE := "被击落的韩国波音"
-const TXT_DESC := "1983年9月1日，一架韩国波音747-230B客机在苏联边境附近的太平洋上空被击落。据报道，有269人死亡，这是历史上最大的灾难之一。西方媒体已将这一事件称为“不应被遗忘的反人类罪行”，美韩两国也开始自发地抗议苏联的行为。但我们从苏联得到的情报报告说，事实真相可能并非如此——飞机侵犯了苏联边界，在神秘物体附近飞行，没有回应调度员和飞行员的要求。在事件发生前，由于美国飞机自1982年以来多次侵犯苏联领空，该地区的紧张局势有所加剧。在这种情况下，我们该怎么做？我们可以加入国际谴责的行列，以此改善与西方世界的关系，但对苏关系就被搞砸了。还是采取务实的行动，对情况不予置评？我们也可以在这种情况下支持苏联，并宣布侵犯国家边界的行为是不可接受的。"
-const TXT_OPT0 := "对事件情况不予置评"
-const TXT_OPT1 := "谴责苏联"
-const TXT_OPT2 := "支持苏联"
 const TXT_R0 := "中国政府尚未对此事发表正式评论。只有少数代表向遇难者家属表示慰问。很明显，这场灾难严重恶化了当时苏美之间本已恶劣的关系。"
 const TXT_R1 := "我们的媒体整体上重复了西方媒体的论点，要求“追究肇事者的责任”。我们还向苏联大使发出了抗议照会，我国驻联合国的代表也呼吁对这场灾难进行国际调查。这些行动得到了西方大国的同情，但引起了对苏联政府的不满。无论如何，苏联开始与美日两国就建立一个跟踪北太平洋上空航运动向的统一系统进行谈判。"
 const TXT_R2 := "此次坠机事故责任全在波音机组人员和美国军方，他们数次侵犯了苏联边境。这是中华人民共和国对事故的官方表态。这自然引起了西方媒体及西方国家代表的不满，并大大恶化了我们与西方世界的关系。但另一方面，我们同苏联的关系明显回温：苏联代表向我们表示感谢，并提出在中华人民共和国和苏联空军之间建立直接合作关系，以便在今后对这种情况作出有效反应。"
@@ -58,14 +53,5 @@ func _disable(opt: EventOption, text: String) -> void:
 	n.value = 99999.0
 	opt.enable_condition = n
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

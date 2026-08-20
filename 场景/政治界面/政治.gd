@@ -996,5 +996,4 @@ func _on_stats_changed() -> void:
 
 
 func _goto_diplomacy() -> void:
-	音频总管.play_button_click_sound()
 	get_tree().change_scene_to_file(外交场景)

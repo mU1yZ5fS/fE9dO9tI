@@ -4,10 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：无自动触发点——原版由 DiploButtonScript.cs:4678-4680（this_type 外交按钮）手动 number_event=620。
 ## 差异：结果页标题与事件标题原版不同（大陆/大路），execute 设置 result_title；proprc→亲中。
 
-const TXT_TITLE := "让我们在幸福的大路上迈开步伐"
 const TXT_TITLE_RESULT := "让我们在幸福的大陆上迈开步伐"
-const TXT_DESC := "自1968年赤道几内亚独立以来，赤道几内亚的大权便一直掌握在恩圭马家族的手中，在他们的治下，赤道几内亚贫困不堪，人民生活水深火热，大量反对派被屠杀殆尽，马西埃甚至还称呼自己的统治为社会主义。现在，喀麦隆和加蓬这两大邻国已然革命化，两国愿意为了解放赤道几内亚人民而出动军队攻打赤道几内亚，是时候让他们见识一下真正的社会主义了。"
-const TXT_OPT0 := "推翻独裁者！"
 const TXT_R0 := "在喀麦隆和加蓬的多面攻击下，赤道几内亚军队迅速溃退，最终两国联军占领了整个赤道几内亚。多亏了马西埃长期的反智教育，赤道几内亚军队质量堪忧，整场行动伤亡人数不超百人，奥比昂·恩圭马被抓捕并被枪毙，马西埃的尸体被挖出来重新公审再枪毙，整个恩圭马家族统统关进大牢中，马西埃在其家乡所建造的别墅则被充公，部分奢侈品则被拍卖以换取外汇来购买工业农业设备。新政府由流亡到刚果（布）的左翼组织几内亚国家和人民解放阵线（FRENAPO）组建，秘书长赫苏斯·姆巴·奥沃诺担任总统。整个赤道几内亚由于恩圭马家族的统治而变得落后不堪，为了使得赤道几内亚发展起来，非盟开始为赤道几内亚提供大量低息贷款，喀麦隆和加蓬的部分军队在此驻扎混编成为非盟维和部队并一直持续到赤道几内亚社会秩序稳定为止。FRENAPO开始按照各社会主义国家的宪法来建立出属于自己的宪法，逐步进行扫盲教育和无神论教育，以求去除马西埃的神化所造成的影响，并对被屠杀的各少数民族和知识分子进行平反和纪念；将国内的官僚资本全部充公，并学习坦桑尼亚的乌贾马运动，逐步建设农村合作社。FRENAPO还预计在数年之后进行一次关于是否并入喀麦隆的全民公投，但是由于赤道几内亚的现状，并入喀麦隆的可能性将会很大。"
 
 
@@ -31,17 +28,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

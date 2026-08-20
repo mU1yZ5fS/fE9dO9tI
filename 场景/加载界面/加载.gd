@@ -40,7 +40,6 @@ func _wire_slots() -> void:
 
 
 func _on_slot_pressed(slot: int) -> void:
-	音频总管.play_button_click_sound()
 	# 原作 LoadInScript.OnMouseDown：有档才动作，无档直接返回。
 	if not SaveCatalog.slot_exists(slot):
 		_set_info(" 空 档 位")
@@ -76,7 +75,6 @@ func _set_info(text: String) -> void:
 
 
 func _on_返回主菜单_pressed() -> void:
-	音频总管.play_button_click_sound()
 	var target := MENU_SCENE
 	if GameManager and GameManager.save_return_scene != "":
 		target = GameManager.save_return_scene

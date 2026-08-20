@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event355.cs：卫星导航网络。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "卫星导航网络"
 
-const TXT_DESC := "一年多前，美国开始构建自己的卫星全球定位系统——GPS。情报部门还报告说，在今后几年里，苏联也将开始进行一个类似的项目。在大势所趋下，有些人建议我们构建一个属于我们中国自己的系统。当然，这需要资源，但回报将无可估计......"
 
 const TXT_OPT0 := "开始发射北斗系统！"
 const TXT_OPT0_DIS := "没有这么做的资源。"
@@ -59,19 +57,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

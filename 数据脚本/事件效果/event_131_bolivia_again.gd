@@ -3,11 +3,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event131.cs：又一次，又一次，又一次（3 选项）。
 ## 触发：原版未发现自动触发条件（trigger_conditions 为空），疑由未逆向的选举/地图系统手动触发。
 
-const TXT_TITLE := "又一次，又一次，又一次"
-const TXT_DESC := "在确定新的选举日期时，《1967年宪法》被宣布适用于此次选举，其中规定的参选候选人的条件自然也得以沿用。1979年选举中所采用的选举制度是简单的个人及选区制度。在此次选举中，有关于选票的最大创新便是采用了彩色多选项的选票（DL.16095）。在此之前，所有政党都能印发自己的选票，这给他们操纵选举留下了可乘之机。目前，最受欢迎的候选人是：埃尔南·西莱斯·祖阿索，来自民主和人民联盟，各玻利维亚左派政党都被囊括在联盟之中，而候选人本人将坚持温和的民主左派立场；以及维克托·帕斯·埃斯登索罗，来自革命民族主义运动联盟，一个右翼民族主义保守集团。在军事政变前，维克多本人曾先后三次担任玻利维亚总统（并非连任），早些时候还担任过财政部长，恪守自由保守主义原则。如果没有一个候选人获得过半选票，那么将由议会选择总统，而议会的决定将取决于去年议会选举的情况。"
-const TXT_OPT0 := "埃尔南·西莱斯·祖阿索，民主和人民联盟（社会民主主义）"
-const TXT_OPT1 := "维克托·帕斯·埃斯登索罗，革命民族主义运动联盟(温和主义)"
-const TXT_OPT2 := "保持距离"
 const TXT_PROPRC_YES := "新政府决心和我们做朋友。"
 const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_R0 := "据投票结果显示，埃尔南·西莱斯和维克多·帕斯之间几乎打成平手。由于没有候选人在有效选票中获得绝对多数，在军方的压力下，国会选举埃尔南·西莱斯为共和国新总统，任期一年，下一次选举也将于次年6月举行。新政府由左派、社会自由派与中间派政党结成的不稳定的临时联盟组成，并由莉迪亚·盖勒担任政府首脑。为避免发生军事政变，临时政府被迫与军方合作，军费被维持在适当的水平，政府也对军方内部事务不加干涉。同时，对审查制度、艺术和学术界的适度自由化进程开始了，通过重订劳动法与引入社会立法，工人与妇女们的劳动权利所得到的保障也更为充分了。但这种不稳定的联盟基本不可能延续到下次选举后。"
@@ -30,19 +25,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _leave_alliances(c: CountryData) -> void:

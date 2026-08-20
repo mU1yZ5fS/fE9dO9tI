@@ -9,17 +9,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##    EstablishGovernment(ProChina) → 亲中 true、亲苏/亲美 false；
 ##    c41.name = "埃塞俄比亚民主联邦共和国" → chinese_name（既有约定）。
 
-const TXT_TITLE := "提格拉钦"
 
-const TXT_DESC := "主席同志，是时候谈谈非洲（过去）最古老的君主制国家埃塞俄比亚了。自1974年的军事政变以来，该国经历着意识形态上的巨大变化。从资本主义的支持者到激进共产主义分子，所有人都希望得到临时军事行政委员会，也就是德尔格的青睐。除了平庸无力的“埃塞俄比亚第一”这样的爱国口号外，军委选择的是社会主义者，他们积极和全埃塞俄比亚社会主义运动和埃塞俄比亚人民革命党展开合作。其中，全埃社运支持临时军委，他们由苏联留学生和工人构成。而埃塞俄比亚人民革命党义正严辞的反对临时军委的长期存在，呼吁快速建立一个先锋党，他们支持毛泽东主席的理论，也支持阿尔巴尼亚的反修正主义思想。\n在1975年9月11日，临时军委正式宣布将走“埃塞俄比亚特色的共产主义道路”。他们公开支持，鼓励各个社会主义和共产主义政党加入群众组织临时办公室。以特法里·本蒂准将为首的温和派临时军委成员甚至准备和埃人革党达成协议，组建一个统一的社会主义的先锋党，用来加速解散临时军委。而这一决定遭到了实权人物门格斯图·海尔·马里亚姆的抵制，绰号“红色尼格斯”的他，曾亲手处死了第一任临时军委主席阿曼·迈克尔·安多姆，而他并不介意再次扫清一位敌人。他在担任副主席的时候，便公开拉偏架打击埃人革党。纵使门格斯图本人也不反对组建一支革命的先锋党，但门格斯图眼里容不得沙子，为此他大力支持由自己领导的“革命火焰”组织。双方的关系已经恶化到了极点。特法里·本蒂多次在会议上指控门格斯图滥杀无辜，而门格斯图则以“潜在的帝国主义者”为理由攻击特法里·本蒂，并派遣军事警察抓捕埃人革党成员。\n主席同志，尽管有些泥菩萨过河，但我们至少该表个态，对吧？"
 
-const TXT_OPT0 := "帮本蒂一把"
 const TXT_OPT0_DIS := "他们不愿意听我们的话"
-const TXT_OPT1 := "门格斯图，非洲的列宁！"
 const TXT_OPT1_DIS := "支持他？这是给我们的敌人递子弹！"
-const TXT_OPT2 := "游击战士会把他们双双埋葬！"
 const TXT_OPT2_DIS := "对别国内政的干涉太夸张了"
-const TXT_OPT3 := "让苏联人自个头疼去吧！"
 
 const TXT_R0 := "我们在人民日报上发表了这样一片文章：《警惕伪装成社会主义的法西斯主义者》，其中提到了埃塞俄比亚的现状。虚假的公有制政策，极力打击真正的左翼政党，并和帝国主义者沆瀣一气。同时我们向特法里·本蒂提供了来自我们的帮助，在1977年2月3日的中央例会上，门格斯图向军委主席本蒂准将汇报工作，在一旁旁听的提格雷代表突然抄起板凳扔向门格斯图，这是行动开始的记号。突然间把脸涂成黑色的中国特工和埃塞俄比亚人民解放军战士从会场后方杀出，在激烈的交火中，门格斯图身中十七枪身亡。随后，特法里·本蒂在电视上发表了特别报告，揭露了门格斯图的不雅往事：在美国留学时花天酒地，在革命时主张美国介入；出卖了埃塞主权；接纳了苏联的政治献金，却仅仅是为了孩子能上莫斯科大学。综上所述，他以反革命罪缺席判处门格斯图死刑（尽管他已经被击毙了）。\n随后，他在电视讲话中宣读了惊人的信息，他宣布临时军事委员会已经圆满完成了民族民主革命的阶段性目标，临时军委将自行解散。并会组建埃塞俄比亚社会主义革命党-马克思列宁主义，一个由埃人革党和左翼军人，贫下中农和势力更小的左翼政党组成的新党。在第一届全埃塞工农兵代表大会上，他被选举为名誉主席和总统，而贝尔哈纳·梅斯克尔·雷达则当选为新任党主席。该党秉持着坚实的毛主义原则，并加速深化土地革命运动，同时积极和厄立特里亚就自治问题达成协议。他们也和我们加大了互动。"
 
@@ -38,18 +32,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
 	var opt := event_def.options
 	if line <= 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line != 0 and line != 4:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line <= 1:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -119,11 +113,5 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

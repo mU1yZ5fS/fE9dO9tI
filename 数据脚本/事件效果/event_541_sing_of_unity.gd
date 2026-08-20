@@ -4,13 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:202-204 —— relres && 年<=1984。
 ## 差异：描述由 prepare 动态拼领袖姓名；resultOfEvents 缺省按原版 int 默认 0 处理。
 
-const TXT_TITLE := "我们高唱团结友谊"
 const TXT_DESC := "同志！外联部的同志最近收到了消息，随着我国与苏联关系的缓和，苏共国际部希望就我国在世界民主青年联盟席位的恢复商谈。以防您已经忘了这个组织，请允许我简单的介绍一下：世界民主青年联盟是世界左翼学生运动中规模最大的国际性组织，旨在团结世界各国反帝爱国的进步青年。自我国与苏联决裂以来，中国共产主义青年团和中华全国青年联合会便停止了出席此类活动。而随着我国与苏联关系的回暖，回到此类国际组织也应该成为我们外交政策的一部分。不过无论如何，您都有权利投上庄严的一票！"
-const TXT_OPT0 := "我们同意！"
 const TXT_OPT0_DIS := "我们不同意！"
-const TXT_OPT1 := "不能寄人篱下，我们要搞自己的"
 const TXT_OPT1_DIS := "为什么在有电梯的时候，非得爬楼梯呢？"
-const TXT_OPT2 := "为啥要去呢？"
 const TXT_OPT2_DIS := "可是资本主义世界的人都去了！"
 const TXT_R0 := "我们决定重新回到世界民主青年联盟，苏联对于我们的行为非常高兴。在世界民主青年联盟的第十一次大会上，出于对修复我国关系和地沿政治的考量。苏联高调宣布将1985年举办的第十二届世界青年学生联欢会的东道国为中华人民共和国。各个代表都相当高兴，这不仅会成为我们在将来的国际舞台上发光发声的基石。也象征着欧亚大陆上两个最大的社会主义超级大国达成了和解。"
 const TXT_R0_ALB := "
@@ -34,15 +30,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var line := d[W.I_POLITICAL_LINE]
 	if line < 3:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if d[W.I_ALBANIA_BREAK] == 0 and ws.influence_prc >= 350 and ws.modifiers[3].is_active:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line > 1:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 

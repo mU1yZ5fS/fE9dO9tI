@@ -81,6 +81,3 @@ func _raw_uk(world: WorldState) -> int:
 	return world.数值表[147]
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta

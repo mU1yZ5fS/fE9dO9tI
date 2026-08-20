@@ -1,6 +1,9 @@
 class_name PoliticianPool
 extends RefCounted
 
+## 跨系统注入（GameManager 设置）。
+static var current_world: WorldState = null
+
 const INITIAL_DIR := "res://数据脚本/政治家池/初始/"
 const RESERVE_DIR := "res://数据脚本/政治家池/预备/"
 
@@ -110,8 +113,8 @@ static func pick_replacement(
 	# 防重名：事件可能已把预备池里的历史人物（如陈永贵）写入政坛，
 	# 若预备池还留有同名模板，死亡补员时会再拉一个同名者。
 	var existing_names := {}
-	if GameManager != null and GameManager.world != null:
-		for p in GameManager.world.politicians:
+	if current_world != null:
+		for p in current_world.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p) or p.name_display == "":
 				continue
 			existing_names[p.name_display] = true
@@ -151,8 +154,8 @@ static func generate_random_politician(
 	existing_names: Dictionary,
 ) -> PoliticianData:
 	var rng: RandomNumberGenerator
-	if GameManager != null and GameManager.world != null:
-		rng = GameManager.world.ensure_rng()
+	if current_world != null:
+		rng = current_world.ensure_rng()
 	else:
 		rng = RandomNumberGenerator.new()
 		rng.randomize()

@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event353.cs：新型运载火箭。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "新型运载火箭"
 
-const TXT_DESC := "一直以来，我们的太空计划一直被已经过时的长征一号和风暴一号火箭“牵引”着。中国航天局的工程师实际上已准备对后者进行深度改造，并将其命名为“长征二号”，现在就差投产了。但就火箭家族的进一步发展而言，也不乏一些建议。比如，工程师们提出了长征四号轻型运载火箭和长征三号中型运载火箭的概念，我们可以借此将卫星发射到地球静止轨道。还有个颇有风险的重型运载火箭项目，但这现在对我们是不是太复杂了？"
 
 const TXT_OPT0 := "开始研制长征三号和长征四号。"
 const TXT_OPT0_DIS := "没有这么做的资源。"
@@ -70,19 +68,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

@@ -9,18 +9,12 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - parts[1] 写前 resize；AmericanSupportAttacker.SovietSupportDefender → usa_side=0/ussr_side=1；
 ##  - TickTime(24) → fortnight_max=24。
 
-const TXT_TITLE := "萨帕塔的孩子们……"
 
-const TXT_DESC := "主席同志，来自墨西哥合众国恰帕斯州的消息。今天，EZLN（萨帕塔民族解放军）在恰帕斯州成立了，该组织在部分成员上也与70年代的左翼游击队存在一定的继承关系。不出我们所料，作为对外国技术和投资都有较高依赖的国家，跨国公司与当地原住民的矛盾极为突出，随着卡西克（一种墨西哥地方豪强）势力的发展，当地的原住民同时受到来自外国资本、当地腐败地主和政府的三重欺压。自从阿夫萨隆·卡斯特利亚诺斯·多明戈斯担任该州州长后，当地政治暴力显著上升。我们是否要支持这些墨西哥贫苦农工的斗争？"
 
-const TXT_OPT0 := "让他们看看，萨帕塔回来了，给新自由主义来上一枪！"
 const TXT_OPT0_DIS := "我们鞭长莫及啊……"
-const TXT_OPT1 := "声援并支持墨西哥农民运动"
 const TXT_OPT1_DIS_WHY := "为什么墨西哥不能直接走上社会主义的康庄大道？"
 const TXT_OPT1_DIS_INDIAN := "没有必要支持一群流氓一样的印第安人"
-const TXT_OPT2 := "我们最好还是把这些乱民的名单提供给墨西哥政府"
 const TXT_OPT2_DIS := "这未免太残酷了"
-const TXT_OPT3 := "墨西哥农民的事务没有引起我们的关注"
 
 const TXT_R0 := "借助EZLN的老相识，新崛起的人民革命军迅速和EZLN搭上了关系，游击活动开始变得更加广泛和激进，随着墨西哥经济的进一步下行，当地工人以及贫困农民很快加入了人民革命军的左翼地下小组。得益于我国慷慨的援助，有组织的游击队迅速发展壮大并和来自城市的工人和原住民以外的地方贫农结成同盟。很快，从原住民地区开始蔓延的游击活动超出了当地警察和安全部队所能控制的界限，甚至发生了效法70年代穷人党游击队的绑架活动——人民革命军大规模地绑架墨西哥政治家和地方公务员，开展一系列旨在摧毁墨西哥政府行政能力的行动。墨西哥政府从全国调集了数万名士兵进驻恰帕斯州并展开大规模的“清乡活动”，然而人民革命军不会屈服，决定给来犯之敌迎头痛击！"
 const TXT_R1_A := "很快，人民日报刊登了一批揭露恰帕斯州原住民和其他边缘群体受到迫害的证据。我国的外交部和联合国发言人也开始指责墨西哥政府在恰帕斯地区的“殖民主义”。墨西哥政府没有料到这些事情居然遭到了中国如此严厉的指责。很快。墨西哥统一社会党和左翼游击队开始声援当地居民并展开游击活动。这使得墨西哥陆军和联邦安全局力量在当地迅速增长……地区主教萨缪尔·加西亚也对当地日益增长的暴力冲突感到忧虑。"
@@ -44,20 +38,20 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	if line == 0 and c149 != null and (c149.has_tag("亲中") or c149.has_tag("亲苏")) \
 			and r577 == 0 and world.influence_prc >= 800:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line >= 1 and line <= 3 and world.influence_prc >= 500:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif line == 0:
 		_disable(opt[1], TXT_OPT1_DIS_WHY)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_INDIAN)
 	if data.size() > W.I_WAR_SUPPORT and data[W.I_WAR_SUPPORT] >= 700:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:

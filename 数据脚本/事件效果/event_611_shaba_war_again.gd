@@ -4,10 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:904-906 —— DATE_AFTER 1978.5.11；fire_only_once 承担 !event_done[611]。
 ## 差异：描述/结果按 c163.parts[0] 分支；AmericanSupportAttacker→usa_side=0；TickTime(9)→fortnight_max。
 
-const TXT_TITLE := "沙巴战争，又一次？"
 const TXT_DESC_A := "在第一次沙巴战争惨痛的失败后，FNLC的成员痛定思痛，决心攻占科卢维齐这一重地作为前进的跳板。在古巴的支持下，6500名FNLC士兵又一次越过边界突袭该国。起义军已经攻下了边境的数个军火库和哨站，似乎这次他们的赢面很大？"
 const TXT_DESC_B := "在刚果民族解放阵线站稳了脚跟后，加丹加人民共和国一直尽力渗透着扎伊尔政权。而今天，塔纳尔·姆奔巴宣布发起又一次冲锋，他们将会彻底击溃孱弱的扎伊尔政权。很明显，一边是士气高昂的解放战士，另一边是依赖巫医，金钱和外国人的国防军，胜利的天平似乎已经开始倾斜了。"
-const TXT_OPT0 := "支持扎伊尔人民反抗苏联社会帝国主义的斗争"
 const TXT_R0_A := "我们像过去的那样呼吁各方冷静下来并停火，但谁会在乎我们的话呢？古巴人仍然在一波又一波的开往加丹加地区。"
 const TXT_WAR_A_NAME := "第二次沙巴战争"
 const TXT_WAR_A_SIDE1 := "扎伊尔"
@@ -50,17 +48,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

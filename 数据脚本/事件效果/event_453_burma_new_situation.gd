@@ -4,9 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录无 this_num_event=453 / StartEvent(453) / event_done[453] 自动触发点；
 ##   按项目约定 trigger_conditions=[]（仅定义，待外部入口接入）。
 
-const TXT_TITLE := "缅甸的新局势"
-const TXT_DESC := "过去，我们在中缅边境援助了缅甸共产党（即白旗派）和部分民族地方武装以支持缅甸的共产主义运动。如今，我们对他们的支持已经越来越保守化——为了维持与缅甸政府的关系，对缅共的支持逐渐让步于现实外交。但是，1976年以来，缅甸进入了一个新的较为动荡的时期——在社会上，学校再次爆发了学生运动；在执政党内，吸纳的左翼分子逐渐与军事派系不和；军队内，反对派军官酝酿了对奈温的未遂阴谋。主席同志，或许这是一次新的机会！"
-const TXT_OPT0 := "让我们在缅甸布下些许暗线"
 const TXT_R0 := "在我们的干预下，左翼民族地方武装、红旗共产党余部最终达成了和解，同缅甸共产党合并，他们使用我们的新支援的武器挫败了缅军的围剿，并新占领了一些根据地；同时，我们的特工也为学生运动送去了武器支持，并帮助他们将学生运动与工人运动联合起来；我们也秘密与处于地下活动的民主派建立了联系，为他们送去了援助。更多的反对派加入了缅共领导的民族民主团结阵线。军政府对局势的恶化很不高兴。"
 
 
@@ -21,25 +18,16 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

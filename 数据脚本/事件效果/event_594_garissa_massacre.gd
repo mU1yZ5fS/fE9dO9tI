@@ -8,15 +8,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 仅 AmericanSupportDefender → usa_side=1/ussr_side=-1；
 ##  - TickTime(24) → fortnight_max=24。
 
-const TXT_TITLE := "加里萨大屠杀"
 const TXT_DESC_BASE := "在索马里人聚居区被欧美列强和埃塞俄比亚帝国瓜分之后，以索马里人为主的东北省便纳入英属肯尼亚领土中，在索马里独立之后，北部边界区便强烈要求分离出来加入索马里。自肯尼亚独立尤其是1967年盗匪战争（肯尼亚称索马里分离势力为盗匪）结束以来，肯尼亚对于东北省予以打压，甚至不惜为东北省单独立法来加强管控。1980年11月，在一名土匪的袭击下，有六名政府官员死亡，肯尼亚军队随即在东北省加里萨镇进行报复性行为，烧毁庄园，强奸，放火杀人，把当地镇民赶到幼儿园作为小型集中营关押，放走除了索马里人以外的其他人并断绝他们的水源和食物。至少有三千余人死于这场屠杀。\n索马里政府对此十分不满，并要求肯尼亚政府停止种族屠杀，否则将会推翻现政权并进行占领。"
 const TXT_DESC_EXTRA := "主席同志，我们或许可以借此机会帮助索马里人完成大索马里之梦，或者帮肯尼亚一忙，解决掉他们的心头之患？总之选择权在你。"
 
-const TXT_OPT0 := "为索马里盟友提供顾问"
 const TXT_OPT0_DIS := "他们不愿意听我们的话"
-const TXT_OPT1 := "帮助肯尼亚保卫领土完整"
 const TXT_OPT1_DIS := "支持他？这是给我们的敌人递子弹！"
-const TXT_OPT2 := "这只是普通的非洲国家之间的争端罢了"
 
 const TXT_R0_A := "在肯尼亚未作出回应之前，新华社发表社论支持索马里人民反抗肯尼亚反动政权并回到索马里的斗争，北部省人民进步党这个曾经试图让北部省重新加入索马里的组织重组了起来并在我们特工的协助下在东北省进行袭扰战，与此同时，索马里也宣布对肯尼亚再次发动战争并试图收复东北省，大量来自东方的货轮正在摩加迪沙港卸下“拖拉机”等“农业设备”，"
 const TXT_R0_B := "古巴雇佣兵又一次踏上了东非这片土地，"
@@ -45,19 +41,19 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if somalia != null and somalia.sub_government == 10:
 		event_def.description = TXT_DESC_BASE + TXT_DESC_EXTRA
 		if line <= 2 and (somalia_proprc or (somalia_prosov and china_sev)):
-			_enable(opt[0], TXT_OPT0)
+			_enable(opt[0], event_def.options[0].text)
 		else:
 			_disable(opt[0], TXT_OPT0_DIS)
 		if line >= 2 and (not somalia_proprc or (somalia_prosov and not china_sev)):
-			_enable(opt[1], TXT_OPT1)
+			_enable(opt[1], event_def.options[1].text)
 		else:
 			_disable(opt[1], TXT_OPT1_DIS)
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		event_def.description = TXT_DESC_BASE
 		_disable(opt[0], "")
 		_disable(opt[1], "")
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -132,6 +128,3 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta

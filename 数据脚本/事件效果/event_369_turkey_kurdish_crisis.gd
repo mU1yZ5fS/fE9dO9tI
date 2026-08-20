@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event369.cs：重蹈覆辙？。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "重蹈覆辙？"
 
-const TXT_DESC := "由军政府官员与亲法西斯主义组织民族运动党联合执政的土耳其，已经走上了一条压迫少数民族的道路、自20世纪70年代末期，库尔德斯坦工人党便已开始为实现民族独立而战。但在土耳其军事政变后，该党的准军事组织便不得不躲藏在山区之中，并撤往土耳其与叙利亚和伊拉克之间的边界。\n近日，军政府批准了土耳其的新宪法，其中包含了民族主义色彩极其明显的条款。例如，土耳其国的领土与民族是不可分割的有机整体，且除去国语以外的其他语言均被禁止。政府同时还对库尔德人实施了歧视性政策：新生儿不得取库尔德人名字、位于边界的民族社群不得拥有自己的牲口。\n出于遏制库尔德民族主义的需要，军政府向库尔德人聚居区增派了部队，并对当地人口组织大屠杀。当局的这一行动被许多国家视为种族灭绝。上述事件甚至还引起了移民危机——难民纷纷逃往伊拉克与叙利亚。土耳其军方则使用各种各样的反人道战术，甚至将当地居民掠为人质以逼迫部分游击队投降。\n显然，一场区域危机即将愈演愈烈，它甚至可能激化全世界的紧张局势。对此，我们该怎么做？"
 
 const TXT_OPT0 := "与苏联一道施压联合国，将土耳其民族主义认定为法西斯主义变种"
 const TXT_OPT0_DIS := "与苏联的关系还未实现正常化......"
@@ -138,19 +136,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

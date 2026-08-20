@@ -7,18 +7,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - OilProd += 100f 已建模（ws.oil_prod）。
 ##  - 死代码 result 5 测试分支跳过；result 0-4 均为实际选项。
 
-const TXT_TITLE := "西非巨人——第一幕"
-const TXT_DESC := "同志，是时候关注“西非经济巨人”尼日利亚了，请容我简要介绍该国的情况。和大多数非洲国家相同，这个国家也深陷部族主义、军方干政、政治腐败和新殖民主义等泥潭。该国主要分为三大部族：北方的豪萨-富拉尼族，西南的约鲁巴族和东南的伊博族。北方主要信仰伊斯兰教，东南方的伊博族主要信仰基督教，西南方的约鲁巴族则是基督教、伊斯兰教和原始信仰各色均有。1960年独立后的尼日利亚第一共和国主要沿用他们的前宗主国的威斯敏斯特议会制，国家也依照殖民时期的惯性，按部族分为三个大区。二战后，北方人长期在政治上享有优势地位。由于尼日利亚的客观现实，该国的议会民主制实际上沦为了各部族统治阶级争权夺利的工具，贿选、腐败、部族冲突和政治暴力盛行，各个政党也是代表各个部族和地方利益的工具。最终，在部族矛盾、阶级矛盾和政治、经济问题的冲击下，军方发动政变，夺取了政权。相较于非洲大陆上以腐败专制的著称的各路军头而言，尼日利亚历届军政府属于开明的一批，他们力行反腐，推动经济发展和民生建设并致力于维护国家统一和稳定，戈翁军政府废除了依照部族划分的大区，建立了更为集权的行政区划“州”，打击部族主义，甚至还废除了北方豪萨-富拉尼封建主和南方部落酋长的许多特权。|目前，该国由奥卢塞贡·奥巴桑乔将军领导，他推行了还政于民、建立第二共和国的计划，军政府颁布了新宪法，将国家改为总统制，并要求全国性的、排除了部族主义和地方主义因素的政党才能被批准参加大选。目前，军政府承诺的议会选举和总统选举的时间已然邻近，军方批准了五大政党参与选举（尽管如此，这些政党仍能看出部族因素）——由北方人阿尔哈吉·谢胡·沙加里领导、主要以豪萨-富拉尼人为基础的保守派政党尼日利亚国民党；由主张社会民主主义和福利主义的奥巴费米·阿沃罗沃领导、主要以约鲁巴人为基础的尼日利亚统一党；由温和派泛非主义者和尼日利亚民族主义者纳姆迪·阿齐克韦领导的、以伊博人为基础的进步派政党尼日利亚人民党；从尼日利亚人民党中分裂出来的、由瓦齐里·易卜拉欣领导的进步派政党大尼日利亚人民党；由阿米努·卡诺领导的左翼政党【尽管卡诺本人以及该党的“泥潭”派相对温和，主张“民主人文主义”，但该党也不乏主张阶级斗争和马克思主义原则的社会主义激进派（在党内被称为“滑坡”派）】人民救国党。在竞选期间，规模和势头最大的是保守派的尼日利亚国民党；尼日利亚统一党和人民救国党提出了最为连贯一致的行动方案，以民主社会主义倡导者的形象达成了合作关系，但并未建立联盟。|除了以上建制势力，尼日利亚也存在激进的群众运动、学生运动和工会运动。该国内部的矛盾也催生了由穆罕默德·马尔瓦（绰号“麦塔特斯尼”）的“扬塔特斯尼”组织领导的激进主义运动，马尔瓦大肆抨击尼日利亚当局，吸引了大批年轻人、失业者、城市贫民和少数来自尼日尔、喀麦隆等地的外国人的参与。他将伊斯兰教同巫术结合，拒绝以西方国家和现代技术为象征的物质主义，据悉，这一组织并不打算将运动局限在嘴上。当然，支援我们的尼日利亚的同志们也并非天方夜谭，除了众所周知的亲苏“正统派”共产党尼日利亚社会主义工农党外，该国也存在很多小型激进左翼政党以及激进工会分子、左翼知识分子和活动家，尽管如此，尼日利亚激进左翼仍存在各自为政、缺乏领导核心和组织不统一的问题。|我们是要插手这个西非大国，亦或什么都不做？毕竟他们是西非重要的存在。"
 
-const TXT_OPT0 := "根据奥卡姆剃刀原理，我选最强大的尼日利亚国民党"
 const TXT_OPT0_DIS := "我们不会支持保守派"
-const TXT_OPT1 := "支持尼日利亚统一党和人民救国党等进步派更进一步，调解进步派政党的矛盾，以建立联盟"
 const TXT_OPT1_DIS := "我们没必要把资源浪费在非洲的选举事务上……"
-const TXT_OPT2 := "因地制宜，为什么不支持反西方的“扬塔特斯尼”呢？"
 const TXT_OPT2_DIS := "我们不会去找他们！"
-const TXT_OPT3 := "帮助尼日利亚的同志们团结起来，只有一场革命才能真正终结这个国家的乱局！"
 const TXT_OPT3_DIS := "他们认为我们是叛徒"
-const TXT_OPT4 := "尼日利亚？尼日尔？我对这群黑鬼没兴趣！"
 const TXT_OPT4_ALT := "尼日利亚？尼日尔？那是哪里？"
 
 const TXT_R0 := "我们向尼日利亚国民党送去了资金，并扰乱了其他政党的选举。\n在7月7日的参议院选举中，尼日利亚国民党赢得了参议院95个席位中的40席。统一党获得了26席。人民党获得了14席。救国党获得了7席。大尼日利亚人民党获得了8席。7月14日的众议院的选举，国民党也占优势，在总数为449个议席中，国民党得了180席。统一党得了105席,居第二位。人民党居第三位，得了73席。居第四位的是救国党，得了49席。居最后一位的是大尼日利亚人民党，获得了48席。最终，沙加里的尼日利亚国民党与阿齐克韦的尼日利亚人民党经过谈判在议会中达成了联盟，获得了多数席位。\n8月16日，尼日利亚举行全民总统大选的投票，共有1684万选民参加了选举。结果，国民党候选人沙加里获得568万张选票，占总数的33.8%，并在19个州中的12个州里得票率超过了25%，从而达到了宪法所规定的当选新总统的票数。10月1日，在尼日利亚庆祝独立和建国19周年的时候，奥巴桑乔军政府在首都拉各斯举行了规模盛大的“还政于民”政权交接仪式，尼日利亚第二共和国成立，沙加里宣誓就任总统。在非洲大陆军人政权盛行，军事政变不断的时候，尼日利亚还政于民的成功，民选的文官新总统的就职，在非洲产生了重大的影响，奥巴桑乔受到非洲和国际社会的高度赞誉。新政府感谢我们的帮助，同我们达成了一些合作协定。"
@@ -32,31 +25,29 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	event_def.title = TXT_TITLE
-	event_def.description = TXT_DESC
 	var data := world.数值表
 	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 2
 	var war_support := data[W.I_WAR_SUPPORT] if data.size() > W.I_WAR_SUPPORT else 0
 	var opt := event_def.options
 	if line >= 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line <= 2 and line >= 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line <= 3 and line >= 1 and not _modifier_active(world, 3) and war_support >= 600:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	var china := world.get_country_by_legacy_index(1)
 	if line <= 1 and _modifier_active(world, 6) and world.is_socialism(china, true):
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 	if line != 0:
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_enable(opt[4], TXT_OPT4_ALT)
 
@@ -147,11 +138,5 @@ func _leave_alliances(c: CountryData) -> void:
 	c.puppet_of = -1
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

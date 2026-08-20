@@ -4,16 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：无自动触发点——原版由 DiploButtonScript.cs:4656-4658（this_type 外交按钮）手动 number_event=619。
 ## 差异：based→有驻军基地；OilProd 已建模（ws.oil_prod），result1三路/2/3/4 各 +100；IsSocialism/IsAuthoritarianism→ws 谓词；name→chinese_name。
 
-const TXT_TITLE := "“邦戈兰”的终结？"
-const TXT_DESC := "与大多数亲法的非洲专制政权类似，加蓬的“独立”是在亲法独裁者，所谓的“国父”莱昂·姆巴的领导下实现的。姆巴政权同法国签订了大量协议，使得法国在加蓬的政治、经济、军事和文化中保留了大量的控制权，并维持了驻军。尽管该国采取的是民主共和制，但当政的姆巴不断压制诸如温和左翼的加蓬民主与社会联盟、激进左翼的加蓬民族团结党与加蓬人民行动运动以及工会和加蓬学生总协会等反对团体和异见者，对他们进行残酷迫害。这一切在加蓬引起了大量不满，最终使得该国于1964年二月发生了由民主派、民族主义者和左翼力量支持的反帝反殖政变，成功软禁姆巴并成立了革命委员会和临时政府，但法国很快反应过来，派出军队推翻了新政府，复辟了姆巴政权。在政变失败后，一方面，加蓬的左翼反对派成立了由热尔曼·姆巴、马克·姆巴·恩东和马克·萨吐尼恩·恩南·恩圭马等人领导的具有非洲社会主义和马克思主义色彩的加蓬民族革命运动，他们在阿尔及利亚、加纳和刚果（布）的支持下尝试进行武装斗争，以推翻卖国政权；另一方面，当局也积极向反对党施压，企图将所有政治力量集中在自己的控制下。1967年，莱昂·姆巴去世，副总统邦戈继任。邦戈掌权后，将执政党加蓬民主同盟改组为加蓬民主党，并成功颁布确立了加蓬民主党的一党专制地位的新宪法。与此同时，邦戈披上了温和的外衣，宣布进行“民族和解”，大赦反对派，呼吁流亡的反对派回国，包括加蓬民族革命运动在内的多个反对派都回国了。其中部分声望较大的或听从邦戈的，被授予了一些官位，但不听指挥的，邦戈也对他们采取了“特别措施”（不幸的是，热尔曼·姆巴因发表将要参加总统大选的言论，被邦戈请的白人雇佣兵杀害）。|在邦戈的治下，加蓬背靠石油资源和法国的扶助，创造了六十至七十年代经济增长的“黄金时代”，成为了法国在中非地区的“模范殖民地”。但到了八十年代，伴随着经济危机，加蓬的反对派和异见者再度活跃起来，1981年，反对党全国复兴运动在巴黎成立，并公开宣称为推翻邦戈总统的政权和实现“民主、全国团结和发展”而战。1982年，他们散发了一些传单，很快导致部分成员被捕而转入地下，1985年2月，全国复兴运动主席保罗·姆巴·阿巴索贝在巴黎宣布成立流亡政府。此外，流亡国外的反对派也存在如加蓬学生总协会这类激进左翼团体。随着制裁的引入和该国经济的不断恶化，反对派的活动已经越来越活跃，加蓬国内的反对情绪很快被点燃。学运、工运频发，邦戈政权经历执政以来前所未有的社会动荡的严峻考验。利伯维尔连续发生学生罢课、职员与工人罢工和示威游行，要求提高工资和进行民主改革。多个反对派政党开始成立——温和左翼的加蓬人民联盟、加蓬进步党，激进左翼的加蓬社会主义党和由加蓬学生总协会改组的加蓬社会主义联盟，他们已经开始快速吸收支持者并向建制渗透；与此同时，力量最强大的全国复兴运动也开始分裂为偏右的“伐木者派”和偏左的“原始派”；在加蓬民主党和军队内部，同情反对派和支持民主变革的成员也开始出现。|该国的大致情况已经为您介绍完毕，请您在以下几个方案中进行选择。"
-const TXT_OPT0 := "不必进一步行动，邦戈和加蓬民主党专制政权必将自取灭亡"
-const TXT_OPT1 := "让邦戈滚蛋就好……我们将在加蓬民主党政权内部寻找一批“代理人”"
 const TXT_OPT1_DIS := "我们没法找到这些人……"
-const TXT_OPT2 := "支持全国复兴运动“伐木者派”和建制内反对派串联起来，进行自由化"
 const TXT_OPT2_DIS := "我们不会找他们"
-const TXT_OPT3 := "与支持加蓬人民联盟的左翼军官一起，发动一场新的1964革命"
 const TXT_OPT3_DIS := "他们太左了！"
-const TXT_OPT4 := "在加蓬民族革命运动的旗帜下，团结左翼反对派，重启武装斗争"
 const TXT_OPT4_DIS := "他们没有足够力量"
 const TXT_R0_INTRO := "加蓬召开由广泛的政治团体参加的全国协商会议，讨论“国家民主化前途”。此时，全国已出现多个政党和组织，有多个组织组成反对派联合阵线在全国会议上同加蓬民主党斗争。反对派号召民众举行总罢工，对邦戈政权施加压力，政府机构运行陷入混乱状态。|"
 const TXT_R0_LEFT := "邦戈宣布实行多党制，成立过渡政府，吸收反对派人士入阁，但这一举动让法国觉得步子太小，随后，在法国的压力下，邦戈宣布辞职，进行大选。加蓬举行了全国立法选举和大选，在法国的支持下，左翼在议会中拿下了多数。全国复兴运动“原始派”、加蓬人民联盟、加蓬进步党和加蓬争取社会主义协会组成了联合政府，开始进行民主改革和经济改革，并建设福利制度。"
@@ -38,22 +31,22 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var army := d[W.I_ARMY] if d.size() > W.I_ARMY else 0
 	var gabon := world.get_country_by_legacy_index(116)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if budget + reserve >= 50 and agents >= 80:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line >= 3 and budget + reserve >= 50 and agents >= 80:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if line <= 2 and budget + reserve >= 100 and agents >= 100:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 	if line <= 1 and budget + reserve >= 150 and agents >= 150 and army >= 150 \
 			and gabon != null and gabon.有驻军基地:
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
 
@@ -158,17 +151,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event357.cs：载人计划的进一步发展。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "载人计划的进一步发展"
 
-const TXT_DESC := "不久前，中国第一位宇航员成功地乘坐本国设计的飞船发射升空。但很明显，大家都心知肚明，这样一艘飞船既没什么用，也没什么前景可言。因此，科学家们认为，应当开始发展一种更先进的、多座的苏联“联盟”型飞船。但我们的资源是有限的。"
 
 const TXT_OPT0 := "开始发展。"
 const TXT_OPT0_DIS := "没有这么做的资源。"
@@ -57,19 +55,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

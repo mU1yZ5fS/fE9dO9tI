@@ -10,14 +10,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - iron_and_blood 成就已接 Achievements（Set 编号见 execute 内注释）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
-const TXT_TITLE := "国父的逝世"
-const TXT_DESC := "在福布斯·伯纳姆理政期间，他一直是圭亚那政坛的强势人物与元老。虽然他同贾根合作，允许右翼自由主义反对派的存在，但他依然是整个圭亚那协作国首要的掌舵人。1985年8月6日，在进行了喉部手术之后，在古巴医生的护理下，圭亚那独立后的首位和首要领导人福布斯·伯纳姆突然去世。圭亚那就这样措手不及地从伯纳姆的时代过渡到一个新时期。人民全国大会党（PNC）能否顺利地将权力移交给伯纳姆的密友，同时也是接班人休伊·德斯蒙德·霍伊特手上？另一位候选人是长期以来的反对党人民进步党（PPP）的领导人切迪·贾根。贾根此前被英国谴责为“马列主义的同情者，苏联在南美施加影响的特洛伊木马”。异军突起的候选人是布林德利·本。在他的背后，毛主义的劳动人民先锋党（WPVP）、代表黑人利益的非裔独立非洲文化关系协会（ASCRIA）和代表印第安原住民利益的泛印第安人民革命协会（IPRAR）组成的劳动人民联盟（WPA）。但是，这一联合与右翼的反对派结盟，才有赢得大选的可能。"
-const TXT_OPT0 := "休伊·德斯蒙德·霍伊特，人民全国大会（右翼独裁主义）"
-const TXT_OPT1 := "切迪·贾根，人民进步党（国控社会主义）"
 const TXT_OPT1_B := "切迪·贾根，人民进步党（左倾保守主义）"
-const TXT_OPT2 := "布林德利·本，劳动人民联盟-解放者党-人民民主运动（新法西斯主义）"
 const TXT_OPT2_DIS := "本在国内的政治影响力不足"
-const TXT_OPT3 := "保持距离"
 const TXT_R7 := "在大选的不久之前，休伊·霍伊特和人民国民大会（PNC）的其他成员开始与反对党人民进步党（PPP）进行谈判尝试，试图达成一项统一的全国方案以解决国家问题。霍伊特宣布他愿意继续展开对话，并宣布在大选中禁止海外投票、代理投票和邮寄投票以作为改革的面子姿态。而反对党质疑政府选举舞弊，抵制1986年的地区一级选举。结果是，人大党赢得了地区议会的所有席位，展开了国家改革。恢复经济被证明是政府所面临的主要挑战，而霍伊特迈出的第一步是增加私营部门在国民经济中的比例：社会主义经济被放弃、发展市场经济与私营企业被作为国家的首要任务、价格管制取消、鼓励私营企业的措施纷纷出台。1988年，霍伊特政府取消了外国企业在圭亚那经营的所有障碍，宣告自给自足的基本国策最终废除。然而，现在谈论民主化还太早了——1990年，霍伊特宣布圭亚那进入国家紧急状态，推迟选举，并把大片赤道森林租让给外国公司。"
 const TXT_R1 := "选举的结果是出人意料的，在下野20余年之后，来自人民进步党（PPP）的切迪·贾根再次当选总统。然而正如风传的一样，人民全国大会党（PNC）通过选举舞弊在国民议会获得了22个席位，在地区议会获得10个席位。而民进党和联合力量仅获得21席与2席。在议会危机即将爆发的关头，休伊·霍伊特担心爆发民众骚乱，加入了人进党的执政联盟。作为妥协的成果，贾根成为了总统，并任命霍伊特为总理。面对经济危机，尤其是农作物签收与缺乏基础建设支持资金的情况，贾根起初试图向国际货币基金组织借款，但由于后者要求圭亚那实施私有化，贾根放弃了这一决定并转而接受社会主义诸国贷款。圭亚那的政治专制得到软化；开放向社会主义国家进口短缺品；东德、罗马尼亚、古巴的专家应邀来优化发展圭亚那的基础设施与医疗教育；圭亚那的专家也前往莫斯科和北京进修学习。解决圭亚那的社会经济问题有了暂时的可能性，但是经济增长陷入怠缓，而债务早晚需要偿付。"
 const TXT_R8 := "切迪·贾根的第二个任期伊始便面临着同上一任期末期完全相同的问题：经济发展的停止与对社会主义国家的债务。不同于西方对他的担忧，他将自己标榜为民主社会主义者而非马列主义者执掌圭亚那。出于担心丧失国家独立性、依赖于其他国家的考虑，贾根不再继续接受社会主义阵营的援助，转而向国际货币基金组织贷款，并接受后者的条件将公共部门缺乏效益的部门，尤其是农业企业私有化，并将私有化所得用于投资基础设施与农业机械的现代化，从而恢复了财政盈余，加快了蔗糖出口速度。与此同时，贾根大力支持工会运动：他通过了新法以保护、发展工会活动，并强制工会监督工人雇佣。圭亚那至此正式确立了建设“合作型市场经济”与“社会导向型国家”的发展方针。"
@@ -25,9 +19,6 @@ const TXT_R9 := "在巧妙地赢得了黑人、原住民、小企业主、工人
 const TXT_FRIEND := "新政府决心和我们做朋友。"
 const TXT_ENEMY := "新政府不想和我们做朋友。"
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -36,14 +27,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _set_next_election(c: CountryData, year: int, month: int, day: int) -> void:
@@ -222,11 +207,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c := world.get_country_by_legacy_index(77)
 	var opt := event_def.options
 	if c != null and c.sub_government != 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_enable(opt[1], TXT_OPT1_B)
 	if c != null and c.sub_government == 8:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 

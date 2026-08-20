@@ -5,14 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：influencePRC→ws.influence_prc；dev→development；Gosstroy/SubGosstroy→government/sub_government；
 ##   Torg→对华贸易、prosov→亲苏、proprc→亲中、Vyshi→亲美；puppetOf→puppet_of。
 
-const TXT_TITLE := "戈兰高地问题"
 
-const TXT_DESC := "1967年六·五战争——第三次中东战争期间，以色列侵占戈兰高地，叙利亚撤走了守军，大部分叙利亚居民也纷纷逃离戈兰高地，留居此地的居民大多是德鲁兹派穆斯林，并且大部分人拒绝加入以色列国籍而保留叙利亚国籍。1973年中东十月战争——第四次中东战争爆发，叙利亚军队攻占谢赫山及以色列的一些阵地，进攻库奈特拉城并占领了周围的一些村庄。1974年5月31日双方达成协议，以色列军队撤离戈兰高地东部的狭长地带，让出库奈特拉城。设置了1.2至3.6英里的缓冲地带，由联合国派部队进驻。之后，以色列在占领区内修建了数十个犹太人定居点。黎巴嫩战争之后，或许我们能利用我们的影响力，尝试组织谈判以解决这一问题？"
 
-const TXT_OPT0 := "主权归叙利亚，当地的居民地位一律平等，并组织由双方共同监督的自治区"
-const TXT_OPT1 := "戈兰高地是叙利亚的拥有合法主权的领土，犹太殖民者必须离开！"
-const TXT_OPT2 := "显然，叙利亚应该承认戈兰高地的正确归属"
-const TXT_OPT3 := "推迟谈判议程"
 
 const TXT_R0_OK := "根据我们的方案，以色列承认该地主权归属于叙利亚，由双方共同组织一个自治委员会管理当地的居民。双方发表声明，宣布当地的语言与民族均平等。联合国部队正在撤出该地。双方对这个方案都很满意。"
 const TXT_R0_FAIL := "双方拒绝我们解决戈兰高地问题的方案，并拒绝参与谈判。(需要任意除建立联邦的巴以谈判成功，中国影响力大于40；或中国/美国影响力大于50，以色列存在且没有变为法西斯主义，爆发了海湾战争且萨达姆失败)"
@@ -114,19 +108,10 @@ func _disable_blank(opt: EventOption) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(idx: int) -> bool:

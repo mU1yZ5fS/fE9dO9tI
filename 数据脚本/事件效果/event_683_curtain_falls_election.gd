@@ -7,22 +7,15 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：OAR→ws.oar；is_gkchp→get_flag("is_gkchp")；traits[0]→ws.leader.trait_personality；
 ##   isRIM→rim、isSocEU→soc_eu、Torg→对华贸易、cw→内战中；now_leader→current_leader。
 ## 注意：原版 option4 条件 data[8]+data[8]>=300 是双重预算加法的原作笔误，按字面移植（预算*2>=300）。
-const TXT_TITLE := "落幕的选举"
 const TXT_DESC_HEAD := "时代正巨变，即便是曾被视为不可动摇的建制派政治框架也开始动摇。北大西洋联盟与大西洋主义的崩溃只是开端，传统政客的外交失败与其引发的国内动荡已让美国人忍无可忍：这便为美国民粹主义运动崛起提供了空前便利。从洛杉矶骚乱到占领华尔街，乃至南方的暴动等运动层出不穷。各式边缘政治组织也得到了久违的支持——自70年代以来便持续萎靡的美国共产党甚至在短短数日迎来了堪比现存党员数的新成员申请函。也就在大规模群众集会的压力下，该国原总统不得不接受苦涩失败并最终退出政治舞台。美国即将召开特别大选，人们已踌躇满志与物色新任领导人。由于美国政治生态事实上走向碎片化，本次大选必然相当有趣，接下来，让我们瞧瞧候选人有哪些罢：|"
 const TXT_DESC_BUSH := "吸取先前的失败经验，建制派决心将美国老战鹰，前中情局长，罗纳德·里根的代言人乔治·布什推选上台，决心彻底扭转导致美国霸权沦落的怀柔主义，并以军备扩张与新自由主义两手振兴美国战争与对外扩张机器。"
 const TXT_DESC_DUKAKIS := "意识到新保守主义与传统鹰派外交已一败涂地，吸取先前的失败经验，建制派决心转向新政治明星，创造了“马萨诸塞奇迹”的希腊裔美国人迈克尔·杜卡基斯。期望以他的移民身份与治理奇迹重塑美国梦合法性。"
 const TXT_DESC_TAIL := "接下来则是主要反建制派阵营的情况：由于建制派节节败退，以自由意志党为代表的老牌第三党得以发展壮大。自由意志党甚至吸纳了曾作为共和党议员的罗纳德·欧内斯特·保罗，试图将小政府主义、美国宪政理想与地方分权政策杂交一致。回归国父时代的“美国属于美洲”；不过，靠着类似立场吃饭的可不只有它们：美国的亿万富翁们也已开始寻求将财力与草根撮合一致的法子，让自身的政治方案登堂入室。改革运动已物色罗斯·佩罗作为其头面人物、并得到了唐纳德·特朗普等媒体大亨支持，预计将在美国刮起蓝领民粹旋风。当然，传统边缘派在这一议程内也未缺席。得到新一轮反建制运动加码的美国共产党又拿出了信心，其党魁格斯·霍尔打算将新老左翼撮合的计划故事重提。社会主义圈子则看准了佛蒙特州的老牌独立人士，支持斯堪的纳维亚社会主义的伯尼·桑德斯，并开始谋划组建首个容纳美国进步派与社会改良主义者的共治政府。|美国社会的局势只会持续沸腾，现在是时候让我们下注了！"
-const TXT_OPT0 := "我们将支持建制派总统保障美国稳定！"
 const TXT_OPT0_DIS := "我们为什么要拉老对手一把？"
-const TXT_OPT1 := "我们将推进罗纳德·欧内斯特·保罗的新版新自由主义议程。"
 const TXT_OPT1_DIS := "没必要选择最坏的资本主义"
-const TXT_OPT2 := "我们将让罗斯·佩罗刮起人民资本主义旋风。"
 const TXT_OPT2_DIS := "支持民粹主义者毫无意义"
-const TXT_OPT3 := "我们将开创历史新篇，是时候选择伯尼·桑德斯了！"
 const TXT_OPT3_DIS := "苹果派社会主义，让下一个厄尔·白劳德上位？"
-const TXT_OPT4 := "我们没必要局限在上述选择内——为什么不直接培植一位中国代理人做总统呢？"
 const TXT_OPT4_DIS := "我们余力不足"
-const TXT_OPT5 := "静观其变"
 const TXT_CAND_AVAKIAN := "我们很快便联系上了老朋友，美国革命共产党领导人鲍勃·阿瓦基安。阿瓦基安借20世纪60年代的美国新左翼之风与言论自由运动快速崛起，并通过筹建湾区革命联盟等举措迅速成为了该国最著名的毛主义活动家。此后，他更是与黑豹党等激进革命组织发展了令人深刻的关系。我们相信如今正是让他同著名黑人活动家休伊·牛顿一齐登上台前，大显身手，给美国人民看看什么是真正社会主义的时候。\n"
 const TXT_CAND_NOVACK := "由于老牌托派组织社会主义工人党主要领导人杰克·巴恩斯、玛丽-爱丽丝·沃特斯等于20世纪80年代开始便逐步调转路线并疏远正统的托洛茨基主义立场。我们只能同那些与社工党的分道扬镳的托派组织（如社会主义行动与第四国际倾向）以及独立的民主社会主义圈子合作。将它们撮合起来可谓是一件难事，不过靠着人力密集型的方式，我们至少能让他们在选举期间发出革命社会主义者的声音。他们已将社会主义工人党内的老牌托派乔治·诺瓦克作为候选推上前台，并预备为该国带来社会革命。\n"
 const TXT_CAND_HALL := "我们只得转向历史悠久的美国共产党及其领导人格斯·霍尔。霍尔自50年代开始便领导该党，延续了其前任领导人尤金·丹尼斯的对苏绝对忠诚路线。他在意识形态上则基本延用30年代共产党领导人厄尔·白劳德的“苹果派共产主义”（即共产主义是20世纪美国主义的社会爱国主义修辞）。通过苏联大使馆与古巴的联系，霍尔很快便收到了我们的支持，并准备再次同黑人民权新星安吉拉·戴维斯一同备战总统。\n"
@@ -54,28 +47,28 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	var line := _res(W.I_POLITICAL_LINE)
 	var opt := event_def.options
 	if line > 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line == 4:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line > 1:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if line > 0 and line < 4:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 	var china := ws.get_country_by_legacy_index(1)
 	if (china == null or china.government != 3) and _res(W.I_BUDGET) * 2 >= 300 \
 			and _res(W.I_AGENTS) >= 20:
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
-	_enable(opt[5], TXT_OPT5)
+	_enable(opt[5], event_def.options[5].text)
 
 
 func execute(context: Dictionary) -> void:

@@ -89,9 +89,6 @@ func execute(context: Dictionary) -> void:
 	PoliticianSystem.sync_in_power_flags(ws)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 ## Event241.cs：从 0 号槽起步，找 power 最小且 traits[0]!=0 的槽。

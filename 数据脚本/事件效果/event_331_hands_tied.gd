@@ -2,13 +2,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event331.cs：“束手束脚”。触发：ReqEventForDLC02.cs:567-570 —— econ_system>12 且日期>=1984.10.27。
 
-const TXT_TITLE := "“束手束脚”"
 
-const TXT_DESC := "在中央委员会定期全体会议上，规范城市企业活动的问题被提了出来。据称，由于国家的不断干预，这些企业“束手束脚”，无法正常运作。但也许恰恰相反，他们效率低下的原因是他们太过自由了？群众也这么觉得，与之相对，他们要求最终将小资产阶级处理掉，因为小资产阶级拒绝充分履行自己的义务，但同时又常常侵犯雇工的权利。"
 
-const TXT_OPT0 := "什么都不做。"
-const TXT_OPT1 := "加强监管。"
-const TXT_OPT2 := "在未来不加干涉。"
 
 const TXT_R0 := "这个问题毫无意义。一切都按部就班地运转着，过火行为的发生是因为个别管理者的愚蠢。让我们转而处理更重要的问题吧。"
 const TXT_R1 := "私营企业主被判有罪，因为正是他们利用着自己的自由，拒绝为国家的利益工作。因此，有必要处理掉一批最失败的企业，并加强企业与国家间的融合。"
@@ -56,9 +51,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -66,14 +58,8 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(index: int) -> bool:

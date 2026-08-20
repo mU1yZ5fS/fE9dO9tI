@@ -6,21 +6,13 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：doctr[13] 显示文案表建模说明，跳过并留原文；结果后的 old_modify_desc[15] 整段为
 ##   display-only 文案（按 r681/r682/r53 + 科技 3/6/7 重建），按项目惯例跳过，仅留溯源。
 
-const TXT_TITLE := "我实在是个乡下人……"
-const TXT_DESC := "随着我们事实上摒弃了依照毛主义逻辑发展发展乡村的旧有路线，现在，我们再次回到了对中国农村前途探讨的老生常谈上。不过，也没必要重新发明轮子。实际上，近代已有无数哲人开出了相应的药方。相当数量的方案更是在民国时期摊开的“乡村建设运动”内得以施行。“乡村建设派”及其领导人梁漱溟便是其中的弄潮，后者更是以最早对毛派农业政策发难而闻名于异见者群体：梁漱溟及其同路人对中国社会持伦理本位的态度，并将中国农村问题概括为重建文化秩序，形成“中式现代性”的改良方案：如果选择这一立场，那么我们将在事实上站在新儒家方，且对奠定现代中国基础的“新文化运动”持一定程度上的退行态度——这会在意识形态层面造成困扰；与之相对的替代则是同时代的杜威主义宠儿晏阳初，试图综合基督教教学、实业培训与平民教育方案改造农村的另一位近代知识分子。晏阳初自出走大陆后便背靠美国，在第三世界政权内推广其组织方案，由此积攒了相当经验与名气。通过他的联系，我们自然可以邀请太平洋对岸的朋友加入到描绘我国农村改革的蓝图当中，并为更大规模的经济改革与开放政策布局。当然，我们也没必要给这些失败者以第二次机会。最简单的方式当属摸着成功人士过河：韩国的新村运动已充分展示了其在培训农村劳动力，建立基层社会控制与促进经济增长方面的效益，展示了背靠国家资本主义制度下农村发展的可能前景——前提是我们仍有如此入局的能力。最后则是兼具怀旧情结与变革愿望的“代表人民的经济”，其思路基本上可分为“重提土地改革旧事”与“恢复真正的社会主义”两条路径：内涵也已写在脸上。如今所要做的便是在诸改革方案内选择其一，并由此确定未来农业的发展方向。"
-const TXT_OPT0 := "梁漱溟的仁政最适用乡土中国"
 const TXT_OPT0_DIS_A := "梁漱溟？！毛主席曾亲自批判过他！"
 const TXT_OPT0_DIS_B := "孔家余孽不准通过！"
-const TXT_OPT1 := "晏阳初的国民教育之路是治疗中国农村愚昧病的正途！"
 const TXT_OPT1_DIS_A := "二号吴廷琰不准通过！"
 const TXT_OPT1_DIS_B := "可晏阳初的东家不会支持我们的！"
-const TXT_OPT2 := "国家强制力担保，管制经济护航，农村发展不愁"
 const TXT_OPT2_DIS_A := "官僚资本主义之路是最恶劣的资本主义，他们怎么可能懂建设农村？"
 const TXT_OPT2_DIS_B := "我们余力不足"
-const TXT_OPT3 := "适应新时代的耕者有其田最有助于我国农民！"
-const TXT_OPT4 := "是时候回归真正的社会主义了！"
 const TXT_OPT4_DIS := "我们没有必要重走回头路"
-const TXT_OPT5 := "如果说农村问题不过是农业问题的话，那还要多想什么？"
 const TXT_OPT5_DIS_A := "当新时代种植园？！怎能不以为耻，反以为荣！"
 const TXT_OPT5_DIS_B := "我们怎能忘本，抛弃国内农民这条根！"
 const TXT_R0_FMT := "由于梁漱溟早在建国初便担任政协要职，且长期得到中央主要领导人的特别关照，将这位老人请出山并非难事。可从某种意义上说，选择他也意味着延续了毛时代的老一套问题：毕竟，毛泽东对农业的误判也正是从他远离农村生产实践开始。我们也没法奢求自50年代中后期便同乡村建设靠边的梁漱溟老先生能够免俗……总之，出于避免战略误判与建设和谐农村社会的共同需要，新政策将在国家新设立的“农民同志会”（其组织则遵循我党领导下的三三制分配原则：三分之一归知识分子、三分之一归乡村干部、以及三分之一归政治团体）的主持下开展，其改革模板则是混合30年代的村治实践与曾蒙羞的前任领导人刘少奇路线的综合：即经济上建立以农为本的国民经济发展模式，以最低支持价格取代义务征购与农业税，鼓励发展农村副业，扩大自留地并推进土地流转，实现灵活经营；在政治上则放开组织村民委员会作为“农民同志会”的基层组织与协助政府履职的自治单位，且在完全翻新各项基础设施的同时对教育体系与文化设施进行全面洗牌：全国出版物与审查红线将根据梁漱溟先生操刀，{0}{1}同志亲自过问的“新心学”思维进行修订——我们将由此开启“唱白打黑”新征程并彻底告别一切性质的革命，并要求社会各界为建立“和谐社会”、“大同社会”的目标自觉效力。当然，这只会让激进改革者不满。若计划照常进行，预计我们将在未来的十年内培育出一批新乡贤、模范村与遵奉现代儒学的有识一代，实现农业的自给自足与增产增效，并由此告别曾困扰我国农村的系列问题。而海外分析人士已将我们的新方针冠以“儒家新经济政策”之名，并将其同“国家法团主义”相提并论……"
@@ -45,30 +37,30 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		and ws.empires[EmpireData.USA] != null else 0
 	var opt := event_def.options
 	if _mod_active(25) and line > 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	elif line <= 2:
 		_disable(opt[0], TXT_OPT0_DIS_A)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS_B)
 	if line == 4 and usa_rel > 600 and econ > 11:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif line < 4:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
 	if line > 0 and (econ == 12 or econ == 13):
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	elif line == 0:
 		_disable(opt[2], TXT_OPT2_DIS_A)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_B)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 	if ws.is_socialism(china, true) and line <= 2:
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
 	if econ >= 14 and line == 4 and (ws.is_authoritarian(china) or (china != null and china.government == 3)):
-		_enable(opt[5], TXT_OPT5)
+		_enable(opt[5], event_def.options[5].text)
 	elif econ < 14:
 		_disable(opt[5], TXT_OPT5_DIS_A)
 	else:

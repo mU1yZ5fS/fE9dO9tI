@@ -6,14 +6,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：politic.traits[0]→trait_personality；原版随后改写 old_modify_desc[2] 的
 ##   大段修正描述为显示层文案，按项目约定跳过（display-only）。
 
-const TXT_TITLE := "高考？高考！"
-const TXT_DESC := "自党中央的一纸号令以来，我国采取了“工农兵大学生”制度。即在接受正常理工科教育的同时，参与生产实践活动。同样的也有工人，农民，解放军士兵接受高等教育。和从前的应试考试不同，这套政策开创性的将群众引入了招生中，不以做题而以实践来招生。\n但同时，党内也有一部分人认为这一套应当慢慢的结束，转而恢复老一套的高等教育考试体系。他们的论点是过去的生源质量欠佳，过于强调根正苗红反而扼杀了真正有才华的学生。主席同志，我们是否要恢复高考？"
-const TXT_OPT0 := "工农兵大学生是过去的产物，早该修修了！"
 const TXT_OPT0_DIS := "恢复高考？你想和毛主席的七·二一指示对着干吗？"
-const TXT_OPT1 := "引入预科制度"
 const TXT_OPT1_DIS_A := "现在的制度有什么问题？"
 const TXT_OPT1_DIS_B := "这还不如不改！"
-const TXT_OPT2 := "我们拒绝修正，但我们接受完善"
 const TXT_OPT2_DIS := "总得来点变化，对吧？"
 const TXT_R0 := "中共中央和教育部颁布了一项通报，宣布将恢复自66年终止的全国高校统一招生考试。1977年10月21日，人民日报头版头条《高等学校招生进行重大改革》，宣布中断了十余年的高考将恢复考试，这一消息迅速传遍了全国各地。\n1977年冬天，举行了恢复高考后的第一次考试，考试分为文史与理工两科，文史类科目是思想政治、语文、数学、史地（历史和地理），理工类科目是政治、语文、数学、理化（物理和化学），报考外语专业的要加试外语。\n全国各地的考生对此投来了热切的目光，这是一个时代的终结，也是一个时代的开始。"
 const TXT_R1 := "中共中央和教育局决定引入预科制度。这将作为工农兵大学生的替代品，在每个学生接受了“工人农民和解放军的再教育”之后。他们将继续接受高等院校的教育（当然他们也可以选择结束教育，并得到专科学历）。这给了一些愿意为祖国做贡献的青年人接受进一步教育的机会，同时这也顾及到了一些高级知识份子的脸面。\n总体来说，这一方案刚刚好，反对的人不多，赞同的人不少。"
@@ -31,17 +26,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
 	var opt := event_def.options
 	if not mod3:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line56 >= 1 and line56 < 3 and not mod3:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif mod3 or line56 == 0:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
 	if line56 == 0 or mod3:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 
@@ -88,25 +83,16 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

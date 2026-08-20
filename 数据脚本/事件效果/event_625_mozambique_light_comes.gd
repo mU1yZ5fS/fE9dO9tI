@@ -5,10 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##  parts/level_of_unstab ExprNode 不支持 → trigger_script。
 ## 差异：描述与结果按 level_of_instability 分支；TextOfEvents 的 parts[0]=false 在 prepare 中复刻。
 
-const TXT_TITLE := "莫桑比克，光明到来？"
 const TXT_DESC_A := "随着莫桑比克全国抵抗运动的最后一个据点被拔除，莫桑比克解放阵线党终于控制了全国。抵运的残军狼狈撤往了南非。"
 const TXT_DESC_B := "随着莫桑比克解放阵线党的最后一个据点被拔除，莫桑比克抵抗运动终于控制了全国。解阵的残军撤往了坦桑尼亚和赞比亚。"
-const TXT_OPT0 := "接下来会怎么发展？"
 const TXT_R0_A := "莫解阵在莫桑比克首都马普托举行了盛大的阅兵仪式，庆祝着属于莫桑比克人民的胜利。在内战中犯下重大罪行的抵运成员被公审处决。为了报复南非和支持南部的同志，莫桑比克加大了对阿扎尼亚泛非主义大会、非洲人国民大会和南非共产党的支持。没有了内部的大敌，莫解阵终于能够更加专注于人民民主革命和国家建设，并借鉴"
 const TXT_R0_MID := "中国和"
 const TXT_R0_B := "苏联的经验开展工业化和进行反部落主义的文化革命。"
@@ -84,17 +82,8 @@ func evaluate(world: WorldState) -> bool:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

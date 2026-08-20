@@ -4,18 +4,12 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1399-1401 —— c86.Gosstroy==3 + resultOfEvents[424]==1 + DATE_AFTER。
 ## 差异：spec→special；isNATO→标签 nato；Vyshi→亲美。
 
-const TXT_TITLE := "西班牙加入北约"
-const TXT_DESC := "军事政变的失败，反而让政治家坚定了决心：北约组织的部队，也许比他们本国深受长枪党思想与等级制影响的部队更加可靠。西班牙领导人们开始考虑改变他们的外交政策，并寻求让西班牙加入北大西洋公约组织。倘若说在苏亚雷斯时期，前首相还怀疑如此做的可行性，并相信中立才最有利于西班牙的发展。而到了他的继承人卡尔沃·索特洛这里，外交政策便发生了显著转变。1982年5月30日，西班牙被批准加入北约。"
-const TXT_OPT0 := "密切关注......"
 const TXT_RESULT := "然而，卡尔沃·索特洛与民主中间派联盟的支持率仍在下降。而在1979年选择抛弃马克思主义，并参与民主选举游戏的西班牙工人社会党则有望赢得接下来举行的选举。也许先前对北约极度谨慎的社会党人，将重新考虑西班牙的外交政策？"
 const TXT_IDX_1431 := "西班牙加入北约"
 const TXT_IDX_1432 := "军事政变的失败，反而让政治家坚定了决心：北约组织的部队，也许比他们本国深受长枪党思想与等级制影响的部队更加可靠。西班牙领导人们开始考虑改变他们的外交政策，并寻求让西班牙加入北大西洋公约组织。倘若说在苏亚雷斯时期，前首相还怀疑如此做的可行性，并相信中立才最有利于西班牙的发展。而到了他的继承人卡尔沃·索特洛这里，外交政策便发生了显著转变。1982年5月30日，西班牙被批准加入北约。"
 const TXT_IDX_1433 := "密切关注......"
 const TXT_IDX_1434 := "然而，卡尔沃·索特洛与民主中间派联盟的支持率仍在下降。而在1979年选择抛弃马克思主义，并参与民主选举游戏的西班牙工人社会党则有望赢得接下来举行的选举。也许先前对北约极度谨慎的社会党人，将重新考虑西班牙的外交政策？"
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _raw(index: int) -> int:
@@ -24,14 +18,8 @@ func _raw(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _fmt(s: String, args: Array) -> String:

@@ -3,13 +3,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event127.cs：巴西复兴（5 选项）。
 ## 触发：原版未发现自动触发条件（trigger_conditions 为空），疑由未逆向的选举/地图系统手动触发。
 
-const TXT_TITLE := "巴西复兴"
-const TXT_DESC := "目前，巴西原有的两党局面已经不复存在。民主运动党（PMDB）和国家社会党（PDS）分别在巴民运（MDB）和国家革新联盟（ARENA）的基础上建立起来。在1980至1981年期间，军方极反动派别从事恐怖主义活动，制造了一系列爆炸案与绑架案，并将袭击归咎于左翼激进分子，但这样的嫁祸未能让民众信服（毕竟左翼地下组织早在1974年便消亡殆尽）。在本次1985年大选的数月前，名为“直接行动”的平民运动席卷了全国，要求在大选中实现直接选举，但这一诉求遭到了议会的否决。在这一形势下，在野势力联合起来支持民主运动党候选人坦克雷多·内维斯，他提出了最终实现巴西政治制度与经济体制自由化的方针；相对应的是，议会中的多数党民主社会党则陷入分裂，在保罗·马卢夫与马里奥·安德里亚扎两位候选人的提名上摇摆不定。安德利亚扎在推动基础设施、航运、住宅综合体和环境工程的高质量快速发展上表现出色；而马卢夫是一位相对保守的候选人，他在其职业生涯中主要处于经济与金融岗位，负责在金融与税务系统反对官僚主义、减少基础教育学校普遍存在的歧视、创设市民休闲设施，以及改善脏乱的人居环境。如果马卢夫获胜，则民主化将稳步推进；而如果安德利亚扎当选，工作重心将放在经济上。与此同时，在这样不稳与撕裂的政局中，如果左翼政党能够联合起来组成一个联盟，那么他们也会有可乘之机......"
-const TXT_OPT0 := "坦克雷多·内维斯，巴西民主运动党（右翼独裁主义）"
-const TXT_OPT1 := "保罗·马卢夫，民主社会党（左倾保守主义）"
-const TXT_OPT2 := "马里奥·安德里亚扎，民主社会党（自由主义）"
-const TXT_OPT3 := "莱昂内尔·布里佐拉，民主工党-工党-劳工党（民主社会主义）"
-const TXT_OPT4 := "保持距离"
 const TXT_PROPRC_YES := "新政府决心和我们做朋友。"
 const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_R7 := "坦克雷多·内韦斯上任后不久便不幸逝世，并由副总统若泽·萨尔内接任总统，他是前巴民运成员，后来另行组党。在他的改革下，巴西最终宣告重回民主，审查制度得以完全废除，总统直选制得以恢复，新闻界、工会获得了言论自由，制宪会议得以召开。在诸多改革事项中值得一提的是，他以商业基础而非招标的方式出让了上千份公共广播电视的特许权，这标志着广电媒体的所有权来到私人垄断者手中，实现了“私有化”。在外交上，萨尔内重申了独立自主外交政策的理念，与众多拉美国家展开对话，其中也包括在1964年政变后断交的社会主义古巴。此外，萨尔内也从事农业改革、推动环境工程和削减官僚编制。然而他任内的诸项改革都未能阻止他任内猖獗的通货膨胀，这成为其执政期间最危险的危机。"
@@ -33,19 +26,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _leave_alliances(c: CountryData) -> void:

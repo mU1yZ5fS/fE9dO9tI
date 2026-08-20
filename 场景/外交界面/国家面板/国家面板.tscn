@@ -1,0 +1,206 @@
+[gd_scene format=3 uid="uid://b4w1g2tqn4wli"]
+
+[ext_resource type="Script" uid="uid://bb7ia3deyeqrp" path="res://场景/外交界面/国家面板.gd" id="45_pb6ma"]
+[ext_resource type="Texture2D" uid="uid://b2ncfaagxja6h" path="res://资产/UI/外交/国家面板背景.png" id="46_ve70n"]
+[ext_resource type="Texture2D" uid="uid://dicmvnbxyaxxt" path="res://资产/UI/外交/地图模式背景.png" id="8_qy4bt"]
+[ext_resource type="Texture2D" uid="uid://p74lr5feanj4" path="res://资产/UI/外交/国家面板关闭.png" id="47_vqwm3"]
+[ext_resource type="Texture2D" uid="uid://b11sk2plk2cbu" path="res://资产/UI/外交/国家面板关闭覆盖.png" id="48_ihuqk"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="17_v5qqf"]
+[ext_resource type="Texture2D" uid="uid://bl55m2ehcmblk" path="res://资产/UI/外交/国家属性背景.png" id="49_cqjq1"]
+[ext_resource type="Texture2D" uid="uid://bakvf4wc3wgro" path="res://资产/UI/外交/政府类型_苏式社会主义.png" id="50_leers"]
+[ext_resource type="Texture2D" uid="uid://d3xenfo6h4ho0" path="res://资产/UI/外交/军事联盟_华沙条约.png" id="51_32v34"]
+[ext_resource type="Texture2D" uid="uid://60edbyccjft1" path="res://资产/UI/外交/经济联盟_经互会.png" id="52_vkq10"]
+[ext_resource type="Texture2D" uid="uid://cchdlv7ltbfsg" path="res://资产/UI/外交/在某国影响下_苏联.png" id="53_leers"]
+[ext_resource type="Texture2D" uid="uid://eprjrxt2krfc" path="res://资产/UI/外交/国家互动按钮背景.png" id="54_32v34"]
+
+[node name="国家面板" type="CanvasLayer"]
+script = ExtResource("45_pb6ma")
+
+
+[node name="背景" type="TextureRect" parent="." unique_id=2038508092]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -248.0
+offset_right = 1640.0
+offset_bottom = 6.0
+grow_vertical = 0
+texture = ExtResource("46_ve70n")
+
+[node name="关闭背景" type="TextureRect" parent="." unique_id=1533306585]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -334.0
+offset_right = 279.0
+offset_bottom = -47.0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_qy4bt")
+
+[node name="关闭" type="TextureButton" parent="." unique_id=1550883285]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -332.0
+offset_right = 628.0
+offset_bottom = 294.0
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("47_vqwm3")
+texture_hover = ExtResource("48_ihuqk")
+
+[node name="当前选中国家名称" type="Label" parent="." unique_id=1973141611]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -240.0
+offset_right = 344.0
+offset_bottom = -203.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 28
+text = "苏联"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="国家属性背景" type="TextureRect" parent="." unique_id=1052982624]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -196.0
+offset_right = 349.0
+offset_bottom = -145.0
+texture = ExtResource("49_cqjq1")
+
+[node name="政府类型" type="TextureRect" parent="." unique_id=642610366]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 15.999999
+offset_top = -192.0
+offset_right = 136.0
+offset_bottom = -72.0
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("50_leers")
+
+[node name="军事联盟" type="TextureRect" parent="." unique_id=1226814457]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 63.000008
+offset_top = -192.0
+offset_right = 183.0
+offset_bottom = -72.0
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("51_32v34")
+
+[node name="经济联盟" type="TextureRect" parent="." unique_id=11946238]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 109.999985
+offset_top = -192.0
+offset_right = 229.99998
+offset_bottom = -72.0
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("52_vkq10")
+
+[node name="贸易伙伴" type="TextureRect" parent="." unique_id=281754020]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 156.99998
+offset_top = -192.0
+offset_right = 277.0
+offset_bottom = -72.0
+scale = Vector2(0.34, 0.34)
+
+[node name="在某国影响下" type="TextureRect" parent="." unique_id=441754020]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 203.99998
+offset_top = -192.0
+offset_right = 323.99997
+offset_bottom = -72.0
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("53_leers")
+
+[node name="互动按钮" type="Button" parent="." unique_id=2006736957]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = -136.0
+offset_right = 184.0
+offset_bottom = -77.0
+scale = Vector2(0.87, 0.87)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("54_32v34")
+flat = true
+icon_alignment = 1
+
+[node name="互动按钮2" type="Button" parent="." unique_id=1053465208]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 160.99998
+offset_top = -136.0
+offset_right = 328.0
+offset_bottom = -77.0
+scale = Vector2(0.87, 0.87)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("54_32v34")
+flat = true
+icon_alignment = 1
+
+[node name="互动按钮3" type="Button" parent="." unique_id=792336673]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = -72.0
+offset_right = 184.00002
+offset_bottom = -13.0
+scale = Vector2(0.87, 0.87)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("54_32v34")
+flat = true
+icon_alignment = 1
+
+[node name="互动按钮4" type="Button" parent="." unique_id=277974183]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 160.99998
+offset_top = -72.0
+offset_right = 328.0
+offset_bottom = -13.0
+scale = Vector2(0.87, 0.87)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("54_32v34")
+flat = true
+icon_alignment = 1
+
+[node name="执行当前互动按钮所需条件及检查" type="Label" parent="." unique_id=1212368593]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 352.0
+offset_top = -240.0
+offset_right = 1632.0
+offset_bottom = -8.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 25
+

@@ -9,7 +9,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 原版 TextOfEvents 会改写 new_events_text[958]，端口只在 prepare 动态处理；
 ##  - 原版 modifies[56].active=false 与 modifies[42-45] 覆盖逐项移植。
 
-const TXT_TITLE := "法国选举-第二幕"
 const TXT_DESC_FMT := "在法国的首轮总统选举结束后，两位竞选人得以进入次轮选举。其中{1}以{3}%的得票率领先对手{2}。然而，他们当中的每个人都有各种各样的黑材料。如果能够灵活运用它们，我们足以在第二轮选举内起到四两拨千斤的效果。"
 const TXT_OPT0_FMT := "我们得教教法国选民该支持谁......开闸，放吉斯卡尔·德斯坦的黑材料！（需要10.0百万{0}与5.0点{1}）"
 const TXT_OPT1_FMT := "我们得教教法国选民该支持谁......开闸，放密特朗的黑材料！（需要需要10.0百万{0}与5.0点{1}）"
@@ -444,9 +443,6 @@ func _mod_active(idx: int) -> bool:
 	return ws.modifiers.size() > idx and ws.modifiers[idx] != null and ws.modifiers[idx].is_active
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -455,9 +451,6 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

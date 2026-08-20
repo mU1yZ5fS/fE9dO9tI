@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event368.cs：一千零一夜。
 ## 触发：见 evaluate()（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "一千零一夜"
 
-const TXT_DESC := "在经济危机日益严重的背景下，叙利亚的政治危机也因现政府的非民主与宗主主义性质而加剧。\n冲突的主角分别是现任总统哈菲兹·阿萨德与他的兄弟里法特·阿萨德，他们均是通过1970年政变上台的政治强人。在物价高企的十年执政期间，尽管该国人民的生活水平得到了普遍提升。但阿萨德政府未能实现叙利亚的现代化。在20世纪80年代初，粮食供应与走私猖獗两大问题，进一步导致该国的局势恶化。\n此外，在执政的多年间。哈菲兹·阿萨德与军队的冲突一直都在酝酿。而讽刺的是，军队恰恰是他的兄弟：里法特·阿萨德的山头。后者在军中占据优势，其领导下的“国防连”拥有5万名训练精良的士兵。我们的情报指出，里法特·阿萨德不满于叙利亚在两伊战争与黎巴嫩战争内所持的政治立场。毕竟，他与沙特阿拉伯存在些许联系，并支持实行更亲西的外交政策。他同样积极支持那些呼吁扩大国内“自由化”政策脚步的企业家与商人，以此争取更广泛的公众支持。\n不论如何，这将是我们把叙利亚与中东从苏联手中解放的好机会。此外，根据多方消息指出，哈菲兹·阿萨德与已经生病，该国可能会出现严重的继承危机。"
 
 const TXT_OPT0 := "支持哈菲兹·阿萨德，并向叙利亚输送援助（需要10.0百万预算与5.0点特工网络）"
 const TXT_OPT0_DIS := "中国的国际影响力应高于25......"
@@ -159,19 +157,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

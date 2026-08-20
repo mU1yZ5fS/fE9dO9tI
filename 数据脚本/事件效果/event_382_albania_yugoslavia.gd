@@ -4,12 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录检索 this_num_event/Reset/event_done/resultOfEvents/StartEvent
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 
-const TXT_TITLE := "“突破行动”"
-const TXT_DESC := "让我们把时间拨回到1977年11月，当时，阿尔巴尼亚内务部长卡德里·哈兹比乌向该国领导层发送了一份报告，就解决阿尔巴尼亚与南斯拉夫间的领土冲突问题给出了一份可能方案。他建议该国高筑墙广积粮，等到南斯拉夫总统铁托死后，等到对南斯拉夫社会主义联邦共和国的军事进攻计划大功告成后再行动。1979年1月至3月期间，阿尔巴尼亚举行了代号为“比扎”和“城堡”的军事演习，证明了阿尔巴尼亚人民军还没有做好与南斯拉夫人民军正面对抗的准备。\n然而，现在南斯拉夫已经没有铁托了，而政府军同科索沃分离主义者的对抗仍在持续。因此，阿尔巴尼亚领导层认为，在此时对南斯拉夫进行军事干预并捅一刀的成功率非常高。我们还不清楚北约对此将持何种态度，但根据从华约中非官方渠道流出的消息来看，倘若军事冲突仅限于有限范围内。东方将不考虑对其进行干预。\n根据“突破”行动的计划来看，22万阿尔巴尼亚人民军将开赴南斯拉夫。其中65%的兵力将被部署在科索沃，35%的兵力则被安置在马其顿与黑山的阿尔巴尼亚族社区。事实上，这一行动是阿尔巴尼亚的孤注一掷，包括其压箱仓的储备也将被压入赌局。意味着行动将变成场阿尔巴尼亚绝不能输掉的全面战争。毕竟，战败不仅意味着政权的崩溃，同时还意味着主权的沦亡。"
-const TXT_OPT0 := "保证为阿尔巴尼亚的行动提供后勤支持（需要20.0百万{0}与20.0点{1}）"
-const TXT_OPT1 := "劝阻阿尔巴尼亚方放弃军事冒险（需要3.0百万{0}与3.0点{1}）"
-const TXT_OPT2 := "看起来我们的巴尔干伙伴们需要“团结一致向前看”，对他们施压。（需要15.0百万{0}与30.0点{1}）"
-const TXT_OPT3 := "让他们自行其是"
 const TXT_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
 const TXT_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
 const TXT_DIS_INFLUENCE := "中国的国际影响力应高于{0}......"
@@ -39,7 +33,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var usa := world.get_country_by_legacy_index(51)
 	var opt := event_def.options
 	if world.influence_prc >= 300 and _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 200 and _d(W.I_AGENTS) >= 200:
-		_enable(opt[0], TXT_OPT0.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[0], event_def.options[0].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif _d(W.I_BUDGET) + _d(W.I_RESERVE) < 200:
 		_disable(opt[0], TXT_DIS_BUDGET.format([20]))
 	elif _d(W.I_AGENTS) < 200:
@@ -47,7 +41,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[0], TXT_DIS_INFLUENCE.format([30]))
 	if albania != null and albania.has_tag("亲中") and _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 30 and _d(W.I_AGENTS) >= 30:
-		_enable(opt[1], TXT_OPT1.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[1], event_def.options[1].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif _d(W.I_BUDGET) + _d(W.I_RESERVE) < 30:
 		_disable(opt[1], TXT_DIS_BUDGET.format([3]))
 	elif _d(W.I_AGENTS) < 30:
@@ -55,7 +49,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[1], TXT_DIS_ALBANIA)
 	if world.influence_prc >= 300 and _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 150 and _d(W.I_AGENTS) >= 300 			and china != null and china.has_tag("econ") 			and (world.get_flag("relres") or (usa != null and usa.has_tag("对华贸易"))) 			and albania != null and albania.has_tag("亲中"):
-		_enable(opt[2], TXT_OPT2.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[2], event_def.options[2].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif china == null or not china.has_tag("econ"):
 		_disable(opt[2], TXT_DIS_ECON)
 	elif world.influence_prc < 300:
@@ -66,7 +60,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[2], TXT_DIS_AGENTS.format([30]))
 	else:
 		_disable(opt[2], TXT_DIS_COND)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -135,9 +129,6 @@ func _start_war_382(infl1: int, infl2: int, usa_side: int, ussr_side: int, tick:
 		ws.wars[18].fortnight_max = tick
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -146,14 +137,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

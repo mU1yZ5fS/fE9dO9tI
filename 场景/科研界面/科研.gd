@@ -146,9 +146,13 @@ func _ready() -> void:
 	# 将所有 Control 节点设为鼠标穿透，避免遮挡按钮点击
 	_make_mouse_transparent(self)
 
-	# 为每个科技按钮绑定点击回调，将科技索引作为参数传入
+	# 为每个科技条目绑定点击回调，将科技索引作为参数传入
+	# （2026-08 条目已组件化：科技名 = 科技条目.tscn 实例根，按钮/图标/进度/年份为其子节点）
 	for i in TECH_UI_COUNT:
-		var btn := find_child(TECH_NAMES[i], true, false) as TextureButton
+		var entry := find_child(TECH_NAMES[i], true, false) as Control
+		if entry == null:
+			continue
+		var btn := entry.get_node_or_null("按钮") as TextureButton
 		if btn:
 			btn.mouse_filter = Control.MOUSE_FILTER_STOP  # 按钮自身保留鼠标事件
 			btn.pressed.connect(_on_tech_pressed.bind(i))
@@ -190,9 +194,12 @@ func _refresh() -> void:
 
 	for i in TECH_UI_COUNT:
 		var tech_name := TECH_NAMES[i]
+		var entry := _find(tech_name) as Control
+		if entry == null:
+			continue
 
 		# --- 进度条：显示剩余研究时间 ---
-		var bar := _find(tech_name + "_科研进度") as ProgressBar
+		var bar := entry.get_node_or_null("科研进度") as ProgressBar
 		if bar:
 			if ts.in_progress[i]:
 				# 正在研究：显示剩余时间（总时间 - 已用时间）
@@ -213,7 +220,7 @@ func _refresh() -> void:
 
 		# --- 状态图标：原版 Repaint() 只按“前置依赖”判定（Science_Script.cs:53-61），
 		#     不检查年份/预算/科研点；超前年份会在悬停提示里显示惩罚，而不是红叉。
-		var icon := _find(tech_name + "_是否可科研状态") as TextureRect
+		var icon := entry.get_node_or_null("是否可科研状态") as TextureRect
 		if icon:
 			if ts.unlocked[i]:
 				icon.visible = false             # 已完成，不显示图标
@@ -226,7 +233,7 @@ func _refresh() -> void:
 					icon.texture = _tex_no       # 前置未完成
 
 		# --- 年份标签：显示解锁年份或当前研究状态 ---
-		var lbl := _find(tech_name + "_解锁年份") as Label
+		var lbl := entry.get_node_or_null("解锁年份") as Label
 		if lbl:
 			# 年份/研究中/已完成统一水平居中，配合科研.tscn 中 130 宽的年份标签。
 			lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -348,14 +355,12 @@ func _on_tech_pressed(tech_index: int) -> void:
 		d[W.I_SCIENCE] = 0            # 科研点全部消耗
 		d[W.I_BUDGET] -= money_cost   # 扣除预算
 		w.sync_economy()              # 直接写数值表不会置 dirty，强制同步显示视图
-		音频总管.play_button_click_sound()
 	_refresh()
 
 
 ## "返回"按钮：切换回外交界面
 func _on_返回外交_pressed() -> void:
 	get_tree().change_scene_to_file("uid://vq6jexkk5tru")
-	音频总管.play_button_click_sound()
 
 
 ## 每10帧刷新一次UI，避免每帧都遍历34项科技的开销

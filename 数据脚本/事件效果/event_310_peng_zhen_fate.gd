@@ -4,10 +4,6 @@
 ##  因此先 kill 再写槽位字段以对齐；文本来自 Events_text_en 索引 98-103。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "彭真的命运"
-const TXT_DESC := "在下一次党的会议上，关于彭真的问题浮出水面：他曾是毛的支持者，在大跃进失败后便背弃了他，转而批评毛主义，因此他被打为走资派并被下放。一些人仍然视他为自由派修正主义者和中国的敌人。但他并没有犯什么弥天大罪，哪怕他正和可疑的人合作，也许还是应该让这个老党员自个待着，反正他也活不了多久了......"
-const TXT_OPT0 := "平反彭真"
-const TXT_OPT1 := "一劳永逸地将其处理掉"
 const TXT_R0 := "党认为对彭真的指控太过牵强，毫无根据。平反期间，他被任命为第五届全国人民代表大会立法工作委员会代理主任。"
 const TXT_R1 := "事实证明，指责其为自由派对彭真的事业和健康的打击都太过沉重了。在受到严厉批评后，他离开了会议，不久就去世了。当然，他死于自然原因。自由派是不高兴，但谁在乎呢？"
 
@@ -16,8 +12,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	_enable(event_def.options[0], TXT_OPT0)
-	_enable(event_def.options[1], TXT_OPT1)
+	_enable(event_def.options[0], event_def.options[0].text)
+	_enable(event_def.options[1], event_def.options[1].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -77,9 +73,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -87,18 +80,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

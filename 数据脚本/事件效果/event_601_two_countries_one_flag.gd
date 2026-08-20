@@ -4,16 +4,10 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:859-861 —— DATE_AFTER 1980.11.1；fire_only_once 承担 !event_done[601]。
 ## 差异：proprc→亲中；Torg→对华贸易；name→chinese_name；names1+names2→_leader_name()。
 
-const TXT_TITLE := "两个国家，一面旗帜"
-const TXT_DESC := "独立之后，几内亚与佛得角非洲独立党在这片曾被葡萄牙殖民者所蹂躏的土地进行了一场独特的实验：佛得角共和国与几内亚比绍共和国——这两个“两具身体心连心”的姐妹共和国，不仅有着近乎一样的国旗与国歌，还有着同一个执政党，在曾共同抗击殖民者的历史所缔造的友谊基础上，两国政府也积极进行合作，以实现已写入两国宪法中的统一。\n然而，几内亚比绍的社会主义之路并不轻松，由于总统本人没有如倒在了独立前夕的国父、他的兄长阿米尔卡·卡布拉尔级别的威望来维系党内的团结，部分几内亚比绍军人也对佛得角血统的党员在几佛独立党中的重要地位颇有微词，再加上葡萄牙在几内亚比绍的漫长殖民地战争摧垮了当地的经济体系，大米的短缺与经济状况的恶化引起了广泛的不满。几佛独立党这栋大厦摇摇欲坠……\n根据科纳克里方面提供的消息，以几内亚比绍总理尼诺·维埃拉将军为首的部分军人正在筹划发动一场政变，“终结佛得角裔精英在几佛独立党中的主导地位，赶走仍在几内亚比绍的殖民主义者”，如果让他成功的话，那么无数革命者用鲜血换来的社会主义几内亚比绍，与两国统一的愿景将很有可能烟消云散，当然，我们也许可以祈祷几佛独立党中并不会出现一个军事独裁者。无论如何，决定权在你，主席同志。"
-const TXT_OPT0 := "让我们支持路易斯·卡布拉尔总统抵抗政变"
 const TXT_OPT0_DIS := "几内亚？赤道几内亚？几内亚比绍？出事的是哪个？"
-const TXT_OPT1 := "支持维埃拉，将佛得角裔精英赶出几内亚比绍"
 const TXT_OPT1_DIS_A := "为什么要支持一个军事独裁者？"
 const TXT_OPT1_DIS_B := "他们之间有区别吗？"
-const TXT_OPT2 := "趁火打劫，让塞内加尔人动手"
 const TXT_OPT2_DIS := "引法国佬的走狗来侵略我们的同志？你疯了吗"
-const TXT_OPT3 := "随他们去吧"
 const TXT_R0_A := "1980年11月14日，尼诺·维埃拉将军发动了一场政变，企图推翻路易斯·卡布拉尔总统，在首都比绍进行了一场激烈的交火后，几内亚和佛得角协助忠诚于政府的部队粉碎了叛军，维埃拉在混战中被流弹击中，当场身亡。随后，我国向几内亚比绍提供了一笔无息贷款，缓解了该国严重的经济危机，该国得以无后顾之忧地继续进行社会主义建设。来自中国的粮食援助与工程队为几内亚比绍经济建设注入了新活力，在中国专家的指导下，崭新的工厂与水利设施在该国建立，长期被忽视的南部农村地区也得到了大力发展。卡布拉尔总统非常感谢我国对他的帮助，宣布将毛主义纳入几佛独立党指导思想中，并学习莫桑比克的经验重启了因党内派系斗争严重而成效甚微的将该党向先锋党转型的道路。在"
 const TXT_R0_B := "同志与塞古·杜尔的推动下，几内亚比绍总统路易斯·卡布拉尔与佛得角总统阿里斯蒂德斯·佩雷拉在几内亚首都科纳克里签订了《几内亚佛得角共和国宪章》，正式宣告两国统一，泛非主义之梦得以更进一步。"
 const TXT_NAME_UNION := "几内亚佛得角共和国"
@@ -32,20 +26,20 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
 	var opt := event_def.options
 	if line < 2:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line != 0 and line != 4:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif line == 0:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
 	if line >= 3:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 
@@ -96,17 +90,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

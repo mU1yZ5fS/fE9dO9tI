@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event373.cs：祖先，祖父。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "祖先，祖父"
 
-const TXT_DESC := "土耳其国家安全委员会于今日清晨，代表土耳其政府发布官方外交公告。公告中，土方措辞强硬地谴责塞浦路斯政府对其傀儡政权——所谓的“塞浦路斯土耳其联邦”实施的长期封锁与打压，并严厉指责塞浦路斯及希腊政府“再次公然违背《苏黎世-伦敦协定》的核心原则”。土耳其方面宣称，依据《担保协定》的规定，他们有权对塞浦路斯采取特别军事行动，以保护岛上土耳其族裔的合法权益与生命安全。\n对此，塞浦路斯政府迅速作出反应，当即动员国民警卫队预备役，并紧急加强绿线沿线所有防御工事的部署与警戒级别。与此同时，塞浦路斯正式向希腊提出请求，希望希方能增加其在塞岛的驻军力量——即希腊驻塞浦路斯部队（ELDYK），以协助塞方应对随时可能爆发的军事冲突。而土耳其军政府领导人凯南·埃夫伦，则在随后的记者招待会上公开发表极具煽动性的讲话：“我们必须彻底控制整个塞浦路斯岛。否则，岛上的土耳其族民众，必将在希腊与塞浦路斯政府的系统性迫害下，遭遇灭顶之灾。”\n国际社会对土耳其的第二次塞浦路斯入侵计划普遍予以强烈谴责。联合国依据安理会第367号决议，明确驳斥了土耳其的军事恫吓与扩张野心，并正式宣布对其实施一系列制裁措施。然而，尽管国际舆论一边倒地对土方表示反对，土耳其凭借其压倒性的军事优势，仍极有可能迅速击溃塞浦路斯的防御力量，进而将整座岛屿完全纳入自身的势力范围。\n面对这一复杂局势，我方是与国际社会一道谴责土耳其的行为，还是支持土耳其以换取一个潜在的盟友？"
 
 const TXT_OPT0 := "我们支持土耳其政府的行动"
 const TXT_OPT1 := "我们反对土耳其政府的行动"
@@ -66,19 +64,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

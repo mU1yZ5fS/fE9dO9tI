@@ -3,14 +3,8 @@
 ## 差异：选项3 原版条件 IsAuthoritarianism(55)/puppetOf<0 按原样复刻（55=突尼斯，原版如此）。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "“萨莱诺转向”对“意大利社会主义”"
-const TXT_DESC := "天主教民主党与意大利共产党间试图达成有机政治协议的计划破产，以及两党间的争端再燃挽救了在巨兽间艰难求生的中间派们，更为其创造了待价而沽的良机。而意大利社会党领导人贝蒂诺·克拉克西便是只率先把握机遇的狐狸——这位原本被视为“妥协候选”的角色自摆平党内争端，坐上头把交椅后便梦想着在自己手中实现以社会党为主角的“左翼替代”——曾几何时，社会党是孕育意大利社会主义的摇篮，早期的意大利共产党也不过是其极端倾向分离的结果（且完全无法同菲利波·图拉蒂主导下，可同自由派政府共治的社会党等量齐观）。如今该是时候让历史回到“正轨”：对此，克拉克西不仅精心调动宣传机器，一方面同媒体大亨西尔维奥·贝卢斯科尼建立起令人印象深刻的友谊，另一方面则标榜社会党将走一条“特色社会主义之路”——克拉克西宣称：“我们的哲学基于法国自由意志主义者蒲鲁东，而非同雅各宾主义一脉相承，目前正得到共产党全力背书的马克思-列宁主义倾向。前者忠于人道、民主与社会化理想；后者只会建立起国家主导下的极权监狱，最终使意大利降格为亚洲政权一列”。靠着对老对手共产党的批判与标榜“左翼替代”，应当基于小党建立起更健康民主生态，最终打破寡头不负责的权力垄断的立场。克拉克西得以带领社会党逐步重振旗鼓，并在相对无害的情况下逐步剥离其马克思主义色彩（与之相对的共产党则只能继续玩弄调和资产阶级民主与共产主义纲领的游戏，虽在实践中逐步远离后者，但终究无法取得建制派的一致信任，政治生活中也就越加孤立，党内的改革派自然越加倾向直接选取社会党立场，同克拉克西调情），转而遵奉大西洋主义主导下的“普世价值”。再版了法国社会党早在70年代初便达成之事。而5月份的总统选举结果只会更有利于克拉克西对其法国前辈成功经验的按图索骥——由于天民党与共产党均无法推举出一位众望所归的候选。最终总统提名与选票均流向了妥协人物，老牌社会党人亚历山德罗·佩尔蒂尼，在增强该党曝光度的同时为其赢得施展权力的关键战略支点，更开创了社会主义者担任意大利国家元首的先例。同时还隐隐暗示建制派意欲对往昔的“中左翼公式”故事重提。而这只会有助于克拉克西进一步推进对共产党社会基础的侵蚀。面对这样一颗冉冉升起，足以影响意大利社会主义生态乃至全国局势的政治新星，或许该是时候做出表态了？"
-const TXT_OPT0 := "我们静观其变"
-const TXT_OPT1 := "我们将竭尽所能帮助意大利共产党，压住这条该死的地头蛇！"
 const TXT_OPT1_DIS := "“意大利式社会主义者”间的狗咬狗？我们可乐见与此！"
-const TXT_OPT2 := "克拉克西的右勾拳给了我们极大启发，我们将用左勾拳打倒贝林格，救出共产党！"
 const TXT_OPT2_DIS := "阶级对阶级的公式早已过时！"
-const TXT_OPT3 := "“意大利式社会主义”是个极好表率——我们应当支持克拉克西更进一步"
 const TXT_OPT3_DIS := "现代修正主义者不准通过！"
 const TXT_R0 := "共产党同社会党间的论战可说是完全无助于前者的陷阱：不论共产党采取何种立场，最终都不过是增强其竞争对手社会党的曝光度，分化民主左翼内部力量，并事实上摧毁在共产党参与下组建新政府的最可行方案之一（即二战结束初双方团结在“人民民主阵线”竞选联盟，争取“左翼替代”的公式）。虽说社会党还不足以借此恢复往日辉煌，可克拉克西切实迈出了将局势搅浑的第一步。与此同时，克拉克西对该国其他小政党所作的宣传工作与对共产党的孤立政策亦不可忽视。意味着若要将共产党拉入政权，要么寻找更加激进（且松散的势力），要么在“历史性妥协”的基础上更进一步，事实上将自身明确为一个更加具有“意大利特性”与“大西洋主义”色彩的政党。可它真的能够就此割舍自己名字当中的“共产”二字吗？"
 const TXT_R1 := "考虑到克拉克西的做法无助于在意大利推进任何形式的“民主替代”议程，我们决定立即出手施加干预。通过对社会党组织的渗透，相关人士揪出了不少同党魁克拉克西有关的黑材料（即便目前多只限于线索阶段，但已然足够）：这位小党的领导人不仅有着同其地位不相匹配的未知财政收入，并借此大肆征购别墅与地产；更是借助“非公开政治捐赠”的形式，以党的利益为名建立起秘密账户（并以此“享受分红”）；他同媒体大亨西尔维奥·贝卢斯科尼的合作并非局限于简单的“政治友谊”，更有一旦克拉克西上台，便会为后者的收购计划大开方便之门的蓝图。而这些材料足够我们好好敲打敲打这位“老革命”，并让克拉克西引火烧身：毕竟，与之相对的共产党确实可对其资金赞助问题持坦荡态度，并以清明政坛者的形象打压克拉克西。虽说克拉克西仍能摆脱其中的绝大多数指控，可怀疑的种子切实已经种下。除此之外，我们的资金还为共产党的地方传媒与社区组织送上助力，通过扩大其社区福利设施，强化竞选运动，标榜“民主替代方案”等做法巩固其基本盘。这在议会外极左翼倾向持续遭受排挤的情况下更是引来波“回归”浪潮——这些新人不久便皈依至主打新议题的众议院议长彼得罗·英格拉奥与其支持者构成的“左翼”集团内，并尝试借这逐步恢复斗争性的组织挑战天民党秩序。"
@@ -25,17 +19,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
 	var tunisia := world.get_country_by_legacy_index(55)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if line >= 2 and line <= 3:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if line <= 2:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if tunisia != null and world.is_authoritarian(tunisia) and tunisia.puppet_of < 0 and line >= 3:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 
@@ -89,9 +83,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -99,18 +90,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

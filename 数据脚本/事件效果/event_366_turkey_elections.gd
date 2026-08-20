@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event366.cs：土耳其国父的遗产。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "土耳其国父的遗产"
 
-const TXT_DESC := "主席同志！土耳其将在数月后举行选举。尽管如此，依然难说选举的结果将如何——自20世纪70年代后半叶以来，该国事实上已经陷入了政治极化的深渊。\n长期以来，该国议会主要是凯末尔主义政党共和人民党、自由派组织正义党、以及更保守的亲伊斯兰主义派系救国党的天下。然而在最近几年，上述三党都无法在议会内取得明显多数，所以他们得相互之间密切合作，建立长期的执政联盟。\n再谈谈土耳其国内的左派：值得注意的是，土耳其工人党已经重建，该党坚决反对美国对土耳其的势力投射；传统的土耳其共产党仍然处于非法状态，被迫进行地下活动；于此同时，土耳其国内也存在一批激进左翼组织（如土耳其共产党/马列，土耳其革命共产党，人民解放党残部“革命之路”组织等），在国内进行武装斗争。\n持泛突厥主义立场的民族行动党，与其青年激进派组织“灰狼”，则代表了土耳其政治的极右翼。\n所有的这些因素都表明，土耳其国内的政治危机正迅速激化。尤其是考虑到持保守派立场的军人对政治的影响，情况只会更加复杂。我们手头的资源并不足以让我们对土耳其实施全面干涉，但至少，我们可以为自己未来在此地的布局安插些许暗线。"
 
 const TXT_OPT0 := "与左派势力建立联系"
 const TXT_OPT0_DIS := "巧妇难为无米之炊，我们手头得有5百万才能干活......"
@@ -89,19 +87,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

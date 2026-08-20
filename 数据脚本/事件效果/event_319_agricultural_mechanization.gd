@@ -4,14 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:519-522 —— 日>=14 月>=7 年>=1980。
 ## 差异：选项显隐 prepare 动态改写；science[3]→techs.unlocked[3]；old_modify_desc[15] 拼接为修正说明文案，Godot 由 ModifierCatalog 静态维护，跳过。
 
-const TXT_TITLE := "农业机械化"
-const TXT_DESC := "我国农业虽然独立自主了几十年，但机械化程度仍然极低，这对我国的发展产生了消极影响——农业领域需要大量的农村工人，但这些工人本可以参加工业领域的生产。一方面，我们可以自力更生，但这需要工业与工程师充分发挥其能力。但是，或许在苏联或其他国家购买外国器械来得更加值当？"
-const TXT_OPT0 := "我们还有别的要紧事得处理。"
-const TXT_OPT1 := "开始自力更生。"
 const TXT_OPT1_DIS := "我们没有足够的资源"
-const TXT_OPT2 := "从苏联购买设备。"
 const TXT_OPT2_DIS := "绝不与社会帝国主义者做交易！"
-const TXT_OPT3 := "从西方购买设备。"
 const TXT_OPT3_DIS := "绝不与资产阶级国家做交易！"
 const TXT_R0 := "农业机械化不是重点，我们还有其他事干。无产阶级流入城市将引发城市的贫困......我们想要这样么？"
 const TXT_R1 := "我们要自力更生实现机械化。是的，这需要下一番利器，但我们仍必须争取独立于虎狼环伺的外部世界。我们如今自己生产的农业机械是在借鉴苏联样品的实践与特点的基础上发展的，但今后，我们要依托国内技术来发展农业机械。这不仅能推动农业发展，也能促进工业发展，工程师们已在思考如何将军事装备中的解决方案应用到实际中去。"
@@ -27,17 +21,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	var br := data[W.I_BUDGET] + data[W.I_RESERVE]
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if br >= 50 and data[W.I_INDUSTRY] >= 500:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if br >= 50 and data[W.I_USSR_RELATIONS] >= 500:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if br >= 50 and data[W.I_DIPLO] >= 500:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 
@@ -82,17 +76,8 @@ func _disable(opt: EventOption, text: String) -> void:
 	n.value = 99999.0
 	opt.enable_condition = n
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _tech_unlocked(idx: int) -> bool:
 	return ws.techs != null and ws.techs.unlocked.size() > idx and ws.techs.unlocked[idx]

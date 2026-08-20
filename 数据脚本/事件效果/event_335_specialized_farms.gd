@@ -2,13 +2,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event335.cs：“专业化农场”。触发：ReqEventForDLC02.cs:582-585 —— econ_system>12 且日期>=1984.6.13。
 
-const TXT_TITLE := "“专业化农场”"
 
-const TXT_DESC := "农民群体中开始出现分化，或者说白了，就是阶层分化。目前，约20%的农场归富有的公民所有。由于这些农场大多与农业领域的特别部门有关，党决定将这些农场称为“专业化农场”。党需要决定如何处理这个问题，或是是否有必要处理这一问题？"
 
-const TXT_OPT0 := "就这样吧，反正他们也剥削不了别人。"
-const TXT_OPT1 := "为他们减税，给他们雇佣工人和向国外销售产品的机会。"
-const TXT_OPT2 := "进行检查，增加税收。"
 
 const TXT_R0 := "嗯，有就有吧。这个问题并没有认真讨论的必要。这些农场占比挺高，这证明它们的存在是绝对正常的！这些人都是老实人，他们的一切是通过劳动挣得的。"
 const TXT_R1 := "我们得明白，这些农场的主人是我们国家的未来。即勤劳、进取、熟练的所有者。他们将对我们的农业企业起支撑作用。他们需要我们的帮助，以保护他们摆脱野蛮竞争的问题和其他农民的攻击。"
@@ -58,9 +53,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -68,14 +60,8 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(index: int) -> bool:

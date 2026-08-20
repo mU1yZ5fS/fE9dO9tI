@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://da15250ca4be3"]
+
+[ext_resource type="Texture2D" uid="uid://13xmvp4u4val" path="res://资产/UI/外交/科研未研究提示.png" id="22_kexue"]
+[ext_resource type="Texture2D" uid="uid://bp438ha7f5jp5" path="res://资产/UI/外交/阴谋临近提示.png" id="23_yinmou"]
+[ext_resource type="Texture2D" uid="uid://0xnxua4djhn2" path="res://资产/UI/外交/ymmym.png" id="45_70jce"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="17_v5qqf"]
+[ext_resource type="Texture2D" uid="uid://kwvpccpoe1ke" path="res://资产/UI/派系/生育政策按钮背景.png" id="46_msavi"]
+[ext_resource type="Texture2D" uid="uid://c8aavxa4ot146" path="res://资产/UI/决议/决议背景2.png" id="47_p3pua"]
+[ext_resource type="Texture2D" uid="uid://dn5r2xt4xyu6h" path="res://资产/UI/概览/切换显示按钮背景.png" id="48_rlltj"]
+[sub_resource type="StyleBoxEmpty" id="blank_style"]
+
+
+[node name="预警图标" type="CanvasLayer"]
+
+
+[node name="科研未研究提示" type="TextureRect" parent="." unique_id=7722002]
+offset_left = 531.0
+offset_top = 181.0
+offset_right = 617.0
+offset_bottom = 261.0
+texture = ExtResource("22_kexue")
+
+[node name="阴谋临近提示" type="TextureRect" parent="." unique_id=7722003]
+offset_left = 648.0
+offset_top = 181.0
+offset_right = 734.0
+offset_bottom = 261.0
+texture = ExtResource("23_yinmou")
+
+[node name="政治局缺人提示" type="TextureRect" parent="." unique_id=475102624]
+offset_left = 768.0
+offset_top = 180.0
+offset_right = 854.0
+offset_bottom = 260.0
+texture = ExtResource("45_70jce")
+
+[node name="可互动国家按钮" type="Button" parent="." unique_id=110835802]
+offset_left = 17.0
+offset_top = 288.0
+offset_right = 177.0
+offset_bottom = 324.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+text = "可互动国家（0）"
+icon = ExtResource("46_msavi")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="可互动国家弹窗" type="Panel" parent="." unique_id=1059696329]
+visible = false
+offset_left = 8.0
+offset_top = 272.0
+offset_right = 368.0
+offset_bottom = 792.0
+
+[node name="背景" type="TextureRect" parent="可互动国家弹窗" unique_id=1897785586]
+layout_mode = 0
+offset_right = 360.0
+offset_bottom = 520.0
+texture = ExtResource("47_p3pua")
+expand_mode = 1
+
+[node name="可互动国家列表" type="ItemList" parent="可互动国家弹窗" unique_id=1989221118]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 16.0
+offset_right = -72.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hovered_color = Color(0, 0, 0, 1)
+theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_styles/panel = SubResource("blank_style")
+
+[node name="关闭" type="Button" parent="可互动国家弹窗" unique_id=669028160]
+layout_mode = 0
+offset_left = 292.0
+offset_top = 6.0
+offset_right = 352.0
+offset_bottom = 38.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+text = "关闭"
+icon = ExtResource("48_rlltj")
+flat = true
+icon_alignment = 1
+expand_icon = true
+

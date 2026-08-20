@@ -4,9 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原版无自动条件（决策/其他事件链手动触发）
 ## 触发：见 evaluate()（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "机群革新"
 
-const TXT_DESC := "苏联将最新的多用途战斗机米格-29投入了使用。我们离研究出这一技术还遥不可及。因此，这飞机对我们很有用......但怎么办呢？你可以购买生产许可证，但中苏关系并没有好到苏联能卖给我们最新武器的程度。因此，也许你应该找找情报部门？"
 
 const TXT_OPT0 := "劫机。"
 const TXT_OPT0_DIS := "我们没那个能力。"
@@ -81,19 +79,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

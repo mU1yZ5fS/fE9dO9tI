@@ -7,16 +7,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - data[56] 政治路线 → W.I_POLITICAL_LINE；proprc/Torg/econ/okb → set_tag；
 ##  - result1 的 data[60]==0 分支按原版 int 默认 0 处理。
 
-const TXT_TITLE := "德意志之秋"
 
-const TXT_DESC := "自1977年四月七日以来，西德马克思主义的极左翼城市游击队“红军旅”与“革命小组”展开了大量针对联邦德国政要与实业家的刺杀，绑架与定向爆破。受害者包括但不局限于：齐格飞·布巴克，尤尔根·庞特等联邦德国巨贾和反共政客。近日，他们又策划了一起劫机案，使得他们本就不多的支持越来越少。\n而与极左翼城市游击队一同发源于西德68运动的“K小组（K-Gruppen,意即CommunistGroups，指的是从68运动发展出的一系列毛派团体或政党）”虽然都有反修正主义的共同基础，但是他们仍在理论和社会分析上存在较大分歧，其中有部分已经倾向阿尔巴尼亚。在西德的紧张气氛下，我们是否要借势将这些分散的革命派组织整合起来？或者帮助西德当局打击这群叛匪，以获得和西德政府合作的机会？"
 
-const TXT_OPT0 := "我们最好组成革命共产党人的大串联"
 const TXT_OPT0_DIS_NOPRO := "显然，连阿尔巴尼亚都不支持我们，我们无力和他们取得联系"
 const TXT_OPT0_DIS_LINE := "支持革恐分子，你疯了？"
-const TXT_OPT1 := "让我们协助西德政府扫清叛匪"
 const TXT_OPT1_DIS := "我们不能背叛革命者！"
-const TXT_OPT2 := "可是西德太远啦……"
 
 const TXT_R0 := "我们在西德的特工决定帮他们一把。在一个夜黑风高的夜晚，我们的特勤用一捆烈性炸药打破了斯图加特监狱的大门，安德烈亚斯·巴德尔和古德伦·恩斯林等红军旅高级成员得到了自由。作为交换，“红军旅”将被改编为新生的革命团体的附属组织。在我们和阿尔巴尼亚的大力推动下，德国共产党/马克思列宁主义、德国共产党（重建组织）、共产主义者联盟、德国共产主义工人联盟、德共重建工人联盟和西德共产主义者联盟等组织在汉堡正式宣布合并为德国马列主义革命党。新的党组织确定了以维利·迪克胡特主席为核心的中央委员会。《人民日报》在第二天发文庆祝西德人民在摆脱美帝国主义枷锁的斗争有了新的主心骨。“红军旅”和“革命小组”被改组为由马列主义革命党领导的“德意志人民武装力量”，他们向我们保证将减少革命恐怖活动，转向人民战争理论，以积极谋求在学生和工人之间发展潜在的成员和同情者。地拉那也宣布支持西德人民团结起来的斗争。\n在革命派共产党人联合起来的情况下，基民盟/基社盟开始动员支持者施压施密特政府，而社民党-自民党政府不得不在国内外的压力下宣布组织跨党派的大危机委员会，西德进入了事实上的紧急状态。社会法西斯主义者又一次对革命派举起了屠刀……"
 
@@ -35,16 +30,16 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
 	var opt := event_def.options
 	if line <= 1 and albania_pro:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	elif not albania_pro:
 		_disable(opt[0], TXT_OPT0_DIS_NOPRO)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS_LINE)
 	if line > 2 and not mod3:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -101,16 +96,7 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

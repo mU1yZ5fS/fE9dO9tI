@@ -5,7 +5,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：描述按 c21.Gosstroy==3 动态插入“法国和”句；proprc→亲中、Torg→对华贸易。
 
 const TXT_TITLE := "La\u00a0Patrie\u00a0ou\u00a0la\u00a0Mort"
-const TXT_DESC := "尼日尔，一个命运多舛的西非国家。在独立后的前14年里，由哈马尼·迪奥里总统领导的一党文人政权统治。在他的统治下，尼日尔初步建立成了一个国家而非大部落，经济发展和工业化进程有所放缓。借助铀矿和在阿尔及利亚独立战争中支持法国，该国得到了法兰西的善意。除了和达荷美（也就是贝宁）的边界争端外，该国其他非洲国家的关系大多“积极”。在此期间，尼日尔一直是一党制国家，迪奥里躲过了1963年的预谋政变和1965年的暗杀企图，但一手造成的腐败，专制主义，饥荒和暴动葬送了他的王朝。最终以赛义尼·孔切上校和他的最高军事委员会接过了烂摊子随着铀价暴跌，经济繁荣结束，国际货币基金组织牵头的紧缩政策和私有化措施引起一些尼日尔人的反对。\n现在，随着孔切的战友一个接着一个都被送去见了戴高乐。马里，布基纳法索和贝宁正在准备中一场彻底推翻孔切政权的行动。"
 const TXT_OPT0 := "Eux\u00a0vaincrons！"
 const TXT_R0_A := "三国组建了一支统一调度的武装部队，代号“尼日尔河”的行动一触即发。在得到尼亚美的信息之后，三军从北，西和南方攻入了该国。布基纳法索人民军迅速开入了尼亚美，在尼日尔国内的萨瓦巴的帮助下顺利攻占了首都总统府和广播电台，号召全体人民起义，夺权，彻底革命。而"
 const TXT_R0_MID := "法国和"
@@ -45,17 +44,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://cbd05srg3vwrw"]
+
+[ext_resource type="Script" uid="uid://dcelhgt2hg4h3" path="res://场景/外交界面/右侧栏.gd" id="32_yikjq"]
+[ext_resource type="Texture2D" uid="uid://d2s7p2aeif06a" path="res://资产/UI/外交/右侧栏展开背景.png" id="13_fpo1t"]
+[ext_resource type="Texture2D" uid="uid://c3wbwr2v5ukta" path="res://资产/UI/外交/右侧栏展开按钮.png" id="12_0r3oo"]
+[ext_resource type="Texture2D" uid="uid://cillx8cxgnuyy" path="res://资产/UI/右侧栏/bottom_entry_CPC_TRCW.png" id="16_13o5n"]
+[ext_resource type="Texture2D" uid="uid://bc7u0qq0e2bfd" path="res://资产/UI/右侧栏/bottom_entry_GAC.png" id="17_qy4bt"]
+[ext_resource type="Texture2D" uid="uid://nsrbrshf65te" path="res://资产/UI/右侧栏/bottom_entry_CMC.png" id="18_wsnwf"]
+
+[node name="右侧栏" type="CanvasLayer"]
+script = ExtResource("32_yikjq")
+
+
+[node name="右侧栏展开后背景" type="TextureRect" parent="." unique_id=421577081]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -211.0
+offset_top = 219.0
+offset_bottom = 756.0
+texture = ExtResource("13_fpo1t")
+
+[node name="右侧栏收回按钮" type="TextureButton" parent="." unique_id=1080282892]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -208.0
+offset_top = 363.0
+offset_right = -168.0
+offset_bottom = 601.0
+texture_normal = ExtResource("12_0r3oo")
+
+[node name="右侧栏展开按钮" type="TextureButton" parent="." unique_id=1233074202]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = 456.0
+offset_right = 28.0
+offset_bottom = 694.0
+grow_horizontal = 0
+rotation = 3.1415927
+texture_normal = ExtResource("12_0r3oo")
+metadata/_edit_use_anchors_ = true
+
+[node name="全国形势展开" type="TextureButton" parent="." unique_id=2134077641]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -154.0
+offset_top = 244.0
+offset_right = -81.0
+offset_bottom = 303.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("16_13o5n")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="全国政协展开" type="TextureButton" parent="." unique_id=1008765268]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -137.0
+offset_top = 398.0
+offset_right = -97.0
+offset_bottom = 438.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("17_qy4bt")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="中央军委展开" type="TextureButton" parent="." unique_id=57432949]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -130.0
+offset_top = 509.0
+offset_right = -90.0
+offset_bottom = 549.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("18_wsnwf")
+ignore_texture_size = true
+stretch_mode = 0
+
+
+[connection signal="pressed" from="右侧栏收回按钮" to="." method="_on_右侧栏收回按钮_pressed"]
+
+[connection signal="pressed" from="右侧栏展开按钮" to="." method="_on_右侧栏展开按钮_pressed"]

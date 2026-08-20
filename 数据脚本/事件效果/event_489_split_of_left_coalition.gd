@@ -8,14 +8,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - prosov/proprc/Torg/isSocEU → set_tag；data[131] 原版无常量，raw index + 注释；
 ##  - LeaveAlliances() → _leave_alliances；JoinAllOurAlliances(true) → _join_alliances。
 
-const TXT_TITLE := "左翼联合政府的分裂"
 
-const TXT_DESC := "土耳其在内战后左翼联合政府的团结与政治合作的时期已经结束。自1977年以来，土耳其就没有举行过选举。该国政府仍处于左翼的共同领导之下，右翼与极右翼政党实际已经被清理出局，初步的左翼改革实施完毕，土耳其此前的问题已经基本解决，使得左翼在社会上相当受欢迎。如今，土耳其左翼各派的共同目标已经消失，由于他们对左翼改革的愿景各不相同，联合政府事实上已经陷入了分裂。土耳其左翼联合政府实际上已经分化为三派：在比伦特·埃杰维特领导下转向民主社会主义的共和人民党、亲苏的正统派土耳其联合共产党和由各个激进派共产主义组织统一而成的土耳其人民共产党。为了避免国家滑向大规模政治暴力，三党最终选择举行新的选举，以决定最后的赢家。目前尚不清楚谁将执掌土耳其。国际与国内的局势将决定这场选举的最终结果。当然，我们也有了干涉这一选举以达成有利于我们的结果的机会。"
 
-const TXT_OPT0 := "支持共和人民党"
-const TXT_OPT1 := "支持联合共产党"
-const TXT_OPT2 := "支持人民共产党"
-const TXT_OPT3 := "不闻不问"
 
 const TXT_R_COMMUNIST := "选举结果表明，联合共产党赢得多数选票。新政府宣布国家将向社会主义过渡，同苏东阵营展开合作，并要“解决一切过去遗留的历史问题”。他们承认了土耳其历史上的亚美尼亚种族灭绝事件，同时表示要尊重库尔德民族自决——土耳其控制下的库尔德人聚集区被赋予了自治权。苏东阵营欢迎新的兄弟加入他们的阵营。"
 
@@ -29,10 +23,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
-	_enable(opt[2], TXT_OPT2)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
+	_enable(opt[2], event_def.options[2].text)
+	_enable(opt[3], event_def.options[3].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -177,16 +171,7 @@ func _enable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = null
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

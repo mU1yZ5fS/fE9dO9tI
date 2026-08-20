@@ -4,7 +4,7 @@
 ##   - new_texts 索引引用：EndingScript.cs L1061/1065/1096/1100/3111/3118 等。
 ##   - 姓名拼接：原版 names1[(int)leader.name_1] + names2[(int)leader.name_2]（EndingScript.cs:71 等）；
 ##     Godot 建模说明 polit_names 表，用 leader.name_display（politician_data.gd:8 显示全名）作等义显示。
-extends "res://场景/外交界面/外交互动_基础.gd"
+extends "res://数据脚本/外交互动/外交互动_基础.gd"
 
 
 ## 原版 new_texts_en.xml 按行 split 后本端口结局系统引用到的下标（0 基，逐字保留）。

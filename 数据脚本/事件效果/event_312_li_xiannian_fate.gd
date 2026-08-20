@@ -4,10 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:509-512 —— NumberOfPolitician(7,7)>=0 且 年>=1981 且 ((党内支持<=750 且 (路线0或1)) 或 NumberOfPolitician(17,17)<0 或 event_done[311])。
 ## 差异：KillPerson→GameManager.kill_politician；文本来自 Events_text_en 索引 110-115。
 
-const TXT_TITLE := "李先念的命运"
-const TXT_DESC := "党内一些人已经发现了经济失败的另一个罪魁祸首——李先念。虽然罪名很轻，但罪行严重到足以让他辞职。而且，那些糊涂事总是可以用阴谋来解释......"
-const TXT_OPT0 := "宣布指控为凭空捏造"
-const TXT_OPT1 := "加大迫害力度。"
 const TXT_R0 := "对李先念同志的指控是从边缘的极左派那里听到的。他们想通过除掉一个重要的党员来巩固他们那毫无价值的地位！我们不会允许的！"
 const TXT_R1 := "显而易见，李先念是经济失败的罪魁祸首！从这份文件中便可见一斑！毛主席的昔日同僚怎会如此无能糊涂？当然没这么简单！这显然是同中国敌人勾结的阴谋！"
 
@@ -61,17 +57,8 @@ func _disable(opt: EventOption, text: String) -> void:
 	n.value = 99999.0
 	opt.enable_condition = n
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _find_politician(name1: int, name2: int) -> int:
 	for i in ws.politicians.size():

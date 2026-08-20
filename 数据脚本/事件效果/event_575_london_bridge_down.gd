@@ -7,7 +7,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - Vyshi → 亲美；isSocEU → soc_eu；Torg → 对华贸易；cw → 内战中；
 ##  - 选项1 非欧社联分支 load_scene_after_click+number_event=576 → EventEngine.enqueue_chain(["event_576"])。
 
-const TXT_TITLE := "伦敦桥倒下了"
 
 const TXT_DESC_BASE := "主席同志！重大消息，是澳大利亚方面的。\n"
 const TXT_DESC_HARD := "英国工党“硬左派”废除君主制并转向联邦共和的政治改革已导致维系英联邦的旧政治关系名存实亡，并顺势激起了澳大利亚人的反君主情绪：既然英国已经给女王分配了公民身份，那澳大利亚也应该效法母国“先进经验”。对温莎王朝和与之有关的澳洲一切建制的落井下石就此开始。"
@@ -17,9 +16,7 @@ const TXT_DESC_HAWKE := "当然，相应措施也不可避免地导致了恐赤�
 const TXT_DESC_FRASER := "当然，相应措施也不可避免地导致了恐赤情绪的进一步激化——甚至影响了自由党-乡村党联合的政治路线。为稳定社会秩序，澳大利亚总理马尔科姆·弗雷泽立即准备三步走：首先是宣布澳大利亚成为共和国，其次是建立临时政府修宪并迅速举行大选。本次选举可被视为澳大利亚的第二次开国，显然将为该国的政治发展定调……"
 const TXT_DESC_ASK := "我们要帮一把我们的工党同志，彻底决定这个新生共和国的命运吗？"
 
-const TXT_OPT0 := "助力工党同志彻底转向社会主义目标！"
 const TXT_OPT0_DIS := "我们无从下手……"
-const TXT_OPT1 := "英帝国的碎片会自己决定自己的命运……"
 
 const TXT_R0 := "得到我国帮助的工党很快便以绝对多数制霸选举，并代表大多数选民拥抱了澳大利亚的完全转型：澳大利亚将在沿用代议制民主的框架下拥抱全新的原住民-多元文化认同，并以斯堪的纳维亚社会主义为蓝本建设服务大众的经济。前进吧，公平的澳大利亚！"
 const TXT_R0_EU := "|新生的澳大利亚共和国并没有忘记与英国的纽带，同样决定和欧社联合作。"
@@ -51,10 +48,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	event_def.description = desc
 	var opt := event_def.options
 	if r573 == 1 and c135 != null and not c135.has_tag("亲美"):
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[1], event_def.options[1].text)
 
 
 func execute(context: Dictionary) -> void:

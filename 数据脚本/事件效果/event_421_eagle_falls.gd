@@ -4,18 +4,12 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1359-1361 —— ExprNode 组合。
 ## 差异：Vyshi→亲美；isASEAN/isSEATO/isSENTO/isNATO→标签；power 直接。
 
-const TXT_TITLE := "雄鹰陨落"
-const TXT_DESC := "北大西洋公约组织被绝大多数的创始国抛弃，导致该组织内拥有强大军事实力的国家少之又少。只有美国、加拿大与德国还能在其中苟延残喘。\n今天，北大西洋理事会决定废除有关1949年建立北约的协定。北约在布鲁塞尔的总部也在各成员国的降旗仪式结束后被关闭。在此之后，美国退出了其他仿照北约模式建立的地区性联盟。"
-const TXT_OPT0 := "美帝国主义的日子到头了！"
 const TXT_RESULT := "冷战结束了吗......？"
 const TXT_IDX_1364 := "雄鹰陨落"
 const TXT_IDX_1365 := "北大西洋公约组织被绝大多数的创始国抛弃，导致该组织内拥有强大军事实力的国家少之又少。只有美国、加拿大与德国还能在其中苟延残喘。\n今天，北大西洋理事会决定废除有关1949年建立北约的协定。北约在布鲁塞尔的总部也在各成员国的降旗仪式结束后被关闭。在此之后，美国退出了其他仿照北约模式建立的地区性联盟。"
 const TXT_IDX_1366 := "美帝国主义的日子到头了！"
 const TXT_IDX_1367 := "冷战结束了吗......？"
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _raw(index: int) -> int:
@@ -24,14 +18,8 @@ func _raw(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _fmt(s: String, args: Array) -> String:

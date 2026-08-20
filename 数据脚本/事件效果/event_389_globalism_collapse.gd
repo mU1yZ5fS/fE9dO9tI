@@ -4,11 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录检索 this_num_event/Reset/event_done/resultOfEvents/StartEvent
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 
-const TXT_TITLE := "全球主义的崩溃？"
-const TXT_DESC := "在过去的两年内，法国社会主义政府正积极实行凯恩斯主义经济政策，其中包括维持扩张性的财政与货币政策。然而，改革停滞不前。并在1982年的夏天时，法国总统便直接借用莱昂·布鲁姆的名言，宣布“暂停改革”。这样，该国的预算才得以好好“消化”该国激增的公共开支。政府在1981年确立的主要目标依然高居于“天国”当中：每次价格冻结都将伴随着通货膨胀的一次剧增，失业率依然严重，由于物价上涨，预算赤字也随之剧增。在法国央行被欧洲货币体系结构束手束脚的情况下，问题只会变得更加严重。因此，面对日益严峻的局势，社会党内分化形成了两大营垒：一方支持实施高赤字的奢侈政策，并让法国退出欧洲货币体系。这一方案得到了皮埃尔·贝雷戈瓦、洛朗·法比尤斯与让·皮埃尔·舍韦内芒的支持；另一方则呼吁放弃社会主要项目，并让法国维持欧洲一体化的情况下引入紧缩政策。总理皮埃尔·莫鲁瓦与财政部长雅克·德洛尔是该方案直言不讳的支持者。\n这种分歧为我们干预该国局势提供了见缝插针的余地，尽管我们的干预只会对决策产生间接影响。"
-const TXT_OPT0 := "支持全球主义者（需要15.0点{1}）"
-const TXT_OPT1 := "支持反全球主义者（需要15.0点{1}）"
-const TXT_OPT2 := "不闻不问"
 const TXT_DIS_INFLUENCE := "中国的国际影响力应高于{0}......"
 const TXT_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
 const TXT_R0 := "法国总统弗朗西斯·密特朗宣布，该国准备实行“严格审计”的财政政策：因此公共支出将被缩减150亿法郎，并引入新的税种与消费税。\n社会经济政策的巨变令那些认为弗朗西斯·密特朗与皮埃尔·莫鲁瓦政府将采用非资本主义发展道路，以非自由主义替代方案恢复经济增长，解决1979年危机的左翼选民大失所望。\n作为对新政的抗议，共产主义者选择离开该政府。"
@@ -25,18 +20,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if world.influence_prc >= 450 and _d(W.I_AGENTS) >= 150:
-		_enable(opt[0], TXT_OPT0.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[0], event_def.options[0].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif world.influence_prc < 450:
 		_disable(opt[0], TXT_DIS_INFLUENCE.format([45]))
 	else:
 		_disable(opt[0], TXT_DIS_AGENTS.format([15]))
 	if world.influence_prc >= 450 and _d(W.I_AGENTS) >= 150:
-		_enable(opt[1], TXT_OPT1.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[1], event_def.options[1].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif world.influence_prc < 450:
 		_disable(opt[1], TXT_DIS_INFLUENCE.format([45]))
 	else:
 		_disable(opt[1], TXT_DIS_AGENTS.format([15]))
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -98,9 +93,6 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USA, 30)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -109,9 +101,6 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

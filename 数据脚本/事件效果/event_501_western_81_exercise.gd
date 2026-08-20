@@ -4,8 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "西方-81演习"
-const TXT_DESC := "据可靠的信息报告，苏共中央已经决定了联合华约各国举行一场规模庞大的军事演习，代号西方-81（Запад-81）。此次行动以北约为假想敌，意图为震慑波兰领导层，遏制其日益增强的反苏情结。\n主席同志，作为与苏联接壤部分最多的国家，我们应该做点什么，对吧！"
 const TXT_R0_A := "外交部长"
 const TXT_R0_B := "同志强烈谴责了苏修帝国主义明晃晃的破坏世界和平的举动。称其为极不明智的举动，穷兵黩武只会埋葬了苏联。\n苏军出动了十个以上的诸兵种合成集团军和近卫坦克军，在前线航空兵、远程航空兵以及国土防空军的伴随下，进行了大纵深装甲合成突击战术的演练。苏军首次出动由新式T80和T72组成的坦克军对假想敌进行装甲冲击，辅以集团军属地地火箭营进行精确战术打击，掩护后继的摩托化步兵继续前进，演习中大量出现空降强击旅，OMG集群等多种苏军新式战役建制，同时波罗的海舰队还出动了基辅号重型载机巡洋舰掩护海军步兵重装突击上陆。苏军在演习中也大量进行复杂条件下大规模诸兵种快速推进训练，总兵力超过五十万人。这无疑震撼了全世界的观察家，苏联即使遭受了不少挫折，依然有能力当社会主义大家庭的家长。"
 const TXT_R1_A := "出于对抗苏联的威胁，我们决定在华北平原展开一场军事演习，目标直指苏联的威胁。中国人民解放军高级干部战役集训班全体军官、中共中央、国务院各部委和各省、直辖市、自治区主要领导人，解放军师以上和北京军区团以上军官及当地地方干部和民兵共3万2千余人观摩了演习。"
@@ -22,14 +20,9 @@ const TXT_R2 := "我们作为苏联社会主义阵营的一位成员，自然有
 const TXT_R3_A := "我们决定向苏联派出军事观察员，苏联方面欣然接受。以"
 const TXT_R3_B := "为首的中国人民解放军代表团参与了对军演的欣赏。\n苏军出动了十个以上的诸兵种合成集团军和近卫坦克军，在前线航空兵、远程航空兵以及国土防空军的伴随下，进行了大纵深装甲合成突击战术的演练。苏军首次出动由新式T80和T72组成的坦克军对假想敌进行装甲冲击，辅以集团军属地地火箭营进行精确战术打击，掩护后继的摩托化步兵继续前进，演习中大量出现空降强击旅，OMG集群等多种苏军新式战役建制，同时波罗的海舰队还出动了基辅号重型载机巡洋舰掩护海军步兵重装突击上陆。苏军在演习中也大量进行复杂条件下大规模诸兵种快速推进训练，总兵力超过五十万人。这无疑震撼了全世界的观察家，苏联即使遭受了不少挫折，依然有能力当社会主义大家庭的家长。"
 const TXT_R4 := "在中央军委的提议下，我们决定和美国等自由世界国家开展一场规模接近的军事行动反向威胁苏联。这一决定获得了美国鹰派和强硬反苏派，尤其是布热津斯基的支持。\n最后，我们和美国在亚太地区召开了“神射手”行动，旨在模拟苏联和朝鲜对韩国发动的第二次朝鲜战争。韩国和日本积极的参与了作战演习。我们和美国的关系更紧密了。苏联也不得不把远东和中亚的防卫等级再次提高。"
-const TXT_OPT0 := "口头谴责苏联人"
-const TXT_OPT1 := "在华北组织一场军事演习"
 const TXT_OPT1_DIS := "我们为什么要耗费那么大的力气？"
-const TXT_OPT2 := "我们和苏联展开联合演习"
 const TXT_OPT2_DIS := "没人会欢迎我们的介入"
-const TXT_OPT3 := "派出观察员"
 const TXT_OPT3_DIS := "苏联人不欢迎我们"
-const TXT_OPT4 := "呼吁北约和东约采取反制措施"
 const TXT_OPT4_DIS := "不能把祖国卖给美国！"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -37,21 +30,21 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if ws.数值表[56] < 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if _tag(1, "ovd"):
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if _empire_rel(1) >= 590:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 	if _tag(1, "seato") and _tag(51, "对华贸易"):
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
 

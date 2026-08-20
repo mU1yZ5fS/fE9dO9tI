@@ -4,11 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:874-876 —— c131.SubGosstroy==9 && !war54.is_going && DATE_AFTER 1984.1.1。
 ## 差异：描述按 c127.puppet_of<0 动态插入“、津巴布韦”；AmericanSupportAttacker→usa_side=0。
 
-const TXT_TITLE := "十八岁的我只想活下去"
 const TXT_DESC_A := "今天，素有“行走大洋国”之称的南非人民邦宣布将在非洲南部地区发起“德拉雷”维和特别军事行动。根据南非人民邦发言人的说法，该行动将“彻底解决侵犯南非领土主权”的敌对行动。全副武装的南非部队已开始向其边界邻国进军，并将炮口瞄准安哥拉、博茨瓦纳"
 const TXT_DESC_MID := "、津巴布韦"
 const TXT_DESC_B := "和莫桑比克境内的反对派。上述非洲国家在战争初便惨遭化学武器和白磷弹打击，沦陷区内尸横遍野。国际社会对南非部队的暴行空前震惊，并纷纷谴责南非纵容新纳粹主义，重走殖民主义老路。美苏两国已开始向非洲南部各国派发军事援助以抵御布尔人怒火，而坦桑尼亚等持泛非主义立场的政权更是号召组织非洲纵队全面援助抗击人民邦的战事。\n究竟谁能够胜利？“文明”还是良知？"
-const TXT_OPT0 := "天哪，天——"
 const TXT_R0 := "决定南部非洲的命运的战争已然打响……"
 const TXT_WAR0_NAME := "南非-安哥拉之战"
 const TXT_WAR0_SIDE1 := "安哥拉"
@@ -62,17 +60,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

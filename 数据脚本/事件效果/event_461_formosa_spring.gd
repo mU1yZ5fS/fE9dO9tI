@@ -6,11 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：LeaveAlliances() 按 Country.cs:89-115 清标签+puppet_of=-1；
 ##   name→chinese_name；isOVD/isSEV/isRIM/econ/okb→set_tag。
 
-const TXT_TITLE := "福尔摩沙之春"
-const TXT_DESC := "解放战争胜利后，国民党败逃到台湾岛，由于美国在台湾的基地和舰队，我们无法解放它，但现如今的情况已大有不同：美国这只曾经的雄鹰已然陨落，台湾岛的军事基地也撤离了，而我们在之前对美丽岛左派的援助也为我们在台湾争取到了足以和蒋伪政府抗衡的盟友。或许我们可以对台湾施加更大的压力以帮助日益中兴的台湾左派联盟推翻蒋伪政府并“回归”中国？"
-const TXT_OPT0 := "给台湾蒋伪政府当局以制裁与禁运，同时帮助左派组建统一的政党"
 const TXT_OPT0_DIS := "台湾左派的力量太弱了！"
-const TXT_OPT1 := "给台湾蒋伪政府当局以制裁与禁运"
 const TXT_R0 := "随着我们对台湾当局施加了巨大的压力，制裁和禁运迅速压垮了这个本就没有什么自给能力的小岛。在一次对抗政府的示威中。我们的特务借机煽风点火，在“你可听见人民的呼声”的歌声中，军警拒绝了接受蒋经国总统关于对人民开枪的指令，事实上发生了哗变。感到自己时日无多的蒋经国收拾了细软，逃往美国檀香山。\n我们的努力得到了回报，由吴荣元组建的“红统”派台湾劳动党事实上夺取了台湾的政治权利。作为推翻蒋氏暴政的英雄，以及对大陆美好生活的向往，台湾迅速决定了接受中华人民共和国管理的决定。外企被悉数收回，美国军队也悉数撤回。而和大陆之间的隔阂也被消除。尽管名义上台湾组建了自己的，独立于北京的政府，但是谁都知道，台湾和大陆再也不会分开了。"
 const TXT_NAME_SAR := "台湾特别行政区"
 const TXT_R1 := "随着我们对台湾当局施加了巨大的压力，制裁和禁运迅速压垮了这个本就没有什么自给能力的小岛。在一次对抗政府的示威中。我们的特务借机煽风点火，在“你可听见人民的呼声”的歌声中，军警拒绝了接受蒋经国总统关于对人民开枪的指令，事实上发生了哗变。感到自己时日无多的蒋经国收拾了细软，逃往美国檀香山。\n由倒蒋集团组成的大帐篷式政党“民主进步党”在大选中击溃了国民党。新他们立刻宣布将和“中华人民共和国展开深入的合作”。新政府立即着手驱赶美军士兵，并放弃了对于大陆的宣称。我们决定在和平对等的基础上吸纳台湾。他们会和祖国母亲团结在一起，直到永远。"
@@ -24,10 +20,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var res460 := int(world.completed_event_ids.get("event_460", 0))
 	var opt := event_def.options
 	if res460 == 0:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[1], event_def.options[1].text)
 
 
 
@@ -95,25 +91,16 @@ func _follow_alliance(c: CountryData, china: CountryData, tag: String) -> void:
 		c.set_tag(tag, true)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

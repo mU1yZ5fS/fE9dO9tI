@@ -8,10 +8,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 原版 iron_and_blood 成就 Set(142) 已接 Achievements；
 ##  - ingamewars[22].usa_place → WarData.usa_side（c51 对华贸易时置 0）。
 
-const TXT_TITLE := "新罗曼诺夫帝国"
 const TXT_DESC_FMT := "更让人始料不及的事发生了，苏联领导人格里戈里·罗曼诺夫宣称：“一些处于社会主义大家庭的国家已经表达了加入苏联的期望。出于尊重其自决权的需要，我们绝不能否认他们的要求。但事关重大，有必要为此举行一场全民公投。”\n长久以来，保加利亚便已为成为苏联的第16个加盟共和国做足了准备，驱动其加入苏联的原因很可能是其欠苏联的外债。然而，现在该国已经举行了公投，其中有{1}%的公民支持加入苏联。\n长期以来，蒙古便被看作是“主权最名不副其实的社会主义国家”，在苏联军队的监管下，那里甚至连分离主义团体产生的苗头都没有。驻守在外贝加尔湖军区的苏军牢牢把控当地局势。因此结果显而易见，有{2}%的公民支持加入苏联。\n而在相对“叛逆”得多的波兰境内，问题则要复杂的多。已经数次失去主权的国家绝不会轻易再度灭亡。但这次，华沙并没有什么新闻。因为有{2}%的公民支持波兰成为苏联境内的苏维埃共和国。\n所以究竟发生了什么，为什么发生了这种事，这些问题均悬而未决。因此，美国和西方国家指责苏联伪造全民公决结果并借机吞并这些国家。而苏联则称西方言行不一。\n可我们对此应该怎么做？毕竟在此次扩张后，我们与苏联之间的边界扩大了许多倍。"
-const TXT_OPT0 := "接下来将发生什么......"
-const TXT_OPT1 := "谴责苏联扩张主义政策！"
 const TXT_OPT2_RELRES := "与苏联断交，并让他们尝尝“第二次珍宝岛冲突”！（需要75.0点{2}）"
 const TXT_OPT2_NORELRES := "让他们尝尝“第二次珍宝岛冲突”！（需要75.0点{2}）"
 const TXT_DIS_INFLUENCE := "中国的国际影响力应高于{0}......"
@@ -38,8 +35,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	event_def.description = TXT_DESC_FMT.format(["\n", randi_range(80, 94), randi_range(80, 94)])
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
 	var relres: bool = world.get_flag("relres")
 	var war22 := world.wars[22] if world.wars.size() > 22 else null
 	if relres and world.influence_prc >= 750 and _d(W.I_ARMY) >= 750 			and GameManager.is_faction_leading(0) 			and (war22 == null or not war22.is_going) and _d(133) == 0:  # 原版 data[133]
@@ -116,9 +113,6 @@ func _start_war_388() -> void:
 		ws.wars[22].fortnight_max = 500
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -127,14 +121,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

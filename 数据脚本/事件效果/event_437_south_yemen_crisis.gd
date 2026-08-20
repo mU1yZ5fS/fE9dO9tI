@@ -5,13 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：选项显隐 prepare 动态改写；proprc→亲中、prosov→亲苏、Torg→对华贸易；
 ##   Gosstroy/SubGosstroy→government/sub_government。
 
-const TXT_TITLE := "南也门事变?"
 
-const TXT_DESC := "在1966年的“六·二二”纠正运动后，南也门确定了走科学社会主义的道路，社会主义制度逐渐被建立起来。但是在实践中，南也门领导层的三巨头之间的分歧和矛盾逐渐显露。亲近苏联的阿里·纳赛尔·穆罕默德和阿普杜勒·法塔赫·伊斯梅尔同更支持毛主义观点的萨利姆·鲁巴伊·阿里总统之间的矛盾渐渐严重。有情报表明，阿里·纳赛尔和伊斯梅尔的亲苏派计划发动武装政变。同时，苏联在南也门的军事基地的军事调动也变得更加频繁，他们可能会介入并支持政变。或许我们可以尝试支持鲁巴伊，粉碎政变，让南也门彻底倒向我们？"
 
-const TXT_OPT0 := "让我们尽全力支持鲁巴伊同志打倒修正主义分子！（需要5百万元预算，5特工网络）"
 const TXT_OPT0_DIS := "我们无从下手......"
-const TXT_OPT1 := "我们不能得罪苏联......"
 
 const TXT_R0 := "多亏了我们在索马里的部署，让我们有了力量支持鲁巴伊。在我们的警告以及特工小组的协助下，鲁巴伊得以逮捕部分亲苏的修正主义分子。残余的亲苏分子发觉了鲁巴伊的行动，匆匆拉起一支叛军，但很快被政府军和民兵粉碎。苏联军事基地内的驻军在我们和索马里的军事力量的联合封锁下，无法介入政变，最后整个军事基地都被南也门扣押。阿里·纳赛尔和伊斯梅尔最终被俘，他们被中央委员会设立的特别法庭判处叛国罪和反革命罪，死刑立即执行。亲苏分子完全被清洗，鲁巴伊稳固了他的领导地位。在“统一政治组织——民族阵线”的特别全国代表大会上，该组织被改组为也门共产党，党章加入了毛主义和反对修正主义的词条。会上，总书记萨利姆·鲁巴伊·阿里宣布将加强与中国的合作，这引起了苏联的不满。但鲁巴伊并未提出要驱逐苏联军事基地，因此苏联的不满也仅仅停留在牢骚层面。"
 const TXT_R1 := "1978年6月24日，伊斯梅尔一派策划了加什米遇刺案，企图嫁祸于鲁巴伊。这一事件加速了双方的武力摊牌。1978年6月26日召开的“统一政治组织——民族阵线”中央委员会非常会议上，两派因政见分歧而发生了流血冲突，伊斯梅尔和总理阿里·纳赛尔·穆罕默德在苏联、德意志民主共和国和古巴的支持下发动推翻鲁巴伊的武装政变，动用飞机轰炸鲁巴伊所在的总统府，派军舰封锁了海面，苏联和古巴的军事力量直接介入了冲突。鲁巴伊指挥警卫营进行抵抗，激战16小时。总统府被攻陷后，鲁巴伊失败被俘，被中央委员会设立的“特别法庭”判处死刑，并立即执行。政变后，伊斯梅尔又清洗了残余的鲁巴伊派。在的“统一政治组织——民族阵线”的特别全国代表大会上，该组织被改组为也门社会党，伊斯梅尔当选为该党总书记。会上，伊斯梅尔强调今后将努力“扩大和加强与以苏联为首的社会主义阵营的友好合作关系”。"
@@ -31,10 +27,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	cond = cond and data[W.I_BUDGET] + data[W.I_RESERVE] >= 50 \
 			and data[W.I_AGENTS] >= 50 and data[W.I_INFLUENCE] >= 100
 	if cond:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[1], event_def.options[1].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -86,19 +82,10 @@ func _disable_blank(opt: EventOption) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(idx: int) -> bool:

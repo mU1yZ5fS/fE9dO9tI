@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event361.cs：中国的月球计划——先进任务。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "中国的月球计划——先进任务"
 
-const TXT_DESC := "在我国探测器成功地在月球表面着陆后，科学家们提出了两项更宏伟的任务来探索我们的卫星——一个搭载小型月球车的登陆平台的改进版本，以及一个自动运送月球土壤样本的站点。如果第一个项目是可行的，那么第二个项目就有些困难。事实上，只有苏联进行了这种试验，而且就算是他们，也有一半的设备报废了。发生事故的风险很高，因为第二个任务仍有问题......"
 
 const TXT_OPT0 := "启动两个任务。"
 const TXT_OPT0_DIS := "这太冒险了。"
@@ -70,19 +68,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

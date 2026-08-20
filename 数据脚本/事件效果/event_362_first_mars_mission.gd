@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event362.cs：第一次火星任务。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "第一次火星任务"
 
-const TXT_DESC := "中国很可能执行一次火星任务。问题是，这仅是一次着陆任务，还是我们决定创造一种从未有人尝试过的东西——探测器。当然，这十分复杂，但也能给科学带来难以置信的好处！"
 
 const TXT_OPT0 := "着陆就行。"
 const TXT_OPT0_DIS := "我们没有足够的资源。"
@@ -70,19 +68,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

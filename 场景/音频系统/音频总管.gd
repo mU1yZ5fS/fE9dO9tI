@@ -25,6 +25,9 @@ const _音频扩展名 := [".ogg", ".wav", ".mp3"]
 var 背景音乐播放器: AudioStreamPlayer
 @onready var 按钮按下: AudioStreamPlayer = $按钮按下
 
+## 按钮悬停音效播放器（懒创建，见 play_button_hover_sound）
+var 按钮悬停: AudioStreamPlayer = null
+
 var 专辑目录列表: Array[String] = []      # 每张专辑的文件夹路径
 var 专辑名列表: Array[String] = []        # 文件夹名
 
@@ -221,3 +224,16 @@ func apply_voice() -> void:
 func play_button_click_sound() -> void:
 	if 按钮按下:
 		按钮按下.play()
+
+
+## 按钮悬停音效（click_mouse_over_01.wav；由 按钮特效 autoload 统一触发）。
+## 播放器按需懒创建，路由到「音效」总线。
+func play_button_hover_sound() -> void:
+	if 按钮悬停 == null:
+		按钮悬停 = AudioStreamPlayer.new()
+		按钮悬停.name = "按钮悬停"
+		按钮悬停.bus = "音效"
+		按钮悬停.stream = preload("res://资产/音频/音效/click_mouse_over_01.wav")
+		add_child(按钮悬停)
+	if 按钮悬停:
+		按钮悬停.play()

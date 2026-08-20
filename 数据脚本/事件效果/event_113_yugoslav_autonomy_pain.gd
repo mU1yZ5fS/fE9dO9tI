@@ -8,17 +8,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - data[86] 无 W.I_* 常量 → 直接 d[86] + 注释；result0/2 的 data[86] 读写是局部 no-op，跳过；
 ##  - Vyshi→亲美、isSEV→sev、Torg→对华贸易、dev→development。
 
-const TXT_TITLE := "南斯拉夫社会主义自治的痛苦"
-const TXT_DESC := "主席同志，南斯拉夫传来了糟糕的新闻。由南斯拉夫主席团前主席谢尔盖·克拉伊盖尔（其本人为斯洛文尼亚族，与“社会主义自治政府”理论家爱德华·卡德尔关系密切）领导的所谓“克拉伊盖尔委员会”向南斯拉夫主席团递交了大规模市场经济改革的建议。南斯拉夫在约瑟普·布罗兹·铁托死后陷入困境：科索沃分离主义者叛乱的恶果仍未得到处理、以斯洛文尼亚和克罗地亚为中心的不满正在日益增长并且塞尔维亚的民族主义情绪正在激增。1979年的经济危机更是火上浇油，迫使已经深陷债务泥潭的该国继续贷款。看起来南斯拉夫正在步入深渊……苏联和其他社会主义国家准备为南斯拉夫提供大额财政援助以避免其进行市场改革。我们也可以响应苏联领导人的提议，但一些党员建议发动军事政变，让希望终结“不结盟运动”的将军们上台。另一方面，美国也可以为南斯拉夫提供新的贷款……所以我们该作何选择？"
 
-const TXT_OPT0 := "我们关心南斯拉夫干什么？铁托主义者不是喜欢自力更生吗？那就自己的事情自己做！"
-const TXT_OPT1 := "我们会为南斯拉夫提供重建债务的计划，以阻止改革计划落地（需要5特工网络，需要20百万预算）"
 const TXT_OPT1_DIS := "为什么我们需要重组他们的债务？"
-const TXT_OPT2 := "我们加入苏联的提议"
 const TXT_OPT2_DIS := "我们没有足够的影响力让苏联和南斯拉夫听我们的"
-const TXT_OPT3 := "我们将支持由韦利科·卡迪耶维奇和布兰科·马穆拉领导的一批军人"
 const TXT_OPT3_DIS := "支持军政府？在南斯拉夫？胡说八道！"
-const TXT_OPT4 := "我们加入美国的提议"
 const TXT_OPT4_DIS := "我们没有足够的影响力让美国和南斯拉夫听我们的"
 
 const TXT_R0 := "接任南斯拉夫主席团主席职务的佩塔尔·斯坦鲍利奇（塞尔维亚族）和米尔卡·什皮利亚克（克罗地亚族）都不敢通过克拉伊盖尔委员会的改革提议。南斯拉夫从国际货币基金组织和苏联那里获得了新的贷款，这只不过是南斯拉夫经济再痛苦一段时间罢了……"
@@ -33,7 +26,6 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	event_def.description = TXT_DESC
 	var data := world.数值表
 	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
 	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
@@ -45,21 +37,21 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var relres := world.get_flag("relres")
 	var usa := world.get_country_by_legacy_index(51)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if agents >= 50 and policy_left:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if ((world.influence_prc >= 150 and china_sev) or (relres and world.influence_prc >= 250)) and policy_left:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if world.influence_prc >= 300 and agents >= 50 and ((line < 2 and party < 8) or (coal > 66 and party > 7)):
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 	if (world.influence_prc >= 200 or (usa != null and usa.development > 0)) and agents >= 50 and ((line >= 3 and party < 8) or (coal > 66 and party > 7)):
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
 
@@ -170,16 +162,7 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

@@ -3,11 +3,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event132.cs：主爱圣三一（3 选项）。
 ## 触发：原版未发现自动触发条件（trigger_conditions 为空），疑由未逆向的选举/地图系统手动触发。
 
-const TXT_TITLE := "主爱圣三一"
-const TXT_DESC := "1980年玻利维亚总统选举将于6月29日举行。由于没有候选人获得过半选票，不得不由国民议会从获得最多选票的候选人中选出一位总统。在选举中，公民们必须为这些职位投上一票：总统、副总统、参议员和众议员。投票站计票结果并非最终结果；各省都拥有其“电子表格”，尽管它们没有办法修改选票结果，但它们有权取消投票结果。国会中的对抗主要发生在埃尔南·西莱斯与乌戈·班塞尔·苏亚雷斯之间，而老政客维克托·帕斯·埃斯滕索罗一张选票也没有得到。埃尔南仍是左翼联盟的代表，如果早些时候这个联盟在议会选举中胜选，那么他便能在国会中大获全胜。另一位候选人乌戈·班塞尔来自民族主义民主行动，这是个全国性质的保守党，也是前玻利维亚独裁者的政党。如果右翼保守派从前没有赢得民众的支持，那他也无望获胜。选举结果尚未出炉。"
-const TXT_OPT0 := "埃尔南·西莱斯·祖阿索，左翼革命民族主义运动（民主社会主义）"
-const TXT_OPT1 := "乌戈·班塞尔·苏亚雷斯，民族主义民主行动（新法西斯主义）"
-const TXT_OPT2 := "保持距离"
 const TXT_PROPRC_YES := "新政府决心和我们做朋友。"
 const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_R0 := "上台后，脆弱的玻利维亚民主政权发现自己处于非常困难的社会、经济和政治局势中。在经济上，玻利维亚破产了。此外，恶性通货膨胀（高达27.000%）一飞冲天，破坏了雇员们的购买力，国家因此陷入无政府状态。这种情况要归功于18年来的政变和军事暴力。幸运的是，议会的大力支持让赛卢斯找到了解决问题的答案，因为赛卢斯一直反对暴力，并且从根本上准备只诉诸民主政府的方法。首先，必需品的临时定价机制得以建立，针对工会组织组织群众集会的意图，工会的权利也得到扩大，工人们必须加入工会，并禁止工人在没有工会参与的情况下订立雇佣合同。尽管右翼民族保守派试图阻拦法律通过，新领导层还是实施了这些政策，提高了最低工资，为穷人引入了最低限度的食物保障，政府合约的数量也增多了，以图创造新的就业机会，并发展该国的基础设施。在人民的全力支持下，逃亡的纳粹分子被逮捕，军队中也发生了清洗，包括乌戈·班塞尔在内的先前军事政变的发起者、参与者和共犯都被受到了打击，之后，同谋政变或支持政变的一切政党与运动都被取缔，其本人对过去任何军事政变的支持都等同于刑事犯罪。在国会、人民与工会的支持下，西莱斯开始实施他构建温和的社会主义民主国家的计划。"
@@ -30,19 +25,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _leave_alliances(c: CountryData) -> void:

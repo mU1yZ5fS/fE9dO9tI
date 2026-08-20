@@ -4,12 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：无自动触发点（trigger_conditions=[]）。DiploButtonScript.cs:9260-9264 this_type==35 手动 number_event=445。
 ## 差异：stab→stab（CountryData.stab）；isSEV→sev、prosov→亲苏、proprc→亲中；prcpower→prc_power。
 
-const TXT_TITLE := "老挝的命运"
 
-const TXT_DESC := "由于越南亲华派的上位，越南调整了对外关系，对老挝的援助任务现在落到了我们头上。也许我们应该重新审视老挝同越南和我们的关系，让他们适当调整政策以和我们步调一致，或者我们可以先把精力放在别处：毕竟，越南和柬埔寨已经确定和我们步调一致。"
 
-const TXT_OPT0 := "向老挝政府施压以建立关系"
-const TXT_OPT1 := "我们稍后再议"
 
 const TXT_R0 := "在我们和越南的施压下，凯山·丰威汉承认在过去他的政策“有重大的失误”后辞去了老挝人民革命党总书记和政府总理的的职务，仅保留了政治局委员职务。苏发努冯被选为新的老挝人民革命党总书记和政府总理，富米·冯维希当选为新的老挝国家主席和最高人民议会主席。老挝新领导层同我们和越南重新签订了合作协议。原本老挝政府中大量的越南顾问撤回了越南国内；同时，我们给老挝发放了大批无息贷款，转让了一批工业设施，他们的社会主义经济正在稳步发展。"
 const TXT_R1 := "有了越南，我们已经在中南半岛有了立足之地，所以我们可以先把目光放在别处，暂时不管老挝的事......"
@@ -66,19 +62,10 @@ func _disable_blank(opt: EventOption) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(idx: int) -> bool:

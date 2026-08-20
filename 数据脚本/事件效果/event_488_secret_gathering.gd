@@ -8,18 +8,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - isSEV/isOVD/prosov/Torg/proprc → has_tag/set_tag；parts[0] 用 _set_part 置位；
 ##  - modifies[53].active = false → modifiers[53].is_active = false。
 
-const TXT_TITLE := "秘密集结"
 
-const TXT_DESC := "我们在波兰与匈牙利的同志传来了有趣的消息。由于国际局势风云突变，民主德国领导层苦心构建的“社会主义橱窗”正处于濒临违约的境地。众所周知，民主德国的社会主义之路从一开始便坎坷非常。出于构建欧洲集体安全体系的需要，苏联领导层曾将民主德国视为东方集团内可有可无的阑尾：前者不仅以民主德国“是否实行社会主义”作为同西方联盟议价筹建中立德国的筹码，更通过将富庶的西里西亚工业区划归波兰，实施大规模人口迁徙政策与严厉的战争赔偿削弱了经济潜力。且作为民主德国国内根基的德国统一社会党亦在合并后长期呈现为“名义共产党，实际社会民主党”的特质，并在《1949年宪法》中将自身的政治目标限定为民族统一与和平民主上。直到德国分立局面已成定局时，民德的社会主义才得以步入快车道，而这恰是另一个悲剧的开始：脆弱的产业基础，尚未为社会化经济做好准备的现状同瓦尔特·乌布利希的狂飙突进愿景交织一致直接导致了动摇国本的6月事变，至此奠定了该国先天不足的政治困境。而东德当局试图打破这一困局的尝试则在苏东阵营改革的背景下转向柯西金主义变体——即乌布利希先后主张的“新经济体系”与“社会主义经济体系”，计划在扩充国营部门的同时以委任技术官僚，强化经济核算并实现经济自动化的方式取得对联邦德国的经济优势，最终确立社会主义议程对德国的领导权。然而，计划内的“大跃进”最终只是重复了早在第三世界发生的一切。最终让乌布利希为埃里希·昂纳克所取代，不同于习惯在国际指挥棒下点头哈腰的乌布利希；后者直接扎根于德国本土的青年共产主义运动，并在战争结束后多少继承了“老斯巴达克”的些许气息：他将民主德国的政治前途锚定在“创造新社会体制”与“满足人民福祉”两大目标上，并借此开启了产业国有化、社会立法的自由化与兴建福利国家的议程。尝试与德国的草根阶级建立战略同盟。可考虑到民主德国的不稳定经济基础，这一计划自然得仰赖“特别赞助”：借助主管经济的二号人物君特·米塔格的手笔，该国得以从其波恩兄弟处获取巨额秘密贷款，并借此实现对于民众的收买政策：可在西德强硬派上台，拒绝继续奉行“以贸促变”政策；乃至苏联对该国态度亦转向“切割阑尾”的背景下。民主德国本身的局势便愈加焦灼。倘若无法立即提出替代性政治解决方案，6月政变再演不过是时间问题……不过考虑到混乱即阶梯，我们说不定能借用这一机会，将社会主义阵营的孤儿给收入囊中？"
 
-const TXT_OPT0 := "患难见真情，我们将成为名副其实的“老大哥”，今后“红色威丁”将不会被出卖！"
-const TXT_OPT1 := "想想老朋友的经验，德国人应试试紧缩政策和与之配套的罗马尼亚方案！"
 const TXT_OPT1_DIS := "兵营社会主义不是我们的政策"
-const TXT_OPT2 := "经济问题仅能通过经济方案解决，民主德国是时候迎来改革重组了！"
 const TXT_OPT2_DIS := "乌布利希的失败足以证明，德国不需要所谓“改革重组”"
-const TXT_OPT3 := "借助民主德国的政治失败煽动民粹主义，并寻找统社党内部代理人策动政变！"
 const TXT_OPT3_DIS := "我们没必要和党阀狼狈为奸"
-const TXT_OPT4 := "既然民主德国人喜欢说我们仍在这里，那我们就瞧瞧看……"
 
 const TXT_R0_INTRO := "我们决定向苏东政权的另类保守派抛出橄榄枝，并向其展示何为“真正的社会主义”议程。作为重振民主德国社会主义计划的一部分。我们将承担该国在“两德密约”期间的所有外债，并为民主德国企业提供慷慨的技术转让与特别资金支持以重振该国生产。当然，民主德国方亦需要拿出解决该国社会主义内“三大障碍”的相应诚意：将以柏林地区第一书记康拉德·瑙曼为代表的强硬派政治路线全面引入当前政治议程（借助同该国工人与基层人民的广泛联系，瑙曼得以将自身塑造为人民领袖，并同该国越加无法代表“劳动群众需求”的老朽官员与拥抱精英主义的文化界人士泾渭分明）；在道德激励与大众动员的基础上重塑该国经济-社会体系；以及在外交上同步实现“经济与社会体制的步调一致”——这不仅意味着拒绝同联邦德国的勾肩搭背，更要同对德国社会主义事业叶公好龙的苏联集团完全分离。\n"
 
@@ -84,20 +77,20 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var econ := world.数值表[W.I_ECON_SYSTEM] if world.数值表.size() > W.I_ECON_SYSTEM else 11
 	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if china != null and china.government <= 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if (china != null and (china.government == 2 or china.government == 3)) or econ >= 13:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if line > 1:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
-	_enable(opt[4], TXT_OPT4)
+	_enable(opt[4], event_def.options[4].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -267,16 +260,7 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta

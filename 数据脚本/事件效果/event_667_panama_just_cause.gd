@@ -101,9 +101,6 @@ func _enable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = null
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
 func _set_part(country: CountryData, index: int, value: bool) -> void:

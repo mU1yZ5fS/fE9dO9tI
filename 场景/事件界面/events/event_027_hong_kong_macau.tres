@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" path="res://数据脚本/event_option.gd" id="1_option"]
-[ext_resource type="Script" path="res://数据脚本/effect_node.gd" id="2_effect"]
-[ext_resource type="Script" path="res://数据脚本/event_def.gd" id="3_event"]
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="3_event"]
 [ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="4_custom"]
 
 [sub_resource type="Resource" id="Effect_custom"]

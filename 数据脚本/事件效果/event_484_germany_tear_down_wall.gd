@@ -153,14 +153,6 @@ func _set_mod_active(idx: int, active: bool) -> void:
 		ws.modifiers[idx].is_active = active
 
 
-func _leave_alliances(c: CountryData) -> void:
-	if c == null:
-		return
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
 
 func _join_our_alliances(c: CountryData) -> void:

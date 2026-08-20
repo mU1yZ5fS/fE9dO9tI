@@ -14,10 +14,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##    为 display-only，跳过并注释；
 ##  - isBALECON→set_tag("balecon", false)；Torg/proprc/econ/okb 循环按严格社会主义清标签。
 
-const TXT_TITLE := "奥林匹斯山的诸神们"
-const TXT_DESC := "主席同志，我国的革命航船又一次找到了掌舵人，也就是您。是时候让我们再在全球掀起革命的惊涛骇浪了，我们的朋友不可谓不是遍天下，其中既有罗马尼亚的天才，朝鲜半岛上不落的太阳。也有诸如俄罗斯的民族共产主义者，安第斯的原住民运动，法国的莫拉斯—毛主义者等苦苦挣扎的革命战友。为此，外联部和外交部的同志建议我们组建一个伞型的国际性合作组织。当然，决定权在您的手上。"
-const TXT_OPT0 := "天下大势，浩浩汤汤，顺之者昌，逆之者亡"
-const TXT_OPT1 := "这是不是有点太疯狂了？"
 const TXT_R0 := "在钓鱼台国宾馆，中央举行了一场别开生面的宴席。与会人员除了长袖善舞的尼古拉·齐奥塞斯库同志，我们长久以来的盟友金日成同志。更有新鲜的面孔：秘鲁的艾萨克·乌马拉，法国的毛-莫拉斯主义者，津巴布韦非洲民族联盟的罗伯特·穆加贝，非洲人国民大会的温妮·曼德拉代替其丈夫出席了宴会。{0}诸如霍亨索伦，哈布斯堡和波拿巴家族都收到了请柬（当然他们没有与会，我们深表遗憾）。会上，华国锋同志强调了西方世界的腐朽堕落，痛心疾首的批判欧洲国家背弃了前人所指出的明路。就在这时，与会的代表突然举手发言，高声欢呼中国革命经验的年轻与活力，同时感谢了我国对各国的革命者们提供各种程度上的支持，并欢呼我国的革命事业又一次取得了伟大胜利。各国革命者的代表们投以热烈的掌声，并纷纷在这一划时代的《北京协议》上签下了自己的名字。这份协议不仅是新生的礼炮，更是腐朽的旧秩序的丧钟。\n西方堕落国家和那些自以为正统的“左派”对我们的“倒行逆施”大加鞭笞，称其为新时代的梅特涅同盟。在部分欧洲国家甚至发生了有组织的针对华裔社区的抢劫，而我们都知道暴徒的背后是邪恶的资本主义旧秩序。这更展示了欧罗巴的堕落与野蛮，他们也没有资格成为什么世界秩序的缔造者了。既然如此，那就让他们羡慕我们好了，我们的战友遍天下，我们的英名将传遍四方。过去，现在和未来都掌握在我们手中。就让我们从他们手中夺走这个世界，把它砸个粉碎，缔造属于我们的新秩序！"
 const TXT_R0_IRAQ := "伊拉克总统萨达姆·侯赛因的心腹，阿比德·哈米德·马哈茂德·提克里提代表阿拉伯复兴社会党（伊拉克支部）参加了此次会议。他对会上所提及的一些内容非常感兴趣，称可能会有适用于伊拉克国情的部分。"
 const TXT_R1 := "大雨让野餐的计划泡汤了。"
@@ -182,9 +178,6 @@ func _set_modifier_active(index: int, value: bool) -> void:
 		ws.modifiers[index].is_active = value
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -192,6 +185,3 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)

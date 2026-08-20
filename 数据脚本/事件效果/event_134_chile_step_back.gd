@@ -3,11 +3,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event134.cs：进一步，退两步（3 选项）。
 ## 触发：原版未发现自动触发条件（trigger_conditions 为空），疑由未逆向的选举/地图系统手动触发。
 
-const TXT_TITLE := "进一步，退两步"
-const TXT_DESC := "皮诺切特将军领导的智利军政府正在逐步瓦解。国内，左翼激进分子分子对其展开游击斗争，反对派民主联盟（AD）与人民民主运动（PDM）正逐步扩张影响力；国外，苏联与古巴源源不断向反对派提供援助，甚至美国也因为军政府的法西斯化立场停止支持皮诺切特，施压皮诺切特迫使其退出政坛，从而恢复文官统治；1979年的经济危机更是加剧了民众的贫困，激发了人民对皮诺切特的反对情绪。这种情况下，皮诺切特和他的首席理论家海梅·古兹曼决定逐步放开体制：军政府将在1990年还政于文官政府、恢复国家议会活动、举行多党制议会选举与总统选举。据我方情报部门报告，现在只有仓促成立的四个亲军方政党，两个中左翼，两个中右翼，被允许参加选举。皮诺切特本人和御用反对派安东尼奥·扎莫拉诺提名为总统候选人。但现在反对派的声势不同往日，形势也许有所变化......"
-const TXT_OPT0 := "刺杀皮诺切特（马列主义）"
-const TXT_OPT1 := "促使权力由皮诺切特向温和的埃尔南·布奇过渡（自由主义）"
-const TXT_OPT2 := "保持距离"
 const TXT_PROPRC_YES := "新政府决心和我们做朋友。"
 const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_OPT0_DIS := "智利的地下武装力量还不够强大！"
@@ -26,14 +21,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if world.empires.size() > EmpireData.USSR and world.empires[EmpireData.USSR] != null:
 		ussr_rel = world.empires[EmpireData.USSR].relations
 	if ev133 == 1 and (world.get_flag("relres") or ussr_rel >= 800):
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if ev133 < 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], event_def.options[2].text)
 
 
 func _enable(opt: EventOption, text: String) -> void:
@@ -52,19 +47,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _leave_alliances(c: CountryData) -> void:

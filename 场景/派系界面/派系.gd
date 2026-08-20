@@ -598,7 +598,6 @@ func _on_policy_tab(cat_name: String) -> void:
 	_set_visible("右栏条件显示", _当前类别 != "")
 	if _当前类别 != "":
 		_refresh_policy_panel(_当前类别)
-	音频总管.play_button_click_sound()
 
 
 func _refresh_policy_panel(cat_name: String) -> void:
@@ -653,7 +652,6 @@ func _on_policy_slot(cat_name: String, slot_idx: int) -> void:
 		return
 	if GameManager.change_policy(int(政策类别[cat_name]["idx"]), target_val):
 		_refresh()
-		音频总管.play_button_click_sound()
 
 
 ## 常驻 4 条件文案（原版 uslovie_text[0..3] 逐字，含空格排版）。
@@ -719,20 +717,17 @@ func _on_faction_support(button_pressed: bool, faction_idx: int, is_support: boo
 func _on_birth_policy(policy_idx: int) -> void:
 	GameManager.set_birth_policy(policy_idx)
 	_refresh()
-	音频总管.play_button_click_sound()
 
 
 # ── 选举 / 演讲 / 同盟按钮（原版 ElectScript / speechscript）──
 
 func _on_manual_election() -> void:
 	if GameManager.manual_election():
-		音频总管.play_button_click_sound()
 		_refresh()
 
 
 func _on_manual_speech() -> void:
 	if GameManager.manual_speech():
-		音频总管.play_button_click_sound()
 		_refresh()
 
 
@@ -741,4 +736,3 @@ func _on_alliance_event(event_id: String) -> void:
 	if not GameManager.can_manual_alliance(is_military):
 		return
 	GameManager.start_event(event_id)
-	音频总管.play_button_click_sound()

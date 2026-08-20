@@ -8,14 +8,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 原版 politics 循环 → ws.politicians，traits[0] → trait_personality；
 ##  - 原版 guns 字段端口建模说明，按 ws.get_flag("guns") 处理（默认 false）。
 
-const TXT_TITLE := "肝胆相照"
-const TXT_DESC := "70年代时，朝鲜的主体思想还处于萌芽阶段，并以“金日成主义”的名字示人。朝鲜意识形态理论家以双层嵌套逻辑为该意识形态镀金：首先是证明斯大林派的马克思主义诠释是马克思列宁主义理论的唯一范本，其次便将金日成主义称为朝鲜化的斯大林式马列主义。金日成本身也被冠以“我们时代最伟大的马列主义者”之名。然而到了20世纪80年代，一切都变了：主体思想已经找齐了属于自己的“专有名词”，终于得以同马列主义分道扬镳，从而自成一派。\n这些年来，金日成发表了大量有关主体思想的文章，最终形成了一个哲学体系。而身为他长子与继承人的金正日，则完成了他父亲的工作，得以将体系转为概括。在金正日于1982年所作的《论主体思想》一文中，他提出了主体思想的主要原则与相关推论。\n然而，并不是每个人都能接受这种明目张胆的意识形态修正：一些党员认为，主体思想充其量不过是一种有朝鲜民族特色的马列主义，而另一部分党员认为主体已经成为了某种逐步远离马克思主义基本原则的修正主义理论，同建立人民政府与反对传统主义、官僚主义的原则渐行渐远。而最激进的马克思主义哲学家则公开宣称主体思想就是种披着左翼外衣的儒家思想与韩国传统宗教天道教的大杂烩。\n那么，作为朝鲜民主主义人民共和国邻居与长期合作伙伴的我们，究竟该如何回应呢？"
-const TXT_OPT0 := "为朝鲜同志在马克思主义观点上的新创见欢呼"
-const TXT_OPT1 := "主体思想不过是一类修正主义变种，我们得给朝鲜点苦头尝尝"
-const TXT_OPT2 := "对朝鲜用兵，推翻这一残暴的独裁政权（需要25.0点{2}）"
-const TXT_OPT3 := "朝鲜已经不能被看作朋友，我们将增进同韩国的关系，他们是更好的生意伙伴"
-const TXT_OPT4 := "以制裁威胁朝鲜当局放弃修正主义（需要10.0点{1}）"
-const TXT_OPT5 := "我们怎么能干涉他国的内政？按兵不动"
 const TXT_DIS_IDEOLOGY := "国家体制必须比社会民主主义更激进......"
 const TXT_DIS_NO_ALLIANCE := "我们还没有属于自己的军事联盟......"
 const TXT_DIS_NK_ALLIANCE := "朝鲜是我们的盟友！"
@@ -53,16 +45,16 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var skorea := world.get_country_by_legacy_index(46)
 	var opt := event_def.options
 	if _d(W.I_IDEOLOGY) < 4:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_DIS_IDEOLOGY)
 	if _d(W.I_IDEOLOGY) < 4:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_DIS_IDEOLOGY)
 	var mod6: bool = ws.modifiers.size() > 6 and ws.modifiers[6] != null and ws.modifiers[6].is_active
 	if china != null and (china.has_tag("okb") or china.has_tag("seato")) 			and nkorea != null and not nkorea.has_tag("okb") and _d(W.I_ARMY) >= 250 			and (mod6 and GameManager.is_faction_leading(0) or (china != null and china.government == 3)):
-		_enable(opt[2], TXT_OPT2.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[2], event_def.options[2].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif china == null or (not china.has_tag("okb") and not china.has_tag("seato")):
 		_disable(opt[2], TXT_DIS_NO_ALLIANCE)
 	elif nkorea != null and nkorea.has_tag("okb"):
@@ -79,7 +71,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[2], TXT_DIS_GOV)
 	if skorea != null and not skorea.has_tag("对华贸易") and (_d(W.I_ECON_SYSTEM) > 13 or _d(W.I_IDEOLOGY) >= 4):
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	elif skorea != null and skorea.has_tag("对华贸易"):
 		_disable(opt[3], TXT_DIS_KOREA_TRADE)
 	elif _d(W.I_ECON_SYSTEM) <= 13:
@@ -87,14 +79,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[3], TXT_DIS_GOV2)
 	if china != null and china.has_tag("sev") and _d(W.I_AGENTS) >= 100:
-		_enable(opt[4], TXT_OPT4.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt[4], event_def.options[4].text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif china == null or not china.has_tag("sev"):
 		_disable(opt[4], TXT_DIS_SEV)
 	elif china != null and china.sub_government != 16:
 		_disable(opt[4], TXT_DIS_SUB)
 	else:
 		_disable(opt[4], TXT_DIS_AGENTS.format([15]))
-	_enable(opt[5], TXT_OPT5)
+	_enable(opt[5], event_def.options[5].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -225,9 +217,6 @@ func _establish_government(c: CountryData, kind: String) -> void:
 		c.set_tag("亲美", false)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -236,14 +225,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

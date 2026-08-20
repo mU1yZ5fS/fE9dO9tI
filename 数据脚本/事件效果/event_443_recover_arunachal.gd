@@ -4,11 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：无自动触发点（trigger_conditions=[]）。TimeScript.cs:2866-2875 中印战争（war==2）胜利分支手动 number_event=443。
 ## 差异：CBIndia→ws.set_flag("cb_india", false)。
 
-const TXT_TITLE := "收复藏南！"
 
-const TXT_DESC := "我们最终结束了与印度长期存在的领土争端——我们对印度迅速而具有决定性的特别军事行动使得藏南地区（即伪阿鲁纳恰尔邦）完整的回归中国！"
 
-const TXT_OPT0 := "庆祝藏南的回归！"
 
 const TXT_R0 := "在解放军的猛烈攻势下，印度军队终究没能守得住战线，开始溃退。解放军在挺进到地图上的国境线后便不再有大规模军事行动，而是开通新的稳定补给路线。印度东北部地区则出现了大规模的叛乱，印度因此忙于平叛，无暇顾及藏南地区。由于这次印军的失利，该届印度政府垮台，新一届的印度政府开始进一步反华，更加亲美亲苏，与美苏订立了更多的军事订单，可能会在中印边境开展新一轮的边境冲突......"
 
@@ -54,19 +51,10 @@ func _disable_blank(opt: EventOption) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(idx: int) -> bool:

@@ -3,13 +3,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event565.cs：滚出去，阿萨德（叙利亚内战，3选项）。
 ## 触发：无自动触发（Event564 结果1 后 EventEngine.enqueue_chain 承接）。
 
-const TXT_TITLE := "滚出去，阿萨德"
-const TXT_DESC := "得益于我们之前的行动，部分叙利亚库尔德组织，伊斯兰主义者，自由主义者与左派被联合起来组成了解放叙利亚全国同盟，在我们特勤的帮助下，1980年6月27日在招待马里总统的正式国宴上，数名被安插进去的反对派分子成功刺杀了阿萨德。阿萨德之死彻底使得叙利亚局势变得更加动乱，解放叙利亚全国同盟借此机会拿着我们支援的武器发动了起义。继任的里法特·阿萨德宣布与中国断交，并寻求苏联的支持来镇压叛乱。\n在内战爆发之后，由于解放叙利亚全国同盟内部信仰的巨大差异使得反对派的联合不可避免的瓦解了。反对派们分裂成以圣战者战斗先锋队（穆斯林兄弟会中的强硬分支）为首的极端伊斯兰主义者，民族进步阵线的反对派组成的民族民主大会（以阿拉伯社会主义和科学社会主义者为主），以及以叙利亚第二共和国时期的遗老为首的自由主义者和穆兄会组成的叙利亚自由联盟这三大派别。现在到了选择的时候了。"
-const TXT_OPT0 := "支持伊斯兰主义者"
 const TXT_OPT0_DIS := "为什么要支持一群神棍？"
-const TXT_OPT1 := "支持民族民主大会"
 const TXT_OPT1_DIS := "他们不会听我们的"
-const TXT_OPT2 := "支持叙利亚自由联盟"
 const TXT_OPT2_DIS := "绝不支持自由主义者！"
 const TXT_R0 := "在我们的支持下，以圣战者战斗先锋队为首的极端伊斯兰主义者很快将左派和民主派分子处理掉，并宣布将对复兴社会党世俗主义政权发动圣战。"
 const TXT_R1 := "在我们的支持下，由库尔德工人党叙利亚支部，阿拉伯社会主义者和共产主义者组织起来的民族民主大会迅速平定了伊斯兰主义者和民主派的叛乱，并开始向背叛革命的阿萨德政府进行进攻。"
@@ -23,15 +18,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var c8 := world.get_country_by_legacy_index(8)
 	if ws.influence_prc >= 500 and d[W.I_WAR_SUPPORT] >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != 13:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if d[W.I_POLITICAL_LINE] <= 2:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if d[W.I_POLITICAL_LINE] > 1:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 

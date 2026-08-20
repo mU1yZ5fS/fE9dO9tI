@@ -5,14 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：原版按条件 Destroy(button[i])；Godot 用 _disable 灰显同义。
 ##   cw→内战中、Gosstroy/SubGosstroy→government/sub_government、Torg/proprc→标签、name→chinese_name。
 
-const TXT_TITLE := "一份爱，一份和平"
-const TXT_DESC := "自1943年以来，右翼亲美的牙买加工党（JLP）和左翼亲古巴的人民民族党（PNP）之间的斗争就十分激烈，尤其到了1962年牙买加独立之后，两大党派所支持的帮派开始在街头互殴敌对方的支持者，政治暴力逐渐升级到开始刺杀政治人物。由于忍受不了长期的政治暴力，来自JLP和PNP的两名帮派头目决定组织“一份爱，一份和平”（onelovepeace）演唱会来进行政治和解，以求结束政治暴力。曾于参与1976年“微笑牙买加”演唱会的泛非主义支持者和雷鬼乐（牙买加音乐的一种）鼻祖鲍勃·马利应邀参与表演。\n按照牙买加的政治，两年之后牙买加将会再次进行大选，如果我们之前有邀请过雷鬼乐歌手访华的话，我们或许可以提前为牙买加的选举铺路，不论是支持牙买加工党，还是支持人民民族党亦或者趁机帮助两党进行政治上的和解。总之，选择权在你。"
-const TXT_OPT0 := "收买牙买加工党的帮派"
 const TXT_OPT0_DIS := "我们在当地没有如此巨大的影响力"
-const TXT_OPT1 := "收买人民民族党的帮派"
-const TXT_OPT2 := "促进政治和解"
-const TXT_OPT3 := "额，牙买加？"
-const TXT_OPT4 := "让这帮伪善者见鬼去吧，与其二选一还不如指望拉斯塔法里教徒来治国"
 const TXT_OPT4_DIS := "额……他们是不是大烟抽多了？"
 const TXT_R0 := "在演唱会开始前几天，一伙自称是支持牙买加工党的帮派对鲍勃·马利进行了一次刺杀，由于伤势较轻，马利依旧坚持着参与演唱会。此次演唱会汇集了16场雷鬼音乐最盛大的表演，被媒体称为“第三世界的伍德斯托克音乐节”、“鲍勃·马利为和平而唱”，更简略点“鲍勃·马利回来了”。这场演唱会吸引了超过32,000名观众，演出收益将用于“西金斯敦平民急需的卫生设施和住房”。演唱会于下午5：00开始，前埃塞俄比亚王储阿斯法·沃森发表了致辞，赞扬了演唱会组织者为恢复牙买加和平所做的努力。演唱会的后半场，鲍勃·马利将迈克尔·曼利和爱德华·西加都叫到舞台上，三人一起举起双手以表示他们的团结。然而，这场演唱会并没有平息政治暴力，组织这次演唱会的两位帮派头目在之后两年内均遭杀害，在1980年这一牙买加的选举年内发生的谋杀案比1979年多了一倍。由于牙买加工党的帮派的刺杀举动导致牙买加工党支持率有所下降。"
 const TXT_R1 := "在演唱会开始前几天，一伙自称是支持人民民族党的帮派对鲍勃·马利进行了一次刺杀，由于伤势较轻，马利依旧坚持着参与演唱会。此次演唱会汇集了16场雷鬼音乐最盛大的表演，被媒体称为“第三世界的伍德斯托克音乐节”、“鲍勃·马利为和平而唱”，更简略点“鲍勃·马利回来了”。这场演唱会吸引了超过32,000名观众，演出收益将用于“西金斯敦平民急需的卫生设施和住房”。演唱会于下午5：00开始，前埃塞俄比亚王储阿斯法·沃森发表了致辞，赞扬了演唱会组织者为恢复牙买加和平所做的努力。演唱会的后半场，鲍勃·马利将迈克尔·曼利和爱德华·西加都叫到舞台上，三人一起举起双手以表示他们的团结。然而，这场演唱会并没有平息政治暴力，组织这次演唱会的两位帮派头目在之后两年内均遭杀害，在1980年这一牙买加的选举年内发生的谋杀案比1979年多了一倍。由于人民民族党的帮派的刺杀举动导致人民民族党支持率有所下降。"
@@ -32,20 +25,20 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		and _res(W.I_AGENTS) >= 2500 and _res(W.I_ARMY) >= 2500
 	var opt := event_def.options
 	if line < 3 and cw:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line > 1 and cw:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT0_DIS)
 	if cw:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT0_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 	if cw and rich:
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
 

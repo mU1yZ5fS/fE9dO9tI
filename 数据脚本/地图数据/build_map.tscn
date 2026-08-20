@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://数据脚本/地图数据/build_map_runtime.gd" id="1_7nqg3"]
+
+[node name="root" type="Node" unique_id=188354720]
+script = ExtResource("1_7nqg3")

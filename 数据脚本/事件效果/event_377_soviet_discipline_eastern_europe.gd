@@ -10,14 +10,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - ingamewars[22].usa_place → WarData.usa_side（c51 对华贸易时置 0）；
 ##  - war 22 覆盖 name_war/fortnight_max。
 
-const TXT_TITLE := "苏联“老大哥”教训“小弟”"
 const TXT_DESC_FMT := "主席阁下！不可思议的事情发生了！苏联领导人格里戈里·罗曼诺夫宣称“反革命势力沉渣泛起，再度威胁到了友爱团结的社会主义阵营”，且它们“正准备在华沙条约组织成员国内组织反共反苏政变”。因此，格里戈里·罗曼诺夫将以“将社会主义兄弟从帝国主义分子手中解放”为由，向下述各国派出军队，对其进行政府改组：{1}\n苏联事实上已有派兵干涉苏东集团各国内政的先例，但如此大规模的军事行动还是闻所未闻！介于目前的局势，我们必须对此做些什么，但欧洲距离中国太遥远，我们又能怎么做呢？"
 const TXT_LIST_5 := "波兰、罗马尼亚、匈牙利与蒙古"
 const TXT_LIST_5B := "波兰、罗马尼亚、匈牙利、保加利亚与蒙古"
 const TXT_LIST_4 := "波兰、罗马尼亚与匈牙利"
 const TXT_LIST_4B := "波兰、罗马尼亚、匈牙利与保加利亚"
-const TXT_OPT0 := "我们不得不咽下苦果......"
-const TXT_OPT1 := "谴责苏联社会帝国主义政策！"
 const TXT_OPT2_RELRES := "与苏联断交，并让他们尝尝“第二次珍宝岛冲突”！（需要75.0点{2}）"
 const TXT_OPT2_NORELRES := "让他们尝尝“第二次珍宝岛冲突”！（需要75.0点{2}）"
 const TXT_DIS_INFLUENCE := "中国的国际影响力应高于{0}......"
@@ -57,8 +54,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		event_def.description = TXT_DESC_FMT.format(["\n", TXT_LIST_4B])
 	else:
 		event_def.description = TXT_DESC_FMT.format(["\n", TXT_LIST_4])
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
 	var relres: bool = world.get_flag("relres")
 	var war22 := world.wars[22] if world.wars.size() > 22 else null
 	if relres and world.influence_prc >= 750 and _d(W.I_ARMY) >= 750 			and GameManager.is_faction_leading(0) 			and (war22 == null or not war22.is_going) and _d(133) == 0:  # 原版 data[133]
@@ -176,9 +173,6 @@ func _establish_government(c: CountryData, kind: String) -> void:
 		c.set_tag("亲美", false)
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -187,14 +181,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

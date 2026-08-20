@@ -5,9 +5,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && resultOfEvents[618]!=1 && resultOfEvents[618]!=2。
 ## 差异：描述按 c66.puppet_of==21 动态插入“和法国外籍兵团”；AmericanSupportAttacker→usa_side=0。
 
-const TXT_TITLE := "四月九日的复仇"
-const TXT_DESC := "这一次，在我方和非洲盟友的支援下，喀麦隆人民联盟得以重整旗鼓，再一次发动起工人、农民和广大爱国群众，在全国各地掀起了人民战争的燎原之火，扩充了根据地和游击区，有了足够的势力同喀麦隆当局抗衡。在农村，喀麦隆人民联盟和喀麦隆民族解放军通过土地斗争，争取了大批农民支持；在城市，UPC的地下组织通过工人运动，同JOSE配合进行城市游击战，打击统治阶级和国家机器。斗争已经来到关键的地方，喀麦隆政府宣布国家进入紧急状态。"
-const TXT_OPT0 := "帝国主义滚出非洲去！"
 const TXT_R0_A := "依托于地下网络，UPC已经在城市中组织起总罢工和工人民兵部队，和JOSE的城市游击队一起发动起义同喀麦隆民族解放军配合作战。政府军"
 const TXT_R0_MID := "和法国外籍兵团"
 const TXT_R0_B := "采取了同上次一样的措施，大规模暴力镇压革命分子。第二次喀麦隆战争就此打响。"
@@ -37,17 +34,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

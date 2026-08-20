@@ -6,13 +6,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：文本取自 Events_text_en.txt:1636-1643；Gosstroy/SubGosstroy→government/sub_government；
 ##   puppetOf→puppet_of（原版序号 85=意大利，99=厄立特里亚）；Torg→对华贸易。
 
-const TXT_TITLE := "小罗马"
 
-const TXT_DESC := "20世纪30年代末，意大利人便已通过改造当地基础设施，兴建各类建筑，从而将厄立特里亚的首都阿斯马拉成功打造为了“小罗马”。今天，阿斯马拉的基建仍延续意大利殖民地时代的原汁原味，其商店名字也是照搬的意大利名。例如“维多利亚酒吧”（BarVittoria）、“现代风糕点店”（Pasticceriamoderna）、“奶酪作坊”（Casadelfromaggio）与“五金店”（Ferramenta）。意大利披萨已经成为了无处不在的日常菜，并在当地打出了名气。在厄立特里亚人领导的独立战争已过去半年的背景下，新秩序民族革命先锋治下的意大利政府决定重返当地。尽管遭到联合国与苏联的抗议，意大利还是与厄立特里亚签订了新发展协定：作为交换意大利对当地的二度投资，包括改建道路、翻修建筑、大兴基建与提供军事援助的筹码；厄立特里亚承诺将为意大利企业开采当地资源提供税收优惠，以及49年的特许经营权。"
 
-const TXT_OPT0 := "谴责意大利新帝国主义死灰复燃"
-const TXT_OPT1 := "立即向埃塞俄比亚提供援助"
-const TXT_OPT2 := "向厄立特里亚提供援助，以交换关税减免"
 
 const TXT_R0 := "我们强烈谴责意大利帝国主义行径与其对非洲的新殖民主义政策，然而，我们的批判对意大利人来说不痛不痒，他们仍继续实行其掠夺性政策。据称。阿斯马拉当局已经接收到了第一批意援武器与相关军事顾问。"
 const TXT_R1 := "出于反对意大利帝国主义行径与其对非洲的新殖民主义政策的需要。我们向埃塞俄比亚政府送去了额外的武器与粮食援助，希望这些物资能够协助其对抗意大利人。于此同时，阿斯马拉当局已经接收到了第一批意援武器与相关军事顾问。"
@@ -98,19 +93,10 @@ func _disable_blank(opt: EventOption) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(idx: int) -> bool:

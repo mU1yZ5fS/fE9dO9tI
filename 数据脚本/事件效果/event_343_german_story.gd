@@ -8,7 +8,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - is_gkchp 端口建模说明 → 用 global_flags 同名键近似（项目既有约定）。
 ##  - 原版 GameObject.Find("Ach(Clone)") 是死代码，移植说明。
 
-const TXT_TITLE := "德国——民主德国的故事"
 
 # 原版 GameObject.Find("Ach(Clone)") 死代码字符串（仅保留原文供溯源）：
 # Ach(Clone)
@@ -49,7 +48,6 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null:
 		return
-	event_def.title = TXT_TITLE
 	event_def.description = _text_of_ending(world)
 
 

@@ -4,20 +4,14 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:317-319 —— allcountries[8].SubGosstroy==8
 ##   && DATE_AFTER 1979.11.4；fire_only_once 承担 !event_done[455]。
 
-const TXT_TITLE := "伊朗人质危机"
-const TXT_DESC := "在过去的数十年来，伊朗的沙阿一直是美国在中东坚定的盟友，但是1979年的伊朗革命却打断了这一切，原本美国希望尝试向伊朗新政府建立关系，但是1979年10月，巴列维前往美国治疗淋巴瘤，此事激怒了伊朗的革命者。更加坐实了其“美国人的走狗”这一称号。\n1979年11月4日，大约有500名自称“伊玛目的门徒”的伊朗学生占领了使馆的主体建筑。一部分伊朗人民党党员也宣布支持“杂碎帝国主义余孽”的行为。从而加入了对大使馆的占领。为避免引起更大的纷争，美国海军陆战队卫兵只进行了象征性抵抗，而使馆馆员不得不破坏通讯设备并将敏感的档案文件予以销毁。在90名使馆人员中，有66名被扣，其中有3人是在伊朗外交部所俘。暴乱人群还对外界展示了从使馆获得的密文，其中有些此前已透过美方的碎纸机破坏，后来又由革命军拼接起来。虽然人质的处境还算不错，但他们时常会被蒙上眼睛带到当地人和电视镜头前。\n伊朗政府对此事表默认支持，部分革命卫队甚至加入了抗议群众。美国总统吉米·卡特已宣布对伊朗进行制裁。主席同志，我们怎么办？"
-const TXT_OPT0 := "安抚伊朗人，勒令其放人"
 const TXT_OPT0_DIS_A := "我们宁愿支持伊朗人也不帮帝国主义者！"
 const TXT_OPT0_DIS_B := "我们很想帮助他们，但不至于做这么过分的事！"
 const TXT_OPT0_DIS_C := "我们没有余力再帮他们了！"
-const TXT_OPT1 := "我们派遣人员去营救"
 const TXT_OPT1_DIS_A := "和美国人一起行动，下一步是什么，帮他们镇压革命者吗？"
 const TXT_OPT1_DIS_B := "我们没必要这么为美国人卖命"
 const TXT_OPT1_DIS_C := "我们没有余力再帮他们了！"
-const TXT_OPT2 := "火上浇油，激化时局"
 const TXT_OPT2_DIS_A := "你脑子是进水了？帮伊朗做这种事？"
 const TXT_OPT2_DIS_C := "我们没有余力再帮他们了！"
-const TXT_OPT3 := "让杨基佬自个头疼去吧，我们还有自己的事要搞。"
 const TXT_R0 := "在我们外交人员的斡旋下，伊朗方面终于宣布释放人质，美国方面也同意支付一部分赔偿金，并保证在王室康复后将其返还至伊朗，尽管我们知道这不太可能发生。\n这场风波对美国大选造成了一点影响，但是由于伊朗方面和民主党人处理的及时，所以对民主党人的影响并不大，尽管如此，这依然遭到伊朗民间的强烈反对，认为这是一种妥协。而在此之后，由于美国政府并未兑现诺言，伊朗外交人员对于美国的指责也开始多了起来，甚至民间有很多自发的活动，开始针对美国进行恐怖袭击，伊朗和美国的关系也自此降低到了冰点。\n随着巴列维国王的离开，西亚将迎来新的大洗牌……"
 const TXT_R1 := "看样子，伊朗人并不打算释放人质，那只能我们亲自出手了，我们开始同五角大楼方面有秘密的来往，进行一次联合人质拯救工作。在双方参谋部意见的交换之下，制定出了一份详细的人质拯救计划，代号“鹰爪行动”\n执行这一方案的美军部队主力是三角洲部队和陆军游骑兵，他们虽然存在着人数不足的问题，但这并不是主要问题，最主要的是，他们并不掌握足够的伊朗情报，这就需要我们的情报人员加大调查了\n看样子，这次计划实施的很成功，我们的特勤成功的从伊朗这里搜集到了足够的情报，也使得最终三角洲部队和陆军游骑兵最终顺利的完成了这次行动。这场顺利的行动保住了吉米·卡特的脸面。但也因这个问题，使得伊朗方面谴责美方侵犯了伊朗的主权，看来这一问题仍然需要等待时间解决。"
 const TXT_R2 := "伊朗人是不会放人了，当然，我们也不会在乎这件事。在我们的干涉下，这件事却有了新的进展：我们开始积极地怂恿伊朗人进行撕票行为，并且我们也参与了这场行动，这对于美帝来说，绝对是一场巨大的精神刺激，没有人会愿意受这种屈辱的，即便对方是卡特，美方即刻宣布，要对伊朗进行“无限制制裁”，直到伊朗对此事进行道歉为止。\n对于美国政界来说，这等炸裂的消息就足够轰动全国了，共和党人士常常拿着这个来指责民主党，指责民主党在对外方面不够强硬、不能保护海外侨民利益等等，可以说，就凭这一事，民主党就别想赢下下一届大选了，共和党人士宣称：一旦他们上台，就会对伊朗进行一次惩罚性战争。"
@@ -39,7 +33,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var army := d[W.I_ARMY] if d.size() > W.I_ARMY else 0
 	var opt := event_def.options
 	if ((line56 >= 1 and line56 <= 3) or (diplo >= 700 and diplo <= 900)) and budget + reserve >= 100 and agents >= 100:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	elif line56 == 0 or diplo > 900:
 		_disable(opt[0], TXT_OPT0_DIS_A)
 	elif line56 == 4 or diplo < 700:
@@ -47,7 +41,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[0], TXT_OPT0_DIS_C)
 	if line56 >= 3 and diplo <= 700 and army >= 150 and agents >= 100:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	elif line56 == 0 or diplo > 900:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	elif line56 < 3 or diplo > 700:
@@ -55,12 +49,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_C)
 	if line56 < 2 and agents >= 100:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	elif line56 >= 2:
 		_disable(opt[2], TXT_OPT2_DIS_A)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_C)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 
 
@@ -97,25 +91,16 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
 		d[index] = value
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 func _set_relation(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
 		ws.empires[empire_index].relations = clampi(value, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _set_power(empire_index: int, value: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:

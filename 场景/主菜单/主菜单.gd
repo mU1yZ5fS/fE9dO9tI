@@ -19,24 +19,20 @@ func _ready() -> void:
 func _on_退出_pressed() -> void:
 	#退出游戏
 	get_tree().quit()
-	音频总管.play_button_click_sound()
 
 
 func _on_关于_pressed() -> void:
 	#跳转到关于场景
 	get_tree().change_scene_to_file("uid://cb1wvmuscp64r")
-	音频总管.play_button_click_sound()
 
 
 func _on_设置_pressed() -> void:
 	#跳转到设置场景
 	GameManager.settings_return_scene = "uid://bydan4iqthbaa"
 	get_tree().change_scene_to_file("uid://b6l0sieu63sgv")
-	音频总管.play_button_click_sound()
 
 
 func _on_成就_pressed() -> void:
-	音频总管.play_button_click_sound()
 	_refresh_achievement_rows()
 	_ach_mask.visible = true
 	# gdd_0706_Popup.md：Popup 默认不可见，用 Window 的 popup_centered() 显示
@@ -56,7 +52,6 @@ func _close_achievements() -> void:
 	if _ach_popup.visible:
 		_ach_popup.hide()
 	_ach_mask.visible = false
-	音频总管.play_button_click_sound()
 
 
 func _refresh_achievement_rows() -> void:
@@ -110,7 +105,6 @@ func _on_开始游戏_pressed() -> void:
 		get_tree().change_scene_to_packed(GameManager.cached_diplomacy_scene)
 	else:
 		get_tree().change_scene_to_file("uid://vq6jexkk5tru")
-	音频总管.play_button_click_sound()
 
 
 func _on_加载_pressed() -> void:
@@ -118,4 +112,3 @@ func _on_加载_pressed() -> void:
 	if GameManager:
 		GameManager.save_return_scene = "uid://bydan4iqthbaa"
 	get_tree().change_scene_to_file("uid://b1x75pv02eanc")
-	音频总管.play_button_click_sound()

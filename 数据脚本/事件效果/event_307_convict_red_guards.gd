@@ -4,12 +4,8 @@
 ##  traits[0]→trait_personality；文本来自 Events_text_en 索引 77-84 与 Event307.cs 内联。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_TITLE := "定罪红卫兵"
 const TXT_DESC_INACTIVE := "文革失败后，许多红卫兵被送进监狱以稳定局势。但那么多年过去了，放了他们也没什么了，毕竟我们已牢牢掌握了权力，以前的激进分子中也有有用的专家，人民对镇压红卫兵的态度也不是很好，释放他们会让我们更受支持。但先得记住，让他们回归原位会让这个国家大大回到激进的过去。"
 const TXT_DESC_ACTIVE := "文革前十年的后期，由于保守势力的反扑，许多造反派红卫兵被送进了监狱。但在文革局势逐渐稳定下来之后，一些党员提出要为之前蒙冤入狱的造反派平反，这些造反派中也不乏有用的专家，人民对造反派的看法也早有改观，释放他们会让我们更受支持。但是，我们是应该不带有色眼镜把他们当作正常人去对待并给他们分配工作，还是仅仅做个“人道”的样子但在暗中仍然排挤他们？这决定了我们是把文化大革命当作一场真正的人民运动还是被粉饰成“人民运动”的清洗活动。"
-const TXT_OPT0 := "让他们继续在监狱里服刑。"
-const TXT_OPT1 := "放了他们。"
-const TXT_OPT2 := "放了他们，让他们回到党内和岗位上。"
 const TXT_OPT2_DIS := ""
 const TXT_R0 := "没必要把他们放了。他们已使这个国家坠入深渊，造成数百万人死亡。我们需要稳定，而不是革命狂热。"
 const TXT_R1 := "红卫兵们被释放了，但他们毫无权力。全党平静地面对了这一事实，毕竟已时过境迁了，但许多家庭得以团圆，人民对您的支持也增加了，所以在以前的激进派中也有一些人改换门庭，转而支持您。"
@@ -26,10 +22,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		event_def.description = TXT_DESC_INACTIVE
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
 	if mod3:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 
@@ -80,9 +76,6 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _set_data(index: int, value: int) -> void:
@@ -90,18 +83,12 @@ func _set_data(index: int, value: int) -> void:
 		d[index] = value
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _mod_active(idx: int) -> bool:
-	var w: WorldState = ws if ws != null else GameManager.world
+	var w: WorldState = ws
 	return w != null and w.modifiers.size() > idx and w.modifiers[idx] != null and w.modifiers[idx].is_active
 
 

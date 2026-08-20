@@ -4,11 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：由 Decision(GlobalScript.cs:21) 手动触发（西藏自治路线），原版无自动条件；
 ## 故 trigger_conditions 为空，本脚本按原版复刻选项显隐与结果效果。
 
-const TXT_TITLE := "新喇嘛"
-const TXT_DESC := "既然已经决定做出准许西藏拥有特别自治权这样的历史性妥协，我们就得好好挑选西藏的政教领袖，确立其地位。如依照藏传佛教教规教义，我们可从三个候选人中择一而取：十世班禅，处于控制下的喇嘛人选，他被我们软禁过一段时间，后来娶了位汉族妻子；流亡的十四世达赖，老反贼了，逃亡印度的他于政治上十分活跃，长久以来也一直觊觎着这个位置；最后一位，苏维埃化的韩波喇嘛，苏联佛教徒的精神领袖，积极致力于佛学院组织的和平发展。第一位人选我们无需过多担心，第三位人选风险在于其可能倒向苏联，而最冒险的是第二位人选——尽管达赖喇嘛声称他只主张自治而不是分裂主义，但他与某些政治异见者甚至美国政客都有着长期的接触。一切选择都取决于你。"
-const TXT_OPT0 := "我们的十世班禅"
-const TXT_OPT1 := "流亡海外的十四世达赖"
-const TXT_OPT2 := "苏维埃的韩波喇嘛"
 const TXT_OPT0_DIS := "已达成协定或已平反确吉坚赞"
 const TXT_OPT1_DIS := "没有毛主义，没有文化大革命，国际声誉＜40.0"
 const TXT_OPT2_DIS := "是经互会的观察国或成员国"
@@ -27,17 +22,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var num := 0
 	if tibet != null and tibet.special_ending == 33:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 		num += 1
 	if world.数值表[W.I_DIPLO] <= 400 and not _modifier_active(6) and not _modifier_active(3):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 		num += 1
 	if (soviet != null and soviet.has_tag("对华贸易")) or (china != null and china.has_tag("sev")) or num >= 2:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 
@@ -58,19 +53,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(index: int) -> bool:

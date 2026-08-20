@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event354.cs：空间通信。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "空间通信"
 
-const TXT_DESC := "我国正在迈入一个新时代，卫星通信将不仅能满足军事需要。有人提议在近地轨道上构建一个通信卫星系统，但这将需要许多少用的卫星，而发射地球同步卫星则需要一种特殊的火箭......另一方面，我们可以连通某国已经建成的网络。"
 
 const TXT_OPT0 := "在近地轨道上构建一个网络。"
 const TXT_OPT0_DIS := "没有这么做的资源。"
@@ -78,19 +76,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

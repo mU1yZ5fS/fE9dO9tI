@@ -4,11 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:879-881 —— c131.SubGosstroy==10 && DATE_AFTER 1985.12.1。
 ## 差异：Torg→对华贸易、proprc→亲中；结果2 文本按原版逐字。
 
-const TXT_TITLE := "后翼弃车？"
-const TXT_DESC := "主席同志，我们刚刚得知来自阿扎尼亚的消息。如你所知，该国自从反对种族隔离的联军获得胜利以来政治局势一直不稳，该国的两大团体——提倡改良主义与和白人群体谈和的阿扎尼亚泛非大会与被温妮·曼德拉夺权带领的非国大已经冲突了有一段时间了，这导致了临时政府的停摆以及迟迟未能出台社会改造政策乃至一部宪法。就在今天，我们得知温妮·曼德拉成为了权力斗争的胜利者。现在在阿扎尼亚，非洲之矛民兵正在到处搜捕“帝国主义的第五纵队”，比如南非共产党，阿扎尼亚泛非主义大会与阿扎尼亚人民组织，指控他们名左实右，与希望种族隔离制度复辟的阿非利卡民族主义者沆瀣一气。温妮·曼德拉目前没有谴责社会主义国家当中的任何一个阵营，但我们要如何应对这一非洲铁娘子的崛起呢？"
-const TXT_OPT0 := "承认新政府"
-const TXT_OPT1 := "谴责政变"
-const TXT_OPT2 := "承认新政府，并敦促曼德拉夫人选择更加正确的立场！"
 const TXT_OPT2_DIS := "我们不会将阿扎尼亚变成第二个罗马尼亚"
 const TXT_R0 := "也就在温妮·曼德拉上位次日，我们便立即承认了新阿扎尼亚政府的合法性并送去贺电。中国的率先表态显然让曼德拉夫人看清了谁才是她最值得依靠的“盟友”——不久后，我们便得以同阿扎尼亚建立特殊关系。与此同时，苏东阵营与大多数非洲国家也顺水推舟承认新政府。根据温妮·曼德拉的计划，阿扎尼亚革命政府将在改组为一党制国家“阿扎尼亚民主主义人民共和国”，在以类似《伊拉克1970年宪法》形式确立非国大作为该国唯一执政党地位的同时，要求6岁以上的全体公民均有加入该“反帝黑人社会主义先锋党”的义务。阿扎尼亚泛非主义大会等组织则因缺乏武装力量与失败的种族和解政策而被曼德拉政府连根拔起。此后，莱索托也在阿扎尼亚支持下选择了类似立场。下一步便是在电视上公审作为失败者的“非洲叛徒”。"
 const TXT_R1 := "也就在温妮·曼德拉上位次日，我们便立即谴责了其发动政变的行为，认为这只会让加剧阿扎尼亚局势混乱并激化民族矛盾。中国的率先表态显然让曼德拉夫人看清了谁是她该留意的敌人——我们也只能收获一顶“中华定居派沙文主义”的帽子并同阿扎尼亚断交。根据温妮·曼德拉的计划，阿扎尼亚革命政府将在改组为一党制国家“阿扎尼亚民主主义人民共和国”，在以类似《伊拉克1970年宪法》形式确立非国大作为该国唯一执政党地位的同时，要求6岁以上的全体公民均有加入该“反帝黑人社会主义先锋党”的义务。阿扎尼亚泛非主义大会等组织则因缺乏武装力量与失败的种族和解政策而被曼德拉政府连根拔起。此后，莱索托也在阿扎尼亚支持下选择了类似立场。下一步便是在电视上公审作为失败者的“非洲叛徒”。"
@@ -21,10 +16,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var china := world.get_country_by_legacy_index(1)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
 	if china != null and china.sub_government == 19:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 
@@ -67,17 +62,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

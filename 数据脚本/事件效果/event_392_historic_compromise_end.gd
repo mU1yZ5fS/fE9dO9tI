@@ -8,17 +8,12 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - VasilyisGay → ws.set_flag("VasilyisGay", true)；
 ##  - data[134]/data[172]/data[175]/data[176]/data[177] 为原版 raw index。
 
-const TXT_TITLE := "“历史性妥协”的终结？"
 const TXT_DESC_FMT := "1976年的意大利大选格局与1977年的全国动荡共同造就了一种同床异梦的另类共治格局：意大利共产党虽能在议会内中高歌猛进，取得了历届大选最佳成绩。可该党依旧无法让这份胜利果实以执政形式切实落地——考虑到意大利主流议会政党对共产党的敌视一而惯之，且可作为合作对象的该国新兴激进政党亦不足以同共产党形成法定多数。考虑到“智利悲剧”在前，该党领导人恩里科·贝林格更在事实上选择效法意大利社会党的老一套变式：即共产党虽对组建天主教民主党成员一言堂（由于共产党同天民党共同瓜分全国过半选票的格局，无法形成法定多数的窘境在后者处同样存在。这最终导致天民党决定成立一个仅包含自身成员的绝对少数派内阁）的新政府表示反对，并呼吁建立需有共产党成员参与的共治模式；可该党在议会内仍以支持“民族团结”纲领，共同打击恐怖主义威胁的形式对天民党少数派施加支持。然而，这只是将多方相互掣肘与低民意代表性的问题给无限期滞后。为此，早在1973年由贝林格提出的“历史性妥协”策略（即共产党应当争取同包括天民党在内的“国内民主力量”达成共识，从捍卫共和国这一最低纲领起步，最终建立得到国民普遍信任的政府）便越来越显得宛如该问题的最终解决方案。而这恰仰赖天民党关键人物，现任主席阿尔多·莫罗的拍板，他同时是早期策划天民党同社会党合作的“中左翼公式”总设计师。不过，事情也就到此为止。也就在莫罗准备前往议会，并准备将由朱利奥·安德烈奥蒂领导，并有共产党部长背书的“民族团结”政府蓝图落地时。他的轿车在途中被{1}劫持，后者成功制造了一场车祸，以此成功孤立前总理周围的防御并将其囚禁。该组织声称，若当局不打算将其名单上的数位恐怖分子释放，他们便会对莫罗实施对等报复。对此，意大利国内的绝大多数建制派很快便回到了“民族团结”的立场：除社会党领导人贝蒂诺·克拉克西呼吁同恐怖分子谈判，解救前总理莫罗外，包括共产党在内的几乎所有议会政党都表示“同任恐怖分子胡作非为相比，意大利能够承受区区一个莫罗的损失”。倘若没有域外力量干涉，莫罗与其另类版“历史性妥协”政策的死刑执行不过时间问题。因此，我们有必要考量先前的布局，并从中选取最有利自身的立场……"
 const TXT_1072 := "极左翼恐怖组织“红色旅”"
 const TXT_1073 := "极右翼恐怖组织“革命武装组织”"
-const TXT_OPT0 := "我们绝不干涉"
 const TXT_OPT1_LEFT := "通过我们的人脉施压左翼组织，要求其释放阿尔多·莫罗"
 const TXT_OPT1_RIGHT := "通过我们的人脉施压右翼组织，要求其释放阿尔多·莫罗"
 const TXT_DIS1 := "他们清楚意大利当局不过纸老虎，所以绝不可能收手！"
-const TXT_OPT2 := "指控美国在幕后策划恐怖袭击"
-const TXT_OPT3 := "指控苏联在幕后策划恐怖袭击"
-const TXT_OPT4 := "向武装组织发出暗示，讲和谈判已无可能，应立即处决莫罗并对建制派领导层复制“莫罗经验”"
 const TXT_DIS4 := "激化局势？这是自杀行为！"
 const TXT_R0_HEAD := "阿尔多·莫罗案虽得到国际社会的普遍关注与同情，时任教皇保禄六世甚至为此筹集上亿资金，并甘心以自己为人质交换莫罗性命。可意大利主流议会政党的冷淡态度注定了这一事态只会被“冷处理”：不仅是意大利共产党议员们纷纷高呼“我不能放弃原则”，其中代表安东内洛·特龙巴多里更同怀柔派“打成一片”，怒吼“一群豺狼走兽！我绝不容许共和国灭亡！”；就连莫罗曾领导的天主教民主党也跟着加入到队伍内，一面在朱利奥·安德烈奥蒂的支持下对莫罗的前幕僚进行洗牌，另一面则坚决抵制同恐怖组织直接进行谈判的可能性。即便这意味着同教皇陛下的“人道主义”指示背道而驰。不过那又如何，毕竟天民党首先是意大利国家的政党。上述态度很快便将贝蒂诺·克拉克西在其中游说的“国家为公民”，“公民需庇护”等表态给压制下去，事实上在公民面前充分展现了该国由两大政治巨头垄断议程，并藐视人道主义精神，试图将全体公民绑在反恐战车上的权力格局：天民党仍同往日那般不可一世，注定无法引领变革；而还未掌权的共产党则已经试着跟前者一样发号施令，又有何资格作为左翼替代方案的代言人？\n"
 const TXT_R0_LEFT := "虽说如此表态注定影响民调，可不论如何，至少目前它们都得偿所愿：就在“红色旅”的最新公告内，他们宣布前总理阿尔多·莫罗已在人民法庭前伏诛。1978年5月9日，一辆红色雷诺轿车停在了分割天民党与共产党各自总部的马路间，在其后备箱内发现了被机枪扫射的惨不忍睹的阿尔多·莫罗遗体。莫罗之死事实上宣告了通过议会手段，实现共产党同天民党达成妥协，基于民主主义、反极端主义与坚持以经济改良为核心原则建立民族团结政府的计划胎死腹中。而下一梭子弹将打向共产党，光是袭击者的左翼背景便足以让其大为头痛，难以割舍。而排斥营救莫罗，坚决捍卫国家利益的做法不仅导致该党在极左翼处彻底身败名裂；更在仍信任民主机制，追求人性面纱社会主义的温和改良派与市民群体处显露地极其虚伪，促使其转而倒向老对手意大利社会党。其不可靠合作伙伴天民党更借机彻底踢开党内改良派，转而回归同其他议会政党共谋出路或维持少数派政府的立场。事实上摧毁了“历史性妥协”政策。除此之外，由于警方吸取事件教训，加强安保，收拢控制，被视为“红色旅”后台的极左翼运动亦遭打击。相关组织不得不越加低调行事。"
@@ -43,16 +38,16 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	event_def.description = TXT_DESC_FMT.format(["\n", kidnapper])
 	var italy := world.get_country_by_legacy_index(85)
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if (r391 == 1 or r391 == 0 or r391 == 2) and _d(134) < 75 and italy != null and italy.level_of_development > 40:  # 原版 data[134]
 		var txt: String = TXT_OPT1_LEFT if (r391 == 0 or r391 == 4 or r391 == 2) else TXT_OPT1_RIGHT
 		_enable(opt[1], txt)
 	else:
 		_disable(opt[1], TXT_DIS1)
-	_enable(opt[2], TXT_OPT2)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[2], event_def.options[2].text)
+	_enable(opt[3], event_def.options[3].text)
 	if (r391 == 1 or r391 == 0 or r391 == 2) and _d(W.I_DIPLO) >= 900 and _d(134) >= 75 			and italy != null and italy.level_of_development <= 40:  # 原版 data[134]
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_DIS4)
 
@@ -143,9 +138,6 @@ func execute(context: Dictionary) -> void:
 				portugal.special -= 15
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 func _d(index: int) -> int:
@@ -154,14 +146,8 @@ func _d(index: int) -> int:
 	return 0
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _enable(opt: EventOption, text: String) -> void:

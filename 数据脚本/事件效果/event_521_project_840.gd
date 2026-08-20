@@ -4,12 +4,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "840工程"
-const TXT_DESC := "同志，如你所知，建造一支强大的蓝水海军一直是我国的梦想。而现在，这个梦想在我们强大的工业水平下得以实现。但是，在开香槟前还有一个重要的问题。我们的舰队未来的方向应该是什么？大多数军事委员会的成员建议我们研发像苏联那样的导弹巡洋舰，类比比我们曾经提出过的055方案，建造一款大型远洋导弹驱逐舰，抑或是追赶英法，建造航母。这每一项都将花费不少资金，但对于一支强大的水军来说，这没有什么难的。"
-const TXT_OPT0 := "进行055型导弹驱逐舰的研发"
-const TXT_OPT1 := "进行航母的研发"
-const TXT_OPT2 := "英国人做不到的事，我们可以！"
-const TXT_OPT3 := "我们押宝于长期计划"
 const TXT_R0_A := "我们在大量的手稿中找出了055型驱逐舰的设计草图，尽管已经过去了数十年，但其理念仍然不输时代。很快，就有眼尖的摄影爱好者在上海的长兴岛发现了一款巨大的“货轮”建造设施。很快就传来了激动的消息，055已经完成了下水。采用全燃动力、射频综合集成及舰载通用垂直发射系统，由中国人民解放军海军701研究所设计、江南造船厂103基地与大连船舶812工厂承建。055型导弹驱逐舰是全亚洲，乃至全世界都排得上号的大型水面舰艇。此型舰的服役标志着中国驱逐舰已经跻身于全球先进军舰的行列，055型导弹驱逐舰亦有充足的空间进行动力与武器的升级，如高空反导系统，激光近防炮设施，电磁动力炮和超远程雷达等大型装备的升级正在逐步推进。首舰则被命名为“上海号”，用于纪念上海对于这艘船和共和国的独特地位。\n美国观察家指出，若美国海军进一步节约经费用去买可乐，就要连中国佬的海军都比不过了。"
 const TXT_R1_A := "我们开始尝试常规动力航母的研发，这是个困难的事情，因为这是个从无到有的过程。在借鉴了美国的“福莱斯特”号，"
 const TXT_R1_B := "“圣伊丽莎白”号"
@@ -30,11 +24,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	event_def.description = _leader_name() + TXT_DESC
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
-	_enable(opt[2], TXT_OPT2)
-	_enable(opt[3], TXT_OPT3)
+	event_def.description = _leader_name() + event_def.description
+	_enable(opt[0], event_def.options[0].text)
+	_enable(opt[1], event_def.options[1].text)
+	_enable(opt[2], event_def.options[2].text)
+	_enable(opt[3], event_def.options[3].text)
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

@@ -10,11 +10,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - c41.name = "非洲之角联邦" → chinese_name（既有约定）；
 ##  - JoinAllOurAlliances(true) → 复制玩家全部 true 标签。
 
-const TXT_TITLE := "在同一面红旗之下"
-const TXT_DESC := "1977年，古巴领导人菲德尔·卡斯特罗曾试图推动埃塞俄比亚与索马里两个亲苏的“社会主义国家”与南也门组成一个社会主义联盟，然而，在亲自见到了巴雷与门格斯图这两位“革命新星”后，大失所望的卡斯特罗终究还是放弃了这个异想天开的想法。此后没过多长时间，一场围绕着欧加登地区的血腥冲突就席卷了两国，联邦的构想也彻底被埃塞俄比亚与索马里间的血海深仇所埋葬。\n不过，在两位红皮独裁者都被革命所推翻、非洲之角换了新颜的今天，两国政府已经开展了密切的合作，并就欧加登问题展开了谈判。在谈判过程中，建立一个涵盖索马里与埃塞俄比亚的非洲之角联邦的提议又重新回到了两国人民的视线之内。也许我们可以推波助澜，完成古巴佬的未竟之事，让东非的这两个革命国家真正携起手来，化干戈为玉帛，结成一个独立、民主、平等、不结盟的社会主义联邦？"
 
-const TXT_OPT0 := "埃索情谊深，同志加兄弟！"
-const TXT_OPT1 := "还是暂时放一下这个想法吧……"
 
 const TXT_R0 := "在我们的提议下，埃塞俄比亚领导人与索马里领导人于南也门首都亚丁签订了《埃塞俄比亚-索马里联邦宪章》，决定合并两国政府与议会，非洲之角民主联邦共和国就此诞生。条约中规定了组成联邦的两个主体埃塞俄比亚与索马里具有同等地位，各民族不论语言、种族、宗教信仰的差异一律平等，并将按照民族聚居区域和两国争议地区划分自治区，赋予高度自治权，而欧加登与厄立特里亚就是第一批自治区。尽管两国间仍存在一些隔阂，但相信很快，两国人民就能冰释前嫌，共同建设社会主义的非洲之角。"
 const TXT_R1 := "好吧，也许我们没必要完成这个大胆的计划，就让时间来治愈埃塞俄比亚与索马里人民的伤痛与隔阂吧……"
@@ -29,9 +25,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	event_def.description = TXT_DESC
-	_enable(event_def.options[0], TXT_OPT0)
-	_enable(event_def.options[1], TXT_OPT1)
+	_enable(event_def.options[0], event_def.options[0].text)
+	_enable(event_def.options[1], event_def.options[1].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -108,6 +103,3 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta

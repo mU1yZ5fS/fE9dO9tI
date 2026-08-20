@@ -5,7 +5,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：描述由 prepare 按 data[15]/[16]/[17]/[50] 动态拼接；politic.traits[0]→trait_personality；
 ##   loyality→loyalty；modifies[3]→ws.modifiers[3].is_active。
 
-const TXT_TITLE := "脆弱的革命"
 
 const TXT_DESC_BASE := "在毛主席死后，我们仍然设法维持了他的遗产之一——文化大革命，并持续至今，但我们近期的一些政策似乎加剧了党和人民的不满："
 const TXT_DESC_PARTY := "在党政中引入过多的反对派政党，"
@@ -14,8 +13,6 @@ const TXT_DESC_SPEECH := "对言论的管制过于放松导致资产阶级反动
 const TXT_DESC_RELIGION := "对宗教的管控不力导致一些反党邪教的兴起，"
 const TXT_DESC_TAIL := "......；已经有越来越多反对文化大革命继续进行的声音了，对此，我们是要承认应该要让这一奇特的运动盖棺定论，还是修改一些政策使其继续进行下去呢？"
 
-const TXT_OPT0 := "是时候盖棺定论了"
-const TXT_OPT1 := "调整一部分政策使文化大革命继续下去"
 
 const TXT_R0 := "你说文化大革命已经完成了它的历史任务，所以你开始消灭文化大革命的最后遗产，在全国各地苟延残喘至今的相关活动开始被逐步地大规模地取消，这当然使中国人民高兴了，但党内的一些激进左派分子非常愤怒，因为这意味着毛主席自认为一生中唯二做过的事之一被彻底地盖棺定论了......"
 const TXT_R1 := "我们做出了一些政策上的调整，让文化大革命得以继续维系下去，党和人民仍然是有些不满的，但也仅限于牢骚的程度，不会发展到失控的局面——至少在目前看来是如此......"
@@ -37,8 +34,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	desc += TXT_DESC_TAIL
 	event_def.description = desc
 	if event_def.options.size() >= 2:
-		_enable(event_def.options[0], TXT_OPT0)
-		_enable(event_def.options[1], TXT_OPT1)
+		_enable(event_def.options[0], event_def.options[0].text)
+		_enable(event_def.options[1], event_def.options[1].text)
 
 
 func execute(context: Dictionary) -> void:
@@ -111,19 +108,10 @@ func _disable_blank(opt: EventOption) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _modifier_active(idx: int) -> bool:

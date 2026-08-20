@@ -4,15 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_TITLE := "人民空军，勇敢去闯荡"
-const TXT_DESC := "随着我们工业体系，尤其是航空电子科技的进一步发展，一个大胆的计划正在酝酿。我们的科学家和工程师正在研究电子层面的低可侦测型涂装，这将会是一件非常烧钱的计划，但其回报将是超出我们想象的：要是在将来爆发战争，我们的空军将会有难以匹敌的优势。这款飞机的雷达系统和数字化控制系统将会超出我们所有人的预料，远远的把同级的F15，Mig-29甩在身后。最高领导人同志，您的意向如何？"
-const TXT_OPT0 := "投资研发歼-18型隐身歼击机"
 const TXT_OPT0_DIS := "我们的航空器技术还是不太行啊……"
-const TXT_OPT1 := "投资研发轰-15型隐身战略轰炸机"
 const TXT_OPT1_DIS := "我们的航空器技术还是不太行啊……"
-const TXT_OPT2 := "我全都要！"
 const TXT_OPT2_DIS := "我们的航空器技术还是不太行啊……"
-const TXT_OPT3 := "我们用现在的飞机就足够了"
 const TXT_R0_A := "中央军事委员会决定研究J-18歼击机。该机型采取了不同以往的布局系统，采用了双发，鸭式气动布局的新格局。最新的航电系统允许其搭载超视距的霹雳10等空空导弹。隐形性能大概在0.0001左右，这已经是相当好的数据了。类似的系统将会被搭载在歼20上，预计在本世纪末之前完成理论实验和风洞测试。"
 const TXT_R1_A := "中央军事委员会决定投资轰-15战略轰炸机。和过去轰炸机最大的不同便是其强大的隐身性能，代价便是其载弹量显著小于我们现役的任何一种战略轰炸机。不过我们只要能突破敌人的第一道防线，也算是达成战略目的了。配套的“井冈山”型精确制导炸弹和红鸟-4远程巡航导弹也在研发中。我们的“三位一体”核打击能力大大加强了。"
 const TXT_R2_A := "中国空军正在向着超一流的水平发展，其中必不可少的便是全面研发先进航空器。\nJ-18歼击机项目上马了。该机型采取了不同以往的布局系统，采用了双发，鸭式气动布局的新格局。最新的航电系统允许其搭载超视距的霹雳10等空空导弹。隐形性能大概在0.0001左右，这已经是相当好的数据了。类似的系统将会被搭载在歼20上，预计在本世纪末之前完成理论实验和风洞测试。\n轰-15战略轰炸机也是个不可忽视的大项目。和过去轰炸机最大的不同便是其强大的隐身性能，代价便是其载弹量显著小于我们现役的任何一种战略轰炸机。不过我们只要能突破敌人的第一道防线，也算是达成战略目的了。配套的“井冈山”型精确制导炸弹和红鸟-4远程巡航导弹也在研发中。我们的“三位一体”核打击能力大大加强了。\n保卫领空，抵御侵略。迎着新世纪的曙光去飞翔，飞翔，飞翔！"
@@ -23,16 +17,16 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
+	_enable(opt[0], event_def.options[0].text)
 	if int(ws.completed_event_ids.get("event_517", 0)) >= 1:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if int(ws.completed_event_ids.get("event_517", 0)) == 2:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[3], event_def.options[3].text)
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

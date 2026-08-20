@@ -36,9 +36,6 @@ func execute(context: Dictionary) -> void:
 	context["result_text"] = TXT_RESULT
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
 ## Event999.cs：is_party_enabled / is_party_ally / party_number / party_ideology 批量重写。

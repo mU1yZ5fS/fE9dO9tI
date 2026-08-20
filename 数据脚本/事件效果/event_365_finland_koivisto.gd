@@ -3,9 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event365.cs：亲苏反共派的离任。
 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
 
-const TXT_TITLE := "亲苏反共派的离任"
 
-const TXT_DESC := "近日，由于身体状况迅速恶化与高龄在岗，乌尔霍·吉科宁选择自愿离职。他是芬兰政坛的元老，并在该国担任总统长达25年。他的四个总统任期都以巧妙的走独木桥为鲜明特征：吉科宁对芬兰国内局势了如指掌，尽管在贸易与文化政策上更偏向苏联。但总体而言，他还是在美国与苏联之间奉行中立外交政策。\n在即将到来的总统选举中，离开了这位脍炙人口领导人的中央党，不太可能成为现代芬兰政治内两大巨头的威胁。他们分别是来自芬兰社会民主党的总理毛诺·科伊维斯托，他试图照吉科宁的既定方针办，并维持与苏联的非正式联盟关系；以及来自中右翼阵营的哈里·霍尔克里，他力图立即摆脱莫斯科的影响，并深化与西方的合作。\n一方面，我们可以支持亲莫斯科的社会主义运动，以打击该国越加壮大的民族民主运动，并维持苏联在世界舞台上的影响力。另一方面，我们也可以通过支持哈里·霍尔克里，从而在新政府处获得一份有利可图的贸易合同。\n以及，如果您再仔细想想的话，我们为什么要对如此遥远的芬兰如此上心呢？"
 
 const TXT_OPT0 := "我们选择支持芬兰社会民主党与毛诺·科伊维斯托"
 const TXT_OPT0_DIS := "中国并不是经济互助委员会的成员......"
@@ -128,19 +126,10 @@ func _disable(opt: EventOption, text: String) -> void:
 	opt.enable_condition = n
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 
 func _prev_result(world: WorldState, event_id: String) -> int:

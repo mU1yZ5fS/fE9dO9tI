@@ -5,19 +5,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：relres→ws.get_flag；now_leader→current_leader；Vyshi→亲美、Torg→对华贸易；
 ##   string.Format {1}{2}→_foreign_minister_name()。
 
-const TXT_TITLE := "“南非”意味着攻击"
-const TXT_DESC := "同志，如今也是时候彻底解决我们与南非间的问题了。长期制裁与国际投资撤离已使南非全国经济与社会秩序濒于崩溃，并深陷内外交困境地。而南非领导人兼国民党党魁P·W·博塔的“种族隔离为反共”与对现有国体的小修小补改革也收效甚微。因此，该国将于今日举行全民公投并修改宪法。宪法草案将在剥夺总理，首相与议会权力，改南非为总统制共和国的同时修改”班图斯坦“政策（以自治区形式取代独立主权体）——上述政策自然无法使抗议者满足。考虑到部分消息声称不排除南非陆军下场戒严的可能。我们可说白人南非的命运拐点即将到来。\n现在也是时候给我国的非洲布局交上答卷了。针对南非问题，我们有多种干涉方案：如果我们已同南非的阿扎尼亚泛非主义大会和其殖民地的西南非洲民族联盟（SWANU）打过照面，并做好了联动阿扎尼亚人民组织等革命派发动武装起义方面的工作，便能以最直接了当的方式歼灭种族隔离政权，并将南非转变为毛主义的壁垒。毕竟，阿扎尼亚大会与SWANU的亲毛立场并非秘密；当然，我们也可以选择同苏联一起支持非洲国民大会党、南非共产党与南非工会大会的三角联盟，推进其转向非洲社会主义；最后则是选择建制派，以密切双边贸易与经济合作的方式快速解决南非政治危机，并在南非推动亲中政治力量就位。考虑到南非在曾同我国建交的两年内便可达成价值一千三百万美元的合同，以及南非作为铀矿、钻石与多种热带农贸产品主产国的优越地位。我们没理由放跑煮熟的鸭子……"
-const TXT_OPT0 := "给博塔政权个痛快，阿扎尼亚归阿扎尼亚人！"
 const TXT_OPT0_DIS := "阿扎尼亚？那是哪个国家？"
-const TXT_OPT1 := "让我们与苏联一起为局势火上浇油！"
 const TXT_OPT1_DIS := "怎能支持反华的南非共产党？怎么支持反华的南非共产党？"
-const TXT_OPT2 := "我们是不是可以在这个问题上和自由世界合作？"
 const TXT_OPT2_DIS := "指望洋基佬发善心？你想发扬甘地的阿Q精神？"
-const TXT_OPT3 := "我们将与超级大国携手施压南非政府，为了全人类的自由！"
 const TXT_OPT3_DIS := "冷战摧毁了美苏两国在南非问题上合作的可能"
-const TXT_OPT4 := "此时雪中送炭能卖的价钱肯定不少！"
 const TXT_OPT4_DIS := "真的吗？就算我们无耻至极，也不排除热脸贴冷屁股的可能！"
-const TXT_OPT5 := "可是南非离我们太远了……"
 const TXT_R0_A := "由于阿扎尼亚泛非主义大会与西南非洲民族联盟内部的毛主义派系早已在我国支持下就位，我们得以将阿扎尼亚人民解放军（阿扎尼亚泛非主义大会的军事翼）、阿扎尼亚民族解放军（阿扎尼亚人民组织的军事翼）和西南非洲民族联盟的游击队组织在统一战线下迅捷出击，打敌人个措手不及：莱索托国王收到了阿扎尼亚人民解放军勒令其退位的最后通牒；P·W·博塔总统、国防部长马格努斯·马兰与康斯坦德·维尔容将军等军政高层人物也在汽车炸弹袭击内被完全消灭。因此，阿扎尼亚人民解放军、阿扎尼亚民族解放军和西南非洲民族联盟得以利用政府内部的混乱与我国情报协助发起对南非武装部队的全线进攻；非洲国民大会党、南非共产党的非洲之矛与西南非洲人民解放军（西南非洲人民组织的军事翼）也在不久后加入混战，形成了针对种族隔离政权的多路诸侯。全世界都正关注南非内战局势：黑人对白人的种族复仇，白人对黑人的报复回击等场景充斥各地；紧急状态下的南非成为了一个大型难民营。联合国试图派遣维和部队并在南非调停局势的努力也宣告失效，该国就此陷入内战泥潭。"
 const TXT_WAR_NAME := "南非内战"
 const TXT_WAR_SIDE1 := "阿扎尼亚联军"
@@ -50,7 +42,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var mozambique := world.get_country_by_legacy_index(126)
 	var opt := event_def.options
 	if line < 3 and lesotho != null and lesotho.内战中 and south_africa != null and south_africa.内战中 and ws.influence_prc > 600:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line < 2 and world.get_flag("relres") and china != null and china.has_tag("ovd") \
@@ -59,7 +51,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			and (mozambique == null or mozambique.government != 3) \
 			and (zimbabwe == null or not zimbabwe.has_tag("亲美")) \
 			and (mozambique == null or not mozambique.has_tag("亲美")):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if china != null and china.government == 3 and south_africa != null and south_africa.内战中 \
@@ -69,7 +61,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			and world.empires[EmpireData.USA] != null and world.empires[EmpireData.USSR] != null \
 			and world.empires[EmpireData.USA].power > world.empires[EmpireData.USSR].power \
 			and ws.influence_prc > 500:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	if line > 0 and south_africa != null and south_africa.内战中 \
@@ -77,14 +69,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			and world.empires[EmpireData.USA] != null and world.empires[EmpireData.USSR] != null \
 			and world.empires[EmpireData.USA].relations >= 650 and world.empires[EmpireData.USSR].relations >= 650 \
 			and ws.influence_prc > 500:
-		_enable(opt[3], TXT_OPT3)
+		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 	if line > 1 and china != null and china.government != 1 and ws.influence_prc > 500:
-		_enable(opt[4], TXT_OPT4)
+		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
-	_enable(opt[5], TXT_OPT5)
+	_enable(opt[5], event_def.options[5].text)
 
 
 
@@ -176,17 +168,8 @@ func execute(context: Dictionary) -> void:
 
 
 
-func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
 
-func _add_relation(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 
-func _add_power(empire_index: int, delta: int) -> void:
-	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
 
 func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():

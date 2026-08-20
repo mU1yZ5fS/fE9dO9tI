@@ -3,6 +3,9 @@
 class_name WorldState
 extends Resource
 
+## 数值表/具名字段变更通知。index=-1 表示非数值表字段（如 war_state / influence_prc）。
+signal value_changed(index: int, old_value: int, new_value: int)
+
 # ============================================================================
 # 数值表索引常量 — 取代魔术数字
 # ============================================================================
@@ -419,6 +422,40 @@ func get_country_by_tag(tag: String) -> CountryData:
 	return _tag_cache.get(tag)
 
 
+## 统一国家身份解析：自动识别 gwcode / 原版序号 / slot / 标签字符串。
+## 这是国家-地图-战争共用的唯一入口，避免各系统混用编号。
+func resolve_country(id) -> CountryData:
+	if id is String:
+		var sid := String(id)
+		if sid.is_valid_int():
+			return resolve_country(int(sid))
+		return get_country_by_tag(sid)
+	if id is int or id is float:
+		var iid := int(id)
+		var c := get_country_by_gwcode(iid)
+		if c != null:
+			return c
+		c = get_country_by_legacy_index(iid)
+		if c != null:
+			return c
+		return get_country_by_slot(iid)
+	return null
+
+
+## 每日镜像：empires 权威 → 数值表[28/29/10/2]（原版 KumihaRepaint）。
+## 原为 GameManager._mirror_empires_to_data，迁到 WorldState 后 WarSystem 可直接调用。
+func mirror_empires_to_data() -> void:
+	if 数值表.size() <= 29:
+		return
+	var d := 数值表
+	if empires.size() > 0 and empires[0] != null:
+		d[28] = empires[0].relations
+		d[I_USA_INFLUENCE] = empires[0].power
+	if empires.size() > 1 and empires[1] != null:
+		d[29] = empires[1].relations
+		d[I_SOVIET_INFLUENCE] = empires[1].power
+
+
 # ── 数值表读写 ──
 
 func get_data_index(key: String) -> int:
@@ -438,28 +475,55 @@ func get_data_value(key: String) -> int:
 
 func set_data_value(key: String, value: int) -> void:
 	if key.to_lower() in ["war", "war_state"]:
+		var old_war := war_state
 		war_state = value
+		value_changed.emit(-1, old_war, war_state)
 		return
 	if key.to_lower() == "influence_prc":
+		var old_inf := influence_prc
 		influence_prc = value
+		value_changed.emit(-1, old_inf, influence_prc)
 		return
 	var idx := get_data_index(key)
 	if idx >= 0 and idx < 数值表.size():
-		数值表[idx] = value
-		_economy_dirty = true
+		var old := 数值表[idx]
+		if old != value:
+			数值表[idx] = value
+			_economy_dirty = true
+			value_changed.emit(idx, old, value)
 
 
 func add_data_value(key: String, delta: int) -> void:
 	if key.to_lower() in ["war", "war_state"]:
+		var old_war := war_state
 		war_state += delta
+		value_changed.emit(-1, old_war, war_state)
 		return
 	if key.to_lower() == "influence_prc":
+		var old_inf := influence_prc
 		influence_prc += delta
+		value_changed.emit(-1, old_inf, influence_prc)
 		return
 	var idx := get_data_index(key)
 	if idx >= 0 and idx < 数值表.size():
-		数值表[idx] += delta
+		var old := 数值表[idx]
+		var new_value := old + delta
+		数值表[idx] = new_value
 		_economy_dirty = true
+		value_changed.emit(idx, old, new_value)
+
+
+## 具名门面：与 get_data_value 等价，后续新代码优先使用短名。
+func get_value(key: String) -> int:
+	return get_data_value(key)
+
+
+func set_value(key: String, value: int) -> void:
+	set_data_value(key, value)
+
+
+func add_value(key: String, delta: int) -> void:
+	add_data_value(key, delta)
 
 
 ## 指定国家的资源查询。玩家国家走数值表，非玩家国家查 CountryData 字段。
