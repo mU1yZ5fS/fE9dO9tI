@@ -338,6 +338,8 @@ func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	DecisionSystem.current_world = world
 	ModifierCatalog.current_world = world
 	DecisionAtoms.current_world = world
+	if _fortnight_service != null:
+		_fortnight_service.configure(self, world)
 	if EventEngine:
 		EventEngine.world = world
 	if _map_service:
@@ -372,6 +374,8 @@ func load_game(path: String) -> void:
 		DecisionSystem.current_world = world
 		ModifierCatalog.current_world = world
 		DecisionAtoms.current_world = world
+		if _fortnight_service != null:
+			_fortnight_service.configure(self, world)
 		if EventEngine:
 			EventEngine.world = world
 		if _map_service:

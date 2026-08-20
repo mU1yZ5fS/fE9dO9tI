@@ -12,9 +12,13 @@ var world: WorldState = null
 
 @warning_ignore_start("integer_division")
 
-func run(gm_node: Node, ws: WorldState) -> void:
+func configure(gm_node: Node, ws: WorldState) -> void:
 	gm = gm_node
 	world = ws
+
+
+func run(gm_node: Node, ws: WorldState) -> void:
+	configure(gm_node, ws)
 	_on_fortnight()
 
 func _fortnight_research_advance(d: Array[int], w: WorldState) -> void:
