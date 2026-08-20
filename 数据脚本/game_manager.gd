@@ -165,9 +165,7 @@ func _ready() -> void:
 	WarSystem._start_event_cb = start_event
 	WarSystem._trigger_ending_cb = trigger_ending
 	WarSystem._is_event_in_progress_cb = func() -> bool: return current_event_id != ""
-	PoliticianSystem._notify_stats_cb = _notify_stats
-	PoliticianSystem._is_mao_dead_cb = is_mao_dead
-	PoliticianSystem._is_mao_protected_cb = is_mao_protected
+	PoliticianSystem.configure_callbacks(_notify_stats, is_mao_dead, is_mao_protected)
 	DecisionSystem._notify_stats_cb = _notify_stats
 	_load_tech_effects()
 	_map_service.preload_region_map()
@@ -335,7 +333,7 @@ func _check_autosave() -> void:
 func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	world = WF.create_world(player_gwcode, p_difficulty)
 	WarSystem.current_world = world
-	PoliticianSystem.current_world = world
+	PoliticianSystem.set_world(world)
 	PoliticianPool.current_world = world
 	DecisionSystem.current_world = world
 	ModifierCatalog.current_world = world
@@ -369,7 +367,7 @@ func load_game(path: String) -> void:
 	if loaded is WorldState:
 		world = loaded as WorldState
 		WarSystem.current_world = world
-		PoliticianSystem.current_world = world
+		PoliticianSystem.set_world(world)
 		PoliticianPool.current_world = world
 		DecisionSystem.current_world = world
 		ModifierCatalog.current_world = world

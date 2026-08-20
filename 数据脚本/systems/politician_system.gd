@@ -2,8 +2,8 @@ class_name PoliticianSystem
 extends RefCounted
 
 ## 政客生命周期系统（2026-08 从 GameManager 拆出）。
-## 全部 static 函数，通过 GameManager autoload 访问 world 与跨系统辅助
-## （is_mao_dead / is_mao_protected / _mod_active / _notify_stats）。
+## 全部 static 函数，依赖项通过 set_world / configure_callbacks 显式注入，
+## 不再由 GameManager 直接赋值私有静态字段。
 ## 对齐来源：TimeScript.cs 政客块 + DeathPolitics/PlotPolitics + Button_Pol_Script。
 ##
 ## GameManager 保留同名公开 stub（change_of_killing / kill_politician /
@@ -12,11 +12,21 @@ extends RefCounted
 
 const W = preload("res://数据脚本/world_state.gd")
 
-## 跨系统注入（GameManager._ready / new_game / load_game 设置）。
+## 注入的当前 WorldState。
 static var current_world: WorldState = null
 static var _notify_stats_cb: Callable = Callable()
 static var _is_mao_dead_cb: Callable = Callable()
 static var _is_mao_protected_cb: Callable = Callable()
+
+
+static func set_world(p_world: WorldState) -> void:
+	current_world = p_world
+
+
+static func configure_callbacks(notify_stats_cb: Callable, is_mao_dead_cb: Callable, is_mao_protected_cb: Callable) -> void:
+	_notify_stats_cb = notify_stats_cb
+	_is_mao_dead_cb = is_mao_dead_cb
+	_is_mao_protected_cb = is_mao_protected_cb
 
 
 static func is_vacant_politician(p: PoliticianData) -> bool:
