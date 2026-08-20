@@ -867,7 +867,7 @@ func _on_assassinate() -> void:
 		for p in _world.politicians:
 			if p == null:
 				continue
-			p.loyalty -= 100
+			GameManager.add_politician_loyalty(p, -100)
 		GameManager.add_politician_loyalty(pol, -400)
 		GameManager.set_politician_you_fall(pol, true)
 	_after_operation()
@@ -972,7 +972,7 @@ func _faction_leader_slot_of(pol_index: int) -> int:
 func _apply_trait_loyalty(pol: PoliticianData, delta: int) -> void:
 	for p in _world.politicians:
 		if p != null and p.trait_personality == pol.trait_personality:
-			p.loyalty += delta
+			GameManager.add_politician_loyalty(p, delta)
 
 
 ## 原版每次按钮点击后：BalancePolitic → ResetPolitics → Politic_Selected(200) → RepaintData
