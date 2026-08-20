@@ -883,56 +883,48 @@ func add_influence_prc(delta: int) -> void:
 	if world == null:
 		return
 	world.influence_prc += delta
-	_notify_stats()
 
 
 func add_people_support(delta: int) -> void:
 	if world == null:
 		return
 	world.people_support += delta
-	_notify_stats()
 
 
 func add_party_support(delta: int) -> void:
 	if world == null:
 		return
 	world.party_support += delta
-	_notify_stats()
 
 
 func add_agents(delta: int) -> void:
 	if world == null:
 		return
 	world.agents += delta
-	_notify_stats()
 
 
 func add_budget(delta: int) -> void:
 	if world == null:
 		return
 	world.budget += delta
-	_notify_stats()
 
 
 func add_army(delta: int) -> void:
 	if world == null:
 		return
 	world.army += delta
-	_notify_stats()
 
 
 func add_thought_freedom(delta: int) -> void:
 	if world == null:
 		return
 	world.thought_freedom += delta
-	_notify_stats()
 
 
 func add_political_repression_count(delta: int) -> void:
 	if world == null:
 		return
 	world.political_repression_count += delta
-	_notify_stats()
 
 
 func set_politician_killed_flag(position: int) -> void:
@@ -945,7 +937,6 @@ func set_politician_killed_flag(position: int) -> void:
 			world.killed_military_flag = 9
 		2:
 			world.killed_foreign_flag = 9
-	_notify_stats()
 
 
 func apply_research_cost(money_cost: int) -> void:
@@ -953,7 +944,6 @@ func apply_research_cost(money_cost: int) -> void:
 		return
 	world.science = 0
 	world.budget -= money_cost
-	_notify_stats()
 
 
 ## 国家/帝国/政治家对象写入命令：避免 UI 直接修改领域对象字段。
@@ -961,7 +951,6 @@ func apply_research_cost(money_cost: int) -> void:
 func set_country_tag(country: CountryData, tag: String, value: bool) -> void:
 	if country != null:
 		country.set_tag(tag, value)
-	_notify_stats()
 
 
 func set_country_influence(country: CountryData, field: String, value: int) -> void:
@@ -976,31 +965,26 @@ func set_country_influence(country: CountryData, field: String, value: int) -> v
 			country.usa_influence = value
 		"fre":
 			country.fre_influence = value
-	_notify_stats()
 
 
 func set_country_social_stability(country: CountryData, value: int) -> void:
 	if country != null:
 		country.social_stability = value
-	_notify_stats()
 
 
 func add_empire_power(empire: EmpireData, delta: int) -> void:
 	if empire != null:
 		empire.power += delta
-	_notify_stats()
 
 
 func add_empire_relations(empire: EmpireData, delta: int) -> void:
 	if empire != null:
 		empire.relations += delta
-	_notify_stats()
 
 
 func add_politician_power(pol: PoliticianData, delta: int) -> void:
 	if pol != null:
 		pol.power += delta
-	_notify_stats()
 
 
 ## 政治家对象写入命令：避免 UI 直接修改 PoliticianData 字段。
@@ -1008,51 +992,43 @@ func add_politician_power(pol: PoliticianData, delta: int) -> void:
 func add_politician_loyalty(pol: PoliticianData, delta: int) -> void:
 	if pol != null:
 		pol.loyalty += delta
-	_notify_stats()
 
 
 func set_politician_you_fall(pol: PoliticianData, value: bool) -> void:
 	if pol != null:
 		pol.you_fall = value
-	_notify_stats()
 
 
 func set_politician_investigation(pol: PoliticianData, value: bool) -> void:
 	if pol != null:
 		pol.is_under_investigation = value
-	_notify_stats()
 
 
 func set_politician_investigator(pol: PoliticianData, value: int) -> void:
 	if pol != null:
 		pol.investigator_index = value
-	_notify_stats()
 
 
 func set_politician_surveillance(pol: PoliticianData, value: bool) -> void:
 	if pol != null:
 		pol.is_under_surveillance = value
-	_notify_stats()
 
 
 func set_politician_surveillance_days(pol: PoliticianData, value: int) -> void:
 	if pol != null:
 		pol.days_surveillance = value
-	_notify_stats()
 
 
 func toggle_politician_auto_support(pol: PoliticianData) -> void:
 	if pol == null:
 		return
 	pol.auto_support = 10 if pol.auto_support == 0 else 0
-	_notify_stats()
 
 
 func toggle_politician_auto_hound(pol: PoliticianData) -> void:
 	if pol == null:
 		return
 	pol.auto_hound = 10 if pol.auto_hound == 0 else 0
-	_notify_stats()
 
 
 func assign_leader_cmc() -> void:
@@ -1065,7 +1041,6 @@ func assign_leader_cmc() -> void:
 	for i in range(3, world.politics_positions.size()):
 		if world.politics_positions[i] == -2:
 			world.politics_positions[i] = -1
-	_notify_stats()
 
 
 ## 写数值表后统一：同步显示视图 + 广播刷新

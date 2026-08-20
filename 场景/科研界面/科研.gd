@@ -353,6 +353,7 @@ func _on_tech_pressed(tech_index: int) -> void:
 	var money_cost: int = ts.start_research(tech_index, d.science, w.date.year, w.date.month)
 	if money_cost > 0:
 		GameManager.apply_research_cost(money_cost)
+		GameManager.notify_stats_changed()
 	_refresh()
 
 
