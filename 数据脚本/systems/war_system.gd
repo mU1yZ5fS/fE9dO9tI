@@ -326,25 +326,25 @@ static func intervene_war(war_id: int, action_id: int) -> bool:
 	match action_id:
 		0, 5:
 			d[W.I_BUDGET] -= 20
-			_war_apply_human_aid(war, side)
-			_war_apply_pmc(war, side)
+			WarIntervention.apply_human_aid(w, war, side)
+			WarIntervention.apply_pmc(w, war, side)
 		1, 4:
 			d[W.I_AGENTS] -= 30
-			_war_apply_base(war, side, 30)
-			_war_apply_science24(war, side)
-			_war_apply_pmc(war, side)
-			_war_apply_event548(war, side, 10, 30)
+			WarIntervention.apply_base(war, side, 30)
+			WarIntervention.apply_science24(w, war, side)
+			WarIntervention.apply_pmc(w, war, side)
+			WarIntervention.apply_event548(w, war, side, 10, 30)
 		2, 6:
 			d[W.I_ARMY] -= 30
 			d[W.I_BUDGET] += 3
-			_war_apply_base(war, side, 30 if not _war_science23(w) else 40)
-			_war_apply_event517(war, side)
-			_war_apply_event521(war, side)
-			_war_apply_event548_2(war, side)
-			_war_apply_pmc(war, side)
+			WarIntervention.apply_base(war, side, 30 if not WarIntervention.science23(w) else 40)
+			WarIntervention.apply_event517(w, war, side)
+			WarIntervention.apply_event521(w, war, side)
+			WarIntervention.apply_event548_2(w, war, side)
+			WarIntervention.apply_pmc(w, war, side)
 		3, 7:
-			_war_apply_diplo(war, side)
-			_war_apply_event548_diplo(war, side)
+			WarIntervention.apply_diplo(w, war, side)
+			WarIntervention.apply_event548_diplo(w, war, side)
 			war.diplo_done[side - 1] = true
 			WarQueries.clamp_war_infl(war)
 			w.mirror_empires_to_data()
@@ -353,164 +353,14 @@ static func intervene_war(war_id: int, action_id: int) -> bool:
 			return true
 
 	# 非外交动作共有的敌对帝国关系惩罚
-	_war_apply_enemy_relation(war, side, -5)
+	WarIntervention.apply_enemy_relation(w, war, side, -5)
 	# 非外交动作共有的党内支持消耗与不稳定度增加
-	_war_apply_party_cost(w, d, china)
+	WarIntervention.apply_party_cost(w, d, china)
 	WarQueries.clamp_war_infl(war)
 	w.mirror_empires_to_data()
 	if _notify_stats_cb.is_valid():
 				_notify_stats_cb.call()
 	return true
-
-
-# ============================================================================
-# 战争支援辅助（原版 WarButtonScript.OnMouseDown 逐段）
-# ============================================================================
-
-## 基础增援：side 方 +delta，对方 -delta
-static func _war_apply_base(war: WarData, side: int, delta: int) -> void:
-	if side == 1:
-		war.infl1 += delta
-		war.infl2 -= delta
-	else:
-		war.infl2 += delta
-		war.infl1 -= delta
-
-
-## 人力增援（0/5）：无事件548时基础 +20/-20；事件548 result1 +30/-30、result2 +50/-50，
-## result0 时无额外变化（原版 if/else if 链）。
-static func _war_apply_human_aid(war: WarData, side: int) -> void:
-	var w := current_world
-	if not w.event_done_num(548):
-		_war_apply_base(war, side, 20)
-		return
-	var r := w.result_of_event_num(548)
-	if r == 1:
-		_war_apply_base(war, side, 30)
-	elif r == 2:
-		_war_apply_base(war, side, 50)
-
-
-## 事件548：result 1 → +30/-30，result 2 → +50/-50（用于 0/5）
-static func _war_apply_event548(war: WarData, side: int, delta_r1: int, delta_r2: int) -> void:
-	if not current_world.event_done_num(548):
-		return
-	var r := current_world.result_of_event_num(548)
-	if r == 1:
-		_war_apply_base(war, side, delta_r1)
-	elif r == 2:
-		_war_apply_base(war, side, delta_r2)
-
-
-## 事件548：仅 result 2 时 +20/-20（用于 2/6）
-static func _war_apply_event548_2(war: WarData, side: int) -> void:
-	if current_world.event_done_num(548) and current_world.result_of_event_num(548) == 2:
-		_war_apply_base(war, side, 20)
-
-
-## 事件548：外交声援 result 1 → +110/-110，result 2 → +140/-140
-static func _war_apply_event548_diplo(war: WarData, side: int) -> void:
-	# 原版：事件548未完成 → +80/-80；已完成且 result1/2 → +110/-110、+140/-140；
-	# 已完成但 result0 → 不加（if/else if 链）。
-	if not current_world.event_done_num(548):
-		_war_apply_base(war, side, 80)
-		return
-	var r := current_world.result_of_event_num(548)
-	if r == 1:
-		_war_apply_base(war, side, 110)
-	elif r == 2:
-		_war_apply_base(war, side, 140)
-
-
-## 科技24（专家）：+10/-10
-static func _war_apply_science24(war: WarData, side: int) -> void:
-	var w := current_world
-	if w != null and w.techs != null and w.techs.unlocked.size() > 24 and w.techs.unlocked[24]:
-		_war_apply_base(war, side, 10)
-
-
-## 科技23（武器）：true 时基础增援用 40，否则 30
-static func _war_science23(w: WorldState) -> bool:
-	return w != null and w.techs != null and w.techs.unlocked.size() > 23 and w.techs.unlocked[23]
-
-
-## 事件517：result 0/1 → +10/-10，result 2 → +20/-20
-static func _war_apply_event517(war: WarData, side: int) -> void:
-	var w := current_world
-	if not w.event_done_num(517):
-		return
-	var r := w.result_of_event_num(517)
-	if r == 0 or r == 1:
-		_war_apply_base(war, side, 10)
-	elif r == 2:
-		_war_apply_base(war, side, 20)
-
-
-## 事件521：result 1 → +10/-10，result 2 → +20/-20
-static func _war_apply_event521(war: WarData, side: int) -> void:
-	var w := current_world
-	if not w.event_done_num(521):
-		return
-	var r := w.result_of_event_num(521)
-	if r == 1:
-		_war_apply_base(war, side, 10)
-	elif r == 2:
-		_war_apply_base(war, side, 20)
-
-
-## PMC > 0：+20/-20
-static func _war_apply_pmc(war: WarData, side: int) -> void:
-	if current_world != null and current_world.pmc > 0:
-		_war_apply_base(war, side, 20)
-
-
-## 非外交动作：对敌方阵营帝国关系 -5（side1 的敌人在 usa_place==1/ussr_place==1）
-static func _war_apply_enemy_relation(war: WarData, side: int, delta: int) -> void:
-	var w := current_world
-	if side == 1:
-		if war.usa_side == GameConstants.WarSide.SIDE2 and w.empires.size() > 0:
-			w.empires[0].relations += delta
-		if war.ussr_side == GameConstants.WarSide.SIDE2 and w.empires.size() > 1:
-			w.empires[1].relations += delta
-	else:
-		if war.usa_side == GameConstants.WarSide.SIDE1 and w.empires.size() > 0:
-			w.empires[0].relations += delta
-		if war.ussr_side == GameConstants.WarSide.SIDE1 and w.empires.size() > 1:
-			w.empires[1].relations += delta
-
-
-## 外交声援：友方阵营帝国关系 +30
-static func _war_apply_diplo(war: WarData, side: int) -> void:
-	var w := current_world
-	if side == 1:
-		if war.usa_side == GameConstants.WarSide.SIDE1 and w.empires.size() > 0:
-			w.empires[0].relations += 30
-		if war.ussr_side == GameConstants.WarSide.SIDE1 and w.empires.size() > 1:
-			w.empires[1].relations += 30
-	else:
-		if war.usa_side == GameConstants.WarSide.SIDE2 and w.empires.size() > 0:
-			w.empires[0].relations += 30
-		if war.ussr_side == GameConstants.WarSide.SIDE2 and w.empires.size() > 1:
-			w.empires[1].relations += 30
-
-
-## 事件545 分档的党内支持（军事介入点 data[0]）消耗；结束后中国不稳定度 +8。
-static func _war_apply_party_cost(w: WorldState, d: Array[int], china: CountryData) -> void:
-	if china == null:
-		return
-	var unstab := china.level_of_instability
-	var mult := 10
-	if w.event_done_num(545):
-		var r := w.result_of_event_num(545)
-		if r == 0:
-			mult = 8
-		elif r == 2:
-			mult = 5
-	@warning_ignore("integer_division")
-	var cost := mult * unstab / 10
-	if d.size() > W.I_MIL_INTERVENTION:
-		d[W.I_MIL_INTERVENTION] -= cost
-	china.level_of_instability += 8
 
 
 # ============================================================================
