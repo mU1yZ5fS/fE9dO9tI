@@ -299,27 +299,27 @@ func _tooltip_status(ts: TechState, i: int) -> String:
 	if ts.unlocked[i]:
 		s = "[color=red]%s[/color] 资金 | [color=green] 研究完成 [/color]" % money_s
 	elif ts.in_progress[i]:
-		s = "[color=red]%s[/color] 资金 | [color=blue]%d.get_data_by_index(/color)/%d 科研点 | [color=green] 研究中... [/color]" % [money_s, elapsed, days]
+		s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=green] 研究中... [/color]" % [money_s, elapsed, days]
 	elif ts.is_researching():
-		s = "[color=red]%s[/color] 资金 | [color=blue]%d.get_data_by_index(/color)/%d 科研点 | [color=red] 只能研究单个项目 [/color]" % [money_s, elapsed, days]
+		s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=red] 只能研究单个项目 [/color]" % [money_s, elapsed, days]
 	else:
 		# 原版对 17 号（中国版OGAS）有 data.automation_progress==0 的“尚未宣告建设全面自动化”门，
 		# 由 Event110 写入 data.automation_progress=1 后解锁；Event110 尚移植说明，本端口保持可研究，不显示该门。
 		var dep: int = ts.TECH_DEPENDENCY[i] if i < ts.TECH_DEPENDENCY.size() else -1
 		if dep != -1 and (dep >= ts.unlocked.size() or not ts.unlocked[dep]):
-			s = "[color=red]%s[/color] 资金 | [color=blue]%d.get_data_by_index(/color)/%d 科研点 | [color=red] 不可研究 [/color]" % [money_s, elapsed, days]
+			s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=red] 不可研究 [/color]" % [money_s, elapsed, days]
 		else:
 			var w: WorldState = GameManager.world
 			var req_year: int = ts.TECH_YEAR[i] if i < ts.TECH_YEAR.size() else 1976
 			var year: int = w.date.year if w.date else 1976
 			if year >= req_year:
-				s = "[color=red]%s[/color] 资金 | [color=blue]%d.get_data_by_index(/color)/%d 科研点 | [color=red] 可研究 [/color]" % [money_s, elapsed, days]
+				s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=red] 可研究 [/color]" % [money_s, elapsed, days]
 			else:
 				# 原版超前惩罚（Science_Script.cs:139）：days*(data-year) - month*(days/12)
 				var month: int = w.date.month if w.date else 1
 				@warning_ignore("integer_division")
 				var penalty: int = days * (req_year - year) - month * (days / 12)
-				s = "[color=red]%s[/color] 资金 | [color=blue]%d.get_data_by_index(/color)/%d 科研点 | [color=red] 超前惩罚：+%d 科研点 [/color]" % [money_s, elapsed, days, penalty]
+				s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=red] 超前惩罚：+%d 科研点 [/color]" % [money_s, elapsed, days, penalty]
 	return "[center]" + s + "[/center]"
 
 
