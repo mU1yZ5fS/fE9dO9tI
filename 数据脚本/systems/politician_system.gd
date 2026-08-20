@@ -23,6 +23,64 @@ static func is_vacant_politician(p: PoliticianData) -> bool:
 	return p == null or p.name_display == "空位" or (p.power <= 0 and p.portrait == null)
 
 
+## 统一领导人资料拷贝：事件换领袖时不再各自复制 name/traits/age/face 字段。
+## 肖像系统仍使用 face_* 旧字段，后续迁移到 portrait 资源后可只改这里。
+static func copy_leader_profile(leader: PoliticianData, source: PoliticianData) -> void:
+	if leader == null or source == null:
+		return
+	leader.name_display = source.name_display
+	leader.name_first = source.name_first
+	leader.name_last = source.name_last
+	leader.trait_personality = source.trait_personality
+	leader.trait_background = source.trait_background
+	leader.trait_alignment = source.trait_alignment
+	leader.trait_special = source.trait_special
+	leader.age = source.age
+	leader.face_type = source.face_type
+	if source.face_parts.size() >= 8:
+		leader.face_parts = source.face_parts.duplicate()
+	leader.jacket = source.jacket
+
+
+## 仅拷贝肖像相关字段（事件只换脸不换人设的场合）。
+static func copy_leader_appearance(leader: PoliticianData, source: PoliticianData) -> void:
+	if leader == null or source == null:
+		return
+	leader.face_type = source.face_type
+	if source.face_parts.size() >= 8:
+		leader.face_parts = source.face_parts.duplicate()
+	leader.jacket = source.jacket
+
+
+## 领导人资料互换（Event80 等需要保留双方身份的场合）。
+static func swap_leader_profile(a: PoliticianData, b: PoliticianData) -> void:
+	if a == null or b == null:
+		return
+	var tmp_display := a.name_display
+	var tmp_first := a.name_first
+	var tmp_last := a.name_last
+	var tmp_personality := a.trait_personality
+	var tmp_background := a.trait_background
+	var tmp_alignment := a.trait_alignment
+	var tmp_special := a.trait_special
+	var tmp_age := a.age
+	var tmp_face := a.face_type
+	var tmp_parts := a.face_parts.duplicate()
+	var tmp_jacket := a.jacket
+	copy_leader_profile(a, b)
+	b.name_display = tmp_display
+	b.name_first = tmp_first
+	b.name_last = tmp_last
+	b.trait_personality = tmp_personality
+	b.trait_background = tmp_background
+	b.trait_alignment = tmp_alignment
+	b.trait_special = tmp_special
+	b.age = tmp_age
+	b.face_type = tmp_face
+	b.face_parts = tmp_parts
+	b.jacket = tmp_jacket
+
+
 # ============================================================================
 # 月度 / 年度 / 阴谋循环
 # ============================================================================

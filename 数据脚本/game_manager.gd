@@ -309,6 +309,8 @@ func set_difficulty(value: int) -> void:
 func reset_settings() -> void:
 	if _settings != null:
 		_settings.reset_to_defaults()
+	if world != null:
+		world.difficulty = 2
 
 
 ## 原作 savePlace 编号 5=成就位；本端口存档槽 0=成就位、1-4=普通位。

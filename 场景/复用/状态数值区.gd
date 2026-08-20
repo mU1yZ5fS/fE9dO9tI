@@ -69,10 +69,12 @@ func _flash_label(lbl: Label) -> void:
 		if old_tween != null and old_tween.is_valid():
 			old_tween.kill()
 		_flash_tweens.erase(id)
+	var orig: Color = lbl.get_meta("fx_orig_modulate", Color.WHITE)
+	lbl.set_meta("fx_orig_modulate", orig)
 	lbl.modulate = Color(1.0, 0.92, 0.55, 1.0)
 	var tw := create_tween()
 	_flash_tweens[id] = tw
-	tw.tween_property(lbl, "modulate", Color.WHITE, 0.45) \
+	tw.tween_property(lbl, "modulate", orig, 0.45) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.tween_callback(func() -> void:
 		_flash_tweens.erase(id)

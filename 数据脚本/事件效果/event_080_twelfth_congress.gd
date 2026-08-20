@@ -348,40 +348,7 @@ func _swap_leader_with_politician(slot: int) -> void:
 	var other: PoliticianData = ws.politicians[slot]
 	if other == null:
 		return
-	var tmp_name_first := ws.leader.name_first
-	var tmp_name_last := ws.leader.name_last
-	var tmp_personality := ws.leader.trait_personality
-	var tmp_background := ws.leader.trait_background
-	var tmp_alignment := ws.leader.trait_alignment
-	var tmp_special := ws.leader.trait_special
-	var tmp_age := ws.leader.age
-	var tmp_face := ws.leader.face_type
-	var tmp_parts := ws.leader.face_parts.duplicate()
-	var tmp_jacket := ws.leader.jacket
-	var tmp_display := ws.leader.name_display
-	var other_display := other.name_display
-	ws.leader.name_first = other.name_first
-	ws.leader.name_last = other.name_last
-	ws.leader.trait_personality = other.trait_personality
-	ws.leader.trait_background = other.trait_background
-	ws.leader.trait_alignment = other.trait_alignment
-	ws.leader.trait_special = other.trait_special
-	ws.leader.age = other.age
-	ws.leader.face_type = other.face_type
-	ws.leader.face_parts = other.face_parts.duplicate()
-	ws.leader.jacket = other.jacket
-	ws.leader.name_display = other_display
-	other.name_first = tmp_name_first
-	other.name_last = tmp_name_last
-	other.trait_personality = tmp_personality
-	other.trait_background = tmp_background
-	other.trait_alignment = tmp_alignment
-	other.trait_special = tmp_special
-	other.age = tmp_age
-	other.face_type = tmp_face
-	other.face_parts = tmp_parts
-	other.jacket = tmp_jacket
-	other.name_display = tmp_display
+	PoliticianSystem.swap_leader_profile(ws.leader, other)
 
 
 func _find_politician_by_names(name_first: int, name_last: int) -> int:

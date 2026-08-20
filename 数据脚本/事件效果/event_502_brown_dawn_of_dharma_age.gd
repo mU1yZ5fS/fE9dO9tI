@@ -39,15 +39,7 @@ func execute(context: Dictionary) -> void:
 			if fl_idx >= 0 and fl_idx < ws.politicians.size() and ws.politicians[fl_idx] != null:
 				var fl: PoliticianData = ws.politicians[fl_idx]
 				if ws.leader != null:
-					ws.leader.name_display = fl.name_display
-					ws.leader.trait_personality = fl.trait_personality
-					ws.leader.trait_alignment = fl.trait_alignment
-					ws.leader.trait_special = fl.trait_special
-					ws.leader.trait_background = fl.trait_background
-					ws.leader.age = fl.age
-					ws.leader.face_type = fl.face_type
-					ws.leader.face_parts = fl.face_parts.duplicate()
-					ws.leader.jacket = fl.jacket
+					PoliticianSystem.copy_leader_profile(ws.leader, fl)
 				GameManager.kill_politician(fl_idx)
 			# 原版 LeaderAsset = 0; MoneyLevel = 0; ServeRMB = false 为 display-only，跳过
 			if ws.modifiers.size() > 65: ws.modifiers[65].is_active = false

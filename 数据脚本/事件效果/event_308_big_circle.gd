@@ -96,8 +96,5 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.trait_alignment = p.trait_alignment
 	ws.leader.trait_special = p.trait_special
 	ws.leader.age = p.age
-	ws.leader.face_type = p.face_type
-	if p.face_parts.size() >= 8:
-		ws.leader.face_parts = p.face_parts.duplicate()
-	ws.leader.jacket = p.jacket
+	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
