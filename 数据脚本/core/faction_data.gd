@@ -6,8 +6,6 @@ extends Resource
 ## support ≡ 原版 party_number（席位/力量数据源；一党制下由 GameManager
 ##   _sync_faction_numbers_from_ideology 每日按 ideology+禁用派转移重算）
 ## ideology ≡ 原版 party_ideology（基础支持度；每 7 天盟友增长也写这里）
-## points ≡ 已废弃的自造半年积分字段；仅保留以兼容旧存档，不再有任何逻辑读写
-
 const MAOIST: int = 0
 const CONSERVATIVE: int = 1
 const MODERATE: int = 2
@@ -44,16 +42,7 @@ const FACTION_NAMES_MULTI_TIP: Array[String] = [
 @export var is_enabled: bool = false        # 是否活跃（原版 is_party_enabled）
 @export var is_ally: bool = false           # 是否与玩家结盟（原版 is_party_ally）
 @export var support: int = 0                # 民众支持 / party_number（一党制下每日由 ideology 重算）
-@export var points: int = 0                 # 已废弃自造积分；仅存档兼容
-@export var influence: int = 0              # 旧派生字段，仅存档兼容；增长/重算以 ideology 为准
 @export var leader_index: int = -1          # politician 索引；-2=实权领袖本人，-1=空缺
-
-## 兼容旧字段：席位只读派生，写入时同步到 support
-@export var seats: int = 0:
-	get:
-		return support
-	set(value):
-		support = value
 
 
 func _init(p_id: int = 0) -> void:

@@ -550,9 +550,7 @@ static func _build_factions(ws: WorldState) -> void:
 		fd.is_enabled = row[0] != 0
 		fd.is_ally = row[1] != 0
 		fd.ideology = row[2]
-		fd.influence = row[2]    # 旧字段兼容：初始=ideology；增长/重算一律走 ideology
 		fd.support = row[3]      # ≡ party_number
-		fd.points = 0            # 已废弃自造字段，仅初始化保持旧档一致
 		ws.factions.append(fd)
 
 	# 派系领袖
