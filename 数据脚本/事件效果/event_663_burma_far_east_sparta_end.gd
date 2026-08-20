@@ -53,11 +53,6 @@ func execute(context: Dictionary) -> void:
 	context["result_text"] = T_663_14
 
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
 
 func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: int, usa_side: int, ussr_side: int, war_name: String, fortnight: int = -1) -> void:
 	GameManager.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)

@@ -241,13 +241,6 @@ func _greece_to(government: int, sub: int) -> void:
 		_leave_alliances(greece)
 
 
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "asean",
-			"seato", "oar", "oil", "sento", "fxseu", "nazimao", "balecon",
-			"rim", "au", "亲苏", "亲美", "亲中", "对华贸易"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
-
 
 func _parts0(legacy_index: int) -> bool:
 	var c := ws.get_country_by_legacy_index(legacy_index)
@@ -279,20 +272,5 @@ func _ussr_leader_add(index: int, delta: int) -> void:
 	if index >= 0 and index < leaders.size() and leaders[index] != null:
 		leaders[index].support += delta
 
-
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
 
 

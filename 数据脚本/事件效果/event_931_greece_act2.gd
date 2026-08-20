@@ -98,23 +98,4 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = "左翼联合政府赢得了希腊大选。希腊继续维持左翼联盟政府，并在外交中继续保持中立。希腊将继续维持左翼多党霸权。不过，这种泛左翼的联合政府究竟还能维持多久？"
 
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
-
-
 

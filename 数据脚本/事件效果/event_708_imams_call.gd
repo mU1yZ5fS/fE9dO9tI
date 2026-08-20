@@ -133,24 +133,6 @@ func _start_war88(infl1: int, infl2: int) -> void:
 		ws.wars[88].fortnight_max = 100  # 原版 TickTime(100)
 
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
-
 
 
 func _leader_name(world: WorldState) -> String:

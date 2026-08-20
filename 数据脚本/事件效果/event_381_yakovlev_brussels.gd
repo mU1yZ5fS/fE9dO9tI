@@ -57,7 +57,3 @@ func execute(context: Dictionary) -> void:
 		germany.sub_government = 3
 
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null

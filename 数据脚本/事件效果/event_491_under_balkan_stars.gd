@@ -39,11 +39,3 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-
-

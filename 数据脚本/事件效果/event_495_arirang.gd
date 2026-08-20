@@ -73,15 +73,3 @@ func _set_part(c: CountryData, index: int, value: bool) -> void:
 	c.parts[index] = value
 
 
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
-
-
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null

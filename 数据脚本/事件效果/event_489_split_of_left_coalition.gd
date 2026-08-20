@@ -147,13 +147,6 @@ func _add_leader_support(empire_index: int, leader_index: int, delta: int) -> vo
 			empire.leaders[leader_index].support += delta
 
 
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
-
 
 func _join_alliances(c: CountryData) -> void:
 	var china := ws.get_country_by_legacy_index(1)
@@ -163,15 +156,5 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
-
-
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-
-
 
 

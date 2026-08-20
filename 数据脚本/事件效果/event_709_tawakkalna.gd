@@ -48,15 +48,7 @@ func _convert_country(legacy_index: int) -> void:
 
 
 ## Country.cs:89-112 LeaveAlliances（联盟/倾向清空 + puppetOf=-1）。
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "asean",
-			"seato", "oar", "oil", "sento", "fxseu", "nazimao", "balecon",
-			"rim", "au", "亲苏", "亲美", "亲中", "对华贸易"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
-
-## Country.cs:42-86 JoinAllOurAlliances 核心联盟跟随逻辑。
 func _join_our_alliances(c: CountryData) -> void:
 	var player := ws.get_country_by_legacy_index(1)
 	if player == null:

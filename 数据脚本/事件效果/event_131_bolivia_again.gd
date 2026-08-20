@@ -9,34 +9,7 @@ const TXT_R0 := "据投票结果显示，埃尔南·西莱斯和维克多·帕�
 const TXT_R1 := "据投票结果显示，埃尔南·西莱斯和维克多·帕斯之间几乎打成平手。由于没有候选人在有效选票中获得绝对多数，在军方的压力下，国会选举埃尔南·西莱斯为共和国新总统，任期一年，下一次选举也将于次年6月举行。新政府由保守派、自由派与中间派政党结成的不稳定的临时联盟组成，并由莉迪亚·盖勒担任政府首脑。为避免发生军事政变，临时政府被迫与军方合作，军费被维持在适当的水平，政府也对军方内部事务不加干涉。与此同时，适度的经济自由化也随之开始：裁撤官僚机构、放宽关税与贸易壁垒，修改税收法规、部分出售国有企业的少量股份并扩大其职权范围。改革的道路已然铺就。"
 const TXT_R2 := "据投票结果显示，埃尔南·西莱斯和维克多·帕斯之间几乎打成平手。由于没有候选人在有效选票中获得绝对多数，国会试图由自己选出共和国的新总统，但在几轮投票后，没有候选人能在议员中获得绝对多数，因此，国会决定将总统职位移交给参议院议长担任，为期一年，而后者有义务在1980年组织新的选举。因此，胡安·佩雷达和前军政府的亲密伙伴，瓦尔特·格瓦拉被任命为总统。然而，他的统治只持续了3个月之久，纳图什·布什上校便发动了一场政变，指责瓦尔特·格瓦拉试图篡权夺力。不过，尽管纳图什·布什在街头为祸一方，却也激起了全体玻利维亚人民的抗议浪潮，纳图什辩解说，“他被不择手段的政客欺骗了”，这些政客向他保证，如果他推翻瓦尔特，他将得到各政党的支持，但他并没有如愿以偿。在同意任命莉迪亚·盖勒为总统后，这位失败的政变者便逃往海外。"
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
 
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
-
-
-
-
-
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
 
 func _proprc_suffix(c: CountryData) -> String:

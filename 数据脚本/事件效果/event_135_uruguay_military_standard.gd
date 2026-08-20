@@ -8,34 +8,7 @@ const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_R0 := "为了为新一轮多余的清洗做辩护，德米切利批准了1972年博达贝里政府制定的《国家发展计划》。这是一套实用主义的经济政策，旨在于技术官僚的领导下，对国家经济及其运作的基础进行彻底地重新规划。改革则是为了将对外贸易的生产结构、国民收入分配、市场需求与相对价格转化为广泛的经济自由化与对外开放的框架。在1973年至1985年间统治乌拉圭的文官或军政府之中，德米切利较为温和，哪怕他执政期间推行的措施被民主派支持者视为对反政府人士的压制，但在禁止前政治家从事政治活动的程度上，他并不同意其军方同行的意见。他编写的法学书籍多年来也一直是共和国大学法学系的教学与参考资料。"
 const TXT_R1 := "1976年，阿帕里西奥·门德斯被国家委员会（一个由武装部队控制的机构）任命为共和国总统，他于9月1日其担任这一职位，并签署了《四号组织法》，该法规剥夺了15000名公民在15年内参政的权力。此外，甫一上任，他便颁布了一项法令，剥夺了所有政党领导人的政治权利。1980年，他举行了修改宪法并使现政府合法化的公民投票，但大多数选民投反对票。他是军方的提线木偶，在他统治期间，人权遭到践踏，数千人被逮捕与流放。军政府试图为正在发生的事披上一层合法性的外衣，并制定了一份宪法草案，但大多数人民对此持抵制态度。门德斯是行政法专家，也曾在大学从事法律教学工作。1934年至1955年，他任共和国大学行政法教授，但由于与学生会发生冲突而离开了大学，学生会指责他试图推广意大利的墨索里尼的法西斯政权。"
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
 
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
-
-
-
-
-
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
 
 func _d(index: int) -> int:

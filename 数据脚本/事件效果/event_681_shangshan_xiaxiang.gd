@@ -94,24 +94,6 @@ func execute(context: Dictionary) -> void:
 	# ModifierCatalog 静态维护，不在事件脚本中改写（见本文件头注）。
 
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
-
 
 
 func _leader_name() -> String:

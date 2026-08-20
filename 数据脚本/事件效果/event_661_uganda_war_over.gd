@@ -153,13 +153,6 @@ func _set_parts0(c: CountryData, value: bool) -> void:
 
 
 ## Country.LeaveAlliances() 逐项映射（同 Event713 约定）。
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "asean",
-			"seato", "oar", "oil", "sento", "fxseu", "nazimao", "balecon",
-			"rim", "au", "亲苏", "亲美", "亲中", "对华贸易"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
-
 
 func _mod_active(world: WorldState, index: int) -> bool:
 	return world.modifiers.size() > index and world.modifiers[index] != null and world.modifiers[index].is_active

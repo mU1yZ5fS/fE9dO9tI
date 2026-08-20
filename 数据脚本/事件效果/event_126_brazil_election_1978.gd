@@ -8,34 +8,7 @@ const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_R7 := "赢得选举之后，若昂承诺“伸出和解之手”，发誓要让“这个国家成为民主国家”。在来自反对派巴西民主运动所组织的大规模工会罢工的压力下，他做的第一件事就是宣布对政治家进行广泛的、全面无限制的大赦，允许那些被军政府流放的人回到巴西。此后不久，他发起了选举改革，结束了两党制，形成了四个反对执政党的政党。同时立法禁止政党联盟并要求“平等投票”（一个选民只能投票给一个政党的候选人）。作为总统，他还在联合国大会上发表讲话，批评发达国家的高利率，还推出了农业刺激计划。虽然因为巴西农业现代化的激励措施许多小农已经破产，但农业确实实现了现代化。"
 const TXT_R5 := "\"为了在议会中形成政治多数，巴西民主运动和欧拉本人不得不与国家革新联盟中的温和派进行谈判。其结果是改革方案被阻断并大幅缩减，特别是社会支出的部分内容，最低工资、养老金和救济金的增加都被取消。最后的改革方案被称为捍卫国家宣言，剧作家和作家阿里亚诺·苏阿苏纳负责包括废除审查制度，有关国家艺术和创新的资助，发展以及自由的法案、律师和历史学家巴尔博萨参与了撰写、利马·索布里尼奥提出了为了保护国家安全条款，禁止国有公司私有化和禁止领导人员连任、还有社会学家和政治家费尔南多·恩里克·卡尔多苏为打击政治极端化和激进分子的项目以及一个教授群众政治知识以使他们不受激进分子影响的公司进行游说。同时作为一种妥协，所有被流放的巴西人和所有没有参与暴力的人都得到了大赦。这样就通过了对政治反对派的赦免，最终导致了两党政权的彻底垮台。但改革方案还包括一项法案，为旧政府的所有人、参与者和拥护者，特别是国家革新联盟的成员提供豁免权，保证禁止对1964年政变以来发生的任何事进行谴责或起诉。\""
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
 
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
-
-
-
-
-
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
 
 func _proprc_suffix(c: CountryData) -> String:

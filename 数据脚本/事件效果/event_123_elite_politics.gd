@@ -9,26 +9,6 @@ const TXT_R1 := "首先，为了在政治上重树儒家原则，我们需要撤
 const TXT_R2 := "在一切改革路径中，我们选择了最为艰难、最为漫长的一条——回归法家。在新政策全面生效之前，我们要彻底清除所有意识形态（同时对其颁布禁令），以对法律的崇拜取而代之。让一切归于全面集权，让人民为真正的严刑峻法做好准备，这一切都需要时间。当然，我们首先要树立起对最高统治者的毫不动摇、毫无疑问的服从......"
 const TXT_R3 := "我们向全国人民宣告，伟大的中国需要伟大的政治家，那么，又有谁能比一个爱国军官更伟大呢？他能保卫他的祖国，他的手足同胞，乃至于我们中华文明的全部遗产。我们将开始实施我们的伟大计划，现在将只有军官才能在政治生涯中得以晋升，在五年内，每个人要么在适当的地方学习并服役，并被授予军官军衔，要么就与政治切割。大审判将至！"
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
-
-
-
 
 
 func _modifier_active(index: int) -> bool:
@@ -40,12 +20,6 @@ func _set_modifier_active(index: int, active: bool) -> void:
 		ws.modifiers[index].is_active = active
 
 
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

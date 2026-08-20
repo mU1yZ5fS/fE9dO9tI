@@ -95,13 +95,6 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = T_667_21
 
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-
 
 func _set_part(country: CountryData, index: int, value: bool) -> void:
 	if country == null:

@@ -153,16 +153,7 @@ func _leader_name() -> String:
 
 
 ## Country.LeaveAlliances() 逐项映射（同 Event587 约定）。
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
-
-## JoinAllOurAlliances(true)：id67 属 flag 组，军事联盟分支原版跳过；
-## 仅按中国 econ/sev 加入经济联盟。
 func _join_alliances(c: CountryData) -> void:
 	var china := ws.get_country_by_legacy_index(1)
 	if china == null:
@@ -171,25 +162,6 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
-
-
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
 
 
 

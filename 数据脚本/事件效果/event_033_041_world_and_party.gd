@@ -443,12 +443,6 @@ func _find_politician(name1: int, name2: int) -> int:
 	return -1
 
 
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "asean",
-			"seato", "oar", "oil", "sento", "rim", "au", "亲苏", "亲美", "亲中", "对华贸易"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
-
 
 func _add_empire_relation(empire_index: int, delta: int) -> void:
 	if empire_index >= 0 and empire_index < ws.empires.size() and ws.empires[empire_index] != null:
@@ -460,20 +454,6 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 		ws.empires[empire_index].power += delta
 
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
 
 
 func _sync_empire_mirrors() -> void:

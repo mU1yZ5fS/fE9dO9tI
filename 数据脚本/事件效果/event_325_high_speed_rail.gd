@@ -50,19 +50,6 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 
 	
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
 
 
 func _set_mod_active(idx: int, value: bool) -> void:

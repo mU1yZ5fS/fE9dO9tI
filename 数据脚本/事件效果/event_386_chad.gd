@@ -28,13 +28,6 @@ func execute(context: Dictionary) -> void:
 	context["result_text"] = TXT_R0
 
 
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
-
 
 func _join_alliances(c: CountryData) -> void:
 	var china := ws.get_country_by_legacy_index(1)

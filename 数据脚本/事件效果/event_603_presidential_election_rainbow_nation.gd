@@ -156,22 +156,8 @@ func _free_puppets(overlord: int) -> void:
 		if c != null and c.puppet_of == overlord:
 			c.puppet_of = -1
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
 
 
-## 原版 Event603.cs:33/55/93 —— this.a.empires[i].power 直访的等价映射
 func _empire_power(idx: int) -> int:
 	if ws.empires.size() > idx and ws.empires[idx] != null:
 		return ws.empires[idx].power

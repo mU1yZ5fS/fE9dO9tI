@@ -8,34 +8,7 @@ const TXT_PROPRC_NO := "新政府不想和我们做朋友。"
 const TXT_R0 := "尽管民族主义联盟的胡安·佩雷达·阿斯本在总统大选中胜选，但人们发现总票数大于登记选民的人数（倘若重新计票，胡安便不会获得所需的过半选票）。人们作出了一系列有关选举欺诈及其他违规行为的指控，包括在选民数目上的欺诈、窃取投票箱及为资助佩雷达·阿斯本的竞选活动而进行的政治献金。在对此类指控进行审查后，选举法院于7月20日作出裁决，宣布选举结果无效。而在选举结果因欺诈行为被宣布无效的次日，在一场军事政变后，佩雷达成为了总统。同一天，根据总统令，玻利维亚全国进入戒严状态，一切公共集会被禁止，清洗军队、镇压人民和迫害工会的行动也纷至沓来。如此这般，再加上经济衰退、繁荣不再，大规模的骚乱和集会因此而起，而佩雷达仍企图延续他的任期，最终引发了11月24日的军事反政变，之后，大卫·帕迪利亚将军成为了总统。新的选举定于明年7月举行。"
 const TXT_R1 := "尽管各自竭尽全力，但没有一个候选人能获得过半选票，又因为没有候选人在有效选票中获得绝对多数，不得不由国会决定谁将成为共和国的新任总统。根据现行宪法，得票数最多的三位候选人将在次年再度参与竞选。经过几轮投票，没有候选人在议员中获得绝对多数，雨果·班塞尔将其任期延长了一年，并要求在明年7月举行新的选举，在此之前，他保证将继续与民选议会合作，还承诺在1979年7月最终退出政坛，民主派与反对派也因此得到了安抚。"
 
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
 
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
-
-
-
-
-
-
-
-
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
 
 func _proprc_suffix(c: CountryData) -> String:

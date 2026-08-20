@@ -63,15 +63,7 @@ func execute(context: Dictionary) -> void:
 
 
 ## Country.LeaveAlliances() 逐项映射（含原版不常见的联盟标签）。
-func _leave_alliances(c: CountryData) -> void:
-	for tag in ["okb", "econ", "sev", "ovd", "nato", "eu", "soc_eu", "亲苏",
-			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
-			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
-		c.set_tag(tag, false)
-	c.puppet_of = -1
 
-
-## 原版 EstablishGovernment(ProChina) 只改倾向标签，不改 government。
 func _establish_pro_china(c: CountryData) -> void:
 	c.set_tag("亲中", true)
 	c.set_tag("亲苏", false)
@@ -86,20 +78,5 @@ func _join_all_our_alliances(c: CountryData) -> void:
 		if player.tags[tag_key]:
 			c.set_tag(tag_key, true)
 
-
-func _enable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = ""
-	opt.enable_condition = null
-
-
-func _disable(opt: EventOption, text: String) -> void:
-	opt.text = text
-	opt.disabled_text = text
-	var n := ExprNode.new()
-	n.type = ExprNode.Type.RESOURCE_AT_LEAST
-	n.key = "party_system"
-	n.value = 99999.0
-	opt.enable_condition = n
 
 

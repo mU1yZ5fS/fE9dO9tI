@@ -147,13 +147,6 @@ func _copy_soc_eu_from_turkey(cyprus: CountryData) -> void:
 		cyprus.set_tag("soc_eu", true)
 
 
-func _leave_alliances(c: CountryData) -> void:
-	if c == null:
-		return
-	for t in WorldFactory.START_CLEAR_TAGS:
-		c.set_tag(t, false)
-	c.puppet_of = -1
-
 
 func _cyprus() -> CountryData:
 	return ws.get_country_by_legacy_index(94)
