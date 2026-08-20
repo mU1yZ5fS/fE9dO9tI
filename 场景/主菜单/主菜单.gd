@@ -2,17 +2,24 @@ extends Control
 
 const CAT = preload("res://数据脚本/achievement_catalog.gd")
 
+const ACH_FRAME_TEX := preload("uid://byw8pr1qq7a4w")
+const ACH_HANDLE_TEX := preload("uid://cx2p3gjuloxo5")
+
 @onready var _ach_mask: ColorRect = $成就遮罩
 @onready var _ach_popup: PopupPanel = $成就弹窗
 @onready var _ach_list: VBoxContainer = $成就弹窗/布局/列表滚动/成就列表
 @onready var _ach_count: Label = $成就弹窗/布局/标题栏/计数
+@onready var _ach_scroll: ScrollContainer = $成就弹窗/布局/列表滚动
 
 const COLOR_UNLOCKED := Color(0.13, 0.5, 0.16, 1)
 const COLOR_LOCKED := Color(0.5, 0.5, 0.5, 1)
 
+var _row_style: StyleBoxTexture = null
+
 
 func _ready() -> void:
 	_ach_mask.gui_input.connect(_on_成就遮罩_gui_input)
+	_style_scrollbar()
 	_refresh_achievement_rows()
 
 
@@ -62,10 +69,39 @@ func _refresh_achievement_rows() -> void:
 		_ach_list.add_child(_make_row(int(item["number"]), String(item["title"]), String(item["desc"])))
 
 
-func _make_row(number: int, title: String, desc: String) -> HBoxContainer:
+func _style_scrollbar() -> void:
+	if _ach_scroll == null:
+		return
+	var bar: VScrollBar = _ach_scroll.get_v_scroll_bar()
+	if bar == null:
+		return
+	var handle := StyleBoxTexture.new()
+	handle.texture = ACH_HANDLE_TEX
+	bar.add_theme_stylebox_override("grabber", handle)
+	# 让滚动条本身不显示默认的深色背景条，只保留手柄图片
+	bar.add_theme_stylebox_override("grabber_area", StyleBoxEmpty.new())
+	bar.add_theme_stylebox_override("track", StyleBoxEmpty.new())
+
+
+func _row_stylebox() -> StyleBoxTexture:
+	if _row_style == null:
+		_row_style = StyleBoxTexture.new()
+		_row_style.texture = ACH_FRAME_TEX
+		_row_style.texture_margin_left = 14.0
+		_row_style.texture_margin_top = 8.0
+		_row_style.texture_margin_right = 14.0
+		_row_style.texture_margin_bottom = 8.0
+	return _row_style
+
+
+func _make_row(number: int, title: String, desc: String) -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", _row_stylebox())
+	panel.custom_minimum_size = Vector2(0, 80)
+
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 14)
-	row.custom_minimum_size = Vector2(0, 56)
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	var unlocked: bool = Achievements.is_unlocked(number)
 
@@ -77,7 +113,7 @@ func _make_row(number: int, title: String, desc: String) -> HBoxContainer:
 	status.text = "已解锁" if unlocked else "未解锁"
 
 	var title_label := Label.new()
-	title_label.custom_minimum_size = Vector2(150, 0)
+	title_label.custom_minimum_size = Vector2(160, 0)
 	title_label.add_theme_font_size_override("font_size", 26)
 	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title_label.add_theme_color_override("font_color", Color(0, 0, 0, 1) if unlocked else COLOR_LOCKED)
@@ -94,7 +130,8 @@ func _make_row(number: int, title: String, desc: String) -> HBoxContainer:
 	row.add_child(status)
 	row.add_child(title_label)
 	row.add_child(desc_label)
-	return row
+	panel.add_child(row)
+	return panel
 
 
 func _on_开始游戏_pressed() -> void:

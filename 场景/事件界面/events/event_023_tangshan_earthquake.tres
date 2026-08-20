@@ -1,15 +1,10 @@
-[gd_resource type="Resource" script_class="EventDef" format=3]
+[gd_resource type="Resource" script_class="EventDef" format=3 uid="uid://cpg1usic0trnv"]
 
-[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
-[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
-[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
-[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
-[ext_resource type="Script" path="res://数据脚本/事件效果/event_023_tangshan.gd" id="5_custom"]
-
-[sub_resource type="Resource" id="Expr_date"]
-script = ExtResource("3_expr")
-type = 12
-key = "1976.8.1"
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" uid="uid://c73huttgvbhjn" path="res://数据脚本/事件效果/event_023_tangshan.gd" id="5_custom"]
 
 [sub_resource type="Resource" id="Fx0"]
 script = ExtResource("2_fx")
@@ -55,6 +50,11 @@ text = "让省政府自行解决"
 effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
 result_text = "（结果由 event_023_tangshan.gd 动态生成）"
 
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.8.1"
+
 [resource]
 script = ExtResource("4_def")
 event_id = "event_023"
@@ -62,8 +62,7 @@ source_event_number = 23
 trigger_priority = 2300
 title = "唐山大地震"
 description = "7月28日，3时42分，河北省唐山市发生了震级8.2级的地震，完全摧毁了整个城市。距唐山西140公里的天津和北京也遭到破坏。最高震级为7.1级的几波余震，导致了更高的伤亡。根据初步数据，有20—60万人死于地震。据上海市地震局局长张俊所讲，巨大破坏的主要原因是建筑建造时缺乏必要的抗震措施。"
-display_script = ExtResource("5_custom")
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 show_notification = false
-fire_only_once = true
 options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])
+display_script = ExtResource("5_custom")

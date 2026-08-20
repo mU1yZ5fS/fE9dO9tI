@@ -5,6 +5,27 @@
 [ext_resource type="Texture2D" uid="uid://b16ruch2kqkir" path="res://资产/UI/主菜单/主菜单按钮.png" id="2_ngrxy"]
 [ext_resource type="Script" uid="uid://dprrkvl1dxnw8" path="res://场景/主菜单/主菜单.gd" id="2_qdl27"]
 [ext_resource type="Script" uid="uid://c8lq4p6d1xjda" path="res://场景/主菜单/版本信息.gd" id="5_xj33c"]
+[ext_resource type="Texture2D" uid="uid://cvujiu0bjxwl8" path="res://资产/UI/成就/ui_window_bg.png" id="6_achbg"]
+[ext_resource type="Texture2D" uid="uid://cjwwrjeyr3uuo" path="res://资产/UI/成就/ui_close.png" id="7_achclose"]
+[ext_resource type="Texture2D" uid="uid://d27i3sxr0wxur" path="res://资产/UI/成就/ui_scroll_bg.png" id="9_achscrollbg"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ach_win"]
+content_margin_left = 28.0
+content_margin_top = 24.0
+content_margin_right = 28.0
+content_margin_bottom = 24.0
+texture = ExtResource("6_achbg")
+texture_margin_left = 24.0
+texture_margin_top = 24.0
+texture_margin_right = 24.0
+texture_margin_bottom = 24.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ach_scroll"]
+texture = ExtResource("9_achscrollbg")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
 
 [node name="Control" type="Control" unique_id=1650672303]
 layout_mode = 3
@@ -130,16 +151,18 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.45)
 
 [node name="成就弹窗" type="PopupPanel" parent="." unique_id=1339]
+oversampling_override = 1.0
 size = Vector2i(1200, 780)
+theme_override_styles/panel = SubResource("StyleBoxTexture_ach_win")
 
 [node name="布局" type="VBoxContainer" parent="成就弹窗" unique_id=1340]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 1196.0
-offset_bottom = 776.0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = -28.0
+offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
@@ -151,6 +174,7 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="成就弹窗/布局/标题栏" unique_id=1342]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 42
 text = "成就"
 
@@ -160,18 +184,23 @@ theme_override_font_sizes/font_size = 28
 text = "0/24"
 
 [node name="关闭" type="Button" parent="成就弹窗/布局/标题栏" unique_id=1344]
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
-text = "关闭"
+tooltip_text = "关闭"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+icon = ExtResource("7_achclose")
+flat = true
+expand_icon = true
 
 [node name="说明" type="Label" parent="成就弹窗/布局" unique_id=1345]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.3, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 22
-text = "仅列出本端口已接线的成就；灰色为未解锁。条件摘要译自原版 Set 调用点。"
 
 [node name="列表滚动" type="ScrollContainer" parent="成就弹窗/布局" unique_id=1346]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxTexture_ach_scroll")
 horizontal_scroll_mode = 0
 
 [node name="成就列表" type="VBoxContainer" parent="成就弹窗/布局/列表滚动" unique_id=1347]

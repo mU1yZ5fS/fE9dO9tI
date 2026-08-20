@@ -9,9 +9,9 @@
 #   - <color> 标签不保留（决议 UI 不开 bbcode，先例：事件 UI）。
 #
 # 分步状态：
-#   - 批次1（本轮）：version=1 决议 idx 0-14 的条件/效果/title/desc 完整；
-#     req（门槛文本）/result（效果文本）随界面批次补齐（本批先置空）。
-#   - 批次2/3：version=2（idx 15-19）、version=3（idx 20-52）。
+#   - 全部决议 idx 0-52 的 req（门槛文本）已按原版 AddReq 链补齐，
+#     并在每次 rebuild 时动态附加 √/× 判定标记。
+#   - 全部决议 idx 0-52 的 result（效果文本）已按原版 AddResult 链补齐。
 # ============================================================================
 class_name DecisionCatalog
 extends RefCounted
@@ -65,6 +65,31 @@ static func _new(id: int, title: String, desc: String, version: int) -> Decision
 	return d
 
 
+## 构建决议条件提示文本：原版 AddReq 链的 Godot 动态等价。
+## 每条目 = [描述文本, 条件 Callable]；显示时附加 √/× 与“和”连接。
+static func _build_req(entries: Array) -> String:
+	var lines: Array[String] = []
+	for i in entries.size():
+		var e: Array = entries[i]
+		var text: String = e[0]
+		var ok: bool = e[1].call()
+		var mark := "<color=lime>√</color>" if ok else "<color=red>×</color>"
+		if i == 0:
+			lines.append("%s %s" % [text, mark])
+		else:
+			lines.append("和 %s %s" % [text, mark])
+	return "条件:\n" + "\n".join(lines)
+
+
+## 构建决议效果提示文本：原版 AddResult 链的 Godot 等价。
+## 每条目为已经求值为字符串的效果行；按原版以“结果为：”开头、换行分隔。
+static func _build_result(entries: Array) -> String:
+	var lines: Array[String] = []
+	for e in entries:
+		lines.append(str(e))
+	return "结果为：\n" + "\n".join(lines)
+
+
 ## 把原版空格排版字符串压成项目惯例（去掉全部空格；| 换行标记转 \n）
 static func _s(s: String) -> String:
 	return s.replace(" ", "").replace("|", "\n")
@@ -83,6 +108,17 @@ static func _build_v1() -> void:
 		func(): A.add_army(-250),
 		func(): A.start_event(120),
 	]
+	d0.req = DecisionCatalog._build_req([
+		["朝 鲜 和 我 们 处 在 同 一 经 济 与 军 事 联 盟", func() -> bool: return A.they_are_ours(10)],
+		["朝鲜不为中国的傀儡且已通过第二次朝鲜战争统一，或朝鲜不为中国的傀儡且左翼分子在韩国掌权", func() -> bool: return A.quelle_gosstroy(10, 1, true)],
+		["预 算 - 25.0", func() -> bool: return A.has_money(250)],
+		["特 工 网 络 - 25.0", func() -> bool: return A.has_agents(250)],
+	])
+	d0.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-25.0</color>",
+		"军 队 力 量: <color=red>-25.0</color>",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d0)
 
 	# ── idx 1 西藏自治（new_texts[114]/[132]）──────────────────────────
@@ -98,6 +134,20 @@ static func _build_v1() -> void:
 		func(): A.add_relations(1, 250),
 		func(): A.start_event(121),
 	]
+	d1.req = DecisionCatalog._build_req([
+		["西 藏 是 我 国 的 一 部 分 - 是", func() -> bool: return A.tibet_is_ours(true)],
+		["国 家 体 制 为 单 一 制 - 否", func() -> bool: return A.is_unitarism(false)],
+		["党 内 是 自 由 派 领 导/ 党 内 路 线 是 自 由 主 义 - 是", func() -> bool: return A.is_liberal(true)],
+	])
+	d1.result = DecisionCatalog._build_result([
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=red>-50.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 温 和 派: <color=red>-50.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 改 革 派: <color=red>-50.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 自 由 派: <color=lime>+25.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d1)
 
 	# ── idx 2 博巴金珠帕其玛托瓦 / 根除藏文化（三元，new_texts[115]/[133]）──
@@ -123,6 +173,37 @@ static func _build_v1() -> void:
 		func(): A.change_special_ending_for_the_country(69, d2_special),
 		func(): A.start_event(547),
 	]
+	d2.req = DecisionCatalog._build_req([
+		["西 藏 是 我 国 的 一 部 分 - 是", func() -> bool: return A.tibet_is_ours(true)],
+		["国 家 体 制 为 单 一 制 - 是", func() -> bool: return A.is_unitarism(true)],
+		["党内是极左派领导 是", func() -> bool: return A.is_leftradical_lead(true)],
+		["破除传统- 是", func() -> bool: return A.is_radical_tradition(true)],
+		["军 队 力 量 - 25.0", func() -> bool: return A.has_army(250)],
+	]) if A._faction_leading(0) else DecisionCatalog._build_req([
+		["西 藏 是 我 国 的 一 部 分 - 是", func() -> bool: return A.tibet_is_ours(true)],
+		["国 家 体 制 为 单 一 制 - 是", func() -> bool: return A.is_unitarism(true)],
+		["党 内 是 极 左 派/ 改 革 派 领 导/ 西 方 范 式 民 主 国 家 且 党 内 路 线 是 威 权 主 义 - 是", func() -> bool: return A.is_autoritharian(true)],
+		["破除传统- 是", func() -> bool: return A.is_radical_tradition(true)],
+		["军 队 力 量 - 25.0", func() -> bool: return A.has_army(250)],
+	])
+	d2.result = DecisionCatalog._build_result([
+		"<color=lime>西 藏 将 不 再 有 分 裂 可 能 性</color>",
+		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+2.5</color>",
+		"预 算 将 变 更: <color=red>-25.0</color>",
+		"爱 国 情 绪 将 变 更: <color=lime>+25.0</color>",
+		"<color=red>将 改 变 结 算 界 面 的 国 家 状 态</color>",
+		"<color=lime>触 发 事 件</color>",
+	]) if A._faction_leading(0) else DecisionCatalog._build_result([
+		"<color=lime>西 藏 将 不 再 有 分 裂 可 能 性</color>",
+		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+2.5</color>",
+		"预 算 将 变 更: <color=red>-25.0</color>",
+		"爱 国 情 绪 将 变 更: <color=lime>+25.0</color>",
+		"<color=red>将 改 变 结 算 界 面 的 国 家 状 态</color>",
+	])
 	_defs.append(d2)
 
 	# ── idx 3 维吾尔自治（new_texts[116]/[134]）────────────────────────
@@ -138,6 +219,20 @@ static func _build_v1() -> void:
 		func(): A.add_relations(1, 250),
 		func(): A.start_event(122),
 	]
+	d3.req = DecisionCatalog._build_req([
+		["新 疆 是 我 国 的 一 部 分 - 是", func() -> bool: return A.uyghur_is_ours(true)],
+		["国 家 体 制 为 单 一 制 - 否", func() -> bool: return A.is_unitarism(false)],
+		["党 内 是 自 由 派 领 导/ 党 内 路 线 是 自 由 主 义 - 是", func() -> bool: return A.is_liberal(true)],
+	])
+	d3.result = DecisionCatalog._build_result([
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=red>-50.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 温 和 派: <color=red>-50.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 改 革 派: <color=red>-50.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 自 由 派: <color=lime>+25.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d3)
 
 	# ── idx 4 天山脚下红旗飞扬 / 根除维吾尔文化（三元）────────────────
@@ -163,6 +258,37 @@ static func _build_v1() -> void:
 		func(): A.change_special_ending_for_the_country(70, d4_special),
 		func(): A.start_event(546),
 	]
+	d4.req = DecisionCatalog._build_req([
+		["新 疆 是 我 国 的 一 部 分 - 是", func() -> bool: return A.uyghur_is_ours(true)],
+		["国 家 体 制 为 单 一 制 - 是", func() -> bool: return A.is_unitarism(true)],
+		["党内是极左派领导 是", func() -> bool: return A.is_leftradical_lead(true)],
+		["破除传统- 是", func() -> bool: return A.is_radical_tradition(true)],
+		["军 队 力 量 - 25.0", func() -> bool: return A.has_army(250)],
+	]) if A._faction_leading(0) else DecisionCatalog._build_req([
+		["新 疆 是 我 国 的 一 部 分 - 是", func() -> bool: return A.uyghur_is_ours(true)],
+		["国 家 体 制 为 单 一 制 - 是", func() -> bool: return A.is_unitarism(true)],
+		["党 内 是 极 左 派/ 改 革 派 领 导/ 西 方 范 式 民 主 国 家 且 党 内 路 线 是 威 权 主 义 - 是", func() -> bool: return A.is_autoritharian(true)],
+		["破除传统- 是", func() -> bool: return A.is_radical_tradition(true)],
+		["军 队 力 量 - 25.0", func() -> bool: return A.has_army(250)],
+	])
+	d4.result = DecisionCatalog._build_result([
+		"<color=lime>新 疆 将 不 再 有 分 裂 可 能 性</color>",
+		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+2.5</color>",
+		"预 算 将 变 更: <color=red>-25.0</color>",
+		"爱 国 情 绪 将 变 更: <color=lime>+25.0</color>",
+		"<color=red>将 改 变 结 算 界 面 的 国 家 状 态</color>",
+		"<color=lime>触 发 事 件</color>",
+	]) if A._faction_leading(0) else DecisionCatalog._build_result([
+		"<color=lime>新 疆 将 不 再 有 分 裂 可 能 性</color>",
+		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+2.5</color>",
+		"预 算 将 变 更: <color=red>-25.0</color>",
+		"爱 国 情 绪 将 变 更: <color=lime>+25.0</color>",
+		"<color=red>将 改 变 结 算 界 面 的 国 家 状 态</color>",
+	])
 	_defs.append(d4)
 
 	# ── idx 5 精英治国（new_texts[118]/[136]）──────────────────────────
@@ -170,6 +296,14 @@ static func _build_v1() -> void:
 	d5.condition = func() -> bool:
 		return A.is_party_enabled(false, 0) and A.has_one_party_mechanic(true) and A.all_leaders_are_dead()
 	d5.effects = [func(): A.start_event(123)]
+	d5.req = DecisionCatalog._build_req([
+		["派 系 存 续 ： 极 左 派 - 否", func() -> bool: return A.is_party_enabled(false, 0)],
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
+		["华 国 锋 ， 邓 小 平 ， “ 四 人 帮 ” 不 在 政 治 局 任 职", func() -> bool: return A.all_leaders_are_dead()],
+	])
+	d5.result = DecisionCatalog._build_result([
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d5)
 
 	# ── idx 6 一国两制（new_texts[119]/[137]）──────────────────────────
@@ -188,6 +322,25 @@ static func _build_v1() -> void:
 		func(): A.add_liberalization(-50),
 		func(): A.start_event(462),
 	]
+	d6.req = DecisionCatalog._build_req([
+		["授 予 澳 门 和 香 港 自 治 权 - 是", func() -> bool: return A.has_autonomy_for_macao(true)],
+		["进 攻 台 海 拉 锯 岛 屿 - 否", func() -> bool: return A.is_taiwan_attacked(false)],
+		["宝岛已回到我们的怀抱 - 否", func() -> bool: return A.is_taiwan_return(false)],
+		["中 国 不 在 华 约 中 - 是", func() -> bool: return A.is_in_the_ovd(false, 1)],
+		["中 国 不 在 经 互 会 中 - 是", func() -> bool: return A.is_in_the_sev(false, 1)],
+		["文 化 大 革 命 修 正 - 否", func() -> bool: return A.has_cultural_revolution(false)],
+		["毛 主 义 壁 垒 修 正 - 否", func() -> bool: return A.has_maoismus(false)],
+		["国 际 声 誉 ≺ 50.0", func() -> bool: return A.is_dip_rep_less_than(true, 500)],
+	])
+	d6.result = DecisionCatalog._build_result([
+		"台 湾 - 属 于 我 们 的 影 响 范 围: <color=lime>√</color>",
+		"台 湾 - 处 于 美 国 影 响 下: <color=red>×</color>",
+		"台 湾 - 将 国 家 体 制 更 改 为: <color=lime>改 良 主 义</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+3.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+5.0</color>",
+		"思 想 自 由 化 将 变 更: <color=lime>-5.0</color>",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d6)
 
 	# ── idx 7 解放台湾（三元，new_texts[120]/[138]）────────────────────
@@ -207,6 +360,7 @@ static func _build_v1() -> void:
 		d7.condition = func() -> bool:
 			return A.tibet_is_ours(true) and A.uyghur_is_ours(true) \
 				and A.has_agents(1500) and A.has_army(1500) and A.has_money(1500) \
+				and A.is_chi_sov_influence_less_than(false, 500) \
 				and A.is_unity_less_than(false, 700) \
 				and A.has_maoismus(true) and A.is_american_influence_less_than(true, 100) \
 				and A.is_taiwan_attacked(true) and A.is_taiwan_return(false) \
@@ -225,6 +379,61 @@ static func _build_v1() -> void:
 		func(): A.add_army(-1500),
 		func(): A.start_event(457),
 	]
+	d7.req = DecisionCatalog._build_req([
+		["西 藏 是 我 国 的 一 部 分 - 是", func() -> bool: return A.tibet_is_ours(true)],
+		["新 疆 是 我 国 的 一 部 分 - 是", func() -> bool: return A.uyghur_is_ours(true)],
+		["特 工 网 络 - 150.0", func() -> bool: return A.has_agents(1500)],
+		["军 队 力 量 - 150.0", func() -> bool: return A.has_army(1500)],
+		["预 算 - 150.0", func() -> bool: return A.has_money(1500)],
+		["中 国 影 响 力 （ 若 与 苏 联 在 同 一 联 盟 ， 则 再 加 上 苏 联 影 响 力 ） ≻ 50.0", func() -> bool: return A.is_chi_sov_influence_less_than(false, 500)],
+		["毛 主 义 壁 垒 修 正 - 是", func() -> bool: return A.has_maoismus(true)],
+		["美 国 影 响 ≺ 10.0", func() -> bool: return A.is_american_influence_less_than(true, 100)],
+		["进 攻 台 海 拉 锯 岛 屿 - 是", func() -> bool: return A.is_taiwan_attacked(true)],
+		["宝岛已回到我们的怀抱 - 否", func() -> bool: return A.is_taiwan_return(false)],
+		["我 们 在 联 盟 中", func() -> bool: return A.they_are_ours(1)],
+		["港 澳 已 回 归 - 是", func() -> bool: return A.has_annexed_macao(true)],
+		["全民皆兵/积极建军 - 是", func() -> bool: return A.has_agressive_military_doctrine(true)],
+		["科 技 «发 展 海 军 与 空 军» 研 发 完 毕", func() -> bool: return A.is_science_done(24, true)],
+	]) if A._mod_active(6) else DecisionCatalog._build_req([
+		["西 藏 是 我 国 的 一 部 分 - 是", func() -> bool: return A.tibet_is_ours(true)],
+		["新 疆 是 我 国 的 一 部 分 - 是", func() -> bool: return A.uyghur_is_ours(true)],
+		["特 工 网 络 - 150.0", func() -> bool: return A.has_agents(1500)],
+		["军 队 力 量 - 150.0", func() -> bool: return A.has_army(1500)],
+		["预 算 - 150.0", func() -> bool: return A.has_money(1500)],
+		["中 国 影 响 力 （ 若 与 苏 联 在 同 一 联 盟 ， 则 再 加 上 苏 联 影 响 力 ） ≻ 50.0", func() -> bool: return A.is_chi_sov_influence_less_than(false, 500)],
+		["国 家 凝 聚 力 ≻ 70.0", func() -> bool: return A.is_unity_less_than(false, 700)],
+		["美 国 影 响 ≺ 10.0", func() -> bool: return A.is_american_influence_less_than(true, 100)],
+		["进 攻 台 海 拉 锯 岛 屿 - 是", func() -> bool: return A.is_taiwan_attacked(true)],
+		["宝岛已回到我们的怀抱 - 否", func() -> bool: return A.is_taiwan_return(false)],
+		["我 们 在 联 盟 中", func() -> bool: return A.they_are_ours(1)],
+		["港 澳 已 回 归 - 是", func() -> bool: return A.has_annexed_macao(true)],
+		["全民皆兵/积极建军 - 是", func() -> bool: return A.has_agressive_military_doctrine(true)],
+		["科 技 «发 展 海 军 与 空 军» 研 发 完 毕", func() -> bool: return A.is_science_done(24, true)],
+	])
+	d7.result = DecisionCatalog._build_result([
+		"<color=lime>台 湾 - 被 吞 并 于 红 色 中 国</color>",
+		"台 湾 - 处 于 美 国 影 响 下: <color=red>×</color>",
+		"将 会 改 变 关 系 和 美 国: <color=red>-100.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+5.0</color>",
+		"人 口 将 变 更: <color=lime>+18.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+5.0</color>",
+		"思 想 自 由 化 将 变 更: <color=lime>-5.0</color>",
+		"特 工 网 络: <color=red>-150.0</color>",
+		"预 算 将 变 更: <color=red>-150.0</color>",
+		"军 队 力 量: <color=red>-150.0</color>",
+		"<color=lime>触 发 事 件</color>",
+	]) if A._mod_active(6) else DecisionCatalog._build_result([
+		"<color=lime>台 湾 - 被 吞 并 于 红 色 中 国</color>",
+		"台 湾 - 处 于 美 国 影 响 下: <color=red>×</color>",
+		"将 会 改 变 关 系 和 美 国: <color=red>-100.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+5.0</color>",
+		"人 口 将 变 更: <color=lime>+18.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+5.0</color>",
+		"思 想 自 由 化 将 变 更: <color=lime>-5.0</color>",
+		"特 工 网 络: <color=red>-150.0</color>",
+		"预 算 将 变 更: <color=red>-150.0</color>",
+		"军 队 力 量: <color=red>-150.0</color>",
+	])
 	_defs.append(d7)
 
 	# ── idx 8 平反林彪集团（三元，new_texts[121]，desc 内嵌）───────────
@@ -240,6 +449,26 @@ static func _build_v1() -> void:
 		func(): A.add_power_to_leader_faction(200),
 		func(): A.get_lin_biao(true),
 	]
+	d8.req = DecisionCatalog._build_req([
+		["已完全粉碎四人帮 - 是", func() -> bool: return A.has_arrest_gof(true)],
+		["保守派 / 温和派掌舵 - 是", func() -> bool: return A.has_conservative_moderate_leading(true)],
+		["撰写保守派决议，或加入华约，或迎回王明家人 - 是", func() -> bool: return A.has_lin_biao(true)],
+	]) if A._mod_active(6) else DecisionCatalog._build_req([
+		["已完全粉碎四人帮 - 是", func() -> bool: return A.has_arrest_gof(true)],
+		["保守派 / 温和派掌舵 - 是", func() -> bool: return A.has_conservative_moderate_leading(true)],
+		["撰写保守派决议，或加入华约，或迎回王明家人 - 是", func() -> bool: return A.has_lin_biao(true)],
+	])
+	d8.result = DecisionCatalog._build_result([
+		"思 想 自 由 化 将 变 更: <color=red>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
+		"增加与领导人同一派系政治家的影响力: <color=lime>+20.0</color>",
+		"<color=lime>林彪集团的成员将陆续加入政治局</color>",
+	]) if A._mod_active(6) else DecisionCatalog._build_result([
+		"思 想 自 由 化 将 变 更: <color=red>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
+		"增加与领导人同一派系政治家的影响力: <color=lime>+20.0</color>",
+		"<color=lime>林彪集团的成员将陆续加入政治局</color>",
+	])
 	_defs.append(d8)
 
 	# ── idx 9 另类改组，倒反天罡（new_texts[122]/[140]）────────────────
@@ -263,6 +492,31 @@ static func _build_v1() -> void:
 		func(): A.maoism_sov_is_better(9),
 		func(): A.start_event(470),
 	]
+	d9.req = DecisionCatalog._build_req([
+		["极左派 / 保守派 / 温和派掌舵 - 是", func() -> bool: return A.has_communist_leader(true)],
+		["深 化 与 苏 联 的 友 好 条 约 - 否", func() -> bool: return A.has_soviet_friendship(false)],
+		["我 们 在 联 盟 中", func() -> bool: return A.they_are_ours(1)],
+		["波 兰 、 罗 马 尼 亚 、 匈 牙 利 对 我 们 持 积 极 态 度", func() -> bool: return A.has_europeans_puppets()],
+		["阿 富 汗 在 我 们 的 影 响 下", func() -> bool: return A.pro_chinese(12)],
+		["伊 朗 在 我 们 的 影 响 下", func() -> bool: return A.pro_chinese(8)],
+		["中 国 影 响 ≻ 35.0", func() -> bool: return A.is_chinese_influence_less_than(false, 350)],
+		["\"毛 泽 东 思 想 在 … … 苏 联 ？\" - 事 件 中 选 择 给 予 回 应 1", func() -> bool: return A.has_chosen_in_the_event(471, 0)],
+		["戈 尔 巴 乔 夫 执 掌 苏 联", func() -> bool: return A.has_gorbachev()],
+		["所 需 年 限 ≻  1984", func() -> bool: return A.is_year_less(false, 1984)],
+		["毛 主 义 壁 垒 修 正 - 是", func() -> bool: return A.has_maoismus(true)],
+		["文 化 大 革 命 修 正 - 是", func() -> bool: return A.has_cultural_revolution(true)],
+	])
+	d9.result = DecisionCatalog._build_result([
+		"匈牙利、波兰、罗马尼亚将退出华约和经互会",
+		"匈牙利、波兰、罗马尼亚将加入集安条约和经合组织",
+		"改 变 美 国 影 响 力: <color=lime>+10.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-100.0</color>",
+		"改 变 苏 联 影 响 力: <color=red>-100.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=lime>+50.0</color>",
+		"<color=lime>支 援 东 欧 毛 派 势 力 将 会 增 加 世 界 影 响 力</color>",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d9)
 
 	# ── idx 10 组织革命国际主义运动（new_texts[123]/[141]）────────────
@@ -287,6 +541,31 @@ static func _build_v1() -> void:
 		func(): A.maoism_is_better(10),
 		func(): A.start_event(548),
 	]
+	d10.req = DecisionCatalog._build_req([
+		["中 国 由 极 左 派 掌 舵 - 是", func() -> bool: return A.has_left_radical_leader(true)],
+		["我 们 在 联 盟 中", func() -> bool: return A.they_are_ours(1)],
+		["毛主义者在 泰国、缅甸、印度 均建立了稳定政权", func() -> bool: return A.quelle_gosstroy(33, 1, true)],
+		["非洲 至少有一个 毛主义国家", func() -> bool: return A.quelle_gosstroy(58, 1, true)],
+		["秘鲁 为 毛主义", func() -> bool: return A.quelle_gosstroy(80, 1, true)],
+		["毛 主 义 壁 垒 修 正 - 是", func() -> bool: return A.has_maoismus(true)],
+		["文 化 大 革 命 修 正 - 是", func() -> bool: return A.has_cultural_revolution(true)],
+		["我们还没被其他毛派视作叛徒 - 是", func() -> bool: return A.is_not_revisionist(true)],
+	])
+	d10.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-25.0</color>",
+		"军 队 力 量: <color=red>-25.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
+		"改 变 美 国 影 响 力: <color=red>-10.0</color>",
+		"改 变 苏 联 影 响 力: <color=red>-10.0</color>",
+		"国 际 声 誉 将 改 变: <color=lime>+10.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+10.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=lime>+50.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 改 革 派: <color=red>-50.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 自 由 派: <color=red>-50.0</color>",
+		"<color=lime>支 援 西 方 毛 派 势 力 将 会 增 加 世 界 影 响 力</color>",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d10)
 
 	# ── idx 11 这里的苦跌塔静悄悄（new_texts[124]/[142]）──────────────
@@ -308,6 +587,26 @@ static func _build_v1() -> void:
 		func(): A.kill_the_leader_of_the_faction(3),
 		func(): A.kill_the_leader_of_the_faction(4),
 	]
+	d11.req = DecisionCatalog._build_req([
+		["陈云 在 政 治 局 任 职", func() -> bool: return A.is_politician_alive(16, 16, 1, 21, 5, 11)],
+		["特 工 网 络 - 25.0", func() -> bool: return A.has_agents(250)],
+		["文 化 大 革 命 修 正 - 否", func() -> bool: return A.has_cultural_revolution(false)],
+		["温 和 派 领 导 - 是", func() -> bool: return A.has_moderate_faction(true)],
+		["中国领袖为保守派 / 温和派/ 改革派 - 是", func() -> bool: return A.has_moderate_leader(true)],
+	])
+	d11.result = DecisionCatalog._build_result([
+		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
+		"特 工 网 络: <color=red>-25.0</color>",
+		"思 想 自 由 化 将 变 更: <color=red>+25.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+15.0</color>",
+		"生 活 水 平 将 变 更: <color=lime>+5.0</color>",
+		"<color=lime>陈 云 将 会 成 为 国 家 领 袖</color>",
+		"<color=red>该 政 治 派 系 领 袖 将 离 任 ： 极 左 派</color>",
+		"<color=red>该 政 治 派 系 领 袖 将 离 任 ： 保 守 派</color>",
+		"<color=red>该 政 治 派 系 领 袖 将 离 任 ： 改 革 派</color>",
+		"<color=red>该 政 治 派 系 领 袖 将 离 任 ： 自 由 派</color>",
+	])
 	_defs.append(d11)
 
 	# ── idx 12 嚼嚼口香糖，友谊长又长（new_texts[125]/[143]）──────────
@@ -317,6 +616,17 @@ static func _build_v1() -> void:
 			and A.is_liberal(true) and A.is_left_rad_banned() \
 			and A.has_capitalist_economy(true) and A.has_oligarchy_power_less(false, 60)
 	d12.effects = [func(): A.agree_to_oligarchy(12)]
+	d12.req = DecisionCatalog._build_req([
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
+		["特 工 网 络 - 25.0", func() -> bool: return A.has_agents(250)],
+		["党 内 是 自 由 派 领 导/ 党 内 路 线 是 自 由 主 义 - 是", func() -> bool: return A.is_liberal(true)],
+		["极 左 派 被 禁 止", func() -> bool: return A.is_left_rad_banned()],
+		["经济类型为市场经济 - 是", func() -> bool: return A.has_capitalist_economy(true)],
+		["寡 头 权 力 ≻  60", func() -> bool: return A.has_oligarchy_power_less(false, 60)],
+	])
+	d12.result = DecisionCatalog._build_result([
+		"<color=lime>寡 头 权 力 将 不 会 高 于75 或 低 于40</color>",
+	])
 	_defs.append(d12)
 
 	# ── idx 13 王明的遗产（new_texts[126]/[144]）──────────────────────
@@ -330,6 +640,19 @@ static func _build_v1() -> void:
 		func(): A.block_market(13),
 		func(): A.start_event(124),
 	]
+	d13.req = DecisionCatalog._build_req([
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
+		["经济类型为市场经济 - 否", func() -> bool: return A.has_capitalist_economy(false)],
+		["深 化 与 苏 联 的 友 好 条 约 - 是", func() -> bool: return A.has_soviet_friendship(true)],
+		["所 需 年 限 ≺  1984", func() -> bool: return A.is_year_less(true, 1984)],
+		["撰 写 赫 鲁 晓 夫 版 《 决 议 》 - 是", func() -> bool: return A.is_mao_demaoised(true)],
+		["中 国 领 导 人 不 是 极 左 派 ， 不 是 改 革 派 ， 不 是 自 由 派 - 是", func() -> bool: return A.has_real_moderate_leader(true)],
+	])
+	d13.result = DecisionCatalog._build_result([
+		"将 会 改 变 关 系 和 苏 联: <color=lime>+100.0</color>",
+		"<color=red>开 放 的 资 产 阶 级 路 线 将 不 再 可 行</color>",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d13)
 
 	# ── idx 14 印度大棋，弃子争先（new_texts[127]/[145]）──────────────
@@ -344,6 +667,20 @@ static func _build_v1() -> void:
 		func(): A.add_chinese_influence(50),
 		func(): A.start_event(125),
 	]
+	d14.req = DecisionCatalog._build_req([
+		["特 工 网 络 - 100.0", func() -> bool: return A.has_agents(1000)],
+		["预 算 - 50.0", func() -> bool: return A.has_money(500)],
+		["毛 主 义 壁 垒 修 正 - 是", func() -> bool: return A.has_maoismus(true)],
+		["支 持 人 民 党 胜 选 ， 再 抛 弃 他 们 - 是", func() -> bool: return A.is_dead_janata_in_india(true)],
+		["纳 萨 尔 派 在 印 度 的 武 装 力 量 ≻ 79.9", func() -> bool: return A.has_naxalits_power_less(false, 799)],
+	])
+	d14.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-50.0</color>",
+		"特 工 网 络: <color=red>-150.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-100.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+5.0</color>",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d14)
 
 
@@ -363,6 +700,18 @@ static func _build_v2() -> void:
 		func(): A.add_support(50),
 		func(): A.add_chinese_influence(1),
 	]
+	d15.req = DecisionCatalog._build_req([
+		["极左派 / 保守派 / 温和派掌舵 - 否", func() -> bool: return A.has_communist_leader(false)],
+		["毛 主 义 壁 垒 修 正 - 否", func() -> bool: return A.has_maoismus(false)],
+		["文 化 大 革 命 修 正 - 否", func() -> bool: return A.has_cultural_revolution(false)],
+		["经济类型为市场经济 - 是", func() -> bool: return A.has_capitalist_economy(true)],
+	])
+	d15.result = DecisionCatalog._build_result([
+		"<color=lime>朱镕 基将 会 成 为 国 家 领 袖</color>",
+		"思 想 自 由 化 将 变 更: <color=red>+5.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+5.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+0.1</color>",
+	])
 	_defs.append(d15)
 
 	# idx 16 效法袁世凯（new_texts[552]/[557]）
@@ -376,6 +725,19 @@ static func _build_v2() -> void:
 		func(): A.add_agents(-1500),
 		func(): A.add_army(-1500),
 	]
+	d16.req = DecisionCatalog._build_req([
+		["统 治 国 家 - 朱 镕 基", func() -> bool: return A.has_leader(32, 47, 3, 21, 4, 14)],
+		["党 内 是 极 左 派/ 改 革 派 领 导/ 西 方 范 式 民 主 国 家 且 党 内 路 线 是 威 权 主 义 - 是", func() -> bool: return A.is_autoritharian(true)],
+		["尊 崇 传 统/ 政 教 协 定 - 是", func() -> bool: return A.is_traditional(true)],
+		["特 工 网 络 - 150.0", func() -> bool: return A.has_agents(1500)],
+		["军 队 力 量 - 150.0", func() -> bool: return A.has_army(1500)],
+	])
+	d16.result = DecisionCatalog._build_result([
+		"<color=red>自 由 民 主 路 线 将 不 再 可 行</color>",
+		"<color=lime>将 新 添 加 修 正</color>",
+		"特 工 网 络: <color=red>-150.0</color>",
+		"军 队 力 量: <color=red>-150.0</color>",
+	])
 	_defs.append(d16)
 
 	# idx 17 关于处理海外麻匪的指导意见（new_texts[553]/[558]）
@@ -388,6 +750,17 @@ static func _build_v2() -> void:
 		func(): A.add_money(-500),
 		func(): A.add_new_modify(39),
 	]
+	d17.req = DecisionCatalog._build_req([
+		["所 需 年 限 ≻  1981", func() -> bool: return A.is_year_less(false, 1981)],
+		["\"大 圈\" - 事 件 中 选 择 给 予 回 应 2", func() -> bool: return A.has_chosen_in_the_event(308, 1)],
+		["特 工 网 络 - 50.0", func() -> bool: return A.has_agents(500)],
+		["预 算 - 50.0", func() -> bool: return A.has_money(500)],
+	])
+	d17.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-50.0</color>",
+		"预 算 将 变 更: <color=red>-50.0</color>",
+		"<color=lime>将 新 添 加 修 正</color>",
+	])
 	_defs.append(d17)
 
 	# idx 18 回归农业文明（内嵌文本）
@@ -409,6 +782,30 @@ static func _build_v2() -> void:
 		func(): A.create_new_leader(47, 65, 2, 26, 4, 14, age18a),
 		func(): A.create_new_politician(39, 66, 2, 26, 5, 14, age18b),
 	]
+	d18.req = DecisionCatalog._build_req([
+		["中国领袖为保守派 / 温和派/ 改革派 - 是", func() -> bool: return A.has_moderate_leader(true)],
+		["派 系 被 禁 止 - 极 左 派", func() -> bool: return A.is_faction_banned(0)],
+		["派 系 被 禁 止 - 自 由 派", func() -> bool: return A.is_faction_banned(4)],
+		["\"中 南 半 岛 的 独 裁 者\" - 事 件 中 选 择 给 予 回 应 2", func() -> bool: return A.has_chosen_in_the_event(451, 1)],
+		["\"柬 越 战 争\" - 事 件 中 选 择 给 予 回 应 2", func() -> bool: return A.has_chosen_in_the_event(15, 1)],
+		[(A._ws().wars[1].name_war if (A._ws() != null and A._ws().wars.size() > 1) else "") + " " + "战 争 以 该 势 力 获 胜 告 终" + " " + "柬 埔 寨", func() -> bool: return A.has_someone_won_in_the_war(1, 0)],
+		["国 际 声 誉 ≻ 70.0", func() -> bool: return A.is_dip_rep_less_than(false, 700)],
+		["毛 主 义 壁 垒 修 正 - 否", func() -> bool: return A.has_maoismus(false)],
+		["尊 崇 传 统/ 政 教 协 定 - 是", func() -> bool: return A.is_traditional(true)],
+		[("新民主主义制度" if A._mod_active(6) else "一党独大式民主") + " - " + "是", func() -> bool: return A.is_new_democracy(true)],
+		["\"我实在是个乡下人……\" - 事 件 中 选 择 给 予 回 应 1", func() -> bool: return A.has_chosen_in_the_event(682, 0)],
+		["特 工 网 络 - 50.0", func() -> bool: return A.has_agents(500)],
+		["预 算 - 50.0", func() -> bool: return A.has_money(500)],
+	])
+	d18.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-50.0</color>",
+		"预 算 将 变 更: <color=red>-50.0</color>",
+		"<color=lime>将 新 添 加 修 正</color>",
+		"<color=red>仅国家垄断资本主义可用</color>",
+		"<color=red>仅仅 国 家 垄 断 资 本 主 义 可 用可用</color>",
+		"<color=lime>梁漱 溟将 会 成 为 国 家 领 袖</color>",
+		"<color=lime>冯友 兰 将加入政治局</color>",
+	])
 	_defs.append(d18)
 
 	# idx 19 中华秋海棠叶遂归于一统 / 整合漠北（三元 puppetOf!=1）
@@ -437,6 +834,33 @@ static func _build_v2() -> void:
 			func(): A.add_chinese_influence(100),
 			func(): A.get_mongolia(19),
 		]
+	d19.req = DecisionCatalog._build_req([
+		["国 家 体 制 为 单 一 制 - 否", func() -> bool: return A.is_unitarism(false)],
+		["蒙 古 在 我 们 的 影 响 下", func() -> bool: return A.pro_chinese(9)],
+		["我 们 在 联 盟 中", func() -> bool: return A.they_are_ours(1)],
+		["特 工 网 络 - 50.0", func() -> bool: return A.has_agents(500)],
+		["预 算 - 50.0", func() -> bool: return A.has_money(500)],
+		["中 国 影 响 ≻ 75.0", func() -> bool: return A.is_chinese_influence_less_than(false, 750)],
+		["国 家 凝 聚 力 ≻ 70.0", func() -> bool: return A.is_unity_less_than(false, 700)],
+	]) if A._country(9) != null and A._country(9).puppet_of != GameConstants.LegacySlot.CHINA else DecisionCatalog._build_req([
+		["蒙 古 在 我 们 的 影 响 下", func() -> bool: return A.pro_chinese(9)],
+		["我 们 在 联 盟 中", func() -> bool: return A.they_are_ours(1)],
+	])
+	d19.result = DecisionCatalog._build_result([
+		"人 口 将 变 更: <color=lime>+2.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+10.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+1.0</color>",
+		"特 工 网 络: <color=red>-50.0</color>",
+		"预 算 将 变 更: <color=red>-50.0</color>",
+		"<color=red>蒙 古 将 作 为 自 治 共 和 国 成 为 中 国 的 一 部 分</color>",
+		"<color=red>蒙古将成为历史名词</color>",
+	]) if A._country(9) != null and A._country(9).puppet_of != GameConstants.LegacySlot.CHINA else DecisionCatalog._build_result([
+		"人 口 将 变 更: <color=lime>+2.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+10.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+10.0</color>",
+		"<color=red>蒙 古 将 作 为 自 治 共 和 国 成 为 中 国 的 一 部 分</color>",
+		"<color=red>蒙古将成为历史名词</color>",
+	])
 	_defs.append(d19)
 
 
@@ -476,6 +900,34 @@ static func _build_v3() -> void:
 			func(): A.add_money(-100),
 			func(): A.unite_arab(),
 		]
+	d20.req = DecisionCatalog._build_req([
+		["阿 拉 伯 联 合 共 和 国 已 经 重 建", func() -> bool: return A.is_oar_created(true)],
+		["埃 及 、 伊 拉 克 、 叙 利 亚 、 阿 尔 及 利 亚 、 利 比 亚 、 突 尼 斯 、 摩 洛 哥 与 西 撒 哈 拉 ， 均 为 阿 拉 伯 联 合 共 和 国 的 一 员", func() -> bool: return A.is_oar_full(true)],
+		["中 东 无 战 事", func() -> bool: return A.is_no_wars(true)],
+		["所 需 年 限 ≻  1983", func() -> bool: return A.is_year_less(false, 1983)],
+		["中 国 影 响 ≻ 80.0", func() -> bool: return A.is_chinese_influence_less_than(false, 800)],
+		["预 算 - 30.0", func() -> bool: return A.has_money(300)],
+		["土耳其 的政体为 社会主义或改良主义", func() -> bool: return A.quelle_gosstroy(84, 2, true)],
+		["埃及 的政体为 改良主义", func() -> bool: return A.quelle_gosstroy(30, 2, true)],
+		["特 工 网 络 - 30.0", func() -> bool: return A.has_agents(300)],
+		["巴 勒 斯 坦 地 区 已 建 立 亲 中 的 巴 以 “ 联 盟 国 家 ”", func() -> bool: return A.is_rael(true)],
+	]) if A._country(30) != null and A._country(30).government != GameConstants.Government.SOCIALIST else DecisionCatalog._build_req([
+		["革命的西撒哈拉、摩洛哥、阿尔及利亚、突尼斯、利比亚、埃及、苏丹、巴以、黎巴嫩、约旦、叙利亚、伊拉克、科威特、也门、沙特阿拉伯、海湾均已加入阿拉伯革命社会主义共和国联盟", func() -> bool: return A.is_revotionary_oar_full(true)],
+		["中 东 无 战 事", func() -> bool: return A.is_no_wars(true)],
+		["中 国 影 响 ≻ 50.0", func() -> bool: return A.is_chinese_influence_less_than(false, 500)],
+		["预 算 - 10.0", func() -> bool: return A.has_money(100)],
+		["特 工 网 络 - 10.0", func() -> bool: return A.has_agents(100)],
+	])
+	d20.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-30.0</color>",
+		"预 算 将 变 更: <color=red>-30.0</color>",
+		"阿 拉 伯 联 合 共 和 国 将 统 一 为 单 一 国 家",
+		"<color=lime>触 发 事 件</color>",
+	]) if A._country(30) != null and A._country(30).government != GameConstants.Government.SOCIALIST else DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-10.0</color>",
+		"预 算 将 变 更: <color=red>-10.0</color>",
+		"<color=lime>阿拉伯革命社会主义共和国联盟将整合为一个国家</color>",
+	])
 	_defs.append(d20)
 
 	# idx 21 统一情报网络（new_texts[589]/[590]）
@@ -484,6 +936,16 @@ static func _build_v3() -> void:
 		return A.is_chinese_influence_less_than(false, 200) and A.is_china_war_aliance(true) \
 			and A.is_science_done(19, true) and A.has_money(100)
 	d21.effects = [func(): A.add_money(-100), func(): A.on_agent_modif(true)]
+	d21.req = DecisionCatalog._build_req([
+		["中 国 影 响 ≻ 20.0", func() -> bool: return A.is_chinese_influence_less_than(false, 200)],
+		["我 们 已 成 立 自 己 的 军 事 联 盟", func() -> bool: return A.is_china_war_aliance(true)],
+		["科 技 «情 报 部 门 新 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(19, true)],
+		["预 算 - 10.0", func() -> bool: return A.has_money(100)],
+	])
+	d21.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-10.0</color>",
+		"添 加 修 正 效 果 “ 特 勤 一 体 化 协 定 ”",
+	])
 	_defs.append(d21)
 
 	# idx 22 建立统一的总参谋部（new_texts[629]/[630]）
@@ -492,6 +954,16 @@ static func _build_v3() -> void:
 		return A.is_chinese_influence_less_than(false, 200) and A.is_china_war_aliance(true) \
 			and A.is_science_done(23, true) and A.has_money(100)
 	d22.effects = [func(): A.add_money(-100), func(): A.on_army_modif(true)]
+	d22.req = DecisionCatalog._build_req([
+		["中 国 影 响 ≻ 20.0", func() -> bool: return A.is_chinese_influence_less_than(false, 200)],
+		["我 们 已 成 立 自 己 的 军 事 联 盟", func() -> bool: return A.is_china_war_aliance(true)],
+		["科 技 «更 新 军 队 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(23, true)],
+		["预 算 - 10.0", func() -> bool: return A.has_money(100)],
+	])
+	d22.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-10.0</color>",
+		"添 加 修 正 效 果 “ 军 事 一 体 化 协 定 ”",
+	])
 	_defs.append(d22)
 
 	# idx 23 统一东南亚条约组织与中央条约组织（new_texts[632]/[636]）
@@ -510,6 +982,25 @@ static func _build_v3() -> void:
 		func(): A.make_in_wpo(true, 9),
 		func(): A.on_seato(true),
 	]
+	d23.req = DecisionCatalog._build_req([
+		["中 国 是 东 南 亚 条 约 组 织 的 成 员 国", func() -> bool: return A.is_in_the_seato(true, 1)],
+		["伊 朗 是 中 央 条 约 组 织 的 成 员 国", func() -> bool: return A.is_in_the_sento(true, 8)],
+		["巴 基 斯 坦 是 中 央 条 约 组 织 的 成 员 国", func() -> bool: return A.is_in_the_sento(true, 31)],
+		["所 需 年 限 ≻  1980", func() -> bool: return A.is_year_less(false, 1980)],
+		["预 算 - 30.0", func() -> bool: return A.has_money(300)],
+		["军 队 力 量 - 30.0", func() -> bool: return A.has_army(300)],
+	])
+	d23.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-30.0</color>",
+		"军 队 力 量: <color=red>-30.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+5.0</color>",
+		"改 变 美 国 影 响 力: <color=lime>+5.0</color>",
+		"改 变 苏 联 影 响 力: <color=red>-5.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
+		"蒙 古 - 加 入 华 沙 条 约: <color=lime>√</color>",
+		"中 央 条 约 组 织 与 东 南 亚 条 约 组 织 将 开 始 实 现 统 一 ， 巴 基 斯 坦 与 伊 朗 将 加 入 我 们 的 军 事 联 盟",
+	])
 	_defs.append(d23)
 
 	# idx 24 打倒苏修新沙皇（new_texts[641]/[642]）
@@ -521,6 +1012,16 @@ static func _build_v3() -> void:
 		func(): A.add_agents(-150),
 		func(): A.add_soviet_influence(-50),
 	]
+	d24.req = DecisionCatalog._build_req([
+		["特 工 网 络 - 15.0", func() -> bool: return A.has_agents(150)],
+		["科 技 «现 代 间 谍 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(25, true)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(24, true)],
+	])
+	d24.result = DecisionCatalog._build_result([
+		"该 决 议 将 在  6 月 后 解 锁",
+		"特 工 网 络: <color=red>-15.0</color>",
+		"改 变 苏 联 影 响 力: <color=red>-5.0</color>",
+	])
 	_defs.append(d24)
 
 	# idx 25 打倒美帝野心狼（new_texts[645]/[646]）
@@ -532,6 +1033,16 @@ static func _build_v3() -> void:
 		func(): A.do_timer(25, 6),
 		func(): A.add_american_influence(-50),
 	]
+	d25.req = DecisionCatalog._build_req([
+		["特 工 网 络 - 15.0", func() -> bool: return A.has_agents(150)],
+		["科 技 «现 代 间 谍 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(25, true)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(25, true)],
+	])
+	d25.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-15.0</color>",
+		"该 决 议 将 在  6 月 后 解 锁",
+		"改 变 美 国 影 响 力: <color=red>-5.0</color>",
+	])
 	_defs.append(d25)
 
 	# idx 26 在苏修集团内挖墙脚（new_texts[647]/[648]）
@@ -548,6 +1059,23 @@ static func _build_v3() -> void:
 		func(): A.add_infl_alliance(-350, 1),
 		func(): A.add_infl_alliance(200, 3),
 	]
+	d26.req = DecisionCatalog._build_req([
+		["中 国 是 华 沙 条 约 组 织 的 成 员 国", func() -> bool: return A.is_in_the_wp(true, 1)],
+		["特 工 网 络 - 5.0", func() -> bool: return A.has_agents(50)],
+		["军 队 力 量 - 15.0", func() -> bool: return A.has_army(150)],
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["科 技 «情 报 部 门 新 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(19, true)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(26, true)],
+	])
+	d26.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-5.0</color>",
+		"军 队 力 量: <color=red>-15.0</color>",
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"该 决 议 将 在  6 月 后 解 锁",
+		"改 变 苏 联 影 响 力: <color=red>-1.0</color>",
+		"苏 联 对 联 盟 内 各 国 的 影 响 力 ：: <color=red>-35.0</color>",
+		"中 国 对 联 盟 内 各 国 的 影 响 力 ：: <color=lime>+20.0</color>",
+	])
 	_defs.append(d26)
 
 	# idx 27 在美帝集团内挖墙脚（new_texts[653]/[654]）
@@ -564,6 +1092,23 @@ static func _build_v3() -> void:
 		func(): A.add_infl_alliance(-350, 2),
 		func(): A.add_infl_alliance(200, 3),
 	]
+	d27.req = DecisionCatalog._build_req([
+		["中 国 是 东 南 亚 条 约 组 织 的 成 员 国", func() -> bool: return A.is_in_the_seato(true, 1)],
+		["特 工 网 络 - 5.0", func() -> bool: return A.has_agents(50)],
+		["军 队 力 量 - 15.0", func() -> bool: return A.has_army(150)],
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["科 技 «情 报 部 门 新 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(19, true)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(27, true)],
+	])
+	d27.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-5.0</color>",
+		"军 队 力 量: <color=red>-15.0</color>",
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"该 决 议 将 在  6 月 后 解 锁",
+		"改 变 美 国 影 响 力: <color=red>-1.0</color>",
+		"美 国 对 联 盟 内 各 国 的 影 响 力 ：: <color=red>-35.0</color>",
+		"中 国 对 联 盟 内 各 国 的 影 响 力 ：: <color=lime>+20.0</color>",
+	])
 	_defs.append(d27)
 
 	# idx 28 斩断苏修伸向非洲的黑手（new_texts[655]/[656]）
@@ -581,6 +1126,24 @@ static func _build_v3() -> void:
 		func(): A.add_all_afrique(100, 3),
 		func(): A.add_stability_afrique(-100),
 	]
+	d28.req = DecisionCatalog._build_req([
+		["特 工 网 络 - 20.0", func() -> bool: return A.has_agents(200)],
+		["军 队 力 量 - 25.0", func() -> bool: return A.has_army(250)],
+		["预 算 - 20.0", func() -> bool: return A.has_money(200)],
+		["科 技 «新 式 间 谍 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(20, true)],
+		["科 技 «发 展 海 军 与 空 军» 研 发 完 毕", func() -> bool: return A.is_science_done(24, true)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(28, true)],
+	])
+	d28.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-20.0</color>",
+		"军 队 力 量: <color=red>-25.0</color>",
+		"预 算 将 变 更: <color=red>-20.0</color>",
+		"该 决 议 将 在  6 月 后 解 锁",
+		"改 变 苏 联 影 响 力: <color=red>-1.0</color>",
+		"苏 联 对 非 洲 国 家 的 影 响 力 ：: <color=red>-25.0</color>",
+		"中 国 对 非 洲 国 家 的 影 响 力 ：: <color=lime>+10.0</color>",
+		"非 洲 国 家 稳 定: <color=red>-10.0</color>",
+	])
 	_defs.append(d28)
 
 	# idx 29 斩断美帝伸向非洲的黑手（new_texts[657]/[658]）
@@ -598,6 +1161,24 @@ static func _build_v3() -> void:
 		func(): A.add_all_afrique(100, 3),
 		func(): A.add_stability_afrique(-100),
 	]
+	d29.req = DecisionCatalog._build_req([
+		["特 工 网 络 - 20.0", func() -> bool: return A.has_agents(200)],
+		["军 队 力 量 - 25.0", func() -> bool: return A.has_army(250)],
+		["预 算 - 20.0", func() -> bool: return A.has_money(200)],
+		["科 技 «新 式 间 谍 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(20, true)],
+		["科 技 «发 展 海 军 与 空 军» 研 发 完 毕", func() -> bool: return A.is_science_done(24, true)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(29, true)],
+	])
+	d29.result = DecisionCatalog._build_result([
+		"特 工 网 络: <color=red>-20.0</color>",
+		"军 队 力 量: <color=red>-25.0</color>",
+		"预 算 将 变 更: <color=red>-20.0</color>",
+		"该 决 议 将 在  6 月 后 解 锁",
+		"改 变 美 国 影 响 力: <color=red>-1.0</color>",
+		"美 国 对 非 洲 国 家 的 影 响 力 ：: <color=red>-25.0</color>",
+		"中 国 对 非 洲 国 家 的 影 响 力 ：: <color=lime>+10.0</color>",
+		"非 洲 国 家 稳 定: <color=red>-10.0</color>",
+	])
 	_defs.append(d29)
 
 	# idx 30 作有关战争与革命主题的演讲（new_texts[667]/[669]）
@@ -612,6 +1193,18 @@ static func _build_v3() -> void:
 		func(): A.add_relations(1, -150),
 		func(): A.add_diplo(100),
 	]
+	d30.req = DecisionCatalog._build_req([
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(30, true)],
+	])
+	d30.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"该 决 议 将 在  6 月 后 解 锁",
+		"世 界 影 响 力 将 变 更: <color=red>-1.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=red>-15.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=red>-15.0</color>",
+		"国 际 声 誉 将 改 变: <color=lime>+10.0</color>",
+	])
 	_defs.append(d30)
 
 	# idx 31 作有关和平与发展主题的演讲（new_texts[670]/[671]）
@@ -626,6 +1219,18 @@ static func _build_v3() -> void:
 		func(): A.add_relations(1, 150),
 		func(): A.add_diplo(-100),
 	]
+	d31.req = DecisionCatalog._build_req([
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(31, true)],
+	])
+	d31.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"该 决 议 将 在  6 月 后 解 锁",
+		"世 界 影 响 力 将 变 更: <color=red>-1.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=lime>+15.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=lime>+15.0</color>",
+		"国 际 声 誉 将 改 变: <color=red>-10.0</color>",
+	])
 	_defs.append(d31)
 
 	# idx 32 发展石油生产（new_texts[672]/[673]）—— IsIndustry 阈值运行时取 data.industry_base
@@ -640,6 +1245,18 @@ static func _build_v3() -> void:
 		func(): A.add_money(-50),
 		func(): A.add_oil_prud(150),
 	]
+	d32.req = DecisionCatalog._build_req([
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(32, true)],
+		["科 技 «自 研 工 业 科 技» 研 发 完 毕", func() -> bool: return A.is_science_done(10, true)],
+		["拥 有 “ 黑 金 ” 修 正 - 是", func() -> bool: return A.has_oil(true)],
+		["工 业 高 于 NaN", func() -> bool: return A.is_industry(A._d().get_data_by_index(152), true)],
+	])
+	d32.result = DecisionCatalog._build_result([
+		"该 决 议 将 在  6 月 后 解 锁",
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		(("%s: <color=lime>+%s</color> (%s %s)") % ["石 油 产 量", 150, "将 增 长 至", str((A._ws().oil_prod if A._ws() != null else 0.0) + 150)]),
+	])
 	_defs.append(d32)
 
 	# idx 33 东西伯利亚-太平洋管道计划（new_texts[678]/[679]）
@@ -651,6 +1268,18 @@ static func _build_v3() -> void:
 		func(): A.add_money(-100),
 		func(): A.add_old_modify(58),
 	]
+	d33.req = DecisionCatalog._build_req([
+		["预 算 - 10.0", func() -> bool: return A.has_money(100)],
+		["科 技 «电 子 工 业 中 国 化» 研 发 完 毕", func() -> bool: return A.is_science_done(12, true)],
+		["拥 有 “ 黑 金 ” 修 正 - 是", func() -> bool: return A.has_oil(true)],
+		["工 业 高 于 70.0", func() -> bool: return A.is_industry(700, true)],
+		["深 化 与 苏 联 的 友 好 条 约 - 是", func() -> bool: return A.has_soviet_friendship(true)],
+		["我 们 与 苏 联 的 关 系 高 于 70.0", func() -> bool: return A.is_realtions(700, 1, true)],
+	])
+	d33.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-10.0</color>",
+		"<color=lime>将 新 添 加 修 正 «东 西 伯 利 亚 - 太 平 洋 管 道 计 划»</color>",
+	])
 	_defs.append(d33)
 
 	# idx 34 绿水青山，省下金山银山（new_texts[682]/[683]）
@@ -663,6 +1292,19 @@ static func _build_v3() -> void:
 		func(): A.add_money(-50),
 		func(): A.add_oil_eat(-100),
 	]
+	d34.req = DecisionCatalog._build_req([
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["每  6 月 实 行 一 次", func() -> bool: return A.oncein(34, true)],
+		["科 技 «计 算 机 化» 研 发 完 毕", func() -> bool: return A.is_science_done(16, true)],
+		["拥 有 “ 黑 金 ” 修 正 - 是", func() -> bool: return A.has_oil(true)],
+		["工 业 高 于 70.0", func() -> bool: return A.is_industry(700, true)],
+		["石 油 用 量 大 于 200", func() -> bool: return A.has_oil_eat(200)],
+	])
+	d34.result = DecisionCatalog._build_result([
+		"该 决 议 将 在  6 月 后 解 锁",
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		(("%s: <color=%s>%s%s</color> (%s %s)") % ["石 油 用 量", "red", "", -100, "将 降 低 至", str(maxf((A._ws().oil_eat if A._ws() != null else 0.0) + -100, 200.0))]),
+	])
 	_defs.append(d34)
 
 	# idx 35 “世纪交易”的终结（new_texts[688]/[689]）—— 链尾三条件原版重复一次，照抄
@@ -681,6 +1323,29 @@ static func _build_v3() -> void:
 		func(): A.add_american_influence(150),
 		func(): A.add_chinese_influence(100),
 	]
+	d35.req = DecisionCatalog._build_req([
+		["预 算 - 10.0", func() -> bool: return A.has_money(100)],
+		["特 工 网 络 - 10.0", func() -> bool: return A.has_agents(100)],
+		["我 们 正 与 中 央 情 报 局 合 作 - 是", func() -> bool: return A.is_cia(true)],
+		["深 化 与 苏 联 的 友 好 条 约 - 否", func() -> bool: return A.has_soviet_friendship(false)],
+		["所 需 年 限 ≻  1983", func() -> bool: return A.is_year_less(false, 1983)],
+		["中 国 影 响 ≻ 35.0", func() -> bool: return A.is_chinese_influence_less_than(false, 350)],
+		["科 技 «自 研 工 业 科 技» 研 发 完 毕", func() -> bool: return A.is_science_done(10, true)],
+		["拥 有 “ 黑 金 ” 修 正 - 是", func() -> bool: return A.has_oil(true)],
+		["工 业 高 于 70.0", func() -> bool: return A.is_industry(700, true)],
+		["缅 甸 在 我 们 的 影 响 下", func() -> bool: return A.pro_chinese(33)],
+		["科 技 «自 研 工 业 科 技» 研 发 完 毕", func() -> bool: return A.is_science_done(10, true)],
+		["拥 有 “ 黑 金 ” 修 正 - 是", func() -> bool: return A.has_oil(true)],
+		["工 业 高 于 70.0", func() -> bool: return A.is_industry(700, true)],
+	])
+	d35.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-10.0</color>",
+		"特 工 网 络: <color=red>-10.0</color>",
+		(("%s: <color=%s>%s%s$</color> (%s)") % ["油 价 将 降 低", "red", "", -10, "油 价 不 会 跌 破 每 桶 $10"]),
+		"改 变 苏 联 影 响 力: <color=red>-20.0</color>",
+		"改 变 美 国 影 响 力: <color=lime>+15.0</color>",
+		"世 界 影 响 力 将 变 更: <color=lime>+10.0</color>",
+	])
 	_defs.append(d35)
 
 	# idx 36 斩断锁链，涅槃重生（内嵌文本）
@@ -693,6 +1358,18 @@ static func _build_v3() -> void:
 		func(): A.african_alliance(true),
 		func(): A.start_event(500),
 	]
+	d36.req = DecisionCatalog._build_req([
+		["极左派掌舵，或保守派掌舵、极左派主导且为马列主义 - 是", func() -> bool: return A.has_revolutionary_leader(true)],
+		["预 算 - 20.0", func() -> bool: return A.has_money(200)],
+		["军 队 力 量 - 30.0", func() -> bool: return A.has_army(300)],
+		["中 国 影 响 ≻ 50.0", func() -> bool: return A.is_chinese_influence_less_than(false, 500)],
+		["是: 几内亚为社会主义且有紧密贸易，加纳，几内亚比绍，布基纳法索，赞比亚，坦桑尼亚，津巴布韦为社会主义且亲中", func() -> bool: return A.is_african_proprc(true)],
+		["是: 非洲有至少6个社会主义政权", func() -> bool: return A.is_african_socialism(true)],
+	])
+	d36.result = DecisionCatalog._build_result([
+		"非洲联盟将成立",
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d36)
 
 	# idx 37 攘外安内，伟大复兴（内嵌文本）
@@ -701,6 +1378,16 @@ static func _build_v3() -> void:
 		return A.have_been_zhu_ti(true) and A.have_full_china(true) and A.they_are_ours(1) \
 			and A.no_zhu_ti_war(true) and A.hasnt_jue_qi(true)
 	d37.effects = [func(): A.start_event(642)]
+	d37.req = DecisionCatalog._build_req([
+		["是: 我们已经应用了先进的社会主义理论", func() -> bool: return A.have_been_zhu_ti(true)],
+		["是: 我们已经收复了所有建国时宣称的领地", func() -> bool: return A.have_full_china(true)],
+		["我 们 在 联 盟 中", func() -> bool: return A.they_are_ours(1)],
+		["是: 没有民族复兴战争正在进行", func() -> bool: return A.no_zhu_ti_war(true)],
+		["是: 我们尚未彻底实现伟大复兴", func() -> bool: return A.hasnt_jue_qi(true)],
+	])
+	d37.result = DecisionCatalog._build_result([
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d37)
 
 	# idx 38 乡土中国（内嵌文本）
@@ -709,6 +1396,15 @@ static func _build_v3() -> void:
 		return A.has_chosen_in_the_event(681, 4) and A.has_maoismus(false) \
 			and A.is_party_support_less_than(false, 800) and A.has_money(200)
 	d38.effects = [func(): A.start_event(682)]
+	d38.req = DecisionCatalog._build_req([
+		["\"广阔天地，大有作为\" - 事 件 中 选 择 给 予 回 应 5", func() -> bool: return A.has_chosen_in_the_event(681, 4)],
+		["毛 主 义 壁 垒 修 正 - 否", func() -> bool: return A.has_maoismus(false)],
+		["党内支持度 ≻ 80.0", func() -> bool: return A.is_party_support_less_than(false, 800)],
+		["预 算 - 20.0", func() -> bool: return A.has_money(200)],
+	])
+	d38.result = DecisionCatalog._build_result([
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d38)
 
 	# idx 39 我们的国歌（内嵌文本）
@@ -718,6 +1414,16 @@ static func _build_v3() -> void:
 			and A.is_party_support_less_than(false, 500) and A.has_one_party_mechanic(true) \
 			and A.has_anthem_confirmed(true)
 	d39.effects = [func(): A.start_event(61)]
+	d39.req = DecisionCatalog._build_req([
+		[" 1978 年  3 月  5 日 之 后 - 是", func() -> bool: return A.is_after_the_day(true, 1978, 3, 5)],
+		["预 算 - 3.0", func() -> bool: return A.has_money(30)],
+		["党内支持度 ≻ 50.0", func() -> bool: return A.is_party_support_less_than(false, 500)],
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
+		["4年一次", func() -> bool: return A.has_anthem_confirmed(true)],
+	])
+	d39.result = DecisionCatalog._build_result([
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d39)
 
 	# idx 40 废除票证制度（三元 data.econ_system<14）
@@ -731,6 +1437,26 @@ static func _build_v3() -> void:
 		func(): A.add_party_support(d40_party),
 		func(): A.coupon_system_will_phase_out(true),
 	]
+	d40.req = DecisionCatalog._build_req([
+		["不为两类市场经济且工农业发展水平的总和大于等于150，或为两类市场经济 - 是", func() -> bool: return A.can_coupon_system_phase_out(true)],
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["储备金 - 15.0", func() -> bool: return A.has_reserve(150)],
+	]) if A._d().size() > WorldState.I_ECON_SYSTEM and A._d().get_data_by_index(WorldState.I_ECON_SYSTEM) < 14 else DecisionCatalog._build_req([
+		["不为两类市场经济且工农业发展水平的总和大于等于150，或为两类市场经济 - 是", func() -> bool: return A.can_coupon_system_phase_out(true)],
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["储备金 - 15.0", func() -> bool: return A.has_reserve(150)],
+	])
+	d40.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+25.0</color>",
+		"党内支持度将变更: <color=red>-10.0</color>",
+		"<color=lime>票证制度将被废除（修正效果将在下回合刷新）</color>",
+	]) if A._d().size() > WorldState.I_ECON_SYSTEM and A._d().get_data_by_index(WorldState.I_ECON_SYSTEM) < 14 else DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+25.0</color>",
+		"党内支持度将变更: <color=lime>+20.0</color>",
+		"<color=lime>票证制度将被废除（修正效果将在下回合刷新）</color>",
+	])
 	_defs.append(d40)
 
 	# idx 41 建立计划性降价制度（内嵌文本）
@@ -745,6 +1471,20 @@ static func _build_v3() -> void:
 		func(): A.add_support(250),
 		func(): A.get_planned_price_reduction(true),
 	]
+	d41.req = DecisionCatalog._build_req([
+		["已废除票证制度", func() -> bool: return A.is_coupon_system_phased_out(true)],
+		["主导派系为极左派 / 保守派 / 温和派 - 是", func() -> bool: return A.left_in_major(true)],
+		["经济体制为计划经济 - 是", func() -> bool: return A.has_planned_economy(true)],
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["党内支持度 ≻ 70.0", func() -> bool: return A.is_party_support_less_than(false, 700)],
+		["农业，工业与服务业均高于80.0", func() -> bool: return A.is_sectors_well(true)],
+		["拥有“计划性降价”修正 - 否", func() -> bool: return A.has_planned_price_reduction(false)],
+	])
+	d41.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+25.0</color>",
+		"<color=lime>获得修正效果“计划性降价”，持续一年（修正效果将在下回合刷新）</color>",
+	])
 	_defs.append(d41)
 
 	# idx 42 引入有民族特色的紧缩疗法（内嵌文本）
@@ -760,6 +1500,21 @@ static func _build_v3() -> void:
 		func(): A.add_import(-50),
 		func(): A.get_austerity(true),
 	]
+	d42.req = DecisionCatalog._build_req([
+		["主导派系为极左派 / 保守派 / 温和派 - 是", func() -> bool: return A.left_in_major(true)],
+		["经济类型为市场经济 - 否", func() -> bool: return A.has_capitalist_economy(false)],
+		["党内支持度 ≻ 70.0", func() -> bool: return A.is_party_support_less_than(false, 700)],
+		["债务规模 ≻ 15.0", func() -> bool: return A.is_debt_less_than(false, 150)],
+		["储备金 ≺ 5.0", func() -> bool: return A.is_reserve_less_than(true, 50)],
+		["拥有“自力更生”修正 - 否", func() -> bool: return A.has_austerity(false)],
+	])
+	d42.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=lime>+10.0</color>",
+		"党内支持度将变更: <color=red>-25.0</color>",
+		"人 民 支 持 度 将 变 更: <color=red>-25.0</color>",
+		"进口需求将变更: <color=lime>-10</color>",
+		"<color=lime>获得修正效果“自力更生”，持续一年（修正效果将在下回合刷新）</color>",
+	])
 	_defs.append(d42)
 
 	# idx 43 广泛实行消费券与负所得税制度（内嵌文本）
@@ -772,6 +1527,17 @@ static func _build_v3() -> void:
 		func(): A.add_support(200),
 		func(): A.get_developed_consumerism(true),
 	]
+	d43.req = DecisionCatalog._build_req([
+		["主导派系为极左派 / 保守派 / 温和派 - 否", func() -> bool: return A.left_in_major(false)],
+		["经济类型为市场经济 - 是", func() -> bool: return A.has_capitalist_economy(true)],
+		["党内支持度 ≻ 70.0", func() -> bool: return A.is_party_support_less_than(false, 700)],
+		["储备金 ≻ 20.0", func() -> bool: return A.is_reserve_less_than(false, 200)],
+		["拥有“发达消费主义”修正 - 否", func() -> bool: return A.has_developed_consumerism(false)],
+	])
+	d43.result = DecisionCatalog._build_result([
+		"人 民 支 持 度 将 变 更: <color=lime>+20.0</color>",
+		"<color=lime>获得修正效果“发达消费主义”，持续一年（修正效果将在下回合刷新）</color>",
+	])
 	_defs.append(d43)
 
 	# idx 44 打造新时代公社社员（内嵌文本）
@@ -787,6 +1553,21 @@ static func _build_v3() -> void:
 		func(): A.get_new_era_commune_member(true),
 		func(): A.eliminate_corrupt_elements(true),
 	]
+	d44.req = DecisionCatalog._build_req([
+		["领袖拥有贪腐特质 - 否", func() -> bool: return A.has_corrupt_leader(false)],
+		["党内支持度 ≻ 95.0", func() -> bool: return A.is_party_support_less_than(false, 950)],
+		["腐败 ≺ 0.1", func() -> bool: return A.is_corruption_less_than(true, 1)],
+		["高层红包支出 ≺ 0.1", func() -> bool: return A.is_envelope_less_than(true, 1)],
+		["生财有道修正 - 否", func() -> bool: return A.has_money_level(false)],
+		["拥有“我们是新时代的公社社员！”修正 - 否", func() -> bool: return A.has_new_era_commune_member(false)],
+		["拥有“政党即派对”修正 - 否", func() -> bool: return A.has_party_means_party(false)],
+	])
+	d44.result = DecisionCatalog._build_result([
+		"党内支持度将变更: <color=red>-25.0</color>",
+		"人 民 支 持 度 将 变 更: <color=lime>+25.0</color>",
+		"<color=lime>获得修正效果“我们是新时代的公社社员！”，持续6个月（修正效果将在下回合刷新）</color>",
+		"党内将不会产生贪腐政客",
+	])
 	_defs.append(d44)
 
 	# idx 45 政党即派对（内嵌文本）
@@ -801,6 +1582,20 @@ static func _build_v3() -> void:
 		func(): A.add_loyality_to_all_politicians(500),
 		func(): A.get_party_means_party(true),
 	]
+	d45.req = DecisionCatalog._build_req([
+		["预 算 - 5.0", func() -> bool: return A.has_money(50)],
+		["党内支持度 ≻ 50.0", func() -> bool: return A.is_party_support_less_than(false, 500)],
+		["高层红包支出 ≻ 15.0", func() -> bool: return A.is_envelope_less_than(false, 150)],
+		["协和民主体制 - 否", func() -> bool: return A.is_consociational_democracy(false)],
+		["拥有“我们是新时代的公社社员！”修正 - 否", func() -> bool: return A.has_new_era_commune_member(false)],
+		["拥有“政党即派对”修正 - 否", func() -> bool: return A.has_party_means_party(false)],
+	])
+	d45.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"党内支持度将变更: <color=lime>+10.0</color>",
+		"改变所有政客的忠诚度: <color=lime>+50.0</color>",
+		"<color=lime>获得修正效果“政党即派对”，持续6个月（修正效果将在下回合刷新）</color>",
+	])
 	_defs.append(d45)
 
 	# idx 46 设立政党补助金（内嵌文本）
@@ -814,6 +1609,19 @@ static func _build_v3() -> void:
 		func(): A.ally_with_other_parties(true),
 		func(): A.get_party_subsidy(true),
 	]
+	d46.req = DecisionCatalog._build_req([
+		["预 算 - 15.0", func() -> bool: return A.has_money(150)],
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "否", func() -> bool: return A.has_one_party_mechanic(false)],
+		["我党在人大选举中席位大于1500 - 是", func() -> bool: return A.is_major_in_election(true)],
+		["拥有“我们是新时代的公社社员！”修正 - 否", func() -> bool: return A.has_new_era_commune_member(false)],
+		["拥有“政党补助金”修正 - 否", func() -> bool: return A.has_party_subsidy(false)],
+	])
+	d46.result = DecisionCatalog._build_result([
+		"党内支持度将变更: <color=lime>+10.0</color>",
+		"改变所有政客的忠诚度: <color=lime>+50.0</color>",
+		"将与议会内席位大于90的政党结盟（异端社会主义者除外）",
+		"<color=lime>获得修正效果“政党补助金”，持续6个月（修正效果将在下回合刷新）</color>",
+	])
 	_defs.append(d46)
 
 	# idx 47 与苏联达成购买T-72坦克的长期军事合同（内嵌文本）
@@ -826,6 +1634,18 @@ static func _build_v3() -> void:
 		func(): A.add_money(-50),
 		func(): A.get_t72(true),
 	]
+	d47.req = DecisionCatalog._build_req([
+		["中苏关系已实现正常化，与苏联建立了合作伙伴关系，且中国政体不为自由主义；或者苏联为革新社会主义政权 - 是", func() -> bool: return A.has_soviet_cooperation(true)],
+		["苏联加入北大西洋公约组织 - 否", func() -> bool: return A.has_soviet_in_nato(false)],
+		["中国与美国建立了合作伙伴关系 - 否", func() -> bool: return A.has_trade_with_usa(false)],
+		["我 们 与 苏 联 的 关 系 高 于 80.0", func() -> bool: return A.is_realtions(800, 1, true)],
+		["预 算 - 10.0", func() -> bool: return A.has_money(100)],
+		["拥有“T-72坦克军购协定”修正 - 否", func() -> bool: return A.has_t72(false)],
+	])
+	d47.result = DecisionCatalog._build_result([
+		"预 算 将 变 更: <color=red>-5.0</color>",
+		"<color=lime>获得修正效果“T-72坦克军购协定”，持续3个月（修正效果将在下回合刷新）</color>",
+	])
 	_defs.append(d47)
 
 	# idx 48 为私人军事服务公司发展提供便利（内嵌文本）
@@ -840,6 +1660,21 @@ static func _build_v3() -> void:
 		func(): A.add_money(-100),
 		func(): A.get_pmc(true),
 	]
+	d48.req = DecisionCatalog._build_req([
+		["中 国不是社会主义", func() -> bool: return A.is_socialism(false, 1)],
+		["经济类型为市场经济 - 是", func() -> bool: return A.has_capitalist_economy(true)],
+		["军事政策为合同兵制 - 是", func() -> bool: return A.has_mercenary(true)],
+		["科 技 «情 报 部 门 新 装 备» 研 发 完 毕", func() -> bool: return A.is_science_done(19, true)],
+		["党内支持度 ≻ 90.0", func() -> bool: return A.is_party_support_less_than(false, 900)],
+		["军 队 力 量 - 15.0", func() -> bool: return A.has_army(150)],
+		["预 算 - 10.0", func() -> bool: return A.has_money(100)],
+	])
+	d48.result = DecisionCatalog._build_result([
+		"党内支持度将变更: <color=red>-10.0</color>",
+		"军 队 力 量: <color=red>-10.0</color>",
+		"预 算 将 变 更: <color=red>-10.0</color>",
+		"<color=lime>获得修正效果“第五纵队”，持续6个月（修正效果将在下回合刷新）</color>",
+	])
 	_defs.append(d48)
 
 	# idx 49 通过特殊渠道购买军事服务（内嵌文本）
@@ -854,6 +1689,20 @@ static func _build_v3() -> void:
 		func(): A.add_army(100),
 		func(): A.mercenary_rebellion(true),
 	]
+	d49.req = DecisionCatalog._build_req([
+		["军事政策为合同兵制 - 是", func() -> bool: return A.has_mercenary(true)],
+		["党内支持度 ≻ 80.0", func() -> bool: return A.is_party_support_less_than(false, 800)],
+		["预 算 - 15.0", func() -> bool: return A.has_money(150)],
+		["拥有“第五纵队”修正 - 是", func() -> bool: return A.has_pmc(true)],
+		["东方罗马修正 - 否", func() -> bool: return A.has_eastern_rome(false)],
+		["一月一次", func() -> bool: return A.once_a_month(true)],
+	])
+	d49.result = DecisionCatalog._build_result([
+		"党内支持度将变更: <color=red>-10.0</color>",
+		"预 算 将 变 更: <color=red>-15.0</color>",
+		"军 队 力 量: <color=lime>+10.0</color>",
+		"<color=yellow>或许会发生什么事情……</color>",
+	])
 	_defs.append(d49)
 
 	# idx 50 窃国者侯（内嵌文本）
@@ -862,6 +1711,16 @@ static func _build_v3() -> void:
 		return A.has_leader_asset(50) and A.has_maoismus(false) \
 			and A.has_fourth_international(false) and A.has_nong_u(false) and A.once_a_month(true)
 	d50.effects = [func(): A.start_event(694)]
+	d50.req = DecisionCatalog._build_req([
+		["领袖资产规模 - 5.0 亿", func() -> bool: return A.has_leader_asset(50)],
+		["毛 主 义 壁 垒 修 正 - 否", func() -> bool: return A.has_maoismus(false)],
+		["第四国际修正 - 否", func() -> bool: return A.has_fourth_international(false)],
+		["回归农业文明修正 - 否", func() -> bool: return A.has_nong_u(false)],
+		["一月一次", func() -> bool: return A.once_a_month(true)],
+	])
+	d50.result = DecisionCatalog._build_result([
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d50)
 
 	# idx 51 破财消灾（内嵌文本）—— LeaderProperty 运行时读取（原版 lambda 内读）
@@ -884,6 +1743,17 @@ static func _build_v3() -> void:
 			var lp2 := ws != null and ws.leader_property.size() > 2 and ws.leader_property[2]
 			A.add_army(25 if lp2 else 0),
 	]
+	d51.req = DecisionCatalog._build_req([
+		["领袖资产规模 - 10.0 亿", func() -> bool: return A.has_leader_asset(100)],
+		["一月一次", func() -> bool: return A.once_a_month(true)],
+	])
+	d51.result = DecisionCatalog._build_result([
+		"领袖资产规模将变更: <color=red>-10.0</color>",
+		(("%s: <color=%s>%s%s</color>") % ["党内支持度将变更", ("lime" if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else ""), str((50 if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else 0))]),
+		"人 民 支 持 度 将 变 更: <color=lime>+10.0</color>",
+		(("%s: <color=%s>%s%s</color>") % ["特 工 网 络", ("lime" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else ""), str((25 if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else 0))]),
+		(("%s: <color=%s>%s%s</color>") % ["军 队 力 量", ("lime" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else ""), str((25 if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else 0))]),
+	])
 	_defs.append(d51)
 
 	# idx 52 一箪食，一瓢饮（内嵌文本）
@@ -891,4 +1761,12 @@ static func _build_v3() -> void:
 	d52.condition = func() -> bool:
 		return A.has_leader_asset(1000) and A.has_money_level(true) and A.once_a_month(true)
 	d52.effects = [func(): A.start_event(712)]
+	d52.req = DecisionCatalog._build_req([
+		["领袖资产规模 - 100.0 亿", func() -> bool: return A.has_leader_asset(1000)],
+		["生财有道修正 - 是", func() -> bool: return A.has_money_level(true)],
+		["一月一次", func() -> bool: return A.once_a_month(true)],
+	])
+	d52.result = DecisionCatalog._build_result([
+		"<color=lime>触 发 事 件</color>",
+	])
 	_defs.append(d52)

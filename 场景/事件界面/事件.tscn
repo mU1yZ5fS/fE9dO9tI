@@ -2,23 +2,11 @@
 
 [ext_resource type="Script" uid="uid://b8sogok83gf8" path="res://场景/事件界面/事件.gd" id="1_event"]
 [ext_resource type="Texture2D" uid="uid://dp62vv8nr53ya" path="res://资产/UI/事件/事件背景.png" id="2_qatr3"]
-[ext_resource type="Texture2D" uid="uid://cna2yftijoqqi" path="res://资产/UI/主游戏UI/状态栏背景.png" id="3_j13k0"]
-[ext_resource type="Texture2D" uid="uid://dy8kecb6d4loa" path="res://资产/UI/主游戏UI/状态背景.png" id="4_utjew"]
-[ext_resource type="Texture2D" uid="uid://ck3yssxxbuhru" path="res://资产/UI/主游戏UI/党内支持度.png" id="5_fhk46"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="6_nyx3b"]
-[ext_resource type="Texture2D" uid="uid://bp4vslkj6seye" path="res://资产/UI/主游戏UI/人民支持度.png" id="7_ucx3m"]
-[ext_resource type="Texture2D" uid="uid://b6bb575lb8cw0" path="res://资产/UI/主游戏UI/思想自由度.png" id="8_kmrgj"]
-[ext_resource type="Texture2D" uid="uid://cbi2105s7kje2" path="res://资产/UI/主游戏UI/生活水平.png" id="9_wb404"]
-[ext_resource type="Texture2D" uid="uid://cjr8ydvc7fuh0" path="res://资产/UI/主游戏UI/国际声望.png" id="10_tkqvd"]
-[ext_resource type="Texture2D" uid="uid://cq007uywcr5pc" path="res://资产/UI/主游戏UI/特工网络.png" id="11_fkmno"]
-[ext_resource type="Texture2D" uid="uid://ccqh1h787cp5c" path="res://资产/UI/主游戏UI/与苏联关系.png" id="12_fhk46"]
-[ext_resource type="Texture2D" uid="uid://cw0u78fykq5ws" path="res://资产/UI/主游戏UI/全球影响力.png" id="12_greuv"]
-[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="13_mc307"]
-[ext_resource type="Texture2D" uid="uid://b5rynoptf3d37" path="res://资产/UI/主游戏UI/与美国关系.png" id="13_nyx3b"]
 [ext_resource type="Texture2D" uid="uid://d1fcqj3u10abp" path="res://资产/UI/事件/事件切换页面按钮.png" id="14_1vwpt"]
 [ext_resource type="Texture2D" uid="uid://dmcb1vpcgusm0" path="res://资产/UI/事件/选项未选中.png" id="15_ak082"]
 [ext_resource type="Texture2D" uid="uid://c670k2ux6ytrb" path="res://资产/UI/事件/选项选中.png" id="16_j13k0"]
-[ext_resource type="PackedScene" uid="uid://8cda01e84fe50" path="res://场景/复用/状态数值区.tscn" id="90_bar"]
+[ext_resource type="PackedScene" uid="uid://ce3cbk18lse3v" path="res://场景/复用/状态数值区.tscn" id="90_bar"]
 
 [node name="事件" type="Control" unique_id=135846827]
 layout_mode = 3
@@ -29,7 +17,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_event")
 
-[node name="状态栏" parent="." instance=ExtResource("90_bar")]
+[node name="状态栏" parent="." unique_id=655211799 instance=ExtResource("90_bar")]
+
 [node name="事件背景" type="TextureRect" parent="." unique_id=1550529252]
 layout_mode = 1
 anchors_preset = 15
@@ -95,14 +84,17 @@ stretch_mode = 0
 
 [node name="事件图片" type="TextureRect" parent="." unique_id=366794167]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -378.0
-offset_top = 97.0
-offset_right = -44.0
-offset_bottom = 522.0
+anchors_preset = -1
+anchor_left = 0.80300003
+anchor_top = 0.09
+anchor_right = 0.97700006
+anchor_bottom = 0.483
+offset_left = -9.76001
+offset_top = -8.200005
+offset_right = 0.15991211
+offset_bottom = -17.640015
 grow_horizontal = 0
+expand_mode = 1
 
 [node name="事件选项" type="Control" parent="." unique_id=1724481168]
 visible = false

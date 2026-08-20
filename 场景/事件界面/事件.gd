@@ -5,6 +5,9 @@ extends Control
 
 enum Page { INTRO, OPTIONS, RESULT }
 
+## 事件无专属配图时的默认插画目录。
+const EVENT_ILLUST_DIR := "res://资产/事件插画"
+
 ## 当前展示的事件定义。由 GameManager.current_event_id 定位，
 ## 再从 EventEngine 的注册表中取出。
 var _event_def: EventDef
@@ -80,12 +83,55 @@ func _load_event() -> void:
 
 	_title.text = _event_def.title
 	_desc.text = BbcTooltip.unity_color_to_bbcode(_event_def.description)
-	# 事件配图是可选资源；没有图时隐藏 TextureRect，避免显示空框。
+	# 事件配图规则：
+	#   1. 资源文件（EventDef.image）设置了图片 → 优先使用；
+	#   2. 否则按 source_event_number 找 资产/事件插画/<编号>.png；
+	#   3. 仍没有 → 从 资产/事件插画 目录随机选一张（暂为均匀随机，无权重数据）。
 	if _event_def.image:
 		_image.texture = _event_def.image
+		_image.show()
 	else:
-		_image.hide()
+		var fallback := _load_fallback_image(_event_def)
+		if fallback:
+			_image.texture = fallback
+			_image.show()
+		else:
+			_image.hide()
 	_setup_options()
+
+
+## 事件没有显式配图时，按编号优先，其次随机从插画目录取一张。
+func _load_fallback_image(ev: EventDef) -> Texture2D:
+	if ev.source_event_number >= 0:
+		var numbered_path := "%s/%d.png" % [EVENT_ILLUST_DIR, ev.source_event_number]
+		if ResourceLoader.exists(numbered_path):
+			var numbered := load(numbered_path) as Texture2D
+			if numbered:
+				return numbered
+	var files := _list_illustrations()
+	if files.is_empty():
+		return null
+	var chosen := files[randi() % files.size()]
+	var chosen_path := "%s/%s" % [EVENT_ILLUST_DIR, chosen]
+	if not ResourceLoader.exists(chosen_path):
+		return null
+	return load(chosen_path) as Texture2D
+
+
+## 列出插画目录下的 PNG 文件名（不含子目录）。
+func _list_illustrations() -> Array[String]:
+	var dir := DirAccess.open(EVENT_ILLUST_DIR)
+	if dir == null:
+		return []
+	var out: Array[String] = []
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.ends_with(".png"):
+			out.append(file_name)
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return out
 
 
 func _setup_options() -> void:

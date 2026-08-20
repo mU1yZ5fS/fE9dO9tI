@@ -1,29 +1,26 @@
-[gd_resource type="Resource" script_class="EventDef" format=3]
+[gd_resource type="Resource" script_class="EventDef" format=3 uid="uid://dbnxu3kl2t7i1"]
 
-[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
-[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
-[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
-[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
-[ext_resource type="Script" path="res://数据脚本/事件效果/event_003_death_of_mao.gd" id="5_custom"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" uid="uid://0mfd3n50q6o7" path="res://数据脚本/事件效果/event_003_death_of_mao.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Expr_date"]
-script = ExtResource("3_expr")
-type = 12
-key = "1976.9.9"
+[sub_resource type="Resource" id="E0_dead"]
+script = ExtResource("2_effect")
+type = 15
+key = "mao_dead"
+
+[sub_resource type="Resource" id="E0_cremated"]
+script = ExtResource("2_effect")
+type = 15
+key = "mao_cremated"
 
 [sub_resource type="Resource" id="Custom"]
 script = ExtResource("2_effect")
 type = 18
 custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="E0_dead"]
-script = ExtResource("2_effect")
-type = 15
-key = "mao_dead"
-[sub_resource type="Resource" id="E0_cremated"]
-script = ExtResource("2_effect")
-type = 15
-key = "mao_cremated"
 [sub_resource type="Resource" id="Opt0"]
 script = ExtResource("1_option")
 text = "按照伟大领袖的既定方针办，并为主席修建一座纪念碑"
@@ -34,10 +31,12 @@ result_text = "（结果由 event_003_death_of_mao.gd 动态生成）"
 script = ExtResource("2_effect")
 type = 15
 key = "mao_dead"
+
 [sub_resource type="Resource" id="E1_mausoleum"]
 script = ExtResource("2_effect")
 type = 15
 key = "mao_mausoleum"
+
 [sub_resource type="Resource" id="Opt1"]
 script = ExtResource("1_option")
 text = "将毛主席安葬在天安门广场的待建纪念堂内"
@@ -48,15 +47,22 @@ result_text = "（结果由 event_003_death_of_mao.gd 动态生成）"
 script = ExtResource("2_effect")
 type = 15
 key = "mao_dead"
+
 [sub_resource type="Resource" id="E2_mausoleum"]
 script = ExtResource("2_effect")
 type = 15
 key = "mao_mausoleum"
+
 [sub_resource type="Resource" id="Opt2"]
 script = ExtResource("1_option")
 text = "让治丧委员会决定"
 effects = Array[ExtResource("2_effect")]([SubResource("E2_dead"), SubResource("E2_mausoleum"), SubResource("Custom")])
 result_text = "（结果由 event_003_death_of_mao.gd 动态生成）"
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.9.9"
 
 [resource]
 script = ExtResource("4_event")
@@ -66,4 +72,3 @@ title = "舵手逝世"
 description = "糟糕的事情发生了。9月9日0时10分，在两次心脏病发作后，中国人民的伟大领袖和导师，毛主席去世了，享年83岁。尽管人民和党还在悲伤中，我们需要召集治丧委员会，决定如何送主席最后一程。"
 trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
 options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])
-fire_only_once = true
