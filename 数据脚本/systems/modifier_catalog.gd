@@ -1068,6 +1068,9 @@ static func _us_party_scores(w: WorldState) -> Dictionary:
 		var war5 := w.wars[5] if w.wars.size() > 5 else null
 		if war5 != null and war5.is_going:
 			dem += 1
+		# ModifyButtonScript.cs:82：resultOfEvents[46]==2（匈牙利危机结果2）→ 民主党+1。
+		if _event_result(w, "hungarian_crisis", 0) == 2:
+			dem += 1
 		var c84 := _country(w, 84)
 		if c84 != null and c84.government == 0:
 			dem += 1
@@ -1078,6 +1081,17 @@ static func _us_party_scores(w: WorldState) -> Dictionary:
 			rep += 1
 		else:
 			dem += 1
+		# ModifyButtonScript.cs:86-102：伊朗人质危机（455）对共和党声势的影响
+		# （event_done[455] && result==0 → +1；==1 → +2；==2 → -2；==3 → -1）。
+		var res455 := _event_result(w, "event_455", 0)
+		if _event_done(w, "event_455") and res455 == 0:
+			rep += 1
+		elif res455 == 1:
+			rep += 2
+		elif res455 == 2:
+			rep -= 2
+		elif res455 == 3:
+			rep -= 1
 	else:
 		# ModifyButtonScript.cs:106-214
 		if usa != null and usa.current_leader == 0:

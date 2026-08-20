@@ -22,6 +22,11 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, 100)
 			ws.influence_prc += 10
 			ws.set_flag("cb_india", false)
+			# 藏南/阿鲁纳恰尔地块（map_regions.json region 43）归中国 710：
+			# 对应原版 ILoveSuckCocks() 的 parts 重绘（data[62]>=2 分支），
+			# 战争胜利已由月度结算转移过一次，此处幂等补执行（读档后覆盖仍在）。
+			if GameManager != null:
+				GameManager.set_map_region_owner([43], 710)
 			context["result_text"] = TXT_R0
 
 

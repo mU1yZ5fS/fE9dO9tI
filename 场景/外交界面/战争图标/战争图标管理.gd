@@ -150,11 +150,36 @@ func _make_entry(w: WorldState, war_id: int, war_name: String,
 	var b_idx := int(anchor.get("b", -1))
 	if a_idx < 0:
 		return {}
+	var mode := String(anchor.get("mode", "midpoint"))
+	# region 模式：a 为地图 region_id，直接取该地块中心（藏南/北爱尔兰等热点战争图标）。
+	if mode == "region":
+		var ll := _map_region_latlon(a_idx)
+		if ll.x == INF or ll.y == INF:
+			if GameManager != null and GameManager.is_map_data_preloaded:
+				if not _missing_anchor_warned.has(key):
+					_missing_anchor_warned[key] = true
+					push_warning("战争图标管理: 战争 %s 缺少地块 %d 经纬度，已跳过显示" % [key, a_idx])
+			return {}
+		var priority_r := int(anchor.get("priority", 0))
+		if priority_r <= 0:
+			priority_r = maxi(infl1, infl2)
+		return {
+			"war_id": war_id,
+			"name": war_name,
+			"side1": side1,
+			"side2": side2,
+			"infl1": infl1,
+			"infl2": infl2,
+			"a_gw": 0,
+			"b_gw": 0,
+			"priority": priority_r,
+			"group": _group_key(0, 0, war_id),
+			"sphere_pos": _map_sphere_pos(ll),
+		}
 	var a_gw := _resolve_gw(w, a_idx, int(anchor.get("a_gw", 0)))
 	var b_gw := _resolve_gw(w, b_idx, int(anchor.get("b_gw", 0))) if b_idx >= 0 else 0
 	var a_ll := _map_centroid(a_gw)
 	var b_ll := _map_centroid(b_gw) if b_gw > 0 else Vector2(INF, INF)
-	var mode := String(anchor.get("mode", "midpoint"))
 	var ll := _pick_ll(mode, a_ll, b_ll)
 	if ll.x == INF or ll.y == INF:
 		# 地图数据未就绪时静默跳过，避免 _ready 阶段误报；就绪后仍缺才警告。
@@ -199,6 +224,14 @@ func _map_centroid(gwcode: int) -> Vector2:
 	var earth := get_parent()
 	if earth != null and earth.has_method("country_centroid"):
 		return earth.country_centroid(gwcode)
+	return Vector2(INF, INF)
+
+
+## 地块中心经纬度（region 锚点模式用；世界地图渲染提供 region_latlon）。
+func _map_region_latlon(region_id: int) -> Vector2:
+	var earth := get_parent()
+	if earth != null and earth.has_method("region_latlon"):
+		return earth.region_latlon(region_id)
 	return Vector2(INF, INF)
 
 

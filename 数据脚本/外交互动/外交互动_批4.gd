@@ -905,6 +905,8 @@ func _def_1036(w: WorldState, country: CountryData, caption: String) -> Dictiona
 		country.leave_alliances()
 		country.set_tag("亲中", true)
 		country.set_tag("对华贸易", true)
+		# 手动颠覆标记：南美选举链（ReqEventTriggers DLC01）据此不再触发该国选举剧情。
+		country.set_tag("手动颠覆", true)
 		if soc(w, c1, true):
 			country.government = 1
 			country.sub_government = 1

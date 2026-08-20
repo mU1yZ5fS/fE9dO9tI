@@ -86,6 +86,10 @@ func execute(context: Dictionary) -> void:
 		return
 	var war_id: int = d[W.I_WAR_RESOLVE] if d.size() > W.I_WAR_RESOLVE else -1
 	var war := _get_war(war_id)
+	# 西撒哈拉战争（war39）补原版 GameState.cs:1969-2007 专属结算文案。
+	if war_id == 39 and war != null:
+		context["result_text"] = _war39_result_text(war)
+		return
 	context["result_text"] = "另一场战争结束了。"
 	# 差异：原版此处追加 WarResult 结算文案；端口结算效果由 GameManager.resolve_war_finished
 	# （事件关闭后）执行，无结算文案。
@@ -103,6 +107,17 @@ func execute(context: Dictionary) -> void:
 
 
 # ── 分支判定辅助（逐字复刻 Event18.cs 条件） ──
+
+## 西撒哈拉战争（war39）结算文案：GameState.cs:1969-2007 三分支。
+func _war39_result_text(war: WarData) -> String:
+	var polisario := ws.get_country_by_legacy_index(18) if ws != null else null
+	var is_cw: bool = polisario != null and polisario.内战中
+	if war.infl2 >= 900:
+		if is_cw:
+			return "在艰苦奋斗后，西撒人阵的步战车攻入了首府阿尤恩的市中心。胜利的旗帜飘扬在这座古老的城市上空，这天也被定为撒哈拉阿拉伯民主共和国的解放日。工人，游击战士和农民推着画有马克思，列宁和毛泽东的画像的花车。举着“共产主义带来大饼与和平”之类的标语牌走过市中心，这片古老的土地焕发着前所未有的生命力。而摩洛哥不得不打碎牙齿往嘴里吞，苦涩的承认了西撒哈拉的独立地位。\n国际观察家认为，西撒人阵背后的中华人民共和国又一次在国际交锋中为自己带来了战友和同志。"
+		return "在艰苦奋斗后，西撒人阵的步战车攻入了首府阿尤恩的市中心。胜利的旗帜飘扬在这座古老的城市上空，这天也被定为撒哈拉阿拉伯民主共和国的解放日。工人，游击战士和农民推着花车，举着“自由，独立，社会主义是我们的目标”之类的标语牌走过市中心，这片古老的土地焕发着前所未有的生命力。而摩洛哥不得不打碎牙齿往嘴里吞，苦涩的承认了西撒哈拉的独立地位。"
+	return "毫不意外的说，摩洛哥以碾压性的优势击败了西撒人阵。在丢下了一地尸体和各式辎重与战车后，他们灰溜溜的离开了自己的祖国，逃往了阿尔及利亚或毛里塔尼亚北部的弱国家地区。摩洛哥王国卫队趾高气扬的在阿尤恩展开了阅兵，哈桑二世在庆功演讲时说道：“只要阿拉维王朝屹立不倒，西撒哈拉的分离主义者就永无明日！”\n美国加大了和摩洛哥王室的合作，并在卡萨布兰卡开始了一个新的监听站。"
+
 
 func _get_war(war_id: int) -> WarData:
 	if war_id >= 0 and war_id < ws.wars.size():

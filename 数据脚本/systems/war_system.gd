@@ -1391,8 +1391,11 @@ static func _apply_cameroon_war_result(war: WarData, d: Array[int]) -> void:
 		d[W.I_INFLUENCE] += 20
 		w.oil_prod += 100.0
 	elif war.infl2 >= 700:
+		# 原版 GameState.cs:3195-3203：infl2>=700 且法国为社会主义时，
+		# 马蒂普叛变夺权、喀人盟合法化、国家民主化（gov=2/sub=8）。
+		# （旧版条件误写成“法国非社会主义”，已按原版反转。）
 		var france := w.get_country_by_legacy_index(21)
-		if france == null or not w.is_socialism(france, false):
+		if france != null and w.is_socialism(france, false):
 			if cameroon != null:
 				cameroon.government = 2
 				cameroon.sub_government = 8
@@ -2003,6 +2006,16 @@ static func _apply_war34_result(war: WarData, d: Array[int]) -> void:
 			malaya.prc_power = 1000
 		if c111 != null:
 			_leave_alliances(c111)
+			# 文莱（legacy 111）“和平接管”：并入马来西亚（49），地图地块（835）归马来西亚（820）。
+			c111.puppet_of = 49
+			c111.government = malaya.government if malaya != null else c111.government
+			c111.sub_government = malaya.sub_government if malaya != null else c111.sub_government
+		# 新加坡（地图 gwcode 830）与文莱（835）地块并入马来西亚（820）：
+		# 对应原版结算文案“推翻李光耀反动政权 / 文莱‘和平’接管 / 成立马来亚-北加里曼丹人民联邦共和国”。
+		if GameManager != null:
+			GameManager.set_map_region_owner([587, 1221, 1222, 1223, 2908, 2909, 2910, 2911, 2912], 820)
+		elif MapService.instance != null:
+			MapService.instance.set_region_owner([587, 1221, 1222, 1223, 2908, 2909, 2910, 2911, 2912], 820)
 	else:
 		if malaya != null:
 			malaya.government = 0
@@ -2936,8 +2949,21 @@ static func _apply_war6_result(war: WarData, _d: Array[int]) -> void:
 	if war.infl1 >= 400:
 		w.set_flag("BritLost", true)
 		add_empire_power(EmpireData.USA, -20)
+		# 阿根廷胜利：福克兰群岛（region 3030）保持归阿根廷（160），
+		# 对应原版 parts[0] 的“马岛随阿根廷”语义（原版结算无条件置 false 属笔误）。
+		_transfer_falklands(160)
 	else:
 		add_empire_power(EmpireData.USA, 20)
+		# 英国胜利：马岛归还英国（200）。
+		_transfer_falklands(200)
+
+
+## 福克兰群岛（map_regions.json region 3030）归属转移。
+static func _transfer_falklands(to_gwcode: int) -> void:
+	if GameManager != null:
+		GameManager.set_map_region_owner([3030], to_gwcode)
+	elif MapService.instance != null:
+		MapService.instance.set_region_owner([3030], to_gwcode)
 
 
 ## 战争 42 号结算：GameState.cs:2185-2281。

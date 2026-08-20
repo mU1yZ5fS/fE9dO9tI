@@ -65,6 +65,8 @@ func execute(context: Dictionary) -> void:
 		_:
 			bolivia.level_of_instability -= 5
 			bolivia.level_of_development -= 5
+			# 用户需求：玻利维亚事件1选择2（保持距离）也能与玻利维亚建立贸易。
+			bolivia.set_tag("对华贸易", true)
 			context["result_text"] = TXT_R0 + _proprc_suffix(bolivia)
 	bolivia.government = 3
 	bolivia.sub_government = 7

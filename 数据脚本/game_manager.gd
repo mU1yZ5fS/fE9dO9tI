@@ -454,6 +454,9 @@ func tick() -> void:
 
 	_daily_deficit_recovery(world)
 
+	# 原版 TimeScript.cs:640-653（Repaint 日块）：危地马拉/尼加拉瓜内战触发。
+	_daily_latin_war_triggers(world)
+
 	# 原版日块行序：年块(743) → 联盟日块(955) → 派系领袖补位(1051) →
 	# 派系席位重算(1114) → 政治路线(1173) → 显示等级(1237) → 体制重算(1269) →
 	# 阴谋判定(1453) → 科研点(1458) → 北欧联动(1648) → 月块(1680)。
@@ -1055,6 +1058,54 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 	if w.empires.size() > 1 and w.empires[1] != null \
 			and w.empires[1].relations <= 500 and w.get_flag("relres"):
 		w.set_flag("relres", false)
+
+
+## TimeScript.cs:640-653（Repaint 日块）：危地马拉(149)/尼加拉瓜(147)内战触发。
+## 原版条件（level_of_unstab 与 500 阈值；Godot 显示值为 /10，故 500=显示 50.0）：
+##   - 危地马拉：非社会主义且 gov!=2 且不稳定度 > 500（用户反馈“到50未爆”→ 用 >= 500），
+##     或社会主义/gov==2 且不稳定度 < 500 → 开战 64，并置 parts[1]（URNG 控制区）。
+##   - 尼加拉瓜：社会主义/gov==2 且不稳定度 < 500 → 开战 67，置 parts[0]。
+func _daily_latin_war_triggers(w: WorldState) -> void:
+	if w == null:
+		return
+	var c149 := w.get_country_by_legacy_index(149)
+	if c149 != null and not _war_going_idx(w, 64) \
+			and ((not w.is_socialism(c149, true) and c149.government != 2 \
+				and c149.level_of_instability >= 500) \
+				or ((w.is_socialism(c149, true) or c149.government == 2) \
+				and c149.level_of_instability < 500)):
+		WAR_SYS.start_war(64, "军政府", "URNG", 500, 500, 0, 1)
+		var war := _war_idx(w, 64)
+		if war != null:
+			war.name_war = "危地马拉内战"
+			war.fortnight_max = 24
+		_set_country_part(c149, 1, true)
+	var c147 := w.get_country_by_legacy_index(147)
+	if c147 != null and not _war_going_idx(w, 67) \
+			and (w.is_socialism(c147, true) or c147.government == 2) \
+			and c147.level_of_instability < 500:
+		WAR_SYS.start_war(67, "康特拉", "FSLN", 500, 500, 0, 1)
+		var war67 := _war_idx(w, 67)
+		if war67 != null:
+			war67.name_war = "尼加拉瓜内战"
+			war67.fortnight_max = 24
+		_set_country_part(c147, 0, true)
+
+
+func _war_going_idx(w: WorldState, idx: int) -> bool:
+	return idx >= 0 and idx < w.wars.size() and w.wars[idx] != null and w.wars[idx].is_going
+
+
+func _war_idx(w: WorldState, idx: int) -> WarData:
+	return w.wars[idx] if idx >= 0 and idx < w.wars.size() else null
+
+
+func _set_country_part(c: CountryData, index: int, value: bool) -> void:
+	if c == null:
+		return
+	while c.parts.size() <= index:
+		c.parts.append(false)
+	c.parts[index] = value
 
 
 ## TimeScript.cs:1648-1679：瑞典(28)/丹麦(90)/挪威(91) econ+okb 且事件686 时，
@@ -2137,7 +2188,9 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 			w.influence_prc += 10
 			d[W.I_ARUNACHAL_STATUS] = 2
 			# 原版此处调 allcountries[1].ILoveSuckCocks() 刷新中国地图 parts；
-			# 项目既有裁决：地图 parts 刷新近似省略（见 _monthly_ejection_and_misc 注释）。
+			# 项目既有裁决：地图 parts 刷新近似省略 → 用地图归属转移等价实现
+			# （藏南/阿鲁纳恰尔地块归中国 710，对应原版 parts 重绘中国全图）。
+			_arunachal_to_china(w)
 			d[W.I_POPULATION] += 434
 			w.war_state = 0
 			GameManager.start_event("event_443")
@@ -2157,6 +2210,11 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 	var vietnam := w.get_country_by_legacy_index(11)
 	if vietnam != null:
 		vietnam.stab = 0
+		# 越南被拉入我国经济同盟/经互会后，下一回合起脱离苏联影响
+		# （用户需求；原版各拉拢动作只置 econ/sev 不剥 prosov，这里在月结落实）。
+		if vietnam.has_tag("亲苏") and (vietnam.has_tag("econ") or vietnam.has_tag("sev")):
+			vietnam.set_tag("亲苏", false)
+			vietnam.set_tag("苏联盟友", false)
 	var india := w.get_country_by_legacy_index(19)
 	if india != null:
 		india.stab = 0
@@ -2185,6 +2243,19 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 		d[W.I_IRAN_LEFT_SUPPORT] += ussr_power / 25 + 30
 		@warning_ignore("integer_division")
 		d[W.I_IRAN_SHAH_SUPPORT] += usa_power / 30
+
+
+## 藏南/阿鲁纳恰尔地块（map_regions.json region 43）归中国（gwcode 710）。
+## 对应原版 ILoveSuckCocks() 在 data[62]>=2 时把中国地图 parts 重绘为含藏南的整图。
+const ARUNACHAL_REGION_IDS: Array[int] = [43]
+const CHINA_GWCODE := 710
+
+
+## 中印边境冲突胜利（或事件443 确认）后把藏南地块转给中国。
+func _arunachal_to_china(w: WorldState) -> void:
+	if w == null:
+		return
+	set_map_region_owner(ARUNACHAL_REGION_IDS, CHINA_GWCODE)
 
 
 ## TimeScript.cs:3026-3037：7 月/1 月清空事件5/7/8/9/10，瑞士发展==1 清零（月块）。

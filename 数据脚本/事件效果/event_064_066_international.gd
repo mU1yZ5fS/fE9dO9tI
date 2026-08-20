@@ -227,7 +227,9 @@ func _event_65(option_index: int, context: Dictionary) -> void:
 			context["result_text"] = r3
 		4:
 			_add_data({W.I_PARTY_SUPPORT: 200, W.I_PEOPLE_SUPPORT: 50,
-				W.I_INFLUENCE: 20, W.I_BUDGET: -200})
+				W.I_INFLUENCE: 20, W.I_BUDGET: -100})
+			# 原版 Event65.cs result4：data[8] -= 100（10 百万预算，与选项文案一致）；
+			# 旧值 -200 会多扣 10 百万，已修正。
 			_add_empire_relation(EmpireData.USA, -50)
 			_add_empire_relation(EmpireData.USSR, -50)
 			var r4 := TXT_65_R4A

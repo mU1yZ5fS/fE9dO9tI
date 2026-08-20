@@ -192,57 +192,57 @@ static func _req_dlc03(w: WorldState) -> bool:
 # ============================================================================
 
 static func _req_dlc01(w: WorldState) -> bool:
-	if _election_due(w, 73) and (not _tag(w, 73, "亲中") or _gov(w, 73) == 3) and not _done(126):
+	if _south_america_election_due(w, 73) and (not _tag(w, 73, "亲中") or _gov(w, 73) == 3) and not _done(126):
 		return _start(126)
-	if _election_due(w, 73) and (not _tag(w, 73, "亲中") or _gov(w, 73) == 3) and _done(126) and not _done(127):
+	if _south_america_election_due(w, 73) and (not _tag(w, 73, "亲中") or _gov(w, 73) == 3) and _done(126) and not _done(127):
 		return _start(127)
-	if _election_due(w, 71) and (not _tag(w, 71, "亲中") or _gov(w, 71) == 3) and not _done(128):
+	if _south_america_election_due(w, 71) and (not _tag(w, 71, "亲中") or _gov(w, 71) == 3) and not _done(128):
 		return _start(128)
-	if _election_due(w, 71) and (not _tag(w, 71, "亲中") or _gov(w, 71) == 3) and _done(128) and not _done(129):
+	if _south_america_election_due(w, 71) and (not _tag(w, 71, "亲中") or _gov(w, 71) == 3) and _done(128) and not _done(129):
 		return _start(129)
-	if _election_due(w, 72) and (not _tag(w, 72, "亲中") or _gov(w, 72) == 3) and not _done(130):
+	if _south_america_election_due(w, 72) and (not _tag(w, 72, "亲中") or _gov(w, 72) == 3) and not _done(130):
 		return _start(130)
-	if _election_due(w, 72) and (not _tag(w, 72, "亲中") or _gov(w, 72) == 3) and _done(130) and not _done(131):
+	if _south_america_election_due(w, 72) and (not _tag(w, 72, "亲中") or _gov(w, 72) == 3) and _done(130) and not _done(131):
 		return _start(131)
-	if _election_due(w, 72) and (not _tag(w, 72, "亲中") or _gov(w, 72) == 3) and _done(131) and not _done(132):
+	if _south_america_election_due(w, 72) and (not _tag(w, 72, "亲中") or _gov(w, 72) == 3) and _done(131) and not _done(132):
 		return _start(132)
-	if _election_due(w, 74) and (not _tag(w, 74, "亲中") or _gov(w, 74) == 3) and not _done(133):
+	if _south_america_election_due(w, 74) and (not _tag(w, 74, "亲中") or _gov(w, 74) == 3) and not _done(133):
 		return _start(133)
-	if _election_due(w, 74) and (not _tag(w, 74, "亲中") or _gov(w, 74) == 3) and _done(133) and not _done(134):
+	if _south_america_election_due(w, 74) and (not _tag(w, 74, "亲中") or _gov(w, 74) == 3) and _done(133) and not _done(134):
 		return _start(134)
-	if _election_due(w, 82) and (not _tag(w, 82, "亲中") or _gov(w, 82) == 3) and not _done(135):
+	if _south_america_election_due(w, 82) and (not _tag(w, 82, "亲中") or _gov(w, 82) == 3) and not _done(135):
 		return _start(135)
-	if _election_due(w, 82) and (not _tag(w, 82, "亲中") or _gov(w, 82) == 3) and _done(135) and not _done(136):
+	if _south_america_election_due(w, 82) and (not _tag(w, 82, "亲中") or _gov(w, 82) == 3) and _done(135) and not _done(136):
 		return _start(136)
-	if _election_due(w, 82) and (not _tag(w, 82, "亲中") or _gov(w, 82) == 3) and _done(136) and not _done(137):
+	if _south_america_election_due(w, 82) and (not _tag(w, 82, "亲中") or _gov(w, 82) == 3) and _done(136) and not _done(137):
 		return _start(137)
-	if _election_due(w, 79) and (not _tag(w, 79, "亲中") or _gov(w, 79) == 3) and not _done(138):
+	if _south_america_election_due(w, 79) and (not _tag(w, 79, "亲中") or _gov(w, 79) == 3) and not _done(138):
 		return _start(138)
-	if _election_due(w, 79) and (not _tag(w, 79, "亲中") or _gov(w, 79) == 3) and _res(138) == 0 and _done(138) and not _done(139):
+	if _south_america_election_due(w, 79) and (not _tag(w, 79, "亲中") or _gov(w, 79) == 3) and _res(138) == 0 and _done(138) and not _done(139):
 		return _start(139)
-	if _election_due(w, 79) and (not _tag(w, 79, "亲中") or _gov(w, 79) == 3) and _res(138) != 0 and _done(138) and not _done(140):
+	if _south_america_election_due(w, 79) and (not _tag(w, 79, "亲中") or _gov(w, 79) == 3) and _res(138) != 0 and _done(138) and not _done(140):
 		return _start(140)
-	if _election_due(w, 80) and (not _tag(w, 80, "亲中") or _gov(w, 80) == 3) and not _done(141):
+	if _south_america_election_due(w, 80) and (not _tag(w, 80, "亲中") or _gov(w, 80) == 3) and not _done(141):
 		return _start(141)
-	if _election_due(w, 80) and (not _tag(w, 80, "亲中") or _gov(w, 80) == 3) and _done(141) and not _done(142):
+	if _south_america_election_due(w, 80) and (not _tag(w, 80, "亲中") or _gov(w, 80) == 3) and _done(141) and not _done(142):
 		return _start(142)
-	if _election_due(w, 76) and (not _tag(w, 76, "亲中") or _gov(w, 76) == 3) and not _done(143):
+	if _south_america_election_due(w, 76) and (not _tag(w, 76, "亲中") or _gov(w, 76) == 3) and not _done(143):
 		return _start(143)
-	if _election_due(w, 76) and (not _tag(w, 76, "亲中") or _gov(w, 76) == 3) and _done(143) and not _done(144):
+	if _south_america_election_due(w, 76) and (not _tag(w, 76, "亲中") or _gov(w, 76) == 3) and _done(143) and not _done(144):
 		return _start(144)
-	if _election_due(w, 75) and (not _tag(w, 75, "亲中") or _gov(w, 75) == 3) and not _done(145):
+	if _south_america_election_due(w, 75) and (not _tag(w, 75, "亲中") or _gov(w, 75) == 3) and not _done(145):
 		return _start(145)
-	if _election_due(w, 75) and (not _tag(w, 75, "亲中") or _gov(w, 75) == 3) and _done(145) and not _done(146):
+	if _south_america_election_due(w, 75) and (not _tag(w, 75, "亲中") or _gov(w, 75) == 3) and _done(145) and not _done(146):
 		return _start(146)
-	if _election_due(w, 83) and (not _tag(w, 83, "亲中") or _gov(w, 83) == 3) and not _done(147):
+	if _south_america_election_due(w, 83) and (not _tag(w, 83, "亲中") or _gov(w, 83) == 3) and not _done(147):
 		return _start(147)
-	if _election_due(w, 83) and (not _tag(w, 83, "亲中") or _gov(w, 83) == 3) and _done(147) and not _done(148):
+	if _south_america_election_due(w, 83) and (not _tag(w, 83, "亲中") or _gov(w, 83) == 3) and _done(147) and not _done(148):
 		return _start(148)
-	if _election_due(w, 77) and (not _tag(w, 77, "亲中") or _gov(w, 77) == 3) and not _done(149):
+	if _south_america_election_due(w, 77) and (not _tag(w, 77, "亲中") or _gov(w, 77) == 3) and not _done(149):
 		return _start(149)
-	if _election_due(w, 77) and (not _tag(w, 77, "亲中") or _gov(w, 77) == 3) and _done(149) and not _done(150):
+	if _south_america_election_due(w, 77) and (not _tag(w, 77, "亲中") or _gov(w, 77) == 3) and _done(149) and not _done(150):
 		return _start(150)
-	if _election_due(w, 81) and (not _tag(w, 81, "亲中") or _gov(w, 81) == 3) and not _done(151):
+	if _south_america_election_due(w, 81) and (not _tag(w, 81, "亲中") or _gov(w, 81) == 3) and not _done(151):
 		return _start(151)
 	return false
 
@@ -376,3 +376,12 @@ static func _election_due(w: WorldState, idx: int) -> bool:
 	var dt: GameDate = w.date
 	return (c.next_election_month <= dt.month and c.next_election_year <= dt.year) \
 		or c.next_election_year < dt.year
+
+
+## 南美选举链的“选举到期且未被手动颠覆”判定（用户需求：外交动作 1036
+## 煽动当地推翻政府 等手动颠覆后，该国不再按历史时间线触发选举剧情）。
+static func _south_america_election_due(w: WorldState, idx: int) -> bool:
+	var c := _c(w, idx)
+	if c == null or c.has_tag("手动颠覆"):
+		return false
+	return _election_due(w, idx)

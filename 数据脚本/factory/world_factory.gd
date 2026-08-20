@@ -1414,6 +1414,8 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_puppet(ws, 108, 21)                      # 多哥（:632）
 	_set_gs(ws, 111, 3, 4)                        # 文莱，归属英国（原代码误写 112 且设为法国，已修正）
 	_set_puppet(ws, 111, 92)
+	_set_gs(ws, 112, 3, 4)                        # 塞内加尔 → 社会民主主义 + 傀儡法国（:634-636）
+	_set_puppet(ws, 112, 21)
 	_set_gs(ws, 113, 0, 20)                       # 冈比亚 + 亲美（:637-639）
 	_set_tag(ws, 113, "亲美", true)
 	_set_gs(ws, 114, 1, 1)                        # 几内亚比绍 + 对华贸易（:640-642）

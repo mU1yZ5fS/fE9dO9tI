@@ -1486,6 +1486,19 @@ func _fortnight_mutual_relations(d: Array[int], w: WorldState) -> void:
 		usa.relations += _dv(d, W.I_LOAN) / 20
 
 
+## TimeScript.cs:3243-3247（双周块）：SOV_PRC_PartiesConnection>0 时
+## empires[1].relations += SOV_PRC_PartiesConnection / 10。
+## 端口映射：I_COMMUNICATIONS（data[30]，外交通信结构恢复度）。
+func _fortnight_comms_relations(d: Array[int], w: WorldState) -> void:
+	if w == null or w.empires.size() <= EmpireData.USSR or w.empires[EmpireData.USSR] == null:
+		return
+	var conn := _dv(d, W.I_COMMUNICATIONS)
+	if conn <= 0:
+		return
+	@warning_ignore("integer_division")
+	w.empires[EmpireData.USSR].relations += conn / 10
+
+
 ## TimeScript.cs:6200-6231 AfricanBotSupport 逐字移植（调用点 TimeScript.cs:1040，每日一次）：
 ## 外交支出 data[81] 对非洲亲中国家提供稳定/削弱美苏影响；支出不足时亲中势力回退。
 func _african_bot_support(d: Array[int], w: WorldState) -> void:
@@ -2944,6 +2957,9 @@ func _on_fortnight() -> void:
 	_apply_tech_periodic(w)
 	_influence_from_investments(d, year)
 	_fortnight_mutual_relations(d, w)
+	# TimeScript.cs:3243-3247（data[19]%14==0 双周块）：联络机构（沟通机构）规模
+	# 每双周为两国修好提供苏联关系加成 —— 规模 ÷10（conn/10，10 规模 → +1）。
+	_fortnight_comms_relations(d, w)
 	# AfricanBotSupport 的调用点在原版日块 TimeScript.cs:1040，已移入 _daily_rim_and_alliance_checks。
 	_update_modifier_population_industry_pressure(d, w)
 	_fortnight_econ_thought_drift(d, year)

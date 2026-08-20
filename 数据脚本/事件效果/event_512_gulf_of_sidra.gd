@@ -254,6 +254,7 @@ func _cf(idx: int, field: String) -> int:
 		"puppetOf": return c.puppet_of
 		"prcpower": return c.prc_power
 		"prcinfl": return c.prc_influence
+		"cw": return 1 if c.内战中 else 0
 	return 0
 
 

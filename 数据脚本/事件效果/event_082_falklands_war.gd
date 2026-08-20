@@ -33,4 +33,8 @@ func execute(context: Dictionary) -> void:
 			while c71.parts.size() <= 0:
 				c71.parts.append(false)
 			c71.parts[0] = true
+		# 原版 parts[0]=true 表示马岛并入阿根廷地图；Godot 地图按地块归属渲染，
+		# 开战即把福克兰群岛（map_regions.json region 3030）转给阿根廷（160）。
+		if GameManager != null:
+			GameManager.set_map_region_owner([3030], 160)
 		context["result_text"] = TXT_RESULT
