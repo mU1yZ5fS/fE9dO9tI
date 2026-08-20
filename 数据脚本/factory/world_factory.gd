@@ -603,10 +603,53 @@ static func _apply_offset_name(c: CountryData) -> void:
 		c.chinese_name = String(OFFSET_COUNTRY_NAMES_ZH[int(c.原版序号)])
 
 
+static func _load_country_identity() -> Dictionary:
+	var path := INITIAL_DATA_DIR + "country_identity.json"
+	var raw := _load_json_as_dict(path)
+	var result := {}
+	for k in raw:
+		result[int(k)] = int(raw[k])
+	return result
+
+
+static func _apply_map_country_meta(c: CountryData, map_countries: Dictionary) -> void:
+	if c == null or c.gwcode <= 0 or c.gwcode >= FICTIONAL_COUNTRY_OFFSET:
+		return
+	var gw_str := str(c.gwcode)
+	if not map_countries.has(gw_str):
+		return
+	var entry: Dictionary = map_countries[gw_str]
+	var zh_name: String = entry.get("name_zh", "")
+	if zh_name != "":
+		c.chinese_name = zh_name
+	var gn = entry.get("gov_names", null)
+	if gn is Dictionary:
+		for k in gn:
+			c.gov_names[int(k)] = String(gn[k])
+
+
 static func _assign_real_gwcodes(ws: WorldState) -> void:
 	var map_countries := _load_json_as_dict(MAP_DIR + "/map_countries.json")
 	if map_countries.is_empty():
 		push_warning("WorldFactory: map_countries.json 缺失，CountryData.gwcode 未修正")
+		return
+
+	# 国家身份统一权威源：country_identity.json（legacy_id → gwcode）。
+	# 仅在该文件缺失时回退到旧的英文名模糊匹配（用于数据未迁移的老工作区）。
+	var identity := _load_country_identity()
+	if not identity.is_empty():
+		var matched := 0
+		for c in ws.countries:
+			var sid := int(c.原版序号)
+			if identity.has(sid):
+				c.gwcode = int(identity[sid])
+				_apply_map_country_meta(c, map_countries)
+				if c.gwcode < FICTIONAL_COUNTRY_OFFSET:
+					matched += 1
+			else:
+				c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
+				_apply_offset_name(c)
+		print("WorldFactory: gwcode 按 country_identity.json 直查完成 %d/%d" % [matched, ws.countries.size()])
 		return
 
 	# 构建 规范化国名 → 真实 gwcode
@@ -617,7 +660,7 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 		if nm != "":
 			name_to_gwcode[nm] = int(gw_key)
 
-	var matched := 0
+	var fallback_matched := 0
 	var unmatched_log: Array[String] = []
 	for c in ws.countries:
 		var sid := int(c.原版序号)
@@ -634,24 +677,15 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 		var gw := _find_best_matching_gwcode(hr_name, name_to_gwcode)
 		if gw > 0:
 			c.gwcode = gw
-			var gw_str := str(gw)
-			if map_countries.has(gw_str):
-				var entry: Dictionary = map_countries[gw_str]
-				var zh_name: String = entry.get("name_zh", "")
-				if zh_name != "":
-					c.chinese_name = zh_name
-				var gn = entry.get("gov_names", null)
-				if gn is Dictionary:
-					for k in gn:
-						c.gov_names[int(k)] = String(gn[k])
-			matched += 1
+			_apply_map_country_meta(c, map_countries)
+			fallback_matched += 1
 		else:
 			# 关键：内部序号 70/100 与 G&W 墨西哥/哥伦比亚冲突 → 挪到 9000+
 			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
 			_apply_offset_name(c)
 			unmatched_log.append("%s(idx=%d→gw=%d)" % [c.name, sid, c.gwcode])
 
-	print("WorldFactory: gwcode 修正完成 %d/%d 匹配" % [matched, ws.countries.size()])
+	print("WorldFactory: gwcode 修正完成 %d/%d 匹配（旧名称匹配回退）" % [fallback_matched, ws.countries.size()])
 	if unmatched_log.size() > 0 and unmatched_log.size() <= 40:
 		print("  未匹配(虚构/无区域，已偏移到 9000+): %s" % str(unmatched_log))
 
