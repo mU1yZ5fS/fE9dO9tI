@@ -153,8 +153,8 @@ func _make_entry(w: WorldState, war_id: int, war_name: String,
 	var mode := String(anchor.get("mode", "midpoint"))
 	# region 模式：a 为地图 region_id，直接取该地块中心（藏南/北爱尔兰等热点战争图标）。
 	if mode == "region":
-		var ll := _map_region_latlon(a_idx)
-		if ll.x == INF or ll.y == INF:
+		var region_ll := _map_region_latlon(a_idx)
+		if region_ll.x == INF or region_ll.y == INF:
 			if GameManager != null and GameManager.is_map_data_preloaded:
 				if not _missing_anchor_warned.has(key):
 					_missing_anchor_warned[key] = true
@@ -174,7 +174,7 @@ func _make_entry(w: WorldState, war_id: int, war_name: String,
 			"b_gw": 0,
 			"priority": priority_r,
 			"group": _group_key(0, 0, war_id),
-			"sphere_pos": _map_sphere_pos(ll),
+			"sphere_pos": _map_sphere_pos(region_ll),
 		}
 	var a_gw := _resolve_gw(w, a_idx, int(anchor.get("a_gw", 0)))
 	var b_gw := _resolve_gw(w, b_idx, int(anchor.get("b_gw", 0))) if b_idx >= 0 else 0

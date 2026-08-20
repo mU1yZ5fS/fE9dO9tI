@@ -4,11 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://c3nbbvgm6qtnf" path="res://资产/UI/外交/时间暂停.png" id="6_ggi5h"]
 [ext_resource type="Texture2D" uid="uid://dwg7rfsovkabs" path="res://资产/UI/外交/时间启动.png" id="7_sb0bh"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="17_v5qqf"]
+
 [sub_resource type="StyleBoxEmpty" id="blank_style"]
 
-
-[node name="时间" type="CanvasLayer"]
-
+[node name="时间" type="CanvasLayer" unique_id=1094694308]
 
 [node name="时间背景" type="TextureRect" parent="." unique_id=2119637277]
 offset_left = 17.0
@@ -101,4 +100,3 @@ offset_bottom = 222.0
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 theme_override_styles/normal = SubResource("blank_style")
 flat = true
-

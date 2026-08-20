@@ -168,6 +168,12 @@ func _execute(line: String) -> void:
 			_cmd_list_events()
 		"list_wars":
 			_cmd_list_wars()
+		"start_all_wars", "all_wars", "allwar":
+			_cmd_start_all_wars()
+		"claim", "claim_territory", "take_land":
+			_cmd_claim_territory()
+		"country", "国家":
+			_cmd_country(parts)
 		_:
 			_print_line("[color=red]未知命令：%s（输入 help 查看帮助）[/color]" % cmd)
 
@@ -286,6 +292,215 @@ func _cmd_list_wars() -> void:
 	_print_line("、".join(parts))
 
 
+# ── 新增调试命令：全部战争 / 点击归中国 / 国家数据 ──
+
+func _cmd_start_all_wars() -> void:
+	if GameManager == null or GameManager.world == null:
+		_print_line("[color=red]当前没有活动世界。[/color]")
+		return
+	var ids := WarCatalog.all_ids()
+	var started := 0
+	for war_id in ids:
+		if GameManager.debug_start_war(war_id):
+			started += 1
+	GameManager.notify_stats_changed()
+	_print_line("[color=green]已尝试开启全部 %d 场战争，成功 %d。[/color]" % [ids.size(), started])
+
+
+func _cmd_claim_territory() -> void:
+	var earth := get_tree().root.find_child("地球", true, false)
+	if earth == null:
+		_print_line("[color=red]未找到世界地图（地球）节点，请先进入世界地图/外交界面。[/color]")
+		return
+	if not earth.has_method("set_test_mode_enabled"):
+		_print_line("[color=red]当前场景不支持领土标记模式。[/color]")
+		return
+	var enabled := true
+	if earth.has_method("is_test_mode_enabled"):
+		enabled = not earth.is_test_mode_enabled()
+	earth.set_test_mode_enabled(enabled)
+	_print_line("[color=green]点击划归中国模式：%s。关闭控制台后点击地图即可。[/color]" % ("开启" if enabled else "关闭"))
+
+
+func _cmd_country(parts: Array) -> void:
+	if parts.size() < 2:
+		_print_help_country()
+		return
+	var w: WorldState = GameManager.world if GameManager else null
+	if w == null:
+		_print_line("[color=red]当前没有活动世界。[/color]")
+		return
+	var country := _find_country(w, String(parts[1]))
+	if country == null:
+		_print_line("[color=red]找不到国家：%s[/color]" % parts[1])
+		return
+	var sub := String(parts[2]).to_lower() if parts.size() > 2 else "info"
+	match sub:
+		"info", "show", "查看":
+			_print_country_info(country)
+		"gov", "government", "政体":
+			_cmd_country_set_int(country, parts, "government", 0, 3, "政体")
+		"sub", "ideology", "子意识形态":
+			_cmd_country_set_int(country, parts, "sub_government", 0, 22, "子意识形态")
+		"sphere", "influence", "阵营", "影响":
+			_cmd_country_sphere(country, parts)
+		"sov", "usa", "prc", "fre":
+			_cmd_country_power(country, parts)
+		"puppet", "傀儡":
+			_cmd_country_puppet(w, country, parts)
+		"tag", "标签":
+			_cmd_country_tag(country, parts)
+		_:
+			_print_line("[color=red]未知国家字段：%s[/color]" % parts[2])
+			_print_help_country()
+
+
+func _find_country(w: WorldState, query: String) -> CountryData:
+	var q := query.strip_edges()
+	var c := w.resolve_country(q)
+	if c != null:
+		return c
+	for cd in w.countries:
+		if cd == null:
+			continue
+		if cd.chinese_name == q or cd.name == q or cd.display_name() == q:
+			return cd
+		if cd.chinese_name.contains(q) or cd.name.contains(q) or cd.display_name().contains(q):
+			return cd
+	return null
+
+
+func _print_country_info(c: CountryData) -> void:
+	var sphere_names := {
+		CountryData.SPHERE_USA: "美国",
+		CountryData.SPHERE_USSR: "苏联",
+		CountryData.SPHERE_CHINA: "中国",
+		CountryData.SPHERE_NEUTRAL: "中立",
+		CountryData.SPHERE_FRANCE: "法国",
+		CountryData.SPHERE_SOUTH_AFRICA: "南非",
+		CountryData.SPHERE_AUSTRALIA: "澳大利亚",
+	}
+	_print_line("[color=yellow]%s[/color] gwcode=%d 原版=%d" % [c.display_name(), c.gwcode, c.原版序号])
+	_print_line("政体=%s(%d) 子意识形态=%s(%d)" % [
+		CountryData.GOV_NAME.get(c.government, "未知"),
+		c.government,
+		c.ideology_name(),
+		c.sub_government,
+	])
+	_print_line("势力圈=%s sov=%d usa=%d prc=%d fre=%d" % [
+		sphere_names.get(c.in_sphere_of_influence(), "中立"),
+		c.sov_power,
+		c.usa_power,
+		c.prc_power,
+		c.fre_power,
+	])
+	_print_line("傀儡=slot %d 稳定=%d 发展=%d" % [c.puppet_of, c.stability, c.development])
+
+
+func _cmd_country_set_int(c: CountryData, parts: Array, field: String, min_v: int, max_v: int, label: String) -> void:
+	if parts.size() < 4:
+		_print_line("[color=yellow]用法：country <国家> %s <0-%d>[/color]" % [parts[2], max_v])
+		return
+	var v := int(parts[3])
+	if v < min_v or v > max_v:
+		_print_line("[color=red]%s 需在 %d-%d 之间。[/color]" % [label, min_v, max_v])
+		return
+	c.set(field, v)
+	_print_line("[color=green]%s %s -> %d[/color]" % [c.display_name(), label, v])
+
+
+func _cmd_country_sphere(c: CountryData, parts: Array) -> void:
+	if parts.size() < 4:
+		_print_line("[color=yellow]用法：country <国家> sphere <中国|美国|苏联|法国|中立>[/color]")
+		return
+	var s := String(parts[3])
+	c.set_tag("亲中", false)
+	c.set_tag("亲苏", false)
+	c.set_tag("亲美", false)
+	c.set_tag("亲法", false)
+	match s:
+		"中国", "china", "prc":
+			c.set_tag("亲中", true)
+		"美国", "usa", "美":
+			c.set_tag("亲美", true)
+		"苏联", "ussr", "sov", "苏":
+			c.set_tag("亲苏", true)
+		"法国", "france", "fre":
+			c.set_tag("亲法", true)
+		"中立", "neutral", "none":
+			pass
+		_:
+			_print_line("[color=red]未知势力：%s[/color]" % s)
+			return
+	GameManager.notify_stats_changed()
+	_print_line("[color=green]%s 势力圈 -> %s[/color]" % [c.display_name(), s])
+
+
+func _cmd_country_power(c: CountryData, parts: Array) -> void:
+	if parts.size() < 4:
+		_print_line("[color=yellow]用法：country <国家> sov|usa|prc|fre <值>[/color]")
+		return
+	var field: String = {
+		"sov": "sov_power",
+		"usa": "usa_power",
+		"prc": "prc_power",
+		"fre": "fre_power",
+	}.get(String(parts[2]).to_lower(), "")
+	if field == "":
+		_print_line("[color=red]未知影响力字段：%s[/color]" % parts[2])
+		return
+	var v := int(parts[3])
+	c.set(field, v)
+	GameManager.notify_stats_changed()
+	_print_line("[color=green]%s %s -> %d[/color]" % [c.display_name(), parts[2], v])
+
+
+func _cmd_country_puppet(w: WorldState, c: CountryData, parts: Array) -> void:
+	if parts.size() < 4:
+		_print_line("[color=yellow]用法：country <国家> puppet <slot|-1|国家名>[/color]")
+		return
+	var q := String(parts[3])
+	if q == "-1" or q.to_lower() == "none" or q == "独立":
+		c.puppet_of = -1
+		_print_line("[color=green]%s 已设为独立。[/color]" % c.display_name())
+		return
+	var target := _find_country(w, q)
+	var slot := -1
+	if target != null:
+		slot = target.slot
+	elif q.is_valid_int():
+		slot = int(q)
+	else:
+		_print_line("[color=red]找不到傀儡宗主国：%s[/color]" % q)
+		return
+	c.puppet_of = slot
+	GameManager.notify_stats_changed()
+	_print_line("[color=green]%s 傀儡 -> slot %d[/color]" % [c.display_name(), slot])
+
+
+func _cmd_country_tag(c: CountryData, parts: Array) -> void:
+	if parts.size() < 5:
+		_print_line("[color=yellow]用法：country <国家> tag <标签> <0|1>[/color]")
+		return
+	var val := int(parts[4]) != 0
+	c.set_tag(String(parts[3]), val)
+	GameManager.notify_stats_changed()
+	_print_line("[color=green]%s 标签 %s -> %s[/color]" % [c.display_name(), parts[3], "true" if val else "false"])
+
+
+func _print_help_country() -> void:
+	_print_line("""
+[color=yellow]===== country 国家调试命令 =====[/color]
+[color=green]country <国家> info[/color]                  查看政体/势力圈/影响力
+[color=green]country <国家> gov <0-3>[/color]             设置政体（0威权 1社会主义 2改良 3自由）
+[color=green]country <国家> sub <0-22>[/color]            设置子意识形态
+[color=green]country <国家> sphere <中国|美国|苏联|法国|中立>[/color]  切换势力圈
+[color=green]country <国家> sov|usa|prc|fre <值>[/color]  设置大国影响力
+[color=green]country <国家> puppet <国家名|-1>[/color]    设置/解除傀儡
+[color=green]country <国家> tag <标签> <0|1>[/color]      设置外交/联盟标签
+""")
+
+
 # ── 输出 ──
 
 func _print_line(text: String) -> void:
@@ -307,6 +522,9 @@ func _print_help() -> void:
 [color=green]date <年> <月> <日>[/color]   设置日期
 [color=green]list_events[/color]           列出全部事件 id
 [color=green]list_wars[/color]             列出全部战争 id
+[color=green]start_all_wars[/color]        开启全部战争
+[color=green]claim[/color]                 切换“点击地图划归中国”模式
+[color=green]country <国家> ...[/color]     查看/修改国家政体、势力圈、影响力（输入 country 查看用法）
 
 [color=yellow]===== 沙盒作弊快捷键（仅沙盒难度）=====[/color]
 左Ctrl+1~9、0：党支持/民支持/思想/生活/国际声望/全球影响/预算/特工/军费/美苏关系 +10

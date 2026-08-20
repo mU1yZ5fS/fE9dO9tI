@@ -132,15 +132,14 @@ color = Color(0, 0, 0, 0.45)
 [node name="成就弹窗" type="PopupPanel" parent="." unique_id=1339]
 size = Vector2i(1200, 780)
 
-
 [node name="布局" type="VBoxContainer" parent="成就弹窗" unique_id=1340]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = 24.0
-offset_right = 1168.0
-offset_bottom = 756.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1196.0
+offset_bottom = 776.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
@@ -205,7 +204,7 @@ tooltip_text = "当前版本内容：90%改版内容+未知可能bug"
 mouse_filter = 1
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 43
-text = "v0.1.8东方红"
+text = "v0.2.0长征"
 horizontal_alignment = 2
 
 [connection signal="pressed" from="开始游戏" to="." method="_on_开始游戏_pressed"]

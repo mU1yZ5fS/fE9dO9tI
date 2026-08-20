@@ -66,7 +66,7 @@ const INTRO_M28 := "<color=red>“ 党 内 党 外 都 要 分 清 是 非 。 �
 const INTRO_M29 := "<color=red>“ 党 内 党 外 都 要 分 清 是 非 。 如 何 对 待 犯 了 错 误 的 人 ， 这 是 一 个 重 要 的 问 题 。 正 确 的 态 度 应 当 是 ， 对 于 犯 错 误 的 同 志 ， 采 取 ‘ 惩 前 毖 后 ， 治 病 救 人 ’ 的 方 针 ， 帮 助 他 们 改 正 错 误 ， 允 许 他 们 继 续 革 命 。 ” — — 毛 泽 东</color>"
 
 ## 原版 Doctrine_button_script.cs:1478-1791 中文块的选择器（modifies[6] 分支 + 事件状态分支）
-func policy_intro_raw(w: WorldState, target_val: int) -> String:
+static func policy_intro_raw(w: WorldState, target_val: int) -> String:
 	if mod_active(w, 6):
 		match target_val:
 			10: return INTRO_10A if not mod_active(w, 11) else INTRO_10B
@@ -132,14 +132,14 @@ func policy_intro_raw(w: WorldState, target_val: int) -> String:
 
 ## 政策介绍入口：把原版 Unity 尖括号 <color=red></color> 转成 Godot BBCode [color=red][/color]
 ## （Godot 4.7 文档 gdd_0413：RichTextLabel 仅识别方括号标签，支持命名颜色 red）。
-func policy_intro(w: WorldState, target_val: int) -> String:
+static func policy_intro(w: WorldState, target_val: int) -> String:
 	return policy_intro_raw(w, target_val) \
 		.replace("<color=red>", "[color=red]") \
 		.replace("</color>", "[/color]")
 
 
 ## id21 联邦制介绍：按 event_done[550] + resultOfEvents[550] 分支（原版 :1570-1585/:1726-1741）
-func intro_21(w: WorldState) -> String:
+static func intro_21(w: WorldState) -> String:
 	if event_done(w, 550):
 		var r := event_result(w, 550)
 		if r == 2:
@@ -172,23 +172,23 @@ const DOCTR_MOD6 := {
 }
 
 # ── 状态位读取（映射 WorldState；数字事件移植说明 → 恒默认）──
-func mod_active(w: WorldState, n: int) -> bool:
+static func mod_active(w: WorldState, n: int) -> bool:
 	return w != null and w.modifiers.size() > n and w.modifiers[n] != null and w.modifiers[n].is_active
 
-func dec_done(w: WorldState, n: int) -> bool:
+static func dec_done(w: WorldState, n: int) -> bool:
 	return w != null and w.decisions != null and w.decisions.completed.size() > n and w.decisions.completed[n]
 
 # 数字键事件（444/502/503/550/551/682…）在本移植中未启用（completed_event_ids 用字符串键）
 # → resultOfEvents 恒 -1、event_done 恒 false，与原版 GameStartScript.cs:48-51 初始态一致。
-func event_result(w: WorldState, n: int) -> int:
+static func event_result(w: WorldState, n: int) -> int:
 	return w.completed_event_ids.get(n, -1) if w != null else -1
 
-func event_done(w: WorldState, n: int) -> bool:
+static func event_done(w: WorldState, n: int) -> bool:
 	return w != null and w.completed_event_ids.has(n)
 
 
 ## 当前政策值 id → 显示名（doctr[id]，modifies[6] 覆盖）。原版 doctr[data[idx]]。
-func doctr_name(w: WorldState, id: int) -> String:
+static func doctr_name(w: WorldState, id: int) -> String:
 	if mod_active(w, 6) and DOCTR_MOD6.has(id):
 		return DOCTR_MOD6[id]
 	return DOCTR_BASE.get(id, "未知")
@@ -197,7 +197,7 @@ func doctr_name(w: WorldState, id: int) -> String:
 ## 忠实移植 Doctrine_script.cs OnMouseDown()：按 this_number 与真实状态位生成有序选项 [{id,text}]。
 ## 数字事件（444/503/550/551/682）移植说明 → _evt_* 恒 -1/false，与原版开局初始态一致。
 ## 开局态 modifies[6]=true、completedDecisions/其余 modifies 全 false → 各类满编选项。
-func build_options(w: WorldState, num: int) -> Array[Dictionary]:
+static func build_options(w: WorldState, num: int) -> Array[Dictionary]:
 	var o: Array[Dictionary] = []
 	match num:
 		16:  # 经济
@@ -292,7 +292,7 @@ func build_options(w: WorldState, num: int) -> Array[Dictionary]:
 
 
 ## 国家体制 id21 文案：随 resultOfEvents[550]（原版 :233-244/198-208，均以 modifies[6] 分改良/联邦）。
-func territory21_text(w: WorldState) -> String:
+static func territory21_text(w: WorldState) -> String:
 	var r := event_result(w, 550)
 	if r == 0:
 		return "美国模式联邦制"
@@ -302,7 +302,7 @@ func territory21_text(w: WorldState) -> String:
 
 
 
-func leading_tooltip(w: WorldState) -> String:
+static func leading_tooltip(w: WorldState) -> String:
 	var total := 0
 	for f in w.factions:
 		total += maxi(f.support, 0)

@@ -86,9 +86,9 @@ static func build_tooltip(for_text: String) -> Control:
 
 ## 从项目全局 Theme 取 TooltipPanel 样式；没有则返回 null 由调用方回退。
 func _tooltip_style() -> StyleBox:
-	var theme := ThemeDB.get_project_theme()
-	if theme != null and theme.has_stylebox("panel", "TooltipPanel"):
-		return theme.get_stylebox("panel", "TooltipPanel")
+	var project_theme := ThemeDB.get_project_theme()
+	if project_theme != null and project_theme.has_stylebox("panel", "TooltipPanel"):
+		return project_theme.get_stylebox("panel", "TooltipPanel")
 	return null
 
 

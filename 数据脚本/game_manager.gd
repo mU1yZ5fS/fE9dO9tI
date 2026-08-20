@@ -90,10 +90,8 @@ var current_ending_id: int = -1
 var _pending_event_ending_id: int = -1
 
 # 速度 → tick 间隔（秒），对齐原版 TimeScript.Update / Diplomacy.unity Speed 按钮：
-#   now_time += speed*delta，now_time>=8 时推进 1 天 → 1 天 = 8/speed 秒。
-#   原版 speed：默认 4（2 秒/天），Speed(0)=16（0.5 秒/天），Speed(1)=24（1/3 秒/天），Speed(2)=32（0.25 秒/天）。
-#   Godot 档位 1-4 依次映射 4/16/24/32；最高档 0.25 秒/天，事件通知 13 天缓冲 ≈ 3.25 秒真实时间。
-const TICK_INTERVALS: Array[float] = [0.0, 2.0, 0.5, 1.0 / 3.0, 0.25]
+
+const TICK_INTERVALS: Array[float] = [0.0, 1.0, 0.5, 0.25, 0.05]
 var _tick_timer: float = 0.0
 
 var _tech_effects: Dictionary = {}

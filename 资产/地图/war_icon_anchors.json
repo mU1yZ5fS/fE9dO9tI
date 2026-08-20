@@ -85,7 +85,7 @@
   "84": { "a": 141, "b": 51,  "mode": "a" },
   "85": { "a": 58,  "b": 61,  "mode": "midpoint" },
   "86": { "a": 2266, "mode": "region" },
-  "87": { "a": 166, "b": 29,  "mode": "midpoint", "a_gw": 200 },
+  "87": { "a": 2266, "mode": "region" },
   "88": { "a": 14,  "mode": "country" },
   "89": { "a": 35,  "b": 14,  "mode": "midpoint" },
   "90": { "a": 1,   "b": 44,  "mode": "midpoint" },

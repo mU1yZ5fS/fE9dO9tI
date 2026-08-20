@@ -196,6 +196,16 @@ func _input(event: InputEvent) -> void:
 		_mouse_moved = true
 
 
+## 供调试控制台/测试脚本切换“点击划归中国”模式。
+func set_test_mode_enabled(enabled: bool) -> void:
+	_test_mode_enabled = enabled
+	print("[TerritoryMap] 测试模式 %s" % ("开启" if enabled else "关闭"))
+
+
+func is_test_mode_enabled() -> bool:
+	return _test_mode_enabled
+
+
 ## 手指按下/抬起：维护触点计数并做轻点判定。
 ## 单指、短位移、全程未多指 → 判为轻点选国，复用既有 _physics_process 选国管线。
 func _handle_touch(t: InputEventScreenTouch) -> void:

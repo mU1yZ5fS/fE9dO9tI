@@ -1,70 +1,69 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://cmdqagtygkpbs"]
 
-[ext_resource type="Script" path="res://数据脚本/ui/调试控制台.gd" id="1_console"]
+[ext_resource type="Script" uid="uid://bht1b0xkjhncc" path="res://数据脚本/ui/调试控制台.gd" id="1_console"]
 
-[node name="调试控制台" type="CanvasLayer"]
-visible = false
-layer = 100
+[node name="调试控制台" type="CanvasLayer" unique_id=1393342397]
 process_mode = 3
+layer = 100
+visible = false
 script = ExtResource("1_console")
 
-[node name="背景遮罩" type="ColorRect" parent="."]
+[node name="背景遮罩" type="ColorRect" parent="." unique_id=507234722]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 0
 color = Color(0, 0, 0, 0.35)
 
-[node name="居中" type="CenterContainer" parent="."]
+[node name="居中" type="CenterContainer" parent="." unique_id=1324882071]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="面板" type="PanelContainer" parent="居中"]
+[node name="面板" type="PanelContainer" parent="居中" unique_id=1094622370]
 custom_minimum_size = Vector2(900, 600)
 layout_mode = 2
 
-[node name="布局" type="VBoxContainer" parent="居中/面板"]
+[node name="布局" type="VBoxContainer" parent="居中/面板" unique_id=446393299]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="标题栏" type="HBoxContainer" parent="居中/面板/布局"]
+[node name="标题栏" type="HBoxContainer" parent="居中/面板/布局" unique_id=939957681]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="标题" type="Label" parent="居中/面板/布局/标题栏"]
+[node name="标题" type="Label" parent="居中/面板/布局/标题栏" unique_id=968419534]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
 text = "调试控制台"
 
-[node name="关闭" type="Button" parent="居中/面板/布局/标题栏"]
+[node name="关闭" type="Button" parent="居中/面板/布局/标题栏" unique_id=825283487]
 layout_mode = 2
 text = "关闭"
 
-[node name="输出" type="RichTextLabel" parent="居中/面板/布局"]
+[node name="输出" type="RichTextLabel" parent="居中/面板/布局" unique_id=400255078]
 custom_minimum_size = Vector2(860, 480)
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-scroll_following = true
 text = "欢迎使用调试控制台。输入 help 查看命令。"
+scroll_following = true
 
-[node name="输入行" type="HBoxContainer" parent="居中/面板/布局"]
+[node name="输入行" type="HBoxContainer" parent="居中/面板/布局" unique_id=193068990]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="输入" type="LineEdit" parent="居中/面板/布局/输入行"]
+[node name="输入" type="LineEdit" parent="居中/面板/布局/输入行" unique_id=876659863]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "输入命令，help 查看帮助"
 
-[node name="执行" type="Button" parent="居中/面板/布局/输入行"]
+[node name="执行" type="Button" parent="居中/面板/布局/输入行" unique_id=1434541787]
 layout_mode = 2
 text = "执行"
 

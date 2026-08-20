@@ -41,5 +41,3 @@ static func clamp_war_infl(war: WarData) -> void:
 		war.infl1 = 0
 	war.infl1 = clampi(war.infl1, 0, 1000)
 	war.infl2 = clampi(war.infl2, 0, 1000)
-
-
