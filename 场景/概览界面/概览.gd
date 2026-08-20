@@ -233,8 +233,8 @@ func _delta_iv(v: int) -> String:
 	return _signed_iv(v)
 
 
-func _dv(d: Array[int], idx: int, fallback: int = 0) -> int:
-	return d[idx] if d.size() > idx else fallback
+func _dv(d: WorldState, idx: int, fallback: int = 0) -> int:
+	return d.get_data_by_index(idx) if d.size() > idx else fallback
 
 
 ## 原版 gameState.ImportChange（GameState.cs:11-16）。公式实现已上收 WorldState.import_change()。
@@ -282,7 +282,7 @@ func _leader_name(empire: EmpireData, fallback: String) -> String:
 # ============================================================================
 
 func _build_trade(w: WorldState) -> String:
-	var d := w.数值表
+	var d := w
 	var export_v := _dv(d, W.I_INCOME)
 	var import_v := _dv(d, W.I_IMPORT_NEEDS)
 	var partners := _dv(d, W.I_TRADE_PARTNERS)
@@ -402,7 +402,7 @@ func _build_influence_funds(w: WorldState) -> String:
 ## 军备竞赛三态（modify_choose.cs:213-312 中文分支）
 func _arms_race_text(w: WorldState, ussr: EmpireData, usa: EmpireData) -> String:
 	var pc := w.get_player_country()
-	var army := _dv(w.数值表, W.I_ARMY)
+	var army := _dv(w, W.I_ARMY)
 	if pc != null and pc.has_tag("okb") and ussr != null and usa != null:
 		var sov_power := ussr.power
 		var us_power := usa.power
@@ -413,7 +413,7 @@ func _arms_race_text(w: WorldState, ussr: EmpireData, usa: EmpireData) -> String
 				sov_power -= sov_power / 9
 				@warning_ignore("integer_division")
 				us_power -= us_power / 9
-		var loan := _dv(w.数值表, W.I_LOAN)
+		var loan := _dv(w, W.I_LOAN)
 		if loan > 7:
 			@warning_ignore("integer_division")
 			us_power += loan / 7
@@ -438,7 +438,7 @@ func _arms_race_text(w: WorldState, ussr: EmpireData, usa: EmpireData) -> String
 		s += "与苏联的关系（每两周）：+0.5（至多70）\n"
 		s += "与美国的关系（每两周）：+0.5（至多70）\n"
 		s += "预算支出（每两周）：-0.2\n"
-		var dip := _dv(w.数值表, W.I_DIPLO)
+		var dip := _dv(w, W.I_DIPLO)
 		if dip > 600:
 			s += "国际威望（每两周）：-0.2\n"
 		elif dip < 400:
@@ -452,7 +452,7 @@ func _arms_race_text(w: WorldState, ussr: EmpireData, usa: EmpireData) -> String
 # ============================================================================
 
 func _build_territory(w: WorldState) -> String:
-	var d := w.数值表
+	var d := w
 	var s := _h("中华本部")
 	s += "%s\n" % _tibet_text(_dv(d, W.I_TIBET_POLICY))
 	s += "%s\n" % _xinjiang_text(_dv(d, W.I_XINJIANG_POLICY))
@@ -466,7 +466,7 @@ func _build_territory(w: WorldState) -> String:
 	return s
 
 
-## data[67] 西藏文化政策状态 → 文案（modify_choose.cs:764-774）
+## data.tibet_policy 西藏文化政策状态 → 文案（modify_choose.cs:764-774）
 func _tibet_text(v: int) -> String:
 	if v == 1:
 		return "西藏共和国-独立主权"
@@ -475,7 +475,7 @@ func _tibet_text(v: int) -> String:
 	return "西藏是中国领土不可分割的一部分"
 
 
-## data[66] 新疆文化政策状态 → 文案（modify_choose.cs:776-789）
+## data.xinjiang_policy 新疆文化政策状态 → 文案（modify_choose.cs:776-789）
 func _xinjiang_text(v: int) -> String:
 	if v == 1:
 		return "新疆-苏联傀儡"
@@ -484,7 +484,7 @@ func _xinjiang_text(v: int) -> String:
 	return "新疆是中国领土不可分割的一部分"
 
 
-## data[65] 港澳回归状态 → 文案（modify_choose.cs:791-805）
+## data.hk_macau_status 港澳回归状态 → 文案（modify_choose.cs:791-805）
 func _hk_macau_text(v: int) -> String:
 	if v == 1:
 		return "港澳是中国的特别行政区"
@@ -514,7 +514,7 @@ func _mongolia_text(w: WorldState) -> String:
 
 
 ## 台湾主状态 + 台海岛屿（modify_choose.cs:831-852）
-func _taiwan_text(w: WorldState, d: Array[int]) -> String:
+func _taiwan_text(w: WorldState, d: WorldState) -> String:
 	var status := _dv(d, W.I_TAIWAN_STATUS)
 	var islands := _dv(d, W.I_TAIWAN_ISLANDS)
 	var ev461 := w.get_flag("event_done_461")
@@ -532,7 +532,7 @@ func _taiwan_text(w: WorldState, d: Array[int]) -> String:
 	return s
 
 
-## data[62] 藏南状态 → 文案（modify_choose.cs:853-864）
+## data.arunachal_status 藏南状态 → 文案（modify_choose.cs:853-864）
 func _arunachal_text(v: int) -> String:
 	if v == 1:
 		return "被印度实际控制，我方承认其主权"
@@ -546,7 +546,7 @@ func _arunachal_text(v: int) -> String:
 # ============================================================================
 
 func _build_situation(w: WorldState) -> String:
-	var d := w.数值表
+	var d := w
 	var s := _h("伊朗")
 	s += _iran_text(w, d)
 	s += "\n\n" + _h("阿富汗")
@@ -561,7 +561,7 @@ func _build_situation(w: WorldState) -> String:
 
 
 ## 伊朗 13 个定性分支（modify_choose.cs:577-655 中文分支，按原版 if-else 顺序）
-func _iran_text(w: WorldState, d: Array[int]) -> String:
+func _iran_text(w: WorldState, d: WorldState) -> String:
 	var turkey := w.get_country_by_legacy_index(84)
 	var iran := w.get_country_by_legacy_index(8)
 	if turkey != null and turkey.parts.size() > 5 and turkey.parts[5]:
@@ -645,7 +645,7 @@ func _usa_president_text(w: WorldState) -> String:
 # ============================================================================
 
 func _build_cohesion(w: WorldState) -> String:
-	var d := w.数值表
+	var d := w
 	var unity_view := _dv(d, W.I_WAR_SUPPORT, 500)
 	var unity_raw := _dv(d, W.I_MANPOWER)
 	var pop := _dv(d, W.I_POPULATION)
@@ -661,7 +661,7 @@ func _build_cohesion(w: WorldState) -> String:
 	return s
 
 
-## data[31] 统一度→世界观档位（modify_choose.cs:346-405）
+## data.war_support 统一度→世界观档位（modify_choose.cs:346-405）
 func _worldview_label(v: int) -> String:
 	if v > 700:
 		return "完全的统一"
@@ -694,7 +694,7 @@ func _worldview_effects_text(v: int) -> String:
 
 ## 人口五效应（modify_choose.cs:456-569）：工业/人民支持度/特工网络/预算/军事实力。
 ## 全部照原版 UI 公式显示（含 econ13 与特工网络两项此前漏移植的显示）。
-func _population_effects_text(d: Array[int], w: WorldState) -> String:
+func _population_effects_text(d: WorldState, w: WorldState) -> String:
 	var pop := _dv(d, W.I_POPULATION)
 	var econ := _dv(d, W.I_ECON_SYSTEM)
 	var effects := [0, 0, 0, 0, 0]  # [工业, 人民支持, 特工, 预算, 军力]

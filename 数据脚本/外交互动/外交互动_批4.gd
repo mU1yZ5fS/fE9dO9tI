@@ -1683,7 +1683,7 @@ func _def_1050(w: WorldState, country: CountryData, caption: String) -> Dictiona
 # 批4 本地安全访问器（原版 allcountries[N] 在 Godot 中可能为 null，条件统一走这里）
 # ============================================================================
 
-## data[idx] 相对增减（原版 data[i] += n / -= n 的忠实等价）。
+## data.get_data_by_index(idx) 相对增减（原版 data.add_data_by_index(i, n / -= n 的忠实等价）。)
 func _add_d(w: WorldState, idx: int, delta: int) -> void:
 	set_d(w, idx, d(w, idx) + delta)
 

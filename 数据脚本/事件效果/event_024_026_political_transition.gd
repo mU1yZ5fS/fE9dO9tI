@@ -26,7 +26,7 @@ func _apply_event_24(option_index: int) -> void:
 			_set_modifier(3, false)
 			_change_loyalty_custom({0: 100, 1: 50, 2: -100, 20: 80})
 			_add_faction_ideology({0: 300, 1: 500})
-			d[W.I_POST_MAO_COURSE] = 1
+			d.post_mao_course = 1
 		1:
 			_add_data({
 				W.I_PARTY_SUPPORT: -50, W.I_PEOPLE_SUPPORT: -100,
@@ -34,13 +34,13 @@ func _apply_event_24(option_index: int) -> void:
 			})
 			_change_loyalty_power_24_1()
 			_add_faction_ideology({0: 800, 1: 300})
-			d[W.I_POST_MAO_COURSE] = 2
+			d.post_mao_course = 2
 		2:
 			_add_data({W.I_DIPLO: -10, W.I_PEOPLE_SUPPORT: 50, W.I_THOUGHT_FREEDOM: 80})
 			_set_modifier(3, false)
 			_change_loyalty_custom({0: -20, 1: 100, 2: 100})
 			_add_faction_ideology({2: 800, 3: 300})
-			d[W.I_POST_MAO_COURSE] = 3
+			d.post_mao_course = 3
 		3:
 			_add_data({
 				W.I_PEOPLE_SUPPORT: 80, W.I_PARTY_SUPPORT: -50,
@@ -49,7 +49,7 @@ func _apply_event_24(option_index: int) -> void:
 			_set_modifier(3, false)
 			_change_loyalty_24_3()
 			_add_faction_ideology({2: 300, 3: 800, 4: 300})
-			d[W.I_POST_MAO_COURSE] = 4
+			d.post_mao_course = 4
 
 
 func _apply_event_25(option_index: int) -> void:
@@ -59,7 +59,7 @@ func _apply_event_25(option_index: int) -> void:
 				W.I_PEOPLE_SUPPORT: 100, W.I_THOUGHT_FREEDOM: 70,
 				W.I_PARTY_SUPPORT: 100, W.I_DIPLO: -30,
 			})
-			d[W.I_GANG_OF_FOUR_PATH] = 1
+			d.gang_of_four_path = 1
 			_change_loyalty_custom({0: -50, 1: 50, 2: 50})
 			_add_faction_ideology({1: 250, 2: 150, 3: 150})
 			_kill_many([0, 1, 2, 3, 4, 17])
@@ -70,7 +70,7 @@ func _apply_event_25(option_index: int) -> void:
 				W.I_PARTY_SUPPORT: 50, W.I_PEOPLE_SUPPORT: 50,
 				W.I_THOUGHT_FREEDOM: 100, W.I_DIPLO: -10,
 			})
-			d[W.I_GANG_OF_FOUR_PATH] = 2
+			d.gang_of_four_path = 2
 			_change_loyalty_custom({0: -20, 1: 50, 2: 50})
 			_add_faction_ideology({1: 200, 2: 100, 3: 100})
 			_kill_many([1, 2])
@@ -82,14 +82,14 @@ func _apply_event_25(option_index: int) -> void:
 				W.I_PARTY_SUPPORT: -100, W.I_PEOPLE_SUPPORT: -100,
 				W.I_THOUGHT_FREEDOM: 250, W.I_DIPLO: 50,
 			})
-			d[W.I_GANG_OF_FOUR_PATH] = 3
+			d.gang_of_four_path = 3
 			_change_loyalty_24_2_style()
 			_add_faction_ideology({0: 250, 1: 150})
 			_scale_faction_ideology(3, 0.90)
 			_add_power_by_index({7: -100, 12: -100, 9: 100})
 		3:
 			# 原版 SceneManager.LoadScene("Ending")；项目用 queue_ending_after_event(2) 替代。
-			d[W.I_ENDING_ROUTE] = 2
+			d.ending_route = 2
 			GameManager.queue_ending_after_event(2)
 	PoliticianSystem.sync_in_power_flags(ws)
 
@@ -101,7 +101,7 @@ func _apply_event_26(option_index: int) -> void:
 				W.I_PEOPLE_SUPPORT: 40, W.I_THOUGHT_FREEDOM: 100,
 				W.I_PARTY_SUPPORT: 50, W.I_DIPLO: -30, W.I_AGENTS: -70,
 			})
-			d[W.I_GANG_OF_FOUR_PATH] = 1
+			d.gang_of_four_path = 1
 			_change_loyalty_custom({0: -100, 1: 50, 2: 50})
 			_add_faction_ideology({1: 250, 2: 150, 3: 150})
 			_kill_many([1, 2, 3, 4])
@@ -112,7 +112,7 @@ func _apply_event_26(option_index: int) -> void:
 				W.I_PARTY_SUPPORT: 20, W.I_PEOPLE_SUPPORT: 20,
 				W.I_THOUGHT_FREEDOM: 100, W.I_DIPLO: -10, W.I_AGENTS: -50,
 			})
-			d[W.I_GANG_OF_FOUR_PATH] = 2
+			d.gang_of_four_path = 2
 			_change_loyalty_custom({0: -50, 1: 50, 2: 50})
 			_add_faction_ideology({1: 200, 2: 100, 3: 100})
 			_kill_many([1, 2])
@@ -207,7 +207,7 @@ func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
 		if index >= 0 and index < d.size():
-			d[index] += int(changes[raw_index])
+			d.add_data_by_index(index, int(changes[raw_index]))
 
 
 
@@ -241,9 +241,9 @@ func _add_empire_relation(empire_index: int, delta: int) -> void:
 		return
 	ws.empires[empire_index].relations = clampi(ws.empires[empire_index].relations + delta, 0, 1000)
 	if empire_index == 0:
-		ws.数值表[W.I_USA_RELATIONS] = ws.empires[empire_index].relations
+		ws.usa_relations = ws.empires[empire_index].relations
 	elif empire_index == 1:
-		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[empire_index].relations
+		ws.ussr_relations = ws.empires[empire_index].relations
 
 
 func _kill_many(indexes: Array[int]) -> void:
@@ -258,7 +258,7 @@ func _remake_as_wang_dongxing(index: int) -> void:
 	politician.name_first = 16
 	politician.name_last = 16
 	politician.name_display = "汪东兴"
-	politician.age = d[W.I_YEAR] - 1905
+	politician.age = d.year - 1905
 	politician.trait_personality = GameConstants.PoliticianPersonality.MODERATE
 	politician.trait_background = GameConstants.PoliticianBackground.PARTY_CADRE
 	politician.trait_alignment = GameConstants.PoliticianAlignment.PRAGMATIST

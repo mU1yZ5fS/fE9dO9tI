@@ -8,7 +8,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - event_done[571] 由 fire_only_once 覆盖；event_done[570]/[417] 在 evaluate 中检查；
 ##  - proprc → 亲中；OAR → ws flag "oar"；completedDecisions[20] → ws.decisions.completed[20]；
-##  - data[143] 无命名键 raw；SovietSupportDefender.AmericanSupportDefender → usa_side = GameConstants.WarSide.SIDE2/ussr_side = GameConstants.WarSide.SIDE2；
+##  - data.oil_price 无命名键 raw；SovietSupportDefender.AmericanSupportDefender → usa_side = GameConstants.WarSide.SIDE2/ussr_side = GameConstants.WarSide.SIDE2；
 ##  - TickTime(25) → fortnight_max=25。
 
 
@@ -48,7 +48,7 @@ func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	if d.size() > 143:
-		d[143] += 3   # 原 data[143]（无命名键）
+		d.oil_price += 3   # 原 data.oil_price（无命名键）
 	GameManager.start_war(28, WAR28_SIDE1, WAR28_SIDE2, 950, 50, 1, 1)
 	if ws.wars.size() > 28 and ws.wars[28] != null:
 		ws.wars[28].name_war = WAR28_NAME

@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event633.cs：永恒的春天（危地马拉内战转折，四选项）。
 ## 触发：ReqEventsDLC02.cs:976-979 —— IsAuthoritarianism(149) && DATE_AFTER 1982.3.23。
 ##   IsAuthoritarianism 无单一 ExprNode → trigger_script evaluate。
-## 差异：原版按 data[56]/对美关系 Destroy(button[i])；Godot _disable 同义；
+## 差异：原版按 data.political_line/对美关系 Destroy(button[i])；Godot _disable 同义；
 ##   美国总统 now_leader==0(里根)/否则(卡特) 用 empires[0].current_leader 分支。
 
 const TXT_OPT0_DIS := "我们为什么要支持流匪？"

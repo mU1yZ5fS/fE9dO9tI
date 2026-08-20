@@ -59,48 +59,48 @@ func execute(context: Dictionary) -> void:
 # 选项0：从预算中拨款支持重建（Event23.cs result 0）
 func _opt_budget_restore(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] += 30
+		d.people_support += 30
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] += 50
+		d.party_support += 50
 	if d.size() > W.I_BUDGET:
-		d[W.I_BUDGET] -= 30
+		d.budget -= 30
 	context["result_text"] = TXT_R0
 
 
 # 选项1：请求外国的人道主义救援（Event23.cs result 1）
 func _opt_foreign_aid(context: Dictionary) -> void:
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] -= 50
+		d.party_support -= 50
 	ws.influence_prc -= 5
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += 50
+		d.thought_freedom += 50
 	context["result_text"] = TXT_R1
 
 
 # 选项2：分配资金支持重建并开发防震系统（Event23.cs result 2）
 func _opt_restore_and_protect(context: Dictionary) -> void:
 	if d.size() > W.I_LIVING:
-		d[W.I_LIVING] += 50
+		d.living_standard += 50
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] += 30
+		d.people_support += 30
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] += 50
+		d.party_support += 50
 	ws.influence_prc += 5
 	if d.size() > W.I_BUDGET:
-		d[W.I_BUDGET] -= 50
+		d.budget -= 50
 	context["result_text"] = TXT_R2
 
 
 # 选项3：让省政府自行解决（Event23.cs result 3）
 func _opt_let_province(context: Dictionary) -> void:
 	if d.size() > W.I_LIVING:
-		d[W.I_LIVING] -= 50
+		d.living_standard -= 50
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 40
+		d.people_support -= 40
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] -= 50
+		d.party_support -= 50
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += 30
+		d.thought_freedom += 30
 	context["result_text"] = TXT_R3
 
 

@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - oar → 国家标签 "oar"；proprc → 亲中；
 ##  - IsSocialism(true) → world.is_socialism(c, true)；IsAuthoritarianism → world.is_authoritarian；
-##  - data[143] 无命名键，raw index 143（同 Event114 约定）；
+##  - data.oil_price 无命名键，raw index 143（同 Event114 约定）；
 ##  - AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.NONE；TickTime(24) → fortnight_max=24。
 
 
@@ -37,7 +37,7 @@ func execute(context: Dictionary) -> void:
 	if c36 != null and c36.has_tag("亲中"):
 		c36.set_tag("亲中", false)
 	if d.size() > 143:
-		d[143] += 10   # 原 data[143]（无命名键，同 Event114 约定）
+		d.oil_price += 10   # 原 data.oil_price（无命名键，同 Event114 约定）
 	GameManager.start_war(43, WAR43_SIDE1, WAR43_SIDE2, 700 - num, 300 + num, 0, -1)
 	if ws.wars.size() > 43 and ws.wars[43] != null:
 		ws.wars[43].name_war = WAR43_NAME

@@ -16,11 +16,11 @@ const TXT_R3 := "最终，有引入我国民族区域自治制度与地方管理
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var dd := world.数值表
+	var dd := world
 	if dd.size() <= W.I_TERRITORY:
 		return false
 	var c9 := world.get_country_by_legacy_index(9)
-	return dd[130] == 1 and world.decisions.completed[19] and dd[W.I_TERRITORY] == 20 			and c9 != null and c9.puppet_of < 0
+	return dd.mongolia_china_route == 1 and world.decisions.completed[19] and dd.territory_policy == 20 			and c9 != null and c9.puppet_of < 0
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -28,7 +28,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	var line := d[W.I_POLITICAL_LINE]
+	var line := d.political_line
 	if line == 4:
 		_enable(opt[0], event_def.options[0].text)
 	else:
@@ -51,7 +51,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			_set_data(130, 0)  # 原 data[130]
+			_set_data(130, 0)  # 原 data.mongolia_china_route
 			_china_parts_change(c1)
 			if c9 != null:
 				c9.government = GameConstants.Government.SOCIALIST
@@ -132,13 +132,13 @@ func _china_parts_change(c1: CountryData) -> void:
 	elif is_gk:
 		_clear_parts(c1)
 		c1.parts[11] = true
-	elif d[130] == 1 and d[W.I_ARUNACHAL_STATUS] >= 2 and (d[W.I_TAIWAN_STATUS] == 2 or ws.decisions.completed[7]):
+	elif d.mongolia_china_route == 1 and d.arunachal_status >= 2 and (d.taiwan_status == 2 or ws.decisions.completed[7]):
 		_clear_parts_range(c1)
 		c1.parts[0] = true
-	elif d[130] == 1 and (d[W.I_ARUNACHAL_STATUS] == 2 or d[W.I_ARUNACHAL_STATUS] == 3):
+	elif d.mongolia_china_route == 1 and (d.arunachal_status == 2 or d.arunachal_status == 3):
 		_clear_parts_range(c1)
 		c1.parts[2] = true
-	elif d[W.I_ARUNACHAL_STATUS] >= 2 and (d[W.I_TAIWAN_STATUS] == 2 or ws.decisions.completed[7]):
+	elif d.arunachal_status >= 2 and (d.taiwan_status == 2 or ws.decisions.completed[7]):
 		_clear_parts_range(c1)
 		c1.parts[6] = true
 

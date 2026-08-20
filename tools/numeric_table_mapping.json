@@ -1,0 +1,937 @@
+{
+  "0": {
+    "name": "mil_intervention",
+    "type": "int",
+    "comment": "军事介入点"
+  },
+  "1": {
+    "name": "party_support",
+    "type": "int",
+    "comment": "党内支持"
+  },
+  "2": {
+    "name": "soviet_influence",
+    "type": "int",
+    "comment": "苏联影响力"
+  },
+  "3": {
+    "name": "people_support",
+    "type": "int",
+    "comment": "民众支持"
+  },
+  "4": {
+    "name": "thought_freedom",
+    "type": "int",
+    "comment": "思想自由/自由化"
+  },
+  "5": {
+    "name": "living_standard",
+    "type": "int",
+    "comment": "生活水平"
+  },
+  "6": {
+    "name": "diplomatic_reputation",
+    "type": "int",
+    "comment": "国际声望"
+  },
+  "7": {
+    "name": "global_influence",
+    "type": "int",
+    "comment": "全球影响力"
+  },
+  "8": {
+    "name": "budget",
+    "type": "int",
+    "comment": "预算余额"
+  },
+  "9": {
+    "name": "agents",
+    "type": "int",
+    "comment": "特工网络"
+  },
+  "10": {
+    "name": "usa_influence",
+    "type": "int",
+    "comment": "美国影响力"
+  },
+  "11": {
+    "name": "science",
+    "type": "int",
+    "comment": "科研点数"
+  },
+  "12": {
+    "name": "industry",
+    "type": "int",
+    "comment": "工业产值"
+  },
+  "13": {
+    "name": "agriculture",
+    "type": "int",
+    "comment": "农业产值"
+  },
+  "14": {
+    "name": "ideology",
+    "type": "int",
+    "comment": "意识形态(离散)"
+  },
+  "15": {
+    "name": "party_system",
+    "type": "int",
+    "comment": "政党制度(离散)"
+  },
+  "16": {
+    "name": "econ_system",
+    "type": "int",
+    "comment": "经济体制(离散)"
+  },
+  "17": {
+    "name": "press_policy",
+    "type": "int",
+    "comment": "舆论政策(离散)"
+  },
+  "18": {
+    "name": "territory_policy",
+    "type": "int",
+    "comment": "领土制度(离散)"
+  },
+  "19": {
+    "name": "day",
+    "type": "int",
+    "comment": "日"
+  },
+  "20": {
+    "name": "month",
+    "type": "int",
+    "comment": "月"
+  },
+  "21": {
+    "name": "year",
+    "type": "int",
+    "comment": "年"
+  },
+  "22": {
+    "name": "army",
+    "type": "int",
+    "comment": "军力"
+  },
+  "23": {
+    "name": "income",
+    "type": "int",
+    "comment": "收入"
+  },
+  "24": {
+    "name": "import_needs",
+    "type": "int",
+    "comment": "进口需求"
+  },
+  "25": {
+    "name": "trade_partners",
+    "type": "int",
+    "comment": "贸易伙伴数"
+  },
+  "26": {
+    "name": "corruption",
+    "type": "int",
+    "comment": "腐败"
+  },
+  "27": {
+    "name": "investment_delay",
+    "type": "int",
+    "comment": "改革开放后等待外资政策月数"
+  },
+  "28": {
+    "name": "usa_relations",
+    "type": "int",
+    "comment": "对美关系(镜像, 待消除)"
+  },
+  "29": {
+    "name": "ussr_relations",
+    "type": "int",
+    "comment": "对苏关系(镜像, 待消除)"
+  },
+  "30": {
+    "name": "communications",
+    "type": "int",
+    "comment": "外交通信结构恢复度"
+  },
+  "31": {
+    "name": "war_support",
+    "type": "int",
+    "comment": "战争支持度"
+  },
+  "32": {
+    "name": "naxalite_power",
+    "type": "int",
+    "comment": "印度纳萨尔派力量"
+  },
+  "33": {
+    "name": "econ_openness",
+    "type": "int",
+    "comment": "经济开放度"
+  },
+  "34": {
+    "name": "population",
+    "type": "int",
+    "comment": "人口(万)"
+  },
+  "35": {
+    "name": "ending_route",
+    "type": "int",
+    "comment": "待进入结局编号"
+  },
+  "36": {
+    "name": "reserve",
+    "type": "int",
+    "comment": "外汇储备"
+  },
+  "37": {
+    "name": "philippines_maoist_power",
+    "type": "int",
+    "comment": "菲律宾毛派力量"
+  },
+  "38": {
+    "name": "stability",
+    "type": "int",
+    "comment": "政治稳定"
+  },
+  "39": {
+    "name": "war_pressure",
+    "type": "int",
+    "comment": "中苏战争压力"
+  },
+  "40": {
+    "name": "india_war_pressure",
+    "type": "int",
+    "comment": "中印边境战争攻势"
+  },
+  "41": {
+    "name": "thailand_election_intervention",
+    "type": "int",
+    "comment": "泰国选举干预标志"
+  },
+  "42": {
+    "name": "iran_left_support",
+    "type": "int",
+    "comment": "伊朗左翼势力"
+  },
+  "43": {
+    "name": "iran_shah_support",
+    "type": "int",
+    "comment": "伊朗王室势力"
+  },
+  "44": {
+    "name": "iran_democrat_support",
+    "type": "int",
+    "comment": "伊朗民主派势力"
+  },
+  "45": {
+    "name": "iran_islamist_support",
+    "type": "int",
+    "comment": "伊朗伊斯兰派势力"
+  },
+  "46": {
+    "name": "afghan_opposition",
+    "type": "int",
+    "comment": "阿富汗亲华/毛派反对派势力"
+  },
+  "47": {
+    "name": "random_diplo_param",
+    "type": "int",
+    "comment": "随机外交参数(开局1-4)"
+  },
+  "48": {
+    "name": "afghan_khalq",
+    "type": "int",
+    "comment": "阿富汗人民派势力"
+  },
+  "49": {
+    "name": "afghan_parcham",
+    "type": "int",
+    "comment": "阿富汗旗帜派势力"
+  },
+  "50": {
+    "name": "religion_policy",
+    "type": "int",
+    "comment": "宗教政策(离散)"
+  },
+  "51": {
+    "name": "military_doctrine",
+    "type": "int",
+    "comment": "军事学说(离散)"
+  },
+  "52": {
+    "name": "econ_display",
+    "type": "int",
+    "comment": "经济显示等级(离散)"
+  },
+  "53": {
+    "name": "party_ban_count",
+    "type": "int",
+    "comment": "已禁止派系数"
+  },
+  "54": {
+    "name": "political_display",
+    "type": "int",
+    "comment": "政治显示等级(离散)"
+  },
+  "55": {
+    "name": "political_openness",
+    "type": "int",
+    "comment": "政治开放度"
+  },
+  "56": {
+    "name": "political_line",
+    "type": "int",
+    "comment": "政治路线(离散)"
+  },
+  "57": {
+    "name": "manpower",
+    "type": "int",
+    "comment": "兵源"
+  },
+  "58": {
+    "name": "data_58",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "59": {
+    "name": "soviet_succession",
+    "type": "int",
+    "comment": "苏联领导层继承结果(离散)"
+  },
+  "60": {
+    "name": "albania_break",
+    "type": "int",
+    "comment": "中阿决裂/阿尔巴尼亚路线状态(离散)"
+  },
+  "61": {
+    "name": "data_61",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "62": {
+    "name": "arunachal_status",
+    "type": "int",
+    "comment": "藏南/阿鲁纳恰尔状态(离散)"
+  },
+  "63": {
+    "name": "taiwan_islands",
+    "type": "int",
+    "comment": "台海岛屿控制(离散)"
+  },
+  "64": {
+    "name": "taiwan_status",
+    "type": "int",
+    "comment": "台湾地位(离散)"
+  },
+  "65": {
+    "name": "hk_macau_status",
+    "type": "int",
+    "comment": "港澳回归路线(离散)"
+  },
+  "66": {
+    "name": "xinjiang_policy",
+    "type": "int",
+    "comment": "新疆/维吾尔文化政策状态(离散)"
+  },
+  "67": {
+    "name": "tibet_policy",
+    "type": "int",
+    "comment": "西藏文化政策状态(离散)"
+  },
+  "68": {
+    "name": "services",
+    "type": "int",
+    "comment": "服务业产值"
+  },
+  "69": {
+    "name": "loan",
+    "type": "int",
+    "comment": "国债"
+  },
+  "70": {
+    "name": "export_base",
+    "type": "int",
+    "comment": "出口规模基数"
+  },
+  "71": {
+    "name": "budget_army",
+    "type": "int",
+    "comment": "预算:军费"
+  },
+  "72": {
+    "name": "budget_mgb",
+    "type": "int",
+    "comment": "预算:国安部"
+  },
+  "73": {
+    "name": "budget_science",
+    "type": "int",
+    "comment": "预算:科研"
+  },
+  "74": {
+    "name": "budget_admin",
+    "type": "int",
+    "comment": "预算:行政"
+  },
+  "75": {
+    "name": "budget_envelope",
+    "type": "int",
+    "comment": "预算:高层福利"
+  },
+  "76": {
+    "name": "budget_propaganda",
+    "type": "int",
+    "comment": "预算:宣传"
+  },
+  "77": {
+    "name": "budget_agri",
+    "type": "int",
+    "comment": "预算:农业"
+  },
+  "78": {
+    "name": "budget_industry",
+    "type": "int",
+    "comment": "预算:工业"
+  },
+  "79": {
+    "name": "budget_services",
+    "type": "int",
+    "comment": "预算:服务业"
+  },
+  "80": {
+    "name": "budget_welfare",
+    "type": "int",
+    "comment": "预算:福利"
+  },
+  "81": {
+    "name": "budget_diplo",
+    "type": "int",
+    "comment": "预算:外交"
+  },
+  "82": {
+    "name": "war_resolve",
+    "type": "int",
+    "comment": "待结算战争id, <0无"
+  },
+  "83": {
+    "name": "korea_result",
+    "type": "int",
+    "comment": "朝鲜战争统一方向(离散)"
+  },
+  "84": {
+    "name": "gang_of_four_path",
+    "type": "int",
+    "comment": "四人帮处置路线(离散)"
+  },
+  "85": {
+    "name": "palestine_status",
+    "type": "int",
+    "comment": "巴以安排(离散)"
+  },
+  "86": {
+    "name": "yugoslavia_kosovo_chain",
+    "type": "int",
+    "comment": "南斯拉夫/科索沃事件链状态(离散)"
+  },
+  "87": {
+    "name": "post_mao_course",
+    "type": "int",
+    "comment": "毛后文革/改革路线(离散)"
+  },
+  "88": {
+    "name": "democracy_movement",
+    "type": "int",
+    "comment": "民主运动/天安门事件链计数"
+  },
+  "89": {
+    "name": "reform_stage",
+    "type": "int",
+    "comment": "改革阶段(离散)"
+  },
+  "90": {
+    "name": "mao_history_line",
+    "type": "int",
+    "comment": "毛泽东历史评价路线(离散)"
+  },
+  "91": {
+    "name": "india_election",
+    "type": "int",
+    "comment": "印度大选结果(离散)"
+  },
+  "92": {
+    "name": "reform_momentum",
+    "type": "int",
+    "comment": "政策改革方向累计值"
+  },
+  "93": {
+    "name": "data_93",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "94": {
+    "name": "afghan_policy",
+    "type": "int",
+    "comment": "阿富汗策略(离散)"
+  },
+  "95": {
+    "name": "soviet_leader_chernenko",
+    "type": "int",
+    "comment": "苏领导人契尔年科支持"
+  },
+  "96": {
+    "name": "soviet_leader_andropov",
+    "type": "int",
+    "comment": "苏领导人安德罗波夫支持"
+  },
+  "97": {
+    "name": "soviet_leader_shcherbitsky",
+    "type": "int",
+    "comment": "苏领导人谢尔比茨基支持"
+  },
+  "98": {
+    "name": "soviet_leader_romanov",
+    "type": "int",
+    "comment": "苏领导人罗曼诺夫支持"
+  },
+  "99": {
+    "name": "soviet_leader_grishin",
+    "type": "int",
+    "comment": "苏领导人格里申支持"
+  },
+  "100": {
+    "name": "soviet_successor_third",
+    "type": "int",
+    "comment": "苏联第三继承人权重"
+  },
+  "101": {
+    "name": "data_101",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "102": {
+    "name": "five_year_plan_focus",
+    "type": "int",
+    "comment": "五年计划重点(1-5)"
+  },
+  "103": {
+    "name": "africa_coup_route",
+    "type": "int",
+    "comment": "非洲政变路线(15=布基纳法索)"
+  },
+  "104": {
+    "name": "mao_mausoleum",
+    "type": "int",
+    "comment": "毛主席纪念堂状态(离散)"
+  },
+  "105": {
+    "name": "birth_policy",
+    "type": "int",
+    "comment": "生育政策/人口增长基数(离散)"
+  },
+  "106": {
+    "name": "satisfied",
+    "type": "int",
+    "comment": "满意现秩序者"
+  },
+  "107": {
+    "name": "afghan_war_path",
+    "type": "int",
+    "comment": "阿富汗战争路线(离散)"
+  },
+  "108": {
+    "name": "oligarch",
+    "type": "int",
+    "comment": "寡头影响力"
+  },
+  "109": {
+    "name": "data_109",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "110": {
+    "name": "political_repression_count",
+    "type": "int",
+    "comment": "政治清洗/铁血计数"
+  },
+  "111": {
+    "name": "hardline_crackdown_count",
+    "type": "int",
+    "comment": "强硬镇压计数"
+  },
+  "112": {
+    "name": "soviet_interventions",
+    "type": "int",
+    "comment": "苏联武装干涉计数"
+  },
+  "113": {
+    "name": "protest_repression",
+    "type": "int",
+    "comment": "抗议镇压状态(离散)"
+  },
+  "114": {
+    "name": "killed_premier_flag",
+    "type": "int",
+    "comment": "总理被杀标志(=9)"
+  },
+  "115": {
+    "name": "killed_military_flag",
+    "type": "int",
+    "comment": "军委主席被杀标志(=9)"
+  },
+  "116": {
+    "name": "killed_foreign_flag",
+    "type": "int",
+    "comment": "外交部长被杀标志(=9)"
+  },
+  "117": {
+    "name": "iraq_development_sentinel",
+    "type": "int",
+    "comment": "伊拉克发展度哨兵(Event75)"
+  },
+  "118": {
+    "name": "automation_progress",
+    "type": "int",
+    "comment": "全面自动化建设宣告标志"
+  },
+  "119": {
+    "name": "election_month_first",
+    "type": "int",
+    "comment": "选举月1(1-6)"
+  },
+  "120": {
+    "name": "ally_crisis_target",
+    "type": "int",
+    "comment": "盟友危机目标国家原版序号"
+  },
+  "121": {
+    "name": "election_month_second",
+    "type": "int",
+    "comment": "选举月2(7-12)"
+  },
+  "122": {
+    "name": "data_122",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "123": {
+    "name": "data_123",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "124": {
+    "name": "turkish_pan_turkic_chain",
+    "type": "int",
+    "comment": "土耳其泛突厥/蒙古事件链标志"
+  },
+  "125": {
+    "name": "election_timer",
+    "type": "int",
+    "comment": "选举计时/余波"
+  },
+  "126": {
+    "name": "turkish_straits_crisis",
+    "type": "int",
+    "comment": "土耳其海峡危机标志"
+  },
+  "127": {
+    "name": "turkish_route_result",
+    "type": "int",
+    "comment": "土耳其路线结果"
+  },
+  "128": {
+    "name": "turkish_straits_state",
+    "type": "int",
+    "comment": "土耳其海峡状态(1/2)"
+  },
+  "129": {
+    "name": "cyprus_greek_victory_flag",
+    "type": "int",
+    "comment": "塞浦路斯希腊方胜利标志"
+  },
+  "130": {
+    "name": "mongolia_china_route",
+    "type": "int",
+    "comment": "蒙古亲华/中国路线(0/1)"
+  },
+  "131": {
+    "name": "world_political_balance",
+    "type": "int",
+    "comment": "世界政治局势(0-3)"
+  },
+  "132": {
+    "name": "soviet_eastern_europe_intervention",
+    "type": "int",
+    "comment": "苏联东欧干涉状态(0/1/2)"
+  },
+  "133": {
+    "name": "soviet_reorganization_war_state",
+    "type": "int",
+    "comment": "苏联重组战争前置状态(离散)"
+  },
+  "134": {
+    "name": "italian_radical_left_power",
+    "type": "int",
+    "comment": "意大利激进左翼/恐怖组织实力"
+  },
+  "135": {
+    "name": "restore_agent_mod_47",
+    "type": "bool",
+    "comment": "被逐出后恢复特工修正47"
+  },
+  "136": {
+    "name": "restore_agent_mod_48",
+    "type": "bool",
+    "comment": "被逐出后恢复特工修正48"
+  },
+  "137": {
+    "name": "restore_econ_alliance",
+    "type": "bool",
+    "comment": "被逐出后恢复经互会"
+  },
+  "138": {
+    "name": "restore_okb_alliance",
+    "type": "bool",
+    "comment": "被逐出后恢复华约"
+  },
+  "139": {
+    "name": "alliance_kickout_timer",
+    "type": "int",
+    "comment": "被逐出联盟倒计时"
+  },
+  "140": {
+    "name": "alliance_kickout_type",
+    "type": "int",
+    "comment": "被逐出联盟类型(1=SEV,2=ASEAN)"
+  },
+  "141": {
+    "name": "alliance_coercion_target",
+    "type": "int",
+    "comment": "联盟胁迫目标国家原版序号"
+  },
+  "142": {
+    "name": "alliance_coercion_progress",
+    "type": "int",
+    "comment": "联盟胁迫进度"
+  },
+  "143": {
+    "name": "oil_price",
+    "type": "int",
+    "comment": "油价"
+  },
+  "144": {
+    "name": "data_144",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "145": {
+    "name": "data_145",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "146": {
+    "name": "foreign_aid",
+    "type": "int",
+    "comment": "外援强度"
+  },
+  "147": {
+    "name": "britain_political_route",
+    "type": "int",
+    "comment": "英国政治路线(1-9)"
+  },
+  "148": {
+    "name": "data_148",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "149": {
+    "name": "soviet_successor_route",
+    "type": "int",
+    "comment": "苏斯洛夫/安德罗波夫继任路线(1-3)"
+  },
+  "150": {
+    "name": "soviet_intervention_cooldown",
+    "type": "int",
+    "comment": "苏联干涉冷却月数"
+  },
+  "151": {
+    "name": "usa_intervention_cooldown",
+    "type": "int",
+    "comment": "美国干涉冷却月数"
+  },
+  "152": {
+    "name": "industry_base",
+    "type": "int",
+    "comment": "工业基数"
+  },
+  "153": {
+    "name": "modifier_58_timer",
+    "type": "int",
+    "comment": "修正58计时"
+  },
+  "154": {
+    "name": "data_154",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "155": {
+    "name": "france_socialist_vote",
+    "type": "int",
+    "comment": "法国社会党得票率"
+  },
+  "156": {
+    "name": "france_communist_vote",
+    "type": "int",
+    "comment": "法国共产党得票率"
+  },
+  "157": {
+    "name": "somalia_war_state",
+    "type": "int",
+    "comment": "索马里战争结果标志"
+  },
+  "158": {
+    "name": "somalia_china_route",
+    "type": "int",
+    "comment": "索马里亲华路线标志"
+  },
+  "159": {
+    "name": "data_159",
+    "type": "int",
+    "comment": "未使用/保留槽"
+  },
+  "160": {
+    "name": "soviet_money",
+    "type": "int",
+    "comment": "苏联资金(结局配置)"
+  },
+  "161": {
+    "name": "usa_money",
+    "type": "int",
+    "comment": "美国资金(结局配置)"
+  },
+  "162": {
+    "name": "org_strength_1",
+    "type": "int",
+    "comment": "其他组织力量1"
+  },
+  "163": {
+    "name": "org_strength_2",
+    "type": "int",
+    "comment": "其他组织力量2"
+  },
+  "164": {
+    "name": "org_strength_3",
+    "type": "int",
+    "comment": "其他组织力量3"
+  },
+  "165": {
+    "name": "org_strength_4",
+    "type": "int",
+    "comment": "其他组织力量4"
+  },
+  "166": {
+    "name": "bico_strength",
+    "type": "int",
+    "comment": "BICO力量"
+  },
+  "167": {
+    "name": "data_167",
+    "type": "int",
+    "comment": "未使用/保留槽(原版有递减)"
+  },
+  "168": {
+    "name": "support_sent_flag",
+    "type": "bool",
+    "comment": "支援已派出标志"
+  },
+  "169": {
+    "name": "ireland_unification_route",
+    "type": "int",
+    "comment": "爱尔兰统一路线(离散)"
+  },
+  "170": {
+    "name": "event999_trigger_sentinel",
+    "type": "int",
+    "comment": "Event999触发哨兵(==999)"
+  },
+  "171": {
+    "name": "vietnam_pro_china_coup_available",
+    "type": "int",
+    "comment": "越南亲华政变可用标志(0/1)"
+  },
+  "172": {
+    "name": "italy_power_172",
+    "type": "int",
+    "comment": "意大利政局力量172"
+  },
+  "173": {
+    "name": "italy_power_173",
+    "type": "int",
+    "comment": "意大利政局力量173"
+  },
+  "174": {
+    "name": "italy_power_174",
+    "type": "int",
+    "comment": "意大利政局力量174"
+  },
+  "175": {
+    "name": "italy_power_175",
+    "type": "int",
+    "comment": "意大利政局力量175"
+  },
+  "176": {
+    "name": "italy_power_176",
+    "type": "int",
+    "comment": "意大利政局力量176"
+  },
+  "177": {
+    "name": "italy_power_177",
+    "type": "int",
+    "comment": "意大利政局力量177"
+  },
+  "178": {
+    "name": "italy_power_178",
+    "type": "int",
+    "comment": "意大利政局力量178"
+  },
+  "179": {
+    "name": "italy_power_179",
+    "type": "int",
+    "comment": "意大利政局力量179"
+  },
+  "180": {
+    "name": "italy_power_180",
+    "type": "int",
+    "comment": "意大利政局力量180"
+  },
+  "181": {
+    "name": "italy_power_181",
+    "type": "int",
+    "comment": "意大利政局力量181"
+  },
+  "182": {
+    "name": "short_sword_power",
+    "type": "int",
+    "comment": "短剑力量"
+  },
+  "183": {
+    "name": "italy_event_timer",
+    "type": "int",
+    "comment": "意大利事件计时"
+  },
+  "184": {
+    "name": "italy_hot_autumn_route",
+    "type": "int",
+    "comment": "意大利热秋路线(1-3)"
+  },
+  "185": {
+    "name": "anthem_choice",
+    "type": "int",
+    "comment": "国歌选择(1-6)"
+  },
+  "186": {
+    "name": "iraq_revolution_timer",
+    "type": "int",
+    "comment": "伊拉克革命计时"
+  }
+}

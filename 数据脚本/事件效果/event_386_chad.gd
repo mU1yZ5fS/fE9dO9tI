@@ -10,7 +10,7 @@ const TXT_R0 := "五国组建了一支统一调度的武装部队，代号“乍
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
-	_add(143, 1)  # 原版 data[143]
+	_add(143, 1)  # 原版 data.oil_price
 	var chad := ws.get_country_by_legacy_index(57)
 	var war80 := ws.wars[80] if ws.wars.size() > 80 else null
 	if war80 != null:

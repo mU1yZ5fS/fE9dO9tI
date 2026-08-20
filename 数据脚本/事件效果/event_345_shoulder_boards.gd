@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event345.cs：肩上的那块牌子。触发：ReqEventForDLC02.cs:607-610 —— 日期>=1984.6.5。
 ## 差异：
-##  - 原版 VariantsOfEvents 动态销毁按钮：按 data[56]（政治路线）、resultOfEvents[514]、modifies[6].active
+##  - 原版 VariantsOfEvents 动态销毁按钮：按 data.political_line（政治路线）、resultOfEvents[514]、modifies[6].active
 ##    决定两个按钮文案/可用性，这里在 prepare 动态 _enable/_disable 复刻；
 ##  - 原版 TextOfEvents 按 vietnampeace / resultOfEvents[378] / allcountries[10].puppetOf 动态拼描述；
 ##    vietnampeace 端口建模说明 → 用 global_flags 同名键近似（项目既有约定）；
@@ -45,8 +45,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 	var opt := event_def.options
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var pol := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
+	var d := world
+	var pol := d.political_line if d.size() > W.I_POLITICAL_LINE else 0
 	var res514 := int(world.completed_event_ids.get("event_514", 0))
 	if (pol <= 2 and res514 != 1) or res514 == 2:
 		_enable(opt[0], TXT_OPT0_EN)

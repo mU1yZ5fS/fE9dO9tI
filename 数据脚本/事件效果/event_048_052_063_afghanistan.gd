@@ -86,7 +86,7 @@ func _event_48(option_index: int, context: Dictionary) -> void:
 		2:
 			_add_data({W.I_PARTY_SUPPORT: -50, W.I_INFLUENCE: -10,
 				W.I_COMMUNICATIONS: 40})
-			ws.数值表[W.I_AFGHAN_PARCHAM] = 110
+			ws.afghan_parcham = 110
 			_add_empire_relation(EmpireData.USSR, 70)
 			context["result_text"] = TXT_48_R2_A + _leader_name() + TXT_48_R2_B
 
@@ -98,15 +98,15 @@ func _event_49(option_index: int, context: Dictionary) -> void:
 	match option_index:
 		0:
 			_add_empire_power(EmpireData.USSR, 10)
-			ws.数值表[W.I_INFLUENCE] += 20
-			if ws.数值表[W.I_AFGHAN_PARCHAM] > 150:
-				ws.数值表[W.I_AFGHAN_KHALQ] = 150
-				ws.数值表[W.I_AFGHAN_PARCHAM] = 100
-				ws.数值表[W.I_AFGHAN_WAR_PATH] = 9
+			ws.global_influence += 20
+			if ws.afghan_parcham > 150:
+				ws.afghan_khalq = 150
+				ws.afghan_parcham = 100
+				ws.afghan_war_path = 9
 				context["result_text"] = TXT_49_R0_SARWARI
 			else:
-				ws.数值表[W.I_AFGHAN_KHALQ] = 100
-				ws.数值表[W.I_AFGHAN_PARCHAM] = 150
+				ws.afghan_khalq = 100
+				ws.afghan_parcham = 150
 				context["result_text"] = TXT_49_R0_KARMAL
 			if afghanistan != null:
 				afghanistan.government = GameConstants.Government.SOCIALIST
@@ -149,7 +149,7 @@ func _event_50(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USA, -150)
 			_start_afghan_war(WAR_MAOIST, WAR_JOINT_OPPOSITION, 50, 950, 1, 1, false)
 		4:
-			ws.数值表[W.I_BUDGET] += 50
+			ws.budget += 50
 			_add_empire_power(EmpireData.USSR, -30)
 			_add_empire_relation(EmpireData.USA, 200)
 			_add_empire_relation(EmpireData.USSR, -200)
@@ -161,11 +161,11 @@ func _event_51(option_index: int) -> void:
 		0:
 			pass
 		1:
-			ws.数值表[W.I_DIPLO] -= 10
+			ws.diplomatic_reputation -= 10
 			_add_empire_relation(EmpireData.USA, 80)
 			_add_empire_relation(EmpireData.USSR, -100)
 		2:
-			ws.数值表[W.I_PARTY_SUPPORT] -= 50
+			ws.party_support -= 50
 			_add_empire_relation(EmpireData.USA, -110)
 			_add_empire_relation(EmpireData.USSR, 100)
 
@@ -182,7 +182,7 @@ func _event_52(option_index: int) -> void:
 			_add_empire_relation(EmpireData.USA, -100)
 			_add_empire_relation(EmpireData.USSR, 100)
 			if war.ussr_side == GameConstants.WarSide.SIDE2:
-				ws.数值表[W.I_AFGHAN_POLICY] = 1
+				ws.afghan_policy = 1
 			else:
 				war.infl1 += 100
 				war.infl2 -= 100
@@ -192,14 +192,14 @@ func _event_52(option_index: int) -> void:
 			_add_empire_relation(EmpireData.USSR, -120)
 			war.infl1 -= 80
 			war.infl2 += 80
-			ws.数值表[W.I_AFGHAN_POLICY] = 2
+			ws.afghan_policy = 2
 		3:
 			_add_data({W.I_BUDGET: -50, W.I_ARMY: -100, W.I_DIPLO: 30})
 			_add_empire_relation(EmpireData.USA, -100)
 			_add_empire_relation(EmpireData.USSR, -100)
 			war.infl1 += 10
 			war.infl2 -= 10
-			ws.数值表[W.I_AFGHAN_POLICY] = 3
+			ws.afghan_policy = 3
 	_clamp_war(war)
 
 
@@ -220,7 +220,7 @@ func _start_afghan_war(
 		if iran != null and iran.government == GameConstants.Government.AUTHORITARIAN:
 			war.infl1 -= 50
 			war.infl2 += 50
-		if ws.数值表[W.I_AFGHAN_WAR_PATH] == 9:
+		if ws.afghan_war_path == 9:
 			war.infl1 += 25
 			war.infl2 -= 25
 	_clamp_war(war)
@@ -244,8 +244,8 @@ func _leader_name() -> String:
 func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
-		if index >= 0 and index < ws.数值表.size():
-			ws.数值表[index] += int(changes[raw_index])
+		if index >= 0 and index < ws.size():
+			ws.add_data_by_index(index, int(changes[raw_index]))
 
 
 func _add_empire_relation(empire_index: int, delta: int) -> void:
@@ -260,8 +260,8 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		ws.数值表[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		ws.数值表[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		ws.usa_relations = ws.empires[EmpireData.USA].relations
+		ws.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		ws.数值表[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		ws.ussr_relations = ws.empires[EmpireData.USSR].relations
+		ws.soviet_influence = ws.empires[EmpireData.USSR].power

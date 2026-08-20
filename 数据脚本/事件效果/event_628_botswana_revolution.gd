@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event628.cs：保佑这高尚的土地（博茨瓦纳革命，单选项）。
 ## 触发：DiploButtonScript.cs:12117 —— 外交按钮 1032，selected_country==129（博茨瓦纳），
-##   入口扣 data[9]-=100（在 _def_1032 中已移植），随后 StartEvent(628)。
+##   入口扣 data.agents-=100（在 _def_1032 中已移植），随后 StartEvent(628)。
 ## 本 .tres trigger_conditions 为空：仅由外交按钮手动触发。
 ## 差异：原版按 politics_dolshnost[0]（150/200 哨兵）选择总理槽姓名或领袖姓名；
 ##   Godot politics_positions[0] 同哨兵语义（150/200），姓名用 PoliticianData.name_display 全文。

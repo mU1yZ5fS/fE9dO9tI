@@ -1,9 +1,9 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event86.cs："钢铁尤里"的终结（1979.7 后 且 苏 now_leader==0 且 result[85]==0 或 data[149]==3）。
+## 原作 Event86.cs："钢铁尤里"的终结（1979.7 后 且 苏 now_leader==0 且 result[85]==0 或 data.soviet_successor_route==3）。
 ## 触发：TimeScript.cs:10705。效果（Event86.cs ResultsOfEvents）：
-##  - result0（推波助澜）：data[9]-=100、data[8]-=50、leaders[3](安德罗波夫).support=-100、leaders[1](谢尔比茨基).support+=10、data[1]+=100
-##  - result1（揭露材料）：苏关系>=400 → data[8]-=70、leaders[3].support=-100、leaders[1].support+=10；否则 data[8]-=70、leaders[3].support+=2
+##  - result0（推波助澜）：data.agents-=100、data.budget-=50、leaders[3](安德罗波夫).support=-100、leaders[1](谢尔比茨基).support+=10、data.party_support+=100
+##  - result1（揭露材料）：苏关系>=400 → data.budget-=70、leaders[3].support=-100、leaders[1].support+=10；否则 data.budget-=70、leaders[3].support+=2
 ##  - result2（留到将来）：leaders[3].support+=2
 ## 选项条件：特工>=100 且（路线<3 且一党制<8，或多党联盟>66%）
 const LDR_ANDROPOV := 3       # 苏 leaders[3] = 尤里·安德罗波夫
@@ -18,17 +18,17 @@ func execute(context: Dictionary) -> void:
 	context["result_title"] = "“钢铁尤里”的终结"
 	if opt == 0:
 		if d.size() > W.I_AGENTS:
-			d[W.I_AGENTS] -= 100
+			d.agents -= 100
 		if d.size() > W.I_BUDGET:
-			d[W.I_BUDGET] -= 50
+			d.budget -= 50
 		_leader_support(LDR_ANDROPOV, -100)
 		_leader_support(LDR_SHCHERBITSKY, 10)
 		if d.size() > W.I_PARTY_SUPPORT:
-			d[W.I_PARTY_SUPPORT] += 100
+			d.party_support += 100
 		context["result_text"] = "在勃列日涅夫前往维也纳会谈时，长期饱受肾病折磨的尤里·安德罗波夫的病情恶化，前往克里米亚接受治疗。然而，这是一次单程的旅行——在克里米亚，他感冒了，最后病倒了——他得了蜂窝织炎，身体健康状况急剧恶化。虽然手术很成功，但是术后伤口没有愈合。他的身体非常虚弱，无法抵抗病毒的侵入。安德罗波夫陷入昏迷，然后就再也没有醒过来。1979年7月9日，苏联克格勃主席逝世。知情人士说：“安德罗波夫没有必要去谢尔比茨基的农场。他也有他的骄傲和他的克格勃。”新的克格勃领导人是塞米恩·茨维贡，他发起了大规模的“办公室清洗”，大量来自乌克兰苏维埃社会主义共和国的克格勃工作人员取代了安德罗波夫的亲信。这增强了弗拉基米尔·谢尔比茨基的影响力，他如今已成为列昂尼德·勃列日涅夫事实上唯一的继承人。对我们来说挺好的……"
 	elif opt == 1:
 		if d.size() > W.I_BUDGET:
-			d[W.I_BUDGET] -= 70
+			d.budget -= 70
 		if ussr != null and ussr.relations >= 400:
 			_leader_support(LDR_ANDROPOV, -100)
 			_leader_support(LDR_SHCHERBITSKY, 10)

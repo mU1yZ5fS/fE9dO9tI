@@ -11,10 +11,10 @@ const TXT_R2 := "此次坠机事故责任全在波音机组人员和美国军方
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var data := world.数值表
+	var data := world
 	if data.size() <= W.I_YEAR:
 		return false
-	var date_ok := data[W.I_DAY] >= 1 and data[W.I_MONTH] >= 9 and data[W.I_YEAR] >= 1983
+	var date_ok := data.day >= 1 and data.month >= 9 and data.year >= 1983
 	var ussr := world.get_country_by_legacy_index(7)
 	var north_korea := world.get_country_by_legacy_index(10)
 	var nato_ok := ussr == null or not ussr.has_tag("nato")

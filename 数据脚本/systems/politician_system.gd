@@ -96,7 +96,7 @@ static func swap_leader_profile(a: PoliticianData, b: PoliticianData) -> void:
 # ============================================================================
 
 ## 月结：调查/监视计数、自动支持·打压、在职 power 加成、空缺派系领袖补位
-static func monthly_politics(d: Array[int], w: WorldState) -> void:
+static func monthly_politics(d: WorldState, w: WorldState) -> void:
 	@warning_ignore("integer_division")
 	sync_in_power_flags(w)
 	for i in w.politicians.size():
@@ -121,9 +121,9 @@ static func monthly_politics(d: Array[int], w: WorldState) -> void:
 		# POL-02 自动支持 — 严格对齐 TimeScript.cs:2940-2956：
 		# 原版不检查资源，直接扣费；power += power/10 不带 abs。
 		if p.auto_support == 10:
-			d[W.I_BUDGET] -= 1
-			d[W.I_PARTY_SUPPORT] -= 20
-			d[W.I_AGENTS] -= 5
+			d.budget -= 1
+			d.party_support -= 20
+			d.agents -= 5
 			p.loyalty += 50
 			p.power += (1976 - w.date.year) * 5
 			@warning_ignore("integer_division")
@@ -132,9 +132,9 @@ static func monthly_politics(d: Array[int], w: WorldState) -> void:
 		# POL-02 自动打压 — 严格对齐 TimeScript.cs:2957-2965：
 		# 原版同样不检查资源；power>=10 时 power -= power/10（不带 abs）。
 		if p.auto_hound == 10:
-			d[W.I_BUDGET] -= 1
-			d[W.I_PARTY_SUPPORT] -= 20
-			d[W.I_AGENTS] -= 20
+			d.budget -= 1
+			d.party_support -= 20
+			d.agents -= 20
 			p.loyalty -= 250
 			p.power -= (1976 - w.date.year) * 5
 			if p.power >= 10:
@@ -144,7 +144,7 @@ static func monthly_politics(d: Array[int], w: WorldState) -> void:
 		apply_monthly_position_power(w, i, p)
 		# ECO-POL-06：贪腐特质(18) 在职则抬腐败
 		if p.trait_special == GameConstants.PoliticianSpecial.CORRUPT and p.in_power:
-			d[W.I_CORRUPTION] += 2
+			d.corruption += 2
 		# TimeScript.cs:1871-1883：modifier[14] 每月提升改革派/非领袖自由派声势。
 		if w.modifier_active(14):
 			if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
@@ -163,7 +163,7 @@ static func monthly_politics(d: Array[int], w: WorldState) -> void:
 
 
 ## 年均政客生命周期（POL-05 / POL-12）
-static func annual_politics(d: Array[int], w: WorldState) -> void:
+static func annual_politics(d: WorldState, w: WorldState) -> void:
 	# 年龄增长（全体非空位；领袖独立体也 +1）
 	for p in w.politicians:
 		if is_vacant_politician(p):
@@ -208,7 +208,7 @@ static func annual_politics(d: Array[int], w: WorldState) -> void:
 ## POL-06 阴谋 — 逐字对齐 TimeScript.PlotPolitics（TimeScript.cs:281-360）。
 ## 谓词、抵抗、随机三连、击杀/撤职保护条件全部照抄；
 ## 随机改走 WorldState 种子 RNG（三次独立抽取，存档续流可复现，等价替代 Unity Random）。
-static func plot_politics(d: Array[int], w: WorldState) -> void:
+static func plot_politics(d: WorldState, w: WorldState) -> void:
 	if not (_is_mao_dead_cb.is_valid() and _is_mao_dead_cb.call()):
 		return
 	var rng := w.ensure_rng()
@@ -254,12 +254,12 @@ static func plot_politics(d: Array[int], w: WorldState) -> void:
 
 		if float(plot_power) > resist * float(target.power):
 			target.is_conspiracy = true
-			# 原版 TimeScript.cs:329：Random.Range(0,11)>data[57]/100 && ... 三连
+			# 原版 TimeScript.cs:329：Random.Range(0,11)>data.manpower/100 && ... 三连
 			var r1 := rng.randf() * 11.0
 			var r2 := rng.randf() * 22.0
 			var r3 := rng.randf() * 44.0
 			@warning_ignore("integer_division")
-			if r1 > d[W.I_MANPOWER] / 100 and r2 > d[W.I_MANPOWER] / 50 and r3 > d[W.I_MANPOWER] / 25:
+			if r1 > d.manpower / 100 and r2 > d.manpower / 50 and r3 > d.manpower / 25:
 				if float(plot_power) > resist * 4.0 * float(target.power) \
 						and _plot_kill_allowed(w, i):
 					# 原版 TimeScript.cs:336-353：非中央职 KillPerson；中央职清职 power=100
@@ -285,18 +285,18 @@ static func plot_politics(d: Array[int], w: WorldState) -> void:
 
 ## 阴谋击杀的历史保护条件 — 逐字对齐 TimeScript.cs:331-335（Button_Pol_Script num2 同款）。
 static func _plot_kill_allowed(w: WorldState, i: int) -> bool:
-	var d := w.数值表
+	var d := w
 	var ev25 := w.completed_event_ids.has("gang_of_four")
 	var ev26 := w.completed_event_ids.has("weak_alliance")
 	var ev80 := w.completed_event_ids.has("event_80")  # 原版 event_done[80]，Godot 移植说明 → 恒 false
 	var mod3: bool = w.modifier_active(3)
-	var year_ok := d[W.I_YEAR] >= 1978
+	var year_ok := d.year >= 1978
 	var basic := i > 5 and i != 7 and (i < 11 or i > 15) and i != 17
-	var e25a := ev25 and d[W.I_GANG_OF_FOUR_PATH] != 3 and (i < 12 or i > 15)
+	var e25a := ev25 and d.gang_of_four_path != 3 and (i < 12 or i > 15)
 	var e26a := ev26 and ((w.leader != null and w.leader.name_first != 0) or i == 1)
 	var y1 := year_ok and not ev80 and mod3 and i > 4
 	var y2 := year_ok and (ev80 or not mod3)
-	var e25b := ev25 and d[W.I_GANG_OF_FOUR_PATH] == 3 and (i < 1 or i > 4)
+	var e25b := ev25 and d.gang_of_four_path == 3 and (i < 1 or i > 4)
 	return (basic or e25a or e26a or y1 or y2 or e25b) and (i > 4 or not mod3)
 
 
@@ -333,7 +333,7 @@ static func change_of_killing(politic_index: int) -> float:
 	var w: WorldState = current_world
 	if w == null or politic_index < 0 or politic_index >= w.politicians.size():
 		return 0.0
-	var d := w.数值表
+	var d := w
 	var pol: PoliticianData = w.politicians[politic_index]
 	if pol == null:
 		return 0.0
@@ -341,11 +341,11 @@ static func change_of_killing(politic_index: int) -> float:
 	# 硬目标惩罚（原版 GameState.cs:5160）：traits[3]==28 或 traits[1]==41 → -0.1
 	if pol.trait_background == GameConstants.PoliticianBackground.AMBITIOUS or pol.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
 		num -= 0.1
-	if d[W.I_AGENTS] + d[W.I_PARTY_SUPPORT] + d[W.I_ARMY] >= pol.power:
+	if d.agents + d.party_support + d.army >= pol.power:
 		num += 0.05
 	else:
 		num -= 0.05
-	if d[W.I_AGENTS] + d[W.I_PARTY_SUPPORT] >= pol.power:
+	if d.agents + d.party_support >= pol.power:
 		num += 0.05
 	var avg_loy: int = sum_loyalty_avg()
 	if avg_loy > 900:
@@ -360,9 +360,9 @@ static func change_of_killing(politic_index: int) -> float:
 		num += 0.05
 	else:
 		num -= 0.05
-	if d[W.I_PARTY_SUPPORT] > 800:
+	if d.party_support > 800:
 		num += 0.05
-	elif d[W.I_PARTY_SUPPORT] < 700:
+	elif d.party_support < 700:
 		num -= 0.05
 	if pol.is_under_investigation:
 		num += 0.1
@@ -410,12 +410,12 @@ static func apply_monthly_position_power(w: WorldState, pol_index: int, p: Polit
 		p.power -= 20
 	elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER:
 		@warning_ignore("integer_division")
-		p.power += 1 + w.数值表[W.I_CORRUPTION] / 50
+		p.power += 1 + w.corruption / 50
 	else:
 		p.power += 1
-	if w.数值表[W.I_YEAR] > 1977:
+	if w.year > 1977:
 		@warning_ignore("integer_division")
-		p.power += (1976 - w.数值表[W.I_YEAR]) / 2
+		p.power += (1976 - w.year) / 2
 
 
 # ============================================================================
@@ -429,7 +429,7 @@ static func kill_politician(pol_index: int, preferred_name: String = "") -> void
 	var w: WorldState = current_world
 	if w == null or pol_index < 0 or pol_index >= w.politicians.size():
 		return
-	# POL-14：毛在世保护 politics[0]（data[38]!=100 时不可杀）
+	# POL-14：毛在世保护 politics[0]（data.stability!=100 时不可杀）
 	if (_is_mao_protected_cb.is_valid() and _is_mao_protected_cb.call(pol_index)):
 		push_warning("GameManager: 毛泽东在世保护，拒绝 kill %d" % pol_index)
 		return

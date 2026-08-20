@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 ## 差异：
 ##  - 描述按 resultOfEvents[291] 动态拼接；
-##  - data[172]-data[182] 为原版原始下标，端口无 W.I_ 常量，raw index 直访。
+##  - data.italy_power_172-data.short_sword_power 为原版原始下标，端口无 W.I_ 常量，raw index 直访。
 
 const TXT_DESC1 := "随着意大利当局越加倾向于用武力手段对抗极端运动，激进主义潮流近乎直接转向各路主打恐怖主义袭击的武装团体：如果说在“火热之秋”与“铅色岁月”时期，武装行动只是作为罢课罢工、政治集会与占领社会中心等政治动员策略的辅助手段。如今它们则成为了夺取政权的万能公式本身。而极端主义武装组织本身的变迁亦证明了这点：在左翼阵营内，由马里奥·莫雷蒂领导的“红色旅”重写了其活动纲领，宣称“国家机器即跨国帝国主义实体”，至此将工作重心由“鼓励怠工”转向直截了当的“政治斩首”，事实上为该国其他的抵抗者做出了表率。"
 const TXT_DESC2 := "挂靠“持续斗争”等工人主义团体运作的武装团体“前线”等组织也试着越来越自行其是，并以攻击政府官员、警察部队与右翼活动家的方式“回敬”1977年的系列镇压，逐渐盖过其服务者的威风。"
@@ -58,15 +58,15 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -20)
 			_add(W.I_AGENTS, -40)
 			_add(W.I_ARMY, -40)
-			_add(172, -1)  # 原版 data[172]
-			_add(175, 1)   # 原版 data[175]
-			_add(177, 1)   # 原版 data[177]
-			_add(182, 1)   # 原版 data[182]
+			_add(172, -1)  # 原版 data.italy_power_172
+			_add(175, 1)   # 原版 data.italy_power_175
+			_add(177, 1)   # 原版 data.italy_power_177
+			_add(182, 1)   # 原版 data.short_sword_power
 			if italy != null and italy.内战中:
-				_add(175, -1)  # 原版 data[175]
-				_add(177, 1)  # 原版 data[177]
+				_add(175, -1)  # 原版 data.italy_power_175
+				_add(177, 1)  # 原版 data.italy_power_177
 				italy.level_of_development -= 10
-				_add(134, 10)  # 原版 data[134]
+				_add(134, 10)  # 原版 data.italian_radical_left_power
 			_add_relation(EmpireData.USA, -50)
 			_add_relation(EmpireData.USSR, -50)
 		1:
@@ -76,14 +76,14 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -20)
 			_add(W.I_AGENTS, -40)
 			_add(W.I_ARMY, -40)
-			_add(172, -1)  # 原版 data[172]
-			_add(176, 2)   # 原版 data[176]
-			_add(182, 1)  # 原版 data[182]
+			_add(172, -1)  # 原版 data.italy_power_172
+			_add(176, 2)   # 原版 data.italy_power_176
+			_add(182, 1)  # 原版 data.short_sword_power
 			if italy != null and italy.内战中:
-				_add(175, -1)  # 原版 data[175]
-				_add(177, 1)  # 原版 data[177]
+				_add(175, -1)  # 原版 data.italy_power_175
+				_add(177, 1)  # 原版 data.italy_power_177
 				italy.level_of_development -= 10
-				_add(134, 10)  # 原版 data[134]
+				_add(134, 10)  # 原版 data.italian_radical_left_power
 			_add_relation(EmpireData.USA, -50)
 			_add_relation(EmpireData.USSR, -50)
 		2:
@@ -93,11 +93,11 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -40)
 			_add(W.I_AGENTS, -80)
 			_add(W.I_ARMY, -80)
-			_add(172, -1)  # 原版 data[172]
-			_add(182, 2)  # 原版 data[182]
+			_add(172, -1)  # 原版 data.italy_power_172
+			_add(182, 2)  # 原版 data.short_sword_power
 			if italy != null and italy.内战中:
 				italy.level_of_development -= 20
-				_add(134, 40)  # 原版 data[134]
+				_add(134, 40)  # 原版 data.italian_radical_left_power
 			_add_relation(EmpireData.USA, -50)
 			_add_relation(EmpireData.USSR, -50)
 		3:
@@ -108,8 +108,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGRICULTURE, 20)
 			_add(W.I_CORRUPTION, 10)
 			_add(W.I_SERVICES, 10)
-			_add(172, -999)  # 原版 data[172]
-			_add(173, -1)    # 原版 data[173]
+			_add(172, -999)  # 原版 data.italy_power_172
+			_add(173, -1)    # 原版 data.italy_power_173
 			if italy != null:
 				italy.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, 50)
@@ -122,7 +122,7 @@ func execute(context: Dictionary) -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

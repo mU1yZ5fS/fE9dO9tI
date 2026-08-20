@@ -38,8 +38,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		desc += "罗共异见党员已经组织了一个阴谋团体，其成员包含在任内批评总统喜好在庞大而低效的项目上浪费开支而被送去“国家水务委员会主席”冷板凳的扬·伊利埃斯库、因有“通苏反齐”嫌疑而被退役转任工业建设部副部长的尼古拉·米利塔鲁将军、被齐奥塞斯库转入预备役的前国防部长、前副总理扬·约尼查将军、民族主义批评者亚诺什·法泽卡什、反对齐奥塞斯库的党内元老西尔维乌·布鲁坎、斯特凡·科斯蒂亚尔少将和海军上校尼古拉·拉杜等人，"
 	desc += "他们计划于齐奥塞斯库访问西德期间发动政变，对国家进行拨乱反正。\n我们是否要做些什么？"
 	event_def.description = desc
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
 	var opt := event_def.options
 	if world.influence_prc >= 600 and _tech(world, 25):
 		_enable(opt[0], "是时候了，让多瑙河倒流吧！")

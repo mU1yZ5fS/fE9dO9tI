@@ -10,14 +10,14 @@ const TXT_R1 := "显而易见，李先念是经济失败的罪魁祸首！从这
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var data := world.数值表
+	var data := world
 	if data.size() <= W.I_YEAR:
 		return false
-	if data[W.I_YEAR] < 1981:
+	if data.year < 1981:
 		return false
 	if not _has_politician(world, 7, 7):
 		return false
-	var party_ok: bool = data[W.I_PARTY_SUPPORT] <= 750 and (GameManager.is_faction_leading(0) or GameManager.is_faction_leading(1))
+	var party_ok: bool = data.party_support <= 750 and (GameManager.is_faction_leading(0) or GameManager.is_faction_leading(1))
 	var chain_ok := (not _has_politician(world, 17, 17)) or world.completed_event_ids.has("event_311")
 	return party_ok or chain_ok
 

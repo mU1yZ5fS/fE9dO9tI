@@ -258,7 +258,7 @@ func _establish_government(c: CountryData, kind: String) -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event641.cs：若列宁可见今日（苏联改革危机，三选项）。
 ## 触发：ReqEventsDLC02.cs:1076 —— 复合条件（ev640、苏联 now_leader==7、资源/科技/parts/三盟国），
 ##   无单一 ExprNode → trigger_script evaluate。
-## 差异：science[26]/[22]→techs.unlocked；data[130] 无命名常量，按原版 raw index 读写；
+## 差异：science[26]/[22]→techs.unlocked；data.mongolia_china_route 无命名常量，按原版 raw index 读写；
 ##   proprc/okb→亲中/okb 标签；ingamewars[70] 建模说明 WarDef → 兜底创建后补名。
 
 const TXT_DESC := "同志，我们似乎获得了削弱那该死的安德罗波夫-卡特协定的良机：由于苏联向西看齐的政策完全是权宜之计，内部自有许多不足之处。雅科夫列夫的改革与对苏共内部的果断清洗只会让问题进一步激化：保守派的离任导致许多官僚机构内青黄不接，对民族地区的洗牌也自然导致了本地利益集团的抗议，而向市场社会主义转型的尝试则开始持续破坏计划经济框架，并为西方投资、多种合营管理与地下交易形式开了绿灯：苏联业已成为匈牙利模式的大型试验田。其欧洲部分也正因近水楼台，接受主要西方国家支持而通过经济特区与自贸区形式快速崛起；但其疏远发达地带，且同时作为冷战前线的中亚与远东则是另一派光景：自筹资金改革与放权政策只会让当地直面破产风险与经济萧条，并不得不仰仗更加竭泽而渔的开发政策——这便是苏联亚洲部分内人口流动频繁，边界管控松懈，且大量苏联侨民开始越过苏联边界口岸逃往我国的原因。我们当然可利用这一状况，一雪伊塔事件之耻，一面用弃暗投明的前苏联公民充实我边疆建设事业，一面则向全世界展示苏联改革政策的失败。不过，我们也可以更进一步——考虑到苏联边界防御事实上趋于松懈，为何不试着对列宁时代的“否认中俄间一切不平等条约”故事重提，并以“保护”我国在苏联侨胞为由，直接让曾被沙俄侵占的外东北和外西北地区回归我中华民族大家庭呢？"
@@ -29,7 +29,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if _res(W.I_ARMY) >= 2000 and _res(W.I_AGENTS) >= 750 and _res(W.I_WAR_SUPPORT) >= 700 \
 			and _res(W.I_MANPOWER) >= 700 and _res(W.I_DIPLO) >= 1000 \
-			and _tech(26) and _tech(22) and d.size() > 130 and d[130] == 1 \
+			and _tech(26) and _tech(22) and d.size() > 130 and d.mongolia_china_route == 1 \
 			and _part(1, 0) and not _part(1, 9) and not _part(1, 7) and not _part(1, 8) \
 			and _pro_okb(8) and _pro_okb(12) and _pro_okb(44):
 		_enable(opt[1], event_def.options[1].text)
@@ -86,14 +86,14 @@ func evaluate(world: WorldState) -> bool:
 	if world.empires.size() <= EmpireData.USSR or world.empires[EmpireData.USSR] == null \
 			or world.empires[EmpireData.USSR].current_leader != 7:
 		return false
-	var dd := world.数值表
+	var dd := world
 	if dd.size() <= W.I_MANPOWER or dd.size() <= 130:
 		return false
-	if dd[W.I_WAR_SUPPORT] < 700 or dd[W.I_MANPOWER] < 700 or dd[W.I_DIPLO] < 1000:
+	if dd.war_support < 700 or dd.manpower < 700 or dd.diplomatic_reputation < 1000:
 		return false
 	if not _tech_on(world, 26) or not _tech_on(world, 22):
 		return false
-	if dd[130] != 1:
+	if dd.mongolia_china_route != 1:
 		return false
 	if not _part_on(world, 1, 0) or _part_on(world, 1, 9) or _part_on(world, 1, 7) or _part_on(world, 1, 8):
 		return false

@@ -39,7 +39,7 @@ const TXT_372_705 := "近日爆发的三场军事冲突中"
 
 ## 原作 Event372.cs：土耳其大国梦（手动事件，入口 DBS this_type==94）。
 ## 结果文案用英文摘要；数值/国家状态效果逐项对齐 ResultsOfEvents 的
-## result 0 / result 1 / result 2（原版 result2 只写 data[124]=1，Event372.cs:630）。
+## result 0 / result 1 / result 2（原版 result2 只写 data.turkish_pan_turkic_chain=1，Event372.cs:630）。
 
 
 func prepare(event_def: EventDef, p_ws: WorldState) -> void:
@@ -133,14 +133,14 @@ func _t372_num3(num: int, turkey: CountryData) -> String:
 ## Event372.cs:123-129 的 {2}：d126>0 且土耳其非北约 → 708，否则 713。
 func _t372_708_or_713() -> String:
 	var turkey := ws.get_country_by_legacy_index(84)
-	if d.size() > 126 and d[126] > 0 and turkey != null and not turkey.has_tag("nato"):
+	if d.size() > 126 and d.turkish_straits_crisis > 0 and turkey != null and not turkey.has_tag("nato"):
 		return TXT_372_708
 	return TXT_372_713
 
 func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bool) -> void:
 	_add_data143(-7)
 	_set_data124(100)
-	if d.size() > 128 and d[128] == 1:
+	if d.size() > 128 and d.turkish_straits_state == 1:
 		var iraq := ws.get_country_by_legacy_index(14)
 		var iran := ws.get_country_by_legacy_index(8)
 		if (iraq == null or (not iraq.has_tag("ovd") and not iraq.has_tag("okb"))) \
@@ -182,7 +182,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		else:
 			_set_part(iraq, 3)
 			_turkish_client_sub3(95)
-		if d.size() > 126 and d[126] > 0 and turkey != null and not turkey.has_tag("nato"):
+		if d.size() > 126 and d.turkish_straits_crisis > 0 and turkey != null and not turkey.has_tag("nato"):
 			_turkey_gov2_sub8()
 		var second372 := _t372_708_or_713()
 		var main372 := TXT_372_711 if (flag2 and flag3) else TXT_372_712
@@ -198,12 +198,12 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 			# Event372.cs:168-281
 			ws.influence_prc += 30
 			_set_data124(100)
-			if d.size() > 126 and d[126] > 0 and turkey != null and not turkey.has_tag("nato"):
+			if d.size() > 126 and d.turkish_straits_crisis > 0 and turkey != null and not turkey.has_tag("nato"):
 				_turkey_gov2_sub8()
 				_release_turkey_puppets()
 			var main372b := TXT_372_714
 			if num >= 1 and num < 3:
-				if d.size() > 126 and d[126] > 0 and turkey != null and not turkey.has_tag("nato"):
+				if d.size() > 126 and d.turkish_straits_crisis > 0 and turkey != null and not turkey.has_tag("nato"):
 					_turkey_gov2_sub8()
 					_release_turkey_puppets()
 				if flag2:
@@ -251,11 +251,11 @@ func _result_1(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		_make_pro_china_copy(35)
 		_make_pro_china_copy(8)
 		_make_pro_china_copy(14)
-		if d.size() > 128 and d[128] == 1:
+		if d.size() > 128 and d.turkish_straits_state == 1:
 			var iraq := ws.get_country_by_legacy_index(14)
 			var iran := ws.get_country_by_legacy_index(8)
 			if (iraq == null or not iraq.has_tag("亲中")) and (iran == null or not iran.has_tag("亲中")):
-				d[128] = 2
+				d.turkish_straits_state = 2
 				if ws.wars.size() <= 3:
 					ws.wars.resize(4)
 				if ws.wars[3] != null:
@@ -268,11 +268,11 @@ func _result_1(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		_make_pro_china_copy(14)
 		_make_pro_china_copy(8)
 		_make_pro_china_copy(35)
-		if d.size() > 128 and d[128] == 1:
+		if d.size() > 128 and d.turkish_straits_state == 1:
 			var iraq := ws.get_country_by_legacy_index(14)
 			var iran := ws.get_country_by_legacy_index(8)
 			if (iraq == null or not iraq.has_tag("亲中")) and (iran == null or not iran.has_tag("亲中")):
-				d[128] = 2
+				d.turkish_straits_state = 2
 				if ws.wars.size() <= 3:
 					ws.wars.resize(4)
 				if ws.wars[3] != null:
@@ -292,11 +292,11 @@ func _result_1(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 			if num >= 1:
 				_make_pro_china_copy(14)
 				_make_pro_china_copy(8)
-				if d.size() > 128 and d[128] == 1:
+				if d.size() > 128 and d.turkish_straits_state == 1:
 					var iraq := ws.get_country_by_legacy_index(14)
 					var iran := ws.get_country_by_legacy_index(8)
 					if (iraq == null or not iraq.has_tag("亲中")) and (iran == null or not iran.has_tag("亲中")):
-						d[128] = 2
+						d.turkish_straits_state = 2
 						if ws.wars.size() <= 3:
 							ws.wars.resize(4)
 						if ws.wars[3] != null:
@@ -378,23 +378,23 @@ func _upgrade_turkish_puppets(flag: bool, flag2: bool, flag3: bool) -> void:
 
 func _set_data124(v: int) -> void:
 	if d.size() > 124:
-		d[124] = v
+		d.turkish_pan_turkic_chain = v
 
 
 func _add_data143(delta: int) -> void:
 	if d.size() > 143:
-		d[143] += delta
+		d.oil_price += delta
 
 
 func _add_data(index: int, delta: int) -> void:
 	if index >= 0 and index < d.size():
-		d[index] += delta
+		d.add_data_by_index(index, delta)
 
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		d[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		d[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		d.usa_relations = ws.empires[EmpireData.USA].relations
+		d.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		d[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		d[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		d.ussr_relations = ws.empires[EmpireData.USSR].relations
+		d.soviet_influence = ws.empires[EmpireData.USSR].power

@@ -35,7 +35,7 @@ func execute(context: Dictionary) -> void:
 			elif egypt.government == GameConstants.Government.REFORMIST:
 				text += "\n" + TXT_EGYPT_2
 		if d.size() > W.I_BUDGET:
-			d[W.I_BUDGET] += 50
+			d.budget += 50
 		context["result_text"] = text
 	elif opt == 1:
 		var text := TXT_R1_BASE

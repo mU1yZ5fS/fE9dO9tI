@@ -416,11 +416,11 @@ func _def_49(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			var num5 := _rng(w, 0, 1000)
 			if num4 <= num5:
 				set_d(w, 35, 10)
-				# 原 DiploButtonScript.cs:9515：data[35]=10 + LoadScene("Ending")。
+				# 原 DiploButtonScript.cs:9515：data.ending_route=10 + LoadScene("Ending")。
 				GameManager.trigger_ending(10)
 			if w.leader != null and w.leader.name_first == 13 and w.leader.name_last == 13 and d(w, 20) == 2 and d(w, 19) == 19:
 				set_d(w, 35, 10)
-				# 原 DiploButtonScript.cs:9520：data[35]=10 + LoadScene("Ending")。
+				# 原 DiploButtonScript.cs:9520：data.ending_route=10 + LoadScene("Ending")。
 				GameManager.trigger_ending(10)
 			country.prc_influence += 100
 		elif sid == 152:

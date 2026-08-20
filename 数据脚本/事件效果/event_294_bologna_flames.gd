@@ -15,9 +15,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
-	var diplo := world.数值表[W.I_DIPLO] if world.数值表.size() > W.I_DIPLO else 0
-	var war := world.数值表[W.I_WAR_SUPPORT] if world.数值表.size() > W.I_WAR_SUPPORT else 0
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
+	var diplo := world.diplomatic_reputation if world.size() > W.I_DIPLO else 0
+	var war := world.war_support if world.size() > W.I_WAR_SUPPORT else 0
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
 	if line < 3:
@@ -65,7 +65,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

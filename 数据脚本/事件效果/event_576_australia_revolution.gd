@@ -34,8 +34,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var r573 := int(world.completed_event_ids.get("event_573", 0))
 	var c50 := world.get_country_by_legacy_index(50)
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 0
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 0
 	var desc := TXT_DESC_BASE
 	if r573 == 2:
 		desc += TXT_DESC_R2

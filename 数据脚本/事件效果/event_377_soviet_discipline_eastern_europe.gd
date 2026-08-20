@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录检索 this_num_event/Reset/event_done/resultOfEvents/StartEvent
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 ## 差异：
-##  - 描述按 c9.proprc/okb、data[132]、c6.proprc 三态动态改写；
+##  - 描述按 c9.proprc/okb、data.soviet_eastern_europe_intervention、c6.proprc 三态动态改写；
 ##  - SOV_PRC_PartiesConnection → I_COMMUNICATIONS（见 event_435 约定）；
 ##  - 成就 Set(142) 已接 Achievements；
 ##  - ingamewars[22].usa_place → WarData.usa_side（c51 对华贸易时置 0）；
@@ -44,8 +44,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var mongolia := world.get_country_by_legacy_index(9)
 	var bulgaria := world.get_country_by_legacy_index(6)
 	var opt := event_def.options
-	var cond5: bool = mongolia != null and mongolia.has_tag("亲中") and not mongolia.has_tag("okb") 			and _d(132) <= 0 and bulgaria != null and bulgaria.has_tag("亲中")  # 原版 data[132]
-	var cond4: bool = mongolia != null and mongolia.has_tag("亲中") and not mongolia.has_tag("okb") and _d(132) <= 0  # 原版 data[132]
+	var cond5: bool = mongolia != null and mongolia.has_tag("亲中") and not mongolia.has_tag("okb") 			and _d(132) <= 0 and bulgaria != null and bulgaria.has_tag("亲中")  # 原版 data.soviet_eastern_europe_intervention
+	var cond4: bool = mongolia != null and mongolia.has_tag("亲中") and not mongolia.has_tag("okb") and _d(132) <= 0  # 原版 data.soviet_eastern_europe_intervention
 	if cond5:
 		event_def.description = TXT_DESC_FMT.format(["\n", TXT_LIST_5B])
 	elif cond4:
@@ -58,7 +58,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_enable(opt[1], event_def.options[1].text)
 	var relres: bool = world.get_flag("relres")
 	var war22 := world.wars[22] if world.wars.size() > 22 else null
-	if relres and world.influence_prc >= 750 and _d(W.I_ARMY) >= 750 			and GameManager.is_faction_leading(0) 			and (war22 == null or not war22.is_going) and _d(133) == 0:  # 原版 data[133]
+	if relres and world.influence_prc >= 750 and _d(W.I_ARMY) >= 750 			and GameManager.is_faction_leading(0) 			and (war22 == null or not war22.is_going) and _d(133) == 0:  # 原版 data.soviet_reorganization_war_state
 		_enable(opt[2], TXT_OPT2_RELRES.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif not relres and world.influence_prc >= 950 and _d(W.I_ARMY) >= 750:
 		_enable(opt[2], TXT_OPT2_NORELRES.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
@@ -68,7 +68,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[2], TXT_DIS_ARMY.format([75]))
 	elif war22 != null and war22.is_going:
 		_disable(opt[2], TXT_DIS_WAR)
-	elif _d(133) != 0:  # 原版 data[133]
+	elif _d(133) != 0:  # 原版 data.soviet_reorganization_war_state
 		_disable(opt[2], TXT_DIS_ISLANDS)
 	else:
 		_disable(opt[2], TXT_DIS_FACTION)
@@ -84,7 +84,7 @@ func execute(context: Dictionary) -> void:
 	var romania := ws.get_country_by_legacy_index(5)
 	var ussr := ws.get_country_by_legacy_index(7)
 	var opt := int(context.get("option_index", -1))
-	var cond5: bool = mongolia != null and mongolia.has_tag("亲中") and not mongolia.has_tag("okb") 			and _d(132) <= 0 and bulgaria != null and bulgaria.has_tag("亲中")  # 原版 data[132]
+	var cond5: bool = mongolia != null and mongolia.has_tag("亲中") and not mongolia.has_tag("okb") 			and _d(132) <= 0 and bulgaria != null and bulgaria.has_tag("亲中")  # 原版 data.soviet_eastern_europe_intervention
 	if opt == 0:
 		if bulgaria == null or not bulgaria.has_tag("亲中"):
 			context["result_text"] = TXT_R0A_FMT.format(["\n", TXT_MONGOLIA if cond5 else ""])
@@ -170,7 +170,7 @@ func _establish_government(c: CountryData, kind: String) -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

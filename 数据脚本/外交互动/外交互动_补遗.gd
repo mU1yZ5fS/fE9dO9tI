@@ -616,13 +616,13 @@ func _war_going_c(w: WorldState, idx: int) -> bool:
 # ============================================================================
 
 ## 数值表安全读取（越界按 0，与原版 int 默认一致）。
-func _data_at(darr: Array, idx: int) -> int:
-	return darr[idx] if darr.size() > idx else 0
+func _data_at(darr: WorldState, idx: int) -> int:
+	return darr.get_data_by_index(idx) if darr.size() > idx else 0
 
 
 ## 原版 GameState.GetSubGosstory()（GameState.cs:7409-7435）。
 func _sub_gosstory(w: WorldState) -> int:
-	var darr: Array = w.数值表
+	var darr: WorldState = w
 	var china := c(w, 1)
 	if _data_at(darr, W.I_IDEOLOGY) <= 2 and _data_at(darr, W.I_ECON_SYSTEM) < 13 \
 			and _data_at(darr, W.I_DIPLO) >= 700 and _data_at(darr, W.I_PARTY_SYSTEM) < 8:

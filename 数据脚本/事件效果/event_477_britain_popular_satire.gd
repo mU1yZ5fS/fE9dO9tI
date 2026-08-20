@@ -76,8 +76,8 @@ func execute(context: Dictionary) -> void:
 
 
 func _raw_uk(world: WorldState) -> int:
-	if world == null or world.数值表.size() <= 147:
+	if world == null or world.size() <= 147:
 		return 0
-	return world.数值表[147]
+	return world.britain_political_route
 
 

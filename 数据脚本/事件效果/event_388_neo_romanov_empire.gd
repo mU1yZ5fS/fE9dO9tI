@@ -39,7 +39,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_enable(opt[1], event_def.options[1].text)
 	var relres: bool = world.get_flag("relres")
 	var war22 := world.wars[22] if world.wars.size() > 22 else null
-	if relres and world.influence_prc >= 750 and _d(W.I_ARMY) >= 750 			and GameManager.is_faction_leading(0) 			and (war22 == null or not war22.is_going) and _d(133) == 0:  # 原版 data[133]
+	if relres and world.influence_prc >= 750 and _d(W.I_ARMY) >= 750 			and GameManager.is_faction_leading(0) 			and (war22 == null or not war22.is_going) and _d(133) == 0:  # 原版 data.soviet_reorganization_war_state
 		_enable(opt[2], TXT_OPT2_RELRES.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
 	elif not relres and world.influence_prc >= 950 and _d(W.I_ARMY) >= 750:
 		_enable(opt[2], TXT_OPT2_NORELRES.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
@@ -49,7 +49,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[2], TXT_DIS_ARMY.format([75]))
 	elif war22 != null and war22.is_going:
 		_disable(opt[2], TXT_DIS_WAR)
-	elif _d(133) != 0:  # 原版 data[133]
+	elif _d(133) != 0:  # 原版 data.soviet_reorganization_war_state
 		_disable(opt[2], TXT_DIS_ISLANDS)
 	else:
 		_disable(opt[2], TXT_DIS_FACTION)
@@ -117,7 +117,7 @@ func _start_war_388() -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

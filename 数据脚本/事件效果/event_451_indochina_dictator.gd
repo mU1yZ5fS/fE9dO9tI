@@ -16,8 +16,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or event_def.options.size() < 2:
 		return
 	var line56 := 0
-	if world.数值表.size() > W.I_POLITICAL_LINE:
-		line56 = world.数值表[W.I_POLITICAL_LINE]
+	if world.size() > W.I_POLITICAL_LINE:
+		line56 = world.political_line
 	var opt := event_def.options
 	if line56 < 2 or line56 > 3:
 		_enable(opt[0], event_def.options[0].text)
@@ -55,7 +55,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_relation(empire_index: int, value: int) -> void:

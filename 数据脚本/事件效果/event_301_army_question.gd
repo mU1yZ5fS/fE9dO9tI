@@ -1,6 +1,6 @@
 ## 原作 Event301.cs：军队问题？（中越战争后军队现代化，三选项）。
 ## 触发：全目录搜索无 this_num_event = 301 / Reset(301)；链外 REST 段，原版无自动条件。
-## 差异：data[28] 用 W.I_USA_RELATIONS；文本来自 Events_text_en 索引 30-39。
+## 差异：data.usa_relations 用 W.I_USA_RELATIONS；文本来自 Events_text_en 索引 30-39。
 extends "res://数据脚本/event_script_base.gd"
 
 const TXT_OPT1_DIS := "真是不幸，我们没有现代化军队的力量。"
@@ -14,10 +14,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var budget := world.数值表[W.I_BUDGET] if world.数值表.size() > W.I_BUDGET else 0
-	var reserve := world.数值表[W.I_RESERVE] if world.数值表.size() > W.I_RESERVE else 0
-	var industry := world.数值表[W.I_INDUSTRY] if world.数值表.size() > W.I_INDUSTRY else 0
-	var usa_rel := world.数值表[W.I_USA_RELATIONS] if world.数值表.size() > W.I_USA_RELATIONS else 0
+	var budget := world.budget if world.size() > W.I_BUDGET else 0
+	var reserve := world.reserve if world.size() > W.I_RESERVE else 0
+	var industry := world.industry if world.size() > W.I_INDUSTRY else 0
+	var usa_rel := world.usa_relations if world.size() > W.I_USA_RELATIONS else 0
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
 	if budget + reserve >= 50 and industry >= 500:
@@ -52,7 +52,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

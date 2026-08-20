@@ -108,19 +108,19 @@ func _refresh() -> void:
 	var bar := _find("状态栏")
 	if bar and bar.has_method("_refresh"):
 		bar._refresh()
-	_label("工业数值", "%.1f" % (float(w.数值表[W.I_INDUSTRY]) / 10.0))
-	_label("农业数值", "%.1f" % (float(w.数值表[W.I_AGRICULTURE]) / 10.0))
-	_label("服务业数值", "%.1f" % (float(w.数值表[W.I_SERVICES]) / 10.0))
-	_label("腐败数值", "%.1f" % (float(w.数值表[W.I_CORRUPTION]) / 10.0))
-	_label("预算数值", "%.1f" % (float(w.数值表[W.I_BUDGET]) / 10.0))
+	_label("工业数值", "%.1f" % (float(w.industry) / 10.0))
+	_label("农业数值", "%.1f" % (float(w.agriculture) / 10.0))
+	_label("服务业数值", "%.1f" % (float(w.services) / 10.0))
+	_label("腐败数值", "%.1f" % (float(w.corruption) / 10.0))
+	_label("预算数值", "%.1f" % (float(w.budget) / 10.0))
 	for item_name in 预算项:
 		var idx: int = 预算项[item_name]
 		_label(item_name + "数值", "%.1f" % (float(_raw(w, idx)) / 10.0))
-	_label("贷款数值", "%.1f" % (float(w.数值表[W.I_LOAN]) / 10.0))
-	_label("储蓄金数值", "%.1f" % (float(w.数值表[W.I_RESERVE]) / 10.0))
+	_label("贷款数值", "%.1f" % (float(w.loan) / 10.0))
+	_label("储蓄金数值", "%.1f" % (float(w.reserve) / 10.0))
 	# 债务损耗 UI（原版 Show_diplomacy_data_script.Repaint_dolg:290-298）：
 	# num=loan/40；零头保底(num<=0 且 loan>0 → 1)；年份互斥加成(1983 +2 / 1980 +1)；定点 num/10.num%10
-	var loan: int = w.数值表[W.I_LOAN]
+	var loan: int = w.loan
 	var year := w.date.year if w.date else 1976
 	@warning_ignore("integer_division")
 	var debt_num := loan / 40
@@ -134,7 +134,7 @@ func _refresh() -> void:
 	# 债务限额：按主人确认使用真实换行（不照抄原版中文分支的字面量 \n）
 	_label("债务限额", " 债 务 限 额 : \n" + _fixed_point(_loan_limit(w)))
 	# 贪腐损耗 UI（原版 Repaint_corrupt:316-330）：预算 num=corr/10、生活 num2=corr/50，定点显示
-	var corruption: int = w.数值表[W.I_CORRUPTION]
+	var corruption: int = w.corruption
 	@warning_ignore("integer_division")
 	var corr_budget := corruption / 10
 	@warning_ignore("integer_division")
@@ -143,19 +143,19 @@ func _refresh() -> void:
 	# 最大投资 UI（原版 Show_diplomacy_data_script.MakePlankaReady:82-93）：
 	# 先 sum/6 再减经济体制惩罚（与点击上限 CheckPlanka 的先减后除顺序不同，整数除法下可差 1，照抄原作）。
 	@warning_ignore("integer_division")
-	var planka_sum := w.数值表[W.I_BUDGET] + w.数值表[W.I_RESERVE]
+	var planka_sum := w.budget + w.reserve
 	for i in range(W.I_BUDGET_ARMY, W.I_BUDGET_DIPLO + 1):
-		planka_sum += w.数值表[i]
+		planka_sum += w.get_data_by_index(i)
 	@warning_ignore("integer_division")
 	var planka_display := planka_sum / 6
-	if w.数值表[W.I_ECON_SYSTEM] > 12:
+	if w.econ_system > 12:
 		@warning_ignore("integer_division")
-		planka_display -= (w.数值表[W.I_ECON_SYSTEM] - 12) * (planka_display / 10)
+		planka_display -= (w.econ_system - 12) * (planka_display / 10)
 	# 原版 Repaint_planka：整数位是 abs(plankas/10 + 1)，先 +1 再取绝对值。
 	@warning_ignore("integer_division")
 	_label("最大投资", " 最 大 投 资 :\n%d.%d" % [absi(planka_display / 10 + 1), absi(planka_display % 10)])
 	_label("储蓄金影响", _reserve_effect(w))
-	var oligarch := w.数值表[W.I_OLIGARCH]
+	var oligarch := w.oligarch
 	_label("寡头状态文本", "%s\n 其 影 响 力 为 : %d/100" % [_oligarch_label(oligarch), oligarch])
 	_refresh_tooltips(w)
 
@@ -205,7 +205,7 @@ func _refresh_tooltips(w: WorldState) -> void:
 			_set_tip_text(item_name + suffix, tip)
 
 
-## 寡头影响力 5 档文案（原版 Show_diplomacy_data_script.cs:229-248，读 data[108]，逐字含空格）
+## 寡头影响力 5 档文案（原版 Show_diplomacy_data_script.cs:229-248，读 data.oligarch，逐字含空格）
 func _oligarch_label(v: int) -> String:
 	if v < 18:
 		return " 国 内 寡 头 无 立 锥 之 地"
@@ -220,9 +220,9 @@ func _oligarch_label(v: int) -> String:
 
 ## 原版 Show_diplomacy_data_script.ReserveRepaint（:107-223）中文分支的动态储备金影响
 func _reserve_effect(w: WorldState) -> String:
-	var d := w.数值表
-	var reserve: int = d[W.I_RESERVE]
-	var econ: int = d[W.I_ECON_SYSTEM]
+	var d := w
+	var reserve: int = d.reserve
+	var econ: int = d.econ_system
 	var year: int = w.date.year if w.date else 1976
 	var num := 0
 	var num2 := 0

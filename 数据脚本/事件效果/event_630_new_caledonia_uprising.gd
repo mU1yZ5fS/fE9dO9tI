@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event630.cs：新喀里多尼亚起义（单选项，按 event_done[483] 双文案双效果）。
 ## 触发：
 ##   - 自动：ReqEventsDLC02.cs:961-963 —— event_done[483] && c21.SubGosstroy!=19（.tres ExprNode）
-##   - 手动：DiploButtonScript.cs:12139（1046，前置已扣 data[22]/data[9] 各 100）
+##   - 手动：DiploButtonScript.cs:12139（1046，前置已扣 data.army/data.agents 各 100）
 ## 差异：原版 TextOfEvents/ResultsOfEvents 按 !event_done[483] 走“风暴”线，
 ##   483 已完成走“只消轻轻扇动翅膀”线；Godot prepare/execute 同判定。
 ##   Vyshi→亲美、proprc→亲中、Torg→对华贸易、puppetOf→puppet_of、name→chinese_name。

@@ -14,7 +14,7 @@ const TXT_IDX_1452 := "54%的西班牙人在投票中支持加入欧洲经济共
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

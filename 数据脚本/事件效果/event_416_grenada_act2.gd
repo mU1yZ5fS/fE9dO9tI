@@ -75,10 +75,10 @@ func evaluate(world: WorldState) -> bool:
 	if world.completed_event_ids.has("event_416"):
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= W.I_YEAR:
 		return false
-	if not ((d[W.I_YEAR] == 1983 and d[W.I_MONTH] >= 3 and d[W.I_DAY] >= 10) or (d[W.I_YEAR] == 1983 and d[W.I_MONTH] >= 4) or d[W.I_YEAR] >= 1984):
+	if not ((d.year == 1983 and d.month >= 3 and d.day >= 10) or (d.year == 1983 and d.month >= 4) or d.year >= 1984):
 		return false
 	var c48 := world.get_country_by_legacy_index(48)
 	if c48 != null and c48.has_tag("sev"):
@@ -92,16 +92,16 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var opt := event_def.options
-	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
-	if budget_reserve >= 100 and d[W.I_AGENTS] >= 150:
+	var budget_reserve := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
+	if budget_reserve >= 100 and d.agents >= 150:
 		_enable(opt[0], TXT_OPT0[0])
 	elif budget_reserve < 100:
 		_disable(opt[0], TXT_OPT0[1])
 	else:
 		_disable(opt[0], TXT_OPT0[2])
-	if budget_reserve >= 50 and d[W.I_AGENTS] >= 100:
+	if budget_reserve >= 50 and d.agents >= 100:
 		_enable(opt[1], TXT_OPT1[0])
 	elif budget_reserve < 50:
 		_disable(opt[1], TXT_OPT1[1])
@@ -109,11 +109,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[1], TXT_OPT1[2])
 	_enable(opt[2], TXT_OPT2[0])
 	var us := world.get_country_by_legacy_index(51)
-	if budget_reserve >= 100 and d[W.I_AGENTS] >= 150 and us != null and us.development > 0:
+	if budget_reserve >= 100 and d.agents >= 150 and us != null and us.development > 0:
 		_enable(opt[3], TXT_OPT3[0])
 	elif budget_reserve < 100:
 		_disable(opt[3], TXT_OPT3[1])
-	elif d[W.I_AGENTS] < 150:
+	elif d.agents < 150:
 		_disable(opt[3], TXT_OPT3[2])
 	else:
 		_disable(opt[3], TXT_OPT3[3])
@@ -205,7 +205,7 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0
 
 func _set_pro_china(c: CountryData) -> void:

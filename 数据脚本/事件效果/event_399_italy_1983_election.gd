@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event399.cs：1983年意大利选举（五选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1186 —— 复杂条件用 evaluate（inflCh 无 ExprNode 字段）。
-## 差异：data[175..182] raw index；选项显隐 prepare；result 4 文本为空但末尾仍拼接选情分支。
+## 差异：data.get_data_by_index(175..182) raw index；选项显隐 prepare；result 4 文本为空但末尾仍拼接选情分支。
 
 const TXT_TITLE := [
 	"1983年意大利选举",
@@ -81,7 +81,7 @@ func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= W.I_YEAR:
 		return false
 	if world.completed_event_ids.has("event_399"):
@@ -89,7 +89,7 @@ func evaluate(world: WorldState) -> bool:
 	var italy := world.get_country_by_legacy_index(85)
 	if italy == null:
 		return false
-	if not ((int(world.completed_event_ids.get("event_393", 0)) > 0 or world.completed_event_ids.has("event_392")) and not world.get_flag("VasilyisGay") and italy.sub_government != GameConstants.SubGovernment.SOCIAL_DEMOCRAT and ((d[W.I_YEAR] >= 1983 and d[W.I_MONTH] >= 6 and d[W.I_DAY] > 19) or (d[W.I_YEAR] >= 1983 and d[W.I_MONTH] >= 7) or d[W.I_YEAR] >= 1984) and not world.completed_event_ids.has("event_556") and not world.completed_event_ids.has("event_396") and italy.sub_government != GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN):
+	if not ((int(world.completed_event_ids.get("event_393", 0)) > 0 or world.completed_event_ids.has("event_392")) and not world.get_flag("VasilyisGay") and italy.sub_government != GameConstants.SubGovernment.SOCIAL_DEMOCRAT and ((d.year >= 1983 and d.month >= 6 and d.day > 19) or (d.year >= 1983 and d.month >= 7) or d.year >= 1984) and not world.completed_event_ids.has("event_556") and not world.completed_event_ids.has("event_396") and italy.sub_government != GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN):
 		return false
 	return true
 
@@ -98,22 +98,22 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var opt := event_def.options
 	if d.size() > W.I_POLITICAL_LINE:
-		if d[W.I_POLITICAL_LINE] >= 3:
+		if d.political_line >= 3:
 			_enable(opt[0], TXT_OPT0[0])
 		else:
 			_disable(opt[0], TXT_OPT0[1])
-		if d[W.I_POLITICAL_LINE] >= 2 and d[W.I_POLITICAL_LINE] <= 3:
+		if d.political_line >= 2 and d.political_line <= 3:
 			_enable(opt[1], TXT_OPT1[0])
 		else:
 			_disable(opt[1], TXT_OPT1[1])
-		if d[W.I_POLITICAL_LINE] <= 2:
+		if d.political_line <= 2:
 			_enable(opt[2], TXT_OPT2[0])
 		else:
 			_disable(opt[2], TXT_OPT2[1])
-		if d[W.I_DIPLO] >= 800 and (d[W.I_WAR_SUPPORT] if d.size() > W.I_WAR_SUPPORT else 0) > 300 and d[W.I_POLITICAL_LINE] <= 3:
+		if d.diplomatic_reputation >= 800 and (d.war_support if d.size() > W.I_WAR_SUPPORT else 0) > 300 and d.political_line <= 3:
 			_enable(opt[3], TXT_OPT3[0])
 		else:
 			_disable(opt[3], TXT_OPT3[1])
@@ -235,7 +235,7 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0
 
 func _mod_active(i: int) -> bool:

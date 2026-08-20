@@ -152,7 +152,7 @@ static func intro_21(w: WorldState) -> String:
 
 
 # ── 当前政策名标签（doctr 名表）──
-# 原版 Politic_doctr_script 读 doctr[data[idx]]；doctr[42] 基础名来自 Assets/Resources/Doctr_en.txt
+# 原版 Politic_doctr_script 读 doctr[data.get_data_by_index(idx)]；doctr[42] 基础名来自 Assets/Resources/Doctr_en.txt
 # （LoadInScript.cs:64-79），再由 modifies[6].active 覆盖部分项（GameStartScript.cs:1645-1673）。
 # 开局 modifies[6] 激活 → 经济11=中式计划经济、党政6=无产阶级专政、宗教24=文化革命…
 const DOCTR_BASE := {
@@ -187,7 +187,7 @@ static func event_done(w: WorldState, n: int) -> bool:
 	return w != null and w.completed_event_ids.has(n)
 
 
-## 当前政策值 id → 显示名（doctr[id]，modifies[6] 覆盖）。原版 doctr[data[idx]]。
+## 当前政策值 id → 显示名（doctr[id]，modifies[6] 覆盖）。原版 doctr[data.get_data_by_index(idx)]。
 static func doctr_name(w: WorldState, id: int) -> String:
 	if mod_active(w, 6) and DOCTR_MOD6.has(id):
 		return DOCTR_MOD6[id]
@@ -306,11 +306,11 @@ static func leading_tooltip(w: WorldState) -> String:
 	var total := 0
 	for f in w.factions:
 		total += maxi(f.support, 0)
-	total += maxi(w.数值表[W.I_SATISFIED], 0)
+	total += maxi(w.satisfied, 0)
 	var t := ""
-	if w.数值表[W.I_PARTY_SYSTEM] > 7:
+	if w.party_system > 7:
 		t += " 领 导 中 ："
-		t += " 我 方 党 派 联 盟\n" if w.数值表[W.I_POLITICAL_LINE] == 1 else " 反 对 派\n"
+		t += " 我 方 党 派 联 盟\n" if w.political_line == 1 else " 反 对 派\n"
 		for i in mini(5, w.factions.size()):
 			var f2: FactionData = w.factions[i]
 			if not f2.is_enabled:
@@ -328,10 +328,10 @@ static func leading_tooltip(w: WorldState) -> String:
 				t += "\n"
 			var pct2 := int(float(maxi(f3.support, 0) * 100) / float(total)) if total > 0 else 0
 			t += "%s: %d%%; " % [FactionData.FACTION_NAMES[i], pct2]
-	var sat := maxi(w.数值表[W.I_SATISFIED], 0)
+	var sat := maxi(w.satisfied, 0)
 	var sat_pct := int(float(sat * 100) / float(total)) if (total > 0 and sat > 0) else 0
 	t += " 满 意 现 秩 序 者 ：%d%%; " % sat_pct
-	if w.数值表[W.I_PARTY_SYSTEM] <= 7:
+	if w.party_system <= 7:
 		t += "\n\n 领 导 中 ："
 		# 原版 :115-118 只与 party_number[1..4] 比较
 		var satisfied_leads := true
@@ -342,7 +342,7 @@ static func leading_tooltip(w: WorldState) -> String:
 		if satisfied_leads:
 			t += " 满 意 现 秩 序 者"
 		else:
-			var line := clampi(w.数值表[W.I_POLITICAL_LINE], 0, 4)
+			var line := clampi(w.political_line, 0, 4)
 			if line < w.factions.size():
 				t += FactionData.FACTION_NAMES[line]
 	return t

@@ -39,9 +39,9 @@ func execute(context: Dictionary) -> void:
 
 	# 代价与全局影响（Event500.cs:141-148）
 	if d.size() > W.I_BUDGET:
-		d[W.I_BUDGET] -= 300
+		d.budget -= 300
 	if d.size() > W.I_ARMY:
-		d[W.I_ARMY] -= 300
+		d.army -= 300
 	if ws.empires.size() > EmpireData.USA:
 		ws.empires[EmpireData.USA].relations -= 100
 		ws.empires[EmpireData.USA].power -= 200

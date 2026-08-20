@@ -319,7 +319,7 @@ func _ending_15(w: WorldState) -> Dictionary:
 			arr[4] = arr[4] * 0.1
 	else:
 		arr[4] = 0.0
-	set_d(w, 125, 1)  # 原 data[125] = 1（Ending15.cs L142）
+	set_d(w, 125, 1)  # 原 data.election_timer = 1（Ending15.cs L142）
 	var _num := 0
 	for i in range(5):
 		if arr[i] < 0.0:

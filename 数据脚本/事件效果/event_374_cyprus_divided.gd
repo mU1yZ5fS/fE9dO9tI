@@ -250,7 +250,7 @@ func _copy_soc_eu_from_spain(cyprus: CountryData) -> void:
 
 func _set_data127(v: int) -> void:
 	if d.size() > 127:
-		d[127] = v
+		d.turkish_route_result = v
 
 
 
@@ -292,8 +292,8 @@ func _usa_nato() -> bool:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		d[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		d[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		d.usa_relations = ws.empires[EmpireData.USA].relations
+		d.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		d[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		d[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		d.ussr_relations = ws.empires[EmpireData.USSR].relations
+		d.soviet_influence = ws.empires[EmpireData.USSR].power

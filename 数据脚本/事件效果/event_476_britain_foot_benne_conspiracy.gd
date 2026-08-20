@@ -37,19 +37,19 @@ const S_403 := "Event"
 
 ## 原作 Event476.cs：富特-本恩阴谋论？/ 第二次卡布尔街之战（三选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1449-1451 ——
-##   (data[147]==6 || c92.SubGosstroy==18) && 日期>=1984.11.1。data[147] 无常量，走 trigger_script。
+##   (data.britain_political_route==6 || c92.SubGosstroy==18) && 日期>=1984.11.1。data.britain_political_route 无常量，走 trigger_script。
 ## 差异：
-##  - 标题/描述/选项显隐按 c92.sub 动态改写；load_scene_after_click → data[82]=86 并 EventEngine.enqueue_chain(["event_018"])；
+##  - 标题/描述/选项显隐按 c92.sub 动态改写；load_scene_after_click → data.war_resolve=86 并 EventEngine.enqueue_chain(["event_018"])；
 ##  - parts[0]→_part/_set_part；cw→内战中；Vyshi→亲美；Torg→对华贸易；proprc→亲中；prosov→亲苏。
 
 
 func evaluate(world: WorldState) -> bool:
-	if world == null or world.数值表.size() <= 147:
+	if world == null or world.size() <= 147:
 		return false
 	var c92 := world.get_country_by_legacy_index(92)
 	if c92 == null:
 		return false
-	if not (world.数值表[147] == 6 or c92.sub_government == GameConstants.SubGovernment.TROTSKYIST):
+	if not (world.britain_political_route == 6 or c92.sub_government == GameConstants.SubGovernment.TROTSKYIST):
 		return false
 	return (world.date.year >= 1984 and world.date.month >= 11) or world.date.year >= 1985
 
@@ -323,9 +323,9 @@ func _war(idx: int) -> WarData:
 
 
 func _dval(world: WorldState, idx: int) -> int:
-	if world == null or world.数值表.size() <= idx:
+	if world == null or world.size() <= idx:
 		return 0
-	return world.数值表[idx]
+	return world.get_data_by_index(idx)
 
 
 func _mod_active(world: WorldState, idx: int) -> bool:
@@ -343,12 +343,12 @@ func _empire_power(idx: int) -> int:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

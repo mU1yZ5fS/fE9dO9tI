@@ -32,8 +32,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var somalia := world.get_country_by_legacy_index(42)
 	var china := world.get_country_by_legacy_index(1)
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var somalia_proprc := somalia != null and somalia.has_tag("亲中")
 	var somalia_prosov := somalia != null and somalia.has_tag("亲苏")
 	var china_sev := china != null and china.has_tag("sev")

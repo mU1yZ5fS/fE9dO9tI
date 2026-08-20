@@ -13,7 +13,7 @@ const TXT_R1 := "1976年，阿帕里西奥·门德斯被国家委员会（一个
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

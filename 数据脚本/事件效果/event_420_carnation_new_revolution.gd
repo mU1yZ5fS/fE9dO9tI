@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event420.cs：康乃“新”革命？（三选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1356 —— ExprNode 组合。
-## 差异：spec→special；data[131] raw；Vyshi→亲美；prosov→亲苏；proprc→亲中。
+## 差异：spec→special；data.world_political_balance raw；Vyshi→亲美；prosov→亲苏；proprc→亲中。
 
 const TXT_TITLE := [
 	"康乃“新”革命？",
@@ -63,13 +63,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var portugal := world.get_country_by_legacy_index(87)
 	var num := 100 - (portugal.special if portugal != null else 0)
 	@warning_ignore("integer_division")
 	num = int(num / 2)
-	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
-	if budget_reserve >= 200 - num and d[W.I_AGENTS] >= 250 - num:
+	var budget_reserve := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
+	if budget_reserve >= 200 - num and d.agents >= 250 - num:
 		_enable(event_def.options[0], TXT_OPT0[0])
 		_enable(event_def.options[1], TXT_OPT1[0])
 	elif budget_reserve < 200:
@@ -161,5 +161,5 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0

@@ -48,7 +48,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			if italy != null:
 				italy.level_of_development -= 10
-			_add(134, 40)  # 原版 data[134]
+			_add(134, 40)  # 原版 data.italian_radical_left_power
 			if italy != null:
 				italy.set_tag("对华贸易", false)
 		1:
@@ -58,14 +58,14 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			if italy != null:
 				italy.level_of_development -= 10
-			_add(134, 40)  # 原版 data[134]
+			_add(134, 40)  # 原版 data.italian_radical_left_power
 			if italy != null:
 				italy.set_tag("对华贸易", false)
 		_:
 			context["result_text"] = TXT_R2
-			_add(134, 0)  # 原版 data[134] = 0
+			_add(134, 0)  # 原版 data.italian_radical_left_power = 0
 			if d.size() > 134:
-				d[134] = 0  # 原版 data[134]
+				d.italian_radical_left_power = 0  # 原版 data.italian_radical_left_power
 			if italy != null:
 				italy.内战中 = false
 				italy.政变中 = false
@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

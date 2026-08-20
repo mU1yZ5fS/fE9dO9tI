@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PEOPLE_SUPPORT, 200)
 			_add(W.I_THOUGHT_FREEDOM, 300)
 			_add(W.I_BUDGET, -20)
-			if d[W.I_PRESS_POLICY] < 18:
+			if d.press_policy < 18:
 				_add(W.I_PRESS_POLICY, 1)
 			_set_mod3("收入+0.6，特工网络+0.2，军队力量+0.5
 如果毛主席已逝世：人民支持度+0.5，思想自由化+1，生活水平-0.5，与美国关系-0.5

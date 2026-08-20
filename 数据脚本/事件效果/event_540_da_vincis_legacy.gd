@@ -17,7 +17,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	var money := d[W.I_BUDGET] + d[W.I_RESERVE]
+	var money := d.budget + d.reserve
 	var c21 := world.get_country_by_legacy_index(21)
 	if money >= 80:
 		_enable(opt[0], event_def.options[0].text)

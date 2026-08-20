@@ -115,18 +115,18 @@ func _refresh() -> void:
 	if w == null:
 		return
 	# 原版 Politic.unity "Text (10)" 挂 Show_diplomacy_data_script num=22（guid f4a6debb…），
-	# Repaint() 显示 data[22]/10 + "." + data[22]%10（Show_diplomacy_data_script.cs:346-363），
-	# 即内部值 ÷10 保留 1 位小数；外交条件 data[22]>=500 即“50 军事实力”。
-	_label("军队力量", "%.1f" % (w.数值表[W.I_ARMY] / 10.0))
-	# 政体 = doctr[data[14]]（Politic_doctr_script doctr=14，非 party_line）
+	# Repaint() 显示 data.army/10 + "." + data.army%10（Show_diplomacy_data_script.cs:346-363），
+	# 即内部值 ÷10 保留 1 位小数；外交条件 data.army>=500 即“50 军事实力”。
+	_label("军队力量", "%.1f" % (w.army / 10.0))
+	# 政体 = doctr[data.ideology]（Politic_doctr_script doctr=14，非 party_line）
 	_label("政体类型", FactionService.doctr_name(w, _raw(w, W.I_IDEOLOGY)))
-	# 党的路线 = doctr[data[52]] + "\n" + doctr[data[54]]（doctr=52, party_line=true）
+	# 党的路线 = doctr[data.econ_display] + "\n" + doctr[data.political_display]（doctr=52, party_line=true）
 	_label("政治路线类型", "%s\n%s" % [
 		FactionService.doctr_name(w, _raw(w, W.I_ECON_DISPLAY)),
 		FactionService.doctr_name(w, _raw(w, W.I_POLITICAL_DISPLAY)),
 	])
 	# 派系列表标题随政党制度切换（原版 ElectScript.Repaint text_part，逐字含空格）
-	var multi: bool = w.数值表[W.I_PARTY_SYSTEM] > 7
+	var multi: bool = w.party_system > 7
 	_label("中共党内派系", " 中 共 党 内 派 系" if not multi else " 人 大 党 派 组 织")
 	# 顶部按钮可用态：选举=多党制 且 本月尚未选举（原版 is_elect 月块复位）；
 	# 同盟按事件自动触发条件；演讲一次性（原版 is_speech 永不复位）。
@@ -217,8 +217,8 @@ class PieChart extends Control:
 			if s > 0:
 				slices.append({"value": s, "color": colors[i]})
 		var satisfied: int = 0
-		if w.数值表.size() > WorldState.I_SATISFIED:
-			satisfied = maxi(w.数值表[WorldState.I_SATISFIED], 0)
+		if w.size() > WorldState.I_SATISFIED:
+			satisfied = maxi(w.satisfied, 0)
 		if satisfied > 0:
 			slices.append({"value": satisfied, "color": colors[5]})
 		var total := 0
@@ -334,7 +334,7 @@ func _build_condition_text(cat_idx: int, target_val: int) -> String:
 
 ## 第4条件文案（原版 Doctrine_button_script.cs:446-461 逐字，含空格）：
 ## modifies[6]激活且目标∈{9,14,15,22,23,28,29} 或 (19且res[444]≠0) → "毛主席正看着你！"；
-## 否则毛已死(data[38]≥100)→"尚未建立"、毛在世→"毛主席已离世，起锚！"。
+## 否则毛已死(data.stability≥100)→"尚未建立"、毛在世→"毛主席已离世，起锚！"。
 func _mao_cond_text(w: WorldState, target_val: int) -> String:
 	if FactionService.mod_active(w, 6) and (target_val in [9, 14, 15, 22, 23, 28, 29] \
 			or (target_val == 19 and FactionService.event_result(w, 444) != 0)):

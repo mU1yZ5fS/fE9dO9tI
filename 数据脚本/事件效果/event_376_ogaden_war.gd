@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录检索 this_num_event/Reset/event_done/resultOfEvents/StartEvent
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 ## 差异：
-##  - SOV_PRC_PartiesConnection → I_COMMUNICATIONS（data[30]，见 event_435 约定）；
+##  - SOV_PRC_PartiesConnection → I_COMMUNICATIONS（data.communications，见 event_435 约定）；
 ##  - 描述/选项显隐 prepare 按 c41.Gosstroy / c41.proprc 动态改写；
 ##  - war 15 按模板覆盖 name_war/fortnight_max。
 
@@ -93,7 +93,7 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USA, 10)
 				_add_relation(EmpireData.USA, 120)
 				_add_relation(EmpireData.USSR, -150)
-				d[W.I_COMMUNICATIONS] -= 20
+				d.communications -= 20
 				_add(W.I_PARTY_SUPPORT, 100)
 				if ethiopia != null:
 					ethiopia.set_tag("对华贸易", true)
@@ -106,7 +106,7 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USSR, 10)
 				_add_relation(EmpireData.USSR, 120)
 				_add_relation(EmpireData.USA, -150)
-				d[W.I_COMMUNICATIONS] += 20
+				d.communications += 20
 				_add(W.I_PARTY_SUPPORT, 100)
 				if ethiopia != null:
 					ethiopia.set_tag("对华贸易", false)
@@ -126,7 +126,7 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USA, 10)
 				_add_relation(EmpireData.USA, 120)
 				_add_relation(EmpireData.USSR, -150)
-				d[W.I_COMMUNICATIONS] -= 20
+				d.communications -= 20
 				_add(W.I_PARTY_SUPPORT, 100)
 				if ethiopia != null:
 					ethiopia.set_tag("对华贸易", true)
@@ -139,7 +139,7 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USSR, 10)
 				_add_relation(EmpireData.USSR, 120)
 				_add_relation(EmpireData.USA, -150)
-				d[W.I_COMMUNICATIONS] += 20
+				d.communications += 20
 				_add(W.I_PARTY_SUPPORT, 100)
 				if ethiopia != null:
 					ethiopia.set_tag("对华贸易", false)
@@ -161,7 +161,7 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USSR, 10)
 				_add_relation(EmpireData.USSR, 120)
 				_add_relation(EmpireData.USA, -150)
-				d[W.I_COMMUNICATIONS] += 20
+				d.communications += 20
 				_add(W.I_PARTY_SUPPORT, 100)
 				if somalia != null:
 					somalia.set_tag("对华贸易", false)
@@ -176,7 +176,7 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USA, 10)
 				_add_relation(EmpireData.USA, 120)
 				_add_relation(EmpireData.USSR, -150)
-				d[W.I_COMMUNICATIONS] -= 20
+				d.communications -= 20
 				_add(W.I_PARTY_SUPPORT, 100)
 				if somalia != null:
 					somalia.set_tag("对华贸易", true)
@@ -197,7 +197,7 @@ func _start_war_376(infl1: int, infl2: int, usa_side: int, ussr_side: int) -> vo
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

@@ -3,9 +3,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event240.cs：革命无罪，造反另说（十一届全会评定文革遗产，4 选项）。
 ## 触发：TimeScript.cs:10206-10212 ——
 ##   ((日>=12 且 月>=8 且 年>=1977) 或 (月>=9 且 年>=1977) 或 年>=1978)
-##   且 data[84]==3 且 !event_done[240]。
+##   且 data.gang_of_four_path==3 且 !event_done[240]。
 ## 差异：
-##  - 选项1 原版按 data[84]==3 决定按钮文案（真=“不偏不倚…”，假=销毁按钮换“文革已经得罪了所有人啦”），
+##  - 选项1 原版按 data.gang_of_four_path==3 决定按钮文案（真=“不偏不倚…”，假=销毁按钮换“文革已经得罪了所有人啦”），
 ##    本版用 enable_condition + disabled_text 等价建模。
 ##  - party_change[] 仅 UI 摆动数值，Godot 建模说明，跳过。
 ##  - 原版逐 if/else-if 忠诚链与 >0/<3 边界逐字保留。
@@ -96,7 +96,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

@@ -18,9 +18,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
-	var war_support := d[W.I_WAR_SUPPORT] if d.size() > W.I_WAR_SUPPORT else 0
+	var d := world
+	var line := d.political_line if d.size() > W.I_POLITICAL_LINE else 3
+	var war_support := d.war_support if d.size() > W.I_WAR_SUPPORT else 0
 	var france := world.get_country_by_legacy_index(21)
 	var cameroon := world.get_country_by_legacy_index(66)
 	var gabon := world.get_country_by_legacy_index(116)

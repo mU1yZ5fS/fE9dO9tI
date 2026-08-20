@@ -22,15 +22,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var c8 := world.get_country_by_legacy_index(8)
 	var r37 := int(ws.completed_event_ids.get("egyptian_unrest", 0))
-	if ws.influence_prc >= 500 and d[W.I_WAR_SUPPORT] >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL:
+	if ws.influence_prc >= 500 and d.war_support >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if (d[W.I_POLITICAL_LINE] < 2 and r37 == 2) or (d[W.I_POLITICAL_LINE] > 2 and r37 == 3):
+	if (d.political_line < 2 and r37 == 2) or (d.political_line > 2 and r37 == 3):
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if d[W.I_POLITICAL_LINE] > 1:
+	if d.political_line > 1:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

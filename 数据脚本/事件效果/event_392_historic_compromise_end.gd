@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 按 resultOfEvents[391] 分流左翼/右翼文本；
 ##  - VasilyisGay → ws.set_flag("VasilyisGay", true)；
-##  - data[134]/data[172]/data[175]/data[176]/data[177] 为原版 raw index。
+##  - data.italian_radical_left_power/data.italy_power_172/data.italy_power_175/data.italy_power_176/data.italy_power_177 为原版 raw index。
 
 const TXT_DESC_FMT := "1976年的意大利大选格局与1977年的全国动荡共同造就了一种同床异梦的另类共治格局：意大利共产党虽能在议会内中高歌猛进，取得了历届大选最佳成绩。可该党依旧无法让这份胜利果实以执政形式切实落地——考虑到意大利主流议会政党对共产党的敌视一而惯之，且可作为合作对象的该国新兴激进政党亦不足以同共产党形成法定多数。考虑到“智利悲剧”在前，该党领导人恩里科·贝林格更在事实上选择效法意大利社会党的老一套变式：即共产党虽对组建天主教民主党成员一言堂（由于共产党同天民党共同瓜分全国过半选票的格局，无法形成法定多数的窘境在后者处同样存在。这最终导致天民党决定成立一个仅包含自身成员的绝对少数派内阁）的新政府表示反对，并呼吁建立需有共产党成员参与的共治模式；可该党在议会内仍以支持“民族团结”纲领，共同打击恐怖主义威胁的形式对天民党少数派施加支持。然而，这只是将多方相互掣肘与低民意代表性的问题给无限期滞后。为此，早在1973年由贝林格提出的“历史性妥协”策略（即共产党应当争取同包括天民党在内的“国内民主力量”达成共识，从捍卫共和国这一最低纲领起步，最终建立得到国民普遍信任的政府）便越来越显得宛如该问题的最终解决方案。而这恰仰赖天民党关键人物，现任主席阿尔多·莫罗的拍板，他同时是早期策划天民党同社会党合作的“中左翼公式”总设计师。不过，事情也就到此为止。也就在莫罗准备前往议会，并准备将由朱利奥·安德烈奥蒂领导，并有共产党部长背书的“民族团结”政府蓝图落地时。他的轿车在途中被{1}劫持，后者成功制造了一场车祸，以此成功孤立前总理周围的防御并将其囚禁。该组织声称，若当局不打算将其名单上的数位恐怖分子释放，他们便会对莫罗实施对等报复。对此，意大利国内的绝大多数建制派很快便回到了“民族团结”的立场：除社会党领导人贝蒂诺·克拉克西呼吁同恐怖分子谈判，解救前总理莫罗外，包括共产党在内的几乎所有议会政党都表示“同任恐怖分子胡作非为相比，意大利能够承受区区一个莫罗的损失”。倘若没有域外力量干涉，莫罗与其另类版“历史性妥协”政策的死刑执行不过时间问题。因此，我们有必要考量先前的布局，并从中选取最有利自身的立场……"
 const TXT_1072 := "极左翼恐怖组织“红色旅”"
@@ -39,14 +39,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var italy := world.get_country_by_legacy_index(85)
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
-	if (r391 == 1 or r391 == 0 or r391 == 2) and _d(134) < 75 and italy != null and italy.level_of_development > 40:  # 原版 data[134]
+	if (r391 == 1 or r391 == 0 or r391 == 2) and _d(134) < 75 and italy != null and italy.level_of_development > 40:  # 原版 data.italian_radical_left_power
 		var txt: String = TXT_OPT1_LEFT if (r391 == 0 or r391 == 4 or r391 == 2) else TXT_OPT1_RIGHT
 		_enable(opt[1], txt)
 	else:
 		_disable(opt[1], TXT_DIS1)
 	_enable(opt[2], event_def.options[2].text)
 	_enable(opt[3], event_def.options[3].text)
-	if (r391 == 1 or r391 == 0 or r391 == 2) and _d(W.I_DIPLO) >= 900 and _d(134) >= 75 			and italy != null and italy.level_of_development <= 40:  # 原版 data[134]
+	if (r391 == 1 or r391 == 0 or r391 == 2) and _d(W.I_DIPLO) >= 900 and _d(134) >= 75 			and italy != null and italy.level_of_development <= 40:  # 原版 data.italian_radical_left_power
 		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_DIS4)
@@ -65,14 +65,14 @@ func execute(context: Dictionary) -> void:
 			var txt := TXT_R0_HEAD
 			if left:
 				txt += TXT_R0_LEFT
-				_add(172, -2)  # 原版 data[172]
-				_add(176, -2)  # 原版 data[176]
+				_add(172, -2)  # 原版 data.italy_power_172
+				_add(176, -2)  # 原版 data.italy_power_176
 				if italy != null and italy.内战中:
-					_add(134, -20)  # 原版 data[134]
+					_add(134, -20)  # 原版 data.italian_radical_left_power
 			else:
 				txt += TXT_R0_RIGHT
-				_add(175, -2)  # 原版 data[175]
-				_add(177, -1)  # 原版 data[177]
+				_add(175, -2)  # 原版 data.italy_power_175
+				_add(177, -1)  # 原版 data.italy_power_177
 			if portugal != null:
 				portugal.special -= 5
 			context["result_text"] = txt
@@ -91,14 +91,14 @@ func execute(context: Dictionary) -> void:
 			var txt2 := TXT_R2_HEAD
 			if left:
 				txt2 += TXT_R2_LEFT
-				_add(172, -2)  # 原版 data[172]
-				_add(176, -2)  # 原版 data[176]
+				_add(172, -2)  # 原版 data.italy_power_172
+				_add(176, -2)  # 原版 data.italy_power_176
 				if italy != null and italy.内战中:
-					_add(134, -20)  # 原版 data[134]
+					_add(134, -20)  # 原版 data.italian_radical_left_power
 			else:
 				txt2 += TXT_R2_RIGHT
-				_add(175, -2)  # 原版 data[175]
-				_add(177, -1)  # 原版 data[177]
+				_add(175, -2)  # 原版 data.italy_power_175
+				_add(177, -1)  # 原版 data.italy_power_177
 			_add(W.I_DIPLO, 10)
 			if portugal != null:
 				portugal.special -= 5
@@ -110,14 +110,14 @@ func execute(context: Dictionary) -> void:
 			var txt3 := TXT_R3_HEAD
 			if left:
 				txt3 += TXT_R3_LEFT
-				_add(172, -2)  # 原版 data[172]
-				_add(176, -2)  # 原版 data[176]
+				_add(172, -2)  # 原版 data.italy_power_172
+				_add(176, -2)  # 原版 data.italy_power_176
 				if int(ws.completed_event_ids.get("event_291", 0)) != 4:
-					_add(134, -20)  # 原版 data[134]
+					_add(134, -20)  # 原版 data.italian_radical_left_power
 			else:
 				txt3 += TXT_R3_RIGHT
-				_add(175, -2)  # 原版 data[175]
-				_add(177, -1)  # 原版 data[177]
+				_add(175, -2)  # 原版 data.italy_power_175
+				_add(177, -1)  # 原版 data.italy_power_177
 			_add_relation(EmpireData.USSR, -150)
 			_add_power(EmpireData.USSR, -15)
 			_add_relation(EmpireData.USA, 50)
@@ -126,7 +126,7 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = txt3
 		_:
 			context["result_text"] = TXT_R4
-			_add(134, 20)  # 原版 data[134]
+			_add(134, 20)  # 原版 data.italian_radical_left_power
 			if italy != null:
 				italy.level_of_development -= 10
 			_add(W.I_ARMY, -50)
@@ -142,7 +142,7 @@ func execute(context: Dictionary) -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

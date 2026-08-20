@@ -21,8 +21,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	_bind_world()
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
+	var d := world
+	var line := d.political_line if d.size() > W.I_POLITICAL_LINE else 3
 	var china := world.get_country_by_legacy_index(1)
 	var opt := event_def.options
 	if line < 2:
@@ -38,7 +38,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
-	if _res_ev("event_623") == 1 and d[W.I_WAR_SUPPORT] >= 700:
+	if _res_ev("event_623") == 1 and d.war_support >= 700:
 		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
@@ -107,10 +107,10 @@ func evaluate(world: WorldState) -> bool:
 	if mozambique == null or not (mozambique.parts.size() > 0 and mozambique.parts[0]):
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= W.I_YEAR or d.size() <= W.I_MONTH:
 		return false
-	return d[W.I_YEAR] >= 1984 or (d[W.I_YEAR] == 1983 and d[W.I_MONTH] >= 4)
+	return d.year >= 1984 or (d.year == 1983 and d.month >= 4)
 
 
 

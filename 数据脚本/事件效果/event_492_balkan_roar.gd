@@ -38,8 +38,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var bulgaria := world.get_country_by_legacy_index(6)
 	var china := world.get_country_by_legacy_index(1)
 	var albania := world.get_country_by_legacy_index(20)
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
-	var econ := world.数值表[W.I_ECON_SYSTEM] if world.数值表.size() > W.I_ECON_SYSTEM else 11
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
+	var econ := world.econ_system if world.size() > W.I_ECON_SYSTEM else 11
 	var mod6 := world.modifiers.size() > 6 and world.modifiers[6] != null and world.modifiers[6].is_active
 	var opt := event_def.options
 	if bulgaria != null and bulgaria.内战中 and world.is_socialism(china, true) and mod6:

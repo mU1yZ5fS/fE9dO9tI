@@ -41,10 +41,10 @@ func evaluate(world: WorldState) -> bool:
 	if world.completed_event_ids.has("event_418"):
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= W.I_YEAR:
 		return false
-	if not ((d[W.I_YEAR] >= 1981 and d[W.I_MONTH] >= 5) or d[W.I_YEAR] >= 1982):
+	if not ((d.year >= 1981 and d.month >= 5) or d.year >= 1982):
 		return false
 	if world.wars.size() > 28 and world.wars[28] != null and world.wars[28].is_going:
 		return false

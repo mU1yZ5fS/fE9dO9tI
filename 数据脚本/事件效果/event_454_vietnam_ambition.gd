@@ -29,8 +29,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		event_def.description = TXT_DESC_B
 	var line56 := 0
-	if world.数值表.size() > W.I_POLITICAL_LINE:
-		line56 = world.数值表[W.I_POLITICAL_LINE]
+	if world.size() > W.I_POLITICAL_LINE:
+		line56 = world.political_line
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
 	if res56 == 0 and line56 >= 2:
@@ -100,7 +100,7 @@ func _indochina_torg(v: bool, l: bool, k: bool) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_relation(empire_index: int, value: int) -> void:

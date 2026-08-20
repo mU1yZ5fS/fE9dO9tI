@@ -20,9 +20,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or event_def.options.size() < 4:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var line56 := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
-	var ideology := d[W.I_IDEOLOGY] if d.size() > W.I_IDEOLOGY else 0
+	var d := world
+	var line56 := d.political_line if d.size() > W.I_POLITICAL_LINE else 0
+	var ideology := d.ideology if d.size() > W.I_IDEOLOGY else 0
 	var france := world.get_country_by_legacy_index(21)
 	var opt := event_def.options
 	if ideology <= 3 and line56 <= 2:
@@ -102,7 +102,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_relation(empire_index: int, value: int) -> void:

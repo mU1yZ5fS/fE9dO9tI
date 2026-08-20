@@ -2,13 +2,13 @@ extends Control
 
 ## 结局场景主控 — 复刻原版 Ending.unity + EndingScript.cs + SwitchEndingScript.cs + EngingDLCController.cs 的交互。
 ## 权威出处：
-##   - 分流：EndingScript.cs Awake/DoneEnding L6-55（data[35]<=0 → GoodEnd + 轮播；data[35]>0 → BadEnding，箭头与 DLC 开关销毁）。
+##   - 分流：EndingScript.cs Awake/DoneEnding L6-55（data.ending_route<=0 → GoodEnd + 轮播；data.ending_route>0 → BadEnding，箭头与 DLC 开关销毁）。
 ##   - 本体轮播：EndingScript.cs OnMouseDown L1025-1042（number_of_e 0..17 循环，中文分支 L1043-3126）。
 ##   - DLC 面板：Ending.unity 三个 EngingDLCController（folder_name/max_pages/end1 数组）与 SwitchEndingScript.cs（num 0-3 切换面板）。
 ##   - 长文滚动：EndingScript.cs Update L4144-4194（UpArrow/DownArrow 移动 Name/Text），Godot 用 RichTextLabel 自带 VScrollBar。
 ##   - 折行：EndingScript.cs Text L4077-4121（'|'→换行，91 列空格处折行）→ Godot RichTextLabel autowrap_mode=3 + '|'→'\n'。
 ## 数据接口：结局内容_*.gd（见 工作记录/结局对齐规范.md 第2节）。
-## 批D 已收口：data[35] 事件触发点由 GameManager.queue_ending_after_event 统一接线；
+## 批D 已收口：data.ending_route 事件触发点由 GameManager.queue_ending_after_event 统一接线；
 ## achievements 结局成就仍为 注（见成就对齐台账）。
 
 const 胜利内容 := preload("res://场景/结局界面/结局内容_本体_胜利.gd")
@@ -56,15 +56,15 @@ func _ready() -> void:
 	DLC三按钮.pressed.connect(_on_面板按钮_pressed.bind(3))
 
 	if _bad_route > 0:
-		# 原作 DoneEnding：data[35]>0 → 箭头 Destroy、SwitchEndingScript Destroy，只显示指定坏结局。
+		# 原作 DoneEnding：data.ending_route>0 → 箭头 Destroy、SwitchEndingScript Destroy，只显示指定坏结局。
 		_show_bad_ending()
 	else:
-		# 原作 data[35]<=0：默认页 0 = GoodEnd 自动判定，左右箭头在 0..17 循环。
+		# 原作 data.ending_route<=0：默认页 0 = GoodEnd 自动判定，左右箭头在 0..17 循环。
 		_refresh_dlc_buttons()
 		_show_panel(0, 0)
 
 
-## 原作 GameState.data[35]>0 → BadEnding 分支；Godot current_ending_id 即 data[35]。
+## 原作 GameState.data.ending_route>0 → BadEnding 分支；Godot current_ending_id 即 data.ending_route。
 func _show_bad_ending() -> void:
 	左翻页.hide()
 	右翻页.hide()

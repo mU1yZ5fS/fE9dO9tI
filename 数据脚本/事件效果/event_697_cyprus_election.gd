@@ -14,7 +14,7 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 	_bind_world()
 	if event_def == null or p_ws == null or event_def.options.size() < 2:
 		return
-	var line := p_ws.数值表[W.I_POLITICAL_LINE] if p_ws.数值表.size() > W.I_POLITICAL_LINE else 0
+	var line := p_ws.political_line if p_ws.size() > W.I_POLITICAL_LINE else 0
 	var opt1 := event_def.options[1]
 	if line > 0 and line < 4:
 		opt1.text = TXT_697_OPT1
@@ -154,13 +154,13 @@ func _cyprus() -> CountryData:
 
 func _add_data(index: int, delta: int) -> void:
 	if index >= 0 and index < d.size():
-		d[index] += delta
+		d.add_data_by_index(index, delta)
 
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		d[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		d[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		d.usa_relations = ws.empires[EmpireData.USA].relations
+		d.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		d[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		d[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		d.ussr_relations = ws.empires[EmpireData.USSR].relations
+		d.soviet_influence = ws.empires[EmpireData.USSR].power

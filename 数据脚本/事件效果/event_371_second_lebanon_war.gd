@@ -41,11 +41,11 @@ func _prev_result(world: WorldState, event_id: String) -> int:
 
 func _budget_reserve(world: WorldState) -> int:
 	var total := 0
-	var dv := world.数值表
+	var dv := world
 	if dv.size() > W.I_BUDGET:
-		total += dv[W.I_BUDGET]
+		total += dv.budget
 	if dv.size() > W.I_RESERVE:
-		total += dv[W.I_RESERVE]
+		total += dv.reserve
 	return total
 
 

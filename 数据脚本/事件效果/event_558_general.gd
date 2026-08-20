@@ -15,7 +15,7 @@ const TXT_R3 := "新政府和戈尔巴乔夫政府间似乎也很难做出什么
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var dd := world.数值表
+	var dd := world
 	if dd.size() <= W.I_YEAR:
 		return false
 	if world.empires.size() <= EmpireData.USSR or world.empires[EmpireData.USSR] == null:
@@ -28,8 +28,8 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if ussr.leaders.size() <= 6 or ussr.leaders[6] == null or ussr.leaders[6].support >= 0:
 		return false
-	var y := dd[W.I_YEAR]
-	var mo := dd[W.I_MONTH]
+	var y := dd.year
+	var mo := dd.month
 	if (y >= 1985 and mo >= 5) or y >= 1986:
 		return true
 	return false
@@ -40,11 +40,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	if d[W.I_DIPLO] <= 900 and d[W.I_DIPLO] >= 500:
+	if d.diplomatic_reputation <= 900 and d.diplomatic_reputation >= 500:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if d[W.I_POLITICAL_LINE] != 0 and d[W.I_POLITICAL_LINE] != 4:
+	if d.political_line != 0 and d.political_line != 4:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

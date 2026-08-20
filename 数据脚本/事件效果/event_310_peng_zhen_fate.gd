@@ -35,7 +35,7 @@ func execute(context: Dictionary) -> void:
 				if p2 != null:
 					p2.name_first = 27
 					p2.name_last = 48
-					p2.age = d[W.I_YEAR] - 1902
+					p2.age = d.year - 1902
 					p2.trait_personality = GameConstants.PoliticianPersonality.MODERATE
 					p2.trait_background = GameConstants.PoliticianBackground.PARTY_CADRE
 					p2.trait_alignment = GameConstants.PoliticianAlignment.TOLERANT
@@ -61,7 +61,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

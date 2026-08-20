@@ -40,8 +40,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 2
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 2
 	event_def.title = T_662_0
 	event_def.description = T_662_1
 	var opt := event_def.options

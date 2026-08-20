@@ -10,10 +10,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##   events[0].activeSelf UI 互斥在 Godot 由 EventEngine.check_and_fire() 单事件进行中保证，不写入 .tres。
 ##
 ## 字段映射说明：
-##   data[107] 在本链中语义是「台湾路线标志」（Unity 复用阿富汗战争路线槽位），
-##   因此这里直接读写 ws.数值表[107]，不依赖 WorldState.I_AFGHAN_WAR_PATH 的误导性常量名；
+##   data.afghan_war_path 在本链中语义是「台湾路线标志」（Unity 复用阿富汗战争路线槽位），
+##   因此这里直接读写 ws.afghan_war_path，不依赖 WorldState.I_AFGHAN_WAR_PATH 的误导性常量名；
 ##   .tres 触发条件则使用 world_state 已登记的同槽键 "afghan_war_path"。
-##   data[64]→W.I_TAIWAN_STATUS；data[4/3/8/1/6/21]→W.I_THOUGHT_FREEDOM/
+##   data.taiwan_status→W.I_TAIWAN_STATUS；data.get_data_by_index(4/3/8/1/6/21)→W.I_THOUGHT_FREEDOM/
 ##   W.I_PEOPLE_SUPPORT/W.I_BUDGET/W.I_PARTY_SUPPORT/W.I_DIPLO/W.I_YEAR。
 ##   allcountries[38]→ws.get_country_by_legacy_index(38)（台湾）；
 ##   Gosstroy/SubGosstroy→government/sub_government；
@@ -26,7 +26,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   - Unity 的 doctr[] 是显示文案表；Godot 的政体/政策名由 派系界面 按数据索引实时
 ##     生成，因此 Event95 的 doctr 赋值不移植，只改数据索引。
 ##   - Unity 的 LeaderAsset/MoneyLevel/ServeRMB 在 Godot 无对应字段，跳过并注释。
-##   - Event96 的 data[17]++ 是 Unity 原码 bug（值未写回数组），Godot 按原行为保持 no-op。
+##   - Event96 的 data.press_policy++ 是 Unity 原码 bug（值未写回数组），Godot 按原行为保持 no-op。
 ##   - Event116 的 ILoveSuckCocks 是刷新中国地图 parts 的辅助方法，这里按主要分支近似移植。
 
 const POLITICAL_TRANSITION = preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
@@ -190,7 +190,7 @@ func _event_94_result_0(context: Dictionary) -> void:
 
 func _event_94_result_1(context: Dictionary) -> void:
 	# Event94.cs:80-185
-	if d[W.I_PEOPLE_SUPPORT] >= 600 and d[W.I_THOUGHT_FREEDOM] < 500:
+	if d.people_support >= 600 and d.thought_freedom < 500:
 		# 成功劝说（Event94.cs:82-88）
 		context["result_text"] = TXT94_R1_OK
 		_add_data({W.I_THOUGHT_FREEDOM: 250, W.I_PEOPLE_SUPPORT: -100,
@@ -201,8 +201,8 @@ func _event_94_result_1(context: Dictionary) -> void:
 		context["result_text"] = TXT94_R1_FAIL_A + leader + TXT94_R1_FAIL_B
 		_add_data({W.I_PEOPLE_SUPPORT: 90, W.I_DIPLO: -50,
 			W.I_MANPOWER: -350, W.I_THOUGHT_FREEDOM: 100})
-		# data[107] 在本链中为台湾路线标志（双用途槽位，勿依赖 I_AFGHAN_WAR_PATH 常量名）
-		ws.数值表[107] = 1
+		# data.afghan_war_path 在本链中为台湾路线标志（双用途槽位，勿依赖 I_AFGHAN_WAR_PATH 常量名）
+		ws.afghan_war_path = 1
 		_swap_leader_with_liberal()
 		# LeaderAsset=0 / MoneyLevel=0 / ServeRMB=false 在 Godot 无对应字段，跳过。
 		_set_modifier_active(65, false)
@@ -214,7 +214,7 @@ func _event_94_result_2(context: Dictionary) -> void:
 	context["result_text"] = TXT94_R2_A + leader + TXT94_R2_B
 	_add_data({W.I_PEOPLE_SUPPORT: 90, W.I_DIPLO: -50,
 		W.I_MANPOWER: -350, W.I_THOUGHT_FREEDOM: 100})
-	ws.数值表[107] = 1
+	ws.afghan_war_path = 1
 	# LeaderAsset=0 / MoneyLevel=0 / ServeRMB=false 在 Godot 无对应字段，跳过。
 	_swap_leader_with_liberal()
 
@@ -222,14 +222,14 @@ func _event_94_result_2(context: Dictionary) -> void:
 func _event_94_result_3(context: Dictionary) -> void:
 	# Event94.cs:281-351
 	context["result_text"] = _liberal_leader_name() + TXT94_R3
-	d[W.I_THOUGHT_FREEDOM] = 1000
+	d.thought_freedom = 1000
 	_swap_leader_with_liberal()
-	d[W.I_PARTY_SUPPORT] = 0
-	d[W.I_PEOPLE_SUPPORT] = 0
+	d.party_support = 0
+	d.people_support = 0
 	# LeaderAsset=0 / MoneyLevel=0 / ServeRMB=false 在 Godot 无对应字段，跳过。
-	# 原版 data[35]=1 → load_scene_after_click → SceneManager.LoadScene("Ending")
+	# 原版 data.ending_route=1 → load_scene_after_click → SceneManager.LoadScene("Ending")
 	# 项目语义映射：结局 1（人民的选择）。见 event_001/event_005 同类迁移。
-	d[W.I_ENDING_ROUTE] = 1
+	d.ending_route = 1
 	GameManager.queue_ending_after_event(1)
 
 
@@ -308,12 +308,12 @@ func _event_95_result_0(context: Dictionary) -> void:
 	context["result_text"] = TXT95_R0
 	_add_data({W.I_PARTY_SUPPORT: -150, W.I_PEOPLE_SUPPORT: 50,
 		W.I_MANPOWER: -50, W.I_THOUGHT_FREEDOM: 100, W.I_DIPLO: -30})
-	d[W.I_IDEOLOGY] = 3
-	d[W.I_ECON_SYSTEM] = 13
-	d[W.I_PARTY_SYSTEM] = 8
-	d[W.I_PRESS_POLICY] = 18
-	if d[W.I_DIPLO] > 699:
-		d[W.I_DIPLO] = 699
+	d.ideology = 3
+	d.econ_system = 13
+	d.party_system = 8
+	d.press_policy = 18
+	if d.diplomatic_reputation > 699:
+		d.diplomatic_reputation = 699
 	var china := ws.get_country_by_legacy_index(1)
 	if china != null:
 		china.government = GameConstants.Government.REFORMIST
@@ -327,26 +327,26 @@ func _event_95_result_1(context: Dictionary) -> void:
 	_add_data({W.I_PARTY_SUPPORT: -300, W.I_PEOPLE_SUPPORT: 80,
 		W.I_MANPOWER: -50, W.I_THOUGHT_FREEDOM: 50, W.I_DIPLO: -50})
 	# Event95.cs:123-130 经济体制钳制：>=13 → 13；<12 → 12；12 保持。
-	if d[W.I_ECON_SYSTEM] >= 13:
-		d[W.I_ECON_SYSTEM] = 13
-	if d[W.I_ECON_SYSTEM] < 12:
-		d[W.I_ECON_SYSTEM] = 12
-	if d[W.I_DIPLO] < 500:
-		d[W.I_DIPLO] = 700
-	if d[W.I_IDEOLOGY] < 4:
+	if d.econ_system >= 13:
+		d.econ_system = 13
+	if d.econ_system < 12:
+		d.econ_system = 12
+	if d.diplomatic_reputation < 500:
+		d.diplomatic_reputation = 700
+	if d.ideology < 4:
 		# Event95.cs:135-159
-		d[W.I_PARTY_SYSTEM] = 9
-		if d[W.I_PRESS_POLICY] < 19:
-			d[W.I_PRESS_POLICY] = 19
-		if d[W.I_RELIGION] < 26:
-			d[W.I_RELIGION] = 26
-		elif d[W.I_RELIGION] > 27:
-			d[W.I_RELIGION] = 27
-		if d[W.I_TERRITORY] < 23:
-			d[W.I_TERRITORY] += 1
-		if d[W.I_MIL_DOCTRINE] < 33:
-			d[W.I_MIL_DOCTRINE] += 1
-		d[W.I_IDEOLOGY] = 4
+		d.party_system = 9
+		if d.press_policy < 19:
+			d.press_policy = 19
+		if d.religion_policy < 26:
+			d.religion_policy = 26
+		elif d.religion_policy > 27:
+			d.religion_policy = 27
+		if d.territory_policy < 23:
+			d.territory_policy += 1
+		if d.military_doctrine < 33:
+			d.military_doctrine += 1
+		d.ideology = 4
 	var china := ws.get_country_by_legacy_index(1)
 	if china != null:
 		china.government = GameConstants.Government.LIBERAL
@@ -371,18 +371,18 @@ func _event_95_result_3(context: Dictionary) -> void:
 ## 在 Event95 option0 设定数据后调用 ChineseSubGosstroy（Gosstroy==2）。
 ## 移植 GameState.cs:4934-5070 中与该状态相关的分支；其余移植说明分支在 Godot 中恒不命中。
 func _chinese_sub_government_after_95_option0(china: CountryData) -> int:
-	# Unity 此时 data[14]=3, data[16]=13, data[6]<=699, data[15]=8, data[17]=18。
-	if d[W.I_IDEOLOGY] >= 2 and d[W.I_ECON_SYSTEM] >= 13 and d[W.I_DIPLO] <= 700 \
-			and d[W.I_PARTY_SYSTEM] >= 8 and d[W.I_PRESS_POLICY] >= 18 \
+	# Unity 此时 data.ideology=3, data.econ_system=13, data.diplomatic_reputation<=699, data.party_system=8, data.press_policy=18。
+	if d.ideology >= 2 and d.econ_system >= 13 and d.diplomatic_reputation <= 700 \
+			and d.party_system >= 8 and d.press_policy >= 18 \
 			and not china.has_tag("ovd"):
 		return 14  # 欧洲共产主义
-	if d[W.I_IDEOLOGY] <= 3 and d[W.I_ECON_SYSTEM] >= 12 and d[W.I_ECON_SYSTEM] <= 13 \
-			and d[W.I_DIPLO] >= 300 and d[W.I_TERRITORY] > 21 and d[W.I_WAR_SUPPORT] >= 700:
+	if d.ideology <= 3 and d.econ_system >= 12 and d.econ_system <= 13 \
+			and d.diplomatic_reputation >= 300 and d.territory_policy > 21 and d.war_support >= 700:
 		return 11  # 铁托主义
-	if d[W.I_IDEOLOGY] <= 3 and d[W.I_ECON_SYSTEM] <= 14 and d[W.I_DIPLO] >= 500 \
-			and d[W.I_ECON_SYSTEM] > 11 and d[W.I_WAR_SUPPORT] >= 400:
+	if d.ideology <= 3 and d.econ_system <= 14 and d.diplomatic_reputation >= 500 \
+			and d.econ_system > 11 and d.war_support >= 400:
 		return 8  # 左倾保守主义
-	if d[W.I_IDEOLOGY] <= 3 and d[W.I_ECON_SYSTEM] <= 13 and d[W.I_PRESS_POLICY] > 17:
+	if d.ideology <= 3 and d.econ_system <= 13 and d.press_policy > 17:
 		return 3  # 民主社会主义
 	return 15  # 政治实用主义
 
@@ -390,11 +390,11 @@ func _chinese_sub_government_after_95_option0(china: CountryData) -> int:
 ## 在 Event95 option1 设定数据后调用 ChineseSubGosstroy（Gosstroy==3）。
 ## 移植 GameState.cs:4934-5070 中 Gosstroy==3 分支。
 func _chinese_sub_government_after_95_option1(_china: CountryData) -> int:
-	if d[W.I_ECON_SYSTEM] <= 13 and d[W.I_DIPLO] >= 500:
+	if d.econ_system <= 13 and d.diplomatic_reputation >= 500:
 		return 4  # 社会民主主义
-	if (d[W.I_PARTY_SYSTEM] <= 8 and d[W.I_PRESS_POLICY] <= 18) or d[W.I_WAR_SUPPORT] >= 700:
+	if (d.party_system <= 8 and d.press_policy <= 18) or d.war_support >= 700:
 		return 12  # 新自由主义
-	if d[W.I_ECON_SYSTEM] > 13 and d[W.I_DIPLO] < 700:
+	if d.econ_system > 13 and d.diplomatic_reputation < 700:
 		return 6  # 自由主义
 	return 5  # 温和主义
 
@@ -418,39 +418,39 @@ func _event_96(option_index: int, context: Dictionary) -> void:
 func _event_96_result_0(context: Dictionary) -> void:
 	# Event96.cs:44-61
 	context["result_text"] = TXT96_R0
-	d[W.I_PARTY_SYSTEM] = 8
-	d[W.I_RELIGION] = 27
+	d.party_system = 8
+	d.religion_policy = 27
 	_add_data({W.I_MANPOWER: -80})
-	# Event96.cs:50-57 data[17]++ 是 Unity 原码 bug（算出的新值未写回数组），按原行为保持 no-op。
+	# Event96.cs:50-57 data.press_policy++ 是 Unity 原码 bug（算出的新值未写回数组），按原行为保持 no-op。
 	_add_data({W.I_DIPLO: -10, W.I_PEOPLE_SUPPORT: 30, W.I_THOUGHT_FREEDOM: 80})
 
 
 func _event_96_result_1(context: Dictionary) -> void:
 	# Event96.cs:62-71
 	context["result_text"] = TXT96_R1
-	d[W.I_PARTY_SYSTEM] = 9
+	d.party_system = 9
 	_add_data({W.I_PEOPLE_SUPPORT: 50, W.I_MANPOWER: -50})
-	d[W.I_RELIGION] = 27
+	d.religion_policy = 27
 	_add_data({W.I_THOUGHT_FREEDOM: 80, W.I_DIPLO: -20})
 
 
 func _event_96_result_2(context: Dictionary) -> void:
 	# Event96.cs:72-88
 	context["result_text"] = TXT96_R2
-	d[W.I_PARTY_SYSTEM] = 9
+	d.party_system = 9
 	_add_data({W.I_PEOPLE_SUPPORT: 50, W.I_MANPOWER: -70})
-	# Event96.cs:78-85 data[17]++ 同样是未写回 no-op，见 result_0 注释。
+	# Event96.cs:78-85 data.press_policy++ 同样是未写回 no-op，见 result_0 注释。
 	_add_data({W.I_THOUGHT_FREEDOM: 50, W.I_DIPLO: -20})
 
 
 func _event_96_result_3(context: Dictionary) -> void:
 	# Event96.cs:89-106
 	context["result_text"] = TXT96_R3
-	d[W.I_PARTY_SYSTEM] = 9
+	d.party_system = 9
 	_add_data({W.I_PEOPLE_SUPPORT: 80, W.I_MANPOWER: -120})
-	# Event96.cs:95-102 data[17]++ 同样是未写回 no-op，见 result_0 注释。
+	# Event96.cs:95-102 data.press_policy++ 同样是未写回 no-op，见 result_0 注释。
 	_add_data({W.I_THOUGHT_FREEDOM: 120, W.I_DIPLO: -40})
-	d[W.I_RELIGION] = 27
+	d.religion_policy = 27
 
 
 # ============================================================================
@@ -478,7 +478,7 @@ func _event_116_result_1(context: Dictionary) -> void:
 		taiwan.set_tag("亲中", true)  # 原版 proprc = true
 		taiwan.government = GameConstants.Government.LIBERAL         # 原版 Gosstroy = 3
 		taiwan.sub_government = GameConstants.SubGovernment.MODERATE     # 原版 SubGosstroy = 5
-	d[W.I_TAIWAN_STATUS] = 2
+	d.taiwan_status = 2
 	var china := ws.get_country_by_legacy_index(1)
 	if china != null:
 		_china_map_parts(china)  # 原版 allcountries[1].ILoveSuckCocks() 近似
@@ -496,7 +496,7 @@ func _event_116_result_2(context: Dictionary) -> void:
 		taiwan.set_tag("对华贸易", true)  # 原版 Torg = true
 		taiwan.government = GameConstants.Government.LIBERAL            # 原版 Gosstroy = 3
 		taiwan.sub_government = GameConstants.SubGovernment.MODERATE        # 原版 SubGosstroy = 5
-	d[W.I_TAIWAN_STATUS] = 1
+	d.taiwan_status = 1
 
 
 ## Event116.cs:65 allcountries[1].ILoveSuckCocks()。
@@ -505,9 +505,9 @@ func _event_116_result_2(context: Dictionary) -> void:
 func _china_map_parts(china: CountryData) -> void:
 	if china.parts.size() < 16:
 		china.parts.resize(16)
-	var d62 := d[W.I_ARUNACHAL_STATUS] if d.size() > W.I_ARUNACHAL_STATUS else 0
-	var d64 := d[W.I_TAIWAN_STATUS] if d.size() > W.I_TAIWAN_STATUS else 0
-	var d130 := d[130] if d.size() > 130 else 0
+	var d62 := d.arunachal_status if d.size() > W.I_ARUNACHAL_STATUS else 0
+	var d64 := d.taiwan_status if d.size() > W.I_TAIWAN_STATUS else 0
+	var d130 := d.mongolia_china_route if d.size() > 130 else 0
 	var dec7 := false
 	if ws.decisions != null and ws.decisions.completed.size() > 7:
 		dec7 = ws.decisions.completed[7]
@@ -570,7 +570,7 @@ func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
 		if index >= 0 and index < d.size():
-			d[index] += int(changes[raw_index])
+			d.add_data_by_index(index, int(changes[raw_index]))
 
 
 func _set_modifier_active(modifier_index: int, active: bool) -> void:
@@ -594,8 +594,8 @@ func _add_empire_relation(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		d[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		d[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		d.usa_relations = ws.empires[EmpireData.USA].relations
+		d.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		d[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		d[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		d.ussr_relations = ws.empires[EmpireData.USSR].relations
+		d.soviet_influence = ws.empires[EmpireData.USSR].power

@@ -21,7 +21,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	_enable(opt[1], event_def.options[1].text)
-	if (usa != null and usa.has_tag("对华贸易")) or world.数值表[W.I_TERRITORY] >= 22:
+	if (usa != null and usa.has_tag("对华贸易")) or world.territory_policy >= 22:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
@@ -63,7 +63,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USSR, -250)
 			_add(W.I_INFLUENCE, 5)
 			_add_power(EmpireData.USSR, -25)
-			if d[W.I_RELIGION] < 27:
+			if d.religion_policy < 27:
 				_add(W.I_RELIGION, 2)
 			context["result_text"] = TXT_R1
 		2:

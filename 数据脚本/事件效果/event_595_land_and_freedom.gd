@@ -27,8 +27,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	event_def.description = _make_desc(world)
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var kenya := world.get_country_by_legacy_index(119)
 	if line < 2 and kenya != null and kenya.内战中:
 		_enable(event_def.options[0], event_def.options[0].text)

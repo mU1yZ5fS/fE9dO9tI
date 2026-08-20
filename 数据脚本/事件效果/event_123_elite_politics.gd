@@ -37,16 +37,16 @@ func execute(context: Dictionary) -> void:
 			_set_modifier_active(25, true)
 			_add(W.I_INFLUENCE, -5)
 			_add_power(EmpireData.USSR, -25)
-			if d[W.I_RELIGION] < 28:
-				d[W.I_RELIGION] = 28
+			if d.religion_policy < 28:
+				d.religion_policy = 28
 			context["result_text"] = TXT_R1
 		2:
 			_add(W.I_PARTY_SUPPORT, -50)
 			_add(W.I_PEOPLE_SUPPORT, -250)
 			_add(W.I_THOUGHT_FREEDOM, -25)
 			_set_modifier_active(26, true)
-			if d[W.I_PRESS_POLICY] < 16:
-				d[W.I_PRESS_POLICY] = 16
+			if d.press_policy < 16:
+				d.press_policy = 16
 			context["result_text"] = TXT_R2
 		3:
 			_add(W.I_PARTY_SUPPORT, -250)

@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && 年>=1984 && event_done[110]。
 ## 差异：
 ##  - 文案与选项按 event_done[494] && resultOfEvents[494]==0 双分支（prepare/结果）。
-##  - r2 的 load_scene_after_click → Ending6：Godot 设 d[I_ENDING_ROUTE]=6。
+##  - r2 的 load_scene_after_click → Ending6：Godot 设 d.ending_route=6。
 ##  - relres → global flag；modifies[3]/[11] → modifiers 槽 active。
 ##  - data12/13/68 → 工业/农业/服务业产值。
 
@@ -35,9 +35,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var is_494 := _is_494_route(world)
 	event_def.description = TXT_DESC_494 if is_494 else TXT_DESC_OTHER
 
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
 	var coal := _coalition_percent(world)
 	var ussr_rel := world.empires[EmpireData.USSR].relations if world.empires.size() > EmpireData.USSR and world.empires[EmpireData.USSR] != null else 0
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
@@ -100,7 +100,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PEOPLE_SUPPORT, -300)
 			_add(W.I_THOUGHT_FREEDOM, 500)
 			if d.size() > W.I_ECON_SYSTEM:
-				d[W.I_ECON_SYSTEM] = 10
+				d.econ_system = 10
 			_add(W.I_LIVING, -100)
 			_add(W.I_INDUSTRY, -200)
 			_add(W.I_AGRICULTURE, -200)
@@ -108,12 +108,12 @@ func execute(context: Dictionary) -> void:
 			if ws.modifiers.size() > 11 and ws.modifiers[11] != null:
 				ws.modifiers[11].is_active = false
 			if d.size() > W.I_PARTY_SUPPORT:
-				d[W.I_PARTY_SUPPORT] = 0
+				d.party_support = 0
 			if d.size() > W.I_PEOPLE_SUPPORT:
-				d[W.I_PEOPLE_SUPPORT] = 0
+				d.people_support = 0
 			if d.size() > W.I_ENDING_ROUTE:
-				d[W.I_ENDING_ROUTE] = 6
-			# 原 Event112.cs:164：data[35]=6 + load_scene_after_click。
+				d.ending_route = 6
+			# 原 Event112.cs:164：data.ending_route=6 + load_scene_after_click。
 			GameManager.queue_ending_after_event(6)
 			context["result_text"] = TXT_R2
 
@@ -125,8 +125,8 @@ func _is_494_route(world: WorldState) -> bool:
 
 
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0

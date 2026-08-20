@@ -14,7 +14,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	if d[W.I_POLITICAL_LINE] < 2:
+	if d.political_line < 2:
 		_enable(event_def.options[0], event_def.options[0].text)
 	else:
 		_disable(event_def.options[0], TXT_OPT0_DIS)

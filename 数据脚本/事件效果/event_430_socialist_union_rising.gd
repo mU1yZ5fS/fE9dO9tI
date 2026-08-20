@@ -21,7 +21,7 @@ const TXT_APPEND_UK := "刚刚赢得大选的英国工党政府看到了新兴�
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

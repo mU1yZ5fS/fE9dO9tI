@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - VasilyisGay → ws.get_flag("VasilyisGay")；
 ##  - 原版 iron_and_blood 成就 Set(122) 已接 Achievements；
-##  - 原版 data[172]..data[182] 为 raw index，直访并注释；
+##  - 原版 data.italy_power_172..data.short_sword_power 为 raw index，直访并注释；
 ##  - 原版 allcountries[85].inflCh → influence_china。
 
 const TXT_DESC_V := "阿尔多·莫罗领导下新党运动的崛起事实上使1976年以来的议会格局彻底过时（相当数量的天主教民主党政客倒戈加入“民主替代”，可议会席位仍根据天民党分离前的模式进行编排。事实上无法反映民意），并进一步加剧了政府的合法性危机。不乏有意大利人调侃国内是“少数派议会加更少数派政府”。而试图在两大党间达成“历史性妥协”计划的破产和天主教民主党政权在今年初就欧洲一体化与国有企业改革等问题上的一言堂做法耗尽了意大利共产党的最后耐心。终于宣告了跛脚前进的“民族团结”阶段终结：1月31日，由于共产党重回反对派阵营，作为“弃权政府”领导人的朱利奥·安德烈奥蒂宣布辞职；而随后的数月内也未能产生一个足以得到广泛支持与普遍信任的政府组成模式：总统亚历山德罗·佩尔蒂尼即便是尝试将意大利民主社会党、意大利共和党带入联盟，也无济于事。根据恩里科·贝林格在1979年3月举行的共产党第十五次代表大会上传达的精神，党员应坚决拒斥一个没有共产党人参与的政府，并在回归反对派阵营的同时事实上奉行“民主替代”路线。至此将另起炉灶的计划上升为全党的统一行动（最终也促成了大联盟政府被否决）。针对这一局势，总统决定解散提前解散众议院并举行大选，并试图寻找新的组合可能。而“民主替代”与意大利社会党均对此渴望已久：前者迫不及待地想要在选举中测试自身实力，并完成对老朋友天民党的复仇；后者则从共产党内的变节分子与新方针中汲取力量，并通过同莫罗的联盟逐步站稳脚跟。这两个中左翼改革派政党希望动摇已延续30年的两党霸权的传统体制，将意大利共产党与天主教民主党拉下马。不过，直到结果水落石出前，都还没法完全下定论。而这就得看我们的布局能在多大程度上影响结果了。"
@@ -59,32 +59,32 @@ func execute(context: Dictionary) -> void:
 	var portugal := ws.get_country_by_legacy_index(87)
 	var opt := int(context.get("option_index", -1))
 	if _mod_active(3):
-		_add(176, -1)  # 原版 data[176]
+		_add(176, -1)  # 原版 data.italy_power_176
 	if italy != null and italy.has_tag("nato"):
-		_add(175, 1)  # 原版 data[175]
+		_add(175, 1)  # 原版 data.italy_power_175
 	if ws.empires[EmpireData.USSR].power < ws.empires[EmpireData.USA].power:
-		_add(175, 2)  # 原版 data[175]
+		_add(175, 2)  # 原版 data.italy_power_175
 	else:
-		_add(176, 1)  # 原版 data[176]
+		_add(176, 1)  # 原版 data.italy_power_176
 	if portugal != null and portugal.government == GameConstants.Government.LIBERAL:
-		_add(175, 1)  # 原版 data[175]
+		_add(175, 1)  # 原版 data.italy_power_175
 	if italy != null and italy.level_of_development >= 60:
-		_add(175, 2)  # 原版 data[175]
+		_add(175, 2)  # 原版 data.italy_power_175
 	if italy != null and italy.level_of_development <= 60 and italy.level_of_development >= 20:
-		_add(176, 2)  # 原版 data[176]
-	if _d(134) < 60 and _d(134) >= 20:  # 原版 data[134]
-		_add(176, 1)  # 原版 data[176]
-	elif _d(134) < 100 and _d(134) >= 60:  # 原版 data[134]
-		_add(176, -3)  # 原版 data[176]
-	elif _d(134) >= 100:  # 原版 data[134]
-		_add(176, -999)  # 原版 data[176]
-	if _d(177) > 1:  # 原版 data[177]
-		_add(176, -1)  # 原版 data[176]
+		_add(176, 2)  # 原版 data.italy_power_176
+	if _d(134) < 60 and _d(134) >= 20:  # 原版 data.italian_radical_left_power
+		_add(176, 1)  # 原版 data.italy_power_176
+	elif _d(134) < 100 and _d(134) >= 60:  # 原版 data.italian_radical_left_power
+		_add(176, -3)  # 原版 data.italy_power_176
+	elif _d(134) >= 100:  # 原版 data.italian_radical_left_power
+		_add(176, -999)  # 原版 data.italy_power_176
+	if _d(177) > 1:  # 原版 data.italy_power_177
+		_add(176, -1)  # 原版 data.italy_power_176
 	var txt := ""
 	match opt:
 		0:
 			txt = TXT_R0
-			_add(175, 1)  # 原版 data[175]
+			_add(175, 1)  # 原版 data.italy_power_175
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGRICULTURE, 10)
 			_add(W.I_INDUSTRY, 10)
@@ -93,27 +93,27 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_INDUSTRY, 5)
 		1:
 			txt = TXT_R1
-			_add(176, 1)  # 原版 data[176]
-			_add(180, 1)  # 原版 data[180]
-			_add(181, 1)  # 原版 data[181]
+			_add(176, 1)  # 原版 data.italy_power_176
+			_add(180, 1)  # 原版 data.italy_power_180
+			_add(181, 1)  # 原版 data.italy_power_181
 			_add(W.I_BUDGET, -50)
 		2:
 			txt = TXT_R2
 			if italy != null and (italy.内战中 or italy.政变中):
-				_add(134, 10)  # 原版 data[134]
-			_add(182, 2)  # 原版 data[182]
+				_add(134, 10)  # 原版 data.italian_radical_left_power
+			_add(182, 2)  # 原版 data.short_sword_power
 			if int(ws.completed_event_ids.get("event_291", 0)) < 3:
 				var r291 := int(ws.completed_event_ids.get("event_291", 0))
-				_add(172 + r291, 1)  # 原版 data[172]
+				_add(172 + r291, 1)  # 原版 data.italy_power_172
 				if r291 == 0:
-					_add(172, 1)  # 原版 data[172]
+					_add(172, 1)  # 原版 data.italy_power_172
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
 			if italy != null:
 				italy.level_of_development -= 5
 		3:
 			txt = TXT_R3
-			_add(177, 1)  # 原版 data[177]
+			_add(177, 1)  # 原版 data.italy_power_177
 			_add(W.I_BUDGET, -50)
 		_:
 			txt = ""
@@ -122,13 +122,13 @@ func execute(context: Dictionary) -> void:
 		Achievements.set_achievement(122)
 		txt += TXT_R_V
 		_add_power(EmpireData.USA, -20)
-		_add(172, 3)  # 原版 data[172]
-		_add(173, 6)  # 原版 data[173]
-	elif _d(175) >= _d(176):  # 原版 data[175,176]
+		_add(172, 3)  # 原版 data.italy_power_172
+		_add(173, 6)  # 原版 data.italy_power_173
+	elif _d(175) >= _d(176):  # 原版 data.get_data_by_index(175,176)
 		txt += TXT_R_DC
 		_add_power(EmpireData.USA, 25)
-		_add(172, 1)  # 原版 data[172]
-		_add(173, 2)  # 原版 data[173]
+		_add(172, 1)  # 原版 data.italy_power_172
+		_add(173, 2)  # 原版 data.italy_power_173
 	else:
 		txt += TXT_R_PCI
 		_add_power(EmpireData.USA, -10)
@@ -150,7 +150,7 @@ func _mod_active(idx: int) -> bool:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

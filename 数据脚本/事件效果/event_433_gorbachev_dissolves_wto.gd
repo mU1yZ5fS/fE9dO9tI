@@ -14,7 +14,7 @@ const TXT_IDX_1495 := "戈尔巴乔夫的“姿态”，被苏联共产党内的
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

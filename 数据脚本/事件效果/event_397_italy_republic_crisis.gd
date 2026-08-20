@@ -60,11 +60,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var data := world.数值表
+	var data := world
 	var opt := event_def.options
-	var budget := data[W.I_BUDGET] if data.size() > W.I_BUDGET else 0
-	var reserve := data[W.I_RESERVE] if data.size() > W.I_RESERVE else 0
-	var agents := data[W.I_AGENTS] if data.size() > W.I_AGENTS else 0
+	var budget := data.budget if data.size() > W.I_BUDGET else 0
+	var reserve := data.reserve if data.size() > W.I_RESERVE else 0
+	var agents := data.agents if data.size() > W.I_AGENTS else 0
 	if budget + reserve >= 100 and agents >= 100:
 		_enable(opt[0], TXT_OPT0[0])
 		_enable(opt[1], TXT_OPT1[0])
@@ -142,5 +142,5 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0

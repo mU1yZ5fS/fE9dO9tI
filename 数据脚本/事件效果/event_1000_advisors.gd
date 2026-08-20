@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event1000.cs：开张圣听（民主化后的舆论来信展示事件，纯文案）。
-## 触发：TimeScript.cs:10027-10032 —— data[15] >= 8 且 !event_done[1000]
+## 触发：TimeScript.cs:10027-10032 —— data.party_system >= 8 且 !event_done[1000]
 ## （fire_only_once 由 EventDef 统一负责）。
 ## 差异记录：
 ##  - 原版 result 0/1/2 三个选项均无效果、同一结果文案；原样保留三分支。

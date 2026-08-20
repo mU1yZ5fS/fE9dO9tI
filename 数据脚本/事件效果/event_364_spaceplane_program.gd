@@ -41,7 +41,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_SCIENCE, 25)
 			_add(W.I_BUDGET, -50)
 			if d.size() > 143:
-				d[143] += 5  # 原 data[143]（无 I_ 常量）
+				d.oil_price += 5  # 原 data.oil_price（无 I_ 常量）
 			context["result_text"] = TXT_R0
 		1:
 			_add(W.I_SCIENCE, 100)
@@ -60,11 +60,11 @@ func _prev_result(world: WorldState, event_id: String) -> int:
 
 func _budget_reserve(world: WorldState) -> int:
 	var total := 0
-	var dv := world.数值表
+	var dv := world
 	if dv.size() > W.I_BUDGET:
-		total += dv[W.I_BUDGET]
+		total += dv.budget
 	if dv.size() > W.I_RESERVE:
-		total += dv[W.I_RESERVE]
+		total += dv.reserve
 	return total
 
 

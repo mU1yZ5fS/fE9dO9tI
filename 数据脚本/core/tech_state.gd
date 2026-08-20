@@ -12,7 +12,7 @@ const TECH_COUNT: int = 34
 ## 完成通知是一次性运行时状态；用 -1 表示本轮无完成项。
 @export var completed_this_tick: int = -1
 
-# 每个科技的预算花费（启动时一次性扣除，data[8] -= money）
+# 每个科技的预算花费（启动时一次性扣除，data.budget -= money）
 # [0-26] 出处 Science.unity 科技组件 money 字段；[27-33] 航天科技（DLC02 内容，按项目惯例无条件开放）
 const TECH_MONEY: Array[int] = [
 	3, 3, 5, 5, 5, 5, 7, 9, 7,
@@ -108,7 +108,7 @@ func can_start(index: int) -> bool:
 
 
 ## 启动研究 — 移植自 Science_Script.OnMouseDown:234-244
-## science_pool = data[11], year = data[21], month = data[20]
+## science_pool = data.science, year = data.year, month = data.month
 ## 原版超前惩罚（Science_Script.cs:237-238）：
 ##   science_time -= days * (data - year) - month * (days / 12)
 ## science_time 允许为负（负进度=额外欠账），monthly_advance 逐月回填。
@@ -131,7 +131,7 @@ func start_research(index: int, science_pool: int, year: int, month: int) -> int
 
 
 ## 月度推进 — 移植自 TimeScript 5458-5574行
-## science_pool = data[11]，返回消耗后剩余的 data[11]
+## science_pool = data.science，返回消耗后剩余的 data.science
 func monthly_advance(science_pool: int) -> int:
 	if active_slot < 0 or active_slot >= TECH_COUNT:
 		return science_pool

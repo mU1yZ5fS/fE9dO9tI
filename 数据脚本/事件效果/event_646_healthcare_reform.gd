@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event646.cs：济世悬壶，着手成春（医疗体制路线，三选项）。
-## 触发：ReqEventsDLC02.cs:99-101 —— data[21]>=1979，即 DATE_AFTER 1979.1.1。
+## 触发：ReqEventsDLC02.cs:99-101 —— data.year>=1979，即 DATE_AFTER 1979.1.1。
 ## 差异：原版结果页后续重写 old_modify_desc[2]（服务业修正说明）；Godot ModifierCatalog
 ##   静态维护 modifier_catalog.gd，沿用 event_668 既有约定不在此处改写。
 

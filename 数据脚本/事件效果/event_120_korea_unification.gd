@@ -208,21 +208,21 @@ func _join_economic_alliance(c: CountryData) -> void:
 
 
 func _res_at_least(world: WorldState, index: int, threshold: int) -> bool:
-	return world.数值表.size() > index and world.数值表[index] >= threshold
+	return world.size() > index and world.get_data_by_index(index) >= threshold
 
 
 func _res_sum_at_least(world: WorldState, a: int, b: int, threshold: int) -> bool:
 	var sum := 0
-	if world.数值表.size() > a:
-		sum += world.数值表[a]
-	if world.数值表.size() > b:
-		sum += world.数值表[b]
+	if world.size() > a:
+		sum += world.get_data_by_index(a)
+	if world.size() > b:
+		sum += world.get_data_by_index(b)
 	return sum >= threshold
 
 
 func _data_value(world: WorldState, index: int) -> int:
-	if world.数值表.size() > index:
-		return world.数值表[index]
+	if world.size() > index:
+		return world.get_data_by_index(index)
 	return 0
 
 

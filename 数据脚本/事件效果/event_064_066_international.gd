@@ -100,7 +100,7 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 	if event_def == null or p_ws == null:
 		return
 	ws = p_ws
-	d = p_ws.数值表
+	d = p_ws
 	match event_def.event_id:
 		"pan_arabism":
 			_prepare_64(event_def)
@@ -130,8 +130,8 @@ func _event_64(option_index: int, context: Dictionary) -> void:
 		_add_empire_relation(EmpireData.USA, -100)
 		_add_empire_power(EmpireData.USSR, -20)
 		ws.influence_prc += 10
-		if ws.数值表.size() > 143:
-			ws.数值表[143] += 5
+		if ws.size() > 143:
+			ws.oil_price += 5
 		_add_empire_power(EmpireData.USA, -20)
 		var oar := [30, 13, 14, 35]
 		for idx in oar:
@@ -228,12 +228,12 @@ func _event_65(option_index: int, context: Dictionary) -> void:
 		4:
 			_add_data({W.I_PARTY_SUPPORT: 200, W.I_PEOPLE_SUPPORT: 50,
 				W.I_INFLUENCE: 20, W.I_BUDGET: -100})
-			# 原版 Event65.cs result4：data[8] -= 100（10 百万预算，与选项文案一致）；
+			# 原版 Event65.cs result4：data.budget -= 100（10 百万预算，与选项文案一致）；
 			# 旧值 -200 会多扣 10 百万，已修正。
 			_add_empire_relation(EmpireData.USA, -50)
 			_add_empire_relation(EmpireData.USSR, -50)
 			var r4 := TXT_65_R4A
-			var reputation := int(ws.数值表[W.I_DIPLO])
+			var reputation := int(ws.diplomatic_reputation)
 			if reputation < 65:
 				r4 += TXT_65_R4_GOOD
 			elif reputation < 85:
@@ -283,8 +283,8 @@ func _event_66(option_index: int, context: Dictionary) -> void:
 func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
-		if index >= 0 and index < ws.数值表.size():
-			ws.数值表[index] += int(changes[raw_index])
+		if index >= 0 and index < ws.size():
+			ws.add_data_by_index(index, int(changes[raw_index]))
 
 
 func _change_politicians(changes: Dictionary) -> void:
@@ -314,11 +314,11 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		ws.数值表[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		ws.数值表[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		ws.usa_relations = ws.empires[EmpireData.USA].relations
+		ws.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		ws.数值表[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		ws.ussr_relations = ws.empires[EmpireData.USSR].relations
+		ws.soviet_influence = ws.empires[EmpireData.USSR].power
 
 func _prepare_64(event_def: EventDef) -> void:
 	if event_def.options.size() < 2:
@@ -334,7 +334,7 @@ func _prepare_64(event_def: EventDef) -> void:
 	event_def.title = TXT_64_TITLE
 	event_def.description = TXT_64_DESC
 	_enable(opts[0], TXT_64_OPT0)
-	var agents := int(ws.数值表[W.I_AGENTS])
+	var agents := int(ws.agents)
 	var egypt_prosov := egypt != null and egypt.has_tag("亲苏")
 	if agents < 50:
 		_disable(opts[1], TXT_64_OPT1_DIS_AGENTS)
@@ -354,8 +354,8 @@ func _prepare_65(event_def: EventDef) -> void:
 	event_def.description = TXT_65_DESC
 	if ws.factions.size() > 0 and ws.factions[0] != null and ws.factions[0].is_enabled:
 		event_def.description += TXT_65_DESC_GANEFO
-	var line := int(ws.数值表[W.I_POLITICAL_LINE])
-	var ps := int(ws.数值表[W.I_PARTY_SYSTEM])
+	var line := int(ws.political_line)
+	var ps := int(ws.party_system)
 	var summa := _summa_3_2()
 	var cond_line_below3 := (line < 3 and ps < 8) or (summa > 66 and ps > 7)
 	var cond_line_1_2 := (line > 0 and line < 3 and ps < 8) or (summa > 66 and ps > 7)
@@ -364,8 +364,8 @@ func _prepare_65(event_def: EventDef) -> void:
 	var china := ws.get_country_by_legacy_index(1)
 	if china != null:
 		china_sev = china.has_tag("sev")
-	var stage_zero := int(ws.数值表[W.I_REFORM_STAGE]) == 0
-	var stage_positive := int(ws.数值表[W.I_REFORM_STAGE]) > 0
+	var stage_zero := int(ws.reform_stage) == 0
+	var stage_positive := int(ws.reform_stage) > 0
 	if (stage_zero and cond_line_below3) or china_sev:
 		_enable(opts[0], TXT_65_OPT0)
 	else:
@@ -403,8 +403,8 @@ func _prepare_66(event_def: EventDef) -> void:
 	if albania != null and albania.has_tag("亲中"):
 		event_def.description += TXT_66_DESC_ALB
 	_enable(opts[0], TXT_66_OPT0)
-	var line := int(ws.数值表[W.I_POLITICAL_LINE])
-	var ps := int(ws.数值表[W.I_PARTY_SYSTEM])
+	var line := int(ws.political_line)
+	var ps := int(ws.party_system)
 	var summa := _summa_3_2()
 	var china_sev := false
 	var china := ws.get_country_by_legacy_index(1)
@@ -425,7 +425,7 @@ func _prepare_66(event_def: EventDef) -> void:
 
 
 func _summa_3_2() -> int:
-	if ws.数值表[W.I_PARTY_SYSTEM] <= 7:
+	if ws.party_system <= 7:
 		return 0
 	var num := 0
 	var den := 0

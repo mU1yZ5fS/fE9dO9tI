@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event410.cs：苏联对我国内政不满（六选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1296 —— 复杂条件用 evaluate（IsAuthoritarianism 无 ExprNode）。
-## 差异：politic.traits[0]→trait_personality；data[139/140] raw index。
+## 差异：politic.traits[0]→trait_personality；data.get_data_by_index(139/140) raw index。
 
 const TXT_TITLE := [
 	"苏联对我国内政不满",
@@ -96,7 +96,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 6:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var opt := event_def.options
 	var pick := 0 if (randi() % 2 == 0) else 1
 	event_def.description = _fmt(TXT_IDX_1245, [TXT_IDX_1246 if pick == 0 else TXT_IDX_1247])
@@ -104,12 +104,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[0], TXT_IDX_1249)
 	else:
 		_enable(opt[0], TXT_IDX_1249)
-	if d[W.I_ARMY] >= 350:
+	if d.army >= 350:
 		_enable(opt[1], _fmt(TXT_IDX_1250, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214]))
 	else:
 		_disable(opt[1], _fmt(TXT_IDX_776, ["35"]))
 	_enable(opt[2], _fmt(TXT_IDX_1251, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214]))
-	if d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0) >= 150:
+	if d.budget + (d.reserve if d.size() > W.I_RESERVE else 0) >= 150:
 		_enable(opt[3], _fmt(TXT_IDX_1252, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214]))
 	else:
 		_disable(opt[3], _fmt(TXT_IDX_566, ["15"]))
@@ -173,12 +173,12 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0
 
 func _raw_in(world: WorldState, i: int) -> int:
-	if world.数值表.size() > i:
-		return world.数值表[i]
+	if world.size() > i:
+		return world.get_data_by_index(i)
 	return 0
 
 func _loyalty_sov() -> void:

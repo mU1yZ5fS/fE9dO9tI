@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event438.cs：脆弱的革命（2选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:37-40 —— modifies[3] 且 modifies[6]，且（意识形态>=4 或 经济体制>=14 或 舆论政策>=19 或 宗教>26 或 政党制度>=8），且（!event_444 或 resultOfEvents[444]!=0），且 !event_503（.tres ExprNode 表达）。
-## 差异：描述由 prepare 按 data[15]/[16]/[17]/[50] 动态拼接；politic.traits[0]→trait_personality；
+## 差异：描述由 prepare 按 data.party_system/[16]/[17]/[50] 动态拼接；politic.traits[0]→trait_personality；
 ##   loyality→loyalty；modifies[3]→ws.modifiers[3].is_active。
 
 
@@ -21,15 +21,15 @@ const TXT_R1 := "我们做出了一些政策上的调整，让文化大革命得
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null:
 		return
-	var data := world.数值表
+	var data := world
 	var desc := TXT_DESC_BASE
-	if data.size() > W.I_PARTY_SYSTEM and data[W.I_PARTY_SYSTEM] >= 8:
+	if data.size() > W.I_PARTY_SYSTEM and data.party_system >= 8:
 		desc += TXT_DESC_PARTY
-	if data.size() > W.I_ECON_SYSTEM and data[W.I_ECON_SYSTEM] >= 14:
+	if data.size() > W.I_ECON_SYSTEM and data.econ_system >= 14:
 		desc += TXT_DESC_ECON
-	if data.size() > W.I_PRESS_POLICY and data[W.I_PRESS_POLICY] >= 19:
+	if data.size() > W.I_PRESS_POLICY and data.press_policy >= 19:
 		desc += TXT_DESC_SPEECH
-	if data.size() > W.I_RELIGION and data[W.I_RELIGION] >= 27:
+	if data.size() > W.I_RELIGION and data.religion_policy >= 27:
 		desc += TXT_DESC_RELIGION
 	desc += TXT_DESC_TAIL
 	event_def.description = desc
@@ -64,20 +64,20 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, -100)
 			_add(W.I_DIPLO, 10)
 			var num := 0
-			if d[W.I_PARTY_SYSTEM] >= 8:
-				d[W.I_PARTY_SYSTEM] = 7
+			if d.party_system >= 8:
+				d.party_system = 7
 				num += 1
-			if d[W.I_ECON_SYSTEM] >= 14:
-				d[W.I_ECON_SYSTEM] = 13
+			if d.econ_system >= 14:
+				d.econ_system = 13
 				num += 1
-			if d[W.I_PRESS_POLICY] >= 19:
-				d[W.I_PRESS_POLICY] = 18
+			if d.press_policy >= 19:
+				d.press_policy = 18
 				num += 1
-			if d[W.I_RELIGION] >= 27:
-				d[W.I_RELIGION] = 26
+			if d.religion_policy >= 27:
+				d.religion_policy = 26
 				num += 1
-			if d[W.I_IDEOLOGY] >= 4:
-				d[W.I_IDEOLOGY] = 3
+			if d.ideology >= 4:
+				d.ideology = 3
 			_add(W.I_BUDGET, -num * 10)
 			context["result_text"] = TXT_R1
 

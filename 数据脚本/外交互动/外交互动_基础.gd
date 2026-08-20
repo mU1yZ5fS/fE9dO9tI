@@ -3,7 +3,7 @@
 ## 约定：
 ##   - 原版 this.a = GlobalScript.inst.gameState → 参数 w: WorldState
 ##   - 原版 this.selected_country = allcountries[N] 数组下标 → country.原版序号
-##   - 原版 data[i] → w.数值表[i]（下标越界读 0，与原版未初始化 int 默认一致）
+##   - 原版 data.get_data_by_index(i) → w.get_data_by_index(i)（下标越界读 0，与原版未初始化 int 默认一致）
 ##   - 原版 event_done[N]/resultOfEvents[N] → w.event_done_num/w.result_of_event_num
 ##   - 原版 modifies[i].active → w.modifier_active(i)
 ##   - 原版 ingamewars[i].is_going → w.war_going(i)
@@ -13,22 +13,20 @@ extends RefCounted
 
 # ── 数据表/状态 ──
 
-## data[idx]，越界按 0（GameState.data 固定 150 槽，未初始化 int 默认 0）。
+## data.get_data_by_index(idx)，越界按 0（GameState.data 固定 150 槽，未初始化 int 默认 0）。
 func d(w: WorldState, idx: int) -> int:
-	if idx >= 0 and idx < w.数值表.size():
-		return w.数值表[idx]
+	if idx >= 0 and idx < w.size():
+		return w.get_data_by_index(idx)
 	return 0
 
 
-## data[idx] 直接写入；数组按需扩展。
+## data.get_data_by_index(idx) 直接写入；数组按需扩展。
 func set_d(w: WorldState, idx: int, value: int) -> void:
 	if idx >= 0:
-		while w.数值表.size() <= idx:
-			w.数值表.append(0)
-		w.数值表[idx] = value
+		w.set_data_by_index(idx, value)
 
 
-## data[idx] += delta（原版 `this.a.data[i] += n`）。
+## data.add_data_by_index(idx, delta（原版 `this.a.data.get_data_by_index(i) += n`）。)
 func _add_d(w: WorldState, idx: int, delta: int) -> void:
 	set_d(w, idx, d(w, idx) + delta)
 
@@ -226,10 +224,10 @@ func _refresh_china_map_parts(w: WorldState, china: CountryData) -> void:
 		return
 	if china.parts.size() < 16:
 		china.parts.resize(16)
-	var data := w.数值表
-	var d62 := data[62] if data.size() > 62 else 0
-	var d64 := data[64] if data.size() > 64 else 0
-	var d130 := data[130] if data.size() > 130 else 0
+	var data := w
+	var d62 := data.arunachal_status if data.size() > 62 else 0
+	var d64 := data.taiwan_status if data.size() > 64 else 0
+	var d130 := data.mongolia_china_route if data.size() > 130 else 0
 	var dec7 := false
 	if w.decisions != null and w.decisions.completed.size() > 7:
 		dec7 = w.decisions.completed[7]

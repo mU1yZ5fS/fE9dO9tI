@@ -22,8 +22,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 func _dyn_ok(w: WorldState) -> bool:
 	@warning_ignore("shadowed_variable_base_class")
-	var d := w.数值表
-	return d.size() > W.I_AGENTS and d[W.I_AGENTS] >= 50
+	var d := w
+	return d.size() > W.I_AGENTS and d.agents >= 50
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

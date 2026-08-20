@@ -33,14 +33,14 @@ func evaluate(world: WorldState) -> bool:
 	if c41 != null and c41.parts.size() > 1 and c41.parts[1]:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= 21:
 		return false
-	if d[21] >= 1982:
+	if d.year >= 1982:
 		return true
-	if d[21] >= 1981 and d[20] >= 11:
+	if d.year >= 1981 and d.month >= 11:
 		return true
-	if d[21] >= 1981 and d[20] >= 10 and d[19] >= 7:
+	if d.year >= 1981 and d.month >= 10 and d.day >= 7:
 		return true
 	return false
 
@@ -49,8 +49,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var opt := event_def.options
 	if line != 0 and line != 4:
 		_enable(opt[0], event_def.options[0].text)

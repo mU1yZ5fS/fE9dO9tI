@@ -34,7 +34,7 @@ const TXT_375_782 := "中国与美国一道向土耳其政府送去了军事与�
 ## 字段映射：
 ##   allcountries[7]→苏联（parts[0/1/2]）；allcountries[35]→叙利亚；allcountries[51]→美国；
 ##   allcountries[84]→土耳其；allcountries[1]→中国；
-##   data[127]→ws.数值表[127]；data[124/126] 只由其他事件/外交按钮写入。
+##   data.turkish_route_result→ws.turkish_route_result；data.get_data_by_index(124/126) 只由其他事件/外交按钮写入。
 ##   relres→ws.get_flag("relres")（项目惯例，国家面板.gd:406 同源）。
 ## 文本：原版 new_events_text 长文未逐字移植，按项目英文风格写入结果摘要。
 
@@ -45,15 +45,15 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 		return
 	if event_def.event_id != "event_375":
 		return
-	var d2 := p_ws.数值表
+	var d2 := p_ws
 	var syria := p_ws.get_country_by_legacy_index(35)
 	var syria_ally := syria != null and syria.has_tag("亲中") and syria.has_tag("okb")
 	event_def.description = TXT_375_766.replace("{1}", TXT_375_775 if syria_ally else "")
 	if event_def.options.size() < 5:
 		return
 	var opt0 := event_def.options[0]
-	var budget_sum: int = d2[W.I_BUDGET] + d2[W.I_RESERVE]
-	var army: int = d2[W.I_ARMY]
+	var budget_sum: int = d2.budget + d2.reserve
+	var army: int = d2.army
 	opt0.text = TXT_375_767.replace("{0}", TXT_375_592).replace("{2}", TXT_375_594)
 	if army >= 500 and budget_sum >= 250:
 		opt0.disabled_text = ""
@@ -128,7 +128,7 @@ func _result_0(context: Dictionary) -> void:
 	else:
 		# Event375.cs:103-120
 		_set_ussr_parts()
-		ws.数值表[127] = 1
+		ws.turkish_route_result = 1
 		ws.influence_prc -= 50
 		_add_empire_power(EmpireData.USSR, 100)
 		_add_empire_relation(EmpireData.USSR, -500)
@@ -187,7 +187,7 @@ func _result_3_syria(context: Dictionary) -> void:
 		_add_empire_relation(EmpireData.USA, 300)
 		context["result_text"] = TXT_375_777.replace("{1}", TXT_375_780)
 	else:
-		ws.数值表[127] = 1
+		ws.turkish_route_result = 1
 		ws.influence_prc -= 50
 		_set_ussr_parts()
 		_add_empire_relation(EmpireData.USSR, -500)
@@ -209,7 +209,7 @@ func _result_3_no_syria(context: Dictionary) -> void:
 		context["result_text"] = TXT_375_782.replace("{1}", TXT_375_780)
 	else:
 		# Event375.cs:246-260
-		ws.数值表[127] = 1
+		ws.turkish_route_result = 1
 		ws.influence_prc -= 50
 		_set_ussr_parts()
 		_add_empire_power(EmpireData.USSR, 100)
@@ -303,7 +303,7 @@ func _clear_relres() -> void:
 
 func _add_data(index: int, delta: int) -> void:
 	if index >= 0 and index < d.size():
-		d[index] += delta
+		d.add_data_by_index(index, delta)
 
 
 func _add_empire_relation(empire_index: int, delta: int) -> void:
@@ -318,8 +318,8 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		d[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		d[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		d.usa_relations = ws.empires[EmpireData.USA].relations
+		d.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		d[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		d[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		d.ussr_relations = ws.empires[EmpireData.USSR].relations
+		d.soviet_influence = ws.empires[EmpireData.USSR].power

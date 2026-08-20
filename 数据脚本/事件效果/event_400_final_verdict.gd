@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event400.cs：盖棺定论（五选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1191 —— 复杂条件用 evaluate（SubGosstroy 链）。
-## 差异：name_display 用于外长姓名；data[178..181] raw index；选项显隐 prepare。
+## 差异：name_display 用于外长姓名；data.get_data_by_index(178..181) raw index；选项显隐 prepare。
 
 const TXT_TITLE := [
 	"盖棺定论",
@@ -99,7 +99,7 @@ func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= W.I_YEAR:
 		return false
 	if world.completed_event_ids.has("event_400") or world.completed_event_ids.has("event_401"):
@@ -111,7 +111,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if italy.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT or italy.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE or italy.sub_government == GameConstants.SubGovernment.RENEWAL_SOCIALIST or italy.sub_government == GameConstants.SubGovernment.PRAGMATIST:
 		return false
-	if not ((d[W.I_YEAR] >= 1984 and d[W.I_MONTH] >= 6 and d[W.I_DAY] > 10) or (d[W.I_YEAR] >= 1984 and d[W.I_MONTH] >= 7) or d[W.I_YEAR] >= 1985):
+	if not ((d.year >= 1984 and d.month >= 6 and d.day > 10) or (d.year >= 1984 and d.month >= 7) or d.year >= 1985):
 		return false
 	return italy.sub_government != GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 
@@ -120,7 +120,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var italy := world.get_country_by_legacy_index(85)
 	var opt := event_def.options
 	if italy != null and italy.influence_china <= 0:
@@ -133,7 +133,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		event_def.description = TXT_DESC[1]
 	_enable(opt[2], TXT_OPT2[0])
 	_enable(opt[3], TXT_OPT3[0])
-	if d.size() > W.I_POLITICAL_LINE and d[W.I_POLITICAL_LINE] == 0:
+	if d.size() > W.I_POLITICAL_LINE and d.political_line == 0:
 		_enable(opt[4], TXT_OPT4[0])
 	else:
 		_disable(opt[4], TXT_OPT4[1])
@@ -281,7 +281,7 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0
 
 func _mod_active(i: int) -> bool:

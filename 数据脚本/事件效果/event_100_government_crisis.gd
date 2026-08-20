@@ -16,10 +16,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
-	var agents := data[W.I_AGENTS] if data.size() > W.I_AGENTS else 0
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var agents := data.agents if data.size() > W.I_AGENTS else 0
 	var coal := _coalition_percent(world)
 	var left_party := party < 8
 	var opt := event_def.options
@@ -64,8 +64,8 @@ func execute(context: Dictionary) -> void:
 
 
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0

@@ -84,7 +84,7 @@ func _start_war_383(infl1: int, infl2: int, usa_side: int, ussr_side: int) -> vo
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

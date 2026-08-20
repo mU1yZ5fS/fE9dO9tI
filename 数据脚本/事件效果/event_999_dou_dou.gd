@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event999.cs：豆豆不能随便投……（民主回卷终局事件）
-## 触发：TimeScript.cs:10020-10024 —— data[170] == 999（哨兵值，结果里清零）。
+## 触发：TimeScript.cs:10020-10024 —— data.event999_trigger_sentinel == 999（哨兵值，结果里清零）。
 ## 差异记录：
 ##  - 原版 result 3/4/5 为不可达“测试”分支（kolvo_variant=2），按死代码跳过。
 ##  - party_change[] 仅 UI 摆动数值，Godot 建模说明，跳过（与 event_020 同类约定）。
@@ -61,8 +61,8 @@ func _apply_one_party_reset() -> void:
 	ws.factions[2].ideology = 50
 	ws.factions[0].support = 0
 	ws.factions[0].ideology = 0
-	# Event999.cs：data[52] == 37 时的分支覆盖
-	if d.size() > W.I_ECON_DISPLAY and d[W.I_ECON_DISPLAY] == 37:
+	# Event999.cs：data.econ_display == 37 时的分支覆盖
+	if d.size() > W.I_ECON_DISPLAY and d.econ_display == 37:
 		ws.factions[4].support = 700
 		ws.factions[4].ideology = 700
 		ws.factions[3].support = 200
@@ -73,6 +73,6 @@ func _apply_one_party_reset() -> void:
 		ws.factions[2].ideology = 50
 		ws.factions[0].support = 0
 		ws.factions[0].ideology = 0
-	# Event999.cs：data[170] = 0（触发哨兵清零）
+	# Event999.cs：data.event999_trigger_sentinel = 0（触发哨兵清零）
 	if d.size() > 170:
-		d[170] = 0
+		d.event999_trigger_sentinel = 0

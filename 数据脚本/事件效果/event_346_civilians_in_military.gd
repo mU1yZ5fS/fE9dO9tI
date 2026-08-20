@@ -24,7 +24,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, -100)
 			_add(W.I_DIPLO, -20)
 			_add(W.I_LIVING, 25)
-			if d.size() > W.I_MIL_DOCTRINE and d[W.I_MIL_DOCTRINE] < 33:
+			if d.size() > W.I_MIL_DOCTRINE and d.military_doctrine < 33:
 				_add(W.I_MIL_DOCTRINE, 1)
 			_set_modifier_active(33)
 			context["result_text"] = TXT_R1
@@ -35,7 +35,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

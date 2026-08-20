@@ -998,11 +998,11 @@ func _def_5001(w: WorldState, country: CountryData, caption: String) -> Dictiona
 	# 列表级守卫（CS L2679 等）：目标社会主义 且 亲中
 	conds.append(cond(" 该 国 是 社 会 主 义 政 权", func(): return soc(w, country, true)))
 	conds.append(cond(" 该 国 持 亲 中 立 场", func(): return has(country, "亲中")))
-	# uslovie[1]：data[22]>=20（DBS L5545）
+	# uslovie[1]：data.army>=20（DBS L5545）
 	conds.append(cond(" 至 少 2 军 事 实 力", func(): return d(w, 22) >= 20))
 	# uslovie[2]：!isAU（DBS L5547）
 	conds.append(cond(" 他 们 未 加 入 非 洲 联 盟", func(): return not has(country, "au")))
-	# uslovie[3]：data[6]>790（DBS L5549）
+	# uslovie[3]：data.diplomatic_reputation>790（DBS L5549）
 	conds.append(cond(" 外 交 声 誉 高 于 79", func(): return d(w, 6) > 790))
 	var eff := func():
 		w.influence_prc += 30

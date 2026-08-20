@@ -15,8 +15,8 @@ const MAX_SLOTS := 10
 
 ## 对齐原作 DiffScript.cs / Savescript.cs 的中文难度显示名（逐字含原空格）。
 const DIFF_NAMES_ZH := [" 牛 棚 小 酌", " 上 山 下 乡", " 斗 私 批 修", " 造 反 有 理", " 浩 荡 文 革"]
-## data[14]（政体/意识形态）显示名。原作 GlobalScript.doctr[]，Godot 侧权威映射见
-## 场景/派系界面/派系.gd DOCTR_BASE 的 0-5（data[14] 只取 0-5）。
+## data.ideology（政体/意识形态）显示名。原作 GlobalScript.doctr[]，Godot 侧权威映射见
+## 场景/派系界面/派系.gd DOCTR_BASE 的 0-5（data.ideology 只取 0-5）。
 const IDEOLOGY_NAMES_ZH := {
 	0: "威权主义",
 	1: "保守社会主义",
@@ -92,8 +92,8 @@ static func meta_from_world(w: WorldState) -> Dictionary:
 	if w == null or w.date == null:
 		return {}
 	var ideology := 0
-	if w.数值表.size() > WorldState.I_IDEOLOGY:
-		ideology = w.数值表[WorldState.I_IDEOLOGY]
+	if w.size() > WorldState.I_IDEOLOGY:
+		ideology = w.ideology
 	return {
 		"year": w.date.year,
 		"month": w.date.month,

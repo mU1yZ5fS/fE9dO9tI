@@ -83,8 +83,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGRICULTURE, 30)
 			_add(W.I_INDUSTRY, 20)
 			_add(W.I_PARTY_SUPPORT, 50)
-			if d.size() > W.I_ECON_SYSTEM and d[W.I_ECON_SYSTEM] == 11:
-				d[W.I_ECON_SYSTEM] = 12
+			if d.size() > W.I_ECON_SYSTEM and d.econ_system == 11:
+				d.econ_system = 12
 			if ws.factions.size() > 3:
 				var personality := ws.leader.trait_personality if ws.leader != null else -1
 				if personality == 20:

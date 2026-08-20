@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event555.cs：铸剑为犁（西德和平运动，3选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1239-1241 —— c17.isNATO && (1983.10.22 或 1984+)。
-## 差异：isNATO/isSocEU→has_tag；data[147] raw index；empires[0].now_leader→current_leader。
+## 差异：isNATO/isSocEU→has_tag；data.britain_political_route raw index；empires[0].now_leader→current_leader。
 
 const TXT_DESC := ""
 const TXT_OPT0_DIS := "我们无法插手"
@@ -24,7 +24,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	var line := d[W.I_POLITICAL_LINE]
+	var line := d.political_line
 	if line <= 2 and ws.influence_prc >= 500:
 		_enable(opt[0], event_def.options[0].text)
 	else:

@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10878-10884 ——
 ##   (月>=6 且 年>=1985 或 年>=1986) && !c7.isNATO && c51.isNATO
 ##   （is_gkchp/IndOpp 端口建模说明 → 视为恒真，沿用既有约定）。
-## 差异：选项1 按 data[9]>=100 动态显隐；国家循环字段映射
+## 差异：选项1 按 data.agents>=100 动态显隐；国家循环字段映射
 ##   sovalliance→苏联盟友、Vyshi→亲美、dev→development、stab→stability。
 
 const TXT_R0 := "结果，民主国际成立了。很难说这是否有助于反共分子的行动，但这一事件意义重大，有助于美国影响力的增长，所以美国积极支持这一行动。"
@@ -20,7 +20,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	_enable(opt[0], "我们不关心此事")
-	var agents := world.数值表[W.I_AGENTS] if world.数值表.size() > W.I_AGENTS else 0
+	var agents := world.agents if world.size() > W.I_AGENTS else 0
 	if agents >= 100:
 		_enable(opt[1], "安排一次恐怖袭击并扰乱会议")
 	else:

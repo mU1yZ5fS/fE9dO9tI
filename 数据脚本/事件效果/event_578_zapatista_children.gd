@@ -31,8 +31,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var c149 := world.get_country_by_legacy_index(149)
 	var r577 := int(world.completed_event_ids.get("event_577", 0))
 	var opt := event_def.options
@@ -47,7 +47,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[1], TXT_OPT1_DIS_WHY)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_INDIAN)
-	if data.size() > W.I_WAR_SUPPORT and data[W.I_WAR_SUPPORT] >= 700:
+	if data.size() > W.I_WAR_SUPPORT and data.war_support >= 700:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

@@ -20,8 +20,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var opt := event_def.options
-	var sum := world.数值表[W.I_BUDGET] + world.数值表[W.I_RESERVE]
-	if sum >= 50 and world.数值表[W.I_AGENTS] >= 50:
+	var sum := world.budget + world.reserve
+	if sum >= 50 and world.agents >= 50:
 		_enable(opt[0], S_23)
 	elif sum <= 50:
 		_disable(opt[0], S_28)

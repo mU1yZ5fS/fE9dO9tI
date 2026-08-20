@@ -14,7 +14,7 @@ const TXT_IDX_1371 := "欧洲的局势更类似于20世纪初的情况......"
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

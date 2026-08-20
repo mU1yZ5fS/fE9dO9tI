@@ -31,6 +31,6 @@ func _set_visible(node_name: String, vis: bool) -> void:
 
 
 func _raw(w: WorldState, idx: int) -> int:
-	if idx >= 0 and idx < w.数值表.size():
-		return w.数值表[idx]
+	if idx >= 0 and idx < w.size():
+		return w.get_data_by_index(idx)
 	return 0

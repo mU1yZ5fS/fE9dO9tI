@@ -55,8 +55,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 			_add(W.I_BUDGET, -80)
 			_add(W.I_AGENTS, -50)
-			_add(175, -1)  # 原版 data[175]
-			_add(176, 1)   # 原版 data[176]
+			_add(175, -1)  # 原版 data.italy_power_175
+			_add(176, 1)   # 原版 data.italy_power_176
 			_add_power(EmpireData.USA, -15)
 			_add_power(EmpireData.USSR, -15)
 			if portugal != null:
@@ -67,9 +67,9 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 			_add(W.I_BUDGET, -60)
 			_add(W.I_AGENTS, -60)
-			_add(173, 1)   # 原版 data[173]
-			_add(175, -1)  # 原版 data[175]
-			_add(176, -1)  # 原版 data[176]
+			_add(173, 1)   # 原版 data.italy_power_173
+			_add(175, -1)  # 原版 data.italy_power_175
+			_add(176, -1)  # 原版 data.italy_power_176
 			if italy != null:
 				italy.level_of_development -= 5
 			_add_power(EmpireData.USA, -15)
@@ -84,7 +84,7 @@ func execute(context: Dictionary) -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

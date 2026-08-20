@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event678.cs：你正在进入自由德里（北爱尔兰动乱，单选项）。
 ## 触发：ReqEventsDLC02.cs:1461-1464 —— !ev673 && !c29.parts[0] && !c166.parts[0]
 ##   && (d162/163/164/166 任一>=100) && DATE_AFTER 1979.8.27 → trigger_script evaluate。
-## 差异：data[162-166] raw index；BritLost→get_flag；ingamewars[86] 兜底创建后补名。
+## 差异：data.get_data_by_index(162-166) raw index；BritLost→get_flag；ingamewars[86] 兜底创建后补名。
 
 const TXT_DESC_A := "贝尔法斯特的街头再也没有虚假的和平，狙击手在行动，爆炸声此起彼伏，时不时就能传来自动步枪和机枪的声音。终于，一切虚假的和平被一枚共和军士兵的火箭弹击碎了。他们袭击了北爱尔兰英军最高指挥官的车队，理查德·罗森将军和同行的安保人员当场殒命。以此为号，南阿马地区和斯特拉班爆发了大规模的反抗英军士兵的暴乱。贝尔法斯特更是出现了共和军士兵与INLA成员同时对英军发动袭击的空前盛况，UDA，UVF与其他忠诚派也不甘示弱，走上街头和天主教徒们打成一团。爱尔兰抵抗组织们在都柏林宣布为这次袭击负责，并高呼一切留在被占领的北爱尔兰的爱国志士，全世界热爱自由的人们都站起来支持他们的斗争。唐宁街十号宣布在北爱尔兰额外增派约3000人的兵力，并授权皇家阿尔斯特警察使用致命武器。北爱尔兰的动乱已经达到了新的高峰，看起来这就是一场你死我活的斗争……"
 const TXT_DESC_B_PRE := "贝尔法斯特的王室特派专员们已经陷入了绝望之中，一支异军突起的马克思主义者正在整个阿尔斯特攻城略地，运用毛的游击战思想分割包围，再加以恐怖手段钳制百姓。"
@@ -22,7 +22,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		event_def.description = TXT_DESC_A
 		return
 	var branch := TXT_DESC_OTHER
-	var data147 := d[147] if d.size() > 147 else 0
+	var data147 := d.britain_political_route if d.size() > 147 else 0
 	if data147 == 5:
 		branch = TXT_DESC_THATCHER
 	elif data147 == 3 or data147 == 6 or data147 == 8:
@@ -38,8 +38,8 @@ func execute(context: Dictionary) -> void:
 		return
 	var num := 100 if ws.get_flag("BritLost") else 0
 	for idx in [162, 163, 164, 166]:
-		if d.size() > idx and d[idx] >= 100:
-			d[idx] = 100
+		if d.size() > idx and d.get_data_by_index(idx) >= 100:
+			d.set_data_by_index(idx, 100)
 	context["result_text"] = TXT_R0
 	# 原版 ingamewars[86]：北爱尔兰冲突，爱尔兰武装(400-num) vs 英国(600+num)，AmericanSupportDefender
 	GameManager.start_war(86, "爱尔兰武装", "英国", 400 - num, 600 + num, 2, -1)
@@ -62,9 +62,9 @@ func evaluate(world: WorldState) -> bool:
 	if northern != null and northern.parts.size() > 0 and northern.parts[0]:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	for idx in [162, 163, 164, 166]:
-		if d.size() > idx and d[idx] >= 100:
+		if d.size() > idx and d.get_data_by_index(idx) >= 100:
 			return true
 	return false
 

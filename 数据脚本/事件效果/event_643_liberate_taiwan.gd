@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event643.cs：解放台湾？（台湾总攻，单选项）。
-## 触发：ReqEventsDLC02.cs:89-92 —— c1.SubGosstroy==19 && data[64]!=2 && !completedDecisions[7]
+## 触发：ReqEventsDLC02.cs:89-92 —— c1.SubGosstroy==19 && data.taiwan_status!=2 && !completedDecisions[7]
 ##   复合条件 → trigger_script evaluate。
 ## 差异：ingamewars[75] 建模说明 WarDef → 兜底创建后补名。
 
@@ -41,8 +41,8 @@ func evaluate(world: WorldState) -> bool:
 	if china == null or china.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	if d.size() <= W.I_TAIWAN_STATUS or d[W.I_TAIWAN_STATUS] == 2:
+	var d := world
+	if d.size() <= W.I_TAIWAN_STATUS or d.taiwan_status == 2:
 		return false
 	return world.decisions == null or world.decisions.completed.size() <= 7 \
 		or not world.decisions.completed[7]

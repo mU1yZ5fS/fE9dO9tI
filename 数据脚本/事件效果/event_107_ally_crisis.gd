@@ -1,9 +1,9 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event107.cs：盟友危机（联盟成员叛离，五选项）。
-## 触发：TimeScript.cs:10985-10990 —— data[120] > 0 && c1.econ && !active。
+## 触发：TimeScript.cs:10985-10990 —— data.ally_crisis_target > 0 && c1.econ && !active。
 ## 差异：
-##  - data[120] 为目标国家原版序号，结果显示后置 -1（原版 ResultsOfEvents 末尾）。
+##  - data.ally_crisis_target 为目标国家原版序号，结果显示后置 -1（原版 ResultsOfEvents 末尾）。
 ##  - 国家名取 Godot display_name()（原版 .name）；|| → \n；
 ##    usalliance→美国盟友、sovalliance→苏联盟友、proprc→亲中、
 ##    Gosstroy→government、SubGosstroy→sub_government、soc_stab→social_stability。
@@ -49,9 +49,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		desc += TXT_DESC_ECON
 	event_def.description = desc
 
-	var data := world.数值表
-	var army := data[W.I_ARMY] if data.size() > W.I_ARMY else 0
-	var agents := data[W.I_AGENTS] if data.size() > W.I_AGENTS else 0
+	var data := world
+	var army := data.army if data.size() > W.I_ARMY else 0
+	var agents := data.agents if data.size() > W.I_AGENTS else 0
 	var okb := target != null and target.has_tag("okb")
 	var opt := event_def.options
 	if army >= 200 and okb:
@@ -176,15 +176,15 @@ func execute(context: Dictionary) -> void:
 					target.social_stability = 0
 					target.set_tag("econ", false)
 			context["result_text"] = TXT_R4
-	# 原版 ResultsOfEvents 末尾无条件 data[120] = -1
+	# 原版 ResultsOfEvents 末尾无条件 data.ally_crisis_target = -1
 	if d.size() > 120:
-		d[120] = -1
+		d.ally_crisis_target = -1
 
 
 func _target_country(world: WorldState) -> CountryData:
-	if world == null or world.数值表.size() <= 120:
+	if world == null or world.size() <= 120:
 		return null
-	var idx := world.数值表[120]
+	var idx := world.ally_crisis_target
 	if idx <= 0:
 		return null
 	return world.get_country_by_legacy_index(idx)

@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10972-10978 —— science[15] && 年>=1983 && modifies[11].active。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写；r0 的 load_scene_after_click → Ending6：
-##    Godot 设 d[I_ENDING_ROUTE]=6（结局界面后续读取）。
+##    Godot 设 d.ending_route=6（结局界面后续读取）。
 ##  - 忠诚<300 杀 3 人循环逐字保留（毛保护/姓名2-2/同领袖性格跳过）。
 
 const TXT_R0 := "末日已至。"
@@ -20,12 +20,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
-	var people := data[W.I_PEOPLE_SUPPORT] if data.size() > W.I_PEOPLE_SUPPORT else 0
-	var living := data[W.I_LIVING] if data.size() > W.I_LIVING else 0
-	var agents := data[W.I_AGENTS] if data.size() > W.I_AGENTS else 0
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
+	var data := world
+	var people := data.people_support if data.size() > W.I_PEOPLE_SUPPORT else 0
+	var living := data.living_standard if data.size() > W.I_LIVING else 0
+	var agents := data.agents if data.size() > W.I_AGENTS else 0
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
 	var coal := _coalition_percent(world)
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
 	var opt := event_def.options
@@ -51,8 +51,8 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if d.size() > W.I_ENDING_ROUTE:
-				d[W.I_ENDING_ROUTE] = 6
-			# 原 Event111.cs:162：load_scene_after_click → data[35]=6。
+				d.ending_route = 6
+			# 原 Event111.cs:162：load_scene_after_click → data.ending_route=6。
 			GameManager.queue_ending_after_event(6)
 			context["result_text"] = TXT_R0
 		1:
@@ -94,8 +94,8 @@ func _kill_3_low_loyalty() -> void:
 
 
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0

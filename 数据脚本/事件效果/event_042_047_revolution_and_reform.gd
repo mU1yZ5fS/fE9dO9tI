@@ -89,9 +89,9 @@ func _prepare_42(event_def: EventDef) -> void:
 	if event_def == null or event_def.options.size() < 2:
 		return
 	var opt := event_def.options[1]
-	if ws.数值表[W.I_AGENTS] < 50:
+	if ws.agents < 50:
 		opt.disabled_text = "我们爱莫能助"
-	elif ws.数值表[W.I_POLITICAL_LINE] > 1:
+	elif ws.political_line > 1:
 		opt.disabled_text = TXT_42_OPT1_DIS_USA
 	else:
 		opt.disabled_text = ""
@@ -147,7 +147,7 @@ func _event_43(option_index: int) -> void:
 	var vietnam := ws.get_country_by_legacy_index(11)
 	match option_index:
 		0:
-			ws.数值表[W.I_PARTY_SUPPORT] -= 50
+			ws.party_support -= 50
 			_add_empire_power(EmpireData.USSR, 30)
 			if vietnam != null: vietnam.set_tag("sev", true)
 		1:
@@ -162,7 +162,7 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 			_set_modifier_active(3, false)
 			_add_data({W.I_PARTY_SUPPORT: 100, W.I_INFLUENCE: -20,
 				W.I_THOUGHT_FREEDOM: 70, W.I_PEOPLE_SUPPORT: 60, W.I_DIPLO: -20})
-			ws.数值表[W.I_REFORM_STAGE] = 1
+			ws.reform_stage = 1
 			_add_empire_relation(EmpireData.USA, 100)
 			_subtract_faction_fraction(FactionData.MAOIST, 0.15)
 			_subtract_faction_fraction(FactionData.CONSERVATIVE, 0.15)
@@ -173,13 +173,13 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 				context["result_text"] = _build_44_result0_deng()
 			elif ye >= 0:
 				ws.factions[FactionData.REFORMIST].leader_index = ye
-				ws.数值表[17] = 16
+				ws.press_policy = 16
 				context["result_text"] = _build_44_result0_ye()
 			else:
 				context["result_text"] = _build_44_result0_generic()
 			_kill_politician_if_exists(11, 11)
 			_kill_politician_if_exists(6, 6)
-			ws.数值表[W.I_PARTY_SYSTEM] = 7
+			ws.party_system = 7
 			_change_politicians({0: [-500, -200], 1: [-100, 100], 2: [200, 200], 3: [70, 80]})
 			var reform_leader := _faction_leader_index(FactionData.REFORMIST)
 			if reform_leader >= 0:
@@ -197,7 +197,7 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 			_set_modifier_active(3, false)
 			_add_data({W.I_PARTY_SUPPORT: 100, W.I_INFLUENCE: -20,
 				W.I_THOUGHT_FREEDOM: 70, W.I_PEOPLE_SUPPORT: 60, W.I_DIPLO: -20})
-			ws.数值表[W.I_REFORM_STAGE] = 1
+			ws.reform_stage = 1
 			_add_empire_relation(EmpireData.USA, 100)
 			_subtract_faction_fraction(FactionData.MAOIST, 0.15)
 			_subtract_faction_fraction(FactionData.CONSERVATIVE, 0.15)
@@ -209,13 +209,13 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 				context["result_text"] = _build_44_result2_deng()
 			elif ye2 > 0:
 				ws.factions[FactionData.REFORMIST].leader_index = ye2
-				ws.数值表[17] = 16
+				ws.press_policy = 16
 				context["result_text"] = _build_44_result2_ye()
 			else:
 				context["result_text"] = _build_44_result2_generic()
 			_kill_politician_if_exists(11, 11)
 			_kill_politician_if_exists(6, 6)
-			ws.数值表[W.I_PARTY_SYSTEM] = 7
+			ws.party_system = 7
 			PoliticianSystem.sync_in_power_flags(ws)
 	# 原版 NewPolitician[4]=false / party_change[] 仅 UI 缓冲，建模说明。
 
@@ -223,11 +223,11 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 func _event_45() -> void:
 	_add_data({W.I_INFLUENCE: -20, W.I_THOUGHT_FREEDOM: 50,
 		W.I_REFORM_MOMENTUM: 20, W.I_DIPLO: -30})
-	if ws.数值表[W.I_ECON_SYSTEM] == 10:
-		ws.数值表[W.I_ECON_SYSTEM] = 12
-	elif ws.数值表[W.I_ECON_SYSTEM] <= 14:
-		ws.数值表[W.I_ECON_SYSTEM] += 1
-	ws.数值表[W.I_REFORM_STAGE] = 2
+	if ws.econ_system == 10:
+		ws.econ_system = 12
+	elif ws.econ_system <= 14:
+		ws.econ_system += 1
+	ws.reform_stage = 2
 	_add_empire_relation(EmpireData.USA, 100)
 	var albania := ws.get_country_by_legacy_index(20)
 	if albania != null:
@@ -395,8 +395,8 @@ func _add_ussr_leader_support(leader_index: int, delta: int) -> void:
 func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
-		if index >= 0 and index < ws.数值表.size():
-			ws.数值表[index] += int(changes[raw_index])
+		if index >= 0 and index < ws.size():
+			ws.add_data_by_index(index, int(changes[raw_index]))
 
 
 func _change_politicians(changes: Dictionary) -> void:
@@ -432,8 +432,8 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		ws.数值表[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		ws.数值表[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		ws.usa_relations = ws.empires[EmpireData.USA].relations
+		ws.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		ws.数值表[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		ws.ussr_relations = ws.empires[EmpireData.USSR].relations
+		ws.soviet_influence = ws.empires[EmpireData.USSR].power

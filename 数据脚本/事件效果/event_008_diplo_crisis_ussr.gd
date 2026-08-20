@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##    trigger_conditions = EMPIRE_RELATION_AT_MOST(1,0) + PREV_EVENT_NOT_DONE(event_473)，
 ##    473 移植说明前视为恒真。
 ##  - dlc[3]（DLC 购买标志）：端口无 DLC 体系 → 视为恒真（同 game_manager.gd:2225 先例）。
-##  - opt3 的 data[111]++：反编译为死代码（ptr 局部变量自增未写回 data），跳过。
+##  - opt3 的 data.hardline_crackdown_count++：反编译为死代码（ptr 局部变量自增未写回 data），跳过。
 ##  - button_text[5]=""（空按钮占位）：无实际内容，跳过。
 
 
@@ -32,11 +32,11 @@ func _opt_detente(context: Dictionary) -> void:
 	if ws.empires.size() > 1 and ws.empires[1] != null:
 		ws.empires[1].relations = 400
 	@warning_ignore("integer_division")
-	if d.size() > W.I_DIPLO and d[W.I_DIPLO] > 600:
+	if d.size() > W.I_DIPLO and d.diplomatic_reputation > 600:
 		@warning_ignore("integer_division")
-		d[W.I_DIPLO] -= d[W.I_DIPLO] / 20
+		d.diplomatic_reputation -= d.diplomatic_reputation / 20
 	if d.size() > W.I_BUDGET:
-		d[W.I_BUDGET] -= 100
+		d.budget -= 100
 	context["result_text"] = "我们紧急组织了一次中国外交部长和苏联外长的盛大会谈，我们邀请苏维埃代表团进行了一次豪华的中国之旅，在那里我们准备了各种节日和活动来表达我们和平的愿望。缓和成功了，紧张局势得到了缓和。"
 
 
@@ -51,15 +51,15 @@ func _opt_indifferent(context: Dictionary) -> void:
 	var mod16 := _get_mod16()
 	if mod16 == null or not mod16.is_active:
 		if d.size() > W.I_ARMY:
-			d[W.I_ARMY] -= 50
+			d.army -= 50
 		if d.size() > W.I_AGENTS:
-			d[W.I_AGENTS] -= 50
+			d.agents -= 50
 		if mod16 != null:
 			mod16.is_active = true
 			_set_mod16_text("苏联禁运", "我们将减少与苏联关系差额10%的收入|失去相当于与苏联关系差额5%的特工网络")
-		# 差异：原 data[111]++ 为反编译死代码（ptr 局部自增未写回），跳过。
-	if mod16 != null and mod16.is_active and _usa_in_sev() and d.size() > 139 and d[139] <= 0:
-		d[139] = 5   # 原 data[139]（无端口命名键，数字索引直访）
+		# 差异：原 data.hardline_crackdown_count++ 为反编译死代码（ptr 局部自增未写回），跳过。
+	if mod16 != null and mod16.is_active and _usa_in_sev() and d.size() > 139 and d.alliance_kickout_timer <= 0:
+		d.alliance_kickout_timer = 5   # 原 data.alliance_kickout_timer（无端口命名键，数字索引直访）
 	context["result_text"] = "紧张度提升"
 
 

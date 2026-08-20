@@ -22,7 +22,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		for o in _opts_full:
 			arr.append(o)
 		event_def.options = arr
-		var agents := world.数值表[W.I_AGENTS] if world.数值表.size() > W.I_AGENTS else 0
+		var agents := world.agents if world.size() > W.I_AGENTS else 0
 		if agents >= 40:
 			_enable(arr[0], "支持泛希腊社会主义运动")
 		else:

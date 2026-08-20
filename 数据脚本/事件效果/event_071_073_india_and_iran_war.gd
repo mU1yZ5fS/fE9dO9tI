@@ -78,11 +78,11 @@ func _event_72(option_index: int, context: Dictionary) -> void:
 	var india := ws.get_country_by_legacy_index(19)
 	match option_index:
 		0:
-			ws.数值表[W.I_INFLUENCE] -= 10
+			ws.global_influence -= 10
 			if india != null:
 				india.set_tag("对华贸易", false)
 				india.set_tag("亲苏", true)
-			if int(ws.数值表[W.I_INDIA_ELECTION]) == 1:
+			if int(ws.india_election) == 1:
 				context["result_text"] = TXT_72_R0_LEFT
 			else:
 				context["result_text"] = TXT_72_R0_OTHER
@@ -112,8 +112,8 @@ func _event_73(context: Dictionary) -> void:
 func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
-		if index >= 0 and index < ws.数值表.size():
-			ws.数值表[index] += int(changes[raw_index])
+		if index >= 0 and index < ws.size():
+			ws.add_data_by_index(index, int(changes[raw_index]))
 
 
 func _add_empire_relation(empire_index: int, delta: int) -> void:
@@ -128,8 +128,8 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		ws.数值表[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		ws.数值表[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		ws.usa_relations = ws.empires[EmpireData.USA].relations
+		ws.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		ws.数值表[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		ws.ussr_relations = ws.empires[EmpireData.USSR].relations
+		ws.soviet_influence = ws.empires[EmpireData.USSR].power

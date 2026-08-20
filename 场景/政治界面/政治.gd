@@ -266,9 +266,9 @@ func _refresh_leader() -> void:
 
 
 func _refresh_right_panel() -> void:
-	# 原版 Politic_Show_Data.Repaint：data[num]/10f，一位小数（{0:F1}）
-	_budget_label.text = _world.display_meter(_world.数值表[W.I_BUDGET])
-	_agents_label.text = _world.display_meter(_world.数值表[W.I_AGENTS])
+	# 原版 Politic_Show_Data.Repaint：data.get_data_by_index(num)/10f，一位小数（{0:F1}）
+	_budget_label.text = _world.display_meter(_world.budget)
+	_agents_label.text = _world.display_meter(_world.agents)
 
 
 # ============================================================================
@@ -309,13 +309,13 @@ func _refresh_left_panel() -> void:
 
 	# 调查 / 监视（Politic_Manager.cs:116-133）
 	if pol.is_under_investigation:
-		sb += "距 纪 律 审 查 结 束 ：[color=green]%d[/color] 个 月" % clampi(7 - pol.investigator_index, 0, 7)
+		sb += "距 纪 律 审 查 结 束 ：[color=green]%d.get_data_by_index(/color) 个 月" % clampi(7 - pol.investigator_index, 0, 7)
 	else:
 		sb += "尚 未 被 纪 律 审 查"
 	sb += "|"
 	if pol.is_under_surveillance:
 		var rate: float = GameManager.change_of_killing(_selected_pol_index)
-		sb += "已 处 于 监 察 调 查 ：[color=green]%d[/color] 个 月|留 置 后 的 影 响 ：%s%%" % [
+		sb += "已 处 于 监 察 调 查 ：[color=green]%d.get_data_by_index(/color) 个 月|留 置 后 的 影 响 ：%s%%" % [
 			pol.days_surveillance, rate * 100.0
 		]
 	else:
@@ -475,27 +475,27 @@ func _update_button_states() -> void:
 
 
 func _update_politician_button_states(pol: PoliticianData) -> void:
-	var d := _world.数值表
+	var d := _world
 	var idx := _selected_pol_index
 	var tier := _get_tier(idx)
 	var investigating := pol.is_under_investigation
 	var surveilling := pol.is_under_surveillance
-	# 原版 data[38]!=100 && selected==0：毛在世保护 politics[0]
+	# 原版 data.stability!=100 && selected==0：毛在世保护 politics[0]
 	var mao_protected: bool = GameManager.is_mao_protected(idx)
 	var money1 := _money_ok(1)
 	var money20 := _money_ok(20)
 	var money100 := _money_ok(100)
 
 	# num0 支持（Button_Pol_Script.cs:534）
-	_btn_support.disabled = not (money1 and d[W.I_AGENTS] >= 5 and not investigating)
+	_btn_support.disabled = not (money1 and d.agents >= 5 and not investigating)
 	# num1 打压（Button_Pol_Script.cs:537）
 	_btn_suppress.disabled = not (
-		money1 and d[W.I_AGENTS] >= 20 and not investigating
+		money1 and d.agents >= 20 and not investigating
 		and _tier_allows_negative(tier, pol) and not mao_protected
 	)
 	# num2 再教育/暗杀（Button_Pol_Script.cs:540）
 	_btn_assassinate.disabled = not (
-		money20 and not investigating and d[W.I_AGENTS] >= 60
+		money20 and not investigating and d.agents >= 60
 		and _tier_allows_negative(tier, pol)
 		and _assassinate_historic_allowed(idx)
 		and not mao_protected
@@ -503,28 +503,28 @@ func _update_politician_button_states(pol: PoliticianData) -> void:
 	)
 	# num3 调查（Button_Pol_Script.cs:543）
 	_btn_investigate.disabled = not (
-		d[W.I_AGENTS] >= 20 and not investigating
+		d.agents >= 20 and not investigating
 		and _tier_allows_negative(tier, pol) and not mao_protected
 	)
 	# num4 监视（Button_Pol_Script.cs:546）
 	_btn_surveil.disabled = not (
-		d[W.I_AGENTS] >= 30 and not investigating and not surveilling
+		d.agents >= 30 and not investigating and not surveilling
 		and _tier_allows_negative(tier, pol) and not mao_protected
 	)
 	# num15 自动支持（Button_Pol_Script.cs:579）
 	_btn_auto_support.disabled = not (
-		pol.auto_support == 10 or (money1 and d[W.I_AGENTS] >= 5 and not investigating)
+		pol.auto_support == 10 or (money1 and d.agents >= 5 and not investigating)
 	)
 	# num16 自动打压（Button_Pol_Script.cs:583）
 	_btn_auto_suppress.disabled = not (
 		pol.auto_hound == 10 or (
-			money1 and d[W.I_AGENTS] >= 20 and not investigating
+			money1 and d.agents >= 20 and not investigating
 			and _tier_allows_negative(tier, pol) and not mao_protected
 		)
 	)
 	# num14 指定派系负责人（Button_Pol_Script.cs:576）
 	_btn_faction_leader.disabled = not (
-		money100 and d[W.I_AGENTS] >= 100
+		money100 and d.agents >= 100
 		and _faction_leader_slot_of(idx) < 0  # 原版：非现任任一派系领袖
 		and not investigating and tier <= 2 and GameManager.is_mao_dead()
 	)
@@ -591,16 +591,16 @@ func _regional_slot_allowed(pol: PoliticianData, tier: int, pos: int) -> bool:
 
 
 ## 原版 num2 历史人物保护条件（Button_Pol_Script.cs:540 中间大括号）。
-## 注意与 TimeScript.cs:331-335 阴谋击杀版不同：这里 || data[21]>=1978 无条件。
+## 注意与 TimeScript.cs:331-335 阴谋击杀版不同：这里 || data.year>=1978 无条件。
 func _assassinate_historic_allowed(idx: int) -> bool:
-	var d := _world.数值表
+	var d := _world
 	var ev25 := _world.completed_event_ids.has("gang_of_four")
 	var ev26 := _world.completed_event_ids.has("weak_alliance")
 	var basic := idx > 5 and idx != 7 and (idx < 11 or idx > 15) and idx != 17
-	var e25a := ev25 and d[W.I_GANG_OF_FOUR_PATH] != 3 and (idx < 12 or idx > 15)
+	var e25a := ev25 and d.gang_of_four_path != 3 and (idx < 12 or idx > 15)
 	var e26a := ev26 and ((_world.leader != null and _world.leader.name_first != 0) or idx == 1)
-	var year_ok := d[W.I_YEAR] >= 1978
-	var e25b := ev25 and d[W.I_GANG_OF_FOUR_PATH] == 3 and (idx < 1 or idx > 4)
+	var year_ok := d.year >= 1978
+	var e25b := ev25 and d.gang_of_four_path == 3 and (idx < 1 or idx > 4)
 	return basic or e25a or e26a or year_ok or e25b
 
 
@@ -612,14 +612,14 @@ func _assassinate_modifier_allowed(idx: int) -> bool:
 
 
 func _can_assign_leader_cmc() -> bool:
-	# 原版 num13（Button_Pol_Script.cs:573）：selected==150 && data[38]==100 && dolshnost[1]!=150
+	# 原版 num13（Button_Pol_Script.cs:573）：selected==150 && data.stability==100 && dolshnost[1]!=150
 	return GameManager.is_mao_dead() and _world.politics_positions[1] != LEADER_POS
 
 
 func _money_ok(amount: int) -> bool:
-	# 原版统一使用 data[8] + data[36]（预算+外汇储备）判断
-	var d := _world.数值表
-	return d[W.I_BUDGET] + d[W.I_RESERVE] >= amount
+	# 原版统一使用 data.budget + data.reserve（预算+外汇储备）判断
+	var d := _world
+	return d.budget + d.reserve >= amount
 
 
 func _game_rule(idx: int) -> int:
@@ -666,7 +666,7 @@ func _refresh_button_tooltips() -> void:
 				" 已 任 命" if _world.politics_positions[7] == LEADER_POS else " 是 ，当 然 可 以"
 			)
 		return
-	var d := _world.数值表
+	var d := _world
 	var idx := _selected_pol_index
 	var investigating := pol.is_under_investigation
 	var surveilling := pol.is_under_surveillance
@@ -745,7 +745,7 @@ func _refresh_button_tooltips() -> void:
 		faction_tip = " 正 被 纪 律 审 查"
 	elif _faction_leader_slot_of(idx) >= 0:
 		faction_tip = " 已 任 命"
-	elif not _money_ok(100) or d[W.I_AGENTS] < 100:
+	elif not _money_ok(100) or d.agents < 100:
 		faction_tip = " 花 费 10 资 金 与\n10 特 工 网 络"
 	_btn_faction_leader.tooltip_text = faction_tip
 
@@ -793,13 +793,13 @@ func _on_support() -> void:
 	var pol := _get_selected_pol()
 	if pol == null:
 		return
-	var d := _world.数值表
+	var d := _world
 	# num0：LeaderProperty[3] 免费（Button_Pol_Script.cs:609-613）
 	if not _leader_property(3):
-		d[W.I_BUDGET] -= 1
-		d[W.I_AGENTS] -= 5
-	d[W.I_PARTY_SUPPORT] -= 20
-	var year: int = d[W.I_YEAR]
+		d.budget -= 1
+		d.agents -= 5
+	d.party_support -= 20
+	var year: int = d.year
 	pol.power += (year - 1976) * 5
 	pol.loyalty += 50
 	pol.power += absi(pol.power / 10)
@@ -812,13 +812,13 @@ func _on_suppress() -> void:
 		return
 	if GameManager.is_mao_protected(_selected_pol_index):
 		return
-	var d := _world.数值表
+	var d := _world
 	# num1（Button_Pol_Script.cs:619-627）
-	d[W.I_BUDGET] -= 1
-	d[W.I_PARTY_SUPPORT] -= 20
-	d[W.I_AGENTS] -= 20
+	d.budget -= 1
+	d.party_support -= 20
+	d.agents -= 20
 	pol.loyalty -= 50
-	var year: int = d[W.I_YEAR]
+	var year: int = d.year
 	pol.power -= (year - 1976) * 5
 	pol.power -= absi(pol.power / 10)
 	_after_operation()
@@ -830,16 +830,16 @@ func _on_assassinate() -> void:
 		return
 	if GameManager.is_mao_protected(_selected_pol_index):
 		return
-	var d := _world.数值表
+	var d := _world
 	var idx := _selected_pol_index
 	# num2 扣费（Button_Pol_Script.cs:654-662）。enabled 保证 !is_sledstvie → 实际恒走 else -100
 	if pol.is_under_investigation:
-		d[W.I_AGENTS] -= 60
+		d.agents -= 60
 	else:
-		d[W.I_AGENTS] -= 100
-	d[W.I_BUDGET] -= 20
+		d.agents -= 100
+	d.budget -= 20
 	# 原版成功与失败分支各 +100，合计恒 +100；提到 roll 前等价（Button_Pol_Script.cs:665/708）
-	d[W.I_THOUGHT_FREEDOM] += 100
+	d.thought_freedom += 100
 
 	var success_rate: float = GameManager.change_of_killing(idx)
 	var roll: float = _world.ensure_rng().randf()
@@ -850,17 +850,17 @@ func _on_assassinate() -> void:
 		else:
 			_apply_trait_loyalty(pol, -5)
 		if d.size() > 110:
-			d[110] += 1
-		# 原版 Button_Pol_Script.cs:686-689：iron_and_blood 且 data[110]>=44 → Set(24)。
-		if d.size() > 110 and d[110] >= 44:
+			d.political_repression_count += 1
+		# 原版 Button_Pol_Script.cs:686-689：iron_and_blood 且 data.political_repression_count>=44 → Set(24)。
+		if d.size() > 110 and d.political_repression_count >= 44:
 			Achievements.set_achievement(24)
-		# 原版被杀者任中央职时置 data[114/115/116]=9（Button_Pol_Script.cs:691-702）
+		# 原版被杀者任中央职时置 data.get_data_by_index(114/115/116)=9（Button_Pol_Script.cs:691-702）
 		if _world.politics_positions[0] == idx:
-			d[114] = 9
+			d.killed_premier_flag = 9
 		if _world.politics_positions[1] == idx:
-			d[115] = 9
+			d.killed_military_flag = 9
 		if _world.politics_positions[2] == idx:
-			d[116] = 9
+			d.killed_foreign_flag = 9
 		GameManager.kill_politician(idx)
 	else:
 		# 原版失败：全员 -100，目标额外 -400，you_fall=true（Button_Pol_Script.cs:708-716）
@@ -879,13 +879,13 @@ func _on_investigate() -> void:
 		return
 	if GameManager.is_mao_protected(_selected_pol_index):
 		return
-	var d := _world.数值表
+	var d := _world
 	var idx := _selected_pol_index
 	# num3（Button_Pol_Script.cs:718-747）：免费判定用 LeaderProperty[1]（原版如此，勿按 tooltip 改）
 	pol.is_under_investigation = true
 	pol.investigator_index = 0
 	if not _leader_property(1):
-		d[W.I_AGENTS] -= 20
+		d.agents -= 20
 	if _faction_leader_slot_of(idx) >= 0:
 		_apply_trait_loyalty(pol, -1000)
 	else:
@@ -900,12 +900,12 @@ func _on_surveil() -> void:
 		return
 	if GameManager.is_mao_protected(_selected_pol_index):
 		return
-	var d := _world.数值表
+	var d := _world
 	# num4（Button_Pol_Script.cs:748-756）
 	pol.is_under_surveillance = true
 	pol.days_surveillance = 0
 	if not _leader_property(1):
-		d[W.I_AGENTS] -= 30
+		d.agents -= 30
 	_after_operation()
 
 

@@ -47,8 +47,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 2
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 2
 	event_def.title = T_499_0
 	event_def.description = T_499_1
 	var ethiopia := world.get_country_by_legacy_index(41)
@@ -139,7 +139,7 @@ func _result1(sudan: CountryData, context: Dictionary) -> void:
 		sudan.puppet_of = 13
 		sudan.name = T_499_19
 		context["result_text"] = T_499_18
-	elif d.size() > W.I_WAR_SUPPORT and d[W.I_WAR_SUPPORT] >= 700:
+	elif d.size() > W.I_WAR_SUPPORT and d.war_support >= 700:
 		_add(W.I_AGENTS, -50)
 		sudan.government = GameConstants.Government.AUTHORITARIAN
 		sudan.sub_government = GameConstants.SubGovernment.NEO_FASCIST

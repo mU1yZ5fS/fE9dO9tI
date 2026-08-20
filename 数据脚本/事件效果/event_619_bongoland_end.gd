@@ -23,12 +23,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
-	var budget := d[W.I_BUDGET] if d.size() > W.I_BUDGET else 0
-	var reserve := d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0
-	var agents := d[W.I_AGENTS] if d.size() > W.I_AGENTS else 0
-	var army := d[W.I_ARMY] if d.size() > W.I_ARMY else 0
+	var d := world
+	var line := d.political_line if d.size() > W.I_POLITICAL_LINE else 3
+	var budget := d.budget if d.size() > W.I_BUDGET else 0
+	var reserve := d.reserve if d.size() > W.I_RESERVE else 0
+	var agents := d.agents if d.size() > W.I_AGENTS else 0
+	var army := d.army if d.size() > W.I_ARMY else 0
 	var gabon := world.get_country_by_legacy_index(116)
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)

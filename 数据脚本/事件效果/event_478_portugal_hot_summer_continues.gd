@@ -25,8 +25,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	var can := world.数值表[W.I_BUDGET] + world.数值表[W.I_RESERVE] >= 50 \
-			and world.数值表[W.I_AGENTS] >= 50
+	var can := world.budget + world.reserve >= 50 \
+			and world.agents >= 50
 	if can:
 		_enable(opt[0], S_23)
 		_enable(opt[1], S_24)

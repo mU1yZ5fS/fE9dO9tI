@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event685.cs：战略武器限制谈判——新人入局（三选项）。
 ## 触发：ReqEventsDLC02.cs:232-234 —— china.okb && r544∈{1,2} && science[26/22/29]
-##   && data[21]>1980 && influencePRC>=500 && !china.sev/ovd/asean/seato → trigger_script evaluate。
+##   && data.year>1980 && influencePRC>=500 && !china.sev/ovd/asean/seato → trigger_script evaluate。
 ## 差异：names1/names2 → name_display；{2}=军委主席（politics_positions[1]，<100 用槽内人，否则“其他”）；
 ##   {0}（结果3）=外交部长（politics_positions[2]，<100 用槽内人，否则领袖）；
 ##   old_modify_desc[50] 为 display-only 文案，按项目惯例跳过并留原文。
@@ -78,8 +78,8 @@ func execute(context: Dictionary) -> void:
 func evaluate(world: WorldState) -> bool:
 	if world == null or world.date == null:
 		return false
-	var d2 := world.数值表
-	if d2.size() <= W.I_YEAR or d2[W.I_YEAR] <= 1980:
+	var d2 := world
+	if d2.size() <= W.I_YEAR or d2.year <= 1980:
 		return false
 	var china := world.get_country_by_legacy_index(1)
 	if china == null or not china.has_tag("okb") \

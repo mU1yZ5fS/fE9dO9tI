@@ -8,7 +8,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##    !event_done[10]；is_gkchp/IndOpp 端口无对应 → 视为恒真（默认状态）。
 ##  - allcountries[70].dev=0：端口无 dev 字段 → 用 development 近似。
 ##  - allcountries[12].proprc / allcountries[70].prosov：端口标签体系 → has_tag("亲中")/set_tag("亲苏")。
-##  - opt1 的 data[18]++：反编译为死代码（ptr 局部自增未写回 data），跳过。
+##  - opt1 的 data.territory_policy++：反编译为死代码（ptr 局部自增未写回 data），跳过。
 
 
 func execute(context: Dictionary) -> void:
@@ -23,26 +23,26 @@ func execute(context: Dictionary) -> void:
 func _opt_independent(context: Dictionary) -> void:
 	ws.influence_prc -= 250
 	if d.size() > W.I_POPULATION:
-		d[W.I_POPULATION] -= 218
+		d.population -= 218
 	if d.size() > W.I_AGRICULTURE:
-		d[W.I_AGRICULTURE] -= 50
+		d.agriculture -= 50
 	if d.size() > W.I_INDUSTRY:
-		d[W.I_INDUSTRY] -= 10
+		d.industry -= 10
 	if d.size() > W.I_MANPOWER:
-		d[W.I_MANPOWER] -= 50
+		d.manpower -= 50
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] -= 200
+		d.party_support -= 200
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 200
+		d.people_support -= 200
 	if d.size() > W.I_POPULATION:
-		d[W.I_POPULATION] -= 218   # 原版重复两次 -=218，逐字复刻
+		d.population -= 218   # 原版重复两次 -=218，逐字复刻
 	var xinjiang := ws.get_country_by_legacy_index(70)
 	if xinjiang != null:
 		xinjiang.development = 0    # 差异：原 dev=0
 	var usa := ws.get_country_by_legacy_index(1)
 	var soviet_puppet_mongolia: bool = _mongolia_condition()
 	if d.size() > W.I_XINJIANG_POLICY:
-		d[W.I_XINJIANG_POLICY] = 1 if soviet_puppet_mongolia else 2
+		d.xinjiang_policy = 1 if soviet_puppet_mongolia else 2
 	if usa != null:
 		usa.parts.resize(10)
 		usa.parts[9] = true

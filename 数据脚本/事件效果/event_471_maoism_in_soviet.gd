@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event471.cs：毛泽东思想在……苏联？（苏联左翼异见者三选项）。
 ## 触发：ReqEventForDLC02.cs:437-439 —— DATE_AFTER 1980.9.1；fire_only_once 承担 !event_done[471]。
 ## 差异：relres→ws.get_flag("relres")；proprc→亲中、Torg→对华贸易；
-##   SOV_PRC_PartiesConnection 未出现在本事件，data[11] 直接按原版。
+##   SOV_PRC_PartiesConnection 未出现在本事件，data.science 直接按原版。
 
 const TXT_OPT0_DIS := "我们已经不再需要过去错误的“极左”方法了，韬光养晦才是正道"
 const TXT_OPT1_DIS_A := "就算我们需要与北方缓和，也不至于要到这个地步！"
@@ -20,8 +20,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or event_def.options.size() < 3:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var line56 := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
+	var d := world
+	var line56 := d.political_line if d.size() > W.I_POLITICAL_LINE else 0
 	var albania := world.get_country_by_legacy_index(20)
 	var sov := world.get_country_by_legacy_index(7)
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
@@ -80,7 +80,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_relation(empire_index: int, value: int) -> void:

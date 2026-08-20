@@ -14,7 +14,7 @@ const TXT_IDX_1375 := "首次民主选举光是竞选活动便进行的非常激
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 原版 result 0 先置 text="另一场战争结束了。" 再经 WarResult(ref text) 追加结算文案；
 ##    端口结算文案无（_apply_war_result 无文案），result_text 仅保留首句，结算效果由引擎执行。
-##  - 69/70 号战争战败 → data[35]=11/12 + load_scene_after_click（蒙古/海参崴结局）：
+##  - 69/70 号战争战败 → data.ending_route=11/12 + load_scene_after_click（蒙古/海参崴结局）：
 ##    端口 ENDINGS 表仅 0-7 → 差异注释，不触发结局（69/70 号战争端口也不存在）。
 ##  - 端口触发：GameManager._check_war_endings（战争达结算条件 → start_event("war_is_over")），
 ##    原版由 Event476 链触发，等价。
@@ -17,8 +17,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
-	d = world.数值表
-	var war_id: int = d[W.I_WAR_RESOLVE] if d.size() > W.I_WAR_RESOLVE else -1
+	d = world
+	var war_id: int = d.war_resolve if d.size() > W.I_WAR_RESOLVE else -1
 	var war := _get_war(war_id)
 	var war_name := war.name_war if war != null else ""
 
@@ -66,7 +66,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	elif _is_japan_revolution(war_id, war):
 		button_text = "为我们日本同志的胜利敬一杯！"
 	elif _is_kefir_doom(war_id, war):
-		var line: int = d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
+		var line: int = d.political_line if d.size() > W.I_POLITICAL_LINE else 0
 		if line == 0:
 			button_text = "他们没能建成地上天国"
 		elif line > 0 and line < 3:
@@ -84,7 +84,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
-	var war_id: int = d[W.I_WAR_RESOLVE] if d.size() > W.I_WAR_RESOLVE else -1
+	var war_id: int = d.war_resolve if d.size() > W.I_WAR_RESOLVE else -1
 	var war := _get_war(war_id)
 	# 西撒哈拉战争（war39）补原版 GameState.cs:1969-2007 专属结算文案。
 	if war_id == 39 and war != null:
@@ -96,13 +96,13 @@ func execute(context: Dictionary) -> void:
 	if _is_mongol_defeat(war_id, war):
 		context["result_title"] = "真该死！"
 		context["result_text"] = "出乎我们的意料，孱弱的蒙古军队设法逼退了中国人民解放军。由于战争初期的失误指挥，我们的先遣部队在乌兰巴托残酷的巷战中损失惨痛。而蒙古民众也并不相信我们能为他们带来解放。纷纷拿起苏制装备躲进山区里，或是骑在马上把我们的巡逻队员绞杀至死。极端民族主义组织“白色十字”甚至成功的暗杀了我们指挥对蒙作战的军事首长。苏联以自愿报名为由派遣了成建制的“志愿军”，古巴和法国的雇佣兵也通过苏联来到蒙古，在各个地方运用他们在非洲学到的知识，打击我们的战士。在惨痛的绞肉战后，这场军事冒险在丢下几万具尸体后惨败收场。最耻辱的莫过于蒙古甚至设法攻克了二连浩特，当着我们全体电视观众的面把我们的国旗扯下并点燃。在各国的斡旋和美国的武力威胁下，我们只得灰溜溜的撤出蒙古。蒙古政府把这次胜利比做二十一世纪的土木堡之战。他们增加了军费，甚至采购了导弹。等等，门口的敲门声是？"
-		# 原 Event18.cs:143：data[82]==69 && ingamewars[69].infl1<1000 → data[35]=11 + load_scene_after_click。
+		# 原 Event18.cs:143：data.war_resolve==69 && ingamewars[69].infl1<1000 → data.ending_route=11 + load_scene_after_click。
 		# Godot 用 queue_ending_after_event 复现「结果页确认后进结局」。
 		GameManager.queue_ending_after_event(11)
 	elif _is_ussr_victory(war_id, war):
 		context["result_title"] = "真该死！"
 		context["result_text"] = "苏联通过背靠北约盟友，将亚洲大战变为了不亚于日俄战争的残酷绞肉机。虽然我们的海军得以封锁库页岛，并将苏联的海军困死在港口内；但我们的陆军并没能在各个方向取得进展，他们只能困守海参崴和伯力。此后，苏联人更是借助美方导弹平台轰炸我核心工业区与关键城市，甚至让北京也陷入威胁当中。在付出数十万人的伤亡后，我们不得不回到谈判桌上同苏联达成妥协，而作为战争的发起者的你定没有好下场……"
-		# 原 Event18.cs:151：data[82]==70 && ingamewars[70].infl1<1000 → data[35]=12 + load_scene_after_click。
+		# 原 Event18.cs:151：data.war_resolve==70 && ingamewars[70].infl1<1000 → data.ending_route=12 + load_scene_after_click。
 		GameManager.queue_ending_after_event(12)
 
 

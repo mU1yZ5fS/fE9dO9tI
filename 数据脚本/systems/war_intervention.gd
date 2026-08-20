@@ -130,8 +130,8 @@ static func apply_diplo(w: WorldState, war: WarData, side: int) -> void:
 			w.empires[1].relations += 30
 
 
-## 事件545 分档的党内支持（军事介入点 data[0]）消耗；结束后中国不稳定度 +8。
-static func apply_party_cost(w: WorldState, d: Array, china: CountryData) -> void:
+## 事件545 分档的党内支持（军事介入点 data.mil_intervention）消耗；结束后中国不稳定度 +8。
+static func apply_party_cost(w: WorldState, d: WorldState, china: CountryData) -> void:
 	if china == null:
 		return
 	var unstab := china.level_of_instability
@@ -145,7 +145,7 @@ static func apply_party_cost(w: WorldState, d: Array, china: CountryData) -> voi
 	@warning_ignore("integer_division")
 	var cost := mult * unstab / 10
 	if d.size() > W.I_MIL_INTERVENTION:
-		d[W.I_MIL_INTERVENTION] -= cost
+		d.mil_intervention -= cost
 	china.level_of_instability += 8
 
 

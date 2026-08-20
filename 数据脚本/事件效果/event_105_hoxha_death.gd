@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event105.cs：阿尔巴尼亚的斯大林的终结（霍查逝世，三选项）。
 ## 触发：TimeScript.cs:10871-10877 ——
-##   ((日>=13 且 月>=4 且 年>=1985) || 年>=1986) && data[60]==0
+##   ((日>=13 且 月>=4 且 年>=1985) || 年>=1986) && data.albania_break==0
 ##   && c20.SubGosstroy!=11 && (!c20.isRIM || c1.isRIM)。
 ## 差异：描述按 event_done[77] 双分支（prepare）；c20.parts[0]/spec 映射。
 
@@ -30,7 +30,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		event_def.description = "新华社1985年4月11日地拉那电：阿尔巴尼亚的终身领导人恩维尔·霍查逝世，享年76岁。在这个国家为自己的损失感到悲痛的同时，拉米兹·阿利雅接任了阿尔巴尼亚劳动党中央委员会第一书记的职位，长期以来，他被认为是霍查的继任者，在PPSh（阿尔巴尼亚劳动党）的早起历程和游击战中立下了汗马功劳。阿利雅欣赏霍查并无条件支持其政策的所有转变，但是，据一些报道，他并不反对与西方和东方集团建立关系，也不反对在国内政治上做出一些让步。一方面，阿尔巴尼亚可能会寻求其他国家的援助而抛弃我们。另一方面，我们也不知道会不会真的这么做。因此，我们可以打打这个不听话小孩的屁股，当然，如果我们在附近有特工的话。"
 	var albania := world.get_country_by_legacy_index(20)
 	var yugo := world.get_country_by_legacy_index(15)
-	var agents := world.数值表[W.I_AGENTS] if world.数值表.size() > W.I_AGENTS else 0
+	var agents := world.agents if world.size() > W.I_AGENTS else 0
 	var opt := event_def.options
 	_enable(opt[0], "什么都不做")
 	if ((yugo != null and yugo.has_tag("对华贸易")) or (albania != null and albania.has_tag("对华贸易"))) and agents >= 60:
@@ -51,7 +51,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if d.size() > W.I_ALBANIA_BREAK:
-				d[W.I_ALBANIA_BREAK] = 2
+				d.albania_break = 2
 			if albania != null:
 				albania.government = GameConstants.Government.SOCIALIST
 				albania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -60)
 			ws.influence_prc += 5
 			if d.size() > W.I_ALBANIA_BREAK:
-				d[W.I_ALBANIA_BREAK] = 3
+				d.albania_break = 3
 			var text := ""
 			if albania != null and albania.parts.size() > 0 and albania.parts[0]:
 				text = TXT_R1_A
@@ -88,7 +88,7 @@ func execute(context: Dictionary) -> void:
 				albania.government = GameConstants.Government.SOCIALIST
 				albania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			if d.size() > W.I_ALBANIA_BREAK:
-				d[W.I_ALBANIA_BREAK] = 2
+				d.albania_break = 2
 			_add(W.I_PARTY_SUPPORT, 100)
 			_add(W.I_BUDGET, -30)
 			_add_relation(EmpireData.USSR, -50)

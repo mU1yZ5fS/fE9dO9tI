@@ -17,10 +17,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or event_def.options.size() < 3:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var agents := d[W.I_AGENTS] if d.size() > W.I_AGENTS else 0
-	var army := d[W.I_ARMY] if d.size() > W.I_ARMY else 0
-	var line56 := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
+	var d := world
+	var agents := d.agents if d.size() > W.I_AGENTS else 0
+	var army := d.army if d.size() > W.I_ARMY else 0
+	var line56 := d.political_line if d.size() > W.I_POLITICAL_LINE else 0
 	var opt := event_def.options
 	if agents >= 50 and army >= 50:
 		_enable(opt[0], event_def.options[0].text)
@@ -65,7 +65,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_relation(empire_index: int, value: int) -> void:

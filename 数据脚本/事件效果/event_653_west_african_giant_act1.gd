@@ -25,9 +25,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 2
-	var war_support := data[W.I_WAR_SUPPORT] if data.size() > W.I_WAR_SUPPORT else 0
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 2
+	var war_support := data.war_support if data.size() > W.I_WAR_SUPPORT else 0
 	var opt := event_def.options
 	if line >= 2:
 		_enable(opt[0], event_def.options[0].text)

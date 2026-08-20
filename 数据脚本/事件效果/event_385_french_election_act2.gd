@@ -129,8 +129,8 @@ func execute(context: Dictionary) -> void:
 		var num := _winner(press)
 		_add(W.I_AGENTS, -100)
 		_add(W.I_BUDGET, -50)
-		# 原版 data[131] = num
-		d[131] = num  # 原版 data[131]
+		# 原版 data.world_political_balance = num
+		d.world_political_balance = num  # 原版 data.world_political_balance
 		var _cand_ch := _cand_name(infl_ch)
 		var _cand_nato := _cand_name(infl_nato)
 		var winner_name := _cand_name(num)
@@ -146,7 +146,7 @@ func execute(context: Dictionary) -> void:
 			if france != null:
 				france.set_tag("亲美", true)
 			_add_power(EmpireData.USA, 50)
-			d[131] = 0  # 原版 data[131]
+			d.world_political_balance = 0  # 原版 data.world_political_balance
 			Achievements.set_achievement(115)  # 原作 Event385.cs:410-413 iron_and_blood → achievements.Set(115)
 			var portugal := ws.get_country_by_legacy_index(87)
 			if portugal != null:
@@ -156,7 +156,7 @@ func execute(context: Dictionary) -> void:
 				france.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			ws.modifiers[42].is_active = false
 			ws.modifiers[43].is_active = true
-			d[131] = 1  # 原版 data[131]
+			d.world_political_balance = 1  # 原版 data.world_political_balance
 			var portugal2 := ws.get_country_by_legacy_index(87)
 			if portugal2 != null:
 				portugal2.special += 5
@@ -170,7 +170,7 @@ func execute(context: Dictionary) -> void:
 					france.government = GameConstants.Government.REFORMIST
 			ws.modifiers[42].is_active = false
 			ws.modifiers[44].is_active = true
-			d[131] = 2  # 原版 data[131]
+			d.world_political_balance = 2  # 原版 data.world_political_balance
 			var portugal3 := ws.get_country_by_legacy_index(87)
 			if portugal3 != null:
 				portugal3.special -= 10
@@ -179,26 +179,26 @@ func execute(context: Dictionary) -> void:
 				france.sub_government = GameConstants.SubGovernment.MODERATE
 			ws.modifiers[42].is_active = false
 			ws.modifiers[45].is_active = true
-			d[131] = 3  # 原版 data[131]
+			d.world_political_balance = 3  # 原版 data.world_political_balance
 			var portugal4 := ws.get_country_by_legacy_index(87)
 			if portugal4 != null:
 				portugal4.special -= 10
 	else:
 		var cand_ch := _cand_name(infl_ch)
 		context["result_text"] = TXT_R_NO_FMT.format(["\n", cand_ch, _promise(infl_ch)])
-		d[131] = infl_ch  # 原版 data[131]
+		d.world_political_balance = infl_ch  # 原版 data.world_political_balance
 		if infl_ch == 0:
 			if france != null:
 				france.set_tag("亲美", true)
 			_add_power(EmpireData.USA, 50)
 			Achievements.set_achievement(115)  # 原作 Event385.cs:457-460 achievements.Set(115)
-			d[131] = 0  # 原版 data[131]
+			d.world_political_balance = 0  # 原版 data.world_political_balance
 		elif infl_ch == 1:
 			if france != null:
 				france.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			ws.modifiers[42].is_active = false
 			ws.modifiers[43].is_active = true
-			d[131] = 1  # 原版 data[131]
+			d.world_political_balance = 1  # 原版 data.world_political_balance
 		elif infl_ch == 2:
 			if france != null:
 				if not ws.get_flag("YugAgree"):
@@ -211,13 +211,13 @@ func execute(context: Dictionary) -> void:
 				ws.empires[EmpireData.USSR].leaders[6].support += 1
 			ws.modifiers[42].is_active = false
 			ws.modifiers[44].is_active = true
-			d[131] = 2  # 原版 data[131]
+			d.world_political_balance = 2  # 原版 data.world_political_balance
 		else:
 			if france != null:
 				france.sub_government = GameConstants.SubGovernment.MODERATE
 			ws.modifiers[42].is_active = false
 			ws.modifiers[45].is_active = true
-			d[131] = 3  # 原版 data[131]
+			d.world_political_balance = 3  # 原版 data.world_political_balance
 
 
 func _compute_press(world: WorldState) -> Array:
@@ -266,7 +266,7 @@ func _compute_press(world: WorldState) -> Array:
 	# press[1]（德斯坦）
 	if int(world.completed_event_ids.get("event_384", 0)) == 2:
 		press[1] += 2
-	if _d(132) == 2:  # 原版 data[132]
+	if _d(132) == 2:  # 原版 data.soviet_eastern_europe_intervention
 		press[1] += 1
 	if usa != null and usa.development > 0:
 		press[1] += 1
@@ -447,7 +447,7 @@ func _mod_active(idx: int) -> bool:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

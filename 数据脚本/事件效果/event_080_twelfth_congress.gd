@@ -43,9 +43,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		arr_mod3.append(_opts_full[1])
 		event_def.options = arr_mod3
 		var num := _compute_num(world)
-		var data_mod3 := world.数值表
-		var line_mod3 := data_mod3[W.I_POLITICAL_LINE] if data_mod3.size() > W.I_POLITICAL_LINE else 1
-		var living := data_mod3[W.I_LIVING] if data_mod3.size() > W.I_LIVING else 0
+		var data_mod3 := world
+		var line_mod3 := data_mod3.get_data_by_index(W.I_POLITICAL_LINE) if data_mod3.size() > W.I_POLITICAL_LINE else 1
+		var living := data_mod3.get_data_by_index(W.I_LIVING) if data_mod3.size() > W.I_LIVING else 0
 		var flag := line_mod3 < 1 and living >= 500 and world.influence_prc >= 500 and num >= 15
 		if flag:
 			_enable(event_def.options[0], "中国人民的革命事业要排除万难，从胜利走向胜利！")
@@ -59,9 +59,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		arr.append(o)
 	event_def.options = arr
 	event_def.description = TXT_DESC_NORMAL
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
 	var coal := _coalition_percent(world)
 	var left_party := party < 8
 	var opt := event_def.options
@@ -303,17 +303,17 @@ func _compute_num(world: WorldState) -> int:
 	c = world.get_country_by_legacy_index(20)
 	if c == null or not c.has_tag("亲中"):
 		num -= 1
-	if world.数值表.size() > 185:
-		if world.数值表[185] == 1:
+	if world.size() > 185:
+		if world.anthem_choice == 1:
 			num -= 1
-		elif world.数值表[185] == 3:
+		elif world.anthem_choice == 3:
 			num += 1
 	return num
 
 
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0
@@ -422,7 +422,7 @@ func _politician_display_name(idx: int) -> String:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

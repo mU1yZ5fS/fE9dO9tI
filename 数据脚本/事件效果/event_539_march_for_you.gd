@@ -35,9 +35,9 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if not (c38.government == GameConstants.Government.SOCIALIST or c38.government == GameConstants.Government.REFORMIST or world.decisions.completed[7]):
 		return false
-	var y := world.数值表[W.I_YEAR]
-	var mo := world.数值表[W.I_MONTH]
-	var day := world.数值表[W.I_DAY]
+	var y := world.year
+	var mo := world.month
+	var day := world.day
 	if (y >= 1985 and mo >= 5 and day >= 23) or (y >= 1985 and mo >= 6) or y >= 1986:
 		return true
 	return false

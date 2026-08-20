@@ -55,7 +55,7 @@ const CATALONIA_REGION_IDS := [629, 637, 2500, 2501]
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 
@@ -84,10 +84,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 6:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
-	var agents := d[W.I_AGENTS] if d.size() > W.I_AGENTS else 0
-	var army := d[W.I_ARMY] if d.size() > W.I_ARMY else 0
+	var d := world
+	var budget_reserve := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
+	var agents := d.agents if d.size() > W.I_AGENTS else 0
+	var army := d.army if d.size() > W.I_ARMY else 0
 	if budget_reserve >= 100 and agents >= 50 and army >= 150:
 		_enable(event_def.options[0], _fmt(TXT_OPT0_EN, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594]))
 	elif budget_reserve < 100:
@@ -98,7 +98,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(event_def.options[0], _fmt(TXT_IDX_776, [15]))
 	_enable(event_def.options[1], event_def.options[1].text)
 	_enable(event_def.options[2], event_def.options[2].text)
-	var political_line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
+	var political_line := d.political_line if d.size() > W.I_POLITICAL_LINE else 0
 	if political_line <= 1 and army >= 150 and budget_reserve >= 100 and agents >= 150:
 		_enable(event_def.options[3], event_def.options[3].text)
 	else:

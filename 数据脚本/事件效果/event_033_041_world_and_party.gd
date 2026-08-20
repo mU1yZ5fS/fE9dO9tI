@@ -47,10 +47,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null:
 		return
-	var dpre: Array[int] = world.数值表
+	var dpre: WorldState = world
 	if event_def.event_id == "iraqi_coalition" and event_def.options.size() >= 4:
-		var line36: int = dpre[W.I_POLITICAL_LINE]
-		var religion36: int = dpre[W.I_RELIGION]
+		var line36: int = dpre.political_line
+		var religion36: int = dpre.religion_policy
 		var opt36 := event_def.options[3]
 		if line36 > 0 and line36 < 4 and religion36 > 25:
 			_enable(opt36, TXT_36_OPT3_ACTIVE)
@@ -62,7 +62,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			_disable(opt36, TXT_36_OPT3_DIS_OTHER)
 	if event_def.event_id == "egyptian_unrest" and event_def.options.size() >= 1:
 		var egypt37 := world.get_country_by_legacy_index(30)
-		var ok37 := dpre[W.I_AGENTS] >= 60 and dpre[W.I_POLITICAL_LINE] <= 2 \
+		var ok37 := dpre.agents >= 60 and dpre.political_line <= 2 \
 				and egypt37 != null and egypt37.stab == 1
 		var opt37 := event_def.options[0]
 		if ok37:
@@ -94,7 +94,7 @@ func _event_33(option_index: int) -> void:
 	match option_index:
 		0:
 			_add_empire_power(EmpireData.USA, 30)
-			d[W.I_THOUGHT_FREEDOM] += 30
+			d.thought_freedom += 30
 			if pakistan != null:
 				pakistan.government = GameConstants.Government.AUTHORITARIAN
 				pakistan.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
@@ -113,7 +113,7 @@ func _event_33(option_index: int) -> void:
 				pakistan.prc_power = 1000
 			_subtract_faction_fraction(FactionData.LIBERAL, 0.25)
 		2:
-			d[W.I_THOUGHT_FREEDOM] += 50
+			d.thought_freedom += 50
 			_add_empire_relation(EmpireData.USA, 50)
 			_add_empire_relation(EmpireData.USSR, -50)
 			_add_empire_power(EmpireData.USA, 20)
@@ -133,7 +133,7 @@ func _event_34(option_index: int) -> void:
 			_change_politicians({2: [-100, 0], 0: [100, 0]})
 			_add_power_by_index({7: -100, 6: -100})
 		1:
-			d[W.I_PARTY_SUPPORT] -= 100
+			d.party_support -= 100
 			_add_faction_ideology({FactionData.CONSERVATIVE: 400})
 			_change_politicians({0: [100, 0]})
 			_add_power_by_index({5: 100, 8: 100, 9: 100})
@@ -189,7 +189,7 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 				iraq.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				iraq.set_tag("对华贸易", true)
 			ws.oil_prod += 200.0  # Event36.cs result0：扩大石油出口
-			d[W.I_INFLUENCE] += 10
+			d.global_influence += 10
 			_add_empire_relation(EmpireData.USSR, -50)
 		1:
 			_add_data({W.I_BUDGET: -50, W.I_AGENTS: -50})
@@ -199,7 +199,7 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 				iraq.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				iraq.set_tag("对华贸易", true)
 			ws.oil_prod += 200.0  # Event36.cs result1：扩大石油出口
-			d[W.I_INFLUENCE] += 10
+			d.global_influence += 10
 			_add_empire_relation(EmpireData.USSR, -50)
 		2:
 			if iraq != null:
@@ -276,14 +276,14 @@ func _event_38(option_index: int) -> void:
 				W.I_PEOPLE_SUPPORT: -40})
 			_add_empire_relation(EmpireData.USA, -70)
 			_add_empire_relation(EmpireData.USSR, 50)
-			d[W.I_ECON_SYSTEM] = 10
+			d.econ_system = 10
 			_add_faction_ideology({FactionData.MAOIST: 250, FactionData.CONSERVATIVE: 250})
 			_change_politicians({0: [100, 0], 1: [-30, 0], 2: [-100, 0]})
 		2:
 			_add_data({W.I_DIPLO: -10, W.I_THOUGHT_FREEDOM: 20, W.I_PEOPLE_SUPPORT: 30})
 			_add_empire_relation(EmpireData.USSR, -70)
 			_add_empire_relation(EmpireData.USA, 80)
-			d[W.I_ECON_SYSTEM] = 12
+			d.econ_system = 12
 			_add_faction_ideology({FactionData.MODERATE: 450, FactionData.REFORMIST: 450})
 			_change_politicians({2: [150, 100], 1: [70, 50], 0: [-170, -100]})
 
@@ -292,7 +292,7 @@ func _event_39(option_index: int, context: Dictionary) -> void:
 	match option_index:
 		0:
 			_add_data({W.I_PARTY_SUPPORT: 80, W.I_PEOPLE_SUPPORT: 20, W.I_DIPLO: 10})
-			d[W.I_MAO_HISTORY_LINE] = 0
+			d.mao_history_line = 0
 			_add_faction_ideology({FactionData.MAOIST: 150, FactionData.CONSERVATIVE: 150})
 			_change_politicians({0: [100, 30], 1: [60, 20], 2: [50, 0], 3: [-100, -30]})
 			var kill_index := _find_politician(13, 13)
@@ -301,17 +301,17 @@ func _event_39(option_index: int, context: Dictionary) -> void:
 		1:
 			_add_data({W.I_PARTY_SUPPORT: 100, W.I_PEOPLE_SUPPORT: 50,
 				W.I_DIPLO: -30, W.I_COMMUNICATIONS: 20})
-			d[W.I_MAO_HISTORY_LINE] = 1
+			d.mao_history_line = 1
 			_add_faction_ideology({FactionData.MAOIST: 150, FactionData.CONSERVATIVE: 150})
 			_change_politicians({0: [50, 10], 1: [100, 40], 2: [80, 30], 3: [60, 0]})
 		2:
-			if d[W.I_MAO_MAUSOLEUM] == 10:
-				d[W.I_MAO_MAUSOLEUM] = 9
+			if d.mao_mausoleum == 10:
+				d.mao_mausoleum = 9
 				context["result_text"] = TXT_39_R2_BASE + "\n" + TXT_39_R2_MAUSOLEUM
 			else:
 				context["result_text"] = TXT_39_R2_BASE
 			_add_data({W.I_PARTY_SUPPORT: -50, W.I_PEOPLE_SUPPORT: -50, W.I_DIPLO: -60})
-			d[W.I_MAO_HISTORY_LINE] = 2
+			d.mao_history_line = 2
 			_add_faction_ideology({FactionData.REFORMIST: 150, FactionData.LIBERAL: 100})
 			_change_politicians({0: [-150, 0], 1: [-100, 0], 2: [50, 0], 3: [150, 0]})
 
@@ -322,7 +322,7 @@ func _event_40(option_index: int, context: Dictionary) -> void:
 		0:
 			_add_data({W.I_PARTY_SUPPORT: 50, W.I_PEOPLE_SUPPORT: -50, W.I_DIPLO: 5})
 		1:
-			if d[W.I_RELIGION] <= 25:
+			if d.religion_policy <= 25:
 				_add_data({W.I_PARTY_SUPPORT: 50, W.I_PEOPLE_SUPPORT: -60,
 					W.I_DIPLO: 10, W.I_MANPOWER: -50, W.I_INFLUENCE: -10})
 				context["result_text"] = TXT_40_R1_REJECT
@@ -340,7 +340,7 @@ func _event_40(option_index: int, context: Dictionary) -> void:
 			if tibet != null:
 				tibet.special_ending = 33
 		3:
-			if d[W.I_RELIGION] >= 26 and d[W.I_PEOPLE_SUPPORT] >= 700:
+			if d.religion_policy >= 26 and d.people_support >= 700:
 				_add_data({W.I_INFLUENCE: 10, W.I_PEOPLE_SUPPORT: 120,
 					W.I_DIPLO: -20, W.I_MANPOWER: 40})
 				_add_empire_relation(EmpireData.USA, 120)
@@ -364,21 +364,21 @@ func _event_41(option_index: int) -> void:
 	var india := ws.get_country_by_legacy_index(19)
 	match option_index:
 		0:
-			d[W.I_INFLUENCE] += 10
-			d[W.I_INDIA_ELECTION] = 2
+			d.global_influence += 10
+			d.india_election = 2
 			if india != null:
 				india.set_tag("对华贸易", true)
 		1:
 			_add_data({W.I_PARTY_SUPPORT: 70, W.I_INFLUENCE: 20,
 				W.I_BUDGET: -30, W.I_AGENTS: -50})
-			d[W.I_INDIA_ELECTION] = 1
+			d.india_election = 1
 			_add_empire_relation(EmpireData.USSR, -70)
 			if india != null:
 				india.set_tag("对华贸易", true)
 				india.set_tag("亲苏", false)
 		2:
 			_add_data({W.I_PARTY_SUPPORT: -50, W.I_AGENTS: -50, W.I_COMMUNICATIONS: 30})
-			d[W.I_INDIA_ELECTION] = 3
+			d.india_election = 3
 			_add_empire_power(EmpireData.USSR, 20)
 			_add_empire_relation(EmpireData.USSR, 100)
 
@@ -389,15 +389,15 @@ func _liberalization_party_effects(loyalty_delta: int, power_delta: int) -> void
 
 
 func _clamp_at_least(index: int, value: int) -> void:
-	if d.size() > index and d[index] < value:
-		d[index] = value
+	if d.size() > index and d.get_data_by_index(index) < value:
+		d.set_data_by_index(index, value)
 
 
 func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
 		if index >= 0 and index < d.size():
-			d[index] += int(changes[raw_index])
+			d.add_data_by_index(index, int(changes[raw_index]))
 
 
 func _change_politicians(changes: Dictionary) -> void:
@@ -458,8 +458,8 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		ws.数值表[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		ws.数值表[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		ws.usa_relations = ws.empires[EmpireData.USA].relations
+		ws.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		ws.数值表[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		ws.ussr_relations = ws.empires[EmpireData.USSR].relations
+		ws.soviet_influence = ws.empires[EmpireData.USSR].power

@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   日期>=1983.2.1 && !c15.eu && c15.SubGosstroy==11 && c20.SubGosstroy!=11。
 ## 差异：
 ##  - result 5 为死代码（button_text[5]=""）→ 跳过；
-##  - data[86] 无 W.I_* 常量 → 直接 d[86] + 注释；result0/2 的 data[86] 读写是局部 no-op，跳过；
+##  - data.yugoslavia_kosovo_chain 无 W.I_* 常量 → 直接 d.yugoslavia_kosovo_chain + 注释；result0/2 的 data.yugoslavia_kosovo_chain 读写是局部 no-op，跳过；
 ##  - Vyshi→亲美、isSEV→sev、Torg→对华贸易、dev→development。
 
 
@@ -26,10 +26,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
-	var agents := data[W.I_AGENTS] if data.size() > W.I_AGENTS else 0
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var agents := data.agents if data.size() > W.I_AGENTS else 0
 	var coal := _coalition_percent(world)
 	var policy_left := (line < 3 and party < 8) or (coal > 66 and party > 7)
 	var china := world.get_country_by_legacy_index(1)
@@ -63,7 +63,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			# 原版 result0 的 data[86] 读写是局部 no-op（未写回数组）→ 跳过。
+			# 原版 result0 的 data.yugoslavia_kosovo_chain 读写是局部 no-op（未写回数组）→ 跳过。
 			context["result_text"] = TXT_R0
 		1:
 			ws.influence_prc += 20
@@ -71,7 +71,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_DIPLO, -10)
 			_add(W.I_BUDGET, -200)
 			if d.size() > 86:
-				d[86] += 2
+				d.yugoslavia_kosovo_chain += 2
 			_set_torg_or_agents(yugoslavia)
 			context["result_text"] = TXT_R1
 		2:
@@ -94,7 +94,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -250)
 			_add_relation(EmpireData.USSR, 200)
 			if d.size() > 86:
-				d[86] += 2
+				d.yugoslavia_kosovo_chain += 2
 			_set_torg_or_agents(yugoslavia)
 			if yugoslavia != null:
 				yugoslavia.government = GameConstants.Government.AUTHORITARIAN
@@ -109,7 +109,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, 200)
 			_add_relation(EmpireData.USSR, -250)
 			if d.size() > 86:
-				d[86] -= 3
+				d.yugoslavia_kosovo_chain -= 3
 			if yugoslavia != null:
 				yugoslavia.set_tag("亲美", true)
 			context["result_text"] = TXT_R4
@@ -126,8 +126,8 @@ func _set_torg_or_agents(c: CountryData) -> void:
 
 ## 原版 summa_3_2 复算：仅 party_system>7 时计算执政党(1)+盟友席位数 ×100 / 五党总席位数。
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0

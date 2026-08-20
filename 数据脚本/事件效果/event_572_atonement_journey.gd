@@ -2,11 +2,11 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event572.cs：赎罪之旅（法国赎罪行动，单选项）。
 ## 触发：ReqEventForDLC02.cs:1119-1122 —— !event_done[572] && event_done[390]
-##   && c21.Gosstroy==1 && flag(任意国家 puppetOf==21) && YugAgree && data[131]==2。
-##   复杂条件（flag 循环 + raw data[131]）→ trigger_script evaluate。
+##   && c21.Gosstroy==1 && flag(任意国家 puppetOf==21) && YugAgree && data.world_political_balance==2。
+##   复杂条件（flag 循环 + raw data.world_political_balance）→ trigger_script evaluate。
 ## 差异：
 ##  - event_done[572] 由 fire_only_once 覆盖；event_done[390] 在 evaluate 中检查；
-##  - YugAgree → ws flag "YugAgree"；data[131] 无命名键 raw；
+##  - YugAgree → ws flag "YugAgree"；data.world_political_balance 无命名键 raw；
 ##  - relres → ws flag "relres"；isSEV → 标签 sev；Torg → 对华贸易；
 ##  - LeaveAlliances 用基类 _leave_alliances；JoinECON 只置 econ 标签。
 
@@ -45,7 +45,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if not world.get_flag("YugAgree"):
 		return false
-	if world.数值表.size() <= 131 or world.数值表[131] != 2:   # 原 data[131]（无命名键）
+	if world.size() <= 131 or world.world_political_balance != 2:   # 原 data.world_political_balance（无命名键）
 		return false
 	return true
 

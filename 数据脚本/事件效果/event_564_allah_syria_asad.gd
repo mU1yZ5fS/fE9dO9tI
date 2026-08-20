@@ -15,7 +15,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	var c35 := world.get_country_by_legacy_index(35)
-	if c35 != null and c35.内战中 and d[W.I_POLITICAL_LINE] != 2 and not ws.completed_event_ids.has("event_707"):
+	if c35 != null and c35.内战中 and d.political_line != 2 and not ws.completed_event_ids.has("event_707"):
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)

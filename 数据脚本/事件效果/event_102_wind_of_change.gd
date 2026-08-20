@@ -8,7 +8,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  support 比较 → now_leader=6/4/5；戈尔巴乔夫胜 → 苏 power -= 250。
 ## 差异：
 ##  - allcountries[15].Gosstroy/SubGosstroy==0 → legacy 15 政体判断
-##  - data[89] → I_REFORM_STAGE（前置副作用：==0 时戈尔巴乔夫 -1）
+##  - data.reform_stage → I_REFORM_STAGE（前置副作用：==0 时戈尔巴乔夫 -1）
 const LDR_GORBACHEV := 6   # leaders[6] = 米哈伊尔·戈尔巴乔夫
 const LDR_ROMANOV := 4     # leaders[4] = 格里戈里·罗曼诺夫
 const LDR_GRISHIN := 5     # leaders[5] = 维克托·格里申
@@ -27,15 +27,15 @@ func execute(context: Dictionary) -> void:
 		0:  # 支持戈尔巴乔夫
 			_leader_support(ussr, LDR_GORBACHEV, 3)
 			if d.size() > W.I_AGENTS:
-				d[W.I_AGENTS] -= 100
+				d.agents -= 100
 		1:  # 支持罗曼诺夫
 			_leader_support(ussr, LDR_ROMANOV, 3)
 			if d.size() > W.I_AGENTS:
-				d[W.I_AGENTS] -= 100
+				d.agents -= 100
 		2:  # 支持格里申
 			_leader_support(ussr, LDR_GRISHIN, 3)
 			if d.size() > W.I_AGENTS:
-				d[W.I_AGENTS] -= 100
+				d.agents -= 100
 		3:  # 不要介入
 			pass
 

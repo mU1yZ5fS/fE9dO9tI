@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event549.cs：铲除杂草（蒙古泽登巴尔，2选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:47-49 —— 复杂条件见 evaluate()。
 ## 差异：ingamewars[22]→ws.wars[22]；IndOpp/is_gkchp→global_flags；
-##   data[133]/data[130] raw index 直接读 数值表。
+##   data.soviet_reorganization_war_state/data.mongolia_china_route raw index 直接读 数值表。
 
 const TXT_OPT0_DIS := "没人会听我们的"
 const TXT_R0 := "在我们的特工资助了蒙古人民革命党内部的反对派的情况下，扎兰阿扎布获得了相当一部分的支持者，而苏联在此时也对他的政策不满，对其进行施压。在来自党内和来自苏联的双重压力下，泽登巴尔放弃了“铲除杂草”运动，甚至平反了此前被打倒的干部（包括丹巴等前竞争对手），他们得以重返中央委员会。如今，泽登巴尔的地位已经大大动摇，他的倒台似乎也已经出现在地平线上。"
@@ -13,12 +13,12 @@ const TXT_R1 := "1983年7月，扎兰阿扎布被突然解除全部职务。但�
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var dd := world.数值表
+	var dd := world
 	if dd.size() <= W.I_DAY:
 		return false
 	if world.wars.size() > 22 and world.wars[22] != null and world.wars[22].is_going:
 		return false
-	if dd[133] == 1 or dd[130] == 1 or dd[133] == 3:
+	if dd.soviet_reorganization_war_state == 1 or dd.mongolia_china_route == 1 or dd.soviet_reorganization_war_state == 3:
 		return false
 	if world.get_flag("IndOpp") or world.get_flag("is_gkchp"):
 		return false
@@ -28,9 +28,9 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if c7.has_tag("nato") or c9.has_tag("ovd"):
 		return false
-	var y := dd[W.I_YEAR]
-	var mo := dd[W.I_MONTH]
-	var day := dd[W.I_DAY]
+	var y := dd.year
+	var mo := dd.month
+	var day := dd.day
 	if (y >= 1983 and mo >= 7 and day >= 1) or (y >= 1983 and mo >= 8) or y >= 1984:
 		return true
 	return false

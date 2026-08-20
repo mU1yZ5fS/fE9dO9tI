@@ -21,10 +21,10 @@ const TXT_R3 := "约旦河，那是啥？约旦不是在两河流域或者尼罗
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var data := world.数值表
+	var data := world
 	if data.size() <= W.I_YEAR:
 		return false
-	if data[W.I_YEAR] < 1983:
+	if data.year < 1983:
 		return false
 	if not (world.get_flag("israellost") or world.get_flag("israel_lost_lebanon_war")):
 		return false
@@ -40,23 +40,23 @@ func evaluate(world: WorldState) -> bool:
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
+	var data := world
 	var iraq := world.get_country_by_legacy_index(14)
 	var syria := world.get_country_by_legacy_index(35)
 	var ethiopia := world.get_country_by_legacy_index(41)
 	var opt := event_def.options
-	if data[W.I_POLITICAL_LINE] >= 3:
+	if data.political_line >= 3:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if data[W.I_POLITICAL_LINE] >= 1 and data[W.I_POLITICAL_LINE] < 3 \
+	if data.political_line >= 1 and data.political_line < 3 \
 			and ((iraq != null and iraq.government == GameConstants.Government.REFORMIST) or (syria != null and syria.government == GameConstants.Government.REFORMIST)):
 		_enable(opt[1], event_def.options[1].text)
-	elif data[W.I_POLITICAL_LINE] == 0:
+	elif data.political_line == 0:
 		_disable(opt[1], TXT_OPT1_DIS_0)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_ELSE)
-	if data[W.I_POLITICAL_LINE] < 2 \
+	if data.political_line < 2 \
 			and (world.is_socialism(iraq, true) or world.is_socialism(syria, true) or world.is_socialism(ethiopia, true)):
 		_enable(opt[2], event_def.options[2].text)
 	else:

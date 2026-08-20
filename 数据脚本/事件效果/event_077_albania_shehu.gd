@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event77.cs：往脸上吐口水，在下巴上打一拳，头上一颗子弹（谢胡政变）。
 ## 触发：TimeScript.cs:10606-10612 ——
-##   (月>=11 且 年>=1981 或 年>=1982) && data[60]<1 && c20.SubGosstroy!=11
+##   (月>=11 且 年>=1981 或 年>=1982) && data.albania_break<1 && c20.SubGosstroy!=11
 ##   && !c20.econ && !c20.isRIM（.tres ExprNode 表达）。
 ## 差异：描述与选项显隐按原版动态改写（prepare）；c20 政体/标签映射为
 ##   government/sub_government/set_tag("对华贸易"/"亲中")。
@@ -20,21 +20,21 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
 	var coal := _coalition_percent(world)
 	var policy_left := (line < 4 and party < 8) or (coal > 66 and party > 7)
 	var albania := world.get_country_by_legacy_index(20)
 	var opt := event_def.options
-	if policy_left and data.size() > W.I_AGENTS and data[W.I_AGENTS] >= 80:
+	if policy_left and data.size() > W.I_AGENTS and data.agents >= 80:
 		_enable(opt[0], "帮助谢胡组织一场政变（需要8特工网络）")
 	else:
 		_disable(opt[0], "我们没有足够的资源")
 	_enable(opt[1], "这是他们自己的问题")
 	var albania_proprc := albania != null and albania.has_tag("亲中")
 	var albania_econ := albania != null and albania.has_tag("econ")
-	if albania_proprc or (albania_econ and data.size() > W.I_ALBANIA_BREAK and data[W.I_ALBANIA_BREAK] == 0):
+	if albania_proprc or (albania_econ and data.size() > W.I_ALBANIA_BREAK and data.albania_break == 0):
 		_enable(opt[2], "我们支持霍查")
 	else:
 		_disable(opt[2], "为什么我们要支持背叛我们的白眼狼霍查？")
@@ -54,7 +54,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -80)
 			_add(W.I_DIPLO, 10)
 			if d.size() > W.I_ALBANIA_BREAK:
-				d[W.I_ALBANIA_BREAK] = 1
+				d.albania_break = 1
 			_add_relation(EmpireData.USSR, 50)
 			if albania != null:
 				albania.government = GameConstants.Government.SOCIALIST
@@ -79,8 +79,8 @@ func execute(context: Dictionary) -> void:
 
 ## 原版 summa_3_2 复算。
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0

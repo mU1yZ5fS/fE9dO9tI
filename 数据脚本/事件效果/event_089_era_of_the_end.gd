@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 安德罗波夫胜 → now_leader=1；谢尔比茨基胜 → now_leader=3；契尔年科胜 → now_leader=2
 ## （与 modify_choose.cs:154-212 显示分支自洽）。
 ## 差异：
-##  - 前置副作用（TextOfEvents）：data[89]==0 → leaders[3].support-=1；苏 power>美 power → leaders[2].support+=1
+##  - 前置副作用（TextOfEvents）：data.reform_stage==0 → leaders[3].support-=1；苏 power>美 power → leaders[2].support+=1
 ##  - 支持选项需 relres && 苏关系≥50 && 特工≥100；安德罗波夫/谢尔比茨基选项另需对应 support 门槛
 ##  - relres → ws flag "relres"；allcountries[7].Torg → 玩家 has_tag("对华贸易")；
 ##    allcountries[1].isSEV/isOVD → 玩家 has_tag("sev"/"ovd")
@@ -24,7 +24,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 
 	# 前置副作用（Event89.cs TextOfEvents）
-	if d.size() > W.I_REFORM_STAGE and d[W.I_REFORM_STAGE] == 0:
+	if d.size() > W.I_REFORM_STAGE and d.reform_stage == 0:
 		_leader_support(ussr, LDR_ANDROPOV, -1)
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
 		if ussr.power > ws.empires[EmpireData.USA].power:
@@ -44,7 +44,7 @@ func execute(context: Dictionary) -> void:
 	if num >= 0:
 		_leader_support(ussr, num, 2)
 		if d.size() > W.I_AGENTS:
-			d[W.I_AGENTS] -= 100
+			d.agents -= 100
 		if ws.get_flag("relres"):
 			_leader_support(ussr, num, 1)
 		var player := ws.get_player_country()

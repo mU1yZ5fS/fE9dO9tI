@@ -13,7 +13,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	var agents := world.数值表[W.I_AGENTS] if world.数值表.size() > W.I_AGENTS else 0
+	var agents := world.agents if world.size() > W.I_AGENTS else 0
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
 	if agents >= 150:
@@ -55,7 +55,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

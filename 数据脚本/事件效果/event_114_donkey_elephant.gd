@@ -2,8 +2,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event114.cs：驴象之争（1980 美国大选，卡特 vs 里根）。
 ## 触发：TimeScript.cs:10824（1980.11 后，fire_only_once）。
-## 13 项计分（num=民主党 / num2=共和党），num2>=num → 卡特连任(now_leader=1, data[143]+=2)；
-## 否则里根(now_leader=0, data[143]-=2, allcountries[51].SubGosstroy=12)。
+## 13 项计分（num=民主党 / num2=共和党），num2>=num → 卡特连任(now_leader=1, data.oil_price+=2)；
+## 否则里根(now_leader=0, data.oil_price-=2, allcountries[51].SubGosstroy=12)。
 ## 差异：
 ##  - OAR → ws flag "oar"；allcountries[15].cw → legacy 15 内战中
 ##  - allcountries[1]（中国）isASEAN/isSEATO：项目无对应 tag → 差异注释，按假跳过
@@ -66,13 +66,13 @@ func execute(context: Dictionary) -> void:
 		# 卡特连任
 		usa.current_leader = 1
 		if d.size() > 143:
-			d[143] += 2   # 原 data[143]（无端口命名键）
+			d.oil_price += 2   # 原 data.oil_price（无端口命名键）
 		context["result_text"] = "选举结束后，卡特仍设法维持住了权力。他获胜的一个关键因素是他温和的外交政策，尽管受到保守派的批评，但总体上表现良好。美国正在等待民主党执政的第二个四年。"
 	elif opt == 0:
 		# 里根当选
 		usa.current_leader = 0
 		if d.size() > 143:
-			d[143] -= 2
+			d.oil_price -= 2
 		var usa_country := ws.get_country_by_legacy_index(51)
 		if usa_country != null:
 			usa_country.sub_government = GameConstants.SubGovernment.NEOLIBERAL

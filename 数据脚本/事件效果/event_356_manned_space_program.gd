@@ -21,12 +21,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	var dv := world.数值表
+	var dv := world
 	if _budget_reserve(world) >= 40:
 		_enable(opt[0], TXT_OPT0)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if _budget_reserve(world) >= 70 and dv.size() > W.I_AGENTS and dv[W.I_AGENTS] >= 20 \
+	if _budget_reserve(world) >= 70 and dv.size() > W.I_AGENTS and dv.agents >= 20 \
 			and (_prev_result(world, "event_353") == 0 or _prev_result(world, "event_353") == 1):
 		_enable(opt[1], TXT_OPT1)
 	else:
@@ -61,11 +61,11 @@ func _prev_result(world: WorldState, event_id: String) -> int:
 
 func _budget_reserve(world: WorldState) -> int:
 	var total := 0
-	var dv := world.数值表
+	var dv := world
 	if dv.size() > W.I_BUDGET:
-		total += dv[W.I_BUDGET]
+		total += dv.budget
 	if dv.size() > W.I_RESERVE:
-		total += dv[W.I_RESERVE]
+		total += dv.reserve
 	return total
 
 

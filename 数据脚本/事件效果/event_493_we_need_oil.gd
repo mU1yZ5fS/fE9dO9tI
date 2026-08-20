@@ -4,8 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:1529-1531 ——
 ##   ((年>=1978 月>=10 日>=8) || (年>=1978 月>=11) || 年>=1979)。
 ## 差异：
-##  - data[8]+data[36] → 预算+外汇（W.I_BUDGET + W.I_RESERVE）；
-##  - data[69] 国债 → W.I_LOAN；OilProd 已建模（ws.oil_prod）按分支 +500/600/400/1000/400；
+##  - data.budget+data.reserve → 预算+外汇（W.I_BUDGET + W.I_RESERVE）；
+##  - data.loan 国债 → W.I_LOAN；OilProd 已建模（ws.oil_prod）按分支 +500/600/400/1000/400；
 ##  - result2 标题切换 → context["result_title"]。
 
 const TXT_TITLE := "我们需要石油？"
@@ -34,8 +34,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var budget := world.数值表[W.I_BUDGET] if world.数值表.size() > W.I_BUDGET else 0
-	var reserve := world.数值表[W.I_RESERVE] if world.数值表.size() > W.I_RESERVE else 0
+	var budget := world.budget if world.size() > W.I_BUDGET else 0
+	var reserve := world.reserve if world.size() > W.I_RESERVE else 0
 	var money := budget + reserve
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
 	var ussr_rel := 0
@@ -76,8 +76,8 @@ func execute(context: Dictionary) -> void:
 			ws.oil_prod += 500.0  # Event493.cs result0
 			context["result_text"] = TXT_R0
 		1:
-			var people := d[W.I_PEOPLE_SUPPORT] if d.size() > W.I_PEOPLE_SUPPORT else 0
-			var living := d[W.I_LIVING] if d.size() > W.I_LIVING else 0
+			var people := d.people_support if d.size() > W.I_PEOPLE_SUPPORT else 0
+			var living := d.living_standard if d.size() > W.I_LIVING else 0
 			var mod3 := ws.modifiers.size() > 3 and ws.modifiers[3] != null and ws.modifiers[3].is_active
 			if (people >= 700 and living >= 600) or (people >= 500 and living >= 400 and mod3):
 				_add(W.I_BUDGET, -5)

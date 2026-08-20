@@ -108,7 +108,7 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 	if event_def == null or p_ws == null:
 		return
 	ws = p_ws
-	d = p_ws.数值表
+	d = p_ws
 	match event_def.event_id:
 		"anthem_problem":
 			_prepare_61(event_def)
@@ -180,7 +180,7 @@ func _event_54(option_index: int, context: Dictionary) -> void:
 		1:
 			_add_data({W.I_BUDGET: 30, W.I_REFORM_MOMENTUM: 10,
 				W.I_THOUGHT_FREEDOM: 70, W.I_DIPLO: -20, W.I_MANPOWER: -30})
-			ws.数值表[W.I_REFORM_STAGE] = 3
+			ws.reform_stage = 3
 			_add_empire_relation(EmpireData.USA, 100)
 			ws.set_flag("sez", true)
 			_change_politicians({1: [100, 120], 2: [150, 120]})
@@ -188,7 +188,7 @@ func _event_54(option_index: int, context: Dictionary) -> void:
 			_add_data({W.I_PARTY_SUPPORT: -100, W.I_REFORM_MOMENTUM: 20,
 				W.I_THOUGHT_FREEDOM: 100, W.I_PEOPLE_SUPPORT: 30, W.I_DIPLO: -30,
 				W.I_BUDGET: 50, W.I_MANPOWER: -70})
-			ws.数值表[W.I_REFORM_STAGE] = 3
+			ws.reform_stage = 3
 			_add_empire_relation(EmpireData.USA, 150)
 			_subtract_faction_fraction(FactionData.MODERATE, 0.09)
 			ws.set_flag("sez", true)
@@ -213,7 +213,7 @@ func _event_55(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USA, -80)
 			if burma != null:
 				# 原版 allcountries[33].parts[0]=false、prcpower=1000 建模说明，跳过。
-				if ws.数值表[W.I_ECON_SYSTEM] <= 12:
+				if ws.econ_system <= 12:
 					burma.government = GameConstants.Government.REFORMIST
 					burma.sub_government = GameConstants.SubGovernment.PRAGMATIST
 					context["result_text"] = TXT_55_R2_BASE + TXT_55_R2_SAN_YU
@@ -259,9 +259,9 @@ func _event_57(option_index: int) -> void:
 
 
 func _event_58(context: Dictionary) -> void:
-	# 原版 Event58.cs:43-103 只有一个结果选项，且只按 data[42]>data[43] 两分支。
-	var left := ws.数值表[W.I_IRAN_LEFT_SUPPORT]
-	var shah := ws.数值表[W.I_IRAN_SHAH_SUPPORT]
+	# 原版 Event58.cs:43-103 只有一个结果选项，且只按 data.iran_left_support>data.iran_shah_support 两分支。
+	var left := ws.iran_left_support
+	var shah := ws.iran_shah_support
 	var iran := ws.get_country_by_legacy_index(8)
 	if left > shah:
 		_add_empire_power(EmpireData.USA, -10)
@@ -273,10 +273,10 @@ func _event_58(context: Dictionary) -> void:
 			iran.set_tag("asean", false)  # 原版 isASEAN=false
 			if iran.development == 1:
 				iran.set_tag("对华贸易", true)  # 原版 dev==1 → Torg=true
-		if ws.数值表.size() > W.I_IRAN_ISLAMIST_SUPPORT:
-			ws.数值表[W.I_IRAN_ISLAMIST_SUPPORT] = 500  # 原版 data[45]=500
-		if ws.数值表.size() > 143:
-			ws.数值表[143] += 10
+		if ws.size() > W.I_IRAN_ISLAMIST_SUPPORT:
+			ws.iran_islamist_support = 500  # 原版 data.iran_islamist_support=500
+		if ws.size() > 143:
+			ws.oil_price += 10
 		# 原版 event_done[36] && resultOfEvents[36]==3 → allcountries[14].prcpower+=20；
 		# 事件 36 移植说明，跳过。
 		context["result_text"] = TXT_58_R_LEFT
@@ -284,8 +284,8 @@ func _event_58(context: Dictionary) -> void:
 		_add_empire_power(EmpireData.USA, 10)
 		if iran != null and iran.development == 0:
 			iran.set_tag("对华贸易", true)  # 原版 dev==0 → Torg=true
-		if ws.数值表.size() > 143:
-			ws.数值表[143] -= 7
+		if ws.size() > 143:
+			ws.oil_price -= 7
 		context["result_text"] = TXT_58_R_SHAH
 	ws.set_flag("iran_revolution_started", false)
 
@@ -300,7 +300,7 @@ func _event_59(option_index: int, context: Dictionary) -> void:
 				W.I_PEOPLE_SUPPORT: 80, W.I_THOUGHT_FREEDOM: 50, W.I_BUDGET: -80})
 			_add_empire_relation(EmpireData.USSR, -100)
 			_add_empire_relation(EmpireData.USA, -100)
-			ws.数值表[44] = 1  # 原版 data[44]=1（ECO 计时标记）
+			ws.iran_democrat_support = 1  # 原版 data.iran_democrat_support=1（ECO 计时标记）
 			_set_modifier_active(8, true)
 			if china != null:
 				china.set_tag("econ", true)
@@ -324,7 +324,7 @@ func _event_59(option_index: int, context: Dictionary) -> void:
 			if china != null:
 				china.stability = 1
 				china.set_tag("sev", true)
-			if ws.数值表[W.I_ALBANIA_BREAK] == 0:
+			if ws.albania_break == 0:
 				var albania := ws.get_country_by_legacy_index(20)
 				if albania != null:
 					albania.set_tag("亲中", false)
@@ -386,7 +386,7 @@ func _event_60(option_index: int, context: Dictionary) -> void:
 
 
 func _event_61(option_index: int, context: Dictionary) -> void:
-	var anthem := int(ws.数值表[185])
+	var anthem := int(ws.anthem_choice)
 	var num := option_index + 1
 	if num == anthem:
 		context["result_text"] = TXT_61_R_KEEP
@@ -407,7 +407,7 @@ func _event_61(option_index: int, context: Dictionary) -> void:
 			pass
 		5:
 			pass
-	ws.数值表[185] = num
+	ws.anthem_choice = num
 	_add_data({W.I_MANPOWER: 30, W.I_PEOPLE_SUPPORT: 100,
 		W.I_PARTY_SUPPORT: 50, W.I_BUDGET: -30})
 	# 原版 AnthemCooldownTime = 4（四年一次国策冷却）；本版无该字段，跳过。
@@ -473,8 +473,8 @@ func _event_62(option_index: int, context: Dictionary) -> void:
 				W.I_PEOPLE_SUPPORT: 50, W.I_WAR_SUPPORT: -50,
 				W.I_REFORM_MOMENTUM: 30})
 			_add_empire_relation(EmpireData.USSR, 50)
-			if int(ws.数值表[W.I_TERRITORY]) < 23:
-				ws.数值表[W.I_TERRITORY] += 1
+			if int(ws.territory_policy) < 23:
+				ws.territory_policy += 1
 			context["result_text"] = TXT_62_R4
 	# 原版 NumberOfPolitician(58,85)（乌兰夫）在 Godot 政治家表无 name_1/name_2 索引，相关忠诚/权力/死亡效果移植说明。
 
@@ -531,8 +531,8 @@ func _set_modifier_active(modifier_index: int, active: bool) -> void:
 func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
-		if index >= 0 and index < ws.数值表.size():
-			ws.数值表[index] += int(changes[raw_index])
+		if index >= 0 and index < ws.size():
+			ws.add_data_by_index(index, int(changes[raw_index]))
 
 
 func _change_politicians(changes: Dictionary) -> void:
@@ -582,11 +582,11 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		ws.数值表[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		ws.数值表[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		ws.usa_relations = ws.empires[EmpireData.USA].relations
+		ws.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		ws.数值表[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		ws.ussr_relations = ws.empires[EmpireData.USSR].relations
+		ws.soviet_influence = ws.empires[EmpireData.USSR].power
 
 
 ## 原版 Event53 old_modify_desc[15] 备查（去空格/剥 color/||→\n 后逐字）：
@@ -626,13 +626,13 @@ func _prepare_61(event_def: EventDef) -> void:
 		event_def.description = _fmt_leader(TXT_61_DESC_AGAIN)
 	else:
 		event_def.description = _fmt_leader(TXT_61_DESC)
-	var anthem := int(ws.数值表[185])
+	var anthem := int(ws.anthem_choice)
 	var m3 := _mod_active(3)
 	var m6 := _mod_active(6)
 	var china := ws.get_country_by_legacy_index(1)
 	var rim := china != null and china.has_tag("rim")
 	var socialism := china != null and china.government == GameConstants.Government.SOCIALIST
-	if m6 and int(ws.数值表[W.I_POLITICAL_LINE]) <= 2 and anthem != 1:
+	if m6 and int(ws.political_line) <= 2 and anthem != 1:
 		_enable(opts[0], TXT_61_OPT0)
 	elif anthem == 1:
 		_enable(opts[0], TXT_61_OPT0_KEEP)
@@ -672,8 +672,8 @@ func _prepare_62(event_def: EventDef) -> void:
 	var opts := event_def.options
 	event_def.title = TXT_62_TITLE
 	event_def.description = _fmt_leader(TXT_62_DESC)
-	var line := int(ws.数值表[W.I_POLITICAL_LINE])
-	var ps := int(ws.数值表[W.I_PARTY_SYSTEM])
+	var line := int(ws.political_line)
+	var ps := int(ws.party_system)
 	var summa := _summa_3_2()
 	if _mod_active(3) or (line < 3 and ps < 8) or (summa > 66 and ps > 7):
 		_enable(opts[0], TXT_62_OPT0)
@@ -702,7 +702,7 @@ func _prepare_62(event_def: EventDef) -> void:
 
 
 func _summa_3_2() -> int:
-	if ws.数值表[W.I_PARTY_SYSTEM] <= 7:
+	if ws.party_system <= 7:
 		return 0
 	var num := 0
 	var den := 0
@@ -721,8 +721,8 @@ func _summa_3_2() -> int:
 
 
 func _legacy_cond(max_line_exclusive: int) -> bool:
-	var line := int(ws.数值表[W.I_POLITICAL_LINE])
-	var ps := int(ws.数值表[W.I_PARTY_SYSTEM])
+	var line := int(ws.political_line)
+	var ps := int(ws.party_system)
 	return (line < max_line_exclusive and ps < 8) or (_summa_3_2() > 66 and ps > 7)
 
 

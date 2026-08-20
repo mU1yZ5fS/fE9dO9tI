@@ -1,6 +1,6 @@
 ## 原作 Event291.cs：秋风萧瑟，洪波涌起（意大利极左翼整合，五选项）。
 ## 触发：全目录搜索无 this_num_event = 291 / Reset(291)；链外 REST 段，原版无自动条件。
-## 差异：选项显隐 prepare 动态改写；data[172..183] 等原版无命名索引用 raw index + 注释。
+## 差异：选项显隐 prepare 动态改写；data.get_data_by_index(172..183) 等原版无命名索引用 raw index + 注释。
 extends "res://数据脚本/event_script_base.gd"
 
 const TXT_OPT0_DIS := "没必要陪左派幼稚病与无政府主义者们虚度光阴，1968年以来的一切证明其注定失败"
@@ -19,9 +19,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
-	var war := world.数值表[W.I_WAR_SUPPORT] if world.数值表.size() > W.I_WAR_SUPPORT else 0
-	var diplo := world.数值表[W.I_DIPLO] if world.数值表.size() > W.I_DIPLO else 0
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
+	var war := world.war_support if world.size() > W.I_WAR_SUPPORT else 0
+	var diplo := world.diplomatic_reputation if world.size() > W.I_DIPLO else 0
 	var opt := event_def.options
 	if line <= 0:
 		_enable(opt[0], event_def.options[0].text)
@@ -120,7 +120,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

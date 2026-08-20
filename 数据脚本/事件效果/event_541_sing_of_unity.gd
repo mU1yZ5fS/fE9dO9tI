@@ -28,12 +28,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	var line := d[W.I_POLITICAL_LINE]
+	var line := d.political_line
 	if line < 3:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if d[W.I_ALBANIA_BREAK] == 0 and ws.influence_prc >= 350 and ws.modifiers[3].is_active:
+	if d.albania_break == 0 and ws.influence_prc >= 350 and ws.modifiers[3].is_active:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
@@ -50,7 +50,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			var text := TXT_R0
-			if d[W.I_ALBANIA_BREAK] == 0:
+			if d.albania_break == 0:
 				text += TXT_R0_ALB + _leader_name() + TXT_R0_ALB_TAIL
 			_add(W.I_PARTY_SUPPORT, 100)
 			_add(W.I_PEOPLE_SUPPORT, 100)
@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = text
 		1:
 			var text := TXT_R1
-			if d[W.I_ALBANIA_BREAK] == 0:
+			if d.albania_break == 0:
 				text += TXT_R1_ALB
 			text += TXT_R1_TAIL
 			_add(W.I_PARTY_SUPPORT, 100)

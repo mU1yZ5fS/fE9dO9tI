@@ -1,9 +1,9 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event441.cs：吕宋群岛的赤色黎明！（1选项）。
-## 触发：TimeScript.cs:1030-1039 —— data[37]>=1000 且 菲律宾(47)非亲中（trigger_script 表达）；
+## 触发：TimeScript.cs:1030-1039 —— data.philippines_maoist_power>=1000 且 菲律宾(47)非亲中（trigger_script 表达）；
 ##   原版触发前预设置移入 prepare（事件显示前等价执行）。
-## 差异：data[37] 为原版 raw index（菲律宾毛派力量）；prcpower→prc_power；soc_stab→social_stability；
+## 差异：data.philippines_maoist_power 为原版 raw index（菲律宾毛派力量）；prcpower→prc_power；soc_stab→social_stability；
 ##   JoinAllOurAlliances 按项目约定仅移植经济联盟分支。
 
 
@@ -15,11 +15,11 @@ const TXT_R0 := "在统一全国之后，菲共立即开始了与中国的全方
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var data := world.数值表
+	var data := world
 	if data.size() <= 37:
 		return false
 	var philippines := world.get_country_by_legacy_index(47)
-	return data[37] >= 1000 and philippines != null and not philippines.has_tag("亲中")
+	return data.philippines_maoist_power >= 1000 and philippines != null and not philippines.has_tag("亲中")
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:

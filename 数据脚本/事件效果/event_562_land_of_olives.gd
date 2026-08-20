@@ -20,7 +20,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var c40 := world.get_country_by_legacy_index(40)
 	var c13 := world.get_country_by_legacy_index(13)
-	var line := d[W.I_POLITICAL_LINE]
+	var line := d.political_line
 	if line < 2 and c40 != null and not c40.has_tag("亲美") and c13 != null and not c13.has_tag("亲美"):
 		_enable(opt[0], event_def.options[0].text)
 	else:

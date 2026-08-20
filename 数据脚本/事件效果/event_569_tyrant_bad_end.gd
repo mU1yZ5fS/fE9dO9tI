@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event569.cs：暴君必尝恶果（沙特半岛解放战争，二选项）。
 ## 触发：DiploButtonScript.cs:11559 —— number_event = 569（外交按钮手动触发），无自动触发。
 ## 差异：
-##  - data[143] 无命名键，raw index 143；
+##  - data.oil_price 无命名键，raw index 143；
 ##  - AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.NONE；TickTime(24) → fortnight_max=24；
 ##  - event_done[569]=false → completed_event_ids.erase("event_569")（同 Event440 约定）。
 
@@ -26,8 +26,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var china := world.get_country_by_legacy_index(1)
 	var c30 := world.get_country_by_legacy_index(30)
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var cond := line <= 2 and china != null and (china.government == GameConstants.Government.SOCIALIST or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL \
 			or ((china.government == GameConstants.Government.REFORMIST or china.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or china.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST) \
 			and c30 != null and c30.government == GameConstants.Government.REFORMIST))
@@ -47,7 +47,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -150)
 			_add(W.I_AGENTS, -150)
 			if d.size() > 143:
-				d[143] += 8   # 原 data[143]（无命名键）
+				d.oil_price += 8   # 原 data.oil_price（无命名键）
 			_add(W.I_ARMY, -150)
 			GameManager.start_war(37, WAR37_SIDE1, WAR37_SIDE2, 600, 400, 0, -1)
 			if ws.wars.size() > 37 and ws.wars[37] != null:

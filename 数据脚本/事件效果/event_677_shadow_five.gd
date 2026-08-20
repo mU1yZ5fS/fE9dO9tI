@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event677.cs：“暗影五号”爆炸案（北爱尔兰路线，六选项）。
 ## 触发：ReqEventsDLC02.cs:1456-1459 —— !ev673 && DATE_AFTER 1979.8.27。
-## 差异：data[162]/[163]/[164]/[165]/[166] 无命名常量，按原版 raw index 读写；
+## 差异：data.org_strength_1/[163]/[164]/[165]/[166] 无命名常量，按原版 raw index 读写；
 ##   Torg→对华贸易；{0}{1} 领袖姓名 → ws.leader.name_display。
 
 const TXT_OPT0_DIS := "拒绝恐怖主义！"
@@ -110,7 +110,7 @@ func execute(context: Dictionary) -> void:
 func _add_raw(idx: int, delta: int) -> void:
 	while d.size() <= idx:
 		d.append(0)
-	d[idx] += delta
+	d.add_data_by_index(idx, delta)
 
 
 func _leader_name() -> String:

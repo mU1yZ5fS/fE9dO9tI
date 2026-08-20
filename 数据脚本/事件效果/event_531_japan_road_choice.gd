@@ -18,7 +18,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	var line := d[W.I_POLITICAL_LINE]
+	var line := d.political_line
 	var r526 := int(ws.completed_event_ids.get("event_526", 0))
 	var r525 := int(ws.completed_event_ids.get("event_525", 0))
 	var r522 := int(ws.completed_event_ids.get("event_522", 0))

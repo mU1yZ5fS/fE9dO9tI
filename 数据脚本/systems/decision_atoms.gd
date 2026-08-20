@@ -31,9 +31,9 @@ static func _ws() -> WorldState:
 	return current_world
 
 
-static func _d() -> Array[int]:
+static func _d() -> WorldState:
 	var ws := _ws()
-	return ws.数值表 if ws != null else []
+	return ws
 
 
 static func _country(legacy_index: int) -> CountryData:
@@ -158,72 +158,72 @@ static func pro_chinese(country: int) -> bool:
 	return c != null and c.has_tag("亲中")
 
 
-## TibetIsOurs — yes: data[67]<=0；!yes: data[67]>0  （L77-108）
+## TibetIsOurs — yes: data.tibet_policy<=0；!yes: data.tibet_policy>0  （L77-108）
 static func tibet_is_ours(yes: bool) -> bool:
-	var v: int = _d()[W.I_TIBET_POLICY] if _d().size() > W.I_TIBET_POLICY else 0
+	var v: int = _d().get_data_by_index(W.I_TIBET_POLICY) if _d().size() > W.I_TIBET_POLICY else 0
 	return v <= 0 if yes else v > 0
 
 
-## UyghurIsOurs — yes: data[66]<=0；!yes: data[66]>0  （L109-140）
+## UyghurIsOurs — yes: data.xinjiang_policy<=0；!yes: data.xinjiang_policy>0  （L109-140）
 static func uyghur_is_ours(yes: bool) -> bool:
-	var v: int = _d()[W.I_XINJIANG_POLICY] if _d().size() > W.I_XINJIANG_POLICY else 0
+	var v: int = _d().get_data_by_index(W.I_XINJIANG_POLICY) if _d().size() > W.I_XINJIANG_POLICY else 0
 	return v <= 0 if yes else v > 0
 
 
-## HasAgents — data[9] >= num  （L141-160）
+## HasAgents — data.agents >= num  （L141-160）
 static func has_agents(num: int) -> bool:
-	return _d().size() > W.I_AGENTS and _d()[W.I_AGENTS] >= num
+	return _d().size() > W.I_AGENTS and _d().get_data_by_index(W.I_AGENTS) >= num
 
 
-## HasMoney — data[8] + data[36] >= num  （L161-180）
+## HasMoney — data.budget + data.reserve >= num  （L161-180）
 static func has_money(num: int) -> bool:
 	var d := _d()
-	return d.size() > W.I_BUDGET and d.size() > W.I_RESERVE and d[W.I_BUDGET] + d[W.I_RESERVE] >= num
+	return d.size() > W.I_BUDGET and d.size() > W.I_RESERVE and d.budget + d.reserve >= num
 
 
-## HasReserve — data[36] >= num  （L181-200）
+## HasReserve — data.reserve >= num  （L181-200）
 static func has_reserve(num: int) -> bool:
-	return _d().size() > W.I_RESERVE and _d()[W.I_RESERVE] >= num
+	return _d().size() > W.I_RESERVE and _d().get_data_by_index(W.I_RESERVE) >= num
 
 
-## HasArmy — data[22] >= num  （L221-240）
+## HasArmy — data.army >= num  （L221-240）
 static func has_army(num: int) -> bool:
-	return _d().size() > W.I_ARMY and _d()[W.I_ARMY] >= num
+	return _d().size() > W.I_ARMY and _d().get_data_by_index(W.I_ARMY) >= num
 
 
-## IsUnitarism — yes: data[18]==20；!yes: !=20  （L273-304）
+## IsUnitarism — yes: data.territory_policy==20；!yes: !=20  （L273-304）
 static func is_unitarism(yes: bool) -> bool:
-	var v: int = _d()[W.I_TERRITORY] if _d().size() > W.I_TERRITORY else 0
+	var v: int = _d().get_data_by_index(W.I_TERRITORY) if _d().size() > W.I_TERRITORY else 0
 	return v == 20 if yes else v != 20
 
 
-## IsLiberal — yes: IsFactionLeadeng(4) || (data[52]>=36 && data[54]>=40)
+## IsLiberal — yes: IsFactionLeadeng(4) || (data.econ_display>=36 && data.political_display>=40)
 ##           !yes: 取反                                          （L305-336）
 static func is_liberal(yes: bool) -> bool:
 	var d := _d()
 	var v := _faction_leading(4) or (d.size() > W.I_ECON_DISPLAY and d.size() > W.I_POLITICAL_DISPLAY
-		and d[W.I_ECON_DISPLAY] >= 36 and d[W.I_POLITICAL_DISPLAY] >= 40)
+		and d.econ_display >= 36 and d.political_display >= 40)
 	return v if yes else not v
 
 
-## IsAutoritharian — yes: IsFactionLeadeng(0)||IsFactionLeadeng(3)||(data[15]>=8 && data[54]<=38)
+## IsAutoritharian — yes: IsFactionLeadeng(0)||IsFactionLeadeng(3)||(data.party_system>=8 && data.political_display<=38)
 ##                  !yes: 取反                                    （L337-368）
 static func is_autoritharian(yes: bool) -> bool:
 	var d := _d()
 	var v := _faction_leading(0) or _faction_leading(3) or (d.size() > W.I_PARTY_SYSTEM and d.size() > W.I_POLITICAL_DISPLAY
-		and d[W.I_PARTY_SYSTEM] >= 8 and d[W.I_POLITICAL_DISPLAY] <= 38)
+		and d.party_system >= 8 and d.political_display <= 38)
 	return v if yes else not v
 
 
-## IsTraditional — yes: data[50]>=28；!yes: <28  （L369-400）
+## IsTraditional — yes: data.religion_policy>=28；!yes: <28  （L369-400）
 static func is_traditional(yes: bool) -> bool:
-	var v: int = _d()[W.I_RELIGION] if _d().size() > W.I_RELIGION else 0
+	var v: int = _d().get_data_by_index(W.I_RELIGION) if _d().size() > W.I_RELIGION else 0
 	return v >= 28 if yes else v < 28
 
 
-## IsRadicalTradition — yes: data[50]<=24；!yes: >24  （L401-432）
+## IsRadicalTradition — yes: data.religion_policy<=24；!yes: >24  （L401-432）
 static func is_radical_tradition(yes: bool) -> bool:
-	var v: int = _d()[W.I_RELIGION] if _d().size() > W.I_RELIGION else 0
+	var v: int = _d().get_data_by_index(W.I_RELIGION) if _d().size() > W.I_RELIGION else 0
 	return v <= 24 if yes else v > 24
 
 
@@ -234,21 +234,21 @@ static func is_party_enabled(yes: bool, num: int) -> bool:
 	return v if yes else not v
 
 
-## HasOnePartyMechanic — yes: data[15]<=7；!yes: >7  （L466-497）
+## HasOnePartyMechanic — yes: data.party_system<=7；!yes: >7  （L466-497）
 static func has_one_party_mechanic(yes: bool) -> bool:
-	var v: int = _d()[W.I_PARTY_SYSTEM] if _d().size() > W.I_PARTY_SYSTEM else 0
+	var v: int = _d().get_data_by_index(W.I_PARTY_SYSTEM) if _d().size() > W.I_PARTY_SYSTEM else 0
 	return v <= 7 if yes else v > 7
 
 
-## IsNewDemocracy — yes: data[15]==7；!yes: !=7  （L498-529）
+## IsNewDemocracy — yes: data.party_system==7；!yes: !=7  （L498-529）
 static func is_new_democracy(yes: bool) -> bool:
-	var v: int = _d()[W.I_PARTY_SYSTEM] if _d().size() > W.I_PARTY_SYSTEM else 0
+	var v: int = _d().get_data_by_index(W.I_PARTY_SYSTEM) if _d().size() > W.I_PARTY_SYSTEM else 0
 	return v == 7 if yes else v != 7
 
 
-## IsConsociationalDemocracy — yes: data[15]==9  （L530-561）
+## IsConsociationalDemocracy — yes: data.party_system==9  （L530-561）
 static func is_consociational_democracy(yes: bool) -> bool:
-	var v: int = _d()[W.I_PARTY_SYSTEM] if _d().size() > W.I_PARTY_SYSTEM else 0
+	var v: int = _d().get_data_by_index(W.I_PARTY_SYSTEM) if _d().size() > W.I_PARTY_SYSTEM else 0
 	return v == 9 if yes else v != 9
 
 
@@ -298,15 +298,15 @@ static func is_politician_alive(name1: int, name2: int, t0: int, t3: int, t1: in
 	return _find_person(name1, name2, t0, t3, t1, t2) >= 0
 
 
-## HasAutonomyForMacao — yes: data[65]==1  （L651-682）
+## HasAutonomyForMacao — yes: data.hk_macau_status==1  （L651-682）
 static func has_autonomy_for_macao(yes: bool) -> bool:
-	var v: int = _d()[W.I_HK_MACAU_STATUS] if _d().size() > W.I_HK_MACAU_STATUS else 0
+	var v: int = _d().get_data_by_index(W.I_HK_MACAU_STATUS) if _d().size() > W.I_HK_MACAU_STATUS else 0
 	return v == 1 if yes else v != 1
 
 
-## HasAnnexedMacao — yes: data[65]==2  （L683-714）
+## HasAnnexedMacao — yes: data.hk_macau_status==2  （L683-714）
 static func has_annexed_macao(yes: bool) -> bool:
-	var v: int = _d()[W.I_HK_MACAU_STATUS] if _d().size() > W.I_HK_MACAU_STATUS else 0
+	var v: int = _d().get_data_by_index(W.I_HK_MACAU_STATUS) if _d().size() > W.I_HK_MACAU_STATUS else 0
 	return v == 2 if yes else v != 2
 
 
@@ -318,18 +318,18 @@ static func is_taiwan_attacked(yes: bool) -> bool:
 
 
 ## IsTaiwanReturn — 原文（L747-778）：yes 分支为
-## event_done[461] || (38.proprc && data[6]<700 && data[16]>=13 && !1.isSEV && !modifies[17].active)
-##   || event_done[462] || event_done[457] || (data[64]==2 && 1.SubGosstroy==19)
+## event_done[461] || (38.proprc && data.diplomatic_reputation<700 && data.econ_system>=13 && !1.isSEV && !modifies[17].active)
+##   || event_done[462] || event_done[457] || (data.taiwan_status==2 && 1.SubGosstroy==19)
 static func is_taiwan_return(yes: bool) -> bool:
 	var d := _d()
 	var tw := _country(38)
 	var china := _country(1)
 	var inner := _event_done(461) \
-		or (tw != null and tw.has_tag("亲中") and d.size() > W.I_DIPLO and d[W.I_DIPLO] < 700
-			and d.size() > W.I_ECON_SYSTEM and d[W.I_ECON_SYSTEM] >= 13
+		or (tw != null and tw.has_tag("亲中") and d.size() > W.I_DIPLO and d.diplomatic_reputation < 700
+			and d.size() > W.I_ECON_SYSTEM and d.econ_system >= 13
 			and not (china != null and china.has_tag("sev")) and not _mod_active(17)) \
 		or _event_done(462) or _event_done(457) \
-		or (d.size() > W.I_TAIWAN_STATUS and d[W.I_TAIWAN_STATUS] == 2
+		or (d.size() > W.I_TAIWAN_STATUS and d.taiwan_status == 2
 			and china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST)
 	return inner if yes else not inner
 
@@ -409,21 +409,21 @@ static func has_money_level(yes: bool) -> bool:
 	return v if yes else not v
 
 
-## IsPartySupportLessThan — yes: data[1]<num；!yes: data[1]>num  （L1197-1229）
+## IsPartySupportLessThan — yes: data.party_support<num；!yes: data.party_support>num  （L1197-1229）
 static func is_party_support_less_than(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_PARTY_SUPPORT] if _d().size() > W.I_PARTY_SUPPORT else 0
+	var v: int = _d().get_data_by_index(W.I_PARTY_SUPPORT) if _d().size() > W.I_PARTY_SUPPORT else 0
 	return v < num if yes else v > num
 
 
-## IsDipRepLessThan — yes: data[6]<num；!yes: >num  （L1362-1394）
+## IsDipRepLessThan — yes: data.diplomatic_reputation<num；!yes: >num  （L1362-1394）
 static func is_dip_rep_less_than(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_DIPLO] if _d().size() > W.I_DIPLO else 0
+	var v: int = _d().get_data_by_index(W.I_DIPLO) if _d().size() > W.I_DIPLO else 0
 	return v < num if yes else v > num
 
 
-## IsUnityLessThan — yes: data[57]<num；!yes: >=num  （L1395-1427）
+## IsUnityLessThan — yes: data.manpower<num；!yes: >=num  （L1395-1427）
 static func is_unity_less_than(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_MANPOWER] if _d().size() > W.I_MANPOWER else 0
+	var v: int = _d().get_data_by_index(W.I_MANPOWER) if _d().size() > W.I_MANPOWER else 0
 	return v < num if yes else v >= num
 
 
@@ -458,15 +458,15 @@ static func is_chi_sov_influence_less_than(yes: bool, num: int) -> bool:
 	return v < num if yes else v > num
 
 
-## HasAgressiveMilitaryDoctrine — yes: data[51]<=31；!yes: >31  （L1560-1591）
+## HasAgressiveMilitaryDoctrine — yes: data.military_doctrine<=31；!yes: >31  （L1560-1591）
 static func has_agressive_military_doctrine(yes: bool) -> bool:
-	var v: int = _d()[W.I_MIL_DOCTRINE] if _d().size() > W.I_MIL_DOCTRINE else 0
+	var v: int = _d().get_data_by_index(W.I_MIL_DOCTRINE) if _d().size() > W.I_MIL_DOCTRINE else 0
 	return v <= 31 if yes else v > 31
 
 
-## HasMercenary — yes: data[51]==33  （L1592-1623）
+## HasMercenary — yes: data.military_doctrine==33  （L1592-1623）
 static func has_mercenary(yes: bool) -> bool:
-	var v: int = _d()[W.I_MIL_DOCTRINE] if _d().size() > W.I_MIL_DOCTRINE else 0
+	var v: int = _d().get_data_by_index(W.I_MIL_DOCTRINE) if _d().size() > W.I_MIL_DOCTRINE else 0
 	return v == 33 if yes else v != 33
 
 
@@ -542,9 +542,9 @@ static func has_gorbachev() -> bool:
 	return e != null and e.current_leader == 6
 
 
-## IsYearLess — yes: data[21]<num；!yes: >num  （L1975-2007）
+## IsYearLess — yes: data.year<num；!yes: >num  （L1975-2007）
 static func is_year_less(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_YEAR] if _d().size() > W.I_YEAR else 0
+	var v: int = _d().get_data_by_index(W.I_YEAR) if _d().size() > W.I_YEAR else 0
 	return v < num if yes else v > num
 
 
@@ -585,53 +585,53 @@ static func is_faction_banned(num: int) -> bool:
 	return not _faction_enabled(num)
 
 
-## HasCapitalistEconomy — yes: data[16]>13；!yes: <=13  （L2270-2301）
+## HasCapitalistEconomy — yes: data.econ_system>13；!yes: <=13  （L2270-2301）
 static func has_capitalist_economy(yes: bool) -> bool:
-	var v: int = _d()[W.I_ECON_SYSTEM] if _d().size() > W.I_ECON_SYSTEM else 0
+	var v: int = _d().get_data_by_index(W.I_ECON_SYSTEM) if _d().size() > W.I_ECON_SYSTEM else 0
 	return v > 13 if yes else v <= 13
 
 
-## HasPlannedEconomy — yes: data[16]<=11；!yes: >11  （L2302-2333）
+## HasPlannedEconomy — yes: data.econ_system<=11；!yes: >11  （L2302-2333）
 static func has_planned_economy(yes: bool) -> bool:
-	var v: int = _d()[W.I_ECON_SYSTEM] if _d().size() > W.I_ECON_SYSTEM else 0
+	var v: int = _d().get_data_by_index(W.I_ECON_SYSTEM) if _d().size() > W.I_ECON_SYSTEM else 0
 	return v <= 11 if yes else v > 11
 
 
-## HasOligarchyPowerLess — yes: data[108]<num；!yes: >num  （L2334-2366）
+## HasOligarchyPowerLess — yes: data.oligarch<num；!yes: >num  （L2334-2366）
 static func has_oligarchy_power_less(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_OLIGARCH] if _d().size() > W.I_OLIGARCH else 0
+	var v: int = _d().get_data_by_index(W.I_OLIGARCH) if _d().size() > W.I_OLIGARCH else 0
 	return v < num if yes else v > num
 
 
-## IsMaoDemaoised — yes: !modifies[6].active && data[90]==2  （L2367-2398）
+## IsMaoDemaoised — yes: !modifies[6].active && data.mao_history_line==2  （L2367-2398）
 static func is_mao_demaoised(yes: bool) -> bool:
-	var v := (not _mod_active(6)) and _d().size() > W.I_MAO_HISTORY_LINE and _d()[W.I_MAO_HISTORY_LINE] == 2
+	var v := (not _mod_active(6)) and _d().size() > W.I_MAO_HISTORY_LINE and _d().get_data_by_index(W.I_MAO_HISTORY_LINE) == 2
 	return v if yes else not v
 
 
-## IsDeadJanataInIndia — yes: data[91]==1 && resultOfEvents[72]==0  （L2399-2430）
+## IsDeadJanataInIndia — yes: data.india_election==1 && resultOfEvents[72]==0  （L2399-2430）
 static func is_dead_janata_in_india(yes: bool) -> bool:
-	var v := _d().size() > W.I_INDIA_ELECTION and _d()[W.I_INDIA_ELECTION] == 1 and _event_result(72, 0)
+	var v := _d().size() > W.I_INDIA_ELECTION and _d().get_data_by_index(W.I_INDIA_ELECTION) == 1 and _event_result(72, 0)
 	return v if yes else not v
 
 
-## HasNaxalitsPowerLess — yes: data[32]<num；!yes: >num  （L2431-2463）
+## HasNaxalitsPowerLess — yes: data.naxalite_power<num；!yes: >num  （L2431-2463）
 static func has_naxalits_power_less(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_NAXALITE_POWER] if _d().size() > W.I_NAXALITE_POWER else 0
+	var v: int = _d().get_data_by_index(W.I_NAXALITE_POWER) if _d().size() > W.I_NAXALITE_POWER else 0
 	return v < num if yes else v > num
 
 
-## LeftInMajor — yes: data[56]<=2；!yes: >2  （L2494-2524）
+## LeftInMajor — yes: data.political_line<=2；!yes: >2  （L2494-2524）
 static func left_in_major(yes: bool) -> bool:
-	var v: int = _d()[W.I_POLITICAL_LINE] if _d().size() > W.I_POLITICAL_LINE else 0
+	var v: int = _d().get_data_by_index(W.I_POLITICAL_LINE) if _d().size() > W.I_POLITICAL_LINE else 0
 	return v <= 2 if yes else v > 2
 
 
-## IsSectorsWell — yes: data[12]>800 && data[13]>800 && data[68]>800  （L2525-2554）
+## IsSectorsWell — yes: data.industry>800 && data.agriculture>800 && data.services>800  （L2525-2554）
 static func is_sectors_well(yes: bool) -> bool:
 	var d := _d()
 	var v := d.size() > W.I_INDUSTRY and d.size() > W.I_AGRICULTURE and d.size() > W.I_SERVICES \
-		and d[W.I_INDUSTRY] > 800 and d[W.I_AGRICULTURE] > 800 and d[W.I_SERVICES] > 800
+		and d.industry > 800 and d.agriculture > 800 and d.services > 800
 	return v if yes else not v
 
 
@@ -659,11 +659,11 @@ static func has_conservative_moderate_leading(yes: bool) -> bool:
 	return v if yes else not v
 
 
-## HasLinBiao — yes: (event_done[74] && data[90]==0 && modifies[6].active)
+## HasLinBiao — yes: (event_done[74] && data.mao_history_line==0 && modifies[6].active)
 ##                   || country1.isOVD || event_done[124]                  （L2896-2926）
 static func has_lin_biao(yes: bool) -> bool:
 	var china := _country(1)
-	var v := (_event_done(74) and _d().size() > W.I_MAO_HISTORY_LINE and _d()[W.I_MAO_HISTORY_LINE] == 0
+	var v := (_event_done(74) and _d().size() > W.I_MAO_HISTORY_LINE and _d().get_data_by_index(W.I_MAO_HISTORY_LINE) == 0
 			and _mod_active(6)) \
 		or (china != null and china.has_tag("ovd")) or _event_done(124)
 	return v if yes else not v
@@ -729,11 +729,11 @@ static func quelle_gosstroy(country: int, gos: int, yes: bool) -> bool:
 # 效果原子（CreateActive delegate 直译）
 # ============================================================================
 
-## AddAgents — data[9] += num
+## AddAgents — data.agents += num
 static func add_agents(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_AGENTS:
-		d[W.I_AGENTS] += num
+		d.agents += num
 
 
 ## AddAmericanInfluence — empires[0].power += num
@@ -764,67 +764,67 @@ static func add_relations(empire_index: int, num: int) -> void:
 		e.relations += num
 
 
-## AddMoney — data[8] += num
+## AddMoney — data.budget += num
 static func add_money(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_BUDGET:
-		d[W.I_BUDGET] += num
+		d.budget += num
 
 
-## AddArmy — data[22] += num
+## AddArmy — data.army += num
 static func add_army(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_ARMY:
-		d[W.I_ARMY] += num
+		d.army += num
 
 
-## AddDiplo — data[6] += num
+## AddDiplo — data.diplomatic_reputation += num
 static func add_diplo(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_DIPLO:
-		d[W.I_DIPLO] += num
+		d.diplomatic_reputation += num
 
 
-## AddLiberalization — data[4] += num
+## AddLiberalization — data.thought_freedom += num
 static func add_liberalization(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += num
+		d.thought_freedom += num
 
 
-## AddPopulation — data[34] += num
+## AddPopulation — data.population += num
 static func add_population(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_POPULATION:
-		d[W.I_POPULATION] += num
+		d.population += num
 
 
-## AddSupport — data[3] += num
+## AddSupport — data.people_support += num
 static func add_support(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] += num
+		d.people_support += num
 
 
-## AddPartySupport — data[1] += num
+## AddPartySupport — data.party_support += num
 static func add_party_support(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] += num
+		d.party_support += num
 
 
-## AddStandardOfLiving — data[5] += num
+## AddStandardOfLiving — data.living_standard += num
 static func add_standard_of_living(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_LIVING:
-		d[W.I_LIVING] += num
+		d.living_standard += num
 
 
-## AddNationalism — data[31] += num
+## AddNationalism — data.war_support += num
 static func add_nationalism(num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_WAR_SUPPORT:
-		d[W.I_WAR_SUPPORT] += num
+		d.war_support += num
 
 
 ## AddLoyalityToAllPoliticiansInTheFaction — 原版按 traits[0]==faction；
@@ -966,10 +966,10 @@ static func get_lin_biao(_yes: bool = true) -> void:
 	var ws := _ws()
 	if ws == null:
 		return
-	var d := ws.数值表
-	var year := d[W.I_YEAR] if d.size() > W.I_YEAR else 1976
-	var month := d[W.I_MONTH] if d.size() > W.I_MONTH else 1
-	var day := d[W.I_DAY] if d.size() > W.I_DAY else 1
+	var d := ws
+	var year := d.year if d.size() > W.I_YEAR else 1976
+	var month := d.month if d.size() > W.I_MONTH else 1
+	var day := d.day if d.size() > W.I_DAY else 1
 	# 第一位：林彪（10,69），出身 1904，traits(20,26,7,31)
 	_replace_lowest_politician(10, 69, year - 1904, 20, 26, 7, 31)
 	# 日期早于 1983-4-26 时再造第二位（12,70），出身 1910，traits(20,25,4,36)
@@ -1060,13 +1060,13 @@ static func add_loyality_to_all_politicians(num: int) -> void:
 # 字段依赖已在 WorldState 补齐（desnull/oil_prod/oil_eat/austerity/...）。
 # ============================================================================
 
-## CanCouponSystemPhaseOut — yes: (data[16]<14 && data[12]+data[13]>=1500) || data[16]>=14
+## CanCouponSystemPhaseOut — yes: (data.econ_system<14 && data.industry+data.agriculture>=1500) || data.econ_system>=14
 static func can_coupon_system_phase_out(yes: bool) -> bool:
 	var d := _d()
-	var v := (d.size() > W.I_ECON_SYSTEM and d[W.I_ECON_SYSTEM] < 14
+	var v := (d.size() > W.I_ECON_SYSTEM and d.econ_system < 14
 			and d.size() > W.I_INDUSTRY and d.size() > W.I_AGRICULTURE
-			and d[W.I_INDUSTRY] + d[W.I_AGRICULTURE] >= 1500) \
-		or (d.size() > W.I_ECON_SYSTEM and d[W.I_ECON_SYSTEM] >= 14)
+			and d.industry + d.agriculture >= 1500) \
+		or (d.size() > W.I_ECON_SYSTEM and d.econ_system >= 14)
 	return v if yes else not v
 
 
@@ -1140,13 +1140,13 @@ static func has_oil_eat(num: int) -> bool:
 	return ws != null and ws.oil_eat >= float(num)
 
 
-## HasRevolutionaryLeader — yes: traits[0]==0 || (traits[0]==20 && data[56]==0 && country1.SubGosstroy==2)
+## HasRevolutionaryLeader — yes: traits[0]==0 || (traits[0]==20 && data.political_line==0 && country1.SubGosstroy==2)
 static func has_revolutionary_leader(yes: bool) -> bool:
 	var ws := _ws()
 	var china := _country(1)
 	var d := _d()
 	var t := ws.leader.trait_personality if (ws != null and ws.leader != null) else -1
-	var v := t == 0 or (t == 20 and d.size() > W.I_POLITICAL_LINE and d[W.I_POLITICAL_LINE] == 0
+	var v := t == 0 or (t == 20 and d.size() > W.I_POLITICAL_LINE and d.political_line == 0
 			and china != null and china.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST)
 	return v if yes else not v
 
@@ -1175,11 +1175,11 @@ static func have_been_zhu_ti(yes: bool) -> bool:
 	return v if yes else not v
 
 
-## HaveFullChina — yes: data[62]>=2 && (data[64]==2 || completedDecisions[7])
+## HaveFullChina — yes: data.arunachal_status>=2 && (data.taiwan_status==2 || completedDecisions[7])
 static func have_full_china(yes: bool) -> bool:
 	var d := _d()
-	var v := d.size() > W.I_ARUNACHAL_STATUS and d[W.I_ARUNACHAL_STATUS] >= 2 \
-		and d.size() > W.I_TAIWAN_STATUS and (d[W.I_TAIWAN_STATUS] == 2 or _completed(7))
+	var v := d.size() > W.I_ARUNACHAL_STATUS and d.arunachal_status >= 2 \
+		and d.size() > W.I_TAIWAN_STATUS and (d.taiwan_status == 2 or _completed(7))
 	return v if yes else not v
 
 
@@ -1224,9 +1224,9 @@ static func is_african_socialism(yes: bool) -> bool:
 ## IsAfterTheDay — yes: (y>=year && m>=month && d>=day) || (y>=year && m>=month+1) || y>=year+1
 static func is_after_the_day(yes: bool, year: int, month: int, day: int) -> bool:
 	var d := _d()
-	var yy := d[W.I_YEAR] if d.size() > W.I_YEAR else 0
-	var mm := d[W.I_MONTH] if d.size() > W.I_MONTH else 0
-	var dd := d[W.I_DAY] if d.size() > W.I_DAY else 0
+	var yy := d.year if d.size() > W.I_YEAR else 0
+	var mm := d.month if d.size() > W.I_MONTH else 0
+	var dd := d.day if d.size() > W.I_DAY else 0
 	var v := (yy >= year and mm >= month and dd >= day) \
 		or (yy >= year and mm >= month + 1) or yy >= year + 1
 	return v if yes else not v
@@ -1241,23 +1241,23 @@ static func is_china_war_aliance(yes: bool) -> bool:
 
 ## IsCorruptionLessThan / IsDebtLessThan / IsEnvelopeLessThan — 原版统一 yes→< num，!yes→> num
 static func is_corruption_less_than(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_CORRUPTION] if _d().size() > W.I_CORRUPTION else 0
+	var v: int = _d().get_data_by_index(W.I_CORRUPTION) if _d().size() > W.I_CORRUPTION else 0
 	return v < num if yes else v > num
 
 
 static func is_debt_less_than(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_LOAN] if _d().size() > W.I_LOAN else 0
+	var v: int = _d().get_data_by_index(W.I_LOAN) if _d().size() > W.I_LOAN else 0
 	return v < num if yes else v > num
 
 
 static func is_envelope_less_than(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_BUDGET_ENVELOPE] if _d().size() > W.I_BUDGET_ENVELOPE else 0
+	var v: int = _d().get_data_by_index(W.I_BUDGET_ENVELOPE) if _d().size() > W.I_BUDGET_ENVELOPE else 0
 	return v < num if yes else v > num
 
 
-## IsReserveLessThan — yes: data[36] < num；!yes: > num
+## IsReserveLessThan — yes: data.reserve < num；!yes: > num
 static func is_reserve_less_than(yes: bool, num: int) -> bool:
-	var v: int = _d()[W.I_RESERVE] if _d().size() > W.I_RESERVE else 0
+	var v: int = _d().get_data_by_index(W.I_RESERVE) if _d().size() > W.I_RESERVE else 0
 	return v < num if yes else v > num
 
 
@@ -1268,9 +1268,9 @@ static func is_coupon_system_phased_out(yes: bool) -> bool:
 	return v if yes else not v
 
 
-## IsIndustry — yes: data[12] >= how；!yes: < how
+## IsIndustry — yes: data.industry >= how；!yes: < how
 static func is_industry(how: int, yes: bool) -> bool:
-	var v: int = _d()[W.I_INDUSTRY] if _d().size() > W.I_INDUSTRY else 0
+	var v: int = _d().get_data_by_index(W.I_INDUSTRY) if _d().size() > W.I_INDUSTRY else 0
 	return v >= how if yes else v < how
 
 
@@ -1399,12 +1399,12 @@ static func add_all_afrique(num: int, cum: int) -> void:
 				c.prc_power += num
 
 
-## AddImport — data[6] += num（原版与 AddDiplo 同字段，照抄）
+## AddImport — data.diplomatic_reputation += num（原版与 AddDiplo 同字段，照抄）
 static func add_import(num: int) -> void:
 	add_diplo(num)
 
 
-## AddLeaderAsset — 原版 delegate 实为 data[6] += num（方法名 misleading，照抄）
+## AddLeaderAsset — 原版 delegate 实为 data.diplomatic_reputation += num（方法名 misleading，照抄）
 static func add_leader_asset(num: int) -> void:
 	add_diplo(num)
 
@@ -1428,31 +1428,31 @@ static func add_oil_eat(num: int) -> void:
 		ws.oil_eat = 200.0
 
 
-## AddOilPrice — data[143]（油价）>=10 才加，否则 =10
+## AddOilPrice — data.oil_price（油价）>=10 才加，否则 =10
 static func add_oil_price(num: int) -> void:
 	var d := _d()
 	if d.size() <= 143:
 		return
-	if d[143] + num >= 10:
-		d[143] += num
+	if d.oil_price + num >= 10:
+		d.oil_price += num
 	else:
-		d[143] = 10
+		d.oil_price = 10
 
 
-## AddOilPrud — OilProd += num；data[152]<1500 → +50（>1500 则 1450）
+## AddOilPrud — OilProd += num；data.industry_base<1500 → +50（>1500 则 1450）
 static func add_oil_prud(num: int) -> void:
 	var ws := _ws()
 	if ws == null:
 		return
 	ws.oil_prod += float(num)
 	var d := _d()
-	if d.size() > W.I_INDUSTRY_BASE and d[W.I_INDUSTRY_BASE] < 1500:
-		d[W.I_INDUSTRY_BASE] += 50
-		if d[W.I_INDUSTRY_BASE] > 1500:
-			d[W.I_INDUSTRY_BASE] = 1450
+	if d.size() > W.I_INDUSTRY_BASE and d.industry_base < 1500:
+		d.industry_base += 50
+		if d.industry_base > 1500:
+			d.industry_base = 1450
 
 
-## AddOldModify — modifies[num].active=true；num==58 → data[153]=12
+## AddOldModify — modifies[num].active=true；num==58 → data.modifier_58_timer=12
 static func add_old_modify(num: int) -> void:
 	var m := _mod(num)
 	if m != null:
@@ -1460,7 +1460,7 @@ static func add_old_modify(num: int) -> void:
 	if num == 58:
 		var d := _d()
 		if d.size() > 153:
-			d[153] = 12
+			d.modifier_58_timer = 12
 
 
 ## AddStabilityAfrique — 区间 53..108、跳过 (69..105) 与 africaOff → stab += num
@@ -1519,18 +1519,18 @@ static func ally_with_other_parties(_yes: bool = true) -> void:
 			ws.factions[i].is_ally = true
 
 
-## BlockForNewDemocracy — data[15]=7
+## BlockForNewDemocracy — data.party_system=7
 static func block_for_new_democracy(_num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_PARTY_SYSTEM:
-		d[W.I_PARTY_SYSTEM] = 7
+		d.party_system = 7
 
 
-## BlockForStatemoncap — data[16]=12
+## BlockForStatemoncap — data.econ_system=12
 static func block_for_statemoncap(_num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_ECON_SYSTEM:
-		d[W.I_ECON_SYSTEM] = 12
+		d.econ_system = 12
 
 
 ## BlockFreedom — completedDecisions[num]=true（原版 delegate 仅完成标记）

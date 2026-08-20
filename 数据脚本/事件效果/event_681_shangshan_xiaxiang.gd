@@ -25,12 +25,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null \
 		and world.modifiers[3].is_active
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var press := data[W.I_PRESS_POLICY] if data.size() > W.I_PRESS_POLICY else 0
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var press := data.press_policy if data.size() > W.I_PRESS_POLICY else 0
 	var budget_reserve := 0
 	if data.size() > W.I_BUDGET and data.size() > W.I_RESERVE:
-		budget_reserve = data[W.I_BUDGET] + data[W.I_RESERVE]
+		budget_reserve = data.budget + data.reserve
 	var opt := event_def.options
 	_enable(opt[0], "为什么要破坏仍行之有效的东西？")
 	if not mod3 and line > 0:

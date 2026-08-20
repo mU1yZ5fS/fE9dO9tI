@@ -1,4 +1,4 @@
-## 结局内容 批C — 坏结局 data[35]==1..14 中文分支（BadEnding 指定结局）。
+## 结局内容 批C — 坏结局 data.ending_route==1..14 中文分支（BadEnding 指定结局）。
 ## 源码出处：EndingScript.cs BadEnding L3695-3870（中文分支；L3871 起为俄文 else，不迁移）。
 ## 接口：build_bad_ending(route, w) -> {name, text}；未命中返回 {name:"", text:""}。
 extends "res://场景/结局界面/结局内容_基础.gd"
@@ -14,7 +14,7 @@ func _pn(w: WorldState, i: int) -> int:
 	return 0
 
 
-## 原版 BadEnding 中文分支：data[35]==1..14。未命中返回 {name:"", text:""}（与原版保持场景默认一致）。
+## 原版 BadEnding 中文分支：data.ending_route==1..14。未命中返回 {name:"", text:""}（与原版保持场景默认一致）。
 func build_bad_ending(route: int, w: WorldState) -> Dictionary:
 	match route:
 		1:
@@ -48,17 +48,17 @@ func build_bad_ending(route: int, w: WorldState) -> Dictionary:
 	return {"name": "", "text": ""}
 
 
-## 原作 EndingScript.cs L3699-3703（data[35]==1，暴动）。
+## 原作 EndingScript.cs L3699-3703（data.ending_route==1，暴动）。
 func _route_1(_w: WorldState) -> Dictionary:
 	return {"name": " 暴 动", "text": " 你 的 政 策 使 中 国 人 民 越 来 越 愤 怒 。 当 你 试 图 以 一 切 方 式 平 息 日 益 增 长 的 抗 议 活 动 时 ， 你 失 败 了 ， 一 场 公 开 起 义 开 始 了 ， 很 快 就 得 到 了 军 队 和 一 些 党 员 的 支 持 。 在 法 庭 上 逮 捕 和 审 判 你 时 ， 党 内 高 层 成 员 和 将 军 已 经 宣 布 成 立 一 个 临 时 政 府 。 中 国 的 未 来 如 此 晦 暗 不 明 … …"}
 
 
-## 原作 EndingScript.cs L3704-3708（data[35]==2，党内政变）。
+## 原作 EndingScript.cs L3704-3708（data.ending_route==2，党内政变）。
 func _route_2(_w: WorldState) -> Dictionary:
 	return {"name": " 党 内 政 变", "text": " 你 的 行 为 使 党 越 来 越 愤 怒 。 他 们 厌 倦 了 你 ， 党 内 的 元 老 组 织 了 一 次 会 议 ， 在 那 里 你 受 到 批 判 ， 然 后 党 内 投 票 赞 成 你 提 前 退 休 。 现 在 你 只 是 一 个 领 取 养 老 金 的 人 ， 没 有 人 在 意 你 ， 而 你 以 前 的 职 位 被 一 个 各 派 妥 协 的 、 尝 试 与 竞 争 对 手 周 旋 的 候 选 人 占 据 。"}
 
 
-## 原作 EndingScript.cs L3709-3729（data[35]==3，核战；modifies[40] 分支改标题）。
+## 原作 EndingScript.cs L3709-3729（data.ending_route==3，核战；modifies[40] 分支改标题）。
 func _route_3(w: WorldState) -> Dictionary:
 	var name := " 核 战"
 	var text := ""
@@ -76,7 +76,7 @@ func _route_3(w: WorldState) -> Dictionary:
 	return {"name": name, "text": text}
 
 
-## 原作 EndingScript.cs L3730-3738（data[35]==4，种族灭绝；iron_and_blood 成就 注）。
+## 原作 EndingScript.cs L3730-3738（data.ending_route==4，种族灭绝；iron_and_blood 成就 注）。
 func _route_4(w: WorldState) -> Dictionary:
 	var name := " 种 族 灭 绝"
 	var text := " 在 你 的 领 导 下 ， 曾 是 世 界 上 第 一 人 口 大 国 的 中 国 ， 人 口 急 剧 减 少 。 这 是 不 可 忽 视 的 ， 人 们 越 发 指 责 你 犯 下 了 种 族 灭 绝 的 罪 行 ， 最 终 党 受 够 了 ， 逮 捕 了 你 ， 并 把 你 送 上 法 庭 。"
@@ -85,7 +85,7 @@ func _route_4(w: WorldState) -> Dictionary:
 	return {"name": name, "text": text}
 
 
-## 原作 EndingScript.cs L3739-3749（data[35]==6，机器总归要人管；string.Concat 姓名拼接）。
+## 原作 EndingScript.cs L3739-3749（data.ending_route==6，机器总归要人管；string.Concat 姓名拼接）。
 func _route_6(w: WorldState) -> Dictionary:
 	var name := " 机 器 总 归 要 人 管"
 	var text := ""
@@ -94,12 +94,12 @@ func _route_6(w: WorldState) -> Dictionary:
 	return {"name": name, "text": text}
 
 
-## 原作 EndingScript.cs L3750-3754（data[35]==7，核战启示录；new_events_text[533]/[534] → 常量）。
+## 原作 EndingScript.cs L3750-3754（data.ending_route==7，核战启示录；new_events_text[533]/[534] → 常量）。
 func _route_7(_w: WorldState) -> Dictionary:
 	return {"name": NEW_EVENTS_TEXT_533, "text": NEW_EVENTS_TEXT_534}
 
 
-## 原作 EndingScript.cs L3755-3763（data[35]==8，未知世界的故事；iron_and_blood 成就 注）。
+## 原作 EndingScript.cs L3755-3763（data.ending_route==8，未知世界的故事；iron_and_blood 成就 注）。
 func _route_8(w: WorldState) -> Dictionary:
 	var name := " 未 知 世 界 的 故 事"
 	var text := " 毛 泽 东 复 活 以 及 政 府 密 谋 暗 杀 失 败 的 消 息 被 公 布 在 报 纸 上 。 这 成 为 了 引 爆 民 众 不 满 的 导 火 索 。 全 国 各 地 大 批 愤 怒 的 群 众 结 社 加 入 “ 毛 泽 东 ” 的 阵 营 ， 并 在 各 大 城 市 游 行 示 威 ， 他 们 高 呼 ： “ 谁 反 对 毛 主 席 ， 谁 就 是 在 反 对 新 中 国 ， 反 对 人 民 ！ ” “ 坚 决 打 倒 反 动 派 ！ ” “ 毛 泽 东 ” 进 行 了 一 篇 煽 动 性 极 强 演 讲 ， 赢 得 大 多 数 人 的 支 持 。 而 在 一 次 群 众 与 政 府 无 意 中 的 流 血 冲 突 后 ， 一 场 全 国 性 的 拥 护 毛 泽 东 、 反 对 修 正 派 的 热 潮 也 被 引 爆 了 。 群 众 运 动 转 为 武 装 斗 争 ， 并 在 “ 毛 泽 东 ” 的 指 挥 及 部 分 军 队 的 支 持 下 夺 得 大 部 分 政 权 。 新 的 中 国 共 产 党 建 立 了 ， 中 华 人 民 共 和 国 国 号 也 加 入 “ 革 命 ” 二 字 ， “ 毛 泽 东 ” 再 度 成 为 国 家 领 袖 。 新 的 政 治 体 系 正 在 建 立 起 来 ， 而 你 也 被 作 为 反 动 派 头 目 与 前 政 府 高 官 一 同 被 枪 决 、 铭 刻 在 历 史 的 耻 辱 柱 上 。 "
@@ -108,12 +108,12 @@ func _route_8(w: WorldState) -> Dictionary:
 	return {"name": name, "text": text}
 
 
-## 原作 EndingScript.cs L3764-3768（data[35]==9，万里涛涛，江水永不休；|| 为硬换行标记，主控统一转换行）。
+## 原作 EndingScript.cs L3764-3768（data.ending_route==9，万里涛涛，江水永不休；|| 为硬换行标记，主控统一转换行）。
 func _route_9(_w: WorldState) -> Dictionary:
 	return {"name": " 万 里 涛 涛 ， 江 水 永 不 休", "text": " 体 制 外 民 主 人 士 和 自 由 派 党 员 共 同 推 进 了 一 场 —— 也 许 是 在 中 国 历 史 上 最 为 轰 轰 烈 烈 的 —— 自 由 主 义 大 变 革 ， 并 相 当 想 当 然 地 认 为 这 场 全 方 位 的 破 冰 行 动 将 带 来 “ 整 个 国 家 的 新 生 ” 。 然 而 令 人 大 跌 眼 镜 的 是 ， 这 场 运 动 滋 养 的 不 是 鲜 花 ， 而 是 毒 草 。 贸 然 而 激 进 的 体 制 改 动 使 得 政 府 人 员 安 排 调 动 变 得 极 其 混 乱 ， 实 际 上 让 政 府 陷 入 了 瘫 痪 状 态 。 而 毫 无 底 线 并 缺 乏 兜 底 机 制 的 私 有 化 引 发 了 大 规 模 失 业 潮 和 公 共 服 务 体 系 瓦 解 ， 国 民 经 济 的 最 后 一 根 弦 也 随 之 崩 断 。 在 如 此 危 局 下 ， 政 府 仍 然 坚 持 “ 减 少 干 预 ， 放 任 自 由 ” 的 执 政 原 则 ， 拒 绝 对 当 前 情 况 负 责 并 保 持 既 定 预 算 计 划 ， 这 最 终 使 得 当 政 自 由 派 被 视 作 一 个 无 能 且 不 作 为 的 执 政 集 团 。 饱 受 内 外 批 评 的 政 府 最 终 败 光 了 自 毛 泽 东 时 代 以 来 的 一 切 公 信 力 ， 布 尔 什 维 克 式 的 党 政 结 构 事 实 上 已 经 解 体 ， 当 下 整 个 中 国 更 近 似 晚 清 那 种 “ 政 令 不 出 首 都 ” 的 弱 中 央 模 式 ， 甚 至 有 人 说 我 党 我 国 已 然 重 蹈 覆 辙 了 东 汉 末 年 和 东 晋 世 家 制 的 局 面 。||由 于 基 层 上 统 领 部 门 的 地 方 党 政 机 构 崩 溃 ， 行 政 管 理 、 执 法 机 构 几 乎 完 全 失 灵 。 无 助 的 人 们 在 失 序 的 社 会 中 最 终 寻 求 了 一 种 历 史 悠 久 但 在 毛 泽 东 时 期 被 全 面 禁 止 的 社 会 组 织 — — 秘 密 结 社 。 或 者 说 ， 黑 社 会 。 这 种 死 灰 复 燃 的 暴 力 团 伙 立 即 代 替 了 基 层 行 政 机 关 ， 并 实 际 上 承 担 起 当 地 的 行 政 与 治 安 责 任 （ 当 然 ， 代 价 是 相 应 的 “ 保 护 费 ” ） 老 牌 的 华 人 黑 帮 ， 如 洪 门 （ 致 公 党 ） 、 青 帮 （ 安 清 会 ） 以 及 三 合 会 捷 足 先 登 ， 为 自 己 一 方 的 势 力 打 下 了 广 阔 的 江 山 。 新 兴 势 力 也 层 出 不 穷 ， 试 图 在 大 帮 派 的 争 斗 中 渔 翁 得 利 ， 撕 下 属 于 自 己 的 一 块 肉 。 形 成 一 定 规 模 的 大 型 结 社 相 当 精 明 地 发 展 表 里 两 面 ， 推 出 属 于 自 己 的 合 法 化 组 织 并 参 与 国 家 政 治 ， 从 议 会 到 政 府 坐 满 了 这 些 戴 着 沾 血 的 黑 手 套 、 文 质 彬 彬 的 黑 手 党 们 ， 国 际 社 会 也 把 我 们 看 作 一 个 东 方 墨 西 哥 。 看 来 ， 终 结 妓 院 、 赌 场 与 毒 品 的 时 代 已 经 随 他 老 人 家 而 远 去 … …||<color=#2F4F4F>雄 关 漫 道 真 如 铁 ， 而 今 迈 步 ， 从 头 越 … …</color> "}
 
 
-## 原作 EndingScript.cs L3769-3809（data[35]==10，领导人意外结局五分支 + 兜底）。
+## 原作 EndingScript.cs L3769-3809（data.ending_route==10，领导人意外结局五分支 + 兜底）。
 ## name_1/name_2 → Godot leader.name_first/name_last（politician_data.gd 旧字段建模）；leader 为 null 按兜底 else 处理。
 func _route_10(w: WorldState) -> Dictionary:
 	var name := ""
@@ -144,7 +144,7 @@ func _route_10(w: WorldState) -> Dictionary:
 	return {"name": name, "text": text}
 
 
-## 原作 EndingScript.cs L3810-3827（data[35]==11，又一个明英宗；modifies[3]/data[15] 追加分支）。
+## 原作 EndingScript.cs L3810-3827（data.ending_route==11，又一个明英宗；modifies[3]/data.party_system 追加分支）。
 func _route_11(w: WorldState) -> Dictionary:
 	var name := " 又 一 个 明 英 宗"
 	var text := "你 的 糟 糕 指 挥 不 仅 葬 送 了 我 们 的 好 战 士 ， 也 让 将 军 们 意 识 到 你 会 害 了 国 家 。 在 一 次 秘 密 会 议 上 ， 他 们 决 定 让 你 提 前 “ 退 休 ” 。 很 快 ， 忠 诚 于 阴 谋 者 的 部 队 切 断 了 电 话 线 ， 包 围 了 中 南 海 ， 你 在 他 们 夺 权 的 过 程 中 以 危 害 国 家 为 由 被 软 禁 起 来 ， 余 生 将 在 秦 城 监 狱 度 过 。 在 宣 布 抓 捕 了 中 央 的 堕 落 分 子 后 ， 军 队 开 始 接 管 各 地 的 党 政 组 织 ， 军 人 和 少 部 分 宣 布 忠 于 军 队 的 文 员 组 建 了 新 地 方 政 府 ， 人 大 则 被 冻 结 ， 直 至 新 的 大 会 上 充 满 了 军 人 和 军 队 的 提 线 木 偶 ， 政 变 的 阴 谋 家 ， 很 快 建 立 了 属 于 他 的 “ 先 军 ， 爱 国 ， 复 仇 ” 路 线 。"
@@ -158,22 +158,22 @@ func _route_11(w: WorldState) -> Dictionary:
 	return {"name": name, "text": text}
 
 
-## 原作 EndingScript.cs L3828-3832（data[35]==12，亲自指挥，亲自部署……）。
+## 原作 EndingScript.cs L3828-3832（data.ending_route==12，亲自指挥，亲自部署……）。
 func _route_12(_w: WorldState) -> Dictionary:
 	return {"name": " 亲 自 指 挥 ， 亲 自 部 署 … …", "text": "国 内 军 官 对 你 在 进 攻 期 间 的 冒 险 主 义 ， 谈 判 期 间 的 投 降 主 义 忍 无 可 忍 ， 并 决 定 让 你 提 前 “ 退 休 ” 。 很 快 ， 忠 诚 于 阴 谋 者 的 部 队 便 切 断 电 话 线 并 包 围 中 南 海 ， 你 则 被 扣 上 了 “ 危 害 国 家 ” 的 帽 子 并 被 软 禁 ， 余 生 将 在 秦 城 监 狱 度 过 。 也 就 在 完 成 对 中 央 的 斩 首 行 动 后 ， 军 队 开 始 试 图 接 管 各 地 党 政 组 织 ， 并 与 少 数 宣 布 忠 于 军 队 的 文 员 组 建 了 救 国 委 员 会 ， 引 入 了 戒 严 法 ： 人 大 被 无 限 期 暂 停 召 开 ， 并 被 军 方 及 其 代 理 人 控 制 的 临 时 委 员 会 取 而 代 之 。 政 变 领 导 人 很 快 便 打 出 “ 先 军 ， 爱 国 ， 复 仇 ” 路 线 ， 试 图 将 中 国 拉 入 军 事 化 轨 道 并 彻 底 取 消 传 统 政 治 框 架 ， 这 只 会 导 致 流 血 事 件 愈 演 愈 烈 ： 民 兵 和 政 变 部 队 陷 入 激 烈 火 并 ， 海 空 军 队 则 趁 乱 加 入 不 同 阵 营 ， 一 场 内 战 迫 在 眉 睫 ， 中 国 恐 将 陷 入 万 劫 不 复 … … 紧 接 着 便 是 自 诩 保 卫 “ 世 界 和 平 ” 的 北 约 组 织 下 场 ， 苏 联 很 快 便 裹 挟 着 复 仇 怒 火 南 下 … …||就 这 样 ， 新 秩 序 到 来 了 … …"}
 
 
-## 原作 EndingScript.cs L3833-3837（data[35]==13，人类命运共同体）。
+## 原作 EndingScript.cs L3833-3837（data.ending_route==13，人类命运共同体）。
 func _route_13(_w: WorldState) -> Dictionary:
 	return {"name": " 人 类 命 运 共 同 体", "text": "在 月 球 上 的 红 军 ， 南 极 企 鹅 ， 火 星 人 ， 北 极 熊 ， 磷 虾 ， 耶 稣 基 督 ， 佩 伦 大 神 ， 玉 皇 大 帝 和 蜥 蜴 人 的 帮 助 下 ， 恩 科 洛 索 借 此 神 力 统 一 了 寰 球 。 现 在 ， 人 类 将 活 在 一 个 幸 福 的 天 国 ， 一 个 共 产 主 义 — 许 玻 尔 珀 瑞 亚 — 流 着 奶 与 蜜 的 地 上 天 国 ！ 现 在 ， 让 我 们 看 看 红 色 药 丸 … …"}
 
 
-## 原作 EndingScript.cs L3838-3842（data[35]==14，枪杆子里出政权……）。
+## 原作 EndingScript.cs L3838-3842（data.ending_route==14，枪杆子里出政权……）。
 func _route_14(_w: WorldState) -> Dictionary:
 	return {"name": " 枪 杆 子 里 出 政 权 … …", "text": "显 而 易 见 ， 你 没 法 在 专 业 领 域 内 胜 过 职 业 人 士 ： 打 着 “ 争 国 权 除 国 贼 ” 的 现 代 版 闯 王 队 伍 兵 不 血 刃 地 解 除 了 首 都 武 装 ， 轻 易 对 你 与 中 国 的 主 要 领 导 层 实 现 了 “ 反 隔 离 ” 。 你 也 就 成 了 现 代 版 的 东 罗 马 末 代 皇 帝 ， 只 能 以 绥 靖 手 段 对 其 诉 求 一 让 再 让 — — 而 这 不 过 是 慢 性 死 亡 而 已 ： 不 久 后 ， 你 与 你 的 支 持 者 们 也 纷 纷 退 休 ， 并 被 置 于 软 禁 状 态 ， 最 终 只 得 在 朝 鲜 的 调 解 下 以 非 政 治 身 份 释 放 并 引 至 平 壤 。 可 惜 ， 鸭 绿 江 对 岸 同 志 的 雪 中 送 炭 也 没 法 将 你 完 全 拽 出 这 个 烂 摊 子 ： 载 有 你 与 中 国 主 要 领 导 人 的 航 班 在 飞 跃 渤 海 上 空 时 离 奇 失 踪 ， 为 这 场 军 事 政 变 彻 底 画 上 了 句 号 。 接 下 来 便 请 欣 赏 发 生 在 中 国 全 境 的 新 一 轮 血 腥 鏖 战 罢 … …"}
 
 
-## 原作 EndingScript.cs L3843-3869（data[35]==5，多党选战四结局；party_number[i] → _pn，iron_and_blood 成就 注）。
+## 原作 EndingScript.cs L3843-3869（data.ending_route==5，多党选战四结局；party_number[i] → _pn，iron_and_blood 成就 注）。
 func _route_5(w: WorldState) -> Dictionary:
 	var name := ""
 	var text := ""

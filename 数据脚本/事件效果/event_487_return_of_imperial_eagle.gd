@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:1504-1506 ——
 ##   ((年>=1980 月>=9 日>=26) || (年>=1980 月>=10) || 年>=1981)。
 ## 差异：
-##  - data[31] 战争支持 → W.I_WAR_SUPPORT；data[56] 政治路线 → W.I_POLITICAL_LINE；
+##  - data.war_support 战争支持 → W.I_WAR_SUPPORT；data.political_line 政治路线 → W.I_POLITICAL_LINE；
 ##  - result1 的领袖姓名拼接 → _leader_name()（names1+names2 → name_display）。
 
 
@@ -26,8 +26,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var war_support := world.数值表[W.I_WAR_SUPPORT] if world.数值表.size() > W.I_WAR_SUPPORT else 0
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
+	var war_support := world.war_support if world.size() > W.I_WAR_SUPPORT else 0
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
 	var res395 := int(world.completed_event_ids.get("event_395", -1))
 	var opt := event_def.options

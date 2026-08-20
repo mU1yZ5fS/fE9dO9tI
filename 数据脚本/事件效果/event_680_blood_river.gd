@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event680.cs：血河奔流（喀麦隆反对派支援，手动事件，三选项）。
 ## 触发：DiploButtonScript.cs:1032 入口（selected_country==66）——科技《情报部门新装备》、
 ##   社会主义或改良主义、影响力>=300、未支持过（或上次选了“再想想”）。
-## 入口扣费（data[9]-100 特工、data[22]-100 军力）在 外交互动_批4.gd:715-717 完成。
+## 入口扣费（data.agents-100 特工、data.army-100 军力）在 外交互动_批4.gd:715-717 完成。
 ## 差异：原版 option1 禁用分支误写 button[0]/button_text[0]（Unity bug），按语义禁用 option1；
 ##   result2 的 event_done[680]=false → context["skip_mark_done"]=true。
 

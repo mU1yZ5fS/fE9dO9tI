@@ -46,7 +46,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	var line := d[W.I_POLITICAL_LINE]
+	var line := d.political_line
 	if line > 1 and line < 4 and c86 != null and c86.sub_government == GameConstants.SubGovernment.TITOIST:
 		_enable(opt[1], event_def.options[1].text)
 	else:

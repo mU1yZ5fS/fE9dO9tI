@@ -80,7 +80,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var opt := event_def.options
 	var num := _okb_count()
 	var num2 := 30
@@ -94,23 +94,23 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		num2 = 70
 		num3 = 50
-	var br := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
+	var br := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
 	if br >= num:
 		_enable(opt[0], _fmt(TXT_IDX_1229, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214, str(num), str(num * 15 / 10.0)]))
 	else:
 		_disable(opt[0], _fmt(TXT_IDX_566, [str(num / 10.0)]))
-	if d[W.I_AGENTS] >= num2:
+	if d.agents >= num2:
 		_enable(opt[1], _fmt(TXT_IDX_1230, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214, str(num2 / 10.0), str(num * 15 / 10.0)]))
 	else:
 		_disable(opt[1], _fmt(TXT_IDX_567, [str(num2 / 10.0)]))
-	if not world.get_flag("relres") and d[W.I_AGENTS] >= num3:
+	if not world.get_flag("relres") and d.agents >= num3:
 		_enable(opt[2], _fmt(TXT_IDX_1231, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214, str(num2 / 10.0), str(num3 / 10.0)]))
 	elif world.get_flag("relres"):
 		_disable(opt[2], TXT_IDX_586)
 	else:
 		_disable(opt[2], _fmt(TXT_IDX_567, [str(num3 / 10.0)]))
 	var us := world.get_country_by_legacy_index(51)
-	if us != null and not us.has_tag("对华贸易") and d[W.I_AGENTS] >= num3:
+	if us != null and not us.has_tag("对华贸易") and d.agents >= num3:
 		_enable(opt[3], _fmt(TXT_IDX_1232, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214, str(num2 / 10.0), str(num3 / 10.0)]))
 	elif us != null and us.has_tag("对华贸易"):
 		_disable(opt[3], TXT_IDX_1220)
@@ -175,7 +175,7 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0
 
 func _okb_count() -> int:

@@ -41,8 +41,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	for c in world.countries:
 		if c != null and c.原版序号 >= 138 and c.has_tag("亲中"):
 			num += 1
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var c140 := world.get_country_by_legacy_index(140)
 	var c1 := world.get_country_by_legacy_index(1)
 	var r577 := int(world.completed_event_ids.get("event_577", 0))
@@ -54,7 +54,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if data.size() > W.I_WAR_SUPPORT and data[W.I_WAR_SUPPORT] >= 700 \
+	if data.size() > W.I_WAR_SUPPORT and data.war_support >= 700 \
 			and c1 != null and c1.sub_government == GameConstants.SubGovernment.NEO_FASCIST and c140 != null and c140.stab == 2 \
 			and r577 == 3 and r578 == 2:
 		_enable(opt[2], event_def.options[2].text)

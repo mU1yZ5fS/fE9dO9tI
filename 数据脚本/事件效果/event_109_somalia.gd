@@ -18,8 +18,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var data := world.数值表
-	var agents := data[W.I_AGENTS] if data.size() > W.I_AGENTS else 0
+	var data := world
+	var agents := data.agents if data.size() > W.I_AGENTS else 0
 	var opt := event_def.options
 	if agents >= 50 and world.influence_prc >= 200:
 		_enable(opt[0], "尽全力支持他们的政变")

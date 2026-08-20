@@ -4,8 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:1499-1501 ——
 ##   ((年>=1977 月>=10 日>=17) || (年>=1977 月>=11) || 年>=1978)。
 ## 差异：
-##  - data[56] 政治路线 → W.I_POLITICAL_LINE；proprc/Torg/econ/okb → set_tag；
-##  - result1 的 data[60]==0 分支按原版 int 默认 0 处理。
+##  - data.political_line 政治路线 → W.I_POLITICAL_LINE；proprc/Torg/econ/okb → set_tag；
+##  - result1 的 data.albania_break==0 分支按原版 int 默认 0 处理。
 
 
 
@@ -24,7 +24,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
 	var albania := world.get_country_by_legacy_index(20)
 	var albania_pro := albania != null and albania.has_tag("亲中")
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
@@ -65,8 +65,8 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc -= 20
 			if west_germany != null:
 				west_germany.set_tag("对华贸易", true)
-			# data[60]：原版中阿决裂状态（无常量），raw index + 注释。
-			if d.size() > 60 and d[60] == 0:
+			# data.albania_break：原版中阿决裂状态（无常量），raw index + 注释。
+			if d.size() > 60 and d.albania_break == 0:
 				if albania != null:
 					albania.set_tag("亲中", false)
 					albania.set_tag("econ", false)

@@ -26,7 +26,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 		num += 1
-	if world.数值表[W.I_DIPLO] <= 400 and not _modifier_active(6) and not _modifier_active(3):
+	if world.diplomatic_reputation <= 400 and not _modifier_active(6) and not _modifier_active(3):
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
@@ -71,7 +71,7 @@ func execute(context: Dictionary) -> void:
 				tibet.special_ending = 1
 			context["result_text"] = TXT_R1
 		2:
-			if d[W.I_YEAR] < 1982:
+			if d.year < 1982:
 				_add_power(EmpireData.USSR, 25)
 				_add(W.I_LIVING, 25)
 				context["result_text"] = TXT_R2_BEFORE

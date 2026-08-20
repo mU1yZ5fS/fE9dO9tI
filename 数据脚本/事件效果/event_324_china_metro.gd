@@ -14,17 +14,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var data := world.数值表
+	var data := world
 	if data.size() <= W.I_RESERVE:
 		return
 	var opt := event_def.options
-	var br := data[W.I_BUDGET] + data[W.I_RESERVE]
+	var br := data.budget + data.reserve
 	_enable(opt[0], event_def.options[0].text)
-	if br >= 70 and data[W.I_INDUSTRY] > 60:
+	if br >= 70 and data.industry > 60:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if br >= 70 and data[W.I_INDUSTRY] > 30 and data[W.I_USSR_RELATIONS] > 600:
+	if br >= 70 and data.industry > 30 and data.ussr_relations > 600:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

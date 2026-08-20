@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10038-10044 —— (月>=10 且 年>=1979) 或 年>=1980。
 ## 动态文案钩子 prepare(event_def, world)（挂 display_script）：
 ##  - 事件描述与结果文案插入当前领导人姓名（原版 names1[name_1]+" "+names2[name_2]）。
-##  - 选项0 原版按 (name_1==2&&name_2==2&&data[56]<=1)||(name_1==3&&name_2==3) 销毁按钮；
+##  - 选项0 原版按 (name_1==2&&name_2==2&&data.political_line<=1)||(name_1==3&&name_2==3) 销毁按钮；
 ##    Godot 用 prepare 动态设置 enable_condition（不可达 ExprNode）等价灰显。
 ## 差异：字符间空格排版不保留；show_notification=false（项目约定）。
 
@@ -85,12 +85,12 @@ func _leader_name(world: WorldState) -> String:
 
 
 ## Event791.cs VariantsOfEvents 选项0显隐条件：
-## (name_1==2 && name_2==2 && data[56]<=1) || (name_1==3 && name_2==3)
+## (name_1==2 && name_2==2 && data.political_line<=1) || (name_1==3 && name_2==3)
 func _option0_available(world: WorldState) -> bool:
 	var leader := world.leader
 	if leader == null:
 		return false
-	var political_line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
+	var political_line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
 	return (leader.name_first == 2 and leader.name_last == 2 and political_line <= 1) \
 		or (leader.name_first == 3 and leader.name_last == 3)
 

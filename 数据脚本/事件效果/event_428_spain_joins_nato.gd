@@ -14,7 +14,7 @@ const TXT_IDX_1434 := "然而，卡尔沃·索特洛与民主中间派联盟的�
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

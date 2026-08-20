@@ -69,14 +69,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var opt := event_def.options
 	_enable(opt[0], TXT_OPT0[0])
 	_enable(opt[1], TXT_OPT1[0])
 	_enable(opt[2], TXT_OPT2[0])
 	var uk := world.get_country_by_legacy_index(92)
-	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
-	if budget_reserve >= 100 and d[W.I_AGENTS] >= 150 and uk != null and uk.influence_nato >= 50:
+	var budget_reserve := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
+	if budget_reserve >= 100 and d.agents >= 150 and uk != null and uk.influence_nato >= 50:
 		_enable(opt[3], TXT_OPT3[0])
 	elif uk != null and uk.influence_nato < 50:
 		_disable(opt[3], TXT_OPT3[1])

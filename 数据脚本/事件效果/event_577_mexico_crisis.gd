@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   → DATE_AFTER 1982.1.30。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写；proprc → 亲中；influencePRC → ws.influence_prc；
-##  - data[31] → W.I_WAR_SUPPORT；data[12]? 无（581 用）；cw → 内战中；
+##  - data.war_support → W.I_WAR_SUPPORT；data.industry? 无（581 用）；cw → 内战中；
 ##  - 结果前全局 c140.gov=3/sub=12 对所有结果生效。
 
 
@@ -32,8 +32,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 6:
 		return
 	var num := _count_proprc(world)
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var china := world.get_country_by_legacy_index(1)
 	var opt := event_def.options
 	if line == 0 and num > 4 and world.influence_prc >= 800:
@@ -53,7 +53,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[2], TXT_OPT2_DIS_NO)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_CANT)
-	if data.size() > W.I_WAR_SUPPORT and data[W.I_WAR_SUPPORT] >= 700:
+	if data.size() > W.I_WAR_SUPPORT and data.war_support >= 700:
 		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)

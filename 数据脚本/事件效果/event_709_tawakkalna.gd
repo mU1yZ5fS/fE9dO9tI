@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event709.cs：“托靠真主-6号”行动（伊拉克攻取哈萨绿洲，单选项）。
-## 触发：event_709_trigger.gd（TimeScript.cs:10572-10578 的 parts[6]/data[186]
+## 触发：event_709_trigger.gd（TimeScript.cs:10572-10578 的 parts[6]/data.iraq_revolution_timer
 ##   /IsAuthoritarianism(101) 复合条件）。
 ## 差异：
 ##  - c101/c102 LeaveAlliances + JoinAllOurAlliances 按 Country.cs:89-112/42-86
@@ -18,7 +18,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	if opt == 0:
 		if d.size() > 143:
-			d[143] += 8
+			d.oil_price += 8
 		var iraq := ws.get_country_by_legacy_index(14)
 		if iraq != null:
 			for i in range(4, 7):

@@ -55,7 +55,7 @@ extends Resource
 ## 原 EventScript.Reset 的 104 计时单位 / 每日 8 单位 = 13 个游戏日。
 @export_range(1, 365, 1) var notification_days: int = 13
 
-## 通知超时代价（原 EventScript.Update：data[9]-=20, data[8]-=5）。
+## 通知超时代价（原 EventScript.Update：data.agents-=20, data.budget-=5）。
 @export var timeout_agents_penalty: int = 20
 @export var timeout_budget_penalty: int = 5
 

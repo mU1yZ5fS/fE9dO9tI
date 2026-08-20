@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event98.cs：非洲的切·格瓦拉（布基纳法索桑卡拉，四选项）。
 ## 触发：TimeScript.cs:10815-10821 —— (月>=8 且 年>=1983 或 年>=1984)。
 ## 差异：
-##  - 共同效果先执行：data[103]=15；c61 LeaveAlliances、name=布基纳法索
+##  - 共同效果先执行：data.africa_coup_route=15；c61 LeaveAlliances、name=布基纳法索
 ##    （new_events_text[800]）、Gosstroy=2/SubGosstroy=3、三倾向清空、dev=500。
 ##  - 选项显隐 prepare 动态改写（modifies[41] 激活才可用法国线）。
 
@@ -24,8 +24,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
 	var opt := event_def.options
 	_enable(opt[0], "无视军事政变")
 	if line != 0 and line != 4:
@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 		return
 	# 共同效果（先于 result 分支）
 	if d.size() > 103:
-		d[103] = 15
+		d.africa_coup_route = 15
 	var bf := ws.get_country_by_legacy_index(61)
 	if bf != null:
 		_leave_alliances(bf)

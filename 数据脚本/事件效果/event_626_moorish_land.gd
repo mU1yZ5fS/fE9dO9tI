@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event626.cs：摩尔人的土地（毛里塔尼亚政变，三选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:949-951 ——
 ##   (1978.7.10 起生效：原 (1978&&m>=7&&d>=10)||(1978&&m>=8)||y>=1979)。
-## 差异：原版选项0在 data[56]>=3 时 Destroy(button[0])；Godot 用 _disable 灰显同义。
+## 差异：原版选项0在 data.political_line>=3 时 Destroy(button[0])；Godot 用 _disable 灰显同义。
 
 const TXT_OPT0_DIS := "达达赫大势已去……"
 const TXT_R0 := "由于我们的提醒，达达赫总统得以在我们特工的帮助下组织起仍忠于他的部队逮捕萨莱克阴谋集团，叛变军官因叛国罪被处决。经过我们的斡旋，达达赫政府承认了阿拉伯撒哈拉民主共和国，放弃了对西撒哈拉的领土要求，并与西撒人阵达成了和平协定，毛里塔尼亚的军队撤出了西撒哈拉领土，这使得毛塔和摩洛哥的关系极度恶化了。在我们的援助下，毛里塔尼亚的局势正在缓慢地走向正常化，经济也逐渐走向恢复，达达赫开始更大力度地推进社会改革，并将支持大毛里塔尼亚主义转向支持泛非团结，以促进国内的阿拉伯-柏柏尔文化的摩尔人和南方黑人之间的关系上的平等化和政治上的团结度。作为交换，毛里塔尼亚人民党仿照人民民主国家和阿拉伯的复兴党国家，将支持毛泽东思想的毛里塔尼亚劳动党和此前反对同人民党合作的独立工会组织“进步工人联盟”等左翼反对派合法化，纳入民族进步阵线，阵线内的组织能够合法参与政府；于此同时，人民党也开始进行党领导军队的建设。"
@@ -16,7 +16,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	if event_def == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	# 原版 :21-29：data[56]<3 显示选项0，否则 Destroy 按钮。
+	# 原版 :21-29：data.political_line<3 显示选项0，否则 Destroy 按钮。
 	if _res(W.I_POLITICAL_LINE) < 3:
 		_enable(opt[0], event_def.options[0].text)
 	else:

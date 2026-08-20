@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event79.cs：紧缩政策（罗马尼亚债务危机，五选项）。
-## 触发：TimeScript.cs:10620-10626 —— data[21]>=1982。
+## 触发：TimeScript.cs:10620-10626 —— data.year>=1982。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（原版 SetActive(false) 等价）。
 ##  - science[16]/science[25] → ws.techs.unlocked 下标（tech_state.gd）。
@@ -24,9 +24,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
 	var coal := _coalition_percent(world)
 	var policy_left := (line < 3 and party < 8) or (coal > 66 and party > 7)
 	var china := world.get_country_by_legacy_index(1)
@@ -100,8 +100,8 @@ func execute(context: Dictionary) -> void:
 
 
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0

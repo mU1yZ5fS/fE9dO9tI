@@ -30,12 +30,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	var dv := world.数值表
+	var dv := world
 	var china := world.get_country_by_legacy_index(1)
 	var usa := world.get_country_by_legacy_index(51)
 	var budget_reserve := _budget_reserve(world)
-	var ideology := dv[W.I_IDEOLOGY] if dv.size() > W.I_IDEOLOGY else 0
-	var agents := dv[W.I_AGENTS] if dv.size() > W.I_AGENTS else 0
+	var ideology := dv.ideology if dv.size() > W.I_IDEOLOGY else 0
+	var agents := dv.agents if dv.size() > W.I_AGENTS else 0
 	var china_sev := china != null and china.has_tag("sev")
 	if china_sev and world.influence_prc >= 300 and ideology > 1 and budget_reserve >= 100 and agents >= 100:
 		_enable(opt[0], TXT_OPT0)
@@ -85,7 +85,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -100)
 			_add(W.I_DIPLO, -30)
 			_add_power(EmpireData.USSR, 10)
-			if d.size() > W.I_ECON_DISPLAY and d[W.I_ECON_DISPLAY] < 35:
+			if d.size() > W.I_ECON_DISPLAY and d.econ_display < 35:
 				_add(W.I_PARTY_SUPPORT, -100)
 			else:
 				_add(W.I_PARTY_SUPPORT, 50)
@@ -100,7 +100,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
 			_add(W.I_DIPLO, -60)
-			if d.size() > W.I_ECON_DISPLAY and d[W.I_ECON_DISPLAY] < 36:
+			if d.size() > W.I_ECON_DISPLAY and d.econ_display < 36:
 				_add(W.I_PARTY_SUPPORT, -100)
 			else:
 				_add(W.I_PARTY_SUPPORT, 50)
@@ -118,11 +118,11 @@ func _prev_result(world: WorldState, event_id: String) -> int:
 
 func _budget_reserve(world: WorldState) -> int:
 	var total := 0
-	var dv := world.数值表
+	var dv := world
 	if dv.size() > W.I_BUDGET:
-		total += dv[W.I_BUDGET]
+		total += dv.budget
 	if dv.size() > W.I_RESERVE:
-		total += dv[W.I_RESERVE]
+		total += dv.reserve
 	return total
 
 

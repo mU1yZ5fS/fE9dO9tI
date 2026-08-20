@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event110.cs：自动化的缓慢进展（四选项）。
 ## 触发：TimeScript.cs:10966-10972 —— 年>=1980 && !modifies[12].active
-##   && science[15] && data[16]<=11。
+##   && science[15] && data.econ_system<=11。
 ## 差异：relres → global flag；modifies[17] → modifiers[17].is_active。
 
 const TXT_R0 := "社会主义经济继续稳定运行。至少目前如此......"
@@ -18,8 +18,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
-	var dip := data[W.I_DIPLO] if data.size() > W.I_DIPLO else 0
+	var data := world
+	var dip := data.diplomatic_reputation if data.size() > W.I_DIPLO else 0
 	var china := world.get_country_by_legacy_index(1)
 	var ussr_rel := world.empires[EmpireData.USSR].relations if world.empires.size() > EmpireData.USSR and world.empires[EmpireData.USSR] != null else 0
 	var usa_rel := world.empires[EmpireData.USA].relations if world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null else 0
@@ -51,7 +51,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_THOUGHT_FREEDOM, 100)
 			_add(W.I_PARTY_SUPPORT, -600)
 			if d.size() > 118:
-				d[118] = 1
+				d.automation_progress = 1
 			context["result_text"] = TXT_R1
 		2:
 			_add(W.I_BUDGET, -80)
@@ -61,9 +61,9 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -100)
 			_add_relation(EmpireData.USSR, 100)
 			if d.size() > 118:
-				d[118] = 1
+				d.automation_progress = 1
 			if d.size() > 73:
-				d[73] += 300
+				d.budget_science += 300
 			context["result_text"] = TXT_R2
 		3:
 			_add(W.I_BUDGET, -80)
@@ -72,9 +72,9 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, -600)
 			_add_relation(EmpireData.USA, 50)
 			if d.size() > 118:
-				d[118] = 1
+				d.automation_progress = 1
 			if d.size() > 73:
-				d[73] += 300
+				d.budget_science += 300
 			context["result_text"] = TXT_R3
 
 

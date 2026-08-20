@@ -459,14 +459,13 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 
 
 # ============================================================================
-# 数值表 -- 从嵌入数组填充 WorldState.数值表[200]
+# 数值表 -- 从嵌入数组填充 WorldState.data_200
 # ============================================================================
 
 static func _fill_data_array(ws: WorldState) -> void:
-	ws.数值表.resize(200)
 	for i in DATA_VALUES.size():
-		ws.数值表[i] = DATA_VALUES[i]
-	print("WorldFactory: 数值表[150] 加载完成")
+		ws.set_data_by_index(i, DATA_VALUES[i])
+	print("WorldFactory: soviet_intervention_cooldown 加载完成")
 
 
 static func _build_countries(ws: WorldState) -> void:
@@ -821,15 +820,15 @@ static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 		return
 	var pol: PoliticianData = ws.politicians[num]
 	var leader: PoliticianData = ws.leader
-	var d := ws.数值表
+	var d := ws
 	var score := 100
 
 	# 提前提取开局状态参数以消除冗余的安全越界校验
-	var econ_display := d[WorldState.I_ECON_DISPLAY] if d.size() > WorldState.I_ECON_DISPLAY else 0
-	var political_display := d[WorldState.I_POLITICAL_DISPLAY] if d.size() > WorldState.I_POLITICAL_DISPLAY else 0
-	var ideology := d[WorldState.I_IDEOLOGY] if d.size() > WorldState.I_IDEOLOGY else 0
+	var econ_display := d.econ_display if d.size() > WorldState.I_ECON_DISPLAY else 0
+	var political_display := d.political_display if d.size() > WorldState.I_POLITICAL_DISPLAY else 0
+	var ideology := d.ideology if d.size() > WorldState.I_IDEOLOGY else 0
 
-	# data[52] 经济显示档 / data[54] 政治显示档 / data[14] 意识形态 — 开局常量
+	# data.econ_display 经济显示档 / data.political_display 政治显示档 / data.ideology 意识形态 — 开局常量
 	match econ_display:
 		34:  # 社会主义：显示值 [+25 +20 +15 -10 -15]，内部×10；20=保守
 			match pol.trait_personality:
@@ -1047,8 +1046,8 @@ static func _init_science(ws: WorldState) -> void:
 static func _init_empires(ws: WorldState) -> void:
 	var usa := EmpireData.new(EmpireData.USA)
 	usa.money = 1000
-	usa.power = ws.数值表[WorldState.I_USA_INFLUENCE]      # 原版 empires[0].power = data[10] = 280
-	usa.relations = ws.数值表[28]                            # 原版 empires[0].relations = data[28] = 700
+	usa.power = ws.usa_influence      # 原版 empires[0].power = data.usa_influence = 280
+	usa.relations = ws.usa_relations                            # 原版 empires[0].relations = data.usa_relations = 700
 	# 美国 8 位领导人（索引 = now_leader，modify_choose.cs:676-716 显示分支）。
 	# 开局 support 对齐 GameStartScript.cs:938-944（new_texts[0..3] 固定 5/4/3/2，4-7 无初始值）。
 	# 注：原版 1977 前显示"福特"、1977-1981 显示"卡特"是按日期的显示分支（modify_choose.cs:678-686），
@@ -1066,23 +1065,23 @@ static func _init_empires(ws: WorldState) -> void:
 
 	var ussr := EmpireData.new(EmpireData.USSR)
 	ussr.money = 800
-	ussr.power = ws.数值表[WorldState.I_SOVIET_INFLUENCE]   # 原版 empires[1].power = data[2] = 300
-	ussr.relations = ws.数值表[29]                           # 原版 empires[1].relations = data[29] = 300
+	ussr.power = ws.soviet_influence   # 原版 empires[1].power = data.soviet_influence = 300
+	ussr.relations = ws.ussr_relations                           # 原版 empires[1].relations = data.ussr_relations = 300
 	# 苏联 9 位领导人（索引 = now_leader，modify_choose.cs:154-212 显示分支）。
-	# 开局 support 按 GameStartScript.cs:963-970 公式：data[95..100] 开局 0（GameState.cs:7850
-	# data=new int[150]），GameStartScript.cs:958-959 增量 data[95]++ / data[96]+=4，dlc[0]=true。
+	# 开局 support 按 GameStartScript.cs:963-970 公式：data.get_data_by_index(95..100) 开局 0（GameState.cs:7850
+	# data=new int[150]），GameStartScript.cs:958-959 增量 data.soviet_leader_chernenko++ / data.soviet_leader_andropov+=4，dlc[0]=true。
 	# 索引语义以 Event89.cs 判定为准（安德罗波夫胜→now_leader=1、谢尔比茨基胜→now_leader=3）：
-	#   leaders[1]=谢尔比茨基（data[97]+3）、leaders[3]=安德罗波夫（data[96]），
+	#   leaders[1]=谢尔比茨基（data.soviet_leader_shcherbitsky+3）、leaders[3]=安德罗波夫（data.soviet_leader_andropov），
 	#   与 modify_choose 显示分支（1=安德罗波夫、3=谢尔比茨基）自洽。
 	# 雅科夫列夫(7)/利加乔夫(8) 无开局公式，取预留合理值（显示分支与未来事件用）。
 	ussr.leaders = [
 		EmpireLeader.new("Leonid Brezhnev", 20),         # 0 列昂尼德·勃列日涅夫（GameStartScript support=20）
-		EmpireLeader.new("Vladimir Shcherbitsky", 3),    # 1 弗拉基米尔·谢尔比茨基（data[97]+3）
-		EmpireLeader.new("Konstantin Chernenko", 3),     # 2 康斯坦丁·契尔年科（data[95]*3）
-		EmpireLeader.new("Yuri Andropov", 4),            # 3 尤里·安德罗波夫（data[96]）
-		EmpireLeader.new("Grigory Romanov", 0),          # 4 格里戈里·罗曼诺夫（data[98]）
-		EmpireLeader.new("Viktor Grishin", 1),           # 5 维克托·格里申（data[99]+1）
-		EmpireLeader.new("Mikhail Gorbachev", 0),        # 6 米哈伊尔·戈尔巴乔夫（data[100]）
+		EmpireLeader.new("Vladimir Shcherbitsky", 3),    # 1 弗拉基米尔·谢尔比茨基（data.soviet_leader_shcherbitsky+3）
+		EmpireLeader.new("Konstantin Chernenko", 3),     # 2 康斯坦丁·契尔年科（data.soviet_leader_chernenko*3）
+		EmpireLeader.new("Yuri Andropov", 4),            # 3 尤里·安德罗波夫（data.soviet_leader_andropov）
+		EmpireLeader.new("Grigory Romanov", 0),          # 4 格里戈里·罗曼诺夫（data.soviet_leader_romanov）
+		EmpireLeader.new("Viktor Grishin", 1),           # 5 维克托·格里申（data.soviet_leader_grishin+1）
+		EmpireLeader.new("Mikhail Gorbachev", 0),        # 6 米哈伊尔·戈尔巴乔夫（data.soviet_successor_third）
 		EmpireLeader.new("Alexander Yakovlev", 30),      # 7 亚历山大·雅科夫列夫（Event117 北约分支）
 		EmpireLeader.new("Yegor Ligachev", 25),          # 8 叶戈尔·利加乔夫（预留）
 	]
@@ -1098,17 +1097,17 @@ static func _init_empires(ws: WorldState) -> void:
 static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 	# 清零区间（原版 lines 627-645）
 	for i in range(111, 126):
-		ws.数值表[i] = 0
-	ws.数值表[105] = 2
-	ws.数值表[WorldState.I_SATISFIED] = 0       # 满意现秩序者开局为 0
-	ws.数值表[WorldState.I_OLIGARCH] = 0        # 寡头影响力
-	if ws.数值表.size() > WorldState.I_INDUSTRY_BASE:
-		ws.数值表[WorldState.I_INDUSTRY_BASE] = 350
-	ws.数值表[27] = 0
-	ws.数值表[0] = 0
-	ws.数值表[85] = 0
-	ws.数值表[WorldState.I_WAR_RESOLVE] = -1
-	ws.数值表[WorldState.I_MIL_INTERVENTION] = 0
+		ws.set_data_by_index(i, 0)
+	ws.birth_policy = 2
+	ws.satisfied = 0       # 满意现秩序者开局为 0
+	ws.oligarch = 0        # 寡头影响力
+	if ws.size() > WorldState.I_INDUSTRY_BASE:
+		ws.industry_base = 350
+	ws.investment_delay = 0
+	ws.mil_intervention = 0
+	ws.palestine_status = 0
+	ws.war_resolve = -1
+	ws.mil_intervention = 0
 
 	# 原版 GameStartScript.cs:92-93：开局 is_elect=true、is_speech=true。
 	# Godot 映射：speech_done=true → 演讲按钮一次性锁定（原版 is_speech 永不复位）；
@@ -1117,38 +1116,38 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 	ws.set_flag("speech_done", true)
 	ws.set_flag("manual_election_used", true)
 
-	# 结局/配置区（原版 GameStartScript.cs:874-898 硬编码，data[160-184]）
+	# 结局/配置区（原版 GameStartScript.cs:874-898 硬编码，data.get_data_by_index(160-184)）
 	# 主控 2026-08-14 亲读原版逐值核对；此前 Godot 全未初始化（全 0），已补齐。
-	ws.数值表[160] = 5500   # 苏联资金（原版 :874）
-	ws.数值表[161] = -1500  # 美国资金（:875）
-	ws.数值表[162] = 12     # （:876）
-	ws.数值表[163] = 20     # （:877）
-	ws.数值表[164] = 8      # （:878）
-	ws.数值表[165] = 8      # （:879）
-	ws.数值表[166] = 0      # （:880）
-	ws.数值表[167] = -1     # （:881）
-	ws.数值表[168] = 0      # （:882）
-	ws.数值表[169] = 0      # （:883）
-	ws.数值表[170] = 0      # （:884）
-	ws.数值表[171] = 1      # （:885）
-	ws.数值表[172] = 6      # （:886）
-	ws.数值表[173] = 3      # （:887）
-	ws.数值表[174] = 1      # （:888）
-	ws.数值表[175] = 3      # （:889）
-	ws.数值表[176] = 2      # （:890）
-	ws.数值表[177] = 0      # （:891）
-	ws.数值表[178] = 0      # （:892）
-	ws.数值表[179] = 1      # （:893）
-	ws.数值表[180] = 2      # （:894）
-	ws.数值表[181] = 2      # （:895）
-	ws.数值表[182] = 0      # （:896）
-	ws.数值表[183] = 0      # （:897）
-	ws.数值表[184] = 0      # （:898）
+	ws.soviet_money = 5500   # 苏联资金（原版 :874）
+	ws.usa_money = -1500  # 美国资金（:875）
+	ws.org_strength_1 = 12     # （:876）
+	ws.org_strength_2 = 20     # （:877）
+	ws.org_strength_3 = 8      # （:878）
+	ws.org_strength_4 = 8      # （:879）
+	ws.bico_strength = 0      # （:880）
+	ws.data_167 = -1     # （:881）
+	ws.support_sent_flag = false      # （:882）
+	ws.ireland_unification_route = 0      # （:883）
+	ws.event999_trigger_sentinel = 0      # （:884）
+	ws.vietnam_pro_china_coup_available = 1      # （:885）
+	ws.italy_power_172 = 6      # （:886）
+	ws.italy_power_173 = 3      # （:887）
+	ws.italy_power_174 = 1      # （:888）
+	ws.italy_power_175 = 3      # （:889）
+	ws.italy_power_176 = 2      # （:890）
+	ws.italy_power_177 = 0      # （:891）
+	ws.italy_power_178 = 0      # （:892）
+	ws.italy_power_179 = 1      # （:893）
+	ws.italy_power_180 = 2      # （:894）
+	ws.italy_power_181 = 2      # （:895）
+	ws.short_sword_power = 0      # （:896）
+	ws.italy_event_timer = 0      # （:897）
+	ws.italy_hot_autumn_route = 0      # （:898）
 
 	# 随机外交参数
-	ws.数值表[47] = randi_range(1, 4)
-	ws.数值表[48] = randi_range(1, 4)
-	ws.数值表[49] = randi_range(1, 4)
+	ws.random_diplo_param = randi_range(1, 4)
+	ws.afghan_khalq = randi_range(1, 4)
+	ws.afghan_parcham = randi_range(1, 4)
 
 	# 国家开局硬编码覆盖（GameStartScript.cs:574-814, 1020-1090，数据文件之后的最终开局值）
 	_apply_country_start_overrides(ws)
@@ -1158,25 +1157,25 @@ static func _apply_post_load_overrides(ws: WorldState, difficulty: int) -> void:
 	# 难度调整
 	match difficulty:
 		0:  # 沙盒
-			ws.数值表[WorldState.I_PARTY_SUPPORT] = 1000
-			ws.数值表[WorldState.I_PEOPLE_SUPPORT] = 1000
-			ws.数值表[WorldState.I_THOUGHT_FREEDOM] = 0
-			ws.数值表[WorldState.I_BUDGET] += 500
-			ws.数值表[WorldState.I_SCIENCE] = 700
+			ws.party_support = 1000
+			ws.people_support = 1000
+			ws.thought_freedom = 0
+			ws.budget += 500
+			ws.science = 700
 		1:  # 简单
-			ws.数值表[WorldState.I_BUDGET] += 100
-			ws.数值表[WorldState.I_SCIENCE] = 300
+			ws.budget += 100
+			ws.science = 300
 		2:  # 普通
-			ws.数值表[WorldState.I_SCIENCE] = 0
+			ws.science = 0
 		3:  # 困难
-			ws.数值表[WorldState.I_SCIENCE] = 0
+			ws.science = 0
 
 
 # ============================================================================
 # 国家开局硬编码覆盖 -- GameStartScript.cs:574-814 整段移植
 # ============================================================================
 # 原版流程：先读 Country_data_1.txt / South_data.txt，随后无条件逐国覆盖
-# 政体/子意识形态/标签/傀儡。Godot 此前只搬了数值表 data[160-184]，
+# 政体/子意识形态/标签/傀儡。Godot 此前只搬了数值表 data.get_data_by_index(160-184)，
 # 缺这一段导致马来西亚、大洋洲、非洲、古巴等大量国家开局政体不符。
 # 说明：原版的国名覆盖（如 "扎 伊 尔 共 和 国"）移植说明——Godot 的显示名
 # 走 map_countries 中文名/9000+ 中文回退，已优先于 c.name。
@@ -1395,7 +1394,7 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	for sento_id in [31, 8]:
 		_set_tag(ws, sento_id, "sento", true)
 	_set_puppet(ws, 22, 11)
-	ws.数值表[143] = 12
+	ws.oil_price = 12
 
 	var c92b := _legacy(ws, 92)                   # （:871-872）
 	if c92b != null: c92b.influence_nato = 10

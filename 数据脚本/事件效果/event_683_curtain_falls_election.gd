@@ -1,12 +1,12 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event683.cs：落幕的选举（美国特别大选，六选项）。
-## 触发：ReqEventForDLC02.cs:1254-1256 —— data[21]>=1985 && !c51.nato && !c0.eu
+## 触发：ReqEventForDLC02.cs:1254-1256 —— data.year>=1985 && !c51.nato && !c0.eu
 ##   && (c44 亲中/亲苏) && (c140 亲中/亲苏 || (gov==2 && !亲美)) && (c101 亲中/亲苏) && !c131 亲美
 ##   → trigger_script evaluate。
 ## 差异：OAR→ws.oar；is_gkchp→get_flag("is_gkchp")；traits[0]→ws.leader.trait_personality；
 ##   isRIM→rim、isSocEU→soc_eu、Torg→对华贸易、cw→内战中；now_leader→current_leader。
-## 注意：原版 option4 条件 data[8]+data[8]>=300 是双重预算加法的原作笔误，按字面移植（预算*2>=300）。
+## 注意：原版 option4 条件 data.budget+data.budget>=300 是双重预算加法的原作笔误，按字面移植（预算*2>=300）。
 const TXT_DESC_HEAD := "时代正巨变，即便是曾被视为不可动摇的建制派政治框架也开始动摇。北大西洋联盟与大西洋主义的崩溃只是开端，传统政客的外交失败与其引发的国内动荡已让美国人忍无可忍：这便为美国民粹主义运动崛起提供了空前便利。从洛杉矶骚乱到占领华尔街，乃至南方的暴动等运动层出不穷。各式边缘政治组织也得到了久违的支持——自70年代以来便持续萎靡的美国共产党甚至在短短数日迎来了堪比现存党员数的新成员申请函。也就在大规模群众集会的压力下，该国原总统不得不接受苦涩失败并最终退出政治舞台。美国即将召开特别大选，人们已踌躇满志与物色新任领导人。由于美国政治生态事实上走向碎片化，本次大选必然相当有趣，接下来，让我们瞧瞧候选人有哪些罢：|"
 const TXT_DESC_BUSH := "吸取先前的失败经验，建制派决心将美国老战鹰，前中情局长，罗纳德·里根的代言人乔治·布什推选上台，决心彻底扭转导致美国霸权沦落的怀柔主义，并以军备扩张与新自由主义两手振兴美国战争与对外扩张机器。"
 const TXT_DESC_DUKAKIS := "意识到新保守主义与传统鹰派外交已一败涂地，吸取先前的失败经验，建制派决心转向新政治明星，创造了“马萨诸塞奇迹”的希腊裔美国人迈克尔·杜卡基斯。期望以他的移民身份与治理奇迹重塑美国梦合法性。"
@@ -231,7 +231,7 @@ func execute(context: Dictionary) -> void:
 func evaluate(world: WorldState) -> bool:
 	if world == null or world.date == null:
 		return false
-	if world.数值表.size() > W.I_YEAR and world.数值表[W.I_YEAR] < 1985:
+	if world.size() > W.I_YEAR and world.year < 1985:
 		return false
 	var europe_union := world.get_country_by_legacy_index(0)
 	var us := world.get_country_by_legacy_index(51)

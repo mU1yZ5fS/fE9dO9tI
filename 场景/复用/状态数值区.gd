@@ -127,5 +127,5 @@ func _refresh_tooltips(w: WorldState) -> void:
 		var idx: int = cfg[1]
 		var tip := "%s: %s" % [cfg[0], _delta_str(w.两周变化(idx))]
 		if idx == W.I_DIPLO:
-			tip += _faction_suffix(w.数值表[W.I_DIPLO])
+			tip += _faction_suffix(w.diplomatic_reputation)
 		_set_tip(label_name, tip)

@@ -18,7 +18,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	var c44 := world.get_country_by_legacy_index(44)
-	if d[W.I_POLITICAL_LINE] == 0 and c44 != null and c44.prc_power >= 120 and not ws.modifiers[3].is_active:
+	if d.political_line == 0 and c44 != null and c44.prc_power >= 120 and not ws.modifiers[3].is_active:
 		_enable(opt[0], event_def.options[0].text)
 	elif ws.modifiers[3].is_active:
 		_disable(opt[0], TXT_OPT0_DIS_TROT)

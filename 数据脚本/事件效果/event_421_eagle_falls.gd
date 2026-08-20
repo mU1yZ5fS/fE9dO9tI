@@ -14,7 +14,7 @@ const TXT_IDX_1367 := "冷战结束了吗......？"
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

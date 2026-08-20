@@ -35,7 +35,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if int(world.completed_event_ids.get("event_486", 0)) == 0 \
-			and _mod_active(world, 6) and world.数值表[W.I_IDEOLOGY] < 3:
+			and _mod_active(world, 6) and world.ideology < 3:
 		_enable(opt[0], S_23)
 	else:
 		_disable(opt[0], S_28)
@@ -92,7 +92,7 @@ func execute(context: Dictionary) -> void:
 				if c21 != null and c21.has_tag("fxseu"):
 					text += S_88
 					c17.set_tag("fxseu", true)
-				elif c1 != null and ws.is_authoritarian(c1) and d[W.I_ECON_SYSTEM] >= 13:
+				elif c1 != null and ws.is_authoritarian(c1) and d.econ_system >= 13:
 					c17.set_tag("对华贸易", true)
 					c17.set_tag("亲中", true)
 					_join_our_alliances(c17)

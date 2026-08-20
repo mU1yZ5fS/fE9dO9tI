@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event432.cs：共和派阵营的崩溃？（四选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1419-1421 —— ExprNode 组合。
 ## 差异：Gosstroy→government；SubGosstroy→sub_government；spec→special；prosov→亲苏；
-##  - data[131] raw；resultOfEvents[424] 缺省 0 语义由 .tres 的 ANY(not_done, result==0) 表达。
+##  - data.world_political_balance raw；resultOfEvents[424] 缺省 0 语义由 .tres 的 ANY(not_done, result==0) 表达。
 
 const TXT_OPT0_EN := "支持共产党人（需要10.0百万{0}与25.0点{1}）"
 const TXT_OPT1_EN := "支持社会党人（需要10.0百万{0}与25.0点{1}）"
@@ -33,7 +33,7 @@ const TXT_IDX_594 := "军事实力"
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 
@@ -62,9 +62,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
-	var agents := d[W.I_AGENTS] if d.size() > W.I_AGENTS else 0
+	var d := world
+	var budget_reserve := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
+	var agents := d.agents if d.size() > W.I_AGENTS else 0
 	if budget_reserve >= 100 and agents >= 250:
 		_enable(event_def.options[0], _fmt(TXT_OPT0_EN, [TXT_IDX_592, TXT_IDX_593]))
 		_enable(event_def.options[1], _fmt(TXT_OPT1_EN, [TXT_IDX_592, TXT_IDX_593]))

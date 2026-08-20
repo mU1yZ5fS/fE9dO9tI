@@ -25,13 +25,13 @@ func execute(context: Dictionary) -> void:
 		0:
 			# Event436.cs result 0（联络规模 +5 已改为 .tres 显式 ADD_RESOURCE）
 			if d.size() > W.I_BUDGET:
-				d[W.I_BUDGET] -= 5
+				d.budget -= 5
 			if d.size() > W.I_PEOPLE_SUPPORT:
-				d[W.I_PEOPLE_SUPPORT] += 25
+				d.people_support += 25
 			if d.size() > W.I_THOUGHT_FREEDOM:
-				d[W.I_THOUGHT_FREEDOM] -= 25
+				d.thought_freedom -= 25
 			if d.size() > W.I_LIVING:
-				d[W.I_LIVING] += 25
+				d.living_standard += 25
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
@@ -43,7 +43,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			# Event436.cs result 1（联络规模 -5 已改为 .tres 显式 ADD_RESOURCE）
 			if d.size() > W.I_PARTY_SUPPORT:
-				d[W.I_PARTY_SUPPORT] += 50
+				d.party_support += 50
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
 				ws.empires[EmpireData.USSR].relations = clampi(ws.empires[EmpireData.USSR].relations - 50, 0, 1000)
 			for p in ws.politicians:

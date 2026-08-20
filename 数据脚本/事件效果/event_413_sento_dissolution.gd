@@ -47,10 +47,10 @@ func evaluate(world: WorldState) -> bool:
 	if world.completed_event_ids.has("event_413"):
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= W.I_YEAR:
 		return false
-	if not ((d[W.I_YEAR] >= 1979 and d[W.I_MONTH] >= 4) or d[W.I_YEAR] >= 1980):
+	if not ((d.year >= 1979 and d.month >= 4) or d.year >= 1980):
 		return false
 	var c51 := world.get_country_by_legacy_index(51)
 	var c31 := world.get_country_by_legacy_index(31)

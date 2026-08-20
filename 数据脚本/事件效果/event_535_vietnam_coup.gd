@@ -19,7 +19,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			_add_power(EmpireData.USSR, -30)
 			_add_relation(EmpireData.USSR, -200)
-			_set_data(171, 0)  # 原 data[171]
+			_set_data(171, 0)  # 原 data.vietnam_pro_china_coup_available
 			if c11 != null:
 				_leave_alliances(c11)
 				c11.set_tag("亲中", true)

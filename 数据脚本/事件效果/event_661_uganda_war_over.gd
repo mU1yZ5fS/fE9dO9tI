@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event661.cs：战争结束了（乌干达内战结算，单选项）。
 ## 触发：TimeScript.cs:1900-1910（event_done[659] && !war81.is_going && 乌干达 inflNATO>=1000）
-##   与 TimeScript.cs:7094-7098（WarCheck(81)：war81.is_going && data[82]<0 &&
+##   与 TimeScript.cs:7094-7098（WarCheck(81)：war81.is_going && data.war_resolve<0 &&
 ##   (fortnight_go>=fortnight_max || infl1>=1000 || infl2>=1000)）。
 ##   本项目 war81 未录入 WarCatalog，实际以乌干达 influence_nato 路径为主；
 ##   trigger_script = 本脚本 evaluate()。
@@ -42,11 +42,11 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	var war81 := _get_war(world, 81)
 	var uganda := world.get_country_by_legacy_index(118)
-	# TimeScript.cs:1900-1910：乌干达北约影响>=1000 提前触发（原版同时写 data[82]=81）
+	# TimeScript.cs:1900-1910：乌干达北约影响>=1000 提前触发（原版同时写 data.war_resolve=81）
 	if world.completed_event_ids.has("event_659") and (war81 == null or not war81.is_going) and uganda != null and uganda.influence_nato >= 1000:
 		return true
 	# TimeScript.cs:7094-7098 / GameState.WarCheck(81)
-	if war81 != null and war81.is_going and world.数值表.size() > W.I_WAR_RESOLVE and world.数值表[W.I_WAR_RESOLVE] < 0:
+	if war81 != null and war81.is_going and world.size() > W.I_WAR_RESOLVE and world.war_resolve < 0:
 		if war81.fortnight_elapsed >= war81.fortnight_max or war81.infl1 >= 1000 or war81.infl2 >= 1000:
 			return true
 	return false

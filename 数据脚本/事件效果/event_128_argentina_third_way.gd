@@ -10,7 +10,7 @@ const TXT_R1 := "在我方情报网络的支持下，我们将所有工会、民
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

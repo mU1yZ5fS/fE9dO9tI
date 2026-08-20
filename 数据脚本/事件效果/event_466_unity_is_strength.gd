@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event466.cs：团结就是力量（印度纳萨尔派二选项）。
-## 触发：ReqEventForDLC02.cs:417-419 —— data[32]>=700；fire_only_once 承担 !event_done[466]。
+## 触发：ReqEventForDLC02.cs:417-419 —— data.naxalite_power>=700；fire_only_once 承担 !event_done[466]。
 ## 差异：Awake 的 summa_3_2 计算为派系支持率缓存，事件内未使用，跳过；
 ##   button_text[5]/result_num==5 为死代码，跳过。
 
@@ -30,7 +30,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_relation(empire_index: int, value: int) -> void:

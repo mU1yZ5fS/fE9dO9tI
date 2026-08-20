@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event550.cs：朝花夕拾（民族区域自治改革，4选项）。
-## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:52-54 —— data[18] != 20。
+## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:52-54 —— data.territory_policy != 20。
 ## 差异：描述由 prepare 动态拼领袖姓名。
 
 const TXT_DESC := "同志，您真的下定决心？要扭转我国的现行民族政策与区域自治这一基本政治制度了吗？倘若如此，那么我们便必须妥善解决自建国以来的一系列历史问题——首先便是对联邦内主体与少数民族权力机构的职能规定：众所周知，权力并不会因调整而消失；中国古代便用一系列鲜活案例教育了我们：地方分权常成为次一级行政单位集权与割据的起点。对省一级单位的放松将为试图培育独立王国的野心家和腐败分子提供钻营机会，并更可能形成依托地域的政治派系。在此背景下，尤其得留意觊觎我国西部的分离主义势力，天知道他们会不会利用我们适当分权的局面借机渗透，与那些试图利用分权框架的狂人们勾结。\n其次则是堪比民族识别本身的老大难。众所周知，中国不仅是一个多民族国家。同时还是一个民族间发展极不均衡的国家：即便将汉族排除在外，单独考察少数民族的情况。我们也会发现，除却维、藏、蒙、壮数个规模显著、且已形成固定活动空间、文化体系与社会认同的民族外；我国的绝大多数少数民族甚至无法被认定为是斯大林经典概念中的“民族”——没有党与国家积极奉行保护与扶持少数民族文化发展的政策，为其创制语言、整理历史的工作，他们兴许只能被称为“部落”，迄今仍处于“建设为民族的初级阶段”；其体量也同既存的主要民族间差距悬殊：即便经历了数次民族识别整理，这些民族也还是太过迷你（例如万人不到的云南独龙族、只有一千人的东北鄂伦春族）。他们要么以一省小聚落的形式存在，要么则分散于东部城市中，以外来人口与小社区的形式生活。后者在文化风俗方面更是与汉族毫无差别——也就意味着，若简单照搬“民族自决”原则，按聚居地与民族身份划定疆界治理；我们必然得彻底修改既有行政版图，并引入新的民族政策。当然，公务员可不会高兴。\n国家已对此提出了不同方案，不过结论都大同小异：要么摸着美洲诸国建设印第安人保留地与州政府的模式过河，用强调地方分权的方式暂时统摄民族问题；要么则效法苏联建立起体系化的民族权力机构，向加盟共和国看齐；总之都是用不同的分权方案推翻重来。又或者，我们为什么一定要拘泥于建立联邦或更分权形式中国的幻想，不试着将“联邦”给中国化呢？我们现行的《区域自治法》便是最好的修改蓝本。当然，最省事的方法还是直接否决一切改变，回到50年代既定的好制度上……总之，在这问题上可马虎不得……"
@@ -24,7 +24,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	var line := d[W.I_POLITICAL_LINE]
+	var line := d.political_line
 	if line >= 1:
 		_enable(opt[0], event_def.options[0].text)
 	else:
@@ -33,9 +33,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if line < 4 and d[W.I_TERRITORY] == 21:
+	if line < 4 and d.territory_policy == 21:
 		_enable(opt[2], event_def.options[2].text)
-	elif d[W.I_TERRITORY] != 21:
+	elif d.territory_policy != 21:
 		_disable(opt[2], TXT_OPT2_DIS_FAR)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_LIE)

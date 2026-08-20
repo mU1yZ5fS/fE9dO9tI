@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event401.cs：左翼阵营内的分裂（三选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1211 —— 复杂条件用 evaluate（inflCh 无 ExprNode 字段）。
-## 差异：Gosstroy/SubGosstroy→government/sub_government；data[179..181] raw index。
+## 差异：Gosstroy/SubGosstroy→government/sub_government；data.get_data_by_index(179..181) raw index。
 
 const TXT_TITLE := [
 	"左翼阵营内的分裂",
@@ -52,7 +52,7 @@ func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= W.I_YEAR:
 		return false
 	if world.completed_event_ids.has("event_401"):
@@ -60,7 +60,7 @@ func evaluate(world: WorldState) -> bool:
 	var italy := world.get_country_by_legacy_index(85)
 	if italy == null:
 		return false
-	if not ((d[W.I_YEAR] == 1984 and d[W.I_MONTH] >= 7) or d[W.I_YEAR] >= 1985):
+	if not ((d.year == 1984 and d.month >= 7) or d.year >= 1985):
 		return false
 	if italy.influence_china <= 0:
 		return false
@@ -116,5 +116,5 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0

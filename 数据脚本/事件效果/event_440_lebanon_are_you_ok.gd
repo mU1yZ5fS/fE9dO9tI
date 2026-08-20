@@ -21,20 +21,20 @@ const TXT_R3 := "“你要上黎巴嫩哀号，在巴珊扬声，从亚巴琳哀
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
+	var data := world
 	var syria := world.get_country_by_legacy_index(35)
 	var opt := event_def.options
-	if data[W.I_PALESTINE_STATUS] >= 2 and syria != null and syria.has_tag("亲中"):
+	if data.palestine_status >= 2 and syria != null and syria.has_tag("亲中"):
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if data[W.I_POLITICAL_LINE] >= 1 and data[W.I_POLITICAL_LINE] <= 2:
+	if data.political_line >= 1 and data.political_line <= 2:
 		_enable(opt[1], event_def.options[1].text)
-	elif data[W.I_POLITICAL_LINE] == 0:
+	elif data.political_line == 0:
 		_disable(opt[1], TXT_OPT1_DIS_0)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_ELSE)
-	if data[W.I_POLITICAL_LINE] <= 1:
+	if data.political_line <= 1:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

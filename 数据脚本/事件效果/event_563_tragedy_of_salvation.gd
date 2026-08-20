@@ -17,8 +17,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	var line := d[W.I_POLITICAL_LINE]
-	if line > 0 and d[W.I_RELIGION] == 29 and d[W.I_WAR_SUPPORT] >= 700:
+	var line := d.political_line
+	if line > 0 and d.religion_policy == 29 and d.war_support >= 700:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)

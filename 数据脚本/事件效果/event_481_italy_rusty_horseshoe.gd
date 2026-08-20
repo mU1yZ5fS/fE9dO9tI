@@ -74,8 +74,8 @@ func execute(context: Dictionary) -> void:
 				italy.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				_leave_alliances(italy)
 				italy.name = S_91
-				if d[W.I_IDEOLOGY] > 3 or d[W.I_PARTY_SYSTEM] > 7 or d[W.I_ECON_SYSTEM] > 13 \
-						or d[W.I_RELIGION] > 28 or d[W.I_POLITICAL_DISPLAY] > 40 or d[W.I_ECON_DISPLAY] > 36:
+				if d.ideology > 3 or d.party_system > 7 or d.econ_system > 13 \
+						or d.religion_policy > 28 or d.political_display > 40 or d.econ_display > 36:
 					_leave_alliances(italy)
 				else:
 					_join_our_alliances(italy)
@@ -147,9 +147,9 @@ func execute(context: Dictionary) -> void:
 
 
 func _dval(world: WorldState, idx: int) -> int:
-	if world == null or world.数值表.size() <= idx:
+	if world == null or world.size() <= idx:
 		return 0
-	return world.数值表[idx]
+	return world.get_data_by_index(idx)
 
 
 func _mod_active(world: WorldState, idx: int) -> bool:

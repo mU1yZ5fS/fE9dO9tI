@@ -21,8 +21,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or event_def.options.size() < 4:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var line56 := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
+	var d := world
+	var line56 := d.political_line if d.size() > W.I_POLITICAL_LINE else 0
 	var mali := world.get_country_by_legacy_index(58)
 	var alb := world.get_country_by_legacy_index(20)
 	var mod6 := world.modifiers.size() > 6 and world.modifiers[6] != null and world.modifiers[6].is_active
@@ -94,7 +94,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_relation(empire_index: int, value: int) -> void:

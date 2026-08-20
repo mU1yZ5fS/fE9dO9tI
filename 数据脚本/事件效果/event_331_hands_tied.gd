@@ -29,7 +29,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, 150)
 			_add(W.I_PEOPLE_SUPPORT, -250)
 			_add_relation(0, 50)
-			if d.size() > W.I_ECON_SYSTEM and d[W.I_ECON_SYSTEM] < 15:
+			if d.size() > W.I_ECON_SYSTEM and d.econ_system < 15:
 				_add(W.I_ECON_SYSTEM, 1)
 			context["result_text"] = TXT_R2
 
@@ -39,7 +39,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

@@ -9,7 +9,7 @@
 #   - P 社游戏的 effect 系统
 #
 # 覆盖原版事件中所有操作类型：
-#   - 资源加减：data[X] += value
+#   - 资源加减：data.add_data_by_index(X, value)
 #   - 联盟加入：allcountries[X].isNATO = true
 #   - 国家变量：allcountries[X].numberOfSpecialEnding = value
 #   - 帝国关系：empires[X].relations += value
@@ -28,8 +28,8 @@ extends Resource
 ## 效果类型
 enum Type {
 	# ── 资源操作 ──
-	ADD_RESOURCE,               # key=资源名 value=变化量 → data[key] += value
-	SET_RESOURCE,               # key=资源名 value=目标值 → data[key] = value
+	ADD_RESOURCE,               # key=资源名 value=变化量 → data.add_data_by_index(key, value)
+	SET_RESOURCE,               # key=资源名 value=目标值 → data.set_data_by_index(key, value)
 
 	# ── 联盟操作 ──
 	JOIN_ALLIANCE,              # target=国家标签 key=联盟名 → country.is_{key} = true

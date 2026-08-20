@@ -16,7 +16,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var data := world.数值表
+	var data := world
 	if data.size() <= W.I_RELIGION:
 		return
 	var opt := event_def.options
@@ -26,7 +26,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if data[W.I_WAR_SUPPORT] >= 700 or (data[W.I_IDEOLOGY] <= 0 and data[W.I_RELIGION] > 27 and data[W.I_ECON_SYSTEM] > 11):
+	if data.war_support >= 700 or (data.ideology <= 0 and data.religion_policy > 27 and data.econ_system > 11):
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

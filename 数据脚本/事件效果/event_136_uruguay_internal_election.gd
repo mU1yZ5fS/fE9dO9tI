@@ -22,7 +22,7 @@ const TXT_ENEMY := "新政府不想和我们做朋友。"
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 
@@ -230,6 +230,6 @@ func execute(context: Dictionary) -> void:
 			c.level_of_development -= 5
 			c.government = GameConstants.Government.AUTHORITARIAN
 			c.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
-			# 死代码/建模说明：原版此分支不扣 data[8]/data[9]；proprc 沿用旧值拼红字。
+			# 死代码/建模说明：原版此分支不扣 data.budget/data.agents；proprc 沿用旧值拼红字。
 			context["result_text"] = TXT_R2 + _friend_suffix(c)
 	_set_next_election(c, 1984, 11, 25)

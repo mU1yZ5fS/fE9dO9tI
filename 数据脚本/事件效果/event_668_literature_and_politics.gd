@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event668.cs：文学的敌人是政治（文艺政策论战，四选项）。
-## 触发：TimeScript.cs:10358-10363 —— data[21]>=1979。
+## 触发：TimeScript.cs:10358-10363 —— data.year>=1979。
 ## 差异：
 ##  - 描述与 4 个选项的文案/显隐均按原版 VariantsOfEvents 三段式动态改写
 ##    （prepare 等价 SetActive(false)；原版另有 result5 空文本死分支，跳过）。
@@ -29,9 +29,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null \
 		and world.modifiers[3].is_active
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var gof := data[W.I_GANG_OF_FOUR_PATH] if data.size() > W.I_GANG_OF_FOUR_PATH else 0
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var gof := data.gang_of_four_path if data.size() > W.I_GANG_OF_FOUR_PATH else 0
 	if mod3:
 		event_def.description = TXT_DESC_MOD3
 	elif gof == 3:

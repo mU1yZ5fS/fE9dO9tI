@@ -23,7 +23,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
 	var china := world.get_country_by_legacy_index(1)
 	var relres := world.get_flag("relres")
 	var res65 := int(world.completed_event_ids.get("event_65", 0))
@@ -125,7 +125,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

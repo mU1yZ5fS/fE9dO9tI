@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：event_ending_choice.tres 的 DATE_AFTER 1986.1.1（fire_only_once）。
 ## 左选项 = 继续掌权（原作 Reborn 隐藏面板恢复速度；Godot 返回外交场景自动恢复速度）。
 ## 右选项 = 功成身退：in1992_script.cs:43-137 逐条复刻。
-##   - 63 号战争进行中 → data[82]=63 + 事件18（in1992_script.cs:43-49）
+##   - 63 号战争进行中 → data.war_resolve=63 + 事件18（in1992_script.cs:43-49）
 ##   - resultOfEvents[581]==2 → 结局13（in1992_script.cs:51-57）
-##   - data[3]<300 或 (diff==4 且 <500) → 结局1（:58-64）
-##   - data[1]<300 或 (diff==4 且 <500) → 结局2（:65-71）
-##   - data[15]==9 && data[16]==15 && data[17]==19 && modifies[5] && data[108]>=100 → 结局9（:72-78）
+##   - data.people_support<300 或 (diff==4 且 <500) → 结局1（:58-64）
+##   - data.party_support<300 或 (diff==4 且 <500) → 结局2（:65-71）
+##   - data.party_system==9 && data.econ_system==15 && data.press_policy==19 && modifies[5] && data.oligarch>=100 → 结局9（:72-78）
 ##   - 否则世界收尾更新 → 结局0（GoodEnd 自动判定）（:79-137）
 
 
@@ -28,7 +28,7 @@ func _right_choice(context: Dictionary) -> void:
 	# 63 号战争进行中 → 先结算战争（in1992_script.cs:43-49）
 	if _war_going(63):
 		if d.size() > W.I_WAR_RESOLVE:
-			d[W.I_WAR_RESOLVE] = 63
+			d.war_resolve = 63
 		EventEngine.enqueue_chain(["war_is_over"])
 		return
 	# 事件581 结果2 → 结局13（in1992_script.cs:51-57）
@@ -36,16 +36,16 @@ func _right_choice(context: Dictionary) -> void:
 		GameManager.queue_ending_after_event(13)
 		return
 	# 人民支持不足 → 结局1（in1992_script.cs:58-64）
-	if d[W.I_PEOPLE_SUPPORT] < 300 or (d[W.I_PEOPLE_SUPPORT] < 500 and ws.difficulty == 4):
+	if d.people_support < 300 or (d.people_support < 500 and ws.difficulty == 4):
 		GameManager.queue_ending_after_event(1)
 		return
 	# 党内支持不足 → 结局2（in1992_script.cs:65-71）
-	if d[W.I_PARTY_SUPPORT] < 300 or (d[W.I_PARTY_SUPPORT] < 500 and ws.difficulty == 4):
+	if d.party_support < 300 or (d.party_support < 500 and ws.difficulty == 4):
 		GameManager.queue_ending_after_event(2)
 		return
 	# 特定体制组合 → 结局9（in1992_script.cs:72-78）
-	if d[W.I_PARTY_SYSTEM] == 9 and d[W.I_ECON_SYSTEM] == 15 and d[W.I_PRESS_POLICY] == 19 \
-			and _modifier_active(5) and d[W.I_OLIGARCH] >= 100:
+	if d.party_system == 9 and d.econ_system == 15 and d.press_policy == 19 \
+			and _modifier_active(5) and d.oligarch >= 100:
 		GameManager.queue_ending_after_event(9)
 		return
 	# 兜底：世界收尾更新后进 GoodEnd（in1992_script.cs:79-137）
@@ -74,8 +74,8 @@ func _apply_farewell_updates() -> void:
 		else:
 			ws.set_flag("relres", false)
 	# :98-101
-	if d[W.I_TIBET_POLICY] > 0:
-		d[W.I_ARUNACHAL_STATUS] = 0
+	if d.tibet_policy > 0:
+		d.arunachal_status = 0
 	# :102-106
 	if ws.ind_opp:
 		if ussr != null:
@@ -89,13 +89,13 @@ func _apply_farewell_updates() -> void:
 	elif ussr.current_leader == 5:
 		ussr.power -= 50
 	elif ussr.current_leader == 6:
-		if d[W.I_XINJIANG_POLICY] == 1:
-			d[W.I_XINJIANG_POLICY] = 2
+		if d.xinjiang_policy == 1:
+			d.xinjiang_policy = 2
 	elif ussr.current_leader == 4:
 		# :114-121
 		var relres: bool = ws.get_flag("relres")
 		var c4_prosov: bool = c4 != null and c4.has_tag("亲苏")
-		if (relres and d[W.I_ECON_SYSTEM] == 11) or (c4 != null and c4.government == GameConstants.Government.SOCIALIST and c4_prosov):
+		if (relres and d.econ_system == 11) or (c4 != null and c4.government == GameConstants.Government.SOCIALIST and c4_prosov):
 			ussr.power += 100
 		else:
 			ussr.power += 50

@@ -130,7 +130,7 @@ func _build_entries(w: WorldState) -> Array[Dictionary]:
 		var e := _make_entry(w, -3, "", "", "", 0, 0)
 		if not e.is_empty():
 			entries.append(e)
-	if w.数值表.size() > 37 and w.数值表[37] > 0 and w.数值表[37] < 1000:
+	if w.size() > 37 and w.philippines_maoist_power > 0 and w.philippines_maoist_power < 1000:
 		var e := _make_entry(w, -4, "", "", "", 0, 0)
 		if not e.is_empty():
 			entries.append(e)

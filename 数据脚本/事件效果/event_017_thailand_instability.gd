@@ -40,9 +40,9 @@ func _opt_ignore(context: Dictionary) -> void:
 # 选项1：派遣武装的泰国共产党部队（Event17.cs result 1：启动战争2「泰国内战」）
 func _opt_uprising(context: Dictionary) -> void:
 	if d.size() > W.I_AGENTS:
-		d[W.I_AGENTS] -= 40
+		d.agents -= 40
 	if d.size() > W.I_ARMY:
-		d[W.I_ARMY] -= 30
+		d.army -= 30
 	if ws.empires.size() > 0 and ws.empires[0] != null:
 		ws.empires[0].relations -= 100
 	var war := ws.wars[2] if ws.wars.size() > 2 else null

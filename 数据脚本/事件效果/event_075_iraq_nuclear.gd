@@ -2,10 +2,10 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event75.cs：伊拉克核问题（以色列“歌剧”行动，四选项）。
 ## 触发：TimeScript.cs:10556-10562 ——
-##   (月>=8 且 年>=1981 或 年>=1982) 且 (data[117]!=9 || c8.Vyshi || c8.Gosstroy!=0)
+##   (月>=8 且 年>=1981 或 年>=1982) 且 (data.iraq_development_sentinel!=9 || c8.Vyshi || c8.Gosstroy!=0)
 ##   且 c14.dev==0 && c14.puppetOf<0 && c14.SubGosstroy==10。
 ## 选项显隐（prepare 动态改写，原版 SetActive(false) 等价）：
-##   原版 summa_3_2 = 执政联盟支持率（data[15]>7 才计算），Godot 用 factions 复算。
+##   原版 summa_3_2 = 执政联盟支持率（data.party_system>7 才计算），Godot 用 factions 复算。
 ## 差异：选项0/2/3 的按钮文案与可用条件逐字保留；result2 的 {0}{1} 插领导人姓名。
 
 const TXT_R0 := "空袭结束后，萨达姆·侯赛因在伊拉克部长会议的紧急会议上发表了精彩的讲话，他在会上说：“今天在反应堆受到的打击对我们来说不是突然的。当然，这是痛苦的，因为它是革命的伟大成果之一，我们长期以来在政治上、科学上、经济上都非常关心。这不是因为他们害怕伊拉克的原子弹，正如特拉维夫帮派的领导人所说，但是因为他们害怕科学、社会、经济、政治、平衡和紧凑的发展，而这正是为了建设一个新的伊拉克……我们没有国际性的一面，所以我们会推迟所有的借口，因为打击是针对我们的…你知道为什么会发生战争——不仅仅是为了给伊拉克核反应堆一个打击，而且为了阻止伊拉克的崛起……你也明白为什么战争会继续……”我们全力支持萨达姆，谴责“来自以色列的美国雇佣兵的强盗袭击”，并建议向伊拉克提供经济和军事援助，侯赛因愉快地接受了这一提议。尽管伊拉克继续奉行多向外交政策，但在不减少与苏联和美国的合作的情况下，开始转向我们的方向……美国在中东的盟友非常愤怒，但美国自己却表现得异常平静……"
@@ -21,9 +21,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
 	var coal := _coalition_percent(world)
 	var policy_left := (line < 3 and party < 8) or (coal > 66 and party > 7)
 	var policy_right := (line > 2 and party < 8) or (coal > 66 and party > 7)
@@ -42,8 +42,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	# 选项1：恒定可用
 	_enable(opt[1], "谁在乎？让萨达姆自己给自己擦屁股…")
 	# 选项2
-	var industry: int = data[W.I_INDUSTRY] if data.size() > W.I_INDUSTRY else 0
-	var stage: int = data[W.I_REFORM_STAGE] if data.size() > W.I_REFORM_STAGE else -1
+	var industry: int = data.industry if data.size() > W.I_INDUSTRY else 0
+	var stage: int = data.reform_stage if data.size() > W.I_REFORM_STAGE else -1
 	if industry >= 600 and stage == 0 and done36 and result36 != 3 and policy_left:
 		_enable(opt[2], "我们将帮助伊拉克恢复其核计划。让帝国主义战栗吧！（需要15百万元，10特工）")
 	elif done36 and result36 == 3:
@@ -99,10 +99,10 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R3
 
 
-## 原版 summa_3_2：data[15]>7 时，保守派 + 结盟且启用的小党，占总席位百分比。
+## 原版 summa_3_2：data.party_system>7 时，保守派 + 结盟且启用的小党，占总席位百分比。
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0

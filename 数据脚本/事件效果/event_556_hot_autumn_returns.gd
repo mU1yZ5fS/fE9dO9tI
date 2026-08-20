@@ -18,10 +18,10 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if c85.level_of_development >= 20:
 		return false
-	var dd := world.数值表
+	var dd := world
 	if dd.size() <= 134:
 		return false
-	if dd[134] < 200:
+	if dd.italian_radical_left_power < 200:
 		return false
 	if c85.influence_china > 0:
 		return false
@@ -35,43 +35,43 @@ func execute(context: Dictionary) -> void:
 	var c20 := ws.get_country_by_legacy_index(20)
 	var c85 := ws.get_country_by_legacy_index(85)
 	var c87 := ws.get_country_by_legacy_index(87)
-	if d[W.I_PRESS_POLICY] > 17:
-		d[172] += 1
+	if d.press_policy > 17:
+		d.italy_power_172 += 1
 	if not ws.modifiers[3].is_active:
-		d[172] -= 1
-		d[174] -= 999
-	if d[W.I_MAO_HISTORY_LINE] == 0 and ws.completed_event_ids.has("event_74"):
-		d[174] -= 1
-	elif d[W.I_MAO_HISTORY_LINE] != 0:
-		d[174] -= 999
+		d.italy_power_172 -= 1
+		d.italy_power_174 -= 999
+	if d.mao_history_line == 0 and ws.completed_event_ids.has("event_74"):
+		d.italy_power_174 -= 1
+	elif d.mao_history_line != 0:
+		d.italy_power_174 -= 999
 	if ws.modifiers[28].is_active:
-		d[172] += 1
-		d[174] += 1
+		d.italy_power_172 += 1
+		d.italy_power_174 += 1
 	if c85 != null and c85.usa_influence > 0:
-		d[173] += 2
+		d.italy_power_173 += 2
 	if c87 != null and c87.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
-		d[173] += 1
+		d.italy_power_173 += 1
 	elif c87 != null and c87.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
-		d[172] += 1
+		d.italy_power_172 += 1
 	if ws.modifiers[43].is_active:
-		d[172] += 1
+		d.italy_power_172 += 1
 	if ws.modifiers[44].is_active and ws.get_flag("YugAgree"):
-		d[173] += 1
+		d.italy_power_173 += 1
 	elif ws.modifiers[44].is_active:
-		d[172] -= 2
-		d[173] -= 1
+		d.italy_power_172 -= 2
+		d.italy_power_173 -= 1
 	if ws.modifiers[49].is_active:
-		d[173] += 2
+		d.italy_power_173 += 2
 	if c1 != null and c1.has_tag("rim") and ws.modifiers[3].is_active and ws.modifiers[6].is_active 			and ws.is_socialism(c1, true):
-		d[174] += 2
+		d.italy_power_174 += 2
 	if ws.completed_event_ids.has("event_500"):
-		d[174] += 2
+		d.italy_power_174 += 2
 	if c20 != null and c20.has_tag("亲中"):
-		d[174] += 1
+		d.italy_power_174 += 1
 	if c20 != null and c20.special == 1:
-		d[174] += 1
+		d.italy_power_174 += 1
 	if ws.influence_prc > 800:
-		d[174] += 1
+		d.italy_power_174 += 1
 	var num := 0
 	for idx in [21, 86, 87, 17, 92]:
 		var cc := ws.get_country_by_legacy_index(idx)
@@ -85,24 +85,24 @@ func execute(context: Dictionary) -> void:
 		var cc := ws.get_country_by_legacy_index(idx)
 		if cc != null and ws.is_socialism(cc, true):
 			num -= 50
-	num -= (d[134] - 200) * 5
+	num -= (d.italian_radical_left_power - 200) * 5
 	if c87 != null:
 		c87.special -= 15
 	var ussr_side := -1
 	if c1 == null or not c1.has_tag("sev"):
 		ussr_side = GameConstants.WarSide.SIDE2
-	if d[172] >= d[173] and d[172] >= d[174]:
-		d[184] = 1
+	if d.italy_power_172 >= d.italy_power_173 and d.italy_power_172 >= d.italy_power_174:
+		d.italy_hot_autumn_route = 1
 		_add_power(EmpireData.USA, -10)
 		_start_war23(num, ussr_side)
 		context["result_text"] = TXT_R0_WORKER
-	elif d[173] >= d[172] and d[173] >= d[174]:
-		d[184] = 2
+	elif d.italy_power_173 >= d.italy_power_172 and d.italy_power_173 >= d.italy_power_174:
+		d.italy_hot_autumn_route = 2
 		_add_power(EmpireData.USA, -10)
 		_start_war23(num, ussr_side)
 		context["result_text"] = TXT_R0_ORTHO
 	else:
-		d[184] = 3
+		d.italy_hot_autumn_route = 3
 		_add_power(EmpireData.USA, -10)
 		_start_war23(num, ussr_side)
 		context["result_text"] = TXT_R0_MAO

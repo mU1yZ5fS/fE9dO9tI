@@ -21,7 +21,7 @@ const TXT_R4 := "“加速发展战略”计划在第十二个五年计划期间
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var dd := world.数值表
+	var dd := world
 	if dd.size() <= W.I_DAY:
 		return false
 	if world.empires.size() <= EmpireData.USSR or world.empires[EmpireData.USSR] == null:
@@ -31,9 +31,9 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.get_flag("IndOpp"):
 		return false
-	var y := dd[W.I_YEAR]
-	var mo := dd[W.I_MONTH]
-	var day := dd[W.I_DAY]
+	var y := dd.year
+	var mo := dd.month
+	var day := dd.day
 	if (y >= 1985 and mo >= 4 and day >= 1) or (y >= 1985 and mo >= 5) or y >= 1986:
 		return true
 	return false
@@ -50,7 +50,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c51 := world.get_country_by_legacy_index(51)
 	var ussr := ws.empires[EmpireData.USSR]
 	var cond_base := ussr != null and ws.influence_prc >= ussr.power and ws.influence_prc >= 750
-	if d[W.I_INDUSTRY] >= 1000 and d[W.I_AGRICULTURE] >= 1000 and d[W.I_SERVICES] >= 1000 and cond_base:
+	if d.industry >= 1000 and d.agriculture >= 1000 and d.services >= 1000 and cond_base:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
@@ -58,7 +58,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if c51 != null and c51.has_tag("对华贸易") and c51.development == 1 and d[W.I_POLITICAL_LINE] >= 3:
+	if c51 != null and c51.has_tag("对华贸易") and c51.development == 1 and d.political_line >= 3:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

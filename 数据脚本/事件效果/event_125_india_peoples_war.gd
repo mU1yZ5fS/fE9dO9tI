@@ -26,7 +26,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if world.数值表[W.I_ARMY] >= 250 and (world.数值表[W.I_INFLUENCE] >= 350 or world.influence_prc >= 350) and china != null and china.has_tag("sev"):
+	if world.army >= 250 and (world.global_influence >= 350 or world.influence_prc >= 350) and china != null and china.has_tag("sev"):
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

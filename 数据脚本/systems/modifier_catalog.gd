@@ -169,9 +169,9 @@ static func icon(id: int, is_active: bool = true) -> Texture2D:
 	if id == 28 and is_active and w != null \
 			and _event_done(w, "event_326") and _event_result(w, "event_326", -1) == 0 \
 			and _mod_active(w, 3) and _mod_active(w, 6) \
-			and _raw(w.数值表, WorldState.I_RELIGION) <= 25 \
-			and _raw(w.数值表, WorldState.I_PARTY_SYSTEM) == 6 \
-			and _raw(w.数值表, WorldState.I_ECON_SYSTEM) <= 11:
+			and _raw(w, WorldState.I_RELIGION) <= 25 \
+			and _raw(w, WorldState.I_PARTY_SYSTEM) == 6 \
+			and _raw(w, WorldState.I_ECON_SYSTEM) <= 11:
 		return _load_icon_named("28_special")
 	var def := get_def(id)
 	if is_active:
@@ -208,10 +208,10 @@ static func count_loaded() -> int:
 # 动态效果（ModifyButtonScript.cs 的格式参数计算）
 # ============================================================================
 
-static func _raw(d: Array[int], idx: int) -> int:
+static func _raw(d: WorldState, idx: int) -> int:
 	if d == null or idx < 0 or idx >= d.size():
 		return 0
-	return d[idx]
+	return d.get_data_by_index(idx)
 
 
 static func _country(w: WorldState, legacy_idx: int) -> CountryData:
@@ -270,7 +270,7 @@ static func _leader_support(w: WorldState, empire_idx: int, leader_idx: int) -> 
 ## 原版 {N} 格式参数表（ModifyButtonScript.cs:585-628）。
 ## 只计算 modifiers 面板实际用到的下标，避免无意义复制。
 static func _fmt_context(w: WorldState) -> Dictionary:
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var ussr: EmpireData = w.empires[1] if (w != null and w.empires.size() > 1) else null
 	var okb := _tag_count(w, "okb")
 	var ctx := {}
@@ -335,7 +335,7 @@ static func _fmt_context(w: WorldState) -> Dictionary:
 
 
 static func _iraq_palestine_status(w: WorldState) -> String:
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var iraq := _country(w, 14)
 	if iraq != null and iraq.parts.size() > 8 and iraq.parts[8]:
 		return "大伊拉克的一部分"
@@ -348,7 +348,7 @@ static func _iraq_palestine_status(w: WorldState) -> String:
 
 
 static func _effect_13(w: WorldState) -> String:
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var living := _raw(d, WorldState.I_LIVING)
 	var econ := _raw(d, WorldState.I_ECON_SYSTEM)
 	var denom := 500
@@ -377,7 +377,7 @@ static func _effect_integration(w: WorldState, agents: bool) -> String:
 
 static func _effect_oil(w: WorldState) -> String:
 	var oil := _oil_numbers(w)
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var world_price := _raw(d, 143)
 	return ("每桶油的价格为：%d$（中国境内油价为：%s$)\n" % [world_price, _num(oil.domestic_price)]) \
 		+ ("国内石油产量：%s\n" % _num(oil.prod)) \
@@ -391,8 +391,8 @@ static func _effect_oil(w: WorldState) -> String:
 
 static func _effect_subsidy(w: WorldState) -> String:
 	var target := _subsidy_target_name(w)
-	var d: Array[int] = w.数值表 if w != null else []
-	# 原版 ModifyButtonScript 参数 {9} = data[146]/10（外援强度），
+	var d: WorldState = w
+	# 原版 ModifyButtonScript 参数 {9} = data.foreign_aid/10（外援强度），
 	# 不是“贸易同盟国家数 × 0.1”；两者在部分决策下会不同，按原文修正。
 	var cost := float(_raw(d, WorldState.I_FOREIGN_AID)) / 10.0
 	return ("月度变化：\n<color=lime>%s的影响力-1.0|中国影响力+0.5.</color>\n" % target) \
@@ -430,7 +430,7 @@ static func _effect_uk_labour(w: WorldState) -> String:
 	var uk := _uk_scores(w)
 	if not _event_done(w, "event_404"):
 		return "工党左派：%d\n工党右派：%d" % [uk.left, uk.right]
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var brit_lost := w.get_flag("BritLost") if w != null else false
 	var hk := _raw(d, WorldState.I_HK_MACAU_STATUS)
 	var uk_country := _country(w, 92)
@@ -448,7 +448,7 @@ static func _effect_uk_labour(w: WorldState) -> String:
 
 static func _effect_pipeline(w: WorldState) -> String:
 	var oil := _oil_numbers(w)
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var status := "工程仍在进行" if _raw(d, 153) <= 0 else "项目大功告成"
 	return ("只有在与苏联关系高于50.0.的情况下，工程才会进行\n" \
 		+ "<color=#DC143C>预算-0.5</color>\n" \
@@ -457,7 +457,7 @@ static func _effect_pipeline(w: WorldState) -> String:
 
 
 static func _effect_anthem(w: WorldState) -> String:
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var anthem := _raw(d, 185)
 	var s := "<color=red>国歌：</color>"
 	match anthem:
@@ -485,8 +485,8 @@ static func _effect_anthem(w: WorldState) -> String:
 
 
 static func _effect_italy(w: WorldState) -> String:
-	var d: Array[int] = w.数值表 if w != null else []
-	# 意大利事件链已移植（event_399 等直接写 data[172..182]）；
+	var d: WorldState = w
+	# 意大利事件链已移植（event_399 等直接写 data.get_data_by_index(172..182)）；
 	# 结算分与当前分都读这些槽的当前值（world_factory 已初始化）。
 	var dc := _raw(d, 175)
 	var pci := _raw(d, 176)
@@ -554,9 +554,9 @@ static func _leader_public_image(asset: int) -> String:
 static func _leader_social_prestige(w: WorldState) -> String:
 	if w.money_level > 14:
 		return " <color=red>“老大哥”</color>"
-	if _raw(w.数值表, W.I_PEOPLE_SUPPORT) < 400:
+	if _raw(w, W.I_PEOPLE_SUPPORT) < 400:
 		return " <color=orange>臭名昭著</color>"
-	if _raw(w.数值表, W.I_PEOPLE_SUPPORT) < 700:
+	if _raw(w, W.I_PEOPLE_SUPPORT) < 700:
 		return " <color=yellow>毁誉参半</color>"
 	return " <color=lime>好评如潮</color>"
 
@@ -598,7 +598,7 @@ static func _is_proletarian_constitution(w: WorldState) -> bool:
 	# TimeScript.cs:566-575：事件326选项0 + 修正3/6 激活 + 宗教<=25 + 一党制6 + 计划体制<=11。
 	if w == null:
 		return false
-	var d := w.数值表
+	var d := w
 	return _event_done(w, "event_326") and _event_result(w, "event_326") == 0 \
 		and _mod_active(w, 3) and _mod_active(w, 6) \
 		and _raw(d, WorldState.I_RELIGION) <= 25 \
@@ -786,7 +786,7 @@ static func _effect_military(w: WorldState) -> String:
 static func _effect_services(w: WorldState) -> String:
 	if w == null:
 		return MT.EFFECT_ZH[2].replace("|", "\n")
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var parts: Array[String] = ["根据服务业的发展情况获得效果"]
 	var oligarch := _raw(d, WorldState.I_OLIGARCH)
 	if oligarch < 54:
@@ -823,7 +823,7 @@ static func _effect_services(w: WorldState) -> String:
 		parts.append("<color=red>|精进的合作医疗：</color>预算-0.2，工业+0.3，农业+0.4，人民支持度+0.2，服务业+0.3")
 	elif res646 == 1:
 		parts.append("<color=red>|市场化改革医疗：</color>预算+0.2，生活水平+0.1，寡头力量+0.1，服务业+0.1")
-	# 原版 ModifiesInfuence.cs:1086-1093：data[16]==15 时票证制度自动废止。
+	# 原版 ModifiesInfuence.cs:1086-1093：data.econ_system==15 时票证制度自动废止。
 	var phase_out := w.has_coupon_system_phase_out or _raw(d, WorldState.I_ECON_SYSTEM) == 15
 	if not phase_out:
 		parts.append("<color=red>|票证制度：</color>农业+0.1，党内支持度+0.2，不同经济模式下随着发展程度的不同有额外加成|<color=lime>当前额外加成：</color>" + _services_coupon_text(w, _raw(d, WorldState.I_ECON_SYSTEM), _raw(d, WorldState.I_INDUSTRY) + _raw(d, WorldState.I_AGRICULTURE)))
@@ -1005,7 +1005,7 @@ static func _us_party_scores(w: WorldState) -> Dictionary:
 static func _american_score(w: WorldState) -> int:
 	if w == null:
 		return 0
-	var d: Array[int] = w.数值表
+	var d: WorldState = w
 	var usa: EmpireData = w.empires[0] if w.empires.size() > 0 else null
 	var ussr: EmpireData = w.empires[1] if w.empires.size() > 1 else null
 	var s := 0
@@ -1042,7 +1042,7 @@ static func _american_score(w: WorldState) -> int:
 static func _france_scores(w: WorldState) -> Dictionary:
 	if w == null:
 		return {"giscard": 0, "mitterrand": 0, "marchais": 0, "chirac": 0}
-	var d: Array[int] = w.数值表
+	var d: WorldState = w
 	var usa: EmpireData = w.empires[0] if w.empires.size() > 0 else null
 	var ussr: EmpireData = w.empires[1] if w.empires.size() > 1 else null
 	var player := w.get_player_country()
@@ -1245,7 +1245,7 @@ static func _uk_scores(w: WorldState) -> Dictionary:
 
 
 static func _oil_numbers(w: WorldState) -> Dictionary:
-	var d: Array[int] = w.数值表 if w != null else []
+	var d: WorldState = w
 	var price := float(_raw(d, 143))
 	if price <= 0.0:
 		price = 12.0
@@ -1258,7 +1258,7 @@ static func _oil_numbers(w: WorldState) -> Dictionary:
 			domestic -= 1.0
 	domestic = maxf(domestic, 10.0)
 	# OilEat（权威值 w.oil_eat 由 _apply_modifier51_oil 按 ModifiesInfuence.cs:2362-2420 每双周更新；
-	# 旧档/未结算时按 GameStartScript.cs:824-828 基础公式兜底，注意原版乘的是 data[5] 生活水平，不是人口）。
+	# 旧档/未结算时按 GameStartScript.cs:824-828 基础公式兜底，注意原版乘的是 data.living_standard 生活水平，不是人口）。
 	var industry := float(_raw(d, WorldState.I_INDUSTRY))
 	var agriculture := float(_raw(d, WorldState.I_AGRICULTURE))
 	var services := float(_raw(d, WorldState.I_SERVICES))

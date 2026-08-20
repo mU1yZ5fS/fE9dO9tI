@@ -80,7 +80,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var opt := event_def.options
 	var num := _okb_count()
 	var num2 := 30
@@ -94,7 +94,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		num2 = 70
 		num3 = 300
-	var br := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
+	var br := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
 	if br >= num:
 		_enable(opt[0], _fmt(TXT_IDX_1215, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214, str(num), str(num * 15 / 10.0)]))
 	else:
@@ -170,7 +170,7 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0
 
 func _okb_count() -> int:

@@ -47,8 +47,8 @@ func evaluate(world: WorldState) -> bool:
 	if ireland == null or not world.is_socialism(ireland, false):
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	if d.size() > 167 and d[167] == 0:
+	var d := world
+	if d.size() > 167 and d.data_167 == 0:
 		return true
 	return world.date != null and world.date.to_int() >= 19850601
 

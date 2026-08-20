@@ -1,7 +1,7 @@
 ## 原作 Event299.cs：“总崩溃”（意大利第二共和国大选，三选项）。
 ## 触发：由 Event298 结果链手动触发（原版 load_scene_after_click + number_event=299），无自动条件。
 ## 差异：Gosstroy/SubGosstroy→government/sub_government；spec→special；inflCh/inflNATO→influence_china/influence_nato；
-##  IsSocialism/IsAuthoritarianism 用 ws.is_socialism/ws.is_authoritarian；d[134]/d[176]/d[177] 用 raw index。
+##  IsSocialism/IsAuthoritarianism 用 ws.is_socialism/ws.is_authoritarian；d.italian_radical_left_power/d.italy_power_176/d.italy_power_177 用 raw index。
 extends "res://数据脚本/event_script_base.gd"
 
 const TXT_OPT0_DIS := "一头羊领导的狮群，远不如一头狮率领的羊群"
@@ -19,11 +19,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
-	var d176 := world.数值表[176] if world.数值表.size() > 176 else 0
-	var d177 := world.数值表[177] if world.数值表.size() > 177 else 0
-	var diplo := world.数值表[W.I_DIPLO] if world.数值表.size() > W.I_DIPLO else 0
-	var war := world.数值表[W.I_WAR_SUPPORT] if world.数值表.size() > W.I_WAR_SUPPORT else 0
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
+	var d176 := world.italy_power_176 if world.size() > 176 else 0
+	var d177 := world.italy_power_177 if world.size() > 177 else 0
+	var diplo := world.diplomatic_reputation if world.size() > W.I_DIPLO else 0
+	var war := world.war_support if world.size() > W.I_WAR_SUPPORT else 0
 	var opt := event_def.options
 	if line >= 2 and line <= 3 and d176 > 0:
 		_enable(opt[0], event_def.options[0].text)
@@ -84,26 +84,26 @@ func execute(context: Dictionary) -> void:
 	var italy := ws.get_country_by_legacy_index(85)
 	if italy != null and italy.level_of_development <= 60 and italy.level_of_development >= 20:
 		_add(176, 2)
-	var d134 := d[134] if d.size() > 134 else 0
+	var d134 := d.italian_radical_left_power if d.size() > 134 else 0
 	if d134 < 60 and d134 >= 20:
 		_add(176, 1)
 	elif d134 < 100 and d134 >= 60:
 		_add(176, -3)
 	elif d134 >= 100:
 		_add(176, -999)
-	if d.size() > 177 and d[177] > 1:
+	if d.size() > 177 and d.italy_power_177 > 1:
 		_add(176, -1)
 	if opt == 0:
 		_add(176, 3)
 		_add(181, 2)
 	elif opt == 1:
 		_add(177, 2)
-	if d.size() > 177 and d.size() > 176 and d[177] < 0 and d[176] < 0:
+	if d.size() > 177 and d.size() > 176 and d.italy_power_177 < 0 and d.italy_power_176 < 0:
 		if italy != null:
 			italy.government = GameConstants.Government.LIBERAL
 			italy.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		context["result_text"] = TXT_R_COLLAPSE
-	elif d.size() > 177 and d.size() > 176 and d[177] < d[176]:
+	elif d.size() > 177 and d.size() > 176 and d.italy_power_177 < d.italy_power_176:
 		if italy != null:
 			italy.government = GameConstants.Government.REFORMIST
 			italy.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
@@ -119,7 +119,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

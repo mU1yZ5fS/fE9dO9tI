@@ -442,8 +442,8 @@ static func _build_v2() -> void:
 
 static func _year() -> int:
 	var ws := DecisionAtoms._ws()
-	if ws != null and ws.数值表.size() > WorldState.I_YEAR:
-		return ws.数值表[WorldState.I_YEAR]
+	if ws != null and ws.size() > WorldState.I_YEAR:
+		return ws.year
 	return 1976
 
 
@@ -628,11 +628,11 @@ static func _build_v3() -> void:
 	]
 	_defs.append(d31)
 
-	# idx 32 发展石油生产（new_texts[672]/[673]）—— IsIndustry 阈值运行时取 data[152]
+	# idx 32 发展石油生产（new_texts[672]/[673]）—— IsIndustry 阈值运行时取 data.industry_base
 	var d32 := _new(32, _s("发 展 石 油 生 产"), _s("在 自 产 石 油 方 面 站 稳 了 脚 跟 子 ， 我 们 的 经 济 才 能 立 起 腰 杆 子 ， 在 洋 油 的 糖 衣 炮 弹 面 前 也 就 有 了 底 子 。"), 3)
 	d32.condition = func() -> bool:
 		var ws := A._ws()
-		var how := ws.数值表[WorldState.I_INDUSTRY_BASE] if ws != null and ws.数值表.size() > WorldState.I_INDUSTRY_BASE else 0
+		var how := ws.industry_base if ws != null and ws.size() > WorldState.I_INDUSTRY_BASE else 0
 		return A.has_money(50) and A.oncein(32, true) and A.is_science_done(10, true) \
 			and A.has_oil(true) and A.is_industry(how, true)
 	d32.effects = [
@@ -720,9 +720,9 @@ static func _build_v3() -> void:
 	d39.effects = [func(): A.start_event(61)]
 	_defs.append(d39)
 
-	# idx 40 废除票证制度（三元 data[16]<14）
+	# idx 40 废除票证制度（三元 data.econ_system<14）
 	var d40 := _new(40, _s("废 除 票 证 制 度"), _s("随 着 我 国 经 济 水 平 的 上 升 与 经 济 形 势 的 进 一 步 变 化 ， 有 必 要 渐 进 废 除 票 证 制 度 ， 以 满 足 人 民 群 众 的 日 常 生 活 和 消 费 需 求 ， 为 我 国 经 济 的 后 续 变 革 打 下 基 础 。"), 3)
-	var d40_party := -100 if A._d().size() > WorldState.I_ECON_SYSTEM and A._d()[WorldState.I_ECON_SYSTEM] < 14 else 200
+	var d40_party := -100 if A._d().size() > WorldState.I_ECON_SYSTEM and A._d().get_data_by_index(WorldState.I_ECON_SYSTEM) < 14 else 200
 	d40.condition = func() -> bool:
 		return A.can_coupon_system_phase_out(true) and A.has_money(50) and A.has_reserve(150)
 	d40.effects = [

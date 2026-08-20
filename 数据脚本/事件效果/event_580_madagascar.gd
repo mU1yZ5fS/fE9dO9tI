@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:809-812 —— (月>=5 且 年>=1979) || 年>=1980 → DATE_AFTER 1979.5.1。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写；isSEV → sev 标签；Torg → 对华贸易；
-##  - data[6] → W.I_DIPLO；proprc/prosov → 亲中/亲苏；puppetOf → puppet_of。
+##  - data.diplomatic_reputation → W.I_DIPLO；proprc/prosov → 亲中/亲苏；puppetOf → puppet_of。
 
 
 
@@ -22,8 +22,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var china := world.get_country_by_legacy_index(1)
 	var c21 := world.get_country_by_legacy_index(21)
 	var ussr_rel := world.empires[EmpireData.USSR].relations if world.empires.size() > EmpireData.USSR \
@@ -38,7 +38,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if data.size() > W.I_DIPLO and data[W.I_DIPLO] <= 800 and c21 != null and c21.has_tag("对华贸易"):
+	if data.size() > W.I_DIPLO and data.diplomatic_reputation <= 800 and c21 != null and c21.has_tag("对华贸易"):
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

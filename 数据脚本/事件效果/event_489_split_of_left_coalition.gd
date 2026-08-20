@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   c84.cw && c84.Gosstroy==2 && 日期>=1984.1.1（原版第三子句 年>=1984 已蕴含）。
 ## 差异：
 ##  - Gosstroy/SubGosstroy → government/sub_government；
-##  - prosov/proprc/Torg/isSocEU → set_tag；data[131] 原版无常量，raw index + 注释；
+##  - prosov/proprc/Torg/isSocEU → set_tag；data.world_political_balance 原版无常量，raw index + 注释；
 ##  - LeaveAlliances() → _leave_alliances；JoinAllOurAlliances(true) → _join_alliances。
 
 
@@ -59,12 +59,12 @@ func execute(context: Dictionary) -> void:
 		num2 += 1
 	elif spain != null and spain.government == GameConstants.Government.LIBERAL:
 		num += 2
-	# data[131]：原版无常量（世界局势变量），raw index + 注释。
+	# data.world_political_balance：原版无常量（世界局势变量），raw index + 注释。
 	if d.size() > 131:
-		if d[131] == 2:
+		if d.world_political_balance == 2:
 			num3 += 1
 			num2 += 1
-		elif d[131] == 1:
+		elif d.world_political_balance == 1:
 			num2 += 1
 		else:
 			num += 2

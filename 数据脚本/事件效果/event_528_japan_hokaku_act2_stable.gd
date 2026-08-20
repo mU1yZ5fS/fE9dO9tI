@@ -73,53 +73,53 @@ func _chinese_sub_government() -> int:
 			result = 22
 		elif ws.completed_event_ids.has("event_912") and _event_result("event_912") == 0:
 			result = 19
-		elif data[W.I_PARTY_SYSTEM] == 8:
+		elif data.party_system == 8:
 			result = 20
 		elif ws.completed_event_ids.has("event_503") and _event_result("event_503") == 0:
 			result = 10
-		elif data[W.I_IDEOLOGY] <= 2 and data[W.I_ECON_SYSTEM] < 13 				and data[W.I_DIPLO] >= 700 and data[W.I_PARTY_SYSTEM] < 8 				and _mod_active(6) and _mod_active(3):
+		elif data.ideology <= 2 and data.econ_system < 13 				and data.diplomatic_reputation >= 700 and data.party_system < 8 				and _mod_active(6) and _mod_active(3):
 			result = 0
-		elif (data[W.I_ECON_SYSTEM] >= 13 and data[W.I_WAR_SUPPORT] >= 700 and not _mod_active(6)) 				or _mod_active(38):
+		elif (data.econ_system >= 13 and data.war_support >= 700 and not _mod_active(6)) 				or _mod_active(38):
 			result = 9
-		elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_WAR_SUPPORT] >= 700 				and data[W.I_DIPLO] >= 700 and (_mod_active(6) or _mod_active(3)):
+		elif data.econ_system <= 13 and data.war_support >= 700 				and data.diplomatic_reputation >= 700 and (_mod_active(6) or _mod_active(3)):
 			result = 10
-		elif data[W.I_ECON_SYSTEM] >= 13 and not _mod_active(6):
+		elif data.econ_system >= 13 and not _mod_active(6):
 			result = 7
 		else:
 			result = 13
 	elif china.government == GameConstants.Government.SOCIALIST:
 		if _mod_active(49):
 			result = 18
-		elif _mod_active(6) and _mod_active(3) and data[W.I_PARTY_SYSTEM] <= 7 				and data[W.I_ECON_SYSTEM] <= 12 and data[W.I_RELIGION] <= 25:
+		elif _mod_active(6) and _mod_active(3) and data.party_system <= 7 				and data.econ_system <= 12 and data.religion_policy <= 25:
 			result = 17
-		elif data[W.I_IDEOLOGY] == 1 and not _mod_active(6) and data[W.I_RELIGION] <= 26:
+		elif data.ideology == 1 and not _mod_active(6) and data.religion_policy <= 26:
 			result = 16
-		elif data[W.I_ECON_SYSTEM] < 13 and data[W.I_PRESS_POLICY] >= 17 				and data[W.I_IDEOLOGY] == 1 and data[W.I_RELIGION] <= 26:
+		elif data.econ_system < 13 and data.press_policy >= 17 				and data.ideology == 1 and data.religion_policy <= 26:
 			result = 2
 		else:
 			result = 1
 	elif china.government == GameConstants.Government.REFORMIST:
 		if _mod_active(40):
 			result = 8
-		elif data[W.I_IDEOLOGY] >= 2 and data[W.I_ECON_SYSTEM] >= 13 				and data[W.I_DIPLO] <= 700 and data[W.I_PARTY_SYSTEM] >= 8 				and data[W.I_PRESS_POLICY] >= 18 and not china.has_tag("ovd"):
+		elif data.ideology >= 2 and data.econ_system >= 13 				and data.diplomatic_reputation <= 700 and data.party_system >= 8 				and data.press_policy >= 18 and not china.has_tag("ovd"):
 			result = 14
-		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] >= 12 				and data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 300 				and data[W.I_TERRITORY] > 21 and data[W.I_WAR_SUPPORT] >= 700:
+		elif data.ideology <= 3 and data.econ_system >= 12 				and data.econ_system <= 13 and data.diplomatic_reputation >= 300 				and data.territory_policy > 21 and data.war_support >= 700:
 			result = 11
-		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] <= 14 				and data[W.I_DIPLO] >= 500 and data[W.I_ECON_SYSTEM] > 11 				and data[W.I_WAR_SUPPORT] >= 400:
+		elif data.ideology <= 3 and data.econ_system <= 14 				and data.diplomatic_reputation >= 500 and data.econ_system > 11 				and data.war_support >= 400:
 			result = 8
-		elif data[W.I_IDEOLOGY] <= 3 and data[W.I_ECON_SYSTEM] <= 13 				and data[W.I_PRESS_POLICY] > 17:
+		elif data.ideology <= 3 and data.econ_system <= 13 				and data.press_policy > 17:
 			result = 3
-		elif data[W.I_PARTY_SYSTEM] <= 8 				and (data[W.I_ECON_SYSTEM] == 13 or data[W.I_ECON_SYSTEM] == 12) 				and data[W.I_WAR_SUPPORT] < 700 and not _mod_active(3) 				and data[W.I_PRESS_POLICY] >= 17:
+		elif data.party_system <= 8 				and (data.econ_system == 13 or data.econ_system == 12) 				and data.war_support < 700 and not _mod_active(3) 				and data.press_policy >= 17:
 			result = 21
 		else:
 			result = 15
 	elif china.government != GameConstants.Government.LIBERAL:
 		result = 13
-	elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 500:
+	elif data.econ_system <= 13 and data.diplomatic_reputation >= 500:
 		result = 4
-	elif (data[W.I_PARTY_SYSTEM] <= 8 and data[W.I_PRESS_POLICY] <= 18) 			or data[W.I_WAR_SUPPORT] >= 700:
+	elif (data.party_system <= 8 and data.press_policy <= 18) 			or data.war_support >= 700:
 		result = 12
-	elif data[W.I_ECON_SYSTEM] > 13 and data[W.I_DIPLO] < 700:
+	elif data.econ_system > 13 and data.diplomatic_reputation < 700:
 		result = 6
 	else:
 		result = 5

@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event90.cs：香港再见，澳门再见？（三合会方案，四选项）。
 ## 触发：TimeScript.cs:10745-10751 ——
-##   (月>=12 且 年>=1980 或 年>=1981) && data[65]==1（hk_macau_status）。
+##   (月>=12 且 年>=1980 或 年>=1981) && data.hk_macau_status==1（hk_macau_status）。
 ## 差异：选项显隐 prepare 动态改写；result2 文本插领导人姓名。
 
 const TXT_R0 := "在特勤部队、国有企业和亲中游说组织的帮助下，我们与三合会的三个主要财团建立了联系，分别是“十四K”、“新义安”和“和胜和”。他们得到了我们对其成员和资产不受侵犯的保证，并提出了一项建议，即以极其优惠的条件将其资本投资于该地区经济（特别是生产麻黄）三合会的领导人已经准备在美国重新设置他们的中心，同意我们的建议。他们开始在我国南方省份进行大量投资，并利用他们的影响力压制反对中国统一的人的行动（特别是批评材料从媒体上消失，所有抗议活动在腐败警察的默许下迅速被三合会成员驱散，还有一些香港和澳门商人移居国外）。因此，我们现在得到了辛迪加的支持，但同时也受到了犯罪世界和腐败日益增长的影响。"
@@ -22,12 +22,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
-	var econ := data[W.I_ECON_SYSTEM] if data.size() > W.I_ECON_SYSTEM else 0
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var econ := data.econ_system if data.size() > W.I_ECON_SYSTEM else 0
 	var coal := _coalition_percent(world)
-	var agents := data[W.I_AGENTS] if data.size() > W.I_AGENTS else 0
+	var agents := data.agents if data.size() > W.I_AGENTS else 0
 	var left_party := party < 8
 	var opt := event_def.options
 	if agents >= 40 and ((line > 1 and left_party) or (coal > 66 and party > 7)):
@@ -58,7 +58,7 @@ func execute(context: Dictionary) -> void:
 			_set_modifier(5, true)
 			context["result_text"] = TXT_R0
 		1:
-			if d.size() > W.I_DIPLO and d.size() > W.I_IDEOLOGY and d[W.I_DIPLO] > 300 and d[W.I_IDEOLOGY] < 3:
+			if d.size() > W.I_DIPLO and d.size() > W.I_IDEOLOGY and d.diplomatic_reputation > 300 and d.ideology < 3:
 				_add(W.I_AGENTS, -20)
 				_add(W.I_PEOPLE_SUPPORT, -50)
 				_add(W.I_DIPLO, 20)
@@ -91,8 +91,8 @@ func execute(context: Dictionary) -> void:
 
 
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0
@@ -115,7 +115,7 @@ func _coalition_percent(world: WorldState) -> int:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_modifier(index: int, active: bool) -> void:

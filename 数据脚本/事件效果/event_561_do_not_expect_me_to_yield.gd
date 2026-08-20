@@ -21,7 +21,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c40 := world.get_country_by_legacy_index(40)
 	var c21 := world.get_country_by_legacy_index(21)
 	var c55 := world.get_country_by_legacy_index(55)
-	var line := d[W.I_POLITICAL_LINE]
+	var line := d.political_line
 	if line < 2 and c40 != null and c40.sub_government != GameConstants.SubGovernment.MODERATE and not c40.has_tag("亲美"):
 		_enable(opt[0], event_def.options[0].text)
 	else:

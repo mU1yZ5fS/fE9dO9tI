@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##   → DATE_AFTER 1983.10.24。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写；resultOfEvents[352]/[361]/[500] 缺省按原版 int 默认 0；
-##  - names1+names2 → _leader_name()（同 Event650 约定）；data[12] → W.I_INDUSTRY；
+##  - names1+names2 → _leader_name()（同 Event650 约定）；data.industry → W.I_INDUSTRY；
 ##  - JoinECON → 仅 econ 标签 + social_stability=1000；name → chinese_name；
-##  - load_scene_after_click + data[35]=13 → GameManager.queue_ending_after_event(13)。
+##  - load_scene_after_click + data.ending_route=13 → GameManager.queue_ending_after_event(13)。
 
 
 
@@ -31,8 +31,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var c131 := world.get_country_by_legacy_index(131)
 	var r352 := int(world.completed_event_ids.get("event_352", 0))
 	var r361 := int(world.completed_event_ids.get("event_361", 0))
@@ -45,7 +45,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if data.size() > W.I_INDUSTRY and data[W.I_INDUSTRY] >= 1200 and r352 == 2 and r361 >= 0 and r361 <= 1:
+	if data.size() > W.I_INDUSTRY and data.industry >= 1200 and r352 == 2 and r361 >= 0 and r361 <= 1:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

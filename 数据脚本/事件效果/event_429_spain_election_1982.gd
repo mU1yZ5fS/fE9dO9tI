@@ -14,7 +14,7 @@ const TXT_IDX_1437 := "由费利佩·冈萨雷斯领导的工人社会党成为�
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

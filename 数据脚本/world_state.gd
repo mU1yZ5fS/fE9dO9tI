@@ -1,5 +1,5 @@
 ## 顶层游戏状态 — 存档的根对象。
-## 数值表[200] 是唯一权威数据源，EconomyData 只是它的显示视图。
+## data_200 是唯一权威数据源，EconomyData 只是它的显示视图。
 class_name WorldState
 extends Resource
 
@@ -10,7 +10,7 @@ signal value_changed(index: int, old_value: int, new_value: int)
 # 数值表索引常量 — 取代魔术数字
 # ============================================================================
 
-const I_MIL_INTERVENTION := 0   ## 军事介入点（原 data[0]）
+const I_MIL_INTERVENTION := 0   ## 军事介入点（原 data.mil_intervention）
 const I_PARTY_SUPPORT := 1       ## 党内支持
 const I_SOVIET_INFLUENCE := 2    ## 苏联影响力
 const I_USA_INFLUENCE := 10      ## 美国影响力（empires[0].power 的种子源）
@@ -29,53 +29,53 @@ const I_PARTY_SYSTEM := 15      ## 政党制度
 const I_ECON_SYSTEM := 16       ## 经济体制
 const I_PRESS_POLICY := 17      ## 舆论政策
 const I_TERRITORY := 18         ## 领土制度
-const I_DAY := 19               ## 当前日（原 data[19]）
-const I_MONTH := 20             ## 当前月（原 data[20]）
-const I_YEAR := 21              ## 当前年（原 data[21]）
+const I_DAY := 19               ## 当前日（原 data.day）
+const I_MONTH := 20             ## 当前月（原 data.month）
+const I_YEAR := 21              ## 当前年（原 data.year）
 const I_ARMY := 22              ## 军力
 const I_INCOME := 23            ## 收入
 const I_IMPORT_NEEDS := 24      ## 进口需求
 const I_TRADE_PARTNERS := 25    ## 贸易伙伴数
 const I_CORRUPTION := 26        ## 腐败
-const I_INVESTMENT_DELAY := 27  ## 改革开放后等待外资政策的月数（原 data[27]）
+const I_INVESTMENT_DELAY := 27  ## 改革开放后等待外资政策的月数（原 data.investment_delay）
 const I_USA_RELATIONS := 28    ## 对美关系镜像（权威在 empires[0].relations）
 const I_USSR_RELATIONS := 29   ## 对苏关系镜像（权威在 empires[1].relations）
-const I_COMMUNICATIONS := 30   ## 外交通信结构恢复度（原 data[30]）
+const I_COMMUNICATIONS := 30   ## 外交通信结构恢复度（原 data.communications）
 const I_WAR_SUPPORT := 31       ## 战争支持度
-const I_NAXALITE_POWER := 32    ## 印度纳萨尔派力量（原 data[32]）
+const I_NAXALITE_POWER := 32    ## 印度纳萨尔派力量（原 data.naxalite_power）
 const I_ECON_OPENNESS := 33     ## 经济开放度
 const I_POPULATION := 34        ## 人口(万)
-const I_ENDING_ROUTE := 35      ## 待进入的结局编号（原 data[35]）
+const I_ENDING_ROUTE := 35      ## 待进入的结局编号（原 data.ending_route）
 const I_RESERVE := 36           ## 外汇储备
 const I_STABILITY := 38         ## 政治稳定
 const I_WAR_PRESSURE := 39      ## 中苏战争压力
-const I_INDIA_WAR_PRESSURE := 40 ## 中印边境战争攻势（原 data[40]）
-const I_IRAN_LEFT_SUPPORT := 42 ## 伊朗左翼势力（原 data[42]）
-const I_IRAN_SHAH_SUPPORT := 43 ## 伊朗王室势力（原 data[43]）
-const I_IRAN_DEMOCRAT_SUPPORT := 44 ## 伊朗民主派势力（原 data[44]）
-const I_IRAN_ISLAMIST_SUPPORT := 45 ## 伊朗伊斯兰派势力（原 data[45]）
-const I_AFGHAN_OPPOSITION := 46 ## 阿富汗亲华/毛派反对派势力（原 data[46]）
-const I_AFGHAN_KHALQ := 48     ## 阿富汗人民派势力（原 data[48]）
-const I_AFGHAN_PARCHAM := 49   ## 阿富汗旗帜派势力（原 data[49]）
+const I_INDIA_WAR_PRESSURE := 40 ## 中印边境战争攻势（原 data.india_war_pressure）
+const I_IRAN_LEFT_SUPPORT := 42 ## 伊朗左翼势力（原 data.iran_left_support）
+const I_IRAN_SHAH_SUPPORT := 43 ## 伊朗王室势力（原 data.iran_shah_support）
+const I_IRAN_DEMOCRAT_SUPPORT := 44 ## 伊朗民主派势力（原 data.iran_democrat_support）
+const I_IRAN_ISLAMIST_SUPPORT := 45 ## 伊朗伊斯兰派势力（原 data.iran_islamist_support）
+const I_AFGHAN_OPPOSITION := 46 ## 阿富汗亲华/毛派反对派势力（原 data.afghan_opposition）
+const I_AFGHAN_KHALQ := 48     ## 阿富汗人民派势力（原 data.afghan_khalq）
+const I_AFGHAN_PARCHAM := 49   ## 阿富汗旗帜派势力（原 data.afghan_parcham）
 const I_RELIGION := 50          ## 宗教政策
 const I_MIL_DOCTRINE := 51      ## 军事学说
 const I_ECON_DISPLAY := 52      ## 经济显示等级
-const I_PARTY_BAN_COUNT := 53   ## 已禁止派系数（原 data[53]，Party_zapret 禁止计数）
+const I_PARTY_BAN_COUNT := 53   ## 已禁止派系数（原 data.party_ban_count，Party_zapret 禁止计数）
 const I_POLITICAL_DISPLAY := 54 ## 政治显示等级
 const I_POLITICAL_OPENNESS := 55 ## 政治开放度
 const I_POLITICAL_LINE := 56    ## 政治路线
 const I_MANPOWER := 57          ## 兵源
-const I_SOVIET_SUCCESSION := 59 ## 苏联领导层继承结果（原 data[59]，>0 表示勃列日涅夫已逝）
-const I_ALBANIA_BREAK := 60     ## 中阿决裂/阿尔巴尼亚路线状态（原 data[60]）
-const I_ARUNACHAL_STATUS := 62  ## 藏南/阿鲁纳恰尔状态（原 data[62]：0印度实控未承认、1承认、2/3已重建控制）
-const I_TAIWAN_ISLANDS := 63    ## 台海岛屿控制（原 data[63]：0国民党、1解放军）
-const I_TAIWAN_STATUS := 64     ## 台湾地位（原 data[64]：0现状、1独立主权、2省级特别行政区）
-const I_HK_MACAU_STATUS := 65   ## 港澳回归路线（原 data[65]）
-const I_XINJIANG_POLICY := 66   ## 新疆/维吾尔文化政策状态（原 data[66]）
-const I_TIBET_POLICY := 67      ## 西藏文化政策状态（原 data[67]）
+const I_SOVIET_SUCCESSION := 59 ## 苏联领导层继承结果（原 data.soviet_succession，>0 表示勃列日涅夫已逝）
+const I_ALBANIA_BREAK := 60     ## 中阿决裂/阿尔巴尼亚路线状态（原 data.albania_break）
+const I_ARUNACHAL_STATUS := 62  ## 藏南/阿鲁纳恰尔状态（原 data.arunachal_status：0印度实控未承认、1承认、2/3已重建控制）
+const I_TAIWAN_ISLANDS := 63    ## 台海岛屿控制（原 data.taiwan_islands：0国民党、1解放军）
+const I_TAIWAN_STATUS := 64     ## 台湾地位（原 data.taiwan_status：0现状、1独立主权、2省级特别行政区）
+const I_HK_MACAU_STATUS := 65   ## 港澳回归路线（原 data.hk_macau_status）
+const I_XINJIANG_POLICY := 66   ## 新疆/维吾尔文化政策状态（原 data.xinjiang_policy）
+const I_TIBET_POLICY := 67      ## 西藏文化政策状态（原 data.tibet_policy）
 const I_SERVICES := 68          ## 服务业产值
 const I_LOAN := 69              ## 国债
-const I_EXPORT_BASE := 70       ## 出口规模基数（原 data[70]，ExportValue 的 data[23] 种子）
+const I_EXPORT_BASE := 70       ## 出口规模基数（原 data.export_base，ExportValue 的 data.income 种子）
 const I_BUDGET_ARMY := 71       ## 预算: 军费
 const I_BUDGET_MGB := 72        ## 预算: 国安部
 const I_BUDGET_SCIENCE := 73    ## 预算: 科研
@@ -87,25 +87,25 @@ const I_BUDGET_INDUSTRY := 78   ## 预算: 工业
 const I_BUDGET_SERVICES := 79   ## 预算: 服务业
 const I_BUDGET_WELFARE := 80    ## 预算: 福利
 const I_BUDGET_DIPLO := 81      ## 预算: 外交
-const I_WAR_RESOLVE := 82       ## 待结算战争 id，<0 无（原 data[82]）
-const I_KOREA_RESULT := 83      ## 朝鲜战争统一方向（原 data[83]：1北胜、2南胜）
-const I_GANG_OF_FOUR_PATH := 84 ## 四人帮处置路线（原 data[84]，事件25/26及后续链）
-const I_PALESTINE_STATUS := 85  ## 巴以安排（原 data[85]）
-const I_POST_MAO_COURSE := 87   ## 毛后文革/改革路线（原 data[87]，事件24及后续链）
-const I_REFORM_STAGE := 89      ## 改革阶段（原 data[89]）
-const I_MAO_HISTORY_LINE := 90  ## 毛泽东历史评价路线（原 data[90]）
-const I_INDIA_ELECTION := 91    ## 印度大选结果（原 data[91]）
-const I_REFORM_MOMENTUM := 92   ## 政策改革方向累计值（原 data[92]）
-const I_AFGHAN_POLICY := 94     ## 阿富汗策略（原 data[94]）
-const I_SOVIET_SUCCESSOR_THIRD := 100 ## 苏联第三继承人权重（原 data[100]）
-const I_MAO_MAUSOLEUM := 104    ## 毛主席纪念堂状态（原 data[104]）
-const I_BIRTH_POLICY := 105     ## 生育政策/人口增长基数（原版 data[105]：1一胎 2二胎 3无限制，开局=2）
+const I_WAR_RESOLVE := 82       ## 待结算战争 id，<0 无（原 data.war_resolve）
+const I_KOREA_RESULT := 83      ## 朝鲜战争统一方向（原 data.korea_result：1北胜、2南胜）
+const I_GANG_OF_FOUR_PATH := 84 ## 四人帮处置路线（原 data.gang_of_four_path，事件25/26及后续链）
+const I_PALESTINE_STATUS := 85  ## 巴以安排（原 data.palestine_status）
+const I_POST_MAO_COURSE := 87   ## 毛后文革/改革路线（原 data.post_mao_course，事件24及后续链）
+const I_REFORM_STAGE := 89      ## 改革阶段（原 data.reform_stage）
+const I_MAO_HISTORY_LINE := 90  ## 毛泽东历史评价路线（原 data.mao_history_line）
+const I_INDIA_ELECTION := 91    ## 印度大选结果（原 data.india_election）
+const I_REFORM_MOMENTUM := 92   ## 政策改革方向累计值（原 data.reform_momentum）
+const I_AFGHAN_POLICY := 94     ## 阿富汗策略（原 data.afghan_policy）
+const I_SOVIET_SUCCESSOR_THIRD := 100 ## 苏联第三继承人权重（原 data.soviet_successor_third）
+const I_MAO_MAUSOLEUM := 104    ## 毛主席纪念堂状态（原 data.mao_mausoleum）
+const I_BIRTH_POLICY := 105     ## 生育政策/人口增长基数（原版 data.birth_policy：1一胎 2二胎 3无限制，开局=2）
 const I_SATISFIED := 106        ## 满意现秩序者
-const I_AFGHAN_WAR_PATH := 107  ## 阿富汗战争路线（原 data[107]）
+const I_AFGHAN_WAR_PATH := 107  ## 阿富汗战争路线（原 data.afghan_war_path）
 const I_OLIGARCH := 108         ## 寡头影响力
-const I_SOVIET_INTERVENTIONS := 112 ## 苏联武装干涉计数（原 data[112]）
-const I_PROTEST_REPRESSION := 113 ## 抗议镇压状态（原 data[113]）
-const I_FOREIGN_AID := 146     ## 外援强度（原版 data[146]，dota 消耗）
+const I_SOVIET_INTERVENTIONS := 112 ## 苏联武装干涉计数（原 data.soviet_interventions）
+const I_PROTEST_REPRESSION := 113 ## 抗议镇压状态（原 data.protest_repression）
+const I_FOREIGN_AID := 146     ## 外援强度（原版 data.foreign_aid，dota 消耗）
 const I_INDUSTRY_BASE := 152    ## 工业基数
 
 # ── 数值表索引 → 语义名映射（事件/效果系统的字符串 key 查表用） ──
@@ -167,17 +167,17 @@ const 数值索引 := {
 	"budget_services": I_BUDGET_SERVICES, "服务业预算": I_BUDGET_SERVICES,
 	"budget_welfare": I_BUDGET_WELFARE, "福利预算": I_BUDGET_WELFARE,
 	"budget_diplomacy": I_BUDGET_DIPLO, "外交预算": I_BUDGET_DIPLO,
-	"data_41": 41,   # 原 data[41]（泰国选举干预标志，无正式命名键）
-	"data_124": 124, # 原 data[124]（土耳其泛突厥/蒙古事件链标志，无正式命名键）
-	"data_126": 126, # 原 data[126]（土耳其海峡危机标志，无正式命名键）
-	"data_127": 127, # 原 data[127]（土耳其路线结果，无正式命名键）
-	"data_133": 133, # 原 data[133]（苏联重组战争前置状态，无正式命名键）
-	"data_149": 149, # 原 data[149]（苏斯洛夫/安德罗波夫继任路线：事件83=1、84=2、85=3，无正式命名键）
-	"data_52": I_ECON_DISPLAY,   # 原 data[52]（经济显示等级，Event999 宪法分支判定 data[52]==37）
-	"data_86": 86,               # 原 data[86]（南斯拉夫/科索沃事件链状态，Event76 使用）
-	"data_117": 117,             # 原 data[117]（伊拉克发展度哨兵，Event75 触发条件 data[117]!=9）
-	"data_120": 120,             # 原 data[120]（盟友危机 Event107 目标国家原版序号，结果末尾置 -1）
-	"data_170": 170,             # 原 data[170]（Event999 触发哨兵：==999 时开火，结果里清零）
+	"data_41": 41,   # 原 data.thailand_election_intervention（泰国选举干预标志，无正式命名键）
+	"data_124": 124, # 原 data.turkish_pan_turkic_chain（土耳其泛突厥/蒙古事件链标志，无正式命名键）
+	"data_126": 126, # 原 data.turkish_straits_crisis（土耳其海峡危机标志，无正式命名键）
+	"data_127": 127, # 原 data.turkish_route_result（土耳其路线结果，无正式命名键）
+	"data_133": 133, # 原 data.soviet_reorganization_war_state（苏联重组战争前置状态，无正式命名键）
+	"data_149": 149, # 原 data.soviet_successor_route（苏斯洛夫/安德罗波夫继任路线：事件83=1、84=2、85=3，无正式命名键）
+	"data_52": I_ECON_DISPLAY,   # 原 data.econ_display（经济显示等级，Event999 宪法分支判定 data.econ_display==37）
+	"data_86": 86,               # 原 data.yugoslavia_kosovo_chain（南斯拉夫/科索沃事件链状态，Event76 使用）
+	"data_117": 117,             # 原 data.iraq_development_sentinel（伊拉克发展度哨兵，Event75 触发条件 data.iraq_development_sentinel!=9）
+	"data_120": 120,             # 原 data.ally_crisis_target（盟友危机 Event107 目标国家原版序号，结果末尾置 -1）
+	"data_170": 170,             # 原 data.event999_trigger_sentinel（Event999 触发哨兵：==999 时开火，结果里清零）
 	"gang_of_four_path": I_GANG_OF_FOUR_PATH, "四人帮路线": I_GANG_OF_FOUR_PATH,
 	"palestine_status": I_PALESTINE_STATUS, "巴以安排": I_PALESTINE_STATUS,
 	"post_mao_course": I_POST_MAO_COURSE, "毛后路线": I_POST_MAO_COURSE,
@@ -205,6 +205,568 @@ const 数值索引 := {
 	"soviet_successor_third": I_SOVIET_SUCCESSOR_THIRD, "苏联第三继承人权重": I_SOVIET_SUCCESSOR_THIRD,
 	"soviet_interventions": I_SOVIET_INTERVENTIONS, "苏联干涉计数": I_SOVIET_INTERVENTIONS,
 }
+
+# ── 数值表：具名字段 ──
+## 0 军事介入点
+@export var mil_intervention: int = 0
+
+## 1 党内支持
+@export var party_support: int = 0
+
+## 2 苏联影响力
+@export var soviet_influence: int = 0
+
+## 3 民众支持
+@export var people_support: int = 0
+
+## 4 思想自由/自由化
+@export var thought_freedom: int = 0
+
+## 5 生活水平
+@export var living_standard: int = 0
+
+## 6 国际声望
+@export var diplomatic_reputation: int = 0
+
+## 7 全球影响力
+@export var global_influence: int = 0
+
+## 8 预算余额
+@export var budget: int = 0
+
+## 9 特工网络
+@export var agents: int = 0
+
+## 10 美国影响力
+@export var usa_influence: int = 0
+
+## 11 科研点数
+@export var science: int = 0
+
+## 12 工业产值
+@export var industry: int = 0
+
+## 13 农业产值
+@export var agriculture: int = 0
+
+## 14 意识形态(离散)
+@export var ideology: int = 0
+
+## 15 政党制度(离散)
+@export var party_system: int = 0
+
+## 16 经济体制(离散)
+@export var econ_system: int = 0
+
+## 17 舆论政策(离散)
+@export var press_policy: int = 0
+
+## 18 领土制度(离散)
+@export var territory_policy: int = 0
+
+## 19 日
+@export var day: int = 0
+
+## 20 月
+@export var month: int = 0
+
+## 21 年
+@export var year: int = 0
+
+## 22 军力
+@export var army: int = 0
+
+## 23 收入
+@export var income: int = 0
+
+## 24 进口需求
+@export var import_needs: int = 0
+
+## 25 贸易伙伴数
+@export var trade_partners: int = 0
+
+## 26 腐败
+@export var corruption: int = 0
+
+## 27 改革开放后等待外资政策月数
+@export var investment_delay: int = 0
+
+## 28 对美关系(镜像, 待消除)
+@export var usa_relations: int = 0
+
+## 29 对苏关系(镜像, 待消除)
+@export var ussr_relations: int = 0
+
+## 30 外交通信结构恢复度
+@export var communications: int = 0
+
+## 31 战争支持度
+@export var war_support: int = 0
+
+## 32 印度纳萨尔派力量
+@export var naxalite_power: int = 0
+
+## 33 经济开放度
+@export var econ_openness: int = 0
+
+## 34 人口(万)
+@export var population: int = 0
+
+## 35 待进入结局编号
+@export var ending_route: int = 0
+
+## 36 外汇储备
+@export var reserve: int = 0
+
+## 37 菲律宾毛派力量
+@export var philippines_maoist_power: int = 0
+
+## 38 政治稳定
+@export var stability: int = 0
+
+## 39 中苏战争压力
+@export var war_pressure: int = 0
+
+## 40 中印边境战争攻势
+@export var india_war_pressure: int = 0
+
+## 41 泰国选举干预标志
+@export var thailand_election_intervention: int = 0
+
+## 42 伊朗左翼势力
+@export var iran_left_support: int = 0
+
+## 43 伊朗王室势力
+@export var iran_shah_support: int = 0
+
+## 44 伊朗民主派势力
+@export var iran_democrat_support: int = 0
+
+## 45 伊朗伊斯兰派势力
+@export var iran_islamist_support: int = 0
+
+## 46 阿富汗亲华/毛派反对派势力
+@export var afghan_opposition: int = 0
+
+## 47 随机外交参数(开局1-4)
+@export var random_diplo_param: int = 0
+
+## 48 阿富汗人民派势力
+@export var afghan_khalq: int = 0
+
+## 49 阿富汗旗帜派势力
+@export var afghan_parcham: int = 0
+
+## 50 宗教政策(离散)
+@export var religion_policy: int = 0
+
+## 51 军事学说(离散)
+@export var military_doctrine: int = 0
+
+## 52 经济显示等级(离散)
+@export var econ_display: int = 0
+
+## 53 已禁止派系数
+@export var party_ban_count: int = 0
+
+## 54 政治显示等级(离散)
+@export var political_display: int = 0
+
+## 55 政治开放度
+@export var political_openness: int = 0
+
+## 56 政治路线(离散)
+@export var political_line: int = 0
+
+## 57 兵源
+@export var manpower: int = 0
+
+## 58 未使用/保留槽
+@export var data_58: int = 0
+
+## 59 苏联领导层继承结果(离散)
+@export var soviet_succession: int = 0
+
+## 60 中阿决裂/阿尔巴尼亚路线状态(离散)
+@export var albania_break: int = 0
+
+## 61 未使用/保留槽
+@export var data_61: int = 0
+
+## 62 藏南/阿鲁纳恰尔状态(离散)
+@export var arunachal_status: int = 0
+
+## 63 台海岛屿控制(离散)
+@export var taiwan_islands: int = 0
+
+## 64 台湾地位(离散)
+@export var taiwan_status: int = 0
+
+## 65 港澳回归路线(离散)
+@export var hk_macau_status: int = 0
+
+## 66 新疆/维吾尔文化政策状态(离散)
+@export var xinjiang_policy: int = 0
+
+## 67 西藏文化政策状态(离散)
+@export var tibet_policy: int = 0
+
+## 68 服务业产值
+@export var services: int = 0
+
+## 69 国债
+@export var loan: int = 0
+
+## 70 出口规模基数
+@export var export_base: int = 0
+
+## 71 预算:军费
+@export var budget_army: int = 0
+
+## 72 预算:国安部
+@export var budget_mgb: int = 0
+
+## 73 预算:科研
+@export var budget_science: int = 0
+
+## 74 预算:行政
+@export var budget_admin: int = 0
+
+## 75 预算:高层福利
+@export var budget_envelope: int = 0
+
+## 76 预算:宣传
+@export var budget_propaganda: int = 0
+
+## 77 预算:农业
+@export var budget_agri: int = 0
+
+## 78 预算:工业
+@export var budget_industry: int = 0
+
+## 79 预算:服务业
+@export var budget_services: int = 0
+
+## 80 预算:福利
+@export var budget_welfare: int = 0
+
+## 81 预算:外交
+@export var budget_diplo: int = 0
+
+## 82 待结算战争id, <0无
+@export var war_resolve: int = 0
+
+## 83 朝鲜战争统一方向(离散)
+@export var korea_result: int = 0
+
+## 84 四人帮处置路线(离散)
+@export var gang_of_four_path: int = 0
+
+## 85 巴以安排(离散)
+@export var palestine_status: int = 0
+
+## 86 南斯拉夫/科索沃事件链状态(离散)
+@export var yugoslavia_kosovo_chain: int = 0
+
+## 87 毛后文革/改革路线(离散)
+@export var post_mao_course: int = 0
+
+## 88 民主运动/天安门事件链计数
+@export var democracy_movement: int = 0
+
+## 89 改革阶段(离散)
+@export var reform_stage: int = 0
+
+## 90 毛泽东历史评价路线(离散)
+@export var mao_history_line: int = 0
+
+## 91 印度大选结果(离散)
+@export var india_election: int = 0
+
+## 92 政策改革方向累计值
+@export var reform_momentum: int = 0
+
+## 93 未使用/保留槽
+@export var data_93: int = 0
+
+## 94 阿富汗策略(离散)
+@export var afghan_policy: int = 0
+
+## 95 苏领导人契尔年科支持
+@export var soviet_leader_chernenko: int = 0
+
+## 96 苏领导人安德罗波夫支持
+@export var soviet_leader_andropov: int = 0
+
+## 97 苏领导人谢尔比茨基支持
+@export var soviet_leader_shcherbitsky: int = 0
+
+## 98 苏领导人罗曼诺夫支持
+@export var soviet_leader_romanov: int = 0
+
+## 99 苏领导人格里申支持
+@export var soviet_leader_grishin: int = 0
+
+## 100 苏联第三继承人权重
+@export var soviet_successor_third: int = 0
+
+## 101 未使用/保留槽
+@export var data_101: int = 0
+
+## 102 五年计划重点(1-5)
+@export var five_year_plan_focus: int = 0
+
+## 103 非洲政变路线(15=布基纳法索)
+@export var africa_coup_route: int = 0
+
+## 104 毛主席纪念堂状态(离散)
+@export var mao_mausoleum: int = 0
+
+## 105 生育政策/人口增长基数(离散)
+@export var birth_policy: int = 0
+
+## 106 满意现秩序者
+@export var satisfied: int = 0
+
+## 107 阿富汗战争路线(离散)
+@export var afghan_war_path: int = 0
+
+## 108 寡头影响力
+@export var oligarch: int = 0
+
+## 109 未使用/保留槽
+@export var data_109: int = 0
+
+## 110 政治清洗/铁血计数
+@export var political_repression_count: int = 0
+
+## 111 强硬镇压计数
+@export var hardline_crackdown_count: int = 0
+
+## 112 苏联武装干涉计数
+@export var soviet_interventions: int = 0
+
+## 113 抗议镇压状态(离散)
+@export var protest_repression: int = 0
+
+## 114 总理被杀标志(=9)
+@export var killed_premier_flag: int = 0
+
+## 115 军委主席被杀标志(=9)
+@export var killed_military_flag: int = 0
+
+## 116 外交部长被杀标志(=9)
+@export var killed_foreign_flag: int = 0
+
+## 117 伊拉克发展度哨兵(Event75)
+@export var iraq_development_sentinel: int = 0
+
+## 118 全面自动化建设宣告标志
+@export var automation_progress: int = 0
+
+## 119 选举月1(1-6)
+@export var election_month_first: int = 0
+
+## 120 盟友危机目标国家原版序号
+@export var ally_crisis_target: int = 0
+
+## 121 选举月2(7-12)
+@export var election_month_second: int = 0
+
+## 122 未使用/保留槽
+@export var data_122: int = 0
+
+## 123 未使用/保留槽
+@export var data_123: int = 0
+
+## 124 土耳其泛突厥/蒙古事件链标志
+@export var turkish_pan_turkic_chain: int = 0
+
+## 125 选举计时/余波
+@export var election_timer: int = 0
+
+## 126 土耳其海峡危机标志
+@export var turkish_straits_crisis: int = 0
+
+## 127 土耳其路线结果
+@export var turkish_route_result: int = 0
+
+## 128 土耳其海峡状态(1/2)
+@export var turkish_straits_state: int = 0
+
+## 129 塞浦路斯希腊方胜利标志
+@export var cyprus_greek_victory_flag: int = 0
+
+## 130 蒙古亲华/中国路线(0/1)
+@export var mongolia_china_route: int = 0
+
+## 131 世界政治局势(0-3)
+@export var world_political_balance: int = 0
+
+## 132 苏联东欧干涉状态(0/1/2)
+@export var soviet_eastern_europe_intervention: int = 0
+
+## 133 苏联重组战争前置状态(离散)
+@export var soviet_reorganization_war_state: int = 0
+
+## 134 意大利激进左翼/恐怖组织实力
+@export var italian_radical_left_power: int = 0
+
+## 135 被逐出后恢复特工修正47
+@export var restore_agent_mod_47: bool = false
+
+## 136 被逐出后恢复特工修正48
+@export var restore_agent_mod_48: bool = false
+
+## 137 被逐出后恢复经互会
+@export var restore_econ_alliance: bool = false
+
+## 138 被逐出后恢复华约
+@export var restore_okb_alliance: bool = false
+
+## 139 被逐出联盟倒计时
+@export var alliance_kickout_timer: int = 0
+
+## 140 被逐出联盟类型(1=SEV,2=ASEAN)
+@export var alliance_kickout_type: int = 0
+
+## 141 联盟胁迫目标国家原版序号
+@export var alliance_coercion_target: int = 0
+
+## 142 联盟胁迫进度
+@export var alliance_coercion_progress: int = 0
+
+## 143 油价
+@export var oil_price: int = 0
+
+## 144 未使用/保留槽
+@export var data_144: int = 0
+
+## 145 未使用/保留槽
+@export var data_145: int = 0
+
+## 146 外援强度
+@export var foreign_aid: int = 0
+
+## 147 英国政治路线(1-9)
+@export var britain_political_route: int = 0
+
+## 148 未使用/保留槽
+@export var data_148: int = 0
+
+## 149 苏斯洛夫/安德罗波夫继任路线(1-3)
+@export var soviet_successor_route: int = 0
+
+## 150 苏联干涉冷却月数
+@export var soviet_intervention_cooldown: int = 0
+
+## 151 美国干涉冷却月数
+@export var usa_intervention_cooldown: int = 0
+
+## 152 工业基数
+@export var industry_base: int = 0
+
+## 153 修正58计时
+@export var modifier_58_timer: int = 0
+
+## 154 未使用/保留槽
+@export var data_154: int = 0
+
+## 155 法国社会党得票率
+@export var france_socialist_vote: int = 0
+
+## 156 法国共产党得票率
+@export var france_communist_vote: int = 0
+
+## 157 索马里战争结果标志
+@export var somalia_war_state: int = 0
+
+## 158 索马里亲华路线标志
+@export var somalia_china_route: int = 0
+
+## 159 未使用/保留槽
+@export var data_159: int = 0
+
+## 160 苏联资金(结局配置)
+@export var soviet_money: int = 0
+
+## 161 美国资金(结局配置)
+@export var usa_money: int = 0
+
+## 162 其他组织力量1
+@export var org_strength_1: int = 0
+
+## 163 其他组织力量2
+@export var org_strength_2: int = 0
+
+## 164 其他组织力量3
+@export var org_strength_3: int = 0
+
+## 165 其他组织力量4
+@export var org_strength_4: int = 0
+
+## 166 BICO力量
+@export var bico_strength: int = 0
+
+## 167 未使用/保留槽(原版有递减)
+@export var data_167: int = 0
+
+## 168 支援已派出标志
+@export var support_sent_flag: bool = false
+
+## 169 爱尔兰统一路线(离散)
+@export var ireland_unification_route: int = 0
+
+## 170 Event999触发哨兵(==999)
+@export var event999_trigger_sentinel: int = 0
+
+## 171 越南亲华政变可用标志(0/1)
+@export var vietnam_pro_china_coup_available: int = 0
+
+## 172 意大利政局力量172
+@export var italy_power_172: int = 0
+
+## 173 意大利政局力量173
+@export var italy_power_173: int = 0
+
+## 174 意大利政局力量174
+@export var italy_power_174: int = 0
+
+## 175 意大利政局力量175
+@export var italy_power_175: int = 0
+
+## 176 意大利政局力量176
+@export var italy_power_176: int = 0
+
+## 177 意大利政局力量177
+@export var italy_power_177: int = 0
+
+## 178 意大利政局力量178
+@export var italy_power_178: int = 0
+
+## 179 意大利政局力量179
+@export var italy_power_179: int = 0
+
+## 180 意大利政局力量180
+@export var italy_power_180: int = 0
+
+## 181 意大利政局力量181
+@export var italy_power_181: int = 0
+
+## 182 短剑力量
+@export var short_sword_power: int = 0
+
+## 183 意大利事件计时
+@export var italy_event_timer: int = 0
+
+## 184 意大利热秋路线(1-3)
+@export var italy_hot_autumn_route: int = 0
+
+## 185 国歌选择(1-6)
+@export var anthem_choice: int = 0
+
+## 186 伊拉克革命计时
+@export var iraq_revolution_timer: int = 0
 
 # ── 时间 ──
 @export var date: GameDate
@@ -241,8 +803,8 @@ const 数值索引 := {
 @export var dlc: Array[bool] = [true, true, true, true, false]
 
 # ── 中苏党际关系（原版 GameState.SOV_PRC_PartiesConnection）──
-# 统一以 data[30]（I_COMMUNICATIONS）为唯一权威，不再保留镜像字段。
-# 原版开局 GameStartScript.cs:934 = gameState.data[30]；Focus 焦点可增减。
+# 统一以 data.communications（I_COMMUNICATIONS）为唯一权威，不再保留镜像字段。
+# 原版开局 GameStartScript.cs:934 = gameState.data.communications；Focus 焦点可增减。
 
 # ── 决议系统原版字段（GameState.cs:7862-7984，决策原子直读直写）──
 # 旧存档缺字段时取声明默认值（与原版默认 0/false 一致）。
@@ -295,8 +857,7 @@ const 数值索引 := {
 # 0=总理 1=军委主席 2=外交部长 3=首都 4=北方 5=西方 6=南方 7=东方
 @export var politics_positions: Array[int] = []
 
-# ── 数值表：唯一权威数据源 ──
-@export var 数值表: Array[int] = []
+# ── 数值表已拆分为具名字段（见上方） ──
 
 # ── 双周入口快照（运行时，不序列化；对齐原版 TimeScript.cs:1224-1228 的 array9）──
 var 入口快照: Array[int] = []
@@ -340,7 +901,6 @@ func _init() -> void:
 	techs = TechState.new()
 	decisions = DecisionState.new()
 	玩家经济 = EconomyData.new()
-	数值表.resize(200)
 	politics_positions.resize(8)
 	politics_positions.fill(-1)
 	desnull.resize(50)
@@ -445,15 +1005,15 @@ func resolve_country(id) -> CountryData:
 ## 每日镜像：empires 权威 → 数值表[28/29/10/2]（原版 KumihaRepaint）。
 ## 原为 GameManager._mirror_empires_to_data，迁到 WorldState 后 WarSystem 可直接调用。
 func mirror_empires_to_data() -> void:
-	if 数值表.size() <= 29:
+	if size() <= 29:
 		return
-	var d := 数值表
+	var d := self
 	if empires.size() > 0 and empires[0] != null:
-		d[28] = empires[0].relations
-		d[I_USA_INFLUENCE] = empires[0].power
+		d.usa_relations = empires[0].relations
+		d.usa_influence = empires[0].power
 	if empires.size() > 1 and empires[1] != null:
-		d[29] = empires[1].relations
-		d[I_SOVIET_INFLUENCE] = empires[1].power
+		d.ussr_relations = empires[1].relations
+		d.soviet_influence = empires[1].power
 
 
 # ── 数值表读写 ──
@@ -468,8 +1028,8 @@ func get_data_value(key: String) -> int:
 	if key.to_lower() == "influence_prc":
 		return influence_prc
 	var idx := get_data_index(key)
-	if idx >= 0 and idx < 数值表.size():
-		return 数值表[idx]
+	if idx >= 0 and idx < size():
+		return get_data_by_index(idx)
 	return 0
 
 
@@ -485,10 +1045,10 @@ func set_data_value(key: String, value: int) -> void:
 		value_changed.emit(-1, old_inf, influence_prc)
 		return
 	var idx := get_data_index(key)
-	if idx >= 0 and idx < 数值表.size():
-		var old := 数值表[idx]
+	if idx >= 0 and idx < size():
+		var old := get_data_by_index(idx)
 		if old != value:
-			数值表[idx] = value
+			set_data_by_index(idx, value)
 			_economy_dirty = true
 			value_changed.emit(idx, old, value)
 
@@ -505,10 +1065,10 @@ func add_data_value(key: String, delta: int) -> void:
 		value_changed.emit(-1, old_inf, influence_prc)
 		return
 	var idx := get_data_index(key)
-	if idx >= 0 and idx < 数值表.size():
-		var old := 数值表[idx]
+	if idx >= 0 and idx < size():
+		var old := get_data_by_index(idx)
 		var new_value := old + delta
-		数值表[idx] = new_value
+		set_data_by_index(idx, new_value)
 		_economy_dirty = true
 		value_changed.emit(idx, old, new_value)
 
@@ -526,7 +1086,233 @@ func add_value(key: String, delta: int) -> void:
 	add_data_value(key, delta)
 
 
-## 指定国家的资源查询。玩家国家走数值表，非玩家国家查 CountryData 字段。
+
+## 动态下标兼容入口：新代码应使用具名字段，这里仅用于尚未迁移完的旧调用。
+func get_data_by_index(idx: int) -> int:
+	var field: String = FIELD_BY_INDEX.get(idx, "")
+	if field == "":
+		return 0
+	return int(get(field))
+
+
+func set_data_by_index(idx: int, value: int) -> void:
+	var field: String = FIELD_BY_INDEX.get(idx, "")
+	if field == "":
+		return
+	set(field, value)
+
+
+func add_data_by_index(idx: int, delta: int) -> void:
+	set_data_by_index(idx, get_data_by_index(idx) + delta)
+
+
+func size() -> int:
+	return FIELD_NAMES.size()
+
+
+func _collect_values() -> Array[int]:
+	var arr: Array[int] = []
+	arr.resize(FIELD_NAMES.size())
+	for i in FIELD_NAMES.size():
+		arr[i] = int(get(FIELD_NAMES[i]))
+	return arr
+
+
+const FIELD_NAMES: Array[String] = [
+"mil_intervention", "party_support", "soviet_influence", "people_support", "thought_freedom", "living_standard", "diplomatic_reputation", "global_influence", "budget", "agents", "usa_influence", "science", "industry", "agriculture", "ideology", "party_system", "econ_system", "press_policy", "territory_policy", "day", "month", "year", "army", "income", "import_needs", "trade_partners", "corruption", "investment_delay", "usa_relations", "ussr_relations", "communications", "war_support", "naxalite_power", "econ_openness", "population", "ending_route", "reserve", "philippines_maoist_power", "stability", "war_pressure", "india_war_pressure", "thailand_election_intervention", "iran_left_support", "iran_shah_support", "iran_democrat_support", "iran_islamist_support", "afghan_opposition", "random_diplo_param", "afghan_khalq", "afghan_parcham", "religion_policy", "military_doctrine", "econ_display", "party_ban_count", "political_display", "political_openness", "political_line", "manpower", "data_58", "soviet_succession", "albania_break", "data_61", "arunachal_status", "taiwan_islands", "taiwan_status", "hk_macau_status", "xinjiang_policy", "tibet_policy", "services", "loan", "export_base", "budget_army", "budget_mgb", "budget_science", "budget_admin", "budget_envelope", "budget_propaganda", "budget_agri", "budget_industry", "budget_services", "budget_welfare", "budget_diplo", "war_resolve", "korea_result", "gang_of_four_path", "palestine_status", "yugoslavia_kosovo_chain", "post_mao_course", "democracy_movement", "reform_stage", "mao_history_line", "india_election", "reform_momentum", "data_93", "afghan_policy", "soviet_leader_chernenko", "soviet_leader_andropov", "soviet_leader_shcherbitsky", "soviet_leader_romanov", "soviet_leader_grishin", "soviet_successor_third", "data_101", "five_year_plan_focus", "africa_coup_route", "mao_mausoleum", "birth_policy", "satisfied", "afghan_war_path", "oligarch", "data_109", "political_repression_count", "hardline_crackdown_count", "soviet_interventions", "protest_repression", "killed_premier_flag", "killed_military_flag", "killed_foreign_flag", "iraq_development_sentinel", "automation_progress", "election_month_first", "ally_crisis_target", "election_month_second", "data_122", "data_123", "turkish_pan_turkic_chain", "election_timer", "turkish_straits_crisis", "turkish_route_result", "turkish_straits_state", "cyprus_greek_victory_flag", "mongolia_china_route", "world_political_balance", "soviet_eastern_europe_intervention", "soviet_reorganization_war_state", "italian_radical_left_power", "restore_agent_mod_47", "restore_agent_mod_48", "restore_econ_alliance", "restore_okb_alliance", "alliance_kickout_timer", "alliance_kickout_type", "alliance_coercion_target", "alliance_coercion_progress", "oil_price", "data_144", "data_145", "foreign_aid", "britain_political_route", "data_148", "soviet_successor_route", "soviet_intervention_cooldown", "usa_intervention_cooldown", "industry_base", "modifier_58_timer", "data_154", "france_socialist_vote", "france_communist_vote", "somalia_war_state", "somalia_china_route", "data_159", "soviet_money", "usa_money", "org_strength_1", "org_strength_2", "org_strength_3", "org_strength_4", "bico_strength", "data_167", "support_sent_flag", "ireland_unification_route", "event999_trigger_sentinel", "vietnam_pro_china_coup_available", "italy_power_172", "italy_power_173", "italy_power_174", "italy_power_175", "italy_power_176", "italy_power_177", "italy_power_178", "italy_power_179", "italy_power_180", "italy_power_181", "short_sword_power", "italy_event_timer", "italy_hot_autumn_route", "anthem_choice", "iraq_revolution_timer"
+]
+
+const FIELD_BY_INDEX := {
+	0: "mil_intervention",
+	1: "party_support",
+	2: "soviet_influence",
+	3: "people_support",
+	4: "thought_freedom",
+	5: "living_standard",
+	6: "diplomatic_reputation",
+	7: "global_influence",
+	8: "budget",
+	9: "agents",
+	10: "usa_influence",
+	11: "science",
+	12: "industry",
+	13: "agriculture",
+	14: "ideology",
+	15: "party_system",
+	16: "econ_system",
+	17: "press_policy",
+	18: "territory_policy",
+	19: "day",
+	20: "month",
+	21: "year",
+	22: "army",
+	23: "income",
+	24: "import_needs",
+	25: "trade_partners",
+	26: "corruption",
+	27: "investment_delay",
+	28: "usa_relations",
+	29: "ussr_relations",
+	30: "communications",
+	31: "war_support",
+	32: "naxalite_power",
+	33: "econ_openness",
+	34: "population",
+	35: "ending_route",
+	36: "reserve",
+	37: "philippines_maoist_power",
+	38: "stability",
+	39: "war_pressure",
+	40: "india_war_pressure",
+	41: "thailand_election_intervention",
+	42: "iran_left_support",
+	43: "iran_shah_support",
+	44: "iran_democrat_support",
+	45: "iran_islamist_support",
+	46: "afghan_opposition",
+	47: "random_diplo_param",
+	48: "afghan_khalq",
+	49: "afghan_parcham",
+	50: "religion_policy",
+	51: "military_doctrine",
+	52: "econ_display",
+	53: "party_ban_count",
+	54: "political_display",
+	55: "political_openness",
+	56: "political_line",
+	57: "manpower",
+	58: "data_58",
+	59: "soviet_succession",
+	60: "albania_break",
+	61: "data_61",
+	62: "arunachal_status",
+	63: "taiwan_islands",
+	64: "taiwan_status",
+	65: "hk_macau_status",
+	66: "xinjiang_policy",
+	67: "tibet_policy",
+	68: "services",
+	69: "loan",
+	70: "export_base",
+	71: "budget_army",
+	72: "budget_mgb",
+	73: "budget_science",
+	74: "budget_admin",
+	75: "budget_envelope",
+	76: "budget_propaganda",
+	77: "budget_agri",
+	78: "budget_industry",
+	79: "budget_services",
+	80: "budget_welfare",
+	81: "budget_diplo",
+	82: "war_resolve",
+	83: "korea_result",
+	84: "gang_of_four_path",
+	85: "palestine_status",
+	86: "yugoslavia_kosovo_chain",
+	87: "post_mao_course",
+	88: "democracy_movement",
+	89: "reform_stage",
+	90: "mao_history_line",
+	91: "india_election",
+	92: "reform_momentum",
+	93: "data_93",
+	94: "afghan_policy",
+	95: "soviet_leader_chernenko",
+	96: "soviet_leader_andropov",
+	97: "soviet_leader_shcherbitsky",
+	98: "soviet_leader_romanov",
+	99: "soviet_leader_grishin",
+	100: "soviet_successor_third",
+	101: "data_101",
+	102: "five_year_plan_focus",
+	103: "africa_coup_route",
+	104: "mao_mausoleum",
+	105: "birth_policy",
+	106: "satisfied",
+	107: "afghan_war_path",
+	108: "oligarch",
+	109: "data_109",
+	110: "political_repression_count",
+	111: "hardline_crackdown_count",
+	112: "soviet_interventions",
+	113: "protest_repression",
+	114: "killed_premier_flag",
+	115: "killed_military_flag",
+	116: "killed_foreign_flag",
+	117: "iraq_development_sentinel",
+	118: "automation_progress",
+	119: "election_month_first",
+	120: "ally_crisis_target",
+	121: "election_month_second",
+	122: "data_122",
+	123: "data_123",
+	124: "turkish_pan_turkic_chain",
+	125: "election_timer",
+	126: "turkish_straits_crisis",
+	127: "turkish_route_result",
+	128: "turkish_straits_state",
+	129: "cyprus_greek_victory_flag",
+	130: "mongolia_china_route",
+	131: "world_political_balance",
+	132: "soviet_eastern_europe_intervention",
+	133: "soviet_reorganization_war_state",
+	134: "italian_radical_left_power",
+	135: "restore_agent_mod_47",
+	136: "restore_agent_mod_48",
+	137: "restore_econ_alliance",
+	138: "restore_okb_alliance",
+	139: "alliance_kickout_timer",
+	140: "alliance_kickout_type",
+	141: "alliance_coercion_target",
+	142: "alliance_coercion_progress",
+	143: "oil_price",
+	144: "data_144",
+	145: "data_145",
+	146: "foreign_aid",
+	147: "britain_political_route",
+	148: "data_148",
+	149: "soviet_successor_route",
+	150: "soviet_intervention_cooldown",
+	151: "usa_intervention_cooldown",
+	152: "industry_base",
+	153: "modifier_58_timer",
+	154: "data_154",
+	155: "france_socialist_vote",
+	156: "france_communist_vote",
+	157: "somalia_war_state",
+	158: "somalia_china_route",
+	159: "data_159",
+	160: "soviet_money",
+	161: "usa_money",
+	162: "org_strength_1",
+	163: "org_strength_2",
+	164: "org_strength_3",
+	165: "org_strength_4",
+	166: "bico_strength",
+	167: "data_167",
+	168: "support_sent_flag",
+	169: "ireland_unification_route",
+	170: "event999_trigger_sentinel",
+	171: "vietnam_pro_china_coup_available",
+	172: "italy_power_172",
+	173: "italy_power_173",
+	174: "italy_power_174",
+	175: "italy_power_175",
+	176: "italy_power_176",
+	177: "italy_power_177",
+	178: "italy_power_178",
+	179: "italy_power_179",
+	180: "italy_power_180",
+	181: "italy_power_181",
+	182: "short_sword_power",
+	183: "italy_event_timer",
+	184: "italy_hot_autumn_route",
+	185: "anthem_choice",
+	186: "iraq_revolution_timer",
+}
+
+## 指定国家的资源查询。玩家国家走具名字段，非玩家国家查 CountryData 字段。
 func get_data_value_for_country(tag: String, key: String) -> int:
 	if tag == "ROOT" or tag == "":
 		return get_data_value(key)
@@ -609,17 +1395,17 @@ func modifier_active(mod_id: int) -> bool:
 # ── 经济同步（轻量版，无数组拷贝） ──
 
 ## 原版 GameState.ImportChange（GameState.cs:11-16）：按生活水平×人口与三产差计算
-## 进口需求年度增量；TimeScript.cs:514 每年 data[20]==13 时 data[24] += ImportChange。
+## 进口需求年度增量；TimeScript.cs:514 每年 data.month==13 时 data.import_needs += ImportChange。
 func import_change() -> int:
-	var d := 数值表
-	var pop: float = float(mini(d[I_POPULATION] if d.size() > I_POPULATION else 0, 1500))
-	var living := d[I_LIVING] if d.size() > I_LIVING else 0
-	var industry := d[I_INDUSTRY] if d.size() > I_INDUSTRY else 0
-	var agri := d[I_AGRICULTURE] if d.size() > I_AGRICULTURE else 0
-	var services := d[I_SERVICES] if d.size() > I_SERVICES else 0
-	var num := living * 2.0 / 1000.0 * pop - industry / 1000.0 * pop
+	var d := self
+	var pop: float = float(mini(d.population if d.size() > I_POPULATION else 0, 1500))
+	var living: int = d.living_standard if d.size() > I_LIVING else 0
+	var industry_val: int = d.industry if d.size() > I_INDUSTRY else 0
+	var agri: int = d.agriculture if d.size() > I_AGRICULTURE else 0
+	var services_val: int = d.services if d.size() > I_SERVICES else 0
+	var num := living * 2.0 / 1000.0 * pop - industry_val / 1000.0 * pop
 	var num2 := living / 1000.0 * pop - agri * 2.0 / 1000.0 * pop
-	var num3 := living / 1000.0 * pop - services / 1000.0 * pop
+	var num3 := living / 1000.0 * pop - services_val / 1000.0 * pop
 	return int((num + num2 + num3) / 200.0)
 
 
@@ -633,7 +1419,7 @@ func flush_economy() -> void:
 func _sync_economy() -> void:
 	if 玩家经济 == null:
 		玩家经济 = EconomyData.new()
-	玩家经济.sync(数值表)
+	玩家经济.sync_from_world(self)
 	# 同步到玩家国家的 economy 引用（如果已分配）
 	var player := get_player_country()
 	if player != null and player.economy != null:
@@ -644,7 +1430,7 @@ func _sync_economy() -> void:
 ## 原版 TimeScript 在每 14 天周期开始时保存 array9，周期末写 data_old = 当前值 - array9；
 ## 这里改为开始时记录、悬浮提示读取时按需做差，结果等价。
 func 记录入口快照() -> void:
-	入口快照 = 数值表.duplicate()
+	入口快照 = _collect_values()
 	入口快照关系.clear()
 	for e in empires:
 		入口快照关系.append(e.relations)
@@ -658,10 +1444,10 @@ func 记录入口快照() -> void:
 func 结算两周变化() -> void:
 	if 入口快照.size() == 0:
 		return
-	上期变化 = 数值表.duplicate()
+	上期变化 = _collect_values()
 	for i in range(上期变化.size()):
 		if i < 入口快照.size():
-			上期变化[i] = 数值表[i] - 入口快照[i]
+			上期变化[i] = get_data_by_index(i) - 入口快照[i]
 	上期关系变化.clear()
 	for i in range(2):
 		var cur := 0
@@ -696,10 +1482,10 @@ func sync_economy() -> void:
 
 # ── 数值边界保护（移植自原版 TimeScript.BoundsOfVariables 6103-6199，调用点 6014）──
 
-## 注意：原版只钳制以下项。Godot 早期版本额外钳制了 data[2/9/22/34/36/38/57/71-81]，
-## 这些原版都不钳制（如 data[9] 特工允许为负，是合法显示状态）。已按原版对齐。
+## 注意：原版只钳制以下项。Godot 早期版本额外钳制了 data.get_data_by_index(2/9/22/34/36/38/57/71-81)，
+## 这些原版都不钳制（如 data.agents 特工允许为负，是合法显示状态）。已按原版对齐。
 ## 2026-08 经济审计：三产/生活上限应为 1500（Godot 曾写成 1000/500，导致 >=1100 衰减档不可达），
-## data[7] influence 原版不钳制，已移除。
+## data.global_influence influence 原版不钳制，已移除。
 
 ## 连续指标显示：内部 ×10 → "80.0"；预算/特工等同规则
 func display_meter(raw: int) -> String:
@@ -716,42 +1502,42 @@ func display_relation(raw: int) -> String:
 
 
 func clamp_values() -> void:
-	# data[12]/[13]/[68] 工业/农业/服务业：上限 1500
-	if 数值表[I_INDUSTRY] > 1500:
-		数值表[I_INDUSTRY] = 1500
-	if 数值表[I_AGRICULTURE] > 1500:
-		数值表[I_AGRICULTURE] = 1500
-	if 数值表[I_SERVICES] > 1500:
-		数值表[I_SERVICES] = 1500
-	# data[3]/[4]/[1] 民众支持/思想自由/党支持：上限 1000
-	if 数值表[I_PEOPLE_SUPPORT] > 1000:
-		数值表[I_PEOPLE_SUPPORT] = 1000
-	if 数值表[I_THOUGHT_FREEDOM] > 1000:
-		数值表[I_THOUGHT_FREEDOM] = 1000
-	if 数值表[I_PARTY_SUPPORT] > 1000:
-		数值表[I_PARTY_SUPPORT] = 1000
-	# data[4] 思想自由下限 0
-	if 数值表[I_THOUGHT_FREEDOM] < 0:
-		数值表[I_THOUGHT_FREEDOM] = 0
-	# data[26] 腐败下限 0，无上限
-	if 数值表[I_CORRUPTION] < 0:
-		数值表[I_CORRUPTION] = 0
-	# data[5] 生活水平：0-1500
-	if 数值表[I_LIVING] < 0:
-		数值表[I_LIVING] = 0
-	elif 数值表[I_LIVING] > 1500:
-		数值表[I_LIVING] = 1500
-	# data[108] 寡头 0-100
-	if 数值表[I_OLIGARCH] < 0:
-		数值表[I_OLIGARCH] = 0
-	elif 数值表[I_OLIGARCH] > 100:
-		数值表[I_OLIGARCH] = 100
-	# data[6] 外交声誉下限 -50，随后原版直接 return（因此 >1100 的钳制不可达）
-	if 数值表[I_DIPLO] < -50:
-		数值表[I_DIPLO] = -50
+	# data.industry/[13]/[68] 工业/农业/服务业：上限 1500
+	if industry > 1500:
+		industry = 1500
+	if agriculture > 1500:
+		agriculture = 1500
+	if services > 1500:
+		services = 1500
+	# data.people_support/[4]/[1] 民众支持/思想自由/党支持：上限 1000
+	if people_support > 1000:
+		people_support = 1000
+	if thought_freedom > 1000:
+		thought_freedom = 1000
+	if party_support > 1000:
+		party_support = 1000
+	# data.thought_freedom 思想自由下限 0
+	if thought_freedom < 0:
+		thought_freedom = 0
+	# data.corruption 腐败下限 0，无上限
+	if corruption < 0:
+		corruption = 0
+	# data.living_standard 生活水平：0-1500
+	if living_standard < 0:
+		living_standard = 0
+	elif living_standard > 1500:
+		living_standard = 1500
+	# data.oligarch 寡头 0-100
+	if oligarch < 0:
+		oligarch = 0
+	elif oligarch > 100:
+		oligarch = 100
+	# data.diplomatic_reputation 外交声誉下限 -50，随后原版直接 return（因此 >1100 的钳制不可达）
+	if diplomatic_reputation < -50:
+		diplomatic_reputation = -50
 		return
-	if 数值表[I_DIPLO] > 1100:
-		数值表[I_DIPLO] = 1100
+	if diplomatic_reputation > 1100:
+		diplomatic_reputation = 1100
 
 
 # ── 超级大国关系与力量边界保护（BoundsOfVariables 5973-6028）──
@@ -801,7 +1587,7 @@ func has_revolutionary_leader() -> bool:
 		return true
 	var player := get_player_country()
 	return leader.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE \
-		and 数值表[I_POLITICAL_LINE] == 0 \
+		and political_line == 0 \
 		and player != null and player.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST
 
 
@@ -834,11 +1620,11 @@ func african_socialism_count() -> int:
 
 
 func can_found_african_union() -> bool:
-	if 数值表.size() <= I_BUDGET or 数值表.size() <= I_RESERVE or 数值表.size() <= I_ARMY:
+	if size() <= I_BUDGET or size() <= I_RESERVE or size() <= I_ARMY:
 		return false
 	return has_revolutionary_leader() \
-		and 数值表[I_BUDGET] + 数值表[I_RESERVE] >= 200 \
-		and 数值表[I_ARMY] >= 300 \
+		and budget + reserve >= 200 \
+		and army >= 300 \
 		and influence_prc > 500 \
 		and african_proprc_ready() \
 		and african_socialism_count() >= 6

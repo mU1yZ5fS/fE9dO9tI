@@ -94,12 +94,12 @@ func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= W.I_YEAR:
 		return false
 	if world.completed_event_ids.has("event_403"):
 		return false
-	if not ((d[W.I_YEAR] == 1984 and d[W.I_MONTH] >= 3) or d[W.I_YEAR] >= 1985):
+	if not ((d.year == 1984 and d.month >= 3) or d.year >= 1985):
 		return false
 	var china := world.get_country_by_legacy_index(1)
 	if china != null and china.has_tag("sev"):
@@ -122,10 +122,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var opt := event_def.options
-	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
-	var army := d[W.I_ARMY] if d.size() > W.I_ARMY else 0
+	var budget_reserve := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
+	var army := d.army if d.size() > W.I_ARMY else 0
 	var us := world.get_country_by_legacy_index(51)
 	var us_dev := us.development if us != null else 0
 	if budget_reserve >= 150 and army >= 150 and (world.influence_prc >= 600 or us_dev > 0):
@@ -214,7 +214,7 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0
 
 func _start_war(war_id: int, war_name: String, side1: String, side2: String, infl1: int, infl2: int, fortnight: int) -> void:

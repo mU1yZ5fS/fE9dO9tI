@@ -24,7 +24,7 @@ const TXT_IDX_594 := "军事实力"
 
 func _raw(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 
@@ -53,9 +53,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var budget_reserve := d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0)
-	var agents := d[W.I_AGENTS] if d.size() > W.I_AGENTS else 0
+	var d := world
+	var budget_reserve := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
+	var agents := d.agents if d.size() > W.I_AGENTS else 0
 	if budget_reserve >= 50 and agents >= 100:
 		_enable(event_def.options[0], _fmt(TXT_OPT0_EN, [TXT_IDX_592, TXT_IDX_593]))
 	elif budget_reserve < 50:

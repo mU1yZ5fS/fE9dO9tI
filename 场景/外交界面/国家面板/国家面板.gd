@@ -175,17 +175,17 @@ func _on_country_selected(gwcode: int, country_name: String) -> void:
 	var w: WorldState = GameManager.world
 
 	# 原版 CountryScript.OnMouseDown 不排除玩家本国（中国=allcountries[1] 有自己的按钮链），
-	# 仅对 69 西藏/70 维吾尔斯坦做 data[67]/data[66] 非零门控，故此处不再屏蔽自己。
+	# 仅对 69 西藏/70 维吾尔斯坦做 data.tibet_policy/data.xinjiang_policy 非零门控，故此处不再屏蔽自己。
 	var country := w.get_country_by_gwcode(gwcode)
 
-	# 原版 CountryScript.OnMouseDown L470：69 西藏需 data[67]!=0、70 维吾尔斯坦需 data[66]!=0
+	# 原版 CountryScript.OnMouseDown L470：69 西藏需 data.tibet_policy!=0、70 维吾尔斯坦需 data.xinjiang_policy!=0
 	# 才允许打开面板，否则点击不响应（这里关闭面板等价）。
 	if country != null:
 		var legacy := int(country.原版序号)
-		if legacy == 69 and w.数值表[W.I_TIBET_POLICY] == 0:
+		if legacy == 69 and w.tibet_policy == 0:
 			_close()
 			return
-		if legacy == 70 and w.数值表[W.I_XINJIANG_POLICY] == 0:
+		if legacy == 70 and w.xinjiang_policy == 0:
 			_close()
 			return
 
@@ -410,7 +410,7 @@ func _clear_condition_text() -> void:
 
 ## [已弃用 2026-07-27] 手写近似互动，被 _build_actions_v2（编号目录驱动）取代。
 ## 保留供后续批次比对，勿在生产路径调用。
-func _def_9(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+func _def_9(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	var opis := "深化经贸关系"
 	if country.原版序号 == 104:
 		opis = "建立正式外交关系并深化经贸关系"
@@ -465,20 +465,20 @@ func _diplo_rep_desc(w: WorldState, country: CountryData) -> String:
 	return "外交声誉低于 50"
 
 
-func _diplo_rep_check(w: WorldState, d: Array[int], country: CountryData) -> bool:
+func _diplo_rep_check(w: WorldState, d: WorldState, country: CountryData) -> bool:
 	if country.原版序号 == 108:
 		var france := w.get_country_by_legacy_index(21)
 		if france != null and france.has_tag("对华贸易") and country.puppet_of == GameConstants.LegacySlot.FRANCE:
 			return france.has_tag("对华贸易")
 	if w.leader_property.size() > 2 and w.leader_property[2] and w.is_socialism(country, false):
-		return d[W.I_DIPLO] < 114514
+		return d.diplomatic_reputation < 114514
 	if w.is_authoritarian(country):
-		return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 800
+		return d.diplomatic_reputation > 390 and d.diplomatic_reputation < 800
 	if w.is_socialism(country, true):
-		return d[W.I_DIPLO] > 690
+		return d.diplomatic_reputation > 690
 	if country.government == GameConstants.Government.REFORMIST:
-		return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 850
-	return d[W.I_DIPLO] < 500
+		return d.diplomatic_reputation > 390 and d.diplomatic_reputation < 850
+	return d.diplomatic_reputation < 500
 
 
 ## 工业档（编号9 的 uslovie[2]，DBS L313-327）
@@ -492,31 +492,31 @@ func _diplo_industry_desc(country: CountryData) -> String:
 	return "工业不低于 50"
 
 
-func _diplo_industry_check(d: Array[int], country: CountryData) -> bool:
+func _diplo_industry_check(d: WorldState, country: CountryData) -> bool:
 	if country.has_tag("亲中"):
-		return d[W.I_INDUSTRY] >= 300
+		return d.industry >= 300
 	var n := country.原版序号
 	if n == 92 or n == 85 or n == 136 or n == 135 or n == 137 \
 			or (n > 87 and n < 92) or n == 0:
-		return d[W.I_INDUSTRY] >= 700
-	return d[W.I_INDUSTRY] >= 500
+		return d.industry >= 700
+	return d.industry >= 500
 
 
 # ============================================================================
 # 编号 24 · 发展贸易（变体）
 # DiploButtonScript Show L778-837 / OnMouseDown L9039
 # ============================================================================
-func _def_24(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+func _def_24(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	var conds: Array = []
 	# uslovie[0]（DBS L782-810）：14 伊朗 sub==20 首档 + 通用声誉档
 	var rep_desc := _diplo_rep_desc(w, country)
 	var rep_check := func() -> bool: return _diplo_rep_check(w, d, country)
 	if country.原版序号 == GameConstants.LegacySlot.IRAQ and country.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 		rep_desc = "外交声誉低于 11451.4"
-		rep_check = func() -> bool: return d[W.I_DIPLO] < 114514
+		rep_check = func() -> bool: return d.diplomatic_reputation < 114514
 	conds.append(_cond(rep_desc, rep_check))
 	conds.append(_cond("尚未深化经贸关系", func(): return not country.has_tag("对华贸易")))
-	conds.append(_cond("工业不低于 70", func(): return d[W.I_INDUSTRY] >= 700))
+	conds.append(_cond("工业不低于 70", func(): return d.industry >= 700))
 	# uslovie[3]（DBS L816-836）：按国专属排他
 	var player := w.get_player_country()
 	var n := country.原版序号
@@ -538,7 +538,7 @@ func _def_24(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 # 编号 10 · 经济合作
 # DiploButtonScript Show L343-431 / OnMouseDown L8839-8855
 # ============================================================================
-func _def_10(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+func _def_10(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	var player := w.get_player_country()
 	var conds: Array = []
 	# 条件1(uslovie[0])：按国专属（DBS L347-361）
@@ -554,19 +554,19 @@ func _def_10(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 	if country.原版序号 == 8:
 		if w.leader_property.size() > 2 and w.leader_property[2] and w.is_socialism(country, false):
 			desc0 = "外交声誉低于 11451.4"
-			check0 = func() -> bool: return d[W.I_DIPLO] < 114514
+			check0 = func() -> bool: return d.diplomatic_reputation < 114514
 		elif country.government == GameConstants.Government.AUTHORITARIAN:
 			desc0 = "外交声誉在 39 到 80 之间"
-			check0 = func() -> bool: return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 800
+			check0 = func() -> bool: return d.diplomatic_reputation > 390 and d.diplomatic_reputation < 800
 		elif country.government == GameConstants.Government.SOCIALIST:
 			desc0 = "外交声誉高于 69"
-			check0 = func() -> bool: return d[W.I_DIPLO] > 690
+			check0 = func() -> bool: return d.diplomatic_reputation > 690
 		elif country.government == GameConstants.Government.REFORMIST:
 			desc0 = "外交声誉在 39 到 85 之间"
-			check0 = func() -> bool: return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 850
+			check0 = func() -> bool: return d.diplomatic_reputation > 390 and d.diplomatic_reputation < 850
 		else:
 			desc0 = "外交声誉低于 50"
-			check0 = func() -> bool: return d[W.I_DIPLO] < 500
+			check0 = func() -> bool: return d.diplomatic_reputation < 500
 	conds.append(_cond(desc0, check0))
 	# 条件2(uslovie[1])：中国已建经合组织(econ) 或 已入经互会(sev)
 	conds.append(_cond("中国已建立经合组织，或中国已加入经互会",
@@ -601,11 +601,11 @@ func _def_10(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 			w.influence_prc += 10
 			country.set_tag("sev", true)
 		else:
-			d[W.I_PEOPLE_SUPPORT] += 20
+			d.people_support += 20
 			w.influence_prc += 20
 			country.set_tag("econ", true)
 			country.social_stability = 1000
-			d[W.I_PARTY_SUPPORT] += 30
+			d.party_support += 30
 	return {
 		"caption": "经济合作", "opis": "允许该国加入我国经济联盟，建立全面战略合作伙伴关系",
 		"conditions": conds, "dormant": false, "effect": eff,
@@ -616,12 +616,12 @@ func _def_10(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 # 编号 19 · 军事同盟
 # DiploButtonScript Show L636-661 / OnMouseDown L8951-8976
 # ============================================================================
-func _def_19(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+func _def_19(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	var player := w.get_player_country()
 	var conds: Array = []
 	# 原版 uslovie 赋值序为 [1],[3],[0],[2]；此处按可读顺序列出，条件为 AND 故顺序不影响判定
-	conds.append(_cond("至少 2 军事实力", func(): return d[W.I_ARMY] >= 20))
-	conds.append(_cond("外交声誉高于 79", func(): return d[W.I_DIPLO] > 790))
+	conds.append(_cond("至少 2 军事实力", func(): return d.army >= 20))
+	conds.append(_cond("外交声誉高于 79", func(): return d.diplomatic_reputation > 790))
 	conds.append(_cond("他们已加入经合组织或经互会",
 		func(): return country.has_tag("sev") or country.has_tag("econ")))
 	var slot_desc := "他们未参与军事联盟，且中国已成立集安组织或已加入华约"
@@ -673,18 +673,18 @@ func _mil19_slot_check(w: WorldState, player: CountryData, country: CountryData)
 # DiploButtonScript Show L54-73 / OnMouseDown L8622-8665
 # 西欧 = 原版序号 ∈ {92,21,17}；否则东欧
 # ============================================================================
-func _def_1(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+func _def_1(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	var player := w.get_player_country()
 	var is_west := country.原版序号 == 92 or country.原版序号 == GameConstants.LegacySlot.FRANCE or country.原版序号 == 17
 	var conds: Array = []
 	# uslovie[0]：特工≥50 且 预算+外汇≥30（DBS L58）
 	conds.append(_cond("至少 5 特工网络和 3 百万预算",
-		func(): return d[W.I_AGENTS] >= 50 and d[W.I_BUDGET] + d[W.I_RESERVE] >= 30))
+		func(): return d.agents >= 50 and d.budget + d.reserve >= 30))
 	# uslovie[1]：modifies[6].active（DBS L60）
 	conds.append(_cond("我们始终坚持伟大的毛泽东思想！",
 		func(): return _modifier_active(w, 6)))
 	# uslovie[2]：声誉>750（DBS L62）
-	conds.append(_cond("外交声誉高于 75", func(): return d[W.I_DIPLO] > 750))
+	conds.append(_cond("外交声誉高于 75", func(): return d.diplomatic_reputation > 750))
 	# uslovie[3]：西欧读 war_active[0]，东欧读 war_active[1]（DBS L64-71，每年一次冷却）
 	if is_west:
 		conds.append(_cond("西欧：每年一次", func(): return not _war_active_flag(w, 0)))
@@ -718,9 +718,9 @@ func _def_1(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 			# DBS L8657-8660：completedDecisions[9] → influencePRC += 25
 			if w.decisions != null and w.decisions.completed.size() > 9 and w.decisions.completed[9]:
 				w.influence_prc += 25
-		d[W.I_AGENTS] -= 50
-		d[W.I_BUDGET] -= 30
-		d[W.I_ARMY] -= 50
+		d.agents -= 50
+		d.budget -= 30
+		d.army -= 50
 	return {
 		"caption": "扶持极左派", "opis": "支持毛派组织",
 		"conditions": conds, "dormant": false, "effect": eff,
@@ -750,7 +750,7 @@ func _set_war_active(w: WorldState, idx: int, value: bool) -> void:
 
 # 编号 5000 革命国际（休眠）：条件 DBS L5520-5538，效果 DBS L12585-12588。
 # 休眠守卫 uslovie[0]=event_done[548]，事件移植说明→get_flag 默认 false。
-func _def_5000(w: WorldState, _d: Array[int], country: CountryData) -> Dictionary:
+func _def_5000(w: WorldState, _d: WorldState, country: CountryData) -> Dictionary:
 	var player := w.get_player_country()
 	var conds: Array = []
 	# uslovie[0]：event_done[548]（DBS L5524，事件移植说明）
@@ -795,19 +795,19 @@ func _rim5000_regime_check(w: WorldState, country: CountryData) -> bool:
 
 # 编号 5001 非洲联盟（休眠）：条件 DBS L5539-5551，效果 DBS L12590-12593。
 # 休眠守卫 uslovie[0]=event_done[500]，事件移植说明→get_flag 默认 false。
-func _def_5001(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+func _def_5001(w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	var conds: Array = []
 	# uslovie[0]：event_done[500]（DBS L5543，事件移植说明）
 	conds.append(_cond("非洲联盟已建立", func(): return w.get_flag("event_done_500")))
 	# 列表级守卫（CS L2679 等）：目标社会主义 且 亲中
 	conds.append(_cond("该国是社会主义政权", func(): return w.is_socialism(country, true)))
 	conds.append(_cond("该国持亲中立场", func(): return country.has_tag("亲中")))
-	# uslovie[1]：data[22]>=20（DBS L5545）
-	conds.append(_cond("至少 2 军事实力", func(): return d[W.I_ARMY] >= 20))
+	# uslovie[1]：data.army>=20（DBS L5545）
+	conds.append(_cond("至少 2 军事实力", func(): return d.army >= 20))
 	# uslovie[2]：!isAU（DBS L5547）
 	conds.append(_cond("他们未加入非洲联盟", func(): return not country.has_tag("au")))
-	# uslovie[3]：data[6]>790（DBS L5549）
-	conds.append(_cond("外交声誉高于 79", func(): return d[W.I_DIPLO] > 790))
+	# uslovie[3]：data.diplomatic_reputation>790（DBS L5549）
+	conds.append(_cond("外交声誉高于 79", func(): return d.diplomatic_reputation > 790))
 	var eff := func():
 		w.influence_prc += 30
 		country.set_tag("au", true)
@@ -820,7 +820,7 @@ func _def_5001(w: WorldState, d: Array[int], country: CountryData) -> Dictionary
 
 # 编号 → 定义分发（返回 {caption, opis, conditions, effect, dormant} 或 {}）。
 # 优先查 外交互动目录（批1-6 全量翻译，共 213 个编号）；查不到再回退到本文件旧定义。
-func _diplo_action_def(编号: int, w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
+func _diplo_action_def(编号: int, w: WorldState, d: WorldState, country: CountryData) -> Dictionary:
 	if _action_catalog != null:
 		var catalog_def: Dictionary = _action_catalog.build_action(编号, {
 			"w": w, "d": d, "country": country, "caption": "",
@@ -927,7 +927,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			# CS L2262：整支在 dlc[3] 内 → 无按钮 注
 			return []
 		87:
-			# CS L2282：data[65] 建模说明 → 按 !=0 走第二分支 注；
+			# CS L2282：data.hk_macau_status 建模说明 → 按 !=0 走第二分支 注；
 			# data65==0 的特别军事行动(2/3)移植说明；128 移植说明
 			if country.has_tag("亲美") and country.government == GameConstants.Government.AUTHORITARIAN:
 				return []
@@ -947,7 +947,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 						n87.append(DIPLO_BTN_RIM5000)
 			return n87
 		92:
-			# CS L2325：data[65] 建模说明 → 按 !=0 且 !auth 分支 注；
+			# CS L2325：data.hk_macau_status 建模说明 → 按 !=0 且 !auth 分支 注；
 			# 2/3/113/1064-1066/10000 移植说明
 			if w.is_authoritarian(country):
 				return []
@@ -1769,7 +1769,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			# CS L672：prcpower 建模说明(0≠1000) → 首分支；8 支持友方派系(ev58)移植说明 注
 			return [DIPLO_BTN_TRADE9]
 		9:
-			# CS L706：11 联络反对派移植说明 注；war22/data[133]/res62 建模说明 → 视为通过
+			# CS L706：11 联络反对派移植说明 注；war22/data.soviet_reorganization_war_state/res62 建模说明 → 视为通过
 			var n9: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			if _revint_ok(w, country):
 				n9.append(DIPLO_BTN_RIM5000)
@@ -1925,9 +1925,9 @@ func _dlc_west_numbers(w: WorldState, country: CountryData) -> Array:
 ## 7 苏联面板（CS L497-523）。
 func _soviet_numbers(w: WorldState, country: CountryData) -> Array:
 	var player := w.get_player_country()
-	var d := w.数值表
+	var d := w
 	if country.has_tag("nato") or w.war_going(22) \
-			or (d.size() > 133 and (d[133] == 1 or d[133] == 3)) \
+			or (d.size() > 133 and (d.soviet_reorganization_war_state == 1 or d.soviet_reorganization_war_state == 3)) \
 			or w.modifier_active(49) or w.get_flag("is_gkchp") or w.ind_opp:
 		return []
 	var nums: Array = []
@@ -2048,7 +2048,7 @@ func _x167_numbers(w: WorldState, country: CountryData) -> Array[int]:
 
 
 ## 链尾块H（CS L3914）：非洲区间+亲中+!africaOff → 10,[soc500]5001,[revint]5000
-## 注：66 资源开发区（CS L3925，data[103] 移植说明）
+## 注：66 资源开发区（CS L3925，data.africa_coup_route 移植说明）
 func _africa_block_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var n := country.原版序号
 	var in_range := (n > 53 and n < 69) or (n > 105 and n < 109) or (n > 111 and n < 134) or n == 42
@@ -2178,7 +2178,7 @@ func _build_actions_v2(country: CountryData) -> Array[Dictionary]:
 	var w: WorldState = GameManager.world
 	if w == null:
 		return []
-	var d := w.数值表
+	var d := w
 	var actions: Array[Dictionary] = []
 
 	# 逐国链已把原版全部按钮（含剧情操作）按槽序产出；这里统一经目录解析。

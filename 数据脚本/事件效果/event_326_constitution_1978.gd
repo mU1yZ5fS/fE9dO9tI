@@ -21,7 +21,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
-	var data := world.数值表
+	var data := world
 	if data.size() <= W.I_POLITICAL_LINE:
 		return
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
@@ -30,7 +30,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		event_def.description = TXT_DESC_BASE + TXT_DESC_FOUR
 	else:
 		event_def.description = TXT_DESC_BASE + TXT_DESC_THREE
-	var line := data[W.I_POLITICAL_LINE]
+	var line := data.political_line
 	var opt := event_def.options
 	if line <= 1 and mod3 and mod6:
 		_enable(opt[0], event_def.options[0].text)
@@ -77,12 +77,12 @@ func execute(context: Dictionary) -> void:
 				if p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 					p.loyalty = 0
 					p.power -= 500
-			if d[W.I_PRESS_POLICY] < 18:
-				d[W.I_PRESS_POLICY] += 1
+			if d.press_policy < 18:
+				d.press_policy += 1
 			_set_data(W.I_PARTY_SYSTEM, 6)
-			if d[W.I_ECON_SYSTEM] > 11:
+			if d.econ_system > 11:
 				_set_data(W.I_ECON_SYSTEM, 11)
-			if d[W.I_RELIGION] > 25:
+			if d.religion_policy > 25:
 				_set_data(W.I_RELIGION, 24)
 			_add(W.I_PARTY_SUPPORT, -100)
 			_add(W.I_PEOPLE_SUPPORT, 100)
@@ -96,12 +96,12 @@ func execute(context: Dictionary) -> void:
 			_add_faction_support(2, 50)
 			_add(W.I_PEOPLE_SUPPORT, 25)
 			_add(W.I_THOUGHT_FREEDOM, 15)
-			if d[W.I_PRESS_POLICY] > 18:
-				d[W.I_PRESS_POLICY] -= 1
+			if d.press_policy > 18:
+				d.press_policy -= 1
 			else:
-				d[W.I_PRESS_POLICY] += 1
+				d.press_policy += 1
 			_set_mod_active(28, false)
-			if d[W.I_PARTY_SYSTEM] > 7:
+			if d.party_system > 7:
 				_set_data(W.I_PARTY_SYSTEM, 7)
 			_set_mod_active(29, true)
 			context["result_text"] = TXT_R1
@@ -109,37 +109,37 @@ func execute(context: Dictionary) -> void:
 			_add_faction_support(2, 50)
 			_add_faction_support(3, 50)
 			_add(W.I_THOUGHT_FREEDOM, 15)
-			if d[W.I_PRESS_POLICY] < 18:
-				d[W.I_PRESS_POLICY] += 1
-			if d[W.I_ECON_SYSTEM] < 15:
-				d[W.I_ECON_SYSTEM] += 1
+			if d.press_policy < 18:
+				d.press_policy += 1
+			if d.econ_system < 15:
+				d.econ_system += 1
 			_add(W.I_DIPLO, -100)
 			_set_mod_active(28, false)
 			_set_mod_active(30, true)
-			if d[W.I_REFORM_STAGE] < 2:
+			if d.reform_stage < 2:
 				_set_data(W.I_REFORM_STAGE, 2)
-			if d[W.I_ECON_SYSTEM] == 11:
+			if d.econ_system == 11:
 				_set_data(W.I_ECON_SYSTEM, 12)
-			elif d[W.I_ECON_SYSTEM] < 13:
+			elif d.econ_system < 13:
 				_set_data(W.I_ECON_SYSTEM, 13)
 			context["result_text"] = TXT_R2
 		3:
 			_add_faction_support(4, 50)
-			if d[W.I_ECON_SYSTEM] < 15:
-				d[W.I_ECON_SYSTEM] += 1
-			if d[W.I_PARTY_SYSTEM] < 8:
-				d[W.I_PARTY_SYSTEM] += 1
+			if d.econ_system < 15:
+				d.econ_system += 1
+			if d.party_system < 8:
+				d.party_system += 1
 			_add(W.I_DIPLO, -250)
 			_add(W.I_THOUGHT_FREEDOM, 50)
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_PARTY_SUPPORT, -50)
 			_set_mod_active(28, false)
 			_set_mod_active(31, true)
-			if d[W.I_REFORM_STAGE] < 2:
+			if d.reform_stage < 2:
 				_set_data(W.I_REFORM_STAGE, 2)
-			if d[W.I_ECON_SYSTEM] < 14:
+			if d.econ_system < 14:
 				_set_data(W.I_ECON_SYSTEM, 14)
-			if d[W.I_PRESS_POLICY] < 17:
+			if d.press_policy < 17:
 				_set_data(W.I_PRESS_POLICY, 17)
 			context["result_text"] = TXT_R3
 		4:
@@ -151,7 +151,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 func _set_mod_active(idx: int, value: bool) -> void:
 	if ws.modifiers.size() > idx and ws.modifiers[idx] != null:

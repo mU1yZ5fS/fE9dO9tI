@@ -39,7 +39,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		event_def.description = "泛希腊社会主义运动与新民主党的竞争仍在继续。PASOK仍然希望维持民主社会主义，并开始修订宪法，将希腊彻底转向议会共和制，左翼选民的壮大使得他们仍有希望执政；新民主党继续支持着他们的亲西方的自由主义政策。当然，希腊共产党的影响力较大，但希腊的左翼生态位已经被PASOK占领，他们已不具有掌权希望。国际形势的变化将会影响此次大选……"
 	else:
 		event_def.description = "希腊左翼联盟对左翼改革的程度产生了矛盾，内部各党对施政方针已经有了不同的见解，此前的共同执政的情况大概已经无法维持了。希腊共产党希望进行更加深入的社会主义改革，并结束中立政策，与各个社会主义国家加深合作；泛希腊社会主义运动则希望搞“民主的社会主义”，拒绝“极权主义”并维持中立；联盟中力量较小的派系，如希腊共产党（国内派）希望遵循欧洲共产主义，但是他们没有单独参选或执政的基础。当然，右翼政党也可能借助左翼分裂的背景而卷土重来。在大选的背景下，左翼联盟是否还能存续？"
-	var agents := world.数值表[W.I_AGENTS] if world.数值表.size() > W.I_AGENTS else 0
+	var agents := world.agents if world.size() > W.I_AGENTS else 0
 	var opt := event_def.options
 	if agents >= 40:
 		_enable(opt[0], "支持希腊共产党")

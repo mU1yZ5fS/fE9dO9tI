@@ -122,7 +122,7 @@ static func _req_dlc03(w: WorldState) -> bool:
 	# CS L1101-1104（387）
 	if not _done(387) and _ge(w, 1979, 2, 21):
 		return _start(387)
-	# CS L1111-1114（389；原版笔误 `a.data[21] > 15` 按日期语义移植为日>15）
+	# CS L1111-1114（389；原版笔误 `a.data.year > 15` 按日期语义移植为日>15）
 	if not _done(389) and _ge(w, 1983, 6, 16) and _dv(w, 131) == 1:
 		return _start(389)
 	# CS L1116-1119（390）
@@ -269,8 +269,8 @@ static func _res(num: int) -> int:
 
 
 static func _dv(w: WorldState, idx: int) -> int:
-	if w.数值表.size() > idx:
-		return w.数值表[idx]
+	if w.size() > idx:
+		return w.get_data_by_index(idx)
 	return 0
 
 

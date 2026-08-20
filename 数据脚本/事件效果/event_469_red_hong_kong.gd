@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event469.cs：红色香江（香港左派援助二选项）。
-## 触发：ReqEventForDLC02.cs:432-434 —— BritLost && data[65]<=0；fire_only_once 承担 !event_done[469]。
+## 触发：ReqEventForDLC02.cs:432-434 —— BritLost && data.hk_macau_status<=0；fire_only_once 承担 !event_done[469]。
 ## 差异：BritLost→global_flags；names1/names2 拼接→ws.leader.name_display。
 
 const TXT_OPT0_DIS := "我们自己都不放心党内的左派！"
@@ -16,8 +16,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or event_def.options.size() < 2:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var line56 := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 0
+	var d := world
+	var line56 := d.political_line if d.size() > W.I_POLITICAL_LINE else 0
 	var opt := event_def.options
 	if line56 <= 1:
 		_enable(opt[0], event_def.options[0].text)
@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 func _set_relation(empire_index: int, value: int) -> void:

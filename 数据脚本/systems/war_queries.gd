@@ -19,7 +19,7 @@ static func get_active_wars(w: WorldState) -> Array[WarData]:
 static func get_mil_intervention_display(w: WorldState) -> String:
 	if w == null:
 		return "0.0"
-	return "%.1f" % (float(w.数值表[W.I_MIL_INTERVENTION]) / 10.0)
+	return "%.1f" % (float(w.mil_intervention) / 10.0)
 
 
 static func wc(w: WorldState, idx: int) -> CountryData:

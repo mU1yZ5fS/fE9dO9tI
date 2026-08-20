@@ -31,7 +31,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

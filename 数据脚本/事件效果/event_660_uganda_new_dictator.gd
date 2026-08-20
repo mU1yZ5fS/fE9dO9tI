@@ -27,12 +27,12 @@ const T_660_14 := "乌干达似乎没有比政变前更接近和平。发出和�
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var data := world.数值表
+	var data := world
 	if data.size() <= W.I_YEAR:
 		return false
-	var date_ok := (data[W.I_YEAR] >= 1985 and data[W.I_MONTH] >= 7 and data[W.I_DAY] >= 30) \
-			or (data[W.I_YEAR] >= 1985 and data[W.I_MONTH] >= 8) \
-			or data[W.I_YEAR] >= 1986
+	var date_ok := (data.year >= 1985 and data.month >= 7 and data.day >= 30) \
+			or (data.year >= 1985 and data.month >= 8) \
+			or data.year >= 1986
 	var r659 := int(world.completed_event_ids.get("event_659", 0))
 	if date_ok and r659 < 3:
 		return true

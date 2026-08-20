@@ -56,7 +56,7 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 		return
 	if event_def.event_id != "event_370":
 		return
-	var d2 := p_ws.数值表
+	var d2 := p_ws
 	var syria := p_ws.get_country_by_legacy_index(35)
 	var iraq := p_ws.get_country_by_legacy_index(14)
 	var iran := p_ws.get_country_by_legacy_index(8)
@@ -83,9 +83,9 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 	event_def.description = desc
 	if event_def.options.size() < 5:
 		return
-	var budget_sum: int = d2[W.I_BUDGET] + d2[W.I_RESERVE]
-	var agents: int = d2[W.I_AGENTS]
-	var army: int = d2[W.I_ARMY]
+	var budget_sum: int = d2.budget + d2.reserve
+	var agents: int = d2.agents
+	var army: int = d2.army
 	var usa := p_ws.get_country_by_legacy_index(51)
 	var greece := p_ws.get_country_by_legacy_index(45)
 	var opt := event_def.options
@@ -111,13 +111,13 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 	opt[2].text = TXT_370_648
 	# 选项 3
 	opt[3].text = TXT_370_649.replace("{0}", TXT_370_592).replace("{2}", TXT_370_594)
-	var xinjiang := d2[W.I_XINJIANG_POLICY] > 0 if d2.size() > W.I_XINJIANG_POLICY else false
-	var tibet := d2[W.I_TIBET_POLICY] > 0 if d2.size() > W.I_TIBET_POLICY else false
-	if (xinjiang or tibet) and budget_sum >= 150 and army >= 200 and d2[W.I_TERRITORY] == 20:
+	var xinjiang := d2.xinjiang_policy > 0 if d2.size() > W.I_XINJIANG_POLICY else false
+	var tibet := d2.tibet_policy > 0 if d2.size() > W.I_TIBET_POLICY else false
+	if (xinjiang or tibet) and budget_sum >= 150 and army >= 200 and d2.territory_policy == 20:
 		opt[3].disabled_text = ""
 	elif not xinjiang and not tibet:
 		opt[3].disabled_text = TXT_370_661
-	elif d2[W.I_TERRITORY] == 20:
+	elif d2.territory_policy == 20:
 		opt[3].disabled_text = TXT_370_660
 	elif budget_sum < 150:
 		opt[3].disabled_text = TXT_370_566.replace("{0}", "15")
@@ -125,7 +125,7 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 		opt[3].disabled_text = TXT_370_608.replace("{0}", "20")
 	# 选项 4
 	opt[4].text = TXT_370_650
-	if d2[W.I_DIPLO] < 800 and greece != null and greece.has_tag("nato"):
+	if d2.diplomatic_reputation < 800 and greece != null and greece.has_tag("nato"):
 		opt[4].disabled_text = ""
 	elif greece == null or not greece.has_tag("nato"):
 		opt[4].disabled_text = TXT_370_681
@@ -146,14 +146,14 @@ func _event_370(option_index: int, context: Dictionary) -> void:
 	# Event370.cs:112-113：两伊战争(war3)若进行中则停战。
 	if ws.wars.size() > 3 and ws.wars[3] != null:
 		ws.wars[3].is_going = false
-	# Event370.cs:114-126：中立国判定与 data[143] 增量。
+	# Event370.cs:114-126：中立国判定与 data.oil_price 增量。
 	var syria_neutral := _syria_neutral()
 	var iraq_neutral := _iraq_neutral()
 	var iran_neutral := _iran_neutral()
 	if iraq_neutral and d.size() > 143:
-		d[143] += 3
+		d.oil_price += 3
 	if iran_neutral and d.size() > 143:
-		d[143] += 3
+		d.oil_price += 3
 	var war3_bonus := 0
 	if ws.wars.size() > 3 and ws.wars[3] != null and ws.wars[3].is_going:
 		war3_bonus = 150
@@ -239,9 +239,9 @@ func _result_3(
 	_start_neutral_wars(syria_neutral, iraq_neutral, iran_neutral, war3_bonus, false, 1)
 	var region := TXT_370_680
 	if d.size() > W.I_XINJIANG_POLICY and d.size() > W.I_TIBET_POLICY:
-		if d[W.I_XINJIANG_POLICY] > 0 and d[W.I_TIBET_POLICY] > 0:
+		if d.xinjiang_policy > 0 and d.tibet_policy > 0:
 			region = TXT_370_680
-		elif d[W.I_TIBET_POLICY] > 0:
+		elif d.tibet_policy > 0:
 			region = TXT_370_679
 		else:
 			region = TXT_370_680
@@ -261,7 +261,7 @@ func _result_4(
 		_add_empire_relation(EmpireData.USA, -100)
 		_add_empire_relation(EmpireData.USSR, -100)
 		if d.size() > 126:
-			d[126] = 1
+			d.turkish_straits_crisis = 1
 		_turkey_leave_nato_and_usa()
 		_start_neutral_wars(syria_neutral, iraq_neutral, iran_neutral, war3_bonus, true, 2)
 		context["result_text"] = TXT_370_656
@@ -365,7 +365,7 @@ func _turkey_leave_nato_and_usa() -> void:
 
 
 func _reward_separatist_states() -> void:
-	if d.size() > W.I_XINJIANG_POLICY and d[W.I_XINJIANG_POLICY] > 0:
+	if d.size() > W.I_XINJIANG_POLICY and d.xinjiang_policy > 0:
 		var uyghuristan := ws.get_country_by_legacy_index(70)
 		if uyghuristan != null:
 			uyghuristan.development = 100
@@ -373,7 +373,7 @@ func _reward_separatist_states() -> void:
 			uyghuristan.set_tag("亲中", true)
 			uyghuristan.set_tag("亲美", false)
 			uyghuristan.set_tag("亲苏", false)
-	if d.size() > W.I_TIBET_POLICY and d[W.I_TIBET_POLICY] > 0:
+	if d.size() > W.I_TIBET_POLICY and d.tibet_policy > 0:
 		var tibet := ws.get_country_by_legacy_index(69)
 		if tibet != null:
 			tibet.development = 100
@@ -397,7 +397,7 @@ func _ussr_power() -> int:
 
 func _add_data(index: int, delta: int) -> void:
 	if index >= 0 and index < d.size():
-		d[index] += delta
+		d.add_data_by_index(index, delta)
 
 
 func _add_empire_relation(empire_index: int, delta: int) -> void:
@@ -412,8 +412,8 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		d[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		d[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		d.usa_relations = ws.empires[EmpireData.USA].relations
+		d.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		d[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		d[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		d.ussr_relations = ws.empires[EmpireData.USSR].relations
+		d.soviet_influence = ws.empires[EmpireData.USSR].power

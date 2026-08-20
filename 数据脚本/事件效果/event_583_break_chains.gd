@@ -36,8 +36,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		desc += TXT_DESC_STRONG
 	desc += TXT_DESC_TAIL
 	event_def.description = desc
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
 	var c53 := world.get_country_by_legacy_index(53)
 	var c52 := world.get_country_by_legacy_index(52)
 	var opt := event_def.options

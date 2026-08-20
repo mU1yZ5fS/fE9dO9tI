@@ -4,8 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10180 —— (日>=25 且 月>=3 且 年>=1976) || (月>=4 且 年>=1976) || 年>=1977，
 ##   端口为 DATE_AFTER "1976.3.25"。
 ## 差异：
-##  - result 2 的 data[88] = data[88] - 1：反编译为死代码（ptr 局部赋值未写回），跳过；
-##  - result 1 的 data[88] += 2 为真实效果（保留，raw index + 注释）；
+##  - result 2 的 data.democracy_movement = data.democracy_movement - 1：反编译为死代码（ptr 局部赋值未写回），跳过；
+##  - result 1 的 data.democracy_movement += 2 为真实效果（保留，raw index + 注释）；
 ##  - politics[12].loyality += 200：端口 ws.politicians[12].loyalty（判空）。
 
 const TXT_R0 := "这篇文章被认为是对死者的侮辱，也是一场极左分子的压制意识形态运动的开始，在长江流域的一些城市引发了抗议。南京爆发了大规模的抗议活动。尽管我们试图封锁有关抗议的信息，抗议的消息似乎已经传到北京，那里的人们也开始上街抗议。"
@@ -31,22 +31,22 @@ func execute(context: Dictionary) -> void:
 # 选项0：什么都不做（Event21.cs result 0）
 func _opt_do_nothing(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 50
+		d.people_support -= 50
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += 50
+		d.thought_freedom += 50
 	context["result_text"] = TXT_R0
 
 
 # 选项1：和四人帮联系，说明“影射”的问题（Event21.cs result 1）
 func _opt_contact(context: Dictionary) -> void:
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] -= 50
+		d.party_support -= 50
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 30
+		d.people_support -= 30
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += 30
+		d.thought_freedom += 30
 	if d.size() > 88:
-		d[88] += 2   # 原 data[88]（无端口命名键）
+		d.democracy_movement += 2   # 原 data.democracy_movement（无端口命名键）
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].loyalty += 200   # 原 politics[12].loyality += 200
 	for p in ws.politicians:
@@ -62,12 +62,12 @@ func _opt_contact(context: Dictionary) -> void:
 # 选项2：支持这篇文章的论点并在媒体上大肆宣扬（Event21.cs result 2）
 func _opt_support(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 80
+		d.people_support -= 80
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += 70
+		d.thought_freedom += 70
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] += 50
-	# 原版此处的 data[88] = data[88] - 1 只写局部 ptr，未写回数组，属死代码，跳过。
+		d.party_support += 50
+	# 原版此处的 data.democracy_movement = data.democracy_movement - 1 只写局部 ptr，未写回数组，属死代码，跳过。
 	for p in ws.politicians:
 		if p == null:
 			continue

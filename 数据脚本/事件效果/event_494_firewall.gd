@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event494.cs：防患于未然？（IECS 防火墙，二选项）。
 ## 触发：ReqEventForDLC02.cs:1534-1536 ——
 ##   !event_done[112] && event_done[97] && science[16]。
-## 差异：science[16] → ExprNode TECH_UNLOCKED(16)；data[8]+data[36] → 预算+外汇。
+## 差异：science[16] → ExprNode TECH_UNLOCKED(16)；data.budget+data.reserve → 预算+外汇。
 
 
 
@@ -18,8 +18,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	var budget := world.数值表[W.I_BUDGET] if world.数值表.size() > W.I_BUDGET else 0
-	var reserve := world.数值表[W.I_RESERVE] if world.数值表.size() > W.I_RESERVE else 0
+	var budget := world.budget if world.size() > W.I_BUDGET else 0
+	var reserve := world.reserve if world.size() > W.I_RESERVE else 0
 	var opt := event_def.options
 	if budget + reserve >= 100:
 		_enable(opt[0], event_def.options[0].text)

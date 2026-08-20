@@ -10,14 +10,14 @@ const TXT_R1 := "你下令开始对王震提起刑事诉讼。面对一切证据
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
-	var data := world.数值表
+	var data := world
 	if data.size() <= W.I_YEAR:
 		return false
-	if data[W.I_YEAR] < 1981:
+	if data.year < 1981:
 		return false
 	if not _has_politician(world, 17, 17):
 		return false
-	var party_ok: bool = data[W.I_PARTY_SUPPORT] <= 750 and (GameManager.is_faction_leading(0) or GameManager.is_faction_leading(1))
+	var party_ok: bool = data.party_support <= 750 and (GameManager.is_faction_leading(0) or GameManager.is_faction_leading(1))
 	return party_ok or world.completed_event_ids.has("event_310")
 
 func execute(context: Dictionary) -> void:

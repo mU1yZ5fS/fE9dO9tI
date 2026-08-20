@@ -32,7 +32,7 @@ extends RefCounted
 
 # ── 表达式节点快捷构建 ──
 
-## data[key] >= value
+## data.get_data_by_index(key) >= value
 static func res_at_least(key: String, value: float) -> ExprNode:
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_AT_LEAST
@@ -40,7 +40,7 @@ static func res_at_least(key: String, value: float) -> ExprNode:
 	n.value = value
 	return n
 
-## data[key] <= value
+## data.get_data_by_index(key) <= value
 static func res_at_most(key: String, value: float) -> ExprNode:
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_AT_MOST
@@ -48,7 +48,7 @@ static func res_at_most(key: String, value: float) -> ExprNode:
 	n.value = value
 	return n
 
-## data[key] == value
+## data.get_data_by_index(key) == value
 static func res_equals(key: String, value: float) -> ExprNode:
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_EQUALS
@@ -56,7 +56,7 @@ static func res_equals(key: String, value: float) -> ExprNode:
 	n.value = value
 	return n
 
-## data[key] != value
+## data.get_data_by_index(key) != value
 static func res_not_equals(key: String, value: float) -> ExprNode:
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_NOT_EQUALS
@@ -64,7 +64,7 @@ static func res_not_equals(key: String, value: float) -> ExprNode:
 	n.value = value
 	return n
 
-## sum(data[keys]) <= value
+## sum(data.get_data_by_index(keys)) <= value
 static func res_sum_at_most(keys: Array[String], value: float) -> ExprNode:
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_SUM_AT_MOST
@@ -72,7 +72,7 @@ static func res_sum_at_most(keys: Array[String], value: float) -> ExprNode:
 	n.value = value
 	return n
 
-## data[left] - data[right] <= value
+## data.get_data_by_index(left) - data.get_data_by_index(right) <= value
 static func res_difference_at_most(left: String, right: String, value: float) -> ExprNode:
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_DIFFERENCE_AT_MOST
@@ -213,7 +213,7 @@ static func custom_effect(script: GDScript) -> EffectNode:
 	n.custom_script = script
 	return n
 
-## data[key] += delta
+## data.add_data_by_index(key, delta)
 static func add_resource(key: String, delta: int) -> EffectNode:
 	var n := EffectNode.new()
 	n.type = EffectNode.Type.ADD_RESOURCE
@@ -221,7 +221,7 @@ static func add_resource(key: String, delta: int) -> EffectNode:
 	n.value = float(delta)
 	return n
 
-## data[key] = value
+## data.set_data_by_index(key, value)
 static func set_resource(key: String, value: int) -> EffectNode:
 	var n := EffectNode.new()
 	n.type = EffectNode.Type.SET_RESOURCE
@@ -623,7 +623,7 @@ static func create_event_24() -> EventDef:
 			+ "excesses of the Cultural Revolution, a renewed radical course, limited modernization, "
 			+ "or large-scale market reform and opening to the world.")
 	ev.fire_only_once = true
-	# 原版 TimeScript.cs:10201：1976.12 后 且 data[84]（gang_of_four_path）!= 3。
+	# 原版 TimeScript.cs:10201：1976.12 后 且 data.gang_of_four_path（gang_of_four_path）!= 3。
 	ev.trigger_conditions = [all_of([date_after("1976.12"), res_not_equals("gang_of_four_path", 3)])] as Array[ExprNode]
 	var transition_script := preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
 

@@ -15,29 +15,29 @@ func execute(context: Dictionary) -> void:
 	_kill_faction_leader_if_valid(4)
 	var mid_idx := _faction_leader_or(2, 16)
 	var reform_idx := _faction_leader_or(3, 15)
-	_set_politician_by_slot(mid_idx, 3, 42, [1, 5, 17, 26], d[W.I_YEAR] - 1932,
+	_set_politician_by_slot(mid_idx, 3, 42, [1, 5, 17, 26], d.year - 1932,
 		[0, 0, 0, 0, 0, 0, 0, 0], 2, 0,
 		[3, 6, 6, 1, 6, 3, 6, 1])
-	_set_politician_by_slot(reform_idx, 3, 44, [2, 5, 14, 26], d[W.I_YEAR] - 1945,
+	_set_politician_by_slot(reform_idx, 3, 44, [2, 5, 14, 26], d.year - 1945,
 		[0, 0, 0, 0, 0, 0, 0, 0], 3, 0,
 		[3, 6, 6, 4, 6, 3, 6, 4])
 	_add(W.I_AGENTS, -25)
 	_add(W.I_BUDGET, -25)
 	var cons_idx := _faction_leader_or(1, 14)
 	if opt == 0:
-		_set_politician(ws.leader, 41, 45, [0, 4, 13, 21], d[W.I_YEAR] - 1911,
+		_set_politician(ws.leader, 41, 45, [0, 4, 13, 21], d.year - 1911,
 			[0, 0, 0, 0, 0, 0, 0, 0], 0, 0,
 			[3, 6, 6, 1, 6, 3, 6, 1])
-		_set_politician_by_slot(cons_idx, 3, 43, [1, 7, 17, 26], d[W.I_YEAR] - 1939,
+		_set_politician_by_slot(cons_idx, 3, 43, [1, 7, 17, 26], d.year - 1939,
 			[0, 0, 0, 0, 0, 0, 0, 0], 1, 0,
 			[3, 6, 6, 4, 6, 3, 6, 4])
 		_add(W.I_LIVING, 50)
 		_add(W.I_PEOPLE_SUPPORT, 50)
 	else:
-		_set_politician(ws.leader, 3, 43, [1, 7, 17, 26], d[W.I_YEAR] - 1939,
+		_set_politician(ws.leader, 3, 43, [1, 7, 17, 26], d.year - 1939,
 			[0, 0, 0, 0, 0, 0, 0, 0], 1, 0,
 			[3, 6, 6, 4, 6, 3, 6, 4])
-		_set_politician_by_slot(cons_idx, 41, 45, [0, 4, 13, 21], d[W.I_YEAR] - 1911,
+		_set_politician_by_slot(cons_idx, 41, 45, [0, 4, 13, 21], d.year - 1911,
 			[0, 0, 0, 0, 0, 0, 0, 0], 0, 0,
 			[3, 6, 6, 1, 6, 3, 6, 1])
 		_add(W.I_AGENTS, 50)

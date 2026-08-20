@@ -57,7 +57,7 @@ func build_good_end(w: WorldState) -> Dictionary:
 			text += " 强 烈 谴 责 犹 太 复 国 主 义 者 对 巴 勒 斯 坦 领 土 的 非 法 占 领 和 屠 杀 ， 并 在 第 二 次 因 提 法 达 后 断 绝 了 和 以 色 列 国 的 外 交 关 系 并 展 开 制 裁 ；"
 		if not has(c(w, 138), "亲美"):
 			text += " 公 开 带 头 在 国 际 上 与 美 国 唱 反 调 ， 顶 着 制 裁 的 危 险 重 新 修 复 与 古 巴 的 贸 易 往 来 ；"
-		if (not parts(c(w, 166), 0) and not parts(c(w, 29), 0)) or (parts(c(w, 29), 0) and d(w, 169) != 0) or (parts(c(w, 166), 0) and not has(c(w, 166), "亲中")):  # 原 data[169]
+		if (not parts(c(w, 166), 0) and not parts(c(w, 29), 0)) or (parts(c(w, 29), 0) and d(w, 169) != 0) or (parts(c(w, 166), 0) and not has(c(w, 166), "亲中")):  # 原 data.ireland_unification_route
 			text += " 谴 责 爱 尔 兰 和 英 国 之 间 的 媾 和 是 “ 背 叛 了 复 活 节 起 义 的 精 神 和 一 代 代 独 立 斗 士 的 鲜 血 ” ；"
 		if ev(w, 300):
 			text += " 加 速 推 进 我 国 与 越 南 政 府 的 和 解 政 策 并 公 开 为 过 去 的 侵 略 道 歉 ；"

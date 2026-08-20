@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event300.cs：越南战争（边境冲突失败后，四选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:447-449 ——
 ##   !event_done[300] && event_done[56] && resultOfEvents[56]==1 && war==1
-##   && data[21]>=1979 && data[20]>=3；fire_only_once 承担 !event_done[300]。
+##   && data.year>=1979 && data.month>=3；fire_only_once 承担 !event_done[300]。
 ## 差异：
 ##  - war→ws.war_state；isOVD/isSEV→set_tag("ovd"/"sev")；
 ##  - empires[1].relations=-250 按项目约定 clampi(…,0,1000) 处理；
@@ -68,7 +68,7 @@ func _get_war(war_id: int) -> WarData:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

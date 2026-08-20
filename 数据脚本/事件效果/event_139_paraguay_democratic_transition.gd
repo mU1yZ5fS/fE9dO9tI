@@ -23,7 +23,7 @@ const TXT_ENEMY := "新政府不想和我们做朋友。"
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 
@@ -191,8 +191,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var left := d.size() > W.I_ECON_SYSTEM and d[W.I_IDEOLOGY] <= 3 and d[W.I_ECON_SYSTEM] <= 12 and d[W.I_INFLUENCE] >= 150
+	var d := world
+	var left := d.size() > W.I_ECON_SYSTEM and d.ideology <= 3 and d.econ_system <= 12 and d.global_influence >= 150
 	if left:
 		_enable(event_def.options[2], TXT_OPT2_LEFT)
 	else:

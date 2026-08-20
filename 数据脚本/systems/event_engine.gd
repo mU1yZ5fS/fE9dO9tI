@@ -10,7 +10,7 @@
 #
 # 待处理（pending）：原 EventScript 地图标记的移植——事件触发后进入待处理，
 #   给玩家 notification_days（原 104 单位/8 = 13 天）缓冲，超时扣
-#   timeout_agents_penalty/timeout_budget_penalty（原 data[9]-=20/data[8]-=5）。
+#   timeout_agents_penalty/timeout_budget_penalty（原 data.agents-=20/data.budget-=5）。
 #   当前 83 个 .tres 均 show_notification=false（直接切事件），缓冲未启用。
 #
 # 架构：
@@ -848,12 +848,12 @@ func _get_empire_relation(empire_index: int) -> int:
 
 
 ## 执政联盟支持率（原版 doneventscript/Event7 等 Awake 的 summa_3_2）。
-## 仅 party_system>7（data[15]>7）时计算：执政党(1)+盟友席位数 ×100 / 五党总席位数；否则 0。
+## 仅 party_system>7（data.party_system>7）时计算：执政党(1)+盟友席位数 ×100 / 五党总席位数；否则 0。
 func _coalition_support_percent() -> int:
 	var ws: WorldState = world
 	if ws == null or ws.factions.size() < 5:
 		return 0
-	if ws.数值表.size() <= 15 or ws.数值表[15] <= 7:
+	if ws.size() <= 15 or ws.party_system <= 7:
 		return 0
 	var num := ws.factions[1].support
 	for i in ws.factions.size():

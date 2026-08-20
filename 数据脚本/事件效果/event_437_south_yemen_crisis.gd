@@ -16,7 +16,7 @@ const TXT_R1 := "1978年6月24日，伊斯梅尔一派策划了加什米遇刺�
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	var data := world.数值表
+	var data := world
 	var somalia := world.get_country_by_legacy_index(42)
 	var ethiopia := world.get_country_by_legacy_index(41)
 	var opt := event_def.options
@@ -24,8 +24,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ethiopia != null and ethiopia.parts.size() > 1:
 		ethiopia_ok = (ethiopia.parts[1] or ethiopia.parts[0]) and ethiopia.has_tag("亲中") and ethiopia.government == GameConstants.Government.SOCIALIST
 	var cond := (somalia != null and somalia.has_tag("亲中")) or ethiopia_ok
-	cond = cond and data[W.I_BUDGET] + data[W.I_RESERVE] >= 50 \
-			and data[W.I_AGENTS] >= 50 and data[W.I_INFLUENCE] >= 100
+	cond = cond and data.budget + data.reserve >= 50 \
+			and data.agents >= 50 and data.global_influence >= 100
 	if cond:
 		_enable(opt[0], event_def.options[0].text)
 	else:

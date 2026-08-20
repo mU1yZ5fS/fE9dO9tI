@@ -224,7 +224,7 @@ func _cmd_war(parts: Array) -> void:
 		return
 	var war_id := int(parts[1])
 	if GameManager.debug_start_war(war_id):
-		_print_line("[color=green]已开始战争：%d[/color]" % war_id)
+		_print_line("[color=green]已开始战争：%d.get_data_by_index(/color)" % war_id)
 	else:
 		_print_line("[color=red]战争 %d 启动失败（可能已在进行或 id 无效）。[/color]" % war_id)
 
@@ -266,9 +266,9 @@ func _cmd_date(parts: Array) -> void:
 	w.date.year = clampi(int(parts[1]), 1976, 2030)
 	w.date.month = clampi(int(parts[2]), 1, 12)
 	w.date.day = clampi(int(parts[3]), 1, 31)
-	w.数值表[WorldState.I_YEAR] = w.date.year
-	w.数值表[WorldState.I_MONTH] = w.date.month
-	w.数值表[WorldState.I_DAY] = w.date.day
+	w.year = w.date.year
+	w.month = w.date.month
+	w.day = w.date.day
 	GameManager.notify_stats_changed()
 	_print_line("[color=green]已设置日期：%s[/color]" % w.date.format())
 
@@ -406,7 +406,7 @@ func _cmd_country_set_int(c: CountryData, parts: Array, field: String, min_v: in
 		_print_line("[color=red]%s 需在 %d-%d 之间。[/color]" % [label, min_v, max_v])
 		return
 	c.set(field, v)
-	_print_line("[color=green]%s %s -> %d[/color]" % [c.display_name(), label, v])
+	_print_line("[color=green]%s %s -> %d.get_data_by_index(/color)" % [c.display_name(), label, v])
 
 
 func _cmd_country_sphere(c: CountryData, parts: Array) -> void:
@@ -452,7 +452,7 @@ func _cmd_country_power(c: CountryData, parts: Array) -> void:
 	var v := int(parts[3])
 	c.set(field, v)
 	GameManager.notify_stats_changed()
-	_print_line("[color=green]%s %s -> %d[/color]" % [c.display_name(), parts[2], v])
+	_print_line("[color=green]%s %s -> %d.get_data_by_index(/color)" % [c.display_name(), parts[2], v])
 
 
 func _cmd_country_puppet(w: WorldState, c: CountryData, parts: Array) -> void:
@@ -475,7 +475,7 @@ func _cmd_country_puppet(w: WorldState, c: CountryData, parts: Array) -> void:
 		return
 	c.puppet_of = slot
 	GameManager.notify_stats_changed()
-	_print_line("[color=green]%s 傀儡 -> slot %d[/color]" % [c.display_name(), slot])
+	_print_line("[color=green]%s 傀儡 -> slot %d.get_data_by_index(/color)" % [c.display_name(), slot])
 
 
 func _cmd_country_tag(c: CountryData, parts: Array) -> void:

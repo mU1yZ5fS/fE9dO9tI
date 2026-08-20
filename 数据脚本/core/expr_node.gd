@@ -8,7 +8,7 @@
 #   - 原版 Decision.CreateCondition() 的 lambda 组合模式
 #   - P 社游戏（EU4/HOI4）的 trigger 系统
 #
-# 叶子节点：表达一个原子条件（如 data[9] >= 250）
+# 叶子节点：表达一个原子条件（如 data.agents >= 250）
 # 组合节点：AND / OR / NOT 嵌套实现任意复杂条件
 #
 # 表达式求值器见 event_engine.gd 的 evaluate() 方法。
@@ -19,8 +19,8 @@ extends Resource
 ## 条件表达式节点类型
 enum Type {
 	# ── 叶子节点 —— 原子条件 ──
-	RESOURCE_AT_LEAST,          # key=资源名 value=阈值 → data[key] >= value
-	RESOURCE_AT_MOST,           # key=资源名 value=阈值 → data[key] <= value
+	RESOURCE_AT_LEAST,          # key=资源名 value=阈值 → data.get_data_by_index(key) >= value
+	RESOURCE_AT_MOST,           # key=资源名 value=阈值 → data.get_data_by_index(key) <= value
 	MODIFIER_ACTIVE,            # key=修正名 → modifies[key].active == true
 	MODIFIER_INACTIVE,          # key=修正名 → modifies[key].active == false
 	PREV_EVENT_RESULT_IS,       # event_id=前序事件ID value=选项号 → resultOfEvents[event_id] == value
@@ -44,10 +44,10 @@ enum Type {
 	NOT,                        # NOT — children[0] 取反
 
 	# 新类型必须追加在组合节点之后，不能插入前方：旧 .tres 按枚举整数序列化。
-	RESOURCE_EQUALS,            # key=资源名 value=值 → data[key] == value
-	RESOURCE_NOT_EQUALS,        # key=资源名 value=值 → data[key] != value
-	RESOURCE_SUM_AT_LEAST,      # keys=资源名数组 value=阈值 → sum(data[keys]) >= value
-	RESOURCE_SUM_AT_MOST,       # keys=资源名数组 value=阈值 → sum(data[keys]) <= value
+	RESOURCE_EQUALS,            # key=资源名 value=值 → data.get_data_by_index(key) == value
+	RESOURCE_NOT_EQUALS,        # key=资源名 value=值 → data.get_data_by_index(key) != value
+	RESOURCE_SUM_AT_LEAST,      # keys=资源名数组 value=阈值 → sum(data.get_data_by_index(keys)) >= value
+	RESOURCE_SUM_AT_MOST,       # keys=资源名数组 value=阈值 → sum(data.get_data_by_index(keys)) <= value
 	COUNTRY_FIELD_EQUALS,       # target=国家标签/原版序号 key=字段 value=值
 	COUNTRY_FIELD_NOT_EQUALS,   # target=国家标签/原版序号 key=字段 value=值
 	COUNTRY_FIELD_AT_LEAST,     # target=国家标签/原版序号 key=字段 value=阈值

@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10614-10620 ——
 ##   (月>=6 且 年>=1981 或 年>=1982) && !c1.isASEAN && !c47.okb
 ##   && !c47.isSEV && !c47.econ && IsAuthoritarianism(47)（.tres ExprNode 表达）。
-## 差异：选项显隐 prepare 动态改写；data[37] 直访（菲律宾毛派力量，无命名键）。
+## 差异：选项显隐 prepare 动态改写；data.philippines_maoist_power 直访（菲律宾毛派力量，无命名键）。
 
 const TXT_R0 := "在我们的特勤部队和武器供应的帮助下，菲律宾共产党和国民运动能够展开大规模的煽动和抗议，伴随着大量的游击活动。其他政治力量和普通公民很快也加入了这些不满。当然，抗议很快就被警察镇压了，游击队的进攻也被军队控制了，但我们似乎对马科斯政权造成了严重的破坏，他没有料到中国会突然进行如此无耻的干预。最后，他成功地赢得了总统选举，获得了52%的选票，但他必须更加谨慎地采取行动，共产党的影响力显著增强。或许，帮助他们更进一步，我们将看到菲律宾革命的胜利……"
 
@@ -17,20 +17,20 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data[W.I_PARTY_SYSTEM] if data.size() > W.I_PARTY_SYSTEM else 8
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
 	var coal := _coalition_percent(world)
 	var policy_left := (line < 2 and party < 8) or (coal > 66 and party > 7)
 	var policy_right := (line > 1 and party < 8) or (coal > 66 and party > 7)
 	var opt := event_def.options
-	if data.size() > W.I_AGENTS and data[W.I_AGENTS] >= 100 \
-			and data.size() > W.I_ARMY and data[W.I_ARMY] >= 80 and policy_left:
+	if data.size() > W.I_AGENTS and data.agents >= 100 \
+			and data.size() > W.I_ARMY and data.army >= 80 and policy_left:
 		_enable(opt[0], "煽动动乱和支持毛派（需要10特工网络，8军事实力）")
 	else:
 		_disable(opt[0], "这不值得我们为之努力")
 	_enable(opt[1], "这不关我们的事。")
-	var dip := data[W.I_DIPLO] if data.size() > W.I_DIPLO else 0
+	var dip := data.diplomatic_reputation if data.size() > W.I_DIPLO else 0
 	if dip < 800 and policy_right:
 		_enable(opt[2], "祝贺马科斯获胜，并尝试建立合作关系")
 	else:
@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_DIPLO, 20)
 			_add_relation(EmpireData.USA, -100)
 			if d.size() > 37:
-				d[37] += 300
+				d.philippines_maoist_power += 300
 			if philippines != null:
 				philippines.set_tag("对华贸易", false)
 			context["result_text"] = TXT_R0
@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_DIPLO, -10)
 			_add_relation(EmpireData.USA, 50)
 			if d.size() > 37:
-				d[37] -= 200
+				d.philippines_maoist_power -= 200
 			_add_power(EmpireData.USA, 20)
 			if philippines != null:
 				philippines.set_tag("对华贸易", true)
@@ -68,8 +68,8 @@ func execute(context: Dictionary) -> void:
 
 
 func _coalition_percent(world: WorldState) -> int:
-	var data := world.数值表
-	if data.size() <= W.I_PARTY_SYSTEM or data[W.I_PARTY_SYSTEM] <= 7:
+	var data := world
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
 		return 0
 	if world.factions.size() < 5:
 		return 0

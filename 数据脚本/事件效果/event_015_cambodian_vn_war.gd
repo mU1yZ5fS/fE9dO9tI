@@ -48,7 +48,7 @@ func _opt_stand_by(context: Dictionary) -> void:
 # 选项1：支持民主柬埔寨（Event15.cs result 1）
 func _opt_support(context: Dictionary) -> void:
 	if d.size() > W.I_AGENTS:
-		d[W.I_AGENTS] -= 30
+		d.agents -= 30
 	if ws.wars.size() > 1:
 		ws.wars[1].infl1 = 450
 		ws.wars[1].infl2 = 550

@@ -74,16 +74,16 @@ func execute(context: Dictionary) -> void:
 func _apply_alliance_country(c: CountryData) -> void:
 	c.social_stability += 200
 	if d.size() > W.I_BUDGET:
-		d[W.I_BUDGET] -= 5
+		d.budget -= 5
 	if not c.has_tag("亲中") and not c.has_tag("苏联盟友") and not c.has_tag("美国盟友"):
 		c.set_tag("亲中", true)
 		if d.size() > W.I_BUDGET:
-			d[W.I_BUDGET] -= 20
+			d.budget -= 20
 	elif not c.has_tag("亲中") and (c.has_tag("苏联盟友") or c.has_tag("美国盟友")):
 		c.set_tag("苏联盟友", false)
 		c.set_tag("美国盟友", false)
 		if d.size() > W.I_BUDGET:
-			d[W.I_BUDGET] -= 30
+			d.budget -= 30
 
 
 

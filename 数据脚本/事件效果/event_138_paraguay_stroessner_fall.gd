@@ -19,7 +19,7 @@ const TXT_ENEMY := "新政府不想和我们做朋友。"
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

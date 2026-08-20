@@ -26,9 +26,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	_bind_world()
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
-	var line := d[W.I_POLITICAL_LINE] if d.size() > W.I_POLITICAL_LINE else 3
-	var diplo := d[W.I_DIPLO] if d.size() > W.I_DIPLO else 0
+	var d := world
+	var line := d.political_line if d.size() > W.I_POLITICAL_LINE else 3
+	var diplo := d.diplomatic_reputation if d.size() > W.I_DIPLO else 0
 	var comoros := world.get_country_by_legacy_index(158)
 	var opt := event_def.options
 	if line <= 1 and _mod_active(3):

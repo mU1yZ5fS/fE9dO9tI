@@ -4,7 +4,7 @@ extends RefCounted
 ## 事件效果脚本统一基类（2026-08 架构收敛）。
 ## 收敛逐脚本重复的样板：
 ##   const W = preload(world_state)  → 基类常量 W（子类直接使用）
-##   var ws = GameManager.world; if null return; var d := ws.数值表
+##   var ws = GameManager.world; if null return; var d := ws
 ##                                     → execute 开头调 _bind_world()，直接用成员 ws / d
 ##
 ## 使用方式：
@@ -12,7 +12,7 @@ extends RefCounted
 ##   func execute(context: Dictionary) -> void:
 ##       if not _bind_world():
 ##           return
-##       d[W.I_PEOPLE_SUPPORT] -= 20   # 直接读写成员
+##       d.people_support -= 20   # 直接读写成员
 ##
 ## 入口契约（与 EventEngine / GameManager 的调用点对应）：
 ##   - execute(context)：CUSTOM_SCRIPT 效果执行（EventEngine._run_custom_script）
@@ -24,8 +24,8 @@ const W = preload("res://数据脚本/world_state.gd")
 ## 当前 WorldState（_bind_world() 成功后可用）
 var ws: WorldState = null
 
-## 数值表快捷引用（= ws.数值表，引用语义，修改即写回）
-var d: Array[int] = []
+## 数值表快捷引用（= ws，引用语义，修改即写回）
+var d: WorldState = null
 
 ## 最近一次 execute(context) 的上下文。EventEngine 执行 CUSTOM_SCRIPT 前会注入。
 ## 用于让事件脚本通过 context["world"] 拿到 WorldState，避免直接依赖 GameManager。
@@ -41,7 +41,7 @@ func _bind_world() -> bool:
 		ws = GameManager.world
 	if ws == null:
 		return false
-	d = ws.数值表
+	d = ws
 	return true
 
 
@@ -84,20 +84,20 @@ func _disable(opt: EventOption, text: String) -> void:
 
 ## 数值表加值
 func _add(index: int, delta: int) -> void:
-	if d.size() > index:
-		d[index] += delta
+	if d != null and d.size() > index:
+		d.add_data_by_index(index, delta)
 
 
 ## 数值表赋值（原 _set，改名避开 Object._set 虚方法签名冲突）
 func _set_data(index: int, value: int) -> void:
-	if d.size() > index:
-		d[index] = value
+	if d != null and d.size() > index:
+		d.set_data_by_index(index, value)
 
 
 ## 数值表读取
 func _res(index: int) -> int:
-	if d.size() > index:
-		return d[index]
+	if d != null and d.size() > index:
+		return d.get_data_by_index(index)
 	return 0
 
 

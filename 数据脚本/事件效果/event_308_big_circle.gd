@@ -1,7 +1,7 @@
 ## 原作 Event308.cs：大圈（港澳犯罪集团合作，两选项）。
 ## 触发：全目录搜索无 this_num_event = 308 / Reset(308)；链外 REST 段，原版无自动条件。
 ## 差异：modifies[3].active→_mod_active(3)；party_number[0]→factions[0].support；
-##  禁用项文本按 data[56]>2 / 预算+储备<50 两分支复刻；文本来自 Events_text_en 索引 85-91、122 与 Event308.cs 内联。
+##  禁用项文本按 data.political_line>2 / 预算+储备<50 两分支复刻；文本来自 Events_text_en 索引 85-91、122 与 Event308.cs 内联。
 extends "res://数据脚本/event_script_base.gd"
 
 const TXT_DESC_INACTIVE := "文革失败后，红卫兵被遣散，其中一些人锒铛入狱。几年来，极左派在现代中国已无立足之地，如今，他们在香港成立了犯罪集团，其在东南亚和北美国家的影响力也愈发强大。我们可以与他们建立合作关系，以更好地影响外国政策。当然，天上不会掉馅饼，黑手党也会想干涉我党事务。"
@@ -21,9 +21,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		event_def.description = TXT_DESC_ACTIVE
 	else:
 		event_def.description = TXT_DESC_INACTIVE
-	var budget := world.数值表[W.I_BUDGET] if world.数值表.size() > W.I_BUDGET else 0
-	var reserve := world.数值表[W.I_RESERVE] if world.数值表.size() > W.I_RESERVE else 0
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
+	var budget := world.budget if world.size() > W.I_BUDGET else 0
+	var reserve := world.reserve if world.size() > W.I_RESERVE else 0
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
 	if budget + reserve >= 50 and line <= 2:
@@ -54,7 +54,7 @@ func execute(context: Dictionary) -> void:
 
 func _set_data(index: int, value: int) -> void:
 	if d.size() > index:
-		d[index] = value
+		d.set_data_by_index(index, value)
 
 
 

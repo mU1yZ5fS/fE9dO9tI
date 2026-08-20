@@ -38,8 +38,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if _opts_full.is_empty():
 		for o in event_def.options:
 			_opts_full.append(o)
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 1
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
 	var done36: bool = world.completed_event_ids.has("iraqi_coalition")
 	var result36: int = world.completed_event_ids.get("iraqi_coalition", -1)
 	var iraq := world.get_country_by_legacy_index(14)

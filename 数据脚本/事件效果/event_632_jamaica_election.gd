@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event632.cs：牙买加，我们热爱的家乡（牙买加1980大选，三选项）。
 ## 触发：ReqEventsDLC02.cs:971-974 —— c152.SubGosstroy!=13 且 DATE_AFTER 1980.10.30
 ##   （原 (1980&&m>=10&&d>=30)||(1980&&m>=11)||y>=1981）。
-## 差异：原版按 data[56]/resultOfEvents[631] Destroy(button[i])；Godot _disable 同义。
+## 差异：原版按 data.political_line/resultOfEvents[631] Destroy(button[i])；Godot _disable 同义。
 ##   Vyshi→亲美、Torg/proprc→标签、now_leader→empires[0].current_leader。
 
 const TXT_OPT0_DIS := "我们在当地没有如此巨大的影响力？"

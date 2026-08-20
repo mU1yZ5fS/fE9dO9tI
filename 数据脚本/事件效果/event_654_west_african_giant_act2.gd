@@ -61,9 +61,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	event_def.description = desc
 	if _saved_full_options.is_empty() and event_def.options.size() >= 6:
 		_saved_full_options = event_def.options.duplicate()
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 2
-	var war_support := data[W.I_WAR_SUPPORT] if data.size() > W.I_WAR_SUPPORT else 0
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 2
+	var war_support := data.war_support if data.size() > W.I_WAR_SUPPORT else 0
 	var prev_653 := int(world.completed_event_ids.get("event_653", 0))
 	var opt := event_def.options
 	if is_sub12:

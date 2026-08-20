@@ -63,7 +63,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = TXT_R0
-			_add(143, 1)  # 原版 data[143]
+			_add(143, 1)  # 原版 data.oil_price
 			_start_war_387(600, 400)
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, -100)
@@ -72,7 +72,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -100)
 		1:
 			context["result_text"] = TXT_R1
-			_add(143, 1)  # 原版 data[143]
+			_add(143, 1)  # 原版 data.oil_price
 			_start_war_387(400, 600)
 			_add_relation(EmpireData.USA, -100)
 			_add_relation(EmpireData.USSR, 100)
@@ -110,7 +110,7 @@ func _start_war_387(infl1: int, infl2: int) -> void:
 
 func _d(index: int) -> int:
 	if d.size() > index:
-		return d[index]
+		return d.get_data_by_index(index)
 	return 0
 
 

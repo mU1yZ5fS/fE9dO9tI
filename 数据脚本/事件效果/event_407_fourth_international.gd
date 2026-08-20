@@ -50,15 +50,15 @@ const TXT_IDX_1209 := "我想知道，他们单打独斗能否成事？"
 ## 原文字符串附录（供自检）
 
 ## 复杂触发条件：原版 ReqEventForDLC02.cs:1279-1281。
-##   !event_done[407] && data[21] > 1983 && allcountries[92].SubGosstroy == 18
+##   !event_done[407] && data.year > 1983 && allcountries[92].SubGosstroy == 18
 ##   && allcountries[1].Gosstroy == 1 && allcountries[1].okb && !modifies[6].active
 func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	if world.completed_event_ids.has("event_407"):
 		return false
-	var data := world.数值表
-	if data.size() <= W.I_YEAR or data[W.I_YEAR] <= 1983:
+	var data := world
+	if data.size() <= W.I_YEAR or data.year <= 1983:
 		return false
 	var uk := world.get_country_by_legacy_index(92)
 	if uk == null or uk.sub_government != GameConstants.SubGovernment.TROTSKYIST:
@@ -75,11 +75,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	var opt := event_def.options
-	if d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0) >= 300 and d[W.I_AGENTS] >= 300:
+	if d.budget + (d.reserve if d.size() > W.I_RESERVE else 0) >= 300 and d.agents >= 300:
 		_enable(opt[0], TXT_OPT0[0])
-	elif d[W.I_BUDGET] + (d[W.I_RESERVE] if d.size() > W.I_RESERVE else 0) < 300:
+	elif d.budget + (d.reserve if d.size() > W.I_RESERVE else 0) < 300:
 		_disable(opt[0], TXT_OPT0[1])
 	else:
 		_disable(opt[0], TXT_OPT0[2])

@@ -314,8 +314,8 @@ func autosave_slot() -> int:
 	return _settings.autosave_slot() if _settings != null else 0
 
 
-## 原作 TimeScript.cs:6021-6030：autosavej==1 在 data[19]==1（每月 1 日），
-## autosavej==2 在 data[19]==1 且 data[20]%6==0（1 日且 6/12 月）自动写当前 savePlace。
+## 原作 TimeScript.cs:6021-6030：autosavej==1 在 data.day==1（每月 1 日），
+## autosavej==2 在 data.day==1 且 data.month%6==0（1 日且 6/12 月）自动写当前 savePlace。
 func _check_autosave() -> void:
 	if world == null or autosave_mode <= 0 or world.date.day != 1:
 		return
@@ -378,9 +378,6 @@ func load_game(path: String) -> void:
 			EventEngine.world = world
 		if _map_service:
 			_map_service.world = world
-		# 旧档/异常档防御：数值表不足 200 槽会令 tick 内 d[I_*] 越界，读档即补全。
-		if world.数值表.size() < 200:
-			world.数值表.resize(200)
 		# Godot 改版无 DLC 购买限制：读档也强制 0-3 号 DLC 全免费（dlc[4] 预留保持原值）。
 		if world.dlc.size() < 4:
 			world.dlc.resize(4)
@@ -472,20 +469,20 @@ func tick() -> void:
 		_on_year_changed()
 	_daily_rim_and_alliance_checks(world)
 	fill_vacant_faction_leaders()
-	_sync_faction_numbers_from_ideology(world.数值表, world)
-	_update_political_line(world.数值表, world)
-	_update_displays(world.数值表)
-	_political_system_recalc(world.数值表, world)
-	_plot_player_cause(world.数值表, world)
-	_check_daily_conspiracy(world.数值表)
+	_sync_faction_numbers_from_ideology(world, world)
+	_update_political_line(world, world)
+	_update_displays(world)
+	_political_system_recalc(world, world)
+	_plot_player_cause(world, world)
+	_check_daily_conspiracy(world)
 	_daily_science_gen(world)
 	_daily_finland_linkage(world)
 	if world.date.month != old_month:
 		_on_month_changed()
 
-	# 原版 data[19] % 7 == 0：已结盟派系 ideology 增长，并扣预算/特工。
+	# 原版 data.day % 7 == 0：已结盟派系 ideology 增长，并扣预算/特工。
 	if world.date.day % 7 == 0:
-		_weekly_ally_upkeep(world.数值表, world)
+		_weekly_ally_upkeep(world, world)
 
 	_check_scheduled_events()
 
@@ -513,13 +510,13 @@ func tick() -> void:
 	_check_autosave()
 
 
-## GameDate 是日期权威源；原版公式/事件仍通过 data[19..21] 读日期。
+## GameDate 是日期权威源；原版公式/事件仍通过 data.get_data_by_index(19..21) 读日期。
 func _sync_date_to_data(w: WorldState) -> void:
-	if w == null or w.date == null or w.数值表.size() <= W.I_YEAR:
+	if w == null or w.date == null or w.size() <= W.I_YEAR:
 		return
-	w.数值表[W.I_DAY] = w.date.day
-	w.数值表[W.I_MONTH] = w.date.month
-	w.数值表[W.I_YEAR] = w.date.year
+	w.day = w.date.day
+	w.month = w.date.month
+	w.year = w.date.year
 
 
 func select_country(gwcode: int) -> void:
@@ -541,39 +538,39 @@ func _apply_tech(tech_id: int) -> void:
 	# 只对“本次完成项”施加一次性效果。原移植按 unlocked 链判断会在后续科技完成时
 	# 重复施加首个已解锁项的效果，本步一并修正。
 	# 注1：原版 gameState.influencePRC 是独立累计字段（对应 world.influence_prc），
-	#     不是数值表 data[7]（全球影响力）。
+	#     不是数值表 data.global_influence（全球影响力）。
 	# 注2：进口需求沿用本移植既有换算（原版 -15/-10 → 本端口 -3/-2）；
 	#     该单位问题（原版显示 /5，本端口显示 /10）与本次航天科技无关，另立步修正。
 	# 注3：原版 3/6/7 号还会往 old_modify_desc[15] 追加描述文案，
 	#     本端口没有对应文案存储，暂不移植。
-	var d := world.数值表
+	var d := world
 	if tech_id == 0:
-		d[W.I_IMPORT_NEEDS] -= 3
+		d.import_needs -= 3
 	elif tech_id == 1:
-		d[W.I_IMPORT_NEEDS] -= 2
+		d.import_needs -= 2
 	elif tech_id == 2:
 		world.influence_prc += 10
 	elif tech_id == 3:
-		d[W.I_IMPORT_NEEDS] -= 3
+		d.import_needs -= 3
 	elif tech_id == 4:
-		d[W.I_IMPORT_NEEDS] -= 2
+		d.import_needs -= 2
 	elif tech_id == 6:
 		pass  # 原版仅追加 old_modify_desc 文案，数值表无变化
 	elif tech_id == 7:
-		d[W.I_IMPORT_NEEDS] -= 2
+		d.import_needs -= 2
 	elif tech_id == 10:
-		d[W.I_IMPORT_NEEDS] -= 2
+		d.import_needs -= 2
 		world.influence_prc += 5
 	elif tech_id == 12:
-		d[W.I_IMPORT_NEEDS] -= 2
+		d.import_needs -= 2
 	elif tech_id == 13:
-		d[W.I_IMPORT_NEEDS] -= 2
+		d.import_needs -= 2
 	elif tech_id == 14:
-		d[W.I_IMPORT_NEEDS] -= 2
+		d.import_needs -= 2
 	elif tech_id == 23:
 		world.influence_prc += 5
 	elif tech_id == 28:
-		d[W.I_IMPORT_NEEDS] -= 2
+		d.import_needs -= 2
 	elif tech_id == 30:
 		world.influence_prc += 10
 	elif tech_id == 31:
@@ -622,7 +619,7 @@ func _on_event_triggered(event_id: String, is_timeout: bool) -> void:
 		return
 	current_event_id = event_id
 	event_is_timeout = is_timeout
-	# 显示前动态文案钩子（原版 Event18 战争结算等按 data[82] 动态生成标题/描述/按钮）
+	# 显示前动态文案钩子（原版 Event18 战争结算等按 data.war_resolve 动态生成标题/描述/按钮）
 	if event_def.display_script != null:
 		var display_inst: RefCounted = event_def.display_script.new()
 		if display_inst != null and display_inst.has_method("prepare"):
@@ -649,14 +646,14 @@ func _start_initial_events() -> void:
 func manual_election() -> bool:
 	if world == null or current_event_id != "":
 		return false
-	var d := world.数值表
-	if d[W.I_PARTY_SYSTEM] <= 7:
+	var d := world
+	if d.party_system <= 7:
 		return false
 	if world.get_flag("manual_election_used"):
 		return false
 	world.set_flag("manual_election_used", true)
-	d[W.I_BUDGET] -= 10  # 原版 data[8] -= 10
-	d[125] = 1           # 原版 data[125] = 1（Godot 未映射语义，保留槽位）
+	d.budget -= 10  # 原版 data.budget -= 10
+	d.election_timer = 1           # 原版 data.election_timer = 1（Godot 未映射语义，保留槽位）
 	_notify_stats()
 	start_event("npc_elections")
 	return true
@@ -720,9 +717,9 @@ const 经济场景_UID := "uid://btldk7ul11cqn"
 
 ## 预算+储备 ≥ 0 才允许推进时间（原版 SpeedScript 守卫）
 func can_resume() -> bool:
-	if world == null or world.数值表.size() <= W.I_RESERVE:
+	if world == null or world.size() <= W.I_RESERVE:
 		return false
-	return world.数值表[W.I_BUDGET] + world.数值表[W.I_RESERVE] >= 0
+	return world.budget + world.reserve >= 0
 
 
 func set_speed(s: int) -> void:
@@ -806,7 +803,7 @@ func adjust_reserve(delta: int) -> bool:
 # 政策切换 3 条件（对齐原版 Doctrine_button_script.OnMouseDown 的 uslovie[0..2]）
 #   [0] 预算    ≥ |diff|×50
 #   [1] 党内支持 ≥ |diff|×300
-#   [2] 派系/路线领导：一党制(data[15]≤7)看政治路线 data[56]；多党看 data[52]/data[54]+联盟席位>66%
+#   [2] 派系/路线领导：一党制(data.party_system≤7)看政治路线 data.political_line；多党看 data.econ_display/data.political_display+联盟席位>66%
 # 注：原版 OnMouseDown 无毛存活门槛，开局即可切（已移除此前的 mao_ok 条件）。
 # ============================================================================
 
@@ -893,15 +890,15 @@ func notify_stats_changed() -> void:
 
 ## 每日镜像：empires 权威 → 数值表[28/29/10/2]（原版 KumihaRepaint）
 func _mirror_empires_to_data(w: WorldState) -> void:
-	if w == null or w.数值表.size() <= 29:
+	if w == null or w.size() <= 29:
 		return
-	var d := w.数值表
+	var d := w
 	if w.empires.size() > 0 and w.empires[0] != null:
-		d[28] = w.empires[0].relations
-		d[W.I_USA_INFLUENCE] = w.empires[0].power
+		d.usa_relations = w.empires[0].relations
+		d.usa_influence = w.empires[0].power
 	if w.empires.size() > 1 and w.empires[1] != null:
-		d[29] = w.empires[1].relations
-		d[W.I_SOVIET_INFLUENCE] = w.empires[1].power
+		d.ussr_relations = w.empires[1].relations
+		d.soviet_influence = w.empires[1].power
 
 
 
@@ -914,10 +911,10 @@ func _on_month_changed() -> void:
 	if w == null:
 		return
 	w.set_flag("manual_election_used", false)  # 原版月块 is_elect=false（TimeScript.cs:505-512）
-	var d := w.数值表
-	# 原版 54 号事件触发就是 TimeScript.cs:10425 的 ev45 && data[16]>11，无 6 个月延迟；
+	var d := w
+	# 原版 54 号事件触发就是 TimeScript.cs:10425 的 ev45 && data.econ_system>11，无 6 个月延迟；
 	# 早期误加的 investment_delay 等待已移除（trigger 在 event_054*.tres 里对齐）。
-	# TimeScript.cs:1925：中国 level_of_unstab 月块重置（原版在 data[19]==1 月块内，非每日）。
+	# TimeScript.cs:1925：中国 level_of_unstab 月块重置（原版在 data.day==1 月块内，非每日）。
 	var china_unstab := w.get_country_by_legacy_index(1)
 	if china_unstab != null:
 		china_unstab.level_of_instability = 10
@@ -925,7 +922,7 @@ func _on_month_changed() -> void:
 	# 916-954 年块维护在 _yearly_jan1_maintenance；955-1048 RIM 日块在 _daily_rim_and_alliance_checks；
 	# 本函数保留季度/半年度条件与 1689+ 月维护。
 	_monthly_rim_and_alliance_cleanup(w)
-	# 原版月块（data[19]==1）行序：1682-2565 已由 _monthly_rim_and_alliance_cleanup 及其子函数执行；
+	# 原版月块（data.day==1）行序：1682-2565 已由 _monthly_rim_and_alliance_cleanup 及其子函数执行；
 	# 2555-2851 寡头、2852-2913 后期维护、2914-3024 政客循环、3025 非洲政变、
 	# 3026-3037 事件清空与瑞士发展、3038-3135 人口增长。
 	_monthly_oligarch(d, w)
@@ -941,7 +938,7 @@ func _on_month_changed() -> void:
 ## TimeScript.cs:955-1048：革命国际/亲中联盟日块（Repaint 每日执行，非月块）。
 ## 含 1000-1015 全部国家 SubGosstroy 17/0 亲中退出与 AU 退出（此前遗漏）。
 func _daily_rim_and_alliance_checks(w: WorldState) -> void:
-	var d := w.数值表
+	var d := w
 	var china := w.get_country_by_legacy_index(1)
 
 	# 957-983：RIM（革命国际）条件退出。
@@ -949,9 +946,9 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 		w.is_socialism(china, false)
 		or not _mod_active(w, 3)
 		or not _mod_active(w, 6)
-		or d[W.I_PARTY_SYSTEM] > 7
-		or d[W.I_ECON_SYSTEM] > 12
-		or d[W.I_RELIGION] > 25
+		or d.party_system > 7
+		or d.econ_system > 12
+		or d.religion_policy > 25
 		or _country_tag(w, 51, "对华贸易")
 		or _country_dev_is(w, 51, 1)
 		or china.has_tag("seato")
@@ -988,13 +985,13 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 			elif c.原版序号 == GameConstants.LegacySlot.CHINA or c.puppet_of == GameConstants.LegacySlot.CHINA:
 				c.set_tag("rim", false)
 
-	# 993-999：阿尔巴尼亚(20)亲中条件退出（cond_full 含 data[52]>36）。
-	var cond_soft := d[W.I_IDEOLOGY] > 3 or d[W.I_PARTY_SYSTEM] > 7 \
-		or d[W.I_ECON_SYSTEM] > 13 or d[W.I_RELIGION] > 28 \
+	# 993-999：阿尔巴尼亚(20)亲中条件退出（cond_full 含 data.econ_display>36）。
+	var cond_soft := d.ideology > 3 or d.party_system > 7 \
+		or d.econ_system > 13 or d.religion_policy > 28 \
 		or (china != null and china.has_tag("seato"))
-	var cond_full := cond_soft or d[W.I_ECON_DISPLAY] > 36
+	var cond_full := cond_soft or d.econ_display > 36
 	var albania := w.get_country_by_legacy_index(20)
-	if albania != null and d[W.I_ALBANIA_BREAK] == 0 and albania.has_tag("亲中") and cond_full:
+	if albania != null and d.albania_break == 0 and albania.has_tag("亲中") and cond_full:
 		albania.set_tag("亲中", false)
 		albania.set_tag("对华贸易", false)
 		albania.set_tag("econ", false)
@@ -1029,7 +1026,7 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 		c24.set_tag("亲中", false)
 
 	# 1020-1023：阿尔巴尼亚 econ/okb 残留清理。
-	if albania != null and d[W.I_ALBANIA_BREAK] == 0 and not albania.has_tag("亲中") \
+	if albania != null and d.albania_break == 0 and not albania.has_tag("亲中") \
 			and (albania.has_tag("econ") or albania.has_tag("okb")):
 		albania.set_tag("econ", false)
 		albania.set_tag("okb", false)
@@ -1037,12 +1034,12 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 	# 1025：ExportValue 每日重算（原版日块；完整 400 行版见 Phase 2，当前用核心版）。
 	_recalc_export_value(d, w)
 
-	# 1026-1029：多党制下 data[125]==4 的选举余波清空。
-	if d[W.I_PARTY_SYSTEM] > 7 and d.size() > 125 and d[125] == 4:
-		d[125] = 0
+	# 1026-1029：多党制下 data.election_timer==4 的选举余波清空。
+	if d.party_system > 7 and d.size() > 125 and d.election_timer == 4:
+		d.election_timer = 0
 
 	# 1028-1039：菲律宾(47)影响力达标时转亲中并触发事件441。
-	if d[37] >= 1000:
+	if d.philippines_maoist_power >= 1000:
 		var c47 := w.get_country_by_legacy_index(47)
 		if c47 != null and not c47.has_tag("亲中") and not w.event_done_num(441):
 			c47.set_tag("亲中", true)
@@ -1156,10 +1153,10 @@ func _daily_finland_linkage(w: WorldState) -> void:
 ## 注：916-954（政变/stab/war_active 重置）是 1 月 1 日年块，已移 _yearly_jan1_maintenance；
 ## 955-1048 是日块，已移 _daily_rim_and_alliance_checks；1648-1679 北欧联动也是日块。
 func _monthly_rim_and_alliance_cleanup(w: WorldState) -> void:
-	var d := w.数值表
+	var d := w
 	var china := w.get_country_by_legacy_index(1)
 
-	# 1490-1634：每季度 1 日维护（data[19]==1 && data[20]%3==0）。
+	# 1490-1634：每季度 1 日维护（data.day==1 && data.month%3==0）。
 	if w.date.day == 1 and w.date.month % 3 == 0:
 		if w.event_done_num(36) and w.result_of_event_num(36) == 2:
 			var iraq_q := w.get_country_by_legacy_index(14)
@@ -1180,7 +1177,7 @@ func _monthly_rim_and_alliance_cleanup(w: WorldState) -> void:
 			var c_based := w.get_country_by_legacy_index(legacy_idx)
 			if c_based != null:
 				c_based.有驻军基地 = false
-		# 事件677/678 未完成且国家29/166未分立时，按结果给 data[162..165] 各最多+1。
+		# 事件677/678 未完成且国家29/166未分立时，按结果给 data.get_data_by_index(162..165) 各最多+1。
 		var c29 := w.get_country_by_legacy_index(29)
 		var c166 := w.get_country_by_legacy_index(166)
 		if w.event_done_num(677) and not w.event_done_num(678) \
@@ -1195,10 +1192,10 @@ func _monthly_rim_and_alliance_cleanup(w: WorldState) -> void:
 				3: inc_slots = [162, 163, 164]
 				4: inc_slots = [162, 163, 164, 165]
 			for slot in inc_slots:
-				if slot < d.size() and d[slot] <= 100:
-					d[slot] += 1
+				if slot < d.size() and d.get_data_by_index(slot) <= 100:
+					d.add_data_by_index(slot, 1)
 
-	# 1636-1648：每半年 1 日维护（data[19]==1 && data[20]%6==0）。
+	# 1636-1648：每半年 1 日维护（data.day==1 && data.month%6==0）。
 	# 原版机制：6 月 1 日 / 12 月 1 日清除 126/149/147/66 的内战冷却标记，
 	# 因此“桑解阵(1043)”5 月按一次后，6 月 1 日冷却清空、6 月可再按。
 	if w.date.day == 1 and w.date.month % 6 == 0:
@@ -1216,12 +1213,12 @@ func _monthly_rim_and_alliance_cleanup(w: WorldState) -> void:
 
 	# 1644-1647：年度抽出的两个“坏事件清空月”复位 bad_done（原版字段未建，用 flag）。
 	if w.date.day == 1 and d.size() > 121 \
-			and (w.date.month == d[119] or w.date.month == d[121]):
+			and (w.date.month == d.election_month_first or w.date.month == d.election_month_second):
 		w.set_flag("bad_done", false)
 
 	# 1689-1740：月维护计时器与决议清理。
-	if d.size() > 44 and d[44] > 0:
-		d[44] -= 1
+	if d.size() > 44 and d.iran_democrat_support > 0:
+		d.iran_democrat_support -= 1
 	if w.event_done_num(36) and w.result_of_event_num(36) == 3 and w.date.month % 2 == 0:
 		var iraq_36 := w.get_country_by_legacy_index(14)
 		if iraq_36 != null:
@@ -1266,31 +1263,31 @@ func _monthly_rim_and_alliance_cleanup(w: WorldState) -> void:
 
 	# 1940-1976：月度递减/清零。
 	for slot in [167, 183, 144, 145, 142, 150, 151]:
-		if slot < d.size() and d[slot] > 0:
-			d[slot] -= 1
-	# 原版 TimeScript.cs:1896-1898 仅当 data[168] > 0 时清零。
-	if d.size() > 168 and d[168] > 0:
-		d[168] = 0
+		if slot < d.size() and d.get_data_by_index(slot) > 0:
+			d.add_data_by_index(slot, -(1))
+	# 原版 TimeScript.cs:1896-1898 仅当 data.support_sent_flag > 0 时清零。
+	if d.support_sent_flag:
+		d.support_sent_flag = false
 	if china != null and china.has_tag("ovd") and china.has_tag("seato"):
 		if d.size() > 142:
-			d[141] = 0
-			d[142] = 0
+			d.alliance_coercion_target = 0
+			d.alliance_coercion_progress = 0
 
 	# 1980-1995：帝国资金换油价冷却。
 	if w.empires.size() > 1 and w.empires[1] != null \
-			and w.empires[1].money >= 200 and (d.size() <= 150 or d[150] <= 0) \
+			and w.empires[1].money >= 200 and (d.size() <= 150 or d.soviet_intervention_cooldown <= 0) \
 			and w.empires[1].power - 200 >= (w.empires[0].power if w.empires.size() > 0 else 0) \
-			and w.empires[1].power - 200 >= w.influence_prc and d[143] < 50:
+			and w.empires[1].power - 200 >= w.influence_prc and d.oil_price < 50:
 		w.empires[1].money -= 200
-		d[143] += 1
-		d[150] = 6
+		d.oil_price += 1
+		d.soviet_intervention_cooldown = 6
 	if w.empires.size() > 0 and w.empires[0] != null \
-			and w.empires[0].money >= 200 and (d.size() <= 151 or d[151] <= 0) \
+			and w.empires[0].money >= 200 and (d.size() <= 151 or d.usa_intervention_cooldown <= 0) \
 			and w.empires[0].power - 200 >= (w.empires[1].power if w.empires.size() > 1 else 0) \
-			and w.empires[0].power - 200 >= w.influence_prc and d[143] > 10:
+			and w.empires[0].power - 200 >= w.influence_prc and d.oil_price > 10:
 		w.empires[0].money -= 200
-		d[143] -= 1
-		d[151] = 6
+		d.oil_price -= 1
+		d.usa_intervention_cooldown = 6
 
 	# 2005-2070：国家36/123 与海湾 101-105 的影响衰减与亲中判定。
 	for legacy_idx in [36, 123]:
@@ -1453,14 +1450,14 @@ func _monthly_event418_mideast(w: WorldState) -> void:
 
 
 ## TimeScript.cs:2299-2565：外援消耗、英法西葡政体、modifies 41/53、被美苏逐出联盟、OAR 等月块维护。
-func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
+func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 	var china := w.get_country_by_legacy_index(1)
 
-	# 2299-2325：data[146] 外援消耗与贸易同盟国家影响。
-	if d.size() > W.I_FOREIGN_AID and d[W.I_FOREIGN_AID] > 0:
-		d[W.I_BUDGET] -= d[W.I_FOREIGN_AID]
-		d[W.I_AGENTS] -= d[W.I_FOREIGN_AID]
-		d[W.I_ARMY] -= d[W.I_FOREIGN_AID]
+	# 2299-2325：data.foreign_aid 外援消耗与贸易同盟国家影响。
+	if d.size() > W.I_FOREIGN_AID and d.foreign_aid > 0:
+		d.budget -= d.foreign_aid
+		d.agents -= d.foreign_aid
+		d.army -= d.foreign_aid
 		for c in w.countries:
 			if c == null or not c.has_tag("贸易同盟"):
 				continue
@@ -1497,7 +1494,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 			britain.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 
 	# 2356-2361：modifies[41] 停用条件。
-	if d[W.I_DIPLO] >= 850 or (d.size() > 131 and (d[131] == 1 or d[131] == 2)):
+	if d.diplomatic_reputation >= 850 or (d.size() > 131 and (d.world_political_balance == 1 or d.world_political_balance == 2)):
 		w.modifiers[41].is_active = false
 	var egypt41 := w.get_country_by_legacy_index(30)
 	if egypt41 != null and not egypt41.has_tag("亲美"):
@@ -1539,23 +1536,23 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 			if c_sento != null:
 				c_sento.set_tag("sento", false)
 
-	# 2392-2470：data[139] 递减与被美苏逐出联盟。
-	if d.size() > 139 and d[139] > 0:
-		d[139] -= 1
+	# 2392-2470：data.alliance_kickout_timer 递减与被美苏逐出联盟。
+	if d.size() > 139 and d.alliance_kickout_timer > 0:
+		d.alliance_kickout_timer -= 1
 	var is_sev := china != null and china.has_tag("sev")
 	var is_asean := china != null and china.has_tag("asean")
-	var evict_pre := (d.size() > 140 and d[140] <= 0) \
+	var evict_pre := (d.size() > 140 and d.alliance_kickout_type <= 0) \
 		and ((not _mod_active(w, 16) and is_sev) or (not _mod_active(w, 17) and is_asean))
-	var evict_bad := (d.size() > 140 and d[139] > 0) and (
-		(d[140] == 1 and is_sev and china.government != GameConstants.Government.LIBERAL and d[W.I_ECON_DISPLAY] != 37)
-		or (d[140] == 2 and is_asean and china.government != GameConstants.Government.SOCIALIST and d[W.I_ECON_DISPLAY] != 34)
+	var evict_bad := (d.size() > 140 and d.alliance_kickout_timer > 0) and (
+		(d.alliance_kickout_type == 1 and is_sev and china.government != GameConstants.Government.LIBERAL and d.econ_display != 37)
+		or (d.alliance_kickout_type == 2 and is_asean and china.government != GameConstants.Government.SOCIALIST and d.econ_display != 34)
 	)
-	if (evict_pre or evict_bad) and d.size() > 139 and d[139] > 0:
-		d[139] = 0
-	var do_evict := d.size() > 139 and d[139] <= 0 and (
-		(is_sev and _mod_active(w, 16) and (d.size() <= 140 or d[140] <= 0))
-		or (is_asean and _mod_active(w, 17) and (d.size() <= 140 or d[140] <= 0))
-		or (d.size() > 140 and d[140] > 0)
+	if (evict_pre or evict_bad) and d.size() > 139 and d.alliance_kickout_timer > 0:
+		d.alliance_kickout_timer = 0
+	var do_evict := d.size() > 139 and d.alliance_kickout_timer <= 0 and (
+		(is_sev and _mod_active(w, 16) and (d.size() <= 140 or d.alliance_kickout_type <= 0))
+		or (is_asean and _mod_active(w, 17) and (d.size() <= 140 or d.alliance_kickout_type <= 0))
+		or (d.size() > 140 and d.alliance_kickout_type > 0)
 	)
 	if do_evict:
 		if is_asean:
@@ -1568,15 +1565,15 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 			if ussr_ev != null:
 				ussr_ev.set_tag("对华贸易", false)
 		if d.size() > 140:
-			d[140] = 0
-		if d.size() > 135 and d[135] > 0:
+			d.alliance_kickout_type = 0
+		if d.restore_agent_mod_47:
 			w.modifiers[47].is_active = true
-			d[135] = 0
-		if d.size() > 136 and d[136] > 0:
+			d.restore_agent_mod_47 = false
+		if d.restore_agent_mod_48:
 			w.modifiers[48].is_active = true
-			d[136] = 0
+			d.restore_agent_mod_48 = false
 		if d.size() > 139:
-			d[139] = 0
+			d.alliance_kickout_timer = 0
 		var ussr_spec := w.get_country_by_legacy_index(7)
 		if ussr_spec != null:
 			ussr_spec.special = 0
@@ -1598,13 +1595,13 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 				c.set_tag("sev", false)
 				if w.empires.size() > 1 and w.empires[1] != null:
 					w.empires[1].power -= 5
-		if d.size() > 137 and d[137] > 0:
-			d[137] = 0
+		if d.restore_econ_alliance:
+			d.restore_econ_alliance = false
 			for c in w.countries:
 				if c != null and c.has_tag("亲中"):
 					c.set_tag("econ", true)
-		if d.size() > 138 and d[138] > 0:
-			d[138] = 0
+		if d.restore_okb_alliance:
+			d.restore_okb_alliance = false
 			for c in w.countries:
 				if c != null and c.has_tag("亲中"):
 					c.set_tag("okb", true)
@@ -1715,7 +1712,7 @@ func _monthly_finland_linkage(w: WorldState) -> void:
 
 
 ## TimeScript.cs:1898-1917：乌干达(118) 事件659/661 月块推进与战争 81 触发。
-func _monthly_uganda_linkage(w: WorldState, _d: Array[int]) -> void:
+func _monthly_uganda_linkage(w: WorldState, _d: WorldState) -> void:
 	if not w.event_done_num(659) or w.event_done_num(661) or w.war_going(81):
 		return
 	var uganda := w.get_country_by_legacy_index(118)
@@ -1729,7 +1726,7 @@ func _monthly_uganda_linkage(w: WorldState, _d: Array[int]) -> void:
 		if war81 != null:
 			war81.name_war = "乌 干 达 内 战"
 			war81.infl2 = 1000
-			w.数值表[W.I_WAR_RESOLVE] = 81
+			w.war_resolve = 81
 			GameManager.start_event("event_661")
 	if uganda.prc_influence > 700:
 		while uganda.parts.size() <= 0:
@@ -1749,13 +1746,13 @@ func _war_at_ensure(w: WorldState, idx: int) -> WarData:
 	return w.wars[idx]
 
 
-## TimeScript.cs:743-954：1 月 1 日年块（Repaint 内 data[19]==1 && data[20]==1）。
+## TimeScript.cs:743-954：1 月 1 日年块（Repaint 内 data.day==1 && data.month==1）。
 ## 原版这些内容只在每年 1 月 1 日执行一次，不是月块。
 func _yearly_jan1_maintenance(w: WorldState) -> void:
-	var d := w.数值表
+	var d := w
 	var china := w.get_country_by_legacy_index(1)
 
-	# 745-754：意大利(85)发展度年增，美苏花钱换 data[160/161]。
+	# 745-754：意大利(85)发展度年增，美苏花钱换 data.get_data_by_index(160/161)。
 	var italy := w.get_country_by_legacy_index(85)
 	if italy != null:
 		italy.level_of_development += 10
@@ -1765,12 +1762,12 @@ func _yearly_jan1_maintenance(w: WorldState) -> void:
 			and w.empires[EmpireData.USSR].money >= 200 and randi_range(0, 4) == 1:
 		w.empires[EmpireData.USSR].money -= 100
 		if d.size() > 160:
-			d[160] += 500
+			d.soviet_money += 500
 	if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null \
 			and w.empires[EmpireData.USA].money >= 200 and randi_range(0, 4) == 1:
 		w.empires[EmpireData.USA].money -= 100
 		if d.size() > 161:
-			d[161] += 500
+			d.usa_money += 500
 
 	# 758-767：AnthemCooldownTime 年递减与决议39清除。
 	if w.anthem_cooldown_time > 0:
@@ -1908,19 +1905,19 @@ func _yearly_jan1_maintenance(w: WorldState) -> void:
 	for i in w.war_active.size():
 		w.war_active[i] = false
 
-	# 952-954：满意现秩序者 data[106] 与派系 party_number 年 /=10。
-	# Godot 侧由 _on_year_changed 随后对 factions.support 与 data[106] 执行同一衰减。
+	# 952-954：满意现秩序者 data.satisfied 与派系 party_number 年 /=10。
+	# Godot 侧由 _on_year_changed 随后对 factions.support 与 data.satisfied 执行同一衰减。
 
 
 func _on_year_changed() -> void:
 	var w := world
 	if w == null:
 		return
-	var d := w.数值表
+	var d := w
 	# 原版 TimeScript.cs:500-501：年滚时抽两个“坏事件清空月”（1-6 / 7-12），供月块 bad_done 复位。
 	if d.size() > 121:
-		d[119] = randi_range(1, 6)
-		d[121] = randi_range(7, 12)
+		d.election_month_first = randi_range(1, 6)
+		d.election_month_second = randi_range(7, 12)
 	# 原版 TimeScript.cs:743-954：1 月 1 日年块维护。
 	_yearly_jan1_maintenance(w)
 	@warning_ignore("integer_division")
@@ -1930,20 +1927,20 @@ func _on_year_changed() -> void:
 	for f in w.factions:
 		f.support = f.support / 10
 	# 满意现秩序者衰减（原版 835 年 /=10）
-	d[W.I_SATISFIED] = d[W.I_SATISFIED] / 10
+	d.satisfied = d.satisfied / 10
 	# 联合/人民民主(7/8) 额外腰斩（TimeScript 年滚 ~640）
-	if d[W.I_SATISFIED] > 1 and (d[W.I_PARTY_SYSTEM] == 7 or d[W.I_PARTY_SYSTEM] == 8):
-		d[W.I_SATISFIED] = d[W.I_SATISFIED] / 2
-	# 年度进口需求增量（原版 TimeScript.cs:514 data[24] += ImportChange；公式 GameState.cs:11-16）
-	d[W.I_IMPORT_NEEDS] += w.import_change()
+	if d.satisfied > 1 and (d.party_system == 7 or d.party_system == 8):
+		d.satisfied = d.satisfied / 2
+	# 年度进口需求增量（原版 TimeScript.cs:514 data.import_needs += ImportChange；公式 GameState.cs:11-16）
+	d.import_needs += w.import_change()
 	# POL-05 / POL-12：年龄 +1、病弱/老死、任职年数（TimeScript 615–621 + DeathPolitics）
 	POL_SYS.annual_politics(d, w)
 	# 1980-01-01 成就检查（TimeScript.cs:687-696：人口>=10000 → Set(63)；
 	# 工业/农业/服务业均>=700 → Set(62)；原作在 iron_and_blood 内，Achievements 内部有同守卫）。
 	if w.date.year == 1980:
-		if d[W.I_POPULATION] >= 10000:
+		if d.population >= 10000:
 			Achievements.set_achievement(63)
-		if d[W.I_INDUSTRY] >= 700 and d[W.I_AGRICULTURE] >= 700 and d[W.I_SERVICES] >= 700:
+		if d.industry >= 700 and d.agriculture >= 700 and d.services >= 700:
 			Achievements.set_achievement(62)
 
 
@@ -1973,213 +1970,213 @@ func fill_vacant_faction_leaders() -> void:
 
 
 # ── 每日：赤字恢复（原版 399-411，日块 Repaint(true)）──
-## 原版条件 data[36]+(data[8]+data[36])>=0 即 2*reserve+budget>=0。
+## 原版条件 data.reserve+(data.budget+data.reserve)>=0 即 2*reserve+budget>=0。
 ## 储备耗尽仍赤字时：speed=0 + 强制跳转经济界面（原版 goto_economy）。
 func _daily_deficit_recovery(w: WorldState) -> void:
-	var d := w.数值表
-	if d[W.I_BUDGET] >= 0:
+	var d := w
+	if d.budget >= 0:
 		return
-	if d[W.I_RESERVE] + (d[W.I_BUDGET] + d[W.I_RESERVE]) >= 0:
-		d[W.I_RESERVE] += d[W.I_BUDGET]
-		d[W.I_BUDGET] = 0
+	if d.reserve + (d.budget + d.reserve) >= 0:
+		d.reserve += d.budget
+		d.budget = 0
 	else:
-		d[W.I_BUDGET] += d[W.I_RESERVE]
-		d[W.I_RESERVE] = 0
-		if d[W.I_BUDGET] < 0:
+		d.budget += d.reserve
+		d.reserve = 0
+		if d.budget < 0:
 			speed = 0
 			is_playing = false
 			call_deferred("_force_goto_economy")
 
 
 # ── 每日：科研点生成（原版 1458-1488，日块）──
-## data[11] += data[73]/40；data[16]<=12 且事件92 时按 data[102] 修正。
+## data.science += data.budget_science/40；data.econ_system<=12 且事件92 时按 data.five_year_plan_focus 修正。
 func _daily_science_gen(w: WorldState) -> void:
-	var d := w.数值表
-	d[W.I_SCIENCE] += d[W.I_BUDGET_SCIENCE] / 40
-	if d[W.I_ECON_SYSTEM] <= 12 and w.event_done_num(92):
+	var d := w
+	d.science += d.budget_science / 40
+	if d.econ_system <= 12 and w.event_done_num(92):
 		match _dv(d, 102):
 			1, 2, 3:
-				d[W.I_SCIENCE] -= 1
+				d.science -= 1
 			4:
-				d[W.I_SCIENCE] += 1
+				d.science += 1
 
 
 # ── 每日：开放度→显示等级映射（原版 1136-1167，日块）──
-func _update_displays(d: Array[int]) -> void:
-	if d[W.I_ECON_OPENNESS] <= 250: d[W.I_ECON_DISPLAY] = 34
-	elif d[W.I_ECON_OPENNESS] <= 500: d[W.I_ECON_DISPLAY] = 35
-	elif d[W.I_ECON_OPENNESS] <= 750: d[W.I_ECON_DISPLAY] = 36
-	else: d[W.I_ECON_DISPLAY] = 37
-	if d[W.I_POLITICAL_OPENNESS] <= 250: d[W.I_POLITICAL_DISPLAY] = 38
-	elif d[W.I_POLITICAL_OPENNESS] <= 500: d[W.I_POLITICAL_DISPLAY] = 39
-	elif d[W.I_POLITICAL_OPENNESS] <= 750: d[W.I_POLITICAL_DISPLAY] = 40
-	else: d[W.I_POLITICAL_DISPLAY] = 41
+func _update_displays(d: WorldState) -> void:
+	if d.econ_openness <= 250: d.econ_display = 34
+	elif d.econ_openness <= 500: d.econ_display = 35
+	elif d.econ_openness <= 750: d.econ_display = 36
+	else: d.econ_display = 37
+	if d.political_openness <= 250: d.political_display = 38
+	elif d.political_openness <= 500: d.political_display = 39
+	elif d.political_openness <= 750: d.political_display = 40
+	else: d.political_display = 41
 
 
-# ── 月度：人口增长（原版 3038-3135，月块 data[19]==1）──
-func _monthly_population(d: Array[int], w: WorldState) -> void:
-	var pop_base: int = d[105]  # 人口增长基数（原版 data[105]，开局=2）
+# ── 月度：人口增长（原版 3038-3135，月块 data.day==1）──
+func _monthly_population(d: WorldState, w: WorldState) -> void:
+	var pop_base: int = d.birth_policy  # 人口增长基数（原版 data.birth_policy，开局=2）
 	# 产值过低 → 人口下降
-	if d[W.I_AGRICULTURE] < 250:
-		d[W.I_POPULATION] -= 15
-	elif d[W.I_AGRICULTURE] < 410:
-		d[W.I_POPULATION] -= 8
-	if d[W.I_SERVICES] < 250:
-		d[W.I_POPULATION] -= 4
-	if d[W.I_INDUSTRY] < 250:
-		d[W.I_POPULATION] -= 8
-	elif d[W.I_INDUSTRY] < 410:
-		d[W.I_POPULATION] -= 4
+	if d.agriculture < 250:
+		d.population -= 15
+	elif d.agriculture < 410:
+		d.population -= 8
+	if d.services < 250:
+		d.population -= 4
+	if d.industry < 250:
+		d.population -= 8
+	elif d.industry < 410:
+		d.population -= 4
 	# 舆论政策 18/19 → 人口下降
-	if d[W.I_PRESS_POLICY] == 18:
-		d[W.I_POPULATION] -= 4
-	elif d[W.I_PRESS_POLICY] == 19:
-		d[W.I_POPULATION] -= 9
+	if d.press_policy == 18:
+		d.population -= 4
+	elif d.press_policy == 19:
+		d.population -= 9
 	# 宗教政策 28/29 → 人口增长
-	if d[W.I_RELIGION] == 28:
-		d[W.I_POPULATION] += pop_base
-	elif d[W.I_RELIGION] == 29:
-		d[W.I_POPULATION] += 2 * pop_base
+	if d.religion_policy == 28:
+		d.population += pop_base
+	elif d.religion_policy == 29:
+		d.population += 2 * pop_base
 	# 经济体制基于人口规模的影响
-	if d[W.I_ECON_SYSTEM] == 11 or d[W.I_ECON_SYSTEM] == 10:
-		d[W.I_INDUSTRY] += d[W.I_POPULATION] / 5000
-	elif d[W.I_ECON_SYSTEM] == 14 and not _mod_active(w, 13):
-		d[W.I_PEOPLE_SUPPORT] -= d[W.I_POPULATION] / 4000
-	elif d[W.I_ECON_SYSTEM] == 15 and not _mod_active(w, 13):
-		d[W.I_PEOPLE_SUPPORT] -= d[W.I_POPULATION] / 4000
+	if d.econ_system == 11 or d.econ_system == 10:
+		d.industry += d.population / 5000
+	elif d.econ_system == 14 and not _mod_active(w, 13):
+		d.people_support -= d.population / 4000
+	elif d.econ_system == 15 and not _mod_active(w, 13):
+		d.people_support -= d.population / 4000
 	# 生活水平 → 人口增长
-	d[W.I_POPULATION] += d[W.I_LIVING] / 60 * pop_base
+	d.population += d.living_standard / 60 * pop_base
 	# 意识形态/生活水平条件块
-	if d[W.I_IDEOLOGY] <= 0 and d[W.I_LIVING] <= 500:
-		d[W.I_POPULATION] += 6 * pop_base
-	elif d[W.I_IDEOLOGY] <= 3 and d[W.I_LIVING] <= 400:
-		d[W.I_POPULATION] += 2 * pop_base
-	elif d[W.I_IDEOLOGY] == 4 and d[W.I_LIVING] >= 850:
-		d[W.I_POPULATION] -= 11
-	elif d[W.I_IDEOLOGY] == 4 and d[W.I_LIVING] >= 650:
-		d[W.I_POPULATION] -= 9
-	elif d[W.I_IDEOLOGY] == 5 and d[W.I_LIVING] >= 850:
-		d[W.I_POPULATION] -= 13
-	elif d[W.I_IDEOLOGY] == 5 and d[W.I_LIVING] >= 650:
-		d[W.I_POPULATION] -= 11
+	if d.ideology <= 0 and d.living_standard <= 500:
+		d.population += 6 * pop_base
+	elif d.ideology <= 3 and d.living_standard <= 400:
+		d.population += 2 * pop_base
+	elif d.ideology == 4 and d.living_standard >= 850:
+		d.population -= 11
+	elif d.ideology == 4 and d.living_standard >= 650:
+		d.population -= 9
+	elif d.ideology == 5 and d.living_standard >= 850:
+		d.population -= 13
+	elif d.ideology == 5 and d.living_standard >= 650:
+		d.population -= 11
 
 
-# ── 月度：寡头成长（原版 2559-2850，月块 data[19]==1）──
-func _monthly_oligarch(d: Array[int], w: WorldState) -> void:
+# ── 月度：寡头成长（原版 2559-2850，月块 data.day==1）──
+func _monthly_oligarch(d: WorldState, w: WorldState) -> void:
 	var year: int = w.date.year
-	var econ := d[W.I_ECON_SYSTEM]
+	var econ := d.econ_system
 	if econ > 13:
 		# econ == 14/15
 		if econ == 14 and year < 1980:
-			d[W.I_OLIGARCH] += 5
+			d.oligarch += 5
 		elif econ == 14:
-			d[W.I_OLIGARCH] += 1
+			d.oligarch += 1
 		elif econ == 15 and year < 1980:
-			d[W.I_OLIGARCH] += 10
+			d.oligarch += 10
 		elif econ == 15:
-			d[W.I_OLIGARCH] += 4
-		if d[W.I_PARTY_SYSTEM] <= 7:
-			d[W.I_OLIGARCH] += 2
-		elif d[W.I_PARTY_SYSTEM] == 8:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_PARTY_SYSTEM] == 9:
-			d[W.I_OLIGARCH] -= 1
-		if d[W.I_PRESS_POLICY] <= 16:
-			d[W.I_OLIGARCH] += 2
-		elif d[W.I_PRESS_POLICY] == 17:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_PRESS_POLICY] == 19:
-			d[W.I_OLIGARCH] -= 1
-		if d[W.I_TERRITORY] == 21:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_TERRITORY] == 22:
-			d[W.I_OLIGARCH] += 2
-		elif d[W.I_TERRITORY] == 23:
-			d[W.I_OLIGARCH] += 3
-		if d[W.I_RELIGION] == 24:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_RELIGION] == 25:
-			d[W.I_OLIGARCH] -= 1
-		elif d[W.I_RELIGION] == 28:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_RELIGION] == 29:
-			d[W.I_OLIGARCH] += 3
-		if d[W.I_MIL_DOCTRINE] == 30:
-			d[W.I_OLIGARCH] += 2
-		elif d[W.I_MIL_DOCTRINE] == 31:
-			d[W.I_OLIGARCH] += 1
+			d.oligarch += 4
+		if d.party_system <= 7:
+			d.oligarch += 2
+		elif d.party_system == 8:
+			d.oligarch += 1
+		elif d.party_system == 9:
+			d.oligarch -= 1
+		if d.press_policy <= 16:
+			d.oligarch += 2
+		elif d.press_policy == 17:
+			d.oligarch += 1
+		elif d.press_policy == 19:
+			d.oligarch -= 1
+		if d.territory_policy == 21:
+			d.oligarch += 1
+		elif d.territory_policy == 22:
+			d.oligarch += 2
+		elif d.territory_policy == 23:
+			d.oligarch += 3
+		if d.religion_policy == 24:
+			d.oligarch += 1
+		elif d.religion_policy == 25:
+			d.oligarch -= 1
+		elif d.religion_policy == 28:
+			d.oligarch += 1
+		elif d.religion_policy == 29:
+			d.oligarch += 3
+		if d.military_doctrine == 30:
+			d.oligarch += 2
+		elif d.military_doctrine == 31:
+			d.oligarch += 1
 		if _mod_active(w, 7):
-			d[W.I_OLIGARCH] -= 1
+			d.oligarch -= 1
 		if _mod_active(w, 13):
-			d[W.I_OLIGARCH] -= 2
+			d.oligarch -= 2
 		if _mod_active(w, 5):
-			d[W.I_OLIGARCH] += 3
+			d.oligarch += 3
 	elif econ == 13:
 		if year < 1980:
-			d[W.I_OLIGARCH] += 1
-		if d[W.I_PARTY_SYSTEM] == 9:
-			d[W.I_OLIGARCH] -= 1
-		if d[W.I_PRESS_POLICY] == 19:
-			d[W.I_OLIGARCH] -= 1
-		if d[W.I_TERRITORY] == 21:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_TERRITORY] == 22:
-			d[W.I_OLIGARCH] += 2
-		elif d[W.I_TERRITORY] == 23:
-			d[W.I_OLIGARCH] += 3
-		if d[W.I_RELIGION] == 24:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_RELIGION] == 25:
-			d[W.I_OLIGARCH] -= 1
-		elif d[W.I_RELIGION] == 28:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_RELIGION] == 29:
-			d[W.I_OLIGARCH] += 3
+			d.oligarch += 1
+		if d.party_system == 9:
+			d.oligarch -= 1
+		if d.press_policy == 19:
+			d.oligarch -= 1
+		if d.territory_policy == 21:
+			d.oligarch += 1
+		elif d.territory_policy == 22:
+			d.oligarch += 2
+		elif d.territory_policy == 23:
+			d.oligarch += 3
+		if d.religion_policy == 24:
+			d.oligarch += 1
+		elif d.religion_policy == 25:
+			d.oligarch -= 1
+		elif d.religion_policy == 28:
+			d.oligarch += 1
+		elif d.religion_policy == 29:
+			d.oligarch += 3
 		if _mod_active(w, 7):
-			d[W.I_OLIGARCH] -= 1
+			d.oligarch -= 1
 		if _mod_active(w, 13):
-			d[W.I_OLIGARCH] -= 2
+			d.oligarch -= 2
 		if _mod_active(w, 5):
-			d[W.I_OLIGARCH] += 3
+			d.oligarch += 3
 	elif econ == 12:
-		if d[W.I_OLIGARCH] > 50:
-			d[W.I_PARTY_SUPPORT] -= (d[W.I_OLIGARCH] - 50) * 10
+		if d.oligarch > 50:
+			d.party_support -= (d.oligarch - 50) * 10
 			if w.empires.size() > 0:
-				w.empires[0].relations -= (d[W.I_OLIGARCH] - 50) * 5
-			d[W.I_LIVING] += (d[W.I_OLIGARCH] - 50) * 5
-			d[W.I_DIPLO] += (d[W.I_OLIGARCH] - 50) * 5
-			d[W.I_AGENTS] -= (d[W.I_OLIGARCH] - 50) * 5
-			d[W.I_OLIGARCH] = 50
-		if d[W.I_PARTY_SYSTEM] == 9:
-			d[W.I_OLIGARCH] -= 1
-		if d[W.I_PRESS_POLICY] == 19:
-			d[W.I_OLIGARCH] -= 1
-		if d[W.I_RELIGION] == 24:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_RELIGION] == 25:
-			d[W.I_OLIGARCH] -= 1
-		elif d[W.I_RELIGION] == 28:
-			d[W.I_OLIGARCH] += 1
-		elif d[W.I_RELIGION] == 29:
-			d[W.I_OLIGARCH] += 3
-		d[W.I_OLIGARCH] -= 3
+				w.empires[0].relations -= (d.oligarch - 50) * 5
+			d.living_standard += (d.oligarch - 50) * 5
+			d.diplomatic_reputation += (d.oligarch - 50) * 5
+			d.agents -= (d.oligarch - 50) * 5
+			d.oligarch = 50
+		if d.party_system == 9:
+			d.oligarch -= 1
+		if d.press_policy == 19:
+			d.oligarch -= 1
+		if d.religion_policy == 24:
+			d.oligarch += 1
+		elif d.religion_policy == 25:
+			d.oligarch -= 1
+		elif d.religion_policy == 28:
+			d.oligarch += 1
+		elif d.religion_policy == 29:
+			d.oligarch += 3
+		d.oligarch -= 3
 		if _mod_active(w, 5):
-			d[W.I_OLIGARCH] += 3
-	elif d[W.I_OLIGARCH] > 0:
+			d.oligarch += 3
+	elif d.oligarch > 0:
 		# econ <= 11：寡头归零
-		d[W.I_PARTY_SUPPORT] -= d[W.I_OLIGARCH] * 10
+		d.party_support -= d.oligarch * 10
 		if w.empires.size() > 0:
-			w.empires[0].relations -= d[W.I_OLIGARCH] * 5
-		d[W.I_LIVING] += d[W.I_OLIGARCH] * 5
-		d[W.I_DIPLO] += d[W.I_OLIGARCH] * 5
-		d[W.I_AGENTS] -= d[W.I_OLIGARCH] * 5
-		d[W.I_OLIGARCH] = 0
+			w.empires[0].relations -= d.oligarch * 5
+		d.living_standard += d.oligarch * 5
+		d.diplomatic_reputation += d.oligarch * 5
+		d.agents -= d.oligarch * 5
+		d.oligarch = 0
 
 
 ## TimeScript.cs:2852-2913：改革阶段→美国关系、波兰 1983.7、中印战争(war==2)、
 ## 瑞士/越南/印度/古巴月度重置、莫桑比克内战漂移、伊朗革命结算（月块）。
-func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
-	# 2852-2858：data[89]==2 且事件54 未完成 → 对美关系 +1。
+func _monthly_late_maintenance(d: WorldState, w: WorldState) -> void:
+	# 2852-2858：data.reform_stage==2 且事件54 未完成 → 对美关系 +1。
 	if _dv(d, W.I_REFORM_STAGE) == 2 and not w.event_done_num(54):
 		_add_empire_relation(w, EmpireData.USA, 1)
 
@@ -2192,22 +2189,22 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 
 	# 2864-2896：中印边境战争(war_state==2)月度推进与胜利结算。
 	if w.war_state == GameConstants.WarState.INDIA:
-		if d[W.I_INDIA_WAR_PRESSURE] >= 1000:
+		if d.india_war_pressure >= 1000:
 			w.influence_prc += 10
-			d[W.I_ARUNACHAL_STATUS] = 2
+			d.arunachal_status = 2
 			# 原版此处调 allcountries[1].ILoveSuckCocks() 刷新中国地图 parts；
 			# 项目既有裁决：地图 parts 刷新近似省略 → 用地图归属转移等价实现
 			# （藏南/阿鲁纳恰尔地块归中国 710，对应原版 parts 重绘中国全图）。
 			_arunachal_to_china(w)
-			d[W.I_POPULATION] += 434
+			d.population += 434
 			w.war_state = GameConstants.WarState.PEACE
 			GameManager.start_event("event_443")
-		d[W.I_POPULATION] -= 2
-		if d[W.I_INDIA_WAR_PRESSURE] >= 50:
-			d[W.I_INDIA_WAR_PRESSURE] -= 50
+		d.population -= 2
+		if d.india_war_pressure >= 50:
+			d.india_war_pressure -= 50
 		elif w.influence_prc >= 20:
 			w.influence_prc -= 20
-		if d[W.I_INDIA_WAR_PRESSURE] <= 0:
+		if d.india_war_pressure <= 0:
 			w.influence_prc -= 20
 			w.war_state = GameConstants.WarState.PEACE
 
@@ -2248,13 +2245,13 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 		var usa_power: int = w.empires[EmpireData.USA].power \
 			if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null else 0
 		@warning_ignore("integer_division")
-		d[W.I_IRAN_LEFT_SUPPORT] += ussr_power / 25 + 30
+		d.iran_left_support += ussr_power / 25 + 30
 		@warning_ignore("integer_division")
-		d[W.I_IRAN_SHAH_SUPPORT] += usa_power / 30
+		d.iran_shah_support += usa_power / 30
 
 
 ## 藏南/阿鲁纳恰尔地块（map_regions.json region 43）归中国（gwcode 710）。
-## 对应原版 ILoveSuckCocks() 在 data[62]>=2 时把中国地图 parts 重绘为含藏南的整图。
+## 对应原版 ILoveSuckCocks() 在 data.arunachal_status>=2 时把中国地图 parts 重绘为含藏南的整图。
 const ARUNACHAL_REGION_IDS: Array[int] = [43]
 const CHINA_GWCODE := 710
 
@@ -2413,10 +2410,10 @@ func _african_sub_gosstroy(gov: int) -> int:
 	return 12
 
 
-## AfricanCoups 中 data[103]==15 时排除 61（上沃尔特）。
+## AfricanCoups 中 data.africa_coup_route==15 时排除 61（上沃尔特）。
 func d103_excluded(w: WorldState, i: int) -> bool:
-	var d := w.数值表
-	return d.size() > 103 and d[103] == 15 and i == 61
+	var d := w
+	return d.size() > 103 and d.africa_coup_route == 15 and i == 61
 
 
 # ── 修正辅助：modifier 是否激活 ──
@@ -2433,39 +2430,39 @@ func _add_empire_relation(w: WorldState, idx: int, delta: int) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._add_empire_relation(w, idx, delta)
 
-func _african_bot_support(d: Array[int], w: WorldState) -> void:
+func _african_bot_support(d: WorldState, w: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._african_bot_support(d, w)
 
-func _political_system_recalc(d: Array[int], w: WorldState) -> void:
+func _political_system_recalc(d: WorldState, w: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._political_system_recalc(d, w)
 
-func _update_political_line(d: Array[int], w: WorldState) -> void:
+func _update_political_line(d: WorldState, w: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._update_political_line(d, w)
 
-func _sync_faction_numbers_from_ideology(d: Array[int], w: WorldState) -> void:
+func _sync_faction_numbers_from_ideology(d: WorldState, w: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._sync_faction_numbers_from_ideology(d, w)
 
-func _weekly_ally_upkeep(d: Array[int], w: WorldState) -> void:
+func _weekly_ally_upkeep(d: WorldState, w: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._weekly_ally_upkeep(d, w)
 
-func _apply_policy_satisfied_growth(d: Array[int], w: WorldState) -> void:
+func _apply_policy_satisfied_growth(d: WorldState, w: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._apply_policy_satisfied_growth(d, w)
 
-func _recalc_export_value(d: Array[int], w: WorldState) -> void:
+func _recalc_export_value(d: WorldState, w: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._recalc_export_value(d, w)
 
-func _plot_player_cause(d: Array[int], w: WorldState) -> void:
+func _plot_player_cause(d: WorldState, w: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._plot_player_cause(d, w)
 
-func _check_daily_conspiracy(d: Array[int]) -> void:
+func _check_daily_conspiracy(d: WorldState) -> void:
 	if _fortnight_service != null:
 		_fortnight_service._check_daily_conspiracy(d)
 
@@ -2473,7 +2470,7 @@ func _check_scheduled_events() -> void:
 	if _fortnight_service != null:
 		_fortnight_service._check_scheduled_events(world)
 
-func _dv(d: Array, idx: int) -> int:
+func _dv(d: WorldState, idx: int) -> int:
 	return _fortnight_service._dv(d, idx) if _fortnight_service != null else 0
 
 func _country_tag(w: WorldState, idx: int, tag: String) -> bool:

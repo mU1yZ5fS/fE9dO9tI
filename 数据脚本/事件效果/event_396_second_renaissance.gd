@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event396.cs：第二次“复兴运动”（意大利全面内战，一选项）。
-## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1231 —— 复杂条件用 evaluate（data[134]>200 无命名键）。
+## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1231 —— 复杂条件用 evaluate（data.italian_radical_left_power>200 无命名键）。
 ## 差异：KGWar 开战映射 GameManager.start_war；AmericanSupportDefender→usa_side = GameConstants.WarSide.SIDE1；
 ##  - 若 c1 非 sev 则 ussr_side = GameConstants.WarSide.SIDE2；TickTime(30)→fortnight_max=30。
 
@@ -43,7 +43,7 @@ func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
-	var d := world.数值表
+	var d := world
 	if d.size() <= 134:
 		return false
 	if world.completed_event_ids.has("event_396"):
@@ -61,7 +61,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if italy.level_of_development >= 20:
 		return false
-	return d[134] > 200
+	return d.italian_radical_left_power > 200
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -94,5 +94,5 @@ func execute(context: Dictionary) -> void:
 
 func _raw(i: int) -> int:
 	if d.size() > i:
-		return d[i]
+		return d.get_data_by_index(i)
 	return 0

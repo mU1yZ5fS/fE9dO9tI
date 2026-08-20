@@ -83,7 +83,7 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 	if event_def == null or p_ws == null:
 		return
 	ws = p_ws
-	d = p_ws.数值表
+	d = p_ws
 	match event_def.event_id:
 		"polish_crisis":
 			_prepare_67(event_def)
@@ -118,7 +118,7 @@ func _event_67(option_index: int, context: Dictionary) -> void:
 				poland.set_tag("对华贸易", true)
 			context["result_text"] = TXT_67_R0
 		1:
-			var line := int(ws.数值表[W.I_POLITICAL_LINE])
+			var line := int(ws.political_line)
 			var r1 := ""
 			if line <= 1:
 				_add_data({W.I_DIPLO: 50})
@@ -338,8 +338,8 @@ func _empire_relation(empire_index: int) -> int:
 func _add_data(changes: Dictionary) -> void:
 	for raw_index in changes:
 		var index := int(raw_index)
-		if index >= 0 and index < ws.数值表.size():
-			ws.数值表[index] += int(changes[raw_index])
+		if index >= 0 and index < ws.size():
+			ws.add_data_by_index(index, int(changes[raw_index]))
 
 
 func _change_politicians(changes: Dictionary) -> void:
@@ -375,11 +375,11 @@ func _add_empire_power(empire_index: int, delta: int) -> void:
 
 func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-		ws.数值表[W.I_USA_RELATIONS] = ws.empires[EmpireData.USA].relations
-		ws.数值表[W.I_USA_INFLUENCE] = ws.empires[EmpireData.USA].power
+		ws.usa_relations = ws.empires[EmpireData.USA].relations
+		ws.usa_influence = ws.empires[EmpireData.USA].power
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
-		ws.数值表[W.I_USSR_RELATIONS] = ws.empires[EmpireData.USSR].relations
-		ws.数值表[W.I_SOVIET_INFLUENCE] = ws.empires[EmpireData.USSR].power
+		ws.ussr_relations = ws.empires[EmpireData.USSR].relations
+		ws.soviet_influence = ws.empires[EmpireData.USSR].power
 
 func _prepare_67(event_def: EventDef) -> void:
 	if event_def.options.size() < 6:
@@ -394,8 +394,8 @@ func _prepare_67(event_def: EventDef) -> void:
 	else:
 		_disable(opts[2], TXT_67_OPT2_DIS)
 	var albania := ws.get_country_by_legacy_index(20)
-	var line := int(ws.数值表[W.I_POLITICAL_LINE])
-	var ps := int(ws.数值表[W.I_PARTY_SYSTEM])
+	var line := int(ws.political_line)
+	var ps := int(ws.party_system)
 	var summa := _summa_3_2()
 	var cond := (line < 3 and ps < 8) or (summa > 66 and ps > 7)
 	if albania != null and albania.has_tag("亲中") and cond:
@@ -429,11 +429,11 @@ func _prepare_69(event_def: EventDef) -> void:
 	_enable(opts[0], TXT_69_OPT0)
 	var moderate_reformer_power := _trait_power_sum([1, 2])
 	var maoist_power := _trait_power_sum([0])
-	if int(ws.数值表[W.I_PARTY_SUPPORT]) >= 650 and moderate_reformer_power > maoist_power:
+	if int(ws.party_support) >= 650 and moderate_reformer_power > maoist_power:
 		_enable(opts[1], TXT_69_OPT1)
 	else:
 		_disable(opts[1], TXT_69_OPT1_DIS)
-	if int(ws.数值表[W.I_PARTY_SUPPORT]) >= 600 and moderate_reformer_power > maoist_power:
+	if int(ws.party_support) >= 600 and moderate_reformer_power > maoist_power:
 		_enable(opts[2], TXT_69_OPT2)
 	else:
 		_disable(opts[2], TXT_69_OPT2_DIS)
@@ -448,11 +448,11 @@ func _prepare_70(event_def: EventDef) -> void:
 	_enable(opts[0], TXT_70_OPT0)
 	var moderate_reformer_power := _trait_power_sum([1, 2])
 	var maoist_power := _trait_power_sum([0])
-	if int(ws.数值表[W.I_PARTY_SUPPORT]) >= 800 and maoist_power > moderate_reformer_power:
+	if int(ws.party_support) >= 800 and maoist_power > moderate_reformer_power:
 		_enable(opts[1], TXT_70_OPT1)
 	else:
 		_disable(opts[1], TXT_70_OPT1_DIS)
-	if int(ws.数值表[W.I_PARTY_SUPPORT]) >= 700 and int(ws.数值表[W.I_MAO_HISTORY_LINE]) != 0:
+	if int(ws.party_support) >= 700 and int(ws.mao_history_line) != 0:
 		_enable(opts[2], TXT_70_OPT2)
 	else:
 		_disable(opts[2], TXT_70_OPT2_DIS)
@@ -468,7 +468,7 @@ func _trait_power_sum(traits: Array) -> int:
 
 
 func _summa_3_2() -> int:
-	if ws.数值表[W.I_PARTY_SYSTEM] <= 7:
+	if ws.party_system <= 7:
 		return 0
 	var num := 0
 	var den := 0

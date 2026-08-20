@@ -8,7 +8,7 @@ const W = preload("res://数据脚本/world_state.gd")
 ## 主分发：返回 {caption, opis, conditions, effect, dormant} 或 {}。
 func build_action(action_type: int, ctx: Dictionary) -> Dictionary:
 	var w: WorldState = ctx.get("w")
-	var _darr: Array = ctx.get("d", [])
+	var _darr = ctx.get("d", null)
 	var country: CountryData = ctx.get("country")
 	var caption: String = ctx.get("caption", "")
 	match action_type:

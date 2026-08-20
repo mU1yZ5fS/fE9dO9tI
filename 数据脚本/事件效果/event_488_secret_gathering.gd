@@ -74,8 +74,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var china := world.get_country_by_legacy_index(1)
-	var econ := world.数值表[W.I_ECON_SYSTEM] if world.数值表.size() > W.I_ECON_SYSTEM else 11
-	var line := world.数值表[W.I_POLITICAL_LINE] if world.数值表.size() > W.I_POLITICAL_LINE else 1
+	var econ := world.econ_system if world.size() > W.I_ECON_SYSTEM else 11
+	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
 	if china != null and china.government <= 1:

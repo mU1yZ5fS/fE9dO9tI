@@ -22,7 +22,7 @@ func execute(context: Dictionary) -> void:
 	var china := ws.get_country_by_legacy_index(1)
 	var mod6: bool = ws.modifiers.size() > 6 and ws.modifiers[6] != null and ws.modifiers[6].is_active
 	if not ws.get_flag("relres") and (china != null and china.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or mod6):
-		d[W.I_COMMUNICATIONS] += 100
+		d.communications += 100
 	var flag_albania := false
 	if albania != null and not albania.has_tag("亲中") and albania.government != GameConstants.Government.REFORMIST:
 		albania.set_tag("sev", true)

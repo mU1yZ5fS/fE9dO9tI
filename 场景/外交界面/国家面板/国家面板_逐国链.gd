@@ -64,8 +64,8 @@ func _part(w: WorldState, idx: int, i: int) -> bool:
 
 
 func _d(w: WorldState, idx: int) -> int:
-	if idx >= 0 and idx < w.数值表.size():
-		return w.数值表[idx]
+	if idx >= 0 and idx < w.size():
+		return w.get_data_by_index(idx)
 	return 0
 
 

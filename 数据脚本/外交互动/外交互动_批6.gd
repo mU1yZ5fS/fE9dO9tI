@@ -262,7 +262,7 @@ func _opis_ub(_w: WorldState, country: CountryData, head: String) -> String:
 ## 主分发：返回 {caption, opis, conditions, effect, dormant} 或 {}。
 func build_action(action_type: int, ctx: Dictionary) -> Dictionary:
 	var w: WorldState = ctx.get("w")
-	var _darr: Array = ctx.get("d", [])
+	var _darr = ctx.get("d", null)
 	var country: CountryData = ctx.get("country")
 	var caption: String = ctx.get("caption", "")
 	match action_type:
@@ -1670,11 +1670,11 @@ func _def_134(w: WorldState, country: CountryData, caption: String) -> Dictionar
 	var eff := func():
 		if not has(country, "贸易同盟"):
 			country.set_tag("贸易同盟", true)
-			# 原版反编译后 data[146] 的增减只写入局部变量 ptr，未写回数组；
-			# 疑似反编译丢失。按原版行为不修改 data[146]。
+			# 原版反编译后 data.foreign_aid 的增减只写入局部变量 ptr，未写回数组；
+			# 疑似反编译丢失。按原版行为不修改 data.foreign_aid。
 		else:
 			country.set_tag("贸易同盟", false)
-			# 同上：原版 data[146] 递减只写入局部变量，未写回数组，按原版不修改。
+			# 同上：原版 data.foreign_aid 递减只写入局部变量，未写回数组，按原版不修改。
 	return make_def(caption, opis, conds, eff)
 # ============================================================================
 # 编号 145 · 对海湾合作委员会施压，要求其减产石油

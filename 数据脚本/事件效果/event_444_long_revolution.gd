@@ -15,10 +15,10 @@ const TXT_R1 := "现在还没有到那种程度，我们的国家和党还没有
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	var data := world.数值表
+	var data := world
 	var opt := event_def.options
 	var cond := world.modifiers.size() > 6 and world.modifiers[6] != null and world.modifiers[6].is_active \
-			and data[W.I_POLITICAL_LINE] < 1 \
+			and data.political_line < 1 \
 			and int(world.completed_event_ids.get("event_307", -1)) == 2 \
 			and int(world.completed_event_ids.get("event_111", -1)) == 1
 	if cond:
@@ -35,10 +35,10 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			# 原版 doctr[6]/doctr[19]/doctr[24] 为显示文案表赋值，Godot 建模说明，跳过。
-			d[W.I_PEOPLE_SUPPORT] = 1000
-			d[W.I_PARTY_SYSTEM] = 6
-			d[W.I_PRESS_POLICY] = 19
-			d[W.I_RELIGION] = 24
+			d.people_support = 1000
+			d.party_system = 6
+			d.press_policy = 19
+			d.religion_policy = 24
 			_add(W.I_PARTY_SUPPORT, 300)
 			ws.influence_prc += 100
 			var kill_list: Array[int] = []

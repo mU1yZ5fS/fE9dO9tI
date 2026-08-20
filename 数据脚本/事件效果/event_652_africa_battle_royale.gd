@@ -38,8 +38,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var sierra := world.get_country_by_legacy_index(107)
 	var libya := world.get_country_by_legacy_index(13)
 	var usa_country := world.get_country_by_legacy_index(51)
-	var data := world.数值表
-	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 2
+	var data := world
+	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 2
 	var opt := event_def.options
 	var sierra_torg := sierra != null and sierra.has_tag("对华贸易")
 	if sierra_torg:

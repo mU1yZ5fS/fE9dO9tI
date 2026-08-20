@@ -4,9 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 触发：TimeScript.cs:10169（日期>=1976.2 且 !event_done[19]）。
 ##  - 原版按钮 0-3 对应 number_otvet 1-4（按钮号+1），端口选项索引 0-3 直接对应。
-##  - opt0 的 data[88]++ / opt2 的 data[88]--：反编译为死代码（ptr 局部自增/自减未写回），跳过；
-##    opt3 的 data[88] += 2 为真实效果（保留）。
-##  - data[88]（无端口命名键）：数字索引直访。
+##  - opt0 的 data.democracy_movement++ / opt2 的 data.democracy_movement--：反编译为死代码（ptr 局部自增/自减未写回），跳过；
+##    opt3 的 data.democracy_movement += 2 为真实效果（保留）。
+##  - data.democracy_movement（无端口命名键）：数字索引直访。
 ##  - politics[12].loyality += 200：端口 ws.politicians[12] 直访（判空）。
 
 
@@ -28,20 +28,20 @@ func execute(context: Dictionary) -> void:
 # 选项0：让它通过，我们静观其变（Event19.cs number_otvet==1）
 func _opt_pass(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 50
+		d.people_support -= 50
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += 50
+		d.thought_freedom += 50
 	context["result_text"] = "作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了人民的不满，而江青同志则被认为是幕后黑手……"
 
 
 # 选项1：严格执行这场运动（Event19.cs number_otvet==2）
 func _opt_enforce(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 70
+		d.people_support -= 70
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += 50
+		d.thought_freedom += 50
 	if d.size() > W.I_DIPLO:
-		d[W.I_DIPLO] += 10
+		d.diplomatic_reputation += 10
 	_add_loyalty_by_trait(0, 70)
 	context["result_text"] = "作为国务院总理，公安部部长，您亲自指挥了这次驱散运动。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了广泛的不满，而江青同志和华国锋同志则被认为是幕后黑手……"
 
@@ -49,11 +49,11 @@ func _opt_enforce(context: Dictionary) -> void:
 # 选项2：严格执行这场运动，并在媒体上批评这种行为（Event19.cs number_otvet==3）
 func _opt_criticize(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 100
+		d.people_support -= 100
 	if d.size() > W.I_THOUGHT_FREEDOM:
-		d[W.I_THOUGHT_FREEDOM] += 70
+		d.thought_freedom += 70
 	if d.size() > W.I_DIPLO:
-		d[W.I_DIPLO] += 10
+		d.diplomatic_reputation += 10
 	_add_loyalty_by_trait(0, 100)
 	context["result_text"] = "作为国务院总理，公安部部长，您亲自指挥了这次驱逐活动并在人民日报的头版发表了对纪念周恩来行为的批评，然而这看起来收效甚微，看起来群众已经厌倦了文化大革命中无止境的批判运动了。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制和在媒体上的批判引起了广泛的不满，而江青同志和华国锋同志则被认为是幕后黑手……"
 
@@ -61,13 +61,13 @@ func _opt_criticize(context: Dictionary) -> void:
 # 选项3：轻微地破坏这场运动（Event19.cs number_otvet==4）
 func _opt_sabotage(context: Dictionary) -> void:
 	if d.size() > W.I_PEOPLE_SUPPORT:
-		d[W.I_PEOPLE_SUPPORT] -= 10
+		d.people_support -= 10
 	if d.size() > 88:
-		d[88] += 2   # 原 data[88]（无端口命名键）
+		d.democracy_movement += 2   # 原 data.democracy_movement（无端口命名键）
 	if d.size() > W.I_PARTY_SUPPORT:
-		d[W.I_PARTY_SUPPORT] -= 50
+		d.party_support -= 50
 	if d.size() > W.I_DIPLO:
-		d[W.I_DIPLO] -= 10
+		d.diplomatic_reputation -= 10
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].loyalty += 200   # 原 politics[12].loyality += 200
 	for p in ws.politicians:
