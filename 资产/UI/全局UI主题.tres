@@ -58,3 +58,6 @@ default_font_size = 24
 Panel/styles/panel = SubResource("StyleBoxFlat_panel")
 PopupPanel/styles/panel = SubResource("StyleBoxFlat_popup")
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_tooltip")
+TooltipLabel/fonts/font = ExtResource("1_font")
+TooltipLabel/font_sizes/font_size = 18
+TooltipLabel/colors/font_color = Color(1, 1, 1, 1)

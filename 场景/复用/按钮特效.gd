@@ -63,6 +63,9 @@ func _bind(btn: BaseButton) -> void:
 	if _bound.has(id):
 		return
 	_bound[id] = true
+	# 按钮销毁时清理缓存，避免 _bound/_anim_safe 无限膨胀
+	if not btn.tree_exited.is_connected(_on_btn_exited):
+		btn.tree_exited.connect(_on_btn_exited.bind(id))
 	if btn.has_meta("no_fx") and btn.get_meta("no_fx"):
 		return
 	# 记录原始缩放（部分按钮自带 scale，如 决议按钮 0.78、音乐按钮 0.2），动效按比例缩放
@@ -75,6 +78,12 @@ func _bind(btn: BaseButton) -> void:
 		btn.mouse_entered.connect(_on_hover.bind(btn))
 	if not btn.mouse_exited.is_connected(_on_hover_end):
 		btn.mouse_exited.connect(_on_hover_end.bind(btn))
+
+
+## 按钮退出场景树时清理缓存；只传 instance_id，不持有按钮引用，避免影响释放。
+func _on_btn_exited(id: int) -> void:
+	_bound.erase(id)
+	_anim_safe.erase(id)
 
 
 func _on_pressed(btn: BaseButton) -> void:

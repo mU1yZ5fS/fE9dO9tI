@@ -24,6 +24,11 @@ const 提示配置 := {
 
 var _vm = null
 
+## 各 Label 上一次显示的文本，用于判断数值是否变化并触发刷新特效。
+var _prev_texts: Dictionary = {}
+## Label 正在播放的刷新特效 Tween，按 Label 实例 id 保存，避免重复叠加。
+var _flash_tweens: Dictionary = {}
+
 
 func _ready() -> void:
 	if not GameManager:
@@ -49,7 +54,29 @@ func _refresh() -> void:
 func _label(label_name: String, text: String) -> void:
 	var lbl := find_child(label_name, true, false)
 	if lbl is Label:
-		lbl.text = text
+		var old: String = _prev_texts.get(label_name, "")
+		if old != text:
+			_prev_texts[label_name] = text
+			lbl.text = text
+			_flash_label(lbl)
+
+
+## 数值变化时给 Label 一个短暂高亮回弹，让玩家一眼看到哪项在变。
+func _flash_label(lbl: Label) -> void:
+	var id := lbl.get_instance_id()
+	if _flash_tweens.has(id):
+		var old_tween: Tween = _flash_tweens[id]
+		if old_tween != null and old_tween.is_valid():
+			old_tween.kill()
+		_flash_tweens.erase(id)
+	lbl.modulate = Color(1.0, 0.92, 0.55, 1.0)
+	var tw := create_tween()
+	_flash_tweens[id] = tw
+	tw.tween_property(lbl, "modulate", Color.WHITE, 0.45) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_callback(func() -> void:
+		_flash_tweens.erase(id)
+	)
 
 
 # ── 悬浮提示 ──

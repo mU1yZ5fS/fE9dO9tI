@@ -365,6 +365,32 @@ func _input(event: InputEvent) -> void:
 		_refresh_time_shortcut_rows()
 
 
+## 恢复默认：还原持久化设置、音乐循环/随机、音量、快捷键与窗口模式。
+func _on_恢复默认_pressed() -> void:
+	_rebinding_action = ""
+	if GameManager:
+		GameManager.reset_settings()
+	if 音频总管:
+		音频总管.循环 = false
+		音频总管.随机 = true
+		音频总管.apply_voice()
+	var audio_info := get_node_or_null("音频信息背景图")
+	if audio_info:
+		if audio_info.has_method("_refresh_volume_display"):
+			audio_info._refresh_volume_display()
+		var slider := audio_info.get_node_or_null("音量滑条") as HSlider
+		if slider:
+			slider.set_value_no_signal(float(GameManager.voice if GameManager else 5))
+	# 项目默认启动为独占全屏，恢复默认时也切回全屏
+	if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	_refresh_settings_rows()
+	_刷新按钮外观()
+	_refresh_time_shortcut_rows()
+	_刷新窗口模式行()
+
+
 func _on_返回_pressed() -> void:
 	var return_scene: String = GameManager.settings_return_scene
 	if return_scene == "":

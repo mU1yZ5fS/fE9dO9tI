@@ -6,17 +6,6 @@
 [ext_resource type="Script" uid="uid://dprrkvl1dxnw8" path="res://场景/主菜单/主菜单.gd" id="2_qdl27"]
 [ext_resource type="Script" uid="uid://c8lq4p6d1xjda" path="res://场景/主菜单/版本信息.gd" id="5_xj33c"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBox_ach_panel"]
-content_margin_left = 32.0
-content_margin_top = 24.0
-content_margin_right = 32.0
-content_margin_bottom = 24.0
-bg_color = Color(0.973, 0.949, 0.867, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
 [node name="Control" type="Control" unique_id=1650672303]
 layout_mode = 3
 anchors_preset = 15
@@ -142,7 +131,7 @@ color = Color(0, 0, 0, 0.45)
 
 [node name="成就弹窗" type="PopupPanel" parent="." unique_id=1339]
 size = Vector2i(1200, 780)
-theme_override_styles/panel = SubResource("StyleBox_ach_panel")
+
 
 [node name="布局" type="VBoxContainer" parent="成就弹窗" unique_id=1340]
 anchors_preset = 15

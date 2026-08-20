@@ -7,10 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://kwvpccpoe1ke" path="res://资产/UI/派系/生育政策按钮背景.png" id="46_msavi"]
 [ext_resource type="Texture2D" uid="uid://c8aavxa4ot146" path="res://资产/UI/决议/决议背景2.png" id="47_p3pua"]
 [ext_resource type="Texture2D" uid="uid://dn5r2xt4xyu6h" path="res://资产/UI/概览/切换显示按钮背景.png" id="48_rlltj"]
+[ext_resource type="Script" path="res://场景/外交界面/预警图标.gd" id="49_alert"]
 [sub_resource type="StyleBoxEmpty" id="blank_style"]
 
 
 [node name="预警图标" type="CanvasLayer"]
+script = ExtResource("49_alert")
 
 
 [node name="科研未研究提示" type="TextureRect" parent="." unique_id=7722002]

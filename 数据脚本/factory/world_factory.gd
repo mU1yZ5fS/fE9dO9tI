@@ -21,49 +21,11 @@ const INITIAL_DATA_DIR: String = "res://资产/数据/初始/"
 # ============================================================================
 # 国名别名表 -- 原版英文国名（规范化后）→ 新地图国名 的映射
 # ============================================================================
-const NAME_ALIASES := {
-	"usa": "unitedstatesofamerica",
-	"gdr": "germandemocraticrepublic",
-	"frg": "germanfederalrepublic",
-	"northkorea": "koreapeoplesrepublicof",
-	"southkorea": "korearepublicof",
-	"northyemen": "yemenarabrepublicofyemen",
-	"southyemen": "yemenpeoplesrepublicof",
-	"luxemburg": "luxembourg",
-	"greatbritain": "unitedkingdom",
-	"burma": "myanmar",
-	"holland": "netherlands",
-	"uae": "unitedarabemirates",
-	"cotedivoire": "cotedivoire",
-	"ctedivoire": "cotedivoire",  # Côte → c + te（ô 被剥掉）
-	"uppervolta": "burkinafasouppervolta",
-	"car": "centralafricanrepublic",
-	"suriname": "surinam",
-	"kampuchea": "cambodiakampuchea",
-	"jordania": "jordan",
-	"sovietunion": "russiasovietunion",
-	"dividedcyprus": "cyprus",
-	"romania": "rumania",
-	"vietnam": "vietnamdemocraticrepublicof",
-	"turkey": "turkeyottomanempire",
-	"iran": "iranpersia",
-	"italy": "italysardinia",
-	"srilanka": "srilankaceylon",
-}
-
-## 地图上不存在的虚构/分离实体：不得占用 G&W 真实 gwcode（否则点墨西哥会命中维吾尔斯坦）
+## 地图上不存在的虚构/分离实体## 地图上不存在的虚构/分离实体：不得占用 G&W 真实 gwcode（否则点墨西哥会命中维吾尔斯坦）
 ## 统一映射到 9000+ 原版序号，避免与 map_countries 0~960 冲突
 const FICTIONAL_COUNTRY_OFFSET := 9000
 
-## 强制走 9000+ 的原版 id：地图无真实区域，或与已有编号重名的分离实体。
-## 153「阿扎尼亚」（原 Country_en.txt 误写为与 128 重名的纳米比亚，按需求修正）；164/165 为安哥拉/尼日利亚分离政权——若不强制，
-## 名称前缀匹配会把它们吸到真实 gwcode，造成 gwcode 索引互相覆盖。
-## 155 塞舌尔 / 159 瓦努阿图已在地图数据补齐，改为正常匹配真实 gwcode（970/971）。
-const FORCE_9000_OFFSET_SLOTS := [
-	145, 150, 151, 153, 156, 157, 162, 163, 164, 165, 166,
-]
-
-## 9000+ 实体的中文名（逐行取自逆向 Assets/Resources/Country_en.txt 的 id 行）。
+## 9000+ 实体的中文名## 9000+ 实体的中文名（逐行取自逆向 Assets/Resources/Country_en.txt 的 id 行）。
 const OFFSET_COUNTRY_NAMES_ZH := {
 	69: "西藏", 70: "维吾尔斯坦",
 	145: "格陵兰岛", 150: "南苏丹", 151: "达尔富尔",
@@ -277,60 +239,8 @@ const SOUTH_COUNTRY_ROWS := [
 # ============================================================================
 # 国家英文名 -- 按原版 id 索引（0-166）
 # ============================================================================
-const COUNTRY_NAMES := {
-	0: "Luxemburg", 1: "China", 2: "Poland", 3: "Czechoslovakia",
-	4: "Hungary", 5: "Romania", 6: "Bulgaria", 7: "Soviet Union",
-	8: "Iran", 9: "Mongolia", 10: "North Korea", 11: "Vietnam",
-	12: "Afghanistan", 13: "Libya", 14: "Iraq", 15: "Yugoslavia",
-	16: "GDR", 17: "FRG", 18: "Western Sahara", 19: "India",
-	20: "Albania", 21: "France", 22: "Laos", 23: "Kampuchea",
-	24: "South Yemen", 25: "North Yemen", 26: "Finland", 27: "Austria",
-	28: "Sweden", 29: "Ireland", 30: "Egypt", 31: "Pakistan",
-	32: "Bangladesh", 33: "Burma", 34: "Thailand", 35: "Syria",
-	36: "Kuwait", 37: "Israel", 38: "Taiwan", 39: "Switzerland",
-	40: "Algeria", 41: "Ethiopia", 42: "Somalia", 43: "Nepal",
-	44: "Japan", 45: "Greece", 46: "South Korea", 47: "Philippines",
-	48: "Grenada", 49: "Malaysia", 50: "Indonesia", 51: "USA",
-	52: "Congo", 53: "Sudan", 54: "Morocco", 55: "Tunisia",
-	56: "Niger", 57: "Chad", 58: "Mali", 59: "Mauritania",
-	60: "Nigeria", 61: "Upper Volta", 62: "Benin", 63: "Ghana",
-	64: "Côte d'Ivoire", 65: "CAR", 66: "Cameroon", 67: "Liberia",
-	68: "Guinea", 69: "Tibet", 70: "Uyghuristan",
-	71: "Argentina", 72: "Bolivia", 73: "Brazil", 74: "Chile",
-	75: "Colombia", 76: "Ecuador", 77: "Guyana", 78: "French Guyana",
-	79: "Paraguay", 80: "Peru", 81: "Suriname", 82: "Uruguay",
-	83: "Venezuela",
-	84: "Turkey", 85: "Italy", 86: "Spain", 87: "Portugal",
-	88: "Belgium", 89: "Holland", 90: "Denmark", 91: "Norway",
-	92: "Great Britain", 93: "Lebanon", 94: "Cyprus",
-	95: "Kurdistan", 96: "Sri Lanka", 97: "Bhutan", 98: "Slovakia",
-	99: "Eritrea", 100: "Tigray", 101: "Saudi Arabia", 102: "UAE",
-	103: "Qatar", 104: "Jordania", 105: "Oman", 106: "Djibouti",
-	107: "Sierra Leone", 108: "Togo", 109: "Basque Country",
-	110: "Catalonia", 111: "Brunei",
-	112: "Senegal", 113: "Gambia", 114: "Guinea-Bissau",
-	115: "Equatorial Guinea", 116: "Gabon",
-	117: "Congo, Democratic Republic of (Zaire)",
-	118: "Uganda", 119: "Kenya", 120: "Rwanda", 121: "Burundi",
-	122: "Tanzania (Tanganyika)", 123: "Angola", 124: "Zambia",
-	125: "Malawi", 126: "Mozambique", 127: "Zimbabwe (Rhodesia)",
-	128: "Namibia", 129: "Botswana", 130: "Swaziland (Eswatini)",
-	131: "South Africa", 132: "Lesotho", 133: "Madagascar (Malagasy)",
-	134: "Papua New Guinea", 135: "Australia", 136: "New Zealand",
-	137: "Canada", 138: "Cuba", 139: "Haiti", 140: "Mexico",
-	141: "Panama", 142: "Belize", 143: "Dominican Republic",
-	144: "Costa Rica", 145: "Greenland", 146: "Honduras",
-	147: "Nicaragua", 148: "El Salvador", 149: "Guatemala",
-	150: "South Sudan", 151: "Darfur", 152: "Jamaica",
-	153: "Azania", 154: "New Caledonia and Dependencies",
-	155: "Seychelles", 156: "Azawad", 157: "Kurdistan II",
-	158: "Comoros", 159: "Vanuatu", 160: "Fiji", 161: "Solomon Islands",
-	162: "Antarctica", 163: "Katanga", 164: "Angola Independence",
-	165: "Nigeria Independence", 166: "Northern Ireland",
-}
-
-
 # ============================================================================
+# 特质中文名# ============================================================================
 # 特质中文名 — 逐字对齐原版 traits_en[44]（Stat.unity:55629 起 Politic_Manager.traits_en）。
 # 7/17/18 按原版为「重视技术/羞怯/贪污」（旧值 科学家/胆怯/贪腐 已修正）。
 # 重要：traits[0] 用 Traits 表（0-3/20），不是 Party 派系表！
@@ -434,7 +344,6 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	ws.ensure_rng()
 
 	_build_countries(ws)
-	_assign_country_names(ws)
 	_assign_real_gwcodes(ws)
 	ws.rebuild_gwcode_index()
 	_fill_data_array(ws)
@@ -483,17 +392,81 @@ static func _load_south_country_rows() -> Array:
 	return SOUTH_COUNTRY_ROWS
 
 
-static func _load_country_names() -> Dictionary:
-	var path := INITIAL_DATA_DIR + "country_names.json"
-	if FileAccess.file_exists(path):
-		var parsed = JSON.parse_string(FileAccess.get_file_as_string(path))
-		if parsed is Dictionary:
-			# JSON 的 key 是字符串，转成 int，保证 names.has(c.gwcode) 命中。
-			var result := {}
-			for k in parsed:
-				result[int(k)] = parsed[k]
-			return result
-	return COUNTRY_NAMES
+# ============================================================================
+# gwcode 修正 -- 用 country_identity.json 建立内部索引→真实 gwcode 映射
+# ============================================================================
+
+static func _apply_offset_name(c: CountryData) -> void:
+	## 9000+ 实体没有 map_countries 条目，回退到逆向 Country_en.txt 的中文名
+	if OFFSET_COUNTRY_NAMES_ZH.has(int(c.原版序号)):
+		c.chinese_name = String(OFFSET_COUNTRY_NAMES_ZH[int(c.原版序号)])
+		c.name = c.chinese_name
+
+
+static func _load_country_identity() -> Dictionary:
+	var path := INITIAL_DATA_DIR + "country_identity.json"
+	var raw := _load_json_as_dict(path)
+	var result := {}
+	for k in raw:
+		result[int(k)] = int(raw[k])
+	return result
+
+
+static func _apply_map_country_meta(c: CountryData, map_countries: Dictionary) -> void:
+	if c == null or c.gwcode <= 0 or c.gwcode >= FICTIONAL_COUNTRY_OFFSET:
+		return
+	var gw_str := str(c.gwcode)
+	if not map_countries.has(gw_str):
+		return
+	var entry: Dictionary = map_countries[gw_str]
+	c.name = String(entry.get("name_1976", c.name))
+	var zh_name: String = entry.get("name_zh", "")
+	if zh_name != "":
+		c.chinese_name = zh_name
+	var gn = entry.get("gov_names", null)
+	if gn is Dictionary:
+		for k in gn:
+			c.gov_names[int(k)] = String(gn[k])
+
+
+static func _assign_real_gwcodes(ws: WorldState) -> void:
+	var map_countries := _load_json_as_dict(MAP_DIR + "/map_countries.json")
+	if map_countries.is_empty():
+		push_warning("WorldFactory: map_countries.json 缺失，CountryData.gwcode 未修正")
+		return
+
+	# 国家身份唯一权威源：country_identity.json（legacy_id → gwcode），不再做英文名模糊匹配。
+	var identity := _load_country_identity()
+	if identity.is_empty():
+		push_error("WorldFactory: country_identity.json 缺失，无法建立国家身份")
+		for c in ws.countries:
+			c.gwcode = FICTIONAL_COUNTRY_OFFSET + int(c.原版序号)
+			_apply_offset_name(c)
+		return
+
+	var matched := 0
+	for c in ws.countries:
+		var sid := int(c.原版序号)
+		if identity.has(sid):
+			c.gwcode = int(identity[sid])
+			_apply_map_country_meta(c, map_countries)
+			if c.gwcode < FICTIONAL_COUNTRY_OFFSET:
+				matched += 1
+		else:
+			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
+			_apply_offset_name(c)
+	print("WorldFactory: gwcode 按 country_identity.json 直查完成 %d/%d" % [matched, ws.countries.size()])
+
+
+# ============================================================================
+# 数值表 -- 从嵌入数组填充 WorldState.数值表[200]
+# ============================================================================
+
+static func _fill_data_array(ws: WorldState) -> void:
+	ws.数值表.resize(200)
+	for i in DATA_VALUES.size():
+		ws.数值表[i] = DATA_VALUES[i]
+	print("WorldFactory: 数值表[150] 加载完成")
 
 
 static func _build_countries(ws: WorldState) -> void:
@@ -547,158 +520,6 @@ static func _build_countries(ws: WorldState) -> void:
 		ws.countries.append(cd)
 
 	print("WorldFactory: 构建了 %d 个国家" % ws.countries.size())
-
-
-# ============================================================================
-# 国家名称 -- 从嵌入字典按 gwcode 赋值
-# ============================================================================
-
-static func _assign_country_names(ws: WorldState) -> void:
-	var names := _load_country_names()
-	for c in ws.countries:
-		if names.has(c.gwcode):
-			c.name = names[c.gwcode]
-
-
-# 寻找与规范化后名字最匹配的真实 gwcode（精确匹配或前缀模糊匹配兜底）
-static func _find_best_matching_gwcode(hr_name: String, name_to_gwcode: Dictionary) -> int:
-	if name_to_gwcode.has(hr_name):
-		return int(name_to_gwcode[hr_name])
-
-	# 前缀唯一匹配兜底（仅 begins_with，避免 slovakia⊂czechoslovakia、oman⊂romania）
-	var best_len := 0
-	var best_gw := 0
-	var best_count := 0
-	for map_name in name_to_gwcode.keys():
-		var mn: String = String(map_name)
-		if mn.length() < 4 or hr_name.length() < 4:
-			continue
-		var hit := mn.begins_with(hr_name) or hr_name.begins_with(mn)
-		if not hit:
-			continue
-		var L: int = mini(mn.length(), hr_name.length())
-		if L > best_len:
-			best_len = L
-			best_gw = int(name_to_gwcode[map_name])
-			best_count = 1
-		elif L == best_len and int(name_to_gwcode[map_name]) != best_gw:
-			best_count += 1
-
-	if best_count == 1 and best_gw > 0:
-		return best_gw
-	return 0
-
-
-# ============================================================================
-# gwcode 修正 -- 用 map_countries.json 建立内部索引→真实 gwcode 映射
-# ============================================================================
-# 匹配策略（按可靠性递减）：
-#   1. 别名表 NAME_ALIASES
-#   2. 规范化名精确匹配
-#   3. 规范化名前缀兜底
-
-static func _apply_offset_name(c: CountryData) -> void:
-	## 9000+ 实体没有 map_countries 中文名，回退到逆向 Country_en.txt 的中文名
-	if OFFSET_COUNTRY_NAMES_ZH.has(int(c.原版序号)):
-		c.chinese_name = String(OFFSET_COUNTRY_NAMES_ZH[int(c.原版序号)])
-
-
-static func _load_country_identity() -> Dictionary:
-	var path := INITIAL_DATA_DIR + "country_identity.json"
-	var raw := _load_json_as_dict(path)
-	var result := {}
-	for k in raw:
-		result[int(k)] = int(raw[k])
-	return result
-
-
-static func _apply_map_country_meta(c: CountryData, map_countries: Dictionary) -> void:
-	if c == null or c.gwcode <= 0 or c.gwcode >= FICTIONAL_COUNTRY_OFFSET:
-		return
-	var gw_str := str(c.gwcode)
-	if not map_countries.has(gw_str):
-		return
-	var entry: Dictionary = map_countries[gw_str]
-	var zh_name: String = entry.get("name_zh", "")
-	if zh_name != "":
-		c.chinese_name = zh_name
-	var gn = entry.get("gov_names", null)
-	if gn is Dictionary:
-		for k in gn:
-			c.gov_names[int(k)] = String(gn[k])
-
-
-static func _assign_real_gwcodes(ws: WorldState) -> void:
-	var map_countries := _load_json_as_dict(MAP_DIR + "/map_countries.json")
-	if map_countries.is_empty():
-		push_warning("WorldFactory: map_countries.json 缺失，CountryData.gwcode 未修正")
-		return
-
-	# 国家身份统一权威源：country_identity.json（legacy_id → gwcode）。
-	# 仅在该文件缺失时回退到旧的英文名模糊匹配（用于数据未迁移的老工作区）。
-	var identity := _load_country_identity()
-	if not identity.is_empty():
-		var matched := 0
-		for c in ws.countries:
-			var sid := int(c.原版序号)
-			if identity.has(sid):
-				c.gwcode = int(identity[sid])
-				_apply_map_country_meta(c, map_countries)
-				if c.gwcode < FICTIONAL_COUNTRY_OFFSET:
-					matched += 1
-			else:
-				c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
-				_apply_offset_name(c)
-		print("WorldFactory: gwcode 按 country_identity.json 直查完成 %d/%d" % [matched, ws.countries.size()])
-		return
-
-	# 构建 规范化国名 → 真实 gwcode
-	var name_to_gwcode: Dictionary = {}
-	for gw_key in map_countries.keys():
-		var entry: Dictionary = map_countries[gw_key]
-		var nm := _normalize_country_name(String(entry.get("name_1976", "")))
-		if nm != "":
-			name_to_gwcode[nm] = int(gw_key)
-
-	var fallback_matched := 0
-	var unmatched_log: Array[String] = []
-	for c in ws.countries:
-		var sid := int(c.原版序号)
-		# 地图无区域/同名分离实体：直接进 9000+，避免占用真实 gwcode
-		# （否则 153 阿扎尼亚会覆盖 128 的 gwcode、164/165 会被前缀吸到母国）
-		if FORCE_9000_OFFSET_SLOTS.has(sid):
-			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
-			_apply_offset_name(c)
-			unmatched_log.append("%s(idx=%d→gw=%d)" % [c.name, sid, c.gwcode])
-			continue
-		var hr_name := _normalize_country_name(c.name)
-		if NAME_ALIASES.has(hr_name):
-			hr_name = String(NAME_ALIASES[hr_name])
-		var gw := _find_best_matching_gwcode(hr_name, name_to_gwcode)
-		if gw > 0:
-			c.gwcode = gw
-			_apply_map_country_meta(c, map_countries)
-			fallback_matched += 1
-		else:
-			# 关键：内部序号 70/100 与 G&W 墨西哥/哥伦比亚冲突 → 挪到 9000+
-			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
-			_apply_offset_name(c)
-			unmatched_log.append("%s(idx=%d→gw=%d)" % [c.name, sid, c.gwcode])
-
-	print("WorldFactory: gwcode 修正完成 %d/%d 匹配（旧名称匹配回退）" % [fallback_matched, ws.countries.size()])
-	if unmatched_log.size() > 0 and unmatched_log.size() <= 40:
-		print("  未匹配(虚构/无区域，已偏移到 9000+): %s" % str(unmatched_log))
-
-
-# ============================================================================
-# 数值表 -- 从嵌入数组填充 WorldState.数值表[200]
-# ============================================================================
-
-static func _fill_data_array(ws: WorldState) -> void:
-	ws.数值表.resize(200)
-	for i in DATA_VALUES.size():
-		ws.数值表[i] = DATA_VALUES[i]
-	print("WorldFactory: 数值表[150] 加载完成")
 
 
 # ============================================================================
@@ -1685,23 +1506,7 @@ static func _init_wars(ws: WorldState) -> void:
 # ============================================================================
 
 # 规范化国名：小写 + 去重音 + 去除空格/标点/连字符，便于跨数据源匹配
-static func _normalize_country_name(s: String) -> String:
-	var t := s.to_lower().replace("&", "and")
-	# 常见西欧重音 → ASCII（Côte / São 等）
-	const FROM := "àáâãäåāăąèéêëēĕėęěìíîïĩīĭįıòóôõöøōŏőùúûüũūŭůűýÿçñśźż"
-	const TO := "aaaaaaaaaeeeeeeeeeeiiiiiiiiiooooooooouuuuuuuuuyycnszz"
-	for i in mini(FROM.length(), TO.length()):
-		t = t.replace(FROM[i], TO[i])
-	var out := ""
-	for i in t.length():
-		var ch := t[i]
-		var code := ch.unicode_at(0)
-		if (code >= 97 and code <= 122) or (code >= 48 and code <= 57):
-			out += ch
-	return out
-
-
-# 加载 JSON 文件为 Dictionary（失败返回空字典）
+# 加载 JSON 文件为 Dictionary# 加载 JSON 文件为 Dictionary（失败返回空字典）
 static func _load_json_as_dict(path: String) -> Dictionary:
 	var f := FileAccess.open(path, FileAccess.READ)
 	if f == null:

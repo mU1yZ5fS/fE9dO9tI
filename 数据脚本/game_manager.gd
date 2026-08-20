@@ -305,6 +305,12 @@ func set_difficulty(value: int) -> void:
 		_settings.set_difficulty(value, world)
 
 
+## 设置界面“恢复默认”：一次性还原全部持久化设置并应用快捷键。
+func reset_settings() -> void:
+	if _settings != null:
+		_settings.reset_to_defaults()
+
+
 ## 原作 savePlace 编号 5=成就位；本端口存档槽 0=成就位、1-4=普通位。
 func autosave_slot() -> int:
 	return _settings.autosave_slot() if _settings != null else 0

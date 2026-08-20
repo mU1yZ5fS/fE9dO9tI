@@ -612,6 +612,20 @@ offset_bottom = 128.0
 texture_normal = ExtResource("2_0f5pc")
 texture_hover = ExtResource("3_ioabl")
 
+[node name="恢复默认" type="Button" parent="." unique_id=2026081701]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 40.0
+offset_right = 840.0
+offset_bottom = 104.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "恢复默认"
+icon = ExtResource("19_rowbar")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
 [node name="音频信息背景图" type="TextureRect" parent="." unique_id=738632101]
 layout_mode = 0
 offset_left = 664.0
@@ -1070,6 +1084,7 @@ offset_right = 1376.96
 offset_bottom = 833.12
 
 [connection signal="pressed" from="返回" to="." method="_on_返回_pressed"]
+[connection signal="pressed" from="恢复默认" to="." method="_on_恢复默认_pressed"]
 [connection signal="pressed" from="音频信息背景图/减小1音量" to="音频信息背景图" method="_on_减小1音量_pressed"]
 [connection signal="pressed" from="音频信息背景图/减小10音量" to="音频信息背景图" method="_on_减小10音量_pressed"]
 [connection signal="pressed" from="音频信息背景图/增大1音量" to="音频信息背景图" method="_on_增大1音量_pressed"]

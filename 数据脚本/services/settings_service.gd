@@ -57,6 +57,17 @@ func save_config() -> void:
 		push_error("SettingsService: 设置写入失败 " + SETTINGS_PATH)
 
 
+## 恢复全部持久化设置为原版默认值，并立即应用到 InputMap 与配置文件。
+func reset_to_defaults() -> void:
+	voice = 5
+	autosave_mode = 0
+	save_place = 5
+	difficulty_setting = 2
+	time_shortcut_keys.clear()
+	apply_time_shortcuts()
+	save_config()
+
+
 ## 注册动作并应用当前绑定。仅应由 GameManager._ready 调用一次；
 ## 动作常驻全局 InputMap，但只有外交场景监听它们。
 func setup_time_shortcuts() -> void:

@@ -35,6 +35,17 @@ static func attach(ctrl: Control) -> void:
 	ctrl.set_script(load("res://数据脚本/bbc_tooltip.gd"))
 
 
+## 通用设置入口：任意 Control 都能用它设置统一 Tooltip。
+## 无脚本控件会自动挂上 BbcTooltip 以支持 BBCode；已有脚本的控件保持其
+## _make_custom_tooltip / tooltip_text 行为不变。
+static func set_tooltip(ctrl: Control, text: String) -> void:
+	if ctrl == null:
+		return
+	ctrl.tooltip_text = text
+	if ctrl.get_script() == null:
+		attach(ctrl)
+
+
 ## 主人要求：提示文案不要空格。显示时直接去掉所有空格（保留换行），
 ## 只影响悬浮提示的显示，不改动经济.gd 里保存的原版文案。
 func _strip_all_spaces(text: String) -> String:
@@ -73,20 +84,31 @@ static func build_tooltip(for_text: String) -> Control:
 	return inst._make_custom_tooltip(for_text)
 
 
+## 从项目全局 Theme 取 TooltipPanel 样式；没有则返回 null 由调用方回退。
+func _tooltip_style() -> StyleBox:
+	var theme := ThemeDB.get_project_theme()
+	if theme != null and theme.has_stylebox("panel", "TooltipPanel"):
+		return theme.get_stylebox("panel", "TooltipPanel")
+	return null
+
+
 func _make_custom_tooltip(for_text: String) -> Control:
 	if for_text.is_empty():
 		return null
 	var display_text := _strip_all_spaces(unity_color_to_bbcode(for_text))
 	var min_height: float = _estimate_min_height(display_text)
 	var panel := PanelContainer.new()
-	# 自绘深灰底：不依赖项目 TooltipPanel 主题颜色，白字永远有对比度
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.07, 0.07, 0.07, 0.97)
-	style.set_corner_radius_all(4)
-	style.content_margin_left = 12
-	style.content_margin_right = 12
-	style.content_margin_top = 8
-	style.content_margin_bottom = 8
+	# 优先使用全局 Theme 的 TooltipPanel 样式，保证所有悬浮提示风格统一；
+	# 没有全局样式时回退到自绘深灰底，白字永远有对比度。
+	var style := _tooltip_style()
+	if style == null:
+		style = StyleBoxFlat.new()
+		style.bg_color = Color(0.07, 0.07, 0.07, 0.97)
+		style.set_corner_radius_all(4)
+		style.content_margin_left = 12
+		style.content_margin_right = 12
+		style.content_margin_top = 8
+		style.content_margin_bottom = 8
 	panel.add_theme_stylebox_override("panel", style)
 	panel.custom_minimum_size = Vector2(240, min_height)
 	var rtl := RichTextLabel.new()
