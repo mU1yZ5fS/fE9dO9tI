@@ -52,6 +52,19 @@ func preload_region_map() -> void:
 	_map_preload_thread.start(_decode_region_map)
 
 
+## 当生成资源缺失或比任一源 JSON 旧时返回 false（需回退 JSON 并提示重建）。
+func _generated_map_is_fresh() -> bool:
+	if not FileAccess.file_exists(GENERATED_MAP_DATA_PATH):
+		return false
+	var res_time := FileAccess.get_modified_time(GENERATED_MAP_DATA_PATH)
+	for fname in ["map_regions.json", "map_countries.json", "map_actors.json", "map_neighbors.json"]:
+		var src_path: String = "res://资产/地图/" + str(fname)
+		if FileAccess.file_exists(src_path):
+			if FileAccess.get_modified_time(src_path) > res_time:
+				return false
+	return true
+
+
 func _decode_region_map() -> void:
 	var img: Image = null
 
@@ -68,8 +81,8 @@ func _decode_region_map() -> void:
 
 	# 按原分辨率加载，不缩放/压缩底图。
 
-	# 2. 优先使用 MapBuilder 生成的运行时 Resource
-	if ResourceLoader.exists(GENERATED_MAP_DATA_PATH):
+	# 2. 优先使用 MapBuilder 生成的运行时 Resource（仅当它比源 JSON 新）
+	if _generated_map_is_fresh():
 		var map_data: MapData = load(GENERATED_MAP_DATA_PATH)
 		if map_data != null:
 			var gd_regions_dict: Dictionary = {}
@@ -124,7 +137,9 @@ func _decode_region_map() -> void:
 			)
 			return
 
-	# 3. 回退：直接解析旧 JSON
+	# 3. 回退：直接解析 JSON（res 缺失/过期/加载失败时）
+	if FileAccess.file_exists(GENERATED_MAP_DATA_PATH):
+		push_warning("MapService: map_data.res 已过期或不可用，已回退 JSON；请运行 res://tools/rebuild_map_data.gd 重建")
 	const META_PATH := "res://资产/地图/map_meta.json"
 	const REGIONS_PATH := "res://资产/地图/map_regions.json"
 	const COUNTRIES_PATH := "res://资产/地图/map_countries.json"
