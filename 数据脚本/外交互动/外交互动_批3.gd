@@ -213,8 +213,8 @@ func _def_80(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		set_tag(country, "美国盟友", false)
 		country.establish_government(2)
 		set_tag(country, "亲中", true)
-		if country.puppet_of != 1:
-			country.puppet_of = -1
+		if country.puppet_of != GameConstants.LegacySlot.CHINA:
+			country.puppet_of = GameConstants.LegacySlot.NONE
 		if c1 != null:
 			country.government = c1.government
 			country.sub_government = sub_ch
@@ -224,7 +224,7 @@ func _def_80(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		set_d(w, 8, d(w, 8) - 50)
 		set_d(w, 9, d(w, 9) - 50)
 		set_d(w, 22, d(w, 22) - 50)
-		if country.原版序号 == 14 or country.原版序号 == 8:
+		if country.原版序号 == GameConstants.LegacySlot.IRAQ or country.原版序号 == 8:
 			set_d(w, 117, 0)
 	return make_def(caption, opis, conds, eff)
 

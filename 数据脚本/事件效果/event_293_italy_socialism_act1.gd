@@ -82,7 +82,7 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null:
 					continue
-				if p.trait_personality == 3:
+				if p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 					p.power += 200
 				elif p.trait_personality == 4:
 					p.power += 100

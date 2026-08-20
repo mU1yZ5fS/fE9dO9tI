@@ -264,7 +264,7 @@ func _liberal_leader_index(p_ws: WorldState = null) -> int:
 	var best_power := -1000000000
 	for i in world.politicians.size():
 		var p := world.politicians[i]
-		if p != null and p.trait_personality == 3 and p.power > best_power:
+		if p != null and p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL and p.power > best_power:
 			best = i
 			best_power = p.power
 	return best
@@ -517,14 +517,14 @@ func _china_map_parts(china: CountryData) -> void:
 	if ws.get_flag("IndOpp"):
 		_clear_china_parts(china, true)
 		china.parts[15] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
-			and c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
+	elif c19 != null and c19.puppet_of == GameConstants.LegacySlot.CHINA and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
+			and c33 != null and c33.puppet_of == GameConstants.LegacySlot.CHINA and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[14] = true
-	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
+	elif c33 != null and c33.puppet_of == GameConstants.LegacySlot.CHINA and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[13] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
+	elif c19 != null and c19.puppet_of == GameConstants.LegacySlot.CHINA and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[12] = true
 	elif ws.get_flag("is_gkchp"):

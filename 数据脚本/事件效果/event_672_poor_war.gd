@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02.cs:339-341 —— c58.SubGosstroy==7 && IsSocialism(true,61) && DATE_AFTER 1985.9.1
 ##   复合条件 → trigger_script evaluate。
 ## 差异：ingamewars[85] 已有 war_85 WarDef，仍按 start_war 参数覆盖；
-##   AmericanSupportAttacker → usa_side=1、SovietSupportDefender → ussr_side=2。
+##   AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE2、SovietSupportDefender → ussr_side=2。
 
 const TXT_OPT0_DIS := "我们不是什么战争贩子！"
 const TXT_OPT1_DIS := "你怎么下得去手？"

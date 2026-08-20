@@ -123,7 +123,7 @@ func _result1(sudan: CountryData, context: Dictionary) -> void:
 		sudan.set_tag("对华贸易", true)
 		sudan.name = T_499_17
 		if iraq.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or iraq.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
-			sudan.puppet_of = 14
+			sudan.puppet_of = GameConstants.LegacySlot.IRAQ
 		elif (ws.get_flag("oar") and egypt != null and egypt.has_tag("亲苏")) or iraq.has_tag("亲苏"):
 			sudan.set_tag("亲苏", true)
 		elif (ws.get_flag("oar") and egypt != null and egypt.has_tag("亲中")) or iraq.has_tag("亲中"):

@@ -336,9 +336,9 @@ func _start_neutral_wars(
 			infl_base = 300
 	var usa_side := 0
 	if style == 2:
-		usa_side = 1          # Event370 result4 分支：AmericanSupportDefender
+		usa_side = GameConstants.WarSide.SIDE2          # Event370 result4 分支：AmericanSupportDefender
 	elif style == 0 and _soviet_only:
-		usa_side = -1         # Event370 result1 亲中胜利分支：仅 SovietSupportDefender
+		usa_side = GameConstants.WarSide.NONE         # Event370 result1 亲中胜利分支：仅 SovietSupportDefender
 	var ussr_side := 1
 	if syria_neutral:
 		GameManager.start_war(10, TXT_370_664, TXT_370_665, infl_base, 1000 - infl_base, usa_side, ussr_side)

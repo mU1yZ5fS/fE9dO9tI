@@ -267,7 +267,7 @@ static func all_leaders_are_dead() -> bool:
 	for p: PoliticianData in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality == 0 and ((p.name_first == 0 and p.name_last == 0)
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT and ((p.name_first == 0 and p.name_last == 0)
 				or (p.name_first == 3 and p.name_last == 3)
 				or (p.name_first == 4 and p.name_last == 4)
 				or (p.name_first == 5 and p.name_last == 5)):
@@ -473,7 +473,7 @@ static func has_mercenary(yes: bool) -> bool:
 ## HasLeftRadicalLeader — yes: leader.traits[0]==0  （L1645-1676）
 static func has_left_radical_leader(yes: bool) -> bool:
 	var ws := _ws()
-	var v := ws != null and ws.leader != null and ws.leader.trait_personality == 0
+	var v := ws != null and ws.leader != null and ws.leader.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT
 	return v if yes else not v
 
 
@@ -696,8 +696,8 @@ static func quelle_gosstroy(country: int, gos: int, yes: bool) -> bool:
 		return v if yes else not v
 	if country == 10:
 		var korea := _country(46)
-		var v := (c.puppet_of != 1 and c.parts.size() > 0 and c.parts[0] and c.development == 1) \
-			or (c.puppet_of != 1 and korea != null and korea.government == GameConstants.Government.SOCIALIST)
+		var v := (c.puppet_of != GameConstants.LegacySlot.CHINA and c.parts.size() > 0 and c.parts[0] and c.development == 1) \
+			or (c.puppet_of != GameConstants.LegacySlot.CHINA and korea != null and korea.government == GameConstants.Government.SOCIALIST)
 		return v if yes else not v
 	if country == 30:
 		var v := c.government == GameConstants.Government.REFORMIST
@@ -985,7 +985,7 @@ static func _replace_lowest_politician(n1: int, n2: int, age: int, t0: int, t3: 
 	var num := 0
 	for i in ws.politicians.size():
 		var p: PoliticianData = ws.politicians[i]
-		if p != null and p.power < ws.politicians[num].power and p.trait_personality != 20:
+		if p != null and p.power < ws.politicians[num].power and p.trait_personality != GameConstants.PoliticianPersonality.CONSERVATIVE:
 			num = i
 	if _kill_politician_cb.is_valid():
 		_kill_politician_cb.call(num)
@@ -1041,7 +1041,7 @@ static func has_leader(name1: int, name2: int, t0: int, t3: int, t1: int, t2: in
 ## HasCorruptLeader — yes: leader.traits[2]==18
 static func has_corrupt_leader(yes: bool) -> bool:
 	var ws := _ws()
-	var v := ws != null and ws.leader != null and ws.leader.trait_special == 18
+	var v := ws != null and ws.leader != null and ws.leader.trait_special == GameConstants.PoliticianSpecial.CORRUPT
 	return v if yes else not v
 
 
@@ -1649,7 +1649,7 @@ static func eliminate_corrupt_elements(_yes: bool = true) -> void:
 	var targets: Array[int] = []
 	for i in ws.politicians.size():
 		var p: PoliticianData = ws.politicians[i]
-		if p != null and p.trait_special == 18:
+		if p != null and p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
 			targets.append(i)
 	for i in targets:
 		if _kill_politician_cb.is_valid():
@@ -1782,7 +1782,7 @@ static func _leave_all_legacy(c: CountryData) -> void:
 			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
 			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
 		c.set_tag(tag, false)
-	c.puppet_of = -1
+	c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## JoinAllOurAlliances(true) 等价（中国 econ→econ；否则 sev→sev）

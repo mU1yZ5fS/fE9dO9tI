@@ -90,7 +90,7 @@ func execute(context: Dictionary) -> void:
 		c87.special -= 15
 	var ussr_side := -1
 	if c1 == null or not c1.has_tag("sev"):
-		ussr_side = 1
+		ussr_side = GameConstants.WarSide.SIDE2
 	if d[172] >= d[173] and d[172] >= d[174]:
 		d[184] = 1
 		_add_power(EmpireData.USA, -10)

@@ -28,7 +28,7 @@ func _start_war1() -> void:
 	war.is_going = true
 	war.side1 = "柬埔寨"
 	war.side2 = "越南"
-	war.ussr_side = 1
+	war.ussr_side = GameConstants.WarSide.SIDE2
 
 
 # 选项0：我们无能为力（Event15.cs result 0）

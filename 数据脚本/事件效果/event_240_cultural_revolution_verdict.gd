@@ -33,13 +33,13 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty += 100
-				if p.trait_personality == 20:
+				if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.loyalty += 80
-				elif p.trait_personality == 2:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 					p.loyalty -= 100
-				elif p.trait_personality == 1:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty += 50
 			_set_data(W.I_POST_MAO_COURSE, 1)
 			context["result_text"] = TXT_R0
@@ -51,11 +51,11 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty += 100
-				if p.trait_personality == 20:
+				if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.loyalty += 80
-				elif p.trait_personality > 0:
+				elif p.trait_personality > GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 200
 					p.power -= 100
 			_set_data(W.I_POST_MAO_COURSE, 2)
@@ -68,9 +68,9 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 20
-				elif p.trait_personality < 3:
+				elif p.trait_personality < GameConstants.PoliticianPersonality.LIBERAL:
 					p.loyalty += 100
 			_set_data(W.I_POST_MAO_COURSE, 3)
 			context["result_text"] = TXT_R2
@@ -82,11 +82,11 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 100
-				if p.trait_personality == 20:
+				if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.loyalty -= 50
-				elif p.trait_personality > 1:
+				elif p.trait_personality > GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty += 100
 			_set_data(W.I_POST_MAO_COURSE, 4)
 			context["result_text"] = TXT_R3

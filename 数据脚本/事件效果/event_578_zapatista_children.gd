@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 选项显隐 prepare 动态改写；proprc/prosov → 亲中/亲苏；influencePRC → ws.influence_prc；
 ##  - resultOfEvents[577] 缺省按原版 int 默认 0；cw → 内战中；stab → country.stab；
-##  - parts[1] 写前 resize；AmericanSupportAttacker.SovietSupportDefender → usa_side=0/ussr_side=1；
+##  - parts[1] 写前 resize；AmericanSupportAttacker.SovietSupportDefender → usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.SIDE2；
 ##  - TickTime(24) → fortnight_max=24。
 
 

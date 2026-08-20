@@ -797,10 +797,10 @@ func is_authoritarian(country: CountryData) -> bool:
 func has_revolutionary_leader() -> bool:
 	if leader == null:
 		return false
-	if leader.trait_personality == 0:
+	if leader.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 		return true
 	var player := get_player_country()
-	return leader.trait_personality == 20 \
+	return leader.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE \
 		and 数值表[I_POLITICAL_LINE] == 0 \
 		and player != null and player.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST
 

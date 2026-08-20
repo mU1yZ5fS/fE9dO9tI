@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event670.cs：关心群众生活，注意工作方法（群众组织路线，三选项）。
 ## 触发：ReqEventsDLC02.cs:329-331 —— DATE_AFTER 1977.11.1。
-## 差异：traits[1]==41 → trait_alignment==41；KillPerson → GameManager.kill_politician；
+## 差异：traits[1]==41 → trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD；KillPerson → GameManager.kill_politician；
 ##   结果尾 old_modify_desc[6] 由 ModifierCatalog 静态维护，按 event_668 约定跳过。
 
 const TXT_DESC_PRE := "自毛泽东主席发动文化大革命以来，中国社会便事实上步入了破而不立的全新阶段：基于“在无产阶级专政下继续革命”与“清除党内走资本主义道路的当权派”这两大理论，清理党内队伍的风暴至此不可阻挡。昔日由党发挥统摄全局作用，垂直领导各群众组织开展工作的做法也自然遭受打击，各种试图彰显“群众主动性”的新形式则借此纷纷登上历史舞台，试图扮演主角，成为群众运动内的“主流”。首先便是所谓“红卫兵”——激进分子们在文革时代宣传鼓动话语下自发筹建的社团，其中尤以校内学生最为典型。他们通过背靠毛泽东主席抛弃工作组（即文革早期与党垂直联系，试图直接以行政手腕控制运动倾向的派遣组织）与“放开手脚闹革命”的指示一时风头无二，并掀起红色恐怖的政治清算浪潮。然而，红卫兵组织所“成就”的事业也仅限于此。面对全国范围的无政府状态，他们很快便分化为对领袖权威选择性引用的各路流派相互攻伐，争斗不休，其中不乏有派别试图引入党内元老与解放军等既有权威“独占鳌头”。上述乱象最终导致领袖转而押注“合法阶级斗争”的诸多方法：串联运动被复课与上山下乡取而代之；主张干部、军方与革命群众“三结合”的革命委员会也在此后诞生，红卫兵由此改组为其政治隶属；以及为调停红卫兵间斗争而安插进入各地，形成“政治领导为主”格局的“宣传队”崛起。后者主要成员来自工人、农民与解放军队伍，在得到来自中央的背书后迅速形成组织，旋即仰仗宣传鼓动形成的强大政治支持成为各机关内不可或缺的一股势力，试图在文革时代重建部门间联系，形成革命叙事统摄。然而各路思想宣传队本身缺乏训练，难以适应机关工作的客观情况，乃至步入70年代以来，由周-邓等人启动的一系列旨在重振党组权威并整顿社会秩序的做法也使其难以为继。\n现在，是时候处理这一历史遗留问题。毛泽东主席曾言：“凡属正确的领导，必须是从群众中来，到群众中去”。若要确立我们的秩序，就必须在群众面前拿出新方案：\n"
@@ -62,7 +62,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PEOPLE_SUPPORT, 100)
 			for i in ws.politicians.size():
 				var p: PoliticianData = ws.politicians[i]
-				if p != null and p.trait_alignment == 41:
+				if p != null and p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
 					GameManager.kill_politician(i)
 		1:
 			context["result_text"] = TXT_R1

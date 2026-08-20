@@ -65,7 +65,7 @@ func execute(context: Dictionary) -> void:
 				new_caledonia.government = GameConstants.Government.AUTHORITARIAN
 				new_caledonia.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 				_leave_alliances(new_caledonia)
-				new_caledonia.puppet_of = 21
+				new_caledonia.puppet_of = GameConstants.LegacySlot.FRANCE
 				new_caledonia.chinese_name = "卡纳克人民国"
 			_add_power(EmpireData.USA, 10)
 		elif ws.is_authoritarian(france):
@@ -82,7 +82,7 @@ func execute(context: Dictionary) -> void:
 				new_caledonia.government = GameConstants.Government.AUTHORITARIAN
 				new_caledonia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(new_caledonia)
-				new_caledonia.puppet_of = 135
+				new_caledonia.puppet_of = GameConstants.LegacySlot.AUSTRALIA
 				new_caledonia.chinese_name = "“卡纳克共和国”"
 			_add_power(EmpireData.USA, 10)
 		context["result_text"] = text
@@ -106,6 +106,6 @@ func execute(context: Dictionary) -> void:
 		new_caledonia.government = GameConstants.Government.AUTHORITARIAN
 		new_caledonia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		_leave_alliances(new_caledonia)
-		new_caledonia.puppet_of = 135
+		new_caledonia.puppet_of = GameConstants.LegacySlot.AUSTRALIA
 		new_caledonia.chinese_name = "卡纳克共和国"
 	_add_power(EmpireData.USA, 10)

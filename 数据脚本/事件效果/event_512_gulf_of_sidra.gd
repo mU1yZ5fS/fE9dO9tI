@@ -78,13 +78,13 @@ func execute(context: Dictionary) -> void:
 			if ws.wars.size() > 20 and ws.wars[20] != null and ws.wars[20].is_going:
 				ws.wars[20].infl2 = 1000
 				ws.wars[20].infl1 = 0
-			if c13 != null: c13.puppet_of = -1
+			if c13 != null: c13.puppet_of = GameConstants.LegacySlot.NONE
 			for c in ws.countries:
 				if c != null and c.puppet_of == 13:
-					c.puppet_of = -1
+					c.puppet_of = GameConstants.LegacySlot.NONE
 			var text2 := TXT_R2_0
 			if c57 != null and c57.puppet_of == 13:
-				c57.puppet_of = -1
+				c57.puppet_of = GameConstants.LegacySlot.NONE
 			if ws.数值表[56] < 3 and _tag(1, "okb"):
 				text2 += TXT_R2_1
 				if c13 != null:

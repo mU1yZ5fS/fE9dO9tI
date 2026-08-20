@@ -36,10 +36,10 @@ func execute(context: Dictionary) -> void:
 					p2.name_first = 27
 					p2.name_last = 48
 					p2.age = d[W.I_YEAR] - 1902
-					p2.trait_personality = 1
-					p2.trait_background = 21
-					p2.trait_alignment = 6
-					p2.trait_special = 11
+					p2.trait_personality = GameConstants.PoliticianPersonality.MODERATE
+					p2.trait_background = GameConstants.PoliticianBackground.PARTY_CADRE
+					p2.trait_alignment = GameConstants.PoliticianAlignment.TOLERANT
+					p2.trait_special = GameConstants.PoliticianSpecial.ECONOMIST
 					p2.power = 1500
 					p2.loyalty = 500
 			context["result_text"] = TXT_R0
@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null:
 					continue
-				if p.trait_personality > 1:
+				if p.trait_personality > GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty -= 250
 					p.power -= 250
 			if num2 >= 0:

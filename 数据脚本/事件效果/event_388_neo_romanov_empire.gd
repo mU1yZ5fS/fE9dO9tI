@@ -101,7 +101,7 @@ func execute(context: Dictionary) -> void:
 			_start_war_388()
 			var usa388 := ws.get_country_by_legacy_index(51)
 			if ws.wars.size() > 22 and ws.wars[22] != null and usa388 != null and usa388.has_tag("对华贸易"):
-				ws.wars[22].usa_side = 0
+				ws.wars[22].usa_side = GameConstants.WarSide.SIDE1
 			_add(W.I_PARTY_SUPPORT, 300)
 			_add(W.I_ARMY, -750)
 

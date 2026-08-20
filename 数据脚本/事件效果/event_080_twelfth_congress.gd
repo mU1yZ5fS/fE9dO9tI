@@ -115,7 +115,7 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 200
 			context["result_text"] = TXT_R1.replace("{0}", leader_name)
 		2:
@@ -140,16 +140,16 @@ func _result_mod3_0(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null or PoliticianSystem.is_vacant_politician(p):
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty += 200
 			p.power += 100
-		if p.trait_personality == 20:
+		if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			p.loyalty += 100
 			p.power += 80
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			p.loyalty -= 100
 			p.power -= 100
-		elif p.trait_personality == 1:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 			p.loyalty -= 100
 	if ws.factions.size() > 3:
 		ws.factions[3].ideology = int(ws.factions[3].ideology * 0.85)
@@ -164,13 +164,13 @@ func _result_mod3_1(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null or PoliticianSystem.is_vacant_politician(p):
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty -= 300
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			p.loyalty += 150
-		elif p.trait_personality == 1:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 			p.loyalty += 150
-		elif p.trait_personality == 20:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			p.loyalty += 150
 	_set_modifier(3, false)
 	PoliticianSystem.kill_politician(1)
@@ -211,16 +211,16 @@ func _result_mod3_false_2(context: Dictionary, leader_name: String) -> void:
 	for p in ws.politicians:
 		if p == null or PoliticianSystem.is_vacant_politician(p):
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty -= 600
 			p.power -= 500
-		elif p.trait_personality == 1:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 			p.loyalty -= 400
 			p.power -= 500
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			p.loyalty -= 300
 			p.power -= 500
-		elif p.trait_personality == 3:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 			p.loyalty += 200
 			p.power += 500
 	var faction4_leader := -1

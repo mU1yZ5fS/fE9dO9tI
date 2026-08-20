@@ -148,7 +148,7 @@ func execute(context: Dictionary) -> void:
 			_leave_alliances(c154)
 			c154.name = S_157
 			c154.set_tag("亲中", true)
-			c154.puppet_of = 21
+			c154.puppet_of = GameConstants.LegacySlot.FRANCE
 			c154.set_tag("对华贸易", true)
 		ws.influence_prc += 50
 		context["result_text"] = S_147
@@ -209,8 +209,8 @@ func execute(context: Dictionary) -> void:
 		return
 	if france.sub_government != GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST and france.sub_government != GameConstants.SubGovernment.NEO_FASCIST and france.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		for c in ws.countries:
-			if c != null and c.puppet_of == 21:
-				c.puppet_of = -1
+			if c != null and c.puppet_of == GameConstants.LegacySlot.FRANCE:
+				c.puppet_of = GameConstants.LegacySlot.NONE
 				_leave_alliances(c)
 				c.set_tag("亲中", false)
 				c.set_tag("亲苏", false)
@@ -218,7 +218,7 @@ func execute(context: Dictionary) -> void:
 		return
 	if france.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST and _sub_has_econ(1):
 		for c in ws.countries:
-			if c != null and c.puppet_of == 21:
+			if c != null and c.puppet_of == GameConstants.LegacySlot.FRANCE:
 				c.set_tag("econ", true)
 
 

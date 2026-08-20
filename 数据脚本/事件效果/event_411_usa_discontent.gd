@@ -185,9 +185,9 @@ func _loyalty_usa() -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality < 2:
+		if p.trait_personality < GameConstants.PoliticianPersonality.REFORMIST:
 			p.loyalty -= 500
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			p.loyalty += 100
-		elif p.trait_personality == 3:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 			p.loyalty += 300

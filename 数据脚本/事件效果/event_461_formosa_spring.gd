@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event461.cs：福尔摩沙之春（台湾统一/合作二选项）。
 ## 触发：DiploButtonScript.cs:11411-11415 —— this_type==1005 外交按钮手动触发；
 ##   按项目约定 trigger_conditions=[]（仅定义，待外交入口接入）。
-## 差异：LeaveAlliances() 按 Country.cs:89-115 清标签+puppet_of=-1；
+## 差异：LeaveAlliances() 按 Country.cs:89-115 清标签+puppet_of = GameConstants.LegacySlot.NONE；
 ##   name→chinese_name；isOVD/isSEV/isRIM/econ/okb→set_tag。
 
 const TXT_OPT0_DIS := "台湾左派的力量太弱了！"
@@ -44,7 +44,7 @@ func execute(context: Dictionary) -> void:
 				taiwan.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				taiwan.set_tag("亲中", true)
 				taiwan.set_tag("对华贸易", true)
-				taiwan.puppet_of = 1
+				taiwan.puppet_of = GameConstants.LegacySlot.CHINA
 				taiwan.chinese_name = TXT_NAME_SAR
 			if china != null:
 				_follow_alliance(taiwan, china, "econ")

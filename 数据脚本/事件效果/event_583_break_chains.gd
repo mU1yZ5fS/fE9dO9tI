@@ -96,7 +96,7 @@ func execute(context: Dictionary) -> void:
 				c65.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c65)
 				c65.set_tag("对华贸易", true)
-				c65.puppet_of = 21
+				c65.puppet_of = GameConstants.LegacySlot.FRANCE
 			context["result_text"] = TXT_R2
 		3:
 			context["result_text"] = TXT_R3

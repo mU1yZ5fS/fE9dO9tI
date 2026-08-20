@@ -51,8 +51,8 @@ func _opt_uprising(context: Dictionary) -> void:
 		war.is_going = true
 		war.side1 = "共产党"
 		war.side2 = "保王党"
-		war.usa_side = 1
-		war.ussr_side = 0
+		war.usa_side = GameConstants.WarSide.SIDE2
+		war.ussr_side = GameConstants.WarSide.SIDE1
 		war.infl1 = 300
 		war.infl2 = 700
 		var thai := ws.get_country_by_legacy_index(34)

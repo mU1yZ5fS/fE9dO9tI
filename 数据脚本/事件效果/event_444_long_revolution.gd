@@ -44,20 +44,20 @@ func execute(context: Dictionary) -> void:
 			var kill_list: Array[int] = []
 			for i in ws.politicians.size():
 				var p: PoliticianData = ws.politicians[i]
-				if p != null and (p.trait_alignment == 40 or p.trait_alignment == 41):
+				if p != null and (p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER or p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD):
 					kill_list.append(i)
 			for i in kill_list:
 				PoliticianSystem.kill_politician(i)
 			for p in ws.politicians:
 				if p == null:
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty += 1000
-				elif p.trait_personality == 1:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty -= 300
-				elif p.trait_personality == 2:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 					p.loyalty -= 700
-				elif p.trait_personality == 3:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 					p.loyalty -= 1000
 			context["result_text"] = TXT_R0
 		1:
@@ -65,9 +65,9 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null:
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 1000
-				elif p.trait_personality == 1:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty += 300
 			context["result_text"] = TXT_R1
 

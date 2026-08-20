@@ -73,9 +73,9 @@ func _opt_sabotage(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty -= 70
-		elif p.trait_personality >= 1 or p.trait_personality == 20:
+		elif p.trait_personality >= GameConstants.PoliticianPersonality.MODERATE or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			p.loyalty += 50
 	context["result_text"] = "作为国务院总理，公安部部长，您尽全力的将这次运动的规模控制在最小范围内，一些下令完全禁止纪念活动的官员被调任。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了人民的不满，而江青同志则被认为是幕后黑手。然而由于您的出手，这些不满并没有到不可收拾的程度……"
 

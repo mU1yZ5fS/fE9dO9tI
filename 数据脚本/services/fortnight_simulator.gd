@@ -43,9 +43,9 @@ func _fortnight_trait_influence(d: Array[int], w: WorldState) -> void:
 		if p == null or PoliticianSystem.is_vacant_politician(p):
 			continue
 		if gm._mod_active(w, 14):
-			if p.trait_personality == 2:
+			if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				p.power += 10
-			elif p.trait_personality == 3 and _faction_leader_slot(w, i) != 4:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL and _faction_leader_slot(w, i) != 4:
 				p.power += 5
 		if _faction_leader_slot(w, i) >= 0:
 			p.power += 20
@@ -62,14 +62,14 @@ func _fortnight_trait_influence(d: Array[int], w: WorldState) -> void:
 
 ## TraitInfluence 的 traits[3]/traits[1]/traits[2] 中央职务块（TimeScript.cs:11233-11695）。
 func _trait_influence_central(w: WorldState, d: Array[int], p: PoliticianData) -> void:
-	if p.trait_personality == 0:
+	if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 		if _dv(d, 56) != 0:
 			_addi(d, 1, -2)
 		_addi(d, 5, 2)
 		_add_empire_relation(w, 1, 2)
 		_addi(d, 68, -1)
 		_addi(d, 26, -2)
-	elif p.trait_personality == 20:
+	elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 		if _dv(d, 56) == 1:
 			_addi(d, 1, 1)
 		_addi(d, 4, 1)
@@ -77,21 +77,21 @@ func _trait_influence_central(w: WorldState, d: Array[int], p: PoliticianData) -
 		_add_empire_relation(w, 1, 3)
 		_addi(d, 68, -1)
 		_addi(d, 26, -1)
-	elif p.trait_personality == 1:
+	elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 		if _dv(d, 56) != 2:
 			_addi(d, 1, 1)
 		else:
 			_addi(d, 1, 2)
 		_addi(d, 4, 1)
 		_addi(d, 5, 1)
-	elif p.trait_personality == 2:
+	elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 		if _dv(d, 56) != 3:
 			_addi(d, 1, 4)
 		else:
 			_addi(d, 1, 5)
 		_addi(d, 5, -2)
 		_addi(d, 4, 2)
-	elif p.trait_personality == 3:
+	elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 		if _dv(d, 56) != 4:
 			_addi(d, 1, 9)
 		else:
@@ -103,9 +103,9 @@ func _trait_influence_central(w: WorldState, d: Array[int], p: PoliticianData) -
 			_addi(d, W.I_PARTY_SUPPORT, 3)
 			_addi(d, W.I_PEOPLE_SUPPORT, -1)
 			_addi(d, W.I_THOUGHT_FREEDOM, -2)
-			if p.trait_personality == 1 or p.trait_personality == 2:
+			if p.trait_personality == GameConstants.PoliticianPersonality.MODERATE or p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, W.I_CORRUPTION, 1)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, W.I_CORRUPTION, 2)
 		22:
 			_addi(d, W.I_PARTY_SUPPORT, -2)
@@ -129,24 +129,24 @@ func _trait_influence_central(w: WorldState, d: Array[int], p: PoliticianData) -
 			_addi(d, W.I_THOUGHT_FREEDOM, -5)
 			_addi(d, W.I_ARMY, 1)
 			_addi(d, W.I_LIVING, -1)
-			if p.trait_personality != 0:
+			if p.trait_personality != GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, W.I_CORRUPTION, 1)
 		26:
 			_addi(d, W.I_LIVING, 1)
 			_addi(d, W.I_SCIENCE, 1)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, W.I_PARTY_SUPPORT, -2)
 				_addi(d, W.I_PEOPLE_SUPPORT, 2)
 				_addi(d, W.I_THOUGHT_FREEDOM, -2)
-			elif p.trait_personality == 20 or p.trait_personality == 1:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE or p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_addi(d, W.I_PARTY_SUPPORT, 1)
 				_addi(d, W.I_PEOPLE_SUPPORT, 1)
 				_addi(d, W.I_THOUGHT_FREEDOM, 1)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, W.I_PARTY_SUPPORT, 2)
 				_addi(d, W.I_PEOPLE_SUPPORT, -2)
 				_addi(d, W.I_THOUGHT_FREEDOM, 1)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, W.I_PARTY_SUPPORT, 4)
 				_addi(d, W.I_PEOPLE_SUPPORT, -4)
 				_addi(d, W.I_THOUGHT_FREEDOM, 2)
@@ -213,14 +213,14 @@ func _trait_influence_central(w: WorldState, d: Array[int], p: PoliticianData) -
 			_addi(d, W.I_PEOPLE_SUPPORT, 2)
 			_addi(d, W.I_BUDGET, -3)
 			_addi(d, W.I_CORRUPTION, 1)
-			if p.trait_personality == 0 or p.trait_personality == 20:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_addi(d, W.I_THOUGHT_FREEDOM, -1)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, W.I_THOUGHT_FREEDOM, 1)
 		42:
 			_addi(d, W.I_PARTY_SUPPORT, -3)
 			_addi(d, W.I_PEOPLE_SUPPORT, 3)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, W.I_THOUGHT_FREEDOM, -3)
 	match p.trait_special:
 		8:
@@ -314,7 +314,7 @@ func _trait_influence_central(w: WorldState, d: Array[int], p: PoliticianData) -
 ## TraitInfluence 外交部块（politics_dolshnost[2] == i，TimeScript.cs:11696-11717 之前）。
 func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i: int) -> void:
 	if _is_foreign_minister(w, i):
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			_add_empire_relation(w, 0, -10)
 			if _dv(d, 6) < 700:
 				_addi(d, 6, 2)
@@ -322,7 +322,7 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, 1)
 			_add_ideology_share(w, 0, 666)
 			_add_ideology_share(w, 1, 1000)
-		elif p.trait_personality == 20:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			_add_empire_relation(w, 1, 5)
 			_add_empire_relation(w, 0, 2)
 			if _dv(d, 6) < 500:
@@ -333,7 +333,7 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, -1)
 			_add_ideology_share(w, 2, 1000)
 			_add_ideology_share(w, 1, 333)
-		elif p.trait_personality == 1:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 			_add_empire_relation(w, 1, 10)
 			_add_empire_relation(w, 0, -3)
 			if _dv(d, 6) < 500:
@@ -345,7 +345,7 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 			_add_ideology_share(w, 2, 333)
 			_add_ideology_share(w, 3, 666)
 			_add_ideology_share(w, 1, 2000)
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, 5)
 			if _dv(d, 6) < 300:
@@ -356,7 +356,7 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, -1)
 			_add_ideology_share(w, 3, 666)
 			_add_ideology_share(w, 4, 666)
-		elif p.trait_personality == 3:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 			_add_empire_relation(w, 1, -10)
 			_add_empire_relation(w, 0, 12)
 			if _dv(d, 6) > 700:
@@ -367,7 +367,7 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, -1)
 			_add_ideology_share(w, 3, 666)
 			_add_ideology_share(w, 4, 666)
-		if p.trait_background == 21:
+		if p.trait_background == GameConstants.PoliticianBackground.PARTY_CADRE:
 			_add_empire_relation(w, 1, 5)
 			_add_empire_relation(w, 0, 2)
 			if _dv(d, 6) < 500:
@@ -376,28 +376,28 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, 1)
 			elif _dv(d, 6) > 900:
 				_addi(d, 6, -1)
-		elif p.trait_background == 22:
+		elif p.trait_background == GameConstants.PoliticianBackground.MASS_LEADER:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -8)
 			if _dv(d, 6) < 700:
 				_addi(d, 6, 2)
 			elif _dv(d, 6) < 900:
 				_addi(d, 6, 1)
-		elif p.trait_background == 23:
+		elif p.trait_background == GameConstants.PoliticianBackground.STUDENT_REBEL:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -8)
 			if _dv(d, 6) < 700:
 				_addi(d, 6, 2)
 			elif _dv(d, 6) < 900:
 				_addi(d, 6, 1)
-		elif p.trait_background == 24:
+		elif p.trait_background == GameConstants.PoliticianBackground.WORKER_MODEL:
 			_add_empire_relation(w, 1, -2)
 			_add_empire_relation(w, 0, -5)
 			if _dv(d, 6) < 700:
 				_addi(d, 6, 2)
 			elif _dv(d, 6) < 900:
 				_addi(d, 6, 1)
-		elif p.trait_background == 25:
+		elif p.trait_background == GameConstants.PoliticianBackground.MILITARY_GENERAL:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
 			if _dv(d, 6) < 500:
@@ -406,70 +406,70 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, 2)
 			elif _dv(d, 6) > 1000:
 				_addi(d, 6, -1)
-		elif p.trait_background == 26:
-			if p.trait_personality == 0:
+		elif p.trait_background == GameConstants.PoliticianBackground.INTELLECTUAL:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_add_empire_relation(w, 1, -5)
 				_add_empire_relation(w, 0, -5)
 				_addi(d, 6, 1)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_add_empire_relation(w, 1, 4)
 				_add_empire_relation(w, 0, 2)
-			elif p.trait_personality == 1:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_add_empire_relation(w, 1, 6)
 				_add_empire_relation(w, 0, -2)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_add_empire_relation(w, 1, -3)
 				_add_empire_relation(w, 0, 5)
 				_addi(d, 6, -1)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_add_empire_relation(w, 1, -6)
 				_add_empire_relation(w, 0, 8)
 				_addi(d, 6, -2)
-		elif p.trait_background == 27:
+		elif p.trait_background == GameConstants.PoliticianBackground.SCIENTIST:
 			_addi(d, 11, 6)
-		elif p.trait_background == 28:
+		elif p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
-		elif p.trait_background == 43:
+		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
 			_addi(d, 11, 5)
-		if p.trait_alignment == 4:
+		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
-		elif p.trait_alignment == 5:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
 			_add_empire_relation(w, 1, 5)
 			_add_empire_relation(w, 0, 5)
 			if _dv(d, 6) < 700:
 				_addi(d, 6, 1)
 			else:
 				_addi(d, 6, -1)
-		elif p.trait_alignment == 6:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 			_add_empire_relation(w, 1, 6)
 			_add_empire_relation(w, 0, 6)
 			if _dv(d, 6) > 600:
 				_addi(d, 6, -1)
-		elif p.trait_alignment == 7:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.TECH:
 			_addi(d, 11, 2)
-		elif p.trait_alignment == 29:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.HEDONIST:
 			_add_empire_relation(w, 0, 6)
 			_addi(d, 6, -1)
-		elif p.trait_alignment == 30:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.CONSPIRACY_THEORIST:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
 			if _dv(d, 6) < 700:
 				_addi(d, 6, 1)
 			elif _dv(d, 6) > 900:
 				_addi(d, 6, -1)
-		elif p.trait_alignment == 39:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.SUBJECTIVIST:
 			_addi(d, 8, -1)
-			if p.trait_personality == 0 or p.trait_personality == 20:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_addi(d, 6, 2)
 				_add_empire_relation(w, 1, 6)
 				_add_empire_relation(w, 0, -6)
-			elif p.trait_personality == 2 or p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST or p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 6, -2)
 				_add_empire_relation(w, 1, -6)
 				_add_empire_relation(w, 0, 6)
-		elif p.trait_alignment == 40:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
 			if _rel(w, 1) < 400:
 				_add_empire_relation(w, 1, -3)
 			elif _rel(w, 1) > 600:
@@ -482,36 +482,36 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, 1)
 			elif _dv(d, 6) < 500:
 				_addi(d, 6, -1)
-		elif p.trait_alignment == 41:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
 			_addi(d, 8, -1)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_add_empire_relation(w, 1, -4)
 				_add_empire_relation(w, 0, -4)
 				_addi(d, 6, 1)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_add_empire_relation(w, 0, -1)
-			elif p.trait_personality == 1:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_add_empire_relation(w, 0, -1)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_add_empire_relation(w, 0, 3)
 				_addi(d, 6, -1)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_add_empire_relation(w, 1, -4)
 				_add_empire_relation(w, 0, 3)
 				_addi(d, 6, -2)
-		elif p.trait_alignment == 42:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.POLITICS_FIRST:
 			_addi(d, 8, -1)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_add_empire_relation(w, 1, -6)
 				_add_empire_relation(w, 0, -6)
 				_addi(d, 6, 5)
 				_add_ideology_share(w, 0, 1000)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_add_empire_relation(w, 1, -6)
 				_add_empire_relation(w, 0, 6)
 				_addi(d, 6, -5)
 				_add_ideology_share(w, 4, 1000)
-		if p.trait_special == 8:
+		if p.trait_special == GameConstants.PoliticianSpecial.HARSH:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
 			if _dv(d, 6) < 500:
@@ -520,27 +520,27 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, 2)
 			elif _dv(d, 6) < 1000:
 				_addi(d, 6, 1)
-		elif p.trait_special == 9:
+		elif p.trait_special == GameConstants.PoliticianSpecial.PEACE:
 			_add_empire_relation(w, 1, 4)
 			_add_empire_relation(w, 0, 4)
 			if _dv(d, 6) > 700:
 				_addi(d, 6, -1)
-		elif p.trait_special == 10:
+		elif p.trait_special == GameConstants.PoliticianSpecial.TYRANT:
 			_add_empire_relation(w, 1, -6)
 			_add_empire_relation(w, 0, -6)
 			_addi(d, 6, 2)
-		elif p.trait_special == 11:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ECONOMIST:
 			_add_empire_relation(w, 1, -2)
 			_add_empire_relation(w, 0, -2)
 			_addi(d, 8, 2)
-		elif p.trait_special == 12:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
 			_add_empire_relation(w, 1, -4)
 			_add_empire_relation(w, 0, -4)
 			_addi(d, 6, 1)
-		elif p.trait_special == 13:
+		elif p.trait_special == GameConstants.PoliticianSpecial.IDOL:
 			_add_empire_relation(w, 1, 4)
 			_add_empire_relation(w, 0, 4)
-		elif p.trait_special == 14:
+		elif p.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
 			if _dv(d, 6) < 500:
@@ -549,48 +549,48 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, 1)
 			elif _dv(d, 6) > 900:
 				_addi(d, 6, -1)
-		elif p.trait_special == 15:
+		elif p.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
 			_add_empire_relation(w, 1, -6)
 			_add_empire_relation(w, 0, 6)
 			_addi(d, 6, -1)
-		elif p.trait_special == 16:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER:
 			_add_empire_relation(w, 1, 4)
 			_add_empire_relation(w, 0, 4)
-		elif p.trait_special == 17:
+		elif p.trait_special == GameConstants.PoliticianSpecial.SHY:
 			_add_empire_relation(w, 1, -1)
 			_add_empire_relation(w, 0, -1)
 			_addi(d, 6, -1)
-		elif p.trait_special == 18:
+		elif p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
 			_add_empire_relation(w, 1, -2)
 			_add_empire_relation(w, 0, -2)
 			_addi(d, 8, -1)
-		elif p.trait_special == 19:
+		elif p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
 			_add_empire_relation(w, 1, -2)
 			_add_empire_relation(w, 0, -2)
 			_addi(d, 6, -1)
-		elif p.trait_special == 31:
-			if p.trait_personality == 0:
+		elif p.trait_special == GameConstants.PoliticianSpecial.AGITATOR:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_add_empire_relation(w, 1, -3)
 				_add_empire_relation(w, 0, -3)
 				_addi(d, 6, 1)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_add_empire_relation(w, 1, 3)
 				_add_empire_relation(w, 0, 1)
-			elif p.trait_personality == 1:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_add_empire_relation(w, 1, 5)
 				_add_empire_relation(w, 0, -1)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_add_empire_relation(w, 1, -2)
 				_add_empire_relation(w, 0, 4)
 				_addi(d, 6, -1)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_add_empire_relation(w, 1, -4)
 				_add_empire_relation(w, 0, 6)
 				_addi(d, 6, -2)
-		elif p.trait_special == 32:
+		elif p.trait_special == GameConstants.PoliticianSpecial.PEOPLES_FRIEND:
 			_add_empire_relation(w, 1, -4)
 			_add_empire_relation(w, 0, -4)
-		elif p.trait_special == 33:
+		elif p.trait_special == GameConstants.PoliticianSpecial.DIPLOMAT:
 			_add_empire_relation(w, 1, 6)
 			_add_empire_relation(w, 0, 6)
 			if _dv(d, 6) < 500:
@@ -601,10 +601,10 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 6, 1)
 			elif _dv(d, 6) > 1000:
 				_addi(d, 6, -1)
-		elif p.trait_special == 34:
+		elif p.trait_special == GameConstants.PoliticianSpecial.TROTSKYITE:
 			_add_empire_relation(w, 1, -5)
 			_add_empire_relation(w, 0, -1)
-		elif p.trait_special == 35:
+		elif p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST:
 			_addi(d, 6, -1)
 			if _emp_pow(w, 1) > _emp_pow(w, 0):
 				_add_empire_relation(w, 1, 5)
@@ -612,15 +612,15 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 			else:
 				_add_empire_relation(w, 1, -5)
 				_add_empire_relation(w, 0, 5)
-		elif p.trait_special == 36:
+		elif p.trait_special == GameConstants.PoliticianSpecial.MILITARY_TALENT:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
 			_addi(d, 6, 1)
-		elif p.trait_special == 37:
+		elif p.trait_special == GameConstants.PoliticianSpecial.AFFABLE:
 			_add_empire_relation(w, 1, 2)
 			_add_empire_relation(w, 0, 2)
 			_addi(d, 6, -1)
-		elif p.trait_special == 38:
+		elif p.trait_special == GameConstants.PoliticianSpecial.INDOMITABLE:
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
 			_addi(d, 6, 1)
@@ -629,7 +629,7 @@ func _trait_influence_foreign(w: WorldState, d: Array[int], p: PoliticianData, i
 ## TraitInfluence 的总理块 politics_dolshnost[1]（TimeScript.cs:12187-12658 逐字移植）。
 func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i: int) -> void:
 	if _is_premier(w, i):
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			if _dv(d, 56) != 0:
 				_addi(d, 1, -6)
 			else:
@@ -640,7 +640,7 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 			_addi(d, 26, -2)
 			_add_ideology_share(w, 0, 333)
 			_add_ideology_share(w, 1, 500)
-		elif p.trait_personality == 20:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			if _dv(d, 56) != 1:
 				_addi(d, 1, 4)
 			else:
@@ -651,7 +651,7 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 			_add_empire_relation(w, 1, 5)
 			_add_ideology_share(w, 2, 2000)
 			_add_ideology_share(w, 1, 222)
-		elif p.trait_personality == 1:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 			if _dv(d, 56) != 2:
 				_addi(d, 1, 5)
 			else:
@@ -661,7 +661,7 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 			_add_ideology_share(w, 2, 222)
 			_add_ideology_share(w, 3, 333)
 			_add_ideology_share(w, 1, 2000)
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			if _dv(d, 56) != 3:
 				_addi(d, 1, 6)
 			else:
@@ -670,7 +670,7 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 			_addi(d, 4, 5)
 			_add_ideology_share(w, 3, 222)
 			_add_ideology_share(w, 4, 333)
-		elif p.trait_personality == 3:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 			if _dv(d, 56) != 4:
 				_addi(d, 1, 8)
 			else:
@@ -680,83 +680,83 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 			_addi(d, 8, 2)
 			_add_ideology_share(w, 3, 333)
 			_add_ideology_share(w, 4, 222)
-		if p.trait_background == 21:
+		if p.trait_background == GameConstants.PoliticianBackground.PARTY_CADRE:
 			_addi(d, 1, 5)
 			_addi(d, 3, -2)
 			_addi(d, 4, -3)
-			if p.trait_personality == 1  or  p.trait_personality == 2:
+			if p.trait_personality == GameConstants.PoliticianPersonality.MODERATE  or  p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 26, 1)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 26, 2)
-		elif p.trait_background == 22:
+		elif p.trait_background == GameConstants.PoliticianBackground.MASS_LEADER:
 			_addi(d, 1, -4)
 			_addi(d, 3, 5)
 			_addi(d, 22, 5)
 			_addi(d, 5, 3)
 			_addi(d, 26, -2)
-		elif p.trait_background == 23:
+		elif p.trait_background == GameConstants.PoliticianBackground.STUDENT_REBEL:
 			_addi(d, 1, -5)
 			_addi(d, 4, -8)
 			_addi(d, 22, -3)
 			_addi(d, 26, -2)
-		elif p.trait_background == 24:
+		elif p.trait_background == GameConstants.PoliticianBackground.WORKER_MODEL:
 			_addi(d, 1, -3)
 			_addi(d, 3, 5)
 			_addi(d, 12, 2)
 			_addi(d, 13, 2)
 			_addi(d, 68, 1)
 			_addi(d, 5, -3)
-		elif p.trait_background == 25:
+		elif p.trait_background == GameConstants.PoliticianBackground.MILITARY_GENERAL:
 			_addi(d, 1, 5)
 			_addi(d, 4, -10)
 			_addi(d, 22, 12)
 			_addi(d, 5, -5)
-		elif p.trait_background == 26:
+		elif p.trait_background == GameConstants.PoliticianBackground.INTELLECTUAL:
 			_addi(d, 22, -5)
 			_addi(d, 5, 3)
 			_addi(d, 11, 3)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, 1, -5)
 				_addi(d, 3, 2)
 				_addi(d, 4, -5)
-			elif p.trait_personality == 20  or  p.trait_personality == 1:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE  or  p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_addi(d, 1, 2)
 				_addi(d, 3, 2)
 				_addi(d, 4, 2)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 1, 4)
 				_addi(d, 3, -4)
 				_addi(d, 4, 4)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 1, 5)
 				_addi(d, 3, -5)
 				_addi(d, 4, 6)
-		elif p.trait_background == 27:
+		elif p.trait_background == GameConstants.PoliticianBackground.SCIENTIST:
 			_addi(d, 1, 6)
 			_addi(d, 3, 6)
 			_addi(d, 22, 8)
 			_addi(d, 5, 2)
 			_addi(d, 11, 10)
-		elif p.trait_background == 28:
+		elif p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS:
 			_addi(d, 1, -7)
 			_addi(d, 3, -5)
 			_addi(d, 4, -5)
 			_addi(d, 9, 6)
-		elif p.trait_background == 43:
+		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
 			_addi(d, 11, 8)
-		if p.trait_alignment == 4:
+		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 			_addi(d, 26, -1)
 			_addi(d, 4, -7)
 			_addi(d, 1, -3)
-		elif p.trait_alignment == 5:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
 			_addi(d, 1, 3)
-		elif p.trait_alignment == 6:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 			_addi(d, 26, 1)
 			_addi(d, 4, 7)
 			_addi(d, 1, 7)
-		elif p.trait_alignment == 7:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.TECH:
 			_addi(d, 11, 3)
-		elif p.trait_alignment == 29:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.HEDONIST:
 			_addi(d, 1, 6)
 			_addi(d, 3, -8)
 			_addi(d, 4, 6)
@@ -769,27 +769,27 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 				_addi(d, 5, 4)
 			else:
 				_addi(d, 5, -4)
-		elif p.trait_alignment == 30:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.CONSPIRACY_THEORIST:
 			_addi(d, 1, -6)
 			_addi(d, 3, -8)
 			_addi(d, 57, -5)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, 4, -8)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_addi(d, 4, -4)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 4, 4)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 4, 8)
-			if p.trait_personality == 0  or  p.trait_personality == 1:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT  or  p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_addi(d, 31, 5)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_addi(d, 31, 10)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 31, -5)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 31, -10)
-		elif p.trait_alignment == 39:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.SUBJECTIVIST:
 			_addi(d, 1, -5)
 			_addi(d, 3, -3)
 			_addi(d, 4, -8)
@@ -797,7 +797,7 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 			_addi(d, 9, 3)
 			_addi(d, 57, -2)
 			_addi(d, 8, -2)
-		elif p.trait_alignment == 40:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
 			_addi(d, 1, 6)
 			_addi(d, 3, -3)
 			_addi(d, 26, 2)
@@ -810,7 +810,7 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 			elif _dv(d, 51) == 33:
 				_addi(d, 8, 3)
 				_addi(d, 4, 5)
-		elif p.trait_alignment == 41:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
 			_addi(d, 8, -5)
 			_addi(d, 9, -4)
 			_addi(d, 4, -4)
@@ -821,111 +821,111 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 			else:
 				_addi(d, 1, -5)
 				_addi(d, 22, 8)
-		elif p.trait_alignment == 42:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.POLITICS_FIRST:
 			_addi(d, 1, -8)
 			_addi(d, 22, 3 + d[76] / 200)
 			_addi(d, 9, -3)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_add_ideology_share(w, 0, 500)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_add_ideology_share(w, 4, 500)
-		if p.trait_special == 8:
+		if p.trait_special == GameConstants.PoliticianSpecial.HARSH:
 			_addi(d, 4, -15)
 			_addi(d, 1, -7)
 			_addi(d, 22, 3)
-		elif p.trait_special == 9:
+		elif p.trait_special == GameConstants.PoliticianSpecial.PEACE:
 			_addi(d, 4, 5)
 			_addi(d, 1, 6)
 			_addi(d, 22, -3)
-		elif p.trait_special == 10:
+		elif p.trait_special == GameConstants.PoliticianSpecial.TYRANT:
 			_addi(d, 1, -10)
 			_addi(d, 3, -10)
 			_addi(d, 22, 3)
-		elif p.trait_special == 11:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ECONOMIST:
 			_addi(d, 8, 5)
 			_addi(d, 22, -5)
-		elif p.trait_special == 12:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
 			_addi(d, 4, -5)
 			_addi(d, 1, -8)
 			_addi(d, 22, -3)
-		elif p.trait_special == 13:
+		elif p.trait_special == GameConstants.PoliticianSpecial.IDOL:
 			_addi(d, 1, 12)
-		elif p.trait_special == 14:
+		elif p.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 			_addi(d, 1, 5)
 			_addi(d, 4, 3)
 			_addi(d, 22, 3)
 			_addi(d, 31, 8)
-		elif p.trait_special == 15:
+		elif p.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
 			_addi(d, 1, -5)
 			_addi(d, 4, 3)
 			_addi(d, 22, -3)
 			_addi(d, 31, -8)
-		elif p.trait_special == 16:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER:
 			_addi(d, 1, 6)
 			_addi(d, 9, 6)
 			_addi(d, 22, 3)
-		elif p.trait_special == 17:
+		elif p.trait_special == GameConstants.PoliticianSpecial.SHY:
 			_addi(d, 4, 5)
 			_addi(d, 22, -3)
-		elif p.trait_special == 18:
+		elif p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
 			_addi(d, 26, 5)
 			_addi(d, 1, 7)
 			_addi(d, 8, -2)
 			_addi(d, 22, -3)
-		elif p.trait_special == 19:
+		elif p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
 			_addi(d, 1, 2)
 			_addi(d, 4, 4)
 			_addi(d, 22, -2)
-		elif p.trait_special == 31:
+		elif p.trait_special == GameConstants.PoliticianSpecial.AGITATOR:
 			_addi(d, 22, 3)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, 1, -4)
 				_addi(d, 3, 6)
 				_addi(d, 4, -4)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_addi(d, 1, 2)
 				_addi(d, 3, 4)
 				_addi(d, 4, -2)
-			elif p.trait_personality == 1:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_addi(d, 1, 5)
 				_addi(d, 3, 2)
 				_addi(d, 4, 3)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 1, 6)
 				_addi(d, 3, -3)
 				_addi(d, 4, 4)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 1, -5)
 				_addi(d, 3, -6)
 				_addi(d, 4, 8)
-		elif p.trait_special == 32:
+		elif p.trait_special == GameConstants.PoliticianSpecial.PEOPLES_FRIEND:
 			_addi(d, 3, 12)
 			_addi(d, 4, -6)
 			_addi(d, 22, 5)
-		elif p.trait_special == 33:
+		elif p.trait_special == GameConstants.PoliticianSpecial.DIPLOMAT:
 			_addi(d, 1, -3)
 			_addi(d, 22, -3)
-		elif p.trait_special == 34:
+		elif p.trait_special == GameConstants.PoliticianSpecial.TROTSKYITE:
 			_addi(d, 1, -5)
 			_addi(d, 3, -3)
 			_addi(d, 4, -8)
 			_addi(d, 22, 2)
 			_addi(d, 57, -5)
-		elif p.trait_special == 35:
+		elif p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST:
 			_addi(d, 1, -6)
 			_addi(d, 3, -4)
 			_addi(d, 9, 6)
 			_addi(d, 22, -3)
-		elif p.trait_special == 36:
+		elif p.trait_special == GameConstants.PoliticianSpecial.MILITARY_TALENT:
 			_addi(d, 1, 6)
 			_addi(d, 4, -10)
 			_addi(d, 22, 10)
 			_addi(d, 5, -5)
-		elif p.trait_special == 37:
+		elif p.trait_special == GameConstants.PoliticianSpecial.AFFABLE:
 			_addi(d, 1, 6)
 			_addi(d, 4, 2)
 			_addi(d, 22, 2)
-		elif p.trait_special == 38:
+		elif p.trait_special == GameConstants.PoliticianSpecial.INDOMITABLE:
 			_addi(d, 1, 5)
 			_addi(d, 4, -6)
 			_addi(d, 22, 3)
@@ -934,7 +934,7 @@ func _trait_influence_premier(w: WorldState, d: Array[int], p: PoliticianData, i
 ## TraitInfluence 的主席块 politics_dolshnost[0]（TimeScript.cs:12659-13178 逐字移植）。
 func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, i: int) -> void:
 	if _is_chairman(w, i):
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			if _dv(d, 56) != 0:
 				_addi(d, 1, -9)
 			else:
@@ -946,7 +946,7 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_addi(d, 26, -4)
 			_add_ideology_share(w, 0, 333)
 			_add_ideology_share(w, 1, 500)
-		elif p.trait_personality == 20:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			if _dv(d, 56) == 1:
 				_addi(d, 1, 2)
 			_addi(d, 5, 4)
@@ -956,7 +956,7 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_add_empire_relation(w, 0, 2)
 			_add_ideology_share(w, 2, 1000)
 			_add_ideology_share(w, 1, 222)
-		elif p.trait_personality == 1:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 			if _dv(d, 56) != 2:
 				_addi(d, 1, 5)
 			else:
@@ -968,7 +968,7 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_add_ideology_share(w, 2, 222)
 			_add_ideology_share(w, 3, 333)
 			_add_ideology_share(w, 1, 1000)
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			if _dv(d, 56) != 3:
 				_addi(d, 1, 13)
 			else:
@@ -980,7 +980,7 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_add_empire_relation(w, 0, 5)
 			_add_ideology_share(w, 3, 222)
 			_add_ideology_share(w, 4, 333)
-		elif p.trait_personality == 3:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 			if _dv(d, 56) != 4:
 				_addi(d, 1, 27)
 			else:
@@ -993,32 +993,32 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_add_empire_relation(w, 0, 12)
 			_add_ideology_share(w, 3, 333)
 			_add_ideology_share(w, 4, 222)
-		if p.trait_background == 21:
+		if p.trait_background == GameConstants.PoliticianBackground.PARTY_CADRE:
 			_addi(d, 1, 6)
 			_addi(d, 3, -2)
 			_addi(d, 4, -8)
-			if p.trait_personality == 1  or  p.trait_personality == 2:
+			if p.trait_personality == GameConstants.PoliticianPersonality.MODERATE  or  p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 26, 2)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 26, 3)
-		elif p.trait_background == 22:
+		elif p.trait_background == GameConstants.PoliticianBackground.MASS_LEADER:
 			_addi(d, 1, -10)
 			_addi(d, 3, 12)
 			_addi(d, 22, 2)
 			_addi(d, 5, 5)
 			_addi(d, 26, -4)
-		elif p.trait_background == 23:
+		elif p.trait_background == GameConstants.PoliticianBackground.STUDENT_REBEL:
 			_addi(d, 1, -10)
 			_addi(d, 4, -12)
 			_addi(d, 26, -4)
-		elif p.trait_background == 24:
+		elif p.trait_background == GameConstants.PoliticianBackground.WORKER_MODEL:
 			_addi(d, 1, -5)
 			_addi(d, 3, 12)
 			_addi(d, 12, 4)
 			_addi(d, 13, 4)
 			_addi(d, 68, 4)
 			_addi(d, 5, -5)
-		elif p.trait_background == 25:
+		elif p.trait_background == GameConstants.PoliticianBackground.MILITARY_GENERAL:
 			_addi(d, 1, -6)
 			_addi(d, 3, -6)
 			_addi(d, 4, -10)
@@ -1026,53 +1026,53 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_addi(d, 5, -6)
 			_add_empire_relation(w, 1, -5)
 			_add_empire_relation(w, 0, -5)
-			if p.trait_personality != 0:
+			if p.trait_personality != GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, 26, 2)
-		elif p.trait_background == 26:
+		elif p.trait_background == GameConstants.PoliticianBackground.INTELLECTUAL:
 			_addi(d, 5, 5)
 			_addi(d, 11, 5)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, 1, -4)
 				_addi(d, 3, 4)
 				_addi(d, 4, -4)
-			elif p.trait_personality == 20  or  p.trait_personality == 1:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE  or  p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_addi(d, 1, 3)
 				_addi(d, 3, 3)
 				_addi(d, 4, 3)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 1, 6)
 				_addi(d, 3, -6)
 				_addi(d, 4, 6)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 1, 10)
 				_addi(d, 3, -10)
 				_addi(d, 4, 10)
-		elif p.trait_background == 27:
+		elif p.trait_background == GameConstants.PoliticianBackground.SCIENTIST:
 			_addi(d, 1, 10)
 			_addi(d, 3, 10)
 			_addi(d, 22, 5)
 			_addi(d, 5, 8)
 			_addi(d, 11, 18)
-		elif p.trait_background == 28:
+		elif p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS:
 			_addi(d, 1, -10)
 			_addi(d, 3, -8)
 			_addi(d, 4, -10)
 			_addi(d, 9, 9)
 			_add_empire_relation(w, 1, -5)
 			_add_empire_relation(w, 0, -5)
-		elif p.trait_background == 43:
+		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
 			_addi(d, 11, 15)
-		if p.trait_alignment == 4:
+		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 			_addi(d, 26, -2)
 			_addi(d, 4, -15)
 			_addi(d, 1, -7)
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
-		elif p.trait_alignment == 5:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
 			_addi(d, 1, 7)
 			_add_empire_relation(w, 1, 5)
 			_add_empire_relation(w, 0, 5)
-		elif p.trait_alignment == 6:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 			_addi(d, 26, 2)
 			_addi(d, 4, 15)
 			_addi(d, 1, 15)
@@ -1080,9 +1080,9 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_add_empire_relation(w, 0, 6)
 			if _dv(d, 6) > 60:
 				_addi(d, 6, -1)
-		elif p.trait_alignment == 7:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.TECH:
 			_addi(d, 11, 9)
-		elif p.trait_alignment == 29:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.HEDONIST:
 			_addi(d, 1, 8)
 			_addi(d, 3, -10)
 			_addi(d, 4, 10)
@@ -1095,27 +1095,27 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 				_addi(d, 5, 6)
 			else:
 				_addi(d, 5, -6)
-		elif p.trait_alignment == 30:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.CONSPIRACY_THEORIST:
 			_addi(d, 1, -8)
 			_addi(d, 3, -10)
 			_addi(d, 57, -6)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, 4, -10)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_addi(d, 4, -5)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 4, 5)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 4, 10)
-			if p.trait_personality == 0  or  p.trait_personality == 1:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT  or  p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_addi(d, 31, 6)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_addi(d, 31, 12)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 31, -6)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 31, -12)
-		elif p.trait_alignment == 39:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.SUBJECTIVIST:
 			_addi(d, 1, -8)
 			_addi(d, 3, -5)
 			_addi(d, 4, -10)
@@ -1124,7 +1124,7 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_addi(d, 13, -1)
 			_addi(d, 68, 1)
 			_addi(d, 57, -3)
-		elif p.trait_alignment == 40:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
 			_addi(d, 1, 8)
 			_addi(d, 8, -3)
 			_addi(d, 12, -2)
@@ -1139,7 +1139,7 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 				_addi(d, 31, -3)
 			if _dv(d, 50) > 27:
 				_addi(d, 31, 3)
-		elif p.trait_alignment == 41:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
 			_addi(d, 8, -8)
 			_addi(d, 26, 5)
 			_addi(d, 57, -5)
@@ -1148,119 +1148,119 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 				_addi(d, 1, -10)
 			else:
 				_addi(d, 1, -6)
-		elif p.trait_alignment == 42:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.POLITICS_FIRST:
 			_addi(d, 1, -12)
 			_addi(d, 3, 8 + d[76] / 100)
 			_addi(d, 8, -5)
 			_addi(d, 12, -1)
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, 4, -20)
 				_add_empire_relation(w, 1, -6)
 				_add_empire_relation(w, 0, -6)
 				_add_ideology_share(w, 0, 333)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 4, -5)
 				_add_empire_relation(w, 1, -6)
 				_add_empire_relation(w, 0, 6)
 				_add_ideology_share(w, 4, 333)
-		if p.trait_special == 8:
+		if p.trait_special == GameConstants.PoliticianSpecial.HARSH:
 			_addi(d, 4, -25)
 			_addi(d, 1, -15)
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
 			_addi(d, 6, d[6] / 150)
-		elif p.trait_special == 9:
+		elif p.trait_special == GameConstants.PoliticianSpecial.PEACE:
 			_addi(d, 4, 6)
 			_addi(d, 1, 8)
 			_add_empire_relation(w, 1, 4)
 			_add_empire_relation(w, 0, 4)
-		elif p.trait_special == 10:
+		elif p.trait_special == GameConstants.PoliticianSpecial.TYRANT:
 			_addi(d, 1, -16)
 			_addi(d, 3, -16)
 			_add_empire_relation(w, 1, -8)
 			_add_empire_relation(w, 0, -8)
-		elif p.trait_special == 11:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ECONOMIST:
 			_addi(d, 8, 8)
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
-		elif p.trait_special == 12:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
 			_addi(d, 4, -8)
 			_addi(d, 1, -10)
 			_add_empire_relation(w, 1, -6)
 			_add_empire_relation(w, 0, -6)
-		elif p.trait_special == 13:
+		elif p.trait_special == GameConstants.PoliticianSpecial.IDOL:
 			_addi(d, 1, 20)
-		elif p.trait_special == 14:
+		elif p.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 			_addi(d, 1, 8)
 			_addi(d, 4, 10)
 			_addi(d, 31, 15)
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
 			_addi(d, 6, d[6] / 150)
-		elif p.trait_special == 15:
+		elif p.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
 			_addi(d, 1, -8)
 			_addi(d, 4, 10)
 			_addi(d, 31, -15)
 			_add_empire_relation(w, 1, -6)
 			_add_empire_relation(w, 0, 6)
 			_addi(d, 6, -d[6] / 150)
-		elif p.trait_special == 16:
+		elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER:
 			_addi(d, 1, 9)
 			_addi(d, 9, 6)
 			_add_empire_relation(w, 1, 4)
 			_add_empire_relation(w, 0, 4)
-		elif p.trait_special == 17:
+		elif p.trait_special == GameConstants.PoliticianSpecial.SHY:
 			_addi(d, 4, 8)
 			_add_empire_relation(w, 1, -1)
 			_add_empire_relation(w, 0, -1)
-		elif p.trait_special == 18:
+		elif p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
 			_addi(d, 26, 10)
 			_addi(d, 1, 15)
 			_addi(d, 8, -3)
-		elif p.trait_special == 19:
+		elif p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
 			_addi(d, 1, 4)
 			_addi(d, 4, 6)
 			_addi(d, 8, -1)
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
-		elif p.trait_special == 31:
-			if p.trait_personality == 0:
+		elif p.trait_special == GameConstants.PoliticianSpecial.AGITATOR:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, 1, -5)
 				_addi(d, 3, 8)
 				_addi(d, 4, -6)
-			elif p.trait_personality == 20:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 				_addi(d, 1, 3)
 				_addi(d, 3, 5)
 				_addi(d, 4, -3)
-			elif p.trait_personality == 1:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 				_addi(d, 1, 6)
 				_addi(d, 3, 3)
 				_addi(d, 4, 3)
-			elif p.trait_personality == 2:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				_addi(d, 1, 8)
 				_addi(d, 3, -5)
 				_addi(d, 4, 5)
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, 1, -8)
 				_addi(d, 3, -10)
 				_addi(d, 4, 10)
-		elif p.trait_special == 32:
+		elif p.trait_special == GameConstants.PoliticianSpecial.PEOPLES_FRIEND:
 			_addi(d, 3, 20)
 			_addi(d, 4, -10)
-		elif p.trait_special == 33:
+		elif p.trait_special == GameConstants.PoliticianSpecial.DIPLOMAT:
 			_addi(d, 1, 5)
 			_add_empire_relation(w, 0, 6)
 			_add_empire_relation(w, 1, 6)
-		elif p.trait_special == 34:
+		elif p.trait_special == GameConstants.PoliticianSpecial.TROTSKYITE:
 			_addi(d, 1, -10)
 			_addi(d, 3, -8)
 			_addi(d, 4, -15)
 			_addi(d, 57, -6)
-		elif p.trait_special == 35:
+		elif p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST:
 			_addi(d, 1, -8)
 			_addi(d, 3, -6)
 			_addi(d, 9, 6)
-		elif p.trait_special == 36:
+		elif p.trait_special == GameConstants.PoliticianSpecial.MILITARY_TALENT:
 			_addi(d, 1, -4)
 			_addi(d, 3, -4)
 			_addi(d, 4, -10)
@@ -1268,12 +1268,12 @@ func _trait_influence_chairman(w: WorldState, d: Array[int], p: PoliticianData, 
 			_addi(d, 5, -5)
 			_add_empire_relation(w, 1, -3)
 			_add_empire_relation(w, 0, -3)
-		elif p.trait_special == 37:
+		elif p.trait_special == GameConstants.PoliticianSpecial.AFFABLE:
 			_addi(d, 1, 8)
 			_addi(d, 4, 3)
 			_add_empire_relation(w, 1, 2)
 			_add_empire_relation(w, 0, 2)
-		elif p.trait_special == 38:
+		elif p.trait_special == GameConstants.PoliticianSpecial.INDOMITABLE:
 			_addi(d, 1, 6)
 			_addi(d, 4, -8)
 			_addi(d, 5, -4)
@@ -3051,9 +3051,9 @@ func _fortnight_modifiers(
 			for p in w.politicians:
 				if PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 100
-				elif p.trait_personality > 1:
+				elif p.trait_personality > GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty += 100
 		d[W.I_BUDGET] += 6
 		d[W.I_AGENTS] += 2
@@ -3086,8 +3086,8 @@ func _fortnight_modifiers(
 	var plan_condition := (
 		d[W.I_IDEOLOGY] == 3
 		and w.leader != null
-		and w.leader.trait_alignment == 5
-		and w.leader.trait_personality > 0
+		and w.leader.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST
+		and w.leader.trait_personality > GameConstants.PoliticianPersonality.FAR_LEFT
 		and d[W.I_REFORM_STAGE] >= 3
 		and player != null
 		and not player.has_tag("sev")
@@ -3186,9 +3186,9 @@ func _fortnight_modifiers(
 				deng != null
 				and deng.name_first == 13
 				and deng.name_last == 13
-				and deng.trait_personality == 2
-				and deng.trait_alignment == 5
-				and deng.trait_special == 11
+				and deng.trait_personality == GameConstants.PoliticianPersonality.REFORMIST
+				and deng.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST
+				and deng.trait_special == GameConstants.PoliticianSpecial.ECONOMIST
 			)
 		if not deng_valid:
 			w.modifiers[14].is_active = false
@@ -3278,7 +3278,7 @@ func _fortnight_modifiers(
 			for p in w.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.power += 30
 					p.loyalty += 30
 		else:
@@ -3287,7 +3287,7 @@ func _fortnight_modifiers(
 			for p in w.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0 or p.trait_personality == 20:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.power += 10
 					p.loyalty += 10
 			d[W.I_PARTY_SUPPORT] -= 2
@@ -3307,7 +3307,7 @@ func _fortnight_modifiers(
 		for p in w.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p):
 				continue
-			if p.trait_personality != 1:
+			if p.trait_personality != GameConstants.PoliticianPersonality.MODERATE:
 				p.power -= 5
 		if d[W.I_PARTY_SYSTEM] > 7:
 			w.modifiers[29].is_active = false
@@ -3320,7 +3320,7 @@ func _fortnight_modifiers(
 		for p in w.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p):
 				continue
-			if p.trait_personality == 2:
+			if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				p.power += 10
 		if d[W.I_ECON_SYSTEM] < 13:
 			w.modifiers[30].is_active = false
@@ -3331,7 +3331,7 @@ func _fortnight_modifiers(
 		for p in w.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p):
 				continue
-			if p.trait_personality == 3:
+			if p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				p.power += 10
 		d[W.I_CORRUPTION] -= 2
 		d[W.I_OLIGARCH] -= 2
@@ -3343,7 +3343,7 @@ func _fortnight_modifiers(
 		for p in w.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p):
 				continue
-			if p.trait_personality == 0:
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				p.power += 10
 			else:
 				p.power -= 5
@@ -3455,7 +3455,7 @@ func _fortnight_modifiers(
 		for p in w.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p):
 				continue
-			if p.trait_personality == 2:
+			if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				p.power += 10
 
 	# ── 42-51：ModifiesInfuence.cs:2228-2420 ──
@@ -3559,7 +3559,7 @@ func _fortnight_modifiers(
 			for p in w.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0 or p.trait_personality == 1:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT or p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.power += 10
 		elif c17 != null and c17.parts.size() > 0 and c17.parts[0] \
 				and c17.has_tag("亲中") and c17.government == GameConstants.Government.SOCIALIST:
@@ -3568,7 +3568,7 @@ func _fortnight_modifiers(
 			for p in w.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.power += 10
 	if gm._mod_active(w, 58) and w.empires.size() > EmpireData.USSR \
 			and w.empires[EmpireData.USSR].relations >= 500 and _dv(d, 153) > 0:
@@ -3638,7 +3638,7 @@ func _fortnight_modifiers(
 			for p in w.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 20:
+				if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.power += 10
 	if w.money_level > 0 and not gm._mod_active(w, 65):
 		w.modifiers[65].is_active = true
@@ -4107,7 +4107,7 @@ func _fortnight_difficulty_bonus(d: Array[int], w: WorldState) -> void:
 				for p in w.politicians:
 					if p == null:
 						continue
-					if p.trait_personality == 0:
+					if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 						p.power += 50
 					else:
 						p.loyalty -= 10
@@ -4141,8 +4141,8 @@ func _check_coup(d: Array[int], w: WorldState) -> void:
 
 ## TimeScript.PlotPlayerCause（TimeScript.cs:250-266）：按不忠势力判断「针对你的阴谋」，
 ## 并把结果写到 leader.is_sagovor（本端口对应 leader.is_conspiracy）。
-## 谓词与 _check_coup（PlotPlayer）不同：trait_background=28 阈值 1500、
-## trait_alignment=41 阈值 1200、trait_special 16/35 阈值 300 等。
+## 谓词与 _check_coup（PlotPlayer）不同：trait_background = GameConstants.PoliticianBackground.AMBITIOUS 阈值 1500、
+## trait_alignment = GameConstants.PoliticianAlignment.LOCAL_WARLORD 阈值 1200、trait_special 16/35 阈值 300 等。
 func _plot_player_cause(d: Array[int], w: WorldState) -> void:
 	if w == null or w.leader == null:
 		return
@@ -4150,20 +4150,20 @@ func _plot_player_cause(d: Array[int], w: WorldState) -> void:
 	for p in w.politicians:
 		if p == null or p.is_under_investigation:
 			continue
-		if p.trait_special == 17 or p.trait_special == 19 or p.trait_alignment == 40:
+		if p.trait_special == GameConstants.PoliticianSpecial.SHY or p.trait_special == GameConstants.PoliticianSpecial.SICKLY or p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
 			continue
 		var dominated := false
-		if p.trait_background == 28 and p.loyalty < 1500:
+		if p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS and p.loyalty < 1500:
 			dominated = true
-		elif p.trait_alignment == 41 and p.loyalty < 1200:
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD and p.loyalty < 1200:
 			dominated = true
-		elif p.loyalty < 300 and (p.trait_special == 16 or p.trait_special == 35):
+		elif p.loyalty < 300 and (p.trait_special == GameConstants.PoliticianSpecial.ADVISER or p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST):
 			dominated = true
 		elif p.you_fall:
 			dominated = true
-		elif p.loyalty < 150 and p.trait_special != 9 and p.trait_special != 37:
+		elif p.loyalty < 150 and p.trait_special != GameConstants.PoliticianSpecial.PEACE and p.trait_special != GameConstants.PoliticianSpecial.AFFABLE:
 			dominated = true
-		elif p.loyalty < 50 and (p.trait_special == 9 or p.trait_special == 37):
+		elif p.loyalty < 50 and (p.trait_special == GameConstants.PoliticianSpecial.PEACE or p.trait_special == GameConstants.PoliticianSpecial.AFFABLE):
 			dominated = true
 		if dominated:
 			disloyal_power += p.power

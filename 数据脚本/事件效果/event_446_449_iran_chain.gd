@@ -252,8 +252,8 @@ func _event_449(option_index: int, context: Dictionary) -> void:
 			war.is_going = true
 			war.side1 = "伊朗人民革命阵线"
 			war.side2 = "伊朗伊斯兰共和国"
-			war.ussr_side = -1
-			war.usa_side = -1
+			war.ussr_side = GameConstants.WarSide.NONE
+			war.usa_side = GameConstants.WarSide.NONE
 			war.infl1 = 300
 			war.infl2 = 700
 			war.fortnight_max = 20

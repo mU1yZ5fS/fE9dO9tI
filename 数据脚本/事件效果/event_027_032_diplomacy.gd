@@ -126,7 +126,7 @@ func _event_28(option_index: int) -> void:
 					war.is_going = true
 					war.side1 = TXT_28_WAR_SIDE1
 					war.side2 = TXT_28_WAR_SIDE2
-					war.usa_side = 1
+					war.usa_side = GameConstants.WarSide.SIDE2
 					war.infl1 = 300
 					war.infl2 = 700
 					war.fortnight_max = 20

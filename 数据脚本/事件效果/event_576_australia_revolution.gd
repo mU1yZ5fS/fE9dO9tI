@@ -80,7 +80,7 @@ func execute(context: Dictionary) -> void:
 					_leave_alliances(c135)
 					c135.set_tag("对华贸易", true)
 				if c134 != null:
-					c134.puppet_of = -1
+					c134.puppet_of = GameConstants.LegacySlot.NONE
 			elif r573 == 2:
 				text += TXT_R0_HILL
 				if c135 != null:
@@ -90,7 +90,7 @@ func execute(context: Dictionary) -> void:
 					c135.set_tag("对华贸易", true)
 					c135.set_tag("亲中", true)
 				if c134 != null:
-					c134.puppet_of = -1
+					c134.puppet_of = GameConstants.LegacySlot.NONE
 				ws.influence_prc += 50
 			elif r573 == 1:
 				text += TXT_R0_CLANCY
@@ -101,7 +101,7 @@ func execute(context: Dictionary) -> void:
 					c135.set_tag("对华贸易", true)
 					c135.set_tag("亲苏", true)
 				if c134 != null:
-					c134.puppet_of = -1
+					c134.puppet_of = GameConstants.LegacySlot.NONE
 				_add_power(EmpireData.USSR, 100)
 			text += TXT_R0_TAIL
 			_add_relation(EmpireData.USA, -300)
@@ -129,5 +129,5 @@ func execute(context: Dictionary) -> void:
 				c159.government = GameConstants.Government.AUTHORITARIAN
 				c159.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c159)
-				c159.puppet_of = 135
+				c159.puppet_of = GameConstants.LegacySlot.AUSTRALIA
 			context["result_text"] = text

@@ -32,7 +32,7 @@ func execute(context: Dictionary) -> void:
 				c11.social_stability = 1000
 			for c in ws.countries:
 				if c.puppet_of == 11:
-					c.puppet_of = -1
+					c.puppet_of = GameConstants.LegacySlot.NONE
 			_add(W.I_BUDGET, -40)
 			_add(W.I_AGENTS, -40)
 			_add(W.I_INFLUENCE, 50)

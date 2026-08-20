@@ -40,7 +40,7 @@ func execute(context: Dictionary) -> void:
 	if rhodesia != null:
 		rhodesia.name = "津巴布韦罗得西亚"
 		rhodesia.chinese_name = "津巴布韦罗得西亚"
-		rhodesia.puppet_of = -1
+		rhodesia.puppet_of = GameConstants.LegacySlot.NONE
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:

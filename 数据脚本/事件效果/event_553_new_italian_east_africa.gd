@@ -44,7 +44,7 @@ func execute(context: Dictionary) -> void:
 	var c85 := ws.get_country_by_legacy_index(85)
 	var is_22 := c85 != null and c85.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 	if c42 != null:
-		c42.puppet_of = 85
+		c42.puppet_of = GameConstants.LegacySlot.SPAIN
 		c42.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST if is_22 else 9
 		c42.set_tag("亲美", false)
 	var opt := int(context.get("option_index", -1))

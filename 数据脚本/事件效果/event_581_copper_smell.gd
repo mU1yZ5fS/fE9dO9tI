@@ -82,7 +82,7 @@ func execute(context: Dictionary) -> void:
 				c124.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c124)
 				c124.set_tag("对华贸易", true)
-				c124.puppet_of = 131
+				c124.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 			_add(W.I_BUDGET, 100)
 			_add(W.I_AGENTS, -50)
 			context["result_text"] = TXT_R1
@@ -117,7 +117,7 @@ func execute(context: Dictionary) -> void:
 						c124.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 						_leave_alliances(c124)
 						c124.chinese_name = "北罗得西亚"
-						c124.puppet_of = 131
+						c124.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 				context["result_text"] = text
 
 

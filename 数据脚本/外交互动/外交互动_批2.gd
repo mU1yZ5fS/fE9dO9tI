@@ -710,7 +710,7 @@ func _def_57(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		conds.append(cond(" 至 少 5 特 工 网 络 与 5 百 万 预 算", func(): return d(w, 9) >= 50 and d(w, 8) + d(w, 36) >= 50))
 		conds.append(cond(" 我 们 仍 坚 持 毛 泽 东 思 想", func(): return mod(w, 6)))
 		var c123 := c(w, 123)
-		conds.append(cond(" 安 哥 拉 没 有 亲 美 立 场 且 不 是 南 非 傀 儡", func(): return c123 != null and not c123.has_tag("亲美") and c123.puppet_of != 131))
+		conds.append(cond(" 安 哥 拉 没 有 亲 美 立 场 且 不 是 南 非 傀 儡", func(): return c123 != null and not c123.has_tag("亲美") and c123.puppet_of != GameConstants.LegacySlot.SOUTH_AFRICA))
 		var c153 := c(w, 153)
 		conds.append(cond(" 尚 未 支 持", func(): return c153 != null and not c153.内战中))
 	var eff := func():
@@ -913,7 +913,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			country.sub_government = chinese_sub_gosstroy(w)
 			country.set_tag("亲苏", false)
 			country.set_tag("亲美", false)
-			country.puppet_of = -1
+			country.puppet_of = GameConstants.LegacySlot.NONE
 			w.influence_prc += 5
 			country.stab = 100
 			country.development -= 200
@@ -936,7 +936,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 				country.government = GameConstants.Government.LIBERAL
 				country.sub_government = african_sub_gosstroy(w, country.government)
 				country.set_tag("亲美", true)
-				country.puppet_of = -1
+				country.puppet_of = GameConstants.LegacySlot.NONE
 				country.set_tag("亲苏", false)
 				country.stab = 100
 				country.development -= 200
@@ -948,7 +948,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 				country.government = GameConstants.Government.SOCIALIST
 				country.sub_government = african_sub_gosstroy(w, country.government)
 				country.set_tag("亲苏", true)
-				country.puppet_of = -1
+				country.puppet_of = GameConstants.LegacySlot.NONE
 				country.set_tag("亲美", false)
 				country.stab = 100
 				country.development -= 200
@@ -959,7 +959,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			elif country.has_tag("美国盟友"):
 				country.government = GameConstants.Government.LIBERAL
 				country.set_tag("亲中", true)
-				country.puppet_of = -1
+				country.puppet_of = GameConstants.LegacySlot.NONE
 				country.sub_government = african_sub_gosstroy(w, country.government)
 				country.set_tag("亲苏", false)
 				country.set_tag("亲美", false)
@@ -975,7 +975,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			elif country.has_tag("苏联盟友"):
 				country.government = GameConstants.Government.SOCIALIST
 				country.set_tag("亲中", true)
-				country.puppet_of = -1
+				country.puppet_of = GameConstants.LegacySlot.NONE
 				country.sub_government = african_sub_gosstroy(w, country.government)
 				country.set_tag("亲苏", false)
 				country.set_tag("亲美", false)
@@ -993,7 +993,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 				if player != null:
 					country.government = player.government
 				country.set_tag("亲中", true)
-				country.puppet_of = -1
+				country.puppet_of = GameConstants.LegacySlot.NONE
 				country.sub_government = chinese_sub_gosstroy(w)
 				country.set_tag("亲苏", false)
 				country.set_tag("亲美", false)
@@ -1004,7 +1004,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 				country.set_tag("美国盟友", false)
 				country.set_tag("亲美", false)
 				country.set_tag("亲苏", false)
-				country.puppet_of = -1
+				country.puppet_of = GameConstants.LegacySlot.NONE
 				@warning_ignore("integer_division")
 				country.usa_power = (country.usa_power + 1) / 2
 				@warning_ignore("integer_division")
@@ -1234,7 +1234,7 @@ func _def_70(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			start_event_num(w, 706)
 		elif sid == 14:
 			for ck in w.countries:
-				if ck != null and (ck.原版序号 == 14 or pup(ck) == 14):
+				if ck != null and (ck.原版序号 == GameConstants.LegacySlot.IRAQ or pup(ck) == 14):
 					ck.government = GameConstants.Government.AUTHORITARIAN
 					ck.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			set_d(w, 186, 6)

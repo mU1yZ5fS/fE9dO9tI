@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event468.cs：南太平洋海涛翻腾（马来亚内战二选项）。
 ## 触发：ReqEventForDLC02.cs:427-429 —— allcountries[34].cw && DATE_AFTER 1981.2.1；
 ##   fire_only_once 承担 !event_done[468]。
-## 差异：usa_place=1→usa_side=1；开战按项目约定 GameManager.start_war(34,...) 后覆盖
+## 差异：usa_place=1→usa_side = GameConstants.WarSide.SIDE2；开战按项目约定 GameManager.start_war(34,...) 后覆盖
 ##   name_war/fortnight_max（TickTime 20）；button_text[5]/result_num==5 死代码跳过。
 
 const TXT_OPT0_DIS := "他们根本没有这样的势力基础"

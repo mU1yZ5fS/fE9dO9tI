@@ -122,7 +122,7 @@ func _def_2(w: WorldState, _country: CountryData, caption: String) -> Dictionary
 # DBS Show L54-L75 / OnMouseDown L8622-L8665
 # ============================================================================
 func _def_1(w: WorldState, country: CountryData, caption: String) -> Dictionary:
-	var is_west: bool = country.原版序号 == 92 or country.原版序号 == 21 or country.原版序号 == 17
+	var is_west: bool = country.原版序号 == 92 or country.原版序号 == GameConstants.LegacySlot.FRANCE or country.原版序号 == 17
 	var conds: Array = []
 	conds.append(cond(" 至 少 5 特 工 网 络 和 3 百 万 预 算", func(): return d(w, W.I_AGENTS) >= 50 and d(w, W.I_BUDGET) + d(w, W.I_RESERVE) >= 30))
 	conds.append(cond(" 我 们 始 终 坚 持 伟 大 的 毛 泽 东 思 想 ！", func(): return mod(w, 6)))
@@ -201,7 +201,7 @@ func _def_4(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var conds: Array = []
 	conds.append(cond(" 不 早 于 1979 年", func(): return d(w, W.I_YEAR) >= 1979))
 	if early:
-		if w.leader != null and w.leader.trait_personality == 0 and w.leader.trait_alignment == 4 and w.leader.trait_special == 8:
+		if w.leader != null and w.leader.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT and w.leader.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER and w.leader.trait_special == GameConstants.PoliticianSpecial.HARSH:
 			conds.append(cond(" 党 内 团 结 度 至 少 90\n 联 络 机 构 的 规 模 至 少 为 10", func(): return d(w, W.I_PARTY_SUPPORT) >= 900 and d(w, W.I_COMMUNICATIONS) >= 100))
 		else:
 			conds.append(cond(" 党 内 团 结 度 至 少 70\n 联 络 机 构 的 规 模 至 少 为 20", func(): return d(w, W.I_PARTY_SUPPORT) >= 700 and d(w, W.I_COMMUNICATIONS) >= 200))
@@ -269,7 +269,7 @@ func _def_5(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 			else:
 				cc.set_tag("econ", false)
 		for p in w.politicians:
-			if p != null and (p.trait_personality == 0 or p.trait_personality == 1 or p.trait_personality == 2):
+			if p != null and (p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT or p.trait_personality == GameConstants.PoliticianPersonality.MODERATE or p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST):
 				p.loyalty -= 250
 	return make_def(caption, " 加 入 经 济 互 助 委 员 会", conds, eff)
 
@@ -404,7 +404,7 @@ func _def_9(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 		conds.append(cond(" 尚 未 深 化 经 贸 关 系", func(): return not has(country, "对华贸易")))
 	if has(country, "亲中"):
 		conds.append(cond(" 工 业 不 低 于 30", func(): return d(w, W.I_INDUSTRY) >= 300))
-	elif country.原版序号 == 92 or country.原版序号 == 85 or country.原版序号 == 136 or country.原版序号 == 135 or country.原版序号 == 137 or (country.原版序号 > 87 and country.原版序号 < 92) or country.原版序号 == 0:
+	elif country.原版序号 == 92 or country.原版序号 == GameConstants.LegacySlot.SPAIN or country.原版序号 == 136 or country.原版序号 == GameConstants.LegacySlot.AUSTRALIA or country.原版序号 == 137 or (country.原版序号 > 87 and country.原版序号 < 92) or country.原版序号 == 0:
 		conds.append(cond(" 工 业 不 低 于 70", func(): return d(w, W.I_INDUSTRY) >= 700))
 	else:
 		conds.append(cond(" 工 业 不 低 于 50", func(): return d(w, W.I_INDUSTRY) >= 500))
@@ -424,7 +424,7 @@ func _def_9(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 # ============================================================================
 func _def_10(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var conds: Array = []
-	if country.原版序号 != 35 and country.原版序号 != 14 and country.原版序号 != 9:
+	if country.原版序号 != 35 and country.原版序号 != GameConstants.LegacySlot.IRAQ and country.原版序号 != 9:
 		conds.append(cond(" 已 深 化 经 贸 关 系 或 该 国 持 亲 中 立 场", func(): return has(country, "对华贸易") or has(country, "亲中")))
 	elif country.原版序号 == 9:
 		conds.append(cond(" 蒙 古 人 民 相 信 我 们 的 善 意", func(): return has(country, "亲中") and res(w, 62) != 2))
@@ -556,8 +556,8 @@ func _def_15(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			kw.side2 = " 韩 国"
 			kw.is_going = true
 			var c10 := c(w, 10)
-			kw.ussr_side = 0 if (c10 != null and not has(c10, "亲中")) else -1
-			kw.usa_side = 1
+			kw.ussr_side = GameConstants.WarSide.SIDE1 if (c10 != null and not has(c10, "亲中")) else -1
+			kw.usa_side = GameConstants.WarSide.SIDE2
 			kw.infl1 = 600
 			kw.infl2 = 400
 	return make_def(caption, " 煽 动 一 场 新 的 朝 鲜 战 争", conds, eff)
@@ -695,7 +695,7 @@ func _def_24(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	conds.append(cond(_diplo_rep_desc24(w, country), func(): return _diplo_rep_check24(w, country)))
 	conds.append(cond(" 尚 未 深 化 经 贸 关 系", func(): return not has(country, "对华贸易")))
 	conds.append(cond(" 工 业 不 低 于 70", func(): return d(w, W.I_INDUSTRY) >= 700))
-	if country.原版序号 == 14:
+	if country.原版序号 == GameConstants.LegacySlot.IRAQ:
 		conds.append(cond(" 该 国 不 受 伊 朗 人 的 摆 布", func(): return pup(country) != 8))
 	elif ((country.原版序号 >= 2 and country.原版序号 <= 6) or country.原版序号 == 16) and has(c(w, 1), "sev"):
 		conds.append(cond(" 中 国 已 加 入 经 互 会", func(): return has(c(w, 1), "sev")))
@@ -923,11 +923,11 @@ func _def_33(w: WorldState, country: CountryData, caption: String) -> Dictionary
 # ============================================================================
 func _def_34(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var conds: Array = []
-	if gov(c(w, 21)) == 1 and country.原版序号 == 21:
+	if gov(c(w, 21)) == 1 and country.原版序号 == GameConstants.LegacySlot.FRANCE:
 		conds.append(cond(" 外 交 声 誉 高 于 60", func(): return d(w, W.I_DIPLO) >= 600))
 	else:
 		conds.append(cond(" 外 交 声 誉 低 于 60", func(): return d(w, W.I_DIPLO) < 600))
-	if gov(c(w, 21)) == 1 and country.原版序号 == 21:
+	if gov(c(w, 21)) == 1 and country.原版序号 == GameConstants.LegacySlot.FRANCE:
 		conds.append(cond("经 济 模 式 为 \" 国 家 垄 断 资 本 主 义\" 或 更 偏 社 会 主 义 的 政 策| 或 开 放 自 由 贸 易 区", func(): return d(w, W.I_ECON_SYSTEM) < 13 or fl(w, "sez")))
 	else:
 		conds.append(cond("经 济 模 式 为 \" 鸟 笼 经 济 \" 或 更 偏 自 由 主 义 的 政 策| 或 开 放 经 济 特 区", func(): return d(w, W.I_ECON_SYSTEM) >= 13 or fl(w, "sez")))
@@ -1025,13 +1025,13 @@ func _diplo_rep_check(w: WorldState, country: CountryData) -> bool:
 
 ## 编号24 专用：多一条 伊朗14/SubGosstroy==20 的前置分档（DBS Show L782-L786）。
 func _diplo_rep_desc24(w: WorldState, country: CountryData) -> String:
-	if country.原版序号 == 14 and sub(country) == 20:
+	if country.原版序号 == GameConstants.LegacySlot.IRAQ and sub(country) == 20:
 		return " 外 交 声 誉 低 于 11451.4"
 	return _diplo_rep_desc(w, country)
 
 
 func _diplo_rep_check24(w: WorldState, country: CountryData) -> bool:
-	if country.原版序号 == 14 and sub(country) == 20:
+	if country.原版序号 == GameConstants.LegacySlot.IRAQ and sub(country) == 20:
 		return d(w, W.I_DIPLO) < 114514
 	return _diplo_rep_check(w, country)
 

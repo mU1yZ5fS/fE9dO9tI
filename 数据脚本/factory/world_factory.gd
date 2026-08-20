@@ -862,24 +862,24 @@ static func _compute_relation_score(source: PoliticianData, target: PoliticianDa
 
 	match target.trait_alignment:
 		4:
-			if source.trait_alignment == 6:
+			if source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score -= 250
-			elif source.trait_alignment == 4:
+			elif source.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score += 100
 			else:
 				score -= 100
 		6:
-			if source.trait_alignment == 4:
+			if source.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score -= 300
-			elif source.trait_alignment == 6:
+			elif source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score += 100
 			else:
 				score += 100
 		5:
-			if source.trait_alignment != 5:
+			if source.trait_alignment != GameConstants.PoliticianAlignment.PRAGMATIST:
 				score += 100
 		7:
-			if source.trait_alignment == 6:
+			if source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score += 50
 
 	if include_special:
@@ -891,19 +891,19 @@ static func _compute_relation_score(source: PoliticianData, target: PoliticianDa
 					10: score += 50
 					14: score += 50
 			9:
-				if source.trait_special == 16:
+				if source.trait_special == GameConstants.PoliticianSpecial.ADVISER:
 					score -= 250
-				elif source.trait_special != 9:
+				elif source.trait_special != GameConstants.PoliticianSpecial.PEACE:
 					score += 50
 			10:
-				if source.trait_special == 12:
+				if source.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
 					score += 50
-				elif source.trait_special == 10:
+				elif source.trait_special == GameConstants.PoliticianSpecial.TYRANT:
 					score += 300
 				else:
 					score -= 100
 			11:
-				if source.trait_special == 10 or source.trait_special == 12:
+				if source.trait_special == GameConstants.PoliticianSpecial.TYRANT or source.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
 					score -= 100
 				else:
 					score += 100
@@ -912,31 +912,31 @@ static func _compute_relation_score(source: PoliticianData, target: PoliticianDa
 			13:
 				score += 100
 			14:
-				if source.trait_special == 15:
+				if source.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
 					score -= 300
-				elif source.trait_special == 14:
+				elif source.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 					score += 150
 				else:
 					score += 50
 			15:
-				if source.trait_special == 15:
+				if source.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
 					score += 200
-				elif source.trait_special == 14:
+				elif source.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 					score -= 300
 			16:
-				if source.trait_special == 9:
+				if source.trait_special == GameConstants.PoliticianSpecial.PEACE:
 					score -= 250
-				elif source.trait_special == 14:
+				elif source.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 					score += 50
 			17:
-				if source.trait_special == 8:
+				if source.trait_special == GameConstants.PoliticianSpecial.HARSH:
 					score -= 250
-				elif source.trait_special == 17:
+				elif source.trait_special == GameConstants.PoliticianSpecial.SHY:
 					score += 300
 				else:
 					score -= 50
 			18:
-				if source.trait_special == 11:
+				if source.trait_special == GameConstants.PoliticianSpecial.ECONOMIST:
 					score -= 300
 				else:
 					score += 10
@@ -1069,71 +1069,71 @@ static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 				3: score += 100
 	match ideology:
 		0:
-			if pol.trait_alignment == 4:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score += 250
-			elif pol.trait_alignment == 6:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score -= 150
 		1:
-			if pol.trait_alignment == 4:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score += 250
-			elif pol.trait_alignment == 5:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
 				score -= 150
-			elif pol.trait_alignment == 7:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TECH:
 				score -= 150
 		2:
-			if pol.trait_alignment == 4:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score += 100
-			elif pol.trait_alignment == 5:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
 				score += 150
-			elif pol.trait_alignment == 7:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TECH:
 				score -= 100
 		3:
-			if pol.trait_alignment == 4:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score += 100
-			elif pol.trait_alignment == 5:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
 				score += 250
-			elif pol.trait_alignment == 7:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TECH:
 				score -= 100
 		4:
-			if pol.trait_alignment == 4:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score -= 150
-			elif pol.trait_alignment == 6:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score += 200
-			elif pol.trait_alignment == 5:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
 				score += 50
-			elif pol.trait_alignment == 7:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TECH:
 				score += 100
 		5:
-			if pol.trait_alignment == 4:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score -= 250
-			elif pol.trait_alignment == 6:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score += 300
-			elif pol.trait_alignment == 5:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
 				score -= 150
-			elif pol.trait_alignment == 7:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TECH:
 				score += 250
 	if leader.trait_personality == pol.trait_personality:
 		score += 300
 	match leader.trait_alignment:
 		4:
-			if pol.trait_alignment == 6:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score -= 150
-			elif pol.trait_alignment == 4:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score += 100
 			else:
 				score -= 100
 		6:
-			if pol.trait_alignment == 4:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 				score -= 200
-			elif pol.trait_alignment == 6:
+			elif pol.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score += 100
 			else:
 				score += 100
 		5:
-			if pol.trait_alignment != 5:
+			if pol.trait_alignment != GameConstants.PoliticianAlignment.PRAGMATIST:
 				score += 100
 		7:
-			if pol.trait_alignment == 6:
+			if pol.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 				score += 50
 	match leader.trait_special:
 		8:
@@ -1143,19 +1143,19 @@ static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 				10: score += 50
 				14: score += 50
 		9:
-			if pol.trait_special == 16:
+			if pol.trait_special == GameConstants.PoliticianSpecial.ADVISER:
 				score -= 150
-			elif pol.trait_special != 9:
+			elif pol.trait_special != GameConstants.PoliticianSpecial.PEACE:
 				score += 50
 		10:
-			if pol.trait_special == 12:
+			if pol.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
 				score += 50
-			elif pol.trait_special == 10:
+			elif pol.trait_special == GameConstants.PoliticianSpecial.TYRANT:
 				score += 300
 			else:
 				score -= 100
 		11:
-			if pol.trait_special == 10 or pol.trait_special == 12:
+			if pol.trait_special == GameConstants.PoliticianSpecial.TYRANT or pol.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
 				score -= 100
 			else:
 				score += 100
@@ -1164,31 +1164,31 @@ static func _calc_rel_leader(ws: WorldState, num: int) -> void:
 		13:
 			score += 100
 		14:
-			if pol.trait_special == 15:
+			if pol.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
 				score -= 200
-			elif pol.trait_special == 14:
+			elif pol.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 				score += 150
 			else:
 				score += 50
 		15:
-			if pol.trait_special == 15:
+			if pol.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
 				score += 200
-			elif pol.trait_special == 14:
+			elif pol.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 				score -= 200
 		16:
-			if pol.trait_special == 9:
+			if pol.trait_special == GameConstants.PoliticianSpecial.PEACE:
 				score -= 150
-			elif pol.trait_special == 14:
+			elif pol.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 				score += 50
 		17:
-			if pol.trait_special == 8:
+			if pol.trait_special == GameConstants.PoliticianSpecial.HARSH:
 				score -= 150
-			elif pol.trait_special == 17:
+			elif pol.trait_special == GameConstants.PoliticianSpecial.SHY:
 				score += 300
 			else:
 				score -= 50
 		18:
-			if pol.trait_special == 11:
+			if pol.trait_special == GameConstants.PoliticianSpecial.ECONOMIST:
 				score -= 200
 			else:
 				score += 10
@@ -1401,7 +1401,7 @@ static func _clear_alliance_tags(c: CountryData) -> void:
 	## 对应原版 Country.LeaveAlliances()（Country.cs:89-115）
 	for t in START_CLEAR_TAGS:
 		c.tags.erase(t)
-	c.puppet_of = -1
+	c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 static func _leave_and_gs(ws: WorldState, id: int, gov: int, sub: int) -> void:
@@ -1437,7 +1437,7 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	var c66 := _legacy(ws, 66)                    # 喀麦隆 sub7+傀儡法国（:617-618）
 	if c66 != null:
 		c66.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
-		c66.puppet_of = 21
+		c66.puppet_of = GameConstants.LegacySlot.FRANCE
 	_set_gs(ws, 67, 0, 20)                        # 利比里亚（:620-621）
 	_set_tag(ws, 68, "亲苏", false)               # 几内亚（:622-623）
 	_set_tag(ws, 68, "对华贸易", true)
@@ -1599,7 +1599,7 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	var c65 := _legacy(ws, 65)                    # 中非：sub13 + 傀儡法国（:1069-1071）
 	if c65 != null:
 		c65.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
-		c65.puppet_of = 21
+		c65.puppet_of = GameConstants.LegacySlot.FRANCE
 	_set_tag(ws, 42, "对华贸易", true)             # 索马里（:1072）
 	var c53 := _legacy(ws, 53)                    # 苏丹 sub10（:1073）
 	if c53 != null: c53.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST

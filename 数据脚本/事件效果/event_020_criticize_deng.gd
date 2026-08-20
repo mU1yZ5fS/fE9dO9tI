@@ -44,11 +44,11 @@ func _opt_join(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty += 50
-		if p.trait_personality == 20:
+		if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			p.loyalty += 30
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			p.loyalty -= 100
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].power -= 130
@@ -68,11 +68,11 @@ func _opt_support(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty -= 100
-		elif p.trait_personality == 3:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 			p.loyalty += 50
-		elif p.trait_personality > 0:
+		elif p.trait_personality > GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty += 100
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].power -= 80

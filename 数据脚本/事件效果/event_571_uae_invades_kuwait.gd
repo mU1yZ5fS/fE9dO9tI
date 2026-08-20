@@ -8,7 +8,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - event_done[571] 由 fire_only_once 覆盖；event_done[570]/[417] 在 evaluate 中检查；
 ##  - proprc → 亲中；OAR → ws flag "oar"；completedDecisions[20] → ws.decisions.completed[20]；
-##  - data[143] 无命名键 raw；SovietSupportDefender.AmericanSupportDefender → usa_side=1/ussr_side=1；
+##  - data[143] 无命名键 raw；SovietSupportDefender.AmericanSupportDefender → usa_side = GameConstants.WarSide.SIDE2/ussr_side = GameConstants.WarSide.SIDE2；
 ##  - TickTime(25) → fortnight_max=25。
 
 

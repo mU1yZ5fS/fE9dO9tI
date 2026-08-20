@@ -181,7 +181,7 @@ func _event_52(option_index: int) -> void:
 			_add_data({W.I_DIPLO: 10, W.I_AGENTS: -40, W.I_ARMY: -50})
 			_add_empire_relation(EmpireData.USA, -100)
 			_add_empire_relation(EmpireData.USSR, 100)
-			if war.ussr_side == 1:
+			if war.ussr_side == GameConstants.WarSide.SIDE2:
 				ws.数值表[W.I_AFGHAN_POLICY] = 1
 			else:
 				war.infl1 += 100

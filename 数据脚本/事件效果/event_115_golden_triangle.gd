@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   年>=1982 && c33.对华贸易 && !c33.亲中 && c34.对华贸易 && c22.对华贸易。
 ## 差异：
 ##  - result 5 为死代码（button_text[5]=""）→ 跳过；
-##  - traits[0]==0 → trait_personality==0；loyality→loyalty。
+##  - traits[0]==0 → trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT；loyality→loyalty。
 
 
 const TXT_OPT1_DIS := "中国人民打击毒贩子可不是为了让我们与他们眉来眼去的"
@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 			if burma != null:
 				burma.set_tag("对华贸易", true)
 			for p in ws.politicians:
-				if p != null and p.trait_personality == 0:
+				if p != null and p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 100
 			context["result_text"] = TXT_R1
 		2:

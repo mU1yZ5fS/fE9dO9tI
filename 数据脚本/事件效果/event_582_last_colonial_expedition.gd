@@ -93,7 +93,7 @@ func execute(context: Dictionary) -> void:
 					c65.chinese_name = "中非共和国"
 				_add_relation(EmpireData.USA, -100)
 				if c65 != null:
-					c65.puppet_of = 21
+					c65.puppet_of = GameConstants.LegacySlot.FRANCE
 				context["result_text"] = text
 		1:
 			_add(W.I_BUDGET, -100)
@@ -104,7 +104,7 @@ func execute(context: Dictionary) -> void:
 				c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				c65.chinese_name = "中非共和国"
 				_leave_alliances(c65)
-				c65.puppet_of = 21
+				c65.puppet_of = GameConstants.LegacySlot.FRANCE
 			_add(W.I_DIPLO, 20)
 			context["result_text"] = TXT_R1
 		2:
@@ -130,7 +130,7 @@ func execute(context: Dictionary) -> void:
 				c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				_leave_alliances(c65)
 				c65.chinese_name = "中非共和国"
-				c65.puppet_of = 21
+				c65.puppet_of = GameConstants.LegacySlot.FRANCE
 			_add(W.I_DIPLO, -20)
 			_add(W.I_DIPLO, 20)
 			context["result_text"] = TXT_R3
@@ -140,7 +140,7 @@ func execute(context: Dictionary) -> void:
 				c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				_leave_alliances(c65)
 				c65.chinese_name = "中非共和国"
-				c65.puppet_of = 21
+				c65.puppet_of = GameConstants.LegacySlot.FRANCE
 			_add(W.I_DIPLO, -20)
 			if c65 != null:
 				c65.set_tag("对华贸易", true)
@@ -151,7 +151,7 @@ func execute(context: Dictionary) -> void:
 				c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				_leave_alliances(c65)
 				c65.chinese_name = "中非共和国"
-				c65.puppet_of = 21
+				c65.puppet_of = GameConstants.LegacySlot.FRANCE
 			context["result_text"] = TXT_R5
 
 

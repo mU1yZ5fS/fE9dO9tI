@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   （或月>=3 年>=1977 / 年>=1978）。
 ## 差异：
 ##  - 选项按 data[56]（政治路线）动态显隐；<color> 标签去除（既有约定）；
-##  - LeaveAlliances() → 清全部联盟/倾向标签 + puppet_of=-1；
+##  - LeaveAlliances() → 清全部联盟/倾向标签 + puppet_of = GameConstants.LegacySlot.NONE；
 ##    EstablishGovernment(ProChina) → 亲中 true、亲苏/亲美 false；
 ##    c41.name = "埃塞俄比亚民主联邦共和国" → chinese_name（既有约定）。
 

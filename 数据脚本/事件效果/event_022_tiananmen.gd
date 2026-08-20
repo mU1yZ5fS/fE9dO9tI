@@ -68,9 +68,9 @@ func _opt_repress(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty -= 100
-		elif p.trait_personality > 0:
+		elif p.trait_personality > GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty -= 80
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].power -= 100
@@ -88,7 +88,7 @@ func _opt_disperse(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty -= 50
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].power += 100
@@ -104,9 +104,9 @@ func _opt_cordon(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty += 100
-		if p.trait_personality == 20:
+		if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			p.loyalty += 80
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].power -= 100

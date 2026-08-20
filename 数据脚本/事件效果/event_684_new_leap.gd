@@ -105,7 +105,7 @@ func _adjust_politicians() -> void:
 			continue
 		if p.trait_personality == leader_personality:
 			p.power -= 200
-		elif p.trait_personality == 2:
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			p.power += 200
 
 

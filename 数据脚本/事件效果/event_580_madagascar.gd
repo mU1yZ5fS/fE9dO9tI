@@ -79,7 +79,7 @@ func execute(context: Dictionary) -> void:
 				c133.government = GameConstants.Government.LIBERAL
 				c133.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				_leave_alliances(c133)
-				c133.puppet_of = 21
+				c133.puppet_of = GameConstants.LegacySlot.FRANCE
 				c133.set_tag("对华贸易", true)
 			_add(W.I_AGENTS, -30)
 			_add(W.I_ARMY, -100)

@@ -69,9 +69,9 @@ func _init() -> void:
 func party_index() -> int:
 	if faction >= 0:
 		return faction
-	if trait_personality <= 0:
+	if trait_personality <= GameConstants.PoliticianPersonality.FAR_LEFT:
 		return 0
-	if trait_personality == 20:
+	if trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 		return 1
 	return trait_personality + 1
 
@@ -84,7 +84,7 @@ func ideology_label() -> String:
 ## 第四槽背景标签：合法值域 21-28/43（traits[3]），0 或缺省一律显示「未知」，
 ## 避免误落到 traits[0] 的「极左派」标签。
 func background_label() -> String:
-	if (trait_background >= 21 and trait_background <= 28) or trait_background == 43:
+	if (trait_background >= GameConstants.PoliticianBackground.PARTY_CADRE and trait_background <= GameConstants.PoliticianBackground.AMBITIOUS) or trait_background == GameConstants.PoliticianBackground.SPECIAL:
 		return WorldFactory.TRAIT_LABELS_ZH.get(trait_background, "未知")
 	return "未知"
 

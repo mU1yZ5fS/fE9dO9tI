@@ -5,8 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线 / c107 对华贸易 / c107 内战 / c13 利比亚对华贸易 / c51 美国发展度与美领导人）。
 ##  - War 78：GameManager.start_war(78,...) + fortnight_max=40（TickTime(40)）；
-##    AmericanSupportDefender.SovietSupportAttacker → usa_side=1 / ussr_side=0；
-##    仅 AmericanSupportDefender 的分支 usa_side=1 / ussr_side=-1（原版 War 默认 -1）。
+##    AmericanSupportDefender.SovietSupportAttacker → usa_side = GameConstants.WarSide.SIDE2 / ussr_side = GameConstants.WarSide.SIDE1；
+##    仅 AmericanSupportDefender 的分支 usa_side = GameConstants.WarSide.SIDE2 / ussr_side = GameConstants.WarSide.NONE（原版 War 默认 -1）。
 ##  - 死代码 result 5 测试分支跳过；result 3 是实际选项（充耳不闻），效果已复刻。
 
 
@@ -105,7 +105,7 @@ func execute(context: Dictionary) -> void:
 			else:
 				GameManager.start_war(78, TXT_WAR78_NO_CW_ATTACKER, TXT_WAR78_NO_CW_DEFENDER, 200, 800, 1, -1)
 				if ws.wars.size() > 78 and ws.wars[78] != null:
-					ws.wars[78].ussr_side = -1
+					ws.wars[78].ussr_side = GameConstants.WarSide.NONE
 				text += TXT_R1_NO_CW
 			if ws.wars.size() > 78 and ws.wars[78] != null:
 				ws.wars[78].name_war = TXT_WAR78_NAME

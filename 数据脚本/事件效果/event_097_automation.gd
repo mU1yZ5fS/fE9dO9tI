@@ -21,7 +21,7 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty += 1000
 				else:
 					p.loyalty -= 500

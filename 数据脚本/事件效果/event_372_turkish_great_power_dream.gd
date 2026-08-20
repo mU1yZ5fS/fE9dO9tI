@@ -331,7 +331,7 @@ func _release_turkey_puppets() -> void:
 	for legacy_idx in [35, 8, 14]:
 		var c := ws.get_country_by_legacy_index(legacy_idx)
 		if c != null:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 func _make_pro_china_copy(legacy_idx: int) -> void:
@@ -350,7 +350,7 @@ func _make_pro_china_copy(legacy_idx: int) -> void:
 		c.set_tag("sev", true)
 	if china.has_tag("ovd"):
 		c.set_tag("ovd", true)
-	c.puppet_of = -1
+	c.puppet_of = GameConstants.LegacySlot.NONE
 	c.government = china.government
 	c.sub_government = china.sub_government
 

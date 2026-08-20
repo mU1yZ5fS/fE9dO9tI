@@ -366,17 +366,17 @@ func _refresh_traits(pol: PoliticianData) -> void:
 func _is_plotting_against_you(pol: PoliticianData) -> bool:
 	if pol.is_under_investigation:
 		return false
-	if pol.trait_special == 17 or pol.trait_special == 19:
+	if pol.trait_special == GameConstants.PoliticianSpecial.SHY or pol.trait_special == GameConstants.PoliticianSpecial.SICKLY:
 		return false
-	if pol.loyalty < 450 and (pol.trait_special == 16 or pol.trait_special == 35):
+	if pol.loyalty < 450 and (pol.trait_special == GameConstants.PoliticianSpecial.ADVISER or pol.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST):
 		return true
 	if pol.you_fall:
 		return true
-	if pol.loyalty < 300 and pol.trait_special != 9 and pol.trait_special != 37:
+	if pol.loyalty < 300 and pol.trait_special != GameConstants.PoliticianSpecial.PEACE and pol.trait_special != GameConstants.PoliticianSpecial.AFFABLE:
 		return true
-	if pol.loyalty < 150 and (pol.trait_special == 9 or pol.trait_special == 37):
+	if pol.loyalty < 150 and (pol.trait_special == GameConstants.PoliticianSpecial.PEACE or pol.trait_special == GameConstants.PoliticianSpecial.AFFABLE):
 		return true
-	if pol.trait_background == 28 and pol.loyalty < 2000:
+	if pol.trait_background == GameConstants.PoliticianBackground.AMBITIOUS and pol.loyalty < 2000:
 		return true
 	return false
 

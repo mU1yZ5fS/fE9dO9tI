@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && !c51.isNATO && c37.Gosstroy==3 && c35/c93/c104.SubGosstroy==19
 ##   （全部由 .tres ExprNode 表达）。
 ## 效果：ingamewars[4] = 第五次中东战争，伊拉克(700) vs 以色列(300)，
-##   TickTime(24)（→ fortnight_max=24），无美苏支持标记（usa/ussr_side=0 默认）。
+##   TickTime(24)（→ fortnight_max=24），无美苏支持标记（usa/ussr_side = GameConstants.WarSide.SIDE1 默认）。
 
 const TXT_RESULT := "伊拉克的侯赛因-1型导弹带着五十年的怒火从巴格达飞向特拉维夫，惊恐的以色列人毫无防备，但以色列国防军也开始了全国总动员。伊拉克方面则从三个方向全面进攻，目标直指耶路撒冷。听命于伊拉克的巴勒斯坦解放组织也早就在当地就位，开展了自1967年的惨败以来最猛烈的回击。"
 

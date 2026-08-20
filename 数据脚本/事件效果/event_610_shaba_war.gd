@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event610.cs：沙巴战争（扎伊尔/安哥拉干预，四选项）。
 ## 触发：ReqEventForDLC02.cs:899-901 —— DATE_AFTER 1977.3.8；fire_only_once 承担 !event_done[610]。
-## 差异：names1+names2→_foreign_minister_name()；AmericanSupportAttacker→usa_side=0；TickTime(9/6)→fortnight_max。
+## 差异：names1+names2→_foreign_minister_name()；AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE1；TickTime(9/6)→fortnight_max。
 
 const TXT_OPT0_DIS_A := "他？他杀死了卢蒙巴！"
 const TXT_OPT0_DIS_B := "我看不出来他和法西斯的区别"
@@ -191,6 +191,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

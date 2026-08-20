@@ -800,7 +800,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 						_show(slots, 3, 70, " 马 里 亚 姆 王 朝")
 		elif n == 43 or n == 96 or n == 97:
 			# CS L1476-1487
-			if country.puppet_of != 1:
+			if country.puppet_of != GameConstants.LegacySlot.CHINA:
 				_show(slots, 0, 97, " 外 交 施 压")
 				_show(slots, 1, 98, " 经 济 合 作")
 				_show(slots, 2, 99, " 军 事 联 盟")
@@ -1341,7 +1341,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				if (w.get_flag("Israellost") and not w.event_done_num(440)) \
 						or w.result_of_event_num(440) == 2:  # 散落 bool Israellost 用 global_flags 建模
 					_show(slots, 1, 1002, "谈 判 结 束 内 战")
-				if c35 != null and c35.puppet_of == 14:
+				if c35 != null and c35.puppet_of == GameConstants.LegacySlot.IRAQ:
 					_show(slots, 1, 1079, "新 秩 序")
 				if country.has_tag("亲中"):
 					_show(slots, 1, 10, "经 济 合 作")
@@ -1401,7 +1401,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 3, 144, " 投 资 油 井")
 			if w.event_done_num(709) and _sub(w, 14) == 19:
 				_show(slots, 0, 1079, "新 秩 序")
-				if country.puppet_of == 14:
+				if country.puppet_of == GameConstants.LegacySlot.IRAQ:
 					_show(slots, 2, 145, " 抬 高 石 油 价 格")
 					_show(slots, 3, 146, " 降 低 石 油 价 格")
 			if _revint_ok(w, country):
@@ -1458,7 +1458,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 		elif n == 104 and _dlc3(w):
 			# CS L2576-2598
 			_show(slots, 0, 9, " 建 立 外 交 关 系")
-			if not w.is_authoritarian(country) or country.puppet_of == 14:
+			if not w.is_authoritarian(country) or country.puppet_of == GameConstants.LegacySlot.IRAQ:
 				_show(slots, 1, 10, "经 济 合 作")
 				if country.has_tag("亲中") and country.puppet_of < 0:
 					_show(slots, 2, 19, "军 事 同 盟")
@@ -2306,7 +2306,7 @@ func _block_zhengchi(w: WorldState, country: CountryData, slots: Array) -> void:
 
 func _block_k_ok(w: WorldState, country: CountryData) -> bool:
 	# CS L3942-3948
-	if not w.event_done_num(713) or country.原版序号 == 1:
+	if not w.event_done_num(713) or country.原版序号 == GameConstants.LegacySlot.CHINA:
 		return false
 	if country.puppet_of >= 0:
 		return false

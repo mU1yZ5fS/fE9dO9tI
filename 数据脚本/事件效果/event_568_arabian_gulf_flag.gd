@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - oar → 国家标签 "oar"；proprc → 亲中；
 ##  - IsSocialism(true) → world.is_socialism(c, true)；IsAuthoritarianism → world.is_authoritarian；
 ##  - data[143] 无命名键，raw index 143（同 Event114 约定）；
-##  - AmericanSupportAttacker → usa_side=0/ussr_side=-1；TickTime(24) → fortnight_max=24。
+##  - AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.NONE；TickTime(24) → fortnight_max=24。
 
 
 

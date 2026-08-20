@@ -169,11 +169,11 @@ func _apply_chain(trade: bool) -> void:
 		_join_fxseu(93, trade)
 	if _has_puppet_of(21):
 		for c in ws.countries:
-			if c != null and c.puppet_of == 21:
+			if c != null and c.puppet_of == GameConstants.LegacySlot.FRANCE:
 				c.set_tag("fxseu", true)
 	if _has_puppet_of(85):
 		for c in ws.countries:
-			if c != null and c.puppet_of == 85:
+			if c != null and c.puppet_of == GameConstants.LegacySlot.SPAIN:
 				c.set_tag("fxseu", true)
 	for idx in [92, 85, 86, 87, 21]:
 		var c := ws.get_country_by_legacy_index(idx)

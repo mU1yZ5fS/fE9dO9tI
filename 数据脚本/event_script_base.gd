@@ -121,7 +121,7 @@ func _leave_alliances(c: CountryData) -> void:
 			"亲美", "亲中", "asean", "seato", "oar", "oil", "对华贸易",
 			"sento", "fxseu", "nazimao", "balecon", "rim", "au", "olas"]:
 		c.set_tag(tag, false)
-	c.puppet_of = -1
+	c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## JoinAllOurAlliances(true) 简化映射（id 属 flag 组时仅加入经济联盟）

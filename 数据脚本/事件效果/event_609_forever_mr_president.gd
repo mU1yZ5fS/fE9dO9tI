@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 					comoros.government = GameConstants.Government.AUTHORITARIAN
 					comoros.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					_leave_alliances(comoros)
-					comoros.puppet_of = 21
+					comoros.puppet_of = GameConstants.LegacySlot.FRANCE
 					comoros.chinese_name = TXT_NAME_FAIL
 			context["result_text"] = text
 		1:
@@ -96,7 +96,7 @@ func execute(context: Dictionary) -> void:
 				comoros.government = GameConstants.Government.AUTHORITARIAN
 				comoros.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(comoros)
-				comoros.puppet_of = 21
+				comoros.puppet_of = GameConstants.LegacySlot.FRANCE
 				comoros.set_tag("对华贸易", true)
 				comoros.chinese_name = TXT_NAME_FAIL
 		3:
@@ -105,7 +105,7 @@ func execute(context: Dictionary) -> void:
 				comoros.government = GameConstants.Government.AUTHORITARIAN
 				comoros.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(comoros)
-				comoros.puppet_of = 21
+				comoros.puppet_of = GameConstants.LegacySlot.FRANCE
 				comoros.chinese_name = TXT_NAME_FAIL
 
 
@@ -193,7 +193,7 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 

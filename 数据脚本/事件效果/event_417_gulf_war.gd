@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event417.cs：我们将走上战场（一选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1331 —— ExprNode 组合。
-## 差异：描述动态由 prepare 按伊拉克是否傀儡科威特拼接；SovietSupportDefender.AmericanSupportDefender→usa_side=0,ussr_side=1。
+## 差异：描述动态由 prepare 按伊拉克是否傀儡科威特拼接；SovietSupportDefender.AmericanSupportDefender→usa_side = GameConstants.WarSide.SIDE1,ussr_side = GameConstants.WarSide.SIDE2。
 
 const TXT_TITLE := [
 	"我们将走上战场",
@@ -57,7 +57,7 @@ func evaluate(world: WorldState) -> bool:
 	var c14 := world.get_country_by_legacy_index(14)
 	if c8 == null or c14 == null:
 		return false
-	if not (c8.puppet_of == 14 or c8.has_tag("seato") or c8.has_tag("sento") or c8.has_tag("ovd") or c8.has_tag("okb")):
+	if not (c8.puppet_of == GameConstants.LegacySlot.IRAQ or c8.has_tag("seato") or c8.has_tag("sento") or c8.has_tag("ovd") or c8.has_tag("okb")):
 		return false
 	if world.wars.size() > 3 and world.wars[3] != null and world.wars[3].is_going:
 		return false
@@ -74,7 +74,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null:
 		return
 	var iraq := world.get_country_by_legacy_index(8)
-	var append_text := TXT_DESC_APPEND if iraq != null and iraq.puppet_of == 14 else ""
+	var append_text := TXT_DESC_APPEND if iraq != null and iraq.puppet_of == GameConstants.LegacySlot.IRAQ else ""
 	event_def.description = _fmt(TXT_DESC[0], [append_text]) + TXT_DESC[1]
 
 func execute(context: Dictionary) -> void:

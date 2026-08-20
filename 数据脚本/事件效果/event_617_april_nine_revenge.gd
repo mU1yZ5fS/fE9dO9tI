@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event617.cs：四月九日的复仇（第二次喀麦隆战争，单选项）。
 ## 触发：ReqEventForDLC02.cs:929-931 —— event_done[680] && c66.level_of_unstab>=100 && c66.SubGosstroy==7
 ##   && resultOfEvents[618]!=1 && resultOfEvents[618]!=2。
-## 差异：描述按 c66.puppet_of==21 动态插入“和法国外籍兵团”；AmericanSupportAttacker→usa_side=0。
+## 差异：描述按 c66.puppet_of == GameConstants.LegacySlot.FRANCE 动态插入“和法国外籍兵团”；AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE1。
 
 const TXT_R0_A := "依托于地下网络，UPC已经在城市中组织起总罢工和工人民兵部队，和JOSE的城市游击队一起发动起义同喀麦隆民族解放军配合作战。政府军"
 const TXT_R0_MID := "和法国外籍兵团"
@@ -22,7 +22,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			var text := TXT_R0_A
-			if cameroon != null and cameroon.puppet_of == 21:
+			if cameroon != null and cameroon.puppet_of == GameConstants.LegacySlot.FRANCE:
 				text += TXT_R0_MID
 			text += TXT_R0_B
 			context["result_text"] = text
@@ -117,6 +117,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

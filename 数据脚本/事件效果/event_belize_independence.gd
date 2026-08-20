@@ -16,7 +16,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var belize := ws.get_country_by_legacy_index(142)
 	if belize != null:
-		belize.puppet_of = -1
+		belize.puppet_of = GameConstants.LegacySlot.NONE
 		belize.government = GameConstants.Government.LIBERAL
 		belize.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 		if GameManager != null:

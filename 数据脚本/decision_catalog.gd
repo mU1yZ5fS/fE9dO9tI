@@ -413,7 +413,7 @@ static func _build_v2() -> void:
 
 	# idx 19 中华秋海棠叶遂归于一统 / 整合漠北（三元 puppetOf!=1）
 	var d19: DecisionDef
-	if A._country(9) != null and A._country(9).puppet_of != 1:
+	if A._country(9) != null and A._country(9).puppet_of != GameConstants.LegacySlot.CHINA:
 		d19 = _new(19, _s("中 华 秋 海 棠 叶 遂 归 于 一 统"), _s("蒙 古 人 很 久 以 前 就 和 我 们 断 绝 了 联 系 ， 但 这 不 是 中 国 的 错 。 他 们 不 是 同 中 国 断 绝 联 系 ， 而 是 同 末 代 皇 帝 及 其 母 亲 的 疯 狂 专 制 政 权 断 绝 。 现 在 ， 这 一 障 碍 已 经 消 除 ， 蒙 古 人 民 相 信 我 们 的 善 意 ， 我 们 可 以 开 始 启 动 一 个 项 目 ， 让 蒙 古 重 新 融 入 我 们 伟 大 的 中 国 人 民 大 家 庭 ！"), 2)
 		d19.condition = func() -> bool:
 			return A.is_unitarism(false) and A.pro_chinese(9) and A.they_are_ours(1) \

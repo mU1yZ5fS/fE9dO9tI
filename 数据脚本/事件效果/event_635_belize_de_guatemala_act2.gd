@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02.cs:981-984 —— IsAuthoritarianism(149) && BritLost && DATE_AFTER 1983.1.1。
 ##   IsAuthoritarianism 无单一 ExprNode → trigger_script evaluate。
 ## 差异：ingamewars[66] 建模说明 WarDef → GameManager.start_war 兜底创建后手工补名；
-##   AmericanSupportAttacker→usa_side=1、SovietSupportDefender→ussr_side=2。
+##   AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE2、SovietSupportDefender→ussr_side=2。
 
 const TXT_R0 := "以凯比尔（kaibil）特种兵为主力，危地马拉军队迅速跨过两国边境，一场战争打响了。"
 const TXT_R1 := "以凯比尔（kaibil）特种兵为主力，危地马拉军队迅速跨过两国边境，一场战争打响了。\n我们大力支持了伯利兹抵抗危地马拉军政府侵略的行动，向英国提供了军事支持。在新一期人民日报的头版上，大幅刊登了伯利兹的反侵略战争，盛赞了伯利兹人民抗击危地马拉扩张主义侵略的英勇举动和英军千里迢迢赶来帮助伯利兹人民反击侵略的国际主义精神。"

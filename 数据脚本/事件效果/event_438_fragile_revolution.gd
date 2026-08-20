@@ -53,9 +53,9 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null:
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 100
-				elif p.trait_personality > 1:
+				elif p.trait_personality > GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty += 100
 			context["result_text"] = TXT_R0
 		1:

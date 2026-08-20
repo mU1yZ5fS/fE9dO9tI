@@ -108,9 +108,9 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -100)
 			_add_relation(EmpireData.USSR, -100)
 			for pol in ws.politicians:
-				if pol != null and pol.trait_personality == 0:
+				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.loyalty -= 250
-				elif pol != null and pol.trait_personality > 1:
+				elif pol != null and pol.trait_personality > GameConstants.PoliticianPersonality.MODERATE:
 					pol.loyalty -= 200
 		1:
 			context["result_text"] = TXT_R1
@@ -124,9 +124,9 @@ func execute(context: Dictionary) -> void:
 			if nkorea != null:
 				nkorea.set_tag("对华贸易", false)
 			for pol in ws.politicians:
-				if pol != null and pol.trait_personality == 0:
+				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.loyalty += 50
-				elif pol != null and pol.trait_personality == 1:
+				elif pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					pol.loyalty += 200
 				elif pol != null:
 					pol.loyalty -= 50
@@ -147,10 +147,10 @@ func execute(context: Dictionary) -> void:
 				_establish_government(nkorea, "prosov")
 				nkorea.influence_nato = 1
 			for pol in ws.politicians:
-				if pol != null and pol.trait_personality == 0:
+				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.power += 300
 					pol.loyalty += 250
-				elif pol != null and pol.trait_personality == 1:
+				elif pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					pol.loyalty += 250
 				elif pol != null:
 					pol.loyalty -= 100
@@ -170,9 +170,9 @@ func execute(context: Dictionary) -> void:
 				skorea_country().set_tag("对华贸易", true)
 			_add(W.I_SCIENCE, 1000)
 			for pol in ws.politicians:
-				if pol != null and pol.trait_personality == 0:
+				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.power -= 500
-				elif pol != null and pol.trait_personality == 1:
+				elif pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					pol.loyalty -= 100
 				elif pol != null:
 					pol.loyalty += 100
@@ -191,9 +191,9 @@ func execute(context: Dictionary) -> void:
 			else:
 				_add(W.I_PARTY_SUPPORT, 200)
 			for pol in ws.politicians:
-				if pol != null and pol.trait_personality == 0:
+				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.power -= 150
-				elif pol != null and pol.trait_personality == 1:
+				elif pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					pol.loyalty += 100
 		_:
 			context["result_text"] = TXT_R5

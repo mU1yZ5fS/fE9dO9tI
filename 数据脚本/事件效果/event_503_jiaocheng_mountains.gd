@@ -212,7 +212,7 @@ func evaluate(world: WorldState) -> bool:
 	for politic in world.politicians:
 		if politic == null:
 			continue
-		if politic.trait_personality == 0 and ((politic.name_first == 0 and politic.name_last == 0) or (politic.name_first == 3 and politic.name_last == 3) or (politic.name_first == 4 and politic.name_last == 4) or (politic.name_first == 5 and politic.name_last == 5) or (politic.name_first == 1 and politic.name_last == 41)):
+		if politic.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT and ((politic.name_first == 0 and politic.name_last == 0) or (politic.name_first == 3 and politic.name_last == 3) or (politic.name_first == 4 and politic.name_last == 4) or (politic.name_first == 5 and politic.name_last == 5) or (politic.name_first == 1 and politic.name_last == 41)):
 			num += 1
 		if politic.name_first == 13 and politic.name_last == 13:
 			num += 1

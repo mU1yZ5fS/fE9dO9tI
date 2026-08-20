@@ -6,8 +6,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 选项显隐 prepare 动态改写；proprc → 亲中；Vyshi → 亲美；
 ##  - resultOfEvents[577]/[578] 缺省按原版 int 默认 0；cw → 内战中；
-##  - AmericanSupportAttacker.SovietSupportDefender → usa_side=0/ussr_side=1；
-##    仅 AmericanSupportAttacker → usa_side=0/ussr_side=-1；TickTime(24) → fortnight_max=24。
+##  - AmericanSupportAttacker.SovietSupportDefender → usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.SIDE2；
+##    仅 AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.NONE；TickTime(24) → fortnight_max=24。
 
 
 

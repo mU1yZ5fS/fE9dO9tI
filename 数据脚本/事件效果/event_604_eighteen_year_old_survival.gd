@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event604.cs：十八岁的我只想活下去（南非人民邦特别军事行动，单选项）。
 ## 触发：ReqEventForDLC02.cs:874-876 —— c131.SubGosstroy==9 && !war54.is_going && DATE_AFTER 1984.1.1。
-## 差异：描述按 c127.puppet_of<0 动态插入“、津巴布韦”；AmericanSupportAttacker→usa_side=0。
+## 差异：描述按 c127.puppet_of<0 动态插入“、津巴布韦”；AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE1。
 
 const TXT_DESC_A := "今天，素有“行走大洋国”之称的南非人民邦宣布将在非洲南部地区发起“德拉雷”维和特别军事行动。根据南非人民邦发言人的说法，该行动将“彻底解决侵犯南非领土主权”的敌对行动。全副武装的南非部队已开始向其边界邻国进军，并将炮口瞄准安哥拉、博茨瓦纳"
 const TXT_DESC_MID := "、津巴布韦"
@@ -143,6 +143,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

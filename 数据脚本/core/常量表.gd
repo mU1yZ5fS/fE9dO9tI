@@ -32,13 +32,14 @@ const GwCode := {
 
 # ── 原版数组下标（CountryData.原版序号，事件脚本 allcountries[N]） ──
 const LegacySlot := {
+	NONE = -1,
 	CHINA = 1,
-	FRANCE = 21,
 	IRAQ = 14,
+	FRANCE = 21,
+	TAIWAN = 38,
 	SPAIN = 85,
 	SOUTH_AFRICA = 131,
 	AUSTRALIA = 135,
-	TAIWAN = 38,
 }
 
 # ── 战争状态（WorldState.war_state） ──
@@ -113,17 +114,47 @@ enum PoliticianAlignment {
 	PRAGMATIST = 5,
 	TOLERANT = 6,
 	TECH = 7,
+	HEDONIST = 29,
+	CONSPIRACY_THEORIST = 30,
+	SUBJECTIVIST = 39,
+	FENCE_SITTER = 40,
+	LOCAL_WARLORD = 41,
+	POLITICS_FIRST = 42,
+}
+
+# ── 政治家特殊特质 traits[2] ──
+enum PoliticianSpecial {
+	HARSH = 8,
+	PEACE = 9,
+	TYRANT = 10,
+	ECONOMIST = 11,
+	ARROGANT = 12,
+	IDOL = 13,
+	CHINA_SCHOOL = 14,
+	WESTERN_SCHOOL = 15,
+	ADVISER = 16,
+	SHY = 17,
+	CORRUPT = 18,
+	SICKLY = 19,
+	AGITATOR = 31,
+	PEOPLES_FRIEND = 32,
+	DIPLOMAT = 33,
+	TROTSKYITE = 34,
+	OPPORTUNIST = 35,
+	MILITARY_TALENT = 36,
+	AFFABLE = 37,
+	INDOMITABLE = 38,
 }
 
 # ── 政治家出身 traits[3] ──
 enum PoliticianBackground {
-	WORKER = 21,
-	PEASANT = 22,
-	INTELLECTUAL = 23,
-	CADRE = 24,
-	SOLDIER = 25,
-	BUSINESS = 26,
-	OVERSEAS = 27,
-	SECURITY = 28,
+	PARTY_CADRE = 21,
+	MASS_LEADER = 22,
+	STUDENT_REBEL = 23,
+	WORKER_MODEL = 24,
+	MILITARY_GENERAL = 25,
+	INTELLECTUAL = 26,
+	SCIENTIST = 27,
+	AMBITIOUS = 28,
 	SPECIAL = 43,
 }

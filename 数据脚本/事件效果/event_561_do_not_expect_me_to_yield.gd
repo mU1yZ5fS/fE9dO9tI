@@ -26,7 +26,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if line > 0 and c21 != null and c21.has_tag("对华贸易") and c55 != null and c55.puppet_of == 21:
+	if line > 0 and c21 != null and c21.has_tag("对华贸易") and c55 != null and c55.puppet_of == GameConstants.LegacySlot.FRANCE:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
@@ -62,7 +62,7 @@ func execute(context: Dictionary) -> void:
 				c13.government = GameConstants.Government.AUTHORITARIAN
 				c13.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c13)
-				c13.puppet_of = 21
+				c13.puppet_of = GameConstants.LegacySlot.FRANCE
 				c13.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, 80)
 			_add_power(EmpireData.USA, 20)

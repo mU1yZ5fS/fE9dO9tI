@@ -54,10 +54,10 @@ func _replace_mao_with_mao_yuanxin() -> void:
 		p.name_last = 41
 		p.age = d[W.I_YEAR] - 1941
 		p.power = 700
-		p.trait_personality = 0    # traits[0]
-		p.trait_alignment = 4      # traits[1]
-		p.trait_special = 32       # traits[2]（原版越界值逐字保留）
-		p.trait_background = 22    # traits[3]
+		p.trait_personality = GameConstants.PoliticianPersonality.FAR_LEFT    # traits[0]
+		p.trait_alignment = GameConstants.PoliticianAlignment.HARDLINER      # traits[1]
+		p.trait_special = GameConstants.PoliticianSpecial.PEOPLES_FRIEND       # traits[2]（原版越界值逐字保留）
+		p.trait_background = GameConstants.PoliticianBackground.MASS_LEADER    # traits[3]
 	# 军委由实权领袖本人担任（原 politics_dolshnost[1]=150）
 	if ws.politics_positions.size() > 1:
 		ws.politics_positions[1] = WorldFactory.LEADER_POSITION_SENTINEL

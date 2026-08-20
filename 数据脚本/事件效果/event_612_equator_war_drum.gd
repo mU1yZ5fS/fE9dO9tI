@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event612.cs：赤道战鼓（刚果革命战争，单选项）。
 ## 触发：无自动触发点——原版由 DiploButtonScript.cs:4980-4982（this_type 外交按钮）手动 number_event=612。
-## 差异：描述按 resultOfEvents[610]==2 动态插入书记名；AmericanSupportAttacker.SovietSupportAttacker→usa_side=0/ussr_side=0。
+## 差异：描述按 resultOfEvents[610]==2 动态插入书记名；AmericanSupportAttacker.SovietSupportAttacker→usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.SIDE1。
 
 const TXT_DESC_A := "一天又一天，游击队在刚果东方的密林里训练，一天又一天，无数的好男儿为崇高的理想献身，一天又一天，更多的“墨路波”们加入游击队，为自由的刚果献上一切。就在今日，"
 const TXT_NAME_KISASE := "刚果人民革命组织第一书记安德烈·基萨斯"
@@ -126,6 +126,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

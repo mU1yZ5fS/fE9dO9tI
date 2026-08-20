@@ -23,7 +23,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -30)
 			if laos != null:
 				laos.stab = 1
-				laos.puppet_of = -1
+				laos.puppet_of = GameConstants.LegacySlot.NONE
 				laos.set_tag("sev", false)
 				laos.set_tag("亲苏", false)
 				laos.set_tag("亲中", true)

@@ -159,7 +159,7 @@ func execute(context: Dictionary) -> void:
 	if ussr != null and ussr.current_leader == 6:
 		num2 += 1
 	# num3：民粹/改革党
-	if ws.leader != null and ws.leader.trait_personality == 2:
+	if ws.leader != null and ws.leader.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 		num3 += 1
 	if _mod_active(39):
 		num3 += 1

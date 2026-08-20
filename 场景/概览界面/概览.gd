@@ -502,7 +502,7 @@ func _mongolia_text(w: WorldState) -> String:
 		return "蒙古是苏联的加盟共和国"
 	var mongolia := w.get_country_by_legacy_index(9)
 	var proprc: bool = mongolia != null and mongolia.has_tag("亲中")
-	var puppet_china: bool = mongolia != null and mongolia.puppet_of == 1
+	var puppet_china: bool = mongolia != null and mongolia.puppet_of == GameConstants.LegacySlot.CHINA
 	if mongolia != null and not _decision_done(w, 19) \
 			and not w.get_flag("IndOpp") and not w.get_flag("is_gkchp"):
 		if proprc and puppet_china:

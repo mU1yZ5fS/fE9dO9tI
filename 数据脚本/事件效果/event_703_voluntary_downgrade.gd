@@ -48,14 +48,14 @@ func execute(context: Dictionary) -> void:
 			if quebec != null:
 				quebec.government = GameConstants.Government.LIBERAL
 				quebec.sub_government = GameConstants.SubGovernment.MODERATE
-				quebec.puppet_of = 21
+				quebec.puppet_of = GameConstants.LegacySlot.FRANCE
 			context["result_text"] = text
 			return
 		text += TXT_R_FRANCE_SUB
 		if quebec != null:
 			quebec.government = GameConstants.Government.AUTHORITARIAN
 			quebec.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
-			quebec.puppet_of = 21
+			quebec.puppet_of = GameConstants.LegacySlot.FRANCE
 		context["result_text"] = text
 		return
 	if france != null and france.government == GameConstants.Government.REFORMIST:

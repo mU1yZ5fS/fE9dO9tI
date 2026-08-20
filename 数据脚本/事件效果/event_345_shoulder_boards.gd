@@ -36,7 +36,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var korea := world.get_country_by_legacy_index(10)
 	var desc := TXT_DESC_BASE
 	var res378 := int(world.completed_event_ids.get("event_378", 0))
-	if world.get_flag("vietnampeace") and res378 != 2 and (korea == null or korea.puppet_of != 1):
+	if world.get_flag("vietnampeace") and res378 != 2 and (korea == null or korea.puppet_of != GameConstants.LegacySlot.CHINA):
 		desc += TXT_DESC_VISITS
 	else:
 		desc += TXT_DESC_NO_VISITS
@@ -66,7 +66,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			for p in ws.politicians:
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.power += 25
 					p.loyalty += 50
 			_add(W.I_MANPOWER, 15)
@@ -80,7 +80,7 @@ func execute(context: Dictionary) -> void:
 			else:
 				text += TXT_R1_SPECIAL
 			for p in ws.politicians:
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.power -= 25
 					p.loyalty -= 50
 			_add_relation(0, 25)

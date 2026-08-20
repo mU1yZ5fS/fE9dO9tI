@@ -238,14 +238,14 @@ func _refresh_china_map_parts(w: WorldState, china: CountryData) -> void:
 	if w.get_flag("IndOpp"):
 		_clear_china_parts(china, true)
 		china.parts[15] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
-			and c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
+	elif c19 != null and c19.puppet_of == GameConstants.LegacySlot.CHINA and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
+			and c33 != null and c33.puppet_of == GameConstants.LegacySlot.CHINA and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[14] = true
-	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
+	elif c33 != null and c33.puppet_of == GameConstants.LegacySlot.CHINA and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[13] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
+	elif c19 != null and c19.puppet_of == GameConstants.LegacySlot.CHINA and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[12] = true
 	elif w.get_flag("is_gkchp"):

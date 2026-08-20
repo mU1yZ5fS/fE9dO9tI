@@ -52,9 +52,9 @@ func _opt_contact(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality == 0:
+		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			p.loyalty += 50
-		elif (p.trait_personality > 0 and p.trait_personality < 2) or p.trait_personality == 20:
+		elif (p.trait_personality > GameConstants.PoliticianPersonality.FAR_LEFT and p.trait_personality < GameConstants.PoliticianPersonality.REFORMIST) or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			p.loyalty += 50
 	context["result_text"] = TXT_R1
 
@@ -71,6 +71,6 @@ func _opt_support(context: Dictionary) -> void:
 	for p in ws.politicians:
 		if p == null:
 			continue
-		if p.trait_personality > 0 and p.trait_personality < 3:
+		if p.trait_personality > GameConstants.PoliticianPersonality.FAR_LEFT and p.trait_personality < GameConstants.PoliticianPersonality.LIBERAL:
 			p.loyalty -= 70
 	context["result_text"] = TXT_R2

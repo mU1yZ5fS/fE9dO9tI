@@ -4,8 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10929-10934 —— 日期>=1984.2.10 && IsSocialism(false,119)（肯尼亚非社会主义）&& c42.SubGosstroy==10 && (c42.亲中||c42.亲苏)；c41/c42 parts 建模说明恒真跳过。
 ## 差异：
 ##  - 原版 SubGosstroy!=10 分支的空白禁用选项在 .tres 中保留空 text 的 _disable 实现；
-##  - AmericanSupportDefender.SovietSupportAttacker → usa_side=1/ussr_side=0；
-##  - 仅 AmericanSupportDefender → usa_side=1/ussr_side=-1；
+##  - AmericanSupportDefender.SovietSupportAttacker → usa_side = GameConstants.WarSide.SIDE2/ussr_side = GameConstants.WarSide.SIDE1；
+##  - 仅 AmericanSupportDefender → usa_side = GameConstants.WarSide.SIDE2/ussr_side = GameConstants.WarSide.NONE；
 ##  - TickTime(24) → fortnight_max=24。
 
 const TXT_DESC_BASE := "1984年2月，肯尼亚东北省的瓦吉尔镇爆发了一次部族冲突，肯尼亚国防军奉命制止冲突，随后将五千余名当地人赶到瓦加拉机场的跑道上，一周之内断绝了他们的水源和粮食并开枪随意射杀。索马里当局对此十分不满，并要求肯尼亚政府停止种族屠杀，否则将会推翻现政权并进行占领。"

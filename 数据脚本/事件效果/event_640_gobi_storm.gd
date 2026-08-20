@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event640.cs：打倒社帝马前卒！（中蒙战争，单选项）。
 ## 触发：DiploButtonScript.cs:12234 —— 外交按钮 1052，selected_country==9，手动触发。
 ## 差异：ingamewars[69] 已有 war_69 WarDef，仍按 start_war 参数覆盖；
-##   usa_place=0（仅 c51.Torg 时）→ WarData.usa_side=0；relres→global_flags。
+##   usa_place=0（仅 c51.Torg 时）→ WarData.usa_side = GameConstants.WarSide.SIDE1；relres→global_flags。
 
 const TXT_DESC_PRE := "随着苏联的日益式微，是时候处理苏联在东亚地区安插给我们的一棵楔子了。蒙古，这个无耻又邪恶的伪政权，他的诞生就是建立在乘乱谋独上，在我们国内革命陷入危机的时候，蒙古打起了内蒙古的算盘，积极扶持内蒙古人民革命党等“极左”分离主义组织。在八月风暴时妄图借着苏军夺走内蒙。在解放战争中，他们为破坏三区革命的乌斯满匪帮大开绿灯，更别提在中苏论战中毫不动摇的支持苏联。这个无耻之国应该付出代价。随着苏联在东欧的“惨胜”，我们应当更进一步，打碎邪恶帝国在远东的重要支点。而苏联新政府的改革更是创造了这一机会，蒙古的物价遇到了前所未有的飙升，商品极度短缺，俄罗斯驻军的暴行也早已让该国公民厌倦。大量的牧民以探亲戚和“归乡”为由从蒙古一侧逃到我方来寻求庇护。这更说明了我们的正确性。是时候让他们为过去的错误付出代价了。"
 const TXT_DESC_TAIL := "同志，是时候了，该让我们一举粉碎邪恶帝国所孕育的弗兰肯斯坦了。"
@@ -32,7 +32,7 @@ func execute(context: Dictionary) -> void:
 	var usa := ws.get_country_by_legacy_index(51)
 	if usa != null and usa.has_tag("对华贸易"):
 		if ws.wars.size() > 69 and ws.wars[69] != null:
-			ws.wars[69].usa_side = 0
+			ws.wars[69].usa_side = GameConstants.WarSide.SIDE1
 	var mongolia := ws.get_country_by_legacy_index(9)
 	if mongolia != null:
 		mongolia.set_tag("对华贸易", false)

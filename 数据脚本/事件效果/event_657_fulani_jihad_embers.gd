@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs 11078-11083 —— event_done[655] && c60.prc_power>=100 && c60.内战。
 ## 差异：
 ##  - 触发条件用 ExprNode（PREV_EVENT_DONE / COUNTRY_FIELD_AT_LEAST / COUNTRY_FIELD_EQUALS）。
-##  - War 79：AmericanSupportDefender.SovietSupportDefender → usa_side=1 / ussr_side=1；
+##  - War 79：AmericanSupportDefender.SovietSupportDefender → usa_side = GameConstants.WarSide.SIDE2 / ussr_side = GameConstants.WarSide.SIDE2；
 ##    无 TickTime → 原版 fortnight_max 默认 999，Godot 覆盖为 999。
 ##  - 死代码 result 5 测试分支跳过。
 

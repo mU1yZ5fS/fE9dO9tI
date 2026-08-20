@@ -34,8 +34,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if france != null and france.has_tag("对华贸易") \
-			and cameroon != null and cameroon.puppet_of == 21 \
-			and gabon != null and gabon.puppet_of == 21:
+			and cameroon != null and cameroon.puppet_of == GameConstants.LegacySlot.FRANCE \
+			and gabon != null and gabon.puppet_of == GameConstants.LegacySlot.FRANCE:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 				eq_guinea.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(eq_guinea)
 				eq_guinea.set_tag("对华贸易", true)
-				eq_guinea.puppet_of = 21
+				eq_guinea.puppet_of = GameConstants.LegacySlot.FRANCE
 			_add(W.I_AGENTS, -50)
 		3:
 			context["result_text"] = TXT_R3
@@ -168,6 +168,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event598.cs：卡盖拉是我们的！（乌坦战争，三选项）。
 ## 触发：ReqEventForDLC02.cs:844-846 —— DATE_AFTER 1978.11.2；fire_only_once 承担 !event_done[598]。
-## 差异：SovietSupportAttacker→ussr_side=0；TickTime(15)→fortnight_max=15。
+## 差异：SovietSupportAttacker→ussr_side = GameConstants.WarSide.SIDE1；TickTime(15)→fortnight_max=15。
 
 const TXT_OPT0_DIS := "乌干达和坦桑尼亚？极权主义者狗咬狗罢了……"
 const TXT_OPT2_DIS := "我说了，我们不可能搞背叛同志这一套"
@@ -150,6 +150,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event403.cs：军委独裁政权的危机（五选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1261 —— 复杂条件用 evaluate（parts 无 ExprNode 字段）。
-## 差异：ingamewars[24..26]→ws.wars；SovietSupportAttacker.AmericanSupportDefender→usa_side=1,ussr_side=0；TickTime→fortnight_max。
+## 差异：ingamewars[24..26]→ws.wars；SovietSupportAttacker.AmericanSupportDefender→usa_side = GameConstants.WarSide.SIDE2,ussr_side = GameConstants.WarSide.SIDE1；TickTime→fortnight_max。
 
 const TXT_TITLE := [
 	"军委独裁政权的危机",

@@ -35,15 +35,15 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty += 80
-				if p.trait_personality == 20:
+				if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.loyalty += 100
-				elif p.trait_personality == 2:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 					p.loyalty -= 100
-				elif p.trait_personality == 3:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 					p.loyalty -= 150
-				elif p.trait_personality == 1:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty -= 50
 			context["result_text"] = TXT_R0
 		1:
@@ -60,17 +60,17 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty += 100
-				if p.trait_personality == 20:
+				if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.loyalty += 80
-				elif p.trait_personality == 1:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty -= 50
 					p.power -= 100
-				elif p.trait_personality == 2:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 					p.loyalty -= 100
 					p.power -= 100
-				elif p.trait_personality == 3:
+				elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 					p.loyalty -= 150
 					p.power -= 100
 			context["result_text"] = TXT_R1
@@ -81,9 +81,9 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null or PoliticianSystem.is_vacant_politician(p):
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 20
-				elif p.trait_personality < 2:
+				elif p.trait_personality < GameConstants.PoliticianPersonality.REFORMIST:
 					p.loyalty += 100
 			context["result_text"] = TXT_R2
 	PoliticianSystem.sync_in_power_flags(ws)
@@ -102,7 +102,7 @@ func _find_weakest_non_left_radical() -> int:
 		if base == null:
 			num = i
 			continue
-		if p.power < base.power and p.trait_personality != 0:
+		if p.power < base.power and p.trait_personality != GameConstants.PoliticianPersonality.FAR_LEFT:
 			num = i
 	return num
 

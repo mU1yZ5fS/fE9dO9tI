@@ -77,7 +77,7 @@ func execute(context: Dictionary) -> void:
 		2:
 			context["result_text"] = TXT_R2
 			if guinea_bissau != null:
-				guinea_bissau.puppet_of = 21
+				guinea_bissau.puppet_of = GameConstants.LegacySlot.FRANCE
 				guinea_bissau.government = GameConstants.Government.LIBERAL
 				guinea_bissau.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				guinea_bissau.set_tag("对华贸易", true)
@@ -173,6 +173,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

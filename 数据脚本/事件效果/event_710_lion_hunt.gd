@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：event_710_trigger.gd（TimeScript.cs:10580-10586）。
 ## 效果：c35.parts[1]=true；ingamewars[89] 叙利亚-伊拉克战争：
 ##   选项0 AttackerInfluence 350/Defender 650；选项1 250/750；
-##   均 AmericanSupportAttacker + SovietSupportDefender（→ usa_side=0, ussr_side=1）
+##   均 AmericanSupportAttacker + SovietSupportDefender（→ usa_side = GameConstants.WarSide.SIDE1, ussr_side = GameConstants.WarSide.SIDE2）
 ##   且 TickTime(24)（→ fortnight_max=24）。
 ## 差异：描述按 c35.SubGosstroy==15||10 分支；else 分支 {0}=c35.name
 ##   （Godot 用 name，空则 chinese_name）。

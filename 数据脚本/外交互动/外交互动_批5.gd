@@ -914,13 +914,13 @@ func _def_1079(w: WorldState, country: CountryData, caption: String) -> Dictiona
 	var opis := " 和 伊 拉 克 盟 友 一 起 接 管 富 饶 的 产 油 国 ， 武 装 保 卫 我 国 的 生 命 线"
 	var conds: Array = []
 	conds.append(cond(" 10 百 万 预 算 ， 10 军 力", func(): return d(w, 8) + d(w, 36) >= 100 and d(w, 22) >= 100))
-	conds.append(cond(" 尚 未 接 管", func(): return country.puppet_of != 14))
+	conds.append(cond(" 尚 未 接 管", func(): return country.puppet_of != GameConstants.LegacySlot.IRAQ))
 	var eff := func():
 		set_d(w, 8, d(w, 8) - 100)
 		set_d(w, 22, d(w, 22) - 100)
 		w.oil_prod += 100.0
 		country.leave_alliances()
-		country.puppet_of = 14
+		country.puppet_of = GameConstants.LegacySlot.IRAQ
 		country.government = GameConstants.Government.AUTHORITARIAN
 		country.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 		country.set_tag("亲中", true)

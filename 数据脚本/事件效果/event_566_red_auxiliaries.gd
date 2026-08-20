@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   .Defender("伊拉克爱国同盟").AttackerInfluence(700-num).DefenderInfluence(300+num)
 ##   .TickTime(24).AmericanSupportAttacker（num = c14.prcpower/10 整数除法）。
 ## 差异：Godot 用 GameManager.start_war + fortnight_max=24（原版 TickTime(24)）；
-##   AmericanSupportAttacker → usa_side=0（攻击方=复兴党）。
+##   AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1（攻击方=复兴党）。
 
 const TXT_RESULT := "中东的局势还在持续的恶化……"
 

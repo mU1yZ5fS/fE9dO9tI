@@ -69,16 +69,16 @@ func _purge_politicians(loyalty_delta: int) -> void:
 		if p == null:
 			continue
 		var a := (
-			(p.loyalty < 1000 and p.trait_background == 28)
-			or (p.loyalty < 800 and p.trait_alignment == 41)
-			or (p.loyalty < 300 and (p.trait_special == 16 or p.trait_special == 35))
+			(p.loyalty < 1000 and p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS)
+			or (p.loyalty < 800 and p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD)
+			or (p.loyalty < 300 and (p.trait_special == GameConstants.PoliticianSpecial.ADVISER or p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST))
 			or p.you_fall
-			or (p.loyalty < 150 and p.trait_special != 9 and p.trait_special != 37)
-			or (p.loyalty < 50 and (p.trait_special == 9 or p.trait_special == 37))
+			or (p.loyalty < 150 and p.trait_special != GameConstants.PoliticianSpecial.PEACE and p.trait_special != GameConstants.PoliticianSpecial.AFFABLE)
+			or (p.loyalty < 50 and (p.trait_special == GameConstants.PoliticianSpecial.PEACE or p.trait_special == GameConstants.PoliticianSpecial.AFFABLE))
 		)
 		var b := (
-			p.trait_special != 17 and p.trait_special != 19
-			and p.trait_alignment != 40 and not p.is_under_investigation
+			p.trait_special != GameConstants.PoliticianSpecial.SHY and p.trait_special != GameConstants.PoliticianSpecial.SICKLY
+			and p.trait_alignment != GameConstants.PoliticianAlignment.FENCE_SITTER and not p.is_under_investigation
 		)
 		if a and b:
 			p.power -= 100

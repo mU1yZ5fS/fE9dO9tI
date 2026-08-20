@@ -45,7 +45,7 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if gambia != null:
-				gambia.puppet_of = 21
+				gambia.puppet_of = GameConstants.LegacySlot.FRANCE
 			_add(W.I_AGENTS, -50)
 			_add(W.I_ARMY, -50)
 			_add(W.I_PARTY_SUPPORT, -100)
@@ -61,7 +61,7 @@ func execute(context: Dictionary) -> void:
 		2:
 			context["result_text"] = TXT_R2
 			if gambia != null:
-				gambia.puppet_of = 21
+				gambia.puppet_of = GameConstants.LegacySlot.FRANCE
 
 
 
@@ -148,6 +148,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

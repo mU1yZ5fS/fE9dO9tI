@@ -38,7 +38,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	var flag := false
 	for c in world.countries:
-		if c != null and c.puppet_of == 21:
+		if c != null and c.puppet_of == GameConstants.LegacySlot.FRANCE:
 			flag = true
 			break
 	if not flag:
@@ -54,38 +54,38 @@ func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	var text := ""
-	if ws.get_country_by_legacy_index(55) != null and ws.get_country_by_legacy_index(55).puppet_of == 21:
+	if ws.get_country_by_legacy_index(55) != null and ws.get_country_by_legacy_index(55).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_TUNISIA
-	if ws.get_country_by_legacy_index(13) != null and ws.get_country_by_legacy_index(13).puppet_of == 21:
+	if ws.get_country_by_legacy_index(13) != null and ws.get_country_by_legacy_index(13).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_LIBYA
-	if ws.get_country_by_legacy_index(65) != null and ws.get_country_by_legacy_index(65).puppet_of == 21:
+	if ws.get_country_by_legacy_index(65) != null and ws.get_country_by_legacy_index(65).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_CAR
-	if ws.get_country_by_legacy_index(66) != null and ws.get_country_by_legacy_index(66).puppet_of == 21:
+	if ws.get_country_by_legacy_index(66) != null and ws.get_country_by_legacy_index(66).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_CAMEROON
 		var c66 := ws.get_country_by_legacy_index(66)
 		if c66 != null:
 			c66.chinese_name = TXT_CAMEROON_NAME
-	if ws.get_country_by_legacy_index(58) != null and ws.get_country_by_legacy_index(58).puppet_of == 21:
+	if ws.get_country_by_legacy_index(58) != null and ws.get_country_by_legacy_index(58).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_MALI
-	if ws.get_country_by_legacy_index(68) != null and ws.get_country_by_legacy_index(68).puppet_of == 21:
+	if ws.get_country_by_legacy_index(68) != null and ws.get_country_by_legacy_index(68).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_GUINEA
-	if ws.get_country_by_legacy_index(64) != null and ws.get_country_by_legacy_index(64).puppet_of == 21:
+	if ws.get_country_by_legacy_index(64) != null and ws.get_country_by_legacy_index(64).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_CIV
-	if ws.get_country_by_legacy_index(108) != null and ws.get_country_by_legacy_index(108).puppet_of == 21:
+	if ws.get_country_by_legacy_index(108) != null and ws.get_country_by_legacy_index(108).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_TOGO
-	if ws.get_country_by_legacy_index(62) != null and ws.get_country_by_legacy_index(62).puppet_of == 21:
+	if ws.get_country_by_legacy_index(62) != null and ws.get_country_by_legacy_index(62).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_BENIN
-	if ws.get_country_by_legacy_index(116) != null and ws.get_country_by_legacy_index(116).puppet_of == 21:
+	if ws.get_country_by_legacy_index(116) != null and ws.get_country_by_legacy_index(116).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_GABON
-	if ws.get_country_by_legacy_index(133) != null and ws.get_country_by_legacy_index(133).puppet_of == 21:
+	if ws.get_country_by_legacy_index(133) != null and ws.get_country_by_legacy_index(133).puppet_of == GameConstants.LegacySlot.FRANCE:
 		text += TXT_MADAGASCAR
 	var num := 0
 	var china := ws.get_country_by_legacy_index(1)
 	for c in ws.countries:
 		if c == null:
 			continue
-		if c.puppet_of == 21:
-			c.puppet_of = -1
+		if c.puppet_of == GameConstants.LegacySlot.FRANCE:
+			c.puppet_of = GameConstants.LegacySlot.NONE
 			_leave_alliances(c)
 			c.set_tag("亲苏", true)
 			c.government = GameConstants.Government.SOCIALIST

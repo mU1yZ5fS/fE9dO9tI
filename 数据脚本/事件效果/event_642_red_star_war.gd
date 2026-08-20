@@ -44,31 +44,31 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	var japan := ws.get_country_by_legacy_index(44)
 	var india := ws.get_country_by_legacy_index(19)
 	var pakistan := ws.get_country_by_legacy_index(31)
-	if vietnam == null or vietnam.puppet_of != 1:
+	if vietnam == null or vietnam.puppet_of != GameConstants.LegacySlot.CHINA:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if korea == null or korea.puppet_of != 1:
+	if korea == null or korea.puppet_of != GameConstants.LegacySlot.CHINA:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	var sea_free := (philippines == null or philippines.puppet_of != 1) \
-		and (indonesia == null or indonesia.puppet_of != 1) \
-		and (png == null or png.puppet_of != 1)
+	var sea_free := (philippines == null or philippines.puppet_of != GameConstants.LegacySlot.CHINA) \
+		and (indonesia == null or indonesia.puppet_of != GameConstants.LegacySlot.CHINA) \
+		and (png == null or png.puppet_of != GameConstants.LegacySlot.CHINA)
 	var thai_ok := thailand != null and thailand.has_tag("亲中") and thailand.has_tag("okb")
 	if sea_free and thai_ok:
 		_enable(opt[2], TXT_OPT2_NANYANG)
-	elif (philippines != null and philippines.puppet_of == 1) \
-			and (indonesia != null and indonesia.puppet_of == 1) \
-			and (png != null and png.puppet_of == 1) \
-			and (japan == null or japan.puppet_of != 1):
+	elif (philippines != null and philippines.puppet_of == GameConstants.LegacySlot.CHINA) \
+			and (indonesia != null and indonesia.puppet_of == GameConstants.LegacySlot.CHINA) \
+			and (png != null and png.puppet_of == GameConstants.LegacySlot.CHINA) \
+			and (japan == null or japan.puppet_of != GameConstants.LegacySlot.CHINA):
 		_enable(opt[2], TXT_OPT2_JAPAN)
 	elif not thai_ok:
 		_disable(opt[2], TXT_OPT2_DIS_0)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_1)
 	var pak_ok := pakistan != null and pakistan.has_tag("亲中")
-	if (india == null or india.puppet_of != 1) and pak_ok:
+	if (india == null or india.puppet_of != GameConstants.LegacySlot.CHINA) and pak_ok:
 		_enable(opt[3], event_def.options[3].text)
 	elif not pak_ok:
 		_disable(opt[3], TXT_OPT3_DIS_0)
@@ -76,11 +76,11 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		_disable(opt[3], TXT_OPT3_DIS_1)
 	var china := ws.get_country_by_legacy_index(1)
 	var parts_ok := china != null and not (china.parts.size() > 11 and china.parts[11])
-	if (india != null and india.puppet_of == 1) \
-			and (philippines != null and philippines.puppet_of == 1) \
-			and (korea != null and korea.puppet_of == 1) \
-			and (vietnam != null and vietnam.puppet_of == 1) \
-			and (japan != null and japan.puppet_of == 1) \
+	if (india != null and india.puppet_of == GameConstants.LegacySlot.CHINA) \
+			and (philippines != null and philippines.puppet_of == GameConstants.LegacySlot.CHINA) \
+			and (korea != null and korea.puppet_of == GameConstants.LegacySlot.CHINA) \
+			and (vietnam != null and vietnam.puppet_of == GameConstants.LegacySlot.CHINA) \
+			and (japan != null and japan.puppet_of == GameConstants.LegacySlot.CHINA) \
 			and parts_ok and _res(W.I_ARMY) >= 5000:
 		_enable(opt[4], event_def.options[4].text)
 	else:
@@ -111,9 +111,9 @@ func execute(context: Dictionary) -> void:
 			var indonesia := ws.get_country_by_legacy_index(50)
 			var png := ws.get_country_by_legacy_index(134)
 			var korea := ws.get_country_by_legacy_index(10)
-			var sea_free := (philippines == null or philippines.puppet_of != 1) \
-				and (indonesia == null or indonesia.puppet_of != 1) \
-				and (png == null or png.puppet_of != 1)
+			var sea_free := (philippines == null or philippines.puppet_of != GameConstants.LegacySlot.CHINA) \
+				and (indonesia == null or indonesia.puppet_of != GameConstants.LegacySlot.CHINA) \
+				and (png == null or png.puppet_of != GameConstants.LegacySlot.CHINA)
 			if sea_free:
 				context["result_text"] = TXT_R2_NANYANG + TXT_WAR_TAIL
 				_start_war(73, "中华人民共和国", "南洋诸国", "南洋之征")

@@ -49,11 +49,11 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0.format(["\n", t_albania, t_yugo])
 			for pol in ws.politicians:
-				if pol != null and pol.trait_personality == 0:
+				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.power += 500
-				elif pol != null and pol.trait_personality == 1:
+				elif pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					pol.loyalty -= 50
-				elif pol != null and pol.trait_personality == 2:
+				elif pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 					pol.loyalty -= 200
 				elif pol != null:
 					pol.loyalty -= 350
@@ -67,11 +67,11 @@ func execute(context: Dictionary) -> void:
 		1:
 			context["result_text"] = TXT_R1.format(["\n", t_albania, t_yugo])
 			for pol in ws.politicians:
-				if pol != null and pol.trait_personality == 0:
+				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.power -= 500
-				elif pol != null and pol.trait_personality == 1:
+				elif pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					pol.loyalty += 50
-				elif pol != null and pol.trait_personality == 2:
+				elif pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 					pol.loyalty += 200
 				elif pol != null:
 					pol.loyalty += 350

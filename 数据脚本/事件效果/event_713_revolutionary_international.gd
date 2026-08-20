@@ -85,7 +85,7 @@ func execute(context: Dictionary) -> void:
 			if china != null:
 				c.government = china.government
 				c.sub_government = _chinese_sub_government()
-			c.puppet_of = 1
+			c.puppet_of = GameConstants.LegacySlot.CHINA
 			c.set_tag("亲中", true)
 			c.set_tag("对华贸易", true)
 			_join_our_alliances(c)
@@ -105,9 +105,9 @@ func _common_effects() -> void:
 	# 非亲苏/亲美、不在经互会/华约 → 影响-20、断亲中/对华贸易/econ/okb；
 	# 符合条件者转 rim。
 	for c in ws.countries:
-		if c == null or c.原版序号 == 1:
+		if c == null or c.原版序号 == GameConstants.LegacySlot.CHINA:
 			continue
-		if c.puppet_of == 1:
+		if c.puppet_of == GameConstants.LegacySlot.CHINA:
 			continue
 		if not ws.is_socialism(c, true):
 			continue
@@ -153,7 +153,7 @@ func _subdue_country(legacy_index: int, new_name: String) -> void:
 	c.chinese_name = new_name
 	c.government = GameConstants.Government.REFORMIST
 	c.sub_government = GameConstants.SubGovernment.PRAGMATIST
-	c.puppet_of = 1
+	c.puppet_of = GameConstants.LegacySlot.CHINA
 	c.set_tag("亲中", true)
 	c.set_tag("对华贸易", true)
 	_join_our_alliances(c)

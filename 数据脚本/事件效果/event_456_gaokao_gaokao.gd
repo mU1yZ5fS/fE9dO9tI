@@ -52,9 +52,9 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 			for p in ws.politicians:
 				if p != null:
-					if p.trait_personality == 0:
+					if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 						p.power -= 10
-					elif p.trait_personality == 2 or p.trait_personality == 3:
+					elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST or p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 						p.power += 20
 			_add(W.I_PARTY_SUPPORT, 100)
 			_add(W.I_PEOPLE_SUPPORT, 100)
@@ -64,9 +64,9 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 			for p in ws.politicians:
 				if p != null:
-					if p.trait_personality == 0:
+					if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 						p.power -= 5
-					elif p.trait_personality == 2:
+					elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 						p.power += 5
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_PEOPLE_SUPPORT, 100)
@@ -74,9 +74,9 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 			for p in ws.politicians:
 				if p != null:
-					if p.trait_personality == 0:
+					if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 						p.power += 10
-					elif p.trait_personality == 3 or p.trait_personality == 4:
+					elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL or p.trait_personality == 4:
 						p.power -= 5
 			_add(W.I_PARTY_SUPPORT, -50)
 			_add(W.I_PEOPLE_SUPPORT, 50)

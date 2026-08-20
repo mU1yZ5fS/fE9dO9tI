@@ -71,7 +71,7 @@ func execute(context: Dictionary) -> void:
 				if c62 != null: c62.government = GameConstants.Government.REFORMIST
 				if c62 != null: c62.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				if c62 != null: _leave_alliances(c62)
-				if c62 != null: c62.puppet_of = 21
+				if c62 != null: c62.puppet_of = GameConstants.LegacySlot.FRANCE
 				return
 			if c62 != null: c62.government = GameConstants.Government.REFORMIST
 			if c62 != null: c62.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST

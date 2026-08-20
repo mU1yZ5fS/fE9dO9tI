@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：DiploButtonScript.cs:11559 —— number_event = 569（外交按钮手动触发），无自动触发。
 ## 差异：
 ##  - data[143] 无命名键，raw index 143；
-##  - AmericanSupportAttacker → usa_side=0/ussr_side=-1；TickTime(24) → fortnight_max=24；
+##  - AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.NONE；TickTime(24) → fortnight_max=24；
 ##  - event_done[569]=false → completed_event_ids.erase("event_569")（同 Event440 约定）。
 
 

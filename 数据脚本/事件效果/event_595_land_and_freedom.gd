@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 描述由 prepare 按 c42.parts[1/2]、event_594 结果、c119.cw 动态拼接；
 ##  - c119.parts[1]=true（写前 resize）；TickTime(24) → fortnight_max=24；
-##  - SovietSupportDefender.AmericanSupportAttacker → ussr_side=1/usa_side=0。
+##  - SovietSupportDefender.AmericanSupportAttacker → ussr_side = GameConstants.WarSide.SIDE2/usa_side = GameConstants.WarSide.SIDE1。
 
 const TXT_DESC_A := "让我们的视角重新看回肯尼亚。自1963年从英国手中独立以来，肯尼亚处于卢奥人-基库尤人政客的统治之下，对其他民族进行打压，卢奥人政客倾向于接近东方集团，而基库尤人则主张反共亲西方政策。但是在卢奥人政客因被排挤被迫退出政府组建肯尼亚人民联盟之后，肯尼亚政府基本由基库尤人把持。在这之后，打压卢奥人和左翼的政策导致了1969年基苏木大屠杀的发生，肯尼亚人民联盟被政府查禁和解散。1977年肯尼亚与坦桑尼亚的意识形态纠纷等问题最终两国关系破裂，自殖民时期开始互相合作的机构东非共同体解散。1978年肯尼亚国父乔莫·肯雅塔去世之后，他的副手丹尼尔·莫伊随即继任上位。在莫伊的任上，肯尼亚继续了专制和亲西方政策，"
 const TXT_DESC_FAIL := "肯索战争的失败加剧了肯尼亚政权的不稳定性。"

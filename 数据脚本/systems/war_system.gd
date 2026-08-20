@@ -81,7 +81,7 @@ static func apply_war_drift_extra(w: WorldState, war: WarData, def: WarDef) -> v
 		"iran_iraq":
 			pass
 		"afghanistan":
-			if war.ussr_side == 1:
+			if war.ussr_side == GameConstants.WarSide.SIDE2:
 				war.infl1 -= 50
 				war.infl2 += 50
 			if w.数值表.size() > W.I_AFGHAN_POLICY:
@@ -102,7 +102,7 @@ static func apply_war_drift_extra(w: WorldState, war: WarData, def: WarDef) -> v
 			# fortnight_wars() 已先加 def.drift_infl1/drift_infl2（+5/-5 基础档），
 			# 这里在“美国支持或土耳其北约”档补上 20-5 的差额，得到 +20/-20。
 			var turkey := w.get_country_by_legacy_index(84)
-			if war.usa_side == 0 or (turkey != null and turkey.has_tag("nato")):
+			if war.usa_side == GameConstants.WarSide.SIDE1 or (turkey != null and turkey.has_tag("nato")):
 				war.infl1 += def.drift_extra_infl1 - def.drift_infl1
 				war.infl2 += def.drift_extra_infl2 - def.drift_infl2
 		"war40_result563":
@@ -249,8 +249,8 @@ static func start_war(
 		war.side2 = side2 if side2 != "" else def.default_side2
 		war.infl1 = infl1 if infl1 >= 0 else def.default_infl1
 		war.infl2 = infl2 if infl2 >= 0 else def.default_infl2
-		war.usa_side = usa_side if usa_side >= 0 else def.default_usa_side
-		war.ussr_side = ussr_side if ussr_side >= 0 else def.default_ussr_side
+		war.usa_side = usa_side if usa_side >= GameConstants.WarSide.SIDE1 else def.default_usa_side
+		war.ussr_side = ussr_side if ussr_side >= GameConstants.WarSide.SIDE1 else def.default_ussr_side
 		war.fortnight_max = def.fortnight_max
 	else:
 		war.name_war = "战争 #%d" % war_id
@@ -258,8 +258,8 @@ static func start_war(
 		war.side2 = side2 if side2 != "" else "side2"
 		war.infl1 = infl1 if infl1 >= 0 else 500
 		war.infl2 = infl2 if infl2 >= 0 else 500
-		war.usa_side = usa_side if usa_side >= 0 else 0
-		war.ussr_side = ussr_side if ussr_side >= 0 else 0
+		war.usa_side = usa_side if usa_side >= GameConstants.WarSide.SIDE1 else 0
+		war.ussr_side = ussr_side if ussr_side >= GameConstants.WarSide.SIDE1 else 0
 	war.fortnight_elapsed = 0
 	war.diplo_done = [false, false]
 	clamp_war_infl(war)
@@ -478,14 +478,14 @@ static func _war_apply_pmc(war: WarData, side: int) -> void:
 static func _war_apply_enemy_relation(war: WarData, side: int, delta: int) -> void:
 	var w := current_world
 	if side == 1:
-		if war.usa_side == 1 and w.empires.size() > 0:
+		if war.usa_side == GameConstants.WarSide.SIDE2 and w.empires.size() > 0:
 			w.empires[0].relations += delta
-		if war.ussr_side == 1 and w.empires.size() > 1:
+		if war.ussr_side == GameConstants.WarSide.SIDE2 and w.empires.size() > 1:
 			w.empires[1].relations += delta
 	else:
-		if war.usa_side == 0 and w.empires.size() > 0:
+		if war.usa_side == GameConstants.WarSide.SIDE1 and w.empires.size() > 0:
 			w.empires[0].relations += delta
-		if war.ussr_side == 0 and w.empires.size() > 1:
+		if war.ussr_side == GameConstants.WarSide.SIDE1 and w.empires.size() > 1:
 			w.empires[1].relations += delta
 
 
@@ -493,14 +493,14 @@ static func _war_apply_enemy_relation(war: WarData, side: int, delta: int) -> vo
 static func _war_apply_diplo(war: WarData, side: int) -> void:
 	var w := current_world
 	if side == 1:
-		if war.usa_side == 0 and w.empires.size() > 0:
+		if war.usa_side == GameConstants.WarSide.SIDE1 and w.empires.size() > 0:
 			w.empires[0].relations += 30
-		if war.ussr_side == 0 and w.empires.size() > 1:
+		if war.ussr_side == GameConstants.WarSide.SIDE1 and w.empires.size() > 1:
 			w.empires[1].relations += 30
 	else:
-		if war.usa_side == 1 and w.empires.size() > 0:
+		if war.usa_side == GameConstants.WarSide.SIDE2 and w.empires.size() > 0:
 			w.empires[0].relations += 30
-		if war.ussr_side == 1 and w.empires.size() > 1:
+		if war.ussr_side == GameConstants.WarSide.SIDE2 and w.empires.size() > 1:
 			w.empires[1].relations += 30
 
 
@@ -971,9 +971,9 @@ static func _apply_achievement_war_result(war_id: int, war: WarData, d: Array[in
 static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 	var afg := _wc(w, 12)
 	if war.infl1 >= 900:
-		if war.ussr_side == 0:
+		if war.ussr_side == GameConstants.WarSide.SIDE1:
 			add_empire_power(EmpireData.USSR, 50)
-		elif war.ussr_side == -1:
+		elif war.ussr_side == GameConstants.WarSide.NONE:
 			if afg != null:
 				afg.government = GameConstants.Government.SOCIALIST
 				afg.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
@@ -983,7 +983,7 @@ static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 				afg.prc_power = 1000
 			if d.size() > W.I_INFLUENCE:
 				d[W.I_INFLUENCE] += 100
-		elif war.ussr_side == 1:
+		elif war.ussr_side == GameConstants.WarSide.SIDE2:
 			if afg != null:
 				afg.government = GameConstants.Government.SOCIALIST
 				afg.sub_government = GameConstants.SubGovernment.MAOIST
@@ -995,14 +995,14 @@ static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 				d[W.I_INFLUENCE] += 100
 			# GameState.cs:446-448
 			Achievements.set_achievement(54)
-	elif war.ussr_side == 1:
+	elif war.ussr_side == GameConstants.WarSide.SIDE2:
 		# 第二阶段重启（GameState.cs:452-477）
 		war.name_war = "阿 富 汗 内 战"
 		war.is_going = true
 		war.side1 = "阿 富 汗 民 主 共 和 国"
 		war.side2 = "圣 战 者"
-		war.ussr_side = 0
-		war.usa_side = 1
+		war.ussr_side = GameConstants.WarSide.SIDE1
+		war.usa_side = GameConstants.WarSide.SIDE2
 		war.infl1 = 650
 		war.infl2 = 350
 		var c31 := _wc(w, 31)
@@ -1222,7 +1222,7 @@ static func _war26_result(w: WorldState, d: Array[int]) -> void:
 		if c99 != null:
 			if c99.parts.size() > 0:
 				c99.parts[0] = false
-			c99.puppet_of = -1
+			c99.puppet_of = GameConstants.LegacySlot.NONE
 		if w.event_done_num(434) and w.result_of_event_num(434) == 1:
 			var c41 := w.get_country_by_legacy_index(41)
 			if c41 != null:
@@ -1269,8 +1269,8 @@ static func _war30_result(w: WorldState, war: WarData, _d: Array[int]) -> bool:
 			# 第二阶段重启（GameState.cs:1665-1677）
 			war.name_war = "西 班 牙 内 战 第 二 阶 段"
 			war.is_going = true
-			war.ussr_side = -1
-			war.usa_side = -1
+			war.ussr_side = GameConstants.WarSide.NONE
+			war.usa_side = GameConstants.WarSide.NONE
 			war.infl1 = 300
 			war.infl2 = 700
 			clamp_war_infl(war)
@@ -1444,7 +1444,7 @@ static func _apply_war7_result(war: WarData, _d: Array[int]) -> void:
 			india.social_stability = 1000
 		for c in w.countries:
 			if c != null and c.puppet_of == 19:
-				c.puppet_of = -1
+				c.puppet_of = GameConstants.LegacySlot.NONE
 	elif res125 == 0:
 		if india != null:
 			india.set_tag("sev", false)
@@ -1458,7 +1458,7 @@ static func _apply_war7_result(war: WarData, _d: Array[int]) -> void:
 			india.set_tag("亲美", true)
 		for c in w.countries:
 			if c != null and c.puppet_of == 19:
-				c.puppet_of = -1
+				c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## 战争 28 号结算：GameState.cs:1456-1531。
@@ -1849,7 +1849,7 @@ static func _apply_war16_result(war: WarData, d: Array[int]) -> void:
 				north.sub_government = china.sub_government
 			_join_all_our_alliances(w, north)
 			_set_pro_china(north)
-			north.puppet_of = 1
+			north.puppet_of = GameConstants.LegacySlot.CHINA
 			north.set_tag("对华贸易", true)
 			north.name = "朝鲜民主主义人民共和国"
 			north.chinese_name = "朝鲜民主主义人民共和国"
@@ -1895,7 +1895,7 @@ static func _apply_war29_result(war: WarData, d: Array[int]) -> void:
 					if china != null:
 						iraq.government = china.government
 						iraq.sub_government = china.sub_government
-					iraq.puppet_of = 1
+					iraq.puppet_of = GameConstants.LegacySlot.CHINA
 					iraq.set_tag("对华贸易", true)
 					d[W.I_INFLUENCE] += 50
 					iraq.social_stability = 1000
@@ -1915,7 +1915,7 @@ static func _apply_war29_result(war: WarData, d: Array[int]) -> void:
 					if china != null:
 						iraq.government = china.government
 						iraq.sub_government = china.sub_government
-					iraq.puppet_of = 1
+					iraq.puppet_of = GameConstants.LegacySlot.CHINA
 					iraq.set_tag("对华贸易", true)
 					d[W.I_INFLUENCE] += 50
 					iraq.social_stability = 1000
@@ -1934,7 +1934,7 @@ static func _apply_war29_result(war: WarData, d: Array[int]) -> void:
 				if china != null:
 					iraq.government = china.government
 					iraq.sub_government = china.sub_government
-				iraq.puppet_of = 1
+				iraq.puppet_of = GameConstants.LegacySlot.CHINA
 				iraq.set_tag("对华贸易", true)
 				d[W.I_INFLUENCE] += 50
 				iraq.social_stability = 1000
@@ -1964,7 +1964,7 @@ static func _apply_war33_result(war: WarData, d: Array[int]) -> void:
 			iran.set_tag("亲中", true)
 			iran.prc_power = 1000
 		if iraq != null and iraq.puppet_of == 8:
-			iraq.puppet_of = -1
+			iraq.puppet_of = GameConstants.LegacySlot.NONE
 			if iran != null:
 				iraq.government = iran.government
 				iraq.sub_government = iran.sub_government
@@ -2160,7 +2160,7 @@ static func _apply_war39_result(war: WarData, d: Array[int]) -> void:
 				polisario.government = GameConstants.Government.REFORMIST
 				polisario.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				d[W.I_INFLUENCE] += 5
-				if war.ussr_side == 1:
+				if war.ussr_side == GameConstants.WarSide.SIDE2:
 					polisario.set_tag("亲苏", true)
 					add_empire_power(EmpireData.USSR, 15)
 			else:
@@ -2359,7 +2359,7 @@ static func _apply_war44_result(war: WarData, d: Array[int]) -> void:
 			_leave_alliances(c127)
 			c127.government = GameConstants.Government.AUTHORITARIAN
 			c127.sub_government = GameConstants.SubGovernment.NEO_FASCIST
-			c127.puppet_of = 131
+			c127.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 
 
 ## 战争 45 号结算：GameState.cs:2456-2515。
@@ -2603,7 +2603,7 @@ static func _apply_war56_result(war: WarData, d: Array[int]) -> void:
 			angola.government = GameConstants.Government.AUTHORITARIAN
 			angola.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(angola)
-			angola.puppet_of = 131
+			angola.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 
 
 ## 战争 57 号结算：GameState.cs:2963-2981。
@@ -2623,7 +2623,7 @@ static func _apply_war57_result(war: WarData, d: Array[int]) -> void:
 			c129.government = GameConstants.Government.AUTHORITARIAN
 			c129.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c129)
-			c129.puppet_of = 131
+			c129.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 			c129.name = "斯提拉兰"
 			c129.chinese_name = "斯提拉兰"
 
@@ -2648,12 +2648,12 @@ static func _apply_war58_result(war: WarData, d: Array[int]) -> void:
 			c125.government = GameConstants.Government.AUTHORITARIAN
 			c125.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c125)
-			c125.puppet_of = 131
+			c125.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 		if c126 != null:
 			c126.government = GameConstants.Government.AUTHORITARIAN
 			c126.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c126)
-			c126.puppet_of = 131
+			c126.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 			c126.name = "莫桑比克国"
 			c126.chinese_name = "莫桑比克国"
 
@@ -2675,7 +2675,7 @@ static func _apply_war59_result(war: WarData, d: Array[int]) -> void:
 			c127.government = GameConstants.Government.AUTHORITARIAN
 			c127.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c127)
-			c127.puppet_of = 131
+			c127.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 			c127.name = "罗得西亚共和国"
 			c127.chinese_name = "罗得西亚共和国"
 
@@ -2817,7 +2817,7 @@ static func _apply_war1_result(war: WarData, d: Array[int]) -> void:
 				c11.government = china.government
 				c11.sub_government = china.sub_government
 				c11.leave_alliances()
-				c11.puppet_of = 1
+				c11.puppet_of = GameConstants.LegacySlot.CHINA
 				c11.set_tag("对华贸易", true)
 				c11.set_tag("亲苏", false)
 				c11.set_tag("亲中", true)
@@ -2839,7 +2839,7 @@ static func _apply_war1_result(war: WarData, d: Array[int]) -> void:
 						c11.name = "越南人民共和国"
 				c11.chinese_name = c11.name
 			if c22 != null and china != null:
-				c22.puppet_of = 1
+				c22.puppet_of = GameConstants.LegacySlot.CHINA
 				c22.government = china.government
 				c22.sub_government = china.sub_government
 				c22.set_tag("亲苏", false)
@@ -2906,7 +2906,7 @@ static func _apply_war4_result(war: WarData, _d: Array[int]) -> void:
 				c37.leave_alliances()
 				c37.government = GameConstants.Government.AUTHORITARIAN
 				c37.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
-				c37.puppet_of = 14
+				c37.puppet_of = GameConstants.LegacySlot.IRAQ
 				c37.set_tag("亲中", true)
 				c37.set_tag("对华贸易", true)
 				_join_all_our_alliances(w, c37)
@@ -2984,7 +2984,7 @@ static func _apply_war42_result(war: WarData, d: Array[int]) -> void:
 				c14.name = "伊拉克社会主义联邦"
 				c14.chinese_name = "伊拉克社会主义联邦"
 				c14.set_tag("亲中", true)
-				c14.puppet_of = -1
+				c14.puppet_of = GameConstants.LegacySlot.NONE
 				_add_d(d, W.I_INFLUENCE, 50)
 				add_empire_power(EmpireData.USA, -20)
 				_add_empire_rel(w, 0, -150)
@@ -3001,12 +3001,12 @@ static func _apply_war42_result(war: WarData, d: Array[int]) -> void:
 				if _emp_power_val(w, EmpireData.USSR) >= _dval(d, W.I_INFLUENCE) or (china != null and china.has_tag("sev")):
 					c14.set_tag("亲苏", true)
 					add_empire_power(EmpireData.USSR, 20)
-				c14.puppet_of = -1
+				c14.puppet_of = GameConstants.LegacySlot.NONE
 				add_empire_power(EmpireData.USA, -20)
 				_add_empire_rel(w, 0, -150)
 		for c in w.countries:
-			if c != null and c.puppet_of == 14:
-				c.puppet_of = -1
+			if c != null and c.puppet_of == GameConstants.LegacySlot.IRAQ:
+				c.puppet_of = GameConstants.LegacySlot.NONE
 	else:
 		if c157 != null and c157.parts.size() > 0:
 			c157.parts[0] = true
@@ -3060,7 +3060,7 @@ static func _apply_war43_result(war: WarData, d: Array[int]) -> void:
 		_add_d(d, W.I_INFLUENCE, 40)
 		_add_d(d, W.I_DIPLO, 20)
 		for p in w.politicians:
-			if p != null and (p.trait_personality < 1 or p.trait_personality == 20):
+			if p != null and (p.trait_personality < GameConstants.PoliticianPersonality.MODERATE or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE):
 				p.loyalty += 100
 		var c102 := _wc(w, 102)
 		var c103 := _wc(w, 103)
@@ -3133,7 +3133,7 @@ static func _apply_war46_result(war: WarData, d: Array[int]) -> void:
 		if c140 != null and c140.parts.size() > 0:
 			c140.parts[0] = false
 		for p in w.politicians:
-			if p != null and (p.trait_personality < 1 or p.trait_personality == 20):
+			if p != null and (p.trait_personality < GameConstants.PoliticianPersonality.MODERATE or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE):
 				p.loyalty += 100
 		if c140 != null and c145 != null:
 			c140.government = c145.government
@@ -3422,7 +3422,7 @@ static func _apply_war62_result(war: WarData, d: Array[int]) -> void:
 		_add_d(d, W.I_INFLUENCE, 30)
 		for c in w.countries:
 			if c != null and c.puppet_of == 117:
-				c.puppet_of = -1
+				c.puppet_of = GameConstants.LegacySlot.NONE
 	else:
 		if c117 != null:
 			c117.government = GameConstants.Government.REFORMIST
@@ -3438,7 +3438,7 @@ static func _apply_war62_result(war: WarData, d: Array[int]) -> void:
 		_add_d(d, W.I_INFLUENCE, 30)
 		for c in w.countries:
 			if c != null and c.puppet_of == 117:
-				c.puppet_of = -1
+				c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## 战争 64 号结算：GameState.cs:3199-3252。
@@ -3616,8 +3616,8 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			war.side2 = "安盟"
 			war.infl1 = 600
 			war.infl2 = 400
-			war.usa_side = 1
-			war.ussr_side = 1
+			war.usa_side = GameConstants.WarSide.SIDE2
+			war.ussr_side = GameConstants.WarSide.SIDE2
 			if c123.parts.size() > 0:
 				c123.parts[0] = true
 			c123.内战中 = false
@@ -3632,7 +3632,7 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 				c123.government = GameConstants.Government.AUTHORITARIAN
 				c123.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				if c131 != null and w.is_authoritarian(c131):
-					c123.puppet_of = 131
+					c123.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 				else:
 					c123.set_tag("亲美", true)
 	elif c123.sov_power == 1000 and c123.usa_power == 0 and c123.prc_power == 0:
@@ -3657,7 +3657,7 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 				c123.set_tag("亲美", true)
 				if c131 != null and w.is_authoritarian(c131):
 					c123.leave_alliances()
-					c123.puppet_of = 131
+					c123.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 					add_empire_power(EmpireData.USA, 20)
 					_add_d(d, W.I_INFLUENCE, 10)
 		else:
@@ -3713,8 +3713,8 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			war.side2 = "安盟"
 			war.infl1 = 600
 			war.infl2 = 400
-			war.usa_side = 1
-			war.ussr_side = 1
+			war.usa_side = GameConstants.WarSide.SIDE2
+			war.ussr_side = GameConstants.WarSide.SIDE2
 			if c123.parts.size() > 0:
 				c123.parts[0] = true
 			c123.内战中 = false
@@ -3757,7 +3757,7 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 				c123.set_tag("亲美", true)
 				if c131 != null and w.is_authoritarian(c131):
 					c123.leave_alliances()
-					c123.puppet_of = 131
+					c123.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 					add_empire_power(EmpireData.USA, 20)
 					_add_d(d, W.I_INFLUENCE, 10)
 	elif c123.usa_power == 0 and c123.sov_power == 1000 and c123.prc_power == 1000:
@@ -3809,7 +3809,7 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 				c123.set_tag("亲美", true)
 				if c131 != null and w.is_authoritarian(c131):
 					c123.leave_alliances()
-					c123.puppet_of = 131
+					c123.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 					add_empire_power(EmpireData.USA, 20)
 					_add_d(d, W.I_INFLUENCE, 10)
 
@@ -3827,7 +3827,7 @@ static func _apply_war69_result(war: WarData, d: Array[int]) -> void:
 			if china != null:
 				c9.government = china.government
 				c9.sub_government = china.sub_government
-			c9.puppet_of = 1
+			c9.puppet_of = GameConstants.LegacySlot.CHINA
 			c9.set_tag("亲中", true)
 			c9.set_tag("对华贸易", true)
 			_join_all_our_alliances(w, c9)
@@ -4023,7 +4023,7 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 				c60.government = GameConstants.Government.AUTHORITARIAN
 				c60.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				c60.leave_alliances()
-				c60.puppet_of = 21
+				c60.puppet_of = GameConstants.LegacySlot.FRANCE
 			c60.name = "比夫拉"
 			c60.chinese_name = "比夫拉"
 		if c164 != null:
@@ -4103,7 +4103,7 @@ static func _apply_war80_result(war: WarData, d: Array[int]) -> void:
 			c57.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c57.leave_alliances()
 			if c21 != null and w.is_socialism(c21, false):
-				c57.puppet_of = 21
+				c57.puppet_of = GameConstants.LegacySlot.FRANCE
 			else:
 				c57.set_tag("亲美", true)
 
@@ -4281,7 +4281,7 @@ static func _apply_war85_result(war: WarData, _d: Array[int]) -> void:
 			c61.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c61.leave_alliances()
 			if c21 != null and not w.is_socialism(c21, true):
-				c61.puppet_of = 21
+				c61.puppet_of = GameConstants.LegacySlot.FRANCE
 			if w.result_of_event_num(672) == 1:
 				c61.set_tag("对华贸易", true)
 
@@ -4424,8 +4424,8 @@ static func _apply_war88_result(war: WarData, d: Array[int]) -> void:
 	var c36 := _wc(w, 36)
 	if war.infl1 >= 1000:
 		for c in w.countries:
-			if c != null and c.puppet_of == 14:
-				c.puppet_of = -1
+			if c != null and c.puppet_of == GameConstants.LegacySlot.IRAQ:
+				c.puppet_of = GameConstants.LegacySlot.NONE
 		if w.wars.size() > 3 and w.wars[3] != null and w.wars[3].is_going:
 			w.wars[3].infl1 = 0
 			w.wars[3].infl2 = 1000
@@ -4464,8 +4464,8 @@ static func _apply_war88_result(war: WarData, d: Array[int]) -> void:
 		if c8 != null:
 			c8.prc_power = 0
 		for c in w.countries:
-			if c != null and c.puppet_of == 14:
-				c.puppet_of = -1
+			if c != null and c.puppet_of == GameConstants.LegacySlot.IRAQ:
+				c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## 战争 89 号结算：GameState.cs:4689-4747。
@@ -4482,7 +4482,7 @@ static func _apply_war89_result(war: WarData, d: Array[int]) -> void:
 	if war.infl2 >= 1000:
 		if c35 != null:
 			c35.leave_alliances()
-			c35.puppet_of = 14
+			c35.puppet_of = GameConstants.LegacySlot.IRAQ
 			c35.government = GameConstants.Government.AUTHORITARIAN
 			c35.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			c35.set_tag("对华贸易", true)
@@ -4493,7 +4493,7 @@ static func _apply_war89_result(war: WarData, d: Array[int]) -> void:
 			var c := _wc(w, idx)
 			if c != null and w.is_authoritarian(c):
 				c.leave_alliances()
-				c.puppet_of = 14
+				c.puppet_of = GameConstants.LegacySlot.IRAQ
 				c.government = GameConstants.Government.AUTHORITARIAN
 				c.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				c.set_tag("亲中", true)
@@ -4516,8 +4516,8 @@ static func _apply_war89_result(war: WarData, d: Array[int]) -> void:
 		if c8 != null:
 			c8.prc_power = 0
 		for c in w.countries:
-			if c != null and c.puppet_of == 14:
-				c.puppet_of = -1
+			if c != null and c.puppet_of == GameConstants.LegacySlot.IRAQ:
+				c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## 战争 20 号结算：GameState.cs:1135-1165。
@@ -4838,7 +4838,7 @@ static func _puppet_to_china(w: WorldState, idx: int, new_name: String, parts_se
 	c.set_tag("对华贸易", true)
 	c.establish_government(2)
 	_join_all_our_alliances(w, c)
-	c.puppet_of = 1
+	c.puppet_of = GameConstants.LegacySlot.CHINA
 	if new_name != "":
 		c.name = new_name
 	for part in parts_set:
@@ -4912,7 +4912,7 @@ static func apply_war_side1_victory(war_id: int, war: WarData, d: Array[int]) ->
 			add_empire_power(EmpireData.USSR, -10)
 			add_empire_power(EmpireData.USA, 20)
 		5:
-			if war.ussr_side == 0:
+			if war.ussr_side == GameConstants.WarSide.SIDE1:
 				add_empire_power(EmpireData.USSR, 50)
 			else:
 				var afghanistan := w.get_country_by_legacy_index(12)
@@ -4966,7 +4966,7 @@ static func apply_war_side2_victory(war_id: int, war: WarData, d: Array[int]) ->
 			add_empire_power(EmpireData.USA, -20)
 			w.set_flag("israel_lost_lebanon_war", true)
 		5:
-			if war.ussr_side == 0:
+			if war.ussr_side == GameConstants.WarSide.SIDE1:
 				var afghanistan := w.get_country_by_legacy_index(12)
 				if afghanistan != null:
 					afghanistan.government = GameConstants.Government.AUTHORITARIAN
@@ -4988,7 +4988,7 @@ static func apply_war_side2_victory(war_id: int, war: WarData, d: Array[int]) ->
 				_leave_alliances(iraq42)
 				iraq42.set_tag("对华贸易", true)
 				iraq42.set_tag("亲中", true)
-				iraq42.puppet_of = -1
+				iraq42.puppet_of = GameConstants.LegacySlot.NONE
 				iraq42.chinese_name = "伊拉克社会主义联邦"
 				d[W.I_INFLUENCE] += 50
 				add_empire_power(EmpireData.USA, -20)
@@ -5023,8 +5023,8 @@ static func restart_afghan_war(war: WarData, d: Array[int]) -> void:
 	war.name_war = "Afghan war"
 	war.side1 = "DRA"
 	war.side2 = "Mujahideen"
-	war.ussr_side = 0
-	war.usa_side = 1
+	war.ussr_side = GameConstants.WarSide.SIDE1
+	war.usa_side = GameConstants.WarSide.SIDE2
 	war.infl1 = 650
 	war.infl2 = 350
 	war.fortnight_elapsed = 0
@@ -5129,7 +5129,7 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 			_stop_war_33()
 			# GameState.cs:257-262：伊拉克原为伊朗附庸 → 随伊朗新政体解放并同步政体。
 			if iraq != null and iran != null and iraq.puppet_of == 8:
-				iraq.puppet_of = -1
+				iraq.puppet_of = GameConstants.LegacySlot.NONE
 				iraq.government = iran.government
 				iraq.sub_government = iran.sub_government
 		elif iraq != null and iraq.sub_government == GameConstants.SubGovernment.SOVIET_STYLE:
@@ -5146,7 +5146,7 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 			w.set_flag("iranrev", false)
 			# GameState.cs:276-281：伊拉克原为伊朗附庸 → 随伊朗新政体解放并同步政体。
 			if iraq != null and iran != null and iraq.puppet_of == 8:
-				iraq.puppet_of = -1
+				iraq.puppet_of = GameConstants.LegacySlot.NONE
 				iraq.government = iran.government
 				iraq.sub_government = iran.sub_government
 		else:
@@ -5167,7 +5167,7 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 				iran.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				iran.set_tag("对华贸易", true)
 				_leave_alliances(iran)
-				iran.puppet_of = 14
+				iran.puppet_of = GameConstants.LegacySlot.IRAQ
 				iran.chinese_name = "伊朗民主伊斯兰共和国"
 				iran.prc_power = 1000
 				iran.social_stability = 1000
@@ -5223,7 +5223,7 @@ static func _leave_alliances(country: CountryData) -> void:
 		return
 	for t in WF.START_CLEAR_TAGS:
 		country.tags.erase(t)
-	country.puppet_of = -1
+	country.puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## Country.EstablishGovernment(Government.ProAmerican)（Country.cs:11-15）：

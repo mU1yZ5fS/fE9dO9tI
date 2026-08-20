@@ -138,11 +138,11 @@ func _change_loyalty_power_24_1() -> void:
 	for politician in ws.politicians:
 		if politician == null:
 			continue
-		if politician.trait_personality == 0:
+		if politician.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			politician.loyalty += 100
-		elif politician.trait_personality == 20:
+		elif politician.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			politician.loyalty += 80
-		elif politician.trait_personality > 0:
+		elif politician.trait_personality > GameConstants.PoliticianPersonality.FAR_LEFT:
 			politician.loyalty -= 200
 			politician.power -= 100
 
@@ -154,11 +154,11 @@ func _change_loyalty_24_3() -> void:
 	for politician in ws.politicians:
 		if politician == null:
 			continue
-		if politician.trait_personality == 0:
+		if politician.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			politician.loyalty -= 100
-		if politician.trait_personality == 20:
+		if politician.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			politician.loyalty -= 50
-		elif politician.trait_personality > 1:
+		elif politician.trait_personality > GameConstants.PoliticianPersonality.MODERATE:
 			politician.loyalty += 100
 
 
@@ -166,9 +166,9 @@ func _change_loyalty_24_2_style() -> void:
 	for politician in ws.politicians:
 		if politician == null:
 			continue
-		if politician.trait_personality == 0:
+		if politician.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			politician.loyalty += 200
-		elif politician.trait_personality == 20:
+		elif politician.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			politician.loyalty += 100
 		else:
 			politician.loyalty -= 100
@@ -178,16 +178,16 @@ func _change_loyalty_power_26_2() -> void:
 	for politician in ws.politicians:
 		if politician == null:
 			continue
-		if politician.trait_personality == 0:
+		if politician.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 			politician.loyalty += 200
 			politician.power += 100
-		elif politician.trait_personality == 20:
+		elif politician.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			politician.loyalty += 100
 			politician.power += 80
-		elif politician.trait_personality == 2:
+		elif politician.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			politician.loyalty -= 100
 			politician.power -= 100
-		elif politician.trait_personality == 1:
+		elif politician.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 			politician.loyalty -= 100
 
 
@@ -259,10 +259,10 @@ func _remake_as_wang_dongxing(index: int) -> void:
 	politician.name_last = 16
 	politician.name_display = "汪东兴"
 	politician.age = d[W.I_YEAR] - 1905
-	politician.trait_personality = 1
-	politician.trait_background = 21
-	politician.trait_alignment = 5
-	politician.trait_special = 11
+	politician.trait_personality = GameConstants.PoliticianPersonality.MODERATE
+	politician.trait_background = GameConstants.PoliticianBackground.PARTY_CADRE
+	politician.trait_alignment = GameConstants.PoliticianAlignment.PRAGMATIST
+	politician.trait_special = GameConstants.PoliticianSpecial.ECONOMIST
 	politician.power = 800
 	politician.loyalty = 800
 	politician.wanted_position = 0

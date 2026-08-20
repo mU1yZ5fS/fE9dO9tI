@@ -86,7 +86,7 @@ func execute(context: Dictionary) -> void:
 			if tunisia != null:
 				tunisia.government = GameConstants.Government.AUTHORITARIAN
 				tunisia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
-				tunisia.puppet_of = 21
+				tunisia.puppet_of = GameConstants.LegacySlot.FRANCE
 			_add_relation(EmpireData.USA, 50)
 			_add_power(EmpireData.USA, 50)
 		3:

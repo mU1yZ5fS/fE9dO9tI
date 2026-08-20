@@ -31,7 +31,7 @@ func execute(context: Dictionary) -> void:
 					botswana.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					_leave_alliances(botswana)
 					botswana.chinese_name = "贝专兰合众邦"
-					botswana.puppet_of = 131
+					botswana.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 				ws.influence_prc -= 20
 				_add_power(EmpireData.USA, 20)
 				return

@@ -75,13 +75,13 @@ static func monthly_politics(d: Array[int], w: WorldState) -> void:
 
 		apply_monthly_position_power(w, i, p)
 		# ECO-POL-06：贪腐特质(18) 在职则抬腐败
-		if p.trait_special == 18 and p.in_power:
+		if p.trait_special == GameConstants.PoliticianSpecial.CORRUPT and p.in_power:
 			d[W.I_CORRUPTION] += 2
 		# TimeScript.cs:1871-1883：modifier[14] 每月提升改革派/非领袖自由派声势。
 		if w.modifier_active(14):
-			if p.trait_personality == 2:
+			if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				p.power += 10
-			elif p.trait_personality == 3:
+			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				var liberal_leader := -1
 				if w.factions.size() > FactionData.LIBERAL:
 					liberal_leader = w.factions[FactionData.LIBERAL].leader_index
@@ -122,15 +122,15 @@ static func annual_politics(d: Array[int], w: WorldState) -> void:
 			to_kill.append(i)
 			continue
 		# 病弱：非改革 traits[0]!=2 时 80..83；改革派 85..88
-		if p.trait_special == 19:
+		if p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
 			continue
 		var sick_age: int
-		if p.trait_personality == 2:
+		if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			sick_age = 85 + (i % 4)
 		else:
 			sick_age = 80 + (i % 4)
 		if p.age >= sick_age:
-			p.trait_special = 19
+			p.trait_special = GameConstants.PoliticianSpecial.SICKLY
 	for idx in to_kill:
 		kill_politician(idx)
 	# PlotPolitics 与 DeathPolitics 同频（年，TimeScript ~5734）
@@ -157,25 +157,25 @@ static func plot_politics(d: Array[int], w: WorldState) -> void:
 			var pol: PoliticianData = w.politicians[j]
 			if is_vacant_politician(pol) or pol.is_under_investigation:
 				continue
-			if pol.trait_special == 17 or pol.trait_special == 19:
+			if pol.trait_special == GameConstants.PoliticianSpecial.SHY or pol.trait_special == GameConstants.PoliticianSpecial.SICKLY:
 				continue
 			var rel := 0
 			if i < pol.loyalty_matrix.size():
 				rel = pol.loyalty_matrix[i]
 			var joins := false
-			if pol.trait_special == 16 and rel < 450:
+			if pol.trait_special == GameConstants.PoliticianSpecial.ADVISER and rel < 450:
 				joins = true
-			elif pol.trait_special == 9 and rel < 150:
+			elif pol.trait_special == GameConstants.PoliticianSpecial.PEACE and rel < 150:
 				joins = true
-			elif pol.trait_special != 9 and rel < 300:
+			elif pol.trait_special != GameConstants.PoliticianSpecial.PEACE and rel < 300:
 				joins = true
 			if joins:
 				plot_power += pol.power
 
 		var resist := 3.0
-		if target.trait_special == 14 or target.trait_special == 13:
+		if target.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL or target.trait_special == GameConstants.PoliticianSpecial.IDOL:
 			resist = 5.0
-		elif target.trait_special == 12 or target.trait_alignment == 6:
+		elif target.trait_special == GameConstants.PoliticianSpecial.ARROGANT or target.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
 			resist = 2.0
 		if w.politics_positions[0] == i:
 			resist += 2.0
@@ -271,7 +271,7 @@ static func change_of_killing(politic_index: int) -> float:
 		return 0.0
 	var num := 0.5
 	# 硬目标惩罚（原版 GameState.cs:5160）：traits[3]==28 或 traits[1]==41 → -0.1
-	if pol.trait_background == 28 or pol.trait_alignment == 41:
+	if pol.trait_background == GameConstants.PoliticianBackground.AMBITIOUS or pol.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
 		num -= 0.1
 	if d[W.I_AGENTS] + d[W.I_PARTY_SUPPORT] + d[W.I_ARMY] >= pol.power:
 		num += 0.05
@@ -336,11 +336,11 @@ static func apply_monthly_position_power(w: WorldState, pol_index: int, p: Polit
 			bonus = maxi(bonus, 10)
 	if bonus > 0:
 		p.power += bonus
-	elif p.trait_special == 18:
+	elif p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
 		p.power += 4
-	elif p.trait_special == 19:
+	elif p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
 		p.power -= 20
-	elif p.trait_special == 16:
+	elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER:
 		@warning_ignore("integer_division")
 		p.power += 1 + w.数值表[W.I_CORRUPTION] / 50
 	else:

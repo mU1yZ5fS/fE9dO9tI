@@ -168,40 +168,40 @@ const SPHERE_AUSTRALIA := 6
 func is_french_influence() -> bool:
 	if has_tag("亲法") or has_tag("法国盟友"):
 		return true
-	if puppet_of == 21:
+	if puppet_of == GameConstants.LegacySlot.FRANCE:
 		return true
-	return 原版序号 == 21 and not has_tag("亲中") and not has_tag("亲苏") and not has_tag("亲美")
+	return 原版序号 == GameConstants.LegacySlot.FRANCE and not has_tag("亲中") and not has_tag("亲苏") and not has_tag("亲美")
 
 
 ## 原版澳大利亚势力（CountryScript.cs:379）：puppetOf == 135 时显示澳大利亚影响。
 func is_australian_influence() -> bool:
-	return puppet_of == 135
+	return puppet_of == GameConstants.LegacySlot.AUSTRALIA
 
 
 ## 原版南非判定（CountryScript.cs:391-395, 5155-5158）：
 ## puppetOf == 131，或南非自身为 7 右翼独裁 / 9 新法西斯且中立时显示南非势力。
 func is_south_african_influence() -> bool:
-	if puppet_of == 131:
+	if puppet_of == GameConstants.LegacySlot.SOUTH_AFRICA:
 		return true
-	return 原版序号 == 131 and not has_tag("亲中") and not has_tag("亲苏") \
+	return 原版序号 == GameConstants.LegacySlot.SOUTH_AFRICA and not has_tag("亲中") and not has_tag("亲苏") \
 		and not has_tag("亲美") and (sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or sub_government == GameConstants.SubGovernment.NEO_FASCIST)
 
 
 ## 原版伊拉克势力（CountryScript.cs:5159-5162）：
 ## 被伊拉克傀儡，或伊拉克自身为 10 左翼民族主义 / 19 封建社会主义且中立。
 func is_iraqi_influence() -> bool:
-	if puppet_of == 14:
+	if puppet_of == GameConstants.LegacySlot.IRAQ:
 		return true
-	return 原版序号 == 14 and not has_tag("亲中") and not has_tag("亲苏") \
+	return 原版序号 == GameConstants.LegacySlot.IRAQ and not has_tag("亲中") and not has_tag("亲苏") \
 		and not has_tag("亲美") and (sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST)
 
 
 ## 原版西班牙(85)势力（CountryScript.cs:5163-5166）：
 ## 被西班牙傀儡，或西班牙自身 sub==9、不亲中、不亲苏、不亲美。
 func is_spanish_influence() -> bool:
-	if puppet_of == 85:
+	if puppet_of == GameConstants.LegacySlot.SPAIN:
 		return true
-	return 原版序号 == 85 and not has_tag("亲中") and sub_government == GameConstants.SubGovernment.NEO_FASCIST \
+	return 原版序号 == GameConstants.LegacySlot.SPAIN and not has_tag("亲中") and sub_government == GameConstants.SubGovernment.NEO_FASCIST \
 		and not has_tag("亲苏") and not has_tag("亲美")
 
 
@@ -281,7 +281,7 @@ func leave_alliances() -> void:
 	set_tag("亲美", false)
 	set_tag("亲中", false)
 	set_tag("对华贸易", false)
-	puppet_of = -1
+	puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## Country.JoinASEAN / JoinSEATO / JoinSENTO / JoinEU / JoinOKB / JoinECON / JoinComecon / JoinWP

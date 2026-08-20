@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && event_done[696] && resultOfEvents[696]==2。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线 + modifies[3]）。
-##  - LeaveAlliances() 逐项清标签；puppetOf=21 → puppet_of=21（法国）。
+##  - LeaveAlliances() 逐项清标签；puppetOf=21 → puppet_of = GameConstants.LegacySlot.FRANCE（法国）。
 
 
 
@@ -68,7 +68,7 @@ func execute(context: Dictionary) -> void:
 				congo.government = GameConstants.Government.REFORMIST
 				congo.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_leave_alliances(congo)
-				congo.puppet_of = 21
+				congo.puppet_of = GameConstants.LegacySlot.FRANCE
 				congo.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USSR, -50)
 			context["result_text"] = TXT_R1

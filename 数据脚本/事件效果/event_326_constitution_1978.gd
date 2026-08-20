@@ -63,18 +63,18 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null:
 					continue
-				if p.trait_personality == 0:
+				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty += 1000
 					p.power += 500
-				if p.trait_personality == 20:
+				if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.power -= 200
-				if p.trait_personality == 1:
+				if p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty = 300
 					p.power -= 300
-				if p.trait_personality == 2:
+				if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 					p.loyalty = 0
 					p.power -= 400
-				if p.trait_personality == 3:
+				if p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 					p.loyalty = 0
 					p.power -= 500
 			if d[W.I_PRESS_POLICY] < 18:

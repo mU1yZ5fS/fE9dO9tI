@@ -18,7 +18,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var solomon := ws.get_country_by_legacy_index(161)
 	if solomon != null:
-		solomon.puppet_of = -1
+		solomon.puppet_of = GameConstants.LegacySlot.NONE
 		solomon.government = GameConstants.Government.LIBERAL
 		solomon.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 		if GameManager != null:

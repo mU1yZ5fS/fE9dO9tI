@@ -111,7 +111,7 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USA, 10)
 			_add_power(EmpireData.USSR, -10)
 			if bf != null:
-				bf.puppet_of = 21
+				bf.puppet_of = GameConstants.LegacySlot.FRANCE
 			_add(W.I_AGENTS, -20)
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, -50)

@@ -40,7 +40,7 @@ func _convert_country(legacy_index: int) -> void:
 	if c == null:
 		return
 	_leave_alliances(c)
-	c.puppet_of = 14
+	c.puppet_of = GameConstants.LegacySlot.IRAQ
 	c.government = GameConstants.Government.AUTHORITARIAN
 	c.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 	c.set_tag("对华贸易", true)

@@ -1091,7 +1091,7 @@ func _def_119(w: WorldState, country: CountryData, caption: String) -> Dictionar
 	conds.append(cond(OT[203], func(): return c1 != null and has(c1, "asean")))
 	conds.append(cond(OT[207], func(): return not has(country, "亲苏")))
 	conds.append(cond(OT[208], func(): return not has(country, "asean") and not has(country, "sev")))
-	if country.原版序号 != 38:
+	if country.原版序号 != GameConstants.LegacySlot.TAIWAN:
 		conds.append(cond(OT[209], func(): return country.government != GameConstants.Government.SOCIALIST))
 	else:
 		conds.append(cond(OT[233], func(): return d(w, 64) == 1 or _dec_done(w, 6)))
@@ -1160,7 +1160,7 @@ func _def_122(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			war0.side2 = " 韩 国"
 			war0.infl1 = 400
 			war0.infl2 = 600
-			war0.usa_side = 1
+			war0.usa_side = GameConstants.WarSide.SIDE2
 			war0.ussr_side = ussr_support
 	return make_def(caption, opis, conds, eff)
 
@@ -1228,7 +1228,7 @@ func _def_124(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 		set_d(w, 139, 0)
 		if not _dec_done(w, 9):
 			for cc in w.countries:
-				if cc != null and has(cc, "亲中") and cc.原版序号 != 1 and cc.原版序号 != 2 \
+				if cc != null and has(cc, "亲中") and cc.原版序号 != GameConstants.LegacySlot.CHINA and cc.原版序号 != 2 \
 						and cc.原版序号 != 5 and cc.原版序号 != 9:
 					if c1 != null and has(c1, "asean"):
 						cc.leave_asean()
@@ -1252,7 +1252,7 @@ func _def_124(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 							cc.join_okb()
 		else:
 			for cc in w.countries:
-				if cc != null and has(cc, "亲中") and cc.原版序号 != 1 and cc.原版序号 != 9:
+				if cc != null and has(cc, "亲中") and cc.原版序号 != GameConstants.LegacySlot.CHINA and cc.原版序号 != 9:
 					if c1 != null and has(c1, "asean"):
 						cc.leave_asean()
 						cc.leave_seato()
@@ -1684,7 +1684,7 @@ func _def_134(w: WorldState, country: CountryData, caption: String) -> Dictionar
 func _def_145(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var new_price: int = (d(w, 143) + 5) if (d(w, 143) + 5 <= 60) else 60
 	var opis: String
-	if country.puppet_of == 14:
+	if country.puppet_of == GameConstants.LegacySlot.IRAQ:
 		opis = " 通 过 我 们 和 石 油 与 主 权 委 员 会 的 关 系 调 整 油 价 ， 使 其 更 有 利 于 我 国 发 展|世 界 油 价 将 变 为 每 桶 %d$ 。" % new_price
 	else:
 		opis = OT[460].format(["\n", str(new_price)])
@@ -1697,8 +1697,8 @@ func _def_145(w: WorldState, country: CountryData, caption: String) -> Dictionar
 	var c36 := c(w, 36)
 	if c36 != null and has(c36, "亲中"):
 		num2 += 1
-	if country.puppet_of == 14:
-		conds.append(cond(" 石 油 与 主 权 委 员 会 已 建 立", func(): return country.puppet_of == 14))
+	if country.puppet_of == GameConstants.LegacySlot.IRAQ:
+		conds.append(cond(" 石 油 与 主 权 委 员 会 已 建 立", func(): return country.puppet_of == GameConstants.LegacySlot.IRAQ))
 	else:
 		conds.append(cond(OT[461], func(): return num2 >= 3))
 	conds.append(cond(OT[454], func(): return d(w, 9) >= 50))
@@ -1727,7 +1727,7 @@ func _def_145(w: WorldState, country: CountryData, caption: String) -> Dictionar
 func _def_146(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var new_price: int = (d(w, 143) - 5) if (d(w, 143) - 5 >= 10) else 10
 	var opis: String
-	if country.puppet_of == 14:
+	if country.puppet_of == GameConstants.LegacySlot.IRAQ:
 		opis = " 通 过 我 们 和 石 油 与 主 权 委 员 会 的 关 系 调 整 油 价 ， 使 其 更 有 利 于 我 国 发 展|世 界 油 价 将 变 为 每 桶 %d$ 。" % new_price
 	else:
 		opis = OT[463].format(["\n", str(new_price)])
@@ -1740,8 +1740,8 @@ func _def_146(w: WorldState, country: CountryData, caption: String) -> Dictionar
 	var c36 := c(w, 36)
 	if c36 != null and has(c36, "亲中"):
 		num4 += 1
-	if country.puppet_of == 14:
-		conds.append(cond(" 石 油 与 主 权 委 员 会 已 建 立", func(): return country.puppet_of == 14))
+	if country.puppet_of == GameConstants.LegacySlot.IRAQ:
+		conds.append(cond(" 石 油 与 主 权 委 员 会 已 建 立", func(): return country.puppet_of == GameConstants.LegacySlot.IRAQ))
 	else:
 		conds.append(cond(OT[461], func(): return num4 >= 3))
 	conds.append(cond(OT[454], func(): return d(w, 9) >= 50))

@@ -313,7 +313,7 @@ func _def_1024(w: WorldState, country: CountryData, caption: String) -> Dictiona
 			c134.内战中 = true
 			c134.government = GameConstants.Government.REFORMIST
 			c134.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
-			c134.puppet_of = -1
+			c134.puppet_of = GameConstants.LegacySlot.NONE
 			c134.leave_alliances()
 			c134.set_tag("亲中", true)
 			c134.set_tag("对华贸易", true)
@@ -347,7 +347,7 @@ func _def_1024(w: WorldState, country: CountryData, caption: String) -> Dictiona
 			if soc(w, c(w, 1), true):
 				c136.government = GameConstants.Government.SOCIALIST
 				c136.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
-				c136.puppet_of = -1
+				c136.puppet_of = GameConstants.LegacySlot.NONE
 				c136.leave_alliances()
 				c136.set_tag("亲中", true)
 				c136.set_tag("对华贸易", true)
@@ -355,7 +355,7 @@ func _def_1024(w: WorldState, country: CountryData, caption: String) -> Dictiona
 			elif c1 != null and c1.government == GameConstants.Government.REFORMIST:
 				c136.government = GameConstants.Government.REFORMIST
 				c136.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
-				c136.puppet_of = -1
+				c136.puppet_of = GameConstants.LegacySlot.NONE
 				c136.leave_alliances()
 				c136.set_tag("亲中", true)
 				c136.set_tag("对华贸易", true)
@@ -364,14 +364,14 @@ func _def_1024(w: WorldState, country: CountryData, caption: String) -> Dictiona
 			elif auth(w, c1):
 				c136.government = GameConstants.Government.REFORMIST
 				c136.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
-				c136.puppet_of = -1
+				c136.puppet_of = GameConstants.LegacySlot.NONE
 				c136.leave_alliances()
 				c136.set_tag("亲中", true)
 				c136.set_tag("对华贸易", true)
 			else:
 				c136.government = GameConstants.Government.LIBERAL
 				c136.sub_government = GameConstants.SubGovernment.NEOLIBERAL
-				c136.puppet_of = -1
+				c136.puppet_of = GameConstants.LegacySlot.NONE
 				c136.leave_alliances()
 				c136.set_tag("亲中", true)
 				c136.set_tag("对华贸易", true)
@@ -473,7 +473,7 @@ func _def_1025(w: WorldState, _country: CountryData, caption: String) -> Diction
 		_add_d(w, 8, -50)
 		_add_d(w, 9, -50)
 		set_parts(c134, 0, true)
-		c134.puppet_of = -1
+		c134.puppet_of = GameConstants.LegacySlot.NONE
 		c134.leave_alliances()
 		c134.government = GameConstants.Government.SOCIALIST
 		c134.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
@@ -846,8 +846,8 @@ func _def_1034(w: WorldState, _country: CountryData, caption: String) -> Diction
 		war49.side2 = "古 巴"
 		war49.infl1 = 500
 		war49.infl2 = 500
-		war49.usa_side = 0
-		war49.ussr_side = 1
+		war49.usa_side = GameConstants.WarSide.SIDE1
+		war49.ussr_side = GameConstants.WarSide.SIDE2
 		war49.fortnight_elapsed = 0
 		war49.diplo_done = [false, false]
 	return make_def(caption, opis, conds, eff)
@@ -1496,7 +1496,7 @@ func _def_1045(w: WorldState, country: CountryData, caption: String) -> Dictiona
 			c59.leave_alliances()
 			c59.set_tag("对华贸易", true)
 			if c14.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or c14.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
-				c59.puppet_of = 14
+				c59.puppet_of = GameConstants.LegacySlot.IRAQ
 			elif (w.oar and c30 != null and c30.has_tag("亲苏")) or c14.has_tag("亲苏"):
 				c59.set_tag("亲苏", true)
 			elif (w.oar and c30 != null and c30.has_tag("亲中")) or c14.has_tag("亲中"):

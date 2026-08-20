@@ -107,7 +107,7 @@ func _spring_leave_alliances() -> void:
 		return
 	for tag in WorldFactory.START_CLEAR_TAGS:
 		taiwan.set_tag(tag, false)
-	taiwan.puppet_of = -1
+	taiwan.puppet_of = GameConstants.LegacySlot.NONE
 
 
 ## Event461.cs:37-71（result_num == 0）
@@ -119,7 +119,7 @@ func _spring_result_0(context: Dictionary) -> void:
 		taiwan.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST             # Event461.cs:41  SubGosstroy = 2
 		taiwan.set_tag("亲中", true)          # Event461.cs:42  proprc = true
 		taiwan.set_tag("对华贸易", true)      # Event461.cs:43  Torg = true
-		taiwan.puppet_of = 1                  # Event461.cs:44  puppetOf = 1
+		taiwan.puppet_of = GameConstants.LegacySlot.CHINA                  # Event461.cs:44  puppetOf = 1
 		taiwan.chinese_name = "台湾特别行政区"  # Event461.cs:45  name = "台湾特别行政区"
 		if china != null:
 			if china.has_tag("econ"):          # Event461.cs:46-49

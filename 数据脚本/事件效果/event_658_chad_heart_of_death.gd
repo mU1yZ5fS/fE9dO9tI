@@ -30,7 +30,7 @@ const T_658_23 := "11月19日，FAN攻占了乍得东部重要城市阿贝歇，
 ## 差异：
 ##  - 描述后缀与 opt1/opt2 文案按 resultOfEvents[512] / [561] 动态选择（缺省按原版 int 默认 0）。
 ##  - OilProd += 100f 已建模（ws.oil_prod）。
-##  - War 80：AmericanSupportDefender.SovietSupportAttacker → usa_side=1 / ussr_side=0。
+##  - War 80：AmericanSupportDefender.SovietSupportAttacker → usa_side = GameConstants.WarSide.SIDE2 / ussr_side = GameConstants.WarSide.SIDE1。
 ##  - 死代码 result_num==5（button_text[5] 测试分支）跳过。
 
 func prepare(event_def: EventDef, world: WorldState) -> void:

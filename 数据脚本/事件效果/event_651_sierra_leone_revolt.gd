@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线）。
 ##  - War 77：GameManager.start_war(77,...) + fortnight_max=40（TickTime(40)），
-##    SovietSupportDefender/AmericanSupportAttacker → ussr_side=1 / usa_side=0。
+##    SovietSupportDefender/AmericanSupportAttacker → ussr_side = GameConstants.WarSide.SIDE2 / usa_side = GameConstants.WarSide.SIDE1。
 ##  - c107=塞拉利昂；c107.parts[0]=true 保留。
 
 

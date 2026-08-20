@@ -62,7 +62,7 @@ func execute(context: Dictionary) -> void:
 				if mali != null:
 					mali.government = GameConstants.Government.AUTHORITARIAN
 					mali.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
-					mali.puppet_of = -1
+					mali.puppet_of = GameConstants.LegacySlot.NONE
 					mali.set_tag("亲美", false)
 					mali.set_tag("对华贸易", true)
 					mali.set_tag("亲苏", true)
@@ -71,7 +71,7 @@ func execute(context: Dictionary) -> void:
 				if mali != null:
 					mali.government = GameConstants.Government.AUTHORITARIAN
 					mali.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
-					mali.puppet_of = -1
+					mali.puppet_of = GameConstants.LegacySlot.NONE
 					mali.set_tag("亲美", false)
 					mali.set_tag("对华贸易", true)
 					mali.set_tag("亲中", true)

@@ -452,7 +452,7 @@ func _diplo_rep_desc(w: WorldState, country: CountryData) -> String:
 	# 108 受法国控制时的专属改写（DBS L288-292）
 	if country.原版序号 == 108:
 		var france := w.get_country_by_legacy_index(21)
-		if france != null and france.has_tag("对华贸易") and country.puppet_of == 21:
+		if france != null and france.has_tag("对华贸易") and country.puppet_of == GameConstants.LegacySlot.FRANCE:
 			return "与法国有贸易关系"
 	if w.leader_property.size() > 2 and w.leader_property[2] and w.is_socialism(country, false):
 		return "外交声誉低于 11451.4"
@@ -468,7 +468,7 @@ func _diplo_rep_desc(w: WorldState, country: CountryData) -> String:
 func _diplo_rep_check(w: WorldState, d: Array[int], country: CountryData) -> bool:
 	if country.原版序号 == 108:
 		var france := w.get_country_by_legacy_index(21)
-		if france != null and france.has_tag("对华贸易") and country.puppet_of == 21:
+		if france != null and france.has_tag("对华贸易") and country.puppet_of == GameConstants.LegacySlot.FRANCE:
 			return france.has_tag("对华贸易")
 	if w.leader_property.size() > 2 and w.leader_property[2] and w.is_socialism(country, false):
 		return d[W.I_DIPLO] < 114514
@@ -511,7 +511,7 @@ func _def_24(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 	# uslovie[0]（DBS L782-810）：14 伊朗 sub==20 首档 + 通用声誉档
 	var rep_desc := _diplo_rep_desc(w, country)
 	var rep_check := func() -> bool: return _diplo_rep_check(w, d, country)
-	if country.原版序号 == 14 and country.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
+	if country.原版序号 == GameConstants.LegacySlot.IRAQ and country.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 		rep_desc = "外交声誉低于 11451.4"
 		rep_check = func() -> bool: return d[W.I_DIPLO] < 114514
 	conds.append(_cond(rep_desc, rep_check))
@@ -547,7 +547,7 @@ func _def_10(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 	if country.原版序号 == 9:
 		desc0 = "蒙古人民相信我们的善意"
 		check0 = func() -> bool: return country.has_tag("亲中") and w.result_of_event_num(62) != 2
-	elif country.原版序号 == 35 or country.原版序号 == 14:
+	elif country.原版序号 == 35 or country.原版序号 == GameConstants.LegacySlot.IRAQ:
 		desc0 = "该国持亲中立场"
 		check0 = func() -> bool: return country.has_tag("亲中")
 	# 8 伊朗的声誉档改写（DBS L401-430）
@@ -675,7 +675,7 @@ func _mil19_slot_check(w: WorldState, player: CountryData, country: CountryData)
 # ============================================================================
 func _def_1(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 	var player := w.get_player_country()
-	var is_west := country.原版序号 == 92 or country.原版序号 == 21 or country.原版序号 == 17
+	var is_west := country.原版序号 == 92 or country.原版序号 == GameConstants.LegacySlot.FRANCE or country.原版序号 == 17
 	var conds: Array = []
 	# uslovie[0]：特工≥50 且 预算+外汇≥30（DBS L58）
 	conds.append(_cond("至少 5 特工网络和 3 百万预算",
@@ -1520,7 +1520,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return [DIPLO_BTN_ECON10]
 		43, 96, 97:
 			# CS L1476：puppet!=1 → 97/98/99 移植说明 注；[revint]5000
-			if country.puppet_of == 1:
+			if country.puppet_of == GameConstants.LegacySlot.CHINA:
 				return []
 			var n43: Array[int] = []
 			if _revint_ok(w, country):
@@ -2146,7 +2146,7 @@ func _soc500_ok(w: WorldState, country: CountryData) -> bool:
 ## 块K（CS L3942）：ev713 && n!=1 && puppet<0 && IsSocialism(true) && sub∉{16,18}
 ## && !亲苏 && !亲美 && !SEV && !OVD && !NATO && !EU && !SEATO && !SENTO
 func _block_k_ok(w: WorldState, country: CountryData) -> bool:
-	if not w.get_flag("event_done_713") or country.原版序号 == 1:
+	if not w.get_flag("event_done_713") or country.原版序号 == GameConstants.LegacySlot.CHINA:
 		return false
 	if country.puppet_of >= 0:
 		return false

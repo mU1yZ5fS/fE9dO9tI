@@ -62,7 +62,7 @@ func execute(context: Dictionary) -> void:
 					mozambique.government = GameConstants.Government.AUTHORITARIAN
 					mozambique.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 					_leave_alliances(mozambique)
-					mozambique.puppet_of = 131
+					mozambique.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 				if _res_ev("event_623") == 1:
 					if mozambique != null:
 						mozambique.set_tag("对华贸易", true)
@@ -165,6 +165,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

@@ -956,12 +956,12 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 		for c in w.countries:
 			if c == null:
 				continue
-			if c.has_tag("rim") and c.puppet_of != 1:
+			if c.has_tag("rim") and c.puppet_of != GameConstants.LegacySlot.CHINA:
 				c.set_tag("亲中", false)
 				c.set_tag("对华贸易", false)
 				c.set_tag("econ", false)
 				c.set_tag("okb", false)
-			elif c.puppet_of == 1:
+			elif c.puppet_of == GameConstants.LegacySlot.CHINA:
 				c.set_tag("rim", false)
 
 	# 984-1000：事件713后革命国际扩张/清理。
@@ -969,15 +969,15 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 		for c in w.countries:
 			if c == null:
 				continue
-			if (c.sub_government == GameConstants.SubGovernment.MAOIST or c.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST) and c.原版序号 != 1 \
-					and c.puppet_of != 1 and not c.has_tag("亲苏") and not c.has_tag("亲美") \
+			if (c.sub_government == GameConstants.SubGovernment.MAOIST or c.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST) and c.原版序号 != GameConstants.LegacySlot.CHINA \
+					and c.puppet_of != GameConstants.LegacySlot.CHINA and not c.has_tag("亲苏") and not c.has_tag("亲美") \
 					and not c.has_tag("sev") and not c.has_tag("ovd") and not c.has_tag("rim"):
 				c.set_tag("亲中", false)
 				c.set_tag("对华贸易", false)
 				c.set_tag("econ", false)
 				c.set_tag("okb", false)
 				c.set_tag("rim", true)
-			elif c.原版序号 == 1 or c.puppet_of == 1:
+			elif c.原版序号 == GameConstants.LegacySlot.CHINA or c.puppet_of == GameConstants.LegacySlot.CHINA:
 				c.set_tag("rim", false)
 
 	# 993-999：阿尔巴尼亚(20)亲中条件退出（cond_full 含 data[52]>36）。
@@ -1001,7 +1001,7 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 	for c in w.countries:
 		if c == null:
 			continue
-		if c.原版序号 != 1 and c.has_tag("亲中"):
+		if c.原版序号 != GameConstants.LegacySlot.CHINA and c.has_tag("亲中"):
 			if c.sub_government == GameConstants.SubGovernment.MAOIST and cond_soft:
 				c.set_tag("亲中", false)
 			elif c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL and cond_full:
@@ -1622,11 +1622,11 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 			if war_nato == null or not war_nato.is_going or i == 5:
 				continue
 			if war_nato.diplo_done[0]:
-				war_nato.usa_side = 1
-				war_nato.ussr_side = 1
+				war_nato.usa_side = GameConstants.WarSide.SIDE2
+				war_nato.ussr_side = GameConstants.WarSide.SIDE2
 			elif war_nato.diplo_done[1]:
-				war_nato.usa_side = 0
-				war_nato.ussr_side = 0
+				war_nato.usa_side = GameConstants.WarSide.SIDE1
+				war_nato.ussr_side = GameConstants.WarSide.SIDE1
 
 	# 2495-2502：1977 年后西班牙/葡萄牙自由化（原版 !dlc[3] 分支；Godot 改版 dlc[3]=true 全免费 → 不执行）。
 	if w.date.year > 1976 and not w.dlc[3]:
@@ -1869,7 +1869,7 @@ func _yearly_jan1_maintenance(w: WorldState) -> void:
 
 	# 918-923：除意大利(85)外所有政变标记清除。
 	for c in w.countries:
-		if c != null and c.原版序号 != 85:
+		if c != null and c.原版序号 != GameConstants.LegacySlot.SPAIN:
 			c.政变中 = false
 
 	# 926-942：各国 stab/prcpower/cw/影响年重置与衰减。

@@ -2,8 +2,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event396.cs：第二次“复兴运动”（意大利全面内战，一选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1231 —— 复杂条件用 evaluate（data[134]>200 无命名键）。
-## 差异：KGWar 开战映射 GameManager.start_war；AmericanSupportDefender→usa_side=0；
-##  - 若 c1 非 sev 则 ussr_side=1；TickTime(30)→fortnight_max=30。
+## 差异：KGWar 开战映射 GameManager.start_war；AmericanSupportDefender→usa_side = GameConstants.WarSide.SIDE1；
+##  - 若 c1 非 sev 则 ussr_side = GameConstants.WarSide.SIDE2；TickTime(30)→fortnight_max=30。
 
 const TXT_TITLE := [
 	"第二次“复兴运动”",
@@ -87,7 +87,7 @@ func execute(context: Dictionary) -> void:
 	var china := ws.get_country_by_legacy_index(1)
 	if china != null and not china.has_tag("sev"):
 		if ws.wars.size() > 23 and ws.wars[23] != null:
-			ws.wars[23].ussr_side = 1
+			ws.wars[23].ussr_side = GameConstants.WarSide.SIDE2
 	if italy != null:
 		italy.special -= 15
 	context["result_text"] = TXT_R[0]

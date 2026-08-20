@@ -45,7 +45,7 @@ func execute(context: Dictionary) -> void:
 			if c62 != null: c62.government = GameConstants.Government.AUTHORITARIAN
 			if c62 != null: c62.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			if c62 != null: _leave_alliances(c62)
-			if c62 != null: c62.puppet_of = 21
+			if c62 != null: c62.puppet_of = GameConstants.LegacySlot.FRANCE
 			if c62 != null: c62.set_tag("对华贸易", true)
 			if c62 != null: c62.name = "达荷美"
 			_add_relation(0, 80)

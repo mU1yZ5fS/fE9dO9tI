@@ -63,7 +63,7 @@ func execute(context: Dictionary) -> void:
 				seychelles.government = GameConstants.Government.AUTHORITARIAN
 				seychelles.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(seychelles)
-				seychelles.puppet_of = 131
+				seychelles.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 		2:
 			context["result_text"] = TXT_R2
 			if seychelles != null:
@@ -154,6 +154,6 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 

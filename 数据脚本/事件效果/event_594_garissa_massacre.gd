@@ -4,8 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10915-10918 —— 日期>=1980.11.1 && c42.SubGosstroy==10。
 ## 差异：
 ##  - 原版 SubGosstroy!=10 分支的空白禁用选项在 .tres 中保留空 text 的 _disable 实现；
-##  - AmericanSupportDefender.SovietSupportAttacker → usa_side=1/ussr_side=0；
-##  - 仅 AmericanSupportDefender → usa_side=1/ussr_side=-1；
+##  - AmericanSupportDefender.SovietSupportAttacker → usa_side = GameConstants.WarSide.SIDE2/ussr_side = GameConstants.WarSide.SIDE1；
+##  - 仅 AmericanSupportDefender → usa_side = GameConstants.WarSide.SIDE2/ussr_side = GameConstants.WarSide.NONE；
 ##  - TickTime(24) → fortnight_max=24。
 
 const TXT_DESC_BASE := "在索马里人聚居区被欧美列强和埃塞俄比亚帝国瓜分之后，以索马里人为主的东北省便纳入英属肯尼亚领土中，在索马里独立之后，北部边界区便强烈要求分离出来加入索马里。自肯尼亚独立尤其是1967年盗匪战争（肯尼亚称索马里分离势力为盗匪）结束以来，肯尼亚对于东北省予以打压，甚至不惜为东北省单独立法来加强管控。1980年11月，在一名土匪的袭击下，有六名政府官员死亡，肯尼亚军队随即在东北省加里萨镇进行报复性行为，烧毁庄园，强奸，放火杀人，把当地镇民赶到幼儿园作为小型集中营关押，放走除了索马里人以外的其他人并断绝他们的水源和食物。至少有三千余人死于这场屠杀。\n索马里政府对此十分不满，并要求肯尼亚政府停止种族屠杀，否则将会推翻现政权并进行占领。"

@@ -33,7 +33,7 @@ func execute(context: Dictionary) -> void:
 			for p in ws.politicians:
 				if p == null:
 					continue
-				if p.trait_personality > 0:
+				if p.trait_personality > GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.loyalty -= 250
 					p.power -= 250
 			if num >= 0:

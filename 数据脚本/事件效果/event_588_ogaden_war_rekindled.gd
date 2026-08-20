@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 原版 !c42.parts[0] && !c42.parts[2] 由 CountryData.parts 建模；
 ##  - Attacker/Defender 用 new_events_text[794]/[795] = 索马里/埃塞俄比亚；
-##  - SovietSupportAttacker/Defender → ussr_side 0/1，美国不介入 → usa_side=-1；
+##  - SovietSupportAttacker/Defender → ussr_side 0/1，美国不介入 → usa_side = GameConstants.WarSide.NONE；
 ##  - TickTime(16/4) → fortnight_max=16/4。
 
 

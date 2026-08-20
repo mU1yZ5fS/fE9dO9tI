@@ -31,7 +31,7 @@ func _page_5(w: WorldState) -> Dictionary:
 		else:
 			text = " 苏 联 继 续 担 当 改 良 过 的 社 会 主 义 阵 营 的 非 正 式 领 袖 ， 带 领 所 有 成 员 走 向 更 光 明 的 未 来 。"
 	elif e1_leader == 6 and (_sub(w, 1) == 6 or _sub(w, 1) == 12) \
-			and w.leader != null and w.leader.trait_personality == 3 \
+			and w.leader != null and w.leader.trait_personality == GameConstants.PoliticianPersonality.LIBERAL \
 			and d(w, W.I_WAR_SUPPORT) < 400 and _has(w, 51, "对华贸易") \
 			and _has(w, 1, "seato") and _cw(w, 51) and _gov(w, 19) == 3 \
 			and _has(w, 0, "nato") and _has(w, 0, "eu") and _gov(w, 92) == 3 \

@@ -68,13 +68,13 @@ func execute(context: Dictionary) -> void:
 				if gabon != null:
 					gabon.government = GameConstants.Government.REFORMIST
 					gabon.sub_government = GameConstants.SubGovernment.PRAGMATIST
-					gabon.puppet_of = 21
+					gabon.puppet_of = GameConstants.LegacySlot.FRANCE
 			else:
 				text += TXT_R0_ELSE
 				if gabon != null:
 					gabon.government = GameConstants.Government.AUTHORITARIAN
 					gabon.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
-					gabon.puppet_of = 21
+					gabon.puppet_of = GameConstants.LegacySlot.FRANCE
 			context["result_text"] = text
 		1:
 			context["result_text"] = TXT_R1
@@ -234,7 +234,7 @@ func _free_puppets(overlord: int) -> void:
 		return
 	for c in ws.countries:
 		if c != null and c.puppet_of == overlord:
-			c.puppet_of = -1
+			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
 

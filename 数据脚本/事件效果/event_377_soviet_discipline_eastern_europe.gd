@@ -113,7 +113,7 @@ func execute(context: Dictionary) -> void:
 		_start_war_377()
 		var usa377 := ws.get_country_by_legacy_index(51)
 		if ws.wars.size() > 22 and ws.wars[22] != null and usa377 != null and usa377.has_tag("对华贸易"):
-			ws.wars[22].usa_side = 0
+			ws.wars[22].usa_side = GameConstants.WarSide.SIDE1
 		if bulgaria != null:
 			bulgaria.set_tag("对华贸易", false)
 		_add(W.I_PARTY_SUPPORT, 300)

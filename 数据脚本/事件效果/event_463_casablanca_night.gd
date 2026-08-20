@@ -3,8 +3,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event463.cs：卡萨布兰卡一夜（摩洛哥干预四选项）。
 ## 触发：ReqEventForDLC02.cs:402-404 —— DATE_AFTER 1981.6.1；fire_only_once 承担 !event_done[463]。
 ## 差异：level_of_dev→level_of_development；开战按项目约定 GameManager.start_war(39,...)
-##   后覆盖 name_war/fortnight_max（TickTime 20）；AmericanSupportAttacker→usa_side=0，
-##   relres→ussr_side=1。
+##   后覆盖 name_war/fortnight_max（TickTime 20）；AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE1，
+##   relres→ussr_side = GameConstants.WarSide.SIDE2。
 
 const TXT_OPT0_DIS := "推翻国王，有谁有这个胆子？"
 const TXT_OPT1_DIS := "我们没有能力做这种事"
@@ -95,7 +95,7 @@ func execute(context: Dictionary) -> void:
 				war.name_war = TXT_WAR_NAME
 				war.fortnight_max = 20
 				if ws.get_flag("relres"):
-					war.ussr_side = 1
+					war.ussr_side = GameConstants.WarSide.SIDE2
 		2:
 			var line56 := _res(W.I_POLITICAL_LINE)
 			if line56 <= 1:

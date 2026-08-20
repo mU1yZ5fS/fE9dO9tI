@@ -52,7 +52,7 @@ func execute(context: Dictionary) -> void:
 			if c68 != null: c68.government = GameConstants.Government.AUTHORITARIAN
 			if c68 != null: c68.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			if c68 != null: _leave_alliances(c68)
-			if c68 != null: c68.puppet_of = 21
+			if c68 != null: c68.puppet_of = GameConstants.LegacySlot.FRANCE
 			if c68 != null: c68.set_tag("对华贸易", true)
 			_add_relation(0, 80)
 			_add_power(0, 50)
@@ -61,7 +61,7 @@ func execute(context: Dictionary) -> void:
 			if c68 != null: c68.government = GameConstants.Government.AUTHORITARIAN
 			if c68 != null: c68.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			if c68 != null: _leave_alliances(c68)
-			if c68 != null: c68.puppet_of = 21
+			if c68 != null: c68.puppet_of = GameConstants.LegacySlot.FRANCE
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

@@ -344,7 +344,7 @@ func _page_4(w: WorldState) -> Dictionary:
 			pass
 	elif _ussr_leader == 6:
 		if (_sub(w, 1) == 6 or _sub(w, 1) == 12) \
-				and w.leader != null and w.leader.trait_personality == 3 \
+				and w.leader != null and w.leader.trait_personality == GameConstants.PoliticianPersonality.LIBERAL \
 				and d(w, W.I_WAR_SUPPORT) < 400 and _has(w, 51, "对华贸易") \
 				and _has(w, 1, "seato") and _cw(w, 51) and _gov(w, 19) == 3 \
 				and _has(w, 0, "nato") and _has(w, 0, "eu") and _gov(w, 92) == 3 \
