@@ -2183,7 +2183,7 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 			poland.sub_government = 21
 
 	# 2864-2896：中印边境战争(war_state==2)月度推进与胜利结算。
-	if w.war_state == 2:
+	if w.war_state == GameConstants.WarState.INDIA:
 		if d[W.I_INDIA_WAR_PRESSURE] >= 1000:
 			w.influence_prc += 10
 			d[W.I_ARUNACHAL_STATUS] = 2
@@ -2192,7 +2192,7 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 			# （藏南/阿鲁纳恰尔地块归中国 710，对应原版 parts 重绘中国全图）。
 			_arunachal_to_china(w)
 			d[W.I_POPULATION] += 434
-			w.war_state = 0
+			w.war_state = GameConstants.WarState.PEACE
 			GameManager.start_event("event_443")
 		d[W.I_POPULATION] -= 2
 		if d[W.I_INDIA_WAR_PRESSURE] >= 50:
@@ -2201,7 +2201,7 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 			w.influence_prc -= 20
 		if d[W.I_INDIA_WAR_PRESSURE] <= 0:
 			w.influence_prc -= 20
-			w.war_state = 0
+			w.war_state = GameConstants.WarState.PEACE
 
 	# 2897-2901：瑞士(39)/古巴(138) 发展度、越南(11)/印度(19) stab 与印度亲中势力月重置。
 	var switzerland := w.get_country_by_legacy_index(39)

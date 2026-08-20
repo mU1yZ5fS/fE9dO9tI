@@ -822,7 +822,7 @@ func _def_29(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	var conds: Array = []
 	conds.append(cond(" 帮 助 英 迪 拉 ， 且 未 与 巴 基 斯 坦 建 立 友 好 关 系| 或 布 托 是 巴 基 斯 坦 总 理", func(): return (d(w, W.I_INDIA_ELECTION) == 1 or d(w, W.I_INDIA_ELECTION) == 2 or d(w, W.I_INDIA_ELECTION) == 3) and (not has(c(w, 31), "对华贸易") or gov(c(w, 31)) == 2 or soc(w, c(w, 31), true))))
 	conds.append(cond(" 尚 未 建 立 友 好 关 系", func(): return not has(country, "对华贸易")))
-	conds.append(cond(" 尚 未 发 动 战 争", func(): return country.development == 0 and w.war_state == 0 and d(w, W.I_ARUNACHAL_STATUS) < 2))
+	conds.append(cond(" 尚 未 发 动 战 争", func(): return country.development == 0 and w.war_state == GameConstants.WarState.PEACE and d(w, W.I_ARUNACHAL_STATUS) < 2))
 	conds.append(cond(" 领 土 争 端 仍 悬 而 未 决", func(): return d(w, W.I_ARUNACHAL_STATUS) == 0))
 	var eff := func():
 		set_tag(country, "对华贸易", true)
@@ -838,10 +838,10 @@ func _def_30(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	var conds: Array = []
 	conds.append(cond(" 拥 有 战 争 理 由", func(): return fl(w, "cb_india")))
 	conds.append(cond(" 尚 未 建 立 友 好 关 系", func(): return not has(country, "对华贸易")))
-	conds.append(cond(" 尚 未 发 动 战 争", func(): return country.development == 0 and w.war_state == 0 and d(w, W.I_ARUNACHAL_STATUS) < 2))
+	conds.append(cond(" 尚 未 发 动 战 争", func(): return country.development == 0 and w.war_state == GameConstants.WarState.PEACE and d(w, W.I_ARUNACHAL_STATUS) < 2))
 	conds.append(cond(" 未 加 入 不 结 盟 运 动", func(): return not _ccw(w, 15)))
 	var eff := func():
-		w.war_state = 2
+		w.war_state = GameConstants.WarState.INDIA
 		add_rel(w, 1, -100)
 		add_rel(w, 0, -50)
 		country.development = 1

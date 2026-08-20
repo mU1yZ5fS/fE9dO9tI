@@ -234,7 +234,7 @@ func _event_56(option_index: int) -> void:
 		1:
 			_add_data({W.I_PARTY_SUPPORT: 50, W.I_WAR_PRESSURE: 200, W.I_DIPLO: 20})
 			_add_empire_relation(EmpireData.USSR, -200)
-			ws.war_state = 1
+			ws.war_state = GameConstants.WarState.SINO_SOVIET
 			var war := _war(1)
 			if war != null:
 				war.name_war = "中国柬埔寨－越南战争"

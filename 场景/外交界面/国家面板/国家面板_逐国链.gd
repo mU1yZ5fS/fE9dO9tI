@@ -364,7 +364,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 0, 1000, "组 织 政 变")
 					_show(slots, 1, 18, "经 济 合 作")
 					_show(slots, 2, 19, "军 事 同 盟")
-				elif w.war_state <= 0:  # 原版 war 状态由 Godot war_state 字段建模
+				elif w.war_state <= GameConstants.WarState.PEACE:  # 原版 war 状态由 Godot war_state 字段建模
 					_show(slots, 0, 17, "发 展 贸 易")
 					if w.event_done_num(43):
 						_show(slots, 1, 18, "经 济 合 作")
@@ -505,7 +505,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				and not _decision_done(w, 14):  # CountryScript completedDecisions[14]
 			_show(slots, 0, 28, "扶 持 纳 萨 尔 派")
 			_show(slots, 1, 29, "重 建 外 交 关 系")
-			if w.war_state != 2 and not country.has_tag("亲中"):  # 原版 war 状态由 Godot war_state 字段建模
+			if w.war_state != GameConstants.WarState.INDIA and not country.has_tag("亲中"):  # 原版 war 状态由 Godot war_state 字段建模
 				_show(slots, 2, 30, "策 动 边 界 战 争")
 			else:
 				_show(slots, 2, 71, "增 兵 助 战")
@@ -2329,8 +2329,8 @@ func _block_k_ok(w: WorldState, country: CountryData) -> bool:
 # 建模说明（行号=文件行号）:
 #   L184 if not w.get_flag("relres"):  # 散落 bool relres 用 global_flags 建模
 #   L341 if not w.get_flag("guns"):  # 散落 bool guns 用 global_flags 建模
-#   L363 elif w.war_state <= 0:  # 原版 war 状态由 Godot war_state 字段建模
-#   L504 if w.war_state != 2 and not country.has_tag("亲中"):  # 原版 war 状态由 Godot war_state 字段建模
+#   L363 elif w.war_state <= GameConstants.WarState.PEACE:  # 原版 war 状态由 Godot war_state 字段建模
+#   L504 if w.war_state != GameConstants.WarState.INDIA and not country.has_tag("亲中"):  # 原版 war 状态由 Godot war_state 字段建模
 #   L693 if w.get_flag("Israellost") or (c93 != null and c93.puppet_of == 37):  # 散落 bool Israellost 用 global_flags 建模
 #   L1338 or w.result_of_event_num(440) == 2:  # 散落 bool Israellost 用 global_flags 建模
 # 已消除近似：L501/L717 的 completedDecisions[14]/[6] 已改用 w.decisions.completed 真实字段。

@@ -70,7 +70,7 @@ func _event_71(option_index: int, context: Dictionary) -> void:
 				W.I_INDIA_WAR_PRESSURE: 200})
 			_add_empire_relation(EmpireData.USA, -150)
 			_add_empire_relation(EmpireData.USSR, -250)
-			ws.war_state = 2
+			ws.war_state = GameConstants.WarState.INDIA
 			context["result_text"] = TXT_71_R2
 
 

@@ -302,7 +302,7 @@ static func can_intervene(war_id: int, action_id: int) -> bool:
 	elif action_id >= 4:
 		if war_id in [16, 22, 69, 70, 90, 29] or (war_id >= 69 and war_id <= 75):
 			return false
-		if w.war_state == 1 and war_id == 1:
+		if w.war_state == GameConstants.WarState.SINO_SOVIET and war_id == 1:
 			return false
 
 	# 非外交动作：data[0]（军事介入点）须 >= 10*中国不稳定度/10（即 >= level_of_instability），
@@ -2812,7 +2812,7 @@ static func _apply_war1_result(war: WarData, d: Array[int]) -> void:
 		add_empire_power(EmpireData.USSR, -20)
 		if w.result_of_event_num(451) == 1 and c23 != null and c23.parts.size() > 0:
 			c23.parts[0] = true
-		if w.war_state == 1:
+		if w.war_state == GameConstants.WarState.SINO_SOVIET:
 			if c11 != null and china != null:
 				c11.government = china.government
 				c11.sub_government = china.sub_government
@@ -2845,7 +2845,7 @@ static func _apply_war1_result(war: WarData, d: Array[int]) -> void:
 				c22.set_tag("亲苏", false)
 				c22.set_tag("亲中", true)
 				c22.set_tag("sev", false)
-			w.war_state = 0
+			w.war_state = GameConstants.WarState.PEACE
 	elif war.infl2 >= 900:
 		if c23 != null and c11 != null:
 			c23.government = c11.government
@@ -2858,9 +2858,9 @@ static func _apply_war1_result(war: WarData, d: Array[int]) -> void:
 			c23.set_tag("okb", false)
 		_add_d(d, W.I_INFLUENCE, -30)
 		add_empire_power(EmpireData.USSR, 10)
-		if w.war_state == 1:
+		if w.war_state == GameConstants.WarState.SINO_SOVIET:
 			_add_d(d, W.I_INFLUENCE, -20)
-			w.war_state = 0
+			w.war_state = GameConstants.WarState.PEACE
 
 
 ## 战争 2 号结算：GameState.cs:352-388（泰国革命）。

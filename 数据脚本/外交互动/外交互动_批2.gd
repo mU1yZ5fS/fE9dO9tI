@@ -1267,7 +1267,7 @@ func _def_71(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	else:
 		return {}
 	var conds: Array = []
-	conds.append(cond(" 与 印 度 爆 发 战 争", func(): return w.war_state == 2))
+	conds.append(cond(" 与 印 度 爆 发 战 争", func(): return w.war_state == GameConstants.WarState.INDIA))
 	conds.append(cond(" 至 少 7 军 事 实 力", func(): return d(w, 22) >= 70))
 	conds.append(cond(" 本 月 增 兵 未 达 三 次", func(): return country.prc_power != 3))
 	var eff := func():
@@ -1291,7 +1291,7 @@ func _def_72(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	conds.append(cond(" 我 们 未 参 与 任 何 军 事 联 盟", func(): return player != null and not player.has_tag("ovd") and not player.has_tag("okb") and not player.has_tag("seato")))
 	conds.append(cond(" 至 少 2 百 万 预 算", func(): return d(w, 8) + d(w, 36) >= 20))
 	conds.append(cond(" 未 加 入 不 结 盟 运 动", func(): return c15 != null and not c15.内战中))
-	conds.append(cond(" 我 们 没 有 战 争", func(): return w.war_state <= 0))
+	conds.append(cond(" 我 们 没 有 战 争", func(): return w.war_state <= GameConstants.WarState.PEACE))
 	var eff := func():
 		set_d(w, 1, d(w, 1) - 300)
 		set_d(w, 8, d(w, 8) - 20)

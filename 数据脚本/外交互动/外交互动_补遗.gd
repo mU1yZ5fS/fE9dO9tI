@@ -52,7 +52,7 @@ func _def_20(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	var strength: int = d(w, idx)
 	@warning_ignore("integer_division")
 	var opis := " 派 遣 解 放 军 增 援 前 线| 我 方 军 力 强 度 ：%d.%d" % [strength / 10, abs(strength % 10)]
-	conds.append(cond(" 与 越 南 爆 发 战 争", func(): return w.war_state == 1))
+	conds.append(cond(" 与 越 南 爆 发 战 争", func(): return w.war_state == GameConstants.WarState.SINO_SOVIET))
 	conds.append(cond(" 至 少 7 军 事 实 力", func(): return d(w, W.I_ARMY) >= 70))
 	conds.append(cond(" 本 月 增 兵 未 达 三 次", func(): return country.stability != 3))
 	var eff := func():

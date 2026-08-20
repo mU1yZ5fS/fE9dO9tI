@@ -122,11 +122,11 @@ func _build_entries(w: WorldState) -> Array[Dictionary]:
 		var e := _make_entry(w, -1, "", "", "", 0, 0)
 		if not e.is_empty():
 			entries.append(e)
-	if w.war_state == 2:
+	if w.war_state == GameConstants.WarState.INDIA:
 		var e := _make_entry(w, -2, "", "", "", 0, 0)
 		if not e.is_empty():
 			entries.append(e)
-	if w.war_state == 1:
+	if w.war_state == GameConstants.WarState.SINO_SOVIET:
 		var e := _make_entry(w, -3, "", "", "", 0, 0)
 		if not e.is_empty():
 			entries.append(e)

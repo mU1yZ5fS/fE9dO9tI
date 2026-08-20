@@ -26,7 +26,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = TXT_R0
-			ws.war_state = 0
+			ws.war_state = GameConstants.WarState.PEACE
 			_set_data(W.I_WAR_PRESSURE, 5)
 			if vietnam != null:
 				vietnam.set_tag("ovd", true)
@@ -37,7 +37,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			context["result_text"] = TXT_R1
 			_add_relation(EmpireData.USSR, -200)
-			ws.war_state = 0
+			ws.war_state = GameConstants.WarState.PEACE
 			if vietnam != null:
 				vietnam.set_tag("sev", true)
 			if war1 != null:
