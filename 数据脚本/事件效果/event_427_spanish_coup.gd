@@ -89,8 +89,8 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -250)
 		if spain != null:
-			spain.government = 0
-			spain.sub_government = 9
+			spain.government = GameConstants.Government.AUTHORITARIAN
+			spain.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 		if portugal != null:
 			portugal.special -= 5
 		context["result_text"] = TXT_R0
@@ -99,8 +99,8 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -250)
 		if spain != null:
-			spain.government = 0
-			spain.sub_government = 7
+			spain.government = GameConstants.Government.AUTHORITARIAN
+			spain.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		if portugal != null:
 			portugal.special -= 5
 		context["result_text"] = TXT_R1
@@ -109,8 +109,8 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -250)
 		if spain != null:
-			spain.government = 2
-			spain.sub_government = 15
+			spain.government = GameConstants.Government.REFORMIST
+			spain.sub_government = GameConstants.SubGovernment.PRAGMATIST
 		if portugal != null:
 			portugal.special -= 5
 		context["result_text"] = TXT_R2

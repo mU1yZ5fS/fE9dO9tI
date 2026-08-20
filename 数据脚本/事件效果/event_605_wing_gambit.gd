@@ -18,7 +18,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
 	_enable(opt[1], event_def.options[1].text)
-	if china != null and china.sub_government == 19:
+	if china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
@@ -55,8 +55,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			context["result_text"] = TXT_R2
 			if south_africa != null:
-				south_africa.government = 0
-				south_africa.sub_government = 19
+				south_africa.government = GameConstants.Government.AUTHORITARIAN
+				south_africa.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				south_africa.set_tag("亲中", true)
 				south_africa.set_tag("对华贸易", true)
 

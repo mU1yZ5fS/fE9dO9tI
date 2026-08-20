@@ -98,7 +98,7 @@ func _prepare_42(event_def: EventDef) -> void:
 
 func _prepare_43(event_def: EventDef) -> void:
 	var vietnam := ws.get_country_by_legacy_index(23)
-	if vietnam != null and vietnam.government == 1:
+	if vietnam != null and vietnam.government == GameConstants.Government.SOCIALIST:
 		event_def.description = TXT_43_DESC_COMMON + TXT_43_DESC_SOCIALIST
 	else:
 		event_def.description = TXT_43_DESC_COMMON + TXT_43_DESC_NOT_SOCIALIST
@@ -247,8 +247,8 @@ func _event_46(option_index: int) -> void:
 			_add_empire_relation(EmpireData.USSR, -300)
 			_add_ussr_leader_support(6, -1)
 			if hungary != null:
-				hungary.government = 1
-				hungary.sub_government = 1
+				hungary.government = GameConstants.Government.SOCIALIST
+				hungary.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				hungary.set_tag("对华贸易", true)
 				hungary.set_tag("亲苏", false)
 		2:
@@ -260,8 +260,8 @@ func _event_46(option_index: int) -> void:
 			_add_empire_power(EmpireData.USA, -10)
 			_add_ussr_leader_support(6, -2)
 			if hungary != null:
-				hungary.government = 1
-				hungary.sub_government = 16
+				hungary.government = GameConstants.Government.SOCIALIST
+				hungary.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				hungary.puppet_of = 7
 		3:
 			_add_data({W.I_PARTY_SUPPORT: 50, W.I_INFLUENCE: 10,

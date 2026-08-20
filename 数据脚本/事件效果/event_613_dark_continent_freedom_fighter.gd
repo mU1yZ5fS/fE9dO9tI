@@ -35,8 +35,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if zaire != null:
-				zaire.government = 2
-				zaire.sub_government = 8
+				zaire.government = GameConstants.Government.REFORMIST
+				zaire.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				zaire.level_of_development = 0
 			_add_relation(EmpireData.USSR, -50)
 			_add_relation(EmpireData.USA, 50)

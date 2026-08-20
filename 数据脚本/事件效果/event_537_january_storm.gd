@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   c86.Gosstroy!=3 && !IsAuthoritarianism(87) && c87.Gosstroy!=3 &&
 ##   c21.SubGosstroy==18 && c92.SubGosstroy==18 && modifies[49].active &&
 ##   c44.Gosstroy==3 && c44.prcpower>=200 && (1985.1 或 1986+)。
-## 差异：IsAuthoritarianism→government==0&&sub_government!=0 复合 ExprNode。
+## 差异：IsAuthoritarianism→government == GameConstants.Government.AUTHORITARIAN&&sub_government != GameConstants.SubGovernment.LEFT_RADICAL 复合 ExprNode。
 
 const TXT_OPT0_DIS := "没人对他们有兴趣"
 const TXT_R0 := "我们迅速为日本社会主义工人党提供了空前规模的资金和武器援助，帮助他们在这一关键时刻抓住机会。很快他们便动员起大部分城市的青年学生和工人掀起了又一次全共斗。十余年前曾经被扑灭的革命热情被再一次点燃。有备而来的学生们迅速控制了各大校园的主要建筑物，要求政府倾听人民的呼声、反对新自由主义改革，怒斥政府要把整个国家的劳动人民卖给美国。自由民主党高层试图像过去处理学生运动的方式一样解决问题，但这次他们失败了：社会主义工人党成功团结了多数底层民众，组建了日本人民共同斗争委员会。很快委员会的代表发表公开声明，明确拒绝了政府提出的缓和提案，指出这不过是缓兵之计。1月12日，共同斗争委员会组织了上百万人的队伍，在全国主要地区展开统一行动。人们高举旗帜，手持自卫武器，对政府大楼、警察局等地进行全面冲击。政府立刻命令自卫队携带武器前去彻底驱散他们。但参与者早已设置了多重街垒和障碍阻碍自卫队的前进速度，同时对美军基地也展开了包围。在自卫队还没来得及抵达的时候，东京和其他大城市市内的各关键区域就已经被人群所占领。中曾根政府被强行解散，共同斗争委员会正式宣布接管国家。而姗姗来迟的自卫队在面对如此规模的游行人群后，最终也决定不再抵抗。部分地区的自卫队虽然进行了抵抗，但早已有所准备且拥有简易武器和技术指导的共斗参与者很快便粉碎了他们。\n英法两国对社会主义工人党的胜利十分振奋。当天英国首相泰德·格兰特便发表演讲，热烈祝贺日本托派的胜利并表示将全力援助新政府。很快法国国务委员会主席团成员罗伯特·巴西亚也代表委员会向日本托派的胜利表示祝贺。据可靠消息，数周后英法两国的代表团就将飞抵日本进行正式访问。"
@@ -31,8 +31,8 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if c44 != null:
-				c44.government = 1
-				c44.sub_government = 18
+				c44.government = GameConstants.Government.SOCIALIST
+				c44.sub_government = GameConstants.SubGovernment.TROTSKYIST
 				c44.set_tag("亲美", false)
 				c44.set_tag("亲中", true)
 				c44.set_tag("对华贸易", true)

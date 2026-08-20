@@ -48,8 +48,8 @@ func _opt_independent(context: Dictionary) -> void:
 		usa.parts[9] = true
 	if xinjiang != null:
 		if soviet_puppet_mongolia:
-			xinjiang.government = 1
-			xinjiang.sub_government = 1
+			xinjiang.government = GameConstants.Government.SOCIALIST
+			xinjiang.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			xinjiang.set_tag("亲苏", true)    # 差异：原 prosov=true
 		else:
 			xinjiang.set_tag("亲苏", false)   # 差异：原 prosov=false
@@ -65,4 +65,4 @@ func _mongolia_condition() -> bool:
 		return false
 	if ws.wars.size() > 5 and ws.wars[5].is_going:
 		return false
-	return mongolia.government != 0
+	return mongolia.government != GameConstants.Government.AUTHORITARIAN

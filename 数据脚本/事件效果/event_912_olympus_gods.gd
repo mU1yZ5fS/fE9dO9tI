@@ -30,12 +30,12 @@ func evaluate(world: WorldState) -> bool:
 	if world.completed_event_ids.get("event_378", -1) != 0:
 		return false
 	var korea := world.get_country_by_legacy_index(10)
-	if korea == null or korea.sub_government != 10 or not korea.has_tag("对华贸易") or korea.puppet_of >= 0:
+	if korea == null or korea.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST or not korea.has_tag("对华贸易") or korea.puppet_of >= 0:
 		return false
 	if world.leader == null or world.leader.name_first != 2 or world.leader.name_last != 2:
 		return false
 	var mongolia := world.get_country_by_legacy_index(5)
-	if mongolia == null or mongolia.sub_government != 10 or not mongolia.has_tag("亲中"):
+	if mongolia == null or mongolia.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST or not mongolia.has_tag("亲中"):
 		return false
 	return true
 
@@ -48,7 +48,7 @@ func execute(context: Dictionary) -> void:
 		0:
 			var iraq := ws.get_country_by_legacy_index(14)
 			var iraq_text := ""
-			if iraq != null and iraq.sub_government == 10 and iraq.puppet_of < 0:
+			if iraq != null and iraq.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST and iraq.puppet_of < 0:
 				iraq_text = TXT_R0_IRAQ
 			context["result_text"] = TXT_R0.format([iraq_text])
 			_add(W.I_PARTY_SUPPORT, 1000)
@@ -67,19 +67,19 @@ func execute(context: Dictionary) -> void:
 			var korea := ws.get_country_by_legacy_index(10)
 			var mongolia := ws.get_country_by_legacy_index(5)
 			if china != null:
-				china.government = 0
-				china.sub_government = 19
+				china.government = GameConstants.Government.AUTHORITARIAN
+				china.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			if korea != null:
-				korea.government = 0
-				korea.sub_government = 19
+				korea.government = GameConstants.Government.AUTHORITARIAN
+				korea.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			if mongolia != null:
-				mongolia.government = 0
-				mongolia.sub_government = 19
+				mongolia.government = GameConstants.Government.AUTHORITARIAN
+				mongolia.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				mongolia.set_tag("balecon", false)
 			for c in ws.countries:
 				if c == null:
 					continue
-				if c.government == 1 or c.sub_government == 0:
+				if c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 					c.set_tag("对华贸易", false)
 					c.set_tag("亲中", false)
 					c.set_tag("econ", false)
@@ -91,7 +91,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USSR, -500)
 			# 原版最后再次把中国 SubGosstroy 覆盖为 ChineseSubGosstroy()
 			if china != null:
-				china.government = 0
+				china.government = GameConstants.Government.AUTHORITARIAN
 				china.sub_government = _chinese_sub_government()
 		1:
 			context["result_text"] = TXT_R1
@@ -105,7 +105,7 @@ func _chinese_sub_government() -> int:
 	if d.size() <= W.I_TERRITORY:
 		return 13
 	var result := 13
-	if china.government == 0:
+	if china.government == GameConstants.Government.AUTHORITARIAN:
 		if _event_result("event_674") == 2:
 			result = 9
 		elif china.has_tag("nazimao"):
@@ -126,7 +126,7 @@ func _chinese_sub_government() -> int:
 			result = 7
 		else:
 			result = 13
-	elif china.government == 1:
+	elif china.government == GameConstants.Government.SOCIALIST:
 		if _mod_active(49):
 			result = 18
 		elif _mod_active(6) and _mod_active(3) and d[W.I_PARTY_SYSTEM] <= 7 and d[W.I_ECON_SYSTEM] <= 12 and d[W.I_RELIGION] <= 25:
@@ -137,7 +137,7 @@ func _chinese_sub_government() -> int:
 			result = 2
 		else:
 			result = 1
-	elif china.government == 2:
+	elif china.government == GameConstants.Government.REFORMIST:
 		if _mod_active(40):
 			result = 8
 		elif d[W.I_IDEOLOGY] >= 2 and d[W.I_ECON_SYSTEM] >= 13 and d[W.I_DIPLO] <= 700 and d[W.I_PARTY_SYSTEM] >= 8 and d[W.I_PRESS_POLICY] >= 18 and not china.has_tag("ovd"):
@@ -152,7 +152,7 @@ func _chinese_sub_government() -> int:
 			result = 21
 		else:
 			result = 15
-	elif china.government != 3:
+	elif china.government != GameConstants.Government.LIBERAL:
 		result = 13
 	elif d[W.I_ECON_SYSTEM] <= 13 and d[W.I_DIPLO] >= 500:
 		result = 4

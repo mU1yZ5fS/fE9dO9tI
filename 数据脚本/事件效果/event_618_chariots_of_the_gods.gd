@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -50)
 			_add(W.I_ARMY, -100)
-			if burkina != null and (burkina.sub_government == 0 or burkina.sub_government == 1 or burkina.sub_government == 15) \
+			if burkina != null and (burkina.sub_government == GameConstants.SubGovernment.LEFT_RADICAL or burkina.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST or burkina.sub_government == GameConstants.SubGovernment.PRAGMATIST) \
 					and _done("event_680") and _res_ev("event_680") == 1:
 				if cameroon != null:
 					_leave_alliances(cameroon)
@@ -67,13 +67,13 @@ func execute(context: Dictionary) -> void:
 				if burkina != null and ws.is_socialism(burkina, true):
 					text += TXT_R0_SOC
 					if cameroon != null:
-						cameroon.government = 1
-						cameroon.sub_government = 1
+						cameroon.government = GameConstants.Government.SOCIALIST
+						cameroon.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				else:
 					text += TXT_R0_NON
 					if cameroon != null:
-						cameroon.government = 2
-						cameroon.sub_government = 15
+						cameroon.government = GameConstants.Government.REFORMIST
+						cameroon.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				context["result_text"] = text
 			elif _done("event_680") and _res_ev("event_680") == 0 and not _done("event_617"):
 				context["result_text"] = TXT_R0_LEAK

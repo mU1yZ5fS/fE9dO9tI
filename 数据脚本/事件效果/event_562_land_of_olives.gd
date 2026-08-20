@@ -40,16 +40,16 @@ func execute(context: Dictionary) -> void:
 		0:
 			if ws.modifiers[6].is_active:
 				if c55 != null:
-					c55.government = 1
-					c55.sub_government = 17
+					c55.government = GameConstants.Government.SOCIALIST
+					c55.sub_government = GameConstants.SubGovernment.MAOIST
 					_leave_alliances(c55)
 					c55.set_tag("亲中", true)
 					c55.set_tag("对华贸易", true)
 				context["result_text"] = TXT_R0_A
 			else:
 				if c55 != null:
-					c55.government = 1
-					c55.sub_government = 1
+					c55.government = GameConstants.Government.SOCIALIST
+					c55.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					_leave_alliances(c55)
 					c55.set_tag("亲中", true)
 					c55.set_tag("对华贸易", true)
@@ -63,8 +63,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			_add(W.I_BUDGET, -100)
 			if c55 != null:
-				c55.government = 3
-				c55.sub_government = 5
+				c55.government = GameConstants.Government.LIBERAL
+				c55.sub_government = GameConstants.SubGovernment.MODERATE
 				_leave_alliances(c55)
 				c55.set_tag("亲中", true)
 				c55.set_tag("对华贸易", true)

@@ -124,12 +124,12 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 10
 			if target != null:
 				target.social_stability = 1000
-				if target.has_tag("美国盟友") and target.government != 0 and target.government != 3:
-					target.government = 2
-					target.sub_government = 15
-				elif target.has_tag("苏联盟友") and target.government != 0 and target.government != 1:
-					target.government = 2
-					target.sub_government = 15
+				if target.has_tag("美国盟友") and target.government != GameConstants.Government.AUTHORITARIAN and target.government != GameConstants.Government.LIBERAL:
+					target.government = GameConstants.Government.REFORMIST
+					target.sub_government = GameConstants.SubGovernment.PRAGMATIST
+				elif target.has_tag("苏联盟友") and target.government != GameConstants.Government.AUTHORITARIAN and target.government != GameConstants.Government.SOCIALIST:
+					target.government = GameConstants.Government.REFORMIST
+					target.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			context["result_text"] = TXT_R2_A + tname + TXT_R2_B
 		3:
 			ws.influence_prc -= 10
@@ -139,17 +139,17 @@ func execute(context: Dictionary) -> void:
 					target.set_tag("美国盟友", false)
 					_add(W.I_DIPLO, -30)
 					_add_relation(EmpireData.USA, 50)
-					if target.government != 0 and target.government != 3:
-						target.government = 1
-						target.sub_government = 15
+					if target.government != GameConstants.Government.AUTHORITARIAN and target.government != GameConstants.Government.LIBERAL:
+						target.government = GameConstants.Government.SOCIALIST
+						target.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				elif target.has_tag("苏联盟友"):
 					_add_power(EmpireData.USSR, 30)
 					target.set_tag("苏联盟友", false)
 					_add(W.I_DIPLO, 30)
 					_add_relation(EmpireData.USSR, 50)
-					if target.government != 0 and target.government != 1:
-						target.government = 2
-						target.sub_government = 15
+					if target.government != GameConstants.Government.AUTHORITARIAN and target.government != GameConstants.Government.SOCIALIST:
+						target.government = GameConstants.Government.REFORMIST
+						target.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			_add(W.I_AGENTS, -50)
 			_add(W.I_BUDGET, -10)
 			if target != null:
@@ -160,14 +160,14 @@ func execute(context: Dictionary) -> void:
 			if target != null:
 				if target.has_tag("美国盟友"):
 					_add_power(EmpireData.USA, 50)
-					if target.government != 0 and target.government != 3:
-						target.government = 3
-						target.sub_government = 12
+					if target.government != GameConstants.Government.AUTHORITARIAN and target.government != GameConstants.Government.LIBERAL:
+						target.government = GameConstants.Government.LIBERAL
+						target.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				elif target.has_tag("苏联盟友"):
 					_add_power(EmpireData.USSR, 50)
-					if target.government != 0 and target.government != 1:
-						target.government = 1
-						target.sub_government = 1
+					if target.government != GameConstants.Government.AUTHORITARIAN and target.government != GameConstants.Government.SOCIALIST:
+						target.government = GameConstants.Government.SOCIALIST
+						target.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				target.set_tag("亲中", false)
 				if target.has_tag("okb"):
 					target.social_stability = 1000

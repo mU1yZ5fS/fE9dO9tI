@@ -36,11 +36,11 @@ func evaluate(world: WorldState) -> bool:
 	if world == null or world.date.year < 1984 or world.date.month != 5:
 		return false
 	var c21 := world.get_country_by_legacy_index(21)
-	if c21 == null or c21.government != 3:
+	if c21 == null or c21.government != GameConstants.Government.LIBERAL:
 		return false
 	for idx in [85, 86, 87, 92, 45]:
 		var c := world.get_country_by_legacy_index(idx)
-		if c != null and c.government == 3:
+		if c != null and c.government == GameConstants.Government.LIBERAL:
 			return false
 	return true
 
@@ -64,7 +64,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_enable(opt[2], S_39)
 	_enable(opt[3], S_40)
 	var c1 := world.get_country_by_legacy_index(1)
-	if c1 != null and c1.sub_government == 19:
+	if c1 != null and c1.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_enable(opt[4], S_43)
 	else:
 		_disable(opt[4], S_47)
@@ -105,46 +105,46 @@ func execute(context: Dictionary) -> void:
 	var c92 := ws.get_country_by_legacy_index(92)
 	var c86 := ws.get_country_by_legacy_index(86)
 	var c87 := ws.get_country_by_legacy_index(87)
-	if (c85 != null and ws.is_socialism(c85, true)) or (c85 != null and c85.sub_government == 22):
+	if (c85 != null and ws.is_socialism(c85, true)) or (c85 != null and c85.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST):
 		num += 1
 	if c92 != null and ws.is_socialism(c92, true):
 		num += 1
-	if c92 != null and c92.sub_government == 18:
+	if c92 != null and c92.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		num2 += 2
 	if _sub(44) == 18:
 		num2 += 2
 	if _sub(1) == 18:
 		num2 += 2
-	if c92 != null and c92.sub_government == 7:
+	if c92 != null and c92.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		num3 += 1
-	if c86 != null and c86.sub_government == 7:
+	if c86 != null and c86.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		num3 += 1
-	if c86 != null and c86.sub_government == 9:
+	if c86 != null and c86.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num3 += 1
-	if c85 != null and c85.sub_government == 7:
+	if c85 != null and c85.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		num3 += 1
-	if c85 != null and c85.sub_government == 9:
+	if c85 != null and c85.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num3 += 1
-	if c87 != null and c87.sub_government == 7:
+	if c87 != null and c87.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		num3 += 1
-	if c85 != null and c85.sub_government == 22:
+	if c85 != null and c85.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
 		num3 += 3
 	var num4 := 0
 	for c in ws.countries:
-		if c != null and c.原版序号 != 0 and c.sub_government == 19:
+		if c != null and c.原版序号 != 0 and c.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 			num4 += 1
 	if num4 >= 7 and opt == 4:
 		if france != null:
-			france.government = 0
-			france.sub_government = 19
+			france.government = GameConstants.Government.AUTHORITARIAN
+			france.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			_leave_alliances(france)
 			france.name = S_151
 			france.set_tag("亲中", true)
 			france.set_tag("对华贸易", true)
 		var c154 := ws.get_country_by_legacy_index(154)
 		if c154 != null:
-			c154.government = 0
-			c154.sub_government = 19
+			c154.government = GameConstants.Government.AUTHORITARIAN
+			c154.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			_leave_alliances(c154)
 			c154.name = S_157
 			c154.set_tag("亲中", true)
@@ -154,8 +154,8 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = S_147
 	elif num >= num2 and num >= num3:
 		if france != null:
-			france.government = 1
-			france.sub_government = 17
+			france.government = GameConstants.Government.SOCIALIST
+			france.sub_government = GameConstants.SubGovernment.MAOIST
 			_leave_alliances(france)
 			if opt == 0:
 				france.set_tag("对华贸易", true)
@@ -165,8 +165,8 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = S_165
 	elif num2 >= num and num2 >= num3:
 		if france != null:
-			france.government = 1
-			france.sub_government = 18
+			france.government = GameConstants.Government.SOCIALIST
+			france.sub_government = GameConstants.SubGovernment.TROTSKYIST
 			_leave_alliances(france)
 			if opt == 1:
 				france.set_tag("对华贸易", true)
@@ -175,11 +175,11 @@ func execute(context: Dictionary) -> void:
 				if _sub(1) == 18:
 					_join_our_alliances(france)
 		context["result_text"] = S_179
-	elif (c86 != null and c86.sub_government == 22) or (c92 != null and c92.sub_government == 22):
-		if c85 != null and c85.sub_government == 22:
+	elif (c86 != null and c86.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST) or (c92 != null and c92.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST):
+		if c85 != null and c85.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
 			if france != null:
-				france.government = 0
-				france.sub_government = 22
+				france.government = GameConstants.Government.AUTHORITARIAN
+				france.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 				_leave_alliances(france)
 				if opt == 2:
 					ws.influence_prc += 50
@@ -188,8 +188,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = S_198
 		else:
 			if france != null:
-				france.government = 0
-				france.sub_government = 22
+				france.government = GameConstants.Government.AUTHORITARIAN
+				france.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 				_leave_alliances(france)
 				if opt == 2:
 					ws.influence_prc += 50
@@ -197,8 +197,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = S_211
 	else:
 		if france != null:
-			france.government = 0
-			france.sub_government = 9
+			france.government = GameConstants.Government.AUTHORITARIAN
+			france.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(france)
 			if opt == 2:
 				france.set_tag("对华贸易", true)
@@ -207,7 +207,7 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = S_224
 	if france == null:
 		return
-	if france.sub_government != 22 and france.sub_government != 9 and france.sub_government != 19:
+	if france.sub_government != GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST and france.sub_government != GameConstants.SubGovernment.NEO_FASCIST and france.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		for c in ws.countries:
 			if c != null and c.puppet_of == 21:
 				c.puppet_of = -1
@@ -216,7 +216,7 @@ func execute(context: Dictionary) -> void:
 				c.set_tag("亲苏", false)
 				c.set_tag("亲美", true)
 		return
-	if france.sub_government == 19 and _sub_has_econ(1):
+	if france.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST and _sub_has_econ(1):
 		for c in ws.countries:
 			if c != null and c.puppet_of == 21:
 				c.set_tag("econ", true)

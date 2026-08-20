@@ -35,7 +35,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if c85.influence_china <= 0:
 		return false
-	if c85.sub_government == 8:
+	if c85.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE:
 		return false
 	var r293 := int(world.completed_event_ids.get("event_293", 0))
 	if r293 < 0 or r293 > 2:
@@ -44,7 +44,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.completed_event_ids.has("event_556") or world.completed_event_ids.has("event_396") or world.completed_event_ids.has("event_401"):
 		return false
-	if c85.sub_government == 20:
+	if c85.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 		return false
 	var y := dd[W.I_YEAR]
 	var mo := dd[W.I_MONTH]
@@ -64,7 +64,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c45 := world.get_country_by_legacy_index(45)
 	var c51 := world.get_country_by_legacy_index(51)
 	var line := d[W.I_POLITICAL_LINE]
-	if line != 0 and line != 4 and not ws.modifiers[3].is_active and c45 != null and c45.government == 2 			and c45 != null and not c45.内战中 and c15 != null and c15.government == 2 			and ws.influence_prc >= 400 and not is_auth(c1) and not ws.is_socialism(c1, true) 			and (c15 != null and (c15.内战中 or c1 != null and c1.has_tag("econ"))) and c15 != null and c15.sub_government == 11:
+	if line != 0 and line != 4 and not ws.modifiers[3].is_active and c45 != null and c45.government == GameConstants.Government.REFORMIST 			and c45 != null and not c45.内战中 and c15 != null and c15.government == GameConstants.Government.REFORMIST 			and ws.influence_prc >= 400 and not is_auth(c1) and not ws.is_socialism(c1, true) 			and (c15 != null and (c15.内战中 or c1 != null and c1.has_tag("econ"))) and c15 != null and c15.sub_government == GameConstants.SubGovernment.TITOIST:
 		_enable(opt[0], event_def.options[0].text)
 	elif line == 0 or line == 4 or ws.modifiers[3].is_active:
 		_disable(opt[0], TXT_OPT0_DIS_TAO)
@@ -79,9 +79,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[1], TXT_OPT1_DIS_REV)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_NO)
-	if line > 2 and c1 != null and c1.sub_government == 4 and d[181] >= d[178] and d[181] >= d[179] 			and d[181] >= d[180] and c51 != null and c51.has_tag("对华贸易") and ws.modifiers[43].is_active:
+	if line > 2 and c1 != null and c1.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT and d[181] >= d[178] and d[181] >= d[179] 			and d[181] >= d[180] and c51 != null and c51.has_tag("对华贸易") and ws.modifiers[43].is_active:
 		_enable(opt[2], event_def.options[2].text)
-	elif line <= 2 or (c1 != null and c1.sub_government != 4):
+	elif line <= 2 or (c1 != null and c1.sub_government != GameConstants.SubGovernment.SOCIAL_DEMOCRAT):
 		_disable(opt[2], TXT_OPT2_DIS_REV)
 	elif (c51 == null or not c51.has_tag("对华贸易")) or not ws.modifiers[43].is_active:
 		_disable(opt[2], TXT_OPT2_DIS_GUA)
@@ -90,7 +90,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 
 func is_auth(c: CountryData) -> bool:
-	return c != null and c.government == 0 and c.sub_government != 0
+	return c != null and c.government == GameConstants.Government.AUTHORITARIAN and c.sub_government != GameConstants.SubGovernment.LEFT_RADICAL
 
 
 func execute(context: Dictionary) -> void:
@@ -110,8 +110,8 @@ func execute(context: Dictionary) -> void:
 				ws.influence_prc -= 5
 				_set_data(182, 0)
 				if c85 != null:
-					c85.government = 0
-					c85.sub_government = 20
+					c85.government = GameConstants.Government.AUTHORITARIAN
+					c85.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					c85.set_tag("亲美", true)
 					c85.set_tag("对华贸易", false)
 					c85.influence_china = 0
@@ -146,8 +146,8 @@ func execute(context: Dictionary) -> void:
 				ws.influence_prc -= 5
 				_set_data(182, 0)
 				if c85 != null:
-					c85.government = 0
-					c85.sub_government = 20
+					c85.government = GameConstants.Government.AUTHORITARIAN
+					c85.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					c85.set_tag("亲美", true)
 					c85.influence_china = 0
 				context["result_text"] = TXT_R1_COUP
@@ -172,8 +172,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USSR, -150)
 			_add_relation(EmpireData.USA, 50)
 			if c85 != null:
-				c85.government = 3
-				c85.sub_government = 4
+				c85.government = GameConstants.Government.LIBERAL
+				c85.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			context["result_text"] = TXT_R2
 		3:
 			context["result_text"] = TXT_R3

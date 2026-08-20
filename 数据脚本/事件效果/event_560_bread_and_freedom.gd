@@ -47,7 +47,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	var line := d[W.I_POLITICAL_LINE]
-	if line > 1 and line < 4 and c86 != null and c86.sub_government == 11:
+	if line > 1 and line < 4 and c86 != null and c86.sub_government == GameConstants.SubGovernment.TITOIST:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
@@ -71,8 +71,8 @@ func execute(context: Dictionary) -> void:
 						c54.parts[0] = false
 					if c18 != null:
 						c18.special = 0
-						c18.government = 2
-						c18.sub_government = 15
+						c18.government = GameConstants.Government.REFORMIST
+						c18.sub_government = GameConstants.SubGovernment.PRAGMATIST
 						c18.set_tag("对华贸易", true)
 					ws.influence_prc += 5
 				else:
@@ -82,14 +82,14 @@ func execute(context: Dictionary) -> void:
 						c54.parts[0] = false
 					if c18 != null:
 						c18.special = 0
-						c18.government = 1
-						c18.sub_government = 2
+						c18.government = GameConstants.Government.SOCIALIST
+						c18.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 						c18.set_tag("对华贸易", true)
 						c18.set_tag("亲中", true)
 					ws.influence_prc += 20
 				if c54 != null:
-					c54.government = 1
-					c54.sub_government = 2
+					c54.government = GameConstants.Government.SOCIALIST
+					c54.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 					_leave_alliances(c54)
 					c54.set_tag("亲中", true)
 					c54.name = "摩洛哥人民共和国"
@@ -102,8 +102,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				text += TXT_R0_LIB
 				if c54 != null:
-					c54.government = 3
-					c54.sub_government = 6
+					c54.government = GameConstants.Government.LIBERAL
+					c54.sub_government = GameConstants.SubGovernment.LIBERAL
 					_leave_alliances(c54)
 					c54.set_tag("亲中", true)
 					c54.name = "摩洛哥王国"
@@ -126,8 +126,8 @@ func execute(context: Dictionary) -> void:
 			text += TXT_R1_TAIL
 			_add(W.I_BUDGET, -100)
 			if c54 != null:
-				c54.government = 2
-				c54.sub_government = 11
+				c54.government = GameConstants.Government.REFORMIST
+				c54.sub_government = GameConstants.SubGovernment.TITOIST
 				_leave_alliances(c54)
 				c54.set_tag("亲中", true)
 				c54.name = "摩洛哥人民联邦王国"

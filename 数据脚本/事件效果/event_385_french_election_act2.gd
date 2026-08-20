@@ -153,7 +153,7 @@ func execute(context: Dictionary) -> void:
 				portugal.special += 10
 		elif num == 1:
 			if france != null:
-				france.sub_government = 4
+				france.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			ws.modifiers[42].is_active = false
 			ws.modifiers[43].is_active = true
 			d[131] = 1  # 原版 data[131]
@@ -163,11 +163,11 @@ func execute(context: Dictionary) -> void:
 		elif num == 2:
 			if france != null:
 				if not ws.get_flag("YugAgree"):
-					france.sub_government = 14
-					france.government = 2
+					france.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
+					france.government = GameConstants.Government.REFORMIST
 				else:
-					france.sub_government = 3
-					france.government = 2
+					france.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
+					france.government = GameConstants.Government.REFORMIST
 			ws.modifiers[42].is_active = false
 			ws.modifiers[44].is_active = true
 			d[131] = 2  # 原版 data[131]
@@ -176,7 +176,7 @@ func execute(context: Dictionary) -> void:
 				portugal3.special -= 10
 		else:
 			if france != null:
-				france.sub_government = 5
+				france.sub_government = GameConstants.SubGovernment.MODERATE
 			ws.modifiers[42].is_active = false
 			ws.modifiers[45].is_active = true
 			d[131] = 3  # 原版 data[131]
@@ -195,18 +195,18 @@ func execute(context: Dictionary) -> void:
 			d[131] = 0  # 原版 data[131]
 		elif infl_ch == 1:
 			if france != null:
-				france.sub_government = 4
+				france.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			ws.modifiers[42].is_active = false
 			ws.modifiers[43].is_active = true
 			d[131] = 1  # 原版 data[131]
 		elif infl_ch == 2:
 			if france != null:
 				if not ws.get_flag("YugAgree"):
-					france.sub_government = 14
-					france.government = 2
+					france.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
+					france.government = GameConstants.Government.REFORMIST
 				else:
-					france.sub_government = 3
-					france.government = 2
+					france.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
+					france.government = GameConstants.Government.REFORMIST
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null 					and ws.empires[EmpireData.USSR].leaders.size() > 6:
 				ws.empires[EmpireData.USSR].leaders[6].support += 1
 			ws.modifiers[42].is_active = false
@@ -214,7 +214,7 @@ func execute(context: Dictionary) -> void:
 			d[131] = 2  # 原版 data[131]
 		else:
 			if france != null:
-				france.sub_government = 5
+				france.sub_government = GameConstants.SubGovernment.MODERATE
 			ws.modifiers[42].is_active = false
 			ws.modifiers[45].is_active = true
 			d[131] = 3  # 原版 data[131]
@@ -247,11 +247,11 @@ func _compute_press(world: WorldState) -> Array:
 		press[0] -= 1
 	if poland != null and poland.puppet_of == 7:
 		press[0] -= 1
-	if hungary != null and hungary.government == 1:
+	if hungary != null and hungary.government == GameConstants.Government.SOCIALIST:
 		press[0] += 1
-	if ethiopia != null and ethiopia.government == 2:
+	if ethiopia != null and ethiopia.government == GameConstants.Government.REFORMIST:
 		press[0] += 1
-	if iran != null and iran.government == 1:
+	if iran != null and iran.government == GameConstants.Government.SOCIALIST:
 		press[0] += 1
 	if china != null and china.has_tag("ovd"):
 		press[0] += 1
@@ -278,9 +278,9 @@ func _compute_press(world: WorldState) -> Array:
 		press[1] += 1
 	if china != null and china.has_tag("okb"):
 		press[1] += 1
-	if iran != null and iran.government == 3:
+	if iran != null and iran.government == GameConstants.Government.LIBERAL:
 		press[1] += 1
-	if afghan != null and not afghan.has_tag("亲中") and afghan.government == 0:
+	if afghan != null and not afghan.has_tag("亲中") and afghan.government == GameConstants.Government.AUTHORITARIAN:
 		press[1] += 1
 	if world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null 			and world.empires[EmpireData.USA].power > world.empires[EmpireData.USSR].power:
 		press[1] += 1
@@ -297,13 +297,13 @@ func _compute_press(world: WorldState) -> Array:
 		press[2] += 2
 	if italy != null and italy.内战中:
 		press[2] += 1
-	if iran != null and iran.has_tag("亲美") and iran.government == 0:
+	if iran != null and iran.has_tag("亲美") and iran.government == GameConstants.Government.AUTHORITARIAN:
 		press[2] += 1
 	if _mod_active(3):
 		press[2] += 1
-	if portugal != null and portugal.sub_government == 5:
+	if portugal != null and portugal.sub_government == GameConstants.SubGovernment.MODERATE:
 		press[2] += 1
-	if spain != null and spain.government == 2:
+	if spain != null and spain.government == GameConstants.Government.REFORMIST:
 		press[2] += 1
 	if nkorea != null and nkorea.has_tag("亲中"):
 		press[2] += 1
@@ -314,31 +314,31 @@ func _compute_press(world: WorldState) -> Array:
 	if china != null and (china.has_tag("sev") or china.has_tag("asean")):
 		press[2] -= 2
 	# press[3]（密特朗）
-	if hungary != null and hungary.government == 2:
+	if hungary != null and hungary.government == GameConstants.Government.REFORMIST:
 		press[3] += 1
 	if int(world.completed_event_ids.get("event_384", 0)) == 0 and world.completed_event_ids.has("event_384"):
 		press[3] += 2
-	if iran != null and iran.sub_government == 20:
+	if iran != null and iran.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 		press[3] += 1
 	if china != null and not china.has_tag("okb") and not china.has_tag("ovd") and not china.has_tag("seato"):
 		press[3] += 1
 	var war5 := world.wars[5] if world.wars.size() > 5 else null
 	if war5 != null and war5.is_going:
 		press[3] += 1
-	if usa != null and usa.sub_government == 12:
+	if usa != null and usa.sub_government == GameConstants.SubGovernment.NEOLIBERAL:
 		press[3] += 1
-	if italy != null and italy.sub_government == 6:
+	if italy != null and italy.sub_government == GameConstants.SubGovernment.LIBERAL:
 		press[3] += 1
-	if portugal != null and portugal.sub_government == 6:
+	if portugal != null and portugal.sub_government == GameConstants.SubGovernment.LIBERAL:
 		press[3] += 1
-	if spain != null and spain.sub_government == 6:
+	if spain != null and spain.sub_government == GameConstants.SubGovernment.LIBERAL:
 		press[3] += 1
 	if world.is_socialism(china, false) and _d(W.I_PARTY_SYSTEM) >= 30:
 		press[3] += 1
 	var war3 := world.wars[3] if world.wars.size() > 3 else null
 	if war3 != null and war3.is_going:
 		press[3] += 1
-	if china != null and china.government == 2:
+	if china != null and china.government == GameConstants.Government.REFORMIST:
 		press[3] += 1
 	return press
 

@@ -1,7 +1,7 @@
 extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event652.cs：非洲大逃杀（塞拉利昂莫莫改革，四选项）。
-## 触发：TimeScript.cs 11035-11039 —— (月>=4 且 年>=1985 或 年>=1986) && c107.sub_government != 12。
+## 触发：TimeScript.cs 11035-11039 —— (月>=4 且 年>=1985 或 年>=1986) && c107.sub_government != GameConstants.SubGovernment.NEOLIBERAL。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线 / c107 对华贸易 / c107 内战 / c13 利比亚对华贸易 / c51 美国发展度与美领导人）。
 ##  - War 78：GameManager.start_war(78,...) + fortnight_max=40（TickTime(40)）；
@@ -82,16 +82,16 @@ func execute(context: Dictionary) -> void:
 			if sierra != null:
 				_leave_alliances(sierra)
 				sierra.set_tag("对华贸易", true)
-				sierra.government = 2
-				sierra.sub_government = 15
+				sierra.government = GameConstants.Government.REFORMIST
+				sierra.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				sierra.set_tag("亲中", true)
 			_add(W.I_BUDGET, -80)
 			ws.influence_prc += 10
 			context["result_text"] = TXT_R0
 		1:
 			if sierra != null:
-				sierra.government = 0
-				sierra.sub_government = 7
+				sierra.government = GameConstants.Government.AUTHORITARIAN
+				sierra.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(sierra)
 				sierra.set_tag("亲美", true)
 				_set_parts(sierra, 0, true)
@@ -114,15 +114,15 @@ func execute(context: Dictionary) -> void:
 		2:
 			if sierra != null:
 				_leave_alliances(sierra)
-				sierra.government = 0
-				sierra.sub_government = 7
+				sierra.government = GameConstants.Government.AUTHORITARIAN
+				sierra.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				sierra.set_tag("亲美", true)
 				sierra.set_tag("对华贸易", true)
 			context["result_text"] = TXT_R2
 		3:
 			if sierra != null:
-				sierra.government = 2
-				sierra.sub_government = 15
+				sierra.government = GameConstants.Government.REFORMIST
+				sierra.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			context["result_text"] = TXT_R3
 
 

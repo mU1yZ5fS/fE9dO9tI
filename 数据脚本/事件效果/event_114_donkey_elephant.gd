@@ -9,7 +9,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - allcountries[1]（中国）isASEAN/isSEATO：项目无对应 tag → 差异注释，按假跳过
 ##  - resultOfEvents[46]==2 / event_done[455]：移植说明事件 → 按假跳过（注释差异）
 ##  - allcountries[84].Gosstroy → legacy 84 government；allcountries[8] → legacy 8
-##  - allcountries[51].SubGosstroy=12 → legacy 51（美国）sub_government=12
+##  - allcountries[51].SubGosstroy=12 → legacy 51（美国）sub_government = GameConstants.SubGovernment.NEOLIBERAL
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -50,12 +50,12 @@ func execute(context: Dictionary) -> void:
 	if w5 != null and w5.is_going:
 		num += 1
 	var c84 := ws.get_country_by_legacy_index(84)
-	if c84 != null and c84.government == 0:
+	if c84 != null and c84.government == GameConstants.Government.AUTHORITARIAN:
 		num += 1
 	else:
 		num2 += 1
 	var c8 := ws.get_country_by_legacy_index(8)
-	if c8 != null and (c8.government == 3 or c8.有驻军基地):
+	if c8 != null and (c8.government == GameConstants.Government.LIBERAL or c8.有驻军基地):
 		num2 += 1
 	else:
 		num += 1
@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 			d[143] -= 2
 		var usa_country := ws.get_country_by_legacy_index(51)
 		if usa_country != null:
-			usa_country.sub_government = 12
+			usa_country.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		context["result_text"] = "选举结束后，卡特被里根击败。由于对油价上涨和外交政策失败所导致的通胀和失业率上升感到不满，美国人选择了追随共和党人的民粹主义口号。现在，在里根的领导下，美国正等待着与苏联进行新一轮的积极对抗。"
 	else:
 		context["result_text"] = "选举结果尚未揭晓。"

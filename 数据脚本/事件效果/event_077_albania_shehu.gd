@@ -57,8 +57,8 @@ func execute(context: Dictionary) -> void:
 				d[W.I_ALBANIA_BREAK] = 1
 			_add_relation(EmpireData.USSR, 50)
 			if albania != null:
-				albania.government = 1
-				albania.sub_government = 1
+				albania.government = GameConstants.Government.SOCIALIST
+				albania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				albania.set_tag("对华贸易", true)
 				albania.set_tag("亲中", true)
 			context["result_text"] = text
@@ -66,14 +66,14 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USSR, -10)
 			ws.influence_prc -= 10
 			if albania != null:
-				albania.government = 0
-				albania.sub_government = 0
+				albania.government = GameConstants.Government.AUTHORITARIAN
+				albania.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 			context["result_text"] = TXT_R1
 		2:
 			_add(W.I_DIPLO, 20)
 			if albania != null:
-				albania.government = 0
-				albania.sub_government = 0
+				albania.government = GameConstants.Government.AUTHORITARIAN
+				albania.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 			context["result_text"] = TXT_R2
 
 

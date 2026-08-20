@@ -50,7 +50,7 @@ func execute(context: Dictionary) -> void:
 			if portugal != null:
 				portugal.special += 10
 			if italy != null:
-				italy.sub_government = 6
+				italy.sub_government = GameConstants.SubGovernment.LIBERAL
 		1:
 			context["result_text"] = TXT_R1
 			_add(W.I_BUDGET, -80)
@@ -62,7 +62,7 @@ func execute(context: Dictionary) -> void:
 			if portugal != null:
 				portugal.special += 10
 			if italy != null:
-				italy.sub_government = 6
+				italy.sub_government = GameConstants.SubGovernment.LIBERAL
 		_:
 			context["result_text"] = TXT_R2
 			_add(W.I_BUDGET, -60)
@@ -77,7 +77,7 @@ func execute(context: Dictionary) -> void:
 			if portugal != null:
 				portugal.special += 10
 			if italy != null:
-				italy.sub_government = 6
+				italy.sub_government = GameConstants.SubGovernment.LIBERAL
 
 
 

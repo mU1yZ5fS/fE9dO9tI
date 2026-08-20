@@ -61,10 +61,10 @@ func evaluate(world: WorldState) -> bool:
 	if data.size() <= W.I_YEAR or data[W.I_YEAR] <= 1983:
 		return false
 	var uk := world.get_country_by_legacy_index(92)
-	if uk == null or uk.sub_government != 18:
+	if uk == null or uk.sub_government != GameConstants.SubGovernment.TROTSKYIST:
 		return false
 	var china := world.get_country_by_legacy_index(1)
-	if china == null or china.government != 1 or not china.has_tag("okb"):
+	if china == null or china.government != GameConstants.Government.SOCIALIST or not china.has_tag("okb"):
 		return false
 	var mod6_active := world.modifiers.size() > 6 and world.modifiers[6] != null and world.modifiers[6].is_active
 	return not mod6_active
@@ -111,7 +111,7 @@ func execute(context: Dictionary) -> void:
 		if china != null:
 			china.sub_government = china.sub_government
 		for c in ws.countries:
-			if c != null and c.has_tag("okb") and c.sub_government != 18:
+			if c != null and c.has_tag("okb") and c.sub_government != GameConstants.SubGovernment.TROTSKYIST:
 				c.set_tag("对华贸易", false)
 				c.set_tag("econ", false)
 				c.set_tag("okb", false)

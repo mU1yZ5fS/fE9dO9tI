@@ -98,7 +98,7 @@ func evaluate(world: WorldState) -> bool:
 	if num2 >= 3:
 		return false
 	var poland := world.get_country_by_legacy_index(4)
-	if poland != null and poland.sub_government == 19:
+	if poland != null and poland.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		return false
 	return true
 

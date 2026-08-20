@@ -37,10 +37,10 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		_disable(opt[0], TXT_OPT0_DIS_A)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS_B)
-	if china != null and china.government != 3 and ws.get_flag("relres") \
+	if china != null and china.government != GameConstants.Government.LIBERAL and ws.get_flag("relres") \
 			and china.has_tag("sev"):
 		_enable(opt[1], event_def.options[1].text)
-	elif china != null and china.government == 3:
+	elif china != null and china.government == GameConstants.Government.LIBERAL:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
@@ -69,8 +69,8 @@ func execute(context: Dictionary) -> void:
 	else:
 		if finland != null:
 			finland.set_tag("亲苏", true)
-			finland.government = 2
-			finland.sub_government = 3
+			finland.government = GameConstants.Government.REFORMIST
+			finland.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 	if opt == 0:
 		var leader := _leader_name()
 		var plan_author := _plan_author_name()
@@ -182,11 +182,11 @@ func _apply_soviet_turn(c: CountryData, ussr: EmpireData) -> void:
 	c.prc_power = 0
 	c.sov_power = 1000
 	if ussr != null and ussr.current_leader == 6:
-		c.government = 2
-		c.sub_government = 14
+		c.government = GameConstants.Government.REFORMIST
+		c.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 	else:
-		c.government = 1
-		c.sub_government = 1
+		c.government = GameConstants.Government.SOCIALIST
+		c.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 	c.set_tag("亲苏", true)
 	c.set_tag("对华贸易", true)
 	c.set_tag("sev", true)
@@ -196,11 +196,11 @@ func _apply_soviet_turn(c: CountryData, ussr: EmpireData) -> void:
 ## 原版 result1 的 c26 单独块（不动势力值）。
 func _apply_finland_turn(c: CountryData, ussr: EmpireData) -> void:
 	if ussr != null and ussr.current_leader == 6:
-		c.government = 2
-		c.sub_government = 14
+		c.government = GameConstants.Government.REFORMIST
+		c.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 	else:
-		c.government = 1
-		c.sub_government = 1
+		c.government = GameConstants.Government.SOCIALIST
+		c.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 	c.set_tag("亲苏", true)
 	c.set_tag("对华贸易", true)
 	c.set_tag("sev", true)

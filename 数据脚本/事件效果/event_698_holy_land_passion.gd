@@ -53,4 +53,4 @@ func evaluate(world: WorldState) -> bool:
 	if world == null or world.date == null or world.date.to_int() < 19791120:
 		return false
 	var c8 := world.get_country_by_legacy_index(8)
-	return c8 == null or c8.sub_government != 13
+	return c8 == null or c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL

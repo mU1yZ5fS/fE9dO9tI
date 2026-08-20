@@ -235,30 +235,30 @@ func _compute_num(world: WorldState) -> int:
 	var num := 0
 	var c := world.get_country_by_legacy_index(2)
 	if c != null:
-		if c.sub_government == 0:
+		if c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 			num += 3
-		if c.government == 1:
+		if c.government == GameConstants.Government.SOCIALIST:
 			num += 1
 	c = world.get_country_by_legacy_index(19)
 	if c != null:
-		if c.sub_government == 17:
+		if c.sub_government == GameConstants.SubGovernment.MAOIST:
 			num += 1
-		if c.government == 1 or c.sub_government == 0:
+		if c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 			num += 3
 	for idx in [33, 11, 22, 47, 23]:
 		c = world.get_country_by_legacy_index(idx)
-		if c != null and (c.government == 1 or c.sub_government == 0):
+		if c != null and (c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 			num += 1
 	for idx in [34, 8, 86]:
 		c = world.get_country_by_legacy_index(idx)
-		if c != null and (c.government == 1 or c.sub_government == 0):
+		if c != null and (c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 			num += 2
 	c = world.get_country_by_legacy_index(86)
 	if c != null and c.has_tag("亲中"):
 		num += 1
 	c = world.get_country_by_legacy_index(87)
 	if c != null:
-		if c.government == 1 or c.sub_government == 0:
+		if c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 			num += 1
 		if c.has_tag("亲中"):
 			num += 1
@@ -266,29 +266,29 @@ func _compute_num(world: WorldState) -> int:
 	if c != null:
 		if c.has_tag("亲中"):
 			num += 1
-		if c.government == 1 or c.sub_government == 0:
+		if c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 			num += 1
 		if c.has_tag("亲苏"):
 			num -= 1
-		if c.sub_government == 17:
+		if c.sub_government == GameConstants.SubGovernment.MAOIST:
 			num += 1
 	c = world.get_country_by_legacy_index(44)
-	if c != null and c.government == 1:
+	if c != null and c.government == GameConstants.Government.SOCIALIST:
 		num += 3
 	c = world.get_country_by_legacy_index(12)
-	if c != null and c.sub_government == 17:
+	if c != null and c.sub_government == GameConstants.SubGovernment.MAOIST:
 		num += 2
 	c = world.get_country_by_legacy_index(24)
 	if c != null:
-		if c.government == 1 or c.sub_government == 0:
+		if c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 			num += 1
 		if c.has_tag("亲中") and c.parts.size() > 0 and c.parts[0]:
 			num += 2
 	c = world.get_country_by_legacy_index(49)
-	if c != null and (c.government == 1 or c.sub_government == 0):
+	if c != null and (c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 		num += 1
 	c = world.get_country_by_legacy_index(85)
-	if c != null and (c.government == 1 or c.sub_government == 0):
+	if c != null and (c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 		num += 3
 	for idx in [74, 80, 35, 14, 104, 42, 50]:
 		c = world.get_country_by_legacy_index(idx)
@@ -298,7 +298,7 @@ func _compute_num(world: WorldState) -> int:
 	if c != null and world.is_socialism(c, true):
 		num += 1  # 74 额外 +1（原版 +2 总计）
 	c = world.get_country_by_legacy_index(10)
-	if c != null and c.government != 1 and c.sub_government != 0:
+	if c != null and c.government != GameConstants.Government.SOCIALIST and c.sub_government != GameConstants.SubGovernment.LEFT_RADICAL:
 		num -= 1
 	c = world.get_country_by_legacy_index(20)
 	if c == null or not c.has_tag("亲中"):

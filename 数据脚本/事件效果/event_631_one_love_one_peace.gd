@@ -66,8 +66,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -2500)
 			_add(W.I_ARMY, -2500)
 			if jamaica != null:
-				jamaica.government = 0
-				jamaica.sub_government = 13
+				jamaica.government = GameConstants.Government.AUTHORITARIAN
+				jamaica.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 				_leave_alliances(jamaica)
 				jamaica.set_tag("对华贸易", true)
 				jamaica.set_tag("亲中", true)

@@ -98,7 +98,7 @@ func execute(context: Dictionary) -> void:
 	else:
 		num += 1
 	var china := ws.get_country_by_legacy_index(1)
-	if china != null and china.government == 3:
+	if china != null and china.government == GameConstants.Government.LIBERAL:
 		num2 += 1
 	else:
 		num += 1
@@ -147,7 +147,7 @@ func execute(context: Dictionary) -> void:
 			usa.current_leader = 2
 		var us := ws.get_country_by_legacy_index(51)
 		if us != null:
-			us.sub_government = 12
+			us.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		if usa != null and usa.current_leader == 0:
 			context["result_text"] = TXT_R[1]
 		else:

@@ -71,8 +71,8 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if c106 != null:
-				c106.government = 2
-				c106.sub_government = 15
+				c106.government = GameConstants.Government.REFORMIST
+				c106.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_leave_alliances(c106)
 				c106.set_tag("对华贸易", true)
 				c106.set_tag("亲中", true)
@@ -104,8 +104,8 @@ func execute(context: Dictionary) -> void:
 				text += TXT_R1_END
 				_add(W.I_ARMY, -50)
 				if c106 != null:
-					c106.government = 0
-					c106.sub_government = 10
+					c106.government = GameConstants.Government.AUTHORITARIAN
+					c106.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 					c106.set_tag("对华贸易", true)
 				_add_relation(EmpireData.USA, -100)
 				_add(W.I_DIPLO, 5)

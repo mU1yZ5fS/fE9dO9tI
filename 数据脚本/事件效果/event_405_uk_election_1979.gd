@@ -40,7 +40,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var uk := ws.get_country_by_legacy_index(92)
 	if uk != null:
-		uk.sub_government = 12
+		uk.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 	_add_power(EmpireData.USA, 10)
 	if 57 < ws.modifiers.size() and ws.modifiers[57] != null:
 		ws.modifiers[57].is_active = true

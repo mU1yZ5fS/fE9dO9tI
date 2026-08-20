@@ -96,8 +96,8 @@ func _event_33(option_index: int) -> void:
 			_add_empire_power(EmpireData.USA, 30)
 			d[W.I_THOUGHT_FREEDOM] += 30
 			if pakistan != null:
-				pakistan.government = 0
-				pakistan.sub_government = 7
+				pakistan.government = GameConstants.Government.AUTHORITARIAN
+				pakistan.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				pakistan.set_tag("亲美", true)
 				pakistan.set_tag("亲中", false)
 				pakistan.set_tag("对华贸易", false)
@@ -105,8 +105,8 @@ func _event_33(option_index: int) -> void:
 			_add_empire_relation(EmpireData.USA, -100)
 			_add_data({W.I_INFLUENCE: 20, W.I_AGENTS: -60, W.I_BUDGET: -30})
 			if pakistan != null:
-				pakistan.government = 2
-				pakistan.sub_government = 3
+				pakistan.government = GameConstants.Government.REFORMIST
+				pakistan.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				pakistan.set_tag("亲美", false)
 				pakistan.set_tag("亲中", true)
 				pakistan.set_tag("sento", false)  # 帮助布托后巴基斯坦退出中央条约（CENTO）
@@ -118,8 +118,8 @@ func _event_33(option_index: int) -> void:
 			_add_empire_relation(EmpireData.USSR, -50)
 			_add_empire_power(EmpireData.USA, 20)
 			if pakistan != null:
-				pakistan.government = 0
-				pakistan.sub_government = 7
+				pakistan.government = GameConstants.Government.AUTHORITARIAN
+				pakistan.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				pakistan.set_tag("亲美", true)
 				pakistan.set_tag("亲中", false)
 
@@ -185,8 +185,8 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 			_add_data({W.I_BUDGET: -50, W.I_AGENTS: -50})
 			if iraq != null:
 				_leave_alliances(iraq)
-				iraq.government = 2
-				iraq.sub_government = 15
+				iraq.government = GameConstants.Government.REFORMIST
+				iraq.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				iraq.set_tag("对华贸易", true)
 			ws.oil_prod += 200.0  # Event36.cs result0：扩大石油出口
 			d[W.I_INFLUENCE] += 10
@@ -195,16 +195,16 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 			_add_data({W.I_BUDGET: -50, W.I_AGENTS: -50})
 			if iraq != null:
 				_leave_alliances(iraq)
-				iraq.government = 0
-				iraq.sub_government = 10
+				iraq.government = GameConstants.Government.AUTHORITARIAN
+				iraq.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				iraq.set_tag("对华贸易", true)
 			ws.oil_prod += 200.0  # Event36.cs result1：扩大石油出口
 			d[W.I_INFLUENCE] += 10
 			_add_empire_relation(EmpireData.USSR, -50)
 		2:
 			if iraq != null:
-				iraq.government = 0
-				iraq.sub_government = 10
+				iraq.government = GameConstants.Government.AUTHORITARIAN
+				iraq.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				iraq.set_tag("对华贸易", false)
 				iraq.prc_power = 10
 			_add_data({W.I_PARTY_SUPPORT: 70, W.I_THOUGHT_FREEDOM: -30,
@@ -215,14 +215,14 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 				context["result_text"] = TXT_36_R2_NOT_BASED
 		3:
 			if iraq != null:
-				iraq.government = 0
-				iraq.sub_government = 10
+				iraq.government = GameConstants.Government.AUTHORITARIAN
+				iraq.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				iraq.prc_power = 20
 			_add_data({W.I_BUDGET: -50, W.I_AGENTS: -50})
 		4:
 			if iraq != null:
-				iraq.government = 0
-				iraq.sub_government = 10
+				iraq.government = GameConstants.Government.AUTHORITARIAN
+				iraq.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 
 
 func _event_37(option_index: int, context: Dictionary) -> void:
@@ -236,8 +236,8 @@ func _event_37(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USSR, 80)
 			_add_empire_power(EmpireData.USA, -10)
 			if egypt != null:
-				egypt.government = 2
-				egypt.sub_government = 15
+				egypt.government = GameConstants.Government.REFORMIST
+				egypt.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				egypt.set_tag("亲美", false)
 				egypt.set_tag("对华贸易", true)
 		1:
@@ -250,8 +250,8 @@ func _event_37(option_index: int, context: Dictionary) -> void:
 				_add_empire_power(EmpireData.USA, -20)
 				_add_empire_relation(EmpireData.USSR, 50)
 				if egypt != null:
-					egypt.government = 2
-					egypt.sub_government = 3
+					egypt.government = GameConstants.Government.REFORMIST
+					egypt.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					egypt.set_tag("亲苏", true)
 					egypt.set_tag("亲美", false)
 			else:

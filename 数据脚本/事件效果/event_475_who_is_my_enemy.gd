@@ -43,7 +43,7 @@ func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	var ethiopia := world.get_country_by_legacy_index(41)
-	if ethiopia == null or not ethiopia.has_tag("亲中") or ethiopia.government == 2:
+	if ethiopia == null or not ethiopia.has_tag("亲中") or ethiopia.government == GameConstants.Government.REFORMIST:
 		return false
 	if world.wars.size() <= 24 or world.wars[24] == null:
 		return false

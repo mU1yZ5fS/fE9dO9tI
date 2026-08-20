@@ -221,17 +221,17 @@ func execute(context: Dictionary) -> void:
 			winner = _get_winner_in_america(c, allowed, 0.0, -1)
 			if winner != c.sub_government:
 				c.set_tag("亲中", false)
-	c.government = 0
+	c.government = GameConstants.Government.AUTHORITARIAN
 	_set_next_election(c, 2222, 2, 22)
 	c.sub_government = winner
 	_want_to_leave(c)
-	if c.sub_government == 1:
+	if c.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 		c.level_of_instability -= 15
 		_add_power(EmpireData.USSR, 5)
 		_add_power(EmpireData.USA, 5)
 		context["result_text"] = TXT_R1 + _friend_suffix(c)
 		return
-	if c.sub_government == 8:
+	if c.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -5)
@@ -240,7 +240,7 @@ func execute(context: Dictionary) -> void:
 		Achievements.set_achievement(101)
 		context["result_text"] = TXT_R8 + _friend_suffix(c)
 		return
-	if c.sub_government == 9:
+	if c.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		c.level_of_instability -= 15
 		_add_power(EmpireData.USA, 15)
 		_add_power(EmpireData.USSR, -5)

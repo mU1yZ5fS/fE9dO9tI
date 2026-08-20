@@ -35,7 +35,7 @@ func execute(context: Dictionary) -> void:
 			continue
 		if c.has_tag("亲苏"):
 			num2 += 1
-		if c.government == 3:
+		if c.government == GameConstants.Government.LIBERAL:
 			num += 1
 	if ws.completed_event_ids.get("event_609", -1) == 1:
 		num2 += 1
@@ -51,8 +51,8 @@ func execute(context: Dictionary) -> void:
 		if zimbabwe != null:
 			zimbabwe.name = "津巴布韦共和国"
 			zimbabwe.chinese_name = "津巴布韦共和国"
-			zimbabwe.government = 3
-			zimbabwe.sub_government = 5
+			zimbabwe.government = GameConstants.Government.LIBERAL
+			zimbabwe.sub_government = GameConstants.SubGovernment.MODERATE
 		if mozambique != null:
 			mozambique.level_of_instability -= 50
 		context["result_text"] = TXT_UANC
@@ -60,8 +60,8 @@ func execute(context: Dictionary) -> void:
 		if zimbabwe != null:
 			zimbabwe.name = "津巴布韦人民共和国"
 			zimbabwe.chinese_name = "津巴布韦人民共和国"
-			zimbabwe.government = 2
-			zimbabwe.sub_government = 3
+			zimbabwe.government = GameConstants.Government.REFORMIST
+			zimbabwe.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			zimbabwe.set_tag("亲苏", true)
 		if mozambique != null:
 			mozambique.level_of_instability += 30
@@ -70,8 +70,8 @@ func execute(context: Dictionary) -> void:
 		if zimbabwe != null:
 			zimbabwe.name = "津巴布韦民主人民共和国"
 			zimbabwe.chinese_name = "津巴布韦民主人民共和国"
-			zimbabwe.government = 1
-			zimbabwe.sub_government = 17
+			zimbabwe.government = GameConstants.Government.SOCIALIST
+			zimbabwe.sub_government = GameConstants.SubGovernment.MAOIST
 			zimbabwe.set_tag("亲中", true)
 			zimbabwe.set_tag("对华贸易", true)
 			_join_our_alliances(zimbabwe)
@@ -81,8 +81,8 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = TXT_ZANUPF
 	else:
 		if zimbabwe != null:
-			zimbabwe.government = 2
-			zimbabwe.sub_government = 15
+			zimbabwe.government = GameConstants.Government.REFORMIST
+			zimbabwe.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			zimbabwe.set_tag("亲中", true)
 			zimbabwe.set_tag("对华贸易", true)
 			zimbabwe.name = "津巴布韦共和国"
@@ -91,9 +91,9 @@ func execute(context: Dictionary) -> void:
 			mozambique.level_of_instability += 30
 		context["result_text"] = TXT_MODERATE
 	# 原版 load_scene_after_click → number_event=882：链式触发
-	if zimbabwe != null and zimbabwe.sub_government != 5:
+	if zimbabwe != null and zimbabwe.sub_government != GameConstants.SubGovernment.MODERATE:
 		var c131 := ws.get_country_by_legacy_index(131)
-		if c131 != null and c131.sub_government == 9 \
+		if c131 != null and c131.sub_government == GameConstants.SubGovernment.NEO_FASCIST \
 				and not (ws.wars.size() > 54 and ws.wars[54] != null and ws.wars[54].is_going):
 			EventEngine.enqueue_chain(["event_882"])
 

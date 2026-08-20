@@ -70,7 +70,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	var mali := world.get_country_by_legacy_index(58)
 	var upper_volta := world.get_country_by_legacy_index(61)
-	return mali != null and mali.sub_government == 7 \
+	return mali != null and mali.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN \
 		and upper_volta != null and world.is_socialism(upper_volta, true)
 
 

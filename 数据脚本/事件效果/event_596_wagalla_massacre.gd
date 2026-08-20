@@ -38,7 +38,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var somalia_prosov := somalia != null and somalia.has_tag("亲苏")
 	var china_sev := china != null and china.has_tag("sev")
 	var opt := event_def.options
-	if somalia != null and somalia.sub_government == 10:
+	if somalia != null and somalia.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 		event_def.description = TXT_DESC_BASE + TXT_DESC_EXTRA
 		if line <= 2 and (somalia_proprc or (somalia_prosov and china_sev)):
 			_enable(opt[0], event_def.options[0].text)

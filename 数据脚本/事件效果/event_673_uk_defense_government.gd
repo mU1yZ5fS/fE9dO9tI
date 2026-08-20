@@ -31,8 +31,8 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if usa_leader == 3 or (usa_leader == 1 and france != null and france.government == 3 \
-			and spain != null and spain.government == 3):
+	if usa_leader == 3 or (usa_leader == 1 and france != null and france.government == GameConstants.Government.LIBERAL \
+			and spain != null and spain.government == GameConstants.Government.LIBERAL):
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
@@ -59,16 +59,16 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = TXT_R0
-			uk.government = 0
-			uk.sub_government = 7
+			uk.government = GameConstants.Government.AUTHORITARIAN
+			uk.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			uk.set_tag("亲美", true)
 			uk.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, 50)
 			_add_power(EmpireData.USA, 20)
 		1:
 			context["result_text"] = TXT_R1
-			uk.government = 0
-			uk.sub_government = 20
+			uk.government = GameConstants.Government.AUTHORITARIAN
+			uk.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			uk.set_tag("亲美", true)
 			uk.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, 50)
@@ -77,12 +77,12 @@ func execute(context: Dictionary) -> void:
 			var num := _sub22_count()
 			if num >= 1:
 				context["result_text"] = TXT_R2 + TXT_R2_STRASSER
-				uk.government = 0
-				uk.sub_government = 22
+				uk.government = GameConstants.Government.AUTHORITARIAN
+				uk.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 			else:
 				context["result_text"] = TXT_R2 + TXT_R2_FASCIST
-				uk.government = 0
-				uk.sub_government = 9
+				uk.government = GameConstants.Government.AUTHORITARIAN
+				uk.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			uk.set_tag("亲美", false)
 			uk.set_tag("eu", false)
 			uk.set_tag("nato", false)
@@ -91,39 +91,39 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USA, -20)
 		3:
 			context["result_text"] = TXT_R3
-			uk.government = 0
-			uk.sub_government = 7
+			uk.government = GameConstants.Government.AUTHORITARIAN
+			uk.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			uk.set_tag("亲美", true)
 			_add_relation(EmpireData.USA, 50)
 			_add_power(EmpireData.USA, 20)
 		4:
 			var france := ws.get_country_by_legacy_index(21)
 			var spain := ws.get_country_by_legacy_index(85)
-			if (usa_leader == 3 or usa_leader == 1) and france != null and france.government == 3 \
-					and spain != null and spain.government == 3:
+			if (usa_leader == 3 or usa_leader == 1) and france != null and france.government == GameConstants.Government.LIBERAL \
+					and spain != null and spain.government == GameConstants.Government.LIBERAL:
 				context["result_text"] = TXT_R1
-				uk.government = 0
-				uk.sub_government = 20
+				uk.government = GameConstants.Government.AUTHORITARIAN
+				uk.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				uk.set_tag("亲美", true)
 				_add_power(EmpireData.USA, 20)
 			elif _auth_count() >= 2:
 				var num3 := _sub22_count()
 				if num3 >= 2:
 					context["result_text"] = TXT_R2 + TXT_R2_STRASSER
-					uk.government = 0
-					uk.sub_government = 22
+					uk.government = GameConstants.Government.AUTHORITARIAN
+					uk.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 				else:
 					context["result_text"] = TXT_R2 + TXT_R2_FASCIST
-					uk.government = 0
-					uk.sub_government = 9
+					uk.government = GameConstants.Government.AUTHORITARIAN
+					uk.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				uk.set_tag("亲美", false)
 				uk.set_tag("eu", false)
 				uk.set_tag("nato", false)
 				_add_power(EmpireData.USA, -20)
 			else:
 				context["result_text"] = TXT_R0
-				uk.government = 0
-				uk.sub_government = 7
+				uk.government = GameConstants.Government.AUTHORITARIAN
+				uk.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				uk.set_tag("亲美", true)
 				_add_power(EmpireData.USA, 20)
 
@@ -132,7 +132,7 @@ func _auth_count() -> int:
 	var count := 0
 	for idx in [21, 85, 86]:
 		var c := ws.get_country_by_legacy_index(idx)
-		if c != null and ws.is_authoritarian(c) and c.sub_government != 10 and c.sub_government != 20:
+		if c != null and ws.is_authoritarian(c) and c.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST and c.sub_government != GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 			count += 1
 	return count
 
@@ -141,6 +141,6 @@ func _sub22_count() -> int:
 	var count := 0
 	for idx in [21, 85, 86]:
 		var c := ws.get_country_by_legacy_index(idx)
-		if c != null and c.sub_government == 22:
+		if c != null and c.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
 			count += 1
 	return count

@@ -132,8 +132,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -50)
 			_add(W.I_AGENTS, -100)
 			if italy != null:
-				italy.government = 0
-				italy.sub_government = 20
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			if portugal != null:
 				portugal.special -= 15
 

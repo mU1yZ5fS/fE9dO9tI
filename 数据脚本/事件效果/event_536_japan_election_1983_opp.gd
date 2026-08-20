@@ -44,8 +44,8 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if c44 != null:
-				c44.government = 3
-				c44.sub_government = 5
+				c44.government = GameConstants.Government.LIBERAL
+				c44.sub_government = GameConstants.SubGovernment.MODERATE
 				c44.set_tag("亲美", false)
 				c44.set_tag("亲中", true)
 				c44.set_tag("对华贸易", true)
@@ -64,8 +64,8 @@ func execute(context: Dictionary) -> void:
 			var r531 := int(ws.completed_event_ids.get("event_531", 0))
 			if r531 == 0:
 				if c44 != null:
-					c44.government = 2
-					c44.sub_government = 3
+					c44.government = GameConstants.Government.REFORMIST
+					c44.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					c44.set_tag("亲美", false)
 					c44.set_tag("亲中", true)
 					c44.set_tag("对华贸易", true)
@@ -80,8 +80,8 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = TXT_R1_A
 			else:
 				if c44 != null:
-					c44.government = 1
-					c44.sub_government = 1
+					c44.government = GameConstants.Government.SOCIALIST
+					c44.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					c44.set_tag("亲美", false)
 					c44.set_tag("亲中", true)
 					c44.set_tag("对华贸易", true)
@@ -96,8 +96,8 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = TXT_R1_B
 		2:
 			if c44 != null:
-				c44.government = 3
-				c44.sub_government = 6
+				c44.government = GameConstants.Government.LIBERAL
+				c44.sub_government = GameConstants.SubGovernment.LIBERAL
 				c44.set_tag("亲美", true)
 				c44.set_tag("亲中", false)
 			_add_power(EmpireData.USA, 30)

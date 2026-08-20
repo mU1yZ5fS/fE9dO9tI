@@ -61,8 +61,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 3
-				nigeria.sub_government = 12
+				nigeria.government = GameConstants.Government.LIBERAL
+				nigeria.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -40)
 			_add(W.I_AGENTS, -40)
@@ -71,8 +71,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 3
-				nigeria.sub_government = 4
+				nigeria.government = GameConstants.Government.LIBERAL
+				nigeria.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -160)
 			_add(W.I_AGENTS, -160)
@@ -81,8 +81,8 @@ func execute(context: Dictionary) -> void:
 		2:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 3
-				nigeria.sub_government = 12
+				nigeria.government = GameConstants.Government.LIBERAL
+				nigeria.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
 			_add(W.I_ARMY, -100)
@@ -93,8 +93,8 @@ func execute(context: Dictionary) -> void:
 		3:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 3
-				nigeria.sub_government = 12
+				nigeria.government = GameConstants.Government.LIBERAL
+				nigeria.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			_add_relation(EmpireData.USA, -100)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
@@ -105,8 +105,8 @@ func execute(context: Dictionary) -> void:
 		4:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 3
-				nigeria.sub_government = 12
+				nigeria.government = GameConstants.Government.LIBERAL
+				nigeria.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			context["result_text"] = TXT_R4
 
 

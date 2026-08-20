@@ -26,8 +26,8 @@ func execute(context: Dictionary) -> void:
 func _set_thai_govt() -> void:
 	var thai := ws.get_country_by_legacy_index(34)
 	if thai != null:
-		thai.government = 0
-		thai.sub_government = 7
+		thai.government = GameConstants.Government.AUTHORITARIAN
+		thai.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 
 
 # 选项0：这不关我们的事（Event17.cs result 0）

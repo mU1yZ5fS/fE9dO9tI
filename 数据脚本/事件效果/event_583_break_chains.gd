@@ -67,8 +67,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -50)
 			_add(W.I_ARMY, -50)
 			if c65 != null:
-				c65.government = 2
-				c65.sub_government = 3
+				c65.government = GameConstants.Government.REFORMIST
+				c65.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				_leave_alliances(c65)
 				c65.set_tag("亲中", true)
 				c65.set_tag("对华贸易", true)
@@ -80,8 +80,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -50)
 			_add(W.I_ARMY, -50)
 			if c65 != null:
-				c65.government = 1
-				c65.sub_government = 1
+				c65.government = GameConstants.Government.SOCIALIST
+				c65.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(c65)
 				c65.set_tag("亲中", true)
 				c65.set_tag("对华贸易", true)
@@ -92,8 +92,8 @@ func execute(context: Dictionary) -> void:
 		2:
 			_add(W.I_AGENTS, -50)
 			if c65 != null:
-				c65.government = 0
-				c65.sub_government = 7
+				c65.government = GameConstants.Government.AUTHORITARIAN
+				c65.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c65)
 				c65.set_tag("对华贸易", true)
 				c65.puppet_of = 21

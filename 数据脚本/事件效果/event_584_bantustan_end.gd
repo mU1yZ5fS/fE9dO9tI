@@ -24,20 +24,20 @@ func execute(context: Dictionary) -> void:
 	var c38 := ws.get_country_by_legacy_index(38)
 	var c125 := ws.get_country_by_legacy_index(125)
 	var text := TXT_R0_A
-	if c131 != null and c131.government == 0:
+	if c131 != null and c131.government == GameConstants.Government.AUTHORITARIAN:
 		text += TXT_R0_SA
 	else:
 		text += TXT_R0_OTHER
 	text += TXT_R0_MID_A
-	var break_cond := c38 != null and c38.government == 0 and ws.decisions != null \
+	var break_cond := c38 != null and c38.government == GameConstants.Government.AUTHORITARIAN and ws.decisions != null \
 			and ws.decisions.completed.size() > 7 and not ws.decisions.completed[7]
 	if break_cond:
 		text += TXT_R0_BREAK
 	text += TXT_R0_MID_B
 	_add(W.I_BUDGET, -50)
 	if c125 != null:
-		c125.government = 1
-		c125.sub_government = 1
+		c125.government = GameConstants.Government.SOCIALIST
+		c125.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 		_leave_alliances(c125)
 		c125.set_tag("亲中", true)
 		c125.set_tag("对华贸易", true)

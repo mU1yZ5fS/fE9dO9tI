@@ -30,18 +30,18 @@ func evaluate(world: WorldState) -> bool:
 			continue
 		if world.is_socialism(c, true):
 			num += 1
-			if c.sub_government == 17:
+			if c.sub_government == GameConstants.SubGovernment.MAOIST:
 				flag = true
 	var c80 := world.get_country_by_legacy_index(80)
 	var c44 := world.get_country_by_legacy_index(44)
 	var c19 := world.get_country_by_legacy_index(19)
 	if c80 == null or c44 == null or c19 == null:
 		return false
-	if c80.sub_government != 17:
+	if c80.sub_government != GameConstants.SubGovernment.MAOIST:
 		return false
-	if c44.sub_government != 17:
+	if c44.sub_government != GameConstants.SubGovernment.MAOIST:
 		return false
-	if c19.sub_government != 17 and c19.sub_government != 0:
+	if c19.sub_government != GameConstants.SubGovernment.MAOIST and c19.sub_government != GameConstants.SubGovernment.LEFT_RADICAL:
 		return false
 	if not flag:
 		return false

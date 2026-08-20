@@ -31,13 +31,13 @@ func execute(context: Dictionary) -> void:
 				bolivia.level_of_instability -= 10
 				bolivia.level_of_development += 5
 				bolivia.set_tag("亲中", true)
-				bolivia.sub_government = 4
+				bolivia.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				_leave_alliances(bolivia)
 				context["result_text"] = TXT_R0 + _proprc_suffix(bolivia)
 			else:
 				bolivia.level_of_instability -= 15
 				bolivia.set_tag("亲中", false)
-				bolivia.sub_government = 8
+				bolivia.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				context["result_text"] = TXT_R2 + _proprc_suffix(bolivia)
 		1:
 			if ev130 == 0:
@@ -46,20 +46,20 @@ func execute(context: Dictionary) -> void:
 				bolivia.level_of_instability -= 20
 				bolivia.level_of_development -= 5
 				bolivia.set_tag("亲中", true)
-				bolivia.sub_government = 5
+				bolivia.sub_government = GameConstants.SubGovernment.MODERATE
 				_leave_alliances(bolivia)
 				context["result_text"] = TXT_R1 + _proprc_suffix(bolivia)
 			else:
 				bolivia.level_of_instability -= 15
 				bolivia.set_tag("亲中", false)
-				bolivia.sub_government = 8
+				bolivia.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				context["result_text"] = TXT_R2 + _proprc_suffix(bolivia)
 		_:
 			bolivia.level_of_instability -= 15
 			bolivia.set_tag("亲中", false)
-			bolivia.sub_government = 8
+			bolivia.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			context["result_text"] = TXT_R2 + _proprc_suffix(bolivia)
-	bolivia.government = 3
+	bolivia.government = GameConstants.Government.LIBERAL
 	bolivia.next_election_year = 1980
 	bolivia.next_election_month = 6
 	bolivia.next_election_day = 29

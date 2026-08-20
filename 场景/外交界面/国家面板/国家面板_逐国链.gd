@@ -95,9 +95,9 @@ func _revint_core_ok(w: WorldState, country: CountryData) -> bool:
 		return false
 	if not w.event_done_num(548) or not player.has_tag("rim"):
 		return false
-	if not (w.is_socialism(country, true) or (country.sub_government == 10 and w.get_flag("is_gkchp"))):
+	if not (w.is_socialism(country, true) or (country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST and w.get_flag("is_gkchp"))):
 		return false
-	if country.sub_government == 16 or country.sub_government == 18:
+	if country.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or country.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		return false
 	if country.has_tag("sev") or country.has_tag("ovd"):
 		return false
@@ -136,7 +136,7 @@ func _revint_nosoc_ok(w: WorldState, country: CountryData) -> bool:
 		return false
 	if not w.event_done_num(548) or not player.has_tag("rim"):
 		return false
-	if country.sub_government == 16 or country.sub_government == 18:
+	if country.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or country.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		return false
 	if country.has_tag("sev") or country.has_tag("ovd"):
 		return false
@@ -149,7 +149,7 @@ func _revint_sub17_ok(w: WorldState, country: CountryData) -> bool:
 	if player == null:
 		return false
 	return w.event_done_num(548) and player.has_tag("rim") \
-		and country.sub_government == 17 \
+		and country.sub_government == GameConstants.SubGovernment.MAOIST \
 		and not country.has_tag("sev") and not country.has_tag("ovd") and country.has_tag("亲中")
 
 
@@ -202,7 +202,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			var c4 := _c(w, 4)
 			var sov := _c(w, 7)
 			if (sov != null and sov.has_tag("nato") and country.has_tag("ovd") and not w.war_going(17)) \
-					or (n != 4 and c4 != null and c4.sub_government == 19):
+					or (n != 4 and c4 != null and c4.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST):
 				_show(slots, 0, 103, " 影 响 力")
 				_show(slots, 1, 104, " 一 体 化")
 				_show(slots, 2, 105, " 建 立 军 事 基 地")
@@ -243,7 +243,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 		var c4 := _c(w, 4)
 		var sov := _c(w, 7)
 		if (sov != null and sov.has_tag("nato") and country.has_tag("ovd") and not w.war_going(17)) \
-				or (c4 != null and c4.sub_government == 19):
+				or (c4 != null and c4.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST):
 			_show(slots, 0, 103, " 影 响 力")
 			_show(slots, 1, 104, " 一 体 化")
 			_show(slots, 2, 105, " 建 立 军 事 基 地")
@@ -257,7 +257,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			_show(slots, 1, 24, "发 展 贸 易")
 		else:
 			_show(slots, 0, 24, "发 展 贸 易")
-			if country.sub_government == 17:
+			if country.sub_government == GameConstants.SubGovernment.MAOIST:
 				_show(slots, 2, 10, "经 济 合 作")
 				_show(slots, 3, 19, "军 事 同 盟")
 				if _revint_sub17_ok(w, country):
@@ -291,7 +291,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 		if _revint_ok(w, country):
 			_show(slots, 3, 5000, "革 命 国 际")
 		var c4 := _c(w, 4)
-		if c4 != null and c4.sub_government == 19:
+		if c4 != null and c4.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 			_show(slots, 0, 103, " 影 响 力")
 			_show(slots, 1, 104, " 一 体 化")
 			_show(slots, 2, 105, " 建 立 军 事 基 地")
@@ -392,7 +392,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 2, 5000, "革 命 国 际")
 			if w.oar:
 				_show(slots, 3, 67, "阿 拉 伯 联 合")
-		elif country.government != 3 and country.sub_government != 7:
+		elif country.government != GameConstants.Government.LIBERAL and country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 			_show(slots, 0, 22, "支 持 卡 扎 菲")
 			_show(slots, 1, 23, "联 络 反 对 派")
 			if w.oar:
@@ -405,16 +405,16 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 		if not w.event_done_num(36):
 			_show(slots, 0, 1078, "影 响")
 		if w.event_done_num(36) and w.result_of_event_num(36) == 2 and not w.event_done_num(566) \
-				and country.puppet_of < 0 and country.sub_government == 10:
+				and country.puppet_of < 0 and country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 			_show(slots, 0, 56, "支 持 革 命 者")
 		if w.event_done_num(36) and w.result_of_event_num(36) == 3 and not w.event_done_num(708) \
-				and country.puppet_of < 0 and country.sub_government == 10:
+				and country.puppet_of < 0 and country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 			_show(slots, 0, 56, "达 瓦 党")
 		elif w.oar:
 			_show(slots, 0, 25, "阿 拉 伯 联 合")
-		elif (player != null and player.sub_government == 19) and country.sub_government == 10:
+		elif (player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST) and country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 			_show(slots, 0, 70, "巴 比 伦 之 狮")
-		if country.puppet_of < 0 and country.sub_government == 20:
+		if country.puppet_of < 0 and country.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 			_show(slots, 1, 24, "发 展 贸 易")
 		if country.has_tag("亲中"):
 			_show(slots, 1, 24, "发 展 贸 易")
@@ -464,7 +464,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			_show(slots, 2, 10, "经 济 合 作")
 			_show(slots, 3, 19, "军 事 同 盟")
 			if w.event_done_num(548) and (player != null and player.has_tag("rim")) \
-					and country.sub_government == 2 and not country.has_tag("sev") \
+					and country.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST and not country.has_tag("sev") \
 					and not country.has_tag("ovd") and country.has_tag("亲中"):
 				_show(slots, 1, 5000, "革 命 国 际")
 	elif n == 17:
@@ -475,7 +475,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			var sov := _c(w, 7)
 			if _dlc3(w) and sov != null and not sov.has_tag("nato"):
 				_show(slots, 1, 116, " 统 一")
-				if country.government != 1 and country.government != 2:
+				if country.government != GameConstants.Government.SOCIALIST and country.government != GameConstants.Government.REFORMIST:
 					_show(slots, 2, 137, " 禁 运")
 					_show(slots, 3, 138, " 煽 动")
 		elif w.is_socialism(country, true):
@@ -485,8 +485,8 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			_show(slots, 3, 19, "军 事 同 盟")
 			if _revint_core_ok(w, country) and country.has_tag("okb") and country.has_tag("亲中"):
 				_show(slots, 3, 5000, "革 命 国 际")
-		elif (country.sub_government == 9 or country.sub_government == 22) \
-				and (player != null and (player.sub_government == 7 or player.sub_government == 9)):
+		elif (country.sub_government == GameConstants.SubGovernment.NEO_FASCIST or country.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST) \
+				and (player != null and (player.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or player.sub_government == GameConstants.SubGovernment.NEO_FASCIST)):
 			_show(slots, 1, 24, "发 展 贸 易")
 			_show(slots, 2, 10, "经 济 合 作")
 			_show(slots, 3, 19, "军 事 同 盟")
@@ -518,7 +518,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			elif w.result_of_event_num(72) != 1:
 				_show(slots, 3, 19, "军 事 同 盟")
 			if w.event_done_num(548) and (player != null and player.has_tag("rim")) \
-					and country.sub_government == 17 and not country.has_tag("sev") \
+					and country.sub_government == GameConstants.SubGovernment.MAOIST and not country.has_tag("sev") \
 					and not country.has_tag("ovd") and country.has_tag("econ") \
 					and country.has_tag("okb") and country.has_tag("亲中"):
 				_show(slots, 3, 5000, "革 命 国 际")
@@ -548,20 +548,20 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				else:
 					_show(slots, 2, 1010, "党 内 政 变")
 			if _dlc3(w):
-				if country.government != 1:
+				if country.government != GameConstants.Government.SOCIALIST:
 					_show(slots, 3, 107, " 狩 猎 俱 乐 部")
-				if country.government == 1:
+				if country.government == GameConstants.Government.SOCIALIST:
 					_show(slots, 2, 10, "经 济 合 作")
 		else:
 			_show(slots, 0, 24, "发 展 贸 易")
-			if country.sub_government == 17 or country.sub_government == 22 or country.sub_government == 19 \
-					or (player != null and (player.sub_government == 9 or player.sub_government == 7) \
-					and country.sub_government == 9):
+			if country.sub_government == GameConstants.SubGovernment.MAOIST or country.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST or country.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
+					or (player != null and (player.sub_government == GameConstants.SubGovernment.NEO_FASCIST or player.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN) \
+					and country.sub_government == GameConstants.SubGovernment.NEO_FASCIST):
 				_show(slots, 1, 10, "经 济 合 作")
 				_show(slots, 2, 19, "军 事 同 盟")
 			if w.event_done_num(548) and (player != null and player.has_tag("rim")) \
-					and w.is_socialism(country, true) and country.sub_government != 1 \
-					and country.sub_government != 18 and not country.has_tag("sev") \
+					and w.is_socialism(country, true) and country.sub_government != GameConstants.SubGovernment.STATE_SOCIALIST \
+					and country.sub_government != GameConstants.SubGovernment.TROTSKYIST and not country.has_tag("sev") \
 					and not country.has_tag("ovd") and country.has_tag("亲中"):
 				_show(slots, 3, 5000, "革 命 国 际")
 	elif n == 22:
@@ -666,7 +666,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			if w.result_of_event_num(55) != 2 and not country.has_tag("亲中"):
 				_show(slots, 0, 42, "支 持 反 对 派")
 				if w.result_of_event_num(662) != 1 and country.influence_china > 0 \
-						and country.sub_government != 11 and not w.event_done_num(663):
+						and country.sub_government != GameConstants.SubGovernment.TITOIST and not w.event_done_num(663):
 					_show(slots, 1, 1061, "缅 甸 共 产 党")
 					if w.result_of_event_num(662) == 2:
 						_show(slots, 1, 1061, "民 族 团 结 联 盟")
@@ -716,9 +716,9 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				if w.event_done_num(460) and w.result_of_event_num(460) != 2 \
 						and not _decision_done(w, 6) \
 						and (w.result_of_event_num(116) == 0 or not w.event_done_num(116)) \
-						and (player != null and player.sub_government != 9 and player.sub_government != 7 \
-						and player.sub_government != 10 and player.sub_government != 12 \
-						and player.sub_government != 13):
+						and (player != null and player.sub_government != GameConstants.SubGovernment.NEO_FASCIST and player.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN \
+						and player.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST and player.sub_government != GameConstants.SubGovernment.NEOLIBERAL \
+						and player.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL):
 					_show(slots, 1, 1005, "施 压")
 			elif w.event_done_num(461) and country.has_tag("亲中"):
 				_show(slots, 0, 10, "经 济 合 作")
@@ -754,17 +754,17 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 1, 148, " 促 进 欧 洲 团 结")
 		elif n == 40:
 			# CS L1395-1433
-			if country.sub_government == 20:
+			if country.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 				_show(slots, 0, 1019, "联 络 反 对 派")
 				if country.内战中:
 					_show(slots, 0, 1020, "煽 动 反 对 派")
-			if country.sub_government == 10:
+			if country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 				_show(slots, 0, 9, "发 展 贸 易")
 				_show(slots, 1, 10, "经 济 合 作")
 				if w.oar:
 					_show(slots, 2, 45, "阿 拉 伯 联 合")
-			if country.sub_government != 7 and w.event_done_num(563):
-				if country.sub_government != 1:
+			if country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN and w.event_done_num(563):
+				if country.sub_government != GameConstants.SubGovernment.STATE_SOCIALIST:
 					_show(slots, 1, 10, "经 济 合 作")
 				else:
 					_show(slots, 1, 10, "经 济 合 作")
@@ -786,7 +786,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				if _revint_ok(w, country):
 					_show(slots, 1, 5000, "革 命 国 际")
 			elif country.has_tag("亲中"):
-				if country.government == 1 or country.sub_government == 0:
+				if country.government == GameConstants.Government.SOCIALIST or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 					_show(slots, 1, 10, "经 济 合 作")
 					if w.is_socialism(country, true) and w.event_done_num(500) \
 							and w.result_of_event_num(500) == 0:
@@ -795,7 +795,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 						_show(slots, 3, 5000, "革 命 国 际")
 				else:
 					_show(slots, 1, 10, "经 济 合 作")
-					if country.sub_government == 10 and (player != null and player.sub_government == 19) \
+					if country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST and (player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST) \
 							and not _part(w, 42, 0) and w.event_done_num(376):
 						_show(slots, 3, 70, " 马 里 亚 姆 王 朝")
 		elif n == 43 or n == 96 or n == 97:
@@ -816,7 +816,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				else:
 					_show(slots, 0, 51, "支 持 赤 军")
 			_show(slots, 1, 52, "发 展 贸 易")
-			if w.event_done_num(532) and w.result_of_event_num(532) == 0 and country.sub_government == 6:
+			if w.event_done_num(532) and w.result_of_event_num(532) == 0 and country.sub_government == GameConstants.SubGovernment.LIBERAL:
 				_show(slots, 1, 1015, "发 动 革 命")
 			if country.has_tag("亲中") and not country.has_tag("soc_eu"):
 				if player != null and player.has_tag("asean"):
@@ -833,7 +833,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			if (not w.war_going(19) or not w.is_authoritarian(country)) \
 					and (c94 == null or not c94.内战中):
 				_show(slots, 0, 9, "发 展 贸 易")
-				if not country.has_tag("soc_eu") and country.government != 1 \
+				if not country.has_tag("soc_eu") and country.government != GameConstants.Government.SOCIALIST \
 						and not country.has_tag("eu") and not country.内战中:
 					_show(slots, 1, 54, "经 济 合 作")
 				elif w.is_socialism(country, true):
@@ -868,13 +868,13 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 		elif n == 48:
 			# CS L1597-1607
 			_show(slots, 0, 9, "发 展 贸 易")
-			if country.government != 3:
+			if country.government != GameConstants.Government.LIBERAL:
 				_show(slots, 1, 10, "经 济 合 作")
 				if _revint_ok(w, country):
 					_show(slots, 2, 5000, "革 命 国 际")
 		elif n == 52:
 			# CS L1609-1629
-			if w.event_done_num(497) or country.sub_government == 0:
+			if w.event_done_num(497) or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 				_show(slots, 0, 24, "发 展 贸 易")
 				if w.result_of_event_num(497) != 2:
 					_show(slots, 1, 10, "经 济 合 作")
@@ -895,7 +895,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 3, 5000, "革 命 国 际")
 		elif n == 50:
 			# CS L1647-1665
-			if country.sub_government != 9:
+			if country.sub_government != GameConstants.SubGovernment.NEO_FASCIST:
 				_show(slots, 0, 58, "实 施 制 裁")
 				if country.has_tag("亲中"):
 					_show(slots, 2, 10, "经 济 合 作")
@@ -979,7 +979,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 3, 1007, "西 撒 人 阵")
 			else:
 				_show(slots, 1, 10, "经 济 合 作")
-				if country.sub_government != 11 and country.government != 3:
+				if country.sub_government != GameConstants.SubGovernment.TITOIST and country.government != GameConstants.Government.LIBERAL:
 					_show(slots, 2, 19, "军 事 同 盟")
 					if _revint_core_ok(w, country) and country.has_tag("亲中") and country.has_tag("okb"):
 						_show(slots, 2, 5000, "革 命 国 际")
@@ -995,7 +995,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 3, 67, "阿 拉 伯 联 合")
 				if _revint_core_ok(w, country) and country.has_tag("okb"):
 					_show(slots, 2, 5000, "革 命 国 际")
-			elif country.government == 2:
+			elif country.government == GameConstants.Government.REFORMIST:
 				_show(slots, 0, 10, "经 济 合 作")
 				if w.oar:
 					_show(slots, 1, 67, "阿 拉 伯 联 合")
@@ -1037,11 +1037,11 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				if _revint_ok(w, country):
 					_show(slots, 2, 5000, "革 命 国 际")
 			if w.result_of_event_num(458) == 0 and _sub(w, 61) == 7 \
-					and (player != null and player.sub_government == 19):
+					and (player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST):
 				_show(slots, 3, 1004, "人 民 民 主 化")
 		elif n == 59:
 			# CS L1897-1937
-			if country.sub_government == 15 and not country.内战中:
+			if country.sub_government == GameConstants.SubGovernment.PRAGMATIST and not country.内战中:
 				_show(slots, 0, 1032, "敦 促 改 革")
 			elif w.is_socialism(country, true):
 				_show(slots, 0, 9, "发 展 贸 易")
@@ -1051,12 +1051,12 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 2, 5001, " 非 洲 联 盟")
 				if _revint_ok(w, country):
 					_show(slots, 3, 5000, "革 命 国 际")
-			elif country.sub_government == 7:
+			elif country.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				if not country.内战中:
 					_show(slots, 0, 1043, "毛 塔 民 主 联 盟")
 					_show(slots, 1, 1044, "世 界 第 三 理 论")
 					_show(slots, 2, 1045, "复 兴 党")
-			elif country.sub_government == 10 or country.government == 2:
+			elif country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or country.government == GameConstants.Government.REFORMIST:
 				_show(slots, 0, 9, "发 展 贸 易")
 				_show(slots, 1, 10, "经 济 合 作")
 				if country.内战中 and w.oar:
@@ -1131,17 +1131,17 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 						_show(slots, 2, 5001, "非 洲 联 盟")
 					if _revint_ok(w, country):
 						_show(slots, 3, 5000, "革 命 国 际")
-				if country.sub_government == 10 and (player != null and player.sub_government == 19):
+				if country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST and (player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST):
 					_show(slots, 3, 70, "输 出 革 命 经 验")
 		elif n == 66:
 			# CS L2058-2087
-			if not w.event_done_num(617) or (country.sub_government != 7 and country.sub_government != 8):
+			if not w.event_done_num(617) or (country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN and country.sub_government != GameConstants.SubGovernment.LEFT_CONSERVATIVE):
 				_show(slots, 0, 9, "发 展 贸 易")
-				if not w.event_done_num(618) and country.sub_government == 7:
+				if not w.event_done_num(618) and country.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 					_show(slots, 1, 1032, "支 持 反 对 派")
 				if not w.event_done_num(617) and w.event_done_num(680) \
 						and w.result_of_event_num(680) == 0 and w.result_of_event_num(618) != 1 \
-						and w.result_of_event_num(618) != 2 and country.sub_government == 7:
+						and w.result_of_event_num(618) != 2 and country.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 					_show(slots, 1, 1024, "支 持 喀 人 盟")
 					if w.event_done_num(500) and w.result_of_event_num(500) == 0:
 						_show(slots, 3, 1045, "志 愿 军")
@@ -1205,8 +1205,8 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 1, 10, "经 济 合 作")
 				if _revint_ok(w, country):
 					_show(slots, 2, 5000, "革 命 国 际")
-			if n == 139 and (player != null and player.sub_government == 19):
-				if country.sub_government != 19:
+			if n == 139 and (player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST):
+				if country.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 					_show(slots, 3, 70, "施 展 巫 术")
 				else:
 					_show(slots, 3, 70, "黑 人 民 权 运 动")
@@ -1216,8 +1216,8 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				if _d(w, 21) < 1981 and not w.event_done_num(367):
 					_show(slots, 0, 91, " 联 系 极 左 派")
 					_show(slots, 1, 92, " 联 系 极 右 派")
-				if country.government == 2 \
-						or (country.government == 3 and _d(w, 21) > 1983) \
+				if country.government == GameConstants.Government.REFORMIST \
+						or (country.government == GameConstants.Government.LIBERAL and _d(w, 21) > 1983) \
 						or w.is_socialism(country, true):
 					_show(slots, 0, 9, "发 展 贸 易")
 					if not country.has_tag("soc_eu") and w.event_done_num(489):
@@ -1244,9 +1244,9 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 2, 19, "军 事 同 盟")
 					if _revint_ok(w, country):
 						_show(slots, 3, 5000, "革 命 国 际")
-				if (country.sub_government == 22 or country.sub_government == 0 \
-						or (country.sub_government == 9 and player != null \
-						and (player.sub_government == 9 or player.sub_government == 7))) \
+				if (country.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL \
+						or (country.sub_government == GameConstants.SubGovernment.NEO_FASCIST and player != null \
+						and (player.sub_government == GameConstants.SubGovernment.NEO_FASCIST or player.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN))) \
 						and w.event_done_num(481):
 					_show(slots, 2, 53, "经 济 合 作")
 					_show(slots, 3, 19, "军 事 同 盟")
@@ -1263,7 +1263,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			if _dlc3(w):
 				_show(slots, 0, 136, "联 系 分 离 分 子")
 				_show(slots, 1, 9, "发 展 贸 易")
-				if country.government == 1:
+				if country.government == GameConstants.Government.SOCIALIST:
 					_show(slots, 2, 10, "经 济 合 作")
 					if country.has_tag("亲中"):
 						_show(slots, 3, 19, "军 事 同 盟")
@@ -1273,13 +1273,13 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			# CS L2282-2323
 			if _d(w, 65) == 0:
 				_show(slots, 0, 2, "特 别 军 事 行 动")
-				if not country.has_tag("亲美") or country.government != 0:
+				if not country.has_tag("亲美") or country.government != GameConstants.Government.AUTHORITARIAN:
 					if _d(w, 65) != 2 and (player == null or not player.has_tag("sev")):
 						_show(slots, 1, 3, "组 织 统 一 谈 判")
 					if _dlc3(w):
 						_show(slots, 2, 128, " 破 坏 政 治 稳 定")
 						_show(slots, 3, 9, "发 展 贸 易")
-			elif not country.has_tag("亲美") or country.government != 0:
+			elif not country.has_tag("亲美") or country.government != GameConstants.Government.AUTHORITARIAN:
 				if not w.event_done_num(420) and not w.event_done_num(419):
 					_show(slots, 0, 128, " 破 坏 政 治 稳 定")
 					_show(slots, 1, 9, "发 展 贸 易")
@@ -1287,7 +1287,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 0, 9, "发 展 贸 易")
 					if country.has_tag("对华贸易") and (w.is_socialism(country, true) \
 							or (w.is_authoritarian(country) and not country.has_tag("亲美") \
-							and player != null and (player.sub_government == 7 or player.sub_government == 9))):
+							and player != null and (player.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or player.sub_government == GameConstants.SubGovernment.NEO_FASCIST))):
 						_show(slots, 1, 10, "经 济 合 作")
 						if country.has_tag("亲中"):
 							_show(slots, 2, 19, "军 事 同 盟")
@@ -1298,7 +1298,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			if w.result_of_event_num(673) != 3:
 				if _d(w, 65) == 0:
 					_show(slots, 0, 2, "特 别 军 事 行 动")
-					if country.government != 0 and _dlc3(w):
+					if country.government != GameConstants.Government.AUTHORITARIAN and _dlc3(w):
 						if w.result_of_event_num(677) != 5 and w.event_done_num(677) \
 								and _d(w, 166) < 100 and _d(w, 162) < 100 and _d(w, 163) < 100 \
 								and _d(w, 164) < 100 and _d(w, 165) < 100 \
@@ -1319,7 +1319,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					elif _d(w, 147) == 3:
 						_show(slots, 3, 1065, "落 实 政 治 纲 领")
 					if w.is_socialism(country, true) and country.has_tag("对华贸易") \
-							and country.sub_government != 18:
+							and country.sub_government != GameConstants.SubGovernment.TROTSKYIST:
 						_show(slots, 1, 10, "经 济 合 作")
 						_show(slots, 2, 19, "军 事 同 盟")
 						if _revint_ok(w, country):
@@ -1329,9 +1329,9 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 							and _d(w, 164) < 100 and _d(w, 165) < 100 \
 							and not _part(w, 29, 0) and not _part(w, 166, 0):
 						_show(slots, 0, 1066, "支 援")
-					if country.sub_government == 18:
+					if country.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 						_show(slots, 0, 10000, "重 建 第 四 国 际")
-				if country.sub_government == 12 and w.event_done_num(404):
+				if country.sub_government == GameConstants.SubGovernment.NEOLIBERAL and w.event_done_num(404):
 					_show(slots, 3, 1064, "刺 杀")
 		elif n == 93:
 			# CS L2391-2417
@@ -1358,7 +1358,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			if _d(w, 127) < 100:
 				_show(slots, 2, 1075, " 承 认KKTC")
 			var spain := _c(w, 85)
-			if country.government == 2 and spain != null and spain.has_tag("soc_eu"):
+			if country.government == GameConstants.Government.REFORMIST and spain != null and spain.has_tag("soc_eu"):
 				_show(slots, 3, 1074, " 促 进 欧 洲 团 结")
 			else:
 				_show(slots, 3, 53, "经 济 合 作")
@@ -1412,8 +1412,8 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				var c99 := _c(w, 99)
 				var cond_first: bool = (c99 == null or (not c99.有驻军基地 and not w.war_going(26))) \
 						or (c99 != null and (c99.has_tag("econ") or c99.has_tag("sev") \
-						or (c99.sub_government == 10 and not w.war_going(26)) \
-						or (c99.sub_government == 7 and not w.war_going(26))))
+						or (c99.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST and not w.war_going(26)) \
+						or (c99.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN and not w.war_going(26))))
 				if cond_first:
 					_show(slots, 2, 101, " 经 济 合 作")
 					_show(slots, 0, 110, " 厄 人 阵")
@@ -1437,8 +1437,8 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				var c100 := _c(w, 100)
 				var cond_first: bool = (c100 == null or (not c100.有驻军基地 and not w.war_going(25))) \
 						or (c99 != null and (c99.has_tag("econ") or c99.has_tag("sev") \
-						or (c100 != null and c100.government == 3 and not w.war_going(25)) \
-						or (c100 != null and c100.government == 1 and not w.war_going(25))))
+						or (c100 != null and c100.government == GameConstants.Government.LIBERAL and not w.war_going(25)) \
+						or (c100 != null and c100.government == GameConstants.Government.SOCIALIST and not w.war_going(25))))
 				if cond_first:
 					_show(slots, 2, 101, " 经 济 合 作")
 					_show(slots, 0, 110, " 左 翼")
@@ -1450,7 +1450,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 						_show(slots, 2, 5000, "革 命 国 际")
 				elif country.has_tag("亲中"):
 					_show(slots, 0, 10, "经 济 合 作")
-					if country.government == 1 and country.has_tag("亲中") \
+					if country.government == GameConstants.Government.SOCIALIST and country.has_tag("亲中") \
 							and w.event_done_num(500) and w.result_of_event_num(500) == 0:
 						_show(slots, 3, 5001, " 非 洲 联 盟")
 					if _revint_ok(w, country):
@@ -1490,7 +1490,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				if _revint_ok(w, country):
 					_show(slots, 2, 5000, "革 命 国 际")
 				_show(slots, 3, 9, "发 展 贸 易")
-			elif country.sub_government != 10:
+			elif country.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST:
 				_show(slots, 0, 1053, "革 命 左 翼")
 		elif n == 108:
 			# CS L2640-2662
@@ -1504,7 +1504,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 2, 5001, "非 洲 联 盟")
 				if _revint_ok(w, country):
 					_show(slots, 3, 5000, "革 命 国 际")
-			if player != null and player.sub_government == 19 and country.sub_government != 19:
+			if player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST and country.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 				_show(slots, 1, 70, "革 命")
 		elif n == 109 or n == 110:
 			# CS L2664-2667
@@ -1512,7 +1512,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			_show(slots, 1, 10, "经 济 合 作")
 		elif n == 119 and country.禁用非洲机制:
 			# CS L2669-2689
-			if country.sub_government != 9:
+			if country.sub_government != GameConstants.SubGovernment.NEO_FASCIST:
 				_show(slots, 0, 1032, "协 助 左 派")
 				if country.has_tag("亲中"):
 					_show(slots, 1, 10, "经 济 合 作")
@@ -1570,13 +1570,13 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			# CS L2773-2817
 			if not country.has_tag("fxseu") and not country.has_tag("nazimao"):
 				_show(slots, 0, 9, "发 展 贸 易")
-				if country.sub_government == 9:
+				if country.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 					_show(slots, 0, 9, "发 展 贸 易")
 					if country.has_tag("亲中"):
 						_show(slots, 1, 10, "经 济 合 作")
 					else:
 						_show(slots, 1, 1032, "特 别 解 放 行 动")
-					if player != null and player.sub_government == 19 and w.event_done_num(621):
+					if player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST and w.event_done_num(621):
 						_show(slots, 3, 70, " 邀 请 学 习 经 验")
 				else:
 					_show(slots, 0, 9, "发 展 贸 易")
@@ -1609,7 +1609,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 		elif n == 117:
 			# CS L2847-2891
 			if not country.has_tag("fxseu") and not country.has_tag("nazimao"):
-				if country.sub_government != 9:
+				if country.sub_government != GameConstants.SubGovernment.NEO_FASCIST:
 					if not _part(w, 163, 0):
 						_show(slots, 0, 9, "发 展 贸 易")
 					if country.has_tag("亲中"):
@@ -1619,17 +1619,17 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 							_show(slots, 2, 5001, " 非 洲 联 盟")
 						if _revint_ok(w, country):
 							_show(slots, 3, 5000, "革 命 国 际")
-						if (country.sub_government == 9 or country.sub_government == 7) \
-								and player != null and player.sub_government == 19:
+						if (country.sub_government == GameConstants.SubGovernment.NEO_FASCIST or country.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN) \
+								and player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 							_show(slots, 3, 70, " 扎 伊 尔 化")
-					elif country.sub_government != 10:
+					elif country.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST:
 						if w.result_of_event_num(613) == 0:
 							_show(slots, 1, 1041, "施 压")
 						_show(slots, 2, 1042, "掀 起 革 命")
 				elif country.has_tag("亲中"):
 					_show(slots, 1, 10, "经 济 合 作")
 					_show(slots, 2, 19, "军 事 同 盟")
-					if player != null and player.sub_government == 19:
+					if player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 						_show(slots, 3, 70, " 扎 伊 尔 化")
 		elif n == 118:
 			# CS L2893-2926
@@ -1654,7 +1654,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			# CS L2928-2952
 			if country.puppet_of < 0:
 				_show(slots, 0, 9, "发 展 贸 易")
-				if country.government != 0 and country.government != 3 \
+				if country.government != GameConstants.Government.AUTHORITARIAN and country.government != GameConstants.Government.LIBERAL \
 						and w.event_done_num(598) and not w.war_going(53):
 					_show(slots, 1, 10, "经 济 合 作")
 					if country.has_tag("亲中"):
@@ -1687,7 +1687,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 							_show(slots, 2, 5001, " 非 洲 联 盟")
 						if _revint_ok(w, country):
 							_show(slots, 3, 5000, "革 命 国 际")
-				if country.sub_government == 8 and player != null and player.sub_government == 19:
+				if country.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE and player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 					_show(slots, 1, 70, "复 辟")
 			else:
 				_show(slots, 0, 9, "发 展 贸 易")
@@ -1695,7 +1695,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			# CS L3000-3024
 			if country.puppet_of < 0:
 				_show(slots, 0, 9, "发 展 贸 易")
-				if country.government != 0 and country.government != 3 and w.event_done_num(581):
+				if country.government != GameConstants.Government.AUTHORITARIAN and country.government != GameConstants.Government.LIBERAL and w.event_done_num(581):
 					_show(slots, 1, 10, "经 济 合 作")
 					if country.has_tag("亲中"):
 						if w.is_socialism(country, true) and w.event_done_num(500) \
@@ -1728,7 +1728,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 1, 1044, "支 持 莫 抵 运")
 					if w.event_done_num(500):
 						_show(slots, 2, 1045, "志 愿 军")
-				elif country.sub_government != 9:
+				elif country.sub_government != GameConstants.SubGovernment.NEO_FASCIST:
 					_show(slots, 0, 9, "发 展 贸 易")
 					_show(slots, 1, 10, "经 济 合 作")
 					if country.has_tag("亲中"):
@@ -1741,7 +1741,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			# CS L3084-3108
 			if country.puppet_of < 0:
 				_show(slots, 0, 9, "发 展 贸 易")
-				if country.government != 0 and country.government != 3:
+				if country.government != GameConstants.Government.AUTHORITARIAN and country.government != GameConstants.Government.LIBERAL:
 					_show(slots, 1, 10, "经 济 合 作")
 					if country.has_tag("亲中"):
 						if w.is_socialism(country, true) and w.event_done_num(500) \
@@ -1749,11 +1749,11 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 							_show(slots, 2, 5001, " 非 洲 联 盟")
 						if _revint_ok(w, country):
 							_show(slots, 3, 5000, "革 命 国 际")
-						elif country.sub_government == 15 and player != null and player.sub_government == 19:
+						elif country.sub_government == GameConstants.SubGovernment.PRAGMATIST and player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 							_show(slots, 3, 70, " “ 快 车 道 ”")
 		elif n == 129:
 			# CS L3110-3148
-			if not country.has_tag("亲中") and country.puppet_of < 0 and country.sub_government != 7:
+			if not country.has_tag("亲中") and country.puppet_of < 0 and country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				_show(slots, 0, 9, "发 展 贸 易")
 				_show(slots, 1, 1043, "左 派")
 				_show(slots, 2, 1044, "训 练")
@@ -1766,7 +1766,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 2, 5001, " 非 洲 联 盟")
 				if _revint_ok(w, country):
 					_show(slots, 3, 5000, "革 命 国 际")
-			elif country.puppet_of < 0 and country.sub_government == 7:
+			elif country.puppet_of < 0 and country.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				_show(slots, 0, 62, "扶 持 亲 中 派")
 				if not country.has_tag("亲中"):
 					_show(slots, 1, 63, "勾 结 苏 联")
@@ -1792,13 +1792,13 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			# CS L3173-3211
 			if not country.内战中:
 				_show(slots, 1, 57, "支 持 抗 议 运 动")
-			if country.sub_government != 9:
-				if country.sub_government != 7:
+			if country.sub_government != GameConstants.SubGovernment.NEO_FASCIST:
+				if country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 					_show(slots, 0, 9, "发 展 贸 易")
-				if w.is_authoritarian(country) and country.sub_government != 19:
+				if w.is_authoritarian(country) and country.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 					if country.内战中:
 						_show(slots, 1, 57, "促 使 激 进 化")
-				elif country.government != 3:
+				elif country.government != GameConstants.Government.LIBERAL:
 					_show(slots, 1, 10, "经 济 合 作")
 					if country.has_tag("亲中"):
 						if w.is_socialism(country, true) and w.event_done_num(500) \
@@ -1806,7 +1806,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 							_show(slots, 2, 5001, " 非 洲 联 盟")
 						if _revint_ok(w, country):
 							_show(slots, 3, 5000, "革 命 国 际")
-				if country.sub_government == 19:
+				if country.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 					_show(slots, 3, 70, " “ 博 莱 斯 ” 行 动")
 		elif n == 132:
 			# CS L3213-3238
@@ -1826,7 +1826,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 		elif n == 153:
 			# CS L3240-3262
 			_show(slots, 0, 9, "发 展 贸 易")
-			if country.government == 2:
+			if country.government == GameConstants.Government.REFORMIST:
 				_show(slots, 2, 1039, "支 持 左 翼")
 				_show(slots, 3, 1040, "支 持 右 翼")
 			else:
@@ -1842,7 +1842,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			_show(slots, 0, 9, "发 展 贸 易")
 			_show(slots, 1, 10, "经 济 合 作")
 			if country.has_tag("亲中"):
-				if country.government == 1 and w.event_done_num(500) \
+				if country.government == GameConstants.Government.SOCIALIST and w.event_done_num(500) \
 						and w.result_of_event_num(500) == 0:
 					_show(slots, 2, 5001, " 非 洲 联 盟")
 				if _revint_ok(w, country):
@@ -1872,7 +1872,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			# CS L3316-3333
 			_show(slots, 0, 9, "发 展 贸 易")
 			if not country.has_tag("亲美"):
-				if country.has_tag("亲中") or (country.government != 3 and country.government != 0):
+				if country.has_tag("亲中") or (country.government != GameConstants.Government.LIBERAL and country.government != GameConstants.Government.AUTHORITARIAN):
 					_show(slots, 1, 10, "经 济 合 作")
 				if country.has_tag("亲中"):
 					_show(slots, 2, 19, "军 事 同 盟")
@@ -1890,7 +1890,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 0, 1024, " 支 持")
 		elif n == 137:
 			# CS L3352-3363
-			if country.sub_government != 7:
+			if country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				_show(slots, 0, 9, "发 展 贸 易")
 				_show(slots, 1, 10, "经 济 合 作")
 				_show(slots, 2, 1076, "魁 北 克 问 题")
@@ -1912,7 +1912,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				if country.has_tag("对华贸易"):
 					_show(slots, 0, 49, "进 口 雪 茄")
 				if not country.has_tag("亲中"):
-					if not country.has_tag("亲苏") and not country.has_tag("亲美") and country.sub_government != 7:
+					if not country.has_tag("亲苏") and not country.has_tag("亲美") and country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 						_show(slots, 1, 1033, " 援 助 古 巴")
 					if player != null and player.has_tag("seato"):
 						_show(slots, 2, 1034, " 协 助 入 侵")
@@ -1954,7 +1954,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 2, 5000, "革 命 国 际")
 		elif n == 147:
 			# CS L3468-3497
-			if not w.is_socialism(country, true) and country.government != 2:
+			if not w.is_socialism(country, true) and country.government != GameConstants.Government.REFORMIST:
 				if country.level_of_instability < 1000 and country.level_of_instability > 0:
 					_show(slots, 0, 1043, " 桑 解 阵")
 				else:
@@ -1970,7 +1970,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 						_show(slots, 2, 5000, "革 命 国 际")
 		elif n == 149:
 			# CS L3499-3534
-			if not w.is_socialism(country, true) and country.government != 2:
+			if not w.is_socialism(country, true) and country.government != GameConstants.Government.REFORMIST:
 				if country.level_of_instability < 1000 and country.level_of_instability > 0:
 					_show(slots, 0, 1043, " 左 翼 游 击 队")
 					_show(slots, 1, 1044, " 镇 压 左 翼")
@@ -2083,7 +2083,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 2, 19, "军 事 同 盟")
 				if _revint_ok(w, country):
 					_show(slots, 3, 5000, "革 命 国 际")
-			if country.government == 3:
+			if country.government == GameConstants.Government.LIBERAL:
 				_show(slots, 3, 1051, "支 持 政 府")
 
 
@@ -2136,14 +2136,14 @@ func _block_dlc_west(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 3, 5000, "革 命 国 际")
 		elif w.event_done_num(686) and country.有驻军基地 \
 				and ((sov != null and sov.has_tag("sev")) or w.get_flag("is_gkchp") \
-				or (c4 != null and c4.sub_government == 19)):
+				or (c4 != null and c4.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST)):
 			if player == null or not player.has_tag("asean"):
 				_show(slots, 1, 1, "扶 持 极 左 派")
 			else:
 				_show(slots, 1, 123, " 自 由 派")
 		if country.有驻军基地 and (sov == null or not sov.has_tag("sev")) \
 				and not w.get_flag("is_gkchp") \
-				and (c4 == null or c4.sub_government != 19):
+				and (c4 == null or c4.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST):
 			_show(slots, 2, 148, " 欧 洲 左 派")
 			_show(slots, 3, 149, " 欧 洲 右 派")
 			_show(slots, 1, 53, " 经 济 合 作")
@@ -2160,7 +2160,7 @@ func _block_29(w: WorldState, country: CountryData, slots: Array) -> void:
 	var n := country.原版序号
 	var _player := w.get_player_country()
 	if n == 29 and _d(w, 169) != 1 \
-			and (country.sub_government != 10 or not _part(w, 29, 0)):
+			and (country.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST or not _part(w, 29, 0)):
 		var spain := _c(w, 85)
 		var france := _c(w, 21)
 		if (spain == null or not spain.has_tag("soc_eu")) \
@@ -2182,7 +2182,7 @@ func _block_29(w: WorldState, country: CountryData, slots: Array) -> void:
 			_show(slots, 2, 1068, "  建 立 民 主 社 会")
 	elif n == 29 and _has(w, 85, "soc_eu") and _d(w, 169) == 0:
 		_show(slots, 1, 1068, "  建 立 民 主 社 会")
-	elif n == 29 and country.sub_government == 10 and _part(w, 29, 0):
+	elif n == 29 and country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST and _part(w, 29, 0):
 		_show(slots, 0, 9, " 发 展 贸 易")
 		_show(slots, 1, 10, " 经 济 合 作")
 		_show(slots, 2, 19, "军 事 同 盟")
@@ -2282,7 +2282,7 @@ func _block_africa_h(w: WorldState, country: CountryData, slots: Array) -> void:
 	if not country.has_tag("亲中") or country.禁用非洲机制:
 		return
 	_show(slots, 0, 10, "经 济 合 作")
-	if (country.government == 1 or country.sub_government == 0) \
+	if (country.government == GameConstants.Government.SOCIALIST or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) \
 			and w.event_done_num(500) and w.result_of_event_num(500) == 0:
 		_show(slots, 1, 5001, "非 洲 联 盟")
 	if _revint_ok(w, country):
@@ -2310,7 +2310,7 @@ func _block_k_ok(w: WorldState, country: CountryData) -> bool:
 		return false
 	if country.puppet_of >= 0:
 		return false
-	if not w.is_socialism(country, true) or country.sub_government == 16 or country.sub_government == 18:
+	if not w.is_socialism(country, true) or country.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or country.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		return false
 	if country.has_tag("亲苏") or country.has_tag("亲美") or country.has_tag("sev") \
 			or country.has_tag("ovd") or country.has_tag("nato") or country.has_tag("eu") \

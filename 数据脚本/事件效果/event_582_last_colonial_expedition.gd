@@ -73,8 +73,8 @@ func execute(context: Dictionary) -> void:
 			if c52 != null and c52.has_tag("亲中") and _tech(23):
 				var text := TXT_R0_A + TXT_R0_CONGO
 				if c65 != null:
-					c65.government = 1
-					c65.sub_government = 1
+					c65.government = GameConstants.Government.SOCIALIST
+					c65.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					_leave_alliances(c65)
 					c65.set_tag("对华贸易", true)
 					c65.set_tag("亲中", true)
@@ -87,8 +87,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				var text := TXT_R0_A + TXT_R0_FAIL
 				if c65 != null:
-					c65.government = 0
-					c65.sub_government = 20
+					c65.government = GameConstants.Government.AUTHORITARIAN
+					c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					_leave_alliances(c65)
 					c65.chinese_name = "中非共和国"
 				_add_relation(EmpireData.USA, -100)
@@ -100,8 +100,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -100)
 			_add(W.I_ARMY, -100)
 			if c65 != null:
-				c65.government = 0
-				c65.sub_government = 20
+				c65.government = GameConstants.Government.AUTHORITARIAN
+				c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				c65.chinese_name = "中非共和国"
 				_leave_alliances(c65)
 				c65.puppet_of = 21
@@ -112,8 +112,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -100)
 			_add(W.I_ARMY, -100)
 			if c65 != null:
-				c65.government = 0
-				c65.sub_government = 10
+				c65.government = GameConstants.Government.AUTHORITARIAN
+				c65.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				_leave_alliances(c65)
 				c65.set_tag("亲中", true)
 				c65.set_tag("对华贸易", true)
@@ -126,8 +126,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 		3:
 			if c65 != null:
-				c65.government = 0
-				c65.sub_government = 20
+				c65.government = GameConstants.Government.AUTHORITARIAN
+				c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				_leave_alliances(c65)
 				c65.chinese_name = "中非共和国"
 				c65.puppet_of = 21
@@ -136,8 +136,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R3
 		4:
 			if c65 != null:
-				c65.government = 0
-				c65.sub_government = 20
+				c65.government = GameConstants.Government.AUTHORITARIAN
+				c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				_leave_alliances(c65)
 				c65.chinese_name = "中非共和国"
 				c65.puppet_of = 21
@@ -147,8 +147,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R4
 		5:
 			if c65 != null:
-				c65.government = 0
-				c65.sub_government = 20
+				c65.government = GameConstants.Government.AUTHORITARIAN
+				c65.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				_leave_alliances(c65)
 				c65.chinese_name = "中非共和国"
 				c65.puppet_of = 21

@@ -76,8 +76,8 @@ func execute(context: Dictionary) -> void:
 	if opt == 0:
 		_add(W.I_BUDGET, -50)
 		if grenada != null:
-			grenada.government = 1
-			grenada.sub_government = 1
+			grenada.government = GameConstants.Government.SOCIALIST
+			grenada.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			_set_pro_neutral(grenada)
 			grenada.set_tag("对华贸易", true)
 		_add_power(EmpireData.USSR, 20)
@@ -86,8 +86,8 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = TXT_R[0]
 	elif opt == 1:
 		if grenada != null:
-			grenada.government = 1
-			grenada.sub_government = 1
+			grenada.government = GameConstants.Government.SOCIALIST
+			grenada.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			_set_pro_neutral(grenada)
 			grenada.set_tag("对华贸易", false)
 		_add_power(EmpireData.USSR, 20)
@@ -96,8 +96,8 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = TXT_R[1]
 	else:
 		if grenada != null:
-			grenada.government = 1
-			grenada.sub_government = 1
+			grenada.government = GameConstants.Government.SOCIALIST
+			grenada.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			_set_pro_neutral(grenada)
 		_add_power(EmpireData.USSR, 20)
 		context["result_text"] = TXT_R[2]

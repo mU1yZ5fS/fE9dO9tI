@@ -58,8 +58,8 @@ func execute(context: Dictionary) -> void:
 			text0 += TXT_R0_2
 			context["result_text"] = text0
 			if c13 != null: c13.set_tag("对华贸易", true)
-			if c13 != null: c13.government = 0
-			if c13 != null: c13.sub_government = 10
+			if c13 != null: c13.government = GameConstants.Government.AUTHORITARIAN
+			if c13 != null: c13.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			ws.influence_prc += 10
 			_add_relation(0, -100)
 			ws.oil_prod += 150.0  # Event512.cs result0：利比亚扩大合作
@@ -71,8 +71,8 @@ func execute(context: Dictionary) -> void:
 			text1 += TXT_R1_2
 			context["result_text"] = text1
 			if c13 != null: c13.set_tag("对华贸易", false)
-			if c13 != null: c13.government = 0
-			if c13 != null: c13.sub_government = 10
+			if c13 != null: c13.government = GameConstants.Government.AUTHORITARIAN
+			if c13 != null: c13.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			_add_relation(0, 150)
 		2:
 			if ws.wars.size() > 20 and ws.wars[20] != null and ws.wars[20].is_going:
@@ -89,8 +89,8 @@ func execute(context: Dictionary) -> void:
 				text2 += TXT_R2_1
 				if c13 != null:
 					_leave_alliances(c13)
-					c13.government = 1
-					c13.sub_government = 1
+					c13.government = GameConstants.Government.SOCIALIST
+					c13.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					c13.set_tag("对华贸易", true)
 					c13.set_tag("亲中", true)
 				if c13 != null:
@@ -101,8 +101,8 @@ func execute(context: Dictionary) -> void:
 				text2 += TXT_R2_2
 				if c13 != null:
 					_leave_alliances(c13)
-					c13.government = 3
-					c13.sub_government = 5
+					c13.government = GameConstants.Government.LIBERAL
+					c13.sub_government = GameConstants.SubGovernment.MODERATE
 					c13.set_tag("亲中", true)
 				if c13 != null:
 					if c13.parts.size() <= 0: c13.parts.resize(1)
@@ -111,8 +111,8 @@ func execute(context: Dictionary) -> void:
 				text2 += TXT_R2_3
 				if c13 != null:
 					_leave_alliances(c13)
-					c13.government = 0
-					c13.sub_government = 7
+					c13.government = GameConstants.Government.AUTHORITARIAN
+					c13.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					c13.set_tag("亲美", true)
 				if c13 != null:
 					if c13.parts.size() <= 0: c13.parts.resize(1)
@@ -124,8 +124,8 @@ func execute(context: Dictionary) -> void:
 				text3 += TXT_R3_1
 			text3 += TXT_R3_2
 			context["result_text"] = text3
-			if c13 != null: c13.government = 0
-			if c13 != null: c13.sub_government = 10
+			if c13 != null: c13.government = GameConstants.Government.AUTHORITARIAN
+			if c13 != null: c13.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -160,7 +160,7 @@ func _chinese_sub_government() -> int:
 		return 13
 	var data := d
 	var result := 13
-	if china.government == 0:
+	if china.government == GameConstants.Government.AUTHORITARIAN:
 		if _event_result("event_674") == 2:
 			result = 9
 		elif china.has_tag("nazimao"):
@@ -181,7 +181,7 @@ func _chinese_sub_government() -> int:
 			result = 7
 		else:
 			result = 13
-	elif china.government == 1:
+	elif china.government == GameConstants.Government.SOCIALIST:
 		if _mod_active(49):
 			result = 18
 		elif _mod_active(6) and _mod_active(3) and data[W.I_PARTY_SYSTEM] <= 7 				and data[W.I_ECON_SYSTEM] <= 12 and data[W.I_RELIGION] <= 25:
@@ -192,7 +192,7 @@ func _chinese_sub_government() -> int:
 			result = 2
 		else:
 			result = 1
-	elif china.government == 2:
+	elif china.government == GameConstants.Government.REFORMIST:
 		if _mod_active(40):
 			result = 8
 		elif data[W.I_IDEOLOGY] >= 2 and data[W.I_ECON_SYSTEM] >= 13 				and data[W.I_DIPLO] <= 700 and data[W.I_PARTY_SYSTEM] >= 8 				and data[W.I_PRESS_POLICY] >= 18 and not china.has_tag("ovd"):
@@ -207,7 +207,7 @@ func _chinese_sub_government() -> int:
 			result = 21
 		else:
 			result = 15
-	elif china.government != 3:
+	elif china.government != GameConstants.Government.LIBERAL:
 		result = 13
 	elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 500:
 		result = 4

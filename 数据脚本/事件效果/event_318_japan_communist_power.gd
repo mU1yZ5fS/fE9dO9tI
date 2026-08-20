@@ -45,8 +45,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(0, -500)
 			var japan := ws.get_country_by_legacy_index(44)
 			if japan != null:
-				japan.government = 1
-				japan.sub_government = 1
+				japan.government = GameConstants.Government.SOCIALIST
+				japan.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				japan.chinese_name = TXT_NAME_RED
 				japan.set_tag("亲中", true)
 				japan.set_tag("亲美", false)
@@ -61,8 +61,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(0, -500)
 			var japan := ws.get_country_by_legacy_index(44)
 			if japan != null:
-				japan.government = 0
-				japan.sub_government = 9
+				japan.government = GameConstants.Government.AUTHORITARIAN
+				japan.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				japan.chinese_name = TXT_NAME_EMPIRE
 				japan.set_tag("亲中", true)
 				japan.set_tag("亲美", false)

@@ -28,9 +28,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c30 := world.get_country_by_legacy_index(30)
 	var data := world.数值表
 	var line := data[W.I_POLITICAL_LINE] if data.size() > W.I_POLITICAL_LINE else 3
-	var cond := line <= 2 and china != null and (china.government == 1 or china.sub_government == 0 \
-			or ((china.government == 2 or china.sub_government == 10 or china.sub_government == 22) \
-			and c30 != null and c30.government == 2))
+	var cond := line <= 2 and china != null and (china.government == GameConstants.Government.SOCIALIST or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL \
+			or ((china.government == GameConstants.Government.REFORMIST or china.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or china.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST) \
+			and c30 != null and c30.government == GameConstants.Government.REFORMIST))
 	if cond:
 		_enable(opt[0], event_def.options[0].text)
 	else:

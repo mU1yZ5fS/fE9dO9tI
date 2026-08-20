@@ -17,7 +17,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			if zaire != null and zaire.government == 1:
+			if zaire != null and zaire.government == GameConstants.Government.SOCIALIST:
 				context["result_text"] = TXT_R0_A
 			else:
 				context["result_text"] = TXT_R0_B
@@ -38,7 +38,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if not (katanga.parts.size() > 0 and katanga.parts[0]):
 		return false
-	return zaire.sub_government == 15 or zaire.sub_government == 17
+	return zaire.sub_government == GameConstants.SubGovernment.PRAGMATIST or zaire.sub_government == GameConstants.SubGovernment.MAOIST
 
 
 

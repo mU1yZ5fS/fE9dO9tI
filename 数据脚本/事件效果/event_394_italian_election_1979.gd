@@ -66,7 +66,7 @@ func execute(context: Dictionary) -> void:
 		_add(175, 2)  # 原版 data[175]
 	else:
 		_add(176, 1)  # 原版 data[176]
-	if portugal != null and portugal.government == 3:
+	if portugal != null and portugal.government == GameConstants.Government.LIBERAL:
 		_add(175, 1)  # 原版 data[175]
 	if italy != null and italy.level_of_development >= 60:
 		_add(175, 2)  # 原版 data[175]

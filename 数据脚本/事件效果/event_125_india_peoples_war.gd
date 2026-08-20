@@ -81,8 +81,8 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 30
 			_add_power(EmpireData.USSR, 30)
 			if india != null:
-				india.government = 1
-				india.sub_government = 1
+				india.government = GameConstants.Government.SOCIALIST
+				india.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				india.special_ending = 2
 				india.set_tag("亲中", false)
 				india.set_tag("亲苏", false)

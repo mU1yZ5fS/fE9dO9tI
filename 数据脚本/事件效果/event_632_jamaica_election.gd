@@ -47,8 +47,8 @@ func execute(context: Dictionary) -> void:
 			if ws.influence_prc > usa_power or usa_rel >= 500:
 				context["result_text"] = TXT_R0_OK
 				if jamaica != null:
-					jamaica.government = 2
-					jamaica.sub_government = 3
+					jamaica.government = GameConstants.Government.REFORMIST
+					jamaica.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					_leave_alliances(jamaica)
 					jamaica.set_tag("对华贸易", true)
 					jamaica.set_tag("亲中", true)
@@ -58,8 +58,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R0_FAIL
 				if jamaica != null:
-					jamaica.government = 0
-					jamaica.sub_government = 7
+					jamaica.government = GameConstants.Government.AUTHORITARIAN
+					jamaica.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					_leave_alliances(jamaica)
 					jamaica.set_tag("亲美", true)
 				_add_power(EmpireData.USA, 20)
@@ -71,8 +71,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -50)
 			_add(W.I_ARMY, -50)
 			if jamaica != null:
-				jamaica.government = 3
-				jamaica.sub_government = 12
+				jamaica.government = GameConstants.Government.LIBERAL
+				jamaica.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				_leave_alliances(jamaica)
 				jamaica.set_tag("亲美", true)
 				jamaica.set_tag("对华贸易", true)
@@ -83,8 +83,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2_A + (TXT_R2_REAGAN if leader == 0 else TXT_R2_CARTER) + TXT_R2_TAIL
 			_add(W.I_BUDGET, -20)
 			if jamaica != null:
-				jamaica.government = 3
-				jamaica.sub_government = 12
+				jamaica.government = GameConstants.Government.LIBERAL
+				jamaica.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				_leave_alliances(jamaica)
 				jamaica.set_tag("亲美", true)
 			_add_power(EmpireData.USA, 20)

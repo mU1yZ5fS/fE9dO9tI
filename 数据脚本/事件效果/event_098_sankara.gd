@@ -55,8 +55,8 @@ func execute(context: Dictionary) -> void:
 		_leave_alliances(bf)
 		bf.name = "布基纳法索"
 		bf.chinese_name = "布基纳法索"
-		bf.government = 2
-		bf.sub_government = 3
+		bf.government = GameConstants.Government.REFORMIST
+		bf.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		bf.set_tag("对华贸易", false)
 		bf.set_tag("亲美", false)
 		bf.set_tag("亲中", false)
@@ -67,8 +67,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			var text := TXT_R0
 			if bf != null:
-				bf.sub_government = 1
-				bf.government = 1
+				bf.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
+				bf.government = GameConstants.Government.SOCIALIST
 			var ussr_power := ws.empires[EmpireData.USSR].power if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null else 0
 			var china := ws.get_country_by_legacy_index(1)
 			if (ussr_power > _usa_power() and ussr_power > ws.influence_prc) \
@@ -87,8 +87,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -100)
 			_add(W.I_DIPLO, 10)
 			if bf != null:
-				bf.government = 2
-				bf.sub_government = 15
+				bf.government = GameConstants.Government.REFORMIST
+				bf.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				bf.set_tag("对华贸易", true)
 				bf.set_tag("亲中", true)
 			context["result_text"] = TXT_R1
@@ -101,8 +101,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -50)
 			_add(W.I_DIPLO, 20)
 			if bf != null:
-				bf.sub_government = 0
-				bf.government = 1
+				bf.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
+				bf.government = GameConstants.Government.SOCIALIST
 				bf.set_tag("对华贸易", true)
 				bf.set_tag("亲中", true)
 			context["result_text"] = TXT_R2
@@ -116,8 +116,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, -50)
 			if bf != null:
-				bf.government = 3
-				bf.sub_government = 12
+				bf.government = GameConstants.Government.LIBERAL
+				bf.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				bf.set_tag("对华贸易", true)
 				bf.name = "上沃尔特"
 				bf.chinese_name = "上沃尔特"

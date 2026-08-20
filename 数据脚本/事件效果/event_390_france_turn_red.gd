@@ -81,8 +81,8 @@ func execute(context: Dictionary) -> void:
 		else:
 			context["result_text"] = TXT_R1_DEFAULT
 			if france != null:
-				france.government = 3
-				france.sub_government = 5
+				france.government = GameConstants.Government.LIBERAL
+				france.sub_government = GameConstants.SubGovernment.MODERATE
 			_add_power(EmpireData.USA, 50)
 	else:
 		if opt == 0:
@@ -92,8 +92,8 @@ func execute(context: Dictionary) -> void:
 			if france != null:
 				france.set_tag("eu", false)
 				france.set_tag("nato", false)
-				france.government = 1
-				france.sub_government = 1
+				france.government = GameConstants.Government.SOCIALIST
+				france.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				france.set_tag("亲苏", true)
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null 					and ws.empires[EmpireData.USSR].leaders.size() > 4:
 				ws.empires[EmpireData.USSR].leaders[4].support += 1
@@ -102,8 +102,8 @@ func execute(context: Dictionary) -> void:
 		else:
 			context["result_text"] = TXT_R1_YUG
 			if france != null:
-				france.government = 0
-				france.sub_government = 20
+				france.government = GameConstants.Government.AUTHORITARIAN
+				france.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				france.set_tag("eu", false)
 				france.set_tag("nato", false)
 			if ws.modifiers.size() > 44 and ws.modifiers[44] != null:
@@ -118,7 +118,7 @@ func _calc_num(world: WorldState) -> int:
 	var portugal := world.get_country_by_legacy_index(87)
 	var greece := world.get_country_by_legacy_index(45)
 	var usa := world.get_country_by_legacy_index(51)
-	if spain != null and spain.government == 2:
+	if spain != null and spain.government == GameConstants.Government.REFORMIST:
 		num += 1
 	if italy == null or not italy.has_tag("eu"):
 		num += 1

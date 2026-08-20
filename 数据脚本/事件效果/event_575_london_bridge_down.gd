@@ -32,14 +32,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c135 := world.get_country_by_legacy_index(135)
 	var r573 := int(world.completed_event_ids.get("event_573", 0))
 	var desc := TXT_DESC_BASE
-	if c92 != null and (c92.government == 2 or c92.government == 1) and c92.sub_government != 18 \
+	if c92 != null and (c92.government == GameConstants.Government.REFORMIST or c92.government == GameConstants.Government.SOCIALIST) and c92.sub_government != GameConstants.SubGovernment.TROTSKYIST \
 			and not c92.has_tag("soc_eu") and not c92.has_tag("nato"):
 		desc += TXT_DESC_HARD
-	elif c92 != null and c92.government == 2 and c92.has_tag("soc_eu"):
+	elif c92 != null and c92.government == GameConstants.Government.REFORMIST and c92.has_tag("soc_eu"):
 		desc += TXT_DESC_SOFT
 	else:
 		desc += TXT_DESC_TROT
-	if c135 != null and c135.sub_government == 4:
+	if c135 != null and c135.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 		desc += TXT_DESC_HAWKE
 	else:
 		desc += TXT_DESC_FRASER
@@ -67,8 +67,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -150)
 			if c135 != null:
 				_leave_alliances(c135)
-				c135.government = 2
-				c135.sub_government = 3
+				c135.government = GameConstants.Government.REFORMIST
+				c135.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				c135.set_tag("对华贸易", true)
 				c135.set_tag("亲中", true)
 			_add_relation(EmpireData.USA, -200)
@@ -79,8 +79,8 @@ func execute(context: Dictionary) -> void:
 					c135.set_tag("soc_eu", true)
 				if c136 != null:
 					_leave_alliances(c136)
-					c136.government = 2
-					c136.sub_government = 3
+					c136.government = GameConstants.Government.REFORMIST
+					c136.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					c136.内战中 = true
 					c136.set_tag("对华贸易", true)
 					c136.set_tag("soc_eu", true)
@@ -90,20 +90,20 @@ func execute(context: Dictionary) -> void:
 		1:
 			if c135 != null:
 				c135.set_tag("亲美", false)
-				c135.government = 2
+				c135.government = GameConstants.Government.REFORMIST
 			if c85 != null and c85.has_tag("soc_eu"):
 				if c135 != null:
-					c135.sub_government = 14
+					c135.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 					c135.set_tag("soc_eu", true)
 				if c136 != null:
 					_leave_alliances(c136)
-					c136.government = 2
+					c136.government = GameConstants.Government.REFORMIST
 					c136.内战中 = true
-					c136.sub_government = 3
+					c136.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					c136.set_tag("soc_eu", true)
 				context["result_text"] = TXT_R1_EU
 			else:
 				if c135 != null:
-					c135.sub_government = 8
+					c135.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				EventEngine.enqueue_chain(["event_576"])
 				context["result_text"] = TXT_R1_NORMAL

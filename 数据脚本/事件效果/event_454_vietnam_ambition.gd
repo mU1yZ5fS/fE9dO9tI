@@ -78,8 +78,8 @@ func _indochina_names() -> void:
 	var c22 := _country(22)
 	var c23 := _country(23)
 	if c11 != null:
-		c11.government = 0
-		c11.sub_government = 10
+		c11.government = GameConstants.Government.AUTHORITARIAN
+		c11.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		c11.chinese_name = TXT_NAME_FED
 		_set_part(c11, 0, true)
 		c11.set_tag("sev", true)

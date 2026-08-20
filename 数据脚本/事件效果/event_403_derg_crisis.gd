@@ -107,7 +107,7 @@ func evaluate(world: WorldState) -> bool:
 	var ethiopia := world.get_country_by_legacy_index(41)
 	if ethiopia == null:
 		return false
-	if ethiopia.sub_government != 10:
+	if ethiopia.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST:
 		return false
 	if not ethiopia.has_tag("亲苏"):
 		return false

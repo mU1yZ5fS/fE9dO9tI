@@ -93,13 +93,13 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -100)
 		num2 += 2
 	var west_germany := ws.get_country_by_legacy_index(45)
-	if west_germany != null and west_germany.government == 2:
+	if west_germany != null and west_germany.government == GameConstants.Government.REFORMIST:
 		num += 1
 	if int(ws.completed_event_ids.get("event_049", 0)) == 1:
 		num += 1
 	for cid in [21, 86]:
 		var c := ws.get_country_by_legacy_index(cid)
-		if c != null and c.sub_government == 14:
+		if c != null and c.sub_government == GameConstants.SubGovernment.EUROCOMMUNIST:
 			num += 1
 	if ws.empires.size() > 1 and ws.empires[1] != null and ws.empires[0] != null and ws.empires[1].power > ws.empires[0].power:
 		num += 2
@@ -111,15 +111,15 @@ func execute(context: Dictionary) -> void:
 	if _raw(131) == 3:
 		num2 += 1
 	var bulgaria := ws.get_country_by_legacy_index(84)
-	if bulgaria != null and bulgaria.sub_government == 9:
+	if bulgaria != null and bulgaria.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num2 += 2
-	elif bulgaria != null and bulgaria.sub_government == 7:
+	elif bulgaria != null and bulgaria.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		num2 += 1
 	if ws.empires.size() > 1 and ws.influence_prc > ws.empires[0].power + ws.empires[1].power:
 		num2 += 1
 	for cid in [86, 87]:
 		var c := ws.get_country_by_legacy_index(cid)
-		if c != null and c.government == 0:
+		if c != null and c.government == GameConstants.Government.AUTHORITARIAN:
 			num2 += 1
 	_add_power(EmpireData.USA, -50)
 	if italy != null:

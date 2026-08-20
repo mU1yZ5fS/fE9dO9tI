@@ -124,7 +124,7 @@ func execute(context: Dictionary) -> void:
 
 func _event_64(option_index: int, context: Dictionary) -> void:
 	var egypt := ws.get_country_by_legacy_index(30)
-	if egypt != null and egypt.government == 1:
+	if egypt != null and egypt.government == GameConstants.Government.SOCIALIST:
 		_add_data({W.I_DIPLO: 10, W.I_MANPOWER: 30})
 		_add_empire_relation(EmpireData.USSR, -100)
 		_add_empire_relation(EmpireData.USA, -100)
@@ -145,7 +145,7 @@ func _event_64(option_index: int, context: Dictionary) -> void:
 			if c == null:
 				continue
 			var idx := int(c.原版序号)
-			var socialism := c.government == 1
+			var socialism := c.government == GameConstants.Government.SOCIALIST
 			if idx in [54, 55, 18, 40, 104, 93, 53]:
 				if socialism:
 					c.set_tag("oar", true)
@@ -186,7 +186,7 @@ func _event_65(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USA, -100)
 			var r0 := _leader_name() + TXT_65_R0A + _leader_name() + TXT_65_R0B
 			var iran := ws.get_country_by_legacy_index(8)
-			if iran != null and iran.government == 0:
+			if iran != null and iran.government == GameConstants.Government.AUTHORITARIAN:
 				r0 += TXT_65_R_IRAN
 			r0 += TXT_65_R_TAIL
 			context["result_text"] = r0
@@ -198,7 +198,7 @@ func _event_65(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USSR, -50)
 			var r1 := TXT_65_R1A
 			var iran1 := ws.get_country_by_legacy_index(8)
-			if iran1 != null and iran1.government == 0:
+			if iran1 != null and iran1.government == GameConstants.Government.AUTHORITARIAN:
 				r1 += TXT_65_R_IRAN
 			r1 += TXT_65_R_TAIL1
 			context["result_text"] = r1
@@ -210,7 +210,7 @@ func _event_65(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USSR, 50)
 			var r2 := TXT_65_R2A
 			var iran2 := ws.get_country_by_legacy_index(8)
-			if iran2 != null and iran2.government == 0:
+			if iran2 != null and iran2.government == GameConstants.Government.AUTHORITARIAN:
 				r2 += TXT_65_R_IRAN
 			r2 += TXT_65_R2_TAIL
 			context["result_text"] = r2
@@ -221,7 +221,7 @@ func _event_65(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USSR, -200)
 			var r3 := TXT_65_R3A
 			var iran3 := ws.get_country_by_legacy_index(8)
-			if iran3 != null and iran3.government == 0:
+			if iran3 != null and iran3.government == GameConstants.Government.AUTHORITARIAN:
 				r3 += TXT_65_R_IRAN
 			r3 += TXT_65_R3_TAIL
 			context["result_text"] = r3
@@ -242,7 +242,7 @@ func _event_65(option_index: int, context: Dictionary) -> void:
 				r4 += TXT_65_R4_BAD
 			r4 += TXT_65_R4_TAILA
 			var iran4 := ws.get_country_by_legacy_index(8)
-			if iran4 != null and iran4.government == 0:
+			if iran4 != null and iran4.government == GameConstants.Government.AUTHORITARIAN:
 				r4 += TXT_65_R_IRAN
 			r4 += TXT_65_R4_TAIL
 			context["result_text"] = r4
@@ -325,7 +325,7 @@ func _prepare_64(event_def: EventDef) -> void:
 		return
 	var opts := event_def.options
 	var egypt := ws.get_country_by_legacy_index(30)
-	if egypt != null and egypt.government == 1:
+	if egypt != null and egypt.government == GameConstants.Government.SOCIALIST:
 		event_def.title = TXT_64_TITLE_SOC
 		event_def.description = TXT_64_DESC_SOC
 		_enable(opts[0], TXT_64_OPT0_SOC)

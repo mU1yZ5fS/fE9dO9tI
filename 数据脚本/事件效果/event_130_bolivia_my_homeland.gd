@@ -41,8 +41,8 @@ func execute(context: Dictionary) -> void:
 			# 用户需求：玻利维亚事件1选择2（保持距离）也能与玻利维亚建立贸易。
 			bolivia.set_tag("对华贸易", true)
 			context["result_text"] = TXT_R0 + _proprc_suffix(bolivia)
-	bolivia.government = 3
-	bolivia.sub_government = 7
+	bolivia.government = GameConstants.Government.LIBERAL
+	bolivia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 	bolivia.next_election_year = 1979
 	bolivia.next_election_month = 7
 	bolivia.next_election_day = 1

@@ -67,7 +67,7 @@ func execute(context: Dictionary) -> void:
 	var yugo := ws.get_country_by_legacy_index(15)
 	var china := ws.get_country_by_legacy_index(1)
 	var opt := int(context.get("option_index", -1))
-	var yugo_txt: String = TXT_YUGO if (yugo != null and yugo.sub_government == 0 and not yugo.has_tag("sev") 			and (china != null and (china.government == 1 or china.sub_government == 0))) else ""
+	var yugo_txt: String = TXT_YUGO if (yugo != null and yugo.sub_government == GameConstants.SubGovernment.LEFT_RADICAL and not yugo.has_tag("sev") 			and (china != null and (china.government == GameConstants.Government.SOCIALIST or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL))) else ""
 	if opt == 0:
 		context["result_text"] = TXT_R0.format(["\n", yugo_txt])
 		_apply_wp_to_nato()
@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USSR, 150)
 		_add_relation(EmpireData.USA, -600)
 		_add_relation(EmpireData.USSR, -600)
-		if yugo != null and yugo.sub_government == 0 and not yugo.has_tag("sev") 				and china != null and (china.government == 1 or china.sub_government == 0):
+		if yugo != null and yugo.sub_government == GameConstants.SubGovernment.LEFT_RADICAL and not yugo.has_tag("sev") 				and china != null and (china.government == GameConstants.Government.SOCIALIST or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 			yugo.set_tag("亲中", true)
 	elif opt == 1:
 		context["result_text"] = TXT_R1.format(["\n", yugo_txt])
@@ -84,7 +84,7 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USSR, 150)
 		_add_relation(EmpireData.USA, -700)
 		_add_relation(EmpireData.USSR, -700)
-		if yugo != null and yugo.sub_government == 0 and not yugo.has_tag("sev") 				and china != null and (china.government == 1 or china.sub_government == 0):
+		if yugo != null and yugo.sub_government == GameConstants.SubGovernment.LEFT_RADICAL and not yugo.has_tag("sev") 				and china != null and (china.government == GameConstants.Government.SOCIALIST or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 			yugo.set_tag("亲中", true)
 	else:
 		var num := 0
@@ -123,7 +123,7 @@ func execute(context: Dictionary) -> void:
 		var text2 := ""
 		var num7 := 0
 		var egypt := ws.get_country_by_legacy_index(30)
-		if num2 == 5 and num > 10 and egypt != null and egypt.has_tag("oar") and not egypt.has_tag("亲苏") 				and yugo != null and yugo.sub_government == 0 and not yugo.has_tag("sev") 				and china != null and (china.government == 1 or china.sub_government == 0):
+		if num2 == 5 and num > 10 and egypt != null and egypt.has_tag("oar") and not egypt.has_tag("亲苏") 				and yugo != null and yugo.sub_government == GameConstants.SubGovernment.LEFT_RADICAL and not yugo.has_tag("sev") 				and china != null and (china.government == GameConstants.Government.SOCIALIST or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 			_start_war_379(60 * num2, 1000 - 60 * num2)
 			for i in range(18):
 				var cc := ws.get_country_by_legacy_index(i)
@@ -174,9 +174,9 @@ func execute(context: Dictionary) -> void:
 			num7 += 1
 		if egypt != null and egypt.has_tag("oar") and not egypt.has_tag("亲苏"):
 			num7 += 1
-		if yugo != null and yugo.sub_government == 0 and not yugo.has_tag("sev"):
+		if yugo != null and yugo.sub_government == GameConstants.SubGovernment.LEFT_RADICAL and not yugo.has_tag("sev"):
 			num7 += 1
-		if china != null and (china.government == 1 or china.sub_government == 0):
+		if china != null and (china.government == GameConstants.Government.SOCIALIST or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 			num7 += 1
 		if poland_c() != null and poland_c().has_tag("亲中"):
 			text2 += TXT_POLAND_NATO + "\n"
@@ -202,7 +202,7 @@ func execute(context: Dictionary) -> void:
 		for c in ws.countries:
 			if c != null and (c.has_tag("亲美") or c.has_tag("nato")):
 				c.set_tag("对华贸易", false)
-		if yugo != null and yugo.sub_government == 0 and not yugo.has_tag("sev") 				and china != null and (china.government == 1 or china.sub_government == 0):
+		if yugo != null and yugo.sub_government == GameConstants.SubGovernment.LEFT_RADICAL and not yugo.has_tag("sev") 				and china != null and (china.government == GameConstants.Government.SOCIALIST or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 			yugo.set_tag("亲中", true)
 		context["result_text"] = TXT_R2_FAIL.format(["\n", num3, text2, yugo_txt, num7])
 

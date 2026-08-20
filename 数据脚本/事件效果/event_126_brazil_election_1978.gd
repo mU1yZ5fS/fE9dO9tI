@@ -150,7 +150,7 @@ func execute(context: Dictionary) -> void:
 			winner = _get_winner_in_america(brazil, ideo, sup, 0.0, -1)
 			if winner != brazil.sub_government:
 				brazil.set_tag("亲中", false)
-	brazil.government = 3
+	brazil.government = GameConstants.Government.LIBERAL
 	brazil.sub_government = winner
 	_leave_alliances(brazil)
 	brazil.next_election_year = 1985

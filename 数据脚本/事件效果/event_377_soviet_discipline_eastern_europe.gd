@@ -136,7 +136,7 @@ func execute(context: Dictionary) -> void:
 	if cond5 and mongolia != null and ussr != null:
 		mongolia.government = ussr.government
 		_establish_government(mongolia, "prosov")
-		mongolia.sub_government = 16
+		mongolia.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 		mongolia.puppet_of = 7
 		ws.influence_prc -= 50
 		mongolia.set_tag("对华贸易", false)
@@ -144,7 +144,7 @@ func execute(context: Dictionary) -> void:
 		for c in [poland, hungary, romania, bulgaria]:
 			if c != null:
 				c.government = ussr.government
-				c.sub_government = 16
+				c.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				c.set_tag("对华贸易", false)
 				c.puppet_of = 7
 	ws.influence_prc -= 150

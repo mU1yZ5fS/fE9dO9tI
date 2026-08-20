@@ -106,7 +106,7 @@ func execute(context: Dictionary) -> void:
 			ws.set_flag("relres", false)
 			if c7 != null:
 				c7.set_tag("对华贸易", false)
-				c7.sub_government = 1
+				c7.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			_add(W.I_COMMUNICATIONS, -50)
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -100)
@@ -125,8 +125,8 @@ func execute(context: Dictionary) -> void:
 			if c7 != null:
 				c7.set_tag("对华贸易", true)
 				c7.set_tag("亲苏", false)
-				c7.government = 2
-				c7.sub_government = 15
+				c7.government = GameConstants.Government.REFORMIST
+				c7.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			_add_relation(EmpireData.USSR, 100)
 			_add_relation(EmpireData.USA, 150)
 			_add(W.I_COMMUNICATIONS, 250)
@@ -148,8 +148,8 @@ func execute(context: Dictionary) -> void:
 			if c7 != null:
 				c7.set_tag("对华贸易", true)
 				c7.set_tag("亲苏", false)
-				c7.government = 2
-				c7.sub_government = 21
+				c7.government = GameConstants.Government.REFORMIST
+				c7.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 			_add_relation(EmpireData.USSR, 100)
 			_add_relation(EmpireData.USA, -250)
 			_add(W.I_COMMUNICATIONS, 250)

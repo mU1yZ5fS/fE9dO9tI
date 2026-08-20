@@ -60,4 +60,4 @@ func evaluate(world: WorldState) -> bool:
 	if not world.event_done_num(698):
 		return false
 	var c8 := world.get_country_by_legacy_index(8)
-	return c8 == null or c8.sub_government != 13
+	return c8 == null or c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL

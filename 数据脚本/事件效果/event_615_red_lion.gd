@@ -52,8 +52,8 @@ func execute(context: Dictionary) -> void:
 			if _res_ev("event_597") == 1 and not _part(112, 1) and not _war_going(52):
 				context["result_text"] = TXT_R0
 				if senegal != null:
-					senegal.government = 3
-					senegal.sub_government = 12
+					senegal.government = GameConstants.Government.LIBERAL
+					senegal.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				_add(W.I_THOUGHT_FREEDOM, -20)
 				_add(W.I_ARMY, -50)
 				_add(W.I_BUDGET, -20)
@@ -62,8 +62,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			context["result_text"] = TXT_R1
 			if senegal != null:
-				senegal.government = 3
-				senegal.sub_government = 12
+				senegal.government = GameConstants.Government.LIBERAL
+				senegal.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				senegal.set_tag("对华贸易", true)
 			ws.influence_prc += 10
 			_add(W.I_BUDGET, -50)

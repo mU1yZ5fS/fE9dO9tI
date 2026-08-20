@@ -138,7 +138,7 @@ func _is_kefir_doom(war_id: int, war: WarData) -> bool:
 	if war_id != 3 or war == null or war.infl1 >= 900:
 		return false
 	var iraq := ws.get_country_by_legacy_index(14)
-	return iraq != null and iraq.government == 1
+	return iraq != null and iraq.government == GameConstants.Government.SOCIALIST
 
 
 func _is_ussr_victory(war_id: int, war: WarData) -> bool:

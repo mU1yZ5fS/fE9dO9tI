@@ -975,8 +975,8 @@ static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 			add_empire_power(EmpireData.USSR, 50)
 		elif war.ussr_side == -1:
 			if afg != null:
-				afg.government = 1
-				afg.sub_government = 1
+				afg.government = GameConstants.Government.SOCIALIST
+				afg.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				afg.set_tag("亲苏", false)
 				afg.set_tag("亲中", true)
 				afg.set_tag("对华贸易", true)
@@ -985,8 +985,8 @@ static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 				d[W.I_INFLUENCE] += 100
 		elif war.ussr_side == 1:
 			if afg != null:
-				afg.government = 1
-				afg.sub_government = 17
+				afg.government = GameConstants.Government.SOCIALIST
+				afg.sub_government = GameConstants.SubGovernment.MAOIST
 				afg.set_tag("亲苏", false)
 				afg.set_tag("亲中", true)
 				afg.set_tag("对华贸易", true)
@@ -1010,7 +1010,7 @@ static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 			war.infl1 -= 100
 			war.infl2 += 100
 		var c8 := _wc(w, 8)
-		if c8 != null and c8.government == 0:
+		if c8 != null and c8.government == GameConstants.Government.AUTHORITARIAN:
 			war.infl1 -= 50
 			war.infl2 += 50
 		if d.size() > 107 and d[107] == 9:
@@ -1020,8 +1020,8 @@ static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 		return true
 	else:
 		if afg != null:
-			afg.government = 0
-			afg.sub_government = 13
+			afg.government = GameConstants.Government.AUTHORITARIAN
+			afg.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 			afg.set_tag("亲苏", false)
 			afg.set_tag("亲中", false)
 			afg.set_tag("对华贸易", false)
@@ -1045,12 +1045,12 @@ static func _war19_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 			alb.set_tag("亲中", false)
 			alb.set_tag("对华贸易", false)
 			alb.name = "大 阿 尔 巴 尼 亚"
-			alb.government = 0
-			alb.sub_government = 10
+			alb.government = GameConstants.Government.AUTHORITARIAN
+			alb.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		if greece != null:
 			greece.set_tag("对华贸易", false)
-			greece.government = 0
-			greece.sub_government = 7
+			greece.government = GameConstants.Government.AUTHORITARIAN
+			greece.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			var usa := _wc(w, 51)
 			if usa != null and usa.has_tag("nato"):
 				greece.set_tag("nato", true)
@@ -1061,8 +1061,8 @@ static func _war19_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 			alb.leave_alliances()
 			alb.set_tag("亲中", false)
 			alb.set_tag("对华贸易", false)
-			alb.government = 0
-			alb.sub_government = 10
+			alb.government = GameConstants.Government.AUTHORITARIAN
+			alb.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		var c51 := _wc(w, 51)
 		var ussr := _emp_power_val(w, 1)
 		if c51 != null and c51.has_tag("nato"):
@@ -1098,15 +1098,15 @@ static func _war23_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 				italy.leave_alliances()
 				italy.establish_government(2)
 				italy.set_tag("对华贸易", true)
-				italy.government = 0
-				italy.sub_government = 10
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		else:
 			add_empire_power(EmpireData.USA, 50)
 			if d.size() > W.I_INFLUENCE:
 				d[W.I_INFLUENCE] -= 50
 			if italy != null:
-				italy.government = 0
-				italy.sub_government = 20
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			if d.size() > 134:
 				d[134] = 0
 			if italy != null:
@@ -1125,16 +1125,16 @@ static func _war23_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 			italy.establish_government(2)
 			italy.set_tag("对华贸易", true)
 			if d.size() > 184 and d[184] == 1:
-				italy.government = 0
-				italy.sub_government = 0
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				italy.name = "意 大 利 苏 维 埃 联 邦"
 			elif d.size() > 184 and d[184] == 2:
-				italy.government = 1
-				italy.sub_government = 2
+				italy.government = GameConstants.Government.SOCIALIST
+				italy.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				italy.name = "意 大 利 苏 维 埃 共 和 国"
 			else:
-				italy.government = 1
-				italy.sub_government = 17
+				italy.government = GameConstants.Government.SOCIALIST
+				italy.sub_government = GameConstants.SubGovernment.MAOIST
 				italy.name = "意 大 利 社 会 主 义 共 和 国"
 	else:
 		add_empire_power(EmpireData.USA, 20)
@@ -1142,8 +1142,8 @@ static func _war23_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 			d[W.I_INFLUENCE] -= 15
 		_add_empire_rel(w, 0, -150)
 		if italy != null:
-			italy.government = 0
-			italy.sub_government = 20
+			italy.government = GameConstants.Government.AUTHORITARIAN
+			italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			italy.leave_alliances()
 			italy.set_tag("亲美", true)
 		var c0 := _wc(w, 0)
@@ -1176,8 +1176,8 @@ static func _war25_result(w: WorldState, d: Array[int]) -> void:
 			c100.establish_government(2)
 			c100.set_tag("对华贸易", true)
 			c100.special = 1
-			c100.government = 2
-			c100.sub_government = 15
+			c100.government = GameConstants.Government.REFORMIST
+			c100.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			c100.social_stability = 1000
 			c100.influence_china = 500
 			c100.influence_nato = 500
@@ -1205,8 +1205,8 @@ static func _war26_result(w: WorldState, d: Array[int]) -> void:
 		if c99 != null:
 			c99.set_tag("对华贸易", true)
 			c99.special = 1
-			c99.government = 2
-			c99.sub_government = 15
+			c99.government = GameConstants.Government.REFORMIST
+			c99.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			if not w.event_done_num(434):
 				c99.influence_china = 500
 				c99.social_stability = 1000
@@ -1251,15 +1251,15 @@ static func _war30_result(w: WorldState, war: WarData, _d: Array[int]) -> bool:
 		_war_going_set(w, 31, false)
 		_war_going_set(w, 32, false)
 		if w.result_of_event_num(426) == 3 and spain != null:
-			spain.government = 1
-			spain.sub_government = 1
+			spain.government = GameConstants.Government.SOCIALIST
+			spain.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			spain.leave_alliances()
 			spain.set_tag("亲中", true)
 			spain.set_tag("对华贸易", true)
 			spain.name = "西 班 牙 联 邦"
 		elif w.result_of_event_num(426) == 4 and spain != null:
-			spain.government = 2
-			spain.sub_government = 11
+			spain.government = GameConstants.Government.REFORMIST
+			spain.sub_government = GameConstants.SubGovernment.TITOIST
 			spain.leave_alliances()
 			spain.name = "西 班 牙 人 民 联 合 王 国"
 		elif spain != null:
@@ -1286,12 +1286,12 @@ static func _war30_result(w: WorldState, war: WarData, _d: Array[int]) -> bool:
 					spain.parts[1] = false
 				_revert_spain_parts_map(w, true, true)
 				spain.name = "长 枪 党 西 班 牙"
-				spain.government = 0
-				spain.sub_government = 7
+				spain.government = GameConstants.Government.AUTHORITARIAN
+				spain.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 	else:
 		if spain != null:
-			spain.government = 2
-			spain.sub_government = 14
+			spain.government = GameConstants.Government.REFORMIST
+			spain.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 	return false
 
 
@@ -1381,8 +1381,8 @@ static func _apply_cameroon_war_result(war: WarData, d: Array[int]) -> void:
 		cameroon.parts[0] = false
 	if war.infl2 >= 900:
 		if cameroon != null:
-			cameroon.government = 1
-			cameroon.sub_government = 2
+			cameroon.government = GameConstants.Government.SOCIALIST
+			cameroon.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 			_leave_alliances(cameroon)
 			cameroon.set_tag("对华贸易", true)
 			cameroon.set_tag("亲中", true)
@@ -1397,12 +1397,12 @@ static func _apply_cameroon_war_result(war: WarData, d: Array[int]) -> void:
 		var france := w.get_country_by_legacy_index(21)
 		if france != null and w.is_socialism(france, false):
 			if cameroon != null:
-				cameroon.government = 2
-				cameroon.sub_government = 8
+				cameroon.government = GameConstants.Government.REFORMIST
+				cameroon.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 	else:
 		if cameroon != null:
-			cameroon.government = 0
-			cameroon.sub_government = 7
+			cameroon.government = GameConstants.Government.AUTHORITARIAN
+			cameroon.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		d[W.I_INFLUENCE] -= 20
 
 
@@ -1418,8 +1418,8 @@ static func _apply_war7_result(war: WarData, _d: Array[int]) -> void:
 			if india != null:
 				_join_all_our_alliances(w, india)
 				india.set_tag("亲中", true)
-				india.government = 1
-				india.sub_government = 1
+				india.government = GameConstants.Government.SOCIALIST
+				india.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				india.social_stability = 1000
 				india.set_tag("对华贸易", true)
 		elif res125 == 1:
@@ -1429,8 +1429,8 @@ static func _apply_war7_result(war: WarData, _d: Array[int]) -> void:
 				india.set_tag("okb", false)
 				india.set_tag("econ", false)
 				india.set_tag("亲中", false)
-				india.government = 2
-				india.sub_government = 15
+				india.government = GameConstants.Government.REFORMIST
+				india.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				india.set_tag("对华贸易", false)
 				india.set_tag("亲苏", true)
 	elif res125 == 1:
@@ -1438,8 +1438,8 @@ static func _apply_war7_result(war: WarData, _d: Array[int]) -> void:
 			_leave_alliances(india)
 			_join_all_our_alliances(w, india)
 			india.set_tag("亲中", true)
-			india.government = 1
-			india.sub_government = 17
+			india.government = GameConstants.Government.SOCIALIST
+			india.sub_government = GameConstants.SubGovernment.MAOIST
 			india.set_tag("对华贸易", true)
 			india.social_stability = 1000
 		for c in w.countries:
@@ -1452,8 +1452,8 @@ static func _apply_war7_result(war: WarData, _d: Array[int]) -> void:
 			india.set_tag("okb", false)
 			india.set_tag("econ", false)
 			india.set_tag("亲中", false)
-			india.government = 0
-			india.sub_government = 0
+			india.government = GameConstants.Government.AUTHORITARIAN
+			india.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 			india.set_tag("对华贸易", false)
 			india.set_tag("亲美", true)
 		for c in w.countries:
@@ -1473,8 +1473,8 @@ static func _apply_war28_result(war: WarData, d: Array[int]) -> void:
 		if war.infl1 >= 800:
 			if iraq != null and w.is_socialism(iraq, true):
 				if kuwait != null:
-					kuwait.government = 1
-					kuwait.sub_government = 1
+					kuwait.government = GameConstants.Government.SOCIALIST
+					kuwait.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					_leave_alliances(kuwait)
 					kuwait.set_tag("oil", false)
 					_join_all_our_alliances(w, kuwait)
@@ -1547,8 +1547,8 @@ static func _apply_war24_result(war: WarData, d: Array[int]) -> void:
 			ethiopia.set_tag("亲苏", false)
 			ethiopia.set_tag("亲美", false)
 			ethiopia.set_tag("对华贸易", true)
-			ethiopia.government = 2
-			ethiopia.sub_government = 3
+			ethiopia.government = GameConstants.Government.REFORMIST
+			ethiopia.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			ethiopia.influence_china = 500
 			ethiopia.influence_nato = 500
 			ethiopia.chinese_name = "埃塞俄比亚人民民主共和国"
@@ -1691,11 +1691,11 @@ static func _apply_war18_result(war: WarData, d: Array[int]) -> void:
 		if yugoslavia != null:
 			yugoslavia.set_tag("亲美", true)
 			yugoslavia.set_tag("eu", true)
-			yugoslavia.sub_government = 14
+			yugoslavia.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 	else:
 		if albania != null and yugoslavia != null:
 			albania.sub_government = yugoslavia.sub_government
-			albania.government = 2
+			albania.government = GameConstants.Government.REFORMIST
 			_leave_alliances(albania)
 			albania.puppet_of = 15
 			albania.set_tag("亲中", false)
@@ -1714,8 +1714,8 @@ static func _apply_war14_result(war: WarData, d: Array[int]) -> void:
 			_leave_alliances(cyprus)
 			cyprus.name = "塞浦路斯（受监护）"
 			cyprus.chinese_name = "塞浦路斯（受监护）"
-			cyprus.government = 3
-			cyprus.sub_government = 5
+			cyprus.government = GameConstants.Government.LIBERAL
+			cyprus.sub_government = GameConstants.SubGovernment.MODERATE
 			cyprus.puppet_of = 84
 		var iraq := w.get_country_by_legacy_index(14)
 		var iran := w.get_country_by_legacy_index(8)
@@ -1735,9 +1735,9 @@ static func _apply_war14_result(war: WarData, d: Array[int]) -> void:
 			if cyprus.parts.size() <= 0:
 				cyprus.parts.resize(1)
 			cyprus.parts[0] = true
-			if cyprus.sub_government == 1:
-				cyprus.government = 0
-				cyprus.sub_government = 10
+			if cyprus.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
+				cyprus.government = GameConstants.Government.AUTHORITARIAN
+				cyprus.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 
 
 ## 战争 15 号结算：GameState.cs:768-888。
@@ -1748,13 +1748,13 @@ static func _apply_war15_result(war: WarData, d: Array[int]) -> void:
 	var ethiopia := w.get_country_by_legacy_index(41)
 	var somalia := w.get_country_by_legacy_index(42)
 	if not w.event_done_num(588):
-		if ethiopia != null and ethiopia.government == 1:
+		if ethiopia != null and ethiopia.government == GameConstants.Government.SOCIALIST:
 			if war.infl1 >= 850:
 				_set_pro_china(ethiopia)
 				_set_pro_soviet(somalia)
 				if somalia != null:
-					somalia.government = 0
-					somalia.sub_government = 10
+					somalia.government = GameConstants.Government.AUTHORITARIAN
+					somalia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 					if somalia.parts.size() <= 0:
 						somalia.parts.resize(1)
 					somalia.parts[0] = true
@@ -1763,16 +1763,16 @@ static func _apply_war15_result(war: WarData, d: Array[int]) -> void:
 				_set_pro_china(ethiopia)
 				_set_pro_soviet(somalia)
 				if somalia != null:
-					somalia.government = 0
-					somalia.sub_government = 10
+					somalia.government = GameConstants.Government.AUTHORITARIAN
+					somalia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				d[W.I_INFLUENCE] += 10
 		elif ethiopia != null and ethiopia.has_tag("亲中"):
 			if war.infl1 >= 850:
 				_set_pro_china(ethiopia)
 				_set_pro_soviet(somalia)
 				if somalia != null:
-					somalia.government = 0
-					somalia.sub_government = 10
+					somalia.government = GameConstants.Government.AUTHORITARIAN
+					somalia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 					if somalia.parts.size() <= 0:
 						somalia.parts.resize(1)
 					somalia.parts[0] = true
@@ -1781,8 +1781,8 @@ static func _apply_war15_result(war: WarData, d: Array[int]) -> void:
 				_set_pro_china(ethiopia)
 				_set_pro_soviet(somalia)
 				if somalia != null:
-					somalia.government = 0
-					somalia.sub_government = 10
+					somalia.government = GameConstants.Government.AUTHORITARIAN
+					somalia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				d[W.I_INFLUENCE] += 10
 		elif war.infl1 >= 850:
 			_set_pro_china(somalia)
@@ -1794,8 +1794,8 @@ static func _apply_war15_result(war: WarData, d: Array[int]) -> void:
 			d[W.I_INFLUENCE] += 10
 		else:
 			if somalia != null:
-				somalia.government = 0
-				somalia.sub_government = 10
+				somalia.government = GameConstants.Government.AUTHORITARIAN
+				somalia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			add_empire_power(EmpireData.USSR, 20)
 	elif war.infl1 >= 900:
 		if somalia != null and not somalia.has_tag("亲中") and ethiopia != null and ethiopia.has_tag("亲苏"):
@@ -1827,8 +1827,8 @@ static func _apply_war15_result(war: WarData, d: Array[int]) -> void:
 	else:
 		if somalia != null and not somalia.has_tag("亲美") and not somalia.has_tag("亲苏"):
 			_set_pro_american(somalia)
-			somalia.government = 0
-			somalia.sub_government = 7
+			somalia.government = GameConstants.Government.AUTHORITARIAN
+			somalia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			add_empire_power(EmpireData.USA, 20)
 
 
@@ -1853,7 +1853,7 @@ static func _apply_war16_result(war: WarData, d: Array[int]) -> void:
 			north.set_tag("对华贸易", true)
 			north.name = "朝鲜民主主义人民共和国"
 			north.chinese_name = "朝鲜民主主义人民共和国"
-			if north.sub_government == 18:
+			if north.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
 					w.empires[EmpireData.USSR].relations = clampi(w.empires[EmpireData.USSR].relations + 120, 0, 1000)
 				if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
@@ -1956,8 +1956,8 @@ static func _apply_war33_result(war: WarData, d: Array[int]) -> void:
 		w.set_flag("iranrev", false)
 		if iran != null:
 			_leave_alliances(iran)
-			iran.government = 1
-			iran.sub_government = 2
+			iran.government = GameConstants.Government.SOCIALIST
+			iran.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 			iran.name = "伊朗人民民主共和国"
 			iran.chinese_name = "伊朗人民民主共和国"
 			iran.set_tag("对华贸易", true)
@@ -1975,8 +1975,8 @@ static func _apply_war33_result(war: WarData, d: Array[int]) -> void:
 	else:
 		w.set_flag("iranrev", false)
 		if iran != null:
-			iran.government = 0
-			iran.sub_government = 20
+			iran.government = GameConstants.Government.AUTHORITARIAN
+			iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			_leave_alliances(iran)
 			iran.set_tag("对华贸易", false)
 
@@ -1991,8 +1991,8 @@ static func _apply_war34_result(war: WarData, d: Array[int]) -> void:
 	if war.infl1 >= 850:
 		d[W.I_INFLUENCE] += 50
 		if malaya != null:
-			malaya.government = 1
-			malaya.sub_government = 17
+			malaya.government = GameConstants.Government.SOCIALIST
+			malaya.sub_government = GameConstants.SubGovernment.MAOIST
 			malaya.set_tag("对华贸易", true)
 			malaya.set_tag("亲美", false)
 			malaya.set_tag("asean", false)
@@ -2018,8 +2018,8 @@ static func _apply_war34_result(war: WarData, d: Array[int]) -> void:
 			MapService.instance.set_region_owner([587, 1221, 1222, 1223, 2908, 2909, 2910, 2911, 2912], 820)
 	else:
 		if malaya != null:
-			malaya.government = 0
-			malaya.sub_government = 7
+			malaya.government = GameConstants.Government.AUTHORITARIAN
+			malaya.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			malaya.set_tag("对华贸易", false)
 
 
@@ -2039,8 +2039,8 @@ static func _apply_war35_result(war: WarData, d: Array[int]) -> void:
 			indo.set_tag("亲美", false)
 			indo.set_tag("asean", false)
 			_leave_alliances(indo)
-			indo.government = 1
-			indo.sub_government = 17
+			indo.government = GameConstants.Government.SOCIALIST
+			indo.sub_government = GameConstants.SubGovernment.MAOIST
 			indo.set_tag("对华贸易", true)
 			indo.set_tag("亲中", true)
 			_join_all_our_alliances(w, indo)
@@ -2051,8 +2051,8 @@ static func _apply_war35_result(war: WarData, d: Array[int]) -> void:
 			indo.prc_power = 1000
 	else:
 		if indo != null:
-			indo.government = 0
-			indo.sub_government = 9
+			indo.government = GameConstants.Government.AUTHORITARIAN
+			indo.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			indo.set_tag("对华贸易", false)
 			if indo.parts.size() <= 0:
 				indo.parts.resize(1)
@@ -2072,8 +2072,8 @@ static func _apply_war37_result(war: WarData, d: Array[int]) -> void:
 		d[6] += 20
 		if c24 != null and c24.parts.size() > 0 and c24.parts[0] and c24.has_tag("亲中"):
 			if c101 != null:
-				c101.government = 1
-				c101.sub_government = 17
+				c101.government = GameConstants.Government.SOCIALIST
+				c101.sub_government = GameConstants.SubGovernment.MAOIST
 				_leave_alliances(c101)
 				_join_all_our_alliances(w, c101)
 				c101.set_tag("oil", false)
@@ -2084,16 +2084,16 @@ static func _apply_war37_result(war: WarData, d: Array[int]) -> void:
 				c101.chinese_name = "阿拉伯半岛人民民主共和国"
 		elif c24 != null and c24.parts.size() > 0 and c24.parts[0] and c24.has_tag("亲苏"):
 			if c101 != null:
-				c101.government = 1
-				c101.sub_government = 1
+				c101.government = GameConstants.Government.SOCIALIST
+				c101.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c101.set_tag("对华贸易", true)
 				c101.set_tag("亲苏", true)
 				c101.name = "阿拉伯半岛民主共和国"
 				c101.chinese_name = "阿拉伯半岛民主共和国"
 		else:
 			if c101 != null:
-				c101.government = 2
-				c101.sub_government = 8
+				c101.government = GameConstants.Government.REFORMIST
+				c101.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				_leave_alliances(c101)
 				c101.set_tag("oil", false)
 				_join_all_our_alliances(w, c101)
@@ -2120,8 +2120,8 @@ static func _apply_war38_result(war: WarData, d: Array[int]) -> void:
 		d[W.I_INFLUENCE] += 40
 		d[6] += 20
 		if kuwait != null:
-			kuwait.government = 1
-			kuwait.sub_government = 1
+			kuwait.government = GameConstants.Government.SOCIALIST
+			kuwait.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			_leave_alliances(kuwait)
 			kuwait.set_tag("oil", false)
 			_join_all_our_alliances(w, kuwait)
@@ -2157,15 +2157,15 @@ static func _apply_war39_result(war: WarData, d: Array[int]) -> void:
 			polisario.special = 0
 			polisario.set_tag("对华贸易", true)
 			if not polisario.内战中:
-				polisario.government = 2
-				polisario.sub_government = 15
+				polisario.government = GameConstants.Government.REFORMIST
+				polisario.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				d[W.I_INFLUENCE] += 5
 				if war.ussr_side == 1:
 					polisario.set_tag("亲苏", true)
 					add_empire_power(EmpireData.USSR, 15)
 			else:
-				polisario.government = 1
-				polisario.sub_government = 2
+				polisario.government = GameConstants.Government.SOCIALIST
+				polisario.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				polisario.set_tag("亲中", true)
 				d[W.I_INFLUENCE] += 20
 	else:
@@ -2183,8 +2183,8 @@ static func _apply_war40_result(war: WarData, d: Array[int]) -> void:
 		var res563 := w.result_of_event_num(563)
 		if res563 == 0:
 			if algeria != null:
-				algeria.government = 0
-				algeria.sub_government = 9
+				algeria.government = GameConstants.Government.AUTHORITARIAN
+				algeria.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				algeria.set_tag("对华贸易", true)
 				algeria.set_tag("亲苏", false)
 			d[W.I_INFLUENCE] += 5
@@ -2196,8 +2196,8 @@ static func _apply_war40_result(war: WarData, d: Array[int]) -> void:
 				w.empires[EmpireData.USSR].relations = clampi(w.empires[EmpireData.USSR].relations - 150, 0, 1000)
 		elif res563 == 1:
 			if algeria != null:
-				algeria.government = 3
-				algeria.sub_government = 4
+				algeria.government = GameConstants.Government.LIBERAL
+				algeria.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				algeria.set_tag("对华贸易", true)
 				algeria.set_tag("亲苏", false)
 			d[W.I_INFLUENCE] += 20
@@ -2209,8 +2209,8 @@ static func _apply_war40_result(war: WarData, d: Array[int]) -> void:
 				w.empires[EmpireData.USA].relations = clampi(w.empires[EmpireData.USA].relations + 150, 0, 1000)
 		else:
 			if algeria != null:
-				algeria.government = 1
-				algeria.sub_government = 1
+				algeria.government = GameConstants.Government.SOCIALIST
+				algeria.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				algeria.set_tag("对华贸易", true)
 				algeria.set_tag("亲苏", false)
 				algeria.set_tag("亲中", true)
@@ -2234,8 +2234,8 @@ static func _apply_war36_result(war: WarData, d: Array[int]) -> void:
 	var japan := w.get_country_by_legacy_index(44)
 	if war.infl2 >= 1000:
 		if japan != null:
-			japan.government = 1
-			japan.sub_government = 17
+			japan.government = GameConstants.Government.SOCIALIST
+			japan.sub_government = GameConstants.SubGovernment.MAOIST
 			_leave_alliances(japan)
 			_join_all_our_alliances(w, japan)
 			japan.set_tag("亲中", true)
@@ -2248,8 +2248,8 @@ static func _apply_war36_result(war: WarData, d: Array[int]) -> void:
 		add_empire_power(EmpireData.USA, -100)
 	else:
 		if japan != null:
-			japan.government = 0
-			japan.sub_government = 7
+			japan.government = GameConstants.Government.AUTHORITARIAN
+			japan.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			_leave_alliances(japan)
 			japan.set_tag("对华贸易", false)
 			japan.set_tag("nato", true)
@@ -2275,8 +2275,8 @@ static func _apply_war41_result(war: WarData, d: Array[int]) -> void:
 		if res565 == 0:
 			if syria != null:
 				_leave_alliances(syria)
-				syria.government = 0
-				syria.sub_government = 9
+				syria.government = GameConstants.Government.AUTHORITARIAN
+				syria.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				syria.set_tag("对华贸易", true)
 			d[W.I_INFLUENCE] += 40
 			add_empire_power(EmpireData.USA, -20)
@@ -2288,8 +2288,8 @@ static func _apply_war41_result(war: WarData, d: Array[int]) -> void:
 		elif res565 == 1:
 			if syria != null:
 				_leave_alliances(syria)
-				syria.government = 1
-				syria.sub_government = 1
+				syria.government = GameConstants.Government.SOCIALIST
+				syria.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				syria.set_tag("对华贸易", true)
 				syria.set_tag("亲中", true)
 			if w.event_done_num(36) and w.result_of_event_num(36) == 2 and iraq != null:
@@ -2309,8 +2309,8 @@ static func _apply_war41_result(war: WarData, d: Array[int]) -> void:
 				if usa != null and usa.内战中 and china != null and china.has_tag("seato"):
 					syria.set_tag("asean", true)
 					syria.set_tag("seato", true)
-				syria.government = 3
-				syria.sub_government = 6
+				syria.government = GameConstants.Government.LIBERAL
+				syria.sub_government = GameConstants.SubGovernment.LIBERAL
 				syria.set_tag("对华贸易", true)
 				syria.set_tag("亲美", true)
 			d[W.I_INFLUENCE] += 40
@@ -2322,8 +2322,8 @@ static func _apply_war41_result(war: WarData, d: Array[int]) -> void:
 				w.empires[EmpireData.USSR].relations = clampi(w.empires[EmpireData.USSR].relations - 200, 0, 1000)
 	else:
 		if syria != null:
-			syria.government = 0
-			syria.sub_government = 10
+			syria.government = GameConstants.Government.AUTHORITARIAN
+			syria.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			syria.set_tag("亲苏", true)
 		if res565 == 0:
 			d[W.I_INFLUENCE] -= 20
@@ -2357,8 +2357,8 @@ static func _apply_war44_result(war: WarData, d: Array[int]) -> void:
 		d[W.I_INFLUENCE] -= 40
 		if c127 != null:
 			_leave_alliances(c127)
-			c127.government = 0
-			c127.sub_government = 9
+			c127.government = GameConstants.Government.AUTHORITARIAN
+			c127.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			c127.puppet_of = 131
 
 
@@ -2396,8 +2396,8 @@ static func _apply_war45_result(war: WarData, d: Array[int]) -> void:
 			w.empires[EmpireData.USA].relations = clampi(w.empires[EmpireData.USA].relations - 100, 0, 1000)
 		if c140 != null:
 			c140.set_tag("对华贸易", false)
-			c140.government = 0
-			c140.sub_government = 7
+			c140.government = GameConstants.Government.AUTHORITARIAN
+			c140.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 
 
 ## 战争 47 号结算：GameState.cs:2517-2543。
@@ -2414,8 +2414,8 @@ static func _apply_war47_result(war: WarData, d: Array[int]) -> void:
 			w.empires[EmpireData.USA].relations = clampi(w.empires[EmpireData.USA].relations - 500, 0, 1000)
 		d[W.I_INFLUENCE] += 100
 		if c140 != null:
-			c140.government = 0
-			c140.sub_government = 9
+			c140.government = GameConstants.Government.AUTHORITARIAN
+			c140.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c140)
 			c140.set_tag("亲中", true)
 			c140.set_tag("对华贸易", true)
@@ -2452,8 +2452,8 @@ static func _apply_war53_result(war: WarData, d: Array[int]) -> void:
 		d[W.I_INFLUENCE] += 10
 		add_empire_power(EmpireData.USA, -10)
 		if c118 != null:
-			c118.government = 2
-			c118.sub_government = 15
+			c118.government = GameConstants.Government.REFORMIST
+			c118.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			c118.set_tag("亲苏", false)
 
 
@@ -2473,18 +2473,18 @@ static func _apply_war54_result(war: WarData, d: Array[int]) -> void:
 		add_empire_power(EmpireData.USA, -15)
 		if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
 			w.empires[EmpireData.USA].relations = clampi(w.empires[EmpireData.USA].relations - 100, 0, 1000)
-		if c153 != null and c153.government == 1:
+		if c153 != null and c153.government == GameConstants.Government.SOCIALIST:
 			if azania != null:
-				azania.government = 0
-				azania.sub_government = 0
+				azania.government = GameConstants.Government.AUTHORITARIAN
+				azania.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				azania.name = "阿扎尼亚人民共和国"
 				azania.chinese_name = "阿扎尼亚人民共和国"
 				_leave_alliances(azania)
 				azania.set_tag("对华贸易", true)
 				_set_pro_china(azania)
 			if lesotho != null:
-				lesotho.government = 0
-				lesotho.sub_government = 0
+				lesotho.government = GameConstants.Government.AUTHORITARIAN
+				lesotho.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				lesotho.name = "莱索托人民共和国"
 				lesotho.chinese_name = "莱索托人民共和国"
 				_leave_alliances(lesotho)
@@ -2496,8 +2496,8 @@ static func _apply_war54_result(war: WarData, d: Array[int]) -> void:
 				if c153.parts.size() <= 0:
 					c153.parts.resize(1)
 				c153.parts[0] = true
-				c153.government = 2
-				c153.sub_government = 3 if c153.内战中 else 15
+				c153.government = GameConstants.Government.REFORMIST
+				c153.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST if c153.内战中 else 15
 				c153.set_tag("对华贸易", true)
 				if c153.内战中:
 					_set_pro_china(c153)
@@ -2505,15 +2505,15 @@ static func _apply_war54_result(war: WarData, d: Array[int]) -> void:
 					_set_pro_american(c153)
 		else:
 			if azania != null:
-				azania.government = 0
-				azania.sub_government = 10
+				azania.government = GameConstants.Government.AUTHORITARIAN
+				azania.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				azania.name = "阿扎尼亚"
 				azania.chinese_name = "阿扎尼亚"
 				_leave_alliances(azania)
 				azania.set_tag("对华贸易", true)
 			if lesotho != null:
-				lesotho.government = 2
-				lesotho.sub_government = 15
+				lesotho.government = GameConstants.Government.REFORMIST
+				lesotho.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				lesotho.name = "莱索托"
 				lesotho.chinese_name = "莱索托"
 				_leave_alliances(lesotho)
@@ -2525,8 +2525,8 @@ static func _apply_war54_result(war: WarData, d: Array[int]) -> void:
 				if c153.parts.size() <= 0:
 					c153.parts.resize(1)
 				c153.parts[0] = true
-				c153.government = 2
-				c153.sub_government = 3 if c153.内战中 else 15
+				c153.government = GameConstants.Government.REFORMIST
+				c153.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST if c153.内战中 else 15
 				c153.set_tag("对华贸易", true)
 				if c153.内战中:
 					_set_pro_china(c153)
@@ -2536,8 +2536,8 @@ static func _apply_war54_result(war: WarData, d: Array[int]) -> void:
 		d[W.I_INFLUENCE] -= 10
 		add_empire_power(EmpireData.USA, 10)
 		if azania != null:
-			azania.government = 0
-			azania.sub_government = 9
+			azania.government = GameConstants.Government.AUTHORITARIAN
+			azania.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			azania.name = "南非人民邦"
 			azania.chinese_name = "南非人民邦"
 
@@ -2555,8 +2555,8 @@ static func _apply_war55_result(war: WarData, d: Array[int]) -> void:
 		azania.parts[1] = false
 	if war.infl1 >= 900:
 		if azania != null:
-			azania.government = 1
-			azania.sub_government = 1
+			azania.government = GameConstants.Government.SOCIALIST
+			azania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			azania.name = "南非"
 			azania.chinese_name = "南非"
 			_leave_alliances(azania)
@@ -2564,8 +2564,8 @@ static func _apply_war55_result(war: WarData, d: Array[int]) -> void:
 			_set_pro_soviet(azania)
 		if lesotho != null:
 			_leave_alliances(lesotho)
-			lesotho.government = 2
-			lesotho.sub_government = 15
+			lesotho.government = GameConstants.Government.REFORMIST
+			lesotho.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			lesotho.set_tag("对华贸易", true)
 			_set_pro_china(lesotho)
 		if c126 != null:
@@ -2574,14 +2574,14 @@ static func _apply_war55_result(war: WarData, d: Array[int]) -> void:
 			if c153.parts.size() <= 0:
 				c153.parts.resize(1)
 			c153.parts[0] = true
-			c153.government = 2
-			c153.sub_government = 15
+			c153.government = GameConstants.Government.REFORMIST
+			c153.sub_government = GameConstants.SubGovernment.PRAGMATIST
 	else:
 		d[W.I_INFLUENCE] -= 10
 		add_empire_power(EmpireData.USA, 10)
 		if azania != null:
-			azania.government = 0
-			azania.sub_government = 9
+			azania.government = GameConstants.Government.AUTHORITARIAN
+			azania.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			azania.name = "南非人民邦"
 			azania.chinese_name = "南非人民邦"
 
@@ -2600,8 +2600,8 @@ static func _apply_war56_result(war: WarData, d: Array[int]) -> void:
 		add_empire_power(EmpireData.USA, -10)
 		add_empire_power(EmpireData.USSR, -10)
 		if angola != null:
-			angola.government = 0
-			angola.sub_government = 9
+			angola.government = GameConstants.Government.AUTHORITARIAN
+			angola.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(angola)
 			angola.puppet_of = 131
 
@@ -2620,8 +2620,8 @@ static func _apply_war57_result(war: WarData, d: Array[int]) -> void:
 		add_empire_power(EmpireData.USA, -10)
 		add_empire_power(EmpireData.USSR, -10)
 		if c129 != null:
-			c129.government = 0
-			c129.sub_government = 9
+			c129.government = GameConstants.Government.AUTHORITARIAN
+			c129.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c129)
 			c129.puppet_of = 131
 			c129.name = "斯提拉兰"
@@ -2645,13 +2645,13 @@ static func _apply_war58_result(war: WarData, d: Array[int]) -> void:
 		if c126 != null and c126.parts.size() > 0:
 			c126.parts[0] = false
 		if c125 != null:
-			c125.government = 0
-			c125.sub_government = 9
+			c125.government = GameConstants.Government.AUTHORITARIAN
+			c125.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c125)
 			c125.puppet_of = 131
 		if c126 != null:
-			c126.government = 0
-			c126.sub_government = 9
+			c126.government = GameConstants.Government.AUTHORITARIAN
+			c126.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c126)
 			c126.puppet_of = 131
 			c126.name = "莫桑比克国"
@@ -2672,8 +2672,8 @@ static func _apply_war59_result(war: WarData, d: Array[int]) -> void:
 		add_empire_power(EmpireData.USA, -10)
 		add_empire_power(EmpireData.USSR, -10)
 		if c127 != null:
-			c127.government = 0
-			c127.sub_government = 9
+			c127.government = GameConstants.Government.AUTHORITARIAN
+			c127.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_leave_alliances(c127)
 			c127.puppet_of = 131
 			c127.name = "罗得西亚共和国"
@@ -2701,8 +2701,8 @@ static func _apply_war60_result(war: WarData, _d: Array[int]) -> void:
 			if c163.parts.size() <= 0:
 				c163.parts.resize(1)
 			c163.parts[0] = true
-			c163.government = 0
-			c163.sub_government = 10
+			c163.government = GameConstants.Government.AUTHORITARIAN
+			c163.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			_leave_alliances(c163)
 			c163.set_tag("亲苏", true)
 			c163.set_tag("对华贸易", true)
@@ -2728,8 +2728,8 @@ static func _apply_war61_result(war: WarData, _d: Array[int]) -> void:
 				if c163.parts.size() <= 0:
 					c163.parts.resize(1)
 				c163.parts[0] = true
-				c163.government = 0
-				c163.sub_government = 10
+				c163.government = GameConstants.Government.AUTHORITARIAN
+				c163.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				_leave_alliances(c163)
 				c163.set_tag("亲苏", true)
 				c163.set_tag("对华贸易", true)
@@ -2741,8 +2741,8 @@ static func _apply_war61_result(war: WarData, _d: Array[int]) -> void:
 			if c163.parts.size() > 0:
 				c163.parts[0] = false
 		if c117 != null:
-			c117.government = 0
-			c117.sub_government = 10
+			c117.government = GameConstants.Government.AUTHORITARIAN
+			c117.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			_leave_alliances(c117)
 			c117.set_tag("亲苏", true)
 			c117.name = "刚果人民民主共和国"
@@ -2764,7 +2764,7 @@ static func _apply_war0_result(war: WarData, d: Array[int]) -> void:
 	var south := _wc(w, 46)
 	var china := _wc(w, 1)
 	if war.infl1 >= 900:
-		if north != null and south != null and north.government == 3 and south.government == 0:
+		if north != null and south != null and north.government == GameConstants.Government.LIBERAL and south.government == GameConstants.Government.AUTHORITARIAN:
 			_set_d(d, 157, 1)
 		if north != null:
 			north.name = "朝鲜民主主义人民共和国"
@@ -2872,8 +2872,8 @@ static func _apply_war2_result(war: WarData, d: Array[int]) -> void:
 	if war.infl1 >= 750:
 		if c34 != null:
 			c34.set_tag("对华贸易", true)
-			c34.government = 1
-			c34.sub_government = 17
+			c34.government = GameConstants.Government.SOCIALIST
+			c34.sub_government = GameConstants.SubGovernment.MAOIST
 			c34.leave_asean()
 			c34.set_tag("亲中", true)
 			c34.set_tag("亲美", false)
@@ -2904,8 +2904,8 @@ static func _apply_war4_result(war: WarData, _d: Array[int]) -> void:
 				c14.chinese_name = "大伊拉克共和国"
 			if c37 != null:
 				c37.leave_alliances()
-				c37.government = 0
-				c37.sub_government = 19
+				c37.government = GameConstants.Government.AUTHORITARIAN
+				c37.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				c37.puppet_of = 14
 				c37.set_tag("亲中", true)
 				c37.set_tag("对华贸易", true)
@@ -2922,20 +2922,20 @@ static func _apply_war4_result(war: WarData, _d: Array[int]) -> void:
 			w.set_flag("israellost", true)
 	elif war.infl1 >= 700:
 		if c93 != null:
-			c93.government = 0
-			c93.sub_government = 7
+			c93.government = GameConstants.Government.AUTHORITARIAN
+			c93.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c93.puppet_of = 37
 	elif war.infl2 >= 500:
 		add_empire_power(EmpireData.USA, -50)
 		w.set_flag("israellost", true)
 		if c37 != null:
-			c37.government = 0
-			c37.sub_government = 9
+			c37.government = GameConstants.Government.AUTHORITARIAN
+			c37.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 	else:
 		w.set_flag("israellost", true)
 		if c93 != null:
-			c93.government = 2
-			c93.sub_government = 3
+			c93.government = GameConstants.Government.REFORMIST
+			c93.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 
 
 ## 战争 6 号结算：GameState.cs:490-500（马岛战争）。
@@ -2977,8 +2977,8 @@ static func _apply_war42_result(war: WarData, d: Array[int]) -> void:
 	if war.infl2 >= 900:
 		if c14 != null:
 			if c14.有驻军基地:
-				c14.government = 1
-				c14.sub_government = 2
+				c14.government = GameConstants.Government.SOCIALIST
+				c14.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				c14.leave_alliances()
 				c14.set_tag("对华贸易", true)
 				c14.name = "伊拉克社会主义联邦"
@@ -2992,8 +2992,8 @@ static func _apply_war42_result(war: WarData, d: Array[int]) -> void:
 				_add_empire_rel(w, 1, -50)
 				w.oil_prod += 100
 			else:
-				c14.government = 1
-				c14.sub_government = 16
+				c14.government = GameConstants.Government.SOCIALIST
+				c14.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				c14.leave_alliances()
 				c14.set_tag("对华贸易", true)
 				c14.name = "伊拉克社会主义共和国"
@@ -3011,7 +3011,7 @@ static func _apply_war42_result(war: WarData, d: Array[int]) -> void:
 		if c157 != null and c157.parts.size() > 0:
 			c157.parts[0] = true
 		if c157 != null and c157.parts.size() > 1 and c157.parts[1]:
-			if c157.government == 3:
+			if c157.government == GameConstants.Government.LIBERAL:
 				if c157.parts.size() > 2:
 					c157.parts[0] = false
 					c157.parts[1] = false
@@ -3019,10 +3019,10 @@ static func _apply_war42_result(war: WarData, d: Array[int]) -> void:
 				c157.name = "北叙-北伊联邦"
 				c157.chinese_name = "北叙-北伊联邦"
 				c157.leave_alliances()
-				c157.government = 2
-				c157.sub_government = 3
+				c157.government = GameConstants.Government.REFORMIST
+				c157.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				c157.set_tag("对华贸易", true)
-			elif c157.government == 1:
+			elif c157.government == GameConstants.Government.SOCIALIST:
 				if c157.parts.size() > 2:
 					c157.parts[0] = false
 					c157.parts[1] = false
@@ -3030,21 +3030,21 @@ static func _apply_war42_result(war: WarData, d: Array[int]) -> void:
 				c157.name = "北叙-北伊联邦"
 				c157.chinese_name = "北叙-北伊联邦"
 				c157.leave_alliances()
-				c157.government = 1
-				c157.sub_government = 1
+				c157.government = GameConstants.Government.SOCIALIST
+				c157.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c157.set_tag("亲中", true)
 				c157.set_tag("对华贸易", true)
 		elif c157 != null:
 			c157.leave_alliances()
-			c157.government = 1
-			c157.sub_government = 1
+			c157.government = GameConstants.Government.SOCIALIST
+			c157.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			c157.set_tag("对华贸易", true)
 			c157.set_tag("亲中", true)
 			c157.name = "伊拉克民主共和国"
 			c157.chinese_name = "伊拉克民主共和国"
 		if c14 != null:
-			c14.government = 0
-			c14.sub_government = 10
+			c14.government = GameConstants.Government.AUTHORITARIAN
+			c14.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			c14.set_tag("对华贸易", false)
 		add_empire_power(EmpireData.USA, 50)
 		_add_d(d, W.I_INFLUENCE, -20)
@@ -3075,8 +3075,8 @@ static func _apply_war43_result(war: WarData, d: Array[int]) -> void:
 			if c24.has_tag("亲中"):
 				for c in [c102, c103, c105]:
 					if c != null:
-						c.government = 1
-						c.sub_government = 17
+						c.government = GameConstants.Government.SOCIALIST
+						c.sub_government = GameConstants.SubGovernment.MAOIST
 						c.leave_alliances()
 						c.set_tag("oil", false)
 						_join_all_our_alliances(w, c)
@@ -3086,8 +3086,8 @@ static func _apply_war43_result(war: WarData, d: Array[int]) -> void:
 			else:
 				for c in [c102, c103, c105]:
 					if c != null:
-						c.government = 1
-						c.sub_government = 1
+						c.government = GameConstants.Government.SOCIALIST
+						c.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 						c.leave_alliances()
 						c.set_tag("oil", false)
 						c.set_tag("对华贸易", true)
@@ -3098,8 +3098,8 @@ static func _apply_war43_result(war: WarData, d: Array[int]) -> void:
 			_wc_name(w, 105, "阿拉伯海湾共和国")
 			for c in [c102, c103, c105]:
 				if c != null:
-					c.government = 2
-					c.sub_government = 8
+					c.government = GameConstants.Government.REFORMIST
+					c.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 					c.leave_alliances()
 					c.set_tag("oil", false)
 					_join_all_our_alliances(w, c)
@@ -3142,7 +3142,7 @@ static func _apply_war46_result(war: WarData, d: Array[int]) -> void:
 			c140.set_tag("亲中", true)
 			c140.set_tag("对华贸易", true)
 			_join_all_our_alliances(w, c140)
-			if c145.sub_government == 16:
+			if c145.sub_government == GameConstants.SubGovernment.SOVIET_STYLE:
 				c140.set_tag("亲中", false)
 				c140.set_tag("亲苏", true)
 	else:
@@ -3153,8 +3153,8 @@ static func _apply_war46_result(war: WarData, d: Array[int]) -> void:
 			c140.set_tag("对华贸易", false)
 			if c140.parts.size() > 0:
 				c140.parts[0] = false
-			c140.government = 0
-			c140.sub_government = 7
+			c140.government = GameConstants.Government.AUTHORITARIAN
+			c140.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		if c145 != null:
 			c145.leave_alliances()
 
@@ -3175,8 +3175,8 @@ static func _apply_war48_result(war: WarData, d: Array[int]) -> void:
 			_add_empire_rel(w, 0, -150)
 			_add_d(d, W.I_INFLUENCE, 100)
 			if c53 != null:
-				c53.government = 1
-				c53.sub_government = 1
+				c53.government = GameConstants.Government.SOCIALIST
+				c53.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c53.leave_alliances()
 				c53.set_tag("亲中", true)
 				c53.set_tag("对华贸易", true)
@@ -3189,13 +3189,13 @@ static func _apply_war48_result(war: WarData, d: Array[int]) -> void:
 			if c150 != null:
 				c150.name = "南苏丹社会主义共和国"
 				c150.chinese_name = "南苏丹社会主义共和国"
-				c150.sub_government = 0
-				c150.government = 0
+				c150.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
+				c150.government = GameConstants.Government.AUTHORITARIAN
 				c150.leave_alliances()
 				c150.set_tag("亲中", true)
 				c150.set_tag("对华贸易", true)
 			if c151 != null:
-				c151.sub_government = 2
+				c151.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				c151.government = 15
 		else:
 			_add_d(d, W.I_INFLUENCE, -40)
@@ -3207,21 +3207,21 @@ static func _apply_war48_result(war: WarData, d: Array[int]) -> void:
 				c53.set_tag("对华贸易", false)
 				c53.set_tag("亲中", false)
 				c53.set_tag("亲美", false)
-				c53.government = 0
-				c53.sub_government = 9
+				c53.government = GameConstants.Government.AUTHORITARIAN
+				c53.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				if c53.parts.size() > 0:
 					c53.parts[0] = true
 				if c53.parts.size() > 1:
 					c53.parts[1] = true
 			if c151 != null:
-				c151.sub_government = 15
-				c151.government = 2
+				c151.sub_government = GameConstants.SubGovernment.PRAGMATIST
+				c151.government = GameConstants.Government.REFORMIST
 				c151.set_tag("亲中", true)
 				c151.set_tag("对华贸易", true)
 			if c150 != null:
 				c150.name = "南苏丹社会主义共和国"
 				c150.chinese_name = "南苏丹社会主义共和国"
-				c150.sub_government = 0
+				c150.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				c150.leave_alliances()
 				c150.set_tag("对华贸易", true)
 				c150.set_tag("亲中", true)
@@ -3230,8 +3230,8 @@ static func _apply_war48_result(war: WarData, d: Array[int]) -> void:
 		_add_empire_rel(w, 0, -150)
 		_add_d(d, W.I_INFLUENCE, 100)
 		if c53 != null:
-			c53.government = 0
-			c53.sub_government = 10
+			c53.government = GameConstants.Government.AUTHORITARIAN
+			c53.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			c53.leave_alliances()
 			c53.set_tag("亲苏", true)
 			if _emp_power_val(w, EmpireData.USSR) < _dval(d, W.I_INFLUENCE):
@@ -3250,8 +3250,8 @@ static func _apply_war48_result(war: WarData, d: Array[int]) -> void:
 			c53.set_tag("对华贸易", false)
 			c53.set_tag("亲中", false)
 			c53.set_tag("亲美", true)
-			c53.government = 0
-			c53.sub_government = 7
+			c53.government = GameConstants.Government.AUTHORITARIAN
+			c53.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 
 
 ## 战争 49 号结算：GameState.cs:2633-2658。
@@ -3271,8 +3271,8 @@ static func _apply_war49_result(war: WarData, d: Array[int]) -> void:
 		add_empire_power(EmpireData.USA, 20)
 		_add_empire_rel(w, 0, 150)
 		if c138 != null:
-			c138.government = 0
-			c138.sub_government = 7
+			c138.government = GameConstants.Government.AUTHORITARIAN
+			c138.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c138.leave_alliances()
 			c138.establish_government(0)
 			c138.puppet_of = 51
@@ -3335,8 +3335,8 @@ static func _apply_war51_result(war: WarData, d: Array[int]) -> void:
 		c119.parts[1] = false
 	if war.infl2 >= 900:
 		if c119 != null:
-			c119.government = 1
-			c119.sub_government = 1
+			c119.government = GameConstants.Government.SOCIALIST
+			c119.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			c119.name = "肯尼亚联邦共和国"
 			c119.chinese_name = "肯尼亚联邦共和国"
 			c119.leave_alliances()
@@ -3353,8 +3353,8 @@ static func _apply_war51_result(war: WarData, d: Array[int]) -> void:
 		_add_d(d, W.I_INFLUENCE, -20)
 		add_empire_power(EmpireData.USA, 20)
 		if c119 != null:
-			c119.government = 0
-			c119.sub_government = 9
+			c119.government = GameConstants.Government.AUTHORITARIAN
+			c119.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			c119.leave_alliances()
 			c119.establish_government(0)
 
@@ -3370,8 +3370,8 @@ static func _apply_war52_result(war: WarData, d: Array[int]) -> void:
 		c113.parts[0] = false
 	if war.infl1 >= 900:
 		if c113 != null:
-			c113.government = 1
-			c113.sub_government = 2
+			c113.government = GameConstants.Government.SOCIALIST
+			c113.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 			c113.name = "冈比亚人民革命共和国"
 			c113.chinese_name = "冈比亚人民革命共和国"
 			c113.leave_alliances()
@@ -3403,14 +3403,14 @@ static func _apply_war62_result(war: WarData, d: Array[int]) -> void:
 		c117.parts[1] = false
 	if war.infl1 >= 100:
 		if c117 != null:
-			c117.government = 0
-			c117.sub_government = 9
+			c117.government = GameConstants.Government.AUTHORITARIAN
+			c117.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 		add_empire_power(EmpireData.USA, 30)
 		_add_d(d, W.I_INFLUENCE, -30)
 	elif w.result_of_event_num(610) == 2:
 		if c117 != null:
-			c117.government = 1
-			c117.sub_government = 17
+			c117.government = GameConstants.Government.SOCIALIST
+			c117.sub_government = GameConstants.SubGovernment.MAOIST
 			c117.leave_alliances()
 			c117.set_tag("对华贸易", true)
 			c117.set_tag("亲中", true)
@@ -3425,8 +3425,8 @@ static func _apply_war62_result(war: WarData, d: Array[int]) -> void:
 				c.puppet_of = -1
 	else:
 		if c117 != null:
-			c117.government = 2
-			c117.sub_government = 15
+			c117.government = GameConstants.Government.REFORMIST
+			c117.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			c117.leave_alliances()
 			c117.set_tag("对华贸易", true)
 			c117.set_tag("亲中", true)
@@ -3455,8 +3455,8 @@ static func _apply_war64_result(war: WarData, d: Array[int]) -> void:
 		var china := _wc(w, 1)
 		if w.result_of_event_num(633) != 1 and w.modifier_active(6) and w.modifier_active(3):
 			if c149 != null:
-				c149.government = 1
-				c149.sub_government = 2
+				c149.government = GameConstants.Government.SOCIALIST
+				c149.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				c149.leave_alliances()
 				c149.set_tag("对华贸易", true)
 				c149.set_tag("亲中", true)
@@ -3465,8 +3465,8 @@ static func _apply_war64_result(war: WarData, d: Array[int]) -> void:
 			_add_empire_rel(w, 0, -100)
 		elif (w.result_of_event_num(633) == 1 and w.modifier_active(6) and w.modifier_active(3)) or (china != null and china.has_tag("sev")):
 			if c149 != null:
-				c149.government = 1
-				c149.sub_government = 1
+				c149.government = GameConstants.Government.SOCIALIST
+				c149.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c149.leave_alliances()
 				c149.set_tag("亲苏", true)
 			add_empire_power(EmpireData.USSR, 25)
@@ -3474,8 +3474,8 @@ static func _apply_war64_result(war: WarData, d: Array[int]) -> void:
 			_add_empire_rel(w, 0, -100)
 		else:
 			if c149 != null:
-				c149.government = 2
-				c149.sub_government = 3
+				c149.government = GameConstants.Government.REFORMIST
+				c149.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				c149.leave_alliances()
 				c149.set_tag("亲中", true)
 			_add_d(d, W.I_INFLUENCE, 25)
@@ -3484,8 +3484,8 @@ static func _apply_war64_result(war: WarData, d: Array[int]) -> void:
 	else:
 		if c149 != null:
 			c149.level_of_instability -= 300
-			c149.government = 0
-			c149.sub_government = 7
+			c149.government = GameConstants.Government.AUTHORITARIAN
+			c149.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c149.leave_alliances()
 			c149.set_tag("亲美", true)
 		_add_d(d, W.I_INFLUENCE, -20)
@@ -3538,8 +3538,8 @@ static func _apply_war66_result(war: WarData, d: Array[int]) -> void:
 		_add_d(d, W.I_INFLUENCE, -20)
 		add_empire_power(EmpireData.USA, 20)
 	elif c149 != null:
-		c149.government = 3
-		c149.sub_government = 12
+		c149.government = GameConstants.Government.LIBERAL
+		c149.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		add_empire_power(EmpireData.USA, -20)
 
 
@@ -3553,8 +3553,8 @@ static func _apply_war67_result(war: WarData, d: Array[int]) -> void:
 		c147.parts[0] = false
 	if war.infl1 >= 700:
 		if c147 != null:
-			c147.government = 0
-			c147.sub_government = 7
+			c147.government = GameConstants.Government.AUTHORITARIAN
+			c147.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c147.leave_alliances()
 			c147.set_tag("亲美", true)
 			c147.level_of_instability -= 300
@@ -3586,21 +3586,21 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.usa_power = 0
 			c123.sov_power = 0
 			if c123.has_tag("亲苏"):
-				c123.government = 1
-				c123.sub_government = 16
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				c123.leave_alliances()
 				c123.set_tag("亲苏", true)
 				add_empire_power(EmpireData.USSR, 20)
 				_add_d(d, W.I_INFLUENCE, 10)
-			elif c123.sub_government == 17:
-				c123.government = 1
-				c123.sub_government = 17
+			elif c123.sub_government == GameConstants.SubGovernment.MAOIST:
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.MAOIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				_add_d(d, W.I_INFLUENCE, 30)
 			else:
-				c123.government = 1
-				c123.sub_government = 1
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				_add_d(d, W.I_INFLUENCE, 30)
@@ -3623,14 +3623,14 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.内战中 = false
 			c123.leave_alliances()
 			if w.result_of_event_num(638) == 1:
-				c123.government = 0
-				c123.sub_government = 10
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			elif w.result_of_event_num(638) == 2:
-				c123.government = 2
-				c123.sub_government = 8
+				c123.government = GameConstants.Government.REFORMIST
+				c123.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			else:
-				c123.government = 0
-				c123.sub_government = 7
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				if c131 != null and w.is_authoritarian(c131):
 					c123.puppet_of = 131
 				else:
@@ -3643,16 +3643,16 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.name = "安哥拉人民民主共和国"
 			c123.chinese_name = "安哥拉人民民主共和国"
 			if w.result_of_event_num(638) == 1:
-				c123.government = 0
-				c123.sub_government = 10
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				c123.set_tag("对华贸易", true)
 				add_empire_power(EmpireData.USA, 20)
 				_add_d(d, W.I_INFLUENCE, 10)
 			else:
-				c123.government = 0
-				c123.sub_government = 7
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				c123.leave_alliances()
 				c123.set_tag("亲美", true)
 				if c131 != null and w.is_authoritarian(c131):
@@ -3665,21 +3665,21 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.usa_power = 0
 			c123.sov_power = 0
 			if c123.has_tag("亲苏"):
-				c123.government = 1
-				c123.sub_government = 16
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				c123.leave_alliances()
 				c123.set_tag("亲苏", true)
 				add_empire_power(EmpireData.USSR, 20)
 				_add_d(d, W.I_INFLUENCE, 10)
-			elif c123.sub_government == 17:
-				c123.government = 1
-				c123.sub_government = 17
+			elif c123.sub_government == GameConstants.SubGovernment.MAOIST:
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.MAOIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				_add_d(d, W.I_INFLUENCE, 30)
 			else:
-				c123.government = 1
-				c123.sub_government = 1
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				_add_d(d, W.I_INFLUENCE, 30)
@@ -3692,13 +3692,13 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.sov_power = 0
 			c123.name = "安哥拉共和国"
 			c123.chinese_name = "安哥拉共和国"
-			c123.government = 2
-			c123.sub_government = 8
+			c123.government = GameConstants.Government.REFORMIST
+			c123.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			c123.leave_alliances()
-			if c117 != null and ((w.is_authoritarian(c117) and c117.sub_government != 10) or c117.sub_government == 8):
+			if c117 != null and ((w.is_authoritarian(c117) and c117.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST) or c117.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE):
 				c123.puppet_of = 117
 			if w.result_of_event_num(638) == 2:
-				if c117 != null and (not w.is_authoritarian(c117) or c117.sub_government == 10) and c117.sub_government != 8:
+				if c117 != null and (not w.is_authoritarian(c117) or c117.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST) and c117.sub_government != GameConstants.SubGovernment.LEFT_CONSERVATIVE:
 					c123.set_tag("亲中", true)
 				c123.set_tag("对华贸易", true)
 			add_empire_power(EmpireData.USA, 20)
@@ -3725,13 +3725,13 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.sov_power = 0
 			c123.name = "安哥拉共和国"
 			c123.chinese_name = "安哥拉共和国"
-			c123.government = 2
-			c123.sub_government = 8
+			c123.government = GameConstants.Government.REFORMIST
+			c123.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			c123.leave_alliances()
-			if c117 != null and ((w.is_authoritarian(c117) and c117.sub_government != 10) or c117.sub_government == 8):
+			if c117 != null and ((w.is_authoritarian(c117) and c117.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST) or c117.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE):
 				c123.puppet_of = 117
 			if w.result_of_event_num(638) == 2:
-				if c117 != null and (not w.is_authoritarian(c117) or c117.sub_government == 10) and c117.sub_government != 8:
+				if c117 != null and (not w.is_authoritarian(c117) or c117.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST) and c117.sub_government != GameConstants.SubGovernment.LEFT_CONSERVATIVE:
 					c123.set_tag("亲中", true)
 				c123.set_tag("对华贸易", true)
 			add_empire_power(EmpireData.USA, 20)
@@ -3743,16 +3743,16 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.usa_power = 0
 			c123.sov_power = 0
 			if w.result_of_event_num(638) == 1:
-				c123.government = 0
-				c123.sub_government = 10
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				add_empire_power(EmpireData.USA, 20)
 				_add_d(d, W.I_INFLUENCE, 10)
 				c123.set_tag("对华贸易", true)
 			else:
-				c123.government = 0
-				c123.sub_government = 7
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				c123.leave_alliances()
 				c123.set_tag("亲美", true)
 				if c131 != null and w.is_authoritarian(c131):
@@ -3768,21 +3768,21 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.usa_power = 0
 			c123.sov_power = 0
 			if c123.has_tag("亲苏"):
-				c123.government = 1
-				c123.sub_government = 16
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				c123.leave_alliances()
 				c123.set_tag("亲苏", true)
 				add_empire_power(EmpireData.USSR, 20)
 				_add_d(d, W.I_INFLUENCE, 10)
-			elif c123.sub_government == 17:
-				c123.government = 1
-				c123.sub_government = 17
+			elif c123.sub_government == GameConstants.SubGovernment.MAOIST:
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.MAOIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				_add_d(d, W.I_INFLUENCE, 30)
 			else:
-				c123.government = 1
-				c123.sub_government = 1
+				c123.government = GameConstants.Government.SOCIALIST
+				c123.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				_add_d(d, W.I_INFLUENCE, 30)
@@ -3795,16 +3795,16 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 			c123.usa_power = 0
 			c123.sov_power = 0
 			if w.result_of_event_num(638) == 1:
-				c123.government = 0
-				c123.sub_government = 10
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				c123.leave_alliances()
 				c123.set_tag("亲中", true)
 				add_empire_power(EmpireData.USA, 20)
 				_add_d(d, W.I_INFLUENCE, 10)
 				c123.set_tag("对华贸易", true)
 			else:
-				c123.government = 0
-				c123.sub_government = 7
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				c123.leave_alliances()
 				c123.set_tag("亲美", true)
 				if c131 != null and w.is_authoritarian(c131):
@@ -3865,8 +3865,8 @@ static func _apply_war76_result(war: WarData, d: Array[int]) -> void:
 			c4.set_tag("亲中", true)
 			_join_all_our_alliances(w, c4)
 			c4.set_tag("对华贸易", true)
-			c4.government = 0
-			c4.sub_government = 19
+			c4.government = GameConstants.Government.AUTHORITARIAN
+			c4.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 		for c in w.countries:
 			if c == null:
 				continue
@@ -3879,8 +3879,8 @@ static func _apply_war76_result(war: WarData, d: Array[int]) -> void:
 				c.set_tag("ovd", false)
 		for c in [c2, c3, c6]:
 			if c != null:
-				c.government = 2
-				c.sub_government = 15
+				c.government = GameConstants.Government.REFORMIST
+				c.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				c.set_tag("对华贸易", true)
 		_add_d(d, W.I_PARTY_SUPPORT, 500)
 		_add_d(d, W.I_PEOPLE_SUPPORT, 500)
@@ -3903,8 +3903,8 @@ static func _apply_war76_result(war: WarData, d: Array[int]) -> void:
 		_add_d(d, W.I_PEOPLE_SUPPORT, -300)
 		_add_d(d, W.I_THOUGHT_FREEDOM, 300)
 		if c5 != null:
-			c5.government = 1
-			c5.sub_government = 16
+			c5.government = GameConstants.Government.SOCIALIST
+			c5.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 			c5.leave_alliances()
 			c5.set_tag("sev", true)
 			c5.set_tag("ovd", true)
@@ -3922,8 +3922,8 @@ static func _apply_war77_result(war: WarData, d: Array[int]) -> void:
 		c107.parts[0] = false
 	if war.infl1 >= 700:
 		if c107 != null:
-			c107.government = 3
-			c107.sub_government = 12
+			c107.government = GameConstants.Government.LIBERAL
+			c107.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			if _dval(d, W.I_INFLUENCE) >= _emp_power_val(w, EmpireData.USA):
 				c107.set_tag("亲中", true)
 			else:
@@ -3946,19 +3946,19 @@ static func _apply_war78_result(war: WarData, d: Array[int]) -> void:
 		if c107 == null:
 			return
 		if c107.内战中:
-			c107.government = 1
-			c107.sub_government = 0
+			c107.government = GameConstants.Government.SOCIALIST
+			c107.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 			c107.leave_alliances()
 			c107.set_tag("对华贸易", true)
 			c107.set_tag("亲中", true)
 			_add_d(d, W.I_INFLUENCE, 10)
 		else:
-			c107.government = 0
-			c107.sub_government = 10
+			c107.government = GameConstants.Government.AUTHORITARIAN
+			c107.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			c107.leave_alliances()
 			c107.set_tag("对华贸易", true)
 			c107.set_tag("亲中", true)
-			if c13 != null and c13.sub_government == 10:
+			if c13 != null and c13.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 				c107.puppet_of = 13
 
 
@@ -3974,8 +3974,8 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 		c60.parts[0] = false
 	if c60 != null and c60.内战中:
 		if war.infl1 >= 1000:
-			c60.government = 0
-			c60.sub_government = 9
+			c60.government = GameConstants.Government.AUTHORITARIAN
+			c60.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			c60.leave_alliances()
 			c60.set_tag("对华贸易", true)
 			c60.set_tag("亲中", true)
@@ -3983,8 +3983,8 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 			c60.chinese_name = "索科托伊斯兰国"
 			_add_d(d, W.I_INFLUENCE, 20)
 		else:
-			c60.government = 0
-			c60.sub_government = 9
+			c60.government = GameConstants.Government.AUTHORITARIAN
+			c60.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			c60.leave_alliances()
 			c60.name = "尼日利亚"
 			c60.chinese_name = "尼日利亚"
@@ -3994,16 +3994,16 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 				if c164.parts.size() <= 0:
 					c164.parts.resize(1)
 				c164.parts[0] = true
-				c164.government = 0
-				c164.sub_government = 9
+				c164.government = GameConstants.Government.AUTHORITARIAN
+				c164.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				c164.leave_alliances()
 				c164.set_tag("对华贸易", true)
 				c164.set_tag("亲中", true)
 			_add_d(d, W.I_INFLUENCE, 20)
 	elif war.infl1 >= 1000:
 		if c60 != null:
-			c60.government = 1
-			c60.sub_government = 0
+			c60.government = GameConstants.Government.SOCIALIST
+			c60.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 			c60.leave_alliances()
 			c60.set_tag("对华贸易", true)
 			c60.set_tag("亲中", true)
@@ -4014,14 +4014,14 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 		var c66 := _wc(w, 66)
 		if c60 != null:
 			if c66 != null and w.is_socialism(c66, true):
-				c60.government = 0
-				c60.sub_government = 10
+				c60.government = GameConstants.Government.AUTHORITARIAN
+				c60.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				c60.leave_alliances()
 				c60.set_tag("对华贸易", true)
 				c60.set_tag("亲中", true)
 			else:
-				c60.government = 0
-				c60.sub_government = 7
+				c60.government = GameConstants.Government.AUTHORITARIAN
+				c60.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				c60.leave_alliances()
 				c60.puppet_of = 21
 			c60.name = "比夫拉"
@@ -4032,8 +4032,8 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 			if c164.parts.size() <= 0:
 				c164.parts.resize(1)
 			c164.parts[0] = true
-			c164.government = 0
-			c164.sub_government = 7
+			c164.government = GameConstants.Government.AUTHORITARIAN
+			c164.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c164.leave_alliances()
 			c164.set_tag("亲美", true)
 		if c165 != null:
@@ -4042,8 +4042,8 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 			if c165.parts.size() <= 0:
 				c165.parts.resize(1)
 			c165.parts[0] = true
-			c165.government = 3
-			c165.sub_government = 4
+			c165.government = GameConstants.Government.LIBERAL
+			c165.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			c165.leave_alliances()
 		_add_d(d, W.I_INFLUENCE, 20)
 
@@ -4063,8 +4063,8 @@ static func _apply_war80_result(war: WarData, d: Array[int]) -> void:
 		if c57 == null:
 			return
 		if w.result_of_event_num(658) == 2:
-			c57.government = 0
-			c57.sub_government = 10
+			c57.government = GameConstants.Government.AUTHORITARIAN
+			c57.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			c57.leave_alliances()
 			c57.puppet_of = 13
 			c57.set_tag("对华贸易", true)
@@ -4077,8 +4077,8 @@ static func _apply_war80_result(war: WarData, d: Array[int]) -> void:
 			if c30 != null and c30.puppet_of != 13 and c13 != null:
 				c13.parts[1] = true
 		elif c57.puppet_of == 13:
-			c57.government = 0
-			c57.sub_government = 10
+			c57.government = GameConstants.Government.AUTHORITARIAN
+			c57.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			c57.leave_alliances()
 			c57.puppet_of = 13
 			c57.set_tag("对华贸易", true)
@@ -4086,8 +4086,8 @@ static func _apply_war80_result(war: WarData, d: Array[int]) -> void:
 			c57.chinese_name = "乍得人民社会主义民众国"
 			_add_d(d, W.I_INFLUENCE, 10)
 		else:
-			c57.government = 0
-			c57.sub_government = 10
+			c57.government = GameConstants.Government.AUTHORITARIAN
+			c57.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			c57.leave_alliances()
 			c57.set_tag("对华贸易", true)
 			if _emp_power_val(w, EmpireData.USSR) > _dval(d, W.I_INFLUENCE):
@@ -4099,8 +4099,8 @@ static func _apply_war80_result(war: WarData, d: Array[int]) -> void:
 			_add_d(d, W.I_INFLUENCE, 10)
 	else:
 		if c57 != null:
-			c57.government = 0
-			c57.sub_government = 7
+			c57.government = GameConstants.Government.AUTHORITARIAN
+			c57.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c57.leave_alliances()
 			if c21 != null and w.is_socialism(c21, false):
 				c57.puppet_of = 21
@@ -4123,15 +4123,15 @@ static func _apply_war82_result(war: WarData, d: Array[int]) -> void:
 			if c33.parts.size() <= 1:
 				c33.parts.resize(2)
 			c33.parts[1] = true
-			c33.government = 2
-			c33.sub_government = 11
+			c33.government = GameConstants.Government.REFORMIST
+			c33.sub_government = GameConstants.SubGovernment.TITOIST
 			c33.leave_alliances()
 			c33.set_tag("对华贸易", true)
 		_add_d(d, W.I_INFLUENCE, 15)
 	elif w.result_of_event_num(662) == 4:
 		if c33 != null:
-			c33.government = 1
-			c33.sub_government = 18
+			c33.government = GameConstants.Government.SOCIALIST
+			c33.sub_government = GameConstants.SubGovernment.TROTSKYIST
 			c33.leave_alliances()
 			c33.set_tag("对华贸易", true)
 			c33.set_tag("亲中", true)
@@ -4142,8 +4142,8 @@ static func _apply_war82_result(war: WarData, d: Array[int]) -> void:
 		_add_d(d, W.I_INFLUENCE, 20)
 	else:
 		if c33 != null:
-			c33.government = 1
-			c33.sub_government = 17
+			c33.government = GameConstants.Government.SOCIALIST
+			c33.sub_government = GameConstants.SubGovernment.MAOIST
 			c33.leave_alliances()
 			c33.set_tag("对华贸易", true)
 			c33.set_tag("亲中", true)
@@ -4166,8 +4166,8 @@ static func _apply_war83_result(war: WarData, d: Array[int]) -> void:
 		if c33 != null:
 			if c33.parts.size() > 1:
 				c33.parts[1] = false
-			c33.government = 0
-			c33.sub_government = 9
+			c33.government = GameConstants.Government.AUTHORITARIAN
+			c33.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			c33.leave_alliances()
 			if w.result_of_event_num(664) == 2:
 				c33.set_tag("对华贸易", true)
@@ -4178,8 +4178,8 @@ static func _apply_war83_result(war: WarData, d: Array[int]) -> void:
 			if c33.parts.size() <= 1:
 				c33.parts.resize(2)
 			c33.parts[1] = true
-			c33.government = 3
-			c33.sub_government = 6
+			c33.government = GameConstants.Government.LIBERAL
+			c33.sub_government = GameConstants.SubGovernment.LIBERAL
 			c33.leave_alliances()
 			c33.set_tag("亲美", true)
 		_add_d(d, W.I_INFLUENCE, -10)
@@ -4195,8 +4195,8 @@ static func _apply_war84_result(war: WarData, d: Array[int]) -> void:
 		c141.parts[0] = false
 	if war.infl2 >= 1000:
 		if c141 != null:
-			c141.government = 0
-			c141.sub_government = 7 if w.result_of_event_num(665) == 0 else 13
+			c141.government = GameConstants.Government.AUTHORITARIAN
+			c141.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN if w.result_of_event_num(665) == 0 else 13
 			c141.leave_alliances()
 			c141.set_tag("亲美", true)
 			if c141.parts.size() <= 1:
@@ -4205,8 +4205,8 @@ static func _apply_war84_result(war: WarData, d: Array[int]) -> void:
 		add_empire_power(EmpireData.USA, 10)
 	elif w.result_of_event_num(665) == 0:
 		if c141 != null:
-			c141.government = 1
-			c141.sub_government = 1
+			c141.government = GameConstants.Government.SOCIALIST
+			c141.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			c141.leave_alliances()
 			c141.set_tag("亲中", true)
 			c141.set_tag("对华贸易", true)
@@ -4243,8 +4243,8 @@ static func _apply_war85_result(war: WarData, _d: Array[int]) -> void:
 			if w.result_of_event_num(458) == 2:
 				c58.set_tag("对华贸易", true)
 				if (c61 != null and c61.has_tag("亲苏")) or (c1 != null and c1.has_tag("sev")):
-					c58.government = 1
-					c58.sub_government = 1
+					c58.government = GameConstants.Government.SOCIALIST
+					c58.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					c58.leave_alliances()
 					c58.set_tag("亲苏", true)
 					c58.set_tag("对华贸易", true)
@@ -4252,8 +4252,8 @@ static func _apply_war85_result(war: WarData, _d: Array[int]) -> void:
 					c58.chinese_name = "马里民主共和国"
 					add_empire_power(EmpireData.USA, 10)
 				else:
-					c58.government = 1
-					c58.sub_government = 2
+					c58.government = GameConstants.Government.SOCIALIST
+					c58.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 					c58.leave_alliances()
 					c58.set_tag("对华贸易", true)
 					c58.set_tag("亲中", true)
@@ -4266,19 +4266,19 @@ static func _apply_war85_result(war: WarData, _d: Array[int]) -> void:
 			fallback_democratic = true
 		if fallback_democratic:
 			if _emp_power_val(w, EmpireData.USA) > _emp_power_val(w, EmpireData.USSR):
-				c58.government = 3
-				c58.sub_government = 4
+				c58.government = GameConstants.Government.LIBERAL
+				c58.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				c58.leave_alliances()
 				add_empire_power(EmpireData.USA, 10)
 			else:
-				c58.government = 2
-				c58.sub_government = 3
+				c58.government = GameConstants.Government.REFORMIST
+				c58.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				c58.leave_alliances()
 				add_empire_power(EmpireData.USSR, 10)
 	elif war.infl1 >= 900:
 		if c61 != null:
-			c61.government = 0
-			c61.sub_government = 7
+			c61.government = GameConstants.Government.AUTHORITARIAN
+			c61.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c61.leave_alliances()
 			if c21 != null and not w.is_socialism(c21, true):
 				c61.puppet_of = 21
@@ -4299,12 +4299,12 @@ static func _apply_war86_result(war: WarData, d: Array[int]) -> void:
 	if (_dval(d, 147) == 6 or _dval(d, 147) == 8) and _dval(d, 166) < 100:
 		_add_d(d, W.I_INFLUENCE, 30)
 		add_empire_power(EmpireData.USSR, 50)
-		if c92 != null and c92.sub_government == 1:
+		if c92 != null and c92.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 			if _dval(d, 165) > _dval(d, 162) and _dval(d, 165) > _dval(d, 163) \
 					and _dval(d, 165) > _dval(d, 164) and _dval(d, 165) > _dval(d, 166):
 				if c29 != null:
-					c29.government = 0
-					c29.sub_government = 9
+					c29.government = GameConstants.Government.AUTHORITARIAN
+					c29.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 					if c29.parts.size() <= 0:
 						c29.parts.resize(1)
 					c29.parts[0] = true
@@ -4313,8 +4313,8 @@ static func _apply_war86_result(war: WarData, d: Array[int]) -> void:
 					c29.内战中 = true
 					c29.set_tag("亲美", true)
 			elif c29 != null:
-				c29.government = 2
-				c29.sub_government = 3
+				c29.government = GameConstants.Government.REFORMIST
+				c29.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				if c29.parts.size() <= 0:
 					c29.parts.resize(1)
 				c29.parts[0] = true
@@ -4335,16 +4335,16 @@ static func _apply_war86_result(war: WarData, d: Array[int]) -> void:
 				c166.name = "爱尔兰社会主义共和国"
 				c166.chinese_name = "爱尔兰社会主义共和国"
 				if _dval(d, 162) >= 100:
-					c166.government = 1
-					c166.sub_government = 1
+					c166.government = GameConstants.Government.SOCIALIST
+					c166.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				else:
 					_set_d(d, 167, 6)
 					if _dval(d, 163) >= 100:
-						c166.government = 1
-						c166.sub_government = 0
+						c166.government = GameConstants.Government.SOCIALIST
+						c166.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 					elif _dval(d, 164) >= 100:
-						c166.government = 1
-						c166.sub_government = 2
+						c166.government = GameConstants.Government.SOCIALIST
+						c166.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 			_add_d(d, W.I_INFLUENCE, 30)
 			_add_empire_rel(w, 0, -50)
 		else:
@@ -4355,8 +4355,8 @@ static func _apply_war86_result(war: WarData, d: Array[int]) -> void:
 				c166.parts[0] = true
 				c166.name = "阿尔斯特民主共和国"
 				c166.chinese_name = "阿尔斯特民主共和国"
-				c166.government = 1
-				c166.sub_government = 1
+				c166.government = GameConstants.Government.SOCIALIST
+				c166.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c166.set_tag("对华贸易", true)
 
 
@@ -4391,7 +4391,7 @@ static func _apply_war87_result(war: WarData, d: Array[int]) -> void:
 				c29.government = c166.government
 				c29.sub_government = c166.sub_government
 				c29.leave_alliances()
-				if c21 != null and c21.has_tag("soc_eu") and c29.sub_government == 14:
+				if c21 != null and c21.has_tag("soc_eu") and c29.sub_government == GameConstants.SubGovernment.EUROCOMMUNIST:
 					c29.set_tag("soc_eu", true)
 				c29.set_tag("亲中", true)
 				c29.set_tag("对华贸易", true)
@@ -4407,8 +4407,8 @@ static func _apply_war87_result(war: WarData, d: Array[int]) -> void:
 				c29.name = "爱尔兰民主共和国"
 				c29.chinese_name = "爱尔兰民主共和国"
 				c29.leave_alliances()
-				c29.government = 0
-				c29.sub_government = 10
+				c29.government = GameConstants.Government.AUTHORITARIAN
+				c29.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				c29.set_tag("亲中", true)
 				c29.set_tag("对华贸易", true)
 				c29.内战中 = true
@@ -4432,8 +4432,8 @@ static func _apply_war88_result(war: WarData, d: Array[int]) -> void:
 		if w.event_done_num(36) and w.result_of_event_num(36) == 3:
 			if c14 != null and c14.puppet_of < 0:
 				c14.leave_alliances()
-				c14.government = 3
-				c14.sub_government = 4
+				c14.government = GameConstants.Government.LIBERAL
+				c14.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				c14.name = "伊拉克伊斯兰共和国"
 				c14.chinese_name = "伊拉克伊斯兰共和国"
 				c14.set_tag("亲中", true)
@@ -4443,15 +4443,15 @@ static func _apply_war88_result(war: WarData, d: Array[int]) -> void:
 		else:
 			if c14 != null and c14.puppet_of < 0:
 				c14.leave_alliances()
-				c14.government = 0
-				c14.sub_government = 20
+				c14.government = GameConstants.Government.AUTHORITARIAN
+				c14.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				c14.name = "伊拉克伊斯兰共和国"
 				c14.chinese_name = "伊拉克伊斯兰共和国"
 	else:
 		if c14 != null:
 			c14.leave_alliances()
-			c14.government = 0
-			c14.sub_government = 13
+			c14.government = GameConstants.Government.AUTHORITARIAN
+			c14.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 			if c14.parts.size() > 7:
 				c14.parts[4] = false
 				c14.parts[5] = false
@@ -4459,8 +4459,8 @@ static func _apply_war88_result(war: WarData, d: Array[int]) -> void:
 				c14.parts[7] = false
 		if c36 != null:
 			c36.leave_alliances()
-			c36.government = 0
-			c36.sub_government = 7
+			c36.government = GameConstants.Government.AUTHORITARIAN
+			c36.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		if c8 != null:
 			c8.prc_power = 0
 		for c in w.countries:
@@ -4483,8 +4483,8 @@ static func _apply_war89_result(war: WarData, d: Array[int]) -> void:
 		if c35 != null:
 			c35.leave_alliances()
 			c35.puppet_of = 14
-			c35.government = 0
-			c35.sub_government = 19
+			c35.government = GameConstants.Government.AUTHORITARIAN
+			c35.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			c35.set_tag("对华贸易", true)
 			_join_all_our_alliances(w, c35)
 		_add_d(d, W.I_INFLUENCE, 50)
@@ -4494,16 +4494,16 @@ static func _apply_war89_result(war: WarData, d: Array[int]) -> void:
 			if c != null and w.is_authoritarian(c):
 				c.leave_alliances()
 				c.puppet_of = 14
-				c.government = 0
-				c.sub_government = 19
+				c.government = GameConstants.Government.AUTHORITARIAN
+				c.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				c.set_tag("亲中", true)
 				c.set_tag("对华贸易", true)
 				_join_all_our_alliances(w, c)
 	else:
 		if c14 != null:
 			c14.leave_alliances()
-			c14.government = 0
-			c14.sub_government = 13
+			c14.government = GameConstants.Government.AUTHORITARIAN
+			c14.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 			if c14.parts.size() > 7:
 				c14.parts[4] = false
 				c14.parts[5] = false
@@ -4511,8 +4511,8 @@ static func _apply_war89_result(war: WarData, d: Array[int]) -> void:
 				c14.parts[7] = false
 		if c36 != null:
 			c36.leave_alliances()
-			c36.government = 0
-			c36.sub_government = 7
+			c36.government = GameConstants.Government.AUTHORITARIAN
+			c36.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		if c8 != null:
 			c8.prc_power = 0
 		for c in w.countries:
@@ -4530,27 +4530,27 @@ static func _apply_war20_result(war: WarData, d: Array[int]) -> void:
 	if w.result_of_event_num(512) == 2:
 		d[132] = 2
 		if chad != null:
-			chad.government = 0
-			chad.sub_government = 7
+			chad.government = GameConstants.Government.AUTHORITARIAN
+			chad.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			chad.set_tag("亲美", true)
 		d[143] -= 3
 	elif war.infl1 >= 900:
 		if libya != null:
-			libya.government = 0
-			libya.sub_government = 10
+			libya.government = GameConstants.Government.AUTHORITARIAN
+			libya.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			if libya.parts.size() <= 0:
 				libya.parts.resize(1)
 			libya.parts[0] = true
 		if chad != null:
-			chad.government = 0
+			chad.government = GameConstants.Government.AUTHORITARIAN
 			chad.puppet_of = 13
-			chad.sub_government = 10
+			chad.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		d[132] = 1
 	elif war.infl2 >= 600:
 		d[132] = 2
 		if chad != null:
-			chad.government = 0
-			chad.sub_government = 7
+			chad.government = GameConstants.Government.AUTHORITARIAN
+			chad.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			chad.set_tag("亲美", true)
 		d[143] -= 3
 
@@ -4566,8 +4566,8 @@ static func _apply_war8_result(war: WarData, _d: Array[int]) -> void:
 		return
 	if war.infl2 >= 800:
 		if turkey != null:
-			turkey.government = 2
-			turkey.sub_government = 3
+			turkey.government = GameConstants.Government.REFORMIST
+			turkey.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			turkey.set_tag("亲美", false)
 			turkey.set_tag("nato", false)
 			turkey.内战中 = true
@@ -4576,8 +4576,8 @@ static func _apply_war8_result(war: WarData, _d: Array[int]) -> void:
 			portugal.special -= 10
 	else:
 		if turkey != null:
-			turkey.government = 2
-			turkey.sub_government = 8
+			turkey.government = GameConstants.Government.REFORMIST
+			turkey.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			turkey.set_tag("亲美", false)
 			turkey.set_tag("nato", false)
 		add_empire_power(EmpireData.USA, -30)
@@ -4597,22 +4597,22 @@ static func _apply_war9_result(war: WarData, d: Array[int]) -> void:
 	if war.infl2 >= 800:
 		add_empire_power(EmpireData.USA, -50)
 		if turkey != null:
-			turkey.government = 3
-			turkey.sub_government = 4
+			turkey.government = GameConstants.Government.LIBERAL
+			turkey.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			if turkey.parts.size() <= 0:
 				turkey.parts.resize(1)
 			turkey.parts[0] = true
 		d[W.I_INFLUENCE] += 30
 		if syria != null:
-			syria.government = 1
-			syria.sub_government = 1
+			syria.government = GameConstants.Government.SOCIALIST
+			syria.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			syria.set_tag("亲中", true)
 			syria.set_tag("亲苏", false)
 			syria.set_tag("亲美", false)
 	else:
 		if turkey != null:
-			turkey.government = 3
-			turkey.sub_government = 4
+			turkey.government = GameConstants.Government.LIBERAL
+			turkey.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 
 
 ## WarResult 950 阈值战争集合：{war_id: 失败结局编号}。
@@ -4673,8 +4673,8 @@ static func _war70_victory(w: WorldState, d: Array[int]) -> void:
 		w.set_flag("is_gkchp", true)
 		var c7 := _wc(w, 7)
 		if c7 != null:
-			c7.government = 0
-			c7.sub_government = 10
+			c7.government = GameConstants.Government.AUTHORITARIAN
+			c7.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			c7.leave_eu()
 			c7.leave_nato()
 		for c in w.countries:
@@ -4698,8 +4698,8 @@ static func _war70_victory(w: WorldState, d: Array[int]) -> void:
 			c9.leave_alliances()
 		var c7 := _wc(w, 7)
 		if c7 != null:
-			c7.government = 2
-			c7.sub_government = 21
+			c7.government = GameConstants.Government.REFORMIST
+			c7.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 		if w.empires.size() > 1 and w.empires[1] != null:
 			w.empires[1].current_leader = 6
 		_set_d(d, 130, 1)
@@ -4832,8 +4832,8 @@ static func _puppet_to_china(w: WorldState, idx: int, new_name: String, parts_se
 	var c := _wc(w, idx)
 	if c == null:
 		return
-	c.government = 0
-	c.sub_government = 19
+	c.government = GameConstants.Government.AUTHORITARIAN
+	c.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 	c.leave_alliances()
 	c.set_tag("对华贸易", true)
 	c.establish_government(2)
@@ -4901,7 +4901,7 @@ static func apply_war_side1_victory(war_id: int, war: WarData, d: Array[int]) ->
 		2:
 			var thailand := w.get_country_by_legacy_index(34)
 			if thailand != null:
-				thailand.government = 1
+				thailand.government = GameConstants.Government.SOCIALIST
 				thailand.set_tag("亲中", true)
 				thailand.set_tag("亲美", false)
 			d[W.I_INFLUENCE] += 20
@@ -4917,7 +4917,7 @@ static func apply_war_side1_victory(war_id: int, war: WarData, d: Array[int]) ->
 			else:
 				var afghanistan := w.get_country_by_legacy_index(12)
 				if afghanistan != null:
-					afghanistan.government = 1
+					afghanistan.government = GameConstants.Government.SOCIALIST
 					afghanistan.set_tag("亲苏", false)
 					afghanistan.set_tag("亲中", true)
 					afghanistan.set_tag("对华贸易", true)
@@ -4945,7 +4945,7 @@ static func apply_war_side2_victory(war_id: int, war: WarData, d: Array[int]) ->
 		1:
 			var kampuchea := w.get_country_by_legacy_index(23)
 			if kampuchea != null:
-				kampuchea.government = 1
+				kampuchea.government = GameConstants.Government.SOCIALIST
 				kampuchea.set_tag("亲苏", true)
 				kampuchea.set_tag("econ", false)
 				kampuchea.set_tag("okb", false)
@@ -4958,7 +4958,7 @@ static func apply_war_side2_victory(war_id: int, war: WarData, d: Array[int]) ->
 		3:
 			var iraq := w.get_country_by_legacy_index(14)
 			if iraq != null:
-				iraq.government = 0
+				iraq.government = GameConstants.Government.AUTHORITARIAN
 				iraq.set_tag("对华贸易", false)
 				iraq.set_tag("亲苏", false)
 		4:
@@ -4969,7 +4969,7 @@ static func apply_war_side2_victory(war_id: int, war: WarData, d: Array[int]) ->
 			if war.ussr_side == 0:
 				var afghanistan := w.get_country_by_legacy_index(12)
 				if afghanistan != null:
-					afghanistan.government = 0
+					afghanistan.government = GameConstants.Government.AUTHORITARIAN
 					afghanistan.set_tag("亲苏", false)
 					afghanistan.set_tag("亲中", false)
 					afghanistan.set_tag("对华贸易", false)
@@ -4983,8 +4983,8 @@ static func apply_war_side2_victory(war_id: int, war: WarData, d: Array[int]) ->
 			# GameState.cs:2188-2210：伊拉克爱国同盟获胜且中国驻军基地存在 → 伊拉克社会主义联邦。
 			var iraq42 := w.get_country_by_legacy_index(14)
 			if iraq42 != null and iraq42.有驻军基地:
-				iraq42.government = 1
-				iraq42.sub_government = 2
+				iraq42.government = GameConstants.Government.SOCIALIST
+				iraq42.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				_leave_alliances(iraq42)
 				iraq42.set_tag("对华贸易", true)
 				iraq42.set_tag("亲中", true)
@@ -5033,7 +5033,7 @@ static func restart_afghan_war(war: WarData, d: Array[int]) -> void:
 		war.infl1 -= 100
 		war.infl2 += 100
 	var iran := w.get_country_by_legacy_index(8)
-	if iran != null and iran.government == 0:
+	if iran != null and iran.government == GameConstants.Government.AUTHORITARIAN:
 		war.infl1 -= 50
 		war.infl2 += 50
 	if d[W.I_AFGHAN_WAR_PATH] == 9:
@@ -5059,8 +5059,8 @@ static func _apply_turkey_crisis_war_result(war_id: int, war: WarData, d: Array[
 				var syria := w.get_country_by_legacy_index(35)
 				var turkey10 := w.get_country_by_legacy_index(84)
 				if syria != null:
-					syria.government = 0
-					syria.sub_government = 9
+					syria.government = GameConstants.Government.AUTHORITARIAN
+					syria.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 					_leave_alliances(syria)
 					syria.puppet_of = 84
 				if turkey10 != null and turkey10.has_tag("亲美"):
@@ -5070,8 +5070,8 @@ static func _apply_turkey_crisis_war_result(war_id: int, war: WarData, d: Array[
 				# GameState.cs:651-674：伊拉克
 				var iraq := w.get_country_by_legacy_index(14)
 				if iraq != null:
-					iraq.government = 0
-					iraq.sub_government = 9
+					iraq.government = GameConstants.Government.AUTHORITARIAN
+					iraq.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 					if d.size() > 117:
 						d[117] = 0
 					_leave_alliances(iraq)
@@ -5083,10 +5083,10 @@ static func _apply_turkey_crisis_war_result(war_id: int, war: WarData, d: Array[
 				# GameState.cs:676-695：伊朗
 				var iran := w.get_country_by_legacy_index(8)
 				if iran != null:
-					iran.government = 0
+					iran.government = GameConstants.Government.AUTHORITARIAN
 					if d.size() > 117:
 						d[117] = 0
-					iran.sub_government = 9
+					iran.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 					_leave_alliances(iran)
 					iran.puppet_of = 84
 					if iran.has_tag("亲美"):
@@ -5105,7 +5105,7 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 		return
 	var iran := w.get_country_by_legacy_index(8)
 	var iraq := w.get_country_by_legacy_index(14)
-	if iraq != null and (iraq.sub_government == 4 or iraq.sub_government == 20) \
+	if iraq != null and (iraq.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT or iraq.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN) \
 			and iraq.puppet_of < 0:
 		# GameState.cs:218-221：伊拉克新政府提出停战，无状态变化。
 		return
@@ -5114,11 +5114,11 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 		if iran != null and w.is_socialism(iran, true):
 			iran.prc_power = 1000
 			iran.social_stability = 1000
-		elif iraq != null and iraq.sub_government == 2:
+		elif iraq != null and iraq.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST:
 			# GameState.cs:239-262
 			if iran != null:
-				iran.government = 1
-				iran.sub_government = 2
+				iran.government = GameConstants.Government.SOCIALIST
+				iran.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				iran.chinese_name = "伊朗人民民主共和国"
 				_leave_alliances(iran)
 				iran.set_tag("对华贸易", true)
@@ -5132,11 +5132,11 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 				iraq.puppet_of = -1
 				iraq.government = iran.government
 				iraq.sub_government = iran.sub_government
-		elif iraq != null and iraq.sub_government == 16:
+		elif iraq != null and iraq.sub_government == GameConstants.SubGovernment.SOVIET_STYLE:
 			# GameState.cs:264-281
 			if iran != null:
-				iran.government = 1
-				iran.sub_government = 16
+				iran.government = GameConstants.Government.SOCIALIST
+				iran.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				iran.chinese_name = "伊朗人民共和国"
 				iran.prc_power = 1000
 				iran.social_stability = 1000
@@ -5163,8 +5163,8 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 						iraq.parts.resize(5)
 					iraq.parts[4] = true
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 10
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				iran.set_tag("对华贸易", true)
 				_leave_alliances(iran)
 				iran.puppet_of = 14
@@ -5179,8 +5179,8 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 		iran.social_stability = 1000
 	elif iraq != null and w.is_socialism(iraq, true):
 		# GameState.cs:365-387：伊拉克伊斯兰共和国（伊朗傀儡）。
-		iraq.government = 0
-		iraq.sub_government = 20
+		iraq.government = GameConstants.Government.AUTHORITARIAN
+		iraq.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 		iraq.set_tag("对华贸易", false)
 		_leave_alliances(iraq)
 		iraq.puppet_of = 8
@@ -5191,8 +5191,8 @@ static func _apply_iran_iraq_war_result(war: WarData, d: Array[int]) -> void:
 	else:
 		# GameState.cs:388-400：伊拉克世俗伊朗傀儡。
 		if iraq != null:
-			iraq.government = 0
-			iraq.sub_government = 20
+			iraq.government = GameConstants.Government.AUTHORITARIAN
+			iraq.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			iraq.set_tag("对华贸易", false)
 			iraq.set_tag("亲苏", false)
 			_leave_alliances(iraq)

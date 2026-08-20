@@ -451,9 +451,9 @@ static func _year() -> int:
 static func _build_v3() -> void:
 	var A := DecisionAtoms
 
-	# idx 20 建立阿拉伯联合国家 / 成立阿拉伯革命社会主义联邦共和国（三元 government!=1）
+	# idx 20 建立阿拉伯联合国家 / 成立阿拉伯革命社会主义联邦共和国（三元 government != GameConstants.Government.SOCIALIST）
 	var d20: DecisionDef
-	if A._country(30) != null and A._country(30).government != 1:
+	if A._country(30) != null and A._country(30).government != GameConstants.Government.SOCIALIST:
 		d20 = _new(20, _s("建 立 阿 拉 伯 联 合 国 家"), _s("数 十 年 间 ， 泛 阿 拉 伯 主 义 情 绪 便 已 从 点 点 星 火 燃 作 燎 原 之 势 。 可 遗 憾 的 是 ， 并 没 有 一 个 行 之 有 效 的 一 体 化 项 目 匹 配 如 此 雄 心 。 毕 竟 ， 当 地 的 纳 赛 尔 只 有 一 个 。 但 在 东 方 神 秘 力 量 日 益 壮 大 ， 并 能 为 第 三 世 界 盟 友 搭 把 手 的 情 况 下 ， 阿 拉 伯 人 能 真 正 以 同 一 个 声 音 说 话 吗 ？"), 3)
 		d20.condition = func() -> bool:
 			return A.is_oar_created(true) and A.is_oar_full(true) and A.is_no_wars(true) \

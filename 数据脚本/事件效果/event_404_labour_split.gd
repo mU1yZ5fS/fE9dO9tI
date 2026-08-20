@@ -97,42 +97,42 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -50)
 		_add(W.I_AGENTS, -100)
 	var c4 := ws.get_country_by_legacy_index(4)
-	if c4 != null and c4.government == 2:
+	if c4 != null and c4.government == GameConstants.Government.REFORMIST:
 		num += 1
 	var c2 := ws.get_country_by_legacy_index(2)
 	if c2 != null and c2.has_tag("亲苏"):
 		num += 1
 	var c86 := ws.get_country_by_legacy_index(86)
-	if c86 != null and c86.government == 2:
+	if c86 != null and c86.government == GameConstants.Government.REFORMIST:
 		num += 1
 	var c85 := ws.get_country_by_legacy_index(85)
-	if c85 != null and c85.government == 2:
+	if c85 != null and c85.government == GameConstants.Government.REFORMIST:
 		num += 1
 	if ws.wars.size() > 5 and ws.wars[5] != null and ws.wars[5].is_going:
 		num += 1
 	var c8 := ws.get_country_by_legacy_index(8)
-	if c8 != null and c8.government == 3:
+	if c8 != null and c8.government == GameConstants.Government.LIBERAL:
 		num += 1
-	if c8 != null and c8.sub_government == 3:
+	if c8 != null and c8.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		num += 2
 	if ws.empires.size() > 1 and ws.empires[0] != null and ws.empires[1] != null and ws.empires[0].power > ws.empires[1].power:
 		num += 1
 	var c30 := ws.get_country_by_legacy_index(30)
-	if c30 != null and c30.sub_government == 20:
+	if c30 != null and c30.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 		num += 1
 	if opt == 2:
 		num2 += 1
 		_add(W.I_BUDGET, -50)
 		_add(W.I_AGENTS, -100)
 	var c45 := ws.get_country_by_legacy_index(45)
-	if c45 != null and c45.government == 2:
+	if c45 != null and c45.government == GameConstants.Government.REFORMIST:
 		num2 += 1
 	var c84 := ws.get_country_by_legacy_index(84)
-	if c84 != null and c84.government == 2:
+	if c84 != null and c84.government == GameConstants.Government.REFORMIST:
 		num2 += 1
-	if c2 != null and c2.government == 2:
+	if c2 != null and c2.government == GameConstants.Government.REFORMIST:
 		num2 += 1
-	if c4 != null and c4.government == 1:
+	if c4 != null and c4.government == GameConstants.Government.SOCIALIST:
 		num2 += 1
 	var c166 := ws.get_country_by_legacy_index(166)
 	if c166 != null and c166.parts.size() > 0 and c166.parts[0]:

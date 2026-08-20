@@ -2205,8 +2205,8 @@ func _apply_modifier50_military(d: Array[int], w: WorldState) -> void:
 		var china := w.get_country_by_legacy_index(1)
 		var usa_c := w.get_country_by_legacy_index(51)
 		var ussr_e := w.empires[EmpireData.USSR] if w.empires.size() > EmpireData.USSR else null
-		if ussr_c != null and ussr_c.sub_government != 21 \
-				and (china != null and (china.government == 3
+		if ussr_c != null and ussr_c.sub_government != GameConstants.SubGovernment.RENEWAL_SOCIALIST \
+				and (china != null and (china.government == GameConstants.Government.LIBERAL
 					or (usa_c != null and usa_c.has_tag("对华贸易"))
 					or (ussr_e != null and ussr_e.relations < 500))):
 			w.arms_purchase_agreement = 0
@@ -2571,9 +2571,9 @@ func _political_system_recalc(d: Array[int], w: WorldState) -> void:
 	if pc:
 		pc.government = new_gosstroy
 	# 原版 1440-1444：modifies[40] 激活且 Gosstroy==1 时强制覆盖为 data[14]=3 / Gosstroy=2
-	if gm._mod_active(w, 40) and pc != null and pc.government == 1:
+	if gm._mod_active(w, 40) and pc != null and pc.government == GameConstants.Government.SOCIALIST:
 		d[W.I_IDEOLOGY] = 3
-		pc.government = 2
+		pc.government = GameConstants.Government.REFORMIST
 	# 注意：data[56] 政治路线重算也在日块（tick 中先于本函数调用），不在此处
 
 
@@ -3472,7 +3472,7 @@ func _fortnight_modifiers(
 		var china := w.get_player_country()
 		if c21 != null and c21.has_tag("对华贸易") and china != null \
 				and not china.has_tag("seato") and not china.has_tag("okb") and not china.has_tag("ovd") \
-				and (china.government == 2 or china.government == 3):
+				and (china.government == GameConstants.Government.REFORMIST or china.government == GameConstants.Government.LIBERAL):
 			d[W.I_BUDGET] += 3
 			d[W.I_SCIENCE] += 4
 	if gm._mod_active(w, 44):
@@ -3562,7 +3562,7 @@ func _fortnight_modifiers(
 				if p.trait_personality == 0 or p.trait_personality == 1:
 					p.power += 10
 		elif c17 != null and c17.parts.size() > 0 and c17.parts[0] \
-				and c17.has_tag("亲中") and c17.government == 1:
+				and c17.has_tag("亲中") and c17.government == GameConstants.Government.SOCIALIST:
 			_add_ideology(w, 0, 1)
 			d[W.I_AGENTS] += 15
 			for p in w.politicians:
@@ -3583,7 +3583,7 @@ func _fortnight_modifiers(
 		var oar59 := _count_tag(w, "oar")
 		var rim59 := _count_tag(w, "rim")
 		for c in w.countries:
-			if c != null and c.has_tag("au") and (c.government == 1 or c.sub_government == 0) \
+			if c != null and c.has_tag("au") and (c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) \
 					and w.event_done_num(500) and w.result_of_event_num(500) == 0:
 				au59 += 1
 		if okb59 > 0:
@@ -3620,7 +3620,7 @@ func _fortnight_modifiers(
 				pass
 			6:
 				var china61 := w.get_player_country()
-				if china61 != null and china61.sub_government == 19:
+				if china61 != null and china61.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 					d[W.I_THOUGHT_FREEDOM] -= 2
 					d[W.I_DIPLO] += 2
 					d[W.I_WAR_SUPPORT] += 4
@@ -3963,14 +3963,14 @@ func _fortnight_leader_effects(d: Array[int], w: WorldState) -> void:
 		usa.power -= 4
 		ussr.power += 2
 		usa.relations += 2
-		if player != null and player.government == 3:
+		if player != null and player.government == GameConstants.Government.LIBERAL:
 			usa.relations += 2
 	elif usa.current_leader == 6:
 		usa.money += 1
 		usa.power -= 1
 	elif usa.current_leader == 7:
 		usa.money -= 2
-		if player != null and player.government == 2:
+		if player != null and player.government == GameConstants.Government.REFORMIST:
 			usa.relations += 2
 		_politician_power_boost(w, [2, 3])
 
@@ -4234,10 +4234,10 @@ func _check_periodic_achievements(w: WorldState) -> void:
 	var c85 := w.get_country_by_legacy_index(85)
 	var c86 := w.get_country_by_legacy_index(86)
 	var c87 := w.get_country_by_legacy_index(87)
-	if _dv(d, 131) == 1 and c44 != null and (c44.sub_government == 9 or c44.sub_government == 7) \
-			and c86 != null and c86.sub_government == 9 \
-			and c85 != null and c85.sub_government == 9 \
-			and c87 != null and c87.sub_government == 7:
+	if _dv(d, 131) == 1 and c44 != null and (c44.sub_government == GameConstants.SubGovernment.NEO_FASCIST or c44.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN) \
+			and c86 != null and c86.sub_government == GameConstants.SubGovernment.NEO_FASCIST \
+			and c85 != null and c85.sub_government == GameConstants.SubGovernment.NEO_FASCIST \
+			and c87 != null and c87.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		Achievements.set_achievement(131)
 	# TimeScript.cs:3257：台湾路线2/决议7 且 51 内战中 且 data[157]>0 → Set(155)。
 	var c51 := w.get_country_by_legacy_index(51)

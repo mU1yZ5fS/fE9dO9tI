@@ -48,8 +48,8 @@ func execute(context: Dictionary) -> void:
 	var portugal := ws.get_country_by_legacy_index(87)
 	if portugal != null:
 		portugal.special = 100
-		portugal.government = 3
-		portugal.sub_government = 6
+		portugal.government = GameConstants.Government.LIBERAL
+		portugal.sub_government = GameConstants.SubGovernment.LIBERAL
 		portugal.set_tag("亲美", true)
 	var opt := int(context.get("option_index", -1))
 	if opt == 0:

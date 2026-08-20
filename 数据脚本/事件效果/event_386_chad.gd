@@ -19,8 +19,8 @@ func execute(context: Dictionary) -> void:
 		if chad.parts.size() < 1:
 			chad.parts.resize(1)
 		chad.parts[0] = false
-		chad.government = 1
-		chad.sub_government = 2
+		chad.government = GameConstants.Government.SOCIALIST
+		chad.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 		_leave_alliances(chad)
 		chad.set_tag("对华贸易", true)
 		chad.set_tag("亲中", true)

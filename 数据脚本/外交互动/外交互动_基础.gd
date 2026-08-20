@@ -238,14 +238,14 @@ func _refresh_china_map_parts(w: WorldState, china: CountryData) -> void:
 	if w.get_flag("IndOpp"):
 		_clear_china_parts(china, true)
 		china.parts[15] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == 19 \
-			and c33 != null and c33.puppet_of == 1 and c33.sub_government == 19:
+	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
+			and c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[14] = true
-	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == 19:
+	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[13] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == 19:
+	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[12] = true
 	elif w.get_flag("is_gkchp"):
@@ -365,14 +365,14 @@ func join_all_our_alliances(w: WorldState, country: CountryData, yes: bool) -> v
 		country.set_tag("asean", yes)
 	var gkchp := fl(w, "is_gkchp")
 	if ev(w, 548) and player.has_tag("rim") \
-			and (((country.government == 1 or country.sub_government == 0) and not gkchp)
-			or (gkchp and (country.sub_government == 0 or country.sub_government == 2
-				or country.sub_government == 17 or country.sub_government == 10))) \
-			and country.sub_government != 16 and country.sub_government != 18 \
+			and (((country.government == GameConstants.Government.SOCIALIST or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) and not gkchp)
+			or (gkchp and (country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL or country.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST
+				or country.sub_government == GameConstants.SubGovernment.MAOIST or country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST))) \
+			and country.sub_government != GameConstants.SubGovernment.SOVIET_STYLE and country.sub_government != GameConstants.SubGovernment.TROTSKYIST \
 			and not country.has_tag("sev") and not country.has_tag("ovd") \
 			and country.has_tag("亲中") and country.puppet_of < 0:
 		country.set_tag("rim", yes)
-	if flag_a and (country.government == 1 or country.sub_government == 0) and ev(w, 500):
+	if flag_a and (country.government == GameConstants.Government.SOCIALIST or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) and ev(w, 500):
 		country.set_tag("au", true)
 
 
@@ -392,7 +392,7 @@ func chinese_sub_gosstroy(w: WorldState) -> int:
 	var player := w.get_player_country()
 	if player == null:
 		return -1
-	if player.government == 0:
+	if player.government == GameConstants.Government.AUTHORITARIAN:
 		if res(w, 674) == 2:
 			return 9
 		if player.has_tag("nazimao"):
@@ -414,7 +414,7 @@ func chinese_sub_gosstroy(w: WorldState) -> int:
 		if d(w, 16) >= 13 and not mod(w, 6):
 			return 7
 		return 13
-	if player.government == 1:
+	if player.government == GameConstants.Government.SOCIALIST:
 		if mod(w, 49):
 			return 18
 		if mod(w, 6) and mod(w, 3) and d(w, 15) <= 7 \
@@ -425,7 +425,7 @@ func chinese_sub_gosstroy(w: WorldState) -> int:
 		if d(w, 16) < 13 and d(w, 17) >= 17 and d(w, 14) == 1 and d(w, 50) <= 26:
 			return 2
 		return 1
-	if player.government == 2:
+	if player.government == GameConstants.Government.REFORMIST:
 		if mod(w, 40):
 			return 8
 		if d(w, 14) >= 2 and d(w, 16) >= 13 and d(w, 6) <= 700 \
@@ -443,7 +443,7 @@ func chinese_sub_gosstroy(w: WorldState) -> int:
 				and d(w, 31) < 700 and not mod(w, 3) and d(w, 17) >= 17:
 			return 21
 		return 15
-	if player.government != 3:
+	if player.government != GameConstants.Government.LIBERAL:
 		return 13
 	if d(w, 16) <= 13 and d(w, 6) >= 500:
 		return 4

@@ -55,25 +55,25 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -5)
 			_add(W.I_AGENTS, -5)
 			argentina.set_tag("对华贸易", true)
-			argentina.government = 0
+			argentina.government = GameConstants.Government.AUTHORITARIAN
 		1:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
-			argentina.government = 3
+			argentina.government = GameConstants.Government.LIBERAL
 		_:
 			argentina.set_tag("亲中", false)
-			argentina.government = 0
-	argentina.sub_government = 7
+			argentina.government = GameConstants.Government.AUTHORITARIAN
+	argentina.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 	# 原版顺序：SubGosstroy=7 之后才调 WantToLeave，因此下面判定用的就是新的 sub==7。
 	_want_to_leave(argentina)
 	argentina.next_election_year = 1983
 	argentina.next_election_month = 10
 	argentina.next_election_day = 30
-	if argentina.government == 0:
+	if argentina.government == GameConstants.Government.AUTHORITARIAN:
 		argentina.level_of_instability -= 30
 		argentina.level_of_development -= 15
 		context["result_text"] = TXT_R0
-	elif argentina.government == 3:
+	elif argentina.government == GameConstants.Government.LIBERAL:
 		argentina.level_of_instability -= 15
 		argentina.set_tag("亲美", false)
 		_add_power(EmpireData.USA, -5)

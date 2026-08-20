@@ -3,8 +3,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event654.cs：西非巨人——第二幕（尼日利亚1983大选，分支选项 4/6）。
 ## 触发：TimeScript.cs 11049-11053 —— (月>=8 且 年>=1983 或 年>=1984)。
 ## 差异：
-##  - TextOfEvents 按 c60.sub_government==12/4 动态拼接；string.Format 的 {1} 用 GDScript format 保留原格式串。
-##  - VariantsOfEvents 按 c60.sub_government==12 分支为 4 选项，否则 6 选项；prepare 用静态缓存安全恢复 6 选项数组。
+##  - TextOfEvents 按 c60.sub_government == GameConstants.SubGovernment.NEOLIBERAL/4 动态拼接；string.Format 的 {1} 用 GDScript format 保留原格式串。
+##  - VariantsOfEvents 按 c60.sub_government == GameConstants.SubGovernment.NEOLIBERAL 分支为 4 选项，否则 6 选项；prepare 用静态缓存安全恢复 6 选项数组。
 ##  - 选项显隐 prepare 动态改写（data56 / modifies[3] / data31 / resultOfEvents[653] / num 社会主义+改良+左翼民族主义计数）。
 ##  - OilProd += 100f 已建模（ws.oil_prod）。
 ##  - 死代码 result 5 测试分支在 sub12 分支无效果；sub12 的 result 3 与 else 的 result 5 为纯文本选项，已复刻。
@@ -50,11 +50,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.is_empty():
 		return
 	var nigeria := world.get_country_by_legacy_index(60)
-	var is_sub12 := nigeria != null and nigeria.sub_government == 12
+	var is_sub12 := nigeria != null and nigeria.sub_government == GameConstants.SubGovernment.NEOLIBERAL
 	var desc := TXT_DESC_INTRO
 	if is_sub12:
 		desc += TXT_DESC_SUB12
-	elif nigeria != null and nigeria.sub_government == 4:
+	elif nigeria != null and nigeria.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 		desc += TXT_DESC_SUB4
 	var mid_cond := TXT_DESC_MID_COND if is_sub12 else ""
 	desc += TXT_DESC_MID_FMT.format(["\n", mid_cond])
@@ -115,14 +115,14 @@ func execute(context: Dictionary) -> void:
 		return
 	var nigeria := ws.get_country_by_legacy_index(60)
 	var opt := int(context.get("option_index", -1))
-	var is_sub12 := nigeria != null and nigeria.sub_government == 12
+	var is_sub12 := nigeria != null and nigeria.sub_government == GameConstants.SubGovernment.NEOLIBERAL
 	if is_sub12:
 		match opt:
 			0:
 				if nigeria != null:
 					_leave_alliances(nigeria)
-					nigeria.government = 3
-					nigeria.sub_government = 12
+					nigeria.government = GameConstants.Government.LIBERAL
+					nigeria.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 					nigeria.set_tag("对华贸易", true)
 				_add(W.I_BUDGET, -40)
 				_add(W.I_AGENTS, -40)
@@ -131,8 +131,8 @@ func execute(context: Dictionary) -> void:
 			1:
 				if nigeria != null:
 					_leave_alliances(nigeria)
-					nigeria.government = 3
-					nigeria.sub_government = 4
+					nigeria.government = GameConstants.Government.LIBERAL
+					nigeria.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 					nigeria.set_tag("对华贸易", true)
 				_add(W.I_BUDGET, -160)
 				_add(W.I_AGENTS, -160)
@@ -143,8 +143,8 @@ func execute(context: Dictionary) -> void:
 			2:
 				if nigeria != null:
 					_leave_alliances(nigeria)
-					nigeria.government = 3
-					nigeria.sub_government = 12
+					nigeria.government = GameConstants.Government.LIBERAL
+					nigeria.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 					nigeria.内战中 = true
 					if int(ws.completed_event_ids.get("event_653", 0)) == 2:
 						nigeria.prc_power += 20
@@ -161,8 +161,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 3
-				nigeria.sub_government = 12
+				nigeria.government = GameConstants.Government.LIBERAL
+				nigeria.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
@@ -171,8 +171,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 3
-				nigeria.sub_government = 4
+				nigeria.government = GameConstants.Government.LIBERAL
+				nigeria.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
@@ -181,8 +181,8 @@ func execute(context: Dictionary) -> void:
 		2:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 2
-				nigeria.sub_government = 8
+				nigeria.government = GameConstants.Government.REFORMIST
+				nigeria.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -160)
 			_add(W.I_AGENTS, -160)
@@ -191,8 +191,8 @@ func execute(context: Dictionary) -> void:
 		3:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 2
-				nigeria.sub_government = 3
+				nigeria.government = GameConstants.Government.REFORMIST
+				nigeria.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -200)
 			_add(W.I_AGENTS, -200)
@@ -201,8 +201,8 @@ func execute(context: Dictionary) -> void:
 		4:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 3
-				nigeria.sub_government = 12
+				nigeria.government = GameConstants.Government.LIBERAL
+				nigeria.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
 			if nigeria != null:
@@ -224,7 +224,7 @@ func _left_count(world: WorldState) -> int:
 		var c := world.get_country_by_legacy_index(id)
 		if c == null:
 			continue
-		if c.government == 2 or world.is_socialism(c, true) or c.sub_government == 10:
+		if c.government == GameConstants.Government.REFORMIST or world.is_socialism(c, true) or c.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 			count += 1
 	return count
 

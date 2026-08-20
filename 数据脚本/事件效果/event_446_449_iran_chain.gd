@@ -36,9 +36,9 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 		var iraq := p_ws.get_country_by_legacy_index(14)
 		var arg := ""
 		if iraq != null and iraq.puppet_of < 0:
-			if iraq.sub_government == 10:
+			if iraq.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 				arg = "以及对于萨达姆政权的犹豫不决，"
-			elif iraq.sub_government == 15:
+			elif iraq.sub_government == GameConstants.SubGovernment.PRAGMATIST:
 				arg = "以及对于伊拉克的复兴党政权的犹豫不决，"
 			elif p_ws.is_socialism(iraq, true):
 				arg = "以及对于伊拉克的“卡菲勒”政权的犹豫不决，"
@@ -90,8 +90,8 @@ func _event_446(option_index: int, context: Dictionary) -> void:
 			d[W.I_DIPLO] += 30
 			ws.influence_prc -= 15
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 20
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			d[W.I_IRAN_ISLAMIST_SUPPORT] -= 100
 			context["result_text"] = "在我方的支持下，以人民圣战者，伊朗共产主义者联盟，人民党左翼和“风暴”组织的成员形成了一支左翼同盟“伊朗爱国阵线”。这只组织开始着手训练其武装团体。同时，霍梅尼决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左派学生会产生了分裂，一部分机会主义者倒戈支持霍梅尼。随着革命卫队的坦克开进了大不里士，运动也渐渐消停。随后，大阿亚图拉沙里亚特马达里被软禁。伊朗的未来，似乎走向了一个不可控的地步……"
 		1:
@@ -101,8 +101,8 @@ func _event_446(option_index: int, context: Dictionary) -> void:
 			d[W.I_DIPLO] += 50
 			ws.influence_prc += 80
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 20
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			d[W.I_IRAN_ISLAMIST_SUPPORT] -= 300
 			context["result_text"] = "在我方的支持下，以人民圣战者，伊朗共产主义者联盟，人民党左翼和“风暴”组织的成员形成了一支左翼同盟“伊朗爱国阵线”。这支组织开始着手训练其武装团体。我们的特工决定为革命力量送上一份大礼，在伊朗线人的帮助下，我们的特勤人员找到了努尔丁的住所，用包在鲜花里的炸药将这个叛徒送去了马克思那里。余下的人民党宣布作为温和力量加入伊朗爱国阵线。同时，霍梅尼决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左翼阵线更加团结，学生们占领壁垒，拿上63式和40火，做出要和政府决一死战的地步。在极度的高压和多方势力的威胁下，伊朗政府宣布停止围攻大不里士，双方将对新宪法作出更多讨论。看起来，神也不过如此。"
 		2:
@@ -111,8 +111,8 @@ func _event_446(option_index: int, context: Dictionary) -> void:
 			d[W.I_BUDGET] -= 50
 			d[W.I_DIPLO] += 30
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 20
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			ws.influence_prc += 30
 			d[W.I_IRAN_ISLAMIST_SUPPORT] -= 200
 			context["result_text"] = "我们的特工决定为伊朗人送上一份大礼，在伊朗线人的帮助下，我们的特勤人员找到了努尔丁的住所，用包在鲜花里的炸药将这个叛徒送去了马克思那里。同时，霍梅尼决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左派学生会产生了分裂，一部分机会主义者倒戈支持霍梅尼。随着革命卫队的坦克开进了大不里士，运动也渐渐消停。随后，大阿亚图拉沙里亚特马达里被软禁。伊朗的未来，似乎走向了一个不可控的地步……"
@@ -120,14 +120,14 @@ func _event_446(option_index: int, context: Dictionary) -> void:
 			# Event446.cs:94-96
 			d[W.I_DIPLO] -= 50
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 20
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			context["result_text"] = "“我国不会允许这种对人民开火的暴行，”外交部长" + _foreign_minister_name() + "同志如是说道，“但同时，我们也呼吁伊朗方面冷静下来，不要在自己人身上浪费弹药，让伊朗人的子弹去杀伊朗人！”但霍梅尼显然没有听我们的，他决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左派学生会产生了分裂，一部分机会主义者倒戈支持霍梅尼。随着革命卫队的坦克开进了大不里士，运动也渐渐消停。随后，大阿亚图拉沙里亚特马达里被软禁。伊朗的未来，似乎走向了一个不可控的地步……"
 		4:
 			# Event446.cs:102-103
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 20
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			context["result_text"] = "霍梅尼决定派出伊朗革命卫队前去镇压，大不里士西北的伊朗空军宣布支持人民。在双方紧张对峙之时，左派学生会产生了分裂，一部分机会主义者倒戈支持霍梅尼。随着革命卫队的坦克开进了大不里士，运动也渐渐消停。随后，大阿亚图拉沙里亚特马达里被软禁。伊朗的未来，似乎走向了一个不可控的地步……我也希望，我们的不作为不会带来什么灾难性的后果。"
 
 
@@ -143,8 +143,8 @@ func _event_447(option_index: int, context: Dictionary) -> void:
 				# Event447.cs:56-66：伊斯兰势力尚强，政变后君主派雅利安纳夺权
 				d[W.I_DIPLO] += 30
 				if iran != null:
-					iran.government = 0
-					iran.sub_government = 9
+					iran.government = GameConstants.Government.AUTHORITARIAN
+					iran.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 					iran.set_tag("亲美", true)
 				ws.influence_prc += 10
 				d[W.I_IRAN_ISLAMIST_SUPPORT] -= 1000
@@ -153,8 +153,8 @@ func _event_447(option_index: int, context: Dictionary) -> void:
 				# Event447.cs:68-74：左翼总起义路线，448 由 .tres 的 TRIGGER_EVENT 入队
 				d[W.I_DIPLO] += 30
 				if iran != null:
-					iran.government = 2
-					iran.sub_government = 15
+					iran.government = GameConstants.Government.REFORMIST
+					iran.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				ws.influence_prc += 50
 				d[W.I_IRAN_ISLAMIST_SUPPORT] -= 1000
 				context["result_text"] = "一通来自中国大使馆的电话打进了军营，莫哈格吉准将，马赫迪奥和阿梅里在我方的劝说之下，接纳了将我国作为靠山的计划。为此，我国将会为他们提供军火和逃生路线。一切按计划进行。第23空中突击旅顺利拿下位于哈马丹的诺耶空军基地，这里停有18架强-5战机。一队伊朗“金冠”飞行员驾驶，于6分钟后飞抵德黑兰上空，用BL755集束炸弹和90mm火箭弹对伊斯兰革命卫队总部等多处据点实施精准轰炸。其中，霍梅尼位于首都贾马拉的住所，由三架战机一起行动。在数百磅炸弹的洗礼下，霍梅尼这位真主的仆人便去见了安拉。原帝国近卫师、德黑兰宪兵和警察部队在内的3000人立刻占领广播电台等重要设施，并对主要毛拉进行抓捕。同时，在首都以外，第2、21、92装甲师和第81巴赫塔兰师、第77步兵师、及第1海军陆战旅，也将在伊斯法罕等全国15个城市迅速清理当地革命卫队。与此同时，全国在我们的策动下发生了左翼分子的总武装起义，关键性地为伊斯兰共和国盖上了棺材板。失去了领袖和大量军事力量的伊斯兰主义者再无东山再起的可能性，伊朗伊斯兰革命失败了。在伊朗大部分起义的头领事实上接纳我国作为靠山的大背景，左翼运动积极参与起义的过程的背景下，伊朗的反伊斯兰革命军政府宣布解散了阿扎德甘运动。巴赫拉姆·雅利安纳可谓是气急败坏，他遥控伊朗起义的计划失败了！看起来，除了最顽固的两位“反革命”，大家都赢了。"
@@ -165,15 +165,15 @@ func _event_447(option_index: int, context: Dictionary) -> void:
 			ws.influence_prc += 50
 			d[W.I_IRAN_ISLAMIST_SUPPORT] += 300
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 20
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				iran.set_tag("对华贸易", true)
 			context["result_text"] = "我们决定打电话给伊斯兰共和国政府总理，告知了他们关于政变的阴谋。7月9日晚，莫哈格吉和几名飞行员散会后，在路边等待接应的车辆时，突然看见革命卫队的吉普正这朝边奔来。他们迅速钻进路旁的小树林逃避。莫哈格吉懵了，他不清楚是不是他们已经暴露。跑回公寓后，他直接拨通了原防空司令马赫迪奥的电话。随后，二人开车在德黑兰街头碰面。哥俩现在都不排除计划已泄露的可能性，但如箭在弦，已无回头路。马赫迪奥告诉莫哈格吉将联系陆军的阿梅里，准备提前动手。无论是否成功，他们都将坦然面对。这终将是一场灾难性的失败……第二天一早，伊斯兰革命卫队开始了对“面具”的清剿。包括莫哈格吉、马赫迪奥在内的600多人先后被捕，一些人在抵抗中遭击毙。陆军上校阿梅里和少数人成功逃进了土耳其。在伊朗政府安排的电视审判上，还有相当戏剧性的一幕，莫哈格吉准将挣脱了两旁的革命卫队成员，怒吼道：“我是一名伊朗军人！……我之所以参与行动，是因为我对祖国所发生的一切感到幻灭。阿訇先生（在伊朗是对毛拉的贬义称呼），请不要问我是否后悔！我们参加行动不是为了金钱或地位，而是为了拯救我的祖国！他（霍梅尼）是你们这些蠢货的伊玛目，不是我的！！”伊朗人感谢我们的通风报信，并决定扩大和我们的贸易往来。并决定为我们的主席颁发一枚伊朗伊斯兰共和国二级国旗勋章。"
 		2:
 			# Event447.cs:94-96：不介入，人民党自行告密
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 20
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			d[W.I_IRAN_ISLAMIST_SUPPORT] += 300
 			context["result_text"] = "人民党利用其在军中的情报网络，无意间获取了部分武装力量将发动起义的消息。时任该党中央委员的穆罕默德·阿里·阿穆伊在与党魁基亚努里商议后，决定抓住这个机会向老霍头邀功、表忠心！希望以此让霍梅尼认为自己这个共产主义者将和他永远穿一条裤子。7月9日晚，莫哈格吉和几名飞行员散会后，在路边等待接应的车辆时，突然看见革命卫队的吉普正这朝边奔来。他们迅速钻进路旁的小树林逃避。莫哈格吉懵了，他不清楚是不是他们已经暴露。跑回公寓后，他直接拨通了原防空司令马赫迪奥的电话。随后，二人开车在德黑兰街头碰面。哥俩现在都不排除计划已泄露的可能性，但如箭在弦，已无回头路。马赫迪奥告诉莫哈格吉将联系陆军的阿梅里，准备提前动手。无论是否成功，他们都将坦然面对。这终将是一场灾难性的失败……第二天一早，伊斯兰革命卫队开始了对“面具”的清剿。包括莫哈格吉、马赫迪奥在内的600多人先后被捕，一些人在抵抗中遭击毙。陆军上校阿梅里和少数人成功逃进了土耳其。在伊朗政府安排的电视审判上，还有相当戏剧性的一幕，莫哈格吉准将挣脱了两旁的革命卫队成员，怒吼道：“我是一名伊朗军人！……我之所以参与行动，是因为我对祖国所发生的一切感到幻灭。阿訇先生（在伊朗是对毛拉的贬义称呼），请不要问我是否后悔！我们参加行动不是为了金钱或地位，而是为了拯救我的祖国！他（霍梅尼）是你们这些蠢货的伊玛目，不是我的！！"
 
@@ -188,8 +188,8 @@ func _event_448(option_index: int, context: Dictionary) -> void:
 			d[W.I_DIPLO] += 50
 			ws.influence_prc += 50
 			if iran != null:
-				iran.government = 2
-				iran.sub_government = 3
+				iran.government = GameConstants.Government.REFORMIST
+				iran.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				iran.set_tag("亲中", true)
 				iran.set_tag("对华贸易", true)
 				iran.prc_power = 1000
@@ -201,8 +201,8 @@ func _event_448(option_index: int, context: Dictionary) -> void:
 			d[W.I_DIPLO] -= 50
 			ws.influence_prc += 30
 			if iran != null:
-				iran.government = 3
-				iran.sub_government = 12
+				iran.government = GameConstants.Government.LIBERAL
+				iran.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				iran.set_tag("亲中", true)
 				iran.set_tag("对华贸易", true)
 				iran.prc_power = 1000
@@ -218,16 +218,16 @@ func _event_448(option_index: int, context: Dictionary) -> void:
 			if ussr_power >= usa_power:
 				# Event448.cs:77-80
 				if iran != null:
-					iran.government = 2
-					iran.sub_government = 3
+					iran.government = GameConstants.Government.REFORMIST
+					iran.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					iran.set_tag("对华贸易", false)
 					iran.set_tag("亲苏", true)
 				context["result_text"] = "即便只获得了23%的选票而大量弃票表示对“拯救伊朗大起义”的否定，人民联盟得以以微弱的优势击败伊朗解放阵线。人民联盟上台便开始着手实现其竞选诺言，对原先被外资垄断的石油工业被迅速的收为国有，土地改革几乎是灾难性的，大量自耕农以杀死耕畜和毁坏农机，烧毁粮食作为抵制。借着石油，人民联盟开始组建更为完善的福利体系，包括了全民医保和直至高中的义务教育。罢工和罢课频频发生。同时，他们也没有忘记过去几年所受到的耻辱。新政府上台以来颁布的第一项法令，便是逮捕（如果没有在小型内战中罹害的话）原伊斯兰革命卫队成员和伊朗伊斯兰共和党党员。他们的后代被禁止参与到政府的决策中，部分阿訇和毛拉也被丢进了监狱。新政府也决定放下对伊拉克的敌视，双方再次确定了对入海口和胡齐斯坦/阿拉伯斯坦自治权对保障，作为回报，伊拉克将帮助新生的共和国训练一支足够强大的陆军。然而，大量对于该国新生民主持有反对的团体依然在进行城市游击战，其中除了意料之中的伊斯兰派外，甚至包括不少左翼团体。不过，目前的伊朗当局再差，也比伊斯兰好，对吧？"
 			else:
 				# Event448.cs:84-87
 				if iran != null:
-					iran.government = 3
-					iran.sub_government = 12
+					iran.government = GameConstants.Government.LIBERAL
+					iran.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 					iran.set_tag("对华贸易", false)
 					iran.set_tag("亲美", true)
 				context["result_text"] = "即便只获得了21%的选票而大量弃票表示对“拯救伊朗大起义”的否定，伊朗解放阵线设法取得了立宪会议和伊朗人民议会的相对多数，不得不与伊朗人民联盟事实上共同管理伊朗。自由运动上台便开始着手实现其竞选诺言，对原先被外资垄断的石油工业再次被外资所把握，美国人得以重返伊朗，和我们的石油企业展开了激烈斗争。同时，他们也没有忘记过去几年所受到的耻辱。新政府上台以来颁布的第一项法令，便是逮捕（如果没有在小型内战中罹害的话）原伊斯兰革命卫队成员和伊朗伊斯兰共和党党员。他们的后代被禁止参与到政府的决策中，部分阿訇和毛拉也被丢进了监狱。作为“新摩萨台主义”，政府大力鼓励伊朗民族主义，强调历史和解。新政府拒绝同伊拉克和解，伊朗的F-4“鬼怪”战机和Q-5“番摊”型攻击机频频飞入伊拉克领空，伊拉克也开始试射自己的小型导弹，并谴责伊朗新政府为“帝国主义安插在阿拉伯湾的一枚楔子”。然而，大量对于该国新生民主持有反对的团体依然在进行城市游击战，其中除了意料之中的伊斯兰派外，甚至包括不少左翼团体。不过，目前的伊朗当局再差，也比伊斯兰好，对吧？"
@@ -267,8 +267,8 @@ func _event_449(option_index: int, context: Dictionary) -> void:
 		1:
 			# Event449.cs:71-74：不干涉，伊斯兰共和国稳住阵脚
 			if iran != null:
-				iran.government = 0
-				iran.sub_government = 20
+				iran.government = GameConstants.Government.AUTHORITARIAN
+				iran.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				iran.set_tag("亲中", false)
 				iran.set_tag("对华贸易", false)
 			context["result_text"] = "伊朗各地都爆发了各种反抗活动。阿博尔哈桑·巴尼萨德尔在人民圣战者的掩护下逃到了法国。政府迅速对抗议做出了反应，大量抗议者被逮捕。几天后，一枚炸弹在德黑兰的伊斯兰共和党总部爆炸，当时该党领导人会议正在进行中，伊朗伊斯兰共和国的七十四名主要官员被送去见了真主，包括首席大法官阿亚图拉·穆罕默德·贝赫什蒂，他是伊朗革命中第二有权势的人物（仅次于阿亚图拉·鲁霍拉·霍梅尼），伊朗人民圣战者组织被霍梅尼指控为袭击的幕后黑手；一个月后，总理办公室也发生了一场爆炸，时任总统拉贾伊和总理巴霍纳尔被炸死。伊朗共产主义者联盟在阿莫勒附近的森林中动员力量，发动了反对伊朗伊斯兰政权的武装运动。该起义由赛厄马克·扎伊姆领导，但最终失败，许多伊共盟成员和毛派领导人被枪杀。革命卫队强行夺回阿莫勒市后，扎伊姆被他们逮捕。其他的共产主义团体在各地也开展了一些武装运动，但是由于彼此孤立，互相缺乏联系而被各个击破。少数民族的反抗运动最后也被镇压。伊朗伊斯兰共和国虽然经历了一个动荡的时期，但仍旧稳固。人民圣战者不会放弃斗争，他们正在准备下一次行动……"

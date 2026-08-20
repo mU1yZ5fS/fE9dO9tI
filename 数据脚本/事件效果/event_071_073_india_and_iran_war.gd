@@ -90,15 +90,15 @@ func _event_72(option_index: int, context: Dictionary) -> void:
 			_add_data({W.I_PARTY_SUPPORT: 80, W.I_AGENTS: -60, W.I_BUDGET: -100})
 			_add_empire_relation(EmpireData.USA, -80)
 			if india != null:
-				india.sub_government = 3
+				india.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			context["result_text"] = TXT_72_R1
 		2:
 			_add_data({W.I_PARTY_SUPPORT: 80, W.I_AGENTS: -60, W.I_BUDGET: -100})
 			_add_empire_relation(EmpireData.USA, -80)
 			_add_empire_power(EmpireData.USA, 20)
 			if india != null:
-				india.government = 3
-				india.sub_government = 12
+				india.government = GameConstants.Government.LIBERAL
+				india.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			context["result_text"] = TXT_72_R2
 
 

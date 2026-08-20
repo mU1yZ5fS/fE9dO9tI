@@ -215,7 +215,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
 			winner = _get_winner_in_america(c, allowed, 2.0, 5)
-			c.government = 3
+			c.government = GameConstants.Government.LIBERAL
 			_set_next_election(c, 1985, 4, 14)
 			if winner == 5:
 				c.set_tag("亲中", true)
@@ -225,7 +225,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
 			winner = _get_winner_in_america(c, allowed, 2.0, 3)
-			c.government = 3
+			c.government = GameConstants.Government.LIBERAL
 			_set_next_election(c, 1985, 4, 14)
 			if winner == 3:
 				c.set_tag("亲中", true)
@@ -236,21 +236,21 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -25)
 			winner = 17
 		_:
-			c.government = 3
+			c.government = GameConstants.Government.LIBERAL
 			_set_next_election(c, 1985, 4, 14)
 			winner = _get_winner_in_america(c, allowed, 0.0, -1)
 			if winner != c.sub_government:
 				c.set_tag("亲中", false)
 	c.sub_government = winner
 	_want_to_leave(c)
-	if c.sub_government == 5:
+	if c.sub_government == GameConstants.SubGovernment.MODERATE:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, 15)
 		_add_power(EmpireData.USSR, -5)
 		context["result_text"] = TXT_R5 + _friend_suffix(c)
 		return
-	if c.sub_government == 3:
+	if c.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		c.level_of_instability += 10
 		c.level_of_development += 25
 		_add_power(EmpireData.USA, -15)
@@ -261,7 +261,7 @@ func execute(context: Dictionary) -> void:
 	var c73 := ws.get_country_by_legacy_index(73)
 	var c74 := ws.get_country_by_legacy_index(74)
 	if (c72 != null and c72.sub_government < 6) or (c73 != null and c73.sub_government < 6) or (c74 != null and c74.sub_government < 6):
-		c.government = 1
+		c.government = GameConstants.Government.SOCIALIST
 		c.set_tag("亲中", true)
 		_set_next_election(c, 2222, 2, 22)
 		c.level_of_instability -= 30
@@ -273,8 +273,8 @@ func execute(context: Dictionary) -> void:
 		Achievements.set_achievement(94)
 		context["result_text"] = TXT_R17 + _friend_suffix(c)
 		return
-	c.sub_government = 5
-	c.government = 3
+	c.sub_government = GameConstants.SubGovernment.MODERATE
+	c.government = GameConstants.Government.LIBERAL
 	c.set_tag("亲中", false)
 	_set_next_election(c, 1985, 4, 14)
 	c.level_of_instability -= 20

@@ -54,8 +54,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_AGENTS, -50)
 			if congo != null:
-				congo.government = 2
-				congo.sub_government = 15
+				congo.government = GameConstants.Government.REFORMIST
+				congo.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_leave_alliances(congo)
 				congo.set_tag("亲中", true)
 				congo.set_tag("对华贸易", true)
@@ -65,8 +65,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			_add(W.I_AGENTS, -50)
 			if congo != null:
-				congo.government = 2
-				congo.sub_government = 15
+				congo.government = GameConstants.Government.REFORMIST
+				congo.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_leave_alliances(congo)
 				congo.puppet_of = 21
 				congo.set_tag("对华贸易", true)

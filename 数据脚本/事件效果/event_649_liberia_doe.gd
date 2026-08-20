@@ -18,8 +18,8 @@ func execute(context: Dictionary) -> void:
 		return
 	var liberia := ws.get_country_by_legacy_index(67)
 	if liberia != null:
-		liberia.government = 0
-		liberia.sub_government = 13
+		liberia.government = GameConstants.Government.AUTHORITARIAN
+		liberia.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 		liberia.set_tag("亲美", true)
 	var opt := int(context.get("option_index", -1))
 	match opt:

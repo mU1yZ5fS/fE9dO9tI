@@ -54,8 +54,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_BUDGET, -70)
 			if c133 != null:
-				c133.government = 1
-				c133.sub_government = 1
+				c133.government = GameConstants.Government.SOCIALIST
+				c133.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(c133)
 				c133.set_tag("亲中", true)
 				c133.set_tag("对华贸易", true)
@@ -64,8 +64,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 		1:
 			if c133 != null:
-				c133.government = 1
-				c133.sub_government = 1
+				c133.government = GameConstants.Government.SOCIALIST
+				c133.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(c133)
 				c133.set_tag("亲苏", true)
 				c133.set_tag("对华贸易", true)
@@ -76,8 +76,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 		2:
 			if c133 != null:
-				c133.government = 3
-				c133.sub_government = 4
+				c133.government = GameConstants.Government.LIBERAL
+				c133.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				_leave_alliances(c133)
 				c133.puppet_of = 21
 				c133.set_tag("对华贸易", true)
@@ -87,6 +87,6 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 		3:
 			if c133 != null:
-				c133.government = 2
-				c133.sub_government = 15
+				c133.government = GameConstants.Government.REFORMIST
+				c133.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			context["result_text"] = TXT_R3

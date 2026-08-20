@@ -19,8 +19,8 @@ func execute(context: Dictionary) -> void:
 	var solomon := ws.get_country_by_legacy_index(161)
 	if solomon != null:
 		solomon.puppet_of = -1
-		solomon.government = 3
-		solomon.sub_government = 4
+		solomon.government = GameConstants.Government.LIBERAL
+		solomon.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 		if GameManager != null:
 			GameManager.set_map_region_owner(SOLOMON_REGION_IDS, SOLOMON_GWCODE)
 	context["result_text"] = TXT_RESULT

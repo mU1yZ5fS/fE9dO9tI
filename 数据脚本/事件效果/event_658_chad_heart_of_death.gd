@@ -54,7 +54,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null:
 		usa_rel = world.empires[EmpireData.USA].relations
 	var opt := event_def.options
-	if line <= 2 and libya != null and libya.government != 3:
+	if line <= 2 and libya != null and libya.government != GameConstants.Government.LIBERAL:
 		_enable(opt[0], T_658_4)
 	else:
 		_disable(opt[0], T_658_5)

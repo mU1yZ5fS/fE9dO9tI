@@ -34,8 +34,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -50)
 			if c35 != null:
 				c35.set_tag("对华贸易", false)
-				c35.government = 0
-				c35.sub_government = 10
+				c35.government = GameConstants.Government.AUTHORITARIAN
+				c35.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			_add_relation(EmpireData.USSR, -150)
 			_add_relation(EmpireData.USA, -150)
 			EventEngine.enqueue_chain(["event_565"])

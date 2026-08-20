@@ -43,8 +43,8 @@ func execute(context: Dictionary) -> void:
 		return
 	var sierra := ws.get_country_by_legacy_index(107)
 	if sierra != null:
-		sierra.government = 0
-		sierra.sub_government = 13
+		sierra.government = GameConstants.Government.AUTHORITARIAN
+		sierra.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:

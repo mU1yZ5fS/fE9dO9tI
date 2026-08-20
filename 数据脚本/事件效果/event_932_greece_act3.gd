@@ -81,7 +81,7 @@ func execute(context: Dictionary) -> void:
 	if hungary != null and ws.is_socialism(hungary, true) and not hungary.has_tag("亲苏"):
 		num += 1
 	var c2 := ws.get_country_by_legacy_index(2)
-	if c2 != null and c2.sub_government == 0:
+	if c2 != null and c2.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 		num += 1
 	if _empire_leader(0) == 0:
 		num -= 1
@@ -90,7 +90,7 @@ func execute(context: Dictionary) -> void:
 	if _parts0(20):
 		num -= 2
 	var c84 := ws.get_country_by_legacy_index(84)
-	if c84 != null and c84.sub_government == 9:
+	if c84 != null and c84.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num -= 1
 	if ws.completed_event_ids.get("polish_crisis", -1) == 4:
 		num -= 1
@@ -98,14 +98,14 @@ func execute(context: Dictionary) -> void:
 		num += 1
 	for idx in [21, 85, 86, 87, 92]:
 		var c := ws.get_country_by_legacy_index(idx)
-		if c != null and c.government == 2:
+		if c != null and c.government == GameConstants.Government.REFORMIST:
 			num2 += 1
 	if _ussr_power() >= _usa_power():
 		num2 += 1
-	if hungary != null and hungary.government == 2:
+	if hungary != null and hungary.government == GameConstants.Government.REFORMIST:
 		num2 += 1
 	var c15 := ws.get_country_by_legacy_index(15)
-	if c15 != null and c15.sub_government == 11:
+	if c15 != null and c15.sub_government == GameConstants.SubGovernment.TITOIST:
 		num2 += 1
 	if _parts0(20):
 		num2 -= 1
@@ -118,7 +118,7 @@ func execute(context: Dictionary) -> void:
 		num2 += 2
 	for idx in [21, 85, 86, 87, 92]:
 		var c := ws.get_country_by_legacy_index(idx)
-		if c != null and (c.government == 3 or ws.is_authoritarian(c)):
+		if c != null and (c.government == GameConstants.Government.LIBERAL or ws.is_authoritarian(c)):
 			num3 += 1
 	if _ussr_power() < _usa_power():
 		num3 += 1
@@ -130,7 +130,7 @@ func execute(context: Dictionary) -> void:
 		num3 += 1
 	if _empire_leader(0) == 0:
 		num3 += 2
-	if c84 != null and c84.sub_government == 9:
+	if c84 != null and c84.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num3 += 1
 	if num >= num2 and num >= num3:
 		_branch_kke(context, opt)
@@ -204,7 +204,7 @@ func _branch_pasok(context: Dictionary) -> void:
 		context["result_text"] = TXT_LEFT_UNION
 	else:
 		var text := TXT_PASOK_2
-		if greece != null and greece.government == 3:
+		if greece != null and greece.government == GameConstants.Government.LIBERAL:
 			text = TXT_PASOK_3
 		_greece_to(2, 3)
 		if greece != null:
@@ -220,8 +220,8 @@ func _branch_pasok(context: Dictionary) -> void:
 func _branch_right(context: Dictionary) -> void:
 	var greece := ws.get_country_by_legacy_index(45)
 	if greece != null:
-		greece.government = 3
-		greece.sub_government = 12
+		greece.government = GameConstants.Government.LIBERAL
+		greece.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		_leave_alliances(greece)
 		greece.内战中 = false
 		greece.set_tag("亲美", true)

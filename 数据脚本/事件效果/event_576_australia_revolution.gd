@@ -44,9 +44,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	desc += TXT_DESC_TAIL
 	event_def.description = desc
 	var opt := event_def.options
-	if line < 2 and (r573 == 1 or r573 == 2) and c50 != null and c50.government == 1:
+	if line < 2 and (r573 == 1 or r573 == 2) and c50 != null and c50.government == GameConstants.Government.SOCIALIST:
 		_enable(opt[0], event_def.options[0].text)
-	elif c50 == null or c50.government != 1:
+	elif c50 == null or c50.government != GameConstants.Government.SOCIALIST:
 		_disable(opt[0], TXT_OPT0_DIS_NO)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS_RIOT)
@@ -72,11 +72,11 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -200)
 			_add(W.I_ARMY, -200)
 			var text := TXT_R0_INTRO
-			if c92 != null and c92.sub_government == 18:
+			if c92 != null and c92.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 				text += TXT_R0_TROT
 				if c135 != null:
-					c135.government = 1
-					c135.sub_government = 18
+					c135.government = GameConstants.Government.SOCIALIST
+					c135.sub_government = GameConstants.SubGovernment.TROTSKYIST
 					_leave_alliances(c135)
 					c135.set_tag("对华贸易", true)
 				if c134 != null:
@@ -84,8 +84,8 @@ func execute(context: Dictionary) -> void:
 			elif r573 == 2:
 				text += TXT_R0_HILL
 				if c135 != null:
-					c135.government = 1
-					c135.sub_government = 1
+					c135.government = GameConstants.Government.SOCIALIST
+					c135.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					_leave_alliances(c135)
 					c135.set_tag("对华贸易", true)
 					c135.set_tag("亲中", true)
@@ -95,8 +95,8 @@ func execute(context: Dictionary) -> void:
 			elif r573 == 1:
 				text += TXT_R0_CLANCY
 				if c135 != null:
-					c135.government = 1
-					c135.sub_government = 16
+					c135.government = GameConstants.Government.SOCIALIST
+					c135.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 					_leave_alliances(c135)
 					c135.set_tag("对华贸易", true)
 					c135.set_tag("亲苏", true)
@@ -111,8 +111,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -180)
 			_add(W.I_AGENTS, -150)
 			if c135 != null:
-				c135.government = 2
-				c135.sub_government = 8
+				c135.government = GameConstants.Government.REFORMIST
+				c135.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				_leave_alliances(c135)
 				c135.set_tag("对华贸易", true)
 				c135.set_tag("亲中", true)
@@ -120,14 +120,14 @@ func execute(context: Dictionary) -> void:
 		2:
 			var text := TXT_R2_A
 			if c135 != null:
-				c135.government = 0
-				c135.sub_government = 7
+				c135.government = GameConstants.Government.AUTHORITARIAN
+				c135.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c135)
 				c135.set_tag("亲美", true)
 			text += TXT_R2_B
 			if c159 != null:
-				c159.government = 0
-				c159.sub_government = 7
+				c159.government = GameConstants.Government.AUTHORITARIAN
+				c159.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c159)
 				c159.puppet_of = 135
 			context["result_text"] = text

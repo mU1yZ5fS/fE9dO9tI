@@ -59,7 +59,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
-	if econ >= 14 and line == 4 and (ws.is_authoritarian(china) or (china != null and china.government == 3)):
+	if econ >= 14 and line == 4 and (ws.is_authoritarian(china) or (china != null and china.government == GameConstants.Government.LIBERAL)):
 		_enable(opt[5], event_def.options[5].text)
 	elif econ < 14:
 		_disable(opt[5], TXT_OPT5_DIS_A)

@@ -42,8 +42,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -30)
 			_add(W.I_BUDGET, -30)
 			if kampuchea != null:
-				kampuchea.government = 1
-				kampuchea.sub_government = 17
+				kampuchea.government = GameConstants.Government.SOCIALIST
+				kampuchea.sub_government = GameConstants.SubGovernment.MAOIST
 				kampuchea.stab = 1
 				kampuchea.prc_power = 1000
 			ws.influence_prc += 50

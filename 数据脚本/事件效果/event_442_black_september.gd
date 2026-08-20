@@ -32,8 +32,8 @@ func evaluate(world: WorldState) -> bool:
 	var syria := world.get_country_by_legacy_index(35)
 	if iraq == null or syria == null:
 		return false
-	var iraq_ok := world.is_socialism(iraq, true) or iraq.sub_government == 10 or iraq.government == 2
-	var syria_ok := world.is_socialism(syria, true) or syria.sub_government == 10 or syria.government == 2
+	var iraq_ok := world.is_socialism(iraq, true) or iraq.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or iraq.government == GameConstants.Government.REFORMIST
+	var syria_ok := world.is_socialism(syria, true) or syria.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or syria.government == GameConstants.Government.REFORMIST
 	return iraq_ok and syria_ok
 
 
@@ -50,7 +50,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if data[W.I_POLITICAL_LINE] >= 1 and data[W.I_POLITICAL_LINE] < 3 \
-			and ((iraq != null and iraq.government == 2) or (syria != null and syria.government == 2)):
+			and ((iraq != null and iraq.government == GameConstants.Government.REFORMIST) or (syria != null and syria.government == GameConstants.Government.REFORMIST)):
 		_enable(opt[1], event_def.options[1].text)
 	elif data[W.I_POLITICAL_LINE] == 0:
 		_disable(opt[1], TXT_OPT1_DIS_0)
@@ -73,8 +73,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_AGENTS, -30)
 			if jordan != null:
-				jordan.government = 3
-				jordan.sub_government = 5
+				jordan.government = GameConstants.Government.LIBERAL
+				jordan.sub_government = GameConstants.SubGovernment.MODERATE
 				jordan.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, -150)
 			_add_power(EmpireData.USA, -5)
@@ -82,8 +82,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 		1:
 			if jordan != null:
-				jordan.government = 2
-				jordan.sub_government = 15
+				jordan.government = GameConstants.Government.REFORMIST
+				jordan.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				jordan.set_tag("对华贸易", true)
 			ws.influence_prc += 20
 			_add(W.I_BUDGET, -30)
@@ -95,11 +95,11 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 		2:
 			if jordan != null:
-				jordan.government = 1
+				jordan.government = GameConstants.Government.SOCIALIST
 				if _modifier_active(6):
-					jordan.sub_government = 0
+					jordan.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				else:
-					jordan.sub_government = 1
+					jordan.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				jordan.set_tag("对华贸易", true)
 				jordan.set_tag("亲中", true)
 			ws.influence_prc += 25

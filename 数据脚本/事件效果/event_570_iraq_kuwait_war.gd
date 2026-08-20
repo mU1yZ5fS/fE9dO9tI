@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 	for c in ws.countries:
 		if c == null:
 			continue
-		if c.government == 1 and c.has_tag("oar") and c.原版序号 in [13, 14, 30, 18, 40, 54, 55, 35]:
+		if c.government == GameConstants.Government.SOCIALIST and c.has_tag("oar") and c.原版序号 in [13, 14, 30, 18, 40, 54, 55, 35]:
 			num += 20
 	if d.size() > 143:
 		d[143] += 3   # 原 data[143]（无命名键）

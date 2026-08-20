@@ -29,7 +29,7 @@ func execute(context: Dictionary) -> void:
 			continue
 		if not ws.is_socialism(c, true):
 			continue
-		if c.sub_government == 16 or c.sub_government == 18:
+		if c.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or c.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 			continue
 		if not c.has_tag("亲中"):
 			continue

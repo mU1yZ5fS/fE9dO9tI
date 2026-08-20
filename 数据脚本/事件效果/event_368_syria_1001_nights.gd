@@ -39,7 +39,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if syria.has_tag("sev"):
 		return false
-	if syria.government == 1:
+	if syria.government == GameConstants.Government.SOCIALIST:
 		return false
 	if syria.has_tag("econ"):
 		return false
@@ -47,7 +47,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	var branch := false
 	if world.completed_event_ids.has("event_564") and date.year == 1983 and date.day > 14 and date.month >= 11 \
-			and syria.sub_government == 10:
+			and syria.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 		branch = true
 	if world.wars.size() > 3 and world.wars[3] != null and world.wars[3].is_going \
 			and date.year == 1983 and date.day > 14 and date.month >= 11:
@@ -102,8 +102,8 @@ func execute(context: Dictionary) -> void:
 			if syria != null:
 				_establish_prochina(syria)
 				syria.set_tag("对华贸易", true)
-				syria.government = 0
-				syria.sub_government = 10
+				syria.government = GameConstants.Government.AUTHORITARIAN
+				syria.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			_add_power(EmpireData.USSR, -20)
 			ws.influence_prc += 20
 			_add(W.I_DIPLO, 10)
@@ -116,8 +116,8 @@ func execute(context: Dictionary) -> void:
 				if syria != null:
 					_establish_proamerican(syria)
 					syria.set_tag("对华贸易", true)
-					syria.government = 3
-					syria.sub_government = 5
+					syria.government = GameConstants.Government.LIBERAL
+					syria.sub_government = GameConstants.SubGovernment.MODERATE
 				_add_power(EmpireData.USSR, -20)
 				_add_power(EmpireData.USA, 20)
 				_add(W.I_DIPLO, -10)
@@ -127,7 +127,7 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = TXT_R1_OK
 			else:
 				if syria != null:
-					syria.sub_government = 15
+					syria.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_add(W.I_DIPLO, -10)
 				_add(W.I_BUDGET, -50)
 				_add(W.I_AGENTS, -150)
@@ -136,8 +136,8 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = TXT_R1_FAIL
 		2:
 			if syria != null:
-				syria.government = 2
-				syria.sub_government = 15
+				syria.government = GameConstants.Government.REFORMIST
+				syria.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			context["result_text"] = TXT_R2
 
 

@@ -22,25 +22,25 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R_COMMON
 			if world_empire_power_gt(1, 0):
 				if south_africa != null:
-					south_africa.government = 2
-					south_africa.sub_government = 3
+					south_africa.government = GameConstants.Government.REFORMIST
+					south_africa.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					south_africa.set_tag("亲苏", true)
 			else:
 				if south_africa != null:
-					south_africa.government = 3
-					south_africa.sub_government = 4
+					south_africa.government = GameConstants.Government.LIBERAL
+					south_africa.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			_free_puppets(131)
 		1:
 			context["result_text"] = TXT_R_COMMON
 			if ws.influence_prc + _empire_power(1) > _empire_power(0):
 				if south_africa != null:
-					south_africa.government = 2
-					south_africa.sub_government = 3
+					south_africa.government = GameConstants.Government.REFORMIST
+					south_africa.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					south_africa.set_tag("亲中", true)
 			else:
 				if south_africa != null:
-					south_africa.government = 3
-					south_africa.sub_government = 4
+					south_africa.government = GameConstants.Government.LIBERAL
+					south_africa.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 					south_africa.set_tag("亲中", true)
 			if south_africa != null:
 				south_africa.set_tag("对华贸易", true)
@@ -56,14 +56,14 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = TXT_R2_PRORPC
 				if ws.influence_prc > _empire_power(0):
 					if south_africa != null:
-						south_africa.government = 3
-						south_africa.sub_government = 5
+						south_africa.government = GameConstants.Government.LIBERAL
+						south_africa.sub_government = GameConstants.SubGovernment.MODERATE
 						south_africa.set_tag("亲中", true)
 						south_africa.set_tag("对华贸易", true)
 				else:
 					if south_africa != null:
-						south_africa.government = 3
-						south_africa.sub_government = 5
+						south_africa.government = GameConstants.Government.LIBERAL
+						south_africa.sub_government = GameConstants.SubGovernment.MODERATE
 						south_africa.set_tag("亲美", true)
 						south_africa.set_tag("对华贸易", true)
 			else:

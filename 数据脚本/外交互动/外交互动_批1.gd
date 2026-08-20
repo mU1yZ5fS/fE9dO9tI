@@ -263,7 +263,7 @@ func _def_5(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 		for cc in w.countries:
 			if cc == null:
 				continue
-			if cc.has_tag("econ") and (cc.has_tag("亲苏") or cc.has_tag("苏联盟友") or cc.has_tag("亲中") or cc.government == 1 or (cc.government == 2 and not cc.has_tag("美国盟友") and not cc.has_tag("亲美"))):
+			if cc.has_tag("econ") and (cc.has_tag("亲苏") or cc.has_tag("苏联盟友") or cc.has_tag("亲中") or cc.government == GameConstants.Government.SOCIALIST or (cc.government == GameConstants.Government.REFORMIST and not cc.has_tag("美国盟友") and not cc.has_tag("亲美"))):
 				cc.set_tag("econ", false)
 				cc.set_tag("sev", true)
 			else:
@@ -303,7 +303,7 @@ func _def_6(w: WorldState, _country: CountryData, caption: String) -> Dictionary
 		for cc in w.countries:
 			if cc == null:
 				continue
-			if cc.has_tag("okb") and (cc.has_tag("亲苏") or cc.has_tag("苏联盟友") or cc.has_tag("亲中") or cc.government == 1 or (cc.government == 2 and not cc.has_tag("美国盟友") and not cc.has_tag("亲美"))):
+			if cc.has_tag("okb") and (cc.has_tag("亲苏") or cc.has_tag("苏联盟友") or cc.has_tag("亲中") or cc.government == GameConstants.Government.SOCIALIST or (cc.government == GameConstants.Government.REFORMIST and not cc.has_tag("美国盟友") and not cc.has_tag("亲美"))):
 				cc.set_tag("okb", false)
 				cc.set_tag("ovd", true)
 			else:
@@ -784,8 +784,8 @@ func _def_27(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			set_d(w, W.I_AGENTS, d(w, W.I_AGENTS) - 50)
 			country.development = 2
 			w.influence_prc += 10
-			country.government = 2
-			country.sub_government = 8
+			country.government = GameConstants.Government.REFORMIST
+			country.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			set_tag(country, "soc_eu", true)
 	return make_def(caption, opis, conds, eff)
 
@@ -1047,7 +1047,7 @@ func _mil19_slot_check(w: WorldState, country: CountryData) -> bool:
 	if not has(country, "oar"):
 		return complex
 	var c30 := c(w, 30)
-	if c30 != null and c30.government == 1:
+	if c30 != null and c30.government == GameConstants.Government.SOCIALIST:
 		return complex
 	return false
 

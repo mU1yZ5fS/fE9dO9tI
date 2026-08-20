@@ -44,7 +44,7 @@ func execute(context: Dictionary) -> void:
 	if usa != null and ussr.power > usa.power:
 		_leader_support(ussr, LDR_ROMANOV, 2)
 	var c15 := ws.get_country_by_legacy_index(15)
-	if c15 != null and c15.government == 0 and c15.sub_government == 0:
+	if c15 != null and c15.government == GameConstants.Government.AUTHORITARIAN and c15.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 		_leader_support(ussr, LDR_GORBACHEV, -1)
 
 	# 判定（Event102.cs ResultsOfEvents 后半）

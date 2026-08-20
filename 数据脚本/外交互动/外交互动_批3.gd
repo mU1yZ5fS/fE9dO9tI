@@ -145,7 +145,7 @@ func _def_79(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	conds.append(cond(" 我 们 对 当 地 的 影 响 力 达 到 100", func(): return country.development >= 100))
 	conds.append(cond(" 特 工 网 络 - 8", func(): return d(w, 9) >= 80))
 	var eff := func():
-		country.government = 0
+		country.government = GameConstants.Government.AUTHORITARIAN
 		country.内战中 = false
 		set_tag(country, "对华贸易", false)
 		set_tag(country, "亲中", false)
@@ -285,17 +285,17 @@ func _def_102(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			conds.append(cond(" 外 交 声 誉 高 于 69", func(): return d(w, 6) >= 690))
 		elif country.government <= 2:
 			conds.append(cond(" 外 交 声 誉 在 39 到 85 之 间", func(): return d(w, 6) > 390 and d(w, 6) < 850))
-		elif country.government == 3:
+		elif country.government == GameConstants.Government.LIBERAL:
 			conds.append(cond(" 外 交 声 誉 低 于 50", func(): return d(w, 6) < 500))
 		conds.append(cond(" 尚 未 深 化 经 贸 关 系", func(): return not has(country, "对华贸易")))
 		conds.append(cond(" 工 业 不 低 于 50", func(): return d(w, 12) >= 500))
 		conds.append(cond(" 也 门 已 经 统 一", func(): return parts(country, 0)))  # other_text[117]
 	else:
-		if country.government == 1:
+		if country.government == GameConstants.Government.SOCIALIST:
 			conds.append(cond(" 外 交 声 誉 高 于 69", func(): return d(w, 6) >= 690))
 		elif country.government <= 2:
 			conds.append(cond(" 外 交 声 誉 在 39 到 85 之 间", func(): return d(w, 6) > 390 and d(w, 6) < 850))
-		elif country.government == 3:
+		elif country.government == GameConstants.Government.LIBERAL:
 			conds.append(cond(" 外 交 声 誉 低 于 50", func(): return d(w, 6) < 500))
 		conds.append(cond(" 尚 未 深 化 经 贸 关 系", func(): return not has(country, "对华贸易")))
 		conds.append(cond(" 工 业 不 低 于 50", func(): return d(w, 12) >= 500))
@@ -331,7 +331,7 @@ func _def_116(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 	conds.append(cond(" 两 德 尚 未 统 一", func(): return res(w, 484) == 3 or not ev(w, 484)))
 	conds.append(cond(" 1985 年 后", func(): return d(w, 21) >= 1985))
 	conds.append(cond(" 中 国 影 响 力 大 于 80", func(): return w.influence_prc >= 800))
-	conds.append(cond(" 西 德 没 有 处 于 军 事 管 制", func(): return c(w, 17) != null and c(w, 17).government != 0))
+	conds.append(cond(" 西 德 没 有 处 于 军 事 管 制", func(): return c(w, 17) != null and c(w, 17).government != GameConstants.Government.AUTHORITARIAN))
 	var eff := func():
 		start_event_num(w, 484)
 	return make_def(caption, opis, conds, eff)
@@ -496,8 +496,8 @@ func _def_137(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 		set_d(w, 6, d(w, 6) + 100)
 		w.influence_prc -= 20
 		if c17 != null:
-			c17.government = 0
-			c17.sub_government = 7
+			c17.government = GameConstants.Government.AUTHORITARIAN
+			c17.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 	return make_def(caption, opis, conds, eff)
 
 
@@ -692,8 +692,8 @@ func _def_148(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			country.leave_alliances()
 			set_tag(country, "对华贸易", true)
 			set_tag(country, "soc_eu", true)
-			country.government = 2
-			country.sub_government = 14
+			country.government = GameConstants.Government.REFORMIST
+			country.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 			country.内战中 = true
 			w.influence_prc += 5
 			set_d(w, 8, d(w, 8) - 50)
@@ -710,8 +710,8 @@ func _def_148(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			country.leave_alliances()
 			set_tag(country, "对华贸易", true)
 			set_tag(country, "fxseu", true)
-			country.government = 0
-			country.sub_government = 9
+			country.government = GameConstants.Government.AUTHORITARIAN
+			country.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			w.influence_prc += 5
 			set_d(w, 8, d(w, 8) - 50)
 			set_d(w, 9, d(w, 9) - 50)
@@ -727,8 +727,8 @@ func _def_148(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			country.leave_alliances()
 			set_tag(country, "对华贸易", true)
 			set_tag(country, "nazimao", true)
-			country.government = 0
-			country.sub_government = 22
+			country.government = GameConstants.Government.AUTHORITARIAN
+			country.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 			w.influence_prc += 5
 			set_d(w, 8, d(w, 8) - 50)
 			set_d(w, 9, d(w, 9) - 50)
@@ -749,19 +749,19 @@ func _def_148(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			var cc := c(w, idx)
 			if cc != null and soc(w, cc, true):
 				num25 += 1
-			if cc != null and cc.government == 2:
+			if cc != null and cc.government == GameConstants.Government.REFORMIST:
 				num26 += 1
 		var c1 := c(w, 1)
 		if num25 >= num26:
 			if c1 != null and soc(w, c1, false):
-				country.government = 1
-				country.sub_government = 1
+				country.government = GameConstants.Government.SOCIALIST
+				country.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			else:
 				country.government = c1.government if c1 != null else 0
 				country.sub_government = c1.sub_government if c1 != null else 0
-		elif c1 != null and c1.government != 2:
-			country.government = 2
-			country.sub_government = 3
+		elif c1 != null and c1.government != GameConstants.Government.REFORMIST:
+			country.government = GameConstants.Government.REFORMIST
+			country.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		else:
 			country.government = c1.government if c1 != null else 2
 			country.sub_government = c1.sub_government if c1 != null else 3
@@ -782,7 +782,7 @@ func _def_1000(w: WorldState, country: CountryData, caption: String) -> Dictiona
 	conds.append(cond(" 黎 笋 尚 未 被 推 翻", func(): return d(w, 171) != 0))
 	conds.append(cond(" 至 少 4 特 工 网 络 和 4 百 万 预 算", func(): return d(w, 8) + d(w, 36) >= 40))
 	conds.append(cond(" 该 国 不 受 苏 联 影 响", func(): return not has(country, "亲苏")))
-	conds.append(cond(" 我 国 体 制 为 社 会 主 义", func(): return c(w, 1) != null and (c(w, 1).government == 1 or c(w, 1).sub_government == 0)))
+	conds.append(cond(" 我 国 体 制 为 社 会 主 义", func(): return c(w, 1) != null and (c(w, 1).government == GameConstants.Government.SOCIALIST or c(w, 1).sub_government == GameConstants.SubGovernment.LEFT_RADICAL)))
 	var eff := func():
 		start_event_num(w, 535)
 	return make_def(caption, opis, conds, eff)
@@ -851,15 +851,15 @@ func _def_1004(w: WorldState, _country: CountryData, caption: String) -> Diction
 	conds.append(cond(" 至 少 10 百 万 预 算 与 10 特 勤",
 		func(): return d(w, 8) + d(w, 36) >= 100 and d(w, 9) >= 100))
 	conds.append(cond(" 我 们 已 经 应 用 了 先 进 的 社 会 主 义 理 论",
-		func(): return c(w, 1) != null and c(w, 1).sub_government == 19))
+		func(): return c(w, 1) != null and c(w, 1).sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST))
 	conds.append(cond(" 尚 未 向 马 里 传 授 经 验",
-		func(): return c(w, 58) == null or c(w, 58).sub_government != 19))
+		func(): return c(w, 58) == null or c(w, 58).sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST))
 	var eff := func():
 		set_d(w, 9, d(w, 9) - 100)
 		set_d(w, 8, d(w, 8) - 100)
 		if c(w, 58) != null:
-			c(w, 58).government = 0
-			c(w, 58).sub_government = 19
+			c(w, 58).government = GameConstants.Government.AUTHORITARIAN
+			c(w, 58).sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			c(w, 58).leave_alliances()
 			set_tag(c(w, 58), "对华贸易", true)
 			set_tag(c(w, 58), "亲中", true)
@@ -984,8 +984,8 @@ func _def_1013(w: WorldState, _country: CountryData, caption: String) -> Diction
 	var c46 := c(w, 46)
 	var c10 := c(w, 10)
 	conds.append(cond(" 韩 国 和 朝 鲜 都 已 民 主 化",
-		func(): return ((c46 != null and ((c46.government == 3 and not has(c46, "亲美")) or c46.government == 2))
-			and c10 != null and c10.government == 2)))
+		func(): return ((c46 != null and ((c46.government == GameConstants.Government.LIBERAL and not has(c46, "亲美")) or c46.government == GameConstants.Government.REFORMIST))
+			and c10 != null and c10.government == GameConstants.Government.REFORMIST)))
 	var eff := func():
 		start_event_num(w, 495)
 	return make_def(caption, opis, conds, eff)

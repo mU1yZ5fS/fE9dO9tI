@@ -25,7 +25,7 @@ func execute(context: Dictionary) -> void:
 			var day := str(_res(W.I_DAY))
 			context["result_text"] = TXT_R0_P1 + year + TXT_R0_NIAN + month + TXT_R0_YUE + day + TXT_R0_P2 + _leader_name() + TXT_R0_P3
 			if taiwan != null:
-				taiwan.sub_government = 8
+				taiwan.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 
 
 

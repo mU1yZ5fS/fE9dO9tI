@@ -51,8 +51,8 @@ func execute(context: Dictionary) -> void:
 				somalia.set_tag("亲中", true)
 				somalia.set_tag("亲苏", false)
 				somalia.set_tag("对华贸易", true)
-				somalia.government = 1
-				somalia.sub_government = 1
+				somalia.government = GameConstants.Government.SOCIALIST
+				somalia.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			context["result_text"] = TXT_R0
 		1:
 			_add(W.I_AGENTS, -50)
@@ -66,8 +66,8 @@ func execute(context: Dictionary) -> void:
 				somalia.set_tag("亲中", true)
 				somalia.set_tag("亲苏", false)
 				somalia.set_tag("对华贸易", true)
-				somalia.government = 0
-				somalia.sub_government = 10
+				somalia.government = GameConstants.Government.AUTHORITARIAN
+				somalia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			context["result_text"] = TXT_R1
 		2:
 			context["result_text"] = TXT_R2

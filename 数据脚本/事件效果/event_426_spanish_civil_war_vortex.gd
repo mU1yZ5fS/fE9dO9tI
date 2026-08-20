@@ -120,16 +120,16 @@ func execute(context: Dictionary) -> void:
 	var catalonia := ws.get_country_by_legacy_index(110)
 	if opt != 3 and opt != 4:
 		if basque != null:
-			basque.government = 0
-			basque.sub_government = 10
+			basque.government = GameConstants.Government.AUTHORITARIAN
+			basque.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		if spain != null:
 			if spain.parts.size() < 2:
 				spain.parts.resize(2)
 			spain.parts[0] = true
 			spain.parts[1] = true
 		if catalonia != null:
-			catalonia.government = 2
-			catalonia.sub_government = 15
+			catalonia.government = GameConstants.Government.REFORMIST
+			catalonia.sub_government = GameConstants.SubGovernment.PRAGMATIST
 		if basque != null:
 			basque.social_stability = 1000
 			basque.stability = 1000

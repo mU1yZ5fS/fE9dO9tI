@@ -24,11 +24,11 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			# 原版 :29-40：南非 SubGosstroy==7/9 → 失败分支
-			if south_africa != null and (south_africa.sub_government == 7 or south_africa.sub_government == 9):
+			if south_africa != null and (south_africa.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or south_africa.sub_government == GameConstants.SubGovernment.NEO_FASCIST):
 				context["result_text"] = TXT_R_FAIL
 				if botswana != null:
-					botswana.government = 0
-					botswana.sub_government = 7
+					botswana.government = GameConstants.Government.AUTHORITARIAN
+					botswana.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					_leave_alliances(botswana)
 					botswana.chinese_name = "贝专兰合众邦"
 					botswana.puppet_of = 131
@@ -40,8 +40,8 @@ func execute(context: Dictionary) -> void:
 			if botswana != null and botswana.level_of_instability == 200 and mod6 and botswana.内战中:
 				context["result_text"] = _success_text()
 				if botswana != null:
-					botswana.government = 1
-					botswana.sub_government = 17
+					botswana.government = GameConstants.Government.SOCIALIST
+					botswana.sub_government = GameConstants.SubGovernment.MAOIST
 					_leave_alliances(botswana)
 					botswana.set_tag("亲中", true)
 					botswana.set_tag("对华贸易", true)
@@ -53,8 +53,8 @@ func execute(context: Dictionary) -> void:
 			# 原版 :66-77：其余 → 亲苏左翼大帐篷
 			context["result_text"] = TXT_R_NEUTRAL
 			if botswana != null:
-				botswana.government = 1
-				botswana.sub_government = 16
+				botswana.government = GameConstants.Government.SOCIALIST
+				botswana.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				_leave_alliances(botswana)
 				botswana.set_tag("亲苏", true)
 				botswana.set_tag("对华贸易", true)

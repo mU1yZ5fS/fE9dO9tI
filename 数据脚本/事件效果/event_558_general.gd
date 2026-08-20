@@ -24,7 +24,7 @@ func evaluate(world: WorldState) -> bool:
 	var c7 := world.get_country_by_legacy_index(7)
 	if ussr.current_leader != 6:
 		return false
-	if c7 == null or c7.sub_government == 15:
+	if c7 == null or c7.sub_government == GameConstants.SubGovernment.PRAGMATIST:
 		return false
 	if ussr.leaders.size() <= 6 or ussr.leaders[6] == null or ussr.leaders[6].support >= 0:
 		return false

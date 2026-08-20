@@ -45,7 +45,7 @@ func execute(context: Dictionary) -> void:
 func _event_63(option_index: int) -> void:
 	var afghanistan := ws.get_country_by_legacy_index(12)
 	if afghanistan != null:
-		afghanistan.government = 1
+		afghanistan.government = GameConstants.Government.SOCIALIST
 		afghanistan.set_tag("亲苏", true)
 	match option_index:
 		0:
@@ -74,8 +74,8 @@ func _event_63(option_index: int) -> void:
 func _event_48(option_index: int, context: Dictionary) -> void:
 	var afghanistan := ws.get_country_by_legacy_index(12)
 	if afghanistan != null:
-		afghanistan.government = 0
-		afghanistan.sub_government = 10
+		afghanistan.government = GameConstants.Government.AUTHORITARIAN
+		afghanistan.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		afghanistan.set_tag("亲美", false)
 	match option_index:
 		0:
@@ -109,8 +109,8 @@ func _event_49(option_index: int, context: Dictionary) -> void:
 				ws.数值表[W.I_AFGHAN_PARCHAM] = 150
 				context["result_text"] = TXT_49_R0_KARMAL
 			if afghanistan != null:
-				afghanistan.government = 1
-				afghanistan.sub_government = 1
+				afghanistan.government = GameConstants.Government.SOCIALIST
+				afghanistan.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 		1:
 			_add_data({W.I_AGENTS: -70, W.I_AFGHAN_OPPOSITION: 100,
 				W.I_AFGHAN_PARCHAM: 180, W.I_DIPLO: 50})
@@ -217,7 +217,7 @@ func _start_afghan_war(
 			war.infl1 -= 100
 			war.infl2 += 100
 		var iran := ws.get_country_by_legacy_index(8)
-		if iran != null and iran.government == 0:
+		if iran != null and iran.government == GameConstants.Government.AUTHORITARIAN:
 			war.infl1 -= 50
 			war.infl2 += 50
 		if ws.数值表[W.I_AFGHAN_WAR_PATH] == 9:

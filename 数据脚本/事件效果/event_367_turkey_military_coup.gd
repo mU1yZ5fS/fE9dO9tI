@@ -81,8 +81,8 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	var turkey := ws.get_country_by_legacy_index(84)
 	if turkey != null:
-		turkey.government = 0
-		turkey.sub_government = 7
+		turkey.government = GameConstants.Government.AUTHORITARIAN
+		turkey.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 	match opt:
 		0:
 			if _faction_leading_0_1_2():
@@ -101,7 +101,7 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 		1:
 			if turkey != null:
-				turkey.sub_government = 9
+				turkey.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				turkey.set_tag("对华贸易", true)
 			var c87 := ws.get_country_by_legacy_index(87)
 			if c87 != null:

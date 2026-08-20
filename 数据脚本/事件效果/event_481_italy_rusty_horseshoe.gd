@@ -70,8 +70,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -300)
 			_add_relation(EmpireData.USSR, -100)
 			if italy != null:
-				italy.government = 0
-				italy.sub_government = 0
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				_leave_alliances(italy)
 				italy.name = S_91
 				if d[W.I_IDEOLOGY] > 3 or d[W.I_PARTY_SYSTEM] > 7 or d[W.I_ECON_SYSTEM] > 13 \
@@ -90,8 +90,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -300)
 			_add_relation(EmpireData.USSR, -250)
 			if italy != null:
-				italy.government = 0
-				italy.sub_government = 9
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				_leave_alliances(italy)
 				italy.set_tag("对华贸易", true)
 				italy.name = S_116
@@ -107,8 +107,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -300)
 			_add_relation(EmpireData.USSR, -250)
 			if italy != null:
-				italy.government = 0
-				italy.sub_government = 22
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 				italy.set_tag("对华贸易", true)
 				_join_our_alliances(italy)
 				italy.set_tag("亲中", true)
@@ -123,8 +123,8 @@ func execute(context: Dictionary) -> void:
 					and ussr.current_leader != 6 and ussr.current_leader != 7 \
 					and ((c21 != null and c21.has_tag("sev")) or (c15 != null and c15.has_tag("sev"))):
 				if italy != null:
-					italy.government = 1
-					italy.sub_government = 1
+					italy.government = GameConstants.Government.SOCIALIST
+					italy.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					_leave_alliances(italy)
 					italy.set_tag("亲苏", true)
 					italy.set_tag("对华贸易", false)
@@ -133,8 +133,8 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = S_141
 			else:
 				if italy != null:
-					italy.government = 0
-					italy.sub_government = 20
+					italy.government = GameConstants.Government.AUTHORITARIAN
+					italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					_leave_alliances(italy)
 					italy.set_tag("亲美", true)
 					var c0 := ws.get_country_by_legacy_index(0)

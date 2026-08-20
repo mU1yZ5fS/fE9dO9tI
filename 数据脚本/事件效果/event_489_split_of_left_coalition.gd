@@ -54,10 +54,10 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -250)
 		num3 += 2
-	if spain != null and spain.government == 1:
+	if spain != null and spain.government == GameConstants.Government.SOCIALIST:
 		num3 += 2
 		num2 += 1
-	elif spain != null and spain.government == 3:
+	elif spain != null and spain.government == GameConstants.Government.LIBERAL:
 		num += 2
 	# data[131]：原版无常量（世界局势变量），raw index + 注释。
 	if d.size() > 131:
@@ -70,35 +70,35 @@ func execute(context: Dictionary) -> void:
 			num += 2
 	else:
 		num += 2
-	if greece != null and greece.government == 2:
+	if greece != null and greece.government == GameConstants.Government.REFORMIST:
 		num2 += 2
 		num3 += 1
-	elif greece != null and greece.government == 1:
+	elif greece != null and greece.government == GameConstants.Government.SOCIALIST:
 		num3 += 2
 		num2 += 1
 	else:
 		num += 1
-	if britain != null and britain.government == 1:
+	if britain != null and britain.government == GameConstants.Government.SOCIALIST:
 		num3 += 1
 		num2 += 1
-	elif britain != null and britain.government == 2:
+	elif britain != null and britain.government == GameConstants.Government.REFORMIST:
 		num2 += 1
 		num3 += 1
 	else:
 		num += 1
-	if italy != null and italy.government == 3:
+	if italy != null and italy.government == GameConstants.Government.LIBERAL:
 		num += 1
-	elif italy != null and italy.government == 2:
+	elif italy != null and italy.government == GameConstants.Government.REFORMIST:
 		num2 += 1
-	elif italy != null and italy.government == 1:
+	elif italy != null and italy.government == GameConstants.Government.SOCIALIST:
 		num3 += 1
 	if france != null and france.has_tag("soc_eu"):
 		num += 999
 	if num2 >= num3 and num2 >= num:
 		context["result_text"] = TXT_R_COMMUNIST
 		if turkey != null:
-			turkey.government = 1
-			turkey.sub_government = 16
+			turkey.government = GameConstants.Government.SOCIALIST
+			turkey.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 			_leave_alliances(turkey)
 			turkey.set_tag("亲苏", true)
 		_add_leader_support(EmpireData.USSR, 4, 1)
@@ -114,8 +114,8 @@ func execute(context: Dictionary) -> void:
 	if num3 >= num2 and num3 >= num:
 		context["result_text"] = TXT_R_PEOPLES
 		if turkey != null:
-			turkey.government = 1
-			turkey.sub_government = 2
+			turkey.government = GameConstants.Government.SOCIALIST
+			turkey.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 			_leave_alliances(turkey)
 		if opt == 2:
 			_add(W.I_DIPLO, 100)
@@ -128,8 +128,8 @@ func execute(context: Dictionary) -> void:
 		return
 	context["result_text"] = TXT_R_REPUBLICAN
 	if turkey != null:
-		turkey.government = 2
-		turkey.sub_government = 3
+		turkey.government = GameConstants.Government.REFORMIST
+		turkey.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		_leave_alliances(turkey)
 		if france != null and france.has_tag("soc_eu"):
 			turkey.set_tag("soc_eu", true)

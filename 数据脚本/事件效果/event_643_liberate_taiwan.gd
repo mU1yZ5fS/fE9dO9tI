@@ -38,7 +38,7 @@ func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	var china := world.get_country_by_legacy_index(1)
-	if china == null or china.sub_government != 19:
+	if china == null or china.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		return false
 	@warning_ignore("shadowed_variable_base_class")
 	var d := world.数值表

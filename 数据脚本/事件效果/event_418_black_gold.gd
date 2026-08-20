@@ -59,7 +59,7 @@ func evaluate(world: WorldState) -> bool:
 	var c101 := world.get_country_by_legacy_index(101)
 	if c101 == null:
 		return false
-	return world.is_authoritarian(c101) or c101.government == 3
+	return world.is_authoritarian(c101) or c101.government == GameConstants.Government.LIBERAL
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

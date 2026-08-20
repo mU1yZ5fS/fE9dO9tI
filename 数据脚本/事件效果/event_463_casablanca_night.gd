@@ -58,8 +58,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if morocco != null:
-				morocco.government = 2
-				morocco.sub_government = 3
+				morocco.government = GameConstants.Government.REFORMIST
+				morocco.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				morocco.set_tag("亲美", false)
 				morocco.set_tag("对华贸易", true)
 				morocco.set_tag("亲中", true)
@@ -77,17 +77,17 @@ func execute(context: Dictionary) -> void:
 			var num := 0
 			for idx in [40, 55, 13, 14, 35, 42, 104, 93]:
 				var c := _country(idx)
-				if c != null and (c.has_tag("亲中") or c.government == 1):
+				if c != null and (c.has_tag("亲中") or c.government == GameConstants.Government.SOCIALIST):
 					num += 20
 			var c25 := _country(25)
 			var c24 := _country(24)
-			if (c25 != null and (c25.has_tag("亲中") or c25.government == 1)) or (c24 != null and (c24.has_tag("亲中") or c24.government == 1)):
+			if (c25 != null and (c25.has_tag("亲中") or c25.government == GameConstants.Government.SOCIALIST)) or (c24 != null and (c24.has_tag("亲中") or c24.government == GameConstants.Government.SOCIALIST)):
 				num += 20
 			var c18 := _country(18)
 			if c18 != null and c18.内战中:
 				num += 50
 			var c86 := _country(86)
-			if c86 != null and c86.sub_government != 7:
+			if c86 != null and c86.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				num += 30
 			GameManager.start_war(39, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 700 - num, 300 + num, 0)
 			var war := _get_war(39)

@@ -20,7 +20,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_enable(opt[0], event_def.options[0].text)
 	_enable(opt[1], event_def.options[1].text)
 	_enable(opt[2], event_def.options[2].text)
-	if argentina != null and argentina.government == 3:
+	if argentina != null and argentina.government == GameConstants.Government.LIBERAL:
 		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
@@ -191,28 +191,28 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
-			winner = _get_winner_in_america(argentina, ideo, sup, 2.0 if argentina.government == 3 else 1.5, 4)
+			winner = _get_winner_in_america(argentina, ideo, sup, 2.0 if argentina.government == GameConstants.Government.LIBERAL else 1.5, 4)
 			argentina.set_tag("亲中", winner == 4)
 		1:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
-			winner = _get_winner_in_america(argentina, ideo, sup, 2.0 if argentina.government == 3 else 1.5, 5)
+			winner = _get_winner_in_america(argentina, ideo, sup, 2.0 if argentina.government == GameConstants.Government.LIBERAL else 1.5, 5)
 			argentina.set_tag("亲中", winner == 5)
 		2:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
-			winner = _get_winner_in_america(argentina, ideo, sup, 2.0 if argentina.government == 3 else 1.5, 3)
+			winner = _get_winner_in_america(argentina, ideo, sup, 2.0 if argentina.government == GameConstants.Government.LIBERAL else 1.5, 3)
 			argentina.set_tag("亲中", winner == 3)
 		3:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
-			winner = _get_winner_in_america(argentina, ideo, sup, 2.0 if argentina.government == 3 else 1.5, 1)
+			winner = _get_winner_in_america(argentina, ideo, sup, 2.0 if argentina.government == GameConstants.Government.LIBERAL else 1.5, 1)
 			argentina.set_tag("亲中", winner == 1)
 		_:
 			winner = _get_winner_in_america(argentina, ideo, sup, 0.0, -1)
 			if winner != argentina.sub_government:
 				argentina.set_tag("亲中", false)
-	argentina.government = 3
+	argentina.government = GameConstants.Government.LIBERAL
 	argentina.sub_government = winner
 	_want_to_leave(argentina)
 	argentina.next_election_year = 1989

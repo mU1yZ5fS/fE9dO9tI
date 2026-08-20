@@ -72,8 +72,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R0_DONE660
 				if uganda != null:
-					uganda.government = 0
-					uganda.sub_government = 7
+					uganda.government = GameConstants.Government.AUTHORITARIAN
+					uganda.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					_leave_alliances(uganda)
 					uganda.set_tag("亲美", true)
 		elif ws.completed_event_ids.get("event_659", 0) == 2:
@@ -84,21 +84,21 @@ func execute(context: Dictionary) -> void:
 			if _mod_active(ws, 6):
 				context["result_text"] = TXT_R0_PRORPC
 				if uganda != null:
-					uganda.government = 1
-					uganda.sub_government = 17
+					uganda.government = GameConstants.Government.SOCIALIST
+					uganda.sub_government = GameConstants.SubGovernment.MAOIST
 			else:
 				context["result_text"] = TXT_R0_LIBERAL
 				if uganda != null:
-					uganda.government = 2
-					uganda.sub_government = 15
+					uganda.government = GameConstants.Government.REFORMIST
+					uganda.sub_government = GameConstants.SubGovernment.PRAGMATIST
 		elif ws.completed_event_ids.get("event_659", 0) == 3:
 			context["result_text"] = TXT_R0_AMIN
 			if uganda != null:
 				_leave_alliances(uganda)
 				uganda.puppet_of = 117
 				uganda.set_tag("对华贸易", true)
-				uganda.government = 0
-				uganda.sub_government = 9
+				uganda.government = GameConstants.Government.AUTHORITARIAN
+				uganda.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 		elif ws.completed_event_ids.get("event_659", 0) == 4:
 			var num := 0
 			num += _count_liberal_or_auth(127)
@@ -113,22 +113,22 @@ func execute(context: Dictionary) -> void:
 					_leave_alliances(uganda)
 					uganda.set_tag("亲美", true)
 					uganda.set_tag("对华贸易", true)
-					uganda.government = 3
-					uganda.sub_government = 12
+					uganda.government = GameConstants.Government.LIBERAL
+					uganda.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 					uganda.chinese_name = TXT_UGANDA_FEDERATION
 			else:
 				text += TXT_R0_DEMOCRAT
 				if uganda != null:
 					_leave_alliances(uganda)
 					uganda.set_tag("对华贸易", true)
-					uganda.government = 3
-					uganda.sub_government = 5
+					uganda.government = GameConstants.Government.LIBERAL
+					uganda.sub_government = GameConstants.SubGovernment.MODERATE
 			context["result_text"] = text
 		else:
 			context["result_text"] = TXT_R0_ELSE
 			if uganda != null:
-				uganda.government = 2
-				uganda.sub_government = 15
+				uganda.government = GameConstants.Government.REFORMIST
+				uganda.sub_government = GameConstants.SubGovernment.PRAGMATIST
 
 
 func _get_war(world: WorldState, war_id: int) -> WarData:
@@ -141,7 +141,7 @@ func _count_liberal_or_auth(legacy_index: int) -> int:
 	var c := ws.get_country_by_legacy_index(legacy_index)
 	if c == null:
 		return 0
-	return 1 if (c.government == 3 or ws.is_authoritarian(c)) else 0
+	return 1 if (c.government == GameConstants.Government.LIBERAL or ws.is_authoritarian(c)) else 0
 
 
 func _set_parts0(c: CountryData, value: bool) -> void:

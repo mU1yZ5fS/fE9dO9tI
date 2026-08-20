@@ -75,8 +75,8 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USA, 30)
 			if algeria != null:
 				algeria.set_tag("对华贸易", true)
-				algeria.government = 0
-				algeria.sub_government = 20
+				algeria.government = GameConstants.Government.AUTHORITARIAN
+				algeria.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				algeria.set_tag("亲苏", false)
 				algeria.set_tag("亲美", true)
 			if d.size() > 143:
@@ -84,8 +84,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 		3:
 			if algeria != null:
-				algeria.government = 0
-				algeria.sub_government = 20
+				algeria.government = GameConstants.Government.AUTHORITARIAN
+				algeria.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			context["result_text"] = TXT_R3
 
 

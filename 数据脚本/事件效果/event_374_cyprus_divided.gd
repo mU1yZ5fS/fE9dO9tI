@@ -68,28 +68,28 @@ func _event_374(option_index: int, context: Dictionary) -> void:
 func _result_0(context: Dictionary) -> void:
 	var cyprus := _cyprus()
 	if _greece_progressive() and _turkey_progressive() and ws.influence_prc >= 500 \
-		and cyprus != null and (cyprus.government == 2 or cyprus.government == 3 or cyprus.sub_government == 16):
+		and cyprus != null and (cyprus.government == GameConstants.Government.REFORMIST or cyprus.government == GameConstants.Government.LIBERAL or cyprus.sub_government == GameConstants.SubGovernment.SOVIET_STYLE):
 		# Event374.cs:192-274 成功联邦路径
 		_set_data127(100)
 		if cyprus != null:
 			cyprus.parts.resize(1)
 			cyprus.parts[0] = true
-			if cyprus.government == 2 or cyprus.sub_government == 16:
+			if cyprus.government == GameConstants.Government.REFORMIST or cyprus.sub_government == GameConstants.SubGovernment.SOVIET_STYLE:
 				_leave_alliances(cyprus)
-				cyprus.sub_government = 15
+				cyprus.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_copy_soc_eu_from_spain(cyprus)
 			else:
-				cyprus.sub_government = 5
+				cyprus.sub_government = GameConstants.SubGovernment.MODERATE
 			if not cyprus.内战中:
 				cyprus.set_tag("对华贸易", true)
 		ws.influence_prc += 30
-		if cyprus != null and (cyprus.government == 2 or cyprus.sub_government == 16):
+		if cyprus != null and (cyprus.government == GameConstants.Government.REFORMIST or cyprus.sub_government == GameConstants.SubGovernment.SOVIET_STYLE):
 			context["result_text"] = TXT_374_R0_OK_LEFT + _uk_append_text()
 		else:
 			context["result_text"] = TXT_374_R0_OK_RIGHT + _uk_append_text()
 	else:
 		_set_data127(1)
-		if cyprus != null and cyprus.sub_government == 1:
+		if cyprus != null and cyprus.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 			context["result_text"] = TXT_374_R0_FAIL_GREAT_IDEAL
 		elif cyprus != null and ws.is_authoritarian(cyprus):
 			context["result_text"] = TXT_374_R0_FAIL_AUTH
@@ -99,7 +99,7 @@ func _result_0(context: Dictionary) -> void:
 
 func _result_1(context: Dictionary) -> void:
 	var turkey := _turkey()
-	if not _is_socialism_or_gov2(turkey) and (turkey == null or turkey.government != 2):
+	if not _is_socialism_or_gov2(turkey) and (turkey == null or turkey.government != GameConstants.Government.REFORMIST):
 		# Event374.cs:64-67
 		_set_data127(1)
 		context["result_text"] = TXT_374_R1_FAIL
@@ -118,7 +118,7 @@ func _result_1(context: Dictionary) -> void:
 	ws.influence_prc += 10
 	var uk := _uk()
 	var r1 := TXT_374_R1_OK
-	if uk != null and ws.is_socialism(uk, false) and uk.government != 2:
+	if uk != null and ws.is_socialism(uk, false) and uk.government != GameConstants.Government.REFORMIST:
 		r1 += TXT_374_R1_UK
 	r1 += TXT_374_R1_OK2
 	context["result_text"] = r1
@@ -133,8 +133,8 @@ func _result_2(context: Dictionary) -> void:
 		cyprus.parts[0] = true
 		cyprus.chinese_name = "塞浦路斯土耳其联邦"
 		_leave_alliances(cyprus)
-		cyprus.government = 3
-		cyprus.sub_government = 5
+		cyprus.government = GameConstants.Government.LIBERAL
+		cyprus.sub_government = GameConstants.SubGovernment.MODERATE
 		cyprus.puppet_of = 84
 		ws.influence_prc += 10
 		_greece_reaction_to_turkish_cyprus()
@@ -156,7 +156,7 @@ func _result_2(context: Dictionary) -> void:
 			r2 += TXT_374_R2_LEAVE
 			if _greece_progressive() and _ussr_ovd():
 				r2 += TXT_374_R2_WTO
-			elif greece2 != null and (ws.is_authoritarian(greece2) or greece2.government == 3) and _usa_nato():
+			elif greece2 != null and (ws.is_authoritarian(greece2) or greece2.government == GameConstants.Government.LIBERAL) and _usa_nato():
 				r2 += TXT_374_R2_NATO
 			r2 += TXT_374_R2_DOT
 		if all_turkish:
@@ -188,8 +188,8 @@ func _result_3(context: Dictionary) -> void:
 			cyprus.parts.resize(1)
 			cyprus.parts[0] = true
 			_leave_alliances(cyprus)
-			cyprus.government = 2
-			cyprus.sub_government = 8
+			cyprus.government = GameConstants.Government.REFORMIST
+			cyprus.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			_copy_soc_eu_from_spain(cyprus)
 		_set_data127(100)
 		ws.influence_prc += 10
@@ -215,7 +215,7 @@ func _greece_reaction_to_turkish_cyprus(cyprus_for_join: CountryData = null) -> 
 		if target != null:
 			target.set_tag("sev", true)
 			target.set_tag("ovd", true)
-	elif greece != null and (ws.is_authoritarian(greece) or greece.government == 3) \
+	elif greece != null and (ws.is_authoritarian(greece) or greece.government == GameConstants.Government.LIBERAL) \
 			and usa != null and usa.has_tag("nato"):
 		var target := cyprus_for_join if cyprus_for_join != null else greece
 		if target != null:
@@ -226,20 +226,20 @@ func _greece_progressive() -> bool:
 	var greece := _greece()
 	if greece == null:
 		return false
-	return ws.is_socialism(greece, true) or greece.government == 2
+	return ws.is_socialism(greece, true) or greece.government == GameConstants.Government.REFORMIST
 
 
 func _turkey_progressive() -> bool:
 	var turkey := _turkey()
 	if turkey == null:
 		return false
-	return ws.is_socialism(turkey, true) or turkey.government == 2
+	return ws.is_socialism(turkey, true) or turkey.government == GameConstants.Government.REFORMIST
 
 
 func _is_socialism_or_gov2(c: CountryData) -> bool:
 	if c == null:
 		return false
-	return ws.is_socialism(c, true) or c.government == 2
+	return ws.is_socialism(c, true) or c.government == GameConstants.Government.REFORMIST
 
 
 func _copy_soc_eu_from_spain(cyprus: CountryData) -> void:
@@ -274,9 +274,9 @@ func _uk_append_text() -> String:
 	var uk := _uk()
 	if uk == null:
 		return "\n" + TXT_374_R0_UK_OTHER
-	if ws.is_socialism(uk, true) or uk.government == 2:
+	if ws.is_socialism(uk, true) or uk.government == GameConstants.Government.REFORMIST:
 		return "\n" + TXT_374_R0_UK_LEFT
-	if uk.government == 3:
+	if uk.government == GameConstants.Government.LIBERAL:
 		return "\n" + TXT_374_R0_UK_RIGHT
 	return "\n" + TXT_374_R0_UK_OTHER
 

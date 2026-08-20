@@ -97,8 +97,8 @@ func execute(context: Dictionary) -> void:
 				d[86] += 2
 			_set_torg_or_agents(yugoslavia)
 			if yugoslavia != null:
-				yugoslavia.government = 0
-				yugoslavia.sub_government = 0 if dev1 else 10
+				yugoslavia.government = GameConstants.Government.AUTHORITARIAN
+				yugoslavia.sub_government = GameConstants.SubGovernment.LEFT_RADICAL if dev1 else 10
 			context["result_text"] = TXT_R3_DEV1 if dev1 else TXT_R3_OTHER
 		4:
 			_add(W.I_AGENTS, -50)

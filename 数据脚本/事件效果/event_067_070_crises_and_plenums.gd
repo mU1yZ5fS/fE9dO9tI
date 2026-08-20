@@ -113,8 +113,8 @@ func _event_67(option_index: int, context: Dictionary) -> void:
 			_add_empire_power(EmpireData.USSR, -20)
 			_add_empire_relation(EmpireData.USSR, 50)
 			if poland != null:
-				poland.government = 0
-				poland.sub_government = 10
+				poland.government = GameConstants.Government.AUTHORITARIAN
+				poland.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				poland.set_tag("对华贸易", true)
 			context["result_text"] = TXT_67_R0
 		1:
@@ -144,8 +144,8 @@ func _event_67(option_index: int, context: Dictionary) -> void:
 			_add_empire_power(EmpireData.USSR, -20)
 			_add_empire_relation(EmpireData.USSR, 50)
 			if poland != null:
-				poland.government = 0
-				poland.sub_government = 10
+				poland.government = GameConstants.Government.AUTHORITARIAN
+				poland.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				poland.set_tag("对华贸易", true)
 			context["result_text"] = r1
 		2:
@@ -155,8 +155,8 @@ func _event_67(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USA, -100)
 			_add_empire_relation(EmpireData.USSR, 150)
 			if poland != null:
-				poland.government = 1
-				poland.sub_government = 16
+				poland.government = GameConstants.Government.SOCIALIST
+				poland.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				poland.set_tag("对华贸易", true)
 			context["result_text"] = TXT_67_R2
 		3:
@@ -168,8 +168,8 @@ func _event_67(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USA, -100)
 			_add_empire_relation(EmpireData.USSR, -150)
 			if poland != null:
-				poland.government = 0
-				poland.sub_government = 0
+				poland.government = GameConstants.Government.AUTHORITARIAN
+				poland.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				poland.set_tag("亲苏", false)
 				poland.set_tag("亲中", true)
 				poland.set_tag("对华贸易", true)
@@ -186,7 +186,7 @@ func _event_67(option_index: int, context: Dictionary) -> void:
 				_add_empire_relation(EmpireData.USA, -150)
 				_add_empire_relation(EmpireData.USSR, 150)
 				if poland != null:
-					poland.sub_government = 16
+					poland.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 					poland.puppet_of = 7
 			else:
 				r4 = TXT_67_R4_NO
@@ -194,8 +194,8 @@ func _event_67(option_index: int, context: Dictionary) -> void:
 				ws.influence_prc += 10
 				_add_empire_power(EmpireData.USSR, -20)
 				if poland != null:
-					poland.government = 0
-					poland.sub_government = 10
+					poland.government = GameConstants.Government.AUTHORITARIAN
+					poland.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			context["result_text"] = r4
 		5:
 			var united_states := ws.get_country_by_legacy_index(51)
@@ -207,8 +207,8 @@ func _event_67(option_index: int, context: Dictionary) -> void:
 				_add_empire_relation(EmpireData.USA, 150)
 				_add_empire_relation(EmpireData.USSR, -50)
 				if poland != null:
-					poland.government = 2
-					poland.sub_government = 3
+					poland.government = GameConstants.Government.REFORMIST
+					poland.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					poland.set_tag("亲苏", false)
 					poland.set_tag("对华贸易", true)
 				context["result_text"] = TXT_67_R5_YES

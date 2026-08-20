@@ -858,7 +858,7 @@ func _def_107(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 		var c8 := c(w, 8)
 		conds.append(cond(OT[143], func():
 			return (c30 != null and has(c30, "亲美")
-			and c8 != null and (c8.government == 3 or has(c8, "亲美")))))
+			and c8 != null and (c8.government == GameConstants.Government.LIBERAL or has(c8, "亲美")))))
 		var c1 := c(w, 1)
 		conds.append(cond(OT[144], func(): return (c1 == null or not has(c1, "sev")) and _sci(w, 19)))
 		conds.append(cond(OT[145], func(): return (d(w, 131) == 0 or d(w, 131) == 3) and not mod(w, 41)))
@@ -894,18 +894,18 @@ func _def_110(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			country.有驻军基地 = true
 			if country.原版序号 == 41:
 				country.establish_government(2)
-				country.government = 1
-				country.sub_government = 2
+				country.government = GameConstants.Government.SOCIALIST
+				country.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				country.set_tag("对华贸易", true)
 			elif country.原版序号 == 99:
 				country.establish_government(2)
-				country.government = 0
-				country.sub_government = 10
+				country.government = GameConstants.Government.AUTHORITARIAN
+				country.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				country.set_tag("对华贸易", true)
 			elif country.原版序号 == 100:
 				country.establish_government(2)
-				country.government = 1
-				country.sub_government = 1
+				country.government = GameConstants.Government.SOCIALIST
+				country.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				country.set_tag("对华贸易", true)
 	return make_def(caption, opis, conds, eff)
 
@@ -936,18 +936,18 @@ func _def_111(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			country.有驻军基地 = true
 			if country.原版序号 == 41:
 				country.establish_government(2)
-				country.government = 3
-				country.sub_government = 6
+				country.government = GameConstants.Government.LIBERAL
+				country.sub_government = GameConstants.SubGovernment.LIBERAL
 				country.set_tag("对华贸易", true)
 			elif country.原版序号 == 99:
 				country.establish_government(2)
-				country.government = 0
-				country.sub_government = 7
+				country.government = GameConstants.Government.AUTHORITARIAN
+				country.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				country.set_tag("对华贸易", true)
 			elif country.原版序号 == 100:
 				country.establish_government(2)
-				country.government = 3
-				country.sub_government = 5
+				country.government = GameConstants.Government.LIBERAL
+				country.sub_government = GameConstants.SubGovernment.MODERATE
 				country.set_tag("对华贸易", true)
 	return make_def(caption, opis, conds, eff)
 
@@ -1015,7 +1015,7 @@ func _def_117(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 	var opis: String = OT[196]
 	var c1 := c(w, 1)
 	var conds: Array = []
-	conds.append(cond(OT[197], func(): return c1 != null and c1.government != 1 and d(w, 52) > 34))
+	conds.append(cond(OT[197], func(): return c1 != null and c1.government != GameConstants.Government.SOCIALIST and d(w, 52) > 34))
 	conds.append(cond(OT[198], func(): return c1 == null or (not has(c1, "sev") and not has(c1, "econ"))))
 	conds.append(cond(OT[199], func(): return c1 == null or not has(c1, "asean")))
 	conds.append(cond(OT[200], func(): return d(w, 21) > 1978))
@@ -1092,7 +1092,7 @@ func _def_119(w: WorldState, country: CountryData, caption: String) -> Dictionar
 	conds.append(cond(OT[207], func(): return not has(country, "亲苏")))
 	conds.append(cond(OT[208], func(): return not has(country, "asean") and not has(country, "sev")))
 	if country.原版序号 != 38:
-		conds.append(cond(OT[209], func(): return country.government != 1))
+		conds.append(cond(OT[209], func(): return country.government != GameConstants.Government.SOCIALIST))
 	else:
 		conds.append(cond(OT[233], func(): return d(w, 64) == 1 or _dec_done(w, 6)))
 	var eff := func():
@@ -1142,7 +1142,7 @@ func _def_122(w: WorldState, country: CountryData, caption: String) -> Dictionar
 	var c46 := c(w, 46)
 	var conds: Array = []
 	conds.append(cond(OT[222], func(): return d(w, 9) >= 100 and d(w, 8) + d(w, 36) >= 300))
-	conds.append(cond(OT[223], func(): return ev(w, 91) and c46 != null and c46.government == 0))
+	conds.append(cond(OT[223], func(): return ev(w, 91) and c46 != null and c46.government == GameConstants.Government.AUTHORITARIAN))
 	conds.append(cond(OT[224], func(): return country.development == 0))
 	var eff := func():
 		country.development = 1
@@ -1434,7 +1434,7 @@ func _def_128(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 		func():
 			return (c87 != null and d(w, 8) + d(w, 36) >= c87.influence_china
 			and d(w, 9) >= c87.influence_nato)))
-	conds.append(cond(OT[269], func(): return c87 != null and c87.government != 3))
+	conds.append(cond(OT[269], func(): return c87 != null and c87.government != GameConstants.Government.LIBERAL))
 	if not ev(w, 414):
 		conds.append(cond(OT[268], func(): return ev(w, 414)))
 	else:
@@ -1590,7 +1590,7 @@ func _def_133(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 		var c8 := c(w, 8)
 		var c37 := c(w, 37)
 		if c1b != null and has(c1b, "ovd"):
-			if c30 != null and c30.government != 3:
+			if c30 != null and c30.government != GameConstants.Government.LIBERAL:
 				num18 += 50
 			if c35 != null and (has(c35, "亲中") or has(c35, "亲苏")):
 				num18 += 50
@@ -1606,7 +1606,7 @@ func _def_133(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 				war29a.name_war = NTE1320
 		elif c1b != null and has(c1b, "seato"):
 			add_rel(w, 1, -350)
-			if c30 != null and c30.government == 3:
+			if c30 != null and c30.government == GameConstants.Government.LIBERAL:
 				num18 += 50
 			if c35 != null and (has(c35, "亲中") or has(c35, "亲美")):
 				num18 += 50
@@ -1621,7 +1621,7 @@ func _def_133(w: WorldState, _country: CountryData, caption: String) -> Dictiona
 		else:
 			add_rel(w, 0, -350)
 			add_rel(w, 1, -350)
-			if c30 != null and c30.government == 2:
+			if c30 != null and c30.government == GameConstants.Government.REFORMIST:
 				num18 += 50
 			if c35 != null and has(c35, "亲中"):
 				num18 += 50
@@ -1775,7 +1775,7 @@ func _def_149(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			var cc := c(w, legacy_idx)
 			if cc != null and auth(w, cc):
 				num27 += 1
-			if cc != null and cc.government == 3:
+			if cc != null and cc.government == GameConstants.Government.LIBERAL:
 				num28 += 1
 		var c1 := c(w, 1)
 		if num27 >= num28:
@@ -1783,20 +1783,20 @@ func _def_149(w: WorldState, country: CountryData, caption: String) -> Dictionar
 				var any_fascist := false
 				for legacy_idx2 in [21, 45, 84, 85, 86, 87, 92]:
 					var cc2 := c(w, legacy_idx2)
-					if cc2 != null and cc2.sub_government == 9:
+					if cc2 != null and cc2.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 						any_fascist = true
 				if any_fascist:
-					country.government = 0
-					country.sub_government = 9
+					country.government = GameConstants.Government.AUTHORITARIAN
+					country.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				else:
-					country.government = 0
-					country.sub_government = 7
+					country.government = GameConstants.Government.AUTHORITARIAN
+					country.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			else:
 				country.government = c1.government
 				country.sub_government = c1.sub_government
-		elif c1 != null and c1.government != 3:
-			country.government = 3
-			country.sub_government = 5
+		elif c1 != null and c1.government != GameConstants.Government.LIBERAL:
+			country.government = GameConstants.Government.LIBERAL
+			country.sub_government = GameConstants.SubGovernment.MODERATE
 		else:
 			if c1 != null:
 				country.government = c1.government

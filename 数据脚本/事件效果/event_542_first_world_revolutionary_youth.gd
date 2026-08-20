@@ -33,7 +33,7 @@ func execute(context: Dictionary) -> void:
 	var text := TXT_R0_A + _leader_name()
 	var pm := _prime_minister_name()
 	text += TXT_R0_PM + pm + TXT_R0_SPEECH
-	if c131 != null and (c131.sub_government == 9 or c131.sub_government == 7):
+	if c131 != null and (c131.sub_government == GameConstants.SubGovernment.NEO_FASCIST or c131.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN):
 		text += TXT_R0_ZA
 	else:
 		text += TXT_R0_OTHER

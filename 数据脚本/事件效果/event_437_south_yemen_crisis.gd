@@ -22,7 +22,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var ethiopia_ok := false
 	if ethiopia != null and ethiopia.parts.size() > 1:
-		ethiopia_ok = (ethiopia.parts[1] or ethiopia.parts[0]) and ethiopia.has_tag("亲中") and ethiopia.government == 1
+		ethiopia_ok = (ethiopia.parts[1] or ethiopia.parts[0]) and ethiopia.has_tag("亲中") and ethiopia.government == GameConstants.Government.SOCIALIST
 	var cond := (somalia != null and somalia.has_tag("亲中")) or ethiopia_ok
 	cond = cond and data[W.I_BUDGET] + data[W.I_RESERVE] >= 50 \
 			and data[W.I_AGENTS] >= 50 and data[W.I_INFLUENCE] >= 100
@@ -43,7 +43,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_INFLUENCE, 50)
 			_add_relation(EmpireData.USSR, -150)
 			if south_yemen != null:
-				south_yemen.sub_government = 17
+				south_yemen.sub_government = GameConstants.SubGovernment.MAOIST
 				south_yemen.set_tag("亲中", true)
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)

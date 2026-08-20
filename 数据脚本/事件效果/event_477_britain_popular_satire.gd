@@ -30,15 +30,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var uk := world.get_country_by_legacy_index(92)
 	if uk == null:
 		return
-	if uk.government == 3:
+	if uk.government == GameConstants.Government.LIBERAL:
 		event_def.description = S_17
-	elif uk.government == 2:
+	elif uk.government == GameConstants.Government.REFORMIST:
 		event_def.description = S_22
 	elif world.is_socialism(uk, true):
 		event_def.description = S_27
 	if world.is_authoritarian(uk):
 		var text := S_31
-		if uk.sub_government == 9 or uk.sub_government == 22 or _raw_uk(world) == 9:
+		if uk.sub_government == GameConstants.SubGovernment.NEO_FASCIST or uk.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST or _raw_uk(world) == 9:
 			text += S_34
 		event_def.description = text + S_36
 
@@ -57,9 +57,9 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = S_53
 		1:
 			var text := S_61
-			if uk != null and (uk.government == 3 or ws.is_authoritarian(uk)):
+			if uk != null and (uk.government == GameConstants.Government.LIBERAL or ws.is_authoritarian(uk)):
 				text += S_64
-			elif uk != null and uk.government == 2:
+			elif uk != null and uk.government == GameConstants.Government.REFORMIST:
 				text += S_68
 			elif uk != null and ws.is_socialism(uk, true):
 				text += S_72

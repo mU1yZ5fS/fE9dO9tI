@@ -56,9 +56,9 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			var leader := TXT_R0_NAME_OTHER
-			if iran != null and iran.sub_government == 10:
+			if iran != null and iran.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 				leader = TXT_R0_NAME_NCRI
-			elif iran != null and iran.sub_government == 2:
+			elif iran != null and iran.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST:
 				leader = TXT_R0_NAME_BAZARGAN
 			context["result_text"] = TXT_R0_FMT.format([leader])
 			_add(W.I_AGENTS, -100)
@@ -69,7 +69,7 @@ func execute(context: Dictionary) -> void:
 			ws.set_flag("iranrev", true)
 		1:
 			var arg := TXT_ARG_OTHER
-			if iran != null and iran.sub_government == 10:
+			if iran != null and iran.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 				arg = TXT_ARG_NCRI
 			context["result_text"] = TXT_R1_FMT.format([arg, arg])
 			_add(W.I_ARMY, -200)

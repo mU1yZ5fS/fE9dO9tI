@@ -184,7 +184,7 @@ func is_south_african_influence() -> bool:
 	if puppet_of == 131:
 		return true
 	return 原版序号 == 131 and not has_tag("亲中") and not has_tag("亲苏") \
-		and not has_tag("亲美") and (sub_government == 7 or sub_government == 9)
+		and not has_tag("亲美") and (sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or sub_government == GameConstants.SubGovernment.NEO_FASCIST)
 
 
 ## 原版伊拉克势力（CountryScript.cs:5159-5162）：
@@ -193,7 +193,7 @@ func is_iraqi_influence() -> bool:
 	if puppet_of == 14:
 		return true
 	return 原版序号 == 14 and not has_tag("亲中") and not has_tag("亲苏") \
-		and not has_tag("亲美") and (sub_government == 10 or sub_government == 19)
+		and not has_tag("亲美") and (sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST)
 
 
 ## 原版西班牙(85)势力（CountryScript.cs:5163-5166）：
@@ -201,7 +201,7 @@ func is_iraqi_influence() -> bool:
 func is_spanish_influence() -> bool:
 	if puppet_of == 85:
 		return true
-	return 原版序号 == 85 and not has_tag("亲中") and sub_government == 9 \
+	return 原版序号 == 85 and not has_tag("亲中") and sub_government == GameConstants.SubGovernment.NEO_FASCIST \
 		and not has_tag("亲苏") and not has_tag("亲美")
 
 

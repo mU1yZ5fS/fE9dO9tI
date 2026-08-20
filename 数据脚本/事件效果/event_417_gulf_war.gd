@@ -61,7 +61,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.wars.size() > 3 and world.wars[3] != null and world.wars[3].is_going:
 		return false
-	if c14.sub_government != 10:
+	if c14.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST:
 		return false
 	if c14.puppet_of >= 0:
 		return false

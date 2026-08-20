@@ -17,7 +17,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	var c8 := world.get_country_by_legacy_index(8)
-	if ws.influence_prc >= 500 and d[W.I_WAR_SUPPORT] >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != 13:
+	if ws.influence_prc >= 500 and d[W.I_WAR_SUPPORT] >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)

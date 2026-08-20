@@ -81,7 +81,7 @@ func _opt_embargo(context: Dictionary) -> void:
 # 海地后果（Event7.cs 末尾：SubGosstroy==19 && !cw → cw=true）
 func _haiti_aftermath() -> void:
 	var haiti := ws.get_country_by_legacy_index(139)
-	if haiti != null and haiti.sub_government == 19 and not haiti.内战中:
+	if haiti != null and haiti.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST and not haiti.内战中:
 		haiti.内战中 = true
 
 

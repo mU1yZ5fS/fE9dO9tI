@@ -18,8 +18,8 @@ func execute(context: Dictionary) -> void:
 	if opt == 0:
 		if brunei != null:
 			brunei.set_tag("asean", true)
-			brunei.government = 0
-			brunei.sub_government = 13
+			brunei.government = GameConstants.Government.AUTHORITARIAN
+			brunei.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 		if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
 			ws.empires[EmpireData.USA].power += 20
 		context["result_text"] = TXT_RESULT

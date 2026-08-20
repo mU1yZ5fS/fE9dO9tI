@@ -70,25 +70,25 @@ func execute(context: Dictionary) -> void:
 	else:
 		var num2 := 0
 		var cuba := ws.get_country_by_legacy_index(138)
-		if cuba != null and cuba.sub_government == 10:
+		if cuba != null and cuba.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 			num2 = 100
 		if opt == 0:
 			if panama != null:
-				panama.government = 0
-				panama.sub_government = 10
+				panama.government = GameConstants.Government.AUTHORITARIAN
+				panama.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				panama.set_tag("对华贸易", true)
 				panama.set_tag("亲中", true)
 			_start_war(84, T_667_19, T_667_20, 150 + num * 20 + num2, 850 - num * 20 - num2, 1, 0, T_667_18, 4)
 			var text := T_667_16
-			if cuba != null and cuba.sub_government == 10:
+			if cuba != null and cuba.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 				text = text.replace("{1}", T_667_17)
 			else:
 				text = text.replace("{1}", "")
 			context["result_text"] = text
 		elif opt == 1:
 			if panama != null:
-				panama.government = 0
-				panama.sub_government = 10
+				panama.government = GameConstants.Government.AUTHORITARIAN
+				panama.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				panama.set_tag("对华贸易", true)
 				panama.set_tag("亲中", true)
 			_start_war(84, T_667_23, T_667_24, 50 + num * 20 + num2, 950 - num * 20 - num2, 1, 0, T_667_22, 4)

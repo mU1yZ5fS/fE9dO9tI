@@ -49,9 +49,9 @@ func execute(context: Dictionary) -> void:
 		d[174] += 1
 	if c85 != null and c85.usa_influence > 0:
 		d[173] += 2
-	if c87 != null and c87.sub_government == 1:
+	if c87 != null and c87.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 		d[173] += 1
-	elif c87 != null and c87.sub_government == 0:
+	elif c87 != null and c87.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 		d[172] += 1
 	if ws.modifiers[43].is_active:
 		d[172] += 1

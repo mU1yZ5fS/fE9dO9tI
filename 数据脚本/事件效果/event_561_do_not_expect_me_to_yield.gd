@@ -22,7 +22,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c21 := world.get_country_by_legacy_index(21)
 	var c55 := world.get_country_by_legacy_index(55)
 	var line := d[W.I_POLITICAL_LINE]
-	if line < 2 and c40 != null and c40.sub_government != 5 and not c40.has_tag("亲美"):
+	if line < 2 and c40 != null and c40.sub_government != GameConstants.SubGovernment.MODERATE and not c40.has_tag("亲美"):
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
@@ -45,8 +45,8 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if c55 != null:
-				c55.government = 0
-				c55.sub_government = 10
+				c55.government = GameConstants.Government.AUTHORITARIAN
+				c55.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				_leave_alliances(c55)
 				c55.puppet_of = 13
 				c55.set_tag("对华贸易", true)
@@ -59,8 +59,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			_add(W.I_BUDGET, -100)
 			if c13 != null:
-				c13.government = 0
-				c13.sub_government = 7
+				c13.government = GameConstants.Government.AUTHORITARIAN
+				c13.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c13)
 				c13.puppet_of = 21
 				c13.set_tag("对华贸易", true)

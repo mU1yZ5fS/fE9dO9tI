@@ -55,8 +55,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_AGENTS, -50)
 			if ethiopia != null:
-				ethiopia.government = 1
-				ethiopia.sub_government = 17
+				ethiopia.government = GameConstants.Government.SOCIALIST
+				ethiopia.sub_government = GameConstants.SubGovernment.MAOIST
 				_leave_alliances(ethiopia)
 				ethiopia.set_tag("对华贸易", true)
 				ethiopia.chinese_name = "埃塞俄比亚民主联邦共和国"
@@ -64,8 +64,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			_add(W.I_BUDGET, -80)
 			if ethiopia != null:
-				ethiopia.government = 0
-				ethiopia.sub_government = 10
+				ethiopia.government = GameConstants.Government.AUTHORITARIAN
+				ethiopia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				_leave_alliances(ethiopia)
 				ethiopia.set_tag("亲中", true)
 				ethiopia.set_tag("亲苏", false)
@@ -78,13 +78,13 @@ func execute(context: Dictionary) -> void:
 		2:
 			_add(W.I_ARMY, -50)
 			if ethiopia != null:
-				ethiopia.government = 0
-				ethiopia.sub_government = 10
+				ethiopia.government = GameConstants.Government.AUTHORITARIAN
+				ethiopia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			context["result_text"] = TXT_R2
 		3:
 			if ethiopia != null:
-				ethiopia.government = 0
-				ethiopia.sub_government = 10
+				ethiopia.government = GameConstants.Government.AUTHORITARIAN
+				ethiopia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			context["result_text"] = TXT_R3
 
 

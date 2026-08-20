@@ -21,10 +21,10 @@ func execute(context: Dictionary) -> void:
 	var yugo := ws.get_country_by_legacy_index(15)
 	var china := ws.get_country_by_legacy_index(1)
 	var mod6: bool = ws.modifiers.size() > 6 and ws.modifiers[6] != null and ws.modifiers[6].is_active
-	if not ws.get_flag("relres") and (china != null and china.sub_government == 16 or mod6):
+	if not ws.get_flag("relres") and (china != null and china.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or mod6):
 		d[W.I_COMMUNICATIONS] += 100
 	var flag_albania := false
-	if albania != null and not albania.has_tag("亲中") and albania.government != 2:
+	if albania != null and not albania.has_tag("亲中") and albania.government != GameConstants.Government.REFORMIST:
 		albania.set_tag("sev", true)
 		albania.set_tag("ovd", true)
 		albania.set_tag("亲苏", true)
@@ -32,12 +32,12 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USSR, 50)
 		flag_albania = true
 	var flag_yugo := false
-	if yugo != null and yugo.government == 0 and not yugo.has_tag("fxseu") and not yugo.has_tag("nazimao"):
+	if yugo != null and yugo.government == GameConstants.Government.AUTHORITARIAN and not yugo.has_tag("fxseu") and not yugo.has_tag("nazimao"):
 		yugo.set_tag("sev", true)
 		yugo.set_tag("ovd", true)
 		yugo.set_tag("亲苏", true)
-		if yugo.sub_government == 0:
-			yugo.sub_government = 16
+		if yugo.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
+			yugo.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 		_add(W.I_INFLUENCE, -15)
 		_add_power(EmpireData.USSR, 50)
 		flag_yugo = true

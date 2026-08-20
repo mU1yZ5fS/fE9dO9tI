@@ -39,10 +39,10 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if ws.is_socialism(china, false) and china != null and china.government != 3 \
+	if ws.is_socialism(china, false) and china != null and china.government != GameConstants.Government.LIBERAL \
 			and (quebec == null or quebec.parts.size() == 0 or not quebec.parts[0]):
 		_enable(opt[2], event_def.options[2].text)
-	elif ws.is_socialism(china, true) or (china != null and china.government == 3):
+	elif ws.is_socialism(china, true) or (china != null and china.government == GameConstants.Government.LIBERAL):
 		_disable(opt[2], TXT_OPT2_DIS_A)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS_B)
@@ -67,8 +67,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -500)
 			if canada != null:
 				_leave_alliances(canada)
-				canada.government = 0
-				canada.sub_government = 20
+				canada.government = GameConstants.Government.AUTHORITARIAN
+				canada.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				canada.set_tag("对华贸易", true)
 				canada.set_tag("亲中", true)
 			ws.influence_prc += 50
@@ -82,15 +82,15 @@ func execute(context: Dictionary) -> void:
 			if ws.result_of_event_num(701) == 2:
 				context["result_text"] = TXT_R1_LEFT
 				if canada != null:
-					canada.government = 2
-					canada.sub_government = 3
+					canada.government = GameConstants.Government.REFORMIST
+					canada.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				ws.influence_prc += 30
 				_add_relation(EmpireData.USA, -250)
 			else:
 				context["result_text"] = TXT_R1_PLAIN
 				if canada != null:
-					canada.government = 3
-					canada.sub_government = 4
+					canada.government = GameConstants.Government.LIBERAL
+					canada.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				ws.influence_prc += 20
 				_add_relation(EmpireData.USA, -150)
 		2:
@@ -99,8 +99,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -500)
 			if canada != null:
 				_leave_alliances(canada)
-				canada.government = 2
-				canada.sub_government = 8
+				canada.government = GameConstants.Government.REFORMIST
+				canada.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				canada.set_tag("对华贸易", true)
 			ws.influence_prc += 20
 			_add_relation(EmpireData.USA, -100)
@@ -112,8 +112,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, -100)
 			if canada != null:
 				_leave_alliances(canada)
-				canada.government = 0
-				canada.sub_government = 7
+				canada.government = GameConstants.Government.AUTHORITARIAN
+				canada.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				canada.set_tag("亲美", true)
 				canada.set_tag("对华贸易", false)
 			ws.influence_prc -= 10

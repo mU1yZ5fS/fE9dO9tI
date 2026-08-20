@@ -49,7 +49,7 @@ func evaluate(world: WorldState) -> bool:
 	var romania := world.get_country_by_legacy_index(5)
 	if west == null or east == null:
 		return false
-	if west.government != 2 and not west.has_tag("soc_eu"):
+	if west.government != GameConstants.Government.REFORMIST and not west.has_tag("soc_eu"):
 		return false
 	if _part_true(west, 0):
 		return false
@@ -82,7 +82,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if (china != null and (china.government == 2 or china.government == 3)) or econ >= 13:
+	if (china != null and (china.government == GameConstants.Government.REFORMIST or china.government == GameConstants.Government.LIBERAL)) or econ >= 13:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
@@ -114,7 +114,7 @@ func execute(context: Dictionary) -> void:
 				if gdr != null:
 					_leave_alliances(gdr)
 					gdr.set_tag("亲中", true)
-					gdr.sub_government = 2
+					gdr.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 					_join_alliances(gdr)
 					gdr.set_tag("对华贸易", true)
 				ws.influence_prc += 50
@@ -127,7 +127,7 @@ func execute(context: Dictionary) -> void:
 				if gdr != null:
 					gdr.set_tag("ovd", false)
 					gdr.set_tag("亲苏", false)
-					gdr.sub_government = 1
+					gdr.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 					gdr.set_tag("对华贸易", true)
 				ws.influence_prc += 20
 				_add_power(EmpireData.USSR, -20)
@@ -136,8 +136,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			_add(W.I_DIPLO, 100)
 			if gdr != null:
-				gdr.government = 0
-				gdr.sub_government = 10
+				gdr.government = GameConstants.Government.AUTHORITARIAN
+				gdr.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				_leave_alliances(gdr)
 				gdr.set_tag("亲中", true)
 				gdr.set_tag("对华贸易", true)
@@ -152,8 +152,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -50)
 			if gdr != null:
 				gdr.set_tag("亲苏", false)
-				gdr.government = 2
-				gdr.sub_government = 21
+				gdr.government = GameConstants.Government.REFORMIST
+				gdr.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				gdr.set_tag("对华贸易", true)
 			context["result_text"] = TXT_R2
 		3:
@@ -166,8 +166,8 @@ func execute(context: Dictionary) -> void:
 			if gdr != null:
 				_leave_alliances(gdr)
 				gdr.set_tag("亲中", true)
-				gdr.government = 2
-				gdr.sub_government = 8
+				gdr.government = GameConstants.Government.REFORMIST
+				gdr.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				_join_alliances(gdr)
 				gdr.set_tag("对华贸易", true)
 			context["result_text"] = TXT_R3
@@ -180,7 +180,7 @@ func execute(context: Dictionary) -> void:
 				var text := TXT_R4_REVOLT
 				if gdr != null:
 					gdr.内战中 = true
-				if west != null and west.sub_government == 22:
+				if west != null and west.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
 					text += TXT_R4_EICHBERG
 					if west != null:
 						_set_part(west, 0, true)
@@ -190,7 +190,7 @@ func execute(context: Dictionary) -> void:
 					if gdr != null:
 						_leave_alliances(gdr)
 					_set_modifier_active(53, false)
-				elif west != null and west.sub_government == 9:
+				elif west != null and west.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 					text += TXT_R4_REMER
 					if west != null:
 						_set_part(west, 0, true)

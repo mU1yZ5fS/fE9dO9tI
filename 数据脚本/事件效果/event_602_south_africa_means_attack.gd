@@ -47,14 +47,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[0], TXT_OPT0_DIS)
 	if line < 2 and world.get_flag("relres") and china != null and china.has_tag("ovd") \
 			and south_africa != null and south_africa.内战中 \
-			and (zimbabwe == null or zimbabwe.government != 3) \
-			and (mozambique == null or mozambique.government != 3) \
+			and (zimbabwe == null or zimbabwe.government != GameConstants.Government.LIBERAL) \
+			and (mozambique == null or mozambique.government != GameConstants.Government.LIBERAL) \
 			and (zimbabwe == null or not zimbabwe.has_tag("亲美")) \
 			and (mozambique == null or not mozambique.has_tag("亲美")):
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if china != null and china.government == 3 and south_africa != null and south_africa.内战中 \
+	if china != null and china.government == GameConstants.Government.LIBERAL and south_africa != null and south_africa.内战中 \
 			and usa != null and usa.development == 1 \
 			and (zimbabwe == null or zimbabwe.puppet_of < 0) \
 			and world.empires.size() > EmpireData.USA and world.empires.size() > EmpireData.USSR \
@@ -72,7 +72,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
-	if line > 1 and china != null and china.government != 1 and ws.influence_prc > 500:
+	if line > 1 and china != null and china.government != GameConstants.Government.SOCIALIST and ws.influence_prc > 500:
 		_enable(opt[4], event_def.options[4].text)
 	else:
 		_disable(opt[4], TXT_OPT4_DIS)
@@ -92,7 +92,7 @@ func execute(context: Dictionary) -> void:
 		num = 50
 	match opt:
 		0:
-			if namibia != null and namibia.government == 1:
+			if namibia != null and namibia.government == GameConstants.Government.SOCIALIST:
 				context["result_text"] = TXT_R0_A
 				_start_war(54, TXT_WAR_NAME, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 400 + num, 600 - num, 1, -1, 24)
 			else:
@@ -100,7 +100,7 @@ func execute(context: Dictionary) -> void:
 				_start_war(54, TXT_WAR_NAME, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 500 + num, 500 - num, 1, 0, 24)
 			if south_africa != null:
 				_set_part(south_africa, 0, true)
-				south_africa.sub_government = 9
+				south_africa.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_add(W.I_AGENTS, -50)
 			_add(W.I_ARMY, -120)
 			_add_relation(EmpireData.USA, -150)
@@ -109,7 +109,7 @@ func execute(context: Dictionary) -> void:
 			_start_war(55, TXT_WAR1_NAME, TXT_WAR1_SIDE1, TXT_WAR1_SIDE2, 500 + num, 500 - num, 1, 0, 24)
 			if south_africa != null:
 				_set_part(south_africa, 1, true)
-				south_africa.sub_government = 9
+				south_africa.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			_add(W.I_AGENTS, -50)
 			_add(W.I_ARMY, -60)
 			_add_relation(EmpireData.USA, -150)
@@ -119,8 +119,8 @@ func execute(context: Dictionary) -> void:
 			if world_empire_leader_is(0, 1):
 				text2 += TXT_R2_REFORM
 				if south_africa != null:
-					south_africa.government = 3
-					south_africa.sub_government = 12
+					south_africa.government = GameConstants.Government.LIBERAL
+					south_africa.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 					south_africa.set_tag("亲美", true)
 					south_africa.set_tag("对华贸易", true)
 			else:
@@ -132,8 +132,8 @@ func execute(context: Dictionary) -> void:
 		3:
 			context["result_text"] = TXT_R3
 			if south_africa != null:
-				south_africa.government = 3
-				south_africa.sub_government = 5
+				south_africa.government = GameConstants.Government.LIBERAL
+				south_africa.sub_government = GameConstants.SubGovernment.MODERATE
 				south_africa.set_tag("对华贸易", true)
 			_add(W.I_AGENTS, -100)
 			_add(W.I_BUDGET, -100)
@@ -147,14 +147,14 @@ func execute(context: Dictionary) -> void:
 				var i := int(c.原版序号)
 				if ((i >= 52 and i < 69) or (i > 105 and i < 109) or (i > 111 and i < 134) \
 						or i == 41 or i == 42 or i == 52 or i == 99 or i == 100 or i == 150 or i == 151) \
-						and i != 128 and (c.government == 1 or c.government == 2 or c.sub_government == 0):
+						and i != 128 and (c.government == GameConstants.Government.SOCIALIST or c.government == GameConstants.Government.REFORMIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 					c.set_tag("亲中", false)
 					c.set_tag("econ", false)
 					c.set_tag("okb", false)
 					c.set_tag("对华贸易", false)
 			if south_africa != null:
-				south_africa.government = 2
-				south_africa.sub_government = 8
+				south_africa.government = GameConstants.Government.REFORMIST
+				south_africa.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				_leave_alliances(south_africa)
 				_establish_prochina(south_africa)
 				south_africa.set_tag("对华贸易", true)

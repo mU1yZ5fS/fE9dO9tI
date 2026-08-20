@@ -33,9 +33,9 @@ func execute(context: Dictionary) -> void:
 	var italy := ws.get_country_by_legacy_index(85)
 	if eritrea != null:
 		eritrea.puppet_of = 85
-		if italy != null and italy.sub_government == 22:
+		if italy != null and italy.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
 			eritrea.government = 22
-			eritrea.sub_government = 22
+			eritrea.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 	var war: WarData = null
 	if ws.wars.size() > 26:
 		war = ws.wars[26]

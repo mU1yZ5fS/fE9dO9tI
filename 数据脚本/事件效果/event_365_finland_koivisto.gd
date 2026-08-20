@@ -78,7 +78,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if finland != null:
-				finland.sub_government = 3
+				finland.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				finland.set_tag("sev", true)
 			ws.influence_prc += 10
 			_add(W.I_BUDGET, -100)
@@ -92,8 +92,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 		1:
 			if finland != null:
-				finland.government = 3
-				finland.sub_government = 6
+				finland.government = GameConstants.Government.LIBERAL
+				finland.sub_government = GameConstants.SubGovernment.LIBERAL
 				finland.set_tag("亲苏", false)
 				finland.set_tag("对华贸易", true)
 			ws.influence_prc += 20

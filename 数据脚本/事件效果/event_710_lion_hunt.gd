@@ -25,7 +25,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null:
 		return
 	var syria := world.get_country_by_legacy_index(35)
-	if syria != null and (syria.sub_government == 15 or syria.sub_government == 10):
+	if syria != null and (syria.sub_government == GameConstants.SubGovernment.PRAGMATIST or syria.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST):
 		event_def.description = TXT_DESC_A + TXT_DESC_TAIL
 	else:
 		var syria_name := ""

@@ -34,7 +34,7 @@ func evaluate(world: WorldState) -> bool:
 	if not world.completed_event_ids.has("event_390"):
 		return false
 	var c21 := world.get_country_by_legacy_index(21)
-	if c21 == null or c21.government != 1:
+	if c21 == null or c21.government != GameConstants.Government.SOCIALIST:
 		return false
 	var flag := false
 	for c in world.countries:
@@ -88,8 +88,8 @@ func execute(context: Dictionary) -> void:
 			c.puppet_of = -1
 			_leave_alliances(c)
 			c.set_tag("亲苏", true)
-			c.government = 1
-			c.sub_government = 16
+			c.government = GameConstants.Government.SOCIALIST
+			c.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 			if ws.get_flag("relres") or (china != null and china.has_tag("sev")):
 				c.set_tag("对华贸易", true)
 			num += 1

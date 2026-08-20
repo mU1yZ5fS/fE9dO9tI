@@ -19,8 +19,8 @@ func execute(context: Dictionary) -> void:
 			_set_relation(EmpireData.USSR, 0)
 			var poland := _country(4)
 			if poland != null:
-				poland.government = 1
-				poland.sub_government = 2
+				poland.government = GameConstants.Government.SOCIALIST
+				poland.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				poland.set_tag("亲中", true)
 
 

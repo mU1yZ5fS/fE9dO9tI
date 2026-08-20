@@ -63,17 +63,17 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			var text := TXT_R0_INTRO
-			if france != null and (france.sub_government == 3 or france.sub_government == 14):
+			if france != null and (france.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST or france.sub_government == GameConstants.SubGovernment.EUROCOMMUNIST):
 				text += TXT_R0_LEFT
 				if gabon != null:
-					gabon.government = 2
-					gabon.sub_government = 15
+					gabon.government = GameConstants.Government.REFORMIST
+					gabon.sub_government = GameConstants.SubGovernment.PRAGMATIST
 					gabon.puppet_of = 21
 			else:
 				text += TXT_R0_ELSE
 				if gabon != null:
-					gabon.government = 0
-					gabon.sub_government = 20
+					gabon.government = GameConstants.Government.AUTHORITARIAN
+					gabon.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					gabon.puppet_of = 21
 			context["result_text"] = text
 		1:
@@ -85,28 +85,28 @@ func execute(context: Dictionary) -> void:
 				gabon.set_tag("对华贸易", true)
 			if _empire_power(0) > ws.influence_prc:
 				if gabon != null:
-					gabon.government = 0
-					gabon.sub_government = 20
+					gabon.government = GameConstants.Government.AUTHORITARIAN
+					gabon.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					gabon.set_tag("亲美", true)
 				_add_power(EmpireData.USA, 20)
-			elif ws.is_socialism(china, true) or (china != null and china.government == 2):
+			elif ws.is_socialism(china, true) or (china != null and china.government == GameConstants.Government.REFORMIST):
 				if gabon != null:
-					gabon.government = 2
-					gabon.sub_government = 8
+					gabon.government = GameConstants.Government.REFORMIST
+					gabon.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 					gabon.set_tag("亲中", true)
 				ws.influence_prc += 10
 				ws.oil_prod += 100.0  # Event619.cs result1 社会主义分支：加蓬石油合作
 			elif ws.is_authoritarian(china):
 				if gabon != null:
-					gabon.government = 0
-					gabon.sub_government = 20
+					gabon.government = GameConstants.Government.AUTHORITARIAN
+					gabon.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					gabon.set_tag("亲中", true)
 				ws.influence_prc += 10
 				ws.oil_prod += 100.0  # Event619.cs result1 威权分支
 			else:
 				if gabon != null:
-					gabon.government = 3
-					gabon.sub_government = 5
+					gabon.government = GameConstants.Government.LIBERAL
+					gabon.sub_government = GameConstants.SubGovernment.MODERATE
 					gabon.set_tag("亲中", true)
 				ws.influence_prc += 10
 				ws.oil_prod += 100.0  # Event619.cs result1 其他分支
@@ -115,8 +115,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -80)
 			if gabon != null:
-				gabon.government = 3
-				gabon.sub_government = 6
+				gabon.government = GameConstants.Government.LIBERAL
+				gabon.sub_government = GameConstants.SubGovernment.LIBERAL
 				_leave_alliances(gabon)
 				gabon.set_tag("对华贸易", true)
 				gabon.set_tag("亲中", true)
@@ -127,8 +127,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
 			if gabon != null:
-				gabon.government = 2
-				gabon.sub_government = 3
+				gabon.government = GameConstants.Government.REFORMIST
+				gabon.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				_leave_alliances(gabon)
 				gabon.set_tag("对华贸易", true)
 				gabon.set_tag("亲中", true)
@@ -140,8 +140,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -150)
 			_add(W.I_ARMY, -150)
 			if gabon != null:
-				gabon.government = 1
-				gabon.sub_government = 1
+				gabon.government = GameConstants.Government.SOCIALIST
+				gabon.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(gabon)
 				gabon.set_tag("对华贸易", true)
 				gabon.set_tag("亲中", true)

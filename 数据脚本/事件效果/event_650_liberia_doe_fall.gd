@@ -50,14 +50,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[1], TXT_OPT1_DIS)
 	var usa_leader3 := world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null \
 			and world.empires[EmpireData.USA].current_leader == 3
-	if china != null and china.government == 3 and usa != null and usa.development == 1 and usa_leader3:
+	if china != null and china.government == GameConstants.Government.LIBERAL and usa != null and usa.development == 1 and usa_leader3:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
 	var cond := liberia != null and liberia.has_tag("对华贸易") \
-			and china != null and china.sub_government == 19 \
-			and ethiopia != null and ethiopia.sub_government == 19 \
-			and c117 != null and c117.sub_government == 19
+			and china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
+			and ethiopia != null and ethiopia.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
+			and c117 != null and c117.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST
 	if cond:
 		_enable(opt[3], event_def.options[3].text)
 	else:
@@ -77,11 +77,11 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -30)
 			_add(W.I_ARMY, -30)
-			if burkina != null and burkina.sub_government == 15:
+			if burkina != null and burkina.sub_government == GameConstants.SubGovernment.PRAGMATIST:
 				var tname := _leader_name()
 				if liberia != null:
-					liberia.government = 0
-					liberia.sub_government = 9
+					liberia.government = GameConstants.Government.AUTHORITARIAN
+					liberia.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 					_leave_alliances(liberia)
 					liberia.set_tag("亲中", true)
 					liberia.set_tag("对华贸易", true)
@@ -94,8 +94,8 @@ func execute(context: Dictionary) -> void:
 				if int(ws.completed_event_ids.get("event_500", 0)) == 0:
 					text += TXT_R1_LEFT
 					if liberia != null:
-						liberia.government = 1
-						liberia.sub_government = 1
+						liberia.government = GameConstants.Government.SOCIALIST
+						liberia.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 						_leave_alliances(liberia)
 						liberia.set_tag("亲中", true)
 						liberia.set_tag("对华贸易", true)
@@ -106,8 +106,8 @@ func execute(context: Dictionary) -> void:
 				else:
 					text += TXT_R1_PROCHINA
 					if liberia != null:
-						liberia.government = 2
-						liberia.sub_government = 15
+						liberia.government = GameConstants.Government.REFORMIST
+						liberia.sub_government = GameConstants.SubGovernment.PRAGMATIST
 						_leave_alliances(liberia)
 						liberia.set_tag("亲中", true)
 						liberia.set_tag("对华贸易", true)
@@ -118,8 +118,8 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = text
 		2:
 			if liberia != null:
-				liberia.government = 3
-				liberia.sub_government = 6
+				liberia.government = GameConstants.Government.LIBERAL
+				liberia.sub_government = GameConstants.SubGovernment.LIBERAL
 				_leave_alliances(liberia)
 				liberia.set_tag("亲美", true)
 				liberia.set_tag("对华贸易", true)
@@ -131,8 +131,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 		3:
 			if liberia != null:
-				liberia.government = 0
-				liberia.sub_government = 19
+				liberia.government = GameConstants.Government.AUTHORITARIAN
+				liberia.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				_leave_alliances(liberia)
 				liberia.set_tag("亲中", true)
 				liberia.set_tag("对华贸易", true)

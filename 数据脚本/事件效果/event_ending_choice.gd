@@ -61,14 +61,14 @@ func _apply_farewell_updates() -> void:
 	var ussr: EmpireData = ws.empires[1] if ws.empires.size() > 1 else null
 	var usa: EmpireData = ws.empires[0] if ws.empires.size() > 0 else null
 	# in1992_script.cs:79-82
-	if c61 != null and c51 != null and c61.sub_government != 0 and c51.has_tag("nato"):
+	if c61 != null and c51 != null and c61.sub_government != GameConstants.SubGovernment.LEFT_RADICAL and c51.has_tag("nato"):
 		if usa != null:
 			usa.power += 5
 	# :83-86
-	if c1 != null and c51 != null and (c1.government == 1 or c1.sub_government == 0):
+	if c1 != null and c51 != null and (c1.government == GameConstants.Government.SOCIALIST or c1.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 		c51.development = 0
 	# :87-97
-	if c1 != null and c51 != null and c1.government == 3 and (ussr == null or ussr.current_leader != 6):
+	if c1 != null and c51 != null and c1.government == GameConstants.Government.LIBERAL and (ussr == null or ussr.current_leader != 6):
 		if ussr != null and usa != null and ussr.relations >= usa.relations:
 			c51.set_tag("对华贸易", false)
 		else:
@@ -95,7 +95,7 @@ func _apply_farewell_updates() -> void:
 		# :114-121
 		var relres: bool = ws.get_flag("relres")
 		var c4_prosov: bool = c4 != null and c4.has_tag("亲苏")
-		if (relres and d[W.I_ECON_SYSTEM] == 11) or (c4 != null and c4.government == 1 and c4_prosov):
+		if (relres and d[W.I_ECON_SYSTEM] == 11) or (c4 != null and c4.government == GameConstants.Government.SOCIALIST and c4_prosov):
 			ussr.power += 100
 		else:
 			ussr.power += 50

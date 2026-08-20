@@ -49,7 +49,7 @@ func evaluate(world: WorldState) -> bool:
 	var c92 := world.get_country_by_legacy_index(92)
 	if c92 == null:
 		return false
-	if not (world.数值表[147] == 6 or c92.sub_government == 18):
+	if not (world.数值表[147] == 6 or c92.sub_government == GameConstants.SubGovernment.TROTSKYIST):
 		return false
 	return (world.date.year >= 1984 and world.date.month >= 11) or world.date.year >= 1985
 
@@ -59,7 +59,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var uk := world.get_country_by_legacy_index(92)
 	var opt := event_def.options
-	if uk != null and uk.sub_government == 18:
+	if uk != null and uk.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		event_def.title = S_21
 		event_def.description = S_22
 		if not _mod_active(world, 3) and _dval(world, W.I_POLITICAL_LINE) <= 2:
@@ -106,7 +106,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var uk := ws.get_country_by_legacy_index(92)
 	var opt := int(context.get("option_index", -1))
-	if uk != null and uk.sub_government != 18:
+	if uk != null and uk.sub_government != GameConstants.SubGovernment.TROTSKYIST:
 		_execute_conspiracy(uk, opt, context)
 	else:
 		_execute_cable_street(uk, opt, context)
@@ -118,8 +118,8 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 	if opt == 0:
 		var arg := S_117_1 if (not _part(c29, 0) and not _part(c166, 0)) else ""
 		var text := S_117_0.replace("{0}", arg)
-		uk.government = 1
-		uk.sub_government = 1
+		uk.government = GameConstants.Government.SOCIALIST
+		uk.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 		uk.set_tag("对华贸易", true)
 		uk.set_tag("亲中", true)
 		ws.influence_prc += 50
@@ -140,8 +140,8 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 				and (c7 == null or not c7.has_tag("nato")) and num >= 2:
 			var arg := S_174_1 if (not _part(c29, 0) and not _part(c166, 0)) else ""
 			var text := S_174_0.replace("{0}", arg)
-			uk.government = 1
-			uk.sub_government = 1
+			uk.government = GameConstants.Government.SOCIALIST
+			uk.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			uk.set_tag("亲苏", true)
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
 				var leaders := ws.empires[EmpireData.USSR].leaders
@@ -154,8 +154,8 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 		else:
 			var arg := S_214_1 if not _part(c29, 0) else S_214_2
 			var text := S_214_0.replace("{0}", arg)
-			uk.government = 0
-			uk.sub_government = 7
+			uk.government = GameConstants.Government.AUTHORITARIAN
+			uk.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			uk.set_tag("亲美", true)
 			if c0 != null and c0.has_tag("nato"):
 				uk.set_tag("nato", true)
@@ -182,8 +182,8 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 		if ws.is_socialism(ws.get_country_by_legacy_index(17), true):
 			num += 2
 		if num < 5:
-			uk.government = 0
-			uk.sub_government = 9
+			uk.government = GameConstants.Government.AUTHORITARIAN
+			uk.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			uk.set_tag("亲美", false)
 			uk.set_tag("nato", false)
 			uk.set_tag("eu", false)
@@ -194,8 +194,8 @@ func _execute_conspiracy(uk: CountryData, opt: int, context: Dictionary) -> void
 		else:
 			var arg := S_272_1 if (not _part(c29, 0) and not _part(c166, 0)) else ""
 			var text := S_272_0.replace("{0}", arg)
-			uk.government = 1
-			uk.sub_government = 1
+			uk.government = GameConstants.Government.SOCIALIST
+			uk.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			uk.set_tag("亲中", true)
 			uk.set_tag("对华贸易", true)
 			ws.influence_prc += 50
@@ -232,7 +232,7 @@ func _execute_cable_street(uk: CountryData, opt: int, context: Dictionary) -> vo
 		if uk != null and uk.has_tag("okb"):
 			num += 1
 		for c in ws.countries:
-			if c != null and c.sub_government == 18:
+			if c != null and c.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 				num += 1
 		if ws.is_socialism(ws.get_country_by_legacy_index(21), true):
 			num += 2
@@ -250,8 +250,8 @@ func _execute_cable_street(uk: CountryData, opt: int, context: Dictionary) -> vo
 			context["result_text"] = S_360
 		else:
 			if uk != null:
-				uk.government = 0
-				uk.sub_government = 9
+				uk.government = GameConstants.Government.AUTHORITARIAN
+				uk.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				uk.set_tag("亲美", false)
 				uk.set_tag("nato", false)
 				uk.set_tag("eu", false)
@@ -262,8 +262,8 @@ func _execute_cable_street(uk: CountryData, opt: int, context: Dictionary) -> vo
 			context["result_text"] = S_368
 	elif opt == 1:
 		if uk != null:
-			uk.government = 0
-			uk.sub_government = 9
+			uk.government = GameConstants.Government.AUTHORITARIAN
+			uk.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			uk.set_tag("亲美", false)
 			uk.set_tag("nato", false)
 			uk.set_tag("eu", false)

@@ -34,8 +34,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if c != null:
-				c.government = 2
-				c.sub_government = 15
+				c.government = GameConstants.Government.REFORMIST
+				c.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_leave_alliances(c)
 				c.set_tag("对华贸易", true)
 				c.set_tag("亲中", true)
@@ -45,8 +45,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			context["result_text"] = TXT_R1
 			if c != null:
-				c.government = 0
-				c.sub_government = 7
+				c.government = GameConstants.Government.AUTHORITARIAN
+				c.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c)
 				c.puppet_of = 21
 				c.set_tag("对华贸易", true)
@@ -54,7 +54,7 @@ func execute(context: Dictionary) -> void:
 		2:
 			context["result_text"] = TXT_R2
 			if c != null:
-				c.government = 0
-				c.sub_government = 7
+				c.government = GameConstants.Government.AUTHORITARIAN
+				c.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c)
 				c.puppet_of = 21

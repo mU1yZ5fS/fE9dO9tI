@@ -63,14 +63,14 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R0_FAIL
 				if guinea_bissau != null:
-					guinea_bissau.government = 0
-					guinea_bissau.sub_government = 7
+					guinea_bissau.government = GameConstants.Government.AUTHORITARIAN
+					guinea_bissau.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					_leave_alliances(guinea_bissau)
 		1:
 			context["result_text"] = TXT_R1
 			if guinea_bissau != null:
-				guinea_bissau.government = 0
-				guinea_bissau.sub_government = 10
+				guinea_bissau.government = GameConstants.Government.AUTHORITARIAN
+				guinea_bissau.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				guinea_bissau.set_tag("亲中", true)
 				guinea_bissau.set_tag("对华贸易", true)
 			_add(W.I_AGENTS, -50)
@@ -78,15 +78,15 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 			if guinea_bissau != null:
 				guinea_bissau.puppet_of = 21
-				guinea_bissau.government = 3
-				guinea_bissau.sub_government = 4
+				guinea_bissau.government = GameConstants.Government.LIBERAL
+				guinea_bissau.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				guinea_bissau.set_tag("对华贸易", true)
 			_add(W.I_AGENTS, -50)
 		3:
 			context["result_text"] = TXT_R3
 			if guinea_bissau != null:
-				guinea_bissau.government = 0
-				guinea_bissau.sub_government = 10
+				guinea_bissau.government = GameConstants.Government.AUTHORITARIAN
+				guinea_bissau.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 
 
 

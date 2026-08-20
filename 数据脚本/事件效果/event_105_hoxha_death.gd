@@ -53,8 +53,8 @@ func execute(context: Dictionary) -> void:
 			if d.size() > W.I_ALBANIA_BREAK:
 				d[W.I_ALBANIA_BREAK] = 2
 			if albania != null:
-				albania.government = 1
-				albania.sub_government = 1
+				albania.government = GameConstants.Government.SOCIALIST
+				albania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			context["result_text"] = TXT_R0
 		1:
 			_add(W.I_AGENTS, -60)
@@ -64,19 +64,19 @@ func execute(context: Dictionary) -> void:
 			var text := ""
 			if albania != null and albania.parts.size() > 0 and albania.parts[0]:
 				text = TXT_R1_A
-				albania.government = 0
-				albania.sub_government = 10
-			elif albania != null and albania.government == 1:
+				albania.government = GameConstants.Government.AUTHORITARIAN
+				albania.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
+			elif albania != null and albania.government == GameConstants.Government.SOCIALIST:
 				text = TXT_R1_B
-				albania.government = 0
-				albania.sub_government = 0
+				albania.government = GameConstants.Government.AUTHORITARIAN
+				albania.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				if albania.special == 1:
 					text += TXT_R1_EXTRA
 					albania.set_tag("balecon", true)
-			elif albania != null and albania.government == 0:
+			elif albania != null and albania.government == GameConstants.Government.AUTHORITARIAN:
 				text = TXT_R1_C
-				albania.government = 0
-				albania.sub_government = 10
+				albania.government = GameConstants.Government.AUTHORITARIAN
+				albania.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				if albania.special == 1:
 					text += TXT_R1_EXTRA
 					albania.set_tag("balecon", true)
@@ -85,8 +85,8 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 15
 			if albania != null:
 				albania.set_tag("对华贸易", true)
-				albania.government = 1
-				albania.sub_government = 1
+				albania.government = GameConstants.Government.SOCIALIST
+				albania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			if d.size() > W.I_ALBANIA_BREAK:
 				d[W.I_ALBANIA_BREAK] = 2
 			_add(W.I_PARTY_SUPPORT, 100)

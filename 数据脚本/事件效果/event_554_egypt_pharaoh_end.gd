@@ -22,7 +22,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var c8 := world.get_country_by_legacy_index(8)
 	var r37 := int(ws.completed_event_ids.get("egyptian_unrest", 0))
-	if ws.influence_prc >= 500 and d[W.I_WAR_SUPPORT] >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != 13:
+	if ws.influence_prc >= 500 and d[W.I_WAR_SUPPORT] >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
@@ -46,8 +46,8 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if c30 != null:
-				c30.sub_government = 9
-				c30.government = 0
+				c30.sub_government = GameConstants.SubGovernment.NEO_FASCIST
+				c30.government = GameConstants.Government.AUTHORITARIAN
 				_leave_alliances(c30)
 				c30.set_tag("对华贸易", true)
 			ws.influence_prc += 10
@@ -65,8 +65,8 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_AGENTS, -150)
 				_add(W.I_ARMY, -150)
 				if c30 != null:
-					c30.sub_government = 1
-					c30.government = 1
+					c30.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
+					c30.government = GameConstants.Government.SOCIALIST
 					_leave_alliances(c30)
 					c30.set_tag("亲中", true)
 					c30.set_tag("对华贸易", true)
@@ -88,8 +88,8 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_AGENTS, -150)
 				_add(W.I_ARMY, -150)
 				if c30 != null:
-					c30.government = 3
-					c30.sub_government = 6
+					c30.government = GameConstants.Government.LIBERAL
+					c30.sub_government = GameConstants.SubGovernment.LIBERAL
 					c30.set_tag("对华贸易", true)
 					_leave_alliances(c30)
 					c30.set_tag("亲中", true)
@@ -111,8 +111,8 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = TXT_R1_B
 		2:
 			if c30 != null:
-				c30.sub_government = 7
-				c30.government = 0
+				c30.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
+				c30.government = GameConstants.Government.AUTHORITARIAN
 				_leave_alliances(c30)
 				c30.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, 100)
@@ -121,8 +121,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 		3:
 			if c30 != null:
-				c30.sub_government = 7
-				c30.government = 0
+				c30.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
+				c30.government = GameConstants.Government.AUTHORITARIAN
 				_leave_alliances(c30)
 				c30.set_tag("对华贸易", true)
 			context["result_text"] = TXT_R3

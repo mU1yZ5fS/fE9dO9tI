@@ -91,17 +91,17 @@ func _event_28(option_index: int) -> void:
 	match option_index:
 		0:
 			if indonesia != null:
-				indonesia.government = 0
-				indonesia.sub_government = 9
+				indonesia.government = GameConstants.Government.AUTHORITARIAN
+				indonesia.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 		1:
 			_add_data(d, {W.I_BUDGET: -20, W.I_AGENTS: -20})
 			_add_power(EmpireData.USA, -20)
 			d[W.I_INFLUENCE] += 5
 			if indonesia != null:
 				indonesia.set_tag("亲美", false)
-				indonesia.government = 3
+				indonesia.government = GameConstants.Government.LIBERAL
 				indonesia.set_tag("对华贸易", true)
-				indonesia.sub_government = 6
+				indonesia.sub_government = GameConstants.SubGovernment.LIBERAL
 			_change_loyalty(func(personality: int) -> bool: return personality <= 2, 70)
 		2:
 			_add_data(d, {W.I_BUDGET: -60, W.I_AGENTS: -60, W.I_DIPLO: 20})
@@ -110,15 +110,15 @@ func _event_28(option_index: int) -> void:
 			if indonesia != null:
 				indonesia.set_tag("亲美", false)
 				indonesia.set_tag("asean", false)
-				indonesia.government = 2
-				indonesia.sub_government = 3
+				indonesia.government = GameConstants.Government.REFORMIST
+				indonesia.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				indonesia.set_tag("对华贸易", true)
 			_change_loyalty(func(personality: int) -> bool: return personality <= 1, 100)
 		3:
 			_add_data(d, {W.I_BUDGET: -100, W.I_AGENTS: -100, W.I_DIPLO: 40})
 			if indonesia != null:
-				indonesia.government = 0
-				indonesia.sub_government = 9
+				indonesia.government = GameConstants.Government.AUTHORITARIAN
+				indonesia.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			if ws.wars.size() > 35:
 				var war := ws.wars[35]
 				if war != null:
@@ -149,8 +149,8 @@ func _event_29(option_index: int, context: Dictionary) -> void:
 				_add_power(EmpireData.USA, 30)
 				_change_loyalty_split(1, -100, 100)
 				if north_korea != null:
-					north_korea.government = 2
-					north_korea.sub_government = 15
+					north_korea.government = GameConstants.Government.REFORMIST
+					north_korea.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			else:
 				_set_korea_soviet_result(context)
 				_apply_korea_soviet_turn(north_korea)
@@ -170,8 +170,8 @@ func _event_29(option_index: int, context: Dictionary) -> void:
 				_add_relation(EmpireData.USSR, -150)
 				_change_loyalty_split(0, -120, 120)
 				if north_korea != null:
-					north_korea.government = 2
-					north_korea.sub_government = 21
+					north_korea.government = GameConstants.Government.REFORMIST
+					north_korea.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 
 
 func _event_30(option_index: int, context: Dictionary) -> void:
@@ -218,37 +218,37 @@ func _event_31(option_index: int) -> void:
 		0:
 			d[W.I_INFLUENCE] -= 10
 			if south_korea != null:
-				south_korea.government = 0
-				south_korea.sub_government = 20
+				south_korea.government = GameConstants.Government.AUTHORITARIAN
+				south_korea.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 		1:
 			_add_data(d, {W.I_BUDGET: -50, W.I_DIPLO: -10, W.I_INFLUENCE: 10})
 			_add_relation(EmpireData.USA, 50)
 			if south_korea != null:
 				south_korea.set_tag("亲美", false)
-				south_korea.government = 3
-				south_korea.sub_government = 5
+				south_korea.government = GameConstants.Government.LIBERAL
+				south_korea.sub_government = GameConstants.SubGovernment.MODERATE
 				south_korea.set_tag("对华贸易", true)
 		2:
 			_add_data(d, {W.I_BUDGET: -30, W.I_DIPLO: -15, W.I_INFLUENCE: 10})
 			_add_relation(EmpireData.USA, 50)
 			if south_korea != null:
-				south_korea.government = 3
-				south_korea.sub_government = 12
+				south_korea.government = GameConstants.Government.LIBERAL
+				south_korea.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				south_korea.set_tag("对华贸易", true)
 		3:
 			d[W.I_INFLUENCE] += 5
 			_add_data(d, {W.I_BUDGET: -30, W.I_DIPLO: 10})
 			if south_korea != null:
-				south_korea.government = 0
-				south_korea.sub_government = 20
+				south_korea.government = GameConstants.Government.AUTHORITARIAN
+				south_korea.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				south_korea.set_tag("对华贸易", true)
 		4:
 			_add_relation(EmpireData.USA, -100)
 			_add_data(d, {W.I_BUDGET: -80, W.I_DIPLO: 15, W.I_INFLUENCE: 20})
 			if south_korea != null:
 				south_korea.set_tag("亲美", false)
-				south_korea.government = 2
-				south_korea.sub_government = 3
+				south_korea.government = GameConstants.Government.REFORMIST
+				south_korea.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				south_korea.set_tag("对华贸易", true)
 
 
@@ -259,15 +259,15 @@ func _event_32(option_index: int, context: Dictionary) -> void:
 		0:
 			if mongolia != null:
 				if china != null:
-					if (china.government == 1 and _modifier_active(6)) or china.sub_government == 0:
-						mongolia.government = 1
-						mongolia.sub_government = 2
-					elif china.government == 1 and not _modifier_active(6):
-						mongolia.government = 1
-						mongolia.sub_government = 1
-					elif china.government == 2:
-						mongolia.government = 2
-						mongolia.sub_government = 21
+					if (china.government == GameConstants.Government.SOCIALIST and _modifier_active(6)) or china.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
+						mongolia.government = GameConstants.Government.SOCIALIST
+						mongolia.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
+					elif china.government == GameConstants.Government.SOCIALIST and not _modifier_active(6):
+						mongolia.government = GameConstants.Government.SOCIALIST
+						mongolia.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
+					elif china.government == GameConstants.Government.REFORMIST:
+						mongolia.government = GameConstants.Government.REFORMIST
+						mongolia.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				mongolia.set_tag("对华贸易", true)
 				mongolia.set_tag("亲苏", false)
 				mongolia.set_tag("亲中", true)

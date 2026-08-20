@@ -303,7 +303,7 @@ static func icon(id: int, is_active: bool = true) -> Texture2D:
 	# id46：埃及（原版序号 30）政体==1 且激活时用 special[0]（ChangeIcon 1355-1358）。
 	if id == 46 and is_active and w != null:
 		var egypt := _country(w, 30)
-		if egypt != null and egypt.government == 1:
+		if egypt != null and egypt.government == GameConstants.Government.SOCIALIST:
 			return _load_icon_named("46_special")
 	# id28：75宪法换图条件（ChangeIcon 1359-1362）。
 	if id == 28 and is_active and w != null \
@@ -1072,12 +1072,12 @@ static func _us_party_scores(w: WorldState) -> Dictionary:
 		if _event_result(w, "hungarian_crisis", 0) == 2:
 			dem += 1
 		var c84 := _country(w, 84)
-		if c84 != null and c84.government == 0:
+		if c84 != null and c84.government == GameConstants.Government.AUTHORITARIAN:
 			dem += 1
 		else:
 			rep += 1
 		var c8 := _country(w, 8)
-		if c8 != null and (c8.government == 3 or c8.有驻军基地):
+		if c8 != null and (c8.government == GameConstants.Government.LIBERAL or c8.有驻军基地):
 			rep += 1
 		else:
 			dem += 1
@@ -1102,7 +1102,7 @@ static func _us_party_scores(w: WorldState) -> Dictionary:
 			if usa.power > w.influence_prc: rep += 1
 			else: dem += 1
 		var player2 := w.get_player_country()
-		if player2 != null and player2.government == 3:
+		if player2 != null and player2.government == GameConstants.Government.LIBERAL:
 			rep += 1
 		else:
 			dem += 1
@@ -1164,10 +1164,10 @@ static func _american_score(w: WorldState) -> int:
 	if player != null and player.has_tag("okb"):
 		s += 1
 	var iran := _country(w, 8)
-	if iran != null and iran.government == 3:
+	if iran != null and iran.government == GameConstants.Government.LIBERAL:
 		s += 1
 	var afghan := _country(w, 12)
-	if afghan != null and not afghan.has_tag("亲中") and afghan.government == 0:
+	if afghan != null and not afghan.has_tag("亲中") and afghan.government == GameConstants.Government.AUTHORITARIAN:
 		s += 1
 	if usa != null and ussr != null and usa.power > ussr.power:
 		s += 1
@@ -1199,13 +1199,13 @@ static func _france_scores(w: WorldState) -> Dictionary:
 	if poland != null and poland.puppet_of == 7:
 		a0 -= 1
 	var hungary := _country(w, 4)
-	if hungary != null and hungary.government == 1:
+	if hungary != null and hungary.government == GameConstants.Government.SOCIALIST:
 		a0 += 1
 	var greece := _country(w, 45)
-	if greece != null and greece.government == 2:
+	if greece != null and greece.government == GameConstants.Government.REFORMIST:
 		a0 += 1
 	var iran := _country(w, 8)
-	if iran != null and iran.government == 1:
+	if iran != null and iran.government == GameConstants.Government.SOCIALIST:
 		a0 += 1
 	if player != null and player.has_tag("ovd"):
 		a0 += 1
@@ -1225,15 +1225,15 @@ static func _france_scores(w: WorldState) -> Dictionary:
 	var yugo := _country(w, 15)
 	if yugo != null and yugo.内战中:
 		a2 += 1
-	if iran != null and iran.有驻军基地 and iran.government == 0:
+	if iran != null and iran.有驻军基地 and iran.government == GameConstants.Government.AUTHORITARIAN:
 		a2 += 1
 	if _mod_active(w, 3):
 		a2 += 1
 	var spain := _country(w, 87)
-	if spain != null and spain.sub_government == 5:
+	if spain != null and spain.sub_government == GameConstants.SubGovernment.MODERATE:
 		a2 += 1
 	var italy := _country(w, 86)
-	if italy != null and italy.government == 2:
+	if italy != null and italy.government == GameConstants.Government.REFORMIST:
 		a2 += 1
 	var vietnam := _country(w, 11)
 	if vietnam != null and vietnam.has_tag("亲中"):
@@ -1248,9 +1248,9 @@ static func _france_scores(w: WorldState) -> Dictionary:
 
 	# array[3]（ModifyButtonScript.cs:364-411）
 	var a3 := 0
-	if hungary != null and hungary.government == 2:
+	if hungary != null and hungary.government == GameConstants.Government.REFORMIST:
 		a3 += 1
-	if iran != null and iran.sub_government == 20:
+	if iran != null and iran.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 		a3 += 1
 	if player != null and not player.has_tag("okb") and not player.has_tag("ovd") and not player.has_tag("seato"):
 		a3 += 1
@@ -1258,11 +1258,11 @@ static func _france_scores(w: WorldState) -> Dictionary:
 	if war5 != null and war5.is_going:
 		a3 += 1
 	var usa_country := _country(w, 51)
-	if usa_country != null and usa_country.sub_government == 12:
+	if usa_country != null and usa_country.sub_government == GameConstants.SubGovernment.NEOLIBERAL:
 		a3 += 1
 	for idx in [85, 87, 86]:
 		var c := _country(w, idx)
-		if c != null and c.sub_government == 6:
+		if c != null and c.sub_government == GameConstants.SubGovernment.LIBERAL:
 			a3 += 1
 	var egypt := _country(w, 30)
 	if egypt != null and w.is_authoritarian(egypt):
@@ -1270,7 +1270,7 @@ static func _france_scores(w: WorldState) -> Dictionary:
 	var war3 := w.wars[3] if w.wars.size() > 3 else null
 	if war3 != null and war3.is_going:
 		a3 += 1
-	if player != null and player.government == 2:
+	if player != null and player.government == GameConstants.Government.REFORMIST:
 		a3 += 1
 
 	# num5（ModifyButtonScript.cs:419-484）
@@ -1286,7 +1286,7 @@ static func _france_scores(w: WorldState) -> Dictionary:
 	var num9 := 0
 	for idx in [21, 85, 86, 87]:
 		var c := _country(w, idx)
-		if c != null and (c.government == 2 or c.government == 1):
+		if c != null and (c.government == GameConstants.Government.REFORMIST or c.government == GameConstants.Government.SOCIALIST):
 			num9 += 1
 	if num9 > 1:
 		num8 += 1
@@ -1315,40 +1315,40 @@ static func _uk_scores(w: WorldState) -> Dictionary:
 	var right := 0
 	# num16（右派）：ModifyButtonScript.cs:630-667
 	var hungary := _country(w, 4)
-	if hungary != null and hungary.government == 2:
+	if hungary != null and hungary.government == GameConstants.Government.REFORMIST:
 		right += 1
 	var poland := _country(w, 2)
 	if poland != null and poland.has_tag("亲苏"):
 		right += 1
 	var spain := _country(w, 86)
-	if spain != null and spain.government == 2:
+	if spain != null and spain.government == GameConstants.Government.REFORMIST:
 		right += 1
 	var italy := _country(w, 85)
-	if italy != null and italy.government == 2:
+	if italy != null and italy.government == GameConstants.Government.REFORMIST:
 		right += 1
 	var war5 := w.wars[5] if w.wars.size() > 5 else null
 	if war5 != null and war5.is_going:
 		right += 1
 	var iran := _country(w, 8)
-	if iran != null and iran.government == 3:
+	if iran != null and iran.government == GameConstants.Government.LIBERAL:
 		right += 1
-	if iran != null and iran.sub_government == 3:
+	if iran != null and iran.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		right += 2
 	if usa != null and ussr != null and usa.power > ussr.power:
 		right += 1
 	var egypt := _country(w, 30)
-	if egypt != null and egypt.sub_government == 20:
+	if egypt != null and egypt.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 		right += 1
 	# num15（左派）：ModifyButtonScript.cs:668-706
 	var greece := _country(w, 45)
-	if greece != null and greece.government == 2:
+	if greece != null and greece.government == GameConstants.Government.REFORMIST:
 		left += 1
 	var turkey := _country(w, 84)
-	if turkey != null and turkey.government == 2:
+	if turkey != null and turkey.government == GameConstants.Government.REFORMIST:
 		left += 1
-	if poland != null and poland.government == 2:
+	if poland != null and poland.government == GameConstants.Government.REFORMIST:
 		left += 1
-	if hungary != null and hungary.government == 1:
+	if hungary != null and hungary.government == GameConstants.Government.SOCIALIST:
 		left += 1
 	var c166 := _country(w, 166)
 	if c166 != null and c166.parts.size() > 0 and c166.parts[0]:
@@ -1373,7 +1373,7 @@ static func _uk_scores(w: WorldState) -> Dictionary:
 	var num18 := 0
 	for idx in [21, 85, 86, 87]:
 		var c := _country(w, idx)
-		if c != null and (c.government == 2 or w.is_socialism(c, true)):
+		if c != null and (c.government == GameConstants.Government.REFORMIST or w.is_socialism(c, true)):
 			num18 += 1
 	for idx in [85, 86, 87]:
 		var c := _country(w, idx)

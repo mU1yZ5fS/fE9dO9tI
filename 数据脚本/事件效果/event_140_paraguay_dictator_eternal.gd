@@ -197,7 +197,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
 			winner = _get_winner_in_america(c, allowed, 3.0, 7)
-			c.government = 3
+			c.government = GameConstants.Government.LIBERAL
 			if winner == 4:
 				c.set_tag("亲中", true)
 			else:
@@ -205,7 +205,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
-			c.government = 3
+			c.government = GameConstants.Government.LIBERAL
 			if int(ws.completed_event_ids.get("event_138", 0)) == 1:
 				winner = _get_winner_in_america(c, allowed, 2.0, 9)
 			else:
@@ -219,13 +219,13 @@ func execute(context: Dictionary) -> void:
 	c.sub_government = winner
 	_want_to_leave(c)
 	_set_next_election(c, 1989, 5, 1)
-	if c.sub_government == 7:
+	if c.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		c.level_of_instability -= 15
 		_add_power(EmpireData.USA, 5)
 		_add_power(EmpireData.USSR, -5)
 		context["result_text"] = TXT_R7 + _friend_suffix(c)
 		return
-	if c.sub_government == 9:
+	if c.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		c.level_of_instability -= 30
 		c.level_of_development -= 15
 		_add_power(EmpireData.USA, -15)

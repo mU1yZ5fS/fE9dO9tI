@@ -460,7 +460,7 @@ func _diplo_rep_desc(w: WorldState, country: CountryData) -> String:
 		return "外交声誉在 39 到 80 之间"
 	if w.is_socialism(country, true):
 		return "外交声誉高于 69"
-	if country.government == 2:
+	if country.government == GameConstants.Government.REFORMIST:
 		return "外交声誉在 39 到 85 之间"
 	return "外交声誉低于 50"
 
@@ -476,7 +476,7 @@ func _diplo_rep_check(w: WorldState, d: Array[int], country: CountryData) -> boo
 		return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 800
 	if w.is_socialism(country, true):
 		return d[W.I_DIPLO] > 690
-	if country.government == 2:
+	if country.government == GameConstants.Government.REFORMIST:
 		return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 850
 	return d[W.I_DIPLO] < 500
 
@@ -511,7 +511,7 @@ func _def_24(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 	# uslovie[0]（DBS L782-810）：14 伊朗 sub==20 首档 + 通用声誉档
 	var rep_desc := _diplo_rep_desc(w, country)
 	var rep_check := func() -> bool: return _diplo_rep_check(w, d, country)
-	if country.原版序号 == 14 and country.sub_government == 20:
+	if country.原版序号 == 14 and country.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 		rep_desc = "外交声誉低于 11451.4"
 		rep_check = func() -> bool: return d[W.I_DIPLO] < 114514
 	conds.append(_cond(rep_desc, rep_check))
@@ -555,13 +555,13 @@ func _def_10(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 		if w.leader_property.size() > 2 and w.leader_property[2] and w.is_socialism(country, false):
 			desc0 = "外交声誉低于 11451.4"
 			check0 = func() -> bool: return d[W.I_DIPLO] < 114514
-		elif country.government == 0:
+		elif country.government == GameConstants.Government.AUTHORITARIAN:
 			desc0 = "外交声誉在 39 到 80 之间"
 			check0 = func() -> bool: return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 800
-		elif country.government == 1:
+		elif country.government == GameConstants.Government.SOCIALIST:
 			desc0 = "外交声誉高于 69"
 			check0 = func() -> bool: return d[W.I_DIPLO] > 690
-		elif country.government == 2:
+		elif country.government == GameConstants.Government.REFORMIST:
 			desc0 = "外交声誉在 39 到 85 之间"
 			check0 = func() -> bool: return d[W.I_DIPLO] > 390 and d[W.I_DIPLO] < 850
 		else:
@@ -627,7 +627,7 @@ func _def_19(w: WorldState, d: Array[int], country: CountryData) -> Dictionary:
 	var slot_desc := "他们未参与军事联盟，且中国已成立集安组织或已加入华约"
 	if country.has_tag("oar"):
 		var c30 := w.get_country_by_legacy_index(30)
-		if c30 == null or c30.government != 1:
+		if c30 == null or c30.government != GameConstants.Government.SOCIALIST:
 			slot_desc = "他 们 还 未 加 入 阿 拉 伯 联 合 共 和 国"
 	conds.append(_cond(slot_desc,
 		func(): return _mil19_slot_check(w, player, country)))
@@ -663,7 +663,7 @@ func _mil19_slot_check(w: WorldState, player: CountryData, country: CountryData)
 	if not country.has_tag("oar"):
 		return complex
 	var c30 := w.get_country_by_legacy_index(30)
-	if c30 != null and c30.government == 1:
+	if c30 != null and c30.government == GameConstants.Government.SOCIALIST:
 		return complex
 	return false
 
@@ -762,8 +762,8 @@ func _def_5000(w: WorldState, _d: Array[int], country: CountryData) -> Dictionar
 		conds.append(_cond("该国已建立革命的政权", func(): return _rim5000_regime_check(w, country)))
 	else:
 		conds.append(_cond("该国愿意认可我们", func():
-			return ((country.sub_government == 0 or country.sub_government == 10
-					or country.sub_government == 17 or country.sub_government == 2)
+			return ((country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL or country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST
+					or country.sub_government == GameConstants.SubGovernment.MAOIST or country.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST)
 				and not country.has_tag("sev") and not country.has_tag("ovd")
 				and country.has_tag("亲中"))))
 	# 列表级守卫（CS L550 等）：目标亲中；134/136 用 okb 变体，批3 各自分支处理
@@ -786,8 +786,8 @@ func _rim5000_regime_check(w: WorldState, country: CountryData) -> bool:
 	if country == null:
 		return false
 	return w.is_socialism(country, true) \
-		and country.sub_government != 16 \
-		and country.sub_government != 18 \
+		and country.sub_government != GameConstants.SubGovernment.SOVIET_STYLE \
+		and country.sub_government != GameConstants.SubGovernment.TROTSKYIST \
 		and not country.has_tag("sev") \
 		and not country.has_tag("ovd") \
 		and not country.has_tag("亲苏")
@@ -929,7 +929,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 		87:
 			# CS L2282：data[65] 建模说明 → 按 !=0 走第二分支 注；
 			# data65==0 的特别军事行动(2/3)移植说明；128 移植说明
-			if country.has_tag("亲美") and country.government == 0:
+			if country.has_tag("亲美") and country.government == GameConstants.Government.AUTHORITARIAN:
 				return []
 			# !ev419 && !ev420（事件移植说明→默认 true）→ 128(C)+9 → 只 9
 			if not w.get_flag("event_done_419") and not w.get_flag("event_done_420"):
@@ -939,7 +939,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			var p87 := w.get_player_country()
 			if country.has_tag("对华贸易") and (w.is_socialism(country, true) \
 					or (w.is_authoritarian(country) and not country.has_tag("亲美") \
-					and p87 != null and (p87.sub_government == 7 or p87.sub_government == 9))):
+					and p87 != null and (p87.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or p87.sub_government == GameConstants.SubGovernment.NEO_FASCIST))):
 				n87.append(DIPLO_BTN_ECON10)
 				if country.has_tag("亲中"):
 					n87.append(DIPLO_BTN_MIL19)
@@ -953,7 +953,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				return []
 			var n92: Array[int] = [DIPLO_BTN_TRADE9]
 			# soc && Torg && sub!=18 → 10,19 + [revint]5000
-			if w.is_socialism(country, true) and country.has_tag("对华贸易") and country.sub_government != 18:
+			if w.is_socialism(country, true) and country.has_tag("对华贸易") and country.sub_government != GameConstants.SubGovernment.TROTSKYIST:
 				n92.append(DIPLO_BTN_ECON10)
 				n92.append(DIPLO_BTN_MIL19)
 				if _revint_ok(w, country):
@@ -1053,7 +1053,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			# CS L2669：分支头需 africaOff；未禁用则落入链尾块H
 			if not country.禁用非洲机制:
 				return _africa_block_numbers(w, country)
-			if country.sub_government == 9:
+			if country.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 				return []
 			# 1032 协助左派移植说明 注
 			var n119: Array[int] = []
@@ -1079,7 +1079,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			if country.puppet_of >= 0:
 				return []
 			var n127: Array[int] = [DIPLO_BTN_TRADE9]
-			if country.government != 0 and country.government != 3:
+			if country.government != GameConstants.Government.AUTHORITARIAN and country.government != GameConstants.Government.LIBERAL:
 				n127.append(DIPLO_BTN_ECON10)
 				_append_rim_tail(n127, w, country)
 			return n127
@@ -1089,7 +1089,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				var n129: Array[int] = [DIPLO_BTN_TRADE9]
 				_append_au_rim_tail(n129, w, country)
 				return n129
-			if country.puppet_of < 0 and country.sub_government != 7:
+			if country.puppet_of < 0 and country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				return [DIPLO_BTN_TRADE9]
 			return []  # sub==7 的 62-66 移植说明 注
 		130:
@@ -1097,13 +1097,13 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return []
 		131:
 			# CS L3173：57 抗议运动(cw 建模说明)移植说明 注
-			if country.sub_government == 9:
+			if country.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 				return []
 			var n131: Array[int] = []
-			if country.sub_government != 7:
+			if country.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				n131.append(DIPLO_BTN_TRADE9)
 			# cw 建模说明(默认 false) → auth&&sub!=19 分支无输出且跳过 Gos!=3 else-if
-			if not (w.is_authoritarian(country) and country.sub_government != 19) and country.government != 3:
+			if not (w.is_authoritarian(country) and country.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST) and country.government != GameConstants.Government.LIBERAL:
 				n131.append(DIPLO_BTN_ECON10)
 				_append_rim_tail(n131, w, country)
 			# 注：70 博莱斯 (sub==19, CS L3207)
@@ -1118,13 +1118,13 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 		153:
 			# CS L3240：9 + [Gos!=2] 10 + 亲中尾（1039/1040 移植说明 注）
 			var n153: Array[int] = [DIPLO_BTN_TRADE9]
-			if country.government != 2:
+			if country.government != GameConstants.Government.REFORMIST:
 				n153.append(DIPLO_BTN_ECON10)
 				_append_rim_tail(n153, w, country)
 			return n153
 		115:
 			# CS L2773：sub==9 → 9+[亲中]10；sub!=9 → 9+亲中尾（1032/70 移植说明 注）
-			if country.sub_government == 9:
+			if country.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 				if not country.has_tag("亲中"):
 					return [DIPLO_BTN_TRADE9]
 				return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
@@ -1142,7 +1142,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return n116
 		117:
 			# CS L2847：sub==9&&亲中 → 10,19；sub!=9 → 9+亲中尾（1041/1042/70 移植说明 注）
-			if country.sub_government == 9:
+			if country.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 				if country.has_tag("亲中"):
 					return [DIPLO_BTN_ECON10, DIPLO_BTN_MIL19]
 				return []
@@ -1192,7 +1192,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return n136
 		137:
 			# CS L3352：sub!=7 → 9,10（1076/1077 移植说明 注）
-			if country.sub_government == 7:
+			if country.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				return []
 			return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 		138:
@@ -1227,7 +1227,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 		147:
 			# CS L3468：level_of_unstab 建模说明(视为0) → !soc&&Gos!=2: 9 / 其余: 9+亲中尾
 			# 1043/1044 移植说明 注
-			if not w.is_socialism(country, true) and country.government != 2:
+			if not w.is_socialism(country, true) and country.government != GameConstants.Government.REFORMIST:
 				return [DIPLO_BTN_TRADE9]
 			var n147: Array[int] = [DIPLO_BTN_TRADE9]
 			if country.has_tag("亲中"):
@@ -1237,7 +1237,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return n147
 		149:
 			# CS L3499：同 147；parts/ingamewars[66] 建模说明 → 1045 移植说明 注
-			if not w.is_socialism(country, true) and country.government != 2:
+			if not w.is_socialism(country, true) and country.government != GameConstants.Government.REFORMIST:
 				return [DIPLO_BTN_TRADE9]
 			var n149: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			if _revint_ok(w, country):
@@ -1329,7 +1329,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			# CS L841：133/1078/56/25/70/53/119/120/ev36 移植说明 注
 			# [sub==20&&puppet<0] 24；[亲中] 24,19 + [revint-okb&&puppet<0]5000；else 24,19
 			var n14: Array[int] = []
-			if country.sub_government == 20 and country.puppet_of < 0:
+			if country.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN and country.puppet_of < 0:
 				n14.append(DIPLO_BTN_TRADE24)
 			if country.has_tag("亲中"):
 				n14.append(DIPLO_BTN_TRADE24)
@@ -1383,7 +1383,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			else:
 				n19.append(DIPLO_BTN_MIL19)
 			if w.get_flag("event_done_548") and p19 != null and p19.has_tag("rim") \
-					and country.sub_government == 17 and not country.has_tag("sev") \
+					and country.sub_government == GameConstants.SubGovernment.MAOIST and not country.has_tag("sev") \
 					and not country.has_tag("ovd") and country.has_tag("econ") \
 					and country.has_tag("okb") and country.has_tag("亲中"):
 				n19.append(DIPLO_BTN_RIM5000)
@@ -1399,13 +1399,13 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			var p21 := w.get_player_country()
 			var n21: Array[int] = [DIPLO_BTN_TRADE24]
 			# sub∈{17,22,19} || ((1.sub∈{7,9}) && sub==9) → 10,19
-			if country.sub_government == 17 or country.sub_government == 22 or country.sub_government == 19 \
-					or (p21 != null and (p21.sub_government == 7 or p21.sub_government == 9) and country.sub_government == 9):
+			if country.sub_government == GameConstants.SubGovernment.MAOIST or country.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST or country.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
+					or (p21 != null and (p21.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or p21.sub_government == GameConstants.SubGovernment.NEO_FASCIST) and country.sub_government == GameConstants.SubGovernment.NEO_FASCIST):
 				n21.append(DIPLO_BTN_ECON10)
 				n21.append(DIPLO_BTN_MIL19)
 				# revint 变体 (L1102): IsSocialism(true) && sub∉{1,18} && !SEV && !OVD && 亲中
-				if _revint_core_ok(w, country) and country.sub_government != 1 \
-						and country.sub_government != 18 and country.has_tag("亲中"):
+				if _revint_core_ok(w, country) and country.sub_government != GameConstants.SubGovernment.STATE_SOCIALIST \
+						and country.sub_government != GameConstants.SubGovernment.TROTSKYIST and country.has_tag("亲中"):
 					n21.append(DIPLO_BTN_RIM5000)
 			return n21
 		22:
@@ -1502,7 +1502,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return []
 		40:
 			# CS L1395：sub==20 → 1019/1020 移植说明 注；sub==10 → 9,10（ev563 建模说明）
-			if country.sub_government == 10:
+			if country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 				return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			return []
 		41:
@@ -1510,7 +1510,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			# [Gos==1||sub==0] → 10 + 5001(soc500) + [revint-无soc]5000；else → 10
 			if not country.has_tag("亲中"):
 				return []
-			if country.government == 1 or country.sub_government == 0:
+			if country.government == GameConstants.Government.SOCIALIST or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 				var n41: Array[int] = [DIPLO_BTN_ECON10]
 				if _soc500_ok(w, country):
 					n41.append(DIPLO_BTN_AU5001)
@@ -1561,14 +1561,14 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 		48:
 			# CS L1597：9 + [Gos!=3] 10 + [revint]5000
 			var n48: Array[int] = [DIPLO_BTN_TRADE9]
-			if country.government != 3:
+			if country.government != GameConstants.Government.LIBERAL:
 				n48.append(DIPLO_BTN_ECON10)
 				if _revint_ok(w, country):
 					n48.append(DIPLO_BTN_RIM5000)
 			return n48
 		52:
 			# CS L1609：ev497||sub==0 → 24 + [res497!=2(视为真)] 10 + [亲中] 5001,5000
-			if not w.get_flag("event_done_497") and country.sub_government != 0:
+			if not w.get_flag("event_done_497") and country.sub_government != GameConstants.SubGovernment.LEFT_RADICAL:
 				return []
 			var n52: Array[int] = [DIPLO_BTN_TRADE24]
 			n52.append(DIPLO_BTN_ECON10)
@@ -1587,7 +1587,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			return n49
 		50:
 			# CS L1647：sub!=9 → 58(移植说明 注) + [亲中] 10 + [soc] 19 + [revint-okb&&亲中]5000 + 24
-			if country.sub_government == 9:
+			if country.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 				return []
 			var n50: Array[int] = [DIPLO_BTN_TRADE24]
 			if country.has_tag("亲中"):
@@ -1618,7 +1618,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 			if w.is_authoritarian(country):
 				return [DIPLO_BTN_TRADE9]
 			var n54: Array[int] = [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
-			if country.sub_government != 11 and country.government != 3:
+			if country.sub_government != GameConstants.SubGovernment.TITOIST and country.government != GameConstants.Government.LIBERAL:
 				n54.append(DIPLO_BTN_MIL19)
 				if _revint_okb_ok(w, country) and country.has_tag("亲中"):
 					n54.append(DIPLO_BTN_RIM5000)
@@ -1630,7 +1630,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				if _revint_okb_ok(w, country):
 					n55.append(DIPLO_BTN_RIM5000)
 				return n55
-			if country.government == 2:
+			if country.government == GameConstants.Government.REFORMIST:
 				return [DIPLO_BTN_ECON10]
 			return []
 		56:
@@ -1671,7 +1671,7 @@ func _chain_numbers(w: WorldState, country: CountryData) -> Array:
 				if country.has_tag("亲中"):
 					_append_rim_tail(n59, w, country)
 				return n59
-			if country.sub_government == 10 or country.government == 2:
+			if country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or country.government == GameConstants.Government.REFORMIST:
 				return [DIPLO_BTN_TRADE9, DIPLO_BTN_ECON10]
 			return [DIPLO_BTN_TRADE9]
 		60:
@@ -1803,7 +1803,7 @@ func _sev_satellite_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var n := country.原版序号
 	var c4 := w.get_country_by_legacy_index(4)
 	# L528：NATO 分支 → 103-106（移植说明 注）；ingamewars[17] 移植说明 → !war17 视为真
-	if (player.has_tag("nato") and country.has_tag("ovd")) or (n != 4 and c4 != null and c4.sub_government == 19):
+	if (player.has_tag("nato") and country.has_tag("ovd")) or (n != 4 and c4 != null and c4.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST):
 		return []
 	# L535：!中国NATO && !中国SEV && 目标SEV → [1|123] + 24
 	if not player.has_tag("sev") and country.has_tag("sev"):
@@ -1825,7 +1825,7 @@ func _six_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var player := w.get_player_country()
 	var c4 := w.get_country_by_legacy_index(4)
 	# L592：NATO 分支（注意 6 无 n!=4 豁免）→ 103-106（移植说明 注）
-	if (player.has_tag("nato") and country.has_tag("ovd")) or (c4 != null and c4.sub_government == 19):
+	if (player.has_tag("nato") and country.has_tag("ovd")) or (c4 != null and c4.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST):
 		return []
 	# L599：!中国SEV && 目标SEV → [1|123] + 24
 	if not player.has_tag("sev") and country.has_tag("sev"):
@@ -1836,7 +1836,7 @@ func _six_numbers(w: WorldState, country: CountryData) -> Array[int]:
 		return nums
 	# L611 else：24 + [sub==17] 10,19,[revint6]5000
 	var nums2: Array[int] = [DIPLO_BTN_TRADE24]
-	if country.sub_government == 17:
+	if country.sub_government == GameConstants.SubGovernment.MAOIST:
 		nums2.append(DIPLO_BTN_ECON10)
 		nums2.append(DIPLO_BTN_MIL19)
 		# L618：sub==17 变体（无 soc/sub 检查）
@@ -1902,14 +1902,14 @@ func _dlc_west_numbers(w: WorldState, country: CountryData) -> Array:
 				nums.append(_btn(5000, "革 命 国 际"))
 		elif w.event_done_num(686) and country.有驻军基地 \
 				and ((ussr != null and ussr.has_tag("sev")) or w.get_flag("is_gkchp")
-				or (hungary != null and hungary.sub_government == 19)):
+				or (hungary != null and hungary.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST)):
 			if player == null or not player.has_tag("asean"):
 				nums.append(_btn(1, "扶 持 极 左 派"))
 			else:
 				nums.append(_btn(123, "战 争"))
 		if country.有驻军基地 and (ussr == null or not ussr.has_tag("sev")) \
 				and not w.get_flag("is_gkchp") \
-				and (hungary == null or hungary.sub_government != 19):
+				and (hungary == null or hungary.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST):
 			nums.append(_btn(53, "经 济 合 作"))
 			nums.append(_btn(148, "欧 洲 左 派"))
 			nums.append(_btn(149, "欧 洲 右 派"))
@@ -1984,7 +1984,7 @@ func _econ_gate_country_numbers(w: WorldState, country: CountryData, ev_flag: St
 		return [DIPLO_BTN_TRADE9]
 	var nums: Array[int] = [DIPLO_BTN_TRADE9]
 	# 注：ingamewars[53].is_going 移植说明 → 视为无战争
-	if country.government != 0 and country.government != 3 and w.get_flag(ev_flag):
+	if country.government != GameConstants.Government.AUTHORITARIAN and country.government != GameConstants.Government.LIBERAL and w.get_flag(ev_flag):
 		nums.append(DIPLO_BTN_ECON10)
 		_append_rim_tail(nums, w, country)
 	return nums
@@ -2014,7 +2014,7 @@ func _x133_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	if not country.has_tag("亲中"):
 		return nums
 	# 注：原版 5001 守卫为 Gosstroy==1（非 IsSocialism）；resultOfEvents[500]==0 移植说明
-	if country.government == 1 and w.get_flag("event_done_500"):
+	if country.government == GameConstants.Government.SOCIALIST and w.get_flag("event_done_500"):
 		nums.append(DIPLO_BTN_AU5001)
 	if _revint_ok(w, country):
 		nums.append(DIPLO_BTN_RIM5000)
@@ -2026,7 +2026,7 @@ func _x135_numbers(w: WorldState, country: CountryData) -> Array[int]:
 	var nums: Array[int] = [DIPLO_BTN_TRADE9]
 	if country.has_tag("亲美"):
 		return nums
-	if country.has_tag("亲中") or (country.government != 3 and country.government != 0):
+	if country.has_tag("亲中") or (country.government != GameConstants.Government.LIBERAL and country.government != GameConstants.Government.AUTHORITARIAN):
 		nums.append(DIPLO_BTN_ECON10)
 	if country.has_tag("亲中"):
 		nums.append(DIPLO_BTN_MIL19)
@@ -2080,8 +2080,8 @@ func _revint_core_ok(w: WorldState, country: CountryData) -> bool:
 	if not w.get_flag("event_done_548") or not player.has_tag("rim"):
 		return false
 	var regime_ok := w.is_socialism(country, true) \
-		or (country.sub_government == 10 and w.get_flag("is_gkchp"))
-	if not regime_ok or country.sub_government == 16 or country.sub_government == 18:
+		or (country.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST and w.get_flag("is_gkchp"))
+	if not regime_ok or country.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or country.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		return false
 	if country.has_tag("sev") or country.has_tag("ovd"):
 		return false
@@ -2115,7 +2115,7 @@ func _revint_nosoc_ok(w: WorldState, country: CountryData) -> bool:
 		return false
 	if not w.get_flag("event_done_548") or not player.has_tag("rim"):
 		return false
-	if country.sub_government == 16 or country.sub_government == 18:
+	if country.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or country.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		return false
 	if country.has_tag("sev") or country.has_tag("ovd"):
 		return false
@@ -2133,7 +2133,7 @@ func _revint_sub17_ok(w: WorldState, country: CountryData) -> bool:
 	if player == null:
 		return false
 	return w.get_flag("event_done_548") and player.has_tag("rim") \
-		and country.sub_government == 17 \
+		and country.sub_government == GameConstants.SubGovernment.MAOIST \
 		and not country.has_tag("sev") and not country.has_tag("ovd") and country.has_tag("亲中")
 
 
@@ -2150,7 +2150,7 @@ func _block_k_ok(w: WorldState, country: CountryData) -> bool:
 		return false
 	if country.puppet_of >= 0:
 		return false
-	if not w.is_socialism(country, true) or country.sub_government == 16 or country.sub_government == 18:
+	if not w.is_socialism(country, true) or country.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or country.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		return false
 	if country.has_tag("亲苏") or country.has_tag("亲美") or country.has_tag("sev") \
 			or country.has_tag("ovd") or country.has_tag("nato") or country.has_tag("eu") \

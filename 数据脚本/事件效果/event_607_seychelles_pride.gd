@@ -38,8 +38,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if seychelles != null:
-				seychelles.government = 1
-				seychelles.sub_government = 1
+				seychelles.government = GameConstants.Government.SOCIALIST
+				seychelles.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(seychelles)
 				seychelles.set_tag("亲中", true)
 				seychelles.set_tag("对华贸易", true)
@@ -52,8 +52,8 @@ func execute(context: Dictionary) -> void:
 		2:
 			context["result_text"] = TXT_R2
 			if seychelles != null:
-				seychelles.government = 2
-				seychelles.sub_government = 3
+				seychelles.government = GameConstants.Government.REFORMIST
+				seychelles.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				_leave_alliances(seychelles)
 			_add_power(EmpireData.USA, -10)
 

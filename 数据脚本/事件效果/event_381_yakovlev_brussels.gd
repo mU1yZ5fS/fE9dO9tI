@@ -41,8 +41,8 @@ func execute(context: Dictionary) -> void:
 			c.set_tag("eu", true)
 	var ussr := ws.get_country_by_legacy_index(7)
 	if ussr != null:
-		ussr.government = 2
-		ussr.sub_government = 3
+		ussr.government = GameConstants.Government.REFORMIST
+		ussr.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 	# 原作 Event381.cs:56：iron_and_blood → achievements.Set(132)
 	Achievements.set_achievement(132)
 	var germany := ws.get_country_by_legacy_index(17)
@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 		germany.name = TXT_NAME_GERMANY
 		germany.chinese_name = TXT_NAME_GERMANY
 		germany.set_tag("亲美", false)
-		germany.government = 2
-		germany.sub_government = 3
+		germany.government = GameConstants.Government.REFORMIST
+		germany.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 
 

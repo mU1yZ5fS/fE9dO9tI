@@ -969,7 +969,7 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 		for c in w.countries:
 			if c == null:
 				continue
-			if (c.sub_government == 17 or c.sub_government == 2) and c.原版序号 != 1 \
+			if (c.sub_government == GameConstants.SubGovernment.MAOIST or c.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST) and c.原版序号 != 1 \
 					and c.puppet_of != 1 and not c.has_tag("亲苏") and not c.has_tag("亲美") \
 					and not c.has_tag("sev") and not c.has_tag("ovd") and not c.has_tag("rim"):
 				c.set_tag("亲中", false)
@@ -1002,9 +1002,9 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 		if c == null:
 			continue
 		if c.原版序号 != 1 and c.has_tag("亲中"):
-			if c.sub_government == 17 and cond_soft:
+			if c.sub_government == GameConstants.SubGovernment.MAOIST and cond_soft:
 				c.set_tag("亲中", false)
-			elif c.sub_government == 0 and cond_full:
+			elif c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL and cond_full:
 				c.set_tag("亲中", false)
 		if c.has_tag("au") and w.event_done_num(500) and cond_au \
 				and (c.has_tag("亲中") or c.has_tag("对华贸易") or c.has_tag("econ")):
@@ -1017,7 +1017,7 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 	# 1016-1019：菲律宾(24)亲中条件退出。
 	var c24 := w.get_country_by_legacy_index(24)
 	if c24 != null and c24.parts.size() > 0 and c24.parts[0] \
-			and c24.government == 1 and c24.has_tag("亲中") and cond_full:
+			and c24.government == GameConstants.Government.SOCIALIST and c24.has_tag("亲中") and cond_full:
 		c24.set_tag("亲中", false)
 
 	# 1020-1023：阿尔巴尼亚 econ/okb 残留清理。
@@ -1038,9 +1038,9 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 		var c47 := w.get_country_by_legacy_index(47)
 		if c47 != null and not c47.has_tag("亲中") and not w.event_done_num(441):
 			c47.set_tag("亲中", true)
-			c47.government = 1
+			c47.government = GameConstants.Government.SOCIALIST
 			c47.set_tag("asean", false)
-			c47.sub_government = 17
+			c47.sub_government = GameConstants.SubGovernment.MAOIST
 			c47.set_tag("亲美", false)
 			GameManager.start_event("event_441")
 
@@ -1070,9 +1070,9 @@ func _daily_latin_war_triggers(w: WorldState) -> void:
 		return
 	var c149 := w.get_country_by_legacy_index(149)
 	if c149 != null and not _war_going_idx(w, 64) \
-			and ((not w.is_socialism(c149, true) and c149.government != 2 \
+			and ((not w.is_socialism(c149, true) and c149.government != GameConstants.Government.REFORMIST \
 				and c149.level_of_instability >= 500) \
-				or ((w.is_socialism(c149, true) or c149.government == 2) \
+				or ((w.is_socialism(c149, true) or c149.government == GameConstants.Government.REFORMIST) \
 				and c149.level_of_instability < 500)):
 		WAR_SYS.start_war(64, "军政府", "URNG", 500, 500, 0, 1)
 		var war := _war_idx(w, 64)
@@ -1082,7 +1082,7 @@ func _daily_latin_war_triggers(w: WorldState) -> void:
 		_set_country_part(c149, 1, true)
 	var c147 := w.get_country_by_legacy_index(147)
 	if c147 != null and not _war_going_idx(w, 67) \
-			and (w.is_socialism(c147, true) or c147.government == 2) \
+			and (w.is_socialism(c147, true) or c147.government == GameConstants.Government.REFORMIST) \
 			and c147.level_of_instability < 500:
 		WAR_SYS.start_war(67, "康特拉", "FSLN", 500, 500, 0, 1)
 		var war67 := _war_idx(w, 67)
@@ -1131,17 +1131,17 @@ func _daily_finland_linkage(w: WorldState) -> void:
 			w.empires[EmpireData.USSR].power -= 50
 		var china_fin := w.get_country_by_legacy_index(1)
 		if china_fin != null and w.is_socialism(china_fin, true):
-			finland.government = 1
-			finland.sub_government = 1
-		elif china_fin != null and china_fin.government == 2:
-			finland.government = 2
-			finland.sub_government = 15
-		elif china_fin != null and china_fin.government == 3:
-			finland.government = 3
-			finland.sub_government = 5
+			finland.government = GameConstants.Government.SOCIALIST
+			finland.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
+		elif china_fin != null and china_fin.government == GameConstants.Government.REFORMIST:
+			finland.government = GameConstants.Government.REFORMIST
+			finland.sub_government = GameConstants.SubGovernment.PRAGMATIST
+		elif china_fin != null and china_fin.government == GameConstants.Government.LIBERAL:
+			finland.government = GameConstants.Government.LIBERAL
+			finland.sub_government = GameConstants.SubGovernment.MODERATE
 		else:
-			finland.government = 0
-			finland.sub_government = 20
+			finland.government = GameConstants.Government.AUTHORITARIAN
+			finland.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 
 
 ## TimeScript.cs:1490-1634 / 1636-1648 / 1689-2089：季度、半年度与月维护。
@@ -1468,7 +1468,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 		britain.special = 1
 	if w.date.year == 1981 and w.date.month == 1:
 		var greece := w.get_country_by_legacy_index(45)
-		if greece != null and greece.government == 3:
+		if greece != null and greece.government == GameConstants.Government.LIBERAL:
 			greece.set_tag("eu", true)
 			if w.empires.size() > 0 and w.empires[0] != null:
 				w.empires[0].power += 10
@@ -1486,7 +1486,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 		if w.empires.size() > 0 and w.empires[0] != null:
 			w.empires[0].power += 10
 		if britain != null:
-			britain.sub_government = 12
+			britain.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 
 	# 2356-2361：modifies[41] 停用条件。
 	if d[W.I_DIPLO] >= 850 or (d.size() > 131 and (d[131] == 1 or d[131] == 2)):
@@ -1495,7 +1495,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 	if egypt41 != null and not egypt41.has_tag("亲美"):
 		w.modifiers[41].is_active = false
 	var iran41 := w.get_country_by_legacy_index(8)
-	if iran41 != null and (iran41.government == 1 or iran41.sub_government == 20):
+	if iran41 != null and (iran41.government == GameConstants.Government.SOCIALIST or iran41.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN):
 		w.modifiers[41].is_active = false
 	if china != null and china.has_tag("sev"):
 		w.modifiers[41].is_active = false
@@ -1504,16 +1504,16 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 	var east_germany := w.get_country_by_legacy_index(16)
 	var west_germany := w.get_country_by_legacy_index(17)
 	if east_germany != null and east_germany.has_tag("亲苏") \
-			and (china == null or china.government != 1 or china.has_tag("asean") or not w.get_flag("relres")):
+			and (china == null or china.government != GameConstants.Government.SOCIALIST or china.has_tag("asean") or not w.get_flag("relres")):
 		w.modifiers[53].is_active = false
 		east_germany.set_tag("对华贸易", false)
 	if east_germany != null and east_germany.has_tag("亲中") \
-			and (china == null or china.government != 1 or china.has_tag("asean")):
+			and (china == null or china.government != GameConstants.Government.SOCIALIST or china.has_tag("asean")):
 		w.modifiers[53].is_active = false
 		east_germany.set_tag("对华贸易", false)
 	if west_germany != null and west_germany.parts.size() > 0 and west_germany.parts[0] \
-			and west_germany.government == 1 \
-			and (china == null or china.government != 1 or china.has_tag("asean")):
+			and west_germany.government == GameConstants.Government.SOCIALIST \
+			and (china == null or china.government != GameConstants.Government.SOCIALIST or china.has_tag("asean")):
 		w.modifiers[53].is_active = false
 		west_germany.set_tag("对华贸易", false)
 
@@ -1525,7 +1525,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 				c_ee.set_tag("对华贸易", false)
 
 	# 2386-2391：英国社会主义时巴基斯坦/伊朗退出 SENTO。
-	if britain != null and (britain.government == 1 or britain.sub_government == 3):
+	if britain != null and (britain.government == GameConstants.Government.SOCIALIST or britain.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST):
 		for legacy_idx in [31, 8]:
 			var c_sento := w.get_country_by_legacy_index(legacy_idx)
 			if c_sento != null:
@@ -1539,8 +1539,8 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 	var evict_pre := (d.size() > 140 and d[140] <= 0) \
 		and ((not _mod_active(w, 16) and is_sev) or (not _mod_active(w, 17) and is_asean))
 	var evict_bad := (d.size() > 140 and d[139] > 0) and (
-		(d[140] == 1 and is_sev and china.government != 3 and d[W.I_ECON_DISPLAY] != 37)
-		or (d[140] == 2 and is_asean and china.government != 1 and d[W.I_ECON_DISPLAY] != 34)
+		(d[140] == 1 and is_sev and china.government != GameConstants.Government.LIBERAL and d[W.I_ECON_DISPLAY] != 37)
+		or (d[140] == 2 and is_asean and china.government != GameConstants.Government.SOCIALIST and d[W.I_ECON_DISPLAY] != 34)
 	)
 	if (evict_pre or evict_bad) and d.size() > 139 and d[139] > 0:
 		d[139] = 0
@@ -1612,7 +1612,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 			w.empires[0].power += 10
 		var france83 := w.get_country_by_legacy_index(21)
 		if france83 != null:
-			france83.sub_government = 12
+			france83.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 
 	# 2476-2494：苏联加入北约时按外交标记改战争阵营。
 	var ussr_nato := w.get_country_by_legacy_index(7)
@@ -1632,25 +1632,25 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 	if w.date.year > 1976 and not w.dlc[3]:
 		var portugal := w.get_country_by_legacy_index(87)
 		if portugal != null:
-			portugal.sub_government = 6
-			portugal.government = 3
+			portugal.sub_government = GameConstants.SubGovernment.LIBERAL
+			portugal.government = GameConstants.Government.LIBERAL
 		var spain := w.get_country_by_legacy_index(86)
 		if spain != null:
-			spain.sub_government = 5
-			spain.government = 3
+			spain.sub_government = GameConstants.SubGovernment.MODERATE
+			spain.government = GameConstants.Government.LIBERAL
 
 	# 2503-2509：dlc[3] 分支（Godot 改版 dlc[3]=true 全免费 → 执行）。
 	# 原版：1984 年土耳其 sub==7 时改开化（SubGosstroy=6、Gosstroy=3）。
 	if w.dlc[3]:
 		var turkey84 := w.get_country_by_legacy_index(84)
-		if turkey84 != null and turkey84.sub_government == 7 and w.date.year == 1984:
-			turkey84.sub_government = 6
-			turkey84.government = 3
+		if turkey84 != null and turkey84.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN and w.date.year == 1984:
+			turkey84.sub_government = GameConstants.SubGovernment.LIBERAL
+			turkey84.government = GameConstants.Government.LIBERAL
 
 	# 2510-2550：OAR 成立后阿拉伯国家退出其它联盟。
 	if w.oar:
 		var egypt_oar := w.get_country_by_legacy_index(30)
-		if egypt_oar == null or egypt_oar.government == 1:
+		if egypt_oar == null or egypt_oar.government == GameConstants.Government.SOCIALIST:
 			pass
 		else:
 			for legacy_idx in [14, 35, 40, 30, 13]:
@@ -1666,7 +1666,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: Array[int]) -> void:
 	# 2551-2555：1982.5 西班牙入北约（原版 !dlc[3] 分支；Godot 改版 dlc[3]=true 全免费 → 不执行）。
 	if w.date.year == 1982 and w.date.month == 5 and not w.dlc[3]:
 		var spain_nato := w.get_country_by_legacy_index(86)
-		if spain_nato != null and spain_nato.sub_government == 5:
+		if spain_nato != null and spain_nato.sub_government == GameConstants.SubGovernment.MODERATE:
 			spain_nato.set_tag("nato", true)
 
 	# 2556-2564：土耳其 sub==9 改名（new_events_text[784] 建模说明 → 跳过）。
@@ -1689,11 +1689,11 @@ func _monthly_finland_linkage(w: WorldState) -> void:
 		var ussr_now := w.empires[EmpireData.USSR].current_leader \
 			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null else -1
 		if ussr_now == 6:
-			finland.government = 2
-			finland.sub_government = 14
+			finland.government = GameConstants.Government.REFORMIST
+			finland.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 		else:
-			finland.government = 1
-			finland.sub_government = 1
+			finland.government = GameConstants.Government.SOCIALIST
+			finland.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 		finland.set_tag("亲中", false)
 		finland.set_tag("亲苏", true)
 		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
@@ -1788,7 +1788,7 @@ func _yearly_jan1_maintenance(w: WorldState) -> void:
 	var c149 := w.get_country_by_legacy_index(149)
 	if c149 != null and c149.level_of_instability > 0 and c149.level_of_instability < 1000:
 		c149.level_of_instability += 10
-		if w.is_socialism(c149, true) or c149.government == 2:
+		if w.is_socialism(c149, true) or c149.government == GameConstants.Government.REFORMIST:
 			c149.level_of_instability -= 10
 			for idx_vyshi in [141, 140, 148, 147, 146, 144]:
 				var vc := w.get_country_by_legacy_index(idx_vyshi)
@@ -1796,7 +1796,7 @@ func _yearly_jan1_maintenance(w: WorldState) -> void:
 					c149.level_of_instability -= 10
 		for idx_soc in [147, 148]:
 			var sc := w.get_country_by_legacy_index(idx_soc)
-			if sc != null and (w.is_socialism(sc, true) or sc.government == 2):
+			if sc != null and (w.is_socialism(sc, true) or sc.government == GameConstants.Government.REFORMIST):
 				c149.level_of_instability += 25
 		for idx_pro in [138, 141]:
 			var pc := w.get_country_by_legacy_index(idx_pro)
@@ -1805,7 +1805,7 @@ func _yearly_jan1_maintenance(w: WorldState) -> void:
 	var c147 := w.get_country_by_legacy_index(147)
 	if c147 != null and c147.level_of_instability > 0 and c147.level_of_instability < 1000:
 		c147.level_of_instability += 10
-		if w.is_socialism(c147, true) or c147.government == 2:
+		if w.is_socialism(c147, true) or c147.government == GameConstants.Government.REFORMIST:
 			c147.level_of_instability -= 10
 			for idx_vyshi in [141, 140, 148, 147, 146, 144]:
 				var vc := w.get_country_by_legacy_index(idx_vyshi)
@@ -1813,7 +1813,7 @@ func _yearly_jan1_maintenance(w: WorldState) -> void:
 					c147.level_of_instability -= 10
 		for idx_soc in [149, 148]:
 			var sc := w.get_country_by_legacy_index(idx_soc)
-			if sc != null and (w.is_socialism(sc, true) or sc.government == 2):
+			if sc != null and (w.is_socialism(sc, true) or sc.government == GameConstants.Government.REFORMIST):
 				c147.level_of_instability += 25
 		for idx_pro in [138, 141]:
 			var pc := w.get_country_by_legacy_index(idx_pro)
@@ -1852,9 +1852,9 @@ func _yearly_jan1_maintenance(w: WorldState) -> void:
 		var spain := w.get_country_by_legacy_index(86)
 		var portugal_eu := w.get_country_by_legacy_index(87)
 		if luxemburg != null and luxemburg.has_tag("eu"):
-			if spain != null and spain.government == 3:
+			if spain != null and spain.government == GameConstants.Government.LIBERAL:
 				spain.join_eu()
-			if portugal_eu != null and portugal_eu.government == 3:
+			if portugal_eu != null and portugal_eu.government == GameConstants.Government.LIBERAL:
 				portugal_eu.join_eu()
 
 	# 907-914：中国在 SEATO 内时内战标记解除。
@@ -2178,9 +2178,9 @@ func _monthly_late_maintenance(d: Array[int], w: WorldState) -> void:
 	# 2859-2863：1983.7 波兰 gov==0 且亲苏 → 军政体(2/21)。
 	if w.date.year == 1983 and w.date.month == 7:
 		var poland := w.get_country_by_legacy_index(2)
-		if poland != null and poland.government == 0 and poland.has_tag("亲苏"):
-			poland.government = 2
-			poland.sub_government = 21
+		if poland != null and poland.government == GameConstants.Government.AUTHORITARIAN and poland.has_tag("亲苏"):
+			poland.government = GameConstants.Government.REFORMIST
+			poland.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 
 	# 2864-2896：中印边境战争(war_state==2)月度推进与胜利结算。
 	if w.war_state == GameConstants.WarState.INDIA:
@@ -2283,7 +2283,7 @@ func _monthly_african_coups(w: WorldState) -> void:
 		if i == 58 or i == 128 or i == 55 or i == 69 or i == 70:
 			continue
 
-		if not c.has_tag("亲美") and c.government != 3 and not c.has_tag("亲苏") \
+		if not c.has_tag("亲美") and c.government != GameConstants.Government.LIBERAL and not c.has_tag("亲苏") \
 				and not c.has_tag("亲中") and c.sov_power > 300 and c.sov_power >= c.usa_power:
 			# 6438-6451：亲苏和平转向。
 			var roll := randi_range(80, 99)
@@ -2293,7 +2293,7 @@ func _monthly_african_coups(w: WorldState) -> void:
 				c.set_tag("对华贸易", false)
 				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
 					w.empires[EmpireData.USSR].power += 1
-		elif not c.has_tag("亲美") and c.government != 1 and not c.has_tag("亲苏") \
+		elif not c.has_tag("亲美") and c.government != GameConstants.Government.SOCIALIST and not c.has_tag("亲苏") \
 				and not c.has_tag("亲中") and c.usa_power > 300 and c.sov_power < c.usa_power:
 			# 6452-6465：亲美和平转向。
 			var roll := randi_range(80, 99)
@@ -2348,8 +2348,8 @@ func _monthly_african_coups(w: WorldState) -> void:
 					w.influence_prc -= 5
 					c.set_tag("亲中", false)
 				c.government = randi_range(0, 2)
-				if c.government == 1:
-					c.government = 3
+				if c.government == GameConstants.Government.SOCIALIST:
+					c.government = GameConstants.Government.LIBERAL
 				c.sub_government = _african_sub_gosstroy(c.government)
 				c.set_tag("亲美", true)
 				c.stab = 100

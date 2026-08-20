@@ -43,6 +43,6 @@ func execute(context: Dictionary) -> void:
 		return
 	var spain := ws.get_country_by_legacy_index(86)
 	if spain != null:
-		spain.government = 3
-		spain.sub_government = 6
+		spain.government = GameConstants.Government.LIBERAL
+		spain.sub_government = GameConstants.SubGovernment.LIBERAL
 	context["result_text"] = TXT_RESULT

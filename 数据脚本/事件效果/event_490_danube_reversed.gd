@@ -70,8 +70,8 @@ func execute(context: Dictionary) -> void:
 					and mod6 and not china_sev:
 				text += TXT_MINERS + TXT_A1
 				if romania != null:
-					romania.government = 1
-					romania.sub_government = 2
+					romania.government = GameConstants.Government.SOCIALIST
+					romania.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 					romania.set_tag("对华贸易", true)
 					romania.set_tag("亲苏", false)
 					romania.set_tag("亲中", true)
@@ -80,14 +80,14 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = text
 				return
 			var ussr_power := ws.empires[EmpireData.USSR].power if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null else 0
-			if ((result79 == 3 and china != null and china.government == 2) \
+			if ((result79 == 3 and china != null and china.government == GameConstants.Government.REFORMIST) \
 					or (result79 != 3 and ws.influence_prc > ussr_power)) and not china_sev:
 				if result79 == 3:
 					text += TXT_MINERS
 				text += TXT_A2
 				if romania != null:
-					romania.government = 2
-					romania.sub_government = 21
+					romania.government = GameConstants.Government.REFORMIST
+					romania.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 					romania.set_tag("对华贸易", true)
 					romania.set_tag("亲苏", false)
 					romania.set_tag("亲中", true)
@@ -98,8 +98,8 @@ func execute(context: Dictionary) -> void:
 				return
 			text += TXT_A3
 			if romania != null:
-				romania.government = 1
-				romania.sub_government = 16
+				romania.government = GameConstants.Government.SOCIALIST
+				romania.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				romania.set_tag("对华贸易", true)
 				romania.set_tag("亲苏", true)
 				romania.set_tag("亲中", false)

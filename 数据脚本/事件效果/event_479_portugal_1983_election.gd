@@ -40,14 +40,14 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
 			if portugal != null:
-				portugal.government = 2
-				portugal.sub_government = 3
+				portugal.government = GameConstants.Government.REFORMIST
+				portugal.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				portugal.set_tag("亲美", false)
 			context["result_text"] = S_43
 		1:
 			if portugal != null:
-				portugal.government = 3
-				portugal.sub_government = 5
+				portugal.government = GameConstants.Government.LIBERAL
+				portugal.sub_government = GameConstants.SubGovernment.MODERATE
 			context["result_text"] = S_52
 
 

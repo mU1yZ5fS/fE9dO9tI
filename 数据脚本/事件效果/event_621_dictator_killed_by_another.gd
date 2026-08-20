@@ -53,8 +53,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if eq_guinea != null:
-				eq_guinea.government = 0
-				eq_guinea.sub_government = 7
+				eq_guinea.government = GameConstants.Government.AUTHORITARIAN
+				eq_guinea.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(eq_guinea)
 				eq_guinea.set_tag("对华贸易", true)
 			ws.influence_prc += 10
@@ -71,8 +71,8 @@ func execute(context: Dictionary) -> void:
 		2:
 			context["result_text"] = TXT_R2
 			if eq_guinea != null:
-				eq_guinea.government = 0
-				eq_guinea.sub_government = 7
+				eq_guinea.government = GameConstants.Government.AUTHORITARIAN
+				eq_guinea.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(eq_guinea)
 				eq_guinea.set_tag("对华贸易", true)
 				eq_guinea.puppet_of = 21
@@ -80,8 +80,8 @@ func execute(context: Dictionary) -> void:
 		3:
 			context["result_text"] = TXT_R3
 			if eq_guinea != null:
-				eq_guinea.government = 0
-				eq_guinea.sub_government = 7
+				eq_guinea.government = GameConstants.Government.AUTHORITARIAN
+				eq_guinea.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 
 
 

@@ -42,8 +42,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -50)
 			_add_relation(EmpireData.USSR, 50)
 			if greece != null:
-				greece.government = 2
-				greece.sub_government = 3
+				greece.government = GameConstants.Government.REFORMIST
+				greece.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				greece.set_tag("亲美", false)
 				greece.set_tag("nato", false)
 				if cyprus2 == null or not cyprus2.内战中:

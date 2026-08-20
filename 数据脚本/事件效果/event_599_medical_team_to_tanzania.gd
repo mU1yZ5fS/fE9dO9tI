@@ -25,7 +25,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var china := world.get_country_by_legacy_index(1)
 	var opt := event_def.options
 	var desc := TXT_DESC_A
-	if uganda != null and uganda.sub_government == 15:
+	if uganda != null and uganda.sub_government == GameConstants.SubGovernment.PRAGMATIST:
 		desc += TXT_DESC_MID
 	desc += TXT_DESC_B
 	event_def.description = desc
@@ -52,8 +52,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 			_add(W.I_BUDGET, -80)
 			if tanzania != null:
-				tanzania.government = 1
-				tanzania.sub_government = 1
+				tanzania.government = GameConstants.Government.SOCIALIST
+				tanzania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(tanzania)
 				_establish_prochina(tanzania)
 				tanzania.set_tag("对华贸易", true)
@@ -63,8 +63,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 			_add(W.I_BUDGET, -40)
 			if tanzania != null:
-				tanzania.government = 1
-				tanzania.sub_government = 1
+				tanzania.government = GameConstants.Government.SOCIALIST
+				tanzania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(tanzania)
 				_establish_prochina(tanzania)
 				tanzania.social_stability = 1000
@@ -77,8 +77,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 			_add(W.I_BUDGET, -50)
 			if tanzania != null:
-				tanzania.government = 2
-				tanzania.sub_government = 3
+				tanzania.government = GameConstants.Government.REFORMIST
+				tanzania.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				_leave_alliances(tanzania)
 				_establish_prochina(tanzania)
 				tanzania.social_stability = 1000

@@ -316,7 +316,7 @@ func _event_95_result_0(context: Dictionary) -> void:
 		d[W.I_DIPLO] = 699
 	var china := ws.get_country_by_legacy_index(1)
 	if china != null:
-		china.government = 2
+		china.government = GameConstants.Government.REFORMIST
 		china.sub_government = _chinese_sub_government_after_95_option0(china)
 	_change_loyalty_by_personality({0: -400, 3: 300})
 
@@ -349,7 +349,7 @@ func _event_95_result_1(context: Dictionary) -> void:
 		d[W.I_IDEOLOGY] = 4
 	var china := ws.get_country_by_legacy_index(1)
 	if china != null:
-		china.government = 3
+		china.government = GameConstants.Government.LIBERAL
 		china.sub_government = _chinese_sub_government_after_95_option1(china)
 	_change_loyalty_by_personality({0: -500, 1: -300, 3: 500})
 
@@ -476,8 +476,8 @@ func _event_116_result_1(context: Dictionary) -> void:
 	var taiwan := ws.get_country_by_legacy_index(38)
 	if taiwan != null:
 		taiwan.set_tag("亲中", true)  # 原版 proprc = true
-		taiwan.government = 3         # 原版 Gosstroy = 3
-		taiwan.sub_government = 5     # 原版 SubGosstroy = 5
+		taiwan.government = GameConstants.Government.LIBERAL         # 原版 Gosstroy = 3
+		taiwan.sub_government = GameConstants.SubGovernment.MODERATE     # 原版 SubGosstroy = 5
 	d[W.I_TAIWAN_STATUS] = 2
 	var china := ws.get_country_by_legacy_index(1)
 	if china != null:
@@ -494,8 +494,8 @@ func _event_116_result_2(context: Dictionary) -> void:
 	var taiwan := ws.get_country_by_legacy_index(38)
 	if taiwan != null:
 		taiwan.set_tag("对华贸易", true)  # 原版 Torg = true
-		taiwan.government = 3            # 原版 Gosstroy = 3
-		taiwan.sub_government = 5        # 原版 SubGosstroy = 5
+		taiwan.government = GameConstants.Government.LIBERAL            # 原版 Gosstroy = 3
+		taiwan.sub_government = GameConstants.SubGovernment.MODERATE        # 原版 SubGosstroy = 5
 	d[W.I_TAIWAN_STATUS] = 1
 
 
@@ -517,14 +517,14 @@ func _china_map_parts(china: CountryData) -> void:
 	if ws.get_flag("IndOpp"):
 		_clear_china_parts(china, true)
 		china.parts[15] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == 19 \
-			and c33 != null and c33.puppet_of == 1 and c33.sub_government == 19:
+	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
+			and c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[14] = true
-	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == 19:
+	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[13] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == 19:
+	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_china_parts(china, true)
 		china.parts[12] = true
 	elif ws.get_flag("is_gkchp"):

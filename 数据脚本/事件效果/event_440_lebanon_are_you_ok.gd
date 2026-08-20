@@ -56,8 +56,8 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USSR, -20)
 			if lebanon != null:
 				lebanon.set_tag("对华贸易", true)
-				lebanon.government = 3
-				lebanon.sub_government = 4
+				lebanon.government = GameConstants.Government.LIBERAL
+				lebanon.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			context["result_text"] = TXT_R0
 		1:
 			_add(W.I_AGENTS, -50)
@@ -68,8 +68,8 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USSR, -20)
 			if lebanon != null:
 				lebanon.set_tag("对华贸易", true)
-				lebanon.government = 2
-				lebanon.sub_government = 15
+				lebanon.government = GameConstants.Government.REFORMIST
+				lebanon.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			context["result_text"] = TXT_R1
 		2:
 			_add(W.I_AGENTS, -50)
@@ -81,8 +81,8 @@ func execute(context: Dictionary) -> void:
 			if lebanon != null:
 				lebanon.set_tag("对华贸易", true)
 				lebanon.set_tag("亲中", true)
-				lebanon.government = 1
-				lebanon.sub_government = 2
+				lebanon.government = GameConstants.Government.SOCIALIST
+				lebanon.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 			context["result_text"] = TXT_R2
 		3:
 			ws.completed_event_ids.erase("event_440")

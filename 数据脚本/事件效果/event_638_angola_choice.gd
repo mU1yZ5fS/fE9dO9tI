@@ -56,8 +56,8 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_ELSE)
 	var zaire := ws.get_country_by_legacy_index(117)
-	if line > 0 and zaire != null and zaire.has_tag("对华贸易") and zaire.sub_government != 10 \
-			and (ws.is_authoritarian(zaire) or zaire.sub_government == 8):
+	if line > 0 and zaire != null and zaire.has_tag("对华贸易") and zaire.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST \
+			and (ws.is_authoritarian(zaire) or zaire.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE):
 		_enable(opt[2], event_def.options[2].text)
 	elif line == 0:
 		_disable(opt[2], TXT_OPT2_DIS_0)

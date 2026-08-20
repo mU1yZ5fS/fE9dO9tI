@@ -19,8 +19,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if eq_guinea != null:
-				eq_guinea.government = 1
-				eq_guinea.sub_government = 1
+				eq_guinea.government = GameConstants.Government.SOCIALIST
+				eq_guinea.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(eq_guinea)
 				eq_guinea.set_tag("对华贸易", true)
 				eq_guinea.set_tag("亲中", true)

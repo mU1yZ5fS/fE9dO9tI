@@ -19,8 +19,8 @@ func execute(context: Dictionary) -> void:
 	if haiti != null:
 		_leave_alliances(haiti)
 		haiti.chinese_name = "海地人民帝国"
-		haiti.government = 0
-		haiti.sub_government = 19
+		haiti.government = GameConstants.Government.AUTHORITARIAN
+		haiti.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 		haiti.set_tag("亲中", true)
 		haiti.set_tag("对华贸易", true)
 		_join_alliances(haiti)

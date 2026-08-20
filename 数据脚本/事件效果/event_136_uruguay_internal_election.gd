@@ -213,7 +213,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
 			c.level_of_instability -= 15
-			c.sub_government = 7
+			c.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c.set_tag("亲中", true)
 			_want_to_leave(c)
 			context["result_text"] = TXT_R0 + _friend_suffix(c)
@@ -221,15 +221,15 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
 			c.level_of_instability -= 15
-			c.sub_government = 6
+			c.sub_government = GameConstants.SubGovernment.LIBERAL
 			c.set_tag("亲中", true)
 			_want_to_leave(c)
 			context["result_text"] = TXT_R1 + _friend_suffix(c)
 		_:
 			c.level_of_instability -= 20
 			c.level_of_development -= 5
-			c.government = 0
-			c.sub_government = 7
+			c.government = GameConstants.Government.AUTHORITARIAN
+			c.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			# 死代码/建模说明：原版此分支不扣 data[8]/data[9]；proprc 沿用旧值拼红字。
 			context["result_text"] = TXT_R2 + _friend_suffix(c)
 	_set_next_election(c, 1984, 11, 25)

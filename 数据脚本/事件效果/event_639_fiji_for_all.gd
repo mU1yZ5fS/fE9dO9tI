@@ -24,10 +24,10 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	if opt != 0 or fiji == null:
 		return
-	var vanuatu_ok := vanuatu != null and (ws.is_socialism(vanuatu, true) or vanuatu.government == 2)
+	var vanuatu_ok := vanuatu != null and (ws.is_socialism(vanuatu, true) or vanuatu.government == GameConstants.Government.REFORMIST)
 	var nc_ok := new_caledonia != null and new_caledonia.puppet_of < 0
-	var aus_ok := australia != null and (ws.is_socialism(australia, true) or australia.government == 2) \
-		and australia.sub_government != 8
+	var aus_ok := australia != null and (ws.is_socialism(australia, true) or australia.government == GameConstants.Government.REFORMIST) \
+		and australia.sub_government != GameConstants.SubGovernment.LEFT_CONSERVATIVE
 	if vanuatu_ok and nc_ok and aus_ok:
 		context["result_text"] = TXT_R_OK
 		_leave_alliances(fiji)
@@ -36,15 +36,15 @@ func execute(context: Dictionary) -> void:
 		if australia != null and ws.is_socialism(australia, true) \
 				and vanuatu != null and ws.is_socialism(vanuatu, true) \
 				and png != null and ws.is_socialism(png, true):
-			fiji.government = 1
-			fiji.sub_government = 1
+			fiji.government = GameConstants.Government.SOCIALIST
+			fiji.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			fiji.chinese_name = "斐济民主共和国"
 			return
-		fiji.government = 2
-		fiji.sub_government = 3
+		fiji.government = GameConstants.Government.REFORMIST
+		fiji.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		fiji.chinese_name = "斐济共和国"
 		return
 	context["result_text"] = TXT_R_FAIL
-	fiji.government = 0
-	fiji.sub_government = 7
+	fiji.government = GameConstants.Government.AUTHORITARIAN
+	fiji.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 	fiji.chinese_name = "斐济主权民主共和国"

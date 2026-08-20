@@ -28,9 +28,9 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	if event_def == null or event_def.options.size() < 3:
 		return
 	var china := ws.get_country_by_legacy_index(1)
-	if china != null and (china.sub_government == 9 \
+	if china != null and (china.sub_government == GameConstants.SubGovernment.NEO_FASCIST \
 			or (ws.is_authoritarian(china) and _res(W.I_WAR_SUPPORT) >= 700)) \
-			and china.sub_government != 19:
+			and china.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_enable(event_def.options[2], event_def.options[2].text)
 	else:
 		_disable(event_def.options[2], TXT_OPT2_DIS)
@@ -63,8 +63,8 @@ func execute(context: Dictionary) -> void:
 	else:
 		var china := ws.get_country_by_legacy_index(1)
 		if china != null:
-			china.government = 0
-			china.sub_government = 9
+			china.government = GameConstants.Government.AUTHORITARIAN
+			china.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 		for c in ws.countries:
 			if c == null:
 				continue
@@ -92,13 +92,13 @@ func evaluate(world: WorldState) -> bool:
 	var italy := world.get_country_by_legacy_index(87)
 	if france == null or uk == null or spain == null or portugal == null or italy == null:
 		return false
-	if (france.sub_government != 22 and france.sub_government != 9) \
-			or (uk.sub_government != 22 and uk.sub_government != 9) \
-			or (spain.sub_government != 22 and spain.sub_government != 9):
+	if (france.sub_government != GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST and france.sub_government != GameConstants.SubGovernment.NEO_FASCIST) \
+			or (uk.sub_government != GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST and uk.sub_government != GameConstants.SubGovernment.NEO_FASCIST) \
+			or (spain.sub_government != GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST and spain.sub_government != GameConstants.SubGovernment.NEO_FASCIST):
 		return false
 	if not world.is_authoritarian(portugal):
 		return false
-	if italy.sub_government != 7 and italy.sub_government != 9:
+	if italy.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN and italy.sub_government != GameConstants.SubGovernment.NEO_FASCIST:
 		return false
 	return _sub22_count(world) < 3
 
@@ -107,21 +107,21 @@ func _chain_text(_trade: bool) -> String:
 	var s := ""
 	var iran := ws.get_country_by_legacy_index(8)
 	if iran != null:
-		if iran.sub_government == 13:
+		if iran.sub_government == GameConstants.SubGovernment.NEOPATRIARCHAL:
 			s += TXT_IRAN_13
-		elif iran.sub_government == 9 and iran.puppet_of < 0:
+		elif iran.sub_government == GameConstants.SubGovernment.NEO_FASCIST and iran.puppet_of < 0:
 			s += TXT_IRAN_9
 	var gdr := ws.get_country_by_legacy_index(17)
 	if gdr != null and gdr.parts.size() > 0 and gdr.parts[0]:
-		if gdr.sub_government == 9:
+		if gdr.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 			s += TXT_GDR_9
-		elif gdr.sub_government == 22:
+		elif gdr.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
 			s += TXT_GDR_22
 	var frg := ws.get_country_by_legacy_index(16)
-	if frg != null and frg.parts.size() > 0 and frg.parts[0] and frg.sub_government == 10:
+	if frg != null and frg.parts.size() > 0 and frg.parts[0] and frg.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 		s += TXT_FRG_10
 	var greece := ws.get_country_by_legacy_index(45)
-	if greece != null and greece.sub_government == 7:
+	if greece != null and greece.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		s += TXT_GREECE
 	var australia := ws.get_country_by_legacy_index(135)
 	if ws.is_authoritarian(australia):
@@ -130,16 +130,16 @@ func _chain_text(_trade: bool) -> String:
 	if ws.is_authoritarian(south_africa):
 		s += TXT_SOUTH_AFRICA
 	var mexico := ws.get_country_by_legacy_index(140)
-	if mexico != null and mexico.sub_government == 9:
+	if mexico != null and mexico.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		s += TXT_MEXICO
 	var lebanon := ws.get_country_by_legacy_index(93)
 	if ws.is_authoritarian(lebanon):
 		s += TXT_LEBANON
 	var france := ws.get_country_by_legacy_index(21)
-	if france != null and france.sub_government == 9 and _has_puppet_of(21):
+	if france != null and france.sub_government == GameConstants.SubGovernment.NEO_FASCIST and _has_puppet_of(21):
 		s += TXT_FRANCE_PUPPETS
 	var spain := ws.get_country_by_legacy_index(85)
-	if spain != null and spain.sub_government == 9 and _has_puppet_of(85):
+	if spain != null and spain.sub_government == GameConstants.SubGovernment.NEO_FASCIST and _has_puppet_of(85):
 		s += TXT_ITALY_PUPPETS
 	return s
 
@@ -150,10 +150,10 @@ func _apply_chain(trade: bool) -> void:
 	if gdr != null and gdr.parts.size() > 0 and gdr.parts[0] and gdr.sub_government in [9, 22]:
 		_join_fxseu(17, trade)
 	var frg := ws.get_country_by_legacy_index(16)
-	if frg != null and frg.parts.size() > 0 and frg.parts[0] and frg.sub_government == 10:
+	if frg != null and frg.parts.size() > 0 and frg.parts[0] and frg.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 		_join_fxseu(16, trade)
 	var greece := ws.get_country_by_legacy_index(45)
-	if greece != null and greece.sub_government == 7:
+	if greece != null and greece.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		_join_fxseu(45, trade)
 	var australia := ws.get_country_by_legacy_index(135)
 	if ws.is_authoritarian(australia):
@@ -162,7 +162,7 @@ func _apply_chain(trade: bool) -> void:
 	if ws.is_authoritarian(south_africa):
 		_join_fxseu(131, trade)
 	var mexico := ws.get_country_by_legacy_index(140)
-	if mexico != null and mexico.sub_government == 9:
+	if mexico != null and mexico.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		_join_fxseu(140, trade)
 	var lebanon := ws.get_country_by_legacy_index(93)
 	if ws.is_authoritarian(lebanon):
@@ -190,7 +190,7 @@ func _join_fxseu(idx: int, trade: bool) -> void:
 		return
 	if idx == 8:
 		# 伊朗只在 sub==13 或 (sub==9 && puppet<0) 时加入
-		if c.sub_government == 13 or (c.sub_government == 9 and c.puppet_of < 0):
+		if c.sub_government == GameConstants.SubGovernment.NEOPATRIARCHAL or (c.sub_government == GameConstants.SubGovernment.NEO_FASCIST and c.puppet_of < 0):
 			_leave_alliances(c)
 			c.set_tag("fxseu", true)
 			if trade:
@@ -213,7 +213,7 @@ func _sub22_count(world: WorldState) -> int:
 	var count := 0
 	for idx in [21, 85, 86, 87, 92]:
 		var c := world.get_country_by_legacy_index(idx)
-		if c != null and c.sub_government == 22:
+		if c != null and c.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
 			count += 1
 	return count
 

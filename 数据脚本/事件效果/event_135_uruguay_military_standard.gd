@@ -64,7 +64,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -25)
 			uruguay.level_of_instability -= 10
 			uruguay.level_of_development += 5
-			uruguay.sub_government = 7
+			uruguay.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			uruguay.set_tag("亲中", true)
 			_want_to_leave(uruguay)
 			context["result_text"] = TXT_R0 + _proprc_suffix(uruguay)

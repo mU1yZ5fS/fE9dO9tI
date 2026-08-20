@@ -29,9 +29,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var philippines := world.get_country_by_legacy_index(47)
 	if philippines != null and not philippines.has_tag("亲中"):
 		philippines.set_tag("亲中", true)
-		philippines.government = 1
+		philippines.government = GameConstants.Government.SOCIALIST
 		philippines.set_tag("asean", false)
-		philippines.sub_government = 17
+		philippines.sub_government = GameConstants.SubGovernment.MAOIST
 		philippines.set_tag("亲美", false)
 	if event_def.options.size() >= 1:
 		_enable(event_def.options[0], event_def.options[0].text)

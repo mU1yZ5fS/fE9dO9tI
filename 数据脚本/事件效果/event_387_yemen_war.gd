@@ -88,8 +88,8 @@ func execute(context: Dictionary) -> void:
 					south.parts.resize(1)
 				south.parts[0] = true
 				south.set_tag("亲中", true)
-				south.government = 1
-				south.sub_government = 1
+				south.government = GameConstants.Government.SOCIALIST
+				south.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				south.set_tag("对华贸易", true)
 				south.name = TXT_NAME_YEMEN
 				south.chinese_name = TXT_NAME_YEMEN

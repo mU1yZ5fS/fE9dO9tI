@@ -25,13 +25,13 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			if ev130 == 1 and bolivia.sub_government == 4:
+			if ev130 == 1 and bolivia.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 				_add(W.I_BUDGET, -25)
 				_add(W.I_AGENTS, -25)
 				bolivia.level_of_instability -= 5
 				bolivia.level_of_development += 10
 				bolivia.set_tag("亲中", true)
-				bolivia.sub_government = 3
+				bolivia.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				_leave_alliances(bolivia)
 				# 原作 Event132.cs:37：iron_and_blood → achievements.Set(90)
 				Achievements.set_achievement(90)
@@ -39,29 +39,29 @@ func execute(context: Dictionary) -> void:
 			else:
 				bolivia.level_of_instability -= 15
 				bolivia.set_tag("亲中", false)
-				bolivia.sub_government = 4
+				bolivia.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				context["result_text"] = TXT_R2 + _proprc_suffix(bolivia)
 		1:
-			if ev130 == 0 and bolivia.sub_government == 5:
+			if ev130 == 0 and bolivia.sub_government == GameConstants.SubGovernment.MODERATE:
 				_add(W.I_BUDGET, -25)
 				_add(W.I_AGENTS, -25)
 				bolivia.level_of_instability -= 25
 				bolivia.level_of_development -= 10
 				bolivia.set_tag("亲中", true)
-				bolivia.sub_government = 9
+				bolivia.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				_leave_alliances(bolivia)
 				context["result_text"] = TXT_R1 + _proprc_suffix(bolivia)
 			else:
 				bolivia.level_of_instability -= 15
 				bolivia.set_tag("亲中", false)
-				bolivia.sub_government = 4
+				bolivia.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				context["result_text"] = TXT_R2 + _proprc_suffix(bolivia)
 		_:
 			bolivia.level_of_instability -= 15
 			bolivia.set_tag("亲中", false)
-			bolivia.sub_government = 4
+			bolivia.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			context["result_text"] = TXT_R2 + _proprc_suffix(bolivia)
-	bolivia.government = 3
+	bolivia.government = GameConstants.Government.LIBERAL
 	bolivia.next_election_year = 1986
 	bolivia.next_election_month = 8
 	bolivia.next_election_day = 6

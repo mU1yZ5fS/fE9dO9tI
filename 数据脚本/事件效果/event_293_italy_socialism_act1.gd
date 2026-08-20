@@ -71,8 +71,8 @@ func execute(context: Dictionary) -> void:
 			if italy != null:
 				italy.set_tag("亲美", false)
 				italy.set_tag("eu", false)
-				italy.government = 2
-				italy.sub_government = 14
+				italy.government = GameConstants.Government.REFORMIST
+				italy.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 			var t0 := _leader_name()
 			context["result_text"] = TXT_R0.format([t0, t0])
 		1:

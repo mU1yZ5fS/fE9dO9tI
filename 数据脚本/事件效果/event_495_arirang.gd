@@ -44,20 +44,20 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 		1:
 			var text := TXT_R1_PRE
-			if north != null and north.sub_government == 15:
+			if north != null and north.sub_government == GameConstants.SubGovernment.PRAGMATIST:
 				text += TXT_R1_KIM
 			else:
 				text += TXT_R1_JANG
 			text += TXT_R1_MID
-			if south != null and south.government == 3:
+			if south != null and south.government == GameConstants.Government.LIBERAL:
 				text += TXT_R1_KIMDAE
 			else:
 				text += TXT_R1_AHN
 			text += TXT_R1_POST
 			if north != null:
 				_set_part(north, 0, true)
-				north.government = 2
-				north.sub_government = 3
+				north.government = GameConstants.Government.REFORMIST
+				north.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				north.name = TXT_NAME_UNIFIED
 				north.chinese_name = TXT_NAME_UNIFIED
 				_leave_alliances(north)

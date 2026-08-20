@@ -54,9 +54,9 @@ func execute(context: Dictionary) -> void:
 	if _c84_is_socialist():
 		_add(176, 1)
 	var c84 := ws.get_country_by_legacy_index(84)
-	if c84 != null and c84.sub_government == 7:
+	if c84 != null and c84.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		_add(177, 1)
-	if c84 != null and c84.sub_government == 9:
+	if c84 != null and c84.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		_add(177, 2)
 	var c20 := ws.get_country_by_legacy_index(20)
 	if c20 != null and c20.special == 1:
@@ -100,13 +100,13 @@ func execute(context: Dictionary) -> void:
 		_add(177, 2)
 	if d.size() > 177 and d.size() > 176 and d[177] < 0 and d[176] < 0:
 		if italy != null:
-			italy.government = 3
-			italy.sub_government = 12
+			italy.government = GameConstants.Government.LIBERAL
+			italy.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		context["result_text"] = TXT_R_COLLAPSE
 	elif d.size() > 177 and d.size() > 176 and d[177] < d[176]:
 		if italy != null:
-			italy.government = 2
-			italy.sub_government = 8
+			italy.government = GameConstants.Government.REFORMIST
+			italy.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			italy.influence_china = 1
 		context["result_text"] = TXT_R_LEFT
 	else:
@@ -169,27 +169,27 @@ func _set_leader_from(p: PoliticianData) -> void:
 
 func _c45_is_socialist() -> bool:
 	var c := ws.get_country_by_legacy_index(45)
-	return c != null and (c.government == 2 or ws.is_socialism(c, true))
+	return c != null and (c.government == GameConstants.Government.REFORMIST or ws.is_socialism(c, true))
 
 
 func _c84_is_socialist() -> bool:
 	var c := ws.get_country_by_legacy_index(84)
-	return c != null and (c.government == 2 or ws.is_socialism(c, true))
+	return c != null and (c.government == GameConstants.Government.REFORMIST or ws.is_socialism(c, true))
 
 
 func _c86_is_socialist() -> bool:
 	var c := ws.get_country_by_legacy_index(86)
-	return c != null and (c.government == 2 or ws.is_socialism(c, true))
+	return c != null and (c.government == GameConstants.Government.REFORMIST or ws.is_socialism(c, true))
 
 
 func _c87_is_socialist() -> bool:
 	var c := ws.get_country_by_legacy_index(87)
-	return c != null and (c.government == 2 or ws.is_socialism(c, true))
+	return c != null and (c.government == GameConstants.Government.REFORMIST or ws.is_socialism(c, true))
 
 
 func _c21_is_socialist() -> bool:
 	var c := ws.get_country_by_legacy_index(21)
-	return c != null and (c.government == 2 or ws.is_socialism(c, true))
+	return c != null and (c.government == GameConstants.Government.REFORMIST or ws.is_socialism(c, true))
 
 
 func _c86_is_authoritarian() -> bool:

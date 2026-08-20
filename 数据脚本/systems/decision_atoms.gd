@@ -330,7 +330,7 @@ static func is_taiwan_return(yes: bool) -> bool:
 			and not (china != null and china.has_tag("sev")) and not _mod_active(17)) \
 		or _event_done(462) or _event_done(457) \
 		or (d.size() > W.I_TAIWAN_STATUS and d[W.I_TAIWAN_STATUS] == 2
-			and china != null and china.sub_government == 19)
+			and china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST)
 	return inner if yes else not inner
 
 
@@ -508,8 +508,8 @@ static func has_soviet_cooperation(yes: bool) -> bool:
 	var ussr := _country(7)
 	var china := _country(1)
 	var v := ((ws != null and ws.get_flag("relres") and ussr != null and ussr.has_tag("对华贸易")
-			and china != null and china.government != 3)
-		or (ussr != null and ussr.sub_government == 21))
+			and china != null and china.government != GameConstants.Government.LIBERAL)
+		or (ussr != null and ussr.sub_government == GameConstants.SubGovernment.RENEWAL_SOCIALIST))
 	return v if yes else not v
 
 
@@ -692,24 +692,24 @@ static func quelle_gosstroy(country: int, gos: int, yes: bool) -> bool:
 	if c == null:
 		return false
 	if country == 84:
-		var v := c.government == gos or c.government == 1
+		var v := c.government == gos or c.government == GameConstants.Government.SOCIALIST
 		return v if yes else not v
 	if country == 10:
 		var korea := _country(46)
 		var v := (c.puppet_of != 1 and c.parts.size() > 0 and c.parts[0] and c.development == 1) \
-			or (c.puppet_of != 1 and korea != null and korea.government == 1)
+			or (c.puppet_of != 1 and korea != null and korea.government == GameConstants.Government.SOCIALIST)
 		return v if yes else not v
 	if country == 30:
-		var v := c.government == 2
+		var v := c.government == GameConstants.Government.REFORMIST
 		return v if yes else not v
 	if country == 33:
 		var c19 := _country(19)
 		var c34 := _country(34)
-		var v := c34 != null and c34.sub_government == 17 and c.sub_government == 17 \
-			and c19 != null and c19.sub_government == 17
+		var v := c34 != null and c34.sub_government == GameConstants.SubGovernment.MAOIST and c.sub_government == GameConstants.SubGovernment.MAOIST \
+			and c19 != null and c19.sub_government == GameConstants.SubGovernment.MAOIST
 		return v if yes else not v
 	if country == 80:
-		var v := c.sub_government == 17
+		var v := c.sub_government == GameConstants.SubGovernment.MAOIST
 		return v if yes else not v
 	if country == 58:
 		var found := false
@@ -718,7 +718,7 @@ static func quelle_gosstroy(country: int, gos: int, yes: bool) -> bool:
 			var i := cc.原版序号
 			if ((i >= 52 and i <= 68) or (i >= 106 and i <= 108) or (i >= 112 and i <= 133)
 					or i == 13 or i == 18 or i == 40 or i == 41 or i == 42 or i == 99 or i == 100) \
-					and i != 128 and cc.sub_government == 17:
+					and i != 128 and cc.sub_government == GameConstants.SubGovernment.MAOIST:
 				found = true
 				break
 		return found if yes else not found
@@ -1147,7 +1147,7 @@ static func has_revolutionary_leader(yes: bool) -> bool:
 	var d := _d()
 	var t := ws.leader.trait_personality if (ws != null and ws.leader != null) else -1
 	var v := t == 0 or (t == 20 and d.size() > W.I_POLITICAL_LINE and d[W.I_POLITICAL_LINE] == 0
-			and china != null and china.sub_government == 2)
+			and china != null and china.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST)
 	return v if yes else not v
 
 
@@ -1171,7 +1171,7 @@ static func hasnt_jue_qi(yes: bool) -> bool:
 ## HaveBeenZhuTi — yes: country1.SubGosstroy==19（主体思想）
 static func have_been_zhu_ti(yes: bool) -> bool:
 	var china := _country(1)
-	var v := china != null and china.sub_government == 19
+	var v := china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST
 	return v if yes else not v
 
 
@@ -1340,12 +1340,12 @@ static func is_revotionary_oar_full(yes: bool) -> bool:
 		for num in [13, 14, 35, 36, 37, 40, 53, 54, 55, 93, 101, 102, 103, 104, 105, 24]:
 			var c := _country(num)
 			if c == null or not ws.is_socialism(c, true) or c.has_tag("亲苏") \
-					or c.sub_government == 16 or not c.has_tag("oar"):
+					or c.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or not c.has_tag("oar"):
 				flag = false
 				break
 		var c101 := _country(101)
 		var c105 := _country(105)
-		if c101 == null or c101.sub_government != 17 or c105 == null or c105.sub_government != 17:
+		if c101 == null or c101.sub_government != GameConstants.SubGovernment.MAOIST or c105 == null or c105.sub_government != GameConstants.SubGovernment.MAOIST:
 			flag = false
 		if _event_result(437, 1):
 			flag = false
@@ -1569,8 +1569,8 @@ static func create_big_oar(_yes: bool = true) -> void:
 		c30.set_tag("对华贸易", true)
 		c30.set_tag("亲中", true)
 		c30.name = "阿拉伯联合共和国"
-		c30.government = 2
-		c30.sub_government = 3
+		c30.government = GameConstants.Government.REFORMIST
+		c30.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 	_mod(46).is_active = true
 	if china != null:
 		if china.has_tag("okb"):
@@ -1767,8 +1767,8 @@ static func unite_arab() -> void:
 	if c30.parts.size() > 2:
 		c30.parts[2] = true
 	c30.name = "阿拉伯革命社会主义\n联邦共和国"
-	c30.government = 1
-	c30.sub_government = 1
+	c30.government = GameConstants.Government.SOCIALIST
+	c30.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 	_leave_all_legacy(c30)
 	c30.set_tag("对华贸易", true)
 	c30.set_tag("亲中", true)

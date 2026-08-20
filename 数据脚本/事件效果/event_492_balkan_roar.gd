@@ -70,8 +70,8 @@ func execute(context: Dictionary) -> void:
 			if ws.influence_prc >= 600:
 				var text := TXT_R0_WIN
 				if bulgaria != null:
-					bulgaria.government = 1
-					bulgaria.sub_government = 17
+					bulgaria.government = GameConstants.Government.SOCIALIST
+					bulgaria.sub_government = GameConstants.SubGovernment.MAOIST
 					_leave_alliances(bulgaria)
 					bulgaria.set_tag("对华贸易", true)
 					bulgaria.set_tag("亲中", true)
@@ -88,8 +88,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R0_LOSE
 				if bulgaria != null:
-					bulgaria.government = 0
-					bulgaria.sub_government = 10
+					bulgaria.government = GameConstants.Government.AUTHORITARIAN
+					bulgaria.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 					_leave_alliances(bulgaria)
 				_add_relation(EmpireData.USSR, -200)
 				_add_power(EmpireData.USSR, -150)
@@ -106,8 +106,8 @@ func execute(context: Dictionary) -> void:
 		2:
 			_add(W.I_AGENTS, -100)
 			if bulgaria != null:
-				bulgaria.government = 2
-				bulgaria.sub_government = 21
+				bulgaria.government = GameConstants.Government.REFORMIST
+				bulgaria.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				bulgaria.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USSR, 300)
 			_add_power(EmpireData.USSR, -100)

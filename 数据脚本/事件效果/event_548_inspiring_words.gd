@@ -30,12 +30,12 @@ func execute(context: Dictionary) -> void:
 	if ws.get_flag("is_gkchp"):
 		for c in ws.countries:
 			var i := c.原版序号
-			if i != 46 and (i < 71 or i > 83 or i == 80) and i != 94 and i != 167 					and (c.sub_government == 17 or c.sub_government == 2 or c.sub_government == 0 or c.sub_government == 10) 					and not c.has_tag("sev") and not c.has_tag("ovd") and c.has_tag("亲中") 					and (c.puppet_of < 0 or i == 38):
+			if i != 46 and (i < 71 or i > 83 or i == 80) and i != 94 and i != 167 					and (c.sub_government == GameConstants.SubGovernment.MAOIST or c.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL or c.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST) 					and not c.has_tag("sev") and not c.has_tag("ovd") and c.has_tag("亲中") 					and (c.puppet_of < 0 or i == 38):
 				c.set_tag("rim", true)
 	else:
 		for c in ws.countries:
 			var i := c.原版序号
-			if i != 46 and (i < 71 or i > 83 or i == 80) and i != 94 and i != 167 					and world_is_socialism(c) and c.sub_government != 16 and c.sub_government != 18 					and not c.has_tag("sev") and not c.has_tag("ovd") and c.has_tag("亲中") 					and (c.puppet_of < 0 or i == 38):
+			if i != 46 and (i < 71 or i > 83 or i == 80) and i != 94 and i != 167 					and world_is_socialism(c) and c.sub_government != GameConstants.SubGovernment.SOVIET_STYLE and c.sub_government != GameConstants.SubGovernment.TROTSKYIST 					and not c.has_tag("sev") and not c.has_tag("ovd") and c.has_tag("亲中") 					and (c.puppet_of < 0 or i == 38):
 				c.set_tag("rim", true)
 	var n := _leader_name()
 	var opt := int(context.get("option_index", -1))
@@ -57,7 +57,7 @@ func execute(context: Dictionary) -> void:
 func world_is_socialism(c: CountryData) -> bool:
 	if c == null:
 		return false
-	return c.government == 1 or c.sub_government == 0
+	return c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL
 
 
 func _leader_name() -> String:

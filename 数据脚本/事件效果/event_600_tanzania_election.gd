@@ -60,8 +60,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 			_add(W.I_BUDGET, -50)
 			if tanzania != null:
-				tanzania.government = 1
-				tanzania.sub_government = 2
+				tanzania.government = GameConstants.Government.SOCIALIST
+				tanzania.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				_leave_alliances(tanzania)
 				_establish_prochina(tanzania)
 				_join_alliances(tanzania)
@@ -86,8 +86,8 @@ func execute(context: Dictionary) -> void:
 					_establish_prochina(tanzania)
 			_add(W.I_BUDGET, -50)
 			if tanzania != null:
-				tanzania.government = 1
-				tanzania.sub_government = 1
+				tanzania.government = GameConstants.Government.SOCIALIST
+				tanzania.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				tanzania.set_tag("对华贸易", true)
 				tanzania.social_stability = 1000
 			ws.influence_prc += 5
@@ -95,8 +95,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 			_add(W.I_BUDGET, -60)
 			if tanzania != null:
-				tanzania.government = 3
-				tanzania.sub_government = 12
+				tanzania.government = GameConstants.Government.LIBERAL
+				tanzania.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				_leave_alliances(tanzania)
 				_establish_prochina(tanzania)
 				tanzania.set_tag("对华贸易", true)
@@ -106,8 +106,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R3
 			_add(W.I_BUDGET, -60)
 			if tanzania != null:
-				tanzania.government = 2
-				tanzania.sub_government = 15
+				tanzania.government = GameConstants.Government.REFORMIST
+				tanzania.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_leave_alliances(tanzania)
 				_establish_prochina(tanzania)
 				tanzania.set_tag("对华贸易", true)

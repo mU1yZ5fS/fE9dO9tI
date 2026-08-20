@@ -24,8 +24,8 @@ func execute(context: Dictionary) -> void:
 			if num >= 5 and _socialism(68) and _socialism(114) and _socialism(113):
 				context["result_text"] = TXT_R0
 				if senegal != null:
-					senegal.government = 1
-					senegal.sub_government = 17
+					senegal.government = GameConstants.Government.SOCIALIST
+					senegal.sub_government = GameConstants.SubGovernment.MAOIST
 					_leave_alliances(senegal)
 					senegal.set_tag("对华贸易", true)
 					senegal.set_tag("亲中", true)
@@ -34,8 +34,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R0_FAIL
 				if senegal != null:
-					senegal.government = 0
-					senegal.sub_government = 7
+					senegal.government = GameConstants.Government.AUTHORITARIAN
+					senegal.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 
 
 

@@ -39,7 +39,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if comoros != null and comoros.government != 1 and line > 1 and diplo <= 700:
+	if comoros != null and comoros.government != GameConstants.Government.SOCIALIST and line > 1 and diplo <= 700:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
@@ -63,8 +63,8 @@ func execute(context: Dictionary) -> void:
 					text += TXT_R0_MAO
 				text += TXT_R0_TAIL
 				if comoros != null:
-					comoros.government = 1
-					comoros.sub_government = 17 if _mod_active(3) else 1
+					comoros.government = GameConstants.Government.SOCIALIST
+					comoros.sub_government = GameConstants.SubGovernment.MAOIST if _mod_active(3) else 1
 					_leave_alliances(comoros)
 					comoros.set_tag("亲中", true)
 					comoros.set_tag("对华贸易", true)
@@ -72,8 +72,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				text += TXT_R0_FAIL_BODY
 				if comoros != null:
-					comoros.government = 0
-					comoros.sub_government = 7
+					comoros.government = GameConstants.Government.AUTHORITARIAN
+					comoros.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					_leave_alliances(comoros)
 					comoros.puppet_of = 21
 					comoros.chinese_name = TXT_NAME_FAIL
@@ -83,8 +83,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -20)
 			if comoros != null:
-				comoros.government = 2
-				comoros.sub_government = 3
+				comoros.government = GameConstants.Government.REFORMIST
+				comoros.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				_leave_alliances(comoros)
 				comoros.set_tag("亲苏", true)
 				comoros.set_tag("对华贸易", true)
@@ -93,8 +93,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 			_add(W.I_BUDGET, -30)
 			if comoros != null:
-				comoros.government = 0
-				comoros.sub_government = 7
+				comoros.government = GameConstants.Government.AUTHORITARIAN
+				comoros.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(comoros)
 				comoros.puppet_of = 21
 				comoros.set_tag("对华贸易", true)
@@ -102,8 +102,8 @@ func execute(context: Dictionary) -> void:
 		3:
 			context["result_text"] = TXT_R3
 			if comoros != null:
-				comoros.government = 0
-				comoros.sub_government = 7
+				comoros.government = GameConstants.Government.AUTHORITARIAN
+				comoros.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(comoros)
 				comoros.puppet_of = 21
 				comoros.chinese_name = TXT_NAME_FAIL

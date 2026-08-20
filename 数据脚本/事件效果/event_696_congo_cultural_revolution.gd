@@ -53,8 +53,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -30)
 			if congo != null:
-				congo.government = 0
-				congo.sub_government = 0
+				congo.government = GameConstants.Government.AUTHORITARIAN
+				congo.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				congo.set_tag("对华贸易", true)
 				congo.set_tag("亲中", true)
 			_add_relation(EmpireData.USA, -75)
@@ -64,8 +64,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			_add(W.I_AGENTS, -50)
 			if congo != null:
-				congo.government = 1
-				congo.sub_government = 16
+				congo.government = GameConstants.Government.SOCIALIST
+				congo.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				congo.set_tag("对华贸易", false)
 				congo.set_tag("亲苏", true)
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null \

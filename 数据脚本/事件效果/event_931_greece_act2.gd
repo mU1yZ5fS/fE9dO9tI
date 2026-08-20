@@ -55,8 +55,8 @@ func execute(context: Dictionary) -> void:
 				_add_relation(EmpireData.USA, -50)
 				_add_relation(EmpireData.USSR, 50)
 				if greece != null:
-					greece.government = 2
-					greece.sub_government = 3
+					greece.government = GameConstants.Government.REFORMIST
+					greece.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					greece.set_tag("亲美", false)
 					if cyprus2 == null or not cyprus2.内战中:
 						greece.set_tag("对华贸易", true)
@@ -79,8 +79,8 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USA, 20)
 				if greece != null:
 					greece.set_tag("eu", true)
-					greece.government = 2
-					greece.sub_government = 3
+					greece.government = GameConstants.Government.REFORMIST
+					greece.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				context["result_text"] = "泛希腊社会主义运动成功赢得了大选，组建了希腊历史上第一个社会主义政府。帕潘德里欧的新政府在获胜后推出了几项有趣的政策（民事婚礼合法化、新的家庭法、某些私营公司的国有化，承认民族抵抗运动和本都希腊人的种族灭绝合并希腊宪兵队和城市警察为单一警察机构等）。在新民主党的总统和党内其他派系的阻挠下，希腊未能实现退出北约和终止加入欧共体。"
 	else:
 		if opt == 0:
@@ -88,8 +88,8 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -50)
 			_add_relation(EmpireData.USSR, 50)
 			if greece != null:
-				greece.government = 2
-				greece.sub_government = 3
+				greece.government = GameConstants.Government.REFORMIST
+				greece.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				if cyprus2 == null or not cyprus2.内战中:
 					greece.set_tag("对华贸易", true)
 			if cyprus != null:

@@ -115,8 +115,8 @@ func _spring_result_0(context: Dictionary) -> void:
 	var taiwan := _taiwan()
 	var china := _china()
 	if taiwan != null:
-		taiwan.government = 1                 # Event461.cs:40  Gosstroy = 1
-		taiwan.sub_government = 2             # Event461.cs:41  SubGosstroy = 2
+		taiwan.government = GameConstants.Government.SOCIALIST                 # Event461.cs:40  Gosstroy = 1
+		taiwan.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST             # Event461.cs:41  SubGosstroy = 2
 		taiwan.set_tag("亲中", true)          # Event461.cs:42  proprc = true
 		taiwan.set_tag("对华贸易", true)      # Event461.cs:43  Torg = true
 		taiwan.puppet_of = 1                  # Event461.cs:44  puppetOf = 1
@@ -145,8 +145,8 @@ func _spring_result_1(context: Dictionary) -> void:
 	var taiwan := _taiwan()
 	var china := _china()
 	if taiwan != null:
-		taiwan.government = 2                 # Event461.cs:75  Gosstroy = 2
-		taiwan.sub_government = 3             # Event461.cs:76  SubGosstroy = 3
+		taiwan.government = GameConstants.Government.REFORMIST                 # Event461.cs:75  Gosstroy = 2
+		taiwan.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST             # Event461.cs:76  SubGosstroy = 3
 		taiwan.set_tag("亲中", true)          # Event461.cs:77  proprc = true
 		taiwan.set_tag("对华贸易", true)      # Event461.cs:78  Torg = true
 		_add_empire_relation(EmpireData.USA, -300) # Event461.cs:79  empires[0].relations -= 300

@@ -18,8 +18,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if car != null:
-				car.government = 0
-				car.sub_government = 19
+				car.government = GameConstants.Government.AUTHORITARIAN
+				car.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				car.set_tag("亲中", true)
 				_join_alliances(car)
 				car.social_stability = 1000

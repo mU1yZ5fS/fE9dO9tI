@@ -53,15 +53,15 @@ func execute(context: Dictionary) -> void:
 					num += 1
 			var num2 := 0
 			for c in ws.countries:
-				if (c.government == 1 or c.government == 2) and c.原版序号 in [92, 21, 85, 86, 87]:
+				if (c.government == GameConstants.Government.SOCIALIST or c.government == GameConstants.Government.REFORMIST) and c.原版序号 in [92, 21, 85, 86, 87]:
 					num2 += 1
 			if num < 11 and (num2 >= 3 or (c21_has_soc_eu())):
 				var text := TXT_R0_A
 				_add(W.I_BUDGET, -200)
 				_add(W.I_AGENTS, -200)
 				if c17 != null:
-					c17.government = 2
-					c17.sub_government = 3
+					c17.government = GameConstants.Government.REFORMIST
+					c17.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					_leave_alliances(c17)
 					c17.set_tag("对华贸易", true)
 				if c85 != null and c85.has_tag("soc_eu"):

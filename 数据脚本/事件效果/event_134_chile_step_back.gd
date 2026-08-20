@@ -76,8 +76,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -25)
 			chile.level_of_instability -= 5
 			chile.level_of_development += 10
-			chile.government = 1
-			chile.sub_government = 2
+			chile.government = GameConstants.Government.SOCIALIST
+			chile.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 			chile.set_tag("亲中", true)
 			_want_to_leave(chile)
 			# 原作 Event134.cs:54：iron_and_blood → achievements.Set(91)
@@ -87,7 +87,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
 			chile.level_of_instability -= 15
-			chile.sub_government = 6
+			chile.sub_government = GameConstants.SubGovernment.LIBERAL
 			chile.set_tag("亲中", true)
 			_want_to_leave(chile)
 			context["result_text"] = TXT_R1 + _proprc_suffix(chile)

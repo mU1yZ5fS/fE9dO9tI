@@ -46,8 +46,8 @@ func execute(context: Dictionary) -> void:
 				# 原版 name 固定为联邦名，不随政体变化，因此覆盖全部政体名。
 				for gn_key in ethiopia.gov_names:
 					ethiopia.gov_names[gn_key] = TXT_NAME_ETHIOPIA
-				ethiopia.government = 1
-				ethiopia.sub_government = 17
+				ethiopia.government = GameConstants.Government.SOCIALIST
+				ethiopia.sub_government = GameConstants.SubGovernment.MAOIST
 			if somalia != null:
 				_leave_alliances(somalia)
 			if ethiopia != null:

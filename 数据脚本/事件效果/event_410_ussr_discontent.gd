@@ -87,7 +87,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if c7.special > 0:
 		return false
-	if not (china.government == 3 or (world.is_authoritarian(china) and _raw_in(world, 52) == 37)):
+	if not (china.government == GameConstants.Government.LIBERAL or (world.is_authoritarian(china) and _raw_in(world, 52) == 37)):
 		return false
 	return true
 

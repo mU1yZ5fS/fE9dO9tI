@@ -19,8 +19,8 @@ func execute(context: Dictionary) -> void:
 	_add(W.I_BUDGET, -80)
 	_add(W.I_AGENTS, -80)
 	if c64 != null:
-		c64.government = 1
-		c64.sub_government = 17
+		c64.government = GameConstants.Government.SOCIALIST
+		c64.sub_government = GameConstants.SubGovernment.MAOIST
 		_leave_alliances(c64)
 		_establish_prochina(c64)
 		c64.set_tag("对华贸易", true)

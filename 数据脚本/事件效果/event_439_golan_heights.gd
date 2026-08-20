@@ -31,7 +31,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			var ok0 := ((d[W.I_PALESTINE_STATUS] == 1 or d[W.I_PALESTINE_STATUS] == 2) and ws.influence_prc >= 400) \
-					or ((ws.influence_prc >= 500 or usa_power >= 500) and israel != null and israel.sub_government != 9 \
+					or ((ws.influence_prc >= 500 or usa_power >= 500) and israel != null and israel.sub_government != GameConstants.SubGovernment.NEO_FASCIST \
 					and iraq != null and iraq.development == 1)
 			if ok0:
 				ws.influence_prc += 100
@@ -50,7 +50,7 @@ func execute(context: Dictionary) -> void:
 				ws.influence_prc -= 50
 				context["result_text"] = TXT_R0_FAIL
 		1:
-			var ok1 := d[W.I_PALESTINE_STATUS] == 3 and syria != null and syria.government == 1 and ws.influence_prc >= 400
+			var ok1 := d[W.I_PALESTINE_STATUS] == 3 and syria != null and syria.government == GameConstants.Government.SOCIALIST and ws.influence_prc >= 400
 			if ok1:
 				ws.influence_prc += 100
 				_add_relation(EmpireData.USA, -200)

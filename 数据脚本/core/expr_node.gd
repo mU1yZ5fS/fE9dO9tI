@@ -65,7 +65,7 @@ enum Type {
 	# 领导人继任系统（2026-08 追加，尾追加不破坏旧 .tres 枚举整数）：
 	EMPIRE_LEADER_IS,            # key=帝国编号 value=领导人索引 → empires[int(key)].current_leader == int(value)
 	# 塞浦路斯大选链（Event697.cs:26-33）：keys=原版国家序号数组，value=最低数量。
-	# 严格社会主义判定：government==1 或 sub_government==0（world_state.is_socialism(country, true)）。
+	# 严格社会主义判定：government == GameConstants.Government.SOCIALIST 或 sub_government == GameConstants.SubGovernment.LEFT_RADICAL（world_state.is_socialism(country, true)）。
 	SOCIALIST_COUNT_AT_LEAST,    # keys=[21,29,85,86,87,92] value=3 → IsSocialism(true) 命中数 >= 3
 }
 

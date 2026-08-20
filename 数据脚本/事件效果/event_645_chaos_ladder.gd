@@ -38,4 +38,4 @@ func evaluate(world: WorldState) -> bool:
 	if world == null or not world.ind_opp:
 		return false
 	var romania := world.get_country_by_legacy_index(5)
-	return romania != null and romania.sub_government == 19
+	return romania != null and romania.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST

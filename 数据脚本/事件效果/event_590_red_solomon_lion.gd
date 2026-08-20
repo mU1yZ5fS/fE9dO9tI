@@ -29,8 +29,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -100)
 			if c41 != null:
 				c41.chinese_name = "埃塞俄比亚\n民主主义人民共和国"
-				c41.government = 0
-				c41.sub_government = 19
+				c41.government = GameConstants.Government.AUTHORITARIAN
+				c41.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				_establish_prochina(c41)
 				c41.set_tag("对华贸易", true)
 				_join_alliances(c41)

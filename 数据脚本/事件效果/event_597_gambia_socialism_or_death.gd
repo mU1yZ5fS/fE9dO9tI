@@ -27,7 +27,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if line < 2 and guinea_bissau != null and guinea_bissau.has_tag("亲中") and guinea_bissau.government == 1:
+	if line < 2 and guinea_bissau != null and guinea_bissau.has_tag("亲中") and guinea_bissau.government == GameConstants.Government.SOCIALIST:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)

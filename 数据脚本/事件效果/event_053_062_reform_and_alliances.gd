@@ -214,12 +214,12 @@ func _event_55(option_index: int, context: Dictionary) -> void:
 			if burma != null:
 				# 原版 allcountries[33].parts[0]=false、prcpower=1000 建模说明，跳过。
 				if ws.数值表[W.I_ECON_SYSTEM] <= 12:
-					burma.government = 2
-					burma.sub_government = 15
+					burma.government = GameConstants.Government.REFORMIST
+					burma.sub_government = GameConstants.SubGovernment.PRAGMATIST
 					context["result_text"] = TXT_55_R2_BASE + TXT_55_R2_SAN_YU
 				else:
-					burma.government = 0
-					burma.sub_government = 7
+					burma.government = GameConstants.Government.AUTHORITARIAN
+					burma.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 					context["result_text"] = TXT_55_R2_BASE + TXT_55_R2_KHIN_NYUNT
 				burma.set_tag("对华贸易", true)
 				burma.set_tag("亲中", true)
@@ -252,8 +252,8 @@ func _event_57(option_index: int) -> void:
 	_add_empire_relation(EmpireData.USA, -150)
 	var japan := ws.get_country_by_legacy_index(44)
 	if japan != null:
-		japan.government = 2
-		japan.sub_government = 8
+		japan.government = GameConstants.Government.REFORMIST
+		japan.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 		japan.set_tag("亲美", false)
 		japan.set_tag("对华贸易", true)
 
@@ -266,8 +266,8 @@ func _event_58(context: Dictionary) -> void:
 	if left > shah:
 		_add_empire_power(EmpireData.USA, -10)
 		if iran != null:
-			iran.government = 2       # 原版 Gosstroy=2（Event58.cs:47）
-			iran.sub_government = 8   # 原版 SubGosstroy=8（Event58.cs:48）
+			iran.government = GameConstants.Government.REFORMIST       # 原版 Gosstroy=2（Event58.cs:47）
+			iran.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE   # 原版 SubGosstroy=8（Event58.cs:48）
 			iran.set_tag("亲美", false)   # 原版 Vyshi=false
 			iran.set_tag("sento", false)  # 原版 isSENTO=false
 			iran.set_tag("asean", false)  # 原版 isASEAN=false
@@ -337,8 +337,8 @@ func _event_59(option_index: int, context: Dictionary) -> void:
 				var had_econ := country.has_tag("econ")
 				country.set_tag("econ", false)
 				if had_econ and (country.has_tag("亲苏") or country.has_tag("苏联盟友")
-						or country.has_tag("亲中") or country.government == 1
-						or (country.government == 2 and not country.has_tag("美国盟友")
+						or country.has_tag("亲中") or country.government == GameConstants.Government.SOCIALIST
+						or (country.government == GameConstants.Government.REFORMIST and not country.has_tag("美国盟友")
 							and not country.has_tag("亲美"))):
 					country.set_tag("sev", true)
 			_change_politicians({2: [-200, 0], 3: [-200, 0]})
@@ -631,7 +631,7 @@ func _prepare_61(event_def: EventDef) -> void:
 	var m6 := _mod_active(6)
 	var china := ws.get_country_by_legacy_index(1)
 	var rim := china != null and china.has_tag("rim")
-	var socialism := china != null and china.government == 1
+	var socialism := china != null and china.government == GameConstants.Government.SOCIALIST
 	if m6 and int(ws.数值表[W.I_POLITICAL_LINE]) <= 2 and anthem != 1:
 		_enable(opts[0], TXT_61_OPT0)
 	elif anthem == 1:

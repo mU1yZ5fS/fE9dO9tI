@@ -31,7 +31,7 @@ func execute(context: Dictionary) -> void:
 		if j == 104:
 			continue
 		var c := ws.get_country_by_legacy_index(j)
-		if c != null and c.has_tag("亲中") and (ws.is_authoritarian(c) or c.government == 3):
+		if c != null and c.has_tag("亲中") and (ws.is_authoritarian(c) or c.government == GameConstants.Government.LIBERAL):
 			c.set_tag("亲中", false)
 	var c36 := ws.get_country_by_legacy_index(36)
 	if c36 != null and c36.has_tag("亲中"):

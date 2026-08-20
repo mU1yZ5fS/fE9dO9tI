@@ -41,7 +41,7 @@ func evaluate(world: WorldState) -> bool:
 	var northern := world.get_country_by_legacy_index(166)
 	if northern == null or northern.parts.size() == 0 or not northern.parts[0]:
 		return false
-	if northern.sub_government == 1 and northern.has_tag("亲中"):
+	if northern.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST and northern.has_tag("亲中"):
 		return false
 	var ireland := world.get_country_by_legacy_index(29)
 	if ireland == null or not world.is_socialism(ireland, false):

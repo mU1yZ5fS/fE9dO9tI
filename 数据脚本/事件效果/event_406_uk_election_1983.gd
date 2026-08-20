@@ -64,7 +64,7 @@ func execute(context: Dictionary) -> void:
 	var num2 := 0
 	for cid in [21, 85, 86, 87]:
 		var c := ws.get_country_by_legacy_index(cid)
-		if c != null and (c.government == 2 or ws.is_socialism(c, true)):
+		if c != null and (c.government == GameConstants.Government.REFORMIST or ws.is_socialism(c, true)):
 			num2 += 1
 	for cid in [85, 86, 87]:
 		var c := ws.get_country_by_legacy_index(cid)
@@ -74,8 +74,8 @@ func execute(context: Dictionary) -> void:
 		num += 1
 	if flag and num >= 3 and flag2 and uk != null and uk.有驻军基地:
 		if uk != null:
-			uk.government = 1
-			uk.sub_government = 18
+			uk.government = GameConstants.Government.SOCIALIST
+			uk.sub_government = GameConstants.SubGovernment.TROTSKYIST
 			_leave_alliances(uk)
 			_set_pro_neutral(uk)
 		_add(147, 1)
@@ -83,15 +83,15 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = TXT_R[0]
 	elif uk != null and uk.有驻军基地 and flag and flag2:
 		if uk != null:
-			uk.government = 3
-			uk.sub_government = 5
+			uk.government = GameConstants.Government.LIBERAL
+			uk.sub_government = GameConstants.SubGovernment.MODERATE
 		_add(147, 2)
 		context["result_text"] = TXT_R[1]
 	elif flag and flag2:
 		if uk != null and not uk.内战中:
 			if uk != null:
-				uk.government = 2
-				uk.sub_government = 3
+				uk.government = GameConstants.Government.REFORMIST
+				uk.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				uk.set_tag("eu", false)
 				_set_pro_neutral(uk)
 			_add_power(EmpireData.USA, -50)
@@ -106,8 +106,8 @@ func execute(context: Dictionary) -> void:
 				context["result_text"] = TXT_IDX_1201
 		elif uk != null and uk.内战中:
 			if uk != null:
-				uk.government = 2
-				uk.sub_government = 3
+				uk.government = GameConstants.Government.REFORMIST
+				uk.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				uk.set_tag("eu", false)
 				uk.set_tag("nato", false)
 				_set_pro_neutral(uk)
@@ -117,8 +117,8 @@ func execute(context: Dictionary) -> void:
 	else:
 		if flag or flag2:
 			if uk != null:
-				uk.government = 2
-				uk.sub_government = 8
+				uk.government = GameConstants.Government.REFORMIST
+				uk.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 				_set_pro_neutral(uk)
 			_add(147, 4)
 			_add_power(EmpireData.USA, -20)

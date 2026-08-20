@@ -53,6 +53,6 @@ func _opt_independent(context: Dictionary) -> void:
 			usa.parts.resize(8)
 			usa.parts[7] = true
 	if low_ideology and tibet != null:
-		tibet.government = 3
-		tibet.sub_government = 6
+		tibet.government = GameConstants.Government.LIBERAL
+		tibet.sub_government = GameConstants.SubGovernment.LIBERAL
 	context["result_text"] = "西藏自治区正式宣布以它1950年的边界独立。这对我们来说是一个巨大的打击，对苏联和美国来说却是一个巨大的机遇。"

@@ -40,8 +40,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if taiwan != null:
-				taiwan.government = 1
-				taiwan.sub_government = 2
+				taiwan.government = GameConstants.Government.SOCIALIST
+				taiwan.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				taiwan.set_tag("亲中", true)
 				taiwan.set_tag("对华贸易", true)
 				taiwan.puppet_of = 1
@@ -60,8 +60,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			context["result_text"] = TXT_R1
 			if taiwan != null:
-				taiwan.government = 2
-				taiwan.sub_government = 3
+				taiwan.government = GameConstants.Government.REFORMIST
+				taiwan.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				taiwan.set_tag("亲中", true)
 				taiwan.set_tag("对华贸易", true)
 				taiwan.chinese_name = TXT_NAME_SAR

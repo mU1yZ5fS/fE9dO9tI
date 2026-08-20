@@ -116,17 +116,17 @@ func execute(context: Dictionary) -> void:
 	else:
 		num += 1
 	var c85 := ws.get_country_by_legacy_index(85)
-	if c85 != null and c85.government == 2:
+	if c85 != null and c85.government == GameConstants.Government.REFORMIST:
 		num += 1
 	elif c85 != null and ws.is_authoritarian(c85):
 		num2 += 1
 	var c84 := ws.get_country_by_legacy_index(84)
-	if c84 != null and c84.government == 2:
+	if c84 != null and c84.government == GameConstants.Government.REFORMIST:
 		num += 1
 	elif c84 != null and ws.is_authoritarian(c84):
 		num2 += 1
 	var c86 := ws.get_country_by_legacy_index(86)
-	if c86 != null and c86.government == 2:
+	if c86 != null and c86.government == GameConstants.Government.REFORMIST:
 		num += 1
 	elif c86 != null and ws.is_authoritarian(c86):
 		num2 += 2
@@ -136,26 +136,26 @@ func execute(context: Dictionary) -> void:
 		num2 += 2
 	if num < num2:
 		if portugal != null:
-			portugal.government = 0
+			portugal.government = GameConstants.Government.AUTHORITARIAN
 			if int(ws.completed_event_ids.get("event_478", 0)) == 2:
 				portugal.set_tag("亲美", false)
-			portugal.sub_government = 7
+			portugal.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			portugal.set_tag("nato", false)
 		context["result_text"] = TXT_R[0]
 	elif int(ws.completed_event_ids.get("event_478", 0)) != 1:
 		if portugal != null:
-			portugal.government = 1
+			portugal.government = GameConstants.Government.SOCIALIST
 			portugal.set_tag("亲美", false)
-			portugal.sub_government = 1
+			portugal.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			portugal.set_tag("亲苏", true)
 			portugal.set_tag("nato", false)
 		context["result_text"] = TXT_R[1]
 	else:
 		if portugal != null:
-			portugal.government = 0
+			portugal.government = GameConstants.Government.AUTHORITARIAN
 			portugal.set_tag("亲美", false)
 			portugal.set_tag("亲中", true)
-			portugal.sub_government = 0
+			portugal.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 			portugal.set_tag("nato", false)
 		context["result_text"] = TXT_R[2]
 

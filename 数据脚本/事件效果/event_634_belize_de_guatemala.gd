@@ -18,7 +18,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	if opt != 0:
 		return
-	if uk != null and uk.government == 1:
+	if uk != null and uk.government == GameConstants.Government.SOCIALIST:
 		context["result_text"] = TXT_R_ANNEX
 		if guatemala != null:
 			guatemala.level_of_instability += 50

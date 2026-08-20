@@ -59,8 +59,8 @@ func execute(context: Dictionary) -> void:
 		return
 	var c140 := ws.get_country_by_legacy_index(140)
 	if c140 != null:
-		c140.government = 3
-		c140.sub_government = 12
+		c140.government = GameConstants.Government.LIBERAL
+		c140.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
@@ -76,8 +76,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -80)
 			_add_relation(EmpireData.USA, -200)
 			if c140 != null:
-				c140.government = 0
-				c140.sub_government = 7
+				c140.government = GameConstants.Government.AUTHORITARIAN
+				c140.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_set_part(c140, 1, true)
 			context["result_text"] = TXT_R0
 		1:

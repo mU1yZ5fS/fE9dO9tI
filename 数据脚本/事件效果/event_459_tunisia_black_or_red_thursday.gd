@@ -33,7 +33,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if line56 > 0 and france != null and france.has_tag("对华贸易") and france.government != 1:
+	if line56 > 0 and france != null and france.has_tag("对华贸易") and france.government != GameConstants.Government.SOCIALIST:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
@@ -51,8 +51,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if tunisia != null:
-				tunisia.government = 2
-				tunisia.sub_government = 3
+				tunisia.government = GameConstants.Government.REFORMIST
+				tunisia.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 				tunisia.set_tag("亲美", false)
 				tunisia.set_tag("亲苏", false)
 				tunisia.set_tag("对华贸易", true)
@@ -69,8 +69,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			context["result_text"] = TXT_R1
 			if tunisia != null:
-				tunisia.government = 2
-				tunisia.sub_government = 15
+				tunisia.government = GameConstants.Government.REFORMIST
+				tunisia.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				tunisia.set_tag("亲美", false)
 				tunisia.set_tag("对华贸易", true)
 				tunisia.set_tag("亲苏", true)
@@ -84,16 +84,16 @@ func execute(context: Dictionary) -> void:
 		2:
 			context["result_text"] = TXT_R2
 			if tunisia != null:
-				tunisia.government = 0
-				tunisia.sub_government = 7
+				tunisia.government = GameConstants.Government.AUTHORITARIAN
+				tunisia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				tunisia.puppet_of = 21
 			_add_relation(EmpireData.USA, 50)
 			_add_power(EmpireData.USA, 50)
 		3:
 			context["result_text"] = TXT_R3
 			if tunisia != null:
-				tunisia.government = 0
-				tunisia.sub_government = 7
+				tunisia.government = GameConstants.Government.AUTHORITARIAN
+				tunisia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				tunisia.set_tag("亲美", true)
 			_add_power(EmpireData.USA, 50)
 

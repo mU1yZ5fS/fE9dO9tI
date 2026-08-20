@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs 11056-11060 —— (月>=12 且 日>=31 且 年>=1983 或 年>=1984)。
 ## 差异：
 ##  - 选项显隐 prepare 动态改写（data56 政治路线）。
-##  - 结果1/2 的布哈里声明按 c60.sub_government==12 动态拼接（原版 ?: 字符串）。
+##  - 结果1/2 的布哈里声明按 c60.sub_government == GameConstants.SubGovernment.NEOLIBERAL 动态拼接（原版 ?: 字符串）。
 ##  - OilProd += 100f 已建模（ws.oil_prod）。
 ##  - 死代码 result 5 测试分支跳过。
 
@@ -43,7 +43,7 @@ func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	var nigeria := ws.get_country_by_legacy_index(60)
-	var is_sub12 := nigeria != null and nigeria.sub_government == 12
+	var is_sub12 := nigeria != null and nigeria.sub_government == GameConstants.SubGovernment.NEOLIBERAL
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
@@ -57,8 +57,8 @@ func execute(context: Dictionary) -> void:
 		1:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 0
-				nigeria.sub_government = 7
+				nigeria.government = GameConstants.Government.AUTHORITARIAN
+				nigeria.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				nigeria.set_tag("对华贸易", true)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
@@ -71,8 +71,8 @@ func execute(context: Dictionary) -> void:
 		2:
 			if nigeria != null:
 				_leave_alliances(nigeria)
-				nigeria.government = 0
-				nigeria.sub_government = 7
+				nigeria.government = GameConstants.Government.AUTHORITARIAN
+				nigeria.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			var text2 := TXT_R2_BASE
 			if is_sub12:
 				text2 += TXT_R2_COND

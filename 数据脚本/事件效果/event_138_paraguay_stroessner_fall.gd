@@ -194,8 +194,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
 			c.level_of_instability -= 15
-			c.government = 3
-			c.sub_government = 7
+			c.government = GameConstants.Government.LIBERAL
+			c.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			c.set_tag("亲中", true)
 			_want_to_leave(c)
 			context["result_text"] = TXT_R0 + _friend_suffix(c)

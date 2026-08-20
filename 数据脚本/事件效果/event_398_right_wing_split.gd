@@ -75,7 +75,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.completed_event_ids.has("event_396"):
 		return false
-	return italy.sub_government != 20
+	return italy.sub_government != GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -88,8 +88,8 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if italy != null:
-				italy.government = 0
-				italy.sub_government = 20
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				italy.set_tag("亲美", false)
 				italy.set_tag("nato", false)
 				italy.set_tag("eu", false)
@@ -98,8 +98,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R[0]
 		1:
 			if italy != null:
-				italy.government = 0
-				italy.sub_government = 7
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				italy.set_tag("亲美", false)
 				italy.set_tag("eu", false)
 				italy.set_tag("对华贸易", true)
@@ -107,12 +107,12 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R[1]
 		2:
 			if italy != null:
-				italy.government = 3
-				italy.sub_government = 5
+				italy.government = GameConstants.Government.LIBERAL
+				italy.sub_government = GameConstants.SubGovernment.MODERATE
 				italy.set_tag("亲美", false)
 			context["result_text"] = TXT_R[2]
 		3:
 			if italy != null:
-				italy.government = 3
-				italy.sub_government = 12
+				italy.government = GameConstants.Government.LIBERAL
+				italy.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			context["result_text"] = TXT_R[3]

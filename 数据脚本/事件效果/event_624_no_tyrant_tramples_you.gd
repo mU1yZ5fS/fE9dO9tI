@@ -74,8 +74,8 @@ func execute(context: Dictionary) -> void:
 		2:
 			context["result_text"] = TXT_R2
 			if mozambique != null:
-				mozambique.government = 2
-				mozambique.sub_government = 21
+				mozambique.government = GameConstants.Government.REFORMIST
+				mozambique.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				_leave_alliances(mozambique)
 				mozambique.set_tag("对华贸易", true)
 				mozambique.set_tag("亲中", true)

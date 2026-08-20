@@ -42,12 +42,12 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0
 		1:
 			if c135 != null:
-				c135.sub_government = 4
+				c135.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 				c135.set_tag("亲美", false)
 				c135.set_tag("对华贸易", true)
 			_add_power(EmpireData.USA, -10)
 			context["result_text"] = TXT_R1
 		_:
 			if c135 != null:
-				c135.sub_government = 4
+				c135.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			context["result_text"] = TXT_R2

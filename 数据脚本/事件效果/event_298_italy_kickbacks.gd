@@ -29,8 +29,8 @@ func execute(context: Dictionary) -> void:
 	if italy != null and italy.influence_china > 0:
 		text += TXT_R0_INFL
 		if italy != null:
-			italy.government = 2
-			italy.sub_government = 15
+			italy.government = GameConstants.Government.REFORMIST
+			italy.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			italy.set_tag("亲美", false)
 			italy.set_tag("eu", false)
 			italy.set_tag("nato", false)

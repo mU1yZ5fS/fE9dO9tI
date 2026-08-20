@@ -29,7 +29,7 @@ func execute(context: Dictionary) -> void:
 		num += 99999
 	if portugal != null and portugal.parts.size() > 1 and portugal.parts[0] and portugal.parts[1]:
 		num += 1
-	if spain != null and spain.government != 3:
+	if spain != null and spain.government != GameConstants.Government.LIBERAL:
 		num += 1
 	if quebec != null and quebec.内战中:
 		num += 1
@@ -37,7 +37,7 @@ func execute(context: Dictionary) -> void:
 		num += 1
 	if _res(W.I_TERRITORY) > 21:
 		num += 1
-	if china != null and china.government == 3:
+	if china != null and china.government == GameConstants.Government.LIBERAL:
 		num += 1
 	if num < 5:
 		context["result_text"] = TXT_R_FAIL
@@ -46,8 +46,8 @@ func execute(context: Dictionary) -> void:
 	if quebec != null:
 		_set_part(quebec, 0, true)
 		_leave_alliances(quebec)
-		quebec.government = 3
-		quebec.sub_government = 4
+		quebec.government = GameConstants.Government.LIBERAL
+		quebec.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 		quebec.set_tag("亲美", true)
 
 

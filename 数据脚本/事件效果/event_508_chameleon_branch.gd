@@ -44,20 +44,20 @@ func execute(context: Dictionary) -> void:
 			if c62 != null: _leave_alliances(c62)
 			if c62 != null: c62.set_tag("对华贸易", true)
 			if c62 != null: c62.set_tag("亲中", true)
-			if c62 != null: c62.government = 1
-			if c62 != null: c62.sub_government = 17
+			if c62 != null: c62.government = GameConstants.Government.SOCIALIST
+			if c62 != null: c62.sub_government = GameConstants.SubGovernment.MAOIST
 			# UNHANDLED: GlobalScript.inst.gameState.allcountries[62].JoinAllOurAlliances(true)
 			if ws.数值表[131] == 2  and  ws.get_flag("YugAgree"):
 				_add(8, 40)
 				if c62 != null: _leave_alliances(c62)
 				if c62 != null: c62.set_tag("对华贸易", true)
-				if c62 != null: c62.government = 2
-				if c62 != null: c62.sub_government = 3
+				if c62 != null: c62.government = GameConstants.Government.REFORMIST
+				if c62 != null: c62.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		1:
 			context["result_text"] = TXT_R1_A
 			_add(8, -(10))
-			if c62 != null: c62.government = 1
-			if c62 != null: c62.sub_government = 1
+			if c62 != null: c62.government = GameConstants.Government.SOCIALIST
+			if c62 != null: c62.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			if c62 != null: c62.set_tag("对华贸易", true)
 			_add_relation(1, 100)
 			_add_power(1, 20)
@@ -68,13 +68,13 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R2_B
 			if ws.数值表[131] != 2 or not ws.get_flag("YugAgree"):
-				if c62 != null: c62.government = 2
-				if c62 != null: c62.sub_government = 15
+				if c62 != null: c62.government = GameConstants.Government.REFORMIST
+				if c62 != null: c62.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				if c62 != null: _leave_alliances(c62)
 				if c62 != null: c62.puppet_of = 21
 				return
-			if c62 != null: c62.government = 2
-			if c62 != null: c62.sub_government = 3
+			if c62 != null: c62.government = GameConstants.Government.REFORMIST
+			if c62 != null: c62.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			if c62 != null: _leave_alliances(c62)
 			if c62 != null: c62.set_tag("亲苏", true)
 
@@ -111,7 +111,7 @@ func _chinese_sub_government() -> int:
 		return 13
 	var data := d
 	var result := 13
-	if china.government == 0:
+	if china.government == GameConstants.Government.AUTHORITARIAN:
 		if _event_result("event_674") == 2:
 			result = 9
 		elif china.has_tag("nazimao"):
@@ -132,7 +132,7 @@ func _chinese_sub_government() -> int:
 			result = 7
 		else:
 			result = 13
-	elif china.government == 1:
+	elif china.government == GameConstants.Government.SOCIALIST:
 		if _mod_active(49):
 			result = 18
 		elif _mod_active(6) and _mod_active(3) and data[W.I_PARTY_SYSTEM] <= 7 				and data[W.I_ECON_SYSTEM] <= 12 and data[W.I_RELIGION] <= 25:
@@ -143,7 +143,7 @@ func _chinese_sub_government() -> int:
 			result = 2
 		else:
 			result = 1
-	elif china.government == 2:
+	elif china.government == GameConstants.Government.REFORMIST:
 		if _mod_active(40):
 			result = 8
 		elif data[W.I_IDEOLOGY] >= 2 and data[W.I_ECON_SYSTEM] >= 13 				and data[W.I_DIPLO] <= 700 and data[W.I_PARTY_SYSTEM] >= 8 				and data[W.I_PRESS_POLICY] >= 18 and not china.has_tag("ovd"):
@@ -158,7 +158,7 @@ func _chinese_sub_government() -> int:
 			result = 21
 		else:
 			result = 15
-	elif china.government != 3:
+	elif china.government != GameConstants.Government.LIBERAL:
 		result = 13
 	elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 500:
 		result = 4

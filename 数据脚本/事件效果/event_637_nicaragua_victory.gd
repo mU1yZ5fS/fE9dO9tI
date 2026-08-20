@@ -53,8 +53,8 @@ func execute(context: Dictionary) -> void:
 	if opt == 2:
 		context["result_text"] = TXT_R2_PRE + _leader_name() + TXT_R2_POST
 		nic.level_of_instability += 50
-		nic.government = 3
-		nic.sub_government = 12
+		nic.government = GameConstants.Government.LIBERAL
+		nic.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		_add(W.I_BUDGET, -50)
 		_add(W.I_AGENTS, -50)
 		_add(W.I_ARMY, -50)
@@ -89,8 +89,8 @@ func _run_victory_chain(context: Dictionary, nic: CountryData, r636: int, alt: b
 	var mod6 := ws.modifiers.size() > 6 and ws.modifiers[6] != null and ws.modifiers[6].is_active
 	if not alt and r636 == 0 and mod3 and mod6 and nic.level_of_instability >= 500:
 		context["result_text"] = str(context.get("result_text", "")) + TXT_V_FONSECA
-		nic.government = 1
-		nic.sub_government = 2
+		nic.government = GameConstants.Government.SOCIALIST
+		nic.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 		_leave_alliances(nic)
 		nic.set_tag("对华贸易", true)
 		nic.set_tag("亲中", true)
@@ -101,8 +101,8 @@ func _run_victory_chain(context: Dictionary, nic: CountryData, r636: int, alt: b
 		return
 	if not alt and r636 == 0:
 		context["result_text"] = str(context.get("result_text", "")) + TXT_V_SANDINISTA
-		nic.government = 2
-		nic.sub_government = 15
+		nic.government = GameConstants.Government.REFORMIST
+		nic.sub_government = GameConstants.SubGovernment.PRAGMATIST
 		_leave_alliances(nic)
 		nic.set_tag("对华贸易", true)
 		nic.set_tag("亲中", true)
@@ -113,8 +113,8 @@ func _run_victory_chain(context: Dictionary, nic: CountryData, r636: int, alt: b
 		return
 	if not alt and _res(W.I_POLITICAL_LINE) == 4:
 		context["result_text"] = str(context.get("result_text", "")) + TXT_V_PASTORA
-		nic.government = 3
-		nic.sub_government = 4
+		nic.government = GameConstants.Government.LIBERAL
+		nic.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 		_leave_alliances(nic)
 		nic.set_tag("对华贸易", true)
 		nic.set_tag("亲中", true)
@@ -126,8 +126,8 @@ func _run_victory_chain(context: Dictionary, nic: CountryData, r636: int, alt: b
 		return
 	if pro_soviet and nic.level_of_instability >= 500:
 		context["result_text"] = str(context.get("result_text", "")) + (TXT_V_PROSOV_A_ALT if alt else TXT_V_PROSOV_A)
-		nic.government = 1
-		nic.sub_government = 1
+		nic.government = GameConstants.Government.SOCIALIST
+		nic.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 		_leave_alliances(nic)
 		nic.set_tag("对华贸易", true)
 		nic.set_tag("亲苏", true)
@@ -140,8 +140,8 @@ func _run_victory_chain(context: Dictionary, nic: CountryData, r636: int, alt: b
 		return
 	if pro_soviet:
 		context["result_text"] = str(context.get("result_text", "")) + (TXT_V_PROSOV_B_ALT if alt else TXT_V_PROSOV_B)
-		nic.government = 2
-		nic.sub_government = 3
+		nic.government = GameConstants.Government.REFORMIST
+		nic.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		_leave_alliances(nic)
 		nic.set_tag("对华贸易", true)
 		nic.set_tag("亲苏", true)

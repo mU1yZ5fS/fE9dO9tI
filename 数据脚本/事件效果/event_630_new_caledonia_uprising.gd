@@ -50,8 +50,8 @@ func execute(context: Dictionary) -> void:
 		if ws.is_socialism(france, true):
 			text += TXT_R_WINGS_SOC_TAIL
 			if new_caledonia != null:
-				new_caledonia.government = 1
-				new_caledonia.sub_government = 1
+				new_caledonia.government = GameConstants.Government.SOCIALIST
+				new_caledonia.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(new_caledonia)
 				new_caledonia.chinese_name = "卡纳克人民共和国"
 				new_caledonia.set_tag("亲中", true)
@@ -59,11 +59,11 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 10
 			_add_power(EmpireData.USA, -10)
 			_add_relation(EmpireData.USA, -70)
-		elif france != null and france.sub_government == 22:
+		elif france != null and france.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
 			text = TXT_R_WINGS_FR22
 			if new_caledonia != null:
-				new_caledonia.government = 0
-				new_caledonia.sub_government = 22
+				new_caledonia.government = GameConstants.Government.AUTHORITARIAN
+				new_caledonia.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 				_leave_alliances(new_caledonia)
 				new_caledonia.puppet_of = 21
 				new_caledonia.chinese_name = "卡纳克人民国"
@@ -71,16 +71,16 @@ func execute(context: Dictionary) -> void:
 		elif ws.is_authoritarian(france):
 			text = TXT_R_WINGS_FR_AUTH
 			if new_caledonia != null:
-				new_caledonia.government = 2
-				new_caledonia.sub_government = 15
+				new_caledonia.government = GameConstants.Government.REFORMIST
+				new_caledonia.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				_leave_alliances(new_caledonia)
 				new_caledonia.chinese_name = "卡纳克共和国"
 			_add_power(EmpireData.USA, -10)
 		if ws.is_authoritarian(australia):
 			text = TXT_R_WINGS_AUS
 			if new_caledonia != null:
-				new_caledonia.government = 0
-				new_caledonia.sub_government = 7
+				new_caledonia.government = GameConstants.Government.AUTHORITARIAN
+				new_caledonia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(new_caledonia)
 				new_caledonia.puppet_of = 135
 				new_caledonia.chinese_name = "“卡纳克共和国”"
@@ -88,11 +88,11 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = text
 		return
 	# 原版 :37-64：483 未完成的武装支援线
-	if australia != null and australia.government != 0:
+	if australia != null and australia.government != GameConstants.Government.AUTHORITARIAN:
 		context["result_text"] = TXT_R_STORM_OK
 		if new_caledonia != null:
-			new_caledonia.government = 1
-			new_caledonia.sub_government = 1
+			new_caledonia.government = GameConstants.Government.SOCIALIST
+			new_caledonia.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			_leave_alliances(new_caledonia)
 			new_caledonia.chinese_name = "卡纳克人民共和国"
 			new_caledonia.set_tag("亲中", true)
@@ -103,8 +103,8 @@ func execute(context: Dictionary) -> void:
 		return
 	context["result_text"] = TXT_R_STORM_FAIL
 	if new_caledonia != null:
-		new_caledonia.government = 0
-		new_caledonia.sub_government = 7
+		new_caledonia.government = GameConstants.Government.AUTHORITARIAN
+		new_caledonia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		_leave_alliances(new_caledonia)
 		new_caledonia.puppet_of = 135
 		new_caledonia.chinese_name = "卡纳克共和国"

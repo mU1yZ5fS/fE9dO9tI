@@ -63,8 +63,8 @@ func execute(context: Dictionary) -> void:
 		uganda.influence_china = 50
 		uganda.prc_influence = 100
 		uganda.sov_influence = 50
-		uganda.government = 0
-		uganda.sub_government = 10
+		uganda.government = GameConstants.Government.AUTHORITARIAN
+		uganda.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:

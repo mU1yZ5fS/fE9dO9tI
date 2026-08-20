@@ -88,7 +88,7 @@ func evaluate(world: WorldState) -> bool:
 	if world.empires[EmpireData.USSR].current_leader != 6:
 		return false
 	var poland := world.get_country_by_legacy_index(4)
-	if poland != null and poland.sub_government == 19:
+	if poland != null and poland.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		return false
 	var bulgaria := world.get_country_by_legacy_index(7)
 	if bulgaria != null and bulgaria.has_tag("ovd"):

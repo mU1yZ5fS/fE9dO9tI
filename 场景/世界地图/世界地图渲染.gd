@@ -372,7 +372,7 @@ func _color_for_country(gwcode: int) -> Color:
 			# 政府模式只按政体/子意识形态判定，不套用亲苏/亲美等阵营标签
 			if c.sub_government in CountryData.EXTREMIST_SUBS:
 				return GOV_EXTREMIST
-			if c.government == 1 or c.sub_government == 0:
+			if c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
 				return GOV_SOCIALIST
 			match c.government:
 				2: return GOV_REFORM
@@ -444,7 +444,7 @@ func _is_iraq_syria_union(c: CountryData) -> bool:
 	var sid := int(c.原版序号)
 	if sid != 14 and sid != 35:
 		return false
-	if c.sub_government != 15:
+	if c.sub_government != GameConstants.SubGovernment.PRAGMATIST:
 		return false
 	var ws := _get_world_state()
 	return ws != null and ws.get_flag("event_done_707")

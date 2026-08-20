@@ -45,8 +45,8 @@ func execute(context: Dictionary) -> void:
 				text += TXT_R0_B
 				context["result_text"] = text
 				if mozambique != null:
-					mozambique.government = 1
-					mozambique.sub_government = 2
+					mozambique.government = GameConstants.Government.SOCIALIST
+					mozambique.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				if ws.is_socialism(china, true) and _res_ev("event_623") != 1:
 					if mozambique != null:
 						_leave_alliances(mozambique)
@@ -59,8 +59,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R0_FAIL
 				if mozambique != null:
-					mozambique.government = 0
-					mozambique.sub_government = 9
+					mozambique.government = GameConstants.Government.AUTHORITARIAN
+					mozambique.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 					_leave_alliances(mozambique)
 					mozambique.puppet_of = 131
 				if _res_ev("event_623") == 1:

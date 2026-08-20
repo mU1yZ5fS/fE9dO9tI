@@ -25,7 +25,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if seychelles != null and seychelles.government != 1 and line > 1 and diplo <= 700:
+	if seychelles != null and seychelles.government != GameConstants.Government.SOCIALIST and line > 1 and diplo <= 700:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
@@ -46,11 +46,11 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -30)
 			if seychelles != null:
-				if seychelles.government == 1:
-					seychelles.sub_government = 0
+				if seychelles.government == GameConstants.Government.SOCIALIST:
+					seychelles.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				else:
-					seychelles.government = 1
-					seychelles.sub_government = 1
+					seychelles.government = GameConstants.Government.SOCIALIST
+					seychelles.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(seychelles)
 				seychelles.set_tag("亲中", true)
 				seychelles.set_tag("对华贸易", true)
@@ -60,8 +60,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 			_add(W.I_AGENTS, -30)
 			if seychelles != null:
-				seychelles.government = 0
-				seychelles.sub_government = 7
+				seychelles.government = GameConstants.Government.AUTHORITARIAN
+				seychelles.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(seychelles)
 				seychelles.puppet_of = 131
 		2:

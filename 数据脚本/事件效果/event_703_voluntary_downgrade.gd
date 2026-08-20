@@ -39,31 +39,31 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R_USA + TXT_R_USA_APPEND
 		return
 	var mod45 := ws.modifiers.size() > 45 and ws.modifiers[45] != null and ws.modifiers[45].is_active
-	if mod45 or (france != null and (france.sub_government == 20 or france.sub_government == 9)):
+	if mod45 or (france != null and (france.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN or france.sub_government == GameConstants.SubGovernment.NEO_FASCIST)):
 		var text := TXT_R_FRANCE
 		if quebec != null:
 			_leave_alliances(quebec)
 		if mod45:
 			text += TXT_R_FRANCE_MOD
 			if quebec != null:
-				quebec.government = 3
-				quebec.sub_government = 5
+				quebec.government = GameConstants.Government.LIBERAL
+				quebec.sub_government = GameConstants.SubGovernment.MODERATE
 				quebec.puppet_of = 21
 			context["result_text"] = text
 			return
 		text += TXT_R_FRANCE_SUB
 		if quebec != null:
-			quebec.government = 0
-			quebec.sub_government = 20
+			quebec.government = GameConstants.Government.AUTHORITARIAN
+			quebec.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			quebec.puppet_of = 21
 		context["result_text"] = text
 		return
-	if france != null and france.government == 2:
+	if france != null and france.government == GameConstants.Government.REFORMIST:
 		var text2 := TXT_R_SOCDEM
 		if quebec != null:
 			_leave_alliances(quebec)
-			quebec.government = 2
-			quebec.sub_government = 3
+			quebec.government = GameConstants.Government.REFORMIST
+			quebec.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		if spain != null and spain.has_tag("soc_eu"):
 			text2 += TXT_R_SOCDEM_APPEND
 			if quebec != null:
@@ -72,34 +72,34 @@ func execute(context: Dictionary) -> void:
 		return
 	if ws.is_socialism(france, true):
 		var faction := "和平与民主联盟"
-		if france.sub_government == 1:
+		if france.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 			faction = "魁北克共产党"
-		elif france.sub_government == 17:
+		elif france.sub_government == GameConstants.SubGovernment.MAOIST:
 			faction = "魁北克马列主义党"
 		context["result_text"] = TXT_R_COUP_FMT.replace("{0}", faction)
 		if quebec != null:
 			_leave_alliances(quebec)
-			quebec.government = 1
-			quebec.sub_government = 1
-			if france.sub_government == 1:
+			quebec.government = GameConstants.Government.SOCIALIST
+			quebec.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
+			if france.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 				quebec.set_tag("亲苏", true)
-			elif france.sub_government == 17:
+			elif france.sub_government == GameConstants.SubGovernment.MAOIST:
 				quebec.set_tag("亲中", true)
-			elif france.sub_government == 18 and china != null and china.sub_government == 18:
+			elif france.sub_government == GameConstants.SubGovernment.TROTSKYIST and china != null and china.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 				quebec.set_tag("亲中", true)
 		return
-	if france != null and (france.sub_government == 19 or france.sub_government == 22):
+	if france != null and (france.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST or france.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST):
 		context["result_text"] = TXT_R_EXILE
 		if quebec != null:
 			_leave_alliances(quebec)
-			quebec.government = 2
-			quebec.sub_government = 8
+			quebec.government = GameConstants.Government.REFORMIST
+			quebec.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 		return
 	context["result_text"] = TXT_R_CANADA
 	if quebec != null:
 		_leave_alliances(quebec)
-		quebec.government = 3
-		quebec.sub_government = 6
+		quebec.government = GameConstants.Government.LIBERAL
+		quebec.sub_government = GameConstants.SubGovernment.LIBERAL
 		quebec.set_tag("亲美", true)
 
 

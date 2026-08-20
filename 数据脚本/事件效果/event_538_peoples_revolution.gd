@@ -14,8 +14,8 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	if opt == 0:
 		if c44 != null:
-			c44.government = 0
-			c44.sub_government = 7
+			c44.government = GameConstants.Government.AUTHORITARIAN
+			c44.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		GameManager.start_war(36, "日本政府", "日本人民革命阵线", 700, 300, 0, -1)
 		if ws.wars.size() > 36 and ws.wars[36] != null:
 			ws.wars[36].name_war = "日本革命战争"

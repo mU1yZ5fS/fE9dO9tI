@@ -11,7 +11,7 @@ func evaluate(world: WorldState) -> bool:
 	if world == null:
 		return false
 	var iraq := world.get_country_by_legacy_index(14)
-	if iraq == null or iraq.sub_government != 19 or iraq.puppet_of >= 0:
+	if iraq == null or iraq.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST or iraq.puppet_of >= 0:
 		return false
 	if iraq.parts.size() <= 6 or not iraq.parts[6]:
 		return false

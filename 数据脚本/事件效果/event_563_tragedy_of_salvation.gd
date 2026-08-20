@@ -37,8 +37,8 @@ func execute(context: Dictionary) -> void:
 		return
 	var c40 := ws.get_country_by_legacy_index(40)
 	if c40 != null:
-		c40.government = 0
-		c40.sub_government = 7
+		c40.government = GameConstants.Government.AUTHORITARIAN
+		c40.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		c40.set_tag("对华贸易", false)
 	var opt := int(context.get("option_index", -1))
 	match opt:

@@ -16,14 +16,14 @@ func execute(context: Dictionary) -> void:
 		return
 	var text := TXT_R0
 	var mali := ws.get_country_by_legacy_index(58)
-	if mali != null and mali.sub_government == 19:
+	if mali != null and mali.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		text += TXT_R0_APPEND
 	context["result_text"] = text
 	var togo := ws.get_country_by_legacy_index(108)
 	if togo != null:
 		_leave_alliances(togo)
-		togo.government = 0
-		togo.sub_government = 19
+		togo.government = GameConstants.Government.AUTHORITARIAN
+		togo.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 		togo.set_tag("亲中", true)
 		togo.set_tag("对华贸易", true)
 		_join_alliances(togo)

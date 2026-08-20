@@ -64,15 +64,15 @@ func execute(context: Dictionary) -> void:
 func _apply_result(context: Dictionary, vanuatu: CountryData, stevens: bool, lini: bool) -> void:
 	if stevens:
 		context["result_text"] = TXT_R0_STEVENS if int(context.get("option_index", -1)) == 0 else TXT_R1_STEVENS
-		vanuatu.government = 3
-		vanuatu.sub_government = 6
+		vanuatu.government = GameConstants.Government.LIBERAL
+		vanuatu.sub_government = GameConstants.SubGovernment.LIBERAL
 		_leave_alliances(vanuatu)
 		vanuatu.set_tag("亲美", true)
 		_add_power(EmpireData.USA, 10)
 	elif lini:
 		context["result_text"] = TXT_R0_LINI if int(context.get("option_index", -1)) == 0 else TXT_R1_LINI
-		vanuatu.government = 1
-		vanuatu.sub_government = 1
+		vanuatu.government = GameConstants.Government.SOCIALIST
+		vanuatu.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 		_leave_alliances(vanuatu)
 		vanuatu.set_tag("亲中", true)
 		vanuatu.set_tag("对华贸易", true)
@@ -81,8 +81,8 @@ func _apply_result(context: Dictionary, vanuatu: CountryData, stevens: bool, lin
 		_add_relation(EmpireData.USA, -70)
 	else:
 		context["result_text"] = TXT_R0_MODERATE if int(context.get("option_index", -1)) == 0 else TXT_R1_MODERATE
-		vanuatu.government = 2
-		vanuatu.sub_government = 3
+		vanuatu.government = GameConstants.Government.REFORMIST
+		vanuatu.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		_leave_alliances(vanuatu)
 		_add_power(EmpireData.USA, -10)
 		if vanuatu.内战中:

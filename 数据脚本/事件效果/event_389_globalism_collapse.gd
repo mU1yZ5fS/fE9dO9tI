@@ -82,14 +82,14 @@ func execute(context: Dictionary) -> void:
 	if num > 5:
 		context["result_text"] = TXT_R1
 		if france != null:
-			france.government = 2
-			france.sub_government = 3
+			france.government = GameConstants.Government.REFORMIST
+			france.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			france.set_tag("eu", false)
 		_add_power(EmpireData.USA, -30)
 	else:
 		context["result_text"] = TXT_R0
 		if france != null:
-			france.sub_government = 12
+			france.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		_add_power(EmpireData.USA, 30)
 
 

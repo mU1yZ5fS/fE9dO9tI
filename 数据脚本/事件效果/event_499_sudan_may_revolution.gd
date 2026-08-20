@@ -69,7 +69,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[2], T_499_8)
 	_enable(opt[3], T_499_9)
-	if china != null and china.sub_government == 19:
+	if china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_enable(opt[4], T_499_10)
 	else:
 		_disable(opt[4], T_499_11)
@@ -84,8 +84,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_BUDGET, -80)
 			if sudan != null:
-				sudan.government = 2
-				sudan.sub_government = 15
+				sudan.government = GameConstants.Government.REFORMIST
+				sudan.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				sudan.set_tag("对华贸易", true)
 				sudan.set_tag("亲中", true)
 			ws.influence_prc += 10
@@ -107,10 +107,10 @@ func _result1(sudan: CountryData, context: Dictionary) -> void:
 	var libya := ws.get_country_by_legacy_index(13)
 	var egypt := ws.get_country_by_legacy_index(30)
 	if sudan.prc_influence == 1 and iraq != null \
-			and (iraq.sub_government == 10 or iraq.sub_government == 19 or iraq.government == 2) \
+			and (iraq.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or iraq.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST or iraq.government == GameConstants.Government.REFORMIST) \
 			and not iraq.has_tag("asean") and iraq.puppet_of < 0:
 		var text := T_499_14
-		if iraq.sub_government == 10 or iraq.sub_government == 19:
+		if iraq.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or iraq.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 			text += T_499_15
 		text += T_499_16
 		_add(W.I_AGENTS, -50)
@@ -122,18 +122,18 @@ func _result1(sudan: CountryData, context: Dictionary) -> void:
 		_leave_alliances(sudan)
 		sudan.set_tag("对华贸易", true)
 		sudan.name = T_499_17
-		if iraq.sub_government == 10 or iraq.sub_government == 19:
+		if iraq.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST or iraq.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 			sudan.puppet_of = 14
 		elif (ws.get_flag("oar") and egypt != null and egypt.has_tag("亲苏")) or iraq.has_tag("亲苏"):
 			sudan.set_tag("亲苏", true)
 		elif (ws.get_flag("oar") and egypt != null and egypt.has_tag("亲中")) or iraq.has_tag("亲中"):
 			sudan.set_tag("亲中", true)
 		context["result_text"] = text
-	elif sudan.prc_influence == 2 and libya != null and libya.sub_government == 10:
+	elif sudan.prc_influence == 2 and libya != null and libya.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 		_add(W.I_AGENTS, -50)
 		_add_relation(EmpireData.USA, -100)
-		sudan.government = 0
-		sudan.sub_government = 10
+		sudan.government = GameConstants.Government.AUTHORITARIAN
+		sudan.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		_leave_alliances(sudan)
 		sudan.set_tag("对华贸易", true)
 		sudan.puppet_of = 13
@@ -141,8 +141,8 @@ func _result1(sudan: CountryData, context: Dictionary) -> void:
 		context["result_text"] = T_499_18
 	elif d.size() > W.I_WAR_SUPPORT and d[W.I_WAR_SUPPORT] >= 700:
 		_add(W.I_AGENTS, -50)
-		sudan.government = 0
-		sudan.sub_government = 9
+		sudan.government = GameConstants.Government.AUTHORITARIAN
+		sudan.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 		sudan.set_tag("对华贸易", false)
 		sudan.name = T_499_21
 		_leave_alliances(sudan)
@@ -151,28 +151,28 @@ func _result1(sudan: CountryData, context: Dictionary) -> void:
 		_add(W.I_AGENTS, -50)
 		if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null \
 				and ws.empires[EmpireData.USA].power > ws.influence_prc:
-			sudan.government = 0
-			sudan.sub_government = 7
+			sudan.government = GameConstants.Government.AUTHORITARIAN
+			sudan.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			_leave_alliances(sudan)
 			sudan.set_tag("对华贸易", true)
 			sudan.set_tag("亲美", true)
 		elif ws.is_socialism(ws.get_country_by_legacy_index(1), true) \
-				or (ws.get_country_by_legacy_index(1) != null and ws.get_country_by_legacy_index(1).government == 2) \
-				or (ws.get_country_by_legacy_index(1) != null and ws.get_country_by_legacy_index(1).sub_government == 10):
-			sudan.government = 2
-			sudan.sub_government = 8
+				or (ws.get_country_by_legacy_index(1) != null and ws.get_country_by_legacy_index(1).government == GameConstants.Government.REFORMIST) \
+				or (ws.get_country_by_legacy_index(1) != null and ws.get_country_by_legacy_index(1).sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST):
+			sudan.government = GameConstants.Government.REFORMIST
+			sudan.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			_leave_alliances(sudan)
 			sudan.set_tag("对华贸易", true)
 			sudan.set_tag("亲中", true)
-		elif ws.get_country_by_legacy_index(1) != null and ws.get_country_by_legacy_index(1).government == 3:
-			sudan.government = 3
-			sudan.sub_government = 5
+		elif ws.get_country_by_legacy_index(1) != null and ws.get_country_by_legacy_index(1).government == GameConstants.Government.LIBERAL:
+			sudan.government = GameConstants.Government.LIBERAL
+			sudan.sub_government = GameConstants.SubGovernment.MODERATE
 			_leave_alliances(sudan)
 			sudan.set_tag("对华贸易", true)
 			sudan.set_tag("亲中", true)
 		else:
-			sudan.government = 0
-			sudan.sub_government = 7
+			sudan.government = GameConstants.Government.AUTHORITARIAN
+			sudan.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			_leave_alliances(sudan)
 			sudan.set_tag("对华贸易", true)
 			sudan.set_tag("亲中", true)
@@ -183,8 +183,8 @@ func _result2(sudan: CountryData, context: Dictionary) -> void:
 	_add(W.I_BUDGET, -50)
 	_add(W.I_ARMY, -100)
 	if sudan != null:
-		sudan.government = 0
-		sudan.sub_government = 9
+		sudan.government = GameConstants.Government.AUTHORITARIAN
+		sudan.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 		sudan.set_tag("对华贸易", false)
 	_start_war(48, T_499_25, T_499_26, 600, 400, 0, 1, T_499_24, 24)
 	_set_part(sudan, 2, true)
@@ -196,8 +196,8 @@ func _result2(sudan: CountryData, context: Dictionary) -> void:
 
 func _result3(sudan: CountryData, context: Dictionary) -> void:
 	if sudan != null:
-		sudan.government = 0
-		sudan.sub_government = 7
+		sudan.government = GameConstants.Government.AUTHORITARIAN
+		sudan.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		sudan.set_tag("亲美", true)
 	_add_power(EmpireData.USA, 20)
 	_start_war(48, T_499_29, T_499_30, 600, 400, 0, 1, T_499_28)
@@ -207,12 +207,12 @@ func _result3(sudan: CountryData, context: Dictionary) -> void:
 
 func _result4(sudan: CountryData, context: Dictionary) -> void:
 	var ethiopia := ws.get_country_by_legacy_index(41)
-	if ethiopia != null and ethiopia.sub_government != 19:
+	if ethiopia != null and ethiopia.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_add(W.I_BUDGET, -50)
 		_add(W.I_AGENTS, -150)
 		if sudan != null:
-			sudan.government = 0
-			sudan.sub_government = 19
+			sudan.government = GameConstants.Government.AUTHORITARIAN
+			sudan.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			_leave_alliances(sudan)
 			sudan.set_tag("对华贸易", true)
 			sudan.set_tag("亲中", true)
@@ -222,8 +222,8 @@ func _result4(sudan: CountryData, context: Dictionary) -> void:
 		_add(W.I_BUDGET, -50)
 		_add(W.I_AGENTS, -50)
 		if sudan != null:
-			sudan.government = 0
-			sudan.sub_government = 19
+			sudan.government = GameConstants.Government.AUTHORITARIAN
+			sudan.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			_leave_alliances(sudan)
 			sudan.set_tag("对华贸易", true)
 			sudan.set_tag("亲中", true)

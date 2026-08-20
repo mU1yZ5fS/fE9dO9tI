@@ -65,8 +65,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -50)
 			if congo != null:
-				congo.government = 1
-				congo.sub_government = 2
+				congo.government = GameConstants.Government.SOCIALIST
+				congo.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				_leave_alliances(congo)
 				congo.set_tag("亲中", true)
 				congo.set_tag("对华贸易", true)
@@ -76,8 +76,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
 			if congo != null:
-				congo.government = 1
-				congo.sub_government = 16
+				congo.government = GameConstants.Government.SOCIALIST
+				congo.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				_leave_alliances(congo)
 				congo.set_tag("亲苏", true)
 				congo.set_tag("对华贸易", true)
@@ -91,20 +91,20 @@ func execute(context: Dictionary) -> void:
 				congo.set_tag("对华贸易", true)
 			if not fr_prosu:
 				if congo != null:
-					congo.government = 2
-					congo.sub_government = 21
+					congo.government = GameConstants.Government.REFORMIST
+					congo.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				ws.influence_prc += 20
 				context["result_text"] = TXT_R2_FR_NEUTRAL
 			else:
 				if congo != null:
 					if ws.is_socialism(china, true):
 						congo.set_tag("亲中", true)
-						congo.government = 1
-						congo.sub_government = 1
-					elif china != null and china.government == 2:
+						congo.government = GameConstants.Government.SOCIALIST
+						congo.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
+					elif china != null and china.government == GameConstants.Government.REFORMIST:
 						congo.set_tag("亲中", true)
-						congo.government = 2
-						congo.sub_government = 21
+						congo.government = GameConstants.Government.REFORMIST
+						congo.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				ws.influence_prc += 20
 				context["result_text"] = TXT_R2_FR_PROSU
 		3:
@@ -112,14 +112,14 @@ func execute(context: Dictionary) -> void:
 				if congo != null:
 					_leave_alliances(congo)
 					congo.set_tag("亲苏", true)
-					congo.government = 1
-					congo.sub_government = 16
+					congo.government = GameConstants.Government.SOCIALIST
+					congo.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 				context["result_text"] = TXT_R3_FR_PROSU
 			else:
 				if congo != null:
 					_leave_alliances(congo)
-					congo.government = 2
-					congo.sub_government = 21
+					congo.government = GameConstants.Government.REFORMIST
+					congo.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				context["result_text"] = TXT_R3_FR_NEUTRAL
 
 

@@ -67,8 +67,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -200)
 			_add(W.I_AGENTS, -200)
 			if c17 != null:
-				c17.government = 1
-				c17.sub_government = 17
+				c17.government = GameConstants.Government.SOCIALIST
+				c17.sub_government = GameConstants.SubGovernment.MAOIST
 				_leave_alliances(c17)
 				c17.set_tag("对华贸易", true)
 				c17.set_tag("亲中", true)
@@ -85,8 +85,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -200)
 			_add(W.I_AGENTS, -200)
 			if c17 != null:
-				c17.government = 0
-				c17.sub_government = 9
+				c17.government = GameConstants.Government.AUTHORITARIAN
+				c17.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				_leave_alliances(c17)
 				c17.内战中 = false
 				if c21 != null and c21.has_tag("fxseu"):
@@ -106,8 +106,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -200)
 			_add(W.I_AGENTS, -200)
 			if c17 != null:
-				c17.government = 0
-				c17.sub_government = 22
+				c17.government = GameConstants.Government.AUTHORITARIAN
+				c17.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 				_leave_alliances(c17)
 				c17.内战中 = false
 				if c21 != null and c21.has_tag("nazimao"):

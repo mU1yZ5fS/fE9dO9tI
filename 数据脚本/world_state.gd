@@ -773,15 +773,15 @@ func is_socialism(country: CountryData, strict: bool) -> bool:
 	if country == null:
 		return false
 	if strict:
-		return country.government == 1 or country.sub_government == 0
-	return country.government != 1 and country.sub_government != 0
+		return country.government == GameConstants.Government.SOCIALIST or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL
+	return country.government != GameConstants.Government.SOCIALIST and country.sub_government != GameConstants.SubGovernment.LEFT_RADICAL
 
 
 ## 原版 IsAuthoritarianism(country)：Gosstroy==0 且 SubGosstroy!=0
 func is_authoritarian(country: CountryData) -> bool:
 	if country == null:
 		return false
-	return country.government == 0 and country.sub_government != 0
+	return country.government == GameConstants.Government.AUTHORITARIAN and country.sub_government != GameConstants.SubGovernment.LEFT_RADICAL
 
 
 # ── 非洲联盟决议谓词（GlobalScript.cs:56 的 Decision 条件链） ──
@@ -802,7 +802,7 @@ func has_revolutionary_leader() -> bool:
 	var player := get_player_country()
 	return leader.trait_personality == 20 \
 		and 数值表[I_POLITICAL_LINE] == 0 \
-		and player != null and player.sub_government == 2
+		and player != null and player.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST
 
 
 ## 原版 IsAfricanProprc(true)：几内亚(68)为社会主义且有对华贸易，

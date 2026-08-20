@@ -248,12 +248,12 @@ func _def_45(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	var opis := " 促 成 该 国 加 入 阿 拉 伯 联 合 共 和 国 ，实 现 阿 拉 伯 世 界 的 政 治 统 一"
 	var conds: Array = []
 	conds.append(cond(" 阿 拉 伯 联 合 共 和 国 已 经 成 立", func(): return w.oar))
-	if c30 != null and c30.government == 1:
+	if c30 != null and c30.government == GameConstants.Government.SOCIALIST:
 		conds.append(cond(" 该 国 未 加 入 阿 拉 伯 联 合 共 和 国", func(): return not country.has_tag("oar")))
 	else:
 		conds.append(cond(" 该 国 未 加 入 阿 拉 伯 联 合 共 和 国\n 且 未 参 与 军 事 联 盟", func(): return not country.has_tag("oar") and not country.has_tag("nato") and not country.has_tag("okb") and not country.has_tag("ovd")))
 	conds.append(cond(" 他 们 不 属 于 美 国 的 势 力 范 围", func(): return not country.has_tag("亲美")))
-	if c30 != null and c30.government == 1:
+	if c30 != null and c30.government == GameConstants.Government.SOCIALIST:
 		conds.append(cond(" 该 国 为 社 会 主 义", func(): return soc(w, country, true)))
 	else:
 		conds.append(cond(" 该 国 为 改 良 主 义 或 左 翼 民 族 主 义", func(): return gov(country) == 2 or sub(country) == 10))
@@ -549,7 +549,7 @@ func _def_53(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	if sid == 94:
 		var c94 := c(w, 94)
 		var c45 := c(w, 45)
-		if c94 != null and (c94.sub_government == 1 or c94.sub_government == 10):
+		if c94 != null and (c94.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST or c94.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST):
 			conds.append(cond(" 塞 浦 路 斯 已 武 力 统 一 且 希 腊 亲 中", func(): return d(w, 127) == 100 and c94 != null and parts(c94, 0) and c45 != null and c45.has_tag("亲中")))
 		else:
 			conds.append(cond(" 塞 浦 路 斯 已 统 一", func(): return d(w, 127) == 100 and c94 != null and parts(c94, 0)))
@@ -616,8 +616,8 @@ func _def_55(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	conds.append(cond(" 至 少 4 特 工 网 络", func(): return d(w, 9) >= 40))
 	conds.append(cond(" 支 持 釜 山 起 义 和 光 州 起 义", func(): return fl(w, "SKRebel") and res(w, 474) == 0))
 	var c46 := c(w, 46)
-	if c46 != null and c46.government == 1:
-		conds.append(cond(" 左 翼 分 子 尚 未 在 韩 国 掌 权", func(): return c46 != null and c46.government != 1))
+	if c46 != null and c46.government == GameConstants.Government.SOCIALIST:
+		conds.append(cond(" 左 翼 分 子 尚 未 在 韩 国 掌 权", func(): return c46 != null and c46.government != GameConstants.Government.SOCIALIST))
 	elif war(w, 0):
 		conds.append(cond(" 该 国 当 前 没 有 战 争", func(): return not war(w, 0)))
 	else:
@@ -933,7 +933,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			country.stab -= country.prc_power + 100
 		if country.stab < -200:
 			if country.has_tag("美国盟友") and country.usa_power > country.prc_power:
-				country.government = 3
+				country.government = GameConstants.Government.LIBERAL
 				country.sub_government = african_sub_gosstroy(w, country.government)
 				country.set_tag("亲美", true)
 				country.puppet_of = -1
@@ -945,7 +945,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 				country.sov_power = (country.sov_power + 1) / 2
 				add_power(w, 0, 10)
 			elif country.has_tag("苏联盟友") and country.sov_power > country.prc_power:
-				country.government = 1
+				country.government = GameConstants.Government.SOCIALIST
 				country.sub_government = african_sub_gosstroy(w, country.government)
 				country.set_tag("亲苏", true)
 				country.puppet_of = -1
@@ -957,7 +957,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 				country.usa_power = (country.usa_power + 1) / 2
 				add_power(w, 1, 10)
 			elif country.has_tag("美国盟友"):
-				country.government = 3
+				country.government = GameConstants.Government.LIBERAL
 				country.set_tag("亲中", true)
 				country.puppet_of = -1
 				country.sub_government = african_sub_gosstroy(w, country.government)
@@ -973,7 +973,7 @@ func _def_65(w: WorldState, country: CountryData, caption: String) -> Dictionary
 				add_power(w, 0, 5)
 				w.influence_prc += 5
 			elif country.has_tag("苏联盟友"):
-				country.government = 1
+				country.government = GameConstants.Government.SOCIALIST
 				country.set_tag("亲中", true)
 				country.puppet_of = -1
 				country.sub_government = african_sub_gosstroy(w, country.government)
@@ -1054,11 +1054,11 @@ func _def_67(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	var opis := " 促 成 该 国 加 入 阿 拉 伯 联 合 共 和 国 ，实 现 阿 拉 伯 世 界 的 政 治 统 一"
 	var conds: Array = []
 	conds.append(cond(" 阿 拉 伯 联 合 共 和 国 已 经 成 立", func(): return w.oar))
-	if c30 != null and c30.government == 1:
+	if c30 != null and c30.government == GameConstants.Government.SOCIALIST:
 		conds.append(cond(" 该 国 未 加 入 阿 拉 伯 联 合 共 和 国", func(): return not country.has_tag("oar")))
 	else:
 		conds.append(cond(" 该 国 未 加 入 阿 拉 伯 联 合 共 和 国\n 且 未 参 与 军 事 联 盟", func(): return not country.has_tag("oar") and not country.has_tag("nato") and not country.has_tag("okb") and not country.has_tag("ovd")))
-	if c30 != null and c30.government == 1:
+	if c30 != null and c30.government == GameConstants.Government.SOCIALIST:
 		if country.原版序号 == 13:
 			conds.append(cond(" 卡 扎 菲 已 被 推 翻 并 建 成 社 会 主 义 政 权", func(): return c(w, 13) != null and gov(c(w, 13)) == 1))
 		else:
@@ -1137,7 +1137,7 @@ func _def_70(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		conds.append(cond(" 尚 未 教 授 他 们 方 法", func(): return not ev(w, 622)))
 	elif sid == 139:
 		var c139 := c(w, 139)
-		if c139 != null and c139.sub_government != 19:
+		if c139 != null and c139.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 			opis = " 小 杜 瓦 利 埃 将 学 习 前 人 的 先 进 经 验 ， 在 海 地 建 成 反 抗 资 本 主 义 旧 制 度 和 苏 联 邪 恶 帝 国 的 桥 头 堡"
 			conds.append(cond(" 至 少 35 百 万 预 算 与 20 军 力", func(): return d(w, 8) + d(w, 36) >= 350 and d(w, 22) >= 200))
 			conds.append(cond(" 法 国 与 中 非 已 经 应 用 了 先 进 的 社 会 主 义 理 论", func(): return c(w, 21) != null and sub(c(w, 21)) == 19 and c(w, 65) != null and sub(c(w, 65)) == 19))
@@ -1195,10 +1195,10 @@ func _def_70(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			set_d(w, 9, d(w, 9) - 100)
 			var c117 := c(w, 117)
 			if c117 != null:
-				c117.sub_government = 19
+				c117.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 		elif sid == 139:
 			var c139 := c(w, 139)
-			if c139 != null and c139.sub_government != 19:
+			if c139 != null and c139.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 				set_d(w, 8, d(w, 8) - 350)
 				set_d(w, 22, d(w, 22) - 200)
 				if GameManager != null:
@@ -1219,8 +1219,8 @@ func _def_70(w: WorldState, country: CountryData, caption: String) -> Dictionary
 				var cc := c(w, idx)
 				if cc != null:
 					cc.leave_alliances()
-					cc.government = 0
-					cc.sub_government = 19
+					cc.government = GameConstants.Government.AUTHORITARIAN
+					cc.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 					cc.set_tag("亲中", true)
 					cc.set_tag("对华贸易", true)
 			var c131 := c(w, 131)
@@ -1235,8 +1235,8 @@ func _def_70(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		elif sid == 14:
 			for ck in w.countries:
 				if ck != null and (ck.原版序号 == 14 or pup(ck) == 14):
-					ck.government = 0
-					ck.sub_government = 19
+					ck.government = GameConstants.Government.AUTHORITARIAN
+					ck.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 			set_d(w, 186, 6)
 			set_d(w, 8, d(w, 8) - 100)
 		elif sid == 123:
@@ -1244,8 +1244,8 @@ func _def_70(w: WorldState, country: CountryData, caption: String) -> Dictionary
 			set_d(w, 22, d(w, 22) - 100)
 			var c123 := c(w, 123)
 			if c123 != null:
-				c123.government = 0
-				c123.sub_government = 19
+				c123.government = GameConstants.Government.AUTHORITARIAN
+				c123.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				c123.name = " 安 哥 拉 人 民 联 合 王 国"
 	return make_def(caption, opis, conds, eff)
 

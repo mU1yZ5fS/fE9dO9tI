@@ -38,7 +38,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var ethiopia := world.get_country_by_legacy_index(41)
 	var opt := event_def.options
-	if ethiopia != null and ethiopia.government == 1:
+	if ethiopia != null and ethiopia.government == GameConstants.Government.SOCIALIST:
 		event_def.description = TXT_DESC_GOS
 		_prepare_opt0(opt[0], TXT_OPT0_GOS)
 		_prepare_opt1(opt[1], TXT_OPT1_GOS)
@@ -83,7 +83,7 @@ func execute(context: Dictionary) -> void:
 	if int(ws.completed_event_ids.get("event_587", 0)) == 2:
 		num = 100
 	var opt := int(context.get("option_index", -1))
-	if ethiopia != null and ethiopia.government == 1:
+	if ethiopia != null and ethiopia.government == GameConstants.Government.SOCIALIST:
 		match opt:
 			0:
 				context["result_text"] = TXT_R0_GOS

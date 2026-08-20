@@ -76,7 +76,7 @@ func _text_of_ending(world: WorldState) -> String:
 
 	if world.get_flag("is_gkchp"):
 		text = TXT_GKCHP
-		if c92 != null and c92.sub_government != 9:
+		if c92 != null and c92.sub_government != GameConstants.SubGovernment.NEO_FASCIST:
 			text += TXT_GKCHP_APPEND
 	elif dev17 <= 0 and not prosov16 and not proprc16 and g16 == 1:
 		if leader6:

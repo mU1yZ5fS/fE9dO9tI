@@ -69,8 +69,8 @@ func execute(context: Dictionary) -> void:
 				_set_data(182, 0)
 				_add(175, -999)
 				if italy != null:
-					italy.government = 0
-					italy.sub_government = 20
+					italy.government = GameConstants.Government.AUTHORITARIAN
+					italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					italy.influence_china = 0
 					italy.set_tag("亲美", true)
 					italy.set_tag("对华贸易", false)
@@ -103,8 +103,8 @@ func execute(context: Dictionary) -> void:
 				_set_data(182, 0)
 				_add(175, -999)
 				if italy != null:
-					italy.government = 0
-					italy.sub_government = 20
+					italy.government = GameConstants.Government.AUTHORITARIAN
+					italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 					italy.set_tag("亲美", true)
 					italy.set_tag("对华贸易", false)
 					italy.influence_china = 0
@@ -140,8 +140,8 @@ func execute(context: Dictionary) -> void:
 			if italy != null:
 				if italy.level_of_development > 25:
 					italy.level_of_development = 25
-				italy.government = 0
-				italy.sub_government = 20
+				italy.government = GameConstants.Government.AUTHORITARIAN
+				italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				italy.set_tag("亲美", true)
 				italy.set_tag("对华贸易", false)
 				italy.influence_china = 0

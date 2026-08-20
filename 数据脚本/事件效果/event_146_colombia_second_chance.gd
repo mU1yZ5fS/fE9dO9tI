@@ -192,7 +192,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var c := world.get_country_by_legacy_index(75)
 	var opt := event_def.options
-	if c != null and c.sub_government == 4:
+	if c != null and c.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 		_enable(opt[3], event_def.options[3].text)
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
@@ -205,7 +205,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var opt := int(context.get("option_index", -1))
 	var allowed := _allowed10([6, 7, 4])
-	if c.sub_government == 4:
+	if c.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 		allowed[1] = true
 	var winner := 0
 	match opt:
@@ -247,11 +247,11 @@ func execute(context: Dictionary) -> void:
 			winner = _get_winner_in_america(c, allowed, 0.0, -1)
 			if winner != c.sub_government:
 				c.set_tag("亲中", false)
-	c.government = 3
+	c.government = GameConstants.Government.LIBERAL
 	_set_next_election(c, 1986, 5, 25)
 	c.sub_government = winner
 	_want_to_leave(c)
-	if c.sub_government == 6:
+	if c.sub_government == GameConstants.SubGovernment.LIBERAL:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, 5)
@@ -261,20 +261,20 @@ func execute(context: Dictionary) -> void:
 		Achievements.set_achievement(96)
 		context["result_text"] = TXT_R6 + _friend_suffix(c)
 		return
-	if c.sub_government == 7:
+	if c.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		c.level_of_instability -= 20
 		c.level_of_development -= 5
 		_add_power(EmpireData.USA, 15)
 		_add_power(EmpireData.USSR, -5)
 		context["result_text"] = TXT_R7 + _friend_suffix(c)
 		return
-	if c.sub_government == 4:
+	if c.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -5)
 		context["result_text"] = TXT_R4 + _friend_suffix(c)
 		return
-	if c.sub_government == 1:
+	if c.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -15)

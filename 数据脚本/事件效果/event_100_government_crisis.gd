@@ -50,8 +50,8 @@ func execute(context: Dictionary) -> void:
 				bangladesh.set_tag("亲中", true)
 				bangladesh.set_tag("亲美", false)
 				bangladesh.set_tag("对华贸易", true)
-				bangladesh.government = 2
-				bangladesh.sub_government = 3
+				bangladesh.government = GameConstants.Government.REFORMIST
+				bangladesh.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			context["result_text"] = TXT_R0
 		1:
 			context["result_text"] = TXT_R1

@@ -77,11 +77,11 @@ func execute(context: Dictionary) -> void:
 			ussr.parts[1] = true
 	for c in ws.countries:
 		if c != null and c.puppet_of == 7:
-			c.government = 0
-			c.sub_government = 10
+			c.government = GameConstants.Government.AUTHORITARIAN
+			c.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 	if ussr != null:
-		ussr.government = 0
-		ussr.sub_government = 10
+		ussr.government = GameConstants.Government.AUTHORITARIAN
+		ussr.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:

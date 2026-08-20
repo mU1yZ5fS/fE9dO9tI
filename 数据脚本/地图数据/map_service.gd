@@ -350,7 +350,7 @@ func migrate_legacy_map_owner_overrides() -> void:
 				world.map_owner_overrides[r_id] = 522
 	# 非洲之角联邦（Event589）：索马里区域并入埃塞俄比亚 530；若 1035 已推动，吉布提也并入 530。
 	var c41 := world.get_country_by_legacy_index(41)
-	if c41 != null and c41.parts.size() > 0 and c41.parts[0] and c41.sub_government == 17:
+	if c41 != null and c41.parts.size() > 0 and c41.parts[0] and c41.sub_government == GameConstants.SubGovernment.MAOIST:
 		c41.gov_names[1] = "非洲之角联邦"
 		for gn_key in c41.gov_names:
 			c41.gov_names[gn_key] = "非洲之角联邦"

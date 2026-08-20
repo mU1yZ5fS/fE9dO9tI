@@ -67,8 +67,8 @@ func execute(context: Dictionary) -> void:
 			if romania != null:
 				romania.set_tag("对华贸易", true)
 				romania.set_tag("亲中", true)
-				romania.government = 0
-				romania.sub_government = 10
+				romania.government = GameConstants.Government.AUTHORITARIAN
+				romania.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			_add(W.I_SCIENCE, 200)
 			ws.oil_prod += 100.0  # Event79.cs result0：炼油技术转让
 			context["result_text"] = TXT_R0
@@ -89,13 +89,13 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -150)
 			_add(W.I_ARMY, -150)
 			if romania != null:
-				romania.government = 0
-				romania.sub_government = 10
+				romania.government = GameConstants.Government.AUTHORITARIAN
+				romania.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			context["result_text"] = TXT_R3
 		4:
 			if romania != null:
-				romania.government = 0
-				romania.sub_government = 10
+				romania.government = GameConstants.Government.AUTHORITARIAN
+				romania.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			context["result_text"] = TXT_R4
 
 

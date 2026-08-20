@@ -44,25 +44,25 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var c21 := world.get_country_by_legacy_index(21)
 	var ussr := world.empires[EmpireData.USSR] if world.empires.size() > EmpireData.USSR else null
 	if c16 != null and c17 != null:
-		var west_ok := ((c17.has_tag("nato") and (c16.government == 2 or not c16.has_tag("亲苏"))) \
-				or (c17.government == 1 and c16.government != 2 and not c16.has_tag("亲苏"))) \
-				and c16.sub_government != 10
+		var west_ok := ((c17.has_tag("nato") and (c16.government == GameConstants.Government.REFORMIST or not c16.has_tag("亲苏"))) \
+				or (c17.government == GameConstants.Government.SOCIALIST and c16.government != GameConstants.Government.REFORMIST and not c16.has_tag("亲苏"))) \
+				and c16.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST
 		if west_ok:
 			_enable(opt[0], S_23)
 		else:
 			_disable(opt[0], S_28)
-		var east_ok := ((c16.has_tag("亲苏") and c16.government == 1 and c1 != null \
-				and c1.has_tag("sev") and c1.has_tag("ovd")) or c16.sub_government == 10 \
-				or (c16.government == 1 and c16.has_tag("亲中"))) \
-				and c16.government != 2 and c17.government != 1 and not c17.has_tag("nato")
+		var east_ok := ((c16.has_tag("亲苏") and c16.government == GameConstants.Government.SOCIALIST and c1 != null \
+				and c1.has_tag("sev") and c1.has_tag("ovd")) or c16.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST \
+				or (c16.government == GameConstants.Government.SOCIALIST and c16.has_tag("亲中"))) \
+				and c16.government != GameConstants.Government.REFORMIST and c17.government != GameConstants.Government.SOCIALIST and not c17.has_tag("nato")
 		if east_ok:
 			_enable(opt[1], S_32)
 		else:
 			_disable(opt[1], S_37)
-		if (c16.government == 2 or (c21 != null and c21.has_tag("soc_eu") and c17.has_tag("soc_eu") \
-				and ussr != null and ussr.current_leader == 6)) and c17.government == 2:
+		if (c16.government == GameConstants.Government.REFORMIST or (c21 != null and c21.has_tag("soc_eu") and c17.has_tag("soc_eu") \
+				and ussr != null and ussr.current_leader == 6)) and c17.government == GameConstants.Government.REFORMIST:
 			_enable(opt[2], S_41)
-		elif c16.government == 1 and c17.government == 1 and not c16.has_tag("亲苏"):
+		elif c16.government == GameConstants.Government.SOCIALIST and c17.government == GameConstants.Government.SOCIALIST and not c16.has_tag("亲苏"):
 			_enable(opt[2], S_45)
 		else:
 			_disable(opt[2], S_50)
@@ -89,14 +89,14 @@ func execute(context: Dictionary) -> void:
 			c17.development = 2
 			_set_mod_active(53, false)
 			context["result_text"] = S_66
-		elif c17.government == 1:
+		elif c17.government == GameConstants.Government.SOCIALIST:
 			_set_part(c17, 0, true)
 			c17.set_tag("对华贸易", true)
 			c17.development = 2
 			_set_mod_active(53, true)
 			_leave_alliances(c16)
-			c17.government = 1
-			c17.sub_government = 17
+			c17.government = GameConstants.Government.SOCIALIST
+			c17.sub_government = GameConstants.SubGovernment.MAOIST
 			c17.set_tag("亲中", true)
 			_join_our_alliances(c17)
 			context["result_text"] = S_76
@@ -112,21 +112,21 @@ func execute(context: Dictionary) -> void:
 		c16.name = S_97
 		if ws.is_socialism(c16, true):
 			context["result_text"] = S_100
-		elif c16.sub_government == 10:
+		elif c16.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
 			context["result_text"] = S_105
 		else:
 			context["result_text"] = S_143
 	elif opt == 2:
 		if c16 == null or c17 == null:
 			return
-		if c16.government == 1 and c17.government == 1:
+		if c16.government == GameConstants.Government.SOCIALIST and c17.government == GameConstants.Government.SOCIALIST:
 			_leave_alliances(c16)
 			_set_part(c17, 0, true)
 			_join_our_alliances(c17)
 			c17.development = 1
 			c17.set_tag("对华贸易", true)
-			c17.government = 1
-			c17.sub_government = 17
+			c17.government = GameConstants.Government.SOCIALIST
+			c17.sub_government = GameConstants.SubGovernment.MAOIST
 			c17.name = S_120
 			context["result_text"] = S_121
 		else:
@@ -135,8 +135,8 @@ func execute(context: Dictionary) -> void:
 			_leave_alliances(c17)
 			c17.development = 1
 			c17.set_tag("对华贸易", true)
-			c17.government = 2
-			c17.sub_government = 3
+			c17.government = GameConstants.Government.REFORMIST
+			c17.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			c17.name = S_131
 			_set_mod_active(53, false)
 			var text := S_133

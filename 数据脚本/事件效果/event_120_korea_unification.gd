@@ -131,33 +131,33 @@ func execute(context: Dictionary) -> void:
 			0:
 				context["result_text"] = TXT_R0
 				if korea != null:
-					korea.government = 2
-					korea.sub_government = 21
+					korea.government = GameConstants.Government.REFORMIST
+					korea.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 			1:
 				context["result_text"] = TXT_R1
 				if korea != null:
-					korea.government = 2
-					korea.sub_government = 3
+					korea.government = GameConstants.Government.REFORMIST
+					korea.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			2:
 				context["result_text"] = TXT_R2
 				if korea != null:
-					korea.government = 0
-					korea.sub_government = 10
+					korea.government = GameConstants.Government.AUTHORITARIAN
+					korea.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 			3:
 				context["result_text"] = TXT_R3
 				if korea != null:
-					korea.government = 1
-					korea.sub_government = 1
+					korea.government = GameConstants.Government.SOCIALIST
+					korea.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			4:
 				context["result_text"] = TXT_R4
 				if korea != null:
-					korea.government = 1
-					korea.sub_government = 2
+					korea.government = GameConstants.Government.SOCIALIST
+					korea.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 			5:
 				context["result_text"] = TXT_R5
 				if korea != null:
-					korea.government = 2
-					korea.sub_government = 11
+					korea.government = GameConstants.Government.REFORMIST
+					korea.sub_government = GameConstants.SubGovernment.TITOIST
 
 
 func _set_special(c: CountryData, value: int) -> void:

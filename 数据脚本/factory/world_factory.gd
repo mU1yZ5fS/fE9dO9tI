@@ -1436,7 +1436,7 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_puppet(ws, 64, 21)
 	var c66 := _legacy(ws, 66)                    # 喀麦隆 sub7+傀儡法国（:617-618）
 	if c66 != null:
-		c66.sub_government = 7
+		c66.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		c66.puppet_of = 21
 	_set_gs(ws, 67, 0, 20)                        # 利比里亚（:620-621）
 	_set_tag(ws, 68, "亲苏", false)               # 几内亚（:622-623）
@@ -1533,7 +1533,7 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_puppet(ws, 161, 92)
 	var c162 := _legacy(ws, 162)                  # 南极洲 → 托洛茨基主义（:769）
 	if c162 != null:
-		c162.sub_government = 18
+		c162.sub_government = GameConstants.SubGovernment.TROTSKYIST
 	# 167/168 原版解析不产生独立国家，不移植（:770-775）
 	_set_tag(ws, 15, "对华贸易", false)           # 南斯拉夫（:776）
 	var c5 := _legacy(ws, 5)                      # spec 归零（:777-779）
@@ -1566,7 +1566,7 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	var c147 := _legacy(ws, 147)
 	if c147 != null: c147.level_of_instability = 250
 	var c20 := _legacy(ws, 20)                    # 阿尔巴尼亚 → 马列主义（:814）
-	if c20 != null: c20.sub_government = 2
+	if c20 != null: c20.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 
 	# dlc[3] 条件块（:815-831）。项目惯例：无 DLC 体系 → dlc[3] 视为恒真
 	# （见 event_007_diplo_crisis_usa.gd:12 注释）。OilProd 已在 create_world 设置，
@@ -1598,15 +1598,15 @@ static func _apply_country_start_overrides(ws: WorldState) -> void:
 	_set_puppet(ws, 58, 21)
 	var c65 := _legacy(ws, 65)                    # 中非：sub13 + 傀儡法国（:1069-1071）
 	if c65 != null:
-		c65.sub_government = 13
+		c65.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 		c65.puppet_of = 21
 	_set_tag(ws, 42, "对华贸易", true)             # 索马里（:1072）
 	var c53 := _legacy(ws, 53)                    # 苏丹 sub10（:1073）
-	if c53 != null: c53.sub_government = 10
+	if c53 != null: c53.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 	_set_gs(ws, 57, 0, 7)                         # 乍得 + 傀儡法国（:1074-1076）
 	_set_puppet(ws, 57, 21)
 	var c63 := _legacy(ws, 63)                    # 加纳 sub7 + 亲美（:1077/:1087）
-	if c63 != null: c63.sub_government = 7
+	if c63 != null: c63.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 	_set_tag(ws, 63, "亲美", true)
 	_set_gs(ws, 2, 2, 21)                         # 波兰 → 革新社会主义（:1078-1079）
 	_set_gs(ws, 4, 2, 21)                         # 匈牙利 → 革新社会主义（:1080-1081）
@@ -1634,14 +1634,14 @@ static func _fix_subs(ws: WorldState) -> void:
 		if sid >= 71 and sid <= 83:
 			continue
 		var sub := c.sub_government
-		if c.government != 0 and sub in [0, 7, 9, 10, 13, 19, 20, 22]:
-			c.government = 0
-		elif c.government != 1 and sub in [1, 2, 16, 17, 18]:
-			c.government = 1
-		elif c.government != 2 and sub in [3, 8, 11, 15, 14, 21]:
-			c.government = 2
-		elif c.government != 3 and sub in [4, 5, 6, 12]:
-			c.government = 3
+		if c.government != GameConstants.Government.AUTHORITARIAN and sub in [0, 7, 9, 10, 13, 19, 20, 22]:
+			c.government = GameConstants.Government.AUTHORITARIAN
+		elif c.government != GameConstants.Government.SOCIALIST and sub in [1, 2, 16, 17, 18]:
+			c.government = GameConstants.Government.SOCIALIST
+		elif c.government != GameConstants.Government.REFORMIST and sub in [3, 8, 11, 15, 14, 21]:
+			c.government = GameConstants.Government.REFORMIST
+		elif c.government != GameConstants.Government.LIBERAL and sub in [4, 5, 6, 12]:
+			c.government = GameConstants.Government.LIBERAL
 
 
 # ============================================================================

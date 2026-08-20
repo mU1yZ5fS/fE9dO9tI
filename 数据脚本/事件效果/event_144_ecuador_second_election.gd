@@ -221,23 +221,23 @@ func execute(context: Dictionary) -> void:
 			winner = _get_winner_in_america(c, allowed, 0.0, -1)
 			if winner != c.sub_government:
 				c.set_tag("亲中", false)
-	c.government = 3
+	c.government = GameConstants.Government.LIBERAL
 	_set_next_election(c, 1988, 1, 31)
 	c.sub_government = winner
 	_want_to_leave(c)
-	if c.sub_government == 7:
+	if c.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		c.level_of_instability -= 15
 		_add_power(EmpireData.USA, 5)
 		_add_power(EmpireData.USSR, -5)
 		context["result_text"] = TXT_R7 + _friend_suffix(c)
 		return
-	if c.sub_government == 4:
+	if c.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -5)
 		context["result_text"] = TXT_R4 + _friend_suffix(c)
 		return
-	if c.sub_government == 3:
+	if c.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		c.level_of_instability -= 5
 		c.level_of_development += 10
 		_add_power(EmpireData.USA, -15)

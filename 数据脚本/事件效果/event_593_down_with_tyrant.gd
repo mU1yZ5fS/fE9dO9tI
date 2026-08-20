@@ -28,8 +28,8 @@ func execute(context: Dictionary) -> void:
 	_add(W.I_BUDGET, -80)
 	_add(W.I_AGENTS, -80)
 	if c108 != null:
-		c108.government = 1
-		c108.sub_government = 17
+		c108.government = GameConstants.Government.SOCIALIST
+		c108.sub_government = GameConstants.SubGovernment.MAOIST
 		c108.chinese_name = "多哥人民共和国"
 		_leave_alliances(c108)
 		_establish_prochina(c108)

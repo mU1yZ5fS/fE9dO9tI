@@ -25,15 +25,15 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if c10.parts.size() > 0 and c10.parts[0]:
 		return false
-	if c46.sub_government != 7:
+	if c46.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		return false
 	if c10.puppet_of >= 0:
 		return false
-	if not (c10.government == 1 or c10.sub_government == 0 or c10.sub_government == 10):
+	if not (c10.government == GameConstants.Government.SOCIALIST or c10.sub_government == GameConstants.SubGovernment.LEFT_RADICAL or c10.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST):
 		return false
-	if not (c44.government == 1 or c44.government == 2):
+	if not (c44.government == GameConstants.Government.SOCIALIST or c44.government == GameConstants.Government.REFORMIST):
 		return false
-	if not (c38.government == 1 or c38.government == 2 or world.decisions.completed[7]):
+	if not (c38.government == GameConstants.Government.SOCIALIST or c38.government == GameConstants.Government.REFORMIST or world.decisions.completed[7]):
 		return false
 	var y := world.数值表[W.I_YEAR]
 	var mo := world.数值表[W.I_MONTH]
@@ -65,8 +65,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -150)
 			_add(W.I_ARMY, -150)
 			if c46 != null:
-				c46.government = 1
-				c46.sub_government = 1
+				c46.government = GameConstants.Government.SOCIALIST
+				c46.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(c46)
 				c46.set_tag("亲中", true)
 				c46.set_tag("对华贸易", true)

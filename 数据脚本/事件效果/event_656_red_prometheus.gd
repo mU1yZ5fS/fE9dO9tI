@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event656.cs：红色普罗米修斯（尼日利亚人民军战略反攻，一选项）。
 ## 触发：TimeScript.cs 11071-11077 —— event_done[655] && c60.prc_power>=100
-##   && c60.government!=2 && IsSocialism(true) 计数>=5 && !c60.内战。
+##   && c60.government != GameConstants.Government.REFORMIST && IsSocialism(true) 计数>=5 && !c60.内战。
 ## 差异：
 ##  - 触发条件用 ExprNode（PREV_EVENT_DONE / COUNTRY_FIELD_AT_LEAST / COUNTRY_FIELD_NOT_EQUALS / SOCIALIST_COUNT_AT_LEAST / COUNTRY_FIELD_EQUALS）。
 ##  - War 79：AmericanSupportDefender.SovietSupportDefender → usa_side=1 / ussr_side=1；

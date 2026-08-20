@@ -55,7 +55,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
 	if data.size() > W.I_WAR_SUPPORT and data[W.I_WAR_SUPPORT] >= 700 \
-			and c1 != null and c1.sub_government == 9 and c140 != null and c140.stab == 2 \
+			and c1 != null and c1.sub_government == GameConstants.SubGovernment.NEO_FASCIST and c140 != null and c140.stab == 2 \
 			and r577 == 3 and r578 == 2:
 		_enable(opt[2], event_def.options[2].text)
 	else:
@@ -73,22 +73,22 @@ func execute(context: Dictionary) -> void:
 			if c140 == null or not c140.内战中:
 				text += TXT_R0_SALINAS
 				if c140 != null:
-					c140.government = 3
-					c140.sub_government = 6
+					c140.government = GameConstants.Government.LIBERAL
+					c140.sub_government = GameConstants.SubGovernment.LIBERAL
 					c140.set_tag("亲美", true)
 			else:
 				var r577 := int(ws.completed_event_ids.get("event_577", 0))
 				if r577 == 1:
 					text += TXT_R0_CARDENAS
 					if c140 != null:
-						c140.government = 2
-						c140.sub_government = 15
+						c140.government = GameConstants.Government.REFORMIST
+						c140.sub_government = GameConstants.SubGovernment.PRAGMATIST
 						c140.set_tag("亲美", false)
 				elif r577 == 2:
 					text += TXT_R0_CLOUTHIER
 					if c140 != null:
-						c140.government = 3
-						c140.sub_government = 12
+						c140.government = GameConstants.Government.LIBERAL
+						c140.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 						c140.set_tag("亲美", true)
 			_add(W.I_DIPLO, -80)
 			context["result_text"] = text

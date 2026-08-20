@@ -79,11 +79,11 @@ func execute(context: Dictionary) -> void:
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null \
 			and ws.empires[EmpireData.USSR].leaders.size() > 6:
 		ws.empires[EmpireData.USSR].leaders[6].support += 999
-	if portugal != null and portugal.sub_government == 3 and not portugal.has_tag("econ") \
+	if portugal != null and portugal.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST and not portugal.has_tag("econ") \
 			and not portugal.has_tag("eu") and not portugal.has_tag("okb") and not portugal.has_tag("sev"):
 		_leave_alliances(portugal)
 		portugal.set_tag("soc_eu", true)
-	if turkey != null and turkey.sub_government == 3 and not turkey.has_tag("econ") \
+	if turkey != null and turkey.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST and not turkey.has_tag("econ") \
 			and not turkey.has_tag("eu") and not turkey.has_tag("okb") and not turkey.has_tag("sev"):
 		_leave_alliances(turkey)
 		turkey.set_tag("soc_eu", true)

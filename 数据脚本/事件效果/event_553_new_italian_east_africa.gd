@@ -24,7 +24,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null:
 		return
 	var c85 := world.get_country_by_legacy_index(85)
-	var is_22 := c85 != null and c85.sub_government == 22
+	var is_22 := c85 != null and c85.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 	event_def.description = TXT_DESC_22 if is_22 else TXT_DESC_OTHER
 	if event_def.options.size() < 2:
 		return
@@ -42,10 +42,10 @@ func execute(context: Dictionary) -> void:
 		return
 	var c42 := ws.get_country_by_legacy_index(42)
 	var c85 := ws.get_country_by_legacy_index(85)
-	var is_22 := c85 != null and c85.sub_government == 22
+	var is_22 := c85 != null and c85.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST
 	if c42 != null:
 		c42.puppet_of = 85
-		c42.sub_government = 22 if is_22 else 9
+		c42.sub_government = GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST if is_22 else 9
 		c42.set_tag("亲美", false)
 	var opt := int(context.get("option_index", -1))
 	match opt:

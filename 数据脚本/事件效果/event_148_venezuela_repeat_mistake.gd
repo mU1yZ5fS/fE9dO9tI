@@ -190,7 +190,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var c := world.get_country_by_legacy_index(83)
 	var opt := event_def.options
-	if c != null and c.sub_government == 3:
+	if c != null and c.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)
@@ -203,7 +203,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var opt := int(context.get("option_index", -1))
 	var allowed := _allowed10([4, 8])
-	if c.sub_government == 3:
+	if c.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		allowed[1] = true
 	var winner := 0
 	match opt:
@@ -235,28 +235,28 @@ func execute(context: Dictionary) -> void:
 			winner = _get_winner_in_america(c, allowed, 0.0, -1)
 			if winner != c.sub_government:
 				c.set_tag("亲中", false)
-	c.government = 3
+	c.government = GameConstants.Government.LIBERAL
 	_set_next_election(c, 1988, 12, 4)
 	c.sub_government = winner
 	_want_to_leave(c)
-	if c.sub_government == 4:
+	if c.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 		c.level_of_instability -= 15
 		_add_power(EmpireData.USA, 5)
 		context["result_text"] = TXT_R4 + _friend_suffix(c)
 		return
-	if c.sub_government == 8:
+	if c.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, 5)
 		_add_power(EmpireData.USSR, 5)
 		context["result_text"] = TXT_R8 + _friend_suffix(c)
 		return
-	if c.sub_government == 1:
+	if c.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -15)
 		_add_power(EmpireData.USSR, 5)
-		c.government = 2
+		c.government = GameConstants.Government.REFORMIST
 		# 原作 Event148.cs:123：iron_and_blood → achievements.Set(98)
 		Achievements.set_achievement(98)
 		context["result_text"] = TXT_R1 + _friend_suffix(c)

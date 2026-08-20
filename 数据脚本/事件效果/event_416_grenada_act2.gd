@@ -128,8 +128,8 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -150)
 		if grenada != null:
-			grenada.government = 0
-			grenada.sub_government = 0
+			grenada.government = GameConstants.Government.AUTHORITARIAN
+			grenada.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 			_set_pro_china(grenada)
 			grenada.set_tag("对华贸易", true)
 		_add_power(EmpireData.USSR, -10)
@@ -167,8 +167,8 @@ func execute(context: Dictionary) -> void:
 	elif opt == 2:
 		if grenada != null:
 			grenada.set_tag("对华贸易", false)
-			grenada.government = 3
-			grenada.sub_government = 12
+			grenada.government = GameConstants.Government.LIBERAL
+			grenada.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			_set_pro_american(grenada)
 		_add_power(EmpireData.USSR, -10)
 		_add_power(EmpireData.USA, 20)
@@ -189,8 +189,8 @@ func execute(context: Dictionary) -> void:
 			if grenada != null:
 				_set_pro_american(grenada)
 				grenada.set_tag("对华贸易", true)
-				grenada.government = 3
-				grenada.sub_government = 12
+				grenada.government = GameConstants.Government.LIBERAL
+				grenada.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			ws.influence_prc += 20
 		for p in ws.politicians:
 			if p == null:

@@ -44,21 +44,21 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if korea != null:
-				korea.sub_government = 7
+				korea.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			_add_relation(EmpireData.USA, -100)
 			_add_power(EmpireData.USA, -10)
 			ws.influence_prc += 10
 		1:
 			context["result_text"] = TXT_R1
 			if korea != null:
-				korea.sub_government = 9
+				korea.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				korea.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, 150)
 			_add_relation(EmpireData.USSR, -100)
 		2:
 			context["result_text"] = TXT_R2
 			if korea != null:
-				korea.sub_government = 7
+				korea.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 
 
 

@@ -89,7 +89,7 @@ func evaluate(world: WorldState) -> bool:
 	var italy := world.get_country_by_legacy_index(85)
 	if italy == null:
 		return false
-	if not ((int(world.completed_event_ids.get("event_393", 0)) > 0 or world.completed_event_ids.has("event_392")) and not world.get_flag("VasilyisGay") and italy.sub_government != 4 and ((d[W.I_YEAR] >= 1983 and d[W.I_MONTH] >= 6 and d[W.I_DAY] > 19) or (d[W.I_YEAR] >= 1983 and d[W.I_MONTH] >= 7) or d[W.I_YEAR] >= 1984) and not world.completed_event_ids.has("event_556") and not world.completed_event_ids.has("event_396") and italy.sub_government != 20):
+	if not ((int(world.completed_event_ids.get("event_393", 0)) > 0 or world.completed_event_ids.has("event_392")) and not world.get_flag("VasilyisGay") and italy.sub_government != GameConstants.SubGovernment.SOCIAL_DEMOCRAT and ((d[W.I_YEAR] >= 1983 and d[W.I_MONTH] >= 6 and d[W.I_DAY] > 19) or (d[W.I_YEAR] >= 1983 and d[W.I_MONTH] >= 7) or d[W.I_YEAR] >= 1984) and not world.completed_event_ids.has("event_556") and not world.completed_event_ids.has("event_396") and italy.sub_government != GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN):
 		return false
 	return true
 
@@ -126,7 +126,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	if italy != null and italy.influence_china <= 0:
 		_add(175, 2)
-	if italy != null and italy.sub_government == 14:
+	if italy != null and italy.sub_government == GameConstants.SubGovernment.EUROCOMMUNIST:
 		_add(176, 1)
 	if _raw(181) >= _raw(178) and _raw(181) >= _raw(179) and _raw(181) >= _raw(180):
 		_add(176, 2)
@@ -160,7 +160,7 @@ func execute(context: Dictionary) -> void:
 	else:
 		_add(176, 1)
 	var c87 := ws.get_country_by_legacy_index(87)
-	if c87 != null and c87.government == 3:
+	if c87 != null and c87.government == GameConstants.Government.LIBERAL:
 		_add(175, 1)
 	if italy != null and italy.level_of_development >= 60:
 		_add(175, 2)
@@ -214,8 +214,8 @@ func execute(context: Dictionary) -> void:
 	if _raw(175) >= _raw(176):
 		if italy != null:
 			_add_power(EmpireData.USA, 25)
-			italy.government = 3
-			italy.sub_government = 12
+			italy.government = GameConstants.Government.LIBERAL
+			italy.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			_leave_alliances(italy)
 			italy.set_tag("亲美", true)
 			italy.set_tag("eu", true)
@@ -228,8 +228,8 @@ func execute(context: Dictionary) -> void:
 		if ws.empires.size() > 1 and ws.empires[1] != null and ws.empires[1].leaders.size() > 6:
 			ws.empires[1].leaders[6].support += 1
 		if italy != null:
-			italy.government = 2
-			italy.sub_government = 21
+			italy.government = GameConstants.Government.REFORMIST
+			italy.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 			italy.set_tag("亲美", false)
 			italy.influence_china = 1
 

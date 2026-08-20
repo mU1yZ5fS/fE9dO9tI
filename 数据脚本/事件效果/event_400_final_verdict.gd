@@ -109,11 +109,11 @@ func evaluate(world: WorldState) -> bool:
 	var italy := world.get_country_by_legacy_index(85)
 	if italy == null:
 		return false
-	if italy.sub_government == 4 or italy.sub_government == 8 or italy.sub_government == 21 or italy.sub_government == 15:
+	if italy.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT or italy.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE or italy.sub_government == GameConstants.SubGovernment.RENEWAL_SOCIALIST or italy.sub_government == GameConstants.SubGovernment.PRAGMATIST:
 		return false
 	if not ((d[W.I_YEAR] >= 1984 and d[W.I_MONTH] >= 6 and d[W.I_DAY] > 10) or (d[W.I_YEAR] >= 1984 and d[W.I_MONTH] >= 7) or d[W.I_YEAR] >= 1985):
 		return false
-	return italy.sub_government != 20
+	return italy.sub_government != GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -197,10 +197,10 @@ func execute(context: Dictionary) -> void:
 		if italy != null and italy.level_of_development < 20:
 			_add(179, 2)
 			_add(178, 1)
-		if italy != null and italy.sub_government == 14:
+		if italy != null and italy.sub_government == GameConstants.SubGovernment.EUROCOMMUNIST:
 			_add(179, 1)
 			_add(180, 1)
-		if italy != null and italy.government == 3:
+		if italy != null and italy.government == GameConstants.Government.LIBERAL:
 			_add(181, 2)
 		if _raw(147) == 3:
 			_add(180, 1)
@@ -219,48 +219,48 @@ func execute(context: Dictionary) -> void:
 		if ws.empires.size() > 1 and ws.empires[1] != null and ws.empires[1].current_leader == 7:
 			_add(181, 2)
 		var c15 := ws.get_country_by_legacy_index(15)
-		if c15 != null and c15.government == 0:
+		if c15 != null and c15.government == GameConstants.Government.AUTHORITARIAN:
 			_add(178, 1)
 		if opt == 4:
 			if _raw(180) >= _raw(178) and _raw(180) >= _raw(179) and _raw(180) >= _raw(181):
 				if italy != null:
-					italy.government = 2
-					italy.sub_government = 14
+					italy.government = GameConstants.Government.REFORMIST
+					italy.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 					italy.set_tag("亲美", false)
 				context["result_text"] += _fmt(TXT_R_APPEND[0], ["\n", _fm_name(), ""])
 			elif _raw(181) >= _raw(178) and _raw(181) >= _raw(179) and _raw(181) >= _raw(180):
 				if italy != null:
-					italy.government = 3
-					italy.sub_government = 4
+					italy.government = GameConstants.Government.LIBERAL
+					italy.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 					italy.set_tag("亲美", false)
 				context["result_text"] += _fmt(TXT_R_APPEND[1], ["\n", _fm_name(), ""])
 			elif _raw(179) >= _raw(178) and _raw(179) >= _raw(181) and _raw(179) >= _raw(180):
 				if italy != null:
-					italy.government = 2
-					italy.sub_government = 3
+					italy.government = GameConstants.Government.REFORMIST
+					italy.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					italy.set_tag("亲美", false)
 					italy.set_tag("nato", false)
 					italy.set_tag("eu", false)
 				context["result_text"] += _fmt(TXT_R_APPEND[2], ["\n", _fm_name(), ""])
 			else:
 				if italy != null:
-					italy.government = 3
-					italy.sub_government = 4
+					italy.government = GameConstants.Government.LIBERAL
+					italy.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 					italy.set_tag("亲美", false)
 				context["result_text"] += _fmt(TXT_R_APPEND[3], ["\n", _fm_name(), ""])
 		else:
 			if _raw(179) >= _raw(178) and _raw(179) >= _raw(181) and _raw(179) >= _raw(180):
 				if italy != null:
-					italy.government = 2
-					italy.sub_government = 3
+					italy.government = GameConstants.Government.REFORMIST
+					italy.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					italy.set_tag("亲美", false)
 					italy.set_tag("nato", false)
 					italy.set_tag("eu", false)
 				context["result_text"] += _fmt(TXT_R_APPEND[4], ["\n", _fm_name(), ""])
 			else:
 				if italy != null:
-					italy.government = 1
-					italy.sub_government = 16
+					italy.government = GameConstants.Government.SOCIALIST
+					italy.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 					italy.set_tag("亲美", false)
 					italy.set_tag("nato", false)
 					italy.set_tag("eu", false)

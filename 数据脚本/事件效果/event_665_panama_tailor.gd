@@ -61,8 +61,8 @@ func execute(context: Dictionary) -> void:
 				ws.influence_prc += 20
 				_add_relation(EmpireData.USA, -200)
 				if panama != null:
-					panama.government = 2
-					panama.sub_government = 3
+					panama.government = GameConstants.Government.REFORMIST
+					panama.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					panama.set_tag("对华贸易", true)
 					panama.set_tag("亲中", true)
 				context["result_text"] = _leader_name() + T_665_9.replace("{0}{1}", "")
@@ -73,8 +73,8 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USSR, 30)
 				_add_relation(EmpireData.USA, -100)
 				if panama != null:
-					panama.government = 2
-					panama.sub_government = 3
+					panama.government = GameConstants.Government.REFORMIST
+					panama.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					panama.set_tag("对华贸易", true)
 					panama.set_tag("亲苏", true)
 				context["result_text"] = _leader_name() + T_665_10.replace("{0}{1}", "")
@@ -84,14 +84,14 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USA, 30)
 			_add_power(EmpireData.USSR, -15)
 			if panama != null:
-				panama.government = 0
-				panama.sub_government = 20
+				panama.government = GameConstants.Government.AUTHORITARIAN
+				panama.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 				panama.set_tag("对华贸易", true)
 			context["result_text"] = _leader_name() + T_665_11.replace("{0}{1}", "")
 		2:
 			if panama != null:
-				panama.government = 0
-				panama.sub_government = 20
+				panama.government = GameConstants.Government.AUTHORITARIAN
+				panama.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			context["result_text"] = T_665_12
 
 
@@ -100,7 +100,7 @@ func _branch_a(world: WorldState, china: CountryData, nicaragua: CountryData) ->
 		return false
 	if china.has_tag("sev"):
 		return false
-	return (nicaragua.government == 2 and nicaragua.has_tag("亲中")) \
+	return (nicaragua.government == GameConstants.Government.REFORMIST and nicaragua.has_tag("亲中")) \
 			or world.is_socialism(nicaragua, true)
 
 

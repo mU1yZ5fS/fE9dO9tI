@@ -22,19 +22,19 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			var text := TXT_R0_A
-			if france != null and france.government == 3:
+			if france != null and france.government == GameConstants.Government.LIBERAL:
 				text += TXT_R0_MID
 			text += TXT_R0_B
-			if france != null and france.government == 3:
+			if france != null and france.government == GameConstants.Government.LIBERAL:
 				text += TXT_R0_TAIL
 			context["result_text"] = text
 			if niger != null:
-				niger.government = 1
-				niger.sub_government = 17
+				niger.government = GameConstants.Government.SOCIALIST
+				niger.sub_government = GameConstants.SubGovernment.MAOIST
 				_leave_alliances(niger)
 				niger.set_tag("亲中", true)
 				niger.set_tag("对华贸易", true)
-			if france != null and france.government == 3:
+			if france != null and france.government == GameConstants.Government.LIBERAL:
 				france.set_tag("对华贸易", false)
 			_add(W.I_DIPLO, 30)
 			_add(W.I_ARMY, -100)

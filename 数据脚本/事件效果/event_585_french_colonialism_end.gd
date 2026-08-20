@@ -48,8 +48,8 @@ func execute(context: Dictionary) -> void:
 	var c106 := ws.get_country_by_legacy_index(106)
 	var c41 := ws.get_country_by_legacy_index(41)
 	if c106 != null:
-		c106.government = 2
-		c106.sub_government = 8
+		c106.government = GameConstants.Government.REFORMIST
+		c106.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 		c106.chinese_name = "吉布提共和国"
 		_leave_alliances(c106)
 	# 地图归属必须无条件执行：即使旧存档缺 106 号国，领土也要从法国 220 转给吉布提 522。
@@ -64,8 +64,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -20)
 			_add(W.I_AGENTS, -20)
 			if c106 != null:
-				c106.government = 1
-				c106.sub_government = 1
+				c106.government = GameConstants.Government.SOCIALIST
+				c106.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(c106)
 				c106.set_tag("对华贸易", true)
 				c106.set_tag("亲中", true)
@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_DIPLO, 5)
 			context["result_text"] = text
 		2:
-			var leader := TXT_R2_MENGISTU if c41 != null and c41.sub_government == 10 else TXT_R2_BENTI
+			var leader := TXT_R2_MENGISTU if c41 != null and c41.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST else TXT_R2_BENTI
 			var text := TXT_R2_A + leader + TXT_R2_B
 			if c41 != null:
 				c41.set_tag("对华贸易", true)

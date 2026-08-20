@@ -41,7 +41,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
-	if line >= 2 and c131 != null and (c131.sub_government == 7 or c131.sub_government == 9):
+	if line >= 2 and c131 != null and (c131.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or c131.sub_government == GameConstants.SubGovernment.NEO_FASCIST):
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
@@ -65,8 +65,8 @@ func execute(context: Dictionary) -> void:
 			var text := TXT_R0_A + tname + TXT_R0_B + tname + TXT_R0_C + tname + TXT_R0_D
 			_add(W.I_BUDGET, -50)
 			if c124 != null:
-				c124.government = 1
-				c124.sub_government = 1
+				c124.government = GameConstants.Government.SOCIALIST
+				c124.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(c124)
 				c124.set_tag("亲中", true)
 				c124.set_tag("对华贸易", true)
@@ -78,8 +78,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = text
 		1:
 			if c124 != null:
-				c124.government = 0
-				c124.sub_government = 7
+				c124.government = GameConstants.Government.AUTHORITARIAN
+				c124.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				_leave_alliances(c124)
 				c124.set_tag("对华贸易", true)
 				c124.puppet_of = 131
@@ -88,8 +88,8 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 		2:
 			if c124 != null:
-				c124.government = 0
-				c124.sub_government = 0
+				c124.government = GameConstants.Government.AUTHORITARIAN
+				c124.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				_leave_alliances(c124)
 				c124.set_tag("对华贸易", true)
 			GameManager.queue_ending_after_event(13)
@@ -102,19 +102,19 @@ func execute(context: Dictionary) -> void:
 			if r500 == 0:
 				text += TXT_R3_AU
 				if c124 != null:
-					c124.government = 2
-					c124.sub_government = 3
+					c124.government = GameConstants.Government.REFORMIST
+					c124.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 					_leave_alliances(c124)
 					c124.set_tag("对华贸易", true)
 					c124.set_tag("okb", true)
 				context["result_text"] = text
 			else:
 				text += TXT_R3_HARD
-				if c131 != null and c131.sub_government == 9:
+				if c131 != null and c131.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 					text += TXT_R3_SA
 					if c124 != null:
-						c124.government = 0
-						c124.sub_government = 9
+						c124.government = GameConstants.Government.AUTHORITARIAN
+						c124.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 						_leave_alliances(c124)
 						c124.chinese_name = "北罗得西亚"
 						c124.puppet_of = 131

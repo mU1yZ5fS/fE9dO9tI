@@ -54,25 +54,25 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -150)
 			if c138 != null:
 				if _mod_active(3) and _mod_active(6):
-					c138.government = 1
-					c138.sub_government = 2
+					c138.government = GameConstants.Government.SOCIALIST
+					c138.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				else:
-					c138.government = 2
-					c138.sub_government = 21
+					c138.government = GameConstants.Government.REFORMIST
+					c138.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				_establish_prochina(c138)
 				c138.set_tag("对华贸易", true)
 				_join_alliances(c138)
 			context["result_text"] = text
 		1:
 			var text := TXT_R1_A
-			if c141 != null and c141.sub_government == 20:
+			if c141 != null and c141.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 				text += TXT_R1_NORIEGA
 			text += TXT_R1_B
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
 			if c138 != null:
-				c138.government = 0
-				c138.sub_government = 10
+				c138.government = GameConstants.Government.AUTHORITARIAN
+				c138.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				_establish_prochina(c138)
 				c138.set_tag("对华贸易", true)
 				_join_alliances(c138)
@@ -81,8 +81,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
 			if c138 != null:
-				c138.government = 2
-				c138.sub_government = 21
+				c138.government = GameConstants.Government.REFORMIST
+				c138.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				_establish_prochina(c138)
 				c138.set_tag("对华贸易", true)
 			context["result_text"] = TXT_R2

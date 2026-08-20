@@ -33,7 +33,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -25)
 			_add(W.I_AGENTS, -25)
 			chile.level_of_instability -= 15
-			chile.sub_government = 9
+			chile.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 			chile.set_tag("对华贸易", false)
 			chile.set_tag("亲中", false)
 			context["result_text"] = TXT_R1 + _proprc_suffix(chile)

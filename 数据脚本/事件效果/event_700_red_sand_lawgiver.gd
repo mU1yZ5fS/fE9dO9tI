@@ -40,8 +40,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -50)
 			if saudi != null:
 				_leave_alliances(saudi)
-				saudi.government = 3
-				saudi.sub_government = 12
+				saudi.government = GameConstants.Government.LIBERAL
+				saudi.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				saudi.set_tag("对华贸易", true)
 				saudi.set_tag("亲中", true)
 			ws.oil_prod += 100.0
@@ -51,8 +51,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -50)
 			if saudi != null:
 				_leave_alliances(saudi)
-				saudi.government = 2
-				saudi.sub_government = 15
+				saudi.government = GameConstants.Government.REFORMIST
+				saudi.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				saudi.set_tag("对华贸易", true)
 				saudi.set_tag("亲中", true)
 			ws.oil_prod += 100.0
@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R2
 			if saudi != null:
 				_leave_alliances(saudi)
-				saudi.government = 0
-				saudi.sub_government = 7
+				saudi.government = GameConstants.Government.AUTHORITARIAN
+				saudi.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				saudi.set_tag("对华贸易", true)
 

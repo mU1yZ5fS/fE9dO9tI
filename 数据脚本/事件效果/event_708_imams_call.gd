@@ -68,7 +68,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	else:
 		_disable(opt[1], "不要和那群大胡子走那么近！")
 	var c8 := world.get_country_by_legacy_index(8)
-	if c8 == null or c8.sub_government != 13:
+	if c8 == null or c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL:
 		_enable(opt[2], "我们将支持伊拉克人民的起义！")
 	else:
 		_disable(opt[2], "达瓦党已经孤立无援")

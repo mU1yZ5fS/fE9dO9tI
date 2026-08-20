@@ -97,8 +97,8 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, -100)
 		_add(W.I_AGENTS, -250)
 		if spain != null:
-			spain.government = 0
-			spain.sub_government = 7
+			spain.government = GameConstants.Government.AUTHORITARIAN
+			spain.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 		if portugal != null:
 			portugal.special -= 5
 		num2 += 2
@@ -107,10 +107,10 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_AGENTS, -250)
 		num += 2
 	if spain != null:
-		if spain.government == 1:
+		if spain.government == GameConstants.Government.SOCIALIST:
 			num3 += 2
 			num2 += 1
-		elif spain.government == 3:
+		elif spain.government == GameConstants.Government.LIBERAL:
 			num += 2
 	if _raw(131) == 2:
 		num3 += 1
@@ -121,10 +121,10 @@ func execute(context: Dictionary) -> void:
 		num += 2
 	var greece := ws.get_country_by_legacy_index(45)
 	if greece != null:
-		if greece.government == 2:
+		if greece.government == GameConstants.Government.REFORMIST:
 			num2 += 2
 			num3 += 1
-		elif greece.government == 1:
+		elif greece.government == GameConstants.Government.SOCIALIST:
 			num3 += 2
 			num2 += 1
 		else:
@@ -133,9 +133,9 @@ func execute(context: Dictionary) -> void:
 		num += 1
 	var uk := ws.get_country_by_legacy_index(92)
 	if uk != null:
-		if uk.government == 1:
+		if uk.government == GameConstants.Government.SOCIALIST:
 			num3 += 1
-		elif uk.government == 2:
+		elif uk.government == GameConstants.Government.REFORMIST:
 			num2 += 1
 		else:
 			num += 1
@@ -143,28 +143,28 @@ func execute(context: Dictionary) -> void:
 		num += 1
 	var italy := ws.get_country_by_legacy_index(85)
 	if italy != null:
-		if italy.government == 3:
+		if italy.government == GameConstants.Government.LIBERAL:
 			num += 1
-		elif italy.government == 2:
+		elif italy.government == GameConstants.Government.REFORMIST:
 			num2 += 1
-		elif italy.government == 1:
+		elif italy.government == GameConstants.Government.SOCIALIST:
 			num3 += 1
 	var num4 := 1 if (num2 >= num3 and num2 >= num) else (2 if (num3 >= num2 and num3 >= num) else 3)
 	if spain != null:
 		if num4 == 1:
-			spain.government = 2
-			spain.sub_government = 3
+			spain.government = GameConstants.Government.REFORMIST
+			spain.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		elif num4 == 2:
-			spain.government = 1
-			spain.sub_government = 16
+			spain.government = GameConstants.Government.SOCIALIST
+			spain.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
 			spain.name = TXT_NAME_PEOPLE_SPAIN
 			spain.set_tag("亲苏", true)
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null \
 					and ws.empires[EmpireData.USSR].leaders.size() > 4:
 				ws.empires[EmpireData.USSR].leaders[4].support += 1
 		else:
-			spain.government = 3
-			spain.sub_government = 5
+			spain.government = GameConstants.Government.LIBERAL
+			spain.sub_government = GameConstants.SubGovernment.MODERATE
 	if num4 == 1:
 		context["result_text"] = TXT_R1
 	elif num4 == 2:

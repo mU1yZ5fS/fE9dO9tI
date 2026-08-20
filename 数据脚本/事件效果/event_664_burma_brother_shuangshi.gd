@@ -54,7 +54,7 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = T_664_8
 		1:
 			if burma != null:
-				burma.sub_government = 11
+				burma.sub_government = GameConstants.SubGovernment.TITOIST
 			_set_part(burma, 1, true)
 			if burma != null:
 				burma.set_tag("亲中", true)

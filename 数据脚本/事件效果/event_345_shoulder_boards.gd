@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 		1:
 			var text := TXT_R1
 			var china := ws.get_country_by_legacy_index(1)
-			if china != null and china.sub_government != 19:
+			if china != null and china.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 				text += TXT_R1_NORMAL
 			else:
 				text += TXT_R1_SPECIAL

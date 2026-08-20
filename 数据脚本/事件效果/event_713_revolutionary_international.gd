@@ -78,7 +78,7 @@ func execute(context: Dictionary) -> void:
 			var c := ws.get_country_by_legacy_index(legacy_index)
 			if c == null or not ws.is_socialism(c, true):
 				continue
-			if c.sub_government == 16 or c.sub_government == 18:
+			if c.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or c.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 				continue
 			_leave_alliances(c)
 			var china := ws.get_country_by_legacy_index(1)
@@ -98,9 +98,9 @@ func _common_effects() -> void:
 	ws.completed_event_ids.erase("event_686")
 	# 秘鲁(62)：SubGosstroy==17 或 proprc → Gosstroy=2, SubGosstroy=15
 	var peru := ws.get_country_by_legacy_index(62)
-	if peru != null and (peru.sub_government == 17 or peru.has_tag("亲中")):
-		peru.government = 2
-		peru.sub_government = 15
+	if peru != null and (peru.sub_government == GameConstants.SubGovernment.MAOIST or peru.has_tag("亲中")):
+		peru.government = GameConstants.Government.REFORMIST
+		peru.sub_government = GameConstants.SubGovernment.PRAGMATIST
 	# 全国家循环：i!=1、非中国附庸、IsSocialism(true)、SubGosstroy!=16/18、
 	# 非亲苏/亲美、不在经互会/华约 → 影响-20、断亲中/对华贸易/econ/okb；
 	# 符合条件者转 rim。
@@ -111,7 +111,7 @@ func _common_effects() -> void:
 			continue
 		if not ws.is_socialism(c, true):
 			continue
-		if c.sub_government == 16 or c.sub_government == 18:
+		if c.sub_government == GameConstants.SubGovernment.SOVIET_STYLE or c.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 			continue
 		if c.has_tag("亲苏") or c.has_tag("亲美") or c.has_tag("sev") or c.has_tag("ovd"):
 			continue
@@ -120,15 +120,15 @@ func _common_effects() -> void:
 		c.set_tag("对华贸易", false)
 		c.set_tag("econ", false)
 		c.set_tag("okb", false)
-		if c.sub_government == 17 or c.sub_government == 2 \
+		if c.sub_government == GameConstants.SubGovernment.MAOIST or c.sub_government == GameConstants.SubGovernment.MARXIST_LENINIST \
 				or (c.原版序号 == 24 and ws.completed_event_ids.get("event_437", 0) == 0 \
 				and not _parts_0(25)):
 			c.set_tag("rim", true)
 	# 印度(19)：Gosstroy=0, SubGosstroy=0, numberOfSpecialEnding=0, 非亲美
 	var india := ws.get_country_by_legacy_index(19)
 	if india != null:
-		india.government = 0
-		india.sub_government = 0
+		india.government = GameConstants.Government.AUTHORITARIAN
+		india.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 		india.special_ending = 0
 		india.set_tag("亲美", false)
 		india.set_tag("rim", true)
@@ -151,8 +151,8 @@ func _subdue_country(legacy_index: int, new_name: String) -> void:
 	_leave_alliances(c)
 	c.name = new_name
 	c.chinese_name = new_name
-	c.government = 2
-	c.sub_government = 15
+	c.government = GameConstants.Government.REFORMIST
+	c.sub_government = GameConstants.SubGovernment.PRAGMATIST
 	c.puppet_of = 1
 	c.set_tag("亲中", true)
 	c.set_tag("对华贸易", true)
@@ -236,7 +236,7 @@ func _chinese_sub_government() -> int:
 		return 13
 	var data := d
 	var result := 13
-	if china.government == 0:
+	if china.government == GameConstants.Government.AUTHORITARIAN:
 		if _event_result("event_674") == 2:
 			result = 9
 		elif china.has_tag("nazimao"):
@@ -261,7 +261,7 @@ func _chinese_sub_government() -> int:
 			result = 7
 		else:
 			result = 13
-	elif china.government == 1:
+	elif china.government == GameConstants.Government.SOCIALIST:
 		if _mod_active(49):
 			result = 18
 		elif _mod_active(6) and _mod_active(3) and data[W.I_PARTY_SYSTEM] <= 7 \
@@ -274,7 +274,7 @@ func _chinese_sub_government() -> int:
 			result = 2
 		else:
 			result = 1
-	elif china.government == 2:
+	elif china.government == GameConstants.Government.REFORMIST:
 		if _mod_active(40):
 			result = 8
 		elif data[W.I_IDEOLOGY] >= 2 and data[W.I_ECON_SYSTEM] >= 13 \
@@ -299,7 +299,7 @@ func _chinese_sub_government() -> int:
 			result = 21
 		else:
 			result = 15
-	elif china.government != 3:
+	elif china.government != GameConstants.Government.LIBERAL:
 		result = 13
 	elif data[W.I_ECON_SYSTEM] <= 13 and data[W.I_DIPLO] >= 500:
 		result = 4

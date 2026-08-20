@@ -109,7 +109,7 @@ func _set_icon(id: int) -> void:
 	var path := 图标目录 % id
 	if id == 20 and GameManager != null and GameManager.world != null:
 		var c30 := GameManager.world.get_country_by_legacy_index(30)
-		if c30 != null and c30.government == 1:
+		if c30 != null and c30.government == GameConstants.Government.SOCIALIST:
 			path = "res://资产/UI/决议/决议条目图标/D20-special.png"
 	var tex := _load_tex(path)
 	icon.texture = tex

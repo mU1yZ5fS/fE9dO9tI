@@ -43,8 +43,8 @@ func execute(context: Dictionary) -> void:
 		0:
 			context["result_text"] = TXT_R0
 			if malaysia != null:
-				malaysia.government = 0
-				malaysia.sub_government = 7
+				malaysia.government = GameConstants.Government.AUTHORITARIAN
+				malaysia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			GameManager.start_war(34, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 300, 700, 1)
 			var war := _get_war(34)
 			if war != null:

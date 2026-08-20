@@ -38,16 +38,16 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_AGENTS, -30)
 			if north_yemen != null:
-				north_yemen.government = 2
-				north_yemen.sub_government = 15
+				north_yemen.government = GameConstants.Government.REFORMIST
+				north_yemen.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				north_yemen.set_tag("对华贸易", true)
 				north_yemen.set_tag("亲中", true)
 			_add_relation(EmpireData.USSR, -50)
 			context["result_text"] = T_498_6
 		1:
 			if north_yemen != null:
-				north_yemen.government = 0
-				north_yemen.sub_government = 7
+				north_yemen.government = GameConstants.Government.AUTHORITARIAN
+				north_yemen.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				north_yemen.set_tag("亲美", true)
 			_add_power(EmpireData.USA, 20)
 			context["result_text"] = T_498_7

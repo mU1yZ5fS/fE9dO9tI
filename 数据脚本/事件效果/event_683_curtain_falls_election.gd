@@ -63,7 +63,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	else:
 		_disable(opt[3], TXT_OPT3_DIS)
 	var china := ws.get_country_by_legacy_index(1)
-	if (china == null or china.government != 3) and _res(W.I_BUDGET) * 2 >= 300 \
+	if (china == null or china.government != GameConstants.Government.LIBERAL) and _res(W.I_BUDGET) * 2 >= 300 \
 			and _res(W.I_AGENTS) >= 20:
 		_enable(opt[4], event_def.options[4].text)
 	else:
@@ -125,11 +125,11 @@ func execute(context: Dictionary) -> void:
 		num += 1
 	if china != null and china.has_tag("okb"):
 		num += 1
-	if france != null and france.sub_government != 14 and ws.is_socialism(france, false):
+	if france != null and france.sub_government != GameConstants.SubGovernment.EUROCOMMUNIST and ws.is_socialism(france, false):
 		num += 1
-	if indonesia != null and indonesia.government == 3:
+	if indonesia != null and indonesia.government == GameConstants.Government.LIBERAL:
 		num += 1
-	if nigeria != null and nigeria.government == 3:
+	if nigeria != null and nigeria.government == GameConstants.Government.LIBERAL:
 		num += 1
 	if france != null and (france.has_tag("fxseu") or france.has_tag("nazimao")) \
 			or ws.get_flag("is_gkchp"):
@@ -150,7 +150,7 @@ func execute(context: Dictionary) -> void:
 	if china != null and china.has_tag("rim") and _mod_active(3) and _mod_active(6) \
 			and ws.is_socialism(china, true):
 		num2 -= 1
-	if china != null and china.government == 3:
+	if china != null and china.government == GameConstants.Government.LIBERAL:
 		num2 += 1
 	if west_germany != null and west_germany.内战中:
 		num2 += 1
@@ -163,28 +163,28 @@ func execute(context: Dictionary) -> void:
 		num3 += 1
 	if _mod_active(39):
 		num3 += 1
-	if italy != null and italy.sub_government == 5:
+	if italy != null and italy.sub_government == GameConstants.SubGovernment.MODERATE:
 		num3 += 1
-	if france != null and (france.sub_government == 5 or france.sub_government == 20):
+	if france != null and (france.sub_government == GameConstants.SubGovernment.MODERATE or france.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN):
 		num3 += 1
-	if spain != null and spain.sub_government == 5:
+	if spain != null and spain.sub_government == GameConstants.SubGovernment.MODERATE:
 		num3 += 1
-	if china != null and china.government == 2:
+	if china != null and china.government == GameConstants.Government.REFORMIST:
 		num3 += 1
-	if indonesia != null and indonesia.sub_government == 8:
+	if indonesia != null and indonesia.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE:
 		num3 += 1
-	if japan != null and (japan.sub_government == 7 or japan.government == 3):
+	if japan != null and (japan.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN or japan.government == GameConstants.Government.LIBERAL):
 		num3 += 1
 	# num4：社会民主/桑德斯
-	if italy != null and italy.government == 2:
+	if italy != null and italy.government == GameConstants.Government.REFORMIST:
 		num4 += 1
-	if france != null and france.government == 2:
+	if france != null and france.government == GameConstants.Government.REFORMIST:
 		num4 += 1
-	if portugal != null and portugal.government == 2:
+	if portugal != null and portugal.government == GameConstants.Government.REFORMIST:
 		num4 += 1
 	if ussr != null and ussr.current_leader == 8:
 		num4 += 1
-	if sweden != null and sweden.sub_government == 3:
+	if sweden != null and sweden.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		num4 += 1
 	if spain != null and spain.has_tag("soc_eu"):
 		num4 += 3
@@ -194,14 +194,14 @@ func execute(context: Dictionary) -> void:
 			text += TXT_WIN_BUSH
 			usa.current_leader = 2
 			if usa_country != null:
-				usa_country.sub_government = 12
+				usa_country.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			context["result_text"] = text
 			return
 		text += TXT_WIN_DUKAKIS
 		if usa != null:
 			usa.current_leader = 4
 		if usa_country != null:
-			usa_country.sub_government = 6
+			usa_country.sub_government = GameConstants.SubGovernment.LIBERAL
 		context["result_text"] = text
 		return
 	if num3 >= num2 and num3 >= num and num3 >= num4:
@@ -209,7 +209,7 @@ func execute(context: Dictionary) -> void:
 		if usa != null:
 			usa.current_leader = 6
 		if usa_country != null:
-			usa_country.sub_government = 5
+			usa_country.sub_government = GameConstants.SubGovernment.MODERATE
 		context["result_text"] = text
 		return
 	if num2 >= num3 and num2 >= num and num2 >= num4:
@@ -217,14 +217,14 @@ func execute(context: Dictionary) -> void:
 		if usa != null:
 			usa.current_leader = 5
 		if usa_country != null:
-			usa_country.sub_government = 12
+			usa_country.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		context["result_text"] = text
 		return
 	text += TXT_WIN_SANDERS
 	if usa != null:
 		usa.current_leader = 7
 	if usa_country != null:
-		usa_country.sub_government = 4
+		usa_country.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 	context["result_text"] = text
 
 
@@ -246,7 +246,7 @@ func evaluate(world: WorldState) -> bool:
 	if denmark == null or (not denmark.has_tag("亲中") and not denmark.has_tag("亲苏")):
 		return false
 	if japan == null or (not japan.has_tag("亲中") and not japan.has_tag("亲苏") \
-			and not (japan.government == 2 and not japan.has_tag("亲美"))):
+			and not (japan.government == GameConstants.Government.REFORMIST and not japan.has_tag("亲美"))):
 		return false
 	if cuba == null or (not cuba.has_tag("亲中") and not cuba.has_tag("亲苏")):
 		return false
@@ -260,15 +260,15 @@ func _candidate_text() -> String:
 	if ws.is_socialism(china, true) and ws.result_of_event_num(25) == 2 \
 			and ws.result_of_event_num(26) == 2:
 		return TXT_CAND_AVAKIAN
-	if china != null and china.sub_government == 18:
+	if china != null and china.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		return TXT_CAND_NOVACK
 	if ws.is_socialism(china, true):
 		return TXT_CAND_HALL
-	if china != null and china.government == 2:
+	if china != null and china.government == GameConstants.Government.REFORMIST:
 		return TXT_CAND_FONDA
-	if china != null and china.government == 3:
+	if china != null and china.government == GameConstants.Government.LIBERAL:
 		return TXT_CAND_GRAVEL
-	if china != null and china.sub_government == 19:
+	if china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		return TXT_CAND_KIM
 	return TXT_CAND_LAROUCHE
 

@@ -30,9 +30,9 @@ func execute(context: Dictionary) -> void:
 		var text := TXT_BASE
 		var egypt := ws.get_country_by_legacy_index(30)
 		if egypt != null:
-			if egypt.sub_government == 20:
+			if egypt.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 				text += "\n" + TXT_EGYPT_20
-			elif egypt.government == 2:
+			elif egypt.government == GameConstants.Government.REFORMIST:
 				text += "\n" + TXT_EGYPT_2
 		if d.size() > W.I_BUDGET:
 			d[W.I_BUDGET] += 50
@@ -41,9 +41,9 @@ func execute(context: Dictionary) -> void:
 		var text := TXT_R1_BASE
 		var egypt := ws.get_country_by_legacy_index(30)
 		if egypt != null:
-			if egypt.sub_government == 20:
+			if egypt.sub_government == GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN:
 				text += "\n" + TXT_EGYPT_20
-			elif egypt.government == 2:
+			elif egypt.government == GameConstants.Government.REFORMIST:
 				text += "\n" + TXT_EGYPT_2
 		context["result_text"] = text
 

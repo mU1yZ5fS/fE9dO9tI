@@ -54,8 +54,8 @@ func execute(context: Dictionary) -> void:
 			_set_data(130, 0)  # 原 data[130]
 			_china_parts_change(c1)
 			if c9 != null:
-				c9.government = 1
-				c9.sub_government = 1
+				c9.government = GameConstants.Government.SOCIALIST
+				c9.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				_leave_alliances(c9)
 				c9.set_tag("亲中", true)
 				_join_alliances(c9)
@@ -120,13 +120,13 @@ func _china_parts_change(c1: CountryData) -> void:
 	if ws.get_flag("IndOpp"):
 		_clear_parts(c1)
 		c1.parts[15] = true
-	elif c19 != null and c33 != null and c19.puppet_of == 1 and c19.sub_government == 19 			and c33.puppet_of == 1 and c33.sub_government == 19:
+	elif c19 != null and c33 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST 			and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_parts(c1)
 		c1.parts[14] = true
-	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == 19:
+	elif c33 != null and c33.puppet_of == 1 and c33.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_parts(c1)
 		c1.parts[13] = true
-	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == 19:
+	elif c19 != null and c19.puppet_of == 1 and c19.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_clear_parts(c1)
 		c1.parts[12] = true
 	elif is_gk:

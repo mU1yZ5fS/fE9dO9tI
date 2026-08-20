@@ -24,8 +24,8 @@ func execute(context: Dictionary) -> void:
 			var leader_name := _leader_name()
 			context["result_text"] = TXT_R0_PRE + leader_name + TXT_R0_POST
 			if zimbabwe != null:
-				zimbabwe.government = 0
-				zimbabwe.sub_government = 19
+				zimbabwe.government = GameConstants.Government.AUTHORITARIAN
+				zimbabwe.sub_government = GameConstants.SubGovernment.FEUDAL_SOCIALIST
 				zimbabwe.social_stability = 1000
 				_join_our_alliances(zimbabwe)
 			_add(W.I_BUDGET, -100)

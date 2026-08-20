@@ -52,11 +52,11 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 	var iran := p_ws.get_country_by_legacy_index(8)
 	var iraq := p_ws.get_country_by_legacy_index(14)
 	var num := 0
-	if syria != null and syria.sub_government == 9:
+	if syria != null and syria.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num += 1
-	if iran != null and iran.sub_government == 9:
+	if iran != null and iran.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num += 1
-	if iraq != null and iraq.sub_government == 9:
+	if iraq != null and iraq.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num += 1
 	var lead := TXT_372_702
 	if num == 1:
@@ -85,13 +85,13 @@ func _event_372(option_index: int, context: Dictionary) -> void:
 	var flag2 := true
 	var flag3 := true
 	var num := 0
-	if syria != null and (syria.sub_government == 9 or syria.has_tag("亲中")):
+	if syria != null and (syria.sub_government == GameConstants.SubGovernment.NEO_FASCIST or syria.has_tag("亲中")):
 		flag = false
 		num += 1
-	if iran != null and (iran.sub_government == 9 or iran.has_tag("亲中")):
+	if iran != null and (iran.sub_government == GameConstants.SubGovernment.NEO_FASCIST or iran.has_tag("亲中")):
 		flag3 = false
 		num += 1
-	if iraq != null and (iraq.sub_government == 9 or iraq.has_tag("亲中")):
+	if iraq != null and (iraq.sub_government == GameConstants.SubGovernment.NEO_FASCIST or iraq.has_tag("亲中")):
 		flag2 = false
 		num += 1
 
@@ -243,8 +243,8 @@ func _result_1(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 	elif ws.influence_prc >= 800:
 		# Event372.cs:295-300
 		if turkey != null:
-			turkey.government = 3
-			turkey.sub_government = 5
+			turkey.government = GameConstants.Government.LIBERAL
+			turkey.sub_government = GameConstants.SubGovernment.MODERATE
 	var num3_372 := _t372_num3(num, turkey)
 	if ws.influence_prc >= 600 and num == 3:
 		# Event372.cs:305-320
@@ -308,15 +308,15 @@ func _result_1(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 func _turkey_gov2_sub8() -> void:
 	var turkey := ws.get_country_by_legacy_index(84)
 	if turkey != null:
-		turkey.government = 2
-		turkey.sub_government = 8
+		turkey.government = GameConstants.Government.REFORMIST
+		turkey.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 
 
 func _turkish_client_sub3(legacy_idx: int) -> void:
 	var c := ws.get_country_by_legacy_index(legacy_idx)
 	if c != null:
-		c.government = 2
-		c.sub_government = 3
+		c.government = GameConstants.Government.REFORMIST
+		c.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 
 
 func _set_part(c: CountryData, index: int) -> void:
@@ -357,23 +357,23 @@ func _make_pro_china_copy(legacy_idx: int) -> void:
 
 func _upgrade_turkish_puppets(flag: bool, flag2: bool, flag3: bool) -> void:
 	var turkey := ws.get_country_by_legacy_index(84)
-	if turkey == null or turkey.government != 2:
+	if turkey == null or turkey.government != GameConstants.Government.REFORMIST:
 		return
 	if flag2:
 		var iraq := ws.get_country_by_legacy_index(14)
 		if iraq != null and iraq.puppet_of == 84:
-			iraq.government = 2
-			iraq.sub_government = 8
+			iraq.government = GameConstants.Government.REFORMIST
+			iraq.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 	if flag:
 		var syria := ws.get_country_by_legacy_index(35)
 		if syria != null and syria.puppet_of == 84:
-			syria.government = 2
-			syria.sub_government = 8
+			syria.government = GameConstants.Government.REFORMIST
+			syria.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 	if flag3:
 		var iran := ws.get_country_by_legacy_index(8)
 		if iran != null and iran.puppet_of == 84:
-			iran.government = 2
-			iran.sub_government = 8
+			iran.government = GameConstants.Government.REFORMIST
+			iran.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 
 
 func _set_data124(v: int) -> void:

@@ -60,8 +60,8 @@ func execute(context: Dictionary) -> void:
 			if mali != null and not mali.内战中:
 				context["result_text"] = TXT_R1_KGB
 				if mali != null:
-					mali.government = 0
-					mali.sub_government = 10
+					mali.government = GameConstants.Government.AUTHORITARIAN
+					mali.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 					mali.puppet_of = -1
 					mali.set_tag("亲美", false)
 					mali.set_tag("对华贸易", true)
@@ -69,8 +69,8 @@ func execute(context: Dictionary) -> void:
 			else:
 				context["result_text"] = TXT_R1_OURS
 				if mali != null:
-					mali.government = 0
-					mali.sub_government = 10
+					mali.government = GameConstants.Government.AUTHORITARIAN
+					mali.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 					mali.puppet_of = -1
 					mali.set_tag("亲美", false)
 					mali.set_tag("对华贸易", true)
