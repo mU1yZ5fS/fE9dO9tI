@@ -17,7 +17,7 @@ extends Control
 @onready var 速度4快捷键值: Label = get_node_or_null("速度4快捷键行/值")
 
 ## 显示名逐字对齐原作 DiffScript.cs / Need_save.cs 的字符串（含原空格）。
-const DIFF_NAMES := [" 牛 棚 小 酌", " 上 山 下 乡", " 斗 私 批 修", " 造 反 有 理", " 浩 荡 文 革"]
+const DIFF_NAMES := [" 沙 盒", " 上 山 下 乡", " 斗 私 批 修", " 造 反 有 理", " 浩 荡 文 革"]
 const AUTOSAVE_NAMES := [" 不 自 动 保 存", " 每 月 自 动 保 存", " 半 年 自 动 保 存"]
 const SAVEPLACE_NAMES := {
 	5: " 成 就 激 活 档 位",

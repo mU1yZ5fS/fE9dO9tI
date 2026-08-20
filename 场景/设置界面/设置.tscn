@@ -626,6 +626,17 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
+[node name="沙盒作弊说明" type="RichTextLabel" parent="." unique_id=2026081702]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 112.0
+offset_right = 1320.0
+offset_bottom = 232.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "[color=red]沙盒模式作弊快捷键（仅难度0）[/color]\n左Ctrl+1~9/0：党支持/民支持/思想/生活/国际声望/全球影响/预算/特工/军费/美苏关系 +10\n左Ctrl+A：与苏联关系 恢复/破裂 切换\nF12：打开/关闭调试控制台"
+
 [node name="音频信息背景图" type="TextureRect" parent="." unique_id=738632101]
 layout_mode = 0
 offset_left = 664.0

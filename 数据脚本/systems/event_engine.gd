@@ -691,6 +691,16 @@ func get_event(event_id: String) -> EventDef:
 	return _events.get(event_id)
 
 
+## 返回全部已注册事件 id，供调试控制台/开发者工具列出。
+func get_all_event_ids() -> Array[String]:
+	ensure_events_ready()
+	var ids: Array[String] = []
+	for key in _events.keys():
+		ids.append(String(key))
+	ids.sort()
+	return ids
+
+
 ## 获取事件的本地化文本。
 ## 如果设置了 text_library 且其中存在对应 key，返回本地化文本；
 ## 否则返回 EventDef 中存储的内联文本。
