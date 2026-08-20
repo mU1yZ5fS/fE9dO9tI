@@ -66,7 +66,7 @@ static func fortnight_wars(w: WorldState) -> void:
 			war.infl2 += def.drift_infl2
 			apply_war_drift_extra(w, war, def)
 		war.fortnight_elapsed += 1
-		clamp_war_infl(war)
+		WarQueries.clamp_war_infl(war)
 
 
 ## 双周：战争漂移附加规则（按 WarDef.drift_extra_flag 分派）
@@ -202,21 +202,11 @@ static func check_war_endings() -> void:
 # ============================================================================
 
 static func get_active_wars() -> Array[WarData]:
-	var out: Array[WarData] = []
-	var w: WorldState = current_world
-	if w == null:
-		return out
-	for war in w.wars:
-		if war != null and war.is_going:
-			out.append(war)
-	return out
+	return WarQueries.get_active_wars(current_world)
 
 
 static func get_mil_intervention_display() -> String:
-	var w: WorldState = current_world
-	if w == null:
-		return "0.0"
-	return "%.1f" % (float(w.数值表[W.I_MIL_INTERVENTION]) / 10.0)
+	return WarQueries.get_mil_intervention_display(current_world)
 
 
 # ============================================================================
@@ -262,7 +252,7 @@ static func start_war(
 		war.ussr_side = ussr_side if ussr_side >= GameConstants.WarSide.SIDE1 else 0
 	war.fortnight_elapsed = 0
 	war.diplo_done = [false, false]
-	clamp_war_infl(war)
+	WarQueries.clamp_war_infl(war)
 	if _notify_stats_cb.is_valid():
 				_notify_stats_cb.call()
 	return true
@@ -356,7 +346,7 @@ static func intervene_war(war_id: int, action_id: int) -> bool:
 			_war_apply_diplo(war, side)
 			_war_apply_event548_diplo(war, side)
 			war.diplo_done[side - 1] = true
-			clamp_war_infl(war)
+			WarQueries.clamp_war_infl(war)
 			w.mirror_empires_to_data()
 			if _notify_stats_cb.is_valid():
 				_notify_stats_cb.call()
@@ -366,7 +356,7 @@ static func intervene_war(war_id: int, action_id: int) -> bool:
 	_war_apply_enemy_relation(war, side, -5)
 	# 非外交动作共有的党内支持消耗与不稳定度增加
 	_war_apply_party_cost(w, d, china)
-	clamp_war_infl(war)
+	WarQueries.clamp_war_infl(war)
 	w.mirror_empires_to_data()
 	if _notify_stats_cb.is_valid():
 				_notify_stats_cb.call()
@@ -908,9 +898,6 @@ static func _is_achievement_war_result(war_id: int) -> bool:
 		or war_id == 26 or war_id == 30 or war_id == 31 or war_id == 32
 
 
-static func _wc(w: WorldState, idx: int) -> CountryData:
-	return w.get_country_by_legacy_index(idx)
-
 
 static func _dval(d: Array, idx: int) -> int:
 	return d[idx] if d.size() > idx else 0
@@ -969,7 +956,7 @@ static func _apply_achievement_war_result(war_id: int, war: WarData, d: Array[in
 
 ## GameState.cs:416-489 —— 阿富汗战争。
 static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
-	var afg := _wc(w, 12)
+	var afg := WarQueries.wc(w, 12)
 	if war.infl1 >= 900:
 		if war.ussr_side == GameConstants.WarSide.SIDE1:
 			add_empire_power(EmpireData.USSR, 50)
@@ -1005,18 +992,18 @@ static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 		war.usa_side = GameConstants.WarSide.SIDE2
 		war.infl1 = 650
 		war.infl2 = 350
-		var c31 := _wc(w, 31)
+		var c31 := WarQueries.wc(w, 31)
 		if c31 != null and c31.has_tag("亲美"):
 			war.infl1 -= 100
 			war.infl2 += 100
-		var c8 := _wc(w, 8)
+		var c8 := WarQueries.wc(w, 8)
 		if c8 != null and c8.government == GameConstants.Government.AUTHORITARIAN:
 			war.infl1 -= 50
 			war.infl2 += 50
 		if d.size() > 107 and d[107] == 9:
 			war.infl1 += 25
 			war.infl2 -= 25
-		clamp_war_infl(war)
+		WarQueries.clamp_war_infl(war)
 		return true
 	else:
 		if afg != null:
@@ -1031,8 +1018,8 @@ static func _war5_result(w: WorldState, war: WarData, d: Array[int]) -> bool:
 
 ## GameState.cs:1062-1134 —— 阿尔巴尼亚-希腊战争。
 static func _war19_result(w: WorldState, war: WarData, d: Array[int]) -> void:
-	var alb := _wc(w, 20)
-	var greece := _wc(w, 45)
+	var alb := WarQueries.wc(w, 20)
+	var greece := WarQueries.wc(w, 45)
 	if war.infl1 >= 900:
 		if alb != null and alb.has_tag("亲中") and d.size() > W.I_INFLUENCE:
 			d[W.I_INFLUENCE] -= 100
@@ -1051,7 +1038,7 @@ static func _war19_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 			greece.set_tag("对华贸易", false)
 			greece.government = GameConstants.Government.AUTHORITARIAN
 			greece.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
-			var usa := _wc(w, 51)
+			var usa := WarQueries.wc(w, 51)
 			if usa != null and usa.has_tag("nato"):
 				greece.set_tag("nato", true)
 		# GameState.cs:1078-1081
@@ -1063,7 +1050,7 @@ static func _war19_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 			alb.set_tag("对华贸易", false)
 			alb.government = GameConstants.Government.AUTHORITARIAN
 			alb.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
-		var c51 := _wc(w, 51)
+		var c51 := WarQueries.wc(w, 51)
 		var ussr := _emp_power_val(w, 1)
 		if c51 != null and c51.has_tag("nato"):
 			if greece != null:
@@ -1081,8 +1068,8 @@ static func _war19_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 
 ## GameState.cs:1247-1338 —— 意大利激进派起义。
 static func _war23_result(w: WorldState, war: WarData, d: Array[int]) -> void:
-	var italy := _wc(w, 85)
-	var c87 := _wc(w, 87)
+	var italy := WarQueries.wc(w, 85)
+	var c87 := WarQueries.wc(w, 87)
 	if not w.event_done_num(556):
 		if war.infl1 >= 900:
 			if d.size() > W.I_INFLUENCE:
@@ -1146,7 +1133,7 @@ static func _war23_result(w: WorldState, war: WarData, d: Array[int]) -> void:
 			italy.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
 			italy.leave_alliances()
 			italy.set_tag("亲美", true)
-		var c0 := _wc(w, 0)
+		var c0 := WarQueries.wc(w, 0)
 		if c0 != null and italy != null:
 			if c0.has_tag("eu"):
 				italy.set_tag("eu", true)
@@ -1246,7 +1233,7 @@ static func _revert_spain_parts_map(w: WorldState, revert_basque: bool, revert_c
 
 ## GameState.cs:1627-1730 —— 西班牙内战。
 static func _war30_result(w: WorldState, war: WarData, _d: Array[int]) -> bool:
-	var spain := _wc(w, 86)
+	var spain := WarQueries.wc(w, 86)
 	if war.infl1 >= 800:
 		_war_going_set(w, 31, false)
 		_war_going_set(w, 32, false)
@@ -1273,7 +1260,7 @@ static func _war30_result(w: WorldState, war: WarData, _d: Array[int]) -> bool:
 			war.usa_side = GameConstants.WarSide.NONE
 			war.infl1 = 300
 			war.infl2 = 700
-			clamp_war_infl(war)
+			WarQueries.clamp_war_infl(war)
 			return true
 		else:
 			Achievements.set_achievement(151)
@@ -2760,9 +2747,9 @@ static func _apply_war0_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var north := _wc(w, 10)
-	var south := _wc(w, 46)
-	var china := _wc(w, 1)
+	var north := WarQueries.wc(w, 10)
+	var south := WarQueries.wc(w, 46)
+	var china := WarQueries.wc(w, 1)
 	if war.infl1 >= 900:
 		if north != null and south != null and north.government == GameConstants.Government.LIBERAL and south.government == GameConstants.Government.AUTHORITARIAN:
 			_set_d(d, 157, 1)
@@ -2802,10 +2789,10 @@ static func _apply_war1_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c11 := _wc(w, 11)
-	var c22 := _wc(w, 22)
-	var c23 := _wc(w, 23)
-	var china := _wc(w, 1)
+	var c11 := WarQueries.wc(w, 11)
+	var c22 := WarQueries.wc(w, 22)
+	var c23 := WarQueries.wc(w, 23)
+	var china := WarQueries.wc(w, 1)
 	if war.infl1 >= 900:
 		_add_d(d, W.I_INFLUENCE, 20)
 		_add_d(d, W.I_PARTY_SUPPORT, 100)
@@ -2868,7 +2855,7 @@ static func _apply_war2_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c34 := _wc(w, 34)
+	var c34 := WarQueries.wc(w, 34)
 	if war.infl1 >= 750:
 		if c34 != null:
 			c34.set_tag("对华贸易", true)
@@ -2890,9 +2877,9 @@ static func _apply_war4_result(war: WarData, _d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c14 := _wc(w, 14)
-	var c37 := _wc(w, 37)
-	var c93 := _wc(w, 93)
+	var c14 := WarQueries.wc(w, 14)
+	var c37 := WarQueries.wc(w, 37)
+	var c93 := WarQueries.wc(w, 93)
 	if w.event_done_num(711):
 		if war.infl1 >= 900:
 			w.set_flag("israellost", true)
@@ -2943,7 +2930,7 @@ static func _apply_war6_result(war: WarData, _d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c71 := _wc(w, 71)
+	var c71 := WarQueries.wc(w, 71)
 	if c71 != null and c71.parts.size() > 0:
 		c71.parts[0] = false
 	if war.infl1 >= 400:
@@ -2971,9 +2958,9 @@ static func _apply_war42_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c14 := _wc(w, 14)
-	var c157 := _wc(w, 157)
-	var china := _wc(w, 1)
+	var c14 := WarQueries.wc(w, 14)
+	var c157 := WarQueries.wc(w, 157)
+	var china := WarQueries.wc(w, 1)
 	if war.infl2 >= 900:
 		if c14 != null:
 			if c14.有驻军基地:
@@ -3062,16 +3049,16 @@ static func _apply_war43_result(war: WarData, d: Array[int]) -> void:
 		for p in w.politicians:
 			if p != null and (p.trait_personality < GameConstants.PoliticianPersonality.MODERATE or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE):
 				p.loyalty += 100
-		var c102 := _wc(w, 102)
-		var c103 := _wc(w, 103)
-		var c105 := _wc(w, 105)
-		var c24 := _wc(w, 24)
+		var c102 := WarQueries.wc(w, 102)
+		var c103 := WarQueries.wc(w, 103)
+		var c105 := WarQueries.wc(w, 105)
+		var c24 := WarQueries.wc(w, 24)
 		if c105 != null and c105.parts.size() > 0:
 			c105.parts[0] = true
 		if c24 != null and c24.parts.size() > 0 and c24.parts[0]:
-			_wc_name(w, 102, "阿拉伯海湾民主人民共和国")
-			_wc_name(w, 103, "阿拉伯海湾民主人民共和国")
-			_wc_name(w, 105, "阿拉伯海湾民主人民共和国")
+			WarQueries.wc_name(w, 102, "阿拉伯海湾民主人民共和国")
+			WarQueries.wc_name(w, 103, "阿拉伯海湾民主人民共和国")
+			WarQueries.wc_name(w, 105, "阿拉伯海湾民主人民共和国")
 			if c24.has_tag("亲中"):
 				for c in [c102, c103, c105]:
 					if c != null:
@@ -3093,9 +3080,9 @@ static func _apply_war43_result(war: WarData, d: Array[int]) -> void:
 						c.set_tag("对华贸易", true)
 						c.set_tag("亲苏", true)
 		else:
-			_wc_name(w, 102, "阿拉伯海湾共和国")
-			_wc_name(w, 103, "阿拉伯海湾共和国")
-			_wc_name(w, 105, "阿拉伯海湾共和国")
+			WarQueries.wc_name(w, 102, "阿拉伯海湾共和国")
+			WarQueries.wc_name(w, 103, "阿拉伯海湾共和国")
+			WarQueries.wc_name(w, 105, "阿拉伯海湾共和国")
 			for c in [c102, c103, c105]:
 				if c != null:
 					c.government = GameConstants.Government.REFORMIST
@@ -3108,7 +3095,7 @@ static func _apply_war43_result(war: WarData, d: Array[int]) -> void:
 					c.set_tag("亲苏", true)
 	else:
 		_add_d(d, W.I_INFLUENCE, -40)
-		for c in [_wc(w, 102), _wc(w, 103), _wc(w, 105)]:
+		for c in [WarQueries.wc(w, 102), WarQueries.wc(w, 103), WarQueries.wc(w, 105)]:
 			if c != null:
 				c.leave_alliances()
 				c.set_tag("亲美", true)
@@ -3119,8 +3106,8 @@ static func _apply_war46_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c140 := _wc(w, 140)
-	var c145 := _wc(w, 145)
+	var c140 := WarQueries.wc(w, 140)
+	var c145 := WarQueries.wc(w, 145)
 	if c140 != null and c140.parts.size() > 1:
 		c140.parts[1] = false
 	if war.infl2 >= 900:
@@ -3164,9 +3151,9 @@ static func _apply_war48_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c53 := _wc(w, 53)
-	var c150 := _wc(w, 150)
-	var c151 := _wc(w, 151)
+	var c53 := WarQueries.wc(w, 53)
+	var c150 := WarQueries.wc(w, 150)
+	var c151 := WarQueries.wc(w, 151)
 	if c53 != null and c53.parts.size() > 2:
 		c53.parts[2] = false
 	if w.result_of_event_num(499) == 2:
@@ -3259,7 +3246,7 @@ static func _apply_war49_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c138 := _wc(w, 138)
+	var c138 := WarQueries.wc(w, 138)
 	if c138 != null and c138.parts.size() > 0:
 		c138.parts[0] = false
 	if war.infl2 >= 900:
@@ -3284,8 +3271,8 @@ static func _apply_war50_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c119 := _wc(w, 119)
-	var c42 := _wc(w, 42)
+	var c119 := WarQueries.wc(w, 119)
+	var c42 := WarQueries.wc(w, 42)
 	if c119 != null and c119.parts.size() > 0:
 		c119.parts[0] = false
 	if w.result_of_event_num(594) == 1 or w.result_of_event_num(596) == 1:
@@ -3330,7 +3317,7 @@ static func _apply_war51_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c119 := _wc(w, 119)
+	var c119 := WarQueries.wc(w, 119)
 	if c119 != null and c119.parts.size() > 1:
 		c119.parts[1] = false
 	if war.infl2 >= 900:
@@ -3364,8 +3351,8 @@ static func _apply_war52_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c112 := _wc(w, 112)
-	var c113 := _wc(w, 113)
+	var c112 := WarQueries.wc(w, 112)
+	var c113 := WarQueries.wc(w, 113)
 	if c113 != null and c113.parts.size() > 0:
 		c113.parts[0] = false
 	if war.infl1 >= 900:
@@ -3398,7 +3385,7 @@ static func _apply_war62_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c117 := _wc(w, 117)
+	var c117 := WarQueries.wc(w, 117)
 	if c117 != null and c117.parts.size() > 1:
 		c117.parts[1] = false
 	if war.infl1 >= 100:
@@ -3446,13 +3433,13 @@ static func _apply_war64_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c149 := _wc(w, 149)
+	var c149 := WarQueries.wc(w, 149)
 	if c149 != null and c149.parts.size() > 1:
 		c149.parts[1] = false
 	if war.infl2 >= 900:
 		if c149 != null:
 			c149.level_of_instability += 300
-		var china := _wc(w, 1)
+		var china := WarQueries.wc(w, 1)
 		if w.result_of_event_num(633) != 1 and w.modifier_active(6) and w.modifier_active(3):
 			if c149 != null:
 				c149.government = GameConstants.Government.SOCIALIST
@@ -3497,7 +3484,7 @@ static func _apply_war65_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c149 := _wc(w, 149)
+	var c149 := WarQueries.wc(w, 149)
 	if c149 != null and c149.parts.size() > 2:
 		c149.parts[2] = false
 	if war.infl1 >= 900:
@@ -3518,7 +3505,7 @@ static func _apply_war66_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c149 := _wc(w, 149)
+	var c149 := WarQueries.wc(w, 149)
 	if c149 != null and c149.parts.size() > 2:
 		c149.parts[2] = false
 	if war.infl1 >= 900:
@@ -3548,7 +3535,7 @@ static func _apply_war67_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c147 := _wc(w, 147)
+	var c147 := WarQueries.wc(w, 147)
 	if c147 != null and c147.parts.size() > 0:
 		c147.parts[0] = false
 	if war.infl1 >= 700:
@@ -3572,9 +3559,9 @@ static func _apply_war68_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c123 := _wc(w, 123)
-	var c131 := _wc(w, 131)
-	var c117 := _wc(w, 117)
+	var c123 := WarQueries.wc(w, 123)
+	var c131 := WarQueries.wc(w, 131)
+	var c117 := WarQueries.wc(w, 117)
 	if c123 == null:
 		return
 	if c123.parts.size() > 0:
@@ -3819,8 +3806,8 @@ static func _apply_war69_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c9 := _wc(w, 9)
-	var china := _wc(w, 1)
+	var c9 := WarQueries.wc(w, 9)
+	var china := WarQueries.wc(w, 1)
 	if war.infl1 >= 950:
 		if c9 != null:
 			c9.leave_alliances()
@@ -3850,13 +3837,13 @@ static func _apply_war76_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c2 := _wc(w, 2)
-	var c3 := _wc(w, 3)
-	var c4 := _wc(w, 4)
-	var c5 := _wc(w, 5)
-	var c6 := _wc(w, 6)
-	var c16 := _wc(w, 16)
-	var c17 := _wc(w, 17)
+	var c2 := WarQueries.wc(w, 2)
+	var c3 := WarQueries.wc(w, 3)
+	var c4 := WarQueries.wc(w, 4)
+	var c5 := WarQueries.wc(w, 5)
+	var c6 := WarQueries.wc(w, 6)
+	var c16 := WarQueries.wc(w, 16)
+	var c17 := WarQueries.wc(w, 17)
 	if war.infl1 >= 950:
 		if c5 != null and c5.parts.size() > 0:
 			c5.parts[0] = true
@@ -3917,7 +3904,7 @@ static func _apply_war77_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c107 := _wc(w, 107)
+	var c107 := WarQueries.wc(w, 107)
 	if c107 != null and c107.parts.size() > 0:
 		c107.parts[0] = false
 	if war.infl1 >= 700:
@@ -3938,8 +3925,8 @@ static func _apply_war78_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c107 := _wc(w, 107)
-	var c13 := _wc(w, 13)
+	var c107 := WarQueries.wc(w, 107)
+	var c13 := WarQueries.wc(w, 13)
 	if c107 != null and c107.parts.size() > 0:
 		c107.parts[0] = false
 	if war.infl1 >= 700:
@@ -3967,9 +3954,9 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c60 := _wc(w, 60)
-	var c164 := _wc(w, 164)
-	var c165 := _wc(w, 165)
+	var c60 := WarQueries.wc(w, 60)
+	var c164 := WarQueries.wc(w, 164)
+	var c165 := WarQueries.wc(w, 165)
 	if c60 != null and c60.parts.size() > 0:
 		c60.parts[0] = false
 	if c60 != null and c60.内战中:
@@ -4011,7 +3998,7 @@ static func _apply_war79_result(war: WarData, d: Array[int]) -> void:
 			c60.chinese_name = "尼日利亚人民联邦共和国"
 		_add_d(d, W.I_INFLUENCE, 20)
 	else:
-		var c66 := _wc(w, 66)
+		var c66 := WarQueries.wc(w, 66)
 		if c60 != null:
 			if c66 != null and w.is_socialism(c66, true):
 				c60.government = GameConstants.Government.AUTHORITARIAN
@@ -4053,10 +4040,10 @@ static func _apply_war80_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c13 := _wc(w, 13)
-	var c21 := _wc(w, 21)
-	var c30 := _wc(w, 30)
-	var c57 := _wc(w, 57)
+	var c13 := WarQueries.wc(w, 13)
+	var c21 := WarQueries.wc(w, 21)
+	var c30 := WarQueries.wc(w, 30)
+	var c57 := WarQueries.wc(w, 57)
 	if c57 != null and c57.parts.size() > 0:
 		c57.parts[0] = false
 	if war.infl1 >= 1000:
@@ -4113,7 +4100,7 @@ static func _apply_war82_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c33 := _wc(w, 33)
+	var c33 := WarQueries.wc(w, 33)
 	if c33 != null and c33.parts.size() > 0:
 		c33.parts[0] = false
 	if war.infl1 >= 1000:
@@ -4159,7 +4146,7 @@ static func _apply_war83_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c33 := _wc(w, 33)
+	var c33 := WarQueries.wc(w, 33)
 	if c33 != null and c33.parts.size() > 0:
 		c33.parts[0] = false
 	if war.infl1 >= 1000:
@@ -4190,7 +4177,7 @@ static func _apply_war84_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c141 := _wc(w, 141)
+	var c141 := WarQueries.wc(w, 141)
 	if c141 != null and c141.parts.size() > 0:
 		c141.parts[0] = false
 	if war.infl2 >= 1000:
@@ -4226,11 +4213,11 @@ static func _apply_war85_result(war: WarData, _d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c1 := _wc(w, 1)
-	var c20 := _wc(w, 20)
-	var c21 := _wc(w, 21)
-	var c58 := _wc(w, 58)
-	var c61 := _wc(w, 61)
+	var c1 := WarQueries.wc(w, 1)
+	var c20 := WarQueries.wc(w, 20)
+	var c21 := WarQueries.wc(w, 21)
+	var c58 := WarQueries.wc(w, 58)
+	var c61 := WarQueries.wc(w, 61)
 	if c58 != null and c58.parts.size() > 0:
 		c58.parts[0] = false
 	if war.infl2 >= 900:
@@ -4291,9 +4278,9 @@ static func _apply_war86_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c29 := _wc(w, 29)
-	var c92 := _wc(w, 92)
-	var c166 := _wc(w, 166)
+	var c29 := WarQueries.wc(w, 29)
+	var c92 := WarQueries.wc(w, 92)
+	var c166 := WarQueries.wc(w, 166)
 	if c29 != null and c29.parts.size() > 1:
 		c29.parts[1] = false
 	if (_dval(d, 147) == 6 or _dval(d, 147) == 8) and _dval(d, 166) < 100:
@@ -4365,9 +4352,9 @@ static func _apply_war87_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c21 := _wc(w, 21)
-	var c29 := _wc(w, 29)
-	var c166 := _wc(w, 166)
+	var c21 := WarQueries.wc(w, 21)
+	var c29 := WarQueries.wc(w, 29)
+	var c166 := WarQueries.wc(w, 166)
 	if c166 != null:
 		if c166.parts.size() > 1:
 			c166.parts[1] = false
@@ -4419,9 +4406,9 @@ static func _apply_war88_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c8 := _wc(w, 8)
-	var c14 := _wc(w, 14)
-	var c36 := _wc(w, 36)
+	var c8 := WarQueries.wc(w, 8)
+	var c14 := WarQueries.wc(w, 14)
+	var c36 := WarQueries.wc(w, 36)
 	if war.infl1 >= 1000:
 		for c in w.countries:
 			if c != null and c.puppet_of == GameConstants.LegacySlot.IRAQ:
@@ -4473,10 +4460,10 @@ static func _apply_war89_result(war: WarData, d: Array[int]) -> void:
 	var w: WorldState = current_world
 	if w == null:
 		return
-	var c8 := _wc(w, 8)
-	var c14 := _wc(w, 14)
-	var c35 := _wc(w, 35)
-	var c36 := _wc(w, 36)
+	var c8 := WarQueries.wc(w, 8)
+	var c14 := WarQueries.wc(w, 14)
+	var c35 := WarQueries.wc(w, 35)
+	var c36 := WarQueries.wc(w, 36)
 	if c35 != null and c35.parts.size() > 1:
 		c35.parts[1] = false
 	if war.infl2 >= 1000:
@@ -4490,7 +4477,7 @@ static func _apply_war89_result(war: WarData, d: Array[int]) -> void:
 		_add_d(d, W.I_INFLUENCE, 50)
 		_add_d(d, 143, -2)
 		for idx in [24, 25, 103, 104, 105]:
-			var c := _wc(w, idx)
+			var c := WarQueries.wc(w, idx)
 			if c != null and w.is_authoritarian(c):
 				c.leave_alliances()
 				c.puppet_of = GameConstants.LegacySlot.IRAQ
@@ -4671,7 +4658,7 @@ static func _route_victory_effects(w: WorldState, war_id: int, d: Array[int]) ->
 static func _war70_victory(w: WorldState, d: Array[int]) -> void:
 	if not w.event_done_num(642):
 		w.set_flag("is_gkchp", true)
-		var c7 := _wc(w, 7)
+		var c7 := WarQueries.wc(w, 7)
 		if c7 != null:
 			c7.government = GameConstants.Government.AUTHORITARIAN
 			c7.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
@@ -4693,10 +4680,10 @@ static func _war70_victory(w: WorldState, d: Array[int]) -> void:
 	else:
 		w.ind_opp = true
 		w.set_flag("relres", false)
-		var c9 := _wc(w, 9)
+		var c9 := WarQueries.wc(w, 9)
 		if c9 != null:
 			c9.leave_alliances()
-		var c7 := _wc(w, 7)
+		var c7 := WarQueries.wc(w, 7)
 		if c7 != null:
 			c7.government = GameConstants.Government.REFORMIST
 			c7.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
@@ -4715,17 +4702,17 @@ static func _war70_victory(w: WorldState, d: Array[int]) -> void:
 
 
 static func _war71_victory(w: WorldState, d: Array[int]) -> void:
-	var c33 := _wc(w, 33)
+	var c33 := WarQueries.wc(w, 33)
 	if c33 != null:
 		if c33.parts.size() > 0:
 			c33.parts[0] = false
 		if c33.parts.size() > 1:
 			c33.parts[1] = false
-	var c23 := _wc(w, 23)
+	var c23 := WarQueries.wc(w, 23)
 	if c23 != null and c23.parts.size() > 0:
 		c23.parts[0] = true
 	_war_going_set(w, 82, false)
-	var c11 := _wc(w, 11)
+	var c11 := WarQueries.wc(w, 11)
 	if c11 != null and c11.parts.size() > 0:
 		c11.parts[0] = false
 	_puppet_to_china(w, 11, "交 趾", [])
@@ -4755,19 +4742,19 @@ static func _war73_victory(w: WorldState, d: Array[int]) -> void:
 
 static func _war74_victory(w: WorldState, d: Array[int]) -> void:
 	for idx in [19, 31, 32, 43, 171, 172, 173]:
-		var c := _wc(w, idx)
+		var c := WarQueries.wc(w, idx)
 		if c != null and c.parts.size() > 0:
 			c.parts[0] = true
-	var c19 := _wc(w, 19)
+	var c19 := WarQueries.wc(w, 19)
 	if c19 != null:
 		c19.name = "前 印 度 斯 坦 地 区"
-	var c43 := _wc(w, 43)
+	var c43 := WarQueries.wc(w, 43)
 	if c43 != null:
 		c43.name = "大 尼 泊 尔"
-	_wc_name(w, 97, "布 鲁 克 巴 （ 军 管 区 ）")
-	_wc_name(w, 171, "哲 孟 雄 （ 军 管 区 ）")
-	_wc_name(w, 172, "底 马 撒 （ 军 管 区 ）")
-	_wc_name(w, 173, "翠 蓝 屿 （ 军 管 区 ）")
+	WarQueries.wc_name(w, 97, "布 鲁 克 巴 （ 军 管 区 ）")
+	WarQueries.wc_name(w, 171, "哲 孟 雄 （ 军 管 区 ）")
+	WarQueries.wc_name(w, 172, "底 马 撒 （ 军 管 区 ）")
+	WarQueries.wc_name(w, 173, "翠 蓝 屿 （ 军 管 区 ）")
 	for idx in [19, 31, 32, 43, 96, 97, 171, 172, 173]:
 		_puppet_to_china(w, idx, "", [])
 	_war_victory_common(w, d)
@@ -4785,7 +4772,7 @@ static func _war75_victory(w: WorldState, d: Array[int]) -> void:
 
 
 static func _war90_victory(w: WorldState, d: Array[int]) -> void:
-	var japan := _wc(w, 44)
+	var japan := WarQueries.wc(w, 44)
 	if japan != null:
 		if japan.has_tag("亲美"):
 			add_empire_power(EmpireData.USA, -250)
@@ -4800,7 +4787,7 @@ static func _war90_victory(w: WorldState, d: Array[int]) -> void:
 			add_empire_power(EmpireData.USA, -100)
 			_add_empire_rel(w, 1, -600)
 			_add_empire_rel(w, 0, -600)
-	var c10 := _wc(w, 10)
+	var c10 := WarQueries.wc(w, 10)
 	if c10 != null and c10.parts.size() > 0 and not c10.parts[0]:
 		c10.parts[0] = true
 	_puppet_to_china(w, 44, "日 本 人 民 国", [])
@@ -4829,7 +4816,7 @@ static func _war_victory_common(w: WorldState, d: Array[int]) -> void:
 
 ## 设为中华势力圈：gov=0/sub=19、退盟、对华贸易、亲中、入我方联盟、puppetOf=1。
 static func _puppet_to_china(w: WorldState, idx: int, new_name: String, parts_set: Array) -> void:
-	var c := _wc(w, idx)
+	var c := WarQueries.wc(w, idx)
 	if c == null:
 		return
 	c.government = GameConstants.Government.AUTHORITARIAN
@@ -4847,14 +4834,9 @@ static func _puppet_to_china(w: WorldState, idx: int, new_name: String, parts_se
 			c.parts[pi] = true
 
 
-static func _wc_name(w: WorldState, idx: int, new_name: String) -> void:
-	var c := _wc(w, idx)
-	if c != null:
-		c.name = new_name
-
 
 static func _join_all_our_alliances(w: WorldState, c: CountryData) -> void:
-	var china := _wc(w, 1)
+	var china := WarQueries.wc(w, 1)
 	if china == null:
 		return
 	if china.has_tag("econ"):
@@ -5255,16 +5237,6 @@ static func _set_pro_soviet(country: CountryData) -> void:
 # ============================================================================
 # 内部辅助
 # ============================================================================
-
-static func clamp_war_infl(war: WarData) -> void:
-	if war.infl1 > 1000 or war.infl2 < 0:
-		war.infl1 = 1000
-		war.infl2 = 0
-	elif war.infl2 > 1000 or war.infl1 < 0:
-		war.infl2 = 1000
-		war.infl1 = 0
-	war.infl1 = clampi(war.infl1, 0, 1000)
-	war.infl2 = clampi(war.infl2, 0, 1000)
 
 
 static func add_empire_power(empire_index: int, delta: int) -> void:

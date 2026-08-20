@@ -21,7 +21,6 @@ buses/default_bus_layout="uid://cj7b8uqaaherh"
 
 [autoload]
 
-McpInteractionServer="*res://mcp_interaction_server.gd"
 
 
 
