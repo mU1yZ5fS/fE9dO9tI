@@ -65,7 +65,7 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R1
 		2:
 			var text := TXT_R2_A
-			if not _mod_active(6):
+			if not _mod_active(GameConstants.Modifier.MAOIST_BULWARK):
 				text += TXT_R2_B
 			text += TXT_R2_C
 			_add(W.I_AGENTS, -100)

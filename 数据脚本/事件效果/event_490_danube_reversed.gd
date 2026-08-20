@@ -64,7 +64,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -200)
 			var text := TXT_R0_OPEN
 			var china := ws.get_country_by_legacy_index(1)
-			var mod6 := _mod_active(6)
+			var mod6 := _mod_active(GameConstants.Modifier.MAOIST_BULWARK)
 			var china_sev := china != null and china.has_tag("sev")
 			if result79 == 3 and china != null and ws.is_socialism(china, true) \
 					and mod6 and not china_sev:

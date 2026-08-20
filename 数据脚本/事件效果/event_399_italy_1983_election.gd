@@ -146,11 +146,11 @@ func execute(context: Dictionary) -> void:
 		_add(176, -1)
 	if ws.empires.size() > 0 and ws.empires[0] != null and ws.empires[0].current_leader == 0:
 		_add(175, 2)
-	if _mod_active(44):
+	if _mod_active(GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS):
 		_add(176, 1)
 	else:
 		_add(175, 2)
-	if _mod_active(3):
+	if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 		_add(176, -1)
 	var wg := ws.get_country_by_legacy_index(45)
 	if wg != null and wg.has_tag("nato"):

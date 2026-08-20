@@ -46,7 +46,7 @@ func execute(context: Dictionary) -> void:
 			text += TXT_LEADERS + ussr_name + "。我国的学生代表向他们献上了鲜花和拥抱。国务院总理"
 		var premier := _premier_name()
 		text += premier + TXT_PREMIER
-		if not _mod_active(6):
+		if not _mod_active(GameConstants.Modifier.MAOIST_BULWARK):
 			text += TXT_PROTEST_MID + leader_name + TXT_PROTEST_TAIL
 		text += TXT_CLOSING
 		_add(W.I_THOUGHT_FREEDOM, 20)

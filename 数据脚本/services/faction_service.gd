@@ -67,27 +67,27 @@ const INTRO_M29 := "<color=red>“ 党 内 党 外 都 要 分 清 是 非 。 �
 
 ## 原版 Doctrine_button_script.cs:1478-1791 中文块的选择器（modifies[6] 分支 + 事件状态分支）
 static func policy_intro_raw(w: WorldState, target_val: int) -> String:
-	if mod_active(w, 6):
+	if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK):
 		match target_val:
-			10: return INTRO_10A if not mod_active(w, 11) else INTRO_10B
-			11: return INTRO_11A if not mod_active(w, 11) else INTRO_11B
+			10: return INTRO_10A if not mod_active(w, GameConstants.Modifier.AUTOMATION_AMBITION) else INTRO_10B
+			11: return INTRO_11A if not mod_active(w, GameConstants.Modifier.AUTOMATION_AMBITION) else INTRO_11B
 			12: return INTRO_12
 			13: return INTRO_M13
 			14: return INTRO_M14
 			15: return INTRO_M15
-			6: return INTRO_M6A if event_result(w, 444) == 0 else INTRO_M6B
+			6: return INTRO_M6A if event_result(w, GameConstants.EventNumber.LONG_REVOLUTION) == 0 else INTRO_M6B
 			7: return INTRO_M7
 			8: return INTRO_M8
 			9: return INTRO_M9
 			16: return INTRO_M16
 			17: return INTRO_M17
 			18: return INTRO_18
-			19: return INTRO_M19A if event_result(w, 444) == 0 else INTRO_M19B
+			19: return INTRO_M19A if event_result(w, GameConstants.EventNumber.LONG_REVOLUTION) == 0 else INTRO_M19B
 			20: return INTRO_20
 			21: return intro_21(w)
 			22: return INTRO_M22
 			23: return INTRO_M23
-			24: return INTRO_M24A if event_result(w, 444) == 0 else INTRO_M24B
+			24: return INTRO_M24A if event_result(w, GameConstants.EventNumber.LONG_REVOLUTION) == 0 else INTRO_M24B
 			25: return INTRO_M25
 			26: return INTRO_26
 			27: return INTRO_27
@@ -99,10 +99,10 @@ static func policy_intro_raw(w: WorldState, target_val: int) -> String:
 			33: return INTRO_33
 	else:
 		match target_val:
-			10: return INTRO_10A if not mod_active(w, 11) else INTRO_10B
-			11: return INTRO_11A if not mod_active(w, 11) else INTRO_11B
+			10: return INTRO_10A if not mod_active(w, GameConstants.Modifier.AUTOMATION_AMBITION) else INTRO_10B
+			11: return INTRO_11A if not mod_active(w, GameConstants.Modifier.AUTOMATION_AMBITION) else INTRO_11B
 			12: return INTRO_12
-			13: return INTRO_N13A if (event_done(w, 682) and event_result(w, 682) == 3) else INTRO_N13B
+			13: return INTRO_N13A if (event_done(w, GameConstants.EventNumber.COUNTRYMAN) and event_result(w, GameConstants.EventNumber.COUNTRYMAN) == 3) else INTRO_N13B
 			14: return INTRO_N14
 			15: return INTRO_N15
 			6: return INTRO_N6
@@ -140,8 +140,8 @@ static func policy_intro(w: WorldState, target_val: int) -> String:
 
 ## id21 联邦制介绍：按 event_done[550] + resultOfEvents[550] 分支（原版 :1570-1585/:1726-1741）
 static func intro_21(w: WorldState) -> String:
-	if event_done(w, 550):
-		var r := event_result(w, 550)
+	if event_done(w, GameConstants.EventNumber.ETHNIC_FEDERALISM):
+		var r := event_result(w, GameConstants.EventNumber.ETHNIC_FEDERALISM)
 		if r == 2:
 			return INTRO_21_R2
 		if r == 0:
@@ -189,7 +189,7 @@ static func event_done(w: WorldState, n: int) -> bool:
 
 ## 当前政策值 id → 显示名（doctr[id]，modifies[6] 覆盖）。原版 doctr[data.get_data_by_index(idx)]。
 static func doctr_name(w: WorldState, id: int) -> String:
-	if mod_active(w, 6) and DOCTR_MOD6.has(id):
+	if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) and DOCTR_MOD6.has(id):
 		return DOCTR_MOD6[id]
 	return DOCTR_BASE.get(id, "未知")
 
@@ -201,16 +201,16 @@ static func build_options(w: WorldState, num: int) -> Array[Dictionary]:
 	var o: Array[Dictionary] = []
 	match num:
 		16:  # 经济
-			if mod_active(w, 11):
+			if mod_active(w, GameConstants.Modifier.AUTOMATION_AMBITION):
 				o.append({"id": 10, "text": "国家信息自动化系统"})
 				o.append({"id": 11, "text": "赛博协同控制工程"})
 			elif dec_done(w, 18):
 				o.append({"id": 12, "text": "国家垄断资本主义"})
-			elif event_result(w, 503) == 0:
+			elif event_result(w, GameConstants.EventNumber.JIAOCHENG_MOUNTAINS) == 0:
 				o.append({"id": 10, "text": "中央计划经济"})
-			elif event_result(w, 682) == 3:
+			elif event_result(w, GameConstants.EventNumber.COUNTRYMAN) == 3:
 				o.append({"id": 13, "text": "新乔治主义社会"})
-			elif mod_active(w, 6):
+			elif mod_active(w, GameConstants.Modifier.MAOIST_BULWARK):
 				o.append({"id": 10, "text": "经典计划经济"})
 				o.append({"id": 11, "text": "中式计划经济"})
 				o.append({"id": 12, "text": "国家资本主义"})
@@ -227,54 +227,54 @@ static func build_options(w: WorldState, num: int) -> Array[Dictionary]:
 					o.append({"id": 14, "text": "混合经济"})
 					o.append({"id": 15, "text": "最小干预"})
 		15:  # 党政
-			if event_done(w, 444) and event_result(w, 444) == 0:
+			if event_done(w, GameConstants.EventNumber.LONG_REVOLUTION) and event_result(w, GameConstants.EventNumber.LONG_REVOLUTION) == 0:
 				o.append({"id": 6, "text": "无产阶级专政"})
-			elif event_result(w, 503) == 0:
+			elif event_result(w, GameConstants.EventNumber.JIAOCHENG_MOUNTAINS) == 0:
 				o.append({"id": 6, "text": "一党专政"})
 			elif dec_done(w, 18):
-				o.append({"id": 7, "text": "新民主主义制度" if mod_active(w, 6) else "一党独大式民主"})
-			elif mod_active(w, 6):
+				o.append({"id": 7, "text": "新民主主义制度" if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) else "一党独大式民主"})
+			elif mod_active(w, GameConstants.Modifier.MAOIST_BULWARK):
 				o.append({"id": 6, "text": "无产阶级专政"})
 				o.append({"id": 7, "text": "新民主主义制度"})
-				if not dec_done(w, 13) and not mod_active(w, 24) and not dec_done(w, 16):
+				if not dec_done(w, 13) and not mod_active(w, GameConstants.Modifier.FACTIONAL_ONE_PARTY_DEMOCRACY) and not dec_done(w, 16):
 					o.append({"id": 8, "text": "人民民主制度"})
 					o.append({"id": 9, "text": "协和民主体制"})
 			else:
 				o.append({"id": 6, "text": "一党专政党内民主"})
 				o.append({"id": 7, "text": "一党独大式民主"})
-				if not dec_done(w, 13) and not mod_active(w, 24) and not dec_done(w, 16):
+				if not dec_done(w, 13) and not mod_active(w, GameConstants.Modifier.FACTIONAL_ONE_PARTY_DEMOCRACY) and not dec_done(w, 16):
 					o.append({"id": 8, "text": "宪政民主制度"})
 					o.append({"id": 9, "text": "协和民主体制"})
 		17:  # 人权
-			if event_done(w, 444) and event_result(w, 444) == 0:
+			if event_done(w, GameConstants.EventNumber.LONG_REVOLUTION) and event_result(w, GameConstants.EventNumber.LONG_REVOLUTION) == 0:
 				o.append({"id": 19, "text": "自由境界"})
 			else:
 				o.append({"id": 16, "text": "舆论一律"})
-				if not mod_active(w, 26) and event_result(w, 503) != 0:
+				if not mod_active(w, GameConstants.Modifier.LEGALIST_VICTORY) and event_result(w, GameConstants.EventNumber.JIAOCHENG_MOUNTAINS) != 0:
 					o.append({"id": 17, "text": "纪律约束"})
 					o.append({"id": 18, "text": "自然限制"})
 					o.append({"id": 19, "text": "多元自由"})
 		18:  # 国家体制
-			if event_done(w, 551) and event_result(w, 551) == 3:
+			if event_done(w, GameConstants.EventNumber.MONGOLIA_BREAK) and event_result(w, GameConstants.EventNumber.MONGOLIA_BREAK) == 3:
 				o.append({"id": 21, "text": territory21_text(w)})
-				o.append({"id": 22, "text": "联邦制" if mod_active(w, 6) else "联省自治"})
+				o.append({"id": 22, "text": "联邦制" if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) else "联省自治"})
 				o.append({"id": 23, "text": "自治联盟"})
-			elif event_done(w, 550) and event_result(w, 550) == 2:
+			elif event_done(w, GameConstants.EventNumber.ETHNIC_FEDERALISM) and event_result(w, GameConstants.EventNumber.ETHNIC_FEDERALISM) == 2:
 				o.append({"id": 21, "text": "中国特色联邦制"})
-			elif event_done(w, 550) and event_result(w, 550) == 3:
+			elif event_done(w, GameConstants.EventNumber.ETHNIC_FEDERALISM) and event_result(w, GameConstants.EventNumber.ETHNIC_FEDERALISM) == 3:
 				o.append({"id": 20, "text": "单一制"})
 			else:
 				o.append({"id": 20, "text": "单一制"})
 				o.append({"id": 21, "text": territory21_text(w)})
-				o.append({"id": 22, "text": "联邦制" if mod_active(w, 6) else "联省自治"})
+				o.append({"id": 22, "text": "联邦制" if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) else "联省自治"})
 				o.append({"id": 23, "text": "自治联盟"})
 		50:  # 传统与宗教
-			if event_done(w, 444) and event_result(w, 444) == 0:
+			if event_done(w, GameConstants.EventNumber.LONG_REVOLUTION) and event_result(w, GameConstants.EventNumber.LONG_REVOLUTION) == 0:
 				o.append({"id": 24, "text": "文化革命"})
-			elif event_result(w, 503) == 0 or event_result(w, 682) == 1:
+			elif event_result(w, GameConstants.EventNumber.JIAOCHENG_MOUNTAINS) == 0 or event_result(w, GameConstants.EventNumber.COUNTRYMAN) == 1:
 				o.append({"id": 29, "text": "政教协定"})
-			elif not mod_active(w, 25) and not dec_done(w, 16):
-				o.append({"id": 24, "text": "文化革命" if mod_active(w, 6) else "破除传统"})
+			elif not mod_active(w, GameConstants.Modifier.CONFUCIAN_VICTORY) and not dec_done(w, 16):
+				o.append({"id": 24, "text": "文化革命" if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) else "破除传统"})
 				o.append({"id": 25, "text": "无神国家"})
 				o.append({"id": 26, "text": "民宗管制"})
 				o.append({"id": 27, "text": "世俗主义"})
@@ -293,12 +293,12 @@ static func build_options(w: WorldState, num: int) -> Array[Dictionary]:
 
 ## 国家体制 id21 文案：随 resultOfEvents[550]（原版 :233-244/198-208，均以 modifies[6] 分改良/联邦）。
 static func territory21_text(w: WorldState) -> String:
-	var r := event_result(w, 550)
+	var r := event_result(w, GameConstants.EventNumber.ETHNIC_FEDERALISM)
 	if r == 0:
 		return "美国模式联邦制"
 	elif r == 1:
 		return "苏联模式联邦制"
-	return "改良区域自治制度" if mod_active(w, 6) else "联邦制"
+	return "改良区域自治制度" if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) else "联邦制"
 
 
 

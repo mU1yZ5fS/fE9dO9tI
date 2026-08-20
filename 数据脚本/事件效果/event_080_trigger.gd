@@ -31,7 +31,7 @@ func evaluate(world: WorldState) -> bool:
 	if a_ok:
 		return true
 	# 分支 B
-	if not _mod_active(world, 3) or not _mod_active(world, 6):
+	if not _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION) or not _mod_active(world, GameConstants.Modifier.MAOIST_BULWARK):
 		return false
 	if world.leader == null or world.leader.name_first != 2 or world.leader.name_last != 2:
 		return false

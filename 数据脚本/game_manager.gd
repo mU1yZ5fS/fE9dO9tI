@@ -1111,8 +1111,8 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 	# 957-983：RIM（革命国际）条件退出。
 	var rim_exit := china != null and china.has_tag("rim") and (
 		w.is_socialism(china, false)
-		or not _mod_active(w, 3)
-		or not _mod_active(w, 6)
+		or not _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION)
+		or not _mod_active(w, GameConstants.Modifier.MAOIST_BULWARK)
 		or d.party_system > 7
 		or d.econ_system > 12
 		or d.religion_policy > 25
@@ -1169,7 +1169,7 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 	# 注：原版 TimeScript.cs:1014 循环体内还有一句 num10++（与 for 头叠加，实际只处理偶数序号），
 	# 判定为反编译噪音/原版笔误，本项目按“遍历全部国家”执行。
 	var cond_au := cond_soft or _country_tag(w, 51, "对华贸易") \
-		or _country_dev_is(w, 51, 1) or not _mod_active(w, 6)
+		or _country_dev_is(w, 51, 1) or not _mod_active(w, GameConstants.Modifier.MAOIST_BULWARK)
 	for c in w.countries:
 		if c == null:
 			continue
@@ -1709,7 +1709,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 	var is_sev := china != null and china.has_tag("sev")
 	var is_asean := china != null and china.has_tag("asean")
 	var evict_pre := (d.size() > 140 and d.alliance_kickout_type <= 0) \
-		and ((not _mod_active(w, 16) and is_sev) or (not _mod_active(w, 17) and is_asean))
+		and ((not _mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO) and is_sev) or (not _mod_active(w, GameConstants.Modifier.USA_EMBARGO) and is_asean))
 	var evict_bad := (d.size() > 140 and d.alliance_kickout_timer > 0) and (
 		(d.alliance_kickout_type == 1 and is_sev and china.government != GameConstants.Government.LIBERAL and d.econ_display != 37)
 		or (d.alliance_kickout_type == 2 and is_asean and china.government != GameConstants.Government.SOCIALIST and d.econ_display != 34)
@@ -1717,8 +1717,8 @@ func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 	if (evict_pre or evict_bad) and d.size() > 139 and d.alliance_kickout_timer > 0:
 		d.alliance_kickout_timer = 0
 	var do_evict := d.size() > 139 and d.alliance_kickout_timer <= 0 and (
-		(is_sev and _mod_active(w, 16) and (d.size() <= 140 or d.alliance_kickout_type <= 0))
-		or (is_asean and _mod_active(w, 17) and (d.size() <= 140 or d.alliance_kickout_type <= 0))
+		(is_sev and _mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO) and (d.size() <= 140 or d.alliance_kickout_type <= 0))
+		or (is_asean and _mod_active(w, GameConstants.Modifier.USA_EMBARGO) and (d.size() <= 140 or d.alliance_kickout_type <= 0))
 		or (d.size() > 140 and d.alliance_kickout_type > 0)
 	)
 	if do_evict:
@@ -2207,9 +2207,9 @@ func _monthly_population(d: WorldState, w: WorldState) -> void:
 	# 经济体制基于人口规模的影响
 	if d.econ_system == 11 or d.econ_system == 10:
 		d.industry += d.population / 5000
-	elif d.econ_system == 14 and not _mod_active(w, 13):
+	elif d.econ_system == 14 and not _mod_active(w, GameConstants.Modifier.BOOMING_SMALL_BUSINESS):
 		d.people_support -= d.population / 4000
-	elif d.econ_system == 15 and not _mod_active(w, 13):
+	elif d.econ_system == 15 and not _mod_active(w, GameConstants.Modifier.BOOMING_SMALL_BUSINESS):
 		d.people_support -= d.population / 4000
 	# 生活水平 → 人口增长
 	d.population += d.living_standard / 60 * pop_base
@@ -2272,11 +2272,11 @@ func _monthly_oligarch(d: WorldState, w: WorldState) -> void:
 			d.oligarch += 2
 		elif d.military_doctrine == 31:
 			d.oligarch += 1
-		if _mod_active(w, 7):
+		if _mod_active(w, GameConstants.Modifier.BLACK_CAT_WHITE_CAT):
 			d.oligarch -= 1
-		if _mod_active(w, 13):
+		if _mod_active(w, GameConstants.Modifier.BOOMING_SMALL_BUSINESS):
 			d.oligarch -= 2
-		if _mod_active(w, 5):
+		if _mod_active(w, GameConstants.Modifier.COMPROMISE_WITH_UNDERWORLD):
 			d.oligarch += 3
 	elif econ == 13:
 		if year < 1980:
@@ -2299,11 +2299,11 @@ func _monthly_oligarch(d: WorldState, w: WorldState) -> void:
 			d.oligarch += 1
 		elif d.religion_policy == 29:
 			d.oligarch += 3
-		if _mod_active(w, 7):
+		if _mod_active(w, GameConstants.Modifier.BLACK_CAT_WHITE_CAT):
 			d.oligarch -= 1
-		if _mod_active(w, 13):
+		if _mod_active(w, GameConstants.Modifier.BOOMING_SMALL_BUSINESS):
 			d.oligarch -= 2
-		if _mod_active(w, 5):
+		if _mod_active(w, GameConstants.Modifier.COMPROMISE_WITH_UNDERWORLD):
 			d.oligarch += 3
 	elif econ == 12:
 		if d.oligarch > 50:
@@ -2327,7 +2327,7 @@ func _monthly_oligarch(d: WorldState, w: WorldState) -> void:
 		elif d.religion_policy == 29:
 			d.oligarch += 3
 		d.oligarch -= 3
-		if _mod_active(w, 5):
+		if _mod_active(w, GameConstants.Modifier.COMPROMISE_WITH_UNDERWORLD):
 			d.oligarch += 3
 	elif d.oligarch > 0:
 		# econ <= 11：寡头归零

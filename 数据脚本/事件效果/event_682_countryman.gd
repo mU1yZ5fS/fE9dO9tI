@@ -36,7 +36,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	var usa_rel := ws.empires[EmpireData.USA].relations if ws.empires.size() > EmpireData.USA \
 		and ws.empires[EmpireData.USA] != null else 0
 	var opt := event_def.options
-	if _mod_active(25) and line > 2:
+	if _mod_active(GameConstants.Modifier.CONFUCIAN_VICTORY) and line > 2:
 		_enable(opt[0], event_def.options[0].text)
 	elif line <= 2:
 		_disable(opt[0], TXT_OPT0_DIS_A)

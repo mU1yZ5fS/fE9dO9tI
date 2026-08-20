@@ -39,7 +39,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[1], TXT_OPT1_DIS_A)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS_B)
-	if line <= 2 and relres and res65 != 2 and res65 != 3 and (_mod_active(53) or tech19):
+	if line <= 2 and relres and res65 != 2 and res65 != 3 and (_mod_active(GameConstants.Modifier.COOPERATE_WITH_STASI) or tech19):
 		_enable(opt[2], event_def.options[2].text)
 	elif line > 2:
 		_disable(opt[2], TXT_OPT2_DIS_A)

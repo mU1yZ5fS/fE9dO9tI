@@ -105,6 +105,16 @@ const I_AFGHAN_WAR_PATH := 107  ## 阿富汗战争路线（原 data.afghan_war_p
 const I_OLIGARCH := 108         ## 寡头影响力
 const I_SOVIET_INTERVENTIONS := 112 ## 苏联武装干涉计数（原 data.soviet_interventions）
 const I_PROTEST_REPRESSION := 113 ## 抗议镇压状态（原 data.protest_repression）
+const I_KILLED_PREMIER_FLAG := 114 ## 总理被刺/倒台标记（原 data.killed_premier_flag）
+const I_KILLED_MILITARY_FLAG := 115 ## 军方要员被刺/倒台标记（原 data.killed_military_flag）
+const I_KILLED_FOREIGN_FLAG := 116 ## 外事要员被刺/倒台标记（原 data.killed_foreign_flag）
+const I_WORLD_POLITICAL_BALANCE := 131 ## 世界政治平衡（原 data.world_political_balance）
+const I_OIL_PRICE := 143        ## 石油价格（原 data.oil_price）
+const I_MODIFIER_58_TIMER := 153 ## 58 号修正计时（原 data.modifier_58_timer）
+const I_SOMALIA_WAR_STATE := 157 ## 索马里战争状态（原 data.somalia_war_state）
+const I_SOVIET_MONEY := 160     ## 苏联资金（原 data.soviet_money）
+const I_USA_MONEY := 161        ## 美国资金（原 data.usa_money）
+const I_ANTHEM_CHOICE := 185    ## 国歌选择（原 data.anthem_choice）
 const I_FOREIGN_AID := 146     ## 外援强度（原版 data.foreign_aid，dota 消耗）
 const I_INDUSTRY_BASE := 152    ## 工业基数
 

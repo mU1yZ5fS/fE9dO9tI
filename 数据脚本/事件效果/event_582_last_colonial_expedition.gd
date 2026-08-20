@@ -42,7 +42,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if line != 0 and line != 4 and (not _mod_active(3) or not _mod_active(6)) \
+	if line != 0 and line != 4 and (not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) or not _mod_active(GameConstants.Modifier.MAOIST_BULWARK)) \
 			and c21 != null and c21.has_tag("对华贸易") and _tech(23):
 		_enable(opt[2], event_def.options[2].text)
 	else:

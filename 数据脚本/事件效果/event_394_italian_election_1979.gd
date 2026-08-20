@@ -58,7 +58,7 @@ func execute(context: Dictionary) -> void:
 	var italy := ws.get_country_by_legacy_index(85)
 	var portugal := ws.get_country_by_legacy_index(87)
 	var opt := int(context.get("option_index", -1))
-	if _mod_active(3):
+	if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 		_add(176, -1)  # 原版 data.italy_power_176
 	if italy != null and italy.has_tag("nato"):
 		_add(175, 1)  # 原版 data.italy_power_175

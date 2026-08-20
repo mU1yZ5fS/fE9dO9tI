@@ -206,11 +206,11 @@ func execute(context: Dictionary) -> void:
 			_add(180, 1)
 		if _raw(147) == 6 or _raw(147) == 8:
 			_add(179, 1)
-		if ws.get_flag("YugAgree") and _mod_active(44):
+		if ws.get_flag("YugAgree") and _mod_active(GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS):
 			_add(178, 1)
-		elif _mod_active(44):
+		elif _mod_active(GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS):
 			_add(180, 1)
-		if _mod_active(43):
+		if _mod_active(GameConstants.Modifier.FRENCH_PRESIDENT_MITTERRAND):
 			_add(181, 1)
 		if ws.empires.size() > 1 and ws.empires[1] != null and (ws.empires[1].current_leader == 2 or ws.empires[1].current_leader == 3):
 			_add(178, 1)

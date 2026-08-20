@@ -298,7 +298,7 @@ static func _build_v1() -> void:
 	d5.effects = [func(): A.start_event(123)]
 	d5.req = DecisionCatalog._build_req([
 		["派 系 存 续 ： 极 左 派 - 否", func() -> bool: return A.is_party_enabled(false, 0)],
-		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
 		["华 国 锋 ， 邓 小 平 ， “ 四 人 帮 ” 不 在 政 治 局 任 职", func() -> bool: return A.all_leaders_are_dead()],
 	])
 	d5.result = DecisionCatalog._build_result([
@@ -347,7 +347,7 @@ static func _build_v1() -> void:
 	var d7 := _new(7, _s("解 放 台 湾"), _s("我 们 比 以 往 任 何 时 候 都 更 加 强 大 ， 而 美 国 也 怯 懦 到 了 极 点 。 是 时 候 收 复 台 湾 了 ， 美 国 人 畏 惧 全 面 战 争 的 爆 发 ， 只 会 对 着 他 们 的 “ 盟 友 ” 望 洋 兴 叹 。"), 1)
 	# 原版三元在 CreateDecisions 时定型分支（modifies[6].active 决定用
 	# IsChiSovInfluenceLessThan 还是 IsUnityLessThan），build 时固化。
-	if A._mod_active(6):
+	if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK):
 		d7.condition = func() -> bool:
 			return A.tibet_is_ours(true) and A.uyghur_is_ours(true) \
 				and A.has_agents(1500) and A.has_army(1500) and A.has_money(1500) \
@@ -394,7 +394,7 @@ static func _build_v1() -> void:
 		["港 澳 已 回 归 - 是", func() -> bool: return A.has_annexed_macao(true)],
 		["全民皆兵/积极建军 - 是", func() -> bool: return A.has_agressive_military_doctrine(true)],
 		["科 技 «发 展 海 军 与 空 军» 研 发 完 毕", func() -> bool: return A.is_science_done(24, true)],
-	]) if A._mod_active(6) else DecisionCatalog._build_req([
+	]) if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else DecisionCatalog._build_req([
 		["西 藏 是 我 国 的 一 部 分 - 是", func() -> bool: return A.tibet_is_ours(true)],
 		["新 疆 是 我 国 的 一 部 分 - 是", func() -> bool: return A.uyghur_is_ours(true)],
 		["特 工 网 络 - 150.0", func() -> bool: return A.has_agents(1500)],
@@ -422,7 +422,7 @@ static func _build_v1() -> void:
 		"预 算 将 变 更: <color=red>-150.0</color>",
 		"军 队 力 量: <color=red>-150.0</color>",
 		"<color=lime>触 发 事 件</color>",
-	]) if A._mod_active(6) else DecisionCatalog._build_result([
+	]) if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else DecisionCatalog._build_result([
 		"<color=lime>台 湾 - 被 吞 并 于 红 色 中 国</color>",
 		"台 湾 - 处 于 美 国 影 响 下: <color=red>×</color>",
 		"将 会 改 变 关 系 和 美 国: <color=red>-100.0</color>",
@@ -439,7 +439,7 @@ static func _build_v1() -> void:
 	# ── idx 8 平反林彪集团（三元，new_texts[121]，desc 内嵌）───────────
 	var d8 := _new(8, _s("平 反 林 彪 集 团"),
 		_s("林 副 主 席 作 为 毛 主 席 的 亲 密 战 友 和 接 班 人 ， 怎 么 可 能 是 修 正 主 义 者 ？ 让 我 们 揭 穿 邓 小 平 修 正 主 义 集 团 与 四 人 帮 笔 杆 子 集 团 的 阴 谋 ， 为 林 副 主 席 和 他 的 战 友 们 平 反 昭 雪 。")
-		if A._mod_active(6)
+		if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK)
 		else _s("林 彪 作 为 一 个 对 毛 泽 东 的 社 会 封 建 主 义 幡 然 醒 悟 的 革 命 者 ， 怎 么 可 能 是 修 正 主 义 者 ？ 让 我 们 揭 穿 毛 泽 东 集 团 对 他 们 的 迫 害 ， 为 林 彪 和 他 的 战 友 们 平 反 昭 雪 。"), 1)
 	d8.condition = func() -> bool:
 		return A.has_arrest_gof(true) and A.has_conservative_moderate_leading(true) and A.has_lin_biao(true)
@@ -453,7 +453,7 @@ static func _build_v1() -> void:
 		["已完全粉碎四人帮 - 是", func() -> bool: return A.has_arrest_gof(true)],
 		["保守派 / 温和派掌舵 - 是", func() -> bool: return A.has_conservative_moderate_leading(true)],
 		["撰写保守派决议，或加入华约，或迎回王明家人 - 是", func() -> bool: return A.has_lin_biao(true)],
-	]) if A._mod_active(6) else DecisionCatalog._build_req([
+	]) if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else DecisionCatalog._build_req([
 		["已完全粉碎四人帮 - 是", func() -> bool: return A.has_arrest_gof(true)],
 		["保守派 / 温和派掌舵 - 是", func() -> bool: return A.has_conservative_moderate_leading(true)],
 		["撰写保守派决议，或加入华约，或迎回王明家人 - 是", func() -> bool: return A.has_lin_biao(true)],
@@ -463,7 +463,7 @@ static func _build_v1() -> void:
 		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
 		"增加与领导人同一派系政治家的影响力: <color=lime>+20.0</color>",
 		"<color=lime>林彪集团的成员将陆续加入政治局</color>",
-	]) if A._mod_active(6) else DecisionCatalog._build_result([
+	]) if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else DecisionCatalog._build_result([
 		"思 想 自 由 化 将 变 更: <color=red>+25.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
 		"增加与领导人同一派系政治家的影响力: <color=lime>+20.0</color>",
@@ -617,7 +617,7 @@ static func _build_v1() -> void:
 			and A.has_capitalist_economy(true) and A.has_oligarchy_power_less(false, 60)
 	d12.effects = [func(): A.agree_to_oligarchy(12)]
 	d12.req = DecisionCatalog._build_req([
-		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
 		["特 工 网 络 - 25.0", func() -> bool: return A.has_agents(250)],
 		["党 内 是 自 由 派 领 导/ 党 内 路 线 是 自 由 主 义 - 是", func() -> bool: return A.is_liberal(true)],
 		["极 左 派 被 禁 止", func() -> bool: return A.is_left_rad_banned()],
@@ -641,7 +641,7 @@ static func _build_v1() -> void:
 		func(): A.start_event(124),
 	]
 	d13.req = DecisionCatalog._build_req([
-		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
 		["经济类型为市场经济 - 否", func() -> bool: return A.has_capitalist_economy(false)],
 		["深 化 与 苏 联 的 友 好 条 约 - 是", func() -> bool: return A.has_soviet_friendship(true)],
 		["所 需 年 限 ≺  1984", func() -> bool: return A.is_year_less(true, 1984)],
@@ -792,7 +792,7 @@ static func _build_v2() -> void:
 		["国 际 声 誉 ≻ 70.0", func() -> bool: return A.is_dip_rep_less_than(false, 700)],
 		["毛 主 义 壁 垒 修 正 - 否", func() -> bool: return A.has_maoismus(false)],
 		["尊 崇 传 统/ 政 教 协 定 - 是", func() -> bool: return A.is_traditional(true)],
-		[("新民主主义制度" if A._mod_active(6) else "一党独大式民主") + " - " + "是", func() -> bool: return A.is_new_democracy(true)],
+		[("新民主主义制度" if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else "一党独大式民主") + " - " + "是", func() -> bool: return A.is_new_democracy(true)],
 		["\"我实在是个乡下人……\" - 事 件 中 选 择 给 予 回 应 1", func() -> bool: return A.has_chosen_in_the_event(682, 0)],
 		["特 工 网 络 - 50.0", func() -> bool: return A.has_agents(500)],
 		["预 算 - 50.0", func() -> bool: return A.has_money(500)],
@@ -1418,7 +1418,7 @@ static func _build_v3() -> void:
 		[" 1978 年  3 月  5 日 之 后 - 是", func() -> bool: return A.is_after_the_day(true, 1978, 3, 5)],
 		["预 算 - 3.0", func() -> bool: return A.has_money(30)],
 		["党内支持度 ≻ 50.0", func() -> bool: return A.is_party_support_less_than(false, 500)],
-		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else "一党制共和国 / 一党独大式民主") + " - " + "是", func() -> bool: return A.has_one_party_mechanic(true)],
 		["4年一次", func() -> bool: return A.has_anthem_confirmed(true)],
 	])
 	d39.result = DecisionCatalog._build_result([
@@ -1611,7 +1611,7 @@ static func _build_v3() -> void:
 	]
 	d46.req = DecisionCatalog._build_req([
 		["预 算 - 15.0", func() -> bool: return A.has_money(150)],
-		[("无产阶级专政 / 新民主主义制度" if A._mod_active(6) else "一党制共和国 / 一党独大式民主") + " - " + "否", func() -> bool: return A.has_one_party_mechanic(false)],
+		[("无产阶级专政 / 新民主主义制度" if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else "一党制共和国 / 一党独大式民主") + " - " + "否", func() -> bool: return A.has_one_party_mechanic(false)],
 		["我党在人大选举中席位大于1500 - 是", func() -> bool: return A.is_major_in_election(true)],
 		["拥有“我们是新时代的公社社员！”修正 - 否", func() -> bool: return A.has_new_era_commune_member(false)],
 		["拥有“政党补助金”修正 - 否", func() -> bool: return A.has_party_subsidy(false)],

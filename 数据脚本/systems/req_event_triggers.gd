@@ -37,7 +37,7 @@ static func _req_dlc02(w: WorldState) -> bool:
 		return _start(303)
 	# CS L469-472
 	if w.leader != null and w.leader.name_first == 2 and w.leader.name_last == 2 \
-			and not _mod_active(w, 3) and not _done(503) \
+			and not _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION) and not _done(503) \
 			and (_dv(w, 1) < 500 or _dv(w, 4) > 500 or _dv(w, 3) < 500 or _dv(w, 5) < 250) \
 			and not _done(304) and w.date.year >= 1979:
 		return _start(304)

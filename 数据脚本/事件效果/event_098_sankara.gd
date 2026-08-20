@@ -38,7 +38,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[2], "支持布基纳法索的革新，并推动人民解放委员会选择更坚决的革命立场")
 	else:
 		_disable(opt[2], "更强硬的社会主义军政府？难道你打算在西非制造个黑人版奈温？")
-	if _mod_active(world, 41):
+	if _mod_active(world, GameConstants.Modifier.HUNTING_CLUB_MEMBER):
 		_enable(opt[3], "联系法国人，我们应当给当地畸形的“不断政变”生态画上休止符")
 	else:
 		_disable(opt[3], "我们鞭长莫及")
@@ -77,7 +77,7 @@ func execute(context: Dictionary) -> void:
 				if bf != null:
 					bf.set_tag("亲苏", true)
 				_add_power(EmpireData.USSR, 5)
-			elif not _mod_active(ws, 44):
+			elif not _mod_active(ws, GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS):
 				text += TXT_R0_EXTRA2
 			context["result_text"] = text
 		1:

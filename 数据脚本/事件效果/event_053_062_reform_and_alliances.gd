@@ -426,9 +426,9 @@ func _event_61(option_index: int, context: Dictionary) -> void:
 				r3 = r3.replace("2", "")
 			context["result_text"] = TXT_61_R_INTRO + r3
 		4:
-			if _mod_active(3) and _mod_active(6):
+			if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(GameConstants.Modifier.MAOIST_BULWARK):
 				context["result_text"] = TXT_61_R_INTRO + TXT_61_R4_A
-			elif not _mod_active(3) and _mod_active(6):
+			elif not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(GameConstants.Modifier.MAOIST_BULWARK):
 				context["result_text"] = TXT_61_R_INTRO + TXT_61_R4_B
 			else:
 				context["result_text"] = TXT_61_R_INTRO + TXT_61_R4_C
@@ -627,8 +627,8 @@ func _prepare_61(event_def: EventDef) -> void:
 	else:
 		event_def.description = _fmt_leader(TXT_61_DESC)
 	var anthem := int(ws.anthem_choice)
-	var m3 := _mod_active(3)
-	var m6 := _mod_active(6)
+	var m3 := _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION)
+	var m6 := _mod_active(GameConstants.Modifier.MAOIST_BULWARK)
 	var china := ws.get_country_by_legacy_index(1)
 	var rim := china != null and china.has_tag("rim")
 	var socialism := china != null and china.government == GameConstants.Government.SOCIALIST
@@ -675,11 +675,11 @@ func _prepare_62(event_def: EventDef) -> void:
 	var line := int(ws.political_line)
 	var ps := int(ws.party_system)
 	var summa := _summa_3_2()
-	if _mod_active(3) or (line < 3 and ps < 8) or (summa > 66 and ps > 7):
+	if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) or (line < 3 and ps < 8) or (summa > 66 and ps > 7):
 		_enable(opts[0], TXT_62_OPT0)
 	else:
 		_disable(opts[0], TXT_62_OPT0_DIS)
-	if not _mod_active(3) and (line == 4 or ws.global_flags.get("relres", false) or _empire_relation(EmpireData.USSR) >= 500) and ((line > 0 and ps < 8) or (summa > 66 and ps > 7)):
+	if not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and (line == 4 or ws.global_flags.get("relres", false) or _empire_relation(EmpireData.USSR) >= 500) and ((line > 0 and ps < 8) or (summa > 66 and ps > 7)):
 		_enable(opts[1], TXT_62_OPT1)
 	elif not ws.global_flags.get("relres", false) and _empire_relation(EmpireData.USSR) < 500:
 		_disable(opts[1], TXT_62_OPT1_DIS1)
@@ -695,7 +695,7 @@ func _prepare_62(event_def: EventDef) -> void:
 		_disable(opts[3], TXT_62_OPT3_DIS1)
 	else:
 		_disable(opts[3], TXT_62_OPT3_DIS2)
-	if not _mod_active(3) and (line == 4 or ws.global_flags.get("relres", false) or _empire_relation(EmpireData.USSR) >= 500) and ((line > 0 and ps < 8) or (summa > 66 and ps > 7)):
+	if not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and (line == 4 or ws.global_flags.get("relres", false) or _empire_relation(EmpireData.USSR) >= 500) and ((line > 0 and ps < 8) or (summa > 66 and ps > 7)):
 		_enable(opts[4], TXT_62_OPT4)
 	else:
 		_disable(opts[4], TXT_62_OPT4_DIS)

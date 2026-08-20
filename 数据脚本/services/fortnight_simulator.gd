@@ -46,7 +46,7 @@ func _fortnight_trait_influence(d: WorldState, w: WorldState) -> void:
 		var p: PoliticianData = w.politicians[i]
 		if p == null or PoliticianSystem.is_vacant_politician(p):
 			continue
-		if gm._mod_active(w, 14):
+		if gm._mod_active(w, GameConstants.Modifier.LEGACY_OF_1975_RECTIFICATION):
 			if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 				p.power += 10
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL and _faction_leader_slot(w, i) != 4:
@@ -67,43 +67,43 @@ func _fortnight_trait_influence(d: WorldState, w: WorldState) -> void:
 ## TraitInfluence 的 traits[3]/traits[1]/traits[2] 中央职务块（TimeScript.cs:11233-11695）。
 func _trait_influence_central(w: WorldState, d: WorldState, p: PoliticianData) -> void:
 	if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-		if _dv(d, 56) != 0:
-			_addi(d, 1, -2)
-		_addi(d, 5, 2)
-		_add_empire_relation(w, 1, 2)
-		_addi(d, 68, -1)
-		_addi(d, 26, -2)
+		if _dv(d, W.I_POLITICAL_LINE) != 0:
+			_addi(d, W.I_PARTY_SUPPORT, -2)
+		_addi(d, W.I_LIVING, 2)
+		_add_empire_relation(w, EmpireData.USSR, 2)
+		_addi(d, W.I_SERVICES, -1)
+		_addi(d, W.I_CORRUPTION, -2)
 	elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-		if _dv(d, 56) == 1:
-			_addi(d, 1, 1)
-		_addi(d, 4, 1)
-		_addi(d, 5, 1)
-		_add_empire_relation(w, 1, 3)
-		_addi(d, 68, -1)
-		_addi(d, 26, -1)
+		if _dv(d, W.I_POLITICAL_LINE) == 1:
+			_addi(d, W.I_PARTY_SUPPORT, 1)
+		_addi(d, W.I_THOUGHT_FREEDOM, 1)
+		_addi(d, W.I_LIVING, 1)
+		_add_empire_relation(w, EmpireData.USSR, 3)
+		_addi(d, W.I_SERVICES, -1)
+		_addi(d, W.I_CORRUPTION, -1)
 	elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-		if _dv(d, 56) != 2:
-			_addi(d, 1, 1)
+		if _dv(d, W.I_POLITICAL_LINE) != 2:
+			_addi(d, W.I_PARTY_SUPPORT, 1)
 		else:
-			_addi(d, 1, 2)
-		_addi(d, 4, 1)
-		_addi(d, 5, 1)
+			_addi(d, W.I_PARTY_SUPPORT, 2)
+		_addi(d, W.I_THOUGHT_FREEDOM, 1)
+		_addi(d, W.I_LIVING, 1)
 	elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-		if _dv(d, 56) != 3:
-			_addi(d, 1, 4)
+		if _dv(d, W.I_POLITICAL_LINE) != 3:
+			_addi(d, W.I_PARTY_SUPPORT, 4)
 		else:
-			_addi(d, 1, 5)
-		_addi(d, 5, -2)
-		_addi(d, 4, 2)
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+		_addi(d, W.I_LIVING, -2)
+		_addi(d, W.I_THOUGHT_FREEDOM, 2)
 	elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-		if _dv(d, 56) != 4:
-			_addi(d, 1, 9)
+		if _dv(d, W.I_POLITICAL_LINE) != 4:
+			_addi(d, W.I_PARTY_SUPPORT, 9)
 		else:
-			_addi(d, 1, 10)
-		_addi(d, 5, -5)
-		_addi(d, 4, 7)
+			_addi(d, W.I_PARTY_SUPPORT, 10)
+		_addi(d, W.I_LIVING, -5)
+		_addi(d, W.I_THOUGHT_FREEDOM, 7)
 	match p.trait_background:
-		21:
+		GameConstants.PoliticianBackground.PARTY_CADRE:
 			_addi(d, W.I_PARTY_SUPPORT, 3)
 			_addi(d, W.I_PEOPLE_SUPPORT, -1)
 			_addi(d, W.I_THOUGHT_FREEDOM, -2)
@@ -111,23 +111,23 @@ func _trait_influence_central(w: WorldState, d: WorldState, p: PoliticianData) -
 				_addi(d, W.I_CORRUPTION, 1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, W.I_CORRUPTION, 2)
-		22:
+		GameConstants.PoliticianBackground.MASS_LEADER:
 			_addi(d, W.I_PARTY_SUPPORT, -2)
 			_addi(d, W.I_PEOPLE_SUPPORT, 3)
 			_addi(d, W.I_ARMY, 1)
 			_addi(d, W.I_LIVING, 1)
 			_addi(d, W.I_CORRUPTION, -1)
-		23:
+		GameConstants.PoliticianBackground.STUDENT_REBEL:
 			_addi(d, W.I_PARTY_SUPPORT, -3)
 			_addi(d, W.I_THOUGHT_FREEDOM, -3)
 			_addi(d, W.I_CORRUPTION, -1)
-		24:
+		GameConstants.PoliticianBackground.WORKER_MODEL:
 			_addi(d, W.I_PEOPLE_SUPPORT, 3)
 			_addi(d, W.I_INDUSTRY, 1)
 			_addi(d, W.I_AGRICULTURE, 1)
 			_addi(d, W.I_SERVICES, 1)
 			_addi(d, W.I_LIVING, -1)
-		25:
+		GameConstants.PoliticianBackground.MILITARY_GENERAL:
 			_addi(d, W.I_PARTY_SUPPORT, -2)
 			_addi(d, W.I_PEOPLE_SUPPORT, -2)
 			_addi(d, W.I_THOUGHT_FREEDOM, -5)
@@ -135,7 +135,7 @@ func _trait_influence_central(w: WorldState, d: WorldState, p: PoliticianData) -
 			_addi(d, W.I_LIVING, -1)
 			if p.trait_personality != GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, W.I_CORRUPTION, 1)
-		26:
+		GameConstants.PoliticianBackground.INTELLECTUAL:
 			_addi(d, W.I_LIVING, 1)
 			_addi(d, W.I_SCIENCE, 1)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
@@ -154,65 +154,65 @@ func _trait_influence_central(w: WorldState, d: WorldState, p: PoliticianData) -
 				_addi(d, W.I_PARTY_SUPPORT, 4)
 				_addi(d, W.I_PEOPLE_SUPPORT, -4)
 				_addi(d, W.I_THOUGHT_FREEDOM, 2)
-		27:
+		GameConstants.PoliticianBackground.SCIENTIST:
 			_addi(d, W.I_PARTY_SUPPORT, 3)
 			_addi(d, W.I_PEOPLE_SUPPORT, 3)
 			_addi(d, W.I_ARMY, 1)
 			_addi(d, W.I_LIVING, 2)
 			_addi(d, W.I_SCIENCE, 6)
-		28:
+		GameConstants.PoliticianBackground.AMBITIOUS:
 			_addi(d, W.I_PARTY_SUPPORT, -5)
 			_addi(d, W.I_PEOPLE_SUPPORT, -3)
 			_addi(d, W.I_THOUGHT_FREEDOM, -2)
 			_addi(d, W.I_AGENTS, 3)
-		43:
+		GameConstants.PoliticianBackground.SPECIAL:
 			_addi(d, W.I_SCIENCE, 5)
 	match p.trait_alignment:
-		4:
+		GameConstants.PoliticianAlignment.HARDLINER:
 			_addi(d, W.I_CORRUPTION, -1)
 			_addi(d, W.I_THOUGHT_FREEDOM, -5)
 			_addi(d, W.I_PARTY_SUPPORT, -2)
-		5:
+		GameConstants.PoliticianAlignment.PRAGMATIST:
 			_addi(d, W.I_PARTY_SUPPORT, 2)
-		6:
+		GameConstants.PoliticianAlignment.TOLERANT:
 			_addi(d, W.I_CORRUPTION, 1)
 			_addi(d, W.I_THOUGHT_FREEDOM, 5)
 			_addi(d, W.I_PARTY_SUPPORT, 5)
-		7:
+		GameConstants.PoliticianAlignment.TECH:
 			_addi(d, W.I_SCIENCE, 2)
-		29:
+		GameConstants.PoliticianAlignment.HEDONIST:
 			_addi(d, W.I_PARTY_SUPPORT, 3)
 			_addi(d, W.I_PEOPLE_SUPPORT, -5)
 			_addi(d, W.I_THOUGHT_FREEDOM, 3)
-			_add_empire_relation(w, 0, 2)
+			_add_empire_relation(w, EmpireData.USA, 2)
 			if d.size() > W.I_SERVICES:
 				d.services += 1 if d.services < 60 else -1
 			if d.size() > W.I_LIVING:
 				d.living_standard += 2 if d.living_standard < 50 else -2
-		30:
+		GameConstants.PoliticianAlignment.CONSPIRACY_THEORIST:
 			_addi(d, W.I_PARTY_SUPPORT, -3)
 			_addi(d, W.I_PEOPLE_SUPPORT, -5)
 			_addi(d, W.I_MANPOWER, -3)
 			match p.trait_personality:
-				0: _addi(d, W.I_THOUGHT_FREEDOM, -5)
-				20: _addi(d, W.I_THOUGHT_FREEDOM, -3)
-				2: _addi(d, W.I_THOUGHT_FREEDOM, 3)
-				3: _addi(d, W.I_THOUGHT_FREEDOM, 5)
+				GameConstants.PoliticianPersonality.FAR_LEFT: _addi(d, W.I_THOUGHT_FREEDOM, -5)
+				GameConstants.PoliticianPersonality.CONSERVATIVE: _addi(d, W.I_THOUGHT_FREEDOM, -3)
+				GameConstants.PoliticianPersonality.REFORMIST: _addi(d, W.I_THOUGHT_FREEDOM, 3)
+				GameConstants.PoliticianPersonality.LIBERAL: _addi(d, W.I_THOUGHT_FREEDOM, 5)
 			match p.trait_personality:
-				0, 1: _addi(d, W.I_WAR_SUPPORT, 3)
-				20: _addi(d, W.I_WAR_SUPPORT, 6)
-				2: _addi(d, W.I_WAR_SUPPORT, -3)
-				3: _addi(d, W.I_WAR_SUPPORT, -6)
-		39:
+				GameConstants.PoliticianPersonality.FAR_LEFT, GameConstants.PoliticianPersonality.MODERATE: _addi(d, W.I_WAR_SUPPORT, 3)
+				GameConstants.PoliticianPersonality.CONSERVATIVE: _addi(d, W.I_WAR_SUPPORT, 6)
+				GameConstants.PoliticianPersonality.REFORMIST: _addi(d, W.I_WAR_SUPPORT, -3)
+				GameConstants.PoliticianPersonality.LIBERAL: _addi(d, W.I_WAR_SUPPORT, -6)
+		GameConstants.PoliticianAlignment.SUBJECTIVIST:
 			_addi(d, W.I_PARTY_SUPPORT, -2)
 			_addi(d, W.I_PEOPLE_SUPPORT, -1)
 			_addi(d, W.I_THOUGHT_FREEDOM, -5)
 			_addi(d, W.I_INDUSTRY, -1)
 			_addi(d, W.I_MANPOWER, -1)
-		40:
+		GameConstants.PoliticianAlignment.FENCE_SITTER:
 			_addi(d, W.I_PARTY_SUPPORT, 3)
 			_addi(d, W.I_CORRUPTION, 1)
-		41:
+		GameConstants.PoliticianAlignment.LOCAL_WARLORD:
 			_addi(d, W.I_PARTY_SUPPORT, 5)
 			_addi(d, W.I_PEOPLE_SUPPORT, 2)
 			_addi(d, W.I_BUDGET, -3)
@@ -221,95 +221,95 @@ func _trait_influence_central(w: WorldState, d: WorldState, p: PoliticianData) -
 				_addi(d, W.I_THOUGHT_FREEDOM, -1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_addi(d, W.I_THOUGHT_FREEDOM, 1)
-		42:
+		GameConstants.PoliticianAlignment.POLITICS_FIRST:
 			_addi(d, W.I_PARTY_SUPPORT, -3)
 			_addi(d, W.I_PEOPLE_SUPPORT, 3)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_addi(d, W.I_THOUGHT_FREEDOM, -3)
 	match p.trait_special:
-		8:
+		GameConstants.PoliticianSpecial.HARSH:
 			_addi(d, W.I_THOUGHT_FREEDOM, -10)
 			_addi(d, W.I_PARTY_SUPPORT, -5)
-		9:
+		GameConstants.PoliticianSpecial.PEACE:
 			_addi(d, W.I_THOUGHT_FREEDOM, 3)
 			_addi(d, W.I_PARTY_SUPPORT, 3)
-		10:
+		GameConstants.PoliticianSpecial.TYRANT:
 			_addi(d, W.I_PARTY_SUPPORT, -5)
 			_addi(d, W.I_PEOPLE_SUPPORT, -5)
-		11:
+		GameConstants.PoliticianSpecial.ECONOMIST:
 			_addi(d, W.I_BUDGET, 3)
-		12:
+		GameConstants.PoliticianSpecial.ARROGANT:
 			_addi(d, W.I_THOUGHT_FREEDOM, -3)
 			_addi(d, W.I_PARTY_SUPPORT, -4)
-		13:
+		GameConstants.PoliticianSpecial.IDOL:
 			_addi(d, W.I_PARTY_SUPPORT, 6)
-		14:
+		GameConstants.PoliticianSpecial.CHINA_SCHOOL:
 			_addi(d, W.I_PARTY_SUPPORT, 3)
 			_addi(d, W.I_THOUGHT_FREEDOM, 3)
 			_addi(d, W.I_WAR_SUPPORT, 6)
-		15:
+		GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
 			_addi(d, W.I_PARTY_SUPPORT, -3)
 			_addi(d, W.I_THOUGHT_FREEDOM, 3)
 			_addi(d, W.I_WAR_SUPPORT, -6)
-		16:
+		GameConstants.PoliticianSpecial.ADVISER:
 			_addi(d, W.I_PARTY_SUPPORT, 4)
 			_addi(d, W.I_AGENTS, 3)
-		17:
+		GameConstants.PoliticianSpecial.SHY:
 			_addi(d, W.I_THOUGHT_FREEDOM, 2)
-		18:
+		GameConstants.PoliticianSpecial.CORRUPT:
 			_addi(d, W.I_CORRUPTION, 3)
 			_addi(d, W.I_PARTY_SUPPORT, 5)
 			_addi(d, W.I_BUDGET, -1)
-		19:
+		GameConstants.PoliticianSpecial.SICKLY:
 			_addi(d, W.I_PARTY_SUPPORT, 1)
 			_addi(d, W.I_THOUGHT_FREEDOM, 2)
-		31:
+		GameConstants.PoliticianSpecial.AGITATOR:
 			match p.trait_personality:
-				0:
+				GameConstants.PoliticianPersonality.FAR_LEFT:
 					_addi(d, W.I_PARTY_SUPPORT, -2)
 					_addi(d, W.I_PEOPLE_SUPPORT, 5)
 					_addi(d, W.I_THOUGHT_FREEDOM, -2)
-				20:
+				GameConstants.PoliticianPersonality.CONSERVATIVE:
 					_addi(d, W.I_PARTY_SUPPORT, 1)
 					_addi(d, W.I_PEOPLE_SUPPORT, 3)
 					_addi(d, W.I_THOUGHT_FREEDOM, -1)
-				1:
+				GameConstants.PoliticianPersonality.MODERATE:
 					_addi(d, W.I_PARTY_SUPPORT, 4)
 					_addi(d, W.I_PEOPLE_SUPPORT, 1)
 					_addi(d, W.I_THOUGHT_FREEDOM, 2)
-				2:
+				GameConstants.PoliticianPersonality.REFORMIST:
 					_addi(d, W.I_PARTY_SUPPORT, 5)
 					_addi(d, W.I_PEOPLE_SUPPORT, -3)
 					_addi(d, W.I_THOUGHT_FREEDOM, 3)
-				3:
+				GameConstants.PoliticianPersonality.LIBERAL:
 					_addi(d, W.I_PARTY_SUPPORT, -3)
 					_addi(d, W.I_PEOPLE_SUPPORT, -5)
 					_addi(d, W.I_THOUGHT_FREEDOM, 5)
-		32:
+		GameConstants.PoliticianSpecial.PEOPLES_FRIEND:
 			_addi(d, W.I_PEOPLE_SUPPORT, 6)
 			_addi(d, W.I_THOUGHT_FREEDOM, -3)
-		33:
+		GameConstants.PoliticianSpecial.DIPLOMAT:
 			_addi(d, W.I_PARTY_SUPPORT, 1)
-			_add_empire_relation(w, 0, 1)
-			_add_empire_relation(w, 1, 1)
-		34:
+			_add_empire_relation(w, EmpireData.USA, 1)
+			_add_empire_relation(w, EmpireData.USSR, 1)
+		GameConstants.PoliticianSpecial.TROTSKYITE:
 			_addi(d, W.I_PARTY_SUPPORT, -3)
 			_addi(d, W.I_PEOPLE_SUPPORT, -2)
 			_addi(d, W.I_THOUGHT_FREEDOM, -5)
 			_addi(d, W.I_MANPOWER, -3)
-		35:
+		GameConstants.PoliticianSpecial.OPPORTUNIST:
 			_addi(d, W.I_PARTY_SUPPORT, -5)
 			_addi(d, W.I_PEOPLE_SUPPORT, -3)
 			_addi(d, W.I_AGENTS, 3)
-		36:
+		GameConstants.PoliticianSpecial.MILITARY_TALENT:
 			_addi(d, W.I_PARTY_SUPPORT, -2)
 			_addi(d, W.I_PEOPLE_SUPPORT, -2)
 			_addi(d, W.I_THOUGHT_FREEDOM, -5)
 			_addi(d, W.I_ARMY, 1)
 			_addi(d, W.I_LIVING, -1)
-		37:
+		GameConstants.PoliticianSpecial.AFFABLE:
 			_addi(d, W.I_PARTY_SUPPORT, 3)
-		38:
+		GameConstants.PoliticianSpecial.INDOMITABLE:
 			_addi(d, W.I_PARTY_SUPPORT, 2)
 			_addi(d, W.I_THOUGHT_FREEDOM, -3)
 			_addi(d, W.I_LIVING, -1)
@@ -319,968 +319,968 @@ func _trait_influence_central(w: WorldState, d: WorldState, p: PoliticianData) -
 func _trait_influence_foreign(w: WorldState, d: WorldState, p: PoliticianData, i: int) -> void:
 	if _is_foreign_minister(w, i):
 		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-			_add_empire_relation(w, 0, -10)
-			if _dv(d, 6) < 700:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 900:
-				_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USA, -10)
+			if _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 900:
+				_addi(d, W.I_DIPLO, 1)
 			_add_ideology_share(w, 0, 666)
 			_add_ideology_share(w, 1, 1000)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-			_add_empire_relation(w, 1, 5)
-			_add_empire_relation(w, 0, 2)
-			if _dv(d, 6) < 500:
-				_addi(d, 6, 3)
-			elif _dv(d, 6) < 700:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) > 1000:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, 5)
+			_add_empire_relation(w, EmpireData.USA, 2)
+			if _dv(d, W.I_DIPLO) < 500:
+				_addi(d, W.I_DIPLO, 3)
+			elif _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) > 1000:
+				_addi(d, W.I_DIPLO, -1)
 			_add_ideology_share(w, 2, 1000)
 			_add_ideology_share(w, 1, 333)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-			_add_empire_relation(w, 1, 10)
-			_add_empire_relation(w, 0, -3)
-			if _dv(d, 6) < 500:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 700:
-				_addi(d, 6, 1)
-			elif _dv(d, 6) > 900:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, 10)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			if _dv(d, W.I_DIPLO) < 500:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 1)
+			elif _dv(d, W.I_DIPLO) > 900:
+				_addi(d, W.I_DIPLO, -1)
 			_add_ideology_share(w, 2, 333)
 			_add_ideology_share(w, 3, 666)
 			_add_ideology_share(w, 1, 2000)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, 5)
-			if _dv(d, 6) < 300:
-				_addi(d, 6, 1)
-			elif _dv(d, 6) > 700:
-				_addi(d, 6, -2)
-			elif _dv(d, 6) > 500:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, 5)
+			if _dv(d, W.I_DIPLO) < 300:
+				_addi(d, W.I_DIPLO, 1)
+			elif _dv(d, W.I_DIPLO) > 700:
+				_addi(d, W.I_DIPLO, -2)
+			elif _dv(d, W.I_DIPLO) > 500:
+				_addi(d, W.I_DIPLO, -1)
 			_add_ideology_share(w, 3, 666)
 			_add_ideology_share(w, 4, 666)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-			_add_empire_relation(w, 1, -10)
-			_add_empire_relation(w, 0, 12)
-			if _dv(d, 6) > 700:
-				_addi(d, 6, -3)
-			elif _dv(d, 6) > 500:
-				_addi(d, 6, -2)
-			elif _dv(d, 6) > 300:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, -10)
+			_add_empire_relation(w, EmpireData.USA, 12)
+			if _dv(d, W.I_DIPLO) > 700:
+				_addi(d, W.I_DIPLO, -3)
+			elif _dv(d, W.I_DIPLO) > 500:
+				_addi(d, W.I_DIPLO, -2)
+			elif _dv(d, W.I_DIPLO) > 300:
+				_addi(d, W.I_DIPLO, -1)
 			_add_ideology_share(w, 3, 666)
 			_add_ideology_share(w, 4, 666)
 		if p.trait_background == GameConstants.PoliticianBackground.PARTY_CADRE:
-			_add_empire_relation(w, 1, 5)
-			_add_empire_relation(w, 0, 2)
-			if _dv(d, 6) < 500:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 700:
-				_addi(d, 6, 1)
-			elif _dv(d, 6) > 900:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, 5)
+			_add_empire_relation(w, EmpireData.USA, 2)
+			if _dv(d, W.I_DIPLO) < 500:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 1)
+			elif _dv(d, W.I_DIPLO) > 900:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_background == GameConstants.PoliticianBackground.MASS_LEADER:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -8)
-			if _dv(d, 6) < 700:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 900:
-				_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -8)
+			if _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 900:
+				_addi(d, W.I_DIPLO, 1)
 		elif p.trait_background == GameConstants.PoliticianBackground.STUDENT_REBEL:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -8)
-			if _dv(d, 6) < 700:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 900:
-				_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -8)
+			if _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 900:
+				_addi(d, W.I_DIPLO, 1)
 		elif p.trait_background == GameConstants.PoliticianBackground.WORKER_MODEL:
-			_add_empire_relation(w, 1, -2)
-			_add_empire_relation(w, 0, -5)
-			if _dv(d, 6) < 700:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 900:
-				_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USSR, -2)
+			_add_empire_relation(w, EmpireData.USA, -5)
+			if _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 900:
+				_addi(d, W.I_DIPLO, 1)
 		elif p.trait_background == GameConstants.PoliticianBackground.MILITARY_GENERAL:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
-			if _dv(d, 6) < 500:
-				_addi(d, 6, 3)
-			elif _dv(d, 6) < 700:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) > 1000:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			if _dv(d, W.I_DIPLO) < 500:
+				_addi(d, W.I_DIPLO, 3)
+			elif _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) > 1000:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_background == GameConstants.PoliticianBackground.INTELLECTUAL:
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_add_empire_relation(w, 1, -5)
-				_add_empire_relation(w, 0, -5)
-				_addi(d, 6, 1)
+				_add_empire_relation(w, EmpireData.USSR, -5)
+				_add_empire_relation(w, EmpireData.USA, -5)
+				_addi(d, W.I_DIPLO, 1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_add_empire_relation(w, 1, 4)
-				_add_empire_relation(w, 0, 2)
+				_add_empire_relation(w, EmpireData.USSR, 4)
+				_add_empire_relation(w, EmpireData.USA, 2)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_add_empire_relation(w, 1, 6)
-				_add_empire_relation(w, 0, -2)
+				_add_empire_relation(w, EmpireData.USSR, 6)
+				_add_empire_relation(w, EmpireData.USA, -2)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_add_empire_relation(w, 1, -3)
-				_add_empire_relation(w, 0, 5)
-				_addi(d, 6, -1)
+				_add_empire_relation(w, EmpireData.USSR, -3)
+				_add_empire_relation(w, EmpireData.USA, 5)
+				_addi(d, W.I_DIPLO, -1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_add_empire_relation(w, 1, -6)
-				_add_empire_relation(w, 0, 8)
-				_addi(d, 6, -2)
+				_add_empire_relation(w, EmpireData.USSR, -6)
+				_add_empire_relation(w, EmpireData.USA, 8)
+				_addi(d, W.I_DIPLO, -2)
 		elif p.trait_background == GameConstants.PoliticianBackground.SCIENTIST:
-			_addi(d, 11, 6)
+			_addi(d, W.I_SCIENCE, 6)
 		elif p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
 		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
-			_addi(d, 11, 5)
+			_addi(d, W.I_SCIENCE, 5)
 		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
-			_add_empire_relation(w, 1, 5)
-			_add_empire_relation(w, 0, 5)
-			if _dv(d, 6) < 700:
-				_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USSR, 5)
+			_add_empire_relation(w, EmpireData.USA, 5)
+			if _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 1)
 			else:
-				_addi(d, 6, -1)
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
-			_add_empire_relation(w, 1, 6)
-			_add_empire_relation(w, 0, 6)
-			if _dv(d, 6) > 600:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, 6)
+			_add_empire_relation(w, EmpireData.USA, 6)
+			if _dv(d, W.I_DIPLO) > 600:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.TECH:
-			_addi(d, 11, 2)
+			_addi(d, W.I_SCIENCE, 2)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.HEDONIST:
-			_add_empire_relation(w, 0, 6)
-			_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USA, 6)
+			_addi(d, W.I_DIPLO, -1)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.CONSPIRACY_THEORIST:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
-			if _dv(d, 6) < 700:
-				_addi(d, 6, 1)
-			elif _dv(d, 6) > 900:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			if _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 1)
+			elif _dv(d, W.I_DIPLO) > 900:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.SUBJECTIVIST:
-			_addi(d, 8, -1)
+			_addi(d, W.I_BUDGET, -1)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_addi(d, 6, 2)
-				_add_empire_relation(w, 1, 6)
-				_add_empire_relation(w, 0, -6)
+				_addi(d, W.I_DIPLO, 2)
+				_add_empire_relation(w, EmpireData.USSR, 6)
+				_add_empire_relation(w, EmpireData.USA, -6)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST or p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 6, -2)
-				_add_empire_relation(w, 1, -6)
-				_add_empire_relation(w, 0, 6)
+				_addi(d, W.I_DIPLO, -2)
+				_add_empire_relation(w, EmpireData.USSR, -6)
+				_add_empire_relation(w, EmpireData.USA, 6)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
 			if _rel(w, 1) < 400:
-				_add_empire_relation(w, 1, -3)
+				_add_empire_relation(w, EmpireData.USSR, -3)
 			elif _rel(w, 1) > 600:
-				_add_empire_relation(w, 1, 3)
+				_add_empire_relation(w, EmpireData.USSR, 3)
 			if _rel(w, 0) < 400:
-				_add_empire_relation(w, 0, -3)
+				_add_empire_relation(w, EmpireData.USA, -3)
 			elif _rel(w, 0) > 600:
-				_add_empire_relation(w, 0, 3)
-			if _dv(d, 6) > 900:
-				_addi(d, 6, 1)
-			elif _dv(d, 6) < 500:
-				_addi(d, 6, -1)
+				_add_empire_relation(w, EmpireData.USA, 3)
+			if _dv(d, W.I_DIPLO) > 900:
+				_addi(d, W.I_DIPLO, 1)
+			elif _dv(d, W.I_DIPLO) < 500:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
-			_addi(d, 8, -1)
+			_addi(d, W.I_BUDGET, -1)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_add_empire_relation(w, 1, -4)
-				_add_empire_relation(w, 0, -4)
-				_addi(d, 6, 1)
+				_add_empire_relation(w, EmpireData.USSR, -4)
+				_add_empire_relation(w, EmpireData.USA, -4)
+				_addi(d, W.I_DIPLO, 1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_add_empire_relation(w, 0, -1)
+				_add_empire_relation(w, EmpireData.USA, -1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_add_empire_relation(w, 0, -1)
+				_add_empire_relation(w, EmpireData.USA, -1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_add_empire_relation(w, 0, 3)
-				_addi(d, 6, -1)
+				_add_empire_relation(w, EmpireData.USA, 3)
+				_addi(d, W.I_DIPLO, -1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_add_empire_relation(w, 1, -4)
-				_add_empire_relation(w, 0, 3)
-				_addi(d, 6, -2)
+				_add_empire_relation(w, EmpireData.USSR, -4)
+				_add_empire_relation(w, EmpireData.USA, 3)
+				_addi(d, W.I_DIPLO, -2)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.POLITICS_FIRST:
-			_addi(d, 8, -1)
+			_addi(d, W.I_BUDGET, -1)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_add_empire_relation(w, 1, -6)
-				_add_empire_relation(w, 0, -6)
-				_addi(d, 6, 5)
+				_add_empire_relation(w, EmpireData.USSR, -6)
+				_add_empire_relation(w, EmpireData.USA, -6)
+				_addi(d, W.I_DIPLO, 5)
 				_add_ideology_share(w, 0, 1000)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_add_empire_relation(w, 1, -6)
-				_add_empire_relation(w, 0, 6)
-				_addi(d, 6, -5)
+				_add_empire_relation(w, EmpireData.USSR, -6)
+				_add_empire_relation(w, EmpireData.USA, 6)
+				_addi(d, W.I_DIPLO, -5)
 				_add_ideology_share(w, 4, 1000)
 		if p.trait_special == GameConstants.PoliticianSpecial.HARSH:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
-			if _dv(d, 6) < 500:
-				_addi(d, 6, 3)
-			elif _dv(d, 6) < 700:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 1000:
-				_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			if _dv(d, W.I_DIPLO) < 500:
+				_addi(d, W.I_DIPLO, 3)
+			elif _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 1000:
+				_addi(d, W.I_DIPLO, 1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.PEACE:
-			_add_empire_relation(w, 1, 4)
-			_add_empire_relation(w, 0, 4)
-			if _dv(d, 6) > 700:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, 4)
+			_add_empire_relation(w, EmpireData.USA, 4)
+			if _dv(d, W.I_DIPLO) > 700:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.TYRANT:
-			_add_empire_relation(w, 1, -6)
-			_add_empire_relation(w, 0, -6)
-			_addi(d, 6, 2)
+			_add_empire_relation(w, EmpireData.USSR, -6)
+			_add_empire_relation(w, EmpireData.USA, -6)
+			_addi(d, W.I_DIPLO, 2)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ECONOMIST:
-			_add_empire_relation(w, 1, -2)
-			_add_empire_relation(w, 0, -2)
-			_addi(d, 8, 2)
+			_add_empire_relation(w, EmpireData.USSR, -2)
+			_add_empire_relation(w, EmpireData.USA, -2)
+			_addi(d, W.I_BUDGET, 2)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
-			_add_empire_relation(w, 1, -4)
-			_add_empire_relation(w, 0, -4)
-			_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USSR, -4)
+			_add_empire_relation(w, EmpireData.USA, -4)
+			_addi(d, W.I_DIPLO, 1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.IDOL:
-			_add_empire_relation(w, 1, 4)
-			_add_empire_relation(w, 0, 4)
+			_add_empire_relation(w, EmpireData.USSR, 4)
+			_add_empire_relation(w, EmpireData.USA, 4)
 		elif p.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
-			if _dv(d, 6) < 500:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 800:
-				_addi(d, 6, 1)
-			elif _dv(d, 6) > 900:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			if _dv(d, W.I_DIPLO) < 500:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 800:
+				_addi(d, W.I_DIPLO, 1)
+			elif _dv(d, W.I_DIPLO) > 900:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
-			_add_empire_relation(w, 1, -6)
-			_add_empire_relation(w, 0, 6)
-			_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, -6)
+			_add_empire_relation(w, EmpireData.USA, 6)
+			_addi(d, W.I_DIPLO, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER:
-			_add_empire_relation(w, 1, 4)
-			_add_empire_relation(w, 0, 4)
+			_add_empire_relation(w, EmpireData.USSR, 4)
+			_add_empire_relation(w, EmpireData.USA, 4)
 		elif p.trait_special == GameConstants.PoliticianSpecial.SHY:
-			_add_empire_relation(w, 1, -1)
-			_add_empire_relation(w, 0, -1)
-			_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, -1)
+			_add_empire_relation(w, EmpireData.USA, -1)
+			_addi(d, W.I_DIPLO, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
-			_add_empire_relation(w, 1, -2)
-			_add_empire_relation(w, 0, -2)
-			_addi(d, 8, -1)
+			_add_empire_relation(w, EmpireData.USSR, -2)
+			_add_empire_relation(w, EmpireData.USA, -2)
+			_addi(d, W.I_BUDGET, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
-			_add_empire_relation(w, 1, -2)
-			_add_empire_relation(w, 0, -2)
-			_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, -2)
+			_add_empire_relation(w, EmpireData.USA, -2)
+			_addi(d, W.I_DIPLO, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.AGITATOR:
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_add_empire_relation(w, 1, -3)
-				_add_empire_relation(w, 0, -3)
-				_addi(d, 6, 1)
+				_add_empire_relation(w, EmpireData.USSR, -3)
+				_add_empire_relation(w, EmpireData.USA, -3)
+				_addi(d, W.I_DIPLO, 1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_add_empire_relation(w, 1, 3)
-				_add_empire_relation(w, 0, 1)
+				_add_empire_relation(w, EmpireData.USSR, 3)
+				_add_empire_relation(w, EmpireData.USA, 1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_add_empire_relation(w, 1, 5)
-				_add_empire_relation(w, 0, -1)
+				_add_empire_relation(w, EmpireData.USSR, 5)
+				_add_empire_relation(w, EmpireData.USA, -1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_add_empire_relation(w, 1, -2)
-				_add_empire_relation(w, 0, 4)
-				_addi(d, 6, -1)
+				_add_empire_relation(w, EmpireData.USSR, -2)
+				_add_empire_relation(w, EmpireData.USA, 4)
+				_addi(d, W.I_DIPLO, -1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_add_empire_relation(w, 1, -4)
-				_add_empire_relation(w, 0, 6)
-				_addi(d, 6, -2)
+				_add_empire_relation(w, EmpireData.USSR, -4)
+				_add_empire_relation(w, EmpireData.USA, 6)
+				_addi(d, W.I_DIPLO, -2)
 		elif p.trait_special == GameConstants.PoliticianSpecial.PEOPLES_FRIEND:
-			_add_empire_relation(w, 1, -4)
-			_add_empire_relation(w, 0, -4)
+			_add_empire_relation(w, EmpireData.USSR, -4)
+			_add_empire_relation(w, EmpireData.USA, -4)
 		elif p.trait_special == GameConstants.PoliticianSpecial.DIPLOMAT:
-			_add_empire_relation(w, 1, 6)
-			_add_empire_relation(w, 0, 6)
-			if _dv(d, 6) < 500:
-				_addi(d, 6, 3)
-			elif _dv(d, 6) < 700:
-				_addi(d, 6, 2)
-			elif _dv(d, 6) < 900:
-				_addi(d, 6, 1)
-			elif _dv(d, 6) > 1000:
-				_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, 6)
+			_add_empire_relation(w, EmpireData.USA, 6)
+			if _dv(d, W.I_DIPLO) < 500:
+				_addi(d, W.I_DIPLO, 3)
+			elif _dv(d, W.I_DIPLO) < 700:
+				_addi(d, W.I_DIPLO, 2)
+			elif _dv(d, W.I_DIPLO) < 900:
+				_addi(d, W.I_DIPLO, 1)
+			elif _dv(d, W.I_DIPLO) > 1000:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.TROTSKYITE:
-			_add_empire_relation(w, 1, -5)
-			_add_empire_relation(w, 0, -1)
+			_add_empire_relation(w, EmpireData.USSR, -5)
+			_add_empire_relation(w, EmpireData.USA, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST:
-			_addi(d, 6, -1)
+			_addi(d, W.I_DIPLO, -1)
 			if _emp_pow(w, 1) > _emp_pow(w, 0):
-				_add_empire_relation(w, 1, 5)
-				_add_empire_relation(w, 0, -5)
+				_add_empire_relation(w, EmpireData.USSR, 5)
+				_add_empire_relation(w, EmpireData.USA, -5)
 			else:
-				_add_empire_relation(w, 1, -5)
-				_add_empire_relation(w, 0, 5)
+				_add_empire_relation(w, EmpireData.USSR, -5)
+				_add_empire_relation(w, EmpireData.USA, 5)
 		elif p.trait_special == GameConstants.PoliticianSpecial.MILITARY_TALENT:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
-			_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			_addi(d, W.I_DIPLO, 1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.AFFABLE:
-			_add_empire_relation(w, 1, 2)
-			_add_empire_relation(w, 0, 2)
-			_addi(d, 6, -1)
+			_add_empire_relation(w, EmpireData.USSR, 2)
+			_add_empire_relation(w, EmpireData.USA, 2)
+			_addi(d, W.I_DIPLO, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.INDOMITABLE:
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
-			_addi(d, 6, 1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			_addi(d, W.I_DIPLO, 1)
 
 
 ## TraitInfluence 的总理块 politics_dolshnost[1]（TimeScript.cs:12187-12658 逐字移植）。
 func _trait_influence_premier(w: WorldState, d: WorldState, p: PoliticianData, i: int) -> void:
 	if _is_premier(w, i):
 		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-			if _dv(d, 56) != 0:
-				_addi(d, 1, -6)
+			if _dv(d, W.I_POLITICAL_LINE) != 0:
+				_addi(d, W.I_PARTY_SUPPORT, -6)
 			else:
-				_addi(d, 1, -3)
-			_addi(d, 5, 6)
-			_add_empire_relation(w, 1, 3)
-			_addi(d, 68, -1)
-			_addi(d, 26, -2)
+				_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_LIVING, 6)
+			_add_empire_relation(w, EmpireData.USSR, 3)
+			_addi(d, W.I_SERVICES, -1)
+			_addi(d, W.I_CORRUPTION, -2)
 			_add_ideology_share(w, 0, 333)
 			_add_ideology_share(w, 1, 500)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-			if _dv(d, 56) != 1:
-				_addi(d, 1, 4)
+			if _dv(d, W.I_POLITICAL_LINE) != 1:
+				_addi(d, W.I_PARTY_SUPPORT, 4)
 			else:
-				_addi(d, 1, 5)
-			_addi(d, 5, 4)
-			_addi(d, 4, 1)
-			_addi(d, 26, -1)
-			_add_empire_relation(w, 1, 5)
+				_addi(d, W.I_PARTY_SUPPORT, 5)
+			_addi(d, W.I_LIVING, 4)
+			_addi(d, W.I_THOUGHT_FREEDOM, 1)
+			_addi(d, W.I_CORRUPTION, -1)
+			_add_empire_relation(w, EmpireData.USSR, 5)
 			_add_ideology_share(w, 2, 2000)
 			_add_ideology_share(w, 1, 222)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-			if _dv(d, 56) != 2:
-				_addi(d, 1, 5)
+			if _dv(d, W.I_POLITICAL_LINE) != 2:
+				_addi(d, W.I_PARTY_SUPPORT, 5)
 			else:
-				_addi(d, 1, 6)
-			_addi(d, 5, 2)
-			_addi(d, 4, 3)
+				_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_LIVING, 2)
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
 			_add_ideology_share(w, 2, 222)
 			_add_ideology_share(w, 3, 333)
 			_add_ideology_share(w, 1, 2000)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-			if _dv(d, 56) != 3:
-				_addi(d, 1, 6)
+			if _dv(d, W.I_POLITICAL_LINE) != 3:
+				_addi(d, W.I_PARTY_SUPPORT, 6)
 			else:
-				_addi(d, 1, 7)
-			_addi(d, 5, -3)
-			_addi(d, 4, 5)
+				_addi(d, W.I_PARTY_SUPPORT, 7)
+			_addi(d, W.I_LIVING, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, 5)
 			_add_ideology_share(w, 3, 222)
 			_add_ideology_share(w, 4, 333)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-			if _dv(d, 56) != 4:
-				_addi(d, 1, 8)
+			if _dv(d, W.I_POLITICAL_LINE) != 4:
+				_addi(d, W.I_PARTY_SUPPORT, 8)
 			else:
-				_addi(d, 1, 10)
-			_addi(d, 5, -7)
-			_addi(d, 4, 5)
-			_addi(d, 8, 2)
+				_addi(d, W.I_PARTY_SUPPORT, 10)
+			_addi(d, W.I_LIVING, -7)
+			_addi(d, W.I_THOUGHT_FREEDOM, 5)
+			_addi(d, W.I_BUDGET, 2)
 			_add_ideology_share(w, 3, 333)
 			_add_ideology_share(w, 4, 222)
 		if p.trait_background == GameConstants.PoliticianBackground.PARTY_CADRE:
-			_addi(d, 1, 5)
-			_addi(d, 3, -2)
-			_addi(d, 4, -3)
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+			_addi(d, W.I_PEOPLE_SUPPORT, -2)
+			_addi(d, W.I_THOUGHT_FREEDOM, -3)
 			if p.trait_personality == GameConstants.PoliticianPersonality.MODERATE  or  p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 26, 1)
+				_addi(d, W.I_CORRUPTION, 1)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 26, 2)
+				_addi(d, W.I_CORRUPTION, 2)
 		elif p.trait_background == GameConstants.PoliticianBackground.MASS_LEADER:
-			_addi(d, 1, -4)
-			_addi(d, 3, 5)
-			_addi(d, 22, 5)
-			_addi(d, 5, 3)
-			_addi(d, 26, -2)
+			_addi(d, W.I_PARTY_SUPPORT, -4)
+			_addi(d, W.I_PEOPLE_SUPPORT, 5)
+			_addi(d, W.I_ARMY, 5)
+			_addi(d, W.I_LIVING, 3)
+			_addi(d, W.I_CORRUPTION, -2)
 		elif p.trait_background == GameConstants.PoliticianBackground.STUDENT_REBEL:
-			_addi(d, 1, -5)
-			_addi(d, 4, -8)
-			_addi(d, 22, -3)
-			_addi(d, 26, -2)
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+			_addi(d, W.I_THOUGHT_FREEDOM, -8)
+			_addi(d, W.I_ARMY, -3)
+			_addi(d, W.I_CORRUPTION, -2)
 		elif p.trait_background == GameConstants.PoliticianBackground.WORKER_MODEL:
-			_addi(d, 1, -3)
-			_addi(d, 3, 5)
-			_addi(d, 12, 2)
-			_addi(d, 13, 2)
-			_addi(d, 68, 1)
-			_addi(d, 5, -3)
+			_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_PEOPLE_SUPPORT, 5)
+			_addi(d, W.I_INDUSTRY, 2)
+			_addi(d, W.I_AGRICULTURE, 2)
+			_addi(d, W.I_SERVICES, 1)
+			_addi(d, W.I_LIVING, -3)
 		elif p.trait_background == GameConstants.PoliticianBackground.MILITARY_GENERAL:
-			_addi(d, 1, 5)
-			_addi(d, 4, -10)
-			_addi(d, 22, 12)
-			_addi(d, 5, -5)
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+			_addi(d, W.I_THOUGHT_FREEDOM, -10)
+			_addi(d, W.I_ARMY, 12)
+			_addi(d, W.I_LIVING, -5)
 		elif p.trait_background == GameConstants.PoliticianBackground.INTELLECTUAL:
-			_addi(d, 22, -5)
-			_addi(d, 5, 3)
-			_addi(d, 11, 3)
+			_addi(d, W.I_ARMY, -5)
+			_addi(d, W.I_LIVING, 3)
+			_addi(d, W.I_SCIENCE, 3)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_addi(d, 1, -5)
-				_addi(d, 3, 2)
-				_addi(d, 4, -5)
+				_addi(d, W.I_PARTY_SUPPORT, -5)
+				_addi(d, W.I_PEOPLE_SUPPORT, 2)
+				_addi(d, W.I_THOUGHT_FREEDOM, -5)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE  or  p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_addi(d, 1, 2)
-				_addi(d, 3, 2)
-				_addi(d, 4, 2)
+				_addi(d, W.I_PARTY_SUPPORT, 2)
+				_addi(d, W.I_PEOPLE_SUPPORT, 2)
+				_addi(d, W.I_THOUGHT_FREEDOM, 2)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 1, 4)
-				_addi(d, 3, -4)
-				_addi(d, 4, 4)
+				_addi(d, W.I_PARTY_SUPPORT, 4)
+				_addi(d, W.I_PEOPLE_SUPPORT, -4)
+				_addi(d, W.I_THOUGHT_FREEDOM, 4)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 1, 5)
-				_addi(d, 3, -5)
-				_addi(d, 4, 6)
+				_addi(d, W.I_PARTY_SUPPORT, 5)
+				_addi(d, W.I_PEOPLE_SUPPORT, -5)
+				_addi(d, W.I_THOUGHT_FREEDOM, 6)
 		elif p.trait_background == GameConstants.PoliticianBackground.SCIENTIST:
-			_addi(d, 1, 6)
-			_addi(d, 3, 6)
-			_addi(d, 22, 8)
-			_addi(d, 5, 2)
-			_addi(d, 11, 10)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_PEOPLE_SUPPORT, 6)
+			_addi(d, W.I_ARMY, 8)
+			_addi(d, W.I_LIVING, 2)
+			_addi(d, W.I_SCIENCE, 10)
 		elif p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS:
-			_addi(d, 1, -7)
-			_addi(d, 3, -5)
-			_addi(d, 4, -5)
-			_addi(d, 9, 6)
+			_addi(d, W.I_PARTY_SUPPORT, -7)
+			_addi(d, W.I_PEOPLE_SUPPORT, -5)
+			_addi(d, W.I_THOUGHT_FREEDOM, -5)
+			_addi(d, W.I_AGENTS, 6)
 		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
-			_addi(d, 11, 8)
+			_addi(d, W.I_SCIENCE, 8)
 		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
-			_addi(d, 26, -1)
-			_addi(d, 4, -7)
-			_addi(d, 1, -3)
+			_addi(d, W.I_CORRUPTION, -1)
+			_addi(d, W.I_THOUGHT_FREEDOM, -7)
+			_addi(d, W.I_PARTY_SUPPORT, -3)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
-			_addi(d, 1, 3)
+			_addi(d, W.I_PARTY_SUPPORT, 3)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
-			_addi(d, 26, 1)
-			_addi(d, 4, 7)
-			_addi(d, 1, 7)
+			_addi(d, W.I_CORRUPTION, 1)
+			_addi(d, W.I_THOUGHT_FREEDOM, 7)
+			_addi(d, W.I_PARTY_SUPPORT, 7)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.TECH:
-			_addi(d, 11, 3)
+			_addi(d, W.I_SCIENCE, 3)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.HEDONIST:
-			_addi(d, 1, 6)
-			_addi(d, 3, -8)
-			_addi(d, 4, 6)
-			_addi(d, 22, -6)
-			if _dv(d, 68) < 60:
-				_addi(d, 68, 2)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_PEOPLE_SUPPORT, -8)
+			_addi(d, W.I_THOUGHT_FREEDOM, 6)
+			_addi(d, W.I_ARMY, -6)
+			if _dv(d, W.I_SERVICES) < 60:
+				_addi(d, W.I_SERVICES, 2)
 			else:
-				_addi(d, 68, -2)
-			if _dv(d, 5) < 50:
-				_addi(d, 5, 4)
+				_addi(d, W.I_SERVICES, -2)
+			if _dv(d, W.I_LIVING) < 50:
+				_addi(d, W.I_LIVING, 4)
 			else:
-				_addi(d, 5, -4)
+				_addi(d, W.I_LIVING, -4)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.CONSPIRACY_THEORIST:
-			_addi(d, 1, -6)
-			_addi(d, 3, -8)
-			_addi(d, 57, -5)
+			_addi(d, W.I_PARTY_SUPPORT, -6)
+			_addi(d, W.I_PEOPLE_SUPPORT, -8)
+			_addi(d, W.I_MANPOWER, -5)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_addi(d, 4, -8)
+				_addi(d, W.I_THOUGHT_FREEDOM, -8)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_addi(d, 4, -4)
+				_addi(d, W.I_THOUGHT_FREEDOM, -4)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 4, 4)
+				_addi(d, W.I_THOUGHT_FREEDOM, 4)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 4, 8)
+				_addi(d, W.I_THOUGHT_FREEDOM, 8)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT  or  p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_addi(d, 31, 5)
+				_addi(d, W.I_WAR_SUPPORT, 5)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_addi(d, 31, 10)
+				_addi(d, W.I_WAR_SUPPORT, 10)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 31, -5)
+				_addi(d, W.I_WAR_SUPPORT, -5)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 31, -10)
+				_addi(d, W.I_WAR_SUPPORT, -10)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.SUBJECTIVIST:
-			_addi(d, 1, -5)
-			_addi(d, 3, -3)
-			_addi(d, 4, -8)
-			_addi(d, 22, 3)
-			_addi(d, 9, 3)
-			_addi(d, 57, -2)
-			_addi(d, 8, -2)
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+			_addi(d, W.I_PEOPLE_SUPPORT, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, -8)
+			_addi(d, W.I_ARMY, 3)
+			_addi(d, W.I_AGENTS, 3)
+			_addi(d, W.I_MANPOWER, -2)
+			_addi(d, W.I_BUDGET, -2)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
-			_addi(d, 1, 6)
-			_addi(d, 3, -3)
-			_addi(d, 26, 2)
-			if _dv(d, 51) == 30:
-				_addi(d, 22, 4)
-				_addi(d, 8, -4)
-			elif _dv(d, 51) == 31  or  _dv(d, 51) == 32:
-				_addi(d, 22, 2)
-				_addi(d, 8, -2)
-			elif _dv(d, 51) == 33:
-				_addi(d, 8, 3)
-				_addi(d, 4, 5)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_PEOPLE_SUPPORT, -3)
+			_addi(d, W.I_CORRUPTION, 2)
+			if _dv(d, W.I_MIL_DOCTRINE) == 30:
+				_addi(d, W.I_ARMY, 4)
+				_addi(d, W.I_BUDGET, -4)
+			elif _dv(d, W.I_MIL_DOCTRINE) == 31  or  _dv(d, W.I_MIL_DOCTRINE) == 32:
+				_addi(d, W.I_ARMY, 2)
+				_addi(d, W.I_BUDGET, -2)
+			elif _dv(d, W.I_MIL_DOCTRINE) == 33:
+				_addi(d, W.I_BUDGET, 3)
+				_addi(d, W.I_THOUGHT_FREEDOM, 5)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
-			_addi(d, 8, -5)
-			_addi(d, 9, -4)
-			_addi(d, 4, -4)
-			_addi(d, 26, 3)
-			if _dv(d, 71) < 300:
-				_addi(d, 1, -8)
-				_addi(d, 22, 4)
+			_addi(d, W.I_BUDGET, -5)
+			_addi(d, W.I_AGENTS, -4)
+			_addi(d, W.I_THOUGHT_FREEDOM, -4)
+			_addi(d, W.I_CORRUPTION, 3)
+			if _dv(d, W.I_BUDGET_ARMY) < 300:
+				_addi(d, W.I_PARTY_SUPPORT, -8)
+				_addi(d, W.I_ARMY, 4)
 			else:
-				_addi(d, 1, -5)
-				_addi(d, 22, 8)
+				_addi(d, W.I_PARTY_SUPPORT, -5)
+				_addi(d, W.I_ARMY, 8)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.POLITICS_FIRST:
-			_addi(d, 1, -8)
-			_addi(d, 22, 3 + d.budget_propaganda / 200)
-			_addi(d, 9, -3)
+			_addi(d, W.I_PARTY_SUPPORT, -8)
+			_addi(d, W.I_ARMY, 3 + d.budget_propaganda / 200)
+			_addi(d, W.I_AGENTS, -3)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 				_add_ideology_share(w, 0, 500)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 				_add_ideology_share(w, 4, 500)
 		if p.trait_special == GameConstants.PoliticianSpecial.HARSH:
-			_addi(d, 4, -15)
-			_addi(d, 1, -7)
-			_addi(d, 22, 3)
+			_addi(d, W.I_THOUGHT_FREEDOM, -15)
+			_addi(d, W.I_PARTY_SUPPORT, -7)
+			_addi(d, W.I_ARMY, 3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.PEACE:
-			_addi(d, 4, 5)
-			_addi(d, 1, 6)
-			_addi(d, 22, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, 5)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_ARMY, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.TYRANT:
-			_addi(d, 1, -10)
-			_addi(d, 3, -10)
-			_addi(d, 22, 3)
+			_addi(d, W.I_PARTY_SUPPORT, -10)
+			_addi(d, W.I_PEOPLE_SUPPORT, -10)
+			_addi(d, W.I_ARMY, 3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ECONOMIST:
-			_addi(d, 8, 5)
-			_addi(d, 22, -5)
+			_addi(d, W.I_BUDGET, 5)
+			_addi(d, W.I_ARMY, -5)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
-			_addi(d, 4, -5)
-			_addi(d, 1, -8)
-			_addi(d, 22, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, -5)
+			_addi(d, W.I_PARTY_SUPPORT, -8)
+			_addi(d, W.I_ARMY, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.IDOL:
-			_addi(d, 1, 12)
+			_addi(d, W.I_PARTY_SUPPORT, 12)
 		elif p.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
-			_addi(d, 1, 5)
-			_addi(d, 4, 3)
-			_addi(d, 22, 3)
-			_addi(d, 31, 8)
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
+			_addi(d, W.I_ARMY, 3)
+			_addi(d, W.I_WAR_SUPPORT, 8)
 		elif p.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
-			_addi(d, 1, -5)
-			_addi(d, 4, 3)
-			_addi(d, 22, -3)
-			_addi(d, 31, -8)
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
+			_addi(d, W.I_ARMY, -3)
+			_addi(d, W.I_WAR_SUPPORT, -8)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER:
-			_addi(d, 1, 6)
-			_addi(d, 9, 6)
-			_addi(d, 22, 3)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_AGENTS, 6)
+			_addi(d, W.I_ARMY, 3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.SHY:
-			_addi(d, 4, 5)
-			_addi(d, 22, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, 5)
+			_addi(d, W.I_ARMY, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
-			_addi(d, 26, 5)
-			_addi(d, 1, 7)
-			_addi(d, 8, -2)
-			_addi(d, 22, -3)
+			_addi(d, W.I_CORRUPTION, 5)
+			_addi(d, W.I_PARTY_SUPPORT, 7)
+			_addi(d, W.I_BUDGET, -2)
+			_addi(d, W.I_ARMY, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
-			_addi(d, 1, 2)
-			_addi(d, 4, 4)
-			_addi(d, 22, -2)
+			_addi(d, W.I_PARTY_SUPPORT, 2)
+			_addi(d, W.I_THOUGHT_FREEDOM, 4)
+			_addi(d, W.I_ARMY, -2)
 		elif p.trait_special == GameConstants.PoliticianSpecial.AGITATOR:
-			_addi(d, 22, 3)
+			_addi(d, W.I_ARMY, 3)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_addi(d, 1, -4)
-				_addi(d, 3, 6)
-				_addi(d, 4, -4)
+				_addi(d, W.I_PARTY_SUPPORT, -4)
+				_addi(d, W.I_PEOPLE_SUPPORT, 6)
+				_addi(d, W.I_THOUGHT_FREEDOM, -4)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_addi(d, 1, 2)
-				_addi(d, 3, 4)
-				_addi(d, 4, -2)
+				_addi(d, W.I_PARTY_SUPPORT, 2)
+				_addi(d, W.I_PEOPLE_SUPPORT, 4)
+				_addi(d, W.I_THOUGHT_FREEDOM, -2)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_addi(d, 1, 5)
-				_addi(d, 3, 2)
-				_addi(d, 4, 3)
+				_addi(d, W.I_PARTY_SUPPORT, 5)
+				_addi(d, W.I_PEOPLE_SUPPORT, 2)
+				_addi(d, W.I_THOUGHT_FREEDOM, 3)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 1, 6)
-				_addi(d, 3, -3)
-				_addi(d, 4, 4)
+				_addi(d, W.I_PARTY_SUPPORT, 6)
+				_addi(d, W.I_PEOPLE_SUPPORT, -3)
+				_addi(d, W.I_THOUGHT_FREEDOM, 4)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 1, -5)
-				_addi(d, 3, -6)
-				_addi(d, 4, 8)
+				_addi(d, W.I_PARTY_SUPPORT, -5)
+				_addi(d, W.I_PEOPLE_SUPPORT, -6)
+				_addi(d, W.I_THOUGHT_FREEDOM, 8)
 		elif p.trait_special == GameConstants.PoliticianSpecial.PEOPLES_FRIEND:
-			_addi(d, 3, 12)
-			_addi(d, 4, -6)
-			_addi(d, 22, 5)
+			_addi(d, W.I_PEOPLE_SUPPORT, 12)
+			_addi(d, W.I_THOUGHT_FREEDOM, -6)
+			_addi(d, W.I_ARMY, 5)
 		elif p.trait_special == GameConstants.PoliticianSpecial.DIPLOMAT:
-			_addi(d, 1, -3)
-			_addi(d, 22, -3)
+			_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_ARMY, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.TROTSKYITE:
-			_addi(d, 1, -5)
-			_addi(d, 3, -3)
-			_addi(d, 4, -8)
-			_addi(d, 22, 2)
-			_addi(d, 57, -5)
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+			_addi(d, W.I_PEOPLE_SUPPORT, -3)
+			_addi(d, W.I_THOUGHT_FREEDOM, -8)
+			_addi(d, W.I_ARMY, 2)
+			_addi(d, W.I_MANPOWER, -5)
 		elif p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST:
-			_addi(d, 1, -6)
-			_addi(d, 3, -4)
-			_addi(d, 9, 6)
-			_addi(d, 22, -3)
+			_addi(d, W.I_PARTY_SUPPORT, -6)
+			_addi(d, W.I_PEOPLE_SUPPORT, -4)
+			_addi(d, W.I_AGENTS, 6)
+			_addi(d, W.I_ARMY, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.MILITARY_TALENT:
-			_addi(d, 1, 6)
-			_addi(d, 4, -10)
-			_addi(d, 22, 10)
-			_addi(d, 5, -5)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_THOUGHT_FREEDOM, -10)
+			_addi(d, W.I_ARMY, 10)
+			_addi(d, W.I_LIVING, -5)
 		elif p.trait_special == GameConstants.PoliticianSpecial.AFFABLE:
-			_addi(d, 1, 6)
-			_addi(d, 4, 2)
-			_addi(d, 22, 2)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_THOUGHT_FREEDOM, 2)
+			_addi(d, W.I_ARMY, 2)
 		elif p.trait_special == GameConstants.PoliticianSpecial.INDOMITABLE:
-			_addi(d, 1, 5)
-			_addi(d, 4, -6)
-			_addi(d, 22, 3)
-			_addi(d, 5, -2)
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+			_addi(d, W.I_THOUGHT_FREEDOM, -6)
+			_addi(d, W.I_ARMY, 3)
+			_addi(d, W.I_LIVING, -2)
 
 ## TraitInfluence 的主席块 politics_dolshnost[0]（TimeScript.cs:12659-13178 逐字移植）。
 func _trait_influence_chairman(w: WorldState, d: WorldState, p: PoliticianData, i: int) -> void:
 	if _is_chairman(w, i):
 		if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-			if _dv(d, 56) != 0:
-				_addi(d, 1, -9)
+			if _dv(d, W.I_POLITICAL_LINE) != 0:
+				_addi(d, W.I_PARTY_SUPPORT, -9)
 			else:
-				_addi(d, 1, -3)
-			_addi(d, 5, 5)
-			_add_empire_relation(w, 1, 3)
-			_add_empire_relation(w, 0, -12)
-			_addi(d, 68, -2)
-			_addi(d, 26, -4)
+				_addi(d, W.I_PARTY_SUPPORT, -3)
+			_addi(d, W.I_LIVING, 5)
+			_add_empire_relation(w, EmpireData.USSR, 3)
+			_add_empire_relation(w, EmpireData.USA, -12)
+			_addi(d, W.I_SERVICES, -2)
+			_addi(d, W.I_CORRUPTION, -4)
 			_add_ideology_share(w, 0, 333)
 			_add_ideology_share(w, 1, 500)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-			if _dv(d, 56) == 1:
-				_addi(d, 1, 2)
-			_addi(d, 5, 4)
-			_addi(d, 4, 3)
-			_addi(d, 26, -2)
-			_add_empire_relation(w, 1, 6)
-			_add_empire_relation(w, 0, 2)
+			if _dv(d, W.I_POLITICAL_LINE) == 1:
+				_addi(d, W.I_PARTY_SUPPORT, 2)
+			_addi(d, W.I_LIVING, 4)
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
+			_addi(d, W.I_CORRUPTION, -2)
+			_add_empire_relation(w, EmpireData.USSR, 6)
+			_add_empire_relation(w, EmpireData.USA, 2)
 			_add_ideology_share(w, 2, 1000)
 			_add_ideology_share(w, 1, 222)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-			if _dv(d, 56) != 2:
-				_addi(d, 1, 5)
+			if _dv(d, W.I_POLITICAL_LINE) != 2:
+				_addi(d, W.I_PARTY_SUPPORT, 5)
 			else:
-				_addi(d, 1, 7)
-			_addi(d, 5, 3)
-			_addi(d, 4, 7)
-			_add_empire_relation(w, 1, 12)
-			_add_empire_relation(w, 0, -3)
+				_addi(d, W.I_PARTY_SUPPORT, 7)
+			_addi(d, W.I_LIVING, 3)
+			_addi(d, W.I_THOUGHT_FREEDOM, 7)
+			_add_empire_relation(w, EmpireData.USSR, 12)
+			_add_empire_relation(w, EmpireData.USA, -3)
 			_add_ideology_share(w, 2, 222)
 			_add_ideology_share(w, 3, 333)
 			_add_ideology_share(w, 1, 1000)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-			if _dv(d, 56) != 3:
-				_addi(d, 1, 13)
+			if _dv(d, W.I_POLITICAL_LINE) != 3:
+				_addi(d, W.I_PARTY_SUPPORT, 13)
 			else:
-				_addi(d, 1, 15)
-			_addi(d, 5, -7)
-			_addi(d, 4, 8)
-			_addi(d, 6, -1)
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, 5)
+				_addi(d, W.I_PARTY_SUPPORT, 15)
+			_addi(d, W.I_LIVING, -7)
+			_addi(d, W.I_THOUGHT_FREEDOM, 8)
+			_addi(d, W.I_DIPLO, -1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, 5)
 			_add_ideology_share(w, 3, 222)
 			_add_ideology_share(w, 4, 333)
 		elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-			if _dv(d, 56) != 4:
-				_addi(d, 1, 27)
+			if _dv(d, W.I_POLITICAL_LINE) != 4:
+				_addi(d, W.I_PARTY_SUPPORT, 27)
 			else:
-				_addi(d, 1, 30)
-			_addi(d, 5, -15)
-			_addi(d, 4, 22)
-			_addi(d, 8, 4)
-			_addi(d, 6, -2)
-			_add_empire_relation(w, 1, -10)
-			_add_empire_relation(w, 0, 12)
+				_addi(d, W.I_PARTY_SUPPORT, 30)
+			_addi(d, W.I_LIVING, -15)
+			_addi(d, W.I_THOUGHT_FREEDOM, 22)
+			_addi(d, W.I_BUDGET, 4)
+			_addi(d, W.I_DIPLO, -2)
+			_add_empire_relation(w, EmpireData.USSR, -10)
+			_add_empire_relation(w, EmpireData.USA, 12)
 			_add_ideology_share(w, 3, 333)
 			_add_ideology_share(w, 4, 222)
 		if p.trait_background == GameConstants.PoliticianBackground.PARTY_CADRE:
-			_addi(d, 1, 6)
-			_addi(d, 3, -2)
-			_addi(d, 4, -8)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_PEOPLE_SUPPORT, -2)
+			_addi(d, W.I_THOUGHT_FREEDOM, -8)
 			if p.trait_personality == GameConstants.PoliticianPersonality.MODERATE  or  p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 26, 2)
+				_addi(d, W.I_CORRUPTION, 2)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 26, 3)
+				_addi(d, W.I_CORRUPTION, 3)
 		elif p.trait_background == GameConstants.PoliticianBackground.MASS_LEADER:
-			_addi(d, 1, -10)
-			_addi(d, 3, 12)
-			_addi(d, 22, 2)
-			_addi(d, 5, 5)
-			_addi(d, 26, -4)
+			_addi(d, W.I_PARTY_SUPPORT, -10)
+			_addi(d, W.I_PEOPLE_SUPPORT, 12)
+			_addi(d, W.I_ARMY, 2)
+			_addi(d, W.I_LIVING, 5)
+			_addi(d, W.I_CORRUPTION, -4)
 		elif p.trait_background == GameConstants.PoliticianBackground.STUDENT_REBEL:
-			_addi(d, 1, -10)
-			_addi(d, 4, -12)
-			_addi(d, 26, -4)
+			_addi(d, W.I_PARTY_SUPPORT, -10)
+			_addi(d, W.I_THOUGHT_FREEDOM, -12)
+			_addi(d, W.I_CORRUPTION, -4)
 		elif p.trait_background == GameConstants.PoliticianBackground.WORKER_MODEL:
-			_addi(d, 1, -5)
-			_addi(d, 3, 12)
-			_addi(d, 12, 4)
-			_addi(d, 13, 4)
-			_addi(d, 68, 4)
-			_addi(d, 5, -5)
+			_addi(d, W.I_PARTY_SUPPORT, -5)
+			_addi(d, W.I_PEOPLE_SUPPORT, 12)
+			_addi(d, W.I_INDUSTRY, 4)
+			_addi(d, W.I_AGRICULTURE, 4)
+			_addi(d, W.I_SERVICES, 4)
+			_addi(d, W.I_LIVING, -5)
 		elif p.trait_background == GameConstants.PoliticianBackground.MILITARY_GENERAL:
-			_addi(d, 1, -6)
-			_addi(d, 3, -6)
-			_addi(d, 4, -10)
-			_addi(d, 22, 8)
-			_addi(d, 5, -6)
-			_add_empire_relation(w, 1, -5)
-			_add_empire_relation(w, 0, -5)
+			_addi(d, W.I_PARTY_SUPPORT, -6)
+			_addi(d, W.I_PEOPLE_SUPPORT, -6)
+			_addi(d, W.I_THOUGHT_FREEDOM, -10)
+			_addi(d, W.I_ARMY, 8)
+			_addi(d, W.I_LIVING, -6)
+			_add_empire_relation(w, EmpireData.USSR, -5)
+			_add_empire_relation(w, EmpireData.USA, -5)
 			if p.trait_personality != GameConstants.PoliticianPersonality.FAR_LEFT:
-				_addi(d, 26, 2)
+				_addi(d, W.I_CORRUPTION, 2)
 		elif p.trait_background == GameConstants.PoliticianBackground.INTELLECTUAL:
-			_addi(d, 5, 5)
-			_addi(d, 11, 5)
+			_addi(d, W.I_LIVING, 5)
+			_addi(d, W.I_SCIENCE, 5)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_addi(d, 1, -4)
-				_addi(d, 3, 4)
-				_addi(d, 4, -4)
+				_addi(d, W.I_PARTY_SUPPORT, -4)
+				_addi(d, W.I_PEOPLE_SUPPORT, 4)
+				_addi(d, W.I_THOUGHT_FREEDOM, -4)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE  or  p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_addi(d, 1, 3)
-				_addi(d, 3, 3)
-				_addi(d, 4, 3)
+				_addi(d, W.I_PARTY_SUPPORT, 3)
+				_addi(d, W.I_PEOPLE_SUPPORT, 3)
+				_addi(d, W.I_THOUGHT_FREEDOM, 3)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 1, 6)
-				_addi(d, 3, -6)
-				_addi(d, 4, 6)
+				_addi(d, W.I_PARTY_SUPPORT, 6)
+				_addi(d, W.I_PEOPLE_SUPPORT, -6)
+				_addi(d, W.I_THOUGHT_FREEDOM, 6)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 1, 10)
-				_addi(d, 3, -10)
-				_addi(d, 4, 10)
+				_addi(d, W.I_PARTY_SUPPORT, 10)
+				_addi(d, W.I_PEOPLE_SUPPORT, -10)
+				_addi(d, W.I_THOUGHT_FREEDOM, 10)
 		elif p.trait_background == GameConstants.PoliticianBackground.SCIENTIST:
-			_addi(d, 1, 10)
-			_addi(d, 3, 10)
-			_addi(d, 22, 5)
-			_addi(d, 5, 8)
-			_addi(d, 11, 18)
+			_addi(d, W.I_PARTY_SUPPORT, 10)
+			_addi(d, W.I_PEOPLE_SUPPORT, 10)
+			_addi(d, W.I_ARMY, 5)
+			_addi(d, W.I_LIVING, 8)
+			_addi(d, W.I_SCIENCE, 18)
 		elif p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS:
-			_addi(d, 1, -10)
-			_addi(d, 3, -8)
-			_addi(d, 4, -10)
-			_addi(d, 9, 9)
-			_add_empire_relation(w, 1, -5)
-			_add_empire_relation(w, 0, -5)
+			_addi(d, W.I_PARTY_SUPPORT, -10)
+			_addi(d, W.I_PEOPLE_SUPPORT, -8)
+			_addi(d, W.I_THOUGHT_FREEDOM, -10)
+			_addi(d, W.I_AGENTS, 9)
+			_add_empire_relation(w, EmpireData.USSR, -5)
+			_add_empire_relation(w, EmpireData.USA, -5)
 		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
-			_addi(d, 11, 15)
+			_addi(d, W.I_SCIENCE, 15)
 		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
-			_addi(d, 26, -2)
-			_addi(d, 4, -15)
-			_addi(d, 1, -7)
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
+			_addi(d, W.I_CORRUPTION, -2)
+			_addi(d, W.I_THOUGHT_FREEDOM, -15)
+			_addi(d, W.I_PARTY_SUPPORT, -7)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
-			_addi(d, 1, 7)
-			_add_empire_relation(w, 1, 5)
-			_add_empire_relation(w, 0, 5)
+			_addi(d, W.I_PARTY_SUPPORT, 7)
+			_add_empire_relation(w, EmpireData.USSR, 5)
+			_add_empire_relation(w, EmpireData.USA, 5)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
-			_addi(d, 26, 2)
-			_addi(d, 4, 15)
-			_addi(d, 1, 15)
-			_add_empire_relation(w, 1, 6)
-			_add_empire_relation(w, 0, 6)
-			if _dv(d, 6) > 60:
-				_addi(d, 6, -1)
+			_addi(d, W.I_CORRUPTION, 2)
+			_addi(d, W.I_THOUGHT_FREEDOM, 15)
+			_addi(d, W.I_PARTY_SUPPORT, 15)
+			_add_empire_relation(w, EmpireData.USSR, 6)
+			_add_empire_relation(w, EmpireData.USA, 6)
+			if _dv(d, W.I_DIPLO) > 60:
+				_addi(d, W.I_DIPLO, -1)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.TECH:
-			_addi(d, 11, 9)
+			_addi(d, W.I_SCIENCE, 9)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.HEDONIST:
-			_addi(d, 1, 8)
-			_addi(d, 3, -10)
-			_addi(d, 4, 10)
-			_add_empire_relation(w, 0, 10)
-			if _dv(d, 68) < 60:
-				_addi(d, 68, 4)
+			_addi(d, W.I_PARTY_SUPPORT, 8)
+			_addi(d, W.I_PEOPLE_SUPPORT, -10)
+			_addi(d, W.I_THOUGHT_FREEDOM, 10)
+			_add_empire_relation(w, EmpireData.USA, 10)
+			if _dv(d, W.I_SERVICES) < 60:
+				_addi(d, W.I_SERVICES, 4)
 			else:
-				_addi(d, 68, -4)
-			if _dv(d, 5) < 50:
-				_addi(d, 5, 6)
+				_addi(d, W.I_SERVICES, -4)
+			if _dv(d, W.I_LIVING) < 50:
+				_addi(d, W.I_LIVING, 6)
 			else:
-				_addi(d, 5, -6)
+				_addi(d, W.I_LIVING, -6)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.CONSPIRACY_THEORIST:
-			_addi(d, 1, -8)
-			_addi(d, 3, -10)
-			_addi(d, 57, -6)
+			_addi(d, W.I_PARTY_SUPPORT, -8)
+			_addi(d, W.I_PEOPLE_SUPPORT, -10)
+			_addi(d, W.I_MANPOWER, -6)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_addi(d, 4, -10)
+				_addi(d, W.I_THOUGHT_FREEDOM, -10)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_addi(d, 4, -5)
+				_addi(d, W.I_THOUGHT_FREEDOM, -5)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 4, 5)
+				_addi(d, W.I_THOUGHT_FREEDOM, 5)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 4, 10)
+				_addi(d, W.I_THOUGHT_FREEDOM, 10)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT  or  p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_addi(d, 31, 6)
+				_addi(d, W.I_WAR_SUPPORT, 6)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_addi(d, 31, 12)
+				_addi(d, W.I_WAR_SUPPORT, 12)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 31, -6)
+				_addi(d, W.I_WAR_SUPPORT, -6)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 31, -12)
+				_addi(d, W.I_WAR_SUPPORT, -12)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.SUBJECTIVIST:
-			_addi(d, 1, -8)
-			_addi(d, 3, -5)
-			_addi(d, 4, -10)
-			_addi(d, 8, -5)
-			_addi(d, 12, -1)
-			_addi(d, 13, -1)
-			_addi(d, 68, 1)
-			_addi(d, 57, -3)
+			_addi(d, W.I_PARTY_SUPPORT, -8)
+			_addi(d, W.I_PEOPLE_SUPPORT, -5)
+			_addi(d, W.I_THOUGHT_FREEDOM, -10)
+			_addi(d, W.I_BUDGET, -5)
+			_addi(d, W.I_INDUSTRY, -1)
+			_addi(d, W.I_AGRICULTURE, -1)
+			_addi(d, W.I_SERVICES, 1)
+			_addi(d, W.I_MANPOWER, -3)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
-			_addi(d, 1, 8)
-			_addi(d, 8, -3)
-			_addi(d, 12, -2)
-			_addi(d, 13, -2)
-			_addi(d, 68, -2)
-			_addi(d, 26, 3)
-			if _dv(d, 17) <= 17:
-				_addi(d, 4, -5)
+			_addi(d, W.I_PARTY_SUPPORT, 8)
+			_addi(d, W.I_BUDGET, -3)
+			_addi(d, W.I_INDUSTRY, -2)
+			_addi(d, W.I_AGRICULTURE, -2)
+			_addi(d, W.I_SERVICES, -2)
+			_addi(d, W.I_CORRUPTION, 3)
+			if _dv(d, W.I_PRESS_POLICY) <= 17:
+				_addi(d, W.I_THOUGHT_FREEDOM, -5)
 			else:
-				_addi(d, 3, 5)
-			if _dv(d, 18) > 20:
-				_addi(d, 31, -3)
-			if _dv(d, 50) > 27:
-				_addi(d, 31, 3)
+				_addi(d, W.I_PEOPLE_SUPPORT, 5)
+			if _dv(d, W.I_TERRITORY) > 20:
+				_addi(d, W.I_WAR_SUPPORT, -3)
+			if _dv(d, W.I_RELIGION) > 27:
+				_addi(d, W.I_WAR_SUPPORT, 3)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
-			_addi(d, 8, -8)
-			_addi(d, 26, 5)
-			_addi(d, 57, -5)
-			_addi(d, 68, 3)
-			if _dv(d, 75) < 100:
-				_addi(d, 1, -10)
+			_addi(d, W.I_BUDGET, -8)
+			_addi(d, W.I_CORRUPTION, 5)
+			_addi(d, W.I_MANPOWER, -5)
+			_addi(d, W.I_SERVICES, 3)
+			if _dv(d, W.I_BUDGET_ENVELOPE) < 100:
+				_addi(d, W.I_PARTY_SUPPORT, -10)
 			else:
-				_addi(d, 1, -6)
+				_addi(d, W.I_PARTY_SUPPORT, -6)
 		elif p.trait_alignment == GameConstants.PoliticianAlignment.POLITICS_FIRST:
-			_addi(d, 1, -12)
-			_addi(d, 3, 8 + d.budget_propaganda / 100)
-			_addi(d, 8, -5)
-			_addi(d, 12, -1)
+			_addi(d, W.I_PARTY_SUPPORT, -12)
+			_addi(d, W.I_PEOPLE_SUPPORT, 8 + d.budget_propaganda / 100)
+			_addi(d, W.I_BUDGET, -5)
+			_addi(d, W.I_INDUSTRY, -1)
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_addi(d, 4, -20)
-				_add_empire_relation(w, 1, -6)
-				_add_empire_relation(w, 0, -6)
+				_addi(d, W.I_THOUGHT_FREEDOM, -20)
+				_add_empire_relation(w, EmpireData.USSR, -6)
+				_add_empire_relation(w, EmpireData.USA, -6)
 				_add_ideology_share(w, 0, 333)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 4, -5)
-				_add_empire_relation(w, 1, -6)
-				_add_empire_relation(w, 0, 6)
+				_addi(d, W.I_THOUGHT_FREEDOM, -5)
+				_add_empire_relation(w, EmpireData.USSR, -6)
+				_add_empire_relation(w, EmpireData.USA, 6)
 				_add_ideology_share(w, 4, 333)
 		if p.trait_special == GameConstants.PoliticianSpecial.HARSH:
-			_addi(d, 4, -25)
-			_addi(d, 1, -15)
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
-			_addi(d, 6, d.diplomatic_reputation / 150)
+			_addi(d, W.I_THOUGHT_FREEDOM, -25)
+			_addi(d, W.I_PARTY_SUPPORT, -15)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			_addi(d, W.I_DIPLO, d.diplomatic_reputation / 150)
 		elif p.trait_special == GameConstants.PoliticianSpecial.PEACE:
-			_addi(d, 4, 6)
-			_addi(d, 1, 8)
-			_add_empire_relation(w, 1, 4)
-			_add_empire_relation(w, 0, 4)
+			_addi(d, W.I_THOUGHT_FREEDOM, 6)
+			_addi(d, W.I_PARTY_SUPPORT, 8)
+			_add_empire_relation(w, EmpireData.USSR, 4)
+			_add_empire_relation(w, EmpireData.USA, 4)
 		elif p.trait_special == GameConstants.PoliticianSpecial.TYRANT:
-			_addi(d, 1, -16)
-			_addi(d, 3, -16)
-			_add_empire_relation(w, 1, -8)
-			_add_empire_relation(w, 0, -8)
+			_addi(d, W.I_PARTY_SUPPORT, -16)
+			_addi(d, W.I_PEOPLE_SUPPORT, -16)
+			_add_empire_relation(w, EmpireData.USSR, -8)
+			_add_empire_relation(w, EmpireData.USA, -8)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ECONOMIST:
-			_addi(d, 8, 8)
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
+			_addi(d, W.I_BUDGET, 8)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ARROGANT:
-			_addi(d, 4, -8)
-			_addi(d, 1, -10)
-			_add_empire_relation(w, 1, -6)
-			_add_empire_relation(w, 0, -6)
+			_addi(d, W.I_THOUGHT_FREEDOM, -8)
+			_addi(d, W.I_PARTY_SUPPORT, -10)
+			_add_empire_relation(w, EmpireData.USSR, -6)
+			_add_empire_relation(w, EmpireData.USA, -6)
 		elif p.trait_special == GameConstants.PoliticianSpecial.IDOL:
-			_addi(d, 1, 20)
+			_addi(d, W.I_PARTY_SUPPORT, 20)
 		elif p.trait_special == GameConstants.PoliticianSpecial.CHINA_SCHOOL:
-			_addi(d, 1, 8)
-			_addi(d, 4, 10)
-			_addi(d, 31, 15)
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
-			_addi(d, 6, d.diplomatic_reputation / 150)
+			_addi(d, W.I_PARTY_SUPPORT, 8)
+			_addi(d, W.I_THOUGHT_FREEDOM, 10)
+			_addi(d, W.I_WAR_SUPPORT, 15)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
+			_addi(d, W.I_DIPLO, d.diplomatic_reputation / 150)
 		elif p.trait_special == GameConstants.PoliticianSpecial.WESTERN_SCHOOL:
-			_addi(d, 1, -8)
-			_addi(d, 4, 10)
-			_addi(d, 31, -15)
-			_add_empire_relation(w, 1, -6)
-			_add_empire_relation(w, 0, 6)
-			_addi(d, 6, -d.diplomatic_reputation / 150)
+			_addi(d, W.I_PARTY_SUPPORT, -8)
+			_addi(d, W.I_THOUGHT_FREEDOM, 10)
+			_addi(d, W.I_WAR_SUPPORT, -15)
+			_add_empire_relation(w, EmpireData.USSR, -6)
+			_add_empire_relation(w, EmpireData.USA, 6)
+			_addi(d, W.I_DIPLO, -d.diplomatic_reputation / 150)
 		elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER:
-			_addi(d, 1, 9)
-			_addi(d, 9, 6)
-			_add_empire_relation(w, 1, 4)
-			_add_empire_relation(w, 0, 4)
+			_addi(d, W.I_PARTY_SUPPORT, 9)
+			_addi(d, W.I_AGENTS, 6)
+			_add_empire_relation(w, EmpireData.USSR, 4)
+			_add_empire_relation(w, EmpireData.USA, 4)
 		elif p.trait_special == GameConstants.PoliticianSpecial.SHY:
-			_addi(d, 4, 8)
-			_add_empire_relation(w, 1, -1)
-			_add_empire_relation(w, 0, -1)
+			_addi(d, W.I_THOUGHT_FREEDOM, 8)
+			_add_empire_relation(w, EmpireData.USSR, -1)
+			_add_empire_relation(w, EmpireData.USA, -1)
 		elif p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
-			_addi(d, 26, 10)
-			_addi(d, 1, 15)
-			_addi(d, 8, -3)
+			_addi(d, W.I_CORRUPTION, 10)
+			_addi(d, W.I_PARTY_SUPPORT, 15)
+			_addi(d, W.I_BUDGET, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
-			_addi(d, 1, 4)
-			_addi(d, 4, 6)
-			_addi(d, 8, -1)
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
+			_addi(d, W.I_PARTY_SUPPORT, 4)
+			_addi(d, W.I_THOUGHT_FREEDOM, 6)
+			_addi(d, W.I_BUDGET, -1)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.AGITATOR:
 			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-				_addi(d, 1, -5)
-				_addi(d, 3, 8)
-				_addi(d, 4, -6)
+				_addi(d, W.I_PARTY_SUPPORT, -5)
+				_addi(d, W.I_PEOPLE_SUPPORT, 8)
+				_addi(d, W.I_THOUGHT_FREEDOM, -6)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
-				_addi(d, 1, 3)
-				_addi(d, 3, 5)
-				_addi(d, 4, -3)
+				_addi(d, W.I_PARTY_SUPPORT, 3)
+				_addi(d, W.I_PEOPLE_SUPPORT, 5)
+				_addi(d, W.I_THOUGHT_FREEDOM, -3)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
-				_addi(d, 1, 6)
-				_addi(d, 3, 3)
-				_addi(d, 4, 3)
+				_addi(d, W.I_PARTY_SUPPORT, 6)
+				_addi(d, W.I_PEOPLE_SUPPORT, 3)
+				_addi(d, W.I_THOUGHT_FREEDOM, 3)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
-				_addi(d, 1, 8)
-				_addi(d, 3, -5)
-				_addi(d, 4, 5)
+				_addi(d, W.I_PARTY_SUPPORT, 8)
+				_addi(d, W.I_PEOPLE_SUPPORT, -5)
+				_addi(d, W.I_THOUGHT_FREEDOM, 5)
 			elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
-				_addi(d, 1, -8)
-				_addi(d, 3, -10)
-				_addi(d, 4, 10)
+				_addi(d, W.I_PARTY_SUPPORT, -8)
+				_addi(d, W.I_PEOPLE_SUPPORT, -10)
+				_addi(d, W.I_THOUGHT_FREEDOM, 10)
 		elif p.trait_special == GameConstants.PoliticianSpecial.PEOPLES_FRIEND:
-			_addi(d, 3, 20)
-			_addi(d, 4, -10)
+			_addi(d, W.I_PEOPLE_SUPPORT, 20)
+			_addi(d, W.I_THOUGHT_FREEDOM, -10)
 		elif p.trait_special == GameConstants.PoliticianSpecial.DIPLOMAT:
-			_addi(d, 1, 5)
-			_add_empire_relation(w, 0, 6)
-			_add_empire_relation(w, 1, 6)
+			_addi(d, W.I_PARTY_SUPPORT, 5)
+			_add_empire_relation(w, EmpireData.USA, 6)
+			_add_empire_relation(w, EmpireData.USSR, 6)
 		elif p.trait_special == GameConstants.PoliticianSpecial.TROTSKYITE:
-			_addi(d, 1, -10)
-			_addi(d, 3, -8)
-			_addi(d, 4, -15)
-			_addi(d, 57, -6)
+			_addi(d, W.I_PARTY_SUPPORT, -10)
+			_addi(d, W.I_PEOPLE_SUPPORT, -8)
+			_addi(d, W.I_THOUGHT_FREEDOM, -15)
+			_addi(d, W.I_MANPOWER, -6)
 		elif p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST:
-			_addi(d, 1, -8)
-			_addi(d, 3, -6)
-			_addi(d, 9, 6)
+			_addi(d, W.I_PARTY_SUPPORT, -8)
+			_addi(d, W.I_PEOPLE_SUPPORT, -6)
+			_addi(d, W.I_AGENTS, 6)
 		elif p.trait_special == GameConstants.PoliticianSpecial.MILITARY_TALENT:
-			_addi(d, 1, -4)
-			_addi(d, 3, -4)
-			_addi(d, 4, -10)
-			_addi(d, 22, 6)
-			_addi(d, 5, -5)
-			_add_empire_relation(w, 1, -3)
-			_add_empire_relation(w, 0, -3)
+			_addi(d, W.I_PARTY_SUPPORT, -4)
+			_addi(d, W.I_PEOPLE_SUPPORT, -4)
+			_addi(d, W.I_THOUGHT_FREEDOM, -10)
+			_addi(d, W.I_ARMY, 6)
+			_addi(d, W.I_LIVING, -5)
+			_add_empire_relation(w, EmpireData.USSR, -3)
+			_add_empire_relation(w, EmpireData.USA, -3)
 		elif p.trait_special == GameConstants.PoliticianSpecial.AFFABLE:
-			_addi(d, 1, 8)
-			_addi(d, 4, 3)
-			_add_empire_relation(w, 1, 2)
-			_add_empire_relation(w, 0, 2)
+			_addi(d, W.I_PARTY_SUPPORT, 8)
+			_addi(d, W.I_THOUGHT_FREEDOM, 3)
+			_add_empire_relation(w, EmpireData.USSR, 2)
+			_add_empire_relation(w, EmpireData.USA, 2)
 		elif p.trait_special == GameConstants.PoliticianSpecial.INDOMITABLE:
-			_addi(d, 1, 6)
-			_addi(d, 4, -8)
-			_addi(d, 5, -4)
+			_addi(d, W.I_PARTY_SUPPORT, 6)
+			_addi(d, W.I_THOUGHT_FREEDOM, -8)
+			_addi(d, W.I_LIVING, -4)
 
 func _in_central_office(w: WorldState, idx: int) -> bool:
 	for pos in [3, 4, 5, 6, 7]:
@@ -1368,9 +1368,9 @@ func _apply_modifier51_oil(d: WorldState, w: WorldState) -> void:
 	if oil <= 200.0:
 		oil = 200.0
 	w.oil_eat = oil
-	var raw := float(_dv(d, 143))
+	var raw := float(_dv(d, W.I_OIL_PRICE))
 	var price := raw
-	if gm._mod_active(w, 58) and not gm._mod_active(w, 16) and _dv(d, 153) <= 0:
+	if gm._mod_active(w, GameConstants.Modifier.EAST_SIBERIA_PACIFIC_PIPELINE) and not gm._mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO) and _dv(d, W.I_MODIFIER_58_TIMER) <= 0:
 		price -= 15.0
 	for idx in [14, 8, 35, 40, 30, 83, 52]:
 		var cc := w.get_country_by_legacy_index(idx)
@@ -1389,7 +1389,7 @@ func _apply_modifier51_oil(d: WorldState, w: WorldState) -> void:
 			sov_price -= 1.0
 	if sov_price < 10.0:
 		sov_price = 10.0
-	var d160 := _dv(d, 160)
+	var d160 := _dv(d, W.I_SOVIET_MONEY)
 	if d160 > 0:
 		w.empires[EmpireData.USSR].money += int(raw * 7.7 * float(d160) / 100000.0)
 	else:
@@ -1401,7 +1401,7 @@ func _apply_modifier51_oil(d: WorldState, w: WorldState) -> void:
 			usa_price -= 1.0
 	if usa_price < 10.0:
 		usa_price = 10.0
-	var d161 := _dv(d, 161)
+	var d161 := _dv(d, W.I_USA_MONEY)
 	if d161 > 0:
 		w.empires[EmpireData.USA].money += int(raw * 7.7 * float(d161) / 100000.0)
 	else:
@@ -1454,9 +1454,9 @@ func _fortnight_mutual_relations(d: WorldState, w: WorldState) -> void:
 			usa.relations += base / div45
 		elif china != null and (china.has_tag("sev") or china.has_tag("okb")) and usa.relations > 650:
 			usa.relations += base / div40
-		elif ussr != null and ussr.relations > 750 and not gm._mod_active(w, 17):
+		elif ussr != null and ussr.relations > 750 and not gm._mod_active(w, GameConstants.Modifier.USA_EMBARGO):
 			usa.relations += base / div30
-		elif usa.relations < 200 and gm._mod_active(w, 17):
+		elif usa.relations < 200 and gm._mod_active(w, GameConstants.Modifier.USA_EMBARGO):
 			usa.relations += base / div15
 		elif usa.relations < 400:
 			usa.relations += base / div20
@@ -1468,9 +1468,9 @@ func _fortnight_mutual_relations(d: WorldState, w: WorldState) -> void:
 			ussr.relations += base / div45
 		elif usa_trade != null and (usa_trade.has_tag("对华贸易") or (china != null and china.has_tag("okb"))) and ussr.relations > 650:
 			ussr.relations += base / div40
-		elif usa != null and usa.relations > 750 and not gm._mod_active(w, 17):
+		elif usa != null and usa.relations > 750 and not gm._mod_active(w, GameConstants.Modifier.USA_EMBARGO):
 			ussr.relations += base / div30
-		elif ussr.relations < 200 and gm._mod_active(w, 17):
+		elif ussr.relations < 200 and gm._mod_active(w, GameConstants.Modifier.USA_EMBARGO):
 			ussr.relations += base / div15
 		elif ussr.relations < 400:
 			ussr.relations += base / div20
@@ -2006,7 +2006,7 @@ func _set_decision_flag(w: WorldState, idx: int, value: bool) -> void:
 ## ModifiesInfuence.cs:27-500 的 50 号修正「军事的发展进程」逐字移植。
 ## 依据事件 513-521/540/544/545/685 与军购/PMC/机械陆军等状态，每双周结算一次。
 func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
-	if not gm._mod_active(w, 50):
+	if not gm._mod_active(w, GameConstants.Modifier.MILITARY_DEVELOPMENT):
 		return
 	if w.event_done_num(513) and w.techs != null and w.techs.unlocked.size() > 18 and w.techs.unlocked[18]:
 		if w.result_of_event_num(513) == 0:
@@ -2062,14 +2062,14 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 			1:
 				d.army += 5
 				d.budget -= 2
-				_add_empire_relation(w, 0, -2)
-				_add_empire_relation(w, 1, -2)
+				_add_empire_relation(w, EmpireData.USA, -2)
+				_add_empire_relation(w, EmpireData.USSR, -2)
 			2:
 				d.army += 10
 				d.people_support += 3
 				d.budget -= 3
-				_add_empire_relation(w, 0, -2)
-				_add_empire_relation(w, 1, -2)
+				_add_empire_relation(w, EmpireData.USA, -2)
+				_add_empire_relation(w, EmpireData.USSR, -2)
 	if w.event_done_num(518):
 		match w.result_of_event_num(518):
 			0:
@@ -2080,15 +2080,15 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 			1:
 				d.army += 3
 				d.budget -= 2
-				_add_empire_relation(w, 0, -1)
-				_add_empire_relation(w, 1, -1)
+				_add_empire_relation(w, EmpireData.USA, -1)
+				_add_empire_relation(w, EmpireData.USSR, -1)
 				d.mil_intervention += 10
 			2:
 				d.army += 8
 				d.people_support += 2
 				d.budget -= 3
-				_add_empire_relation(w, 0, -1)
-				_add_empire_relation(w, 1, -1)
+				_add_empire_relation(w, EmpireData.USA, -1)
+				_add_empire_relation(w, EmpireData.USSR, -1)
 				d.mil_intervention += 10
 	if w.event_done_num(519):
 		match w.result_of_event_num(519):
@@ -2109,19 +2109,19 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 			0:
 				d.army += 20
 				d.people_support += 5
-				_add_empire_relation(w, 0, -3)
-				_add_empire_relation(w, 1, -3)
+				_add_empire_relation(w, EmpireData.USA, -3)
+				_add_empire_relation(w, EmpireData.USSR, -3)
 			1:
 				d.army += 50
 				d.budget -= 5
 				d.people_support += 8
-				_add_empire_relation(w, 0, -4)
-				_add_empire_relation(w, 1, -4)
+				_add_empire_relation(w, EmpireData.USA, -4)
+				_add_empire_relation(w, EmpireData.USSR, -4)
 			2:
 				d.army += 10
 				d.people_support += 10
-				_add_empire_relation(w, 0, -2)
-				_add_empire_relation(w, 1, -2)
+				_add_empire_relation(w, EmpireData.USA, -2)
+				_add_empire_relation(w, EmpireData.USSR, -2)
 	if w.event_done_num(521):
 		match w.result_of_event_num(521):
 			0:
@@ -2153,12 +2153,12 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 				d.diplomatic_reputation -= 5
 			1:
 				d.army += 20
-				_add_empire_relation(w, 0, -2)
-				_add_empire_relation(w, 1, -2)
+				_add_empire_relation(w, EmpireData.USA, -2)
+				_add_empire_relation(w, EmpireData.USSR, -2)
 			2:
 				d.army += 40
-				_add_empire_relation(w, 0, -4)
-				_add_empire_relation(w, 1, -4)
+				_add_empire_relation(w, EmpireData.USA, -4)
+				_add_empire_relation(w, EmpireData.USSR, -4)
 	if w.event_done_num(545):
 		match w.result_of_event_num(545):
 			0:
@@ -2175,8 +2175,8 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 	if w.event_done_num(685):
 		match w.result_of_event_num(685):
 			0:
-				_add_empire_relation(w, 0, 2)
-				_add_empire_relation(w, 1, 2)
+				_add_empire_relation(w, EmpireData.USA, 2)
+				_add_empire_relation(w, EmpireData.USSR, 2)
 				d.army -= 4
 				d.agents += 2
 				d.thought_freedom += 2
@@ -2185,8 +2185,8 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 				elif d.diplomatic_reputation < 500:
 					d.diplomatic_reputation += 2
 			1:
-				_add_empire_relation(w, 0, 1)
-				_add_empire_relation(w, 1, 1)
+				_add_empire_relation(w, EmpireData.USA, 1)
+				_add_empire_relation(w, EmpireData.USSR, 1)
 				d.army -= 2
 				if d.diplomatic_reputation > 900:
 					d.diplomatic_reputation -= 1
@@ -2199,8 +2199,8 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 				d.mil_intervention += 40
 				d.science += 100
 			2:
-				_add_empire_relation(w, 0, -1)
-				_add_empire_relation(w, 1, -1)
+				_add_empire_relation(w, EmpireData.USA, -1)
+				_add_empire_relation(w, EmpireData.USSR, -1)
 				d.diplomatic_reputation += 2
 	# 军购协定 / PMC / 机械陆军 / 军力封顶（ModifiesInfuence.cs:433-500）
 	# 433-442 取消分支：条件满足时清零协定/PMC 并撤销对应国策标记。
@@ -2224,7 +2224,7 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 		d.budget -= 6
 		d.army += 12
 		d.science += 5
-		_add_empire_relation(w, 1, 8)
+		_add_empire_relation(w, EmpireData.USSR, 8)
 		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
 			w.empires[EmpireData.USSR].money += 6
 			w.empires[EmpireData.USSR].power += 1
@@ -2517,9 +2517,9 @@ func _political_system_recalc(d: WorldState, w: WorldState) -> void:
 	# TimeScript.cs:1333-1336：DevelopedConsumerism > 0 → num20++。
 	if w.developed_consumerism > 0:
 		num20 += 1
-	if gm._mod_active(w, 40):
+	if gm._mod_active(w, GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION):
 		num20 -= 1
-	if gm._mod_active(w, 38) and num20 > 0:
+	if gm._mod_active(w, GameConstants.Modifier.PRESIDENT_FOR_LIFE) and num20 > 0:
 		num20 = 0
 	# TimeScript.cs:1341-1349：event_done[502] && res502!=4 → num20-=3；
 	# 且 data.party_system==8（政党制度8）再 -3。
@@ -2575,7 +2575,7 @@ func _political_system_recalc(d: WorldState, w: WorldState) -> void:
 	if pc:
 		pc.government = new_gosstroy
 	# 原版 1440-1444：modifies[40] 激活且 Gosstroy==1 时强制覆盖为 data.ideology=3 / Gosstroy=2
-	if gm._mod_active(w, 40) and pc != null and pc.government == GameConstants.Government.SOCIALIST:
+	if gm._mod_active(w, GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION) and pc != null and pc.government == GameConstants.Government.SOCIALIST:
 		d.ideology = 3
 		pc.government = GameConstants.Government.REFORMIST
 	# 注意：data.political_line 政治路线重算也在日块（tick 中先于本函数调用），不在此处
@@ -2980,9 +2980,9 @@ func _on_fortnight() -> void:
 	_apply_modifier50_military(d, w)
 	# 原版 ModifiesInfuence.cs:502-508：每轮双周强制激活修正 1 与 50。
 	# （Godot 改版 dlc[3]=true 全 DLC 免费，开局已激活 50；这里保留原版强制激活作双保险。）
-	if w.modifiers.size() > 1 and not gm._mod_active(w, 1):
+	if w.modifiers.size() > 1 and not gm._mod_active(w, GameConstants.Modifier.PALESTINE_DISPUTE):
 		w.modifiers[1].is_active = true
-	if w.modifiers.size() > 50 and not gm._mod_active(w, 50):
+	if w.modifiers.size() > 50 and not gm._mod_active(w, GameConstants.Modifier.MILITARY_DEVELOPMENT):
 		w.modifiers[50].is_active = true
 	_fortnight_budget_growth_fallback(d, budget_before)
 	_fortnight_population_budget_bonus(d)
@@ -3034,17 +3034,17 @@ func _fortnight_modifiers(
 	var player := w.get_player_country()
 
 	# 0 工业技术依赖：原作在解除的当轮仍会扣一次工业。
-	if gm._mod_active(w, 0):
+	if gm._mod_active(w, GameConstants.Modifier.INEFFICIENT_INDUSTRY):
 		if w.techs and w.techs.unlocked.size() > 10 and w.techs.unlocked[10]:
 			w.modifiers[0].is_active = false
 		d.industry -= 5
 
 	# 2 服务业发展进程（ModifiesInfuence.cs:510-1198：寡头/教育/高考/医疗/票证/国策，动态结算）。
-	if gm._mod_active(w, 2):
+	if gm._mod_active(w, GameConstants.Modifier.SERVICE_SECTOR_DEVELOPMENT):
 		_apply_modifier2_services(d, w)
 
 	# 3 后毛时代效应。
-	if gm._mod_active(w, 3):
+	if gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
 		# 深度改革则解除并冲击。解除当轮仍继续执行下方周期效果。
 		if d.ideology >= 4 or d.econ_system >= 14:
 			w.modifiers[3].is_active = false
@@ -3070,13 +3070,13 @@ func _fortnight_modifiers(
 				w.empires[EmpireData.USA].relations -= 5
 
 	# 5 市场改革冲击。
-	if gm._mod_active(w, 5):
+	if gm._mod_active(w, GameConstants.Modifier.COMPROMISE_WITH_UNDERWORLD):
 		d.people_support -= 2
 		d.thought_freedom += 10
 		d.budget += 2
 
 	# 6 意识形态动员。
-	if gm._mod_active(w, 6):
+	if gm._mod_active(w, GameConstants.Modifier.MAOIST_BULWARK):
 		d.party_support += 5
 		d.thought_freedom -= 2
 		d.manpower += 1
@@ -3098,7 +3098,7 @@ func _fortnight_modifiers(
 		and not player.has_tag("ovd")
 		and not player.has_tag("okb")
 	)
-	if gm._mod_active(w, 7):
+	if gm._mod_active(w, GameConstants.Modifier.BLACK_CAT_WHITE_CAT):
 		if d.corruption > 200:
 			d.corruption -= 1
 		if d.thought_freedom > 800:
@@ -3117,7 +3117,7 @@ func _fortnight_modifiers(
 	# 8 经济联盟身份：加入时激活，退出当轮施加一次余波后解除。
 	if player != null and player.has_tag("econ"):
 		w.modifiers[8].is_active = true
-	elif gm._mod_active(w, 8):
+	elif gm._mod_active(w, GameConstants.Modifier.ECONOMIC_UNION):
 		w.modifiers[8].is_active = false
 		if w.empires.size() > EmpireData.USA:
 			w.empires[EmpireData.USA].relations += 2
@@ -3126,7 +3126,7 @@ func _fortnight_modifiers(
 		d.thought_freedom -= 10
 
 	# 9/10 边疆文化政策：以本轮入口快照削弱支持/自由化涨幅。
-	if not gm._mod_active(w, 9):
+	if not gm._mod_active(w, GameConstants.Modifier.LOSS_OF_XINJIANG):
 		if d.xinjiang_policy > 0:
 			w.modifiers[9].is_active = true
 	else:
@@ -3135,7 +3135,7 @@ func _fortnight_modifiers(
 			d.people_support -= (d.people_support - support_before) / 2
 		if freedom_before > d.thought_freedom:
 			d.thought_freedom += (freedom_before - d.thought_freedom) / 2
-	if not gm._mod_active(w, 10):
+	if not gm._mod_active(w, GameConstants.Modifier.LOSS_OF_TIBET):
 		if d.tibet_policy > 0:
 			w.modifiers[10].is_active = true
 	else:
@@ -3150,7 +3150,7 @@ func _fortnight_modifiers(
 	# TimeScript.cs:10810）。事件97移植说明 → 恒不激活。原版无「econ==11 自动激活」
 	# 逻辑（开局 data.econ_system=11 即中式计划，此前误加致开局党内支持清零，已移除）。
 	# ModifiesInfuence.cs:1558-1570：每两周 +50（显示+5.0）；解除只在 Event112.cs:148。
-	if gm._mod_active(w, 11):
+	if gm._mod_active(w, GameConstants.Modifier.AUTOMATION_AMBITION):
 		d.industry += 50
 		d.services += 50
 		d.agriculture += 50
@@ -3162,7 +3162,7 @@ func _fortnight_modifiers(
 	# 12 政治危机的动态激活条件与完整代价。
 	var output_average := (d.industry + d.agriculture + d.services - d.corruption) / 3
 	w.modifiers[12].is_active = output_average < 500 and w.date.year >= 1980
-	if gm._mod_active(w, 12):
+	if gm._mod_active(w, GameConstants.Modifier.BACKWARD_ECONOMY):
 		d.budget -= 10
 		d.agents -= 10
 		d.manpower -= 3
@@ -3171,7 +3171,7 @@ func _fortnight_modifiers(
 	# 在 _on_fortnight 中按原版位置（战后衰减之后、人口预算加成之前）单独调用。
 
 	# 13 工业创收。原作激活后不在此处自动解除。
-	if not gm._mod_active(w, 13):
+	if not gm._mod_active(w, GameConstants.Modifier.BOOMING_SMALL_BUSINESS):
 		if d.econ_system >= 13 and d.living_standard >= 700:
 			w.modifiers[13].is_active = true
 	elif d.econ_system == 13:
@@ -3182,7 +3182,7 @@ func _fortnight_modifiers(
 		d.budget += d.living_standard / 250
 
 	# 14 改革派声势：邓小平不再占据原 politics[12] 身份时解除。
-	if gm._mod_active(w, 14):
+	if gm._mod_active(w, GameConstants.Modifier.LEGACY_OF_1975_RECTIFICATION):
 		var deng_valid := false
 		if w.politicians.size() > 12:
 			var deng: PoliticianData = w.politicians[12]
@@ -3199,18 +3199,18 @@ func _fortnight_modifiers(
 
 	# 15 农业发展进程（ModifiesInfuence.cs:1618-1720：下乡/乡建/公社/农业科技，动态结算；
 	# 无封顶、无科技解除——Godot 早期版本自造的“>700 封顶 + 科技2解除”在原版全库无出处，已删除）。
-	if gm._mod_active(w, 15):
+	if gm._mod_active(w, GameConstants.Modifier.AGRICULTURE_DEVELOPMENT):
 		_apply_modifier15_agriculture(d, w)
 
 	# 16/17 对苏/对美关系受损。
-	if gm._mod_active(w, 16):
+	if gm._mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO):
 		var ussr_relation := w.empires[EmpireData.USSR].relations if w.empires.size() > EmpireData.USSR else d.ussr_relations
 		if ussr_relation >= 500:
 			w.modifiers[16].is_active = false
 		else:
 			d.budget -= (500 - ussr_relation) / 50
 			d.agents -= (500 - ussr_relation) / 100
-	if gm._mod_active(w, 17):
+	if gm._mod_active(w, GameConstants.Modifier.USA_EMBARGO):
 		var usa_relation := w.empires[EmpireData.USA].relations if w.empires.size() > EmpireData.USA else d.usa_relations
 		if usa_relation >= 500:
 			w.modifiers[17].is_active = false
@@ -3219,58 +3219,58 @@ func _fortnight_modifiers(
 			d.agents -= (500 - usa_relation) / 100
 
 	# ── 18-42：ModifiesInfuence.cs:1866-2260 ──
-	if gm._mod_active(w, 18):
+	if gm._mod_active(w, GameConstants.Modifier.TENTH_PANCHEN_LAMA):
 		d.thought_freedom += 2
 		d.agents += 2
-	elif gm._mod_active(w, 19):
+	elif gm._mod_active(w, GameConstants.Modifier.FOURTEENTH_DALAI_LAMA):
 		d.manpower -= 2
-		_add_empire_relation(w, 0, 5)
+		_add_empire_relation(w, EmpireData.USA, 5)
 		d.thought_freedom += 2
 		d.budget += 2
-	elif gm._mod_active(w, 20):
-		_add_empire_relation(w, 0, -5)
-		_add_empire_relation(w, 1, 2)
+	elif gm._mod_active(w, GameConstants.Modifier.HANBO_LAMA):
+		_add_empire_relation(w, EmpireData.USA, -5)
+		_add_empire_relation(w, EmpireData.USSR, 2)
 		d.army -= 2
 		d.budget += 2
-	if gm._mod_active(w, 21):
-		_add_empire_relation(w, 1, 2)
-		_add_empire_relation(w, 0, -2)
+	if gm._mod_active(w, GameConstants.Modifier.SAIFUDIN_AZIZI):
+		_add_empire_relation(w, EmpireData.USSR, 2)
+		_add_empire_relation(w, EmpireData.USA, -2)
 		d.army -= 2
 		d.science += 5
-	elif gm._mod_active(w, 22):
+	elif gm._mod_active(w, GameConstants.Modifier.BURHAN_SHAHIDI):
 		d.thought_freedom += 2
-		_add_empire_relation(w, 1, -5)
+		_add_empire_relation(w, EmpireData.USSR, -5)
 		d.agents += 2
 		d.manpower += 2
-	elif gm._mod_active(w, 23):
-		_add_empire_relation(w, 0, 5)
+	elif gm._mod_active(w, GameConstants.Modifier.ERKIN_ALPTEKIN):
+		_add_empire_relation(w, EmpireData.USA, 5)
 		d.manpower -= 2
 		d.thought_freedom += 2
 		d.budget += 2
-	if gm._mod_active(w, 24):
+	if gm._mod_active(w, GameConstants.Modifier.FACTIONAL_ONE_PARTY_DEMOCRACY):
 		d.party_support += 2
 		d.thought_freedom += 2
 		d.budget += 2
-	elif gm._mod_active(w, 25):
+	elif gm._mod_active(w, GameConstants.Modifier.CONFUCIAN_VICTORY):
 		d.science += 2
 		d.people_support -= 2
 		d.thought_freedom -= 2
 		d.corruption -= 2
 		d.budget -= 3
-	elif gm._mod_active(w, 26):
+	elif gm._mod_active(w, GameConstants.Modifier.LEGALIST_VICTORY):
 		d.party_support += 5
 		d.people_support -= 5
 		d.thought_freedom -= 5
 		d.corruption -= 5
 		d.living_standard -= 5
-	elif gm._mod_active(w, 27):
+	elif gm._mod_active(w, GameConstants.Modifier.EASTERN_ROME):
 		d.army += 5
 		d.people_support -= 2
 		d.corruption -= 2
 		d.budget -= 2
-	if gm._mod_active(w, 28):
+	if gm._mod_active(w, GameConstants.Modifier.CONSTITUTION_75):
 		if w.event_done_num(326) and w.result_of_event_num(326) == 0 \
-				and gm._mod_active(w, 3) and gm._mod_active(w, 6) \
+				and gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION) and gm._mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) \
 				and d.religion_policy <= 25 and d.party_system == 6 and d.econ_system <= 11:
 			_add_ideology(w, 0, 3)
 			d.party_support -= 5
@@ -3299,9 +3299,9 @@ func _fortnight_modifiers(
 			d.thought_freedom -= 2
 			d.corruption -= 2
 			d.agents += 2
-			if not gm._mod_active(w, 6):
+			if not gm._mod_active(w, GameConstants.Modifier.MAOIST_BULWARK):
 				w.modifiers[28].is_active = false
-	elif gm._mod_active(w, 29):
+	elif gm._mod_active(w, GameConstants.Modifier.SOVIET_STYLE_CONSTITUTION):
 		_add_ideology(w, 0, -1)
 		_add_ideology(w, 3, -1)
 		_add_ideology(w, 4, -1)
@@ -3316,11 +3316,11 @@ func _fortnight_modifiers(
 		if d.party_system > 7:
 			w.modifiers[29].is_active = false
 			w.modifiers[28].is_active = true
-	elif gm._mod_active(w, 30):
+	elif gm._mod_active(w, GameConstants.Modifier.LEFTIST_MARKET_CONSTITUTION):
 		_add_ideology(w, 3, 1)
 		d.budget += 5
 		d.diplomatic_reputation -= 2
-		_add_empire_relation(w, 0, 5)
+		_add_empire_relation(w, EmpireData.USA, 5)
 		for p in w.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p):
 				continue
@@ -3329,9 +3329,9 @@ func _fortnight_modifiers(
 		if d.econ_system < 13:
 			w.modifiers[30].is_active = false
 			w.modifiers[28].is_active = true
-	elif gm._mod_active(w, 31):
+	elif gm._mod_active(w, GameConstants.Modifier.WESTERN_STYLE_CONSTITUTION):
 		_add_ideology(w, 4, 1)
-		_add_empire_relation(w, 0, 5)
+		_add_empire_relation(w, EmpireData.USA, 5)
 		for p in w.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p):
 				continue
@@ -3343,7 +3343,7 @@ func _fortnight_modifiers(
 		if d.econ_system < 14 or d.press_policy < 17:
 			w.modifiers[31].is_active = false
 			w.modifiers[28].is_active = true
-	if gm._mod_active(w, 32):
+	if gm._mod_active(w, GameConstants.Modifier.RED_GUARDS_IN_POWER):
 		for p in w.politicians:
 			if p == null or PoliticianSystem.is_vacant_politician(p):
 				continue
@@ -3351,7 +3351,7 @@ func _fortnight_modifiers(
 				p.power += 10
 			else:
 				p.power -= 5
-		if gm._mod_active(w, 6):
+		if gm._mod_active(w, GameConstants.Modifier.MAOIST_BULWARK):
 			d.people_support += 10
 			d.thought_freedom -= 10
 			if w.event_done_num(670) and (w.result_of_event_num(670) == 0 or w.result_of_event_num(670) == 1):
@@ -3375,13 +3375,13 @@ func _fortnight_modifiers(
 		if d.living_standard > 1100:
 			d.agents += 2
 			d.army += 2
-	if gm._mod_active(w, 33):
+	if gm._mod_active(w, GameConstants.Modifier.CIVILIANS_IN_MILITARY_COMMISSION):
 		d.people_support += 2
 		d.living_standard += 2
 		d.industry -= 2
 		d.services += 2
 		d.army -= 5
-	if gm._mod_active(w, 34):
+	if gm._mod_active(w, GameConstants.Modifier.CHINA_NATURE_TRANSFORMATION_PLAN):
 		var r320 := w.result_of_event_num(320)
 		if r320 == 1:
 			d.agriculture += 7
@@ -3408,34 +3408,34 @@ func _fortnight_modifiers(
 			d.services += 1
 			d.industry += 1
 			d.budget += 2
-	if gm._mod_active(w, 35):
+	if gm._mod_active(w, GameConstants.Modifier.NATIONAL_RAILWAY_NETWORK):
 		d.budget -= 5
 		d.industry += 5
 		d.living_standard += 5
 		d.manpower += 2
-	if gm._mod_active(w, 36):
+	if gm._mod_active(w, GameConstants.Modifier.INTERNATIONAL_PATENT_MEMBER):
 		d.science += 5
 		WarSystem.add_empire_power(EmpireData.USA, 5)
 		WarSystem.add_empire_power(EmpireData.USSR, 5)
-	if gm._mod_active(w, 37):
+	if gm._mod_active(w, GameConstants.Modifier.HELSINKI_ACCORDS_MEMBER):
 		d.corruption -= 2
 		d.services += 2
 		d.living_standard += 5
 		d.thought_freedom += 5
-	if gm._mod_active(w, 38):
+	if gm._mod_active(w, GameConstants.Modifier.PRESIDENT_FOR_LIFE):
 		d.party_support += 5
 		d.diplomatic_reputation += 1
 		d.war_support += 1
 		if w.leader == null or w.leader.name_first != 32 or w.leader.name_last != 47:
 			w.modifiers[38].is_active = false
-	if gm._mod_active(w, 39):
+	if gm._mod_active(w, GameConstants.Modifier.CHINESE_GANGS_IN_AMERICA):
 		var usa_rel := w.empires[EmpireData.USA].relations if w.empires.size() > EmpireData.USA else 0
 		if usa_rel < 150 and w.empires.size() > EmpireData.USA:
 			w.empires[EmpireData.USA].relations = 150
 		WarSystem.add_empire_power(EmpireData.USA, -5)
-		_add_empire_relation(w, 1, -5)
+		_add_empire_relation(w, EmpireData.USSR, -5)
 		d.reserve += 5
-	if gm._mod_active(w, 40):
+	if gm._mod_active(w, GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION):
 		if d.agriculture < 400:
 			d.agriculture = 400
 		if d.industry > 500:
@@ -3451,7 +3451,7 @@ func _fortnight_modifiers(
 		d.corruption -= 5
 		d.thought_freedom -= 10
 		d.diplomatic_reputation += 2
-	if gm._mod_active(w, 41):
+	if gm._mod_active(w, GameConstants.Modifier.HUNTING_CLUB_MEMBER):
 		_add_ideology(w, 3, 1)
 		d.agents += 10
 		WarSystem.add_empire_power(EmpireData.USA, 1)
@@ -3463,15 +3463,15 @@ func _fortnight_modifiers(
 				p.power += 10
 
 	# ── 42-51：ModifiesInfuence.cs:2228-2420 ──
-	if gm._mod_active(w, 42):
+	if gm._mod_active(w, GameConstants.Modifier.FRENCH_PRESIDENT_GISCARD):
 		var c21 := w.get_country_by_legacy_index(21)
-		if d.political_display > 39 and not gm._mod_active(w, 17) \
+		if d.political_display > 39 and not gm._mod_active(w, GameConstants.Modifier.USA_EMBARGO) \
 				and c21 != null and c21.has_tag("对华贸易"):
-			_add_empire_relation(w, 0, 4)
+			_add_empire_relation(w, EmpireData.USA, 4)
 			d.budget += 2
 			d.diplomatic_reputation -= 1
 		WarSystem.add_empire_power(EmpireData.USA, 1)
-	if gm._mod_active(w, 43):
+	if gm._mod_active(w, GameConstants.Modifier.FRENCH_PRESIDENT_MITTERRAND):
 		var c21 := w.get_country_by_legacy_index(21)
 		var china := w.get_player_country()
 		if c21 != null and c21.has_tag("对华贸易") and china != null \
@@ -3479,38 +3479,38 @@ func _fortnight_modifiers(
 				and (china.government == GameConstants.Government.REFORMIST or china.government == GameConstants.Government.LIBERAL):
 			d.budget += 3
 			d.science += 4
-	if gm._mod_active(w, 44):
+	if gm._mod_active(w, GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS):
 		var c21 := w.get_country_by_legacy_index(21)
 		if not w.get_flag("YugAgree"):
-			if c21 != null and c21.has_tag("对华贸易") and d.econ_display < 36 and not gm._mod_active(w, 16):
-				_add_empire_relation(w, 1, 4)
+			if c21 != null and c21.has_tag("对华贸易") and d.econ_display < 36 and not gm._mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO):
+				_add_empire_relation(w, EmpireData.USSR, 4)
 				d.budget += 2
 				d.science += 2
 		else:
-			if c21 != null and c21.has_tag("对华贸易") and d.ideology < 2 and not gm._mod_active(w, 16):
-				_add_empire_relation(w, 1, 5)
+			if c21 != null and c21.has_tag("对华贸易") and d.ideology < 2 and not gm._mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO):
+				_add_empire_relation(w, EmpireData.USSR, 5)
 				d.budget += 6
 				d.science += 6
 		WarSystem.add_empire_power(EmpireData.USSR, 1)
 	var c21b := w.get_country_by_legacy_index(21)
 	var chinab := w.get_player_country()
-	if gm._mod_active(w, 44) and c21b != null and c21b.has_tag("对华贸易") \
+	if gm._mod_active(w, GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS) and c21b != null and c21b.has_tag("对华贸易") \
 			and chinab != null and chinab.has_tag("okb") and d.global_influence >= 500:
 		d.mil_intervention += 5
 		d.budget += 2
-		_add_empire_relation(w, 0, -3)
-		_add_empire_relation(w, 1, -3)
+		_add_empire_relation(w, EmpireData.USA, -3)
+		_add_empire_relation(w, EmpireData.USSR, -3)
 		WarSystem.add_empire_power(EmpireData.USA, -1)
 		WarSystem.add_empire_power(EmpireData.USSR, -1)
-	if gm._mod_active(w, 46):
+	if gm._mod_active(w, GameConstants.Modifier.ARAB_FEDERATION):
 		d.budget += 6
 		d.army += 5
 		d.agents += 5
-		_add_empire_relation(w, 0, -5)
-		_add_empire_relation(w, 1, -5)
+		_add_empire_relation(w, EmpireData.USA, -5)
+		_add_empire_relation(w, EmpireData.USSR, -5)
 		WarSystem.add_empire_power(EmpireData.USA, -1)
 		WarSystem.add_empire_power(EmpireData.USSR, -1)
-	if gm._mod_active(w, 47):
+	if gm._mod_active(w, GameConstants.Modifier.SECRET_SERVICE_INTEGRATION):
 		var okb47 := _count_tag(w, "okb")
 		if okb47 < 7:
 			d.budget -= 10
@@ -3519,7 +3519,7 @@ func _fortnight_modifiers(
 		else:
 			d.budget -= 30
 		d.agents += okb47 * 2
-	if gm._mod_active(w, 48):
+	if gm._mod_active(w, GameConstants.Modifier.MILITARY_INTEGRATION):
 		var okb48 := _count_tag(w, "okb")
 		if okb48 < 7:
 			d.budget -= 10
@@ -3528,11 +3528,11 @@ func _fortnight_modifiers(
 		else:
 			d.budget -= 30
 		d.army += okb48
-	if gm._mod_active(w, 49):
+	if gm._mod_active(w, GameConstants.Modifier.FOURTH_INTERNATIONAL):
 		d.mil_intervention += 30
 		d.agents += 20
-		_add_empire_relation(w, 0, -20)
-		_add_empire_relation(w, 1, -20)
+		_add_empire_relation(w, EmpireData.USA, -20)
+		_add_empire_relation(w, EmpireData.USSR, -20)
 		if w.event_done_num(691):
 			d.budget -= 2
 			d.party_support += 2
@@ -3548,12 +3548,12 @@ func _fortnight_modifiers(
 			elif w.result_of_event_num(691) == 2:
 				var ussr_leader := w.empires[EmpireData.USSR].current_leader if w.empires.size() > EmpireData.USSR else -1
 				if ussr_leader == 6 or ussr_leader == 7:
-					_add_empire_relation(w, 1, 1)
-	if gm._mod_active(w, 51):
+					_add_empire_relation(w, EmpireData.USSR, 1)
+	if gm._mod_active(w, GameConstants.Modifier.OIL_MONEY):
 		_apply_modifier51_oil(d, w)
 
 	# ── 53/58/59/61/63/65：ModifiesInfuence.cs:2556-2890 ──
-	if gm._mod_active(w, 53):
+	if gm._mod_active(w, GameConstants.Modifier.COOPERATE_WITH_STASI):
 		var c17 := w.get_country_by_legacy_index(17)
 		if c17 != null and c17.parts.size() > 0 and not c17.parts[0]:
 			_add_ideology(w, 0, 1)
@@ -3574,14 +3574,14 @@ func _fortnight_modifiers(
 					continue
 				if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					p.power += 10
-	if gm._mod_active(w, 58) and w.empires.size() > EmpireData.USSR \
-			and w.empires[EmpireData.USSR].relations >= 500 and _dv(d, 153) > 0:
+	if gm._mod_active(w, GameConstants.Modifier.EAST_SIBERIA_PACIFIC_PIPELINE) and w.empires.size() > EmpireData.USSR \
+			and w.empires[EmpireData.USSR].relations >= 500 and _dv(d, W.I_MODIFIER_58_TIMER) > 0:
 		d.modifier_58_timer -= 1
 		d.budget -= 5
 	var china59 := w.get_player_country()
-	if not gm._mod_active(w, 59) and china59 != null and china59.has_tag("okb"):
+	if not gm._mod_active(w, GameConstants.Modifier.OUR_MILITARY_ALLIANCE) and china59 != null and china59.has_tag("okb"):
 		w.modifiers[59].is_active = true
-	if gm._mod_active(w, 59):
+	if gm._mod_active(w, GameConstants.Modifier.OUR_MILITARY_ALLIANCE):
 		var okb59 := _count_tag(w, "okb")
 		var au59 := 0
 		var oar59 := _count_tag(w, "oar")
@@ -3606,8 +3606,8 @@ func _fortnight_modifiers(
 			d.army += rim59 * 6
 			d.agents += rim59 * 4
 			d.mil_intervention += rim59 * 2
-	if gm._mod_active(w, 61):
-		match _dv(d, 185):
+	if gm._mod_active(w, GameConstants.Modifier.NATIONAL_SYMBOL):
+		match _dv(d, W.I_ANTHEM_CHOICE):
 			0:
 				d.manpower += 1
 			1:
@@ -3628,7 +3628,7 @@ func _fortnight_modifiers(
 					d.thought_freedom -= 2
 					d.diplomatic_reputation += 2
 					d.war_support += 4
-	if gm._mod_active(w, 63):
+	if gm._mod_active(w, GameConstants.Modifier.CULTURAL_LEAP_FORWARD):
 		if not w.event_done_num(687):
 			d.thought_freedom += 50
 			d.war_support -= 15
@@ -3644,11 +3644,11 @@ func _fortnight_modifiers(
 					continue
 				if p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 					p.power += 10
-	if w.money_level > 0 and not gm._mod_active(w, 65):
+	if w.money_level > 0 and not gm._mod_active(w, GameConstants.Modifier.MONEY_MAKING):
 		w.modifiers[65].is_active = true
-	elif w.money_level <= 0 and gm._mod_active(w, 65):
+	elif w.money_level <= 0 and gm._mod_active(w, GameConstants.Modifier.MONEY_MAKING):
 		w.modifiers[65].is_active = false
-	if gm._mod_active(w, 65):
+	if gm._mod_active(w, GameConstants.Modifier.MONEY_MAKING):
 		var ml := w.money_level
 		w.leader_asset += 10 * ml
 		d.people_support -= 2 * ml
@@ -3662,7 +3662,7 @@ func _fortnight_modifiers(
 			d.budget -= 10
 			d.science += 5
 			d.mil_intervention += 10
-			_add_empire_relation(w, 1, -2)
+			_add_empire_relation(w, EmpireData.USSR, -2)
 		if w.leader_property.size() > 2 and w.leader_property[2]:
 			d.budget -= 20
 			d.science += 5
@@ -3679,7 +3679,7 @@ func _fortnight_modifiers(
 			if d.party_system > 7 and d.thought_freedom > 400:
 				d.thought_freedom = 400
 			d.mil_intervention += 10
-			_add_empire_relation(w, 1, -2)
+			_add_empire_relation(w, EmpireData.USSR, -2)
 		if ml > 20 and d.mao_mausoleum != 9:
 			gm.start_event("popular_discontent")
 
@@ -3845,7 +3845,7 @@ func _fortnight_trade_balance(d: WorldState, w: WorldState) -> void:
 	# 注意：_recalc_export_value 已归零并统计完三类贸易伙伴，这里绝不能再叠加旧循环。
 	_recalc_export_value(d, w)
 	# 石油危机修正（原版 :4135-4139）：modifies[12] 激活时 data.income -= data.income/6
-	if gm._mod_active(w, 12):
+	if gm._mod_active(w, GameConstants.Modifier.BACKWARD_ECONOMY):
 		d.income -= d.income / 6
 	# 贸易平衡（原版 :4140-4155）：顺差 budget+=(23-24)/10、people+=(23-24)/15；
 	# 逆差 budget-=(23-24)/10、people-=(23-24)/15、living-=(23-24)/20
@@ -4231,14 +4231,14 @@ func _check_periodic_achievements(w: WorldState) -> void:
 		return
 	var d := w
 	# TimeScript.cs:5965：data.get_data_by_index(113..116) 全为 9 → Set(28)。
-	if _dv(d, 113) == 9 and _dv(d, 114) == 9 and _dv(d, 115) == 9 and _dv(d, 116) == 9:
+	if _dv(d, W.I_PROTEST_REPRESSION) == 9 and _dv(d, W.I_KILLED_PREMIER_FLAG) == 9 and _dv(d, W.I_KILLED_MILITARY_FLAG) == 9 and _dv(d, W.I_KILLED_FOREIGN_FLAG) == 9:
 		Achievements.set_achievement(28)
 	# TimeScript.cs:3220：data.world_political_balance==1 且 44.sub∈{7,9}、86.sub==9、85.sub==9、87.sub==7 → Set(131)。
 	var c44 := w.get_country_by_legacy_index(44)
 	var c85 := w.get_country_by_legacy_index(85)
 	var c86 := w.get_country_by_legacy_index(86)
 	var c87 := w.get_country_by_legacy_index(87)
-	if _dv(d, 131) == 1 and c44 != null and (c44.sub_government == GameConstants.SubGovernment.NEO_FASCIST or c44.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN) \
+	if _dv(d, W.I_WORLD_POLITICAL_BALANCE) == 1 and c44 != null and (c44.sub_government == GameConstants.SubGovernment.NEO_FASCIST or c44.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN) \
 			and c86 != null and c86.sub_government == GameConstants.SubGovernment.NEO_FASCIST \
 			and c85 != null and c85.sub_government == GameConstants.SubGovernment.NEO_FASCIST \
 			and c87 != null and c87.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
@@ -4246,13 +4246,13 @@ func _check_periodic_achievements(w: WorldState) -> void:
 	# TimeScript.cs:3257：台湾路线2/决议7 且 51 内战中 且 data.somalia_war_state>0 → Set(155)。
 	var c51 := w.get_country_by_legacy_index(51)
 	var dec7 := w.decisions != null and w.decisions.completed.size() > 7 and w.decisions.completed[7]
-	if (_dv(d, W.I_TAIWAN_STATUS) == 2 or dec7) and c51 != null and c51.内战中 and _dv(d, 157) > 0:
+	if (_dv(d, W.I_TAIWAN_STATUS) == 2 or dec7) and c51 != null and c51.内战中 and _dv(d, W.I_SOMALIA_WAR_STATE) > 0:
 		Achievements.set_achievement(155)
 	# TimeScript.cs:3261/3265：data.oil_price <=10 / >=60 且 modifier51 激活 → Set(158)/Set(157)。
 	var mod51 := w.modifiers.size() > 51 and w.modifiers[51] != null and w.modifiers[51].is_active
-	if mod51 and _dv(d, 143) <= 10:
+	if mod51 and _dv(d, W.I_OIL_PRICE) <= 10:
 		Achievements.set_achievement(158)
-	if mod51 and _dv(d, 143) >= 60:
+	if mod51 and _dv(d, W.I_OIL_PRICE) >= 60:
 		Achievements.set_achievement(157)
 	# TimeScript.cs:3269：36/101/102/103/105 全亲中 → Set(156)。
 	var all_proprc := true

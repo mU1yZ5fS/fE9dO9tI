@@ -62,7 +62,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if uk != null and uk.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 		event_def.title = S_21
 		event_def.description = S_22
-		if not _mod_active(world, 3) and _dval(world, W.I_POLITICAL_LINE) <= 2:
+		if not _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION) and _dval(world, W.I_POLITICAL_LINE) <= 2:
 			_enable(opt[0], S_45)
 		else:
 			_disable(opt[0], S_50)

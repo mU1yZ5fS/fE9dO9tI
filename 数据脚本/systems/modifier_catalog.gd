@@ -56,7 +56,7 @@ static func name_zh(id: int) -> String:
 	if id == 63:
 		if w != null and w.completed_event_ids.has("event_687"):
 			return "“民族文化”复兴"
-	if id == 46 and w != null and _mod_active(w, 46):
+	if id == 46 and w != null and _mod_active(w, GameConstants.Modifier.ARAB_FEDERATION):
 		# TimeScript.cs:617-619：埃及(30) 严格社会主义且 46 激活时改标题。
 		var egypt := _country(w, 30)
 		if egypt != null and w.is_socialism(egypt, true):
@@ -168,7 +168,7 @@ static func icon(id: int, is_active: bool = true) -> Texture2D:
 	# id28：75宪法换图条件（ChangeIcon 1359-1362）。
 	if id == 28 and is_active and w != null \
 			and _event_done(w, "event_326") and _event_result(w, "event_326", -1) == 0 \
-			and _mod_active(w, 3) and _mod_active(w, 6) \
+			and _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) \
 			and _raw(w, WorldState.I_RELIGION) <= 25 \
 			and _raw(w, WorldState.I_PARTY_SYSTEM) == 6 \
 			and _raw(w, WorldState.I_ECON_SYSTEM) <= 11:
@@ -465,13 +465,13 @@ static func _effect_anthem(w: WorldState) -> String:
 			s += "纯音乐版《义勇军进行曲》\n凝聚力+0.1"
 		1:
 			s += "改词版《义勇军进行曲》\n党内团结度+0.1"
-			if _mod_active(w, 3) and _mod_active(w, 6):
+			if _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(w, GameConstants.Modifier.MAOIST_BULWARK):
 				s += "，十二大时的力量对比更倾向于保守派"
 		2:
 			s += "《义勇军进行曲》\n凝聚力+0.2"
 		3:
 			s += "《东方红》\n人民支持度+0.1"
-			if _mod_active(w, 3) and _mod_active(w, 6):
+			if _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(w, GameConstants.Modifier.MAOIST_BULWARK):
 				s += "，十二大时的力量对比更倾向于激进派"
 		4:
 			s += "《国际歌》\n世界观-0.1，若世界观高于70.0时额外-0.3"
@@ -600,7 +600,7 @@ static func _is_proletarian_constitution(w: WorldState) -> bool:
 		return false
 	var d := w
 	return _event_done(w, "event_326") and _event_result(w, "event_326") == 0 \
-		and _mod_active(w, 3) and _mod_active(w, 6) \
+		and _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) \
 		and _raw(d, WorldState.I_RELIGION) <= 25 \
 		and _raw(d, WorldState.I_PARTY_SYSTEM) == 6 \
 		and _raw(d, WorldState.I_ECON_SYSTEM) <= 11
@@ -613,7 +613,7 @@ static func _effect_constitution(w: WorldState) -> String:
 
 
 static func _effect_automation(w: WorldState) -> String:
-	if _mod_active(w, 11):
+	if _mod_active(w, GameConstants.Modifier.AUTOMATION_AMBITION):
 		# ModifiesInfuence.cs:1560-1570：激活时覆盖为 +5.0 版本。
 		return "农业、工业和服务业+5.0|预算+5.0，生活水平+1.0，腐败-1.0|党内支持度-5.0|每两周"
 	return MT.EFFECT_ZH[11].replace("|", "\n")
@@ -1033,7 +1033,7 @@ static func _american_score(w: WorldState) -> int:
 		s += 1
 	if usa != null and usa.power > w.influence_prc:
 		s += 1
-	if _mod_active(w, 17):
+	if _mod_active(w, GameConstants.Modifier.USA_EMBARGO):
 		s += 1
 	return s
 
@@ -1075,7 +1075,7 @@ static func _france_scores(w: WorldState) -> Dictionary:
 		a0 += 1
 	if ussr != null and ussr.power > w.influence_prc:
 		a0 += 1
-	if _mod_active(w, 16):
+	if _mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO):
 		a0 += 1
 
 	# array[2]（ModifyButtonScript.cs:320-363）
@@ -1087,7 +1087,7 @@ static func _france_scores(w: WorldState) -> Dictionary:
 		a2 += 1
 	if iran != null and iran.有驻军基地 and iran.government == GameConstants.Government.AUTHORITARIAN:
 		a2 += 1
-	if _mod_active(w, 3):
+	if _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
 		a2 += 1
 	var spain := _country(w, 87)
 	if spain != null and spain.sub_government == GameConstants.SubGovernment.MODERATE:
@@ -1250,7 +1250,7 @@ static func _oil_numbers(w: WorldState) -> Dictionary:
 	if price <= 0.0:
 		price = 12.0
 	var domestic := price
-	if _mod_active(w, 58) and not _mod_active(w, 16) and _raw(d, 153) <= 0:
+	if _mod_active(w, GameConstants.Modifier.EAST_SIBERIA_PACIFIC_PIPELINE) and not _mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO) and _raw(d, 153) <= 0:
 		domestic -= 15.0
 	for idx in [14, 8, 35, 40, 30, 83, 52]:
 		var c := _country(w, idx)

@@ -31,7 +31,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var diplo := d.diplomatic_reputation if d.size() > W.I_DIPLO else 0
 	var comoros := world.get_country_by_legacy_index(158)
 	var opt := event_def.options
-	if line <= 1 and _mod_active(3):
+	if line <= 1 and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)
@@ -59,12 +59,12 @@ func execute(context: Dictionary) -> void:
 			var text := TXT_R0_INTRO
 			if _tech_unlocked(18):
 				text += TXT_R0_BODY
-				if _mod_active(3):
+				if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 					text += TXT_R0_MAO
 				text += TXT_R0_TAIL
 				if comoros != null:
 					comoros.government = GameConstants.Government.SOCIALIST
-					comoros.sub_government = GameConstants.SubGovernment.MAOIST if _mod_active(3) else 1
+					comoros.sub_government = GameConstants.SubGovernment.MAOIST if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) else 1
 					_leave_alliances(comoros)
 					comoros.set_tag("亲中", true)
 					comoros.set_tag("对华贸易", true)

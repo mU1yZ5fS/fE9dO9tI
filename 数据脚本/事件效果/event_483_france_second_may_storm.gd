@@ -49,13 +49,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 5:
 		return
 	var text := ""
-	if _mod_active(world, 42):
+	if _mod_active(world, GameConstants.Modifier.FRENCH_PRESIDENT_GISCARD):
 		text = S_17
-	elif _mod_active(world, 43):
+	elif _mod_active(world, GameConstants.Modifier.FRENCH_PRESIDENT_MITTERRAND):
 		text = S_21
-	elif _mod_active(world, 44):
+	elif _mod_active(world, GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS):
 		text = S_25
-	elif _mod_active(world, 45):
+	elif _mod_active(world, GameConstants.Modifier.FRENCH_PRESIDENT_CHIRAC):
 		text = S_29
 	event_def.description = text + S_31
 	var opt := event_def.options

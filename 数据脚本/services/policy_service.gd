@@ -71,8 +71,8 @@ func check_policy_change(category_idx: int, target_val: int) -> Dictionary:
 	# 原作 :456-461 modifies[6] 覆盖：mod6 激活且目标∈{9,14,15,22,23,28,29}
 	# 或 (19 且 resultOfEvents[444]!=0) 时 uslovie_bool[3] 恒 false（"毛主席正看着你！"）。
 	# 事件 444 未启用 → completed_event_ids.get(444,-1) 恒 -1（原版初始态）→ !=0 恒真。
-	if gm._mod_active(world, 6) and (target_val in [9, 14, 15, 22, 23, 28, 29] \
-			or (target_val == 19 and world.completed_event_ids.get(444, -1) != 0)):
+	if gm._mod_active(world, GameConstants.Modifier.MAOIST_BULWARK) and (target_val in [9, 14, 15, 22, 23, 28, 29] \
+			or (target_val == 19 and world.completed_event_ids.get(GameConstants.EventNumber.LONG_REVOLUTION, -1) != 0)):
 		res.mao_ok = false
 	res.can = res.budget_ok and res.party_ok and res.leading_ok and res.mao_ok
 	return res

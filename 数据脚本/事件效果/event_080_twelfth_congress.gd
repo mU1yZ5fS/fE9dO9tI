@@ -35,7 +35,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if _opts_full.is_empty():
 		for o in event_def.options:
 			_opts_full.append(o)
-	var mod3 := _mod_active(world, 3)
+	var mod3 := _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION)
 	if mod3:
 		event_def.description = TXT_DESC_MOD3
 		var arr_mod3: Array[EventOption] = []
@@ -82,7 +82,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
-	var mod3 := _mod_active(ws, 3)
+	var mod3 := _mod_active(ws, GameConstants.Modifier.CULTURAL_REVOLUTION)
 	var opt := int(context.get("option_index", -1))
 	var leader_name := _leader_name(ws)
 	if mod3:

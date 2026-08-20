@@ -324,11 +324,11 @@ static func is_taiwan_return(yes: bool) -> bool:
 	var d := _d()
 	var tw := _country(38)
 	var china := _country(1)
-	var inner := _event_done(461) \
+	var inner := _event_done(GameConstants.EventNumber.FORMOSA_SPRING) \
 		or (tw != null and tw.has_tag("亲中") and d.size() > W.I_DIPLO and d.diplomatic_reputation < 700
 			and d.size() > W.I_ECON_SYSTEM and d.econ_system >= 13
-			and not (china != null and china.has_tag("sev")) and not _mod_active(17)) \
-		or _event_done(462) or _event_done(457) \
+			and not (china != null and china.has_tag("sev")) and not _mod_active(GameConstants.Modifier.USA_EMBARGO)) \
+		or _event_done(GameConstants.EventNumber.ONE_CHINA) or _event_done(GameConstants.EventNumber.TREASURE_ISLAND_RETURN) \
 		or (d.size() > W.I_TAIWAN_STATUS and d.taiwan_status == 2
 			and china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST)
 	return inner if yes else not inner
@@ -369,43 +369,43 @@ static func is_in_the_sento(yes: bool, country: int) -> bool:
 
 ## HasCulturalRevolution — yes: modifies[3].active  （L973-1004）
 static func has_cultural_revolution(yes: bool) -> bool:
-	var v := _mod_active(3)
+	var v := _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION)
 	return v if yes else not v
 
 
 ## HasOil — yes: modifies[51].active  （L1005-1036）
 static func has_oil(yes: bool) -> bool:
-	var v := _mod_active(51)
+	var v := _mod_active(GameConstants.Modifier.OIL_MONEY)
 	return v if yes else not v
 
 
 ## HasMaoismus — yes: modifies[6].active  （L1037-1068）
 static func has_maoismus(yes: bool) -> bool:
-	var v := _mod_active(6)
+	var v := _mod_active(GameConstants.Modifier.MAOIST_BULWARK)
 	return v if yes else not v
 
 
 ## HasEasternRome — yes: modifies[27].active  （L1069-1100）
 static func has_eastern_rome(yes: bool) -> bool:
-	var v := _mod_active(27)
+	var v := _mod_active(GameConstants.Modifier.EASTERN_ROME)
 	return v if yes else not v
 
 
 ## HasFourthInternational — yes: modifies[49].active  （L1101-1132）
 static func has_fourth_international(yes: bool) -> bool:
-	var v := _mod_active(49)
+	var v := _mod_active(GameConstants.Modifier.FOURTH_INTERNATIONAL)
 	return v if yes else not v
 
 
 ## HasNongU — yes: modifies[40].active  （L1133-1164）
 static func has_nong_u(yes: bool) -> bool:
-	var v := _mod_active(40)
+	var v := _mod_active(GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION)
 	return v if yes else not v
 
 
 ## HasMoneyLevel — yes: modifies[65].active  （L1165-1196）
 static func has_money_level(yes: bool) -> bool:
-	var v := _mod_active(65)
+	var v := _mod_active(GameConstants.Modifier.MONEY_MAKING)
 	return v if yes else not v
 
 
@@ -605,13 +605,13 @@ static func has_oligarchy_power_less(yes: bool, num: int) -> bool:
 
 ## IsMaoDemaoised — yes: !modifies[6].active && data.mao_history_line==2  （L2367-2398）
 static func is_mao_demaoised(yes: bool) -> bool:
-	var v := (not _mod_active(6)) and _d().size() > W.I_MAO_HISTORY_LINE and _d().get_data_by_index(W.I_MAO_HISTORY_LINE) == 2
+	var v := (not _mod_active(GameConstants.Modifier.MAOIST_BULWARK)) and _d().size() > W.I_MAO_HISTORY_LINE and _d().get_data_by_index(W.I_MAO_HISTORY_LINE) == 2
 	return v if yes else not v
 
 
 ## IsDeadJanataInIndia — yes: data.india_election==1 && resultOfEvents[72]==0  （L2399-2430）
 static func is_dead_janata_in_india(yes: bool) -> bool:
-	var v := _d().size() > W.I_INDIA_ELECTION and _d().get_data_by_index(W.I_INDIA_ELECTION) == 1 and _event_result(72, 0)
+	var v := _d().size() > W.I_INDIA_ELECTION and _d().get_data_by_index(W.I_INDIA_ELECTION) == 1 and _event_result(GameConstants.EventNumber.JANATA_CRISIS, 0)
 	return v if yes else not v
 
 
@@ -663,9 +663,9 @@ static func has_conservative_moderate_leading(yes: bool) -> bool:
 ##                   || country1.isOVD || event_done[124]                  （L2896-2926）
 static func has_lin_biao(yes: bool) -> bool:
 	var china := _country(1)
-	var v := (_event_done(74) and _d().size() > W.I_MAO_HISTORY_LINE and _d().get_data_by_index(W.I_MAO_HISTORY_LINE) == 0
-			and _mod_active(6)) \
-		or (china != null and china.has_tag("ovd")) or _event_done(124)
+	var v := (_event_done(GameConstants.EventNumber.HISTORY_RESOLUTION_1981) and _d().size() > W.I_MAO_HISTORY_LINE and _d().get_data_by_index(W.I_MAO_HISTORY_LINE) == 0
+			and _mod_active(GameConstants.Modifier.MAOIST_BULWARK)) \
+		or (china != null and china.has_tag("ovd")) or _event_done(GameConstants.EventNumber.RETURN_TO_SOCIALISM)
 	return v if yes else not v
 
 
@@ -676,12 +676,12 @@ static func is_not_revisionist(yes: bool) -> bool:
 	var ws := _ws()
 	var china := _country(1)
 	var usa := _country(51)
-	var v := (not _event_done(713)) and (ws != null and ws.is_socialism(china, true)) \
-		and _mod_active(6) \
+	var v := (not _event_done(GameConstants.EventNumber.REVOLUTIONARY_INTERNATIONAL)) and (ws != null and ws.is_socialism(china, true)) \
+		and _mod_active(GameConstants.Modifier.MAOIST_BULWARK) \
 		and (usa == null or not usa.has_tag("对华贸易")) \
 		and (usa == null or usa.development != 1) \
 		and (china == null or not china.has_tag("seato")) \
-		and ((china == null or (not china.has_tag("sev") and not china.has_tag("ovd"))) or _event_done(380))
+		and ((china == null or (not china.has_tag("sev") and not china.has_tag("ovd"))) or _event_done(GameConstants.EventNumber.RE_STALINIZATION))
 	return v if yes else not v
 
 
@@ -859,7 +859,7 @@ static func agree_to_oligarchy(num: int) -> void:
 ## !modifies[6].active → event_done[457]=true
 static func annexation_info(num: int, _annexed: int, _country_by: int) -> void:
 	_set_completed(num)
-	if not _mod_active(6):
+	if not _mod_active(GameConstants.Modifier.MAOIST_BULWARK):
 		var ws := _ws()
 		if ws != null:
 			var id := _event_id(457)
@@ -1347,7 +1347,7 @@ static func is_revotionary_oar_full(yes: bool) -> bool:
 		var c105 := _country(105)
 		if c101 == null or c101.sub_government != GameConstants.SubGovernment.MAOIST or c105 == null or c105.sub_government != GameConstants.SubGovernment.MAOIST:
 			flag = false
-		if _event_result(437, 1):
+		if _event_result(GameConstants.EventNumber.SOUTH_YEMEN_CRISIS, 1):
 			flag = false
 	return flag if yes else not flag
 

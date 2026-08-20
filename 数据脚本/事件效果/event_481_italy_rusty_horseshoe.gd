@@ -39,7 +39,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			num += 1
 	var c1 := world.get_country_by_legacy_index(1)
 	var red := c1 != null and c1.has_tag("rim") \
-			and _mod_active(world, 3) and _mod_active(world, 6) \
+			and _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(world, GameConstants.Modifier.MAOIST_BULWARK) \
 			and world.is_socialism(c1, true) \
 			and int(world.completed_event_ids.get("event_395", 0)) == 1 \
 			and _dval(world, 134) >= 300 and num >= 2

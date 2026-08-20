@@ -147,7 +147,7 @@ func execute(context: Dictionary) -> void:
 		num2 -= 1
 	if ws.event_done_num(500):
 		num2 -= 1
-	if china != null and china.has_tag("rim") and _mod_active(3) and _mod_active(6) \
+	if china != null and china.has_tag("rim") and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(GameConstants.Modifier.MAOIST_BULWARK) \
 			and ws.is_socialism(china, true):
 		num2 -= 1
 	if china != null and china.government == GameConstants.Government.LIBERAL:
@@ -161,7 +161,7 @@ func execute(context: Dictionary) -> void:
 	# num3：民粹/改革党
 	if ws.leader != null and ws.leader.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 		num3 += 1
-	if _mod_active(39):
+	if _mod_active(GameConstants.Modifier.CHINESE_GANGS_IN_AMERICA):
 		num3 += 1
 	if italy != null and italy.sub_government == GameConstants.SubGovernment.MODERATE:
 		num3 += 1

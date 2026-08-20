@@ -75,7 +75,7 @@ func execute(context: Dictionary) -> void:
 		_add(176, 2)
 	if _c21_is_authoritarian():
 		_add(177, 3)
-	if _mod_active(3):
+	if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 		_add(176, -1)
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null \
 			and ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null \

@@ -35,7 +35,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if int(world.completed_event_ids.get("event_486", 0)) == 0 \
-			and _mod_active(world, 6) and world.ideology < 3:
+			and _mod_active(world, GameConstants.Modifier.MAOIST_BULWARK) and world.ideology < 3:
 		_enable(opt[0], S_23)
 	else:
 		_disable(opt[0], S_28)

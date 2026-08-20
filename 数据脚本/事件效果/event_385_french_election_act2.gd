@@ -261,7 +261,7 @@ func _compute_press(world: WorldState) -> Array:
 		press[0] += 1
 	if world.empires.size() > EmpireData.USSR and world.empires[EmpireData.USSR] != null 			and world.empires[EmpireData.USSR].power > _d(W.I_INFLUENCE):
 		press[0] += 1
-	if _mod_active(16):
+	if _mod_active(GameConstants.Modifier.SOVIET_EMBARGO):
 		press[0] += 1
 	# press[1]（德斯坦）
 	if int(world.completed_event_ids.get("event_384", 0)) == 2:
@@ -286,7 +286,7 @@ func _compute_press(world: WorldState) -> Array:
 		press[1] += 1
 	if world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null 			and world.empires[EmpireData.USA].power > _d(W.I_INFLUENCE):
 		press[1] += 1
-	if _mod_active(17):
+	if _mod_active(GameConstants.Modifier.USA_EMBARGO):
 		press[1] += 1
 	if int(world.completed_event_ids.get("event_046", 0)) == 2:
 		press[1] -= 1
@@ -299,7 +299,7 @@ func _compute_press(world: WorldState) -> Array:
 		press[2] += 1
 	if iran != null and iran.has_tag("亲美") and iran.government == GameConstants.Government.AUTHORITARIAN:
 		press[2] += 1
-	if _mod_active(3):
+	if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 		press[2] += 1
 	if portugal != null and portugal.sub_government == GameConstants.SubGovernment.MODERATE:
 		press[2] += 1

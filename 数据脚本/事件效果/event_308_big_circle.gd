@@ -16,7 +16,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
-	var mod3 := _mod_active(3)
+	var mod3 := _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION)
 	if mod3:
 		event_def.description = TXT_DESC_ACTIVE
 	else:

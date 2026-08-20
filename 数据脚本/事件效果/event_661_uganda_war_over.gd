@@ -81,7 +81,7 @@ func execute(context: Dictionary) -> void:
 				_leave_alliances(uganda)
 				uganda.set_tag("亲中", true)
 				uganda.set_tag("对华贸易", true)
-			if _mod_active(ws, 6):
+			if _mod_active(ws, GameConstants.Modifier.MAOIST_BULWARK):
 				context["result_text"] = TXT_R0_PRORPC
 				if uganda != null:
 					uganda.government = GameConstants.Government.SOCIALIST

@@ -56,7 +56,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		else:
 			_disable(opt[1], TXT_P0_OPT1_DIS.format([25]))
 		_enable(opt[2], TXT_P0_OPT2)
-		if _res_at_least(world, W.I_AGENTS, 50) and not _mod_active(world, 6) and not _mod_active(world, 3):
+		if _res_at_least(world, W.I_AGENTS, 50) and not _mod_active(world, GameConstants.Modifier.MAOIST_BULWARK) and not _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION):
 			_enable(opt[3], TXT_P0_OPT3)
 		else:
 			_disable(opt[3], TXT_P0_OPT3_DIS.format([5]))
@@ -64,15 +64,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_disable(opt[5], "")
 	else:
 		event_def.description = TXT_DESC_SIX
-		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) != 0:
+		if not _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION) and _data_value(world, W.I_POLITICAL_LINE) != 0:
 			_enable(opt[0], event_def.options[0].text)
 		else:
 			_disable(opt[0], TXT_OPT1)
-		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) > 1:
+		if not _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION) and _data_value(world, W.I_POLITICAL_LINE) > 1:
 			_enable(opt[1], TXT_OPT1)
 		else:
 			_disable(opt[1], TXT_OPT3)
-		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) < 3:
+		if not _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION) and _data_value(world, W.I_POLITICAL_LINE) < 3:
 			_enable(opt[2], TXT_OPT2)
 		else:
 			_disable(opt[2], TXT_OPT5)
@@ -80,11 +80,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			_enable(opt[3], TXT_OPT3)
 		else:
 			_disable(opt[3], TXT_OPT7)
-		if _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) < 3:
+		if _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION) and _data_value(world, W.I_POLITICAL_LINE) < 3:
 			_enable(opt[4], TXT_OPT4)
 		else:
 			_disable(opt[4], TXT_OPT9)
-		if not _mod_active(world, 3) and _data_value(world, W.I_POLITICAL_LINE) > 1:
+		if not _mod_active(world, GameConstants.Modifier.CULTURAL_REVOLUTION) and _data_value(world, W.I_POLITICAL_LINE) > 1:
 			_enable(opt[5], TXT_OPT5)
 		else:
 			_disable(opt[5], TXT_OPT11)

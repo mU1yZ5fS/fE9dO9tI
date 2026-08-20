@@ -34,7 +34,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], TXT_OPT1_DIS)
-	if line > 1 and line != 4 and _mod_active(7):
+	if line > 1 and line != 4 and _mod_active(GameConstants.Modifier.BLACK_CAT_WHITE_CAT):
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], TXT_OPT2_DIS)

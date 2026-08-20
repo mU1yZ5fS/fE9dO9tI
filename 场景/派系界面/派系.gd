@@ -336,8 +336,8 @@ func _build_condition_text(cat_idx: int, target_val: int) -> String:
 ## modifies[6]激活且目标∈{9,14,15,22,23,28,29} 或 (19且res[444]≠0) → "毛主席正看着你！"；
 ## 否则毛已死(data.stability≥100)→"尚未建立"、毛在世→"毛主席已离世，起锚！"。
 func _mao_cond_text(w: WorldState, target_val: int) -> String:
-	if FactionService.mod_active(w, 6) and (target_val in [9, 14, 15, 22, 23, 28, 29] \
-			or (target_val == 19 and FactionService.event_result(w, 444) != 0)):
+	if FactionService.mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) and (target_val in [9, 14, 15, 22, 23, 28, 29] \
+			or (target_val == 19 and FactionService.event_result(w, GameConstants.EventNumber.LONG_REVOLUTION) != 0)):
 		return " 毛 主 席 正 看 着 你 ！"
 	if GameManager.is_mao_dead():
 		return " 尚 未 建 立"

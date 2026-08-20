@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 			var text := TXT_R0_A + tname + TXT_R0_B + tname + TXT_R0_C + tname + TXT_R0_D + tname + TXT_R0_E
 			_add(W.I_BUDGET, -150)
 			if c138 != null:
-				if _mod_active(3) and _mod_active(6):
+				if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(GameConstants.Modifier.MAOIST_BULWARK):
 					c138.government = GameConstants.Government.SOCIALIST
 					c138.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				else:
