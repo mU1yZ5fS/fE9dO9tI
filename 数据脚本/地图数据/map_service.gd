@@ -43,6 +43,42 @@ var cached_color_palette_tex: ImageTexture = null
 
 var _map_preload_thread: Thread = null
 
+## 统一“国家 parts 标志 → 地图归属变更”的规则表。
+## 每一条表示：当 legacy 国家的 parts[part] 为 true 时，执行对应地图合并/区域转移。
+## 这样避免结算逻辑设置 parts 后，地图层漏写规则（如阿尔巴尼亚/库尔德斯坦）。
+## 目前只收录“纯 parts 条件”的规则；带额外条件的（OAR、中国征服、非洲之角等）
+## 仍保留在 sync_map_merges() 的显式分支中，后续可逐步收编。
+const PART_MERGE_RULES := [
+	# 马来西亚吞并文莱
+	{"legacy": 49, "part": 0, "type": "merge", "sources": [111]},
+	# 越南印支联邦：吞并老挝/柬埔寨
+	{"legacy": 11, "part": 0, "type": "merge", "sources": [22, 23]},
+	# 也门统一（双向）
+	{"legacy": 24, "part": 0, "type": "merge", "sources": [25]},
+	{"legacy": 25, "part": 0, "type": "merge", "sources": [24]},
+	# 危地马拉统一：吞并伯利兹
+	{"legacy": 149, "part": 0, "type": "merge", "sources": [142]},
+	# 爱尔兰统一：吞并北爱尔兰
+	{"legacy": 29, "part": 0, "type": "merge", "sources": [166]},
+	# 西撒哈拉并入摩洛哥
+	{"legacy": 54, "part": 0, "type": "merge", "sources": [18]},
+	# 魁北克独立
+	{"legacy": 167, "part": 0, "type": "regions", "regions": [1250]},
+	# 南墨西哥独立：墨西哥 parts[1] → 恰帕斯/瓦哈卡划给南墨西哥(168)
+	{"legacy": 140, "part": 1, "type": "regions", "regions": [1272, 2101], "target_legacy": 168},
+	# 库尔德斯坦独立
+	{"legacy": 157, "part": 0, "type": "regions", "regions": [
+		381, 382, 384, 402, 403, 979, 980, 989, 990, 1408,
+		1723, 4068, 4072, 4074, 4075, 4077, 4091, 4092, 4094,
+	]},
+	# 阿尔巴尼亚对南斯拉夫战争胜利
+	{"legacy": 20, "part": 0, "type": "regions", "regions": [
+		704, 705, 4555, 4245, 4216, 871, 814, 873,
+	]},
+	# 阿尔巴尼亚对希腊战争胜利（大阿尔巴尼亚/查梅尼亚）
+	{"legacy": 20, "part": 1, "type": "regions", "regions": [334]},
+]
+
 
 func preload_region_map() -> void:
 	if cached_region_map_image != null:
@@ -360,10 +396,6 @@ func sync_map_merges() -> void:
 		if c30 != null and _has_part(c30, 0) and _has_part(c30, 1) and _has_part(c30, 2):
 			for src in [54, 55, 18, 14, 35, 13, 40]:
 				_merge_legacy(w, src, 30)
-	# 文莱并入马来西亚：49.parts[0]
-	var c49 := w.get_country_by_legacy_index(49)
-	if c49 != null and _has_part(c49, 0):
-		_merge_legacy(w, 111, 49)
 	# 吉布提：Event585 未发生 -> 仍属法国(21)；若非洲之角(41.parts[1])则并入 41
 	if not w.event_done_num(585):
 		_merge_legacy(w, 106, 21)
@@ -371,58 +403,32 @@ func sync_map_merges() -> void:
 	if c41 != null and (_has_part(c41, 0) or _has_part(c41, 1)):
 		_merge_legacy(w, 42, 41)
 		_merge_legacy(w, 106, 41)
-	# 西撒哈拉：摩洛哥(54).parts[0] 为真时西撒(18)并入摩洛哥
-	var c54 := w.get_country_by_legacy_index(54)
-	if c54 != null and _has_part(c54, 0):
-		_merge_legacy(w, 18, 54)
-	# 印支/东南亚合并：11.parts[0] 时 22、23 并入 11
-	var c11 := w.get_country_by_legacy_index(11)
-	if c11 != null and _has_part(c11, 0):
-		_merge_legacy(w, 22, 11)
-		_merge_legacy(w, 23, 11)
-	# 也门统一：24/25 谁置 parts[0] 就吞并对方
-	var c24 := w.get_country_by_legacy_index(24)
-	var c25 := w.get_country_by_legacy_index(25)
-	if c24 != null and _has_part(c24, 0):
-		_merge_legacy(w, 25, 24)
-	if c25 != null and _has_part(c25, 0):
-		_merge_legacy(w, 24, 25)
-	# 危地马拉统一：149.parts[0] 时伯利兹(142)并入危地马拉
-	var c149 := w.get_country_by_legacy_index(149)
-	if c149 != null and _has_part(c149, 0):
-		_merge_legacy(w, 142, 149)
-	# 爱尔兰统一：29.parts[0] 时另一爱尔兰(166)并入 29
-	var c29 := w.get_country_by_legacy_index(29)
-	var c166 := w.get_country_by_legacy_index(166)
-	if c29 != null and _has_part(c29, 0) and c166 != null:
-		_merge_legacy(w, 166, 29)
-	# 魁北克独立：167.parts[0] 时加拿大魁北克地块划给魁北克
-	var c167 := w.get_country_by_legacy_index(167)
-	if c167 != null and _has_part(c167, 0):
-		set_region_owner([1250], c167.gwcode)
-	# 南墨西哥独立：墨西哥(140).parts[1] 时恰帕斯/瓦哈卡划给南墨西哥(168)
-	var c168 := w.get_country_by_legacy_index(168)
-	var c140 := w.get_country_by_legacy_index(140)
-	if c168 != null and c140 != null and _has_part(c140, 1):
-		set_region_owner([1272, 2101], c168.gwcode)
-	# 库尔德斯坦独立：157.parts[0] 时把主要库尔德人聚居区划给库尔德斯坦
-	var c157 := w.get_country_by_legacy_index(157)
-	if c157 != null and _has_part(c157, 0):
-		set_region_owner([
-			381, 382, 384, 402, 403, 979, 980, 989, 990, 1408,
-			1723, 4068, 4072, 4074, 4075, 4077, 4091, 4092, 4094,
-		], c157.gwcode)
-	# 阿尔巴尼亚扩张：
-	#   parts[0] = 对南斯拉夫战争胜利（科索沃/斯科普里/波德戈里察一带）
-	#   parts[1] = 对希腊战争胜利（大阿尔巴尼亚，伊庇鲁斯/查梅尼亚）
-	var c20 := w.get_country_by_legacy_index(20)
-	if c20 != null:
-		if _has_part(c20, 0):
-			set_region_owner([
-				704, 705, 4555, 4245, 4216, 871, 814, 873,
-			], c20.gwcode)
-		if _has_part(c20, 1):
-			set_region_owner([334], c20.gwcode)
+	# 统一 parts 规则表：文莱/印支/也门/危地马拉/爱尔兰/西撒/魁北克/南墨西哥/库尔德斯坦/阿尔巴尼亚等
+	_apply_part_merge_rules(w)
+
+
+## 按 PART_MERGE_RULES 统一执行 parts 标志对应的地图变更。
+func _apply_part_merge_rules(w: WorldState) -> void:
+	if w == null:
+		return
+	for rule in PART_MERGE_RULES:
+		var legacy_idx := int(rule.get("legacy", -1))
+		var part_idx := int(rule.get("part", -1))
+		var c := w.get_country_by_legacy_index(legacy_idx) if legacy_idx >= 0 else null
+		if c == null or not _has_part(c, part_idx):
+			continue
+		match String(rule.get("type", "")):
+			"merge":
+				for src in rule.get("sources", []):
+					_merge_legacy(w, int(src), legacy_idx)
+			"regions":
+				var target_gw := c.gwcode
+				if rule.has("target_legacy"):
+					var target_c := w.get_country_by_legacy_index(int(rule["target_legacy"]))
+					if target_c == null:
+						continue
+					target_gw = target_c.gwcode
+				set_region_owner(rule.get("regions", []), target_gw)
 
 
 func _merge_legacy(w: WorldState, from_idx: int, to_idx: int) -> void:
