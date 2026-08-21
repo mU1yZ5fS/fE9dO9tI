@@ -46,6 +46,8 @@ func _ready() -> void:
 	背景音乐播放器 = AudioStreamPlayer.new()
 	背景音乐播放器.name = "背景音乐播放器"
 	背景音乐播放器.bus = "背景音乐"
+	# ESC 菜单会 get_tree().paused=true，但背景音乐应继续播放，不随暂停停掉。
+	背景音乐播放器.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(背景音乐播放器)
 	背景音乐播放器.finished.connect(_on_背景音乐播放器_finished)
 
