@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_241_new_faces.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_done240"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_240"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们需要新鲜血液，请这三位同志来喝一杯吧！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_241_new_faces.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "别忘了再叫上那几个上海人！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_241_new_faces.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "哦不，这还是太危险了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_241_new_faces.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_241"
+source_event_number = 241
+trigger_priority = 2410
+title = "新时代，新面孔"
+description = "华国锋同志，在我们扫清新赫鲁晓夫反革命集团的伟大胜利之后，陷入了一个尴尬的问题。我们缺少能堪大任的干部。对此，有人建议我们提拔来自山西的“农民总理”陈永贵，以及工人孙健和吴桂贤。这样既保证了极左派对我们的忠诚，也更好的体现了我们对工农联盟国家的重视。\n但是您的同事，现在的王副主席给出了另一个解决方案。如您所知，他在上海的时期结识了不少志同道合的战友，他的方案便是在提拔上述人选的时候，再任命徐景贤，马天水和王秀珍三人。他们的革命热情不可阻挡也不可否认。但党内的温和派担心他们的极左倾向会加速党的分裂。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_done240")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

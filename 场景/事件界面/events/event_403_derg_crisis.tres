@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_403_derg_crisis.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "推动反对派实现大联合并支持埃塞俄比亚反对派（需要15.0百万预算与35.0点军事实力）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_403_derg_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持分离主义势力（需要15.0百万预算与25.0点军事实力）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_403_derg_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "援助门格斯图政权，但要求他驱逐苏联基地（需要25.0百万预算）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_403_derg_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "为难民送去人道主义援助"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_403_derg_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "不闻不问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_403_derg_crisis.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_403"
+source_event_number = 403
+trigger_priority = 40300
+title = "军委独裁政权的危机"
+description = "当君主制于1974年被推翻后，埃塞俄比亚的政局便落入了临时军政委员会（也被称为军委【Derg】）之手。很快，该国权力便集中于门格斯图·海尔·马里亚姆一人之手。而他对自己的政敌毫不留情。新政权立刻开始以苏联为模板实行一边倒政策。然而，这些政策并不能实现该国的迅速现代化——农业集体化引发了灾难性的饥荒，数以万计的人沦为牺牲品。肆虐的饥荒让这个刚过完十周年纪念日的政权更是显得荒诞。因此，军委成了靠苏联与社会主义阵营这片天吃饭的诡异存在。自欧加登战争后，埃塞俄比亚就变成了苏联在东非与红海的扩张的马前卒。然而，最令人印象深刻的还要数这个自诩以马克思主义立国的政府，竟撞上了一群社会主义反对派：如国内政党埃塞俄比亚人民共和党，以及依托民族分离地区而诞生的大量左翼民族主义政党（在厄立特里亚和提格雷境内，相关组织活动最为活跃）右翼的势力也相当显著，其领头羊当属埃塞俄比亚民主联盟。然而，埃塞俄比亚的反对派内也极度分裂，并相互交火（尤其是区域反对派）。而政府至少在目前还能“妥善处置”这些“叛匪”。但现在，随着军委政权逐渐露出其独裁本质，反对派之间也许能就此达成共识。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

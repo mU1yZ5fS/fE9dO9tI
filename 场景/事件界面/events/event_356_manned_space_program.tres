@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_356_manned_space_program.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E356_tech"]
+script = ExtResource("3_expr")
+type = 29
+value = 30.0
+
+[sub_resource type="Resource" id="E356_not355r1_c"]
+script = ExtResource("3_expr")
+type = 4
+value = 1.0
+ref_event_id = "event_355"
+
+[sub_resource type="Resource" id="E356_not355r1"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("E356_not355r1_c")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_356_manned_space_program.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_356_manned_space_program.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_356_manned_space_program.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_356_manned_space_program.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_356_manned_space_program.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_356_manned_space_program.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_356"
+source_event_number = 356
+trigger_priority = 35600
+title = "载人航天计划"
+description = "苏联和美国已经将他们的宇航员送入了地球轨道，甚至是更远的地方。中国作为一个太空强国，自当奋起直追，这便意味着我们必须重复他们的成就。至少这是科学家们想要的......这也有助于你的政治声誉。这里有两个建议——将我们本国的FSW可返回式卫星改装为单个载人太空舱，或者在情报部门的帮助下获取苏联联盟号飞船的蓝图，以便在其基础上创建自己的类似级别的飞船。或者你可以再次取消载人航天项目......"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E356_tech"), SubResource("E356_not355r1")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

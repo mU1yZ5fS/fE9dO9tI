@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_594_garissa_massacre.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.11.1"
+
+[sub_resource type="Resource" id="Expr_som_sub10"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 10.0
+target = "42"
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_som_sub10")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "为索马里盟友提供顾问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_594_garissa_massacre.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "帮助肯尼亚保卫领土完整"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_594_garissa_massacre.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "这只是普通的非洲国家之间的争端罢了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_594_garissa_massacre.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_594"
+source_event_number = 594
+trigger_priority = 59400
+title = "加里萨大屠杀"
+description = "在索马里人聚居区被欧美列强和埃塞俄比亚帝国瓜分之后，以索马里人为主的东北省便纳入英属肯尼亚领土中，在索马里独立之后，北部边界区便强烈要求分离出来加入索马里。自肯尼亚独立尤其是1967年盗匪战争（肯尼亚称索马里分离势力为盗匪）结束以来，肯尼亚对于东北省予以打压，甚至不惜为东北省单独立法来加强管控。1980年11月，在一名土匪的袭击下，有六名政府官员死亡，肯尼亚军队随即在东北省加里萨镇进行报复性行为，烧毁庄园，强奸，放火杀人，把当地镇民赶到幼儿园作为小型集中营关押，放走除了索马里人以外的其他人并断绝他们的水源和食物。至少有三千余人死于这场屠杀。\n索马里政府对此十分不满，并要求肯尼亚政府停止种族屠杀，否则将会推翻现政权并进行占领。主席同志，我们或许可以借此机会帮助索马里人完成大索马里之梦，或者帮肯尼亚一忙，解决掉他们的心头之患？总之选择权在你。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

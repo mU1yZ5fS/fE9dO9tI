@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_451_indochina_dictator.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_khmer_sub10"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 10
+target = "23"
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.3.1"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_khmer_sub10"), SubResource("Expr_date")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们推翻波尔布特集团！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_451_indochina_dictator.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们有波尔布特就够了。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_451_indochina_dictator.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_451"
+source_event_number = 451
+trigger_priority = 45100
+title = "中南半岛的独裁者"
+description = "尽管柬埔寨共产党掌权的波尔布特集团和我们保持了良好的关系，但是他们并不太听取我们的建议。他们在柬埔寨革命后一直采取偏激的政策——宣扬大高棉主义，迫害柬埔寨的各个少数民族（包括华人），在柬越边境制造摩擦，拒绝使用货币，将人民粗暴地划分为新人和旧人，对柬共的党组织进行保密以及在国内扩大化清洗制造恐怖——这引起了党内干部和群众的不满。根据我们的情报，军队内部分军官对波尔布特集团的暴虐感到担忧；而同时，北部大区书记贵敦和东部大区书记索平正在各自组建密谋团体反对波尔布特集团，或许我们可以尝试串联他们反对波尔布特集团？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_khmer_sub10"), SubResource("Expr_date"), SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

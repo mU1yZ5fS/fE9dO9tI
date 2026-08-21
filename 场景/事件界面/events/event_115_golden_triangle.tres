@@ -1,0 +1,92 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_115_golden_triangle.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.1.1"
+
+[sub_resource type="Resource" id="Expr_bur_torg"]
+script = ExtResource("3_expr")
+type = 10
+key = "对华贸易"
+target = "33"
+
+[sub_resource type="Resource" id="Expr_bur_proprc"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "33"
+
+[sub_resource type="Resource" id="Expr_not_bur_proprc"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_bur_proprc")])
+
+[sub_resource type="Resource" id="Expr_thai_torg"]
+script = ExtResource("3_expr")
+type = 10
+key = "对华贸易"
+target = "34"
+
+[sub_resource type="Resource" id="Expr_lao_torg"]
+script = ExtResource("3_expr")
+type = 10
+key = "对华贸易"
+target = "22"
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_bur_torg"), SubResource("Expr_not_bur_proprc"), SubResource("Expr_thai_torg"), SubResource("Expr_lao_torg")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "这不是我们的事务"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_115_golden_triangle.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "与毒贩达成协议（-1特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_115_golden_triangle.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "帮助盟国打击毒品贩子（-2特工网络，-2军事力量）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_115_golden_triangle.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_115"
+source_event_number = 115
+trigger_priority = 11500
+title = "金三角"
+description = "主席同志，正如我们的情报部门所知，在缅甸、老挝和泰国等最近成为我们势力范围的山区，有一个庞大的网络参与毒品的生产和销售，称为“金三角”。这个网络非常有利于这些国家和周边国家的腐败，而且它还由一位著名的掸族成员领导，他主张掸族与缅甸分离。考虑到这一切，部分党员和将军提出协助这些国家对毒品贩子进行调查和军事行动。然而,有另一组人声称，在多年的内战中掸族一直未能实现独立于缅甸的梦想，也不太可能成功。但是他们与引人注目的一个毒贩集团有联系，这些毒品主要销往西方国家。在这方面，他们提出帮助金三角组织保护和销售商品，这将帮助我们得到资金，破坏西方国家的生活。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

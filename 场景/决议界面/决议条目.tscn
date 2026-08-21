@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://d3ntr2xlaq71"]
+
+[ext_resource type="Script" uid="uid://xps8rehdxaon" path="res://场景/决议界面/决议条目.gd" id="1_entry"]
+[ext_resource type="Texture2D" uid="uid://cvratn38u6gh3" path="res://资产/UI/决议/决议条目背景.png" id="1_gsy06"]
+[ext_resource type="Texture2D" uid="uid://c2ec2bbstkiql" path="res://资产/UI/决议/acceptDecision.png" id="2_82kek"]
+[ext_resource type="Texture2D" uid="uid://boxd7ij5eui7h" path="res://资产/UI/决议/DecisionUnready.png" id="2_ci2tn"]
+[ext_resource type="Texture2D" uid="uid://bmrlc3ihsvfp8" path="res://资产/UI/决议/acceptDecision2.png" id="3_ci2tn"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="6_font"]
+
+[node name="决议条目" type="Control" unique_id=1390301359]
+custom_minimum_size = Vector2(1068, 236)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1068.0
+offset_bottom = 236.0
+size_flags_horizontal = 3
+script = ExtResource("1_entry")
+
+[node name="背景" type="TextureRect" parent="." unique_id=162252452]
+layout_mode = 0
+offset_right = 1068.0
+offset_bottom = 236.0
+texture = ExtResource("1_gsy06")
+
+[node name="不可执行决议_背景" type="TextureRect" parent="." unique_id=640267706]
+visible = false
+layout_mode = 0
+offset_right = 1068.0
+offset_bottom = 236.0
+texture = ExtResource("2_ci2tn")
+
+[node name="已完成决议_背景" type="TextureRect" parent="." unique_id=640267707]
+visible = false
+layout_mode = 0
+offset_right = 1068.0
+offset_bottom = 236.0
+
+[node name="文案" type="RichTextLabel" parent="." unique_id=1903454514]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 760.0
+offset_bottom = 224.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("6_font")
+theme_override_font_sizes/normal_font_size = 20
+
+[node name="执行决议" type="TextureButton" parent="." unique_id=2064424]
+layout_mode = 0
+offset_left = 764.0
+offset_top = 136.0
+offset_right = 812.0
+offset_bottom = 224.0
+texture_normal = ExtResource("2_82kek")
+texture_pressed = ExtResource("3_ci2tn")
+texture_hover = ExtResource("3_ci2tn")
+
+[node name="不可执行提示" type="TextureRect" parent="." unique_id=1572507522]
+layout_mode = 0
+offset_left = 764.0
+offset_top = 32.0
+offset_right = 804.0
+offset_bottom = 72.0
+
+[node name="决议条目图标" type="TextureRect" parent="." unique_id=194156979]
+layout_mode = 0
+offset_left = 825.0
+offset_top = 12.0
+offset_right = 1059.0
+offset_bottom = 231.0
+expand_mode = 1
+stretch_mode = 5

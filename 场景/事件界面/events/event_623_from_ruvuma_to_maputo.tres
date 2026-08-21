@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_623_from_ruvuma_to_maputo.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.5.30"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们将继续援助莫桑比克解放阵线党，一直打到完全胜利为止！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_623_from_ruvuma_to_maputo.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "秘密给抵运打钱"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_623_from_ruvuma_to_maputo.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "尝试置身事外"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_623_from_ruvuma_to_maputo.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_623"
+source_event_number = 623
+trigger_priority = 62300
+title = "从鲁乌马到马普托"
+description = "经过我们和我们的盟友以及苏东阵营的长期支援，并得益于康乃馨革命，莫桑比克解放阵线终于获得了反殖民斗争的阶段性胜利，在1975年6月25日成立了莫桑比克人民共和国，由有“非洲的切·格瓦拉”之称的萨莫拉·马谢尔担任最高领导人。在争取独立的斗争中，莫桑比克解放阵线的左派战胜了内部的资产阶级民族主义路线的支持者，赢得了路线斗争，该组织也逐渐从亲左翼的民族主义组织转向了支持马克思列宁主义的革命组织。意识形态上，它也更多地受到毛泽东思想的影响，相比亲苏的同样持马列主义的安哥拉人民解放运动而言，他们显得更具革命性——积极支持阶级斗争、政治挂帅等原则。\n然而，独立后的路并不一帆风顺，殖民者留下的是一个千疮百孔的莫桑比克，经济凋敝，被形容为“实际上破产的国家”；周边的种族政权以及莫桑比克本土的白人资本家和地主也不愿意见到一个新的左翼反帝政权——1976年，在罗德西亚和白人南非的支持下，白人叛乱组织“死亡之龙”同被清除出党的莫解阵右翼分子的叛乱组织合并为拥有上万人的“莫桑比克全国抵抗运动”，对人民共和国发起了全国性的战争。对于莫桑比克解放阵线党而而言，他们需要一边同莫抵运作战，一边进行人民民主革命，在严峻的环境下建设国家；对抵运而言，这是莫解阵对全国控制相对薄弱的时期。\n作为我们支援非洲反帝反殖的一个重要节点，我们自然应当帮老朋友莫解阵解决掉莫抵运这个麻烦；不过，为了保住我们在非洲的利益，我们或许应该尝试两头下注？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

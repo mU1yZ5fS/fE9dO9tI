@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_416_grenada_act2.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持格林纳达激进左派，并让它们加入我方势力范围（需要15.0百万预算与15.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_416_grenada_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持毕晓普领导的温和共产主义者（需要5.0百万预算与10.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_416_grenada_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "格林纳达在哪？不关我事"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_416_grenada_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "加入美国的干涉行动并支持自由派"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_416_grenada_act2.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_416"
+source_event_number = 416
+trigger_priority = 41600
+title = "我的格林纳达？第二幕"
+description = "尽管格林纳达的社会主义革命在社会改革方面取得了一系列成就，但还是未能解决该国的经济问题。在美国宣布对其进行制裁后，局势便进一步恶化。莫里斯·毕晓普政府决定向美国与国际货币基金组织妥协让步，以此换取后者对该国的制裁放松，但美国拒绝为格林纳达提供贷款。因此，执政党内的派系斗争加剧了。以代总理伯纳德·科尔德和格林纳达军队总司令赫德森·奥斯汀将军为首的激进左派对莫里斯·毕晓普总统的温和派方案相当反感。现在，格林纳达武装部队正计划逮捕莫里斯·毕晓普，并建立反美军事独裁政权。同时，格林纳达民主同盟在邻国巴巴多斯宣布建立。其成员均反对格林纳达现行的马克思主义政府。问题不只在于资助谁，还有要不要资助的问题，毕竟格林纳达不过是个偏远小岛而已。这样的小国在世界上怎么也掀不起波澜。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

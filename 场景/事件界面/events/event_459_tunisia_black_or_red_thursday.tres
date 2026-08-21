@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_459_tunisia_black_or_red_thursday.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.1.20"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "全力支持工会和左翼反对派"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_459_tunisia_black_or_red_thursday.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "暗示阿尔及尔和的黎波里方面，让他们动手。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_459_tunisia_black_or_red_thursday.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "暗示法国人，让他们来解决问题。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_459_tunisia_black_or_red_thursday.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "太远了，还是太远了……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_459_tunisia_black_or_red_thursday.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_459"
+source_event_number = 459
+trigger_priority = 45900
+title = "黑色星期四？红色星期四？"
+description = "在艾哈迈德·本·萨拉赫——这位曾任突尼斯总工会（UGTT）领导人的经济部长的影响下，突尼斯自1964年至1969年实施了一系列社会主义改革，国家进行大规模的经济控制，推行国有化与农业合作化运动，同时，执政的新宪政党亦顺应时势更名为社会主义宪政党。然而，这一短暂的社会主义尝试终因官僚主义的桎梏及党内保守派、商界与富裕农民等势力的联合抵制而告挫败。1969年9月，本·萨拉赫遭免职、开除党籍，并被监禁。直至1973年，他方得脱逃至阿尔及利亚，并于流亡期间创立了反对派政党“人民团结运动”。\n接任其位的埃迪·努伊拉转而采纳自由主义政策，启动经济与社会自由化进程，引发了包括小资产阶级在内的广泛社会阶层的不满情绪。\n值得注意的是，突尼斯总工会与社会主义宪政党之间，长久以来并非简单的领导与被领导关系，而是交织着合作、相互利用乃至对抗的复杂互动。进入1970年代末，突尼斯爆发了经济危机，两大机构在应对危机策略上产生了严重分歧。政府试图将危机责任转嫁给工会及工人阶级，同时加大了对反对派的镇压力度，尤其是针对人民团结运动及由前社会主义宪政党高层艾哈迈德·梅斯提里领导的左翼民主派团体（他在1978年6月19日成立了社会主义民主运动），后者因支持民主化而与本党决裂。\n1978年1月20日，社会主义宪政党中央委员会发布决议，要求清除UGTT领导层中的“破坏因素”。随后，该党派遣武装力量袭击了工会的多处地方机构。1月24日，UGTT斯法克斯的地方领导人被捕，工会总书记哈比卜·阿库尔在穆罕默德·阿里广场的慷慨陈词中，号召全国总罢工，并宣称“人民之外，别无至高无上者”（暗指对布尔吉巴权威的挑战）。此言一出，立即被视为挑衅行为，警方随即于1月25日包围了工会总部，将近200名工会领袖困于其中。次日清晨，阿库尔致电国家安全局，要求安全部队撤离，并发出警告：“如果拒绝，他会宣布‘突尼斯将燃烧’”。\n突尼斯社会的矛盾已累积至一触即发的边缘，我们是否要对此进行干预？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_122_east_turkestan_leader.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "赛福鼎·艾则孜"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_122_east_turkestan_leader.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "包尔汉·沙希迪"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_122_east_turkestan_leader.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "艾尔肯·阿力普提肯"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_122_east_turkestan_leader.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_122"
+source_event_number = 122
+trigger_priority = 12200
+title = "维吾尔领导人"
+description = "既然已经批准设立维吾尔共和国，并同意其组建自治政府，那么我们的意见也是很重要的。现在有三名候选人摆在我们面前，第一位是维吾尔族共产主义战士赛福鼎·艾则孜，他是四十年代三区革命时期的主要领导人之一，曾积极主张与苏联交好，也在“文化大革命”中遭到政治批斗。我们当然可以为其平反，因为他从未表露过分裂主义倾向。而第二位候选人，包尔汉·沙希迪，公开以穆斯林的身份进行活动，同样也是历经了三区革命磨炼的共产主义战士，但与前一位的不同之处在于，他不仅致力于维护中华苗裔，还公然反苏，狂热亲华。他显然是我们的最佳人选，但如果我们正在打击宗教思想，那么就得稍微放宽一些政策。最后，在流亡海外的维吾尔运动组织中，也有一位代表人物可以作为候选，其父曾在三区革命中参与支持亲国民党的维吾尔自治共和，其本人也曾作为自由电台的雇员，担任CIA中国区顾问。他不仅支持维吾尔的民族自决，也同样支持所有的少数民族自决。到目前为止，这位候选在分裂问题上的表态仍处于温和立场——他支持自治而非脱离，并声明只会采取和平手段。如果我们不担心美国的渗透，那么这就是一个绝佳人选，可以向全世界展示我们对人权的保护。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

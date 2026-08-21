@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_140_paraguay_dictator_eternal.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "挑动斯特罗斯纳攻击罗德里格斯（右翼独裁主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_140_paraguay_dictator_eternal.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "挑动斯特罗斯纳攻击罗德里格斯，并让黑恶组织扶植因斯弗兰（新法西斯主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_140_paraguay_dictator_eternal.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "保持距离"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_140_paraguay_dictator_eternal.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_140"
+source_event_number = 140
+trigger_priority = 14000
+title = "独裁并非永恒"
+description = "进入80年代，对斯特罗斯纳统治的不满弥漫在整个巴拉圭国内与统治集团高层。斯特罗斯纳主义的现代化潜力已经消耗殆尽；反共政策在苏联改革的背景下意义不再；美国里根政府对该政权的独裁性质极其不满；天主教会对其表达了激烈的反对立场——统治集团内部的关系急剧恶化。在一场激烈的对峙中，陆军司令罗德里格斯同斯特罗斯纳在政府内阁中从前最亲密的伙伴“黄金四角”走到了一起，并完全赞同后者有关反对斯特罗斯纳继续执政的观点。通过女儿玛莎及女婿小阿尔弗雷多·斯特罗斯纳的渠道，罗德里格斯尝试说服斯特罗斯纳主动下野，但屡次尝试均告失败，于是决定铤而走险。安德烈斯·罗德里格斯将军组织了一个由利诺·奥维耶多将军、巴尔莫里上校、卡里罗上校、冈萨雷斯上校和塞戈维亚上校参加的政变团伙。罗德里格斯的思想启蒙人是埃德加·林尼奥·因斯弗兰，他年轻时是极右翼活动家，斯特罗斯纳的忠实拥趸，组织了数次镇压与处决行动，但他的思想在其下野之后急剧向民主主义蜕变。几乎所有的同谋者都是像罗德里格斯一样，从斯特罗斯纳的亲密伙伴走到了这一步。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

@@ -25,6 +25,9 @@ const _音频扩展名 := [".ogg", ".wav", ".mp3"]
 var 背景音乐播放器: AudioStreamPlayer
 @onready var 按钮按下: AudioStreamPlayer = $按钮按下
 
+## 按钮悬停音效播放器（懒创建，见 play_button_hover_sound）
+var 按钮悬停: AudioStreamPlayer = null
+
 var 专辑目录列表: Array[String] = []      # 每张专辑的文件夹路径
 var 专辑名列表: Array[String] = []        # 文件夹名
 
@@ -43,6 +46,8 @@ func _ready() -> void:
 	背景音乐播放器 = AudioStreamPlayer.new()
 	背景音乐播放器.name = "背景音乐播放器"
 	背景音乐播放器.bus = "背景音乐"
+	# ESC 菜单会 get_tree().paused=true，但背景音乐应继续播放，不随暂停停掉。
+	背景音乐播放器.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(背景音乐播放器)
 	背景音乐播放器.finished.connect(_on_背景音乐播放器_finished)
 
@@ -52,6 +57,9 @@ func _ready() -> void:
 	var 音效节点 := get_node_or_null("音效")
 	if 音效节点 is AudioStreamPlayer:
 		(音效节点 as AudioStreamPlayer).bus = "音效"
+
+	# 应用持久化音量（原版 voice_china 默认 5 → AudioSource.volume=0.05）
+	apply_voice()
 
 	_扫描专辑()
 	if not 专辑目录列表.is_empty():
@@ -120,21 +128,9 @@ func _扫描当前专辑曲目() -> void:
 	当前曲目名列表.clear()
 	if 当前专辑目录 == "":
 		return
-	var 目录 := DirAccess.open(当前专辑目录)
-	if 目录 == null:
-		return
-	var 路径们: Array[String] = []
-	目录.list_dir_begin()
-	var 名称 := 目录.get_next()
-	while 名称 != "":
-		if not 目录.current_is_dir():
-			var 小写名 := 名称.to_lower()
-			for 后缀 in _音频扩展名:
-				if 小写名.ends_with(后缀):
-					路径们.append(当前专辑目录 + 名称)
-					break
-		名称 = 目录.get_next()
-	路径们.sort()
+	# 用 ResScan 以兼容导出包（.ogg/.mp3 等会被重映射为 *.remap/*.import）
+	var 后缀数组 := PackedStringArray(_音频扩展名)
+	var 路径们 := ResScan.list_files(当前专辑目录, 后缀数组)
 	for p in 路径们:
 		当前曲目路径列表.append(p)
 		当前曲目名列表.append(p.get_file().get_basename())
@@ -212,9 +208,34 @@ func 切换随机() -> void:
 	随机 = not 随机
 
 
+## 音量 0-100（原版 voice 字段，默认 5）应用到「背景音乐」总线。
+## 原版 AudioSource.volume = voice/100，即线性音量；Godot 总线用 dB，这里做 linear_to_db 转换。
+func apply_voice() -> void:
+	var 索引 := AudioServer.get_bus_index("背景音乐")
+	if 索引 < 0:
+		return
+	var 值: int = GameManager.voice if GameManager else 5
+	var 线性 := clampf(float(值) / 100.0, 0.0, 1.0)
+	AudioServer.set_bus_volume_db(索引, linear_to_db(clampf(线性, 0.001, 1.0)))
+	AudioServer.set_bus_mute(索引, 值 == 0)
+
+
 # =====================================================================
 # 音效（移植自原版 Total / PlayOnTouch 的按钮点击音效）
 # =====================================================================
 func play_button_click_sound() -> void:
 	if 按钮按下:
 		按钮按下.play()
+
+
+## 按钮悬停音效（click_mouse_over_01.wav；由 按钮特效 autoload 统一触发）。
+## 播放器按需懒创建，路由到「音效」总线。
+func play_button_hover_sound() -> void:
+	if 按钮悬停 == null:
+		按钮悬停 = AudioStreamPlayer.new()
+		按钮悬停.name = "按钮悬停"
+		按钮悬停.bus = "音效"
+		按钮悬停.stream = preload("res://资产/音频/音效/click_mouse_over_01.wav")
+		add_child(按钮悬停)
+	if 按钮悬停:
+		按钮悬停.play()

@@ -1,0 +1,101 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_506_from_1922_to_1984.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0_0"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 1.0
+target = "68"
+
+[sub_resource type="Resource" id="Expr_t0_0_1"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 15.0
+target = "68"
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0_0"), SubResource("Expr_t0_0_1")])
+
+[sub_resource type="Resource" id="Expr_t0_1_0"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲苏"
+target = "68"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_1_0")])
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "68"
+
+[sub_resource type="Resource" id="Expr_t0_3"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.3.22"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2"), SubResource("Expr_t0_3")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "开始组织一场反政变（需要2百万预算和10点军力）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_506_from_1922_to_1984.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "祝贺新政府"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_506_from_1922_to_1984.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "好吧，谁在乎呢？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_506_from_1922_to_1984.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_506"
+source_event_number = 506
+trigger_priority = 50600
+title = "从1922到1984"
+description = "噩耗传来！中国人民的老朋友，几内亚人民的革命领袖塞古·杜尔死于一连串的心脏病并发症。随后，几内亚民主党选举了路易斯·兰萨那·贝阿沃吉作为总统。新总统相当软弱，这使得党内的右翼分子——兰萨纳·孔戴察觉到了可乘之机，他一直谋求向塞古·杜尔复仇。在美国的鼎力支持之下，孔戴掀起了一场反对贝阿沃吉总统的政变。事实上夺取了政权，原政府军仍然在负隅顽抗并呼吁世界各国的帮助。最高领导人同志，杜尔总统一直不希望西方势力染指他的祖国。几内亚是一块弹丸小国，但毛泽东主席也曾经鼎力支持过他们反抗葡萄牙干涉军。也许，到我们该出手的时候了？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

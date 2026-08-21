@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="3_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_372_turkish_great_power_dream.gd" id="4_custom"]
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("4_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "库尔德斯坦必须获得完全独立！"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "和平会议将在美国、苏联与中国三方的参与下在瑞士举行。其公布的结果如下：中东的四处库尔德人聚居区——即土耳其属库尔德斯坦、伊拉克属库尔德斯坦、叙利亚属库尔德斯坦与伊朗属库尔德斯坦，将被统一为单一的库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于土耳其的库尔德斯坦工人党、位于叙利亚的民主联盟党、位于伊朗的库尔德斯坦自由生活党、位于伊拉克的库尔德斯坦爱国联盟与库尔德斯坦民主党。因此，囊括左翼与民主党派政治力量的库尔德斯坦临时政府已经建立。由于土耳其国内爆发的大规模抗议运动，国家安全委员会政府最终倒台。在随后举行的选举中，土耳其工人党与共和人民党获得的选票旗鼓相当。因此，他们不得不达成协定，并建立由社会民主党人比伦特·埃杰维特领导的联合政府。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "必须保证库尔德人的民族自治权！"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "和平会议将在美国、苏联与中国三方的参与下在瑞士举行。其公布的结果如下：合约通过了在伊拉克、伊朗与叙利亚三国境内建立库尔德民族自治区的方案。显然，由于中华人民共和国在上述国家对土耳其的战争中提供了援助，所以条款将由前者监督实行。由于土耳其国内爆发的大规模抗议运动，国家安全委员会政府最终倒台。在随后举行的选举中，土耳其工人党与共和人民党获得的选票旗鼓相当。因此，他们不得不达成协定，并建立由社会民主党人比伦特·埃杰维特领导的联合政府。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "忽略"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "我们将稍后再议......"
+
+[resource]
+script = ExtResource("3_event")
+event_id = "event_372"
+source_event_number = 372
+trigger_priority = 184
+title = "新版色佛尔条约？"
+description = "在土耳其于近日爆发的军事冲突中战败后，世界的命运将直接取决于中东地区的局势。就解决这一问题，外交顾问提供了下述方案。第一项方案是建立独立的库尔德人国家，从而一劳永逸地解决当地的分离主义问题，并让当地人民自己决定其命运。然而，这将导致一个显著的问题——新库尔德国范围多大，其边界该如何划定？库尔德人分散居住在四个中东国家中，并且，这些国家并不想同库尔德人分享自己的领土。第二项方案则是建立民族自治区。是的，在部分国家内，这一制度已经得到了贯彻实行，但库尔德人依然受到当局的系统性同化。可即便是这样，也依然存在问题——谁的势力将主导这一进程，并控制未来世界的局势？此时，任何结果都在可预料的范畴中......"
+display_script = ExtResource("4_custom")
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])
+fire_only_once = true

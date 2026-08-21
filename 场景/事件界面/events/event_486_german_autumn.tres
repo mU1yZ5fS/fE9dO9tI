@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_486_german_autumn.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.10.17"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们最好组成革命共产党人的大串联"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_486_german_autumn.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "让我们协助西德政府扫清叛匪"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_486_german_autumn.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "可是西德太远啦……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_486_german_autumn.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_486"
+source_event_number = 486
+trigger_priority = 48600
+title = "德意志之秋"
+description = "自1977年四月七日以来，西德马克思主义的极左翼城市游击队“红军旅”与“革命小组”展开了大量针对联邦德国政要与实业家的刺杀，绑架与定向爆破。受害者包括但不局限于：齐格飞·布巴克，尤尔根·庞特等联邦德国巨贾和反共政客。近日，他们又策划了一起劫机案，使得他们本就不多的支持越来越少。\n而与极左翼城市游击队一同发源于西德68运动的“K小组（K-Gruppen,意即CommunistGroups，指的是从68运动发展出的一系列毛派团体或政党）”虽然都有反修正主义的共同基础，但是他们仍在理论和社会分析上存在较大分歧，其中有部分已经倾向阿尔巴尼亚。在西德的紧张气氛下，我们是否要借势将这些分散的革命派组织整合起来？或者帮助西德当局打击这群叛匪，以获得和西德政府合作的机会？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

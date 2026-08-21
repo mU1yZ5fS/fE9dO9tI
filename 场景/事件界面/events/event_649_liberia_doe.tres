@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_649_liberia_doe.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.4.12"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "近水楼台，得尽快派队伍到蒙罗维亚去深耕"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_649_liberia_doe.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "欲速则不达，我想只有数十人的团伙可没法管好国家……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_649_liberia_doe.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_649"
+source_event_number = 649
+trigger_priority = 64900
+title = "从应许之地到应许之地"
+description = "众所周知，位于西非海岸的利比里亚可说是全球最被过誉的政权。该国虽有非洲首个“现代主权国家”与率先在当地移植美式宪政体制的“首倡功绩”，并被视为“自由世界在西非地区的样板工程”。可其尴尬现状却完全配不上前面的各种牌面：利比里亚的人口结构深受美国影响，其统治阶层可追溯至美国于19世纪废奴运动时遣返的黑人移民群体。后者很快便在这片土地上摸着前辈智慧过河，精心设计了美裔黑人对本土黑人的等级制与种族隔离制度。可这一西非版本的南非却在战略定力上略显不足：自领导该国走上发展快车道，并试图对现有体制小修小补，维持美洲裔黑人霸权的威廉·杜伯曼退场后，利比里亚国内的局势便越加难以收场。杜伯曼的继任者威廉·托尔伯特既不具有团结美裔黑人的魅力，也缺乏充分使用铁腕手段压制本土黑人的权柄。他试图走多边主义道路，尝试靠拢苏东集团的尝试更使其幕后东家美国人对其丧尽耐心。所有的一切组成了土生克兰族黑人萨缪尔·多伊崛起的背景故事——这位军官借该国首都蒙罗维亚骚乱与罢工的风潮趁虚而入，于当年四月十二日率数十人发动政变，旋即在“人民救赎委员会”的旗下建立起利比里亚首个由土生黑人领导的政权，标榜将落实“民族团结，严打腐败，实现社会公正”等纲领。考虑到土生政权的招牌在前，对我们来说，这兴许是深化去殖民化实践，并将超级大国踢出非洲的好机会。因此，向新政权递出橄榄枝绝对理所应当——即便是出于寻找贸易伙伴的现实需求也是如此。可仍有人对此抱有怀疑：考虑到这片土地也不缺如蒙博托·塞塞·塞科与若纳斯·萨文比等羊头狗肉派角色，提前押注的做法看起来并不明智……"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

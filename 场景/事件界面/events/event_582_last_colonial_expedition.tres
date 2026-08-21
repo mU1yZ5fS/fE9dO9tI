@@ -1,0 +1,91 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_582_last_colonial_expedition.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.9.20"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "在刚果的帮助下，直接支持乌班吉爱国阵线/劳动党的民众起义计划"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_582_last_colonial_expedition.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "革命不是一蹴而就的，让我们联系乌班吉爱国阵线/劳动党，帮助他们进行长期渗透"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_582_last_colonial_expedition.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "既然法国人要放弃博卡萨了，那我们为什么不去支持他？毕竟他早就说要建立“科学的社会主义”了！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_582_last_colonial_expedition.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "谴责法非关系和法帝推行新殖民主义"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_582_last_colonial_expedition.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "在法国采取行动后发表支持的声明"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_582_last_colonial_expedition.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx5"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt5"]
+script = ExtResource("1_opt")
+text = "我们不关心那个内陆国！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx5")])
+result_text = "（结果由 event_582_last_colonial_expedition.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_582"
+source_event_number = 582
+trigger_priority = 58200
+title = "最后的殖民地远征"
+description = "在国父巴泰勒米·波冈达因空难去世后，戴维·达科的掌控了中非执政党黑非洲社会发展运动（MESAN）和国家的权力，并排挤了阿贝尔·贡巴的更支持泛非主义和社会主义的派系（他在被排挤后出走成立了中非民主发展运动，但很快被查禁），逐渐建立了MESAN的一党制霸权。\n1966年1月1日，让-贝德尔·博卡萨上校在一夜之间发起了不流血的政变，推翻了中非共和国总统戴维·达科。他效仿利比亚卡扎菲上校的革命指挥委员会，组建了革命委员会，废除了1959宪法并解散了议会，将所有的立法和行政权力都集中在了自己手上。1972年3月4日，博卡萨成为了终身总统；1976年12月4日，他以拿破仑为先例，把自己加冕为中非帝国的博卡萨一世皇帝。\n当然，中非的爱国人士也一直在为推翻博卡萨进行着地下活动。在马里安·恩古瓦比总统的支持下，布拉柴维尔的革命政权为中非的马克思主义左翼反对派提供了帮助，成功将克劳德-理查德·古昂加领导的中非人民解放阵线与阿贝尔·贡巴领导的民族解放革命委员会合并为乌班吉爱国阵线/劳动党。如今，它已经发展了相当规模的地下组织，正在计划动员民众进行起义和暴动——中非人民早就对这个暴君不满了。\n法国人最开始支持博卡萨政权，但是他越来越飘忽不定的古怪政策和残暴专制最终使法国越来越不满，他们很有可能会对这个政权采取措施，换一位更可靠的代理人。\n现在正是我们插手中非的时候了！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4"), SubResource("Opt5")])

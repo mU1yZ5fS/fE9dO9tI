@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_387_yemen_war.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "在冲突中支持北也门（需要5.0点{1}与10.0点{2}）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_387_yemen_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "在冲突中支持南也门（需要5.0点{1}与10.0点{2}）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_387_yemen_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "也门人不打也门人！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_387_yemen_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "忽略"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_387_yemen_war.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_387"
+source_event_number = 387
+trigger_priority = 38700
+title = "两个也门间的战争？"
+description = "北也门与南也门曾在1972年爆发了一场冲突。最终，对抗以双方签署《开罗合约》结束，并在合约中表达了两国实现统一的愿望。然而，在接下来的数年内，两国均没有为统一采取决定性的行动。\n而现在，北也门政府正控诉其南方邻居正支持名为“民族民主阵线”的革命组织。而在双方的边界上，时常能够听到枪声。\n看起来这场冲突将发展为一场全面战争，但我们可以试着帮忙“拉偏架”。毕竟，也门是美苏两国的兵家必争之地。自20世纪60年代以来，苏联便已经在这里派驻部队，并建立了海军基地。我们可以试着借机将苏联人赶出这一地区。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

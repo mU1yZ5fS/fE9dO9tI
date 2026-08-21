@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_624_no_tyrant_tramples_you.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们将为莫桑比克提供同志般的帮助！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_624_no_tyrant_tramples_you.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "同苏东阵营合作支援，并邀请其加入社会主义国际分工体系"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_624_no_tyrant_tramples_you.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "步子太小了，我们将用他们拒绝不了的条件换取真正的思想解放……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_624_no_tyrant_tramples_you.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "趁机加大对抵运的援助"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_624_no_tyrant_tramples_you.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "我们无能为力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_624_no_tyrant_tramples_you.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_624"
+source_event_number = 624
+trigger_priority = 62400
+title = "不让暴君再蹂躏你"
+description = "自1976年3月莫桑比克为制裁罗得西亚，支持津巴布韦人民斗争而主动关闭莫罗边界后，罗得西亚白人政权便不断向莫桑比克发动武装进攻，使莫桑比克受到的直接破坏和损失达3亿美元。莫桑比克因受南非的武装侵略和袭击而遭受的损失重大，仅独立后的8年中就达3.32亿美元，有900家农村商店、495所小学、80个卫生所和140个村庄被破坏，10万农民流离失所，生活无着。与此同时，反政府武装“抵运”在南非和罗得西亚白人政权的支持下，经常袭击村庄、商店、地方政府机构以至向灾区运送食品和救赈物资的车队，炸毁铁路、桥梁、电站和工厂等重要设施，给莫桑比克造成严重破坏。此外，80年代初发生的持续旱灾和世界资本主义经济危机的冲击，更造成莫桑比克严重的经济困难。1981年，莫桑比克大部分工农业减产，出口下降，市场供应紧张，外汇储备几乎枯竭，外债由独立时的7亿美元增加到1982年的10亿美元。1982年的人均国民生产总值只有152美元，比独立前的1973年下降一半左右。有观察家认为，莫桑比克经济已经“濒临崩溃”，国家“正在水中下沉”。因此，莫解阵领导层不得不进行一定程度的解冻。萨莫拉·马谢尔在一次会议上说：“我们对私人企业产生了一种敌视的态度，这是错误的，必须改变。”同时，他强调要对国营企业进行整顿，要求国营企业“提高产量和增加利润”。\n近期召开的莫解阵四大进一步提出要在经济结构中进行实质性改革，要利用价格政策和合同制鼓励集体和私人经济成份的生产，实行权力和责任下放，在外交上，莫解阵也开始让步和转向，同西方交好以争取外资和援助。和大部分非洲的社会主义政权一样，莫桑比克面临着巨大的经济负担，社会主义模式难以稳定地继续下去；而在其中，莫解阵党内部的某些改革的支持者希望进行更大的让步。\n我们是否要做些什么？"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

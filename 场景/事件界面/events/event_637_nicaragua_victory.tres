@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_637_nicaragua_victory.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.5.10"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "尼加拉瓜与我们无关"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_637_nicaragua_victory.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "一，二，三，冲锋！向马那瓜！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_637_nicaragua_victory.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "同卡特总统一起推进“没有索摩查的索摩查主义”"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_637_nicaragua_victory.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们将支持索摩查，消灭苏修帝国主义在中美洲扶植的第五纵队！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_637_nicaragua_victory.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_637"
+source_event_number = 637
+trigger_priority = 63700
+title = "在胜利的门前"
+description = "到1979年，索摩查王朝已经摇摇欲坠。然而，桑解阵的胜利绝不是不可避免的。尽管其军队在各个战场上屡遭挫折，但国民警卫队仍然是一支重要的军事力量，仍然有能力对对手进行严厉打击，其兵力和武器装备远远超过桑解阵。尽管支持索摩查独裁政权极大损害了美国的国际威望，但卡特政府依然在担心尼加拉瓜成为“第二个古巴”的风险，对反索摩查运动态度模棱两可。\n而反索摩查运动内部也并非铁板一块，相比桑解阵，精英和资产阶级反对派更希望维持国民警卫队，愿意“维持索摩查政府的机构，即使索摩查本人下台了”，并寻求将桑解阵排除在未来政府之外（不过，独裁者更愿意与游击队继续战争，而不是与查莫罗等“温和”反对派人士通过谈判解决问题）。桑解阵则强烈反对美国与资产阶级反对派主张的这种“没有索摩查的索摩查主义”，他们坚持致力于武力推翻独裁者，进而争取桑解阵在反索摩查斗争中的领导地位以及尼加拉瓜未来的转型。为了争取到民主反对派的支持和国际社会的同情、减少美国武力干涉尼加拉瓜的可能，桑解阵还缓和了自己的反帝国主义言辞。\n民主解放联盟与其他温和反对派组成了广泛反对派阵线（由“尼加拉瓜民主运动”党领导人、商人阿方索·罗贝洛领导）。1978年夏天，桑解阵将22个独立的支持团体完全协调成一个单一组织——人民联合运动（MPU），六个月后创建了一个更大的伞式组织，全国爱国阵线（FPN）。\n经过四个月的顽强攻势，在北方，桑解阵解放了埃斯特利、新塞哥维亚、马德里斯、马塔加尔帕和希诺特加等省份，在南方与哥斯达黎加的边界线上，奥斯塔约、索蒂卡巴洛、萨波阿、托拉、南西米、贝伦和波托西等城市也已经被解放，中部马萨亚省的大部分地区也已经被桑解阵所控制。\n1979年6月，托马斯·博尔赫和温贝托·奥尔特加通过桑地诺广播电台正式宣布总起义开始，面对不可避免的局面，精英们开始撤离并逃往美国和其他地方。国民警卫队开始瓦解，部队崩溃，士兵纷纷逃往邻国。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

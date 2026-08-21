@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_446_449_iran_chain.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_prev_447_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_447"
+
+[sub_resource type="Resource" id="Expr_prev_448_not_done"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_448"
+
+[sub_resource type="Resource" id="Expr_country_sub20"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 20.0
+target = "8"
+
+[sub_resource type="Resource" id="Expr_date_1981_6_20"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.6.20"
+
+[sub_resource type="Resource" id="Expr_date_1981_7_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.7.1"
+
+[sub_resource type="Resource" id="Expr_date_1982_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.1"
+
+[sub_resource type="Resource" id="Expr_date_any"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date_1981_6_20"), SubResource("Expr_date_1981_7_1"), SubResource("Expr_date_1982_1")])
+
+[sub_resource type="Resource" id="Expr_line_at_most_1"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "教士集团已经完成了他在民族革命中的任务，不能让他们阻碍革命的进一步发展了"
+disabled_text = "我们没有义务帮他们！"
+enable_condition = SubResource("Expr_line_at_most_1")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "我们的特工联系到人民敢死游击队（德赫加尼派），伊朗人民敢死游击队组织（少数派），工人阶级解放斗争组织（佩卡尔），伊朗共产主义者联盟，伊朗劳动者党，伊朗劳动党（风暴）等组织和其他小型共产主义团体，以及库尔德民主党和俾路支解放阵线等正在武装反抗伊斯兰共和国的少数民族左翼团体，共同组建了伊朗人民革命阵线作为各个武装团体的统一指挥和联络机构。很快，阿莫勒市爆发了一场大起义，同时，在其他抗议城市中，一些中国制式武器不知从什么渠道流通到了抗议民众和罢工工人那里，伊朗全国各地的人民革命阵线成员和抗议民众联合起来，击退了政府的镇压队伍。全国各个城市都爆发了火并。人民圣战者制造了多次暗杀——先是一枚炸弹在德黑兰的伊斯兰共和党总部爆炸，当时该党领导人会议正在进行中，伊朗伊斯兰共和国的七十四名主要官员被送去见了真主，其中包括首席大法官阿亚图拉·穆罕默德·贝赫什蒂，他是伊朗革命中第二有权势的人物（仅次于阿亚图拉·鲁霍拉·霍梅尼）；随后，总理办公室也发生了一场爆炸，时任总统拉贾伊和总理巴霍纳尔被炸死。霍梅尼非常愤怒，宣称这是“伪君子和乌合之众对于正信的背弃”，“自由派想要把我们的国家再一次出卖给大撒旦”立马动员了各级伊斯兰革命委员会、巴斯基动员军以及正在形成中的革命卫队，人民党、激进穆斯林联盟、人民敢死游击队（多数派）也站在霍梅尼这边，希望这次的“从龙之功”能够让他们在未来任何可能的社会改造中拥有更大的话语权。“伊玛目路线的学生”和各种仍持反对派立场的左翼人士已经进入街垒冲突阶段。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "这是伊朗人自己的事情！我们不得干涉他国内政，和平与发展才是当今时代的主题！"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "伊朗各地都爆发了各种反抗活动。阿博尔哈桑·巴尼萨德尔在人民圣战者的掩护下逃到了法国。政府迅速对抗议做出了反应，大量抗议者被逮捕。几天后，一枚炸弹在德黑兰的伊斯兰共和党总部爆炸，当时该党领导人会议正在进行中，伊朗伊斯兰共和国的七十四名主要官员被送去见了真主，包括首席大法官阿亚图拉·穆罕默德·贝赫什蒂，他是伊朗革命中第二有权势的人物（仅次于阿亚图拉·鲁霍拉·霍梅尼），伊朗人民圣战者组织被霍梅尼指控为袭击的幕后黑手；一个月后，总理办公室也发生了一场爆炸，时任总统拉贾伊和总理巴霍纳尔被炸死。伊朗共产主义者联盟在阿莫勒附近的森林中动员力量，发动了反对伊朗伊斯兰政权的武装运动。该起义由赛厄马克·扎伊姆领导，但最终失败，许多伊共盟成员和毛派领导人被枪杀。革命卫队强行夺回阿莫勒市后，扎伊姆被他们逮捕。其他的共产主义团体在各地也开展了一些武装运动，但是由于彼此孤立，互相缺乏联系而被各个击破。少数民族的反抗运动最后也被镇压。伊朗伊斯兰共和国虽然经历了一个动荡的时期，但仍旧稳固。人民圣战者不会放弃斗争，他们正在准备下一次行动……"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "event_449"
+source_event_number = 449
+trigger_priority = 66
+title = "你可听见人民的怒吼？"
+description = "由于伊朗总统阿布·哈桑·巴尼萨德尔在伊朗人质事件上有着比霍梅尼及其党徒更温和的立场，以及对于萨达姆政权的犹豫不决，加之对于神学家的传统立场，霍梅尼最终认定其“作为大地上的腐化者”而罢黜了他，转而让新伊斯兰共和党秘书、霍梅尼最得力的亲信之一——贝赫什蒂负责国内全权事务。革命卫队占领了总统府和花园，并查封了一家与巴尼萨德尔关系密切的报社。在接下来的几天里，他们处决了他几个最亲密的朋友，包括侯赛因·纳瓦布、拉希德·萨德罗赫法齐和马努切赫尔·马苏迪。阿亚图拉·侯赛因·阿里·蒙塔泽里是政府中为数不多的仍然支持巴尼萨德尔的人之一，但他很快就被剥夺了权力。大部分左派乐于看见自由主义的知识分子被霍梅尼清洗，因此初期大力支持霍梅尼的政策，人民党主席基亚努里甚至公然宣布自己永远忠诚于伊玛目的路线，他也是伊朗革命中少数没有被清算的左派。仅仅有少数左翼势力选择了作壁上观，不随便站队法基赫政权。“红色什叶派”早已在链接两个派别的桥梁——阿亚图拉·塔莱加尼病逝后就与霍梅尼主义者的关系不断恶化，最终以马苏德·拉贾维为首的人民圣战者也选择了和巴尼萨德尔一起出走。反对派的活动规模虽庞大，但仍缺乏统一领导。根据我们的信息，政府正准备严厉镇压反对派的活动。我们该怎么办？"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_prev_447_done"), SubResource("Expr_prev_448_not_done"), SubResource("Expr_country_sub20"), SubResource("Expr_date_any")])
+show_notification = false
+display_script = ExtResource("5_custom")
+fire_only_once = true
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])

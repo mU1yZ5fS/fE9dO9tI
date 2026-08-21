@@ -1,0 +1,96 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_553_new_italian_east_africa.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_434"
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 0.0
+target = "42"
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 26
+key = "sub_government"
+value = 0.0
+target = "42"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_3"), SubResource("Expr_4")])
+
+[sub_resource type="Resource" id="Expr_5"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 7.0
+target = "42"
+
+[sub_resource type="Resource" id="Expr_6"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲美"
+target = "42"
+
+[sub_resource type="Resource" id="Expr_8"]
+script = ExtResource("3_expr")
+type = 4
+value = 1.0
+ref_event_id = "event_481"
+
+[sub_resource type="Resource" id="Expr_9"]
+script = ExtResource("3_expr")
+type = 4
+value = 2.0
+ref_event_id = "event_481"
+
+[sub_resource type="Resource" id="Expr_7"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_8"), SubResource("Expr_9")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "谴责意大利扩张主义"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_553_new_italian_east_africa.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "机会难得，我们也该在索马里上敲一笔"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_553_new_italian_east_africa.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_553"
+source_event_number = 553
+trigger_priority = 55300
+title = "新意属东非？"
+description = "革命民族主义在意大利母国的胜利极大的刺激了西亚德·巴雷少将。在欧加登的灾难性冒险之后，索马里民主共和国进入了灾难性的岁月：经济停滞，内政崩溃而低烈度反叛如波涛般涌起。无意驰援摩加迪沙的美利坚合众国伤透了巴雷的心，而这给了罗马方面一个新的机会。弗朗哥·弗雷达的意大利人民国正式向索马里民主共和国伸出了橄榄枝，包括了改建道路、翻修建筑、大兴基建、提供军事援助与帮助平叛。而索马里承诺将为意大利企业开采当地资源和发展畜牧业提供税收优惠，并提供49年的特许经营权，意大利还获得了摩加迪沙港口的一处土地作为海外保障基地。如今，大批意大利人的投资和意大利军人正开赴索马里，巴雷也在意大利顾问的帮助下改造国家。他颁布了一份新的宪法并修改了索马里革命社会主义党章程。在尊重索马里古老的伊斯兰互助传统和马克思主义的经济原理之外，额外吸纳了意大利革命的先进经验，奉行“3M主义”为指导思想的巴雷主义正在成为显学。联合国与美国对东非的政治变化深感遗憾。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_5"), SubResource("Expr_6"), SubResource("Expr_7")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

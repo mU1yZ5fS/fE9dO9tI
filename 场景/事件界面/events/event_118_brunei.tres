@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_118_brunei.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.1.9"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "密切关注......"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_118_brunei.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_118"
+source_event_number = 118
+trigger_priority = 1180
+title = "“和平之国达鲁萨兰”的再回"
+description = "1984年1月1日，苏丹宣布，文莱已成为一个完全独立国家，并宣布新内阁组成名单。1984年1月7日，文莱正式加入东南亚国家联盟，9月加入联合国，成为第159个会员国。"
+trigger_conditions = Array[ExtResource("3_expr")]([])
+trigger_script = ExtResource("5_custom")
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

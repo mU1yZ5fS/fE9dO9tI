@@ -1,0 +1,124 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_067_070_crises_and_plenums.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.10"
+
+[sub_resource type="Resource" id="Expr_relres"]
+script = ExtResource("3_expr")
+type = 14
+key = "relres"
+
+[sub_resource type="Resource" id="Expr_albania"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "20"
+
+[sub_resource type="Resource" id="Expr_line"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_radical"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_relres"), SubResource("Expr_albania"), SubResource("Expr_line")])
+
+[sub_resource type="Resource" id="Expr_ussr_relation"]
+script = ExtResource("3_expr")
+type = 8
+key = "1"
+value = 60.0
+
+[sub_resource type="Resource" id="Expr_china_ovd"]
+script = ExtResource("3_expr")
+type = 10
+key = "ovd"
+target = "1"
+
+[sub_resource type="Resource" id="Expr_intervention"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_ussr_relation"), SubResource("Expr_china_ovd")])
+
+[sub_resource type="Resource" id="Expr_usa_relation"]
+script = ExtResource("3_expr")
+type = 8
+key = "0"
+value = 60.0
+
+[sub_resource type="Resource" id="Expr_usa_trade"]
+script = ExtResource("3_expr")
+type = 10
+key = "对华贸易"
+target = "51"
+
+[sub_resource type="Resource" id="Expr_solidarity"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_usa_relation"), SubResource("Expr_usa_trade")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "波兰的事务与中国无关。他们自己做的事情自己解决！"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_1_declare"]
+script = ExtResource("1_option")
+text = "针对波兰的局势发表我们的声明"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "激化局势，“帮助”统工党强硬派做出正确决定（需要5特工，需要20百万元预算）"
+disabled_text = "还未恢复《中苏友好同盟互助条约》..."
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "组建囊括米雅尔的反修派波兰共产党、统工党“党之基石”派的民族共产主义者和斯大林主义者以及“PAX协会”（圣像派）等左翼势力的大联盟！（需要15特工网络与30百万元预算）"
+disabled_text = "可米雅尔已经离开了阿尔巴尼亚..."
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "|鼓动华约开展“兄弟般”的干预（需要5特工网络，5军事实力）"
+disabled_text = "|我们得是华约的一员..."
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "让我们支持团结工会和统工党右派的合作，以开展改革（需要10百万元预算，20特工网络）"
+disabled_text = "我们得交好美国..."
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "polish_crisis"
+source_event_number = 67
+trigger_priority = 670
+title = "波兰尚未灭亡？"
+description = "主席同志，波兰人民共和国现在已经陷入了严重的政治和经济危机，波兰的修正主义政策迎来了属于他的恶果。对外开放、私有化和市场化改革的政策滋生的大量的小资产阶级对统工党政权产生着异议，盖莱克政府不得不通过“高速度、高积累、高消费”的“三高政策”发展所谓的“消费社会主义”，通过大量举借外债来推动波兰经济高速发展，并利用财政补贴商品以维持较低的价格，以维持政权的稳定。如今，波兰经济的高速增长已经无力维持，近乎停滞，政府已经积累了巨额国债（近400亿美元），不堪重负的波兰政府决定采取冻结工资和部分商品提价的措施以避免危机，不满的波兰民众迅速发起了全国大罢工，不久后罢工的工人组成了全国性的反对派组织和独立自治工会“团结工会”（中情局为他们提供了支持），对统工党政府提出了一系列经济和政治要求。9月6日，波兰统一工人党中央委员会第六届全体会议召开，决定解除领导国家和党10年的爱德华·盖莱克的职务，并以统工党中间派斯坦尼斯瓦夫·卡尼亚取代他。卡尼亚选择对团结工会采取妥协态度。|“团结工会”并非团结在一个意识形态之下——它是一个反统工党政权的大帐篷，其左翼主要由工团主义者、民主社会主义者和基督教左翼组成，反对统工党官僚的统治，希望构建“民主的”社会主义；其右翼由自由主义者、保守主义者和基督教教士组成，希望开展自由化。|统一工人党内部也不是铁板一块，其主要分为左、中、右三派，其左派“党之基石”派主要由亲苏强硬派、斯大林主义者和民族共产主义者组成，由以塔德乌什·格拉布斯基、斯特凡·奥尔绍夫斯基、安杰伊·扎宾斯基和兹基斯瓦夫·库洛夫斯基为首的“四人帮”领导，他们希望镇压团结工会，清除官僚机构的腐败，并让波兰回归正统的马列模式，他们掌握了一众附属团体，与团结工会和统工党右派开展论战；中间派的代表是斯坦尼斯瓦夫·卡尼亚和国防部长沃伊切赫·雅鲁泽尔斯基；其右派为米奇斯瓦夫·拉科夫斯基的改革派和兹比格涅夫·伊万诺夫领导的“平行结构”（指同时具有统工党党籍和团结工会会员的平行身份）派，希望与团结工会合作开展变革。|在苏东阵营内部，保守派的勃列日涅夫、昂纳克和胡萨克都希望以1968年的捷克斯洛伐克为先例，发挥社会主义大家庭的精神，联合镇压反对派并支持“四人帮”；而安德罗波夫、苏斯洛夫和齐奥塞斯库则反对采取军事行动。|在局势如此不稳定和各派分裂的情况下，我们有很大的机会进行干预。请做出我们的选择吧！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1_declare"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_563_tragedy_of_salvation.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们将支持伊斯兰救世阵线的伟大圣战！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_563_tragedy_of_salvation.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们将支持阿尔及利亚人民追求真正的自由！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_563_tragedy_of_salvation.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们将支持阿尔及利亚人民重新开展人民革命！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_563_tragedy_of_salvation.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_563"
+source_event_number = 563
+trigger_priority = 56300
+title = "“拯救”的悲剧"
+description = "自本·杰迪德接任布迈丁成为阿尔及利亚新总统后，阿尔及利亚便开始进行一系列去布迈丁化的改革，但是随着解冻带来的并不是经济的腾飞亦或者民生的改善，而是腐败、国有资产流失、通货膨胀和社会福利的下降，阿尔及利亚民族解放阵线（FLN）的一党制政府所做的已经离他们口中奉行的“社会主义”越来越远了。\n本·杰迪德失败的改革带来了一系列社会问题，随着碳氢化合物的价格的下降，维持着FLN最后一点“社会主义”牌面的福利政策无法持续，民众生活成本上升、工人阶级的失业以及FLN的寡头政治让人民越来越不满，使得80年代的阿尔及利亚并不太平——1980年、1982年和1984年该国就已爆发过多次地方性的骚乱，而反对派也随之崛起，社会正走向撕裂。在我们的特工秘密散发了关于阿尔及利亚将进行新一轮改革削减福利和社会投入的传单后，随后引发了小型的示威，在军队维持秩序时，一名士兵失火击伤了群众，使得局势一发不可收拾。动乱从各大高校和工人阶级社区为起点，向外蔓延，群众运动的火焰烧遍了该国北部的各大主要城市，人们借鉴前几次运动的经验，筑起街垒，占领各大重要的公共建筑同FLN当局进行对抗，并喊着各种口号——“本·贝拉”、“布迈丁”、“社会主义革命”以及“圣战”——反对派并未形成一派核心，其主要以近期崛起的伊斯兰救世阵线、松散的各类泛自由派团体、共产主义的社会主义先锋党和本·贝拉的左翼政党阿尔及利亚民主运动以及柏柏尔人的温和左翼政党社会主义力量阵线为首。\n与此同时，由于局势混乱，军队内的不满本·杰迪德的异见者同FLN保守派的乌季达帮的残余分子串联起来，希望用乌季达帮的布迈丁象征平息骚乱，遂发动了一场政变，但很快，本·杰迪德便带领忠于他的军队进行了一场反政变，并在随后宣布国家进入紧急状态，开始镇压民众起义。改变的最后希望已经消失了，而反对派开始各自将群众组织起来，对抗政府的镇压一场内战开始了！我们将可以干预其中，帮助其中的某一派成为反对派的主导力量。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_593_down_with_tyrant.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帝国主义走卒去死！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_593_down_with_tyrant.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_593"
+source_event_number = 593
+trigger_priority = 59300
+title = "打倒暴君才有自由和平"
+description = "自1967年多哥政变以来，纳辛贝·埃亚德马便成为了这个弹丸之地的无冕之王。在他的统治之下，多哥人民生活在军警无时无刻不在的监视之下。经济被以美国和法国为主导的外商所垄断。他积极的发挥着任何一个买办政府该做的责任：打压革命者，讨好外国政府。他尤其厌恶邻国加纳和贝宁，并在推翻他们的政变中积极参与。但随着该国经济进一步恶化，越来越多的学生和工人纷纷要求他下台。在一场又一次的抗议之后，流血事件还是爆发了。借此机会，加纳政府和贝宁政府已经出台了完整的计划，一举干掉埃亚德马。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_136_uruguay_internal_election.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "“稍微”帮助乌戈·梅迪纳（右翼独裁主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_136_uruguay_internal_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "推动军方维持文官政府的形象（自由主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_136_uruguay_internal_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "保持距离"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_136_uruguay_internal_election.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_136"
+source_event_number = 136
+trigger_priority = 13600
+title = "皮诺切特的失败翻版"
+description = "格雷戈里奥·阿尔瓦雷斯原本是军政府中的激进派。军队因他被任命为陆军司令官而陷入分裂。1978年3月3日，他发布了第7738号法令，根该据法令，信息与国防局（IDS）将隶属于他的指挥。而时任信息与国防局主任阿莫里·柏兰特将军拒绝执行该文件，他因此被处以六十天拘役并最终辞职。1980年，他试图组织一场宪法公投，按预期，公投后将只有三个合法政党得以保留，也只有一位候选人能被推选出来，军队权力也将写入宪法。而1980年公投反而表明了乌拉圭公民对恢复民主生活的意愿，此后，阿尔瓦雷斯中将不愿接受这一结果，并试图逼迫所谓的国家委员会将共和国总统职位移交给他，从而推迟恢复民主的进程。此时，他在军队中的对手是乌戈·梅迪纳将军，而后者更倾向于将权力移交给平民。由于乌拉圭的军队精英们正陷入内斗，试图干预战时最高统帅选举的机会比比皆是。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

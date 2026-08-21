@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://b5tvmwmiq2tqt"]
+
+[ext_resource type="Script" uid="uid://jsat2o672jvk" path="res://场景/外交界面/地图模式.gd" id="9_13o5n"]
+[ext_resource type="Texture2D" uid="uid://dicmvnbxyaxxt" path="res://资产/UI/外交/地图模式背景.png" id="8_qy4bt"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="17_v5qqf"]
+[ext_resource type="Texture2D" uid="uid://bykc3rwxsnjab" path="res://资产/UI/外交/地图类型按钮.png" id="11_wsnwf"]
+
+[node name="地图模式" type="CanvasLayer"]
+script = ExtResource("9_13o5n")
+
+
+[node name="地图模式背景" type="TextureRect" parent="." unique_id=236702710]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -504.0
+offset_right = -1.0
+offset_bottom = 6.0
+texture = ExtResource("8_qy4bt")
+expand_mode = 1
+
+[node name="政府类型地图模式" type="Button" parent="." unique_id=1930160142]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -488.0
+offset_right = -19.0
+offset_bottom = -397.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 0.43137255)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 40
+text = "政府"
+icon = ExtResource("11_wsnwf")
+flat = true
+icon_alignment = 1
+
+[node name="影响地图模式" type="Button" parent="." unique_id=1763483580]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -392.0
+offset_right = -19.0
+offset_bottom = -301.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 0.43137255)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 40
+text = "影响"
+icon = ExtResource("11_wsnwf")
+flat = true
+icon_alignment = 1
+
+[node name="军事阵营地图模式" type="Button" parent="." unique_id=986836618]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -296.0
+offset_right = -19.0
+offset_bottom = -205.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 0.43137255)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 45
+text = "军事"
+icon = ExtResource("11_wsnwf")
+flat = true
+icon_alignment = 1
+
+[node name="经济阵营地图模式" type="Button" parent="." unique_id=735000876]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -200.0
+offset_right = -19.0
+offset_bottom = -109.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 0.43137255)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 40
+text = "经济"
+icon = ExtResource("11_wsnwf")
+flat = true
+icon_alignment = 1
+
+[node name="自然地理地图模式" type="Button" parent="." unique_id=1593347059]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -104.0
+offset_right = -19.0
+offset_bottom = -13.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 0.43137255)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 40
+text = "自然"
+icon = ExtResource("11_wsnwf")
+flat = true
+icon_alignment = 1
+

@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_665_panama_tailor.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.7.31"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持托里霍斯政权，将同美帝国主义的拉锯战打下去！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_665_panama_tailor.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "用托里霍斯人头交换美国的芳心，是个不错的买卖……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_665_panama_tailor.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "巴拿马的命运什么时候轮到我们决定了？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_665_panama_tailor.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_665"
+source_event_number = 665
+trigger_priority = 66500
+title = "巴拿马裁缝"
+description = "巴拿马运河及其附属区域向来是地缘政治内的一大敏感问题：早在19世纪时，美国商人便试图效法苏伊士运河建设的经验寻找修建跨洋黄金水道的战略要地，并试图借此垄断这一区域内的航运收益。这最终导致了1903年的所谓《美巴条约》：根据华盛顿方安排，原本控制这一区域的哥伦比亚不得不出让主权，为新人让路。这便是巴拿马独立国家的诞生，而以“运河区”之名建立的美属租借地便是巴拿马向“恩主”缴纳的报酬。不过，这份交易显然不如表面那般公平——美国不仅利用该条约完成了修筑巴拿马运河的计划，更将各类军事设施搬入此地，改造为控制巴拿马与中美地峡的前线基地。至此拉开了美巴冲突序幕。\n面对70年代苏攻美守的国际风云变换与巴拿马本土民族主义力量蓬勃发展的压力，卡特政府决定以适当让步阻止“第二古巴”诞生，1977年达成的《托里霍斯-卡特条约》便是显著体现：美国宣称将放弃对运河区的控制权并逐步移交相关资产，最终在1999年时彻底归还巴拿马运河的相关工作。\n可上述条款在目前主持巴拿马局势的托里霍斯将军眼中不过是“残缺胜利”：毕竟其中有关运河区“中立化与联合防御”的说辞无疑为美国卷土重来开了窗，而履行移交时间表也不排除配套额外政治条款的可能（卡特宣称，要么巴拿马实施改革，要么巴拿马将永远失去收回运河的机会）。对这位自1968年政变发迹，主张立即清算“寡头、军阀与装神弄鬼者联盟，仅靠士兵乱扣‘恶棍’帽子，耀武扬威欺压人民”的旧体制，并试图朝铁托与纳赛尔自立模式看齐的老将而言，为争取运河完全回归的战斗还会继续。为此，他决心在国民警卫队的监督下奉行“穷人革命”：新宪法引入了受控多党民主，土地改革与社会福利事业亦一日千里。除此之外，该国还建立了旨在吸纳中下层群众，并将社会党国际部分原则写入纲领的民主革命党，事实上开始走第三条道路。与此同时，托里霍斯政权在外交上也不避讳同美国的老对手们有所往来：其中既有来自智利的社会民主主义者，也包括尼加拉瓜，萨尔瓦多和危地马拉等地的反政府游击队，乃至成为社会主义古巴的座上宾。试图以此巩固自立立场。\n从目前的局势来看，托里霍斯将军显然打算继续将同美国的冷战打下去，而这就给了局外人以参战机会——考虑到巴拿马小国寡民，只需稍稍发力，便可达到四两拨千斤效果。尤其是考虑到该国正处于试图扭转经济衰退局面与社会转型的敏感期内……"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

@@ -1,0 +1,163 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_120_korea_unification.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_mod3_off"]
+script = ExtResource("3_expr")
+type = 3
+key = "3"
+
+[sub_resource type="Resource" id="Expr_mod3_on"]
+script = ExtResource("3_expr")
+type = 2
+key = "3"
+
+[sub_resource type="Resource" id="Expr_line_not0"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_line_ge2"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_line_le2"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_line_le1"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_opt0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_mod3_off"), SubResource("Expr_line_not0")])
+
+[sub_resource type="Resource" id="Expr_opt1"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_mod3_off"), SubResource("Expr_line_ge2")])
+
+[sub_resource type="Resource" id="Expr_opt2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_mod3_off"), SubResource("Expr_line_le2")])
+
+[sub_resource type="Resource" id="Expr_opt3"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_opt4"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_mod3_on"), SubResource("Expr_line_le2")])
+
+[sub_resource type="Resource" id="Expr_opt5"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_mod3_off"), SubResource("Expr_line_ge2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx5"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持黄长烨的温和主体思想"
+disabled_text = "没有文化大革命，非极左派主导"
+enable_condition = SubResource("Expr_opt0")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_120_korea_unification.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持金哲的进步派系"
+disabled_text = "没有文化大革命，非极左/保守派主导"
+enable_condition = SubResource("Expr_opt1")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_120_korea_unification.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "支持金英柱的正统派"
+disabled_text = "没有文化大革命，非改革/自由派主导"
+enable_condition = SubResource("Expr_opt2")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_120_korea_unification.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "支持朴劳解的半岛式社会主义"
+disabled_text = "极左/保守派主导"
+enable_condition = SubResource("Expr_opt3")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_120_korea_unification.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "支持蔡万洙的正统列宁主义"
+disabled_text = "有文化大革命，极左/保守派主导"
+enable_condition = SubResource("Expr_opt4")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_120_korea_unification.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt5"]
+script = ExtResource("1_opt")
+text = "支持尹素英的马克思主义新实验"
+disabled_text = "没有文化大革命，非极左/保守派主导"
+enable_condition = SubResource("Expr_opt5")
+effects = Array[ExtResource("2_fx")]([SubResource("Fx5")])
+result_text = "（结果由 event_120_korea_unification.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_120"
+source_event_number = 120
+trigger_priority = 12000
+title = "韩朝统一，不再分离"
+description = "（描述由 event_120_korea_unification.gd 动态生成）"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4"), SubResource("Opt5")])

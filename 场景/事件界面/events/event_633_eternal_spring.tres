@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_633_eternal_spring.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "而战斗已经打响了。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_633_eternal_spring.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "也许我们该试着促成游击队与军政府的和谈？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_633_eternal_spring.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "全力支持里奥斯·蒙特总统先生"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_633_eternal_spring.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "危地马拉？与我无关"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_633_eternal_spring.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_633"
+source_event_number = 633
+trigger_priority = 63300
+title = "永恒的春天"
+description = "危地马拉共和国向来只是中美洲诸多香蕉共和国中最平平无奇的一个。自独立以来，该国仿效现代民主国家的政治体制就只是一个空壳，在现代共和国的表面下，旧殖民地时期的权力层级几乎原封不动地保留了下来。而从西班牙的殖民统治中脱离也并未为该国带来真正的独立，这个小国相继落入了英国和美国的控制之下，靠着地主、军队、教会与帝国主义的支持，卖国贼们自能毫无后顾之忧地将该国变成帝国主义的咖啡园或是香蕉园。1859年，“国父”拉斐尔·卡雷拉同英国签订了《艾西内纳-威克条约》，将伯利兹地区的主权拱手让人，1871年的自由主义革命的最终成果也不过是使该国成为了咖啡共和国，曼努埃尔·卡布雷拉与豪尔赫·乌维科更是将自己的祖国变成了联合果品公司的傀儡。而尽管曾经出现过哈科沃·阿本斯这样的革命性政权，但1954年美国的入侵还是宣告了——这不过是危地马拉漫长黑暗历史中的一个小插曲。就这样，十年改革成果被悉数奉还，土改所分配的土地被交还给地主和联合果品，军事独裁阴影再次笼罩于该国上空，一切都仿佛从未来过。\n但是，危地马拉人民绝不会屈从于帝国主义强加的和平。于是乎，尽管军政府和独裁者如走马灯般更换，但每一任考迪罗们都得面临一个严峻问题——日益壮大的左翼游击队。在漫长的革命斗争中，逐渐形成了这几个左翼派别：受苏联承认的危地马拉劳动党（PGT）中央委员会派，由该党分裂出的坚持武装斗争的激进派别危地马拉劳动党-全国指导核心（PGT-NDN），脱胎自军队左翼起义的游击队“武装反叛部队”（FAR），以及由其中分裂出来的两个左翼游击队——罗兰多·莫兰指挥官的贫民游击军（EGP）和主要由玛雅人组成、由著名文学家米格尔·安赫尔·阿斯图里亚斯的儿子罗德里戈·阿斯图里亚斯（化名加斯巴尔·伊龙来自其父亲的小说《玉米人》）指挥的武装人民组织（ORPA）。1982年2月8日，为协调游击队行动、统一政治军事力量，在古巴的斡旋下，危地马拉的各左翼游击队组成了一个统一的伞形组织——危地马拉全国革命联盟。\n哪怕联合果品公司的衰弱也只是把该国的主人换成了格蒂石油公司、德士古公司和国际镍公司。为了在横断北部地带发现的丰富石油矿藏，将军们摧毁了许多印第安公社，把更多的人逐出家园，被剥夺一切、饥肠辘辘的基切玛雅人成了游击队中最坚定的革命力量。\n而军政府对游击队的应对措施也很简单——只要把当地化为“焦土”，游击队便无处藏身了。通过大规模行动的焦土政策和反共民兵“敢死队”，军政府确实取得了可观的成效，自1954年至1982年，因内战而死的危地马拉人已达十余万（而这个小国只有不足七百万人），第一代游击队FAR的领导人容·索萨和图西奥斯·利马也身死于战场，但很快，EGP等第二代游击队便从FAR的尸骸上成立并迅速发展。\n1982年3月23日，为“结束腐败”，一群青年军官发动政变推翻了总统罗密欧·卢卡斯·加西亚将军，随后，在军队中深孚众望的国防部长里奥斯·蒙特将军被推举为领袖，与奥拉西奥·马尔多纳多·沙德将军、弗朗西斯科·路易斯·戈迪略上校组成了三头执政同盟，新政府宣布解散国会，废除宪法，呼吁“尊重所有危地马拉人的人权”，特赦了一万五千多名游击队员并寻求与URNG展开谈判。尽管这遭到了游击队的激烈反对，但也许这会是个改变危地马拉的惨烈内战现状的好机会。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

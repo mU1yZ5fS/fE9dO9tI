@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_048_052_063_afghanistan.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.1"
+
+[sub_resource type="Resource" id="Expr_afghan_authoritarian"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 0.0
+target = "12"
+
+[sub_resource type="Resource" id="Expr_relres"]
+script = ExtResource("3_expr")
+type = 14
+key = "relres"
+
+[sub_resource type="Resource" id="Expr_agents_70"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 70.0
+
+[sub_resource type="Resource" id="Expr_warn"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_relres"), SubResource("Expr_agents_70")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "这是苏联的事务"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由 event_048_052_063_afghanistan.gd 动态生成）"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "警告阿明和向他发送帮助"
+disabled_text = "没有人会让我们介入"
+enable_condition = SubResource("Expr_warn")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "多亏了我们及时的警告，阿明设法使他的忠诚派系进入战备状态，而他离开了住所，在喀布尔郊区避难。苏联甚至在行动开始时，就已经意识到他的计划失败了，并召回了特种部队。只是在我们和阿富汗外交官以及阿明的努力下，才避免了一个重大的国际丑闻。阿明努力装作什么都没有发生，名义上也没有改变政策。当然，尽管苏联仍然不高兴，并开始迅速减少对阿富汗的援助。苏联军队的进入速度也减慢了，他们的任务也是如此。看来，随着时间的推移，他们和苏联的专家们都会完全撤离，所以在内战开始时，我们必须为阿富汗提供一切帮助。与此同时，阿明与中华人民共和国缔结了一些条约，并邀请直到最近还在反对派内的毛派分子，他们将以优惠条件加入阿富汗人民民主党，并将被增选为政府成员。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "afghan_soviet_plot"
+source_event_number = 49
+trigger_priority = 490
+title = "反对所有暴君"
+description = "在最近的阿明政变之后，苏联以各种可能的方式寻找清除目中无人的篡权者的方法。根据我们的数据，苏联领导人已经与卡尔迈勒、萨瓦里和瓦坦贾等不同派系的人民民主党成员建立了联系，他们因阿明的清洗而逃离阿富汗，并准备用他们来取代阿明。这项计划的关键是以苏联特勤部队中和阿明及其忠实的随从，苏联特勤部队的掩护应该由苏联军队提供，自今年年初以来，尽管苏联不断遭到拒绝，但人民民主党和阿明本人一直被要求得到进入许可。然而，在这种情况的压力下，苏维埃领导人似乎决定改变决定，最早12月25日，第一批苏维埃部队越境，任务是保护苏阿合作的重要军事设施和对象。现在是我们夺取在阿富汗的主动权的机会，如果有可能防止阿明的免职的话。然而，这只能在与苏联保持良好关系的情况下才能实现，否则苏联将冲破一堵砖墙，但不会给我们阿富汗。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_afghan_authoritarian")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])

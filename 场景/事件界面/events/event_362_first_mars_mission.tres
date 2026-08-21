@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_362_first_mars_mission.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E362_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.6.1"
+
+[sub_resource type="Resource" id="E362_tech"]
+script = ExtResource("3_expr")
+type = 29
+value = 31.0
+
+[sub_resource type="Resource" id="E362_done360"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_360"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_362_first_mars_mission.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_362_first_mars_mission.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_362_first_mars_mission.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_362_first_mars_mission.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_362_first_mars_mission.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_362_first_mars_mission.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_362"
+source_event_number = 362
+trigger_priority = 36200
+title = "第一次火星任务"
+description = "中国很可能执行一次火星任务。问题是，这仅是一次着陆任务，还是我们决定创造一种从未有人尝试过的东西——探测器。当然，这十分复杂，但也能给科学带来难以置信的好处！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E362_date"), SubResource("E362_tech"), SubResource("E362_done360")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

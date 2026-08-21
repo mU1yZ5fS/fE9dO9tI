@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_542_first_world_revolutionary_youth.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_541"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 4
+value = 1.0
+ref_event_id = "event_541"
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 2
+key = "3"
+
+[sub_resource type="Resource" id="Expr_5"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.5.4"
+
+[sub_resource type="Resource" id="Expr_6"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.6.1"
+
+[sub_resource type="Resource" id="Expr_7"]
+script = ExtResource("3_expr")
+type = 12
+key = "1986.1.1"
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_5"), SubResource("Expr_6"), SubResource("Expr_7")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "革命青年要志在四方！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_542_first_world_revolutionary_youth.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_542"
+source_event_number = 542
+trigger_priority = 54200
+title = "第一届世界革命青年与学生联欢会"
+description = "（描述由 event_542_first_world_revolutionary_youth.gd 的 prepare 动态生成）"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_3"), SubResource("Expr_4")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

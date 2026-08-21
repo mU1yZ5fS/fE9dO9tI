@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_597_gambia_socialism_or_death.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.7.30"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持冈比亚革命社会主义党"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_597_gambia_socialism_or_death.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "联系几内亚与几内亚比绍，让他们拉冈比亚社会主义革命党一把"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_597_gambia_socialism_or_death.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "这不过是非洲大陆上又一场稀松平常的军事政变……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_597_gambia_socialism_or_death.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_597"
+source_event_number = 597
+trigger_priority = 59700
+title = "社会主义，亦或死亡"
+description = "相对政变与政治危机频繁的其他西非国家来说，尽管达乌达·贾瓦拉总统领导的人民进步党政府在政治上没有什么建树，但独立前十五年，冈比亚的政治局势都保持了一种相对稳定的状态。然而，随着70年代末全球经济的衰退，冈比亚的形势急剧恶化。通货膨胀大幅上涨，失业率上升，再加上席卷西非的大旱导致作为冈比亚经济唯一支柱的经济作物花生的减产，大量小资产阶级破产，绝大多数人陷入赤贫状态。与此同时，统治阶级却仍深陷于官僚主义和腐败的酒池肉林中。这一切都助长了社会思潮的激进化。左翼青年团体的思想急剧向马列主义转变，对激进左翼的同情也在冈比亚野战部队（得益于该国的陆上邻国只有签署了共同防御条约的塞内加尔，贾瓦拉总统并没有设立常规军队，只有这支数百人的用以维持治安的警察部队）中蔓延。\n1980年初，对资本主义感到幻灭的企业家吉布里尔·乔治创建了以马列主义与非洲社会主义为指导思想的“冈比亚社会主义革命党”，该党一经成立便很快就在失业工人和激进学生中获得了强大的影响力，在因为对资产阶级民主制感到幻灭而转向共产主义的前国民大会党活动家库科伊·桑巴·萨尼扬入党后，该党迅速转变为一个依照列宁主义原则而组织的先锋党。\n1981年7月30日晚，乘贾瓦拉总统在英国参加查尔斯王储的婚礼之机，冈比亚革命社会主义党在宪兵部队副司令乌斯曼·博容与半数宪兵部队的支持下发起了革命，起义军迅速占领了军械库、机场、广播中心，监狱中的左翼异见者被释放，萨尼扬在广播中宣布推翻“充斥着部族主义、腐败与压迫的”贾瓦拉政府，将权力移交给国家革命委员会，并承诺结束“失业、不公正、部族主义、裙带关系与腐败”，很快，冈比亚的几个重要城市就落入了革命社会主义党的掌控中，忠诚于政府的宪兵部队簇集于副总统哈桑·穆萨·卡马拉周边，守住了中央银行与部分政府设施，并向身处伦敦的贾瓦拉总统告知了这起事件。\n贾瓦拉则向英国与塞内加尔请求了帮助，据可靠消息，塞内加尔总统阿卜杜·迪乌夫已经向冈比亚边境调动了大批部队。主席同志，又到了选择的时候了，我们是否应该支持萨尼扬和冈比亚革命（也许这对我们来说有点太超出能力范围了），亦或者对此置之不理，毕竟没人会在意这个小国所发生的一切……"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

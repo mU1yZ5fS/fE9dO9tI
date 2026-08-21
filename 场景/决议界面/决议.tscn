@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://b3dscn2yak71"]
+
+[ext_resource type="Script" uid="uid://c1xwymtitxgec" path="res://场景/决议界面/决议.gd" id="1_dec"]
+[ext_resource type="Texture2D" uid="uid://bdqgp062645l1" path="res://资产/UI/决议/决议背景下层.png" id="2_b23qb"]
+[ext_resource type="Texture2D" uid="uid://c8aavxa4ot146" path="res://资产/UI/决议/决议背景2.png" id="3_q8c5u"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="4_f4484"]
+[ext_resource type="Texture2D" uid="uid://dn5r2xt4xyu6h" path="res://资产/UI/概览/切换显示按钮背景.png" id="5_cj80v"]
+
+[node name="决议" type="Control" unique_id=801327001]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dec")
+
+[node name="背景" type="TextureRect" parent="." unique_id=1041086749]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_b23qb")
+
+[node name="背景2" type="TextureRect" parent="." unique_id=1665776774]
+layout_mode = 0
+offset_left = 248.0
+offset_right = 1904.0
+offset_bottom = 1080.0
+texture = ExtResource("3_q8c5u")
+
+[node name="返回" type="Button" parent="." unique_id=801327004]
+layout_mode = 1
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 245.0
+offset_bottom = 115.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_f4484")
+theme_override_font_sizes/font_size = 28
+text = "返回外交界面"
+icon = ExtResource("5_cj80v")
+flat = true
+icon_alignment = 1
+
+[node name="决议滚动" type="ScrollContainer" parent="." unique_id=801327005]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.149
+anchor_top = 0.020000001
+anchor_right = 0.957
+anchor_bottom = 0.98300004
+offset_left = -0.08001709
+offset_top = 0.3999977
+offset_right = 0.5599365
+offset_bottom = 0.35998535
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="决议列表" type="VBoxContainer" parent="决议滚动" unique_id=801327006]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="空提示" type="Label" parent="决议滚动" unique_id=801327007]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_fonts/font = ExtResource("4_f4484")
+theme_override_font_sizes/font_size = 28
+text = "当前没有可显示的决议"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="返回" to="." method="_on_返回_pressed"]

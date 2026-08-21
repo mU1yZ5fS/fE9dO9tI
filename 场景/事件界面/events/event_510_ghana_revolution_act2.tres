@@ -1,0 +1,91 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_510_ghana_revolution_act2.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_509"
+
+[sub_resource type="Resource" id="Expr_t0_1_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_509"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_1_0")])
+
+[sub_resource type="Resource" id="Expr_t0_2_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 1.0
+ref_event_id = "event_509"
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_2_0")])
+
+[sub_resource type="Resource" id="Expr_t0_3"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.1.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2"), SubResource("Expr_t0_3")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "为加纳革命送上最美好的祝福"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_510_ghana_revolution_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们绝不能接受一个极权和独裁的加纳，快给我拨通CIA的电话……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_510_ghana_revolution_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "好吧，谁在乎呢"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_510_ghana_revolution_act2.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_510"
+source_event_number = 510
+trigger_priority = 51000
+title = "黄金海岸的再革命？——第二幕"
+description = "加纳的经济状况持续恶化，利曼软弱的文官政府逐渐和前军政府一样腐败和低效。到1981年底，民众终于无法忍受Kalabule了，经济危机和种族冲突席卷了整个加纳。1982年1月1日晚，罗林斯领导了一场不流血的军事政变，推翻了利曼政府。暂停了该国的宪法，所有政党的活动都被禁止，前政府的腐败官僚被人民法庭审判。权力移交给由罗林斯担任主席的临时全国保卫委员会（NPD）。他说，军方打算进行一场“民族民主革命”，从根本上改善加纳人的生活。所有地方执行机构都被解散，其权力被移交给保卫革命委员会（CPR），全国基层组织和工矿企业成立各级“人民保卫委员会”和“工人保卫委员会”，其目的是“让人民参与治理国家并建立一种新型的民主”。这些委员会积极参与打击犯罪，腐败，走私，控制企业和机构的活动，从事食品分配等。临时全国保卫委员会进行了一系列国有化，并建立了价格控制制度。1982年1月1日晚，在几内亚的支持下，罗林斯与卡迈克尔领导全非人民革命党成功开展了一场不流血的军事政变，推翻了利曼政府。打着恩克鲁玛旗号的人民民族党被宣布为“背离恩克鲁玛的修正主义者”，除了全非人民革命党外，所有政党的活动都被禁止，前政府的腐败官僚被人民法庭公审。权力移交给由全非人民革命党领导的加纳非洲人民革命委员会，实施“人民民主的制度”，各级人民革命委员会将取代旧政府。新政府宣布将继承恩克鲁玛的遗志，致力于全非洲在科学社会主义下的真正解放。新政府开始实施国家资本主义以恢复经济，加纳将在不久后开展社会主义改造。新的政权展示出了一系列革命社会主义的色彩。我们也应该表态了。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

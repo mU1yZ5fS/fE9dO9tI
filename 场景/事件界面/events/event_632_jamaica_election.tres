@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_632_jamaica_election.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.10.30"
+
+[sub_resource type="Resource" id="Expr_jamaica"]
+script = ExtResource("3_expr")
+type = 26
+target = "152"
+key = "sub_government"
+value = 13.0
+
+[sub_resource type="Resource" id="Expr_all"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_jamaica")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帮曼利一把"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_632_jamaica_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "为牙买加工党送去祝贺"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_632_jamaica_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "怎么又是这个小国？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_632_jamaica_election.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_632"
+source_event_number = 632
+trigger_priority = 63200
+title = "牙买加，我们热爱的家乡"
+description = "让我们把时间拨前面一些。在1972年，人民民族党赢得了大选，该党领袖迈克尔·曼利当选为牙买加总理。曼利在这八年统治中着手进行民主的社会主义：其为所有工人制定了最低工资，从小学到高中的免费教育，降低最低投票年龄至18岁，实行女性同工同酬和产假，提供免费医疗，进行土改，提供免费医疗，与古巴关系密切。由于政策开销过高，使其不得不接受国际货币基金组织的条件，此举导致进一步的经济压力，曼利最终决定断绝国际货币基金组织的贷款，但也因此导致公务员和国营公司的工资难以支付，导致了一次电力工人罢工，几乎使70%的牙买加陷入黑暗。在如此时刻，曼利决定提前一年进行选举，而此举也导致了牙买加工党和人民民族党之间的党争变得更为激烈，政治暴力更为频繁，这不由得让人们想起1976年选举年的政治暴力时刻。\n如今，牙买加即将进入选举，我们或许可以趁此机会帮助曼利？毕竟，曼利对社会主义的观感还算不错。当然，如果我们想和美国继续搞好关系，我们也可以支持牙买加工党。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_all")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

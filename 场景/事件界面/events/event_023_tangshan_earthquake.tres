@@ -1,117 +1,68 @@
-[gd_resource type="Resource" script_class="EventDef" format=3]
+[gd_resource type="Resource" script_class="EventDef" format=3 uid="uid://cpg1usic0trnv"]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_jh4e6"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_0kx2q"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_764ir"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_rykqa"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_8w18u"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" uid="uid://c73huttgvbhjn" path="res://数据脚本/事件效果/event_023_tangshan.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_au3ro"]
-script = ExtResource("3_764ir")
-key = "people_support"
-value = 30.0
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_f6wsn"]
-script = ExtResource("3_764ir")
-key = "party_support"
-value = 50.0
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "从预算中拨款支持重建（需要3百万预算）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_023_tangshan.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_kd8ir"]
-script = ExtResource("3_764ir")
-key = "money"
-value = -30.0
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_t8d4o"]
-script = ExtResource("2_0kx2q")
-text = "Allocate funds from the budget for restoration (-3.0 from budget)"
-effects = Array[ExtResource("3_764ir")]([SubResource("Resource_au3ro"), SubResource("Resource_f6wsn"), SubResource("Resource_kd8ir")])
-result_text = "Funds from the PRC budget were immediately allocated to carry out rescue and restoration work, which made it possible to mitigate the effects of the earthquake."
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "请求外国的人道主义救援"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_023_tangshan.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_xdye3"]
-script = ExtResource("3_764ir")
-key = "party_support"
-value = -50.0
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_vahif"]
-script = ExtResource("3_764ir")
-key = "people_support"
-value = 50.0
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "分配资金支持重建并开发防震系统（需要5百万预算）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_023_tangshan.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_58use"]
-script = ExtResource("4_rykqa")
-type = 8
-key = "0"
-value = 600.0
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_585st"]
-script = ExtResource("4_rykqa")
-type = 8
-key = "1"
-value = 600.0
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "让省政府自行解决"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_023_tangshan.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_tmg4c"]
-script = ExtResource("4_rykqa")
-type = 19
-children = Array[ExtResource("4_rykqa")]([SubResource("Resource_58use"), SubResource("Resource_585st")])
-
-[sub_resource type="Resource" id="Resource_yu36w"]
-script = ExtResource("2_0kx2q")
-text = "Request foreign humanitarian assistance"
-disabled_text = "Foreigners will not give us help"
-enable_condition = SubResource("Resource_tmg4c")
-effects = Array[ExtResource("3_764ir")]([SubResource("Resource_xdye3"), SubResource("Resource_vahif")])
-result_text = "The world community and charitable organizations, assessing the scale of the disaster, agreed to provide us with assistance in the form of gratuitous loans and help of volunteers."
-
-[sub_resource type="Resource" id="Resource_o0jrw"]
-script = ExtResource("3_764ir")
-key = "living_standard"
-value = 50.0
-
-[sub_resource type="Resource" id="Resource_w7pjt"]
-script = ExtResource("3_764ir")
-key = "people_support"
-value = 30.0
-
-[sub_resource type="Resource" id="Resource_dou4l"]
-script = ExtResource("3_764ir")
-key = "party_support"
-value = 50.0
-
-[sub_resource type="Resource" id="Resource_76b42"]
-script = ExtResource("3_764ir")
-key = "money"
-value = -50.0
-
-[sub_resource type="Resource" id="Resource_byup5"]
-script = ExtResource("2_0kx2q")
-text = "Allocate funds for restoration and earthquake protection system (-5.0 from budget)"
-effects = Array[ExtResource("3_764ir")]([SubResource("Resource_o0jrw"), SubResource("Resource_w7pjt"), SubResource("Resource_dou4l"), SubResource("Resource_76b42")])
-result_text = "Funds from the PRC budget were immediately allocated... Additional funding was also provided for the construction of earthquake-resistant buildings in hazardous regions."
-
-[sub_resource type="Resource" id="Resource_ckk7l"]
-script = ExtResource("3_764ir")
-key = "living_standard"
-value = -50.0
-
-[sub_resource type="Resource" id="Resource_3lg1i"]
-script = ExtResource("3_764ir")
-key = "people_support"
-value = -40.0
-
-[sub_resource type="Resource" id="Resource_i5q1n"]
-script = ExtResource("3_764ir")
-key = "party_support"
-value = -50.0
-
-[sub_resource type="Resource" id="Resource_1smbs"]
-script = ExtResource("2_0kx2q")
-text = "Let the provincial administration deal with it"
-effects = Array[ExtResource("3_764ir")]([SubResource("Resource_ckk7l"), SubResource("Resource_3lg1i"), SubResource("Resource_i5q1n")])
-result_text = "The center remained deaf to the problems of Hebei Province, which of course made it difficult to eliminate the consequences of the earthquake and gave rise to discontent."
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.8.1"
 
 [resource]
-script = ExtResource("5_8w18u")
-event_id = "tangshan_earthquake"
-title = "Tangshan earthquake"
-description = "On July 28, a magnitude 8.2 earthquake on the Richter scale occurred in the city of Tangshan, Hebei Province, at 03:42 local time, as a result of which the city was almost completely destroyed. The destruction also took place in Tianjin and in Beijing... According to preliminary data, from 200 to 600 thousand people died."
-options = Array[ExtResource("2_0kx2q")]([SubResource("Resource_t8d4o"), SubResource("Resource_yu36w"), SubResource("Resource_byup5"), SubResource("Resource_1smbs")])
+script = ExtResource("4_def")
+event_id = "event_023"
+source_event_number = 23
+trigger_priority = 2300
+title = "唐山大地震"
+description = "7月28日，3时42分，河北省唐山市发生了震级8.2级的地震，完全摧毁了整个城市。距唐山西140公里的天津和北京也遭到破坏。最高震级为7.1级的几波余震，导致了更高的伤亡。根据初步数据，有20—60万人死于地震。据上海市地震局局长张俊所讲，巨大破坏的主要原因是建筑建造时缺乏必要的抗震措施。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])
+display_script = ExtResource("5_custom")

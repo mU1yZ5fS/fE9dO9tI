@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_342_human_rights_commission.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.7.20"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "用矫饰的言辞拒绝。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_342_human_rights_commission.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "加入。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_342_human_rights_commission.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_342"
+source_event_number = 342
+trigger_priority = 34200
+title = "人权委员会"
+description = "在我国在联合国获得其应有的地位后，有人提议我国加入人权委员会。当然，人权是很重要，是我们珍视保护之物，但这些国际机构里面大多是亲西方的吹牛皮代表......我们可以简简单单地加入他们，走与西方和解的道路，或者我们可以带有挑衅意味地拒绝该提议，以此博得众多帝国主义暴政受害者的支持！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date1")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

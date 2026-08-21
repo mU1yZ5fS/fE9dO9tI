@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_525_japan_innovative_or_socialist.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_3"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.1.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2"), SubResource("Expr_t0_3")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "终结社会主义协会的垄断地位并调解派系矛盾"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_525_japan_innovative_or_socialist.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "坚决支持协会派捍卫“革命性”"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_525_japan_innovative_or_socialist.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "试图劝说各派放下分歧"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_525_japan_innovative_or_socialist.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_525"
+source_event_number = 525
+trigger_priority = 52500
+title = "革新政权还是社会主义？"
+description = "依靠革新口号以及大众对自由民主党长期积攒的不满，社会党、公明党与民主社会党成功赢得选举并建立联合政府。而社会党作为新政府的核心，自然也成了未来施政方针的操盘手，并开始进行一系列举措：着手组织废除《日美安保条约》的相关谈判、推动部门企业国有化、筹备国家计划委员会、扩大工人权利等等。这些政策得到了工农群体的拥护，社会党的支持者也有所增多。\n但随着政策的进一步推行，诸多问题也随之而来：在野的自由民主党在众多议题上大力阻挠，并指挥自己所掌控的媒体持续抨击政府，部分高层已经开始秘密与联合政府的其他两党的中央委员接触；美国也对新政府的举措感到不安，国务卿万斯对日本的“越界行为”发出了警告；联合政府内部的公明党和民主社会党同样希望社会党能够放弃一些过于激进的主张，减少乃至最终切断与共产党的联系，并摆脱“劳组斗士”、“社共共斗”这样的标签，真正为一个“符合国民期望的”革新政权而努力。\n即便是社会党内部此时也并不太平。受到上届大选胜利的鼓舞，以江田三郎为代表的改革派趁机主张社会党的进一步改革，希望该党最终成为西欧式的社会民主主义政党以确保稳定执政。而党内最大的派别（也是社会党意识形态路线的掌舵手），以向坂逸郎为代表的社会主义协会则坚持社会党阶级政党的定性，强调“和平革命论”和“社会主义革命的必要性”，并与苏联保持友好关系。而这不仅让其与改革派之间势不两立，也让亲华的佐佐木派对社会主义协会愈发不满。最终，社会党内逐渐形成了“协会派”与“反协会派”两股力量。\n现在是我们选择的时刻了：是支持反协会派并促使社会党完成进一步的转型，还是支持社会主义协会反对改革派的“右倾改革”？需要提醒的是，社会主义协会秉承的是劳农派马克思主义思想，一直反对马列主义这样的“极左思潮”，且由于其纲领特性一直被指责是“以19世纪的发展中国家的德国的考茨基为模范的理论的正统派”。而佐佐木派虽然与社会主义协会不和，但也不喜欢改革派的改革。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

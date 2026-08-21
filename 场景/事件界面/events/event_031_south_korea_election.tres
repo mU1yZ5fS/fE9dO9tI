@@ -1,0 +1,93 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_027_032_diplomacy.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_money_50"]
+script = ExtResource("3_expr")
+type = 23
+value = 50.0
+keys = Array[String](["budget", "reserve"])
+
+[sub_resource type="Resource" id="Expr_money_30"]
+script = ExtResource("3_expr")
+type = 23
+value = 30.0
+keys = Array[String](["budget", "reserve"])
+
+[sub_resource type="Resource" id="Expr_line_ne_0"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_opt3"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_money_30"), SubResource("Expr_line_ne_0")])
+
+
+[sub_resource type="Resource" id="Expr_money_80"]
+script = ExtResource("3_expr")
+type = 23
+value = 80.0
+keys = Array[String](["budget", "reserve"])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "不要干预民主化进程"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "卢泰愚利用反对派的分裂在第一次自由选举中获胜。卢泰愚是旧军政府的支持者，但在全斗焕的支持率下降时，他及时脱离了旧军政府。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "支持金大中"
+disabled_text = "我们无法帮助他们"
+enable_condition = SubResource("Expr_money_50")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "在我们的支持下，金大中成功当选为新一届韩国总统，并开始着手准备对北和解，朝鲜方面积极回应，两边开始了漫长的谈判，与此同时韩国也开始放弃承认中华民国转而承认我们。针对全斗焕等镇压民主人士的军队高层的审判已经开始，全斗焕等人被判决绞死。通过实施新自由主义的经济政策和对中国的贸易，韩国的经济又一次飞涨。美国方面则对韩国的民主化表达了祝贺。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "支持金泳三"
+disabled_text = "我们没那能力支持"
+enable_condition = SubResource("Expr_money_30")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "在我们的支持下，偏保守的金泳三成功当选为新一届韩国总统，在任期内开始大搞新自由主义，但是任期内层出不穷的大事故导致他的支持率暴跌。针对全斗焕等镇压民主人士的军队高层的身旁已经开始，全被判处监禁25年并罚款数亿韩元。在外交上继续拒绝对北和解，由于我们对他的支持，他选择放弃承认中华民国转而承认我们。美国则对韩国的民主化表达了祝贺。"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "支持卢泰愚"
+disabled_text = "我们没那能力支持"
+enable_condition = SubResource("Expr_opt3")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "在我们的支持下，军官出身的卢泰愚顺利的成为了新一任韩国总统，并开始延续威权主义道路，为表达感谢，卢泰愚政权选择放弃承认中华民国转而承认我们。但与此同时，韩国国内的反对派势力依旧强大，很有可能会在下一届大选中赢得胜利。而美国仅对新上任的总统表达了祝贺。"
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "支持安必洙"
+disabled_text = "我们没那能力支持"
+enable_condition = SubResource("Expr_money_80")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "在我们的支持下，社会党总裁安必洙出人意料的赢得了新一届韩国选举。大选之后，社会党没有忘记承诺，开始与朝鲜进行和平统一谈判，放弃中华民国，承认我们并进行大规模贸易，寻求社会党国际的支持，缓和与苏东集团的关系并准备让联合国军和美军撤出半岛；对内则开始实行劳资调和，部分保障劳工权利，平反内战时期的南方游击队和各左派镇压事件，全斗焕等人的审判业已结束，全斗焕等人被判处枪决。韩国内部反对声音激起，并严重怀疑新总统是朝鲜间谍。而美国则仅对韩国实现民主化表达了祝贺。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "south_korea_election"
+source_event_number = 31
+trigger_priority = 3100
+title = "民主重归韩国"
+description = "在我们的帮助下，釜马起义和光州起义狠狠地打击了韩国的独裁体系，与此同时，美国政府也同样对全斗焕政府表达了不满并威胁可能会放弃对全的支持。在中美两国的施压下，全斗焕政府被迫进行民主化，同意进行新的总统选举。\n这次总统选举有四个人选：金大中，金泳三，卢泰愚和安必洙。金大中支持与北方和苏东集团和解，同时支持新自由主义的经济政策；金泳三也支持新自由主义的经济政策，但反对与苏东集团和北方和解；卢泰愚则是打算延续军政府统治，但是会缓慢的民主化，而且由于他的山东祖籍，可能会和我们缓和关系；而安必洙则是激进民主派和劳工运动分子共同推举出来的新人选，他支持和社会主义阵营和解，而且比金大中更在意对劳工待遇的提升。"
+
+show_notification = false
+display_script = ExtResource("5_custom")
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

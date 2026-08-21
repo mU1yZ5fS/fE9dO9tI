@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_625_mozambique_light_comes.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "接下来会怎么发展？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_625_mozambique_light_comes.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_625"
+source_event_number = 625
+trigger_priority = 62500
+title = "莫桑比克，光明到来？"
+description = "随着莫桑比克全国抵抗运动的最后一个据点被拔除，莫桑比克解放阵线党终于控制了全国。抵运的残军狼狈撤往了南非。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

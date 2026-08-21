@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_409_intelligence_agenda.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 27
+target = "1"
+key = "development"
+value = 2.0
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "改组情报网络（以{4:F1}点{0}交换{5:F1}点{1}）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_409_intelligence_agenda.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "组织清剿反对派的行动（需要{4:F1}点{1}）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_409_intelligence_agenda.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "组织针对苏联的间谍行动（以{4:F1}点{1}交换苏联影响力下降1.0与300点科研点数）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_409_intelligence_agenda.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "组织针对美国的间谍行动（以{4:F1}点{1}交换美国影响力下降1.0与300点科研点数）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_409_intelligence_agenda.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "不闻不问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_409_intelligence_agenda.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_409"
+source_event_number = 409
+trigger_priority = 40900
+title = "特勤议题"
+description = "主席同志！我们的情报部门建议您，应当考虑实行一些增强我国联盟实力的措施。首先，我们可以通过改组各国的情报部门，从而将各成员国的情报组织都置于我方的直接控制下。其次，我们可以通过利用我国的情报部门。击溃那些未在我方势力范围内国家的反对派，并让他们完全回归我们的怀抱。以及，我们的特工可以从超级大国处窃取技术蓝图，从而增强我们的科学研发能力。今年，我们该怎么做呢？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

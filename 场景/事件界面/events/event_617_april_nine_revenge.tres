@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_617_april_nine_revenge.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_done680"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_680"
+
+[sub_resource type="Resource" id="Expr_cam_instab"]
+script = ExtResource("3_expr")
+type = 28
+key = "level_of_instability"
+value = 100
+target = "66"
+
+[sub_resource type="Resource" id="Expr_cam_sub7"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 7
+target = "66"
+
+[sub_resource type="Resource" id="Expr_res618_1"]
+script = ExtResource("3_expr")
+type = 4
+value = 1
+ref_event_id = "event_618"
+
+[sub_resource type="Resource" id="Expr_res618_2"]
+script = ExtResource("3_expr")
+type = 4
+value = 2
+ref_event_id = "event_618"
+
+[sub_resource type="Resource" id="Expr_not_618_1"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_res618_1")])
+
+[sub_resource type="Resource" id="Expr_not_618_2"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_res618_2")])
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_done680"), SubResource("Expr_cam_instab"), SubResource("Expr_cam_sub7"), SubResource("Expr_not_618_1"), SubResource("Expr_not_618_2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帝国主义滚出非洲去！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_617_april_nine_revenge.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_617"
+source_event_number = 617
+trigger_priority = 61700
+title = "四月九日的复仇"
+description = "这一次，在我方和非洲盟友的支援下，喀麦隆人民联盟得以重整旗鼓，再一次发动起工人、农民和广大爱国群众，在全国各地掀起了人民战争的燎原之火，扩充了根据地和游击区，有了足够的势力同喀麦隆当局抗衡。在农村，喀麦隆人民联盟和喀麦隆民族解放军通过土地斗争，争取了大批农民支持；在城市，UPC的地下组织通过工人运动，同JOSE配合进行城市游击战，打击统治阶级和国家机器。斗争已经来到关键的地方，喀麦隆政府宣布国家进入紧急状态。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

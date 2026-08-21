@@ -1,12 +1,10 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://62wfrx3m4hi8"]
 
 [ext_resource type="Shader" uid="uid://da46ftdhl8hgc" path="res://场景/世界地图/地图渲染.gdshader" id="1_xsnkq"]
-[ext_resource type="Texture2D" uid="uid://cy6xjdlpau1fg" path="res://资产/地图/map_color.png" id="2_kfmlw"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_xsnkq")
-shader_parameter/region_map = ExtResource("2_kfmlw")
 shader_parameter/selected_gwcode = 0
 shader_parameter/hover_gwcode = 0
 shader_parameter/water_color = Color(0.07, 0.22, 0.38, 1)

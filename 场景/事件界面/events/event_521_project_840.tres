@@ -1,0 +1,81 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_521_project_840.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 0
+key = "industry"
+value = 1200.0
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.1.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "进行055型导弹驱逐舰的研发"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_521_project_840.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "进行航母的研发"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_521_project_840.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "英国人做不到的事，我们可以！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_521_project_840.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们押宝于长期计划"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_521_project_840.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_521"
+source_event_number = 521
+trigger_priority = 52100
+title = "840工程"
+description = "同志，如你所知，建造一支强大的蓝水海军一直是我国的梦想。而现在，这个梦想在我们强大的工业水平下得以实现。但是，在开香槟前还有一个重要的问题。我们的舰队未来的方向应该是什么？大多数军事委员会的成员建议我们研发像苏联那样的导弹巡洋舰，类比比我们曾经提出过的055方案，建造一款大型远洋导弹驱逐舰，抑或是追赶英法，建造航母。这每一项都将花费不少资金，但对于一支强大的水军来说，这没有什么难的。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

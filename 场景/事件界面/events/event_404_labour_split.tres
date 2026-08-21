@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_404_labour_split.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.1.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "接下来将发生什么？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_404_labour_split.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持丹尼斯·希利（需要5.0百万预算与10.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_404_labour_split.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "支持托尼·本恩（需要5.0百万预算与10.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_404_labour_split.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "支持工党内的“战斗”派发动政变（需要10.0百万预算与15.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_404_labour_split.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_404"
+source_event_number = 404
+trigger_priority = 40400
+title = "工党阵营的分裂"
+description = "1979年之后，工党发现自己被玛格丽特·撒切尔领导的强硬保守党政府所压制，她基本上否定了自20世纪50年代以来就获得工党与保守党支持的战后经济和社会政策共识。输掉1979年选举后，工党开始更加左倾，党内左翼力量逐步壮大，其中最具代表性的是以托尼·本恩为首的“硬左派”和以迈克尔·富特为首的“软左派”。本恩等硬左派秉持强烈的社会主义与共和主义主张，且同情马克思主义——他曾在1976年尝试竞选工党领袖，但未能成功。富特等软左派则在一些议题上更具妥协性，以更好进行竞选和换取党内的团结。党内右翼对左翼的崛起深感不满，工党逐渐陷入派系倾轧的困境。这种内部矛盾导致1980年詹姆斯·卡拉汉辞职后，工党推选出了一位妥协性领导人（托尼·本恩未参与此次领导人选举）——迈克尔·富特，工党希望通过此举维系党内团结。然而，党内右派显然对他也极为不满，他们认为富特坚持英国实行单方面核裁军、退出欧洲经济共同体（EEC）的立场过于激进且带有极左色彩。事与愿违，党内团结终究未能实现。工党内部一部分有影响力的右翼党员选择出走，其中就包括罗伊·詹金斯、戴维·欧文、比尔·罗杰斯与雪莉·威廉姆斯组成的“工党四人帮”，以及罗伯特·麦克伦南，他们随后共同组建了社会民主党。尽管启用了新的党名，但该党实际上推行中间派政策，并且开始与自由党建立联系，这一举措或将吸引部分中间派选民的支持。与此同时，工党内的左派和右派围绕副领袖职位展开了争夺。右派成员团结在党的副领袖丹尼斯·希利周围，尝试抵制左派势力的进一步壮大；而“硬左派”领袖托尼·本恩计划在不久后挑战希利的副领导人之位，竞选工党副领袖，以此推动工党的进一步左倾。此外，工党内部存在过数个持打入主义的策略的托洛茨基主义团体，其中最成功的是泰德·格兰特领导的“战斗”派。七十年代以来，该团体的影响力不断扩大，他们在利物浦市议会拥有强大影响力，并且已经控制了工党的青年翼“工党青年社会主义者”。他们试图扩大工党的群众基础，并推动其革命化。对“战斗”派的处置方针也是党内左派与右派的争议焦点，党内右翼主张将该团体驱逐出党，而左翼则拒绝这种“麦卡锡主义”的猎巫政策。主席同志，或许这正是我们插手英国事务的绝佳时机？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

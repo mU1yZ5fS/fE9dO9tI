@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_557_peaceful_transition_socialism_2.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "全力支持贝林格实现欧洲关系民主化的尝试，并建议意大利组建作为国际现存秩序替代方案的“社会主义联盟”"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_557_peaceful_transition_socialism_2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "叫停欧洲一体化进程并推进意大利与苏联的全面和解"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_557_peaceful_transition_socialism_2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "呼吁并促使意大利共产党向现代欧洲社会党看齐，逐步靠拢大西洋主义共识"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_557_peaceful_transition_socialism_2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们将静观其变"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_557_peaceful_transition_socialism_2.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_557"
+source_event_number = 557
+trigger_priority = 55700
+title = "和平长入社会主义：第二幕"
+description = "得到“民主替代”政治议程支持，并在中方助力下享国日久的恩里科·贝林格总理与意大利共产党足以在过去的数年内强化对于国内各项事务的发言权，事实上成为该国境内唯一举足轻重的议会政党。更借助大规模反腐运动与政治洗牌取得了冲击第一共和国根本建制，从而彻底确立新秩序的良机。然而，意大利的政治演进从来不只是内政问题那般简单——考虑到冷战对峙格局与北大西洋联盟的存在，意大利共产党显然有充足理由解释自身的政治改革方案为何会裹足不前，并在外交上仍扮演美国的忠实走卒。因此，我们有必要为自己的国际盟友提供一份适配国际新体系的另类选择，以此同既定秩序相抗衡。基于意大利共产党内部的派系分野与当前国际局势，我们可在下述三项方案中择选其一。首先自是从“社会主义-不结盟-民族独立”口号内取经，以革新社会主义与世界秩序民主化为旗建立起不东不西的第三阵营（当然，这种政治表态并不代表完全政治独立，更像是不充当任一大国打手的左右逢源——毕竟“不结盟运动”的台柱们向来都是对美苏援助照单全收）。显然是对1956年南斯拉夫历史经验与70年代内我国内部发端的“三个世界”理论按图索骥。其次便是“打扫房间”——考虑到战后意大利大选的政治教训，以及匈牙利、捷克斯洛伐克等国的反面案例。若要彻底实现“意大利社会主义”，就必须结束该国作为政治集团附庸的地位。这在意大利便表现为叫停欧洲一体化进程，逐步脱离北大西洋联盟，并在不同程度上靠拢苏东社会主义阵营。共产党党内的亲苏倾向视之为正本清源，回归十月革命传统的正道。最后则是以逐步靠拢大西洋社会主义的“自我革命”之路消解反对分子非议，至此彻底巩固执政地位。这一方针曾造就了英国工党的战后霸权，更促成了德国社会民主党、法国社会党与意大利社会党的二次复兴，为其铺就入阁之路。而该路线的最大挑战自然来自于共产党本身：纵使恩里科·贝林格早在执掌总书记时采取了所谓“天主教-共产主义”的混合政治构想，且该党党内切实形成了倾向现代社会民主主义的所谓“改进派”倾向。但共产主义仍在长时间内作为该党政治招牌。若要建立足以令北大西洋联盟满意的“社会主义”形式，不下定决心洗心革面，并得到同为大西洋阵营的盟友背书是不可能的……"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

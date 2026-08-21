@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_466_unity_is_strength.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_nax700"]
+script = ExtResource("3_expr")
+type = 0
+key = "naxalite_power"
+value = 700
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "印度革命是印度人自己的事……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_466_unity_is_strength.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "让我们帮助印度同志们团结起来！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_466_unity_is_strength.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_466"
+source_event_number = 466
+trigger_priority = 46600
+title = "团结就是力量"
+description = "由于我们的援助和介入，纳萨尔派的力量不断壮大，他们在印度东部和北部的农村地区开辟了大量革命根据地和游击区；与此同时，在查鲁·马宗达同志牺牲后陷入分裂的纳萨尔派组织也逐渐再度团结起来。现在他们的主要派别已经初步整合成了印共（马列）人民战争、印度毛主义共产主义中心、印共（马列）中央重组委员会和印共（马列）解放几个较大的组织。但是这些组织之间仍然存在宗派主义问题和较大的路线分歧。分裂的纳萨尔派显然不利于印度革命的开展，或许我们应该更加深入地介入他们？不管怎么样，主席同志，这取决于你！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_nax700")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

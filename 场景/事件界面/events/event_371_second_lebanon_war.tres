@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_371_second_lebanon_war.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E371_flag"]
+script = ExtResource("3_expr")
+type = 14
+key = "israellost"
+
+[sub_resource type="Resource" id="E371_war10"]
+script = ExtResource("3_expr")
+type = 30
+value = 10.0
+
+[sub_resource type="Resource" id="E371_c37_gov3"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 3.0
+target = "37"
+
+[sub_resource type="Resource" id="E371_not_c37_proprc_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲中"
+target = "37"
+
+[sub_resource type="Resource" id="E371_not_c37_proprc"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("E371_not_c37_proprc_c")])
+
+[sub_resource type="Resource" id="E371_not_c35_vyshi_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲美"
+target = "35"
+
+[sub_resource type="Resource" id="E371_not_c35_vyshi"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("E371_not_c35_vyshi_c")])
+
+[sub_resource type="Resource" id="E371_c37_dev0"]
+script = ExtResource("3_expr")
+type = 28
+key = "development"
+value = 0.0
+target = "37"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_371_second_lebanon_war.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_371_second_lebanon_war.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_371"
+source_event_number = 371
+trigger_priority = 37100
+title = "复仇战争？"
+description = "在以色列于黎巴嫩战争战败后，巴勒斯坦地区的局势便没有发生什么大变化。巴解组织与以色列之间的谈判仍停滞不前，穆斯林与基督教徒的冲突仍在继续，叙利亚在黎巴嫩的军事存在也无法使当地恢复和平。\n在近期事件的大背景下，被战争战败所激怒的以色列，又一次以反恐之名对黎巴嫩发动了入侵。彼时叙利亚仍身陷与土耳其冲突的泥潭，这次冲突将如何发展？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E371_flag"), SubResource("E371_war10"), SubResource("E371_c37_gov3"), SubResource("E371_not_c37_proprc"), SubResource("E371_not_c35_vyshi"), SubResource("E371_c37_dev0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

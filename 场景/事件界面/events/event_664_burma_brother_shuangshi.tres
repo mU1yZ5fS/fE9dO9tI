@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_664_burma_brother_shuangshi.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.6.1"
+
+[sub_resource type="Resource" id="Expr_sub"]
+script = ExtResource("3_expr")
+type = 25
+target = "33"
+key = "sub_government"
+value = 11.0
+
+[sub_resource type="Resource" id="Expr_all"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_sub")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "这就是缘……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_664_burma_brother_shuangshi.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "派出调查员，绝不能让昂山悲剧重演！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_664_burma_brother_shuangshi.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们没有理由不支持我们华人兄弟！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_664_burma_brother_shuangshi.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_664"
+source_event_number = 664
+trigger_priority = 66400
+title = "我的哥哥叫双狮牌，我的妈妈是死去的孔雀"
+description = "看来历史确实是个圈：缅甸的第二次“彬龙会议”也正处于多事之秋。原本打算前往勃生参与多方联合会谈的巴登顶同志和数位缅甸共产党高层领导人在恐怖袭击内惨遭刺杀，缅甸共产党在会议期间的“缺席”只会让其他派系抓紧机会发起进攻：克伦民族联盟的代表要求继续召开会议以稳定政局，并试图在此基础上彻底排除政府内的共产主义残余。而未参会的缅甸共产党代表则团结在东北军区的首长彭家声的旗下严厉抗议恐怖袭击，并呼吁推翻政府！我们得赶在覆水难收前做些什么！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_all")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

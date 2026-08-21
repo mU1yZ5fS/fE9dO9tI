@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_569_tyrant_bad_end.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持阿拉伯人民团结起来解放全半岛人民！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_569_tyrant_bad_end.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "还得再等等……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_569_tyrant_bad_end.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_569"
+source_event_number = 569
+trigger_priority = 56900
+title = "暴君必尝恶果"
+description = "长期以来，阿拉伯半岛的大部分土地都处于沙特阿拉伯王国的控制之下，正如半岛上的各个君主国家一样，沙特阿拉伯与美国保持着“深厚的特殊友谊”（在沙特自由军官组织失败后，沙特阿拉伯请求美国在当地部署了美军基地），通过出售石油赚得盆满钵满，并对异见者进行严厉地镇压。进入冷战时期后，沙特阿拉伯的国内并不太平，国内已经爆发过多次效仿纳赛尔的未遂军事政变；而在1967年后，在左翼浪潮的影响下，阿拉伯半岛人民联盟也进行过短暂的城市游击运动（如向国防部投放炸弹）；受伊朗革命时的伊斯兰主义影响，1979年沙特也发生了两次重大骚乱——卡蒂夫起义和占领麦加大清真寺事件。但地下组织的活动仍然无法打倒沙特的专制君主制度。\n如今，美国已经无力维持其在全球的力量存在，撤走了沙特驻军。流亡阿拉伯湾、也门和约旦等国的沙特左翼人士提出了一个大胆的方案——以约旦、也门和阿拉伯湾为根据地，发起全半岛解放战争，建立统一的社会主义阿拉伯半岛共和国！\n主席同志，我们是否需要支持他们的方案？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

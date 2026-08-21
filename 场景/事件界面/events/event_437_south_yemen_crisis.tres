@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_437_south_yemen_crisis.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 0
+key = "day"
+value = 26.0
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 0
+key = "month"
+value = 6.0
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1978.0
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1"), SubResource("Expr_2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们尽全力支持鲁巴伊同志打倒修正主义分子！（需要5百万元预算，5特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_437_south_yemen_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们不能得罪苏联......"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_437_south_yemen_crisis.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_437"
+source_event_number = 437
+trigger_priority = 43700
+title = "南也门事变?"
+description = "在1966年的“六·二二”纠正运动后，南也门确定了走科学社会主义的道路，社会主义制度逐渐被建立起来。但是在实践中，南也门领导层的三巨头之间的分歧和矛盾逐渐显露。亲近苏联的阿里·纳赛尔·穆罕默德和阿普杜勒·法塔赫·伊斯梅尔同更支持毛主义观点的萨利姆·鲁巴伊·阿里总统之间的矛盾渐渐严重。有情报表明，阿里·纳赛尔和伊斯梅尔的亲苏派计划发动武装政变。同时，苏联在南也门的军事基地的军事调动也变得更加频繁，他们可能会介入并支持政变。或许我们可以尝试支持鲁巴伊，粉碎政变，让南也门彻底倒向我们？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_3")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

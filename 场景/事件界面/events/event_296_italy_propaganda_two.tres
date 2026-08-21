@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_296_italy_propaganda_two.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "意大利人会自行清理门户的……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_296_italy_propaganda_two.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "为和平与民主，我们得帮亚平宁人民一把"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_296_italy_propaganda_two.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "同“宣讲二号”相关人士共同商议对策，并借机销毁成员名册"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_296_italy_propaganda_two.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_296"
+source_event_number = 296
+trigger_priority = 29600
+title = "宣讲到头"
+description = "同意大利第一共和国相伴而生的可不只有社会主义者与法西斯。现在，是时候将目光转向另一位主角了：早在十九世纪中叶的意大利复兴运动时期，亚平宁半岛南部的西西里，乃至整个南方地区便开始成为有组织犯罪运动的温床——王国政府以果断行动迅速解体了当地的封建大地产与旧式贵族制度，并以广泛的小农经济与国家官僚取而代之。然而，试图粗暴移植曾在皮埃蒙特地区如鱼得水的体系与将南方地区固定在农业社会内，以此支撑北方地区工业化进程的歧视性政策很快便招致水土不服。缺乏治理、广泛贫困、物价上涨与长期落后很快便成为南方地区的主旋律。而这便为各种控制暴力、资源或产品供销渠道的中间团体崛起提供了契机，后者至此以黑手党（Mafiusu）面貌登上历史舞台，并逐步成为意大利政治生活的重要组成部分。除却以全能主义与民族团结标榜自身，并对一切异见者采取格杀勿论态度的贝尼托·墨索里尼时代外，黑手党从未在意大利缺席。时至今日亦如此——借助反法西斯与反共风潮和对国内经济的深度参与，黑手党很快便在西方集团默许下成为第一共和国的“必要之恶”，在同其他类似性质的秘密组织和中介团体高度融合的同时开始大规模介入金融、传媒、乃至政界等合法领域。米凯莱·辛多纳便是其中一员，这位同时具有梵蒂冈金融机构背书与西西里黑手党背景的“大鲨鱼”便同时利用自己的黑白两道人脉积极构建网络，并在欺诈与犯罪的基础上为自己聚拢起巨额财富。然而，天下没有不散的宴席——随着70年代的经济下行与国家司法机构的调查到来（相关情报表明，辛多纳同多家大型银行破产事件，乃至被委派至相关机构进行破产清算的被谋杀律师存在高度关联），辛多纳很快便在危机中成为众矢之的，而对他潜在合作伙伴的搜查很快便引出了意外收获：也就在辛多纳合作伙伴利西奥·盖利的产业中，司法官员们找出了一份包括辛多纳在列，同时还写有上千位政界、财界与军界要员的名册。以及利西奥·盖利所属组织“宣讲二号”同阿根廷、秘鲁等拉美国家内反共独裁者的密切往来，乃至同国内多起犯罪行动乃至恐怖袭击存在联系的可疑证据。显然，出于政治野心，辛多纳早早便与共济会地下社团“宣讲二号”建立了秘密联系，在事实上成为后者成员的同时履行其“复兴民主”的政治使命。而这种投机很快便招致了连锁反应：影响意大利政局的阴谋集团从未以如此清晰且直白的方式展露在我们面前，而现在恰是决断之时。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

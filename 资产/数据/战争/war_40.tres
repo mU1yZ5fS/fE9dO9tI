@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 40
+name_zh = "阿尔及利亚内战"
+name_en = ""
+fortnight_max = 20
+drift_infl1 = 0
+drift_infl2 = 0
+drift_extra_infl1 = 0
+drift_extra_infl2 = 0
+drift_extra_flag = "war40_result563"
+default_side1 = "FLN"
+default_side2 = "伊斯兰救世阵线"
+default_usa_side = 0
+default_ussr_side = 0
+default_infl1 = 700
+default_infl2 = 300

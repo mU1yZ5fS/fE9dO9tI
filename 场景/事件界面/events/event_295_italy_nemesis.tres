@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_295_italy_nemesis.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们将静观其变"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_295_italy_nemesis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们将浑水摸鱼，借机渗透意大利安全机构"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_295_italy_nemesis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们将借力打力，为该国的激进分子提供助力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_295_italy_nemesis.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_295"
+source_event_number = 295
+trigger_priority = 29500
+title = "复仇女神"
+description = "踢开了老东家天主教民主党，并在新一届选举内大胜，成功确立新领导班子的总理阿尔多·莫罗终于得以大显身手，并按照自身愿景重塑该国政治生态：基于“民主替代”的社会天主教立场与亲中左翼态度，以及意大利社会党的“左翼替代”招牌与人道的、民主的欧洲社会主义路线。对于意大利国家性质的“再定义”很快便被提上日程。显然，阿尔多·莫罗仍记得60年代初次带领“中左翼公式”执掌意大利的屈辱：彼时出于抵制一切左翼政治势力在意大利“失控”（亦或掌权）的可能，该国前总统安东尼奥·塞尼曾特别召见亲君主派人士兼卡宾枪骑兵总指挥乔瓦尼·德·洛伦佐共商“大事”。计划一旦作为预备政治方案的“中左翼政府”走向崩溃，那便是该国军方出场恢复秩序，并在总统的背书下确立威权戒严配民选形式新格局的时刻。如此做法自然导致初代莫罗政府不得不在同塞尼总统的相处期间束手束脚，并冻结了相当数量的社会改革方案，亲改革派天主教组织的参政渠道亦被人为限制。如今也是时候扭转这种偏差——对“莫罗案”的反思与深入调查很快便转化为了有限社会解冻：在“庇护国民比先发制人更重要”的口号下，意大利安全部门的特权被系数收回：因滥用紧急状态，有架空总理之势而闻名，并开创“铁腕权臣”时代的前部长弗朗切斯科·科西加与其体制正逐步遭到清算。其工作重心则不得不转向对已知恐怖组织的清剿上，由此确立了“自由之敌无自由”的基本模式。与此同时，该国在莫罗案中的戏剧性新发现使其不得不同传统盟友靠边——相关证据表明，20世纪70年代的政治混乱同美国密切相关：后者通过制造混乱与紧张局势，并激化意大利社会内的政治暴力获利。在莫罗绑架事件从酝酿到执行期间，与美国情报机构不仅积极同天主教民主党内部的异见分子对接，计划边缘化莫罗；更以提供情报、渗透组织与激化局势等系列做法为“红色旅”与“革命武装核心”等对当局有显著敌意的活动家开了便车——这便是北约在意大利预留的军事情报网络未能在绑架事件期间发挥效力的缘故。为的就是除掉一个准备同意大利共产党结盟的棘手政治家。上述曝光的结果引起了意大利公众的共鸣，阿尔多·莫罗借此继续炮轰其老对手天主教民主党，指控美国干涉意大利内政，并宣布意大利将减少在北约组织内的参与程度。考虑到意大利国内政治力量此消彼长，似乎正是我们入局之时？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

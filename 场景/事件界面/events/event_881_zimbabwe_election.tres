@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_881_zimbabwe_election.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.4.18"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们只需要等待……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_881_zimbabwe_election.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_881"
+source_event_number = 881
+trigger_priority = 8810
+title = "罗得西亚永不灭亡？"
+description = "1979年12月11日，津巴布韦罗得西亚通过了《津巴布韦罗得西亚宪法（修正案）第4号法案》（1979年），第二天索姆斯勋爵就任总督，持续14年的罗得西亚叛乱宣告结束，津巴布韦罗得西亚作为南罗得西亚的殖民地恢复了英国法律下的合法性。\n英国议会随后通过了《津巴布韦法案》，制定了该国的独立宪法。1979年12月21日，双方正式签署了停火协议；索姆斯勋爵还签署了解除对津民盟-爱国阵线和津人盟的禁令，并对对所有在战争中拿起武器的人实行大赦。英军的监察部队随后在南罗得西亚各地设立了16个集合点，爱国阵线游击队员可以在那里解除武装并恢复平民生活；到1月6日的最后期限前，共有18,300人这样做了。随后便是激动人心的大选时刻，该国国内分别有四个潜在的人选和党派。\n其一是前执政党罗得西亚阵线党，考虑到其臭名昭著的“美名”，他们不太可能获得大选的多数选票，但他们仍然保留了一定席位。大多数的阵线党代表决定和第二个政党，联合非洲民族委员会结盟。由曾经领导津巴布韦罗得西亚联合政府的阿贝尔-穆佐雷瓦所带领，该委员会在前一年赢得了最多选票。但据报道，他的集会出席人数不多，而穆佐雷瓦经常抨击其他津巴布韦政客，这被认为削弱了他作为一个团结人士的吸引力。詹姆斯·奇凯雷马在1979年6月与穆佐雷瓦闹翻，随后带领他的津巴布韦民主党加入竞选，该党与津巴布韦人民联盟（ZAPU）的关系日益密切（他与恩科莫举行了团结会谈）；奇凯雷马抱怨津民盟的支持者对他进行死亡威胁。而津巴布韦非洲民族联盟-爱国阵线（ZANU-PF）提交了一份温和的宣言，其中很少提到该党所宣称的与中国的结盟。不论是谁取得胜利，种族政权的多米诺骨牌还是倒下了。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

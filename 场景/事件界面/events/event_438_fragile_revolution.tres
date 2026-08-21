@@ -1,0 +1,118 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_438_fragile_revolution.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 2
+key = "3"
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 2
+key = "6"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 0
+key = "ideology"
+value = 4.0
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 0
+key = "economy_system"
+value = 14.0
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 0
+key = "speech_policy"
+value = 19.0
+
+[sub_resource type="Resource" id="Expr_5"]
+script = ExtResource("3_expr")
+type = 0
+key = "religion_policy"
+value = 27.0
+
+[sub_resource type="Resource" id="Expr_6"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_system"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_7"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_2"), SubResource("Expr_3"), SubResource("Expr_4"), SubResource("Expr_5"), SubResource("Expr_6")])
+
+[sub_resource type="Resource" id="Expr_8"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_444"
+
+[sub_resource type="Resource" id="Expr_9"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_444"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_10"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_9")])
+
+[sub_resource type="Resource" id="Expr_11"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_8"), SubResource("Expr_10")])
+
+[sub_resource type="Resource" id="Expr_12"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_503"
+
+[sub_resource type="Resource" id="Expr_13"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1"), SubResource("Expr_7"), SubResource("Expr_11"), SubResource("Expr_12")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "是时候盖棺定论了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_438_fragile_revolution.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "调整一部分政策使文化大革命继续下去"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_438_fragile_revolution.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_438"
+source_event_number = 438
+trigger_priority = 43800
+title = "脆弱的革命"
+description = "（描述由 event_438_fragile_revolution.gd 的 prepare 动态生成）"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_13")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

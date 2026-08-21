@@ -1,0 +1,87 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_526_japan_no_rose_only_fist.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_2_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_2_0")])
+
+[sub_resource type="Resource" id="Expr_t0_3"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.1.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2"), SubResource("Expr_t0_3")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "终结社会主义协会的垄断地位并调解派系矛盾"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_526_japan_no_rose_only_fist.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "坚决支持协会派捍卫“革命性”"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_526_japan_no_rose_only_fist.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "试图劝说各派放下分歧"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_526_japan_no_rose_only_fist.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_526"
+source_event_number = 526
+trigger_priority = 52600
+title = "没有玫瑰，只有拳头"
+description = "自森户——稻村争论以来，日本社会党一直维持着左派优位的机制。相较于其他国家的社会党，它显得十分左倾与激进。1964年，社会党确定了纲领性文件《日本通向社会主义之路》，该文件深受党内最大的左派派阀——主张“和平革命论”的社会主义协会的影响，并成为该党事实上的纲领。1966年对该纲领的修订则进一步包含了有效确认无产阶级专政的措辞。社会党也由此成为了一个带有强烈马克思主义色彩的左翼政党。\n此时的社会党内，以社会主义协会为代表的左派始终坚持社会党是一个要推翻当前资本主义制度，建立社会主义的“反建制”政党。而以江田三郎为代表的改革派则希望社会党能够专注于议会斗争和选举，适应当前的社会阶层变化，淡化阶级色彩并解决工会依赖等问题，成为一个西欧式的社会民主主义政党以确保稳定执政。\n1976与次年的众参两院选举中，社会党并未抓住完成“参政交代”的大好机会，依旧维持了尴尬的在野党地位，这让社会党内部的矛盾进一步激化。社会主义协会和改革派互相指责，争论不休。而在中苏问题上，亲华的佐佐木派与亲苏的社会主义协会又爆发了激烈冲突。最终，社会党内逐渐形成了“协会派”与“反协会派”两股力量。\n现在是我们选择的时刻了：是支持反协会派并促使社会党完成进一步的转型，还是支持社会主义协会反对改革？需要提醒的是，社会主义协会秉持的是劳农派马克思主义思想，一直反对马列主义这样的“极左思潮”，且由于其纲领特性一直被指责是“以19世纪的发展中国家的德国的考茨基为模范的理论的正统派”。而佐佐木派虽然与社会主义协会不和，但也不喜欢改革派的改革。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_423_spain_thaw.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Expr_date_1977_6_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.6.1"
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "谁将拔得头筹......？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_423_spain_thaw.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_423"
+source_event_number = 423
+trigger_priority = 42300
+title = "西班牙解冻"
+description = "在任命胡安·卡洛斯一世作为其继承人与西班牙国王后，独裁者佛朗哥便草草去世。随后，胡安·卡洛斯一世加冕为西班牙国王。1976年，新国王任命阿道弗·苏亚雷斯作为西班牙首相，后者隶属于佛朗哥主义改革派。在这数年间，新首相推动了对政治体制的自由化：西班牙重建了议会（Cortes·Generales），政党均被合法化，并开始实行对政治犯的赦免。\n当然，对长枪党政体如此尖锐的挑战引起了保守派传统据点，即军队的不满情绪。军中的“堡垒”派持强硬派佛朗哥主义立场，并坚决反对首相推行的自由民主转型。尤其反对新政府将圣地亚哥·卡里略领导的西班牙共产党合法化。\n在今年年初，苏亚雷斯宣布将举行制宪会议选举，并制定一份宪法。因此，取代西班牙长枪党的新政党民主中间派联盟得以形成，并整合了前者内部的一切改革派势力。此外，西班牙共产党与年轻律师费利佩·冈萨雷斯领导的西班牙工人社会党也将结束地下活动时代，参与此次选举。\n而扮演西班牙的右翼一方的势力主要是两大党：即由曼努埃尔·弗拉加领导的保守派组织国民联盟与极右翼组织真西班牙长枪党。\n该国的政治力量如此多样，让人不得不质疑新执政党无条件取得胜利的可能。因此，几乎无法预测摆脱数十年极权统治下的首次民主选举的结果会如何。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date_1977_6_1")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

@@ -21,12 +21,12 @@ class_name OrbitCamera
 ##      耦合较紧。建议改用全局单例（autoload）或信号机制解耦。
 ##   3. 使用 _unhandled_input 而非 _input，意味着 UI 控件可以优先消费鼠标
 ##      事件，这对策略游戏是有利的设计，但需要确保 UI 设置了 mouse_filter。
-##   4. _orbit() 的参数 mouse_pos 实际上仅用于计算 delta，方法内部也依赖
-##      _last_mouse_pos 的先前值，耦合性略高。可以考虑改为接收 delta 向量。
 ## =============================================================================
 
 ## 鼠标灵敏度，值越大旋转越快
 @export var mouse_sensitivity: float = 0.005
+## 触控灵敏度（触屏 relative 尺度与鼠标不同，独立可调）
+@export var touch_sensitivity: float = 0.005
 ## 滚轮缩放倍率因子：>1 时每格滚轮缩放 zoom_speed 倍
 @export var zoom_speed: float = 1.15
 ## 最小相机距离（最近能拉到多近）
@@ -44,6 +44,12 @@ var _camera: Camera3D
 var _is_dragging: bool = false
 ## 上一帧的鼠标位置，用于计算拖拽增量
 var _last_mouse_pos: Vector2 = Vector2.ZERO
+## 一旦收到真实触摸事件即置 true：之后忽略 emulate_mouse_from_touch 生成的模拟鼠标事件
+var _using_touch: bool = false
+## 当前按下的手指 {index: position}
+var _touch_points: Dictionary = {}
+## 双指捏合的上一帧两指距离
+var _pinch_last_dist: float = 0.0
 
 
 ## ---------------------------------------------------------------------------
@@ -93,6 +99,18 @@ func _find_territory_map() -> TerritoryMap:
 ## 当 UI 控件（按钮、面板等）消费了鼠标事件后，此处不再响应，
 ## 避免拖拽地图时误触 UI 元素。确保 UI 控件的 mouse_filter 设为 STOP。
 func _unhandled_input(event: InputEvent) -> void:
+	# 触控优先：真实触摸事件先于模拟鼠标到达，置闩锁后屏蔽模拟鼠标
+	if event is InputEventScreenTouch:
+		_handle_touch(event as InputEventScreenTouch)
+		return
+	if event is InputEventScreenDrag:
+		_handle_drag(event as InputEventScreenDrag)
+		return
+
+	# 触屏设备上忽略 emulate_mouse_from_touch 生成的模拟鼠标事件
+	if _using_touch:
+		return
+
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
 		match mb.button_index:
@@ -113,6 +131,47 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 ## ---------------------------------------------------------------------------
+## 触控处理
+## ---------------------------------------------------------------------------
+
+## 手指按下/抬起：维护当前触点集合，并重置捏合基准避免跳变。
+func _handle_touch(t: InputEventScreenTouch) -> void:
+	_using_touch = true
+	if t.pressed:
+		_touch_points[t.index] = t.position
+	else:
+		_touch_points.erase(t.index)
+	# 进入/退出双指时重置捏合基准，避免跳变
+	_pinch_last_dist = _two_finger_dist()
+
+
+## 手指拖动：单指旋转，双指捏合缩放。
+func _handle_drag(d: InputEventScreenDrag) -> void:
+	_using_touch = true
+	if _touch_points.has(d.index):
+		_touch_points[d.index] = d.position
+	if _touch_points.size() >= 2:
+		# 双指捏合缩放
+		var dist := _two_finger_dist()
+		if _pinch_last_dist > 0.0 and dist > 0.0:
+			# 两指张开 dist 变大 → factor<1 → 拉近
+			_zoom(_pinch_last_dist / dist)
+		_pinch_last_dist = dist
+	elif _touch_points.size() == 1:
+		# 单指拖拽旋转。用 relative（canvas 空间，随分辨率一致）而非 screen_relative，
+		# 与鼠标路径共用 _orbit_delta，灵敏度不受设备分辨率影响。
+		_orbit_delta(d.relative, touch_sensitivity)
+
+
+## 当前恰有两指时返回两指间距离，否则 0。
+func _two_finger_dist() -> float:
+	if _touch_points.size() != 2:
+		return 0.0
+	var pts := _touch_points.values()
+	return (pts[0] as Vector2).distance_to(pts[1] as Vector2)
+
+
+## ---------------------------------------------------------------------------
 ## 旋转与缩放
 ## ---------------------------------------------------------------------------
 
@@ -125,14 +184,16 @@ func _orbit(mouse_pos: Vector2) -> void:
 	# 计算本帧鼠标位移增量
 	var delta := mouse_pos - _last_mouse_pos
 	_last_mouse_pos = mouse_pos
+	_orbit_delta(delta, mouse_sensitivity)
 
-	# Yaw — 绕世界 Y 轴旋转（水平方向）
-	# 取负号使拖拽方向与直觉一致：鼠标右移 → 视角右转
-	rotate_y(-delta.x * mouse_sensitivity)
 
-	# Pitch — 绕自身 X 轴旋转（垂直方向），限制在 ±tilt_limit 范围内
+## 按位移增量旋转（供鼠标与触控共用）。
+## - Yaw（水平旋转）：绕世界 Y 轴，取负号使拖拽方向与直觉一致（右移 → 视角右转）
+## - Pitch（垂直旋转）：绕自身 X 轴，限制在 ±tilt_limit 范围内
+func _orbit_delta(delta: Vector2, sensitivity: float) -> void:
+	rotate_y(-delta.x * sensitivity)
 	var tilt_limit := deg_to_rad(tilt_limit_deg)
-	rotation.x -= delta.y * mouse_sensitivity
+	rotation.x -= delta.y * sensitivity
 	rotation.x = clampf(rotation.x, -tilt_limit, tilt_limit)
 
 

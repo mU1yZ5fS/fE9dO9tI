@@ -1,0 +1,140 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_042_047_revolution_and_reform.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_year_1979"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1979.0
+
+[sub_resource type="Resource" id="Expr_year_1978"]
+script = ExtResource("3_expr")
+type = 21
+key = "year"
+value = 1978.0
+
+[sub_resource type="Resource" id="Expr_month_1"]
+script = ExtResource("3_expr")
+type = 0
+key = "month"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_day_8"]
+script = ExtResource("3_expr")
+type = 0
+key = "day"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_1978_date"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_year_1978"), SubResource("Expr_month_1"), SubResource("Expr_day_8")])
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_year_1979"), SubResource("Expr_1978_date")])
+
+[sub_resource type="Resource" id="Expr_agents_50"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 50.0
+
+[sub_resource type="Resource" id="Expr_line_at_most_1"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_left_ready"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_50"), SubResource("Expr_line_at_most_1")])
+
+[sub_resource type="Resource" id="Expr_line_at_least_1"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_party_at_most_7"]
+script = ExtResource("3_expr")
+type = 1
+key = "party_system"
+value = 7.0
+
+[sub_resource type="Resource" id="Expr_left_branch"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_at_least_1"), SubResource("Expr_party_at_most_7")])
+
+[sub_resource type="Resource" id="Expr_coalition_67"]
+script = ExtResource("3_expr")
+type = 36
+value = 67.0
+
+[sub_resource type="Resource" id="Expr_party_at_least_8"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_system"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_coalition_branch"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_coalition_67"), SubResource("Expr_party_at_least_8")])
+
+[sub_resource type="Resource" id="Expr_line_ok"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_left_branch"), SubResource("Expr_coalition_branch")])
+
+[sub_resource type="Resource" id="Expr_shah_ready"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_50"), SubResource("Expr_line_ok")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "不干涉"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "伊朗的抗议和罢工仍在没有我们参与的情况下继续。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "站起来，把敌人的宫殿砸了！"
+disabled_text = "我们爱莫能助"
+enable_condition = SubResource("Expr_left_ready")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "一批批印着“英雄的伊朗人民万岁”的板条箱由货轮运往伊朗。伊朗的革命组织感谢了我们的帮助，祝他们好运！但同时，美国对我们的举动感到不快，这可是明着挖他们墙角啊。干涉伊朗的第一步已经开始，但我们不能忘记定期向他们发送新的援助。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "我们应当支持伊朗君主，说不定将来会有用呢？"
+disabled_text = "君主专政和法西斯到底有什么差别？"
+enable_condition = SubResource("Expr_shah_ready")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "沙阿和伊朗政府方面感谢了我们的帮助。我们的特勤得以直接和SAVAK合作，对异议份子进行残酷的监控与铲除。作为回报，伊朗政府宣布和我国展开更深入的贸易。美国驻伊朗大使也感谢了我们的慷慨解囊。干涉伊朗的第一步已经开始，但我们不能忘记定期向沙阿提供新的帮助。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "iranian_revolution"
+source_event_number = 42
+trigger_priority = 420
+title = "伊朗革命"
+description = "主席同志！一段时间以来，针对伊朗人民困难的社会经济状况、沙阿的亲美政策、统治精英的猖獗腐败以及国家对什叶派神职人员的压迫，抗议一直在沙阿伊朗举行。对于巴列维家族的民愤也许自从礼萨·汗废除凯加王朝自我加冕成为“伊朗的袁世凯”开始，而他的儿子的统治则是在“白色革命”上变本加厉地残酷镇压异议分子与为英美利益为虎作伥。这种民愤在知名的电影院纵火事件之后来到了爆点。目前，阿亚图拉（什叶派伊斯兰教的最高精神称号）霍梅尼是富有个人魅力的抗议活动的精神领袖，引领着运动。现在，抗议和罢工席卷了伊朗的许多城市。伊斯兰主义运动，如解放伊朗运动和战斗神职人员协会，是即将到来的革命的驱动力，但其他组织也在努力推翻沙阿，其中最大的是伊朗民族自由主义的民族阵线，亲苏的人民党，以及人民圣战者组织和人民敢死游击队组织。伊朗的革命会极大地改变中东地区的权力平衡，所以也许我们应该进行干预？"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])
+display_script = ExtResource("5_custom")

@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_505_end_of_father_of_guinea.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.8.27"
+value = 0.0
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "承担几内亚的债务（需要5百万预算）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_505_end_of_father_of_guinea.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "火上浇油，推翻杜尔政府"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_505_end_of_father_of_guinea.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "几内亚在哪？我得换一张大点的世界地图了"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_505_end_of_father_of_guinea.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_505"
+source_event_number = 505
+trigger_priority = 50500
+title = "几内亚之父的终结"
+description = "主席同志，来自科纳克里的紧急报道。由于塞古·杜尔总统灾难性的经济政策，导致几内亚经济水平暴跌，而政府又限制私人企业的发展。着导致了小商贩的大规模罢工，而且正有激进化的倾向。杜尔总统本人对社会主义本就有极大的热情，但这可能会成为他的转折点。他很有可能会为了经济援助而转向美国。几内亚毕竟曾经作为非洲反殖民运动的桥头堡，常常支持我国的行动。也行我们应当拉这位“几内亚之父”一把？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

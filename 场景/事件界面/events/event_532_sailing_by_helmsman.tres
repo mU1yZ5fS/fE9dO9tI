@@ -1,0 +1,89 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_532_sailing_by_helmsman.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_524"
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_524"
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 27
+key = "prc_power"
+value = 100.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_5"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 6.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_7"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.1.1"
+
+[sub_resource type="Resource" id="Expr_8"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.1.1"
+
+[sub_resource type="Resource" id="Expr_6"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_7"), SubResource("Expr_8")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "全力帮助他们！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_532_sailing_by_helmsman.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "尝试说服他们"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_532_sailing_by_helmsman.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_532"
+source_event_number = 532
+trigger_priority = 53200
+title = "大海航行靠舵手"
+description = "长期以来，我们对日本共产主义抵抗者同盟提供了包括武器、技术等方面的大量支持。同时派出政工人员与他们开展了长期的交流指导，一方面是解决内部派系林立彼此对立的问题，另一方面也要让他们真正了解了马克思、恩格斯和列宁的学说是什么样的。在数年的努力下，他们已经十分团结并不断深入日工劳动者等工人阶级现场和农村地区，发展组织并动员新的支持者。\n与此同时，我们在帮助革命左翼重夺日本共产党领导权之后，该党也充分发挥了自己完善的基层动员机制与更加健全的组织优势，积极宣传革新思想以及自由民主党弊病。而在总评等传统左翼工会日渐僵化的时候，共产党也借机派出人员对这些工会组织进行渗透，从而开始尝试夺取它们的主导权。\n主席同志，现在已经到了关键的时刻，为了日本能飘扬起红旗，我们必须尽快把两股力量合二为一，并给予他们更多的支持，不然我们先前的一切努力都将付诸东流！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_3"), SubResource("Expr_4"), SubResource("Expr_5"), SubResource("Expr_6")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

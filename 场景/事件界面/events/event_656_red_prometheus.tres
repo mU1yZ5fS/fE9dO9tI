@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_656_red_prometheus.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_655_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_655"
+
+[sub_resource type="Resource" id="Expr_prc_100"]
+script = ExtResource("3_expr")
+type = 27
+key = "prc_power"
+value = 100.0
+target = "60"
+
+[sub_resource type="Resource" id="Expr_gov_not_2"]
+script = ExtResource("3_expr")
+type = 26
+key = "government"
+value = 2.0
+target = "60"
+
+[sub_resource type="Resource" id="Expr_socialist_5"]
+script = ExtResource("3_expr")
+type = 40
+keys = Array[String](["59", "112", "113", "114", "68", "107", "67", "64", "63", "62", "108", "61", "56", "58"])
+value = 5.0
+
+[sub_resource type="Resource" id="Expr_cw_0"]
+script = ExtResource("3_expr")
+type = 25
+key = "cw"
+value = 0.0
+target = "60"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "战斗的人民军向前进！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_656_red_prometheus.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_656"
+source_event_number = 656
+trigger_priority = 65600
+title = "红色普罗米修斯"
+description = "尼日利亚仍在泥潭中挣扎，政府换了又换，国家的实质也并未改变。无论是开明的政府亦或者是保守的政府，都对无产阶级真正的革命运动采取敌视和镇压的政策。如今，全尼日利亚革命社会主义联盟在尼日利亚的萧条和阶级矛盾中获得了大幅的发展，吸纳了失业的无产阶级、被压迫的农民和热血的青年，依托于农村的秘密公社运动、基于持久人民战争原则的农村游击战和城市群众运动、学生运动和工人运动获得了壮大。尼日利亚人民军已经占领了相当的根据地，是时候开始战略反攻了！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_655_done"), SubResource("Expr_prc_100"), SubResource("Expr_gov_not_2"), SubResource("Expr_socialist_5"), SubResource("Expr_cw_0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

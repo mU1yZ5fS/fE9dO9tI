@@ -1,0 +1,260 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_005_popular_discontent.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_support_minus_freedom"]
+script = ExtResource("3_expr")
+type = 32
+key = "people_support"
+value = -51.0
+target = "thought_freedom"
+
+[sub_resource type="Resource" id="Expr_support_negative"]
+script = ExtResource("3_expr")
+type = 1
+key = "people_support"
+value = 99.0
+
+[sub_resource type="Resource" id="Expr_freedom_1200"]
+script = ExtResource("3_expr")
+key = "thought_freedom"
+value = 1200.0
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_support_minus_freedom"), SubResource("Expr_support_negative"), SubResource("Expr_freedom_1200")])
+
+[sub_resource type="Resource" id="Expr_444_done"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_444"
+
+[sub_resource type="Resource" id="Expr_444_result0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_444"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_444_both"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_444_done"), SubResource("Expr_444_result0")])
+
+[sub_resource type="Resource" id="Expr_444_guard"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_444_both")])
+
+[sub_resource type="Resource" id="Expr_503_result0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_503"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_503_guard"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_503_result0")])
+
+[sub_resource type="Resource" id="Expr_trigger_final"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_trigger"), SubResource("Expr_444_guard"), SubResource("Expr_503_guard")])
+
+[sub_resource type="Resource" id="Effect_speech"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_speech"]
+script = ExtResource("1_option")
+text = "向人民群众喊话，安抚他们"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_speech")])
+result_text = "（结果由 event_005_popular_discontent.gd 动态生成）"
+
+[sub_resource type="Resource" id="Expr_party_not_9"]
+script = ExtResource("3_expr")
+type = 22
+key = "party_system"
+value = 9.0
+
+[sub_resource type="Resource" id="Expr_press_not_19"]
+script = ExtResource("3_expr")
+type = 22
+key = "press_policy"
+value = 19.0
+
+[sub_resource type="Resource" id="Expr_democratize"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_party_not_9"), SubResource("Expr_press_not_19")])
+
+[sub_resource type="Resource" id="Effect_dem_party_support"]
+script = ExtResource("2_effect")
+key = "party_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Effect_dem_people"]
+script = ExtResource("2_effect")
+key = "people_support"
+value = 100.0
+
+[sub_resource type="Resource" id="Effect_dem_diplo"]
+script = ExtResource("2_effect")
+key = "diplo"
+value = -50.0
+
+[sub_resource type="Resource" id="Expr_party_is_9"]
+script = ExtResource("3_expr")
+type = 21
+key = "party_system"
+value = 9.0
+
+[sub_resource type="Resource" id="Effect_press_19"]
+script = ExtResource("2_effect")
+type = 1
+key = "press_policy"
+value = 19.0
+condition = SubResource("Expr_party_is_9")
+
+[sub_resource type="Resource" id="Effect_party_9"]
+script = ExtResource("2_effect")
+type = 1
+key = "party_system"
+value = 9.0
+condition = SubResource("Expr_party_not_9")
+
+[sub_resource type="Resource" id="Effect_dem_loyalty"]
+script = ExtResource("2_effect")
+type = 20
+value = -100.0
+
+[sub_resource type="Resource" id="Option_democratize"]
+script = ExtResource("1_option")
+text = "同意民主化"
+disabled_text = "我们已经不能再进一步地民主化了"
+enable_condition = SubResource("Expr_democratize")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_dem_party_support"), SubResource("Effect_dem_people"), SubResource("Effect_dem_diplo"), SubResource("Effect_press_19"), SubResource("Effect_party_9"), SubResource("Effect_dem_loyalty")])
+result_text = "你亲自与全国各地的抗议者进行了交谈。你承诺将尽一切努力改变政策，考虑到所有公民的利益，并建立真正的民主机制，一些民主机制即将开始实行。人民受到鼓舞，但与此同时，批评的浪潮也因为新获的自由而涌来。"
+
+[sub_resource type="Resource" id="Expr_army_100"]
+script = ExtResource("3_expr")
+key = "army"
+value = 100.0
+
+[sub_resource type="Resource" id="Effect_army_freedom"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
+value = -150.0
+
+[sub_resource type="Resource" id="Effect_army_cost"]
+script = ExtResource("2_effect")
+key = "army"
+value = -100.0
+
+[sub_resource type="Resource" id="Effect_army_diplo"]
+script = ExtResource("2_effect")
+key = "diplo"
+value = 50.0
+
+[sub_resource type="Resource" id="Effect_repression"]
+script = ExtResource("2_effect")
+type = 1
+key = "protest_repression"
+value = 9.0
+
+[sub_resource type="Resource" id="Effect_liberal_loyalty"]
+script = ExtResource("2_effect")
+type = 21
+key = "3"
+value = -100.0
+
+[sub_resource type="Resource" id="Option_army"]
+script = ExtResource("1_option")
+text = "驱散抗议者"
+disabled_text = "军方不会支持我们"
+enable_condition = SubResource("Expr_army_100")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_army_freedom"), SubResource("Effect_army_cost"), SubResource("Effect_army_diplo"), SubResource("Effect_repression"), SubResource("Effect_liberal_loyalty")])
+result_text = "军队最终执行了你的命令并用装甲车辆驱散了城市内的抗议者，双方都有伤亡者出现。当然，这种行为使你被国际社会所谴责。"
+
+[sub_resource type="Resource" id="Expr_people_500"]
+script = ExtResource("3_expr")
+key = "people_support"
+value = 501.0
+
+[sub_resource type="Resource" id="Effect_supporters_freedom"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
+value = -200.0
+
+[sub_resource type="Resource" id="Effect_supporters_party"]
+script = ExtResource("2_effect")
+key = "party_support"
+value = -50.0
+
+[sub_resource type="Resource" id="Effect_supporters_diplo"]
+script = ExtResource("2_effect")
+key = "diplo"
+value = 20.0
+
+[sub_resource type="Resource" id="Effect_supporters_people"]
+script = ExtResource("2_effect")
+key = "people_support"
+value = -300.0
+
+[sub_resource type="Resource" id="Effect_reform_loyalty"]
+script = ExtResource("2_effect")
+type = 21
+key = "2,3"
+value = -100.0
+
+[sub_resource type="Resource" id="Option_supporters"]
+script = ExtResource("1_option")
+text = "向忠诚的人民寻求帮助"
+disabled_text = "人民已经受够了大鸣大放，你想复辟文革余毒？"
+enable_condition = SubResource("Expr_people_500")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_supporters_freedom"), SubResource("Effect_supporters_party"), SubResource("Effect_supporters_diplo"), SubResource("Effect_supporters_people"), SubResource("Effect_reform_loyalty")])
+result_text = "通过媒体直播，你呼吁支持你的人保护你的成果不被美国和苏联资助的叛徒的破坏。他们立刻组织起了集会，你的支持者与抗议者大打出手且大部分人被逮捕。当街头抗议尘埃落定，抗议者败下阵来四处逃窜，你的支持者向着天安门前进。"
+
+[sub_resource type="Resource" id="Expr_agents_100"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 150.0
+
+[sub_resource type="Resource" id="Effect_agents_cost"]
+script = ExtResource("2_effect")
+key = "agents"
+value = -150.0
+
+[sub_resource type="Resource" id="Effect_agents_freedom"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
+value = -150.0
+
+[sub_resource type="Resource" id="Effect_agents_people"]
+script = ExtResource("2_effect")
+key = "people_support"
+value = 100.0
+
+[sub_resource type="Resource" id="Option_agents"]
+script = ExtResource("1_option")
+text = "利用特勤，从内部分化瓦解抗议"
+disabled_text = "我们的情报机构对此无能为力"
+enable_condition = SubResource("Expr_agents_100")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_agents_cost"), SubResource("Effect_agents_freedom"), SubResource("Effect_agents_people")])
+result_text = "国安部从事着通常的业务——贿赂某人，消灭某人，因为国家利益我们会把各种组织和个人从其内部瓦解。反对派只能在内部斗争中衰弱，抗议变成了没有任何策略的集会，很快就会干涸。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "popular_discontent"
+source_event_number = 5
+title = "民众不满"
+description = "人民对你政策不满，在全国范围内举行了大规模集会，在广场搭起帐篷营地，分发传单，甚至冲击地方政府建筑。来自不同团体的抗议者对你政府不同的方面不满，但一致要求体制民主化，以限制你在国家政治的影响力。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger_final")])
+options = Array[ExtResource("1_option")]([SubResource("Option_speech"), SubResource("Option_democratize"), SubResource("Option_army"), SubResource("Option_supporters"), SubResource("Option_agents")])
+fire_only_once = true

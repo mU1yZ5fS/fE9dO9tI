@@ -1,0 +1,125 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_042_047_revolution_and_reform.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.11"
+
+[sub_resource type="Resource" id="Expr_agents_80"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 80.0
+
+[sub_resource type="Resource" id="Expr_agents_30"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_army_10"]
+script = ExtResource("3_expr")
+type = 0
+key = "army"
+value = 10.0
+
+[sub_resource type="Resource" id="Expr_uprising"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_30"), SubResource("Expr_army_10")])
+
+[sub_resource type="Resource" id="Expr_line_ge_1"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_line_le_2"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_party_le_7"]
+script = ExtResource("3_expr")
+type = 1
+key = "party_system"
+value = 7.0
+
+[sub_resource type="Resource" id="Expr_asylum_branch1"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_ge_1"), SubResource("Expr_line_le_2"), SubResource("Expr_party_le_7")])
+
+[sub_resource type="Resource" id="Expr_coalition_67"]
+script = ExtResource("3_expr")
+type = 36
+value = 67.0
+
+[sub_resource type="Resource" id="Expr_party_ge_8"]
+script = ExtResource("3_expr")
+type = 0
+key = "party_system"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_asylum_branch2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_coalition_67"), SubResource("Expr_party_ge_8")])
+
+[sub_resource type="Resource" id="Expr_asylum_ready"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_asylum_branch1"), SubResource("Expr_asylum_branch2")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "欧洲太过遥远，亚洲对我们更为重要"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "我们对匈牙利事件没有反应。卡达尔对比斯库和他的支持者发起了攻击。看来，他们和比斯库本人很快就会等待辞职，而卡达尔将提拔年轻的改革者代替他们。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "对比斯库·贝洛和他的人手提供来自我们特勤的支持和帮助"
+disabled_text = "我们没有足够的力量"
+enable_condition = SubResource("Expr_agents_80")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "由于我们情报部门的及时协助，比斯库意识到安德罗波夫已经背叛了他，并在我们特工的帮助下，紧急改变了政变计划，几乎立刻发表了讲话，工人民兵孤立了卡达尔的支持者，并举行了一次特别的匈牙利社会主义工人党中央委员会扩大会议，在那里提及卡达尔与纳吉的合作和最初对1956年暴乱的支持，以及对马克思主义原则的背离和该国不断增长的外债。卡达尔被免去所有职位，并被开除出党，贝拉·比斯库成为新的总书记，开始恢复中央经济计划和对改革派干部进行清洗，也开始实行更加独立的外交政策，已经与我们签订了几份有价值的合同。当然，苏联并不高兴，但在了解到匈牙利的一切都很平静之后，他们将自己的言论限制在枯燥的评论中。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "帮助组织亲中起义"
+disabled_text = "新的在匈牙利的起义？想想1956！"
+enable_condition = SubResource("Expr_uprising")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "由于我们的行动信息和支持，比斯库能够迅速聚集保守共产主义者、斯大林主义者、民族主义者和其他不满卡达尔政策的人，并将他的支持者带到街头示威，同时在工人警察的帮助下，控制了行政大楼并逮捕了卡达尔和他的支持者。然而，这场街头运动并没有停止。比斯库感觉到了自己权力的不稳定性，于是试图让已经开始有反苏分子混入的示威者平静下来，然后让他们确保自己的优势。苏联对布达佩斯进行了轰炸，呼吁恢复该国的秩序并恢复法律。然而，厌倦了毫无结果的谈判，看到比斯库越来越倾向于接受中国的直接支持，并且有可能退出华沙条约，苏联向匈牙利派遣军队，逮捕了失败的政变者，释放了前领导人，并且安抚了人民。在决定不再进行冒险之后，苏联领导层并没有让卡达尔回到总书记的位置（他出于健康原因退休了），而是任命亲苏温和派的帕普·亚诺什，他开始回归苏联式计划体制，并与西方断绝关系，实行日益亲苏的政策。"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "我们做不了什么，除了给比斯库避难，让他免受修正主义者的怒火"
+disabled_text = "欧洲太过遥远，亚洲对我们更为重要"
+enable_condition = SubResource("Expr_asylum_ready")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "由于我们告诉了他关于安德罗波夫的背叛，比斯库意识到，在匈牙利，他最多只能等待他辞职的那天来临，因为他被禁止批评卡达尔的路线。他决定利用我们的提议，连同他的家人和希望跟随他的支持者一起逃到中国，在那里他开始在我们的媒体上广泛批评匈牙利，甚至有时还批评苏联的修正主义。这使我们的人民开始思考并在世界左翼运动中提高了我们的影响力，但却破坏了我们与苏联本来就不是很好的关系。在匈牙利，年轻的改革派在卡达尔的支持下，继续取代已离去的保守派。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "hungarian_crisis"
+source_event_number = 46
+trigger_priority = 460
+title = "第二次匈牙利事件？"
+description = "来自匈牙利的有趣消息。贝拉·比斯库是一名保守的共产主义者，他在1956年积极参与了镇压匈牙利暴乱，并在1957年至1961年担任内政部长和现任匈牙利社会主义工人党（HSWP）书记，他一直反对卡达尔的经济和政治自由主义改革。意识到言语无法阻止卡达尔，他在自己周围组织了一个类似的保守派组织，并决定组织一场党内政变，要求克格勃领导人尤里·安德罗波夫的支持。然而，根据我们的数据，安德罗波夫简单地“背叛”了比斯库对卡达尔的计划，而比斯库自己还不知情。现在我们有机会帮助比斯库和我们的代理人，让匈牙利走上建设真正社会主义的道路。或者你可以尝试在小规模武器供应和情报协调的帮助下在匈牙利发动一场新的起义——这次是真正的共产主义和亲中的——那么匈牙利肯定是我们的！但我们必须行动迅速。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

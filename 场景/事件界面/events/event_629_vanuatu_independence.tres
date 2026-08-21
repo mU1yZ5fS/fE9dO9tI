@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_629_vanuatu_independence.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.7.30"
+
+[sub_resource type="Resource" id="Expr_france"]
+script = ExtResource("3_expr")
+type = 26
+target = "21"
+key = "sub_government"
+value = 19.0
+
+[sub_resource type="Resource" id="Expr_all"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_france")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我全押利尼神甫！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_629_vanuatu_independence.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "准备派遣大使"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_629_vanuatu_independence.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们这次还是不要和法国人站队了吧？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_629_vanuatu_independence.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_629"
+source_event_number = 629
+trigger_priority = 62900
+title = "你我，咱们，瓦努阿图人"
+description = "主席同志，南太平洋传来了消息。英国与法国共同托管的新赫布里底群岛正式宣布结束托管。该国自欧洲帝国的大溃败以来便一直有着独立的想法。尤其是在六十年代以来的“圈地运动”和七十年代的地产热以后，该国的主要政治运动均围绕着独立和更彻底的独立之间展开。1971年，沃尔特·利尼神甫创建了新赫布里底文化协会，随后更名为新赫布里底民族党，凭借着更为激进的对独立的要求，支持土地国有化和美拉尼西亚传统。该党得以异军突起，从而角逐独立后的领导权。利尼神甫在尼雷尔的乌贾玛社会主义的基础上，提出了美拉尼西亚社会主义理论。\n与此同时，法国定居者、讲法语和混血的新瓦努阿图人在更渐进的政治发展平台上成立了两个独立的政党——以圣埃斯皮里图为基础的新赫布里底斯自治运动（MANH）和埃法特的新赫布里底社区联盟（UCNH）。MANH，UCNH这样的“温和派”代表天主教和法国的利益，以及更稳重的独立道路。法国支持这些团体，因为他们渴望在该地区保持影响力，特别是在他们矿产丰富的新喀里多尼亚殖民地，他们试图镇压或者延迟独立。而吉米·史蒂文斯则是其中的佼佼者。这彻底引爆了部分激进派，在主要城市，温和派和激进派的支持者纷纷大打出手，甚至招致了英国，法国，澳大利亚和新西兰的干涉军前来维持秩序。\n在紧张与混乱中，新赫布里底群岛，或者说，瓦努阿图，就这样迎来了独立……"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_all")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

@@ -1,0 +1,99 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_048_052_063_afghanistan.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.1"
+
+[sub_resource type="Resource" id="Expr_iran_not_authoritarian"]
+script = ExtResource("3_expr")
+type = 26
+key = "government"
+value = 0.0
+target = "8"
+
+[sub_resource type="Resource" id="Expr_pakistan_pro_usa"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲美"
+target = "31"
+
+[sub_resource type="Resource" id="Expr_pakistan_not_pro_usa"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_pakistan_pro_usa")])
+
+[sub_resource type="Resource" id="Expr_iran_pro_usa"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲美"
+target = "8"
+
+[sub_resource type="Resource" id="Expr_iran_not_pro_usa"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iran_pro_usa")])
+
+[sub_resource type="Resource" id="Expr_khalq_le_parcham"]
+script = ExtResource("3_expr")
+type = 32
+key = "afghan_khalq"
+value = 0.0
+target = "afghan_parcham"
+
+[sub_resource type="Resource" id="Expr_parcham_le_khalq"]
+script = ExtResource("3_expr")
+type = 32
+key = "afghan_parcham"
+value = 0.0
+target = "afghan_khalq"
+
+[sub_resource type="Resource" id="Expr_equal_factions"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_khalq_le_parcham"), SubResource("Expr_parcham_le_khalq")])
+
+[sub_resource type="Resource" id="Expr_event_49_not_done"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "afghan_soviet_plot"
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "不回应"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "随着部分部队的释放，在苏联顾问和空军的帮助下，阿富汗民主共和国对伊斯兰主义者发起了相对成功的敌对行动。现在预测未来的胜利还为时过早，但在美国无法直接进入阿富汗的情况下，阿富汗民主共和国具有显著优势。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "谴责军队介入"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "在参加了西方外交官的讲话之后，我们还谴责苏联军队进入阿富汗，称这是对一个主权国家事务的野蛮干涉。西方领导人支持我们的声明，但苏联领导人没有回应。随着部分部队的释放，在苏联顾问和航空的帮助下，阿富汗民主共和国对伊斯兰主义者发起了相对成功的敌对行动。现在预测未来的胜利还为时过早，但在美国无法直接进入阿富汗的情况下，阿富汗民主共和国具有显著优势。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "支持军队介入"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "与世界各地听到的关于“入侵”的声音相反，我们决定支持苏联军队的进入，因为这是为了确保阿富汗的和平与稳定，根据《苏阿友好条约》，这是绝对合法的。当然，在西方，我们被称为血腥政权的同谋者，但苏联感谢这一支持。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "afghan_soviet_intervention"
+source_event_number = 51
+trigger_priority = 510
+title = "看看就走……"
+description = "四月革命后，人民民主党面临着许多困难，这是由于其成员缺乏经验和残存着大量的封建和宗教残余，但由于人民民主党两个派系之间的力量相对平衡，有可能避免重大的政治冲突。特别是由于，旗帜派和人民派的成员在苏联的支持下，成功地将阿明从政府和中央委员会除名，指控他违反集体领导原则和普什图民族主义。然而，从今年年初开始的反动组织，特别是伊斯兰主义者的起义势头越来越强劲。巴基斯坦和伊朗的一些公民加入了他们，非法越境，甚至美国设法以某种方式将他们的武器和顾问拖到阿富汗帮助圣战者。在这种情况下，苏联应阿富汗领导人的无数要求，决定引进一支小分队，保卫重要的军事设施和城市，解放阿富汗民主共和国军队的力量与叛乱分子作战。他们似乎不希望大规模参与敌对行动，但西方已经谴责这一行为，称之为入侵。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_iran_not_authoritarian"), SubResource("Expr_pakistan_not_pro_usa"), SubResource("Expr_iran_not_pro_usa"), SubResource("Expr_equal_factions"), SubResource("Expr_event_49_not_done")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

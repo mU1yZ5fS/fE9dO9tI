@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="PoliticianData" format=3 uid="uid://b5l335ifm0048"]
+
+[ext_resource type="Texture2D" uid="uid://cocsya5ygcrbv" path="res://资产/政治家/韦国清.png" id="1_pi1tt"]
+[ext_resource type="Script" uid="uid://b2huwoa1jp02c" path="res://数据脚本/core/politician_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+name_display = "韦国清"
+portrait = ExtResource("1_pi1tt")
+pool_priority = 85
+trait_personality = 20
+trait_alignment = 41
+trait_special = 10
+trait_background = 25
+power = 350
+age = 63
+faction = 1
+name_first = 48
+name_last = 68

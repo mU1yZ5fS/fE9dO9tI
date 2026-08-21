@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_024_026_political_transition.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.11"
+
+[sub_resource type="Resource" id="Expr_path_3"]
+script = ExtResource("3_expr")
+type = 21
+key = "gang_of_four_path"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_agents_70"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 70.0
+
+[sub_resource type="Resource" id="Expr_agents_50"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 50.0
+
+[sub_resource type="Resource" id="Effect_transition"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "一个也别想跑！"
+disabled_text = "你无力改变现状"
+enable_condition = SubResource("Expr_agents_70")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "最终华国锋还是无法忍受与极左派共舞。在他的授意下，8341部队的团长汪东兴与国防部长叶剑英进行了接洽，叶剑英虽对华国锋的突然变卦感到诧异，但还是欣然接受了。之后华国锋召开了政治局特别会议，在会期间命令首都军队逮捕了四位极左派领导人。在此之后，一波对忠心于他们的官员的逮捕浪潮席卷了各大城市，由于极左派在许多地区组织其了相当规模的民兵武装，军队在行动时遭遇了抵抗，虽然大部分民兵是临时拉起的草台班子，稍作抵抗便宣布投降，但在上海等造反派扎根已久的地区，军队遭遇了极端烈度的抵抗，在经过几天的镇压与付出惨重伤亡后，极左民兵最终还是停止了抵抗。行动过后，宣传机关开始开动机器宣传“四人帮”（包括江青、王洪文、张春桥，姚文元）试图夺取党和国家最高领导权及迫害毛主席的罪行，但最终反革命阴谋被粉碎。同大多数党员一样，在盛大的庆祝仪式后，大部分人民群众勉强接受了他们的倒台，随着极左派的喑声，看起来长达十年之久的文化大革命就要结束了。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "只逮捕王洪文和江青"
+disabled_text = "你无力改变现状"
+enable_condition = SubResource("Expr_agents_50")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "华国锋不愿与极左派有太深入的合作，但也不愿冒着中国稳定崩溃的风险对极左派进行大规模活动。综合考虑后他决定只在政治局特别会议上逮捕对当局构成最大威胁的江青和王洪文。在一个平静的夜晚，汪东兴率领8341部队的战士们秘密逮捕了江青王洪文二人。与此同时，华国锋向姚文元和张春桥等极左派团体中较次要的成员许诺以与江青王洪文切割关系，叫停和限制地方造反派活动为代价换取在政府职位的保留与部分提拔，他们最终也无一不屈服了。经过此事，左派的力量受到了削弱，但依然具有影响中央的能力。此外，宣传机关开始批判江青和王洪文在文革期间大量迫害老干部和阴谋夺取政权的反革命行径，总的来说，他们的失败令大多数党员都松了一口气，局势也得以大大缓解，尽管许多人对一些激进分子仍然掌权感到紧张，但至少改革派已经承诺不进行“过度”的打击行动。至此，中国还将在命运的十字路口徘徊一段时间……"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "继续按既定方针办"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_transition")])
+result_text = "木已成舟，华国锋在不敢背离毛泽东主席路线的同时，更忌惮改革派日渐膨胀的野心。华国锋将叶剑英即将发动政变的消息率先通知给了极左派高层，并承诺坚定的予以援助。极左派由此得以迅速采取行动，通过秘密渠道联系各地造反派与民兵领袖采取联合行动。当晚，各地区的民兵与造反派组织纷纷登上了去往北京的列车，宣布要“誓死捍卫党中央”与“组织武装串联”同时，与军队有所联系的毛远新也带着一支坦克师远走进京。华国锋为此召开了一场秘密会议，并在会上成功说服部分军官与党内成员在此次事件中保持中立，将此次事件限定为党内冲突。最终，叶剑英元帅还是无法承担可能发动内战的历史责任，被迫放弃行动，并与其他密谋成员在几天后被撤职和逮捕，而他国防部长的职位也由忠于华国锋主席的陈锡联将军暂时接任。改革派由此受到空前打击，很长一段时间内可能难以在中央立足。之后，华国锋与王洪文一同登上了天安门城楼，面对成千上万的革命群众进行了一场特殊的“阅兵式”并在此宣布挫败了以叶剑英为首的“军事阴谋集团”的夺权企图，在群众的欢呼声中，华国锋与极左派的联盟获得了最终的胜利。但是，华国锋面对无产阶级文化大革命事业时的模糊态度也日渐引起了极左派的不满，在华国锋真正成为这个国家头号领导人的同时，极左派也在持续的扩大自己的影响力。华国锋与王洪文的画像开始并列出现在各大集会场合，类似于“华主席为主，王副主席为副”之类的用词开始在各大宣传刊物上频频出现……极左派并不会止步于与华国锋的“共同胜利”，反而将继续不遗余力的确保中国行走在真正革命的道路上。毛泽东门徒之间的争斗，可能此时才刚刚开始……"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "weak_alliance"
+source_event_number = 26
+trigger_priority = 2600
+title = "脆弱的平衡？"
+description = "几周以来，华国锋通过与极左派的合作，暂时稳定住了国内的政治稳定，但是在表面尴尬的平静之下，持不同观点的各派系依然暗流涌动。有消息称，国防部长叶剑英与其他的改革派成员已经对僵持的局面忍无可忍，随时准备绕过华国锋中央直接对极左派采取行动；极左派也敏锐的捕捉到了气氛的变化，他们并不想止步于华国锋的庇护，极左派的领导班子已经在通过各种渠道联系地方的造反派团体，并尝试扩大民兵武装，声称要“誓死捍卫毛主席的革命遗产”。原本有所缓和的政治气氛再次急转直下。但目前华国锋仍手握大量政治筹码，若他有心维护中国的稳定，就必须站队其中的一方，华国锋可以选择延续与极左派的盟约，公开支持极左领导集团与各地造反派的活动，甚至借机将叶剑英，李先念等改革派的激进分子赶下台；当然，华国锋也可以从此背叛极左阵营，支持叶剑英元帅对极左派中央（包括江青、王洪文、张春桥与姚文元）的行动，彻底结束文化大革命。但无论华国锋最终作何选择，他都要面临其中一个派系的膨胀，这甚至可能导致他自己权力的架空……或者，他能向全国人民证明自己的能力与价值。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_path_3")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

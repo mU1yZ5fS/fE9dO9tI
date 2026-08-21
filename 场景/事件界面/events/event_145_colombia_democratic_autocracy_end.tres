@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_145_colombia_democratic_autocracy_end.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "胡利奥·塞萨尔·图尔瓦伊·阿亚拉，哥伦比亚自由党（右翼独裁主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_145_colombia_democratic_autocracy_end.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "贝利萨里奥·贝坦库尔·夸尔塔斯，哥伦比亚保守党（自由主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_145_colombia_democratic_autocracy_end.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "朱利奥·塞萨尔·佩尼亚，全国反对联盟（社会民主主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_145_colombia_democratic_autocracy_end.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "保持距离"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_145_colombia_democratic_autocracy_end.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_145"
+source_event_number = 145
+trigger_priority = 14500
+title = "民主专制的终结"
+description = "国民阵线的时代开始于1958年，这年，哥伦比亚的自由党（“L”）与保守党（“C”）的领袖起草了《贝尼多姆协议》。作为1948年至1958年两党斗争妥协的结果，旨在实现哥伦比亚的政治和解与稳定，协议规定两党在四个任期即16年内，每个任期两党交替执政，同时平分议会席位。因此，这事实上导致了两党专制的局面形成。虽然国民阵线有利于减少政治暴力促进经济发展，但却导致了两党对峙的僵局。两党难以对任何一项改革形成共识，加上其势力在国会参众两院都势均力敌，故而重大改革的议程无法在国会取得三分之二多数得到通过。同时，对改革的无能为力也加剧了两个党派内部的内耗，并体现在在野政党的社会活动之中。从左到右反国民阵线的各个政党团体的势力扩张最终导致了国民阵线的瓦解，并召开的真正的全民自由选举。自由选举的主要候选人有二：来自自由党的胡利奥·塞萨尔·图尔瓦伊·阿亚拉与来自保守党的贝利萨里奥·贝坦库尔·夸尔塔斯。除此之外，如果反对派各党能在全国反对联盟（UNO）的旗帜下真正团结一心，那么他们将有机会将哥伦比亚变成一个真正的民主国家。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

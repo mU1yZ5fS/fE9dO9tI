@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_399_italy_1983_election.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "比起政治新人，我们依然信任那些政坛老将与其裙带——稳定的合作高于一切。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_399_italy_1983_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持意大利共产党的“民主替代”计划，开启政治革新之路"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_399_italy_1983_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们得留意议会外激进派的声音，并借机强化地下网络"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_399_italy_1983_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "为该国极右翼运动的代表-意大利社会运动提供助力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_399_italy_1983_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "密切关注局势变化"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_399_italy_1983_election.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_399"
+source_event_number = 399
+trigger_priority = 39900
+title = "1983年意大利选举"
+description = "出于应对意大利共产党拒绝支持现政府，并试图在未来的选举中实现“民主替代”的政治局势。自步入20世纪80年代以来，总统亚历山德罗·佩尔蒂尼便多次授予总理（这一职务基本上由天主教民主党方掌握）组建多数派政府之权。虽说1979年的国内选举与1981年初阿纳尔多·福拉尼、贝蒂诺·克拉克西与朱利奥·安德烈奥蒂达成的政治协议（天民党承认将同议会内的中间派世俗政党们保持和谐共处，并以出让意大利总理之位的形式保持利益均沾与步调一致）表明建立“多方联合”乃大势所趋，可这一计划直到1981年时才得以在阿纳尔多·福拉尼总理辞职后借助外部力量之手才开始步入轨道。在意大利共和党党魁兼新任总理乔瓦尼·斯帕多利尼的策划下。“五党联合”的形式得以正式确立：这意味着先前作为天民党政治盟友的意大利社会党、意大利民主社会党、意大利共和党与意大利自由党将不再局限于从政府外支持当局的角色，而是直接参与到新政府当中发号施令。当然，多头共治的策略注定不会一帆风顺——社会党同天民党部长在经济问题上的分歧导致政府内对抗不断，最终导致短命的斯帕多利尼政府重蹈覆辙。厌倦了多次改组政府失败的总统亚历山德罗·佩尔蒂尼最终再次将目光转向对议会结构进行洗牌，至此拉开1983年选举序幕。分析人士称，在“五党联合”已成定局，切实孤立了作为该国激进主义运动两极（即意大利共产党与意大利社会运动），且意大利国内的极端主义运动亦同主要议会政党脱钩，不再作为其外部支持的情况下。本次选举的结果大概率将导致“五党联合”构想采取另一类变体形式得以最终延续。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

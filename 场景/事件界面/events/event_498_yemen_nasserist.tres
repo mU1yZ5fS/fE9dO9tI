@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_498_yemen_nasserist.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.6.14"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "警告北也门关于阴谋的事情（需要3特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_498_yemen_nasserist.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "没有这个必要"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_498_yemen_nasserist.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_498"
+source_event_number = 498
+trigger_priority = 49800
+title = "也门最后的纳赛尔主义者？"
+description = "主席同志！我们最近截获了一份报告，称南也门党内正在谋划针对北也门领袖艾哈迈德·加什米的暗杀计划。加什米总统一贯反对美帝国主义和苏联修正主义者对阿拉伯世界的颐指气使，并大力推进阿拉伯统一事业。也许我们应当警告他们？毕竟这可以极大的促进我们和阿拉伯也门之间的合作。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_126_brazil_election_1978.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "若昂·菲格雷多，国家革新联盟（右翼独裁主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_126_brazil_election_1978.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "欧拉·本特斯·蒙泰罗，巴西民主运动（温和主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_126_brazil_election_1978.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "保持距离"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_126_brazil_election_1978.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_126"
+source_event_number = 126
+trigger_priority = 12600
+title = "快乐里约"
+description = "长期以来，巴西一直由一个披着民主外衣的军政府所统治。在所谓“受控民主”下选举始终由国家革新联盟取胜，它是个保守的巴西政党，旨在为军事独裁提供政治支持。该国现任总统是埃内斯托·盖泽尔，他属于军队中的温和派，因其将1964年上台的军政府视为确保该国自由主义的过渡政权。在盖泽尔的统治下，巴西开始逐渐向自由民过渡主，审查制度有所放松、镇压行为减少，国家对法院和州长的控制也得以增强。但他没有争取连任，蓬勃兴起的反对派可能会赢得即将到来的选举。目前选举中有两名候选人：来自国家革新联盟的若昂·菲格雷多和来自巴西民主运动的欧拉·本斯特·蒙泰罗。统治集团的代表若昂打算延续盖泽尔的事业，逐步实现军队控制下的政权民主化、国家经济自由化并打击共产主义起义者。另一方面，不支持1964年政变的欧拉正在努力实现政权的迅速自由化并建立自由法院，而作为反对派巴西民主运动的代表，他要在反对派的立场上发言：他要求恢复民主、言论自由、社会保障和工会运动的合法化。尽管被盖泽尔的阴谋诡计妨碍着，反对派仍有机会从选举团中赢得足够的选票。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

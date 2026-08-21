@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_509_ghana_revolution_act1.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.11.27"
+value = 0.0
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们帮恩克鲁玛的“传人”——希拉·利曼博士一把"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_509_ghana_revolution_act1.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "利用危机，帮助英美利用科特迪瓦和多哥的雇佣军推翻左翼政府"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_509_ghana_revolution_act1.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "在几内亚同志的帮助下，让恩克鲁玛的好学生卡迈克尔和罗林斯联合起来！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_509_ghana_revolution_act1.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们没有必要做看不到结果的投资"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_509_ghana_revolution_act1.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_509"
+source_event_number = 509
+trigger_priority = 50900
+title = "黄金海岸的再革命？——第一幕"
+description = "在1966年恩克鲁玛被推翻后，加纳迎来的是一系列不同政治集团的内斗，腐败的军政府和软弱的文官政府交替执政。作为国家经济支撑的可可、黄金产业产量不断走低，官员腐败、黑市横行，导致加纳经济大幅衰退，加纳人用Kalabule（指普遍的官商勾结和腐败、诈骗与囤积居奇）这个词描述国家的状态。伊朗革命带来的石油危机使得该国经济危机进一步加剧，无计可施的阿库福军政府不得不承诺开展选举。\n1979年5月15日，空军中尉杰里·罗林斯与一群年轻军官发起了一场针对军政府的未遂政变，尽管政变失败，但是罗林斯对军政府的指责受到加纳民众和少壮派军人的广泛欢迎。6月4日晚，被营救出狱的罗林斯再次发起了一场政变，成功推翻军政府。新成立的武装部队革命委员会具有强烈的左翼反帝色彩，在国家被整肃完毕后，它将把政权交给大选获胜的政党和文官政府。罗林斯主持清清洗了大量造成Kalabule的官员和投机商，并对掌控经济命脉的印度人和黎巴嫩人的公司进行了国有化，没收了投机者屯聚在秘密仓库中的大量货物。\n9月24日，罗林斯将权力交给了大选获胜的由希拉·利曼博士领导的号称是恩克鲁玛主义的人民民族党。利曼总统宣布实施混合经济，要将加纳建设成社会主义的“福利国家”。希拉·利曼总统将主动交权的少壮派军人集团视作潜在的反对派，并将罗林斯视为最大的隐患。他先后将前武装部队革命委员会的重要成员派遣到国外，使他们与加纳政治脱离直接的接触。11月27日，罗林斯被利曼解除军职，并被勒令从武装部队退役，被任命为有职无权的国务委员会委员。\n与此同时，利曼的文官政府无力继续处理Kalabule问题，经济状况反而在继续恶化，食品的生产、出口量、矿产开采仍在下降，基础设施年久失修，财政混乱，腐败和犯罪并未得到遏制。在这种情况下，罗林斯似乎在为新的“革命”做出准备，加纳仍在酝酿着下一次危机。也许我们能在其中插上一脚，拿回我们曾失去的东西？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

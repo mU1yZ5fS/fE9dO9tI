@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_428_spain_joins_nato.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Expr_f86_government_3"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 3.0
+target = "86"
+
+[sub_resource type="Resource" id="Expr_prev_result_424_1"]
+script = ExtResource("3_expr")
+type = 4
+value = 1.0
+ref_event_id = "event_424"
+
+[sub_resource type="Resource" id="Expr_date_1982_6_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.6.1"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_f86_government_3"), SubResource("Expr_prev_result_424_1"), SubResource("Expr_date_1982_6_1")])
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "密切关注......"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_428_spain_joins_nato.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_428"
+source_event_number = 428
+trigger_priority = 42800
+title = "西班牙加入北约"
+description = "军事政变的失败，反而让政治家坚定了决心：北约组织的部队，也许比他们本国深受长枪党思想与等级制影响的部队更加可靠。西班牙领导人们开始考虑改变他们的外交政策，并寻求让西班牙加入北大西洋公约组织。倘若说在苏亚雷斯时期，前首相还怀疑如此做的可行性，并相信中立才最有利于西班牙的发展。而到了他的继承人卡尔沃·索特洛这里，外交政策便发生了显著转变。1982年5月30日，西班牙被批准加入北约。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

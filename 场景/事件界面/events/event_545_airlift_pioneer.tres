@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_545_airlift_pioneer.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 29
+value = 24.0
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 0
+key = "industry"
+value = 1050.0
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 29
+value = 16.0
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.1.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "把宝押在军事领域"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_545_airlift_pioneer.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "还是着墨于民生吧"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_545_airlift_pioneer.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "不管用的用不上，有就是最好！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_545_airlift_pioneer.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们相信后人的智慧"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_545_airlift_pioneer.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_545"
+source_event_number = 545
+trigger_priority = 54500
+title = "空运先锋"
+description = "早在60年代，中国军方就已经意识到了军事航空运输的重要性，提出了“大搞直升机、大搞运输机”的方针。在这一思想指导下，空军先后研制了运-7和运-8军用运输机，并批量装备部队，自从集体安全条约被签订之后，我国的运输机在海外军事投送任务中暴露出了一系列的问题，现有的运八系列很明显已经不能满足人民空军远程投送的任务。不仅受限于运输量，而且航程过于狭小，甚至难以抵达我国青藏高原地区。但另一方面，随着我国经济实力不断提高，建设一个现代化的服务于人民的物流运输系统也显得越来越重要。\n请下决定吧，主席同志！是全面增强改新军用运输机，还是在民用领域里做文章？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_3"), SubResource("Expr_4")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_033_041_world_and_party.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.5"
+
+[sub_resource type="Resource" id="Expr_modifier_3_inactive"]
+script = ExtResource("3_expr")
+type = 3
+key = "3"
+
+[sub_resource type="Resource" id="Expr_budget_not_2"]
+script = ExtResource("3_expr")
+type = 22
+key = "budget"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_line_not_0"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "什么也不做，让步够多了"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "尽管文化大革命已经结束，但似乎没有进一步的自由化运动。人民和改革派都很失望。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "小幅的自由化"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "作为继续与文化大革命的暴行进行斗争的一部分，中国对人民的压制性逐渐略有减弱。人民和改革者们都很满意，但是如果发生了什么的话……"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "放松控制并继续打压传统"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "作为继续与文化大革命的暴行进行斗争的一部分，中国对人民的压制性逐渐略有减弱，对传统的积极斗争也停止了，这代表着对宗教的控制减轻了。然而，国家无神论的原则并没有削弱。尽管有一些地下反政府的牧师在布道，但总的来说，人民还是很高兴的。希望这不会导致什么问题。"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "放松控制，只保留对宗教的监视"
+disabled_text = "我们不能如此的自由化！"
+enable_condition = SubResource("Expr_line_not_0")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "作为继续与文化大革命的暴行进行斗争的一部分，中国对人民的压制性逐渐略有减弱，对传统的积极斗争也停止了，信仰自由也得到了承认，但同时国家保留无神论的课程与宣传并继续了对宗教机构的控制。尽管有一些地下反政府的牧师在布道，但是往往很快就能被镇压，但总的来说，人民还是很高兴的。我们希望这不会导致中国人民之间出现什么问题和冲突。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "end_of_revolution"
+source_event_number = 35
+trigger_priority = 3500
+title = "革命的结束"
+description = "在毛泽东死后，你采取了遏制文化大革命的措施，取得了一定的成果——现在已经看不到群众运动了。但自从文化大革命以来，国家的高压统治还没有减弱，改革派和人民现在要求“拧松螺母”。除了对公民自由的要求，许多人认为有必要减轻对传统和宗教的压力，文化大革命期间，对传统和宗教的压力成倍增加。一些人只主张停止反传统主义的言论，仍然保留国家无神论，另一些人则根据苏联模式，主张名义上的良心自由，同时将宗教机构和教士置于严格的国家控制之下。由你决定。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_modifier_3_inactive"), SubResource("Expr_budget_not_2")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

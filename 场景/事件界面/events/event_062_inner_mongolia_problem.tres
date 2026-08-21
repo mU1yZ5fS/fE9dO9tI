@@ -1,0 +1,120 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_053_062_reform_and_alliances.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.8"
+
+[sub_resource type="Resource" id="Expr_no_war_result"]
+script = ExtResource("3_expr")
+type = 22
+key = "war_resolve"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_full"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_not_one"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_not_zero"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_not_two"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_stop_assimilation"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_not_zero"), SubResource("Expr_not_two")])
+
+[sub_resource type="Resource" id="Expr_religion"]
+script = ExtResource("3_expr")
+type = 22
+key = "religion_policy"
+value = 24.0
+
+[sub_resource type="Resource" id="Expr_line_high"]
+script = ExtResource("3_expr")
+type = 0
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_territory"]
+script = ExtResource("3_expr")
+type = 1
+key = "territorial_policy"
+value = 22.0
+
+[sub_resource type="Resource" id="Expr_all_minorities"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_religion"), SubResource("Expr_line_high"), SubResource("Expr_territory")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "1969方案是我们对他们最大的让步了"
+disabled_text = "完全没必要这么做……"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "恢复到1969年前的区划"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "看来不给他们点教训是长不大的……"
+disabled_text = "就不能翻篇了吗！"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "把蒙东划回内蒙古自治区的同时，狠狠的往里面掺沙子"
+disabled_text = "你想吃共产主义的饭还是民族主义的饭？"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "内蒙古问题是一面照妖镜……我们将借此机会一劳永逸的解决民族问题！"
+disabled_text = "你说什么？"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "inner_mongolia_problem"
+source_event_number = 62
+trigger_priority = 620
+title = "成吉思汗后裔的问题"
+description = "主席同志，随着我们的革命进入了一个新阶段，是时候正式我们过去没能妥善处理的问题了。而今日，党内有一部分同志希望我们能够重新审视云泽同志（即乌兰夫）的问题，借此妥善处理我国的内蒙古自治区的问题。但请先听我对我国的内蒙问题进行一番阐述。|在江西的中华苏维埃时代，中央政府早已对内蒙古问题有了定论：原来内蒙六盟，二十四部，四十九旗，察哈尔土默特二部，及宁夏三特旗之全域，无论是已改县治或为草地，均应归还内蒙人民，作为内蒙古民族之领土，取消热、察、绥三行省之名称与实际行政组织，其他任何民族不得占领或借辞剥夺内蒙古民族之土地；由此，我们成功拉拢了一批进步的蒙古族上层人士，以蒙西的土默特部为主，构成了我党最早的一批蒙族干部。他们在抗日战争中试图统战上层王公贵族反对蒋介石与日本侵略者，但最终失败，蒙族干部遂在晋绥根据地的领导下展开了武装斗争，在构成今日内蒙古自治区的核心地段的乌兰察布盟长期活动。抗日战争取得胜利后，长期在蒙西活动的蒙族干部们成立了“内蒙古自治运动联合会”，以此公开同中央政府要求扩大自治权。与此同时，北部的超级大国苏联开始介入与民国政府的博弈之中，在西部鼓动“三区革命”之外，蒙东的所谓“内蒙古人民革命党”和东北局在错误思想的指导下公开分裂我国领土，要求与蒙古人民共和国合并，就此埋下祸根。我党决定严肃批评东北局的行动并强迫东蒙的自治运动加入西蒙，并许诺其以极大的自治权。在召开了内蒙古地区的代表大会后，以乌兰夫同志为首的蒙族干部们决定拥护我们的新民主主义革命，就此，内蒙古自治区成为了我国最早成立的自治区，是我们民族政策的“头牌”。|事情在建国后变得愈发剪不断理还乱：我国并没有如苏维埃联盟一般建立起中华联邦，此类政策被部分蒙族干部理解为是“对自治权的禁锢”。而在中苏关系急速破裂的50年代中后期，中央对内蒙古自治的问题也随着对苏、蒙关系而急速修改。长期领导内蒙古的乌兰夫同志在多次中央大会上被批评为“搞独立王国”，与中央政策对抗：如拒绝执行中央的“反右”方案、在“四清”时期推动了一场“反对大汉族主义”的运动更是将其推向了火坑。随后，更多相关的黑材料随着无产阶级文化大革命的爆发喷涌而出：拒绝听从中央指挥，歪曲毛泽东思想，对莫斯科和乌兰巴托卑躬屈膝的修正主义小丑乌兰夫就此被打入历史的冷宫。首先是蒙古族干部被停职并隔离审查：尤其是出生自蒙东，曾在伪满洲国时期接受教育的干部们。随后，内蒙古的革命便主要指向了批评，深挖，肃清乌兰夫流毒。并在党内强硬派如康生同志的支持下，中央决定在反抗蒙修与苏修的前线——内蒙古开展军管。由政治斗争引起的政治运动最终演变为了军队完全下场的政治洗牌：以挖清，肃清内蒙古人民革命党流毒为名，内蒙古开展了一轮又一轮政治上的迫害，直到70年代早期才有所转变。至今对死伤人数没有完全定论，这也严重破坏了我国和蒙古人民共和国的关系。|现在，部分同志希望我们能够正视这一问题，这样我们才能正视过去的问题。但是党内也有同志认为不应操之过急，尤其是要担心苏联的潜在渗透问题。主席同志，您的意见是？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_no_war_result")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])

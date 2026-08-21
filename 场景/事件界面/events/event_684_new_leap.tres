@@ -1,0 +1,96 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_684_new_leap.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.12.1"
+
+[sub_resource type="Resource" id="Expr_r25_2"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "gang_of_four"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_r26_2"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "weak_alliance"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_both2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_r25_2"), SubResource("Expr_r26_2")])
+
+[sub_resource type="Resource" id="Expr_not_both2"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_both2")])
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_not_both2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "和西方朋友谈谈，准备跃进现代化的龙门！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_684_new_leap.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "钞票不会说谎，也许我们能将此作为与社会主义阵营复交的契机"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_684_new_leap.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "如无必要，勿增实体。就照“四三方案”的原则办罢"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_684_new_leap.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "战略退却，外资何时都能引进。关键是我们当中得形成纪律与经济思维！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_684_new_leap.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_684"
+source_event_number = 684
+trigger_priority = 6840
+title = "新跃进？"
+description = "在粉碎四人帮后，新任中国领导层暂时达成“团结一致向前看”的政治共识，并逐步将工作重心从阶级斗争转移至经济建设与实现“四个现代化”上。1977年3月，国家计委召开全国计划会议称，今年经济工作要着手解决三个突出问题：一是农业和轻工业不适应生产建设和改善人民生活的需要；二是燃料动力工业和原材料工业的发展赶不上整个国民经济发展的需要；三是已经铺开的基本建设规模，超过了当前财力、物力的可能。事实上揭露了我国经济发展落后的窘况。此后国内又在同年十一月形成《关于经济计划的汇报要点》，并对1975年拟定的《十年规划纲要》做出修订：这些文件提出，在20世纪的最后23年，中国经济发展将被分为三个阶段，打几个大的战役。第一阶段，在“五五”计划后三年，重点是打好农业和燃料、动力、原材料工业两个战役，使农业每年以4%-5%、工业每年以10%以上的速度持续大步前进，为“六五”大上做准备。第二阶段，在“六五”期间，各项生产建设事业都要提高到一个新的水平。到1985年，粮食产量要求搞到8000亿斤，钢搞到6000万吨，原油搞到2.5亿吨。为实现高指标生产，自然拟订了基本建设的庞大计划：如新建和续建20个大型工业项目，改造9条老干线，重点建设秦皇岛、连云港、上海、天津、黄浦等5个港口。当然，仅靠我国目前的资金与技术可远不能达成目标。意味着我们必须得摸着“四三方案”过河，寻求大规模引进技术与外资，并与我们对行业的持续投入实现结合——这本身也不是什么稀奇事。毕竟，在此之前便有墨西哥、罗马尼亚乃至苏联斯大林时代的成功经验可循：它们的经济奇迹均建立在国家干预、技术引进与持之以恒投资加工业这三架马车上。西方经济学家将其称之为“进口替代”。已在上述地区成功的案例，为什么就偏不能作为中国方案？不论如何，中央都已做好决定，如今唯一的问题只在评估经济局势，确认引进规模与寻找合作伙伴上。当然，我们也没必要破坏本就行之有效的东西……只要我们能够容忍这种经济发展速度，注重搞国内整顿与抓纪律、促生产的话，保持原汁原味的既定政策也不是不行？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

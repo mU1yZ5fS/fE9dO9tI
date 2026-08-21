@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 52
+name_zh = "冈 比 亚 战 争"
+name_en = ""
+fortnight_max = 24
+drift_infl1 = 0
+drift_infl2 = 0
+drift_extra_infl1 = 0
+drift_extra_infl2 = 0
+drift_extra_flag = ""
+default_side1 = "几 内 亚 - 几 比 联 军"
+default_side2 = " 塞 内 加 尔"
+default_usa_side = 1
+default_ussr_side = 0
+default_infl1 = 600
+default_infl2 = 400

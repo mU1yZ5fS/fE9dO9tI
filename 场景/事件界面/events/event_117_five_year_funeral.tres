@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_117_five_year_funeral.gd" id="5_script"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.2.9"
+
+[sub_resource type="Resource" id="Expr_leader1"]
+script = ExtResource("3_expr")
+type = 39
+key = "1"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_gate"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_leader1")])
+
+[sub_resource type="Resource" id="E_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_script")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "我们不会派遣代表团"
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_117_five_year_funeral.gd 生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "派遣中国代表团"
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_117_five_year_funeral.gd 生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "我们的领导人将亲自前往"
+effects = Array[ExtResource("2_effect")]([SubResource("E_custom")])
+result_text = "（结果由 event_117_five_year_funeral.gd 生成）"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "five_year_funeral"
+source_event_number = 117
+title = "五年修葬"
+description = "来自莫斯科的紧急消息：苏联共产党中央委员会总书记尤里·安德罗波夫逝世。葬礼将于1984年2月14日在红场举行，各国政要都将出席。我们是否应当派遣代表团前往莫斯科？"
+show_notification = false
+fire_only_once = true
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_gate")])
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

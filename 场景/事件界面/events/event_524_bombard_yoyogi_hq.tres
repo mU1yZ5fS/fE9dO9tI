@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_524_bombard_yoyogi_hq.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.3.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "团结革命左翼，是时候重振日本的共产主义运动了！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_524_bombard_yoyogi_hq.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "也许后退一步也未尝不可？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_524_bombard_yoyogi_hq.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "不采取行动"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_524_bombard_yoyogi_hq.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_524"
+source_event_number = 524
+trigger_priority = 52400
+title = "炮打代代木司令部"
+description = "第二次世界大战之后，我们与日本共产党的关系一直很紧密，中苏论战之后对方更一度倒向我们。但从1966年初开始，两党关系便急转直下。特别是自文化大革命爆发以来，我们批判对方已经成为彻头彻尾的修正主义政党，是无耻的叛徒。而后者也断绝了与我们的一切联系，开除了西泽隆二等30余人亲华派党员的党籍，还把对我们的敌视态度带到了中日两国民间友好团体之间的沟通往来之中，造成了很负面的影响。\n作为此时日本共产党领导人的宫本显治，其本人长期以来不断强化个人权威并大肆排除异己。这使得党的基层活动家大量流失，党的活力越来越低。并且在他掌舵期间，日本共产党开始加速抛弃马列主义，与工农阶层的距离越来越远。1976年7月的日共临时代表会议正式通过了新的决议，将纲领中的“马克思列宁主义”换成“科学社会主义”。同年9月份发表的《自由与民主宣言》中的内容更是全面与欧洲共产主义思想相对标。\n现在，是时候重新考虑与日本共产党的关系问题了。一部分人主张与被宫本等人开除出去的革命左翼建立联系并除掉宫本显治这个万恶的修正主义分子，从而让该党恢复它应有的样子。而另一些人则认为这过于激进。他们建议通过有限度的自我反省释放与日本共产党的和解信号并恢复双方的联系以便后续援助。但是这需要我们先退一步，这是否有必要呢？也许我们就不应该采取行动？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

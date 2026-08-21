@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_334_patent_law.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date1"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.2.11"
+
+[sub_resource type="Resource" id="Expr_res2"]
+script = ExtResource("3_expr")
+type = 0
+key = "economy_system"
+value = 13
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date1"), SubResource("Expr_res2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "不签署。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_334_patent_law.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "进入专利体系。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_334_patent_law.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_334"
+source_event_number = 334
+trigger_priority = 33400
+title = "专利法"
+description = "我国工业蒸蒸日上，一些我国自创的工业设计也出现了。无论如何......如果我们进入国际专利制度，我们就能从别人在其他国家应用我国的发明这一事实中获利。另一方面，我们自己也得破点费，因为我们生产了大量的仿制设备......"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

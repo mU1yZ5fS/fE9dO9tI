@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_639_fiji_for_all.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们看看吧！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_639_fiji_for_all.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_639"
+source_event_number = 639
+trigger_priority = 63900
+title = "为了所有人的斐济"
+description = "在经历反帝反殖的斗争后，瓦努阿图人民最终赢得了独立，开始了美拉尼西亚社会主义的实践。我们现在可以同他们一起将斗争扩展到南太平洋的其他国家。\n斐济独立以来仍然同英国保持着密切联系，当地的部族和酋长也继续保留着他们的特权，并想要维持斐济族在岛上的优势地位（斐济族和斐济印度裔是该国的两大民族，一直存在矛盾）。我们可以通过支持大多数由印度裔斐济人参加的中左翼政党全国联邦党（该党声称代表所有岛民）同支持多种族平等和工人阶级利益的斐济工会大会组成联盟，展开斗争。"
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

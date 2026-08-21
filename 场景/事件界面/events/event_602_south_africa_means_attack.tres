@@ -1,0 +1,92 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_602_south_africa_means_attack.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.11.2"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "给博塔政权个痛快，阿扎尼亚归阿扎尼亚人！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_602_south_africa_means_attack.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "让我们与苏联一起为局势火上浇油！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_602_south_africa_means_attack.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们是不是可以在这个问题上和自由世界合作？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_602_south_africa_means_attack.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们将与超级大国携手施压南非政府，为了全人类的自由！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_602_south_africa_means_attack.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "此时雪中送炭能卖的价钱肯定不少！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_602_south_africa_means_attack.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx5"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt5"]
+script = ExtResource("1_opt")
+text = "可是南非离我们太远了……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx5")])
+result_text = "（结果由 event_602_south_africa_means_attack.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_602"
+source_event_number = 602
+trigger_priority = 60200
+title = "“南非”意味着攻击"
+description = "同志，如今也是时候彻底解决我们与南非间的问题了。长期制裁与国际投资撤离已使南非全国经济与社会秩序濒于崩溃，并深陷内外交困境地。而南非领导人兼国民党党魁P·W·博塔的“种族隔离为反共”与对现有国体的小修小补改革也收效甚微。因此，该国将于今日举行全民公投并修改宪法。宪法草案将在剥夺总理，首相与议会权力，改南非为总统制共和国的同时修改”班图斯坦“政策（以自治区形式取代独立主权体）——上述政策自然无法使抗议者满足。考虑到部分消息声称不排除南非陆军下场戒严的可能。我们可说白人南非的命运拐点即将到来。\n现在也是时候给我国的非洲布局交上答卷了。针对南非问题，我们有多种干涉方案：如果我们已同南非的阿扎尼亚泛非主义大会和其殖民地的西南非洲民族联盟（SWANU）打过照面，并做好了联动阿扎尼亚人民组织等革命派发动武装起义方面的工作，便能以最直接了当的方式歼灭种族隔离政权，并将南非转变为毛主义的壁垒。毕竟，阿扎尼亚大会与SWANU的亲毛立场并非秘密；当然，我们也可以选择同苏联一起支持非洲国民大会党、南非共产党与南非工会大会的三角联盟，推进其转向非洲社会主义；最后则是选择建制派，以密切双边贸易与经济合作的方式快速解决南非政治危机，并在南非推动亲中政治力量就位。考虑到南非在曾同我国建交的两年内便可达成价值一千三百万美元的合同，以及南非作为铀矿、钻石与多种热带农贸产品主产国的优越地位。我们没理由放跑煮熟的鸭子……"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4"), SubResource("Opt5")])

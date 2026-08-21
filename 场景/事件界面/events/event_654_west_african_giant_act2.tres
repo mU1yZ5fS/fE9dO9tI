@@ -1,0 +1,91 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_654_west_african_giant_act2.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.8.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持沙加里维持权力"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_654_west_african_giant_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们支持进步派党团联盟的最终实现"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_654_west_african_giant_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "何不支持扬塔特斯尼组织？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_654_west_african_giant_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "非洲的民主和大选本就是儿戏……我不是说过我对这个尼什么不感兴趣了吗？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_654_west_african_giant_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "何不支持扬塔特斯尼组织？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_654_west_african_giant_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx5"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt5"]
+script = ExtResource("1_opt")
+text = "非洲的民主和大选本就是儿戏……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx5")])
+result_text = "（结果由 event_654_west_african_giant_act2.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_654"
+source_event_number = 654
+trigger_priority = 65400
+title = "西非巨人——第二幕"
+description = "尼日利亚第二共和国的第二次大选即将开始，这届选举的局势同上次大选截然不同——尼日利亚各方面相比上次大选都有所退行。同许多当代非洲国家类似，尼日利亚政府广泛干预社会经济，官员徇私舞弊，导致腐败泛滥。沙加里政府治理无能，经济措施失当，政府制订依赖石油税收的投资计划（尽管取得了一定成果），因石油价格下跌，导致了财政的紧张，并引发了外汇危机和经济滞涨。沙加里不得不实施受国际货币基金组织支持的经济自由化计划，却引发民众贫困及不满，失业现象大幅增加。除了经济萧条，尼日利亚工业、农业也得到了衰退，国家变得更加依赖进口了。在这种情况下，国民党政治家却趁机捞取利益，甚至想利用权力推迟大选，增加政府的任期时间。\n在选举上，尼日利亚国民党和尼日利亚人民党的执政联盟早已破裂，主要反对党尼日利亚统一党正在尝试推进同尼日利亚人民党、人民救国党和大尼日利亚人民党部分成员一起建立一个进步党团联盟，共同对抗保守派。而掌权的国民党也正打算使用一些“非正常”方式来赢得大选……阿沃罗沃政府在上台后尝试推进社会福利建设，推广免费教育和免费医疗，以及投资开展农村发展计划并加强基础设施建设，但这些计划依赖石油税收，因石油价格下跌，导致了财政的紧张，并引发了外汇危机和经济滞涨，使得福利主义改革计划无法完全落实。阿沃罗沃不得不实施受国际货币基金组织支持的经济自由化计划，却引发民众贫困及不满，失业现象大幅增加。阿沃罗沃尝试通过修改宪法来恢复第一共和国的更分权的大区模式和其打压北方、强化约鲁巴部族政治地位的企图最终使得进步派联盟最终走向了破裂。\n在选举上，由于进步派力量的执政地位，尼日利亚人民党和人民救国党的力量都得到了增强，他们决定单独参加大选；另一方面，阿沃罗沃的失败进步改革也强化了民间对反对党尼日利亚国民党的呼声。在国内矛盾的背景下，反建制力量也得以壮大。扬塔特斯尼组织吸引了大批不满现状的年轻人和失业者，力量不断增强，导致尼日利亚国内的宗教关系紧张。1980年，扬塔特斯尼在卡诺发起了一场暴动，最终导致军队介入，这便是扬塔特斯尼叛乱的开端。事后，沙加里政府宣布驱逐尼日利亚的西非移民（因为扬塔特斯尼中有来自尼日尔和喀麦隆等地的人），这遭到了国际社会的广泛谴责。虽然马尔瓦在暴动被镇压后不久去世，但他的亲密弟子穆萨·阿里·苏莱曼成为了继任者。在1982年，迈杜古里和卡杜纳等地也爆发了扬塔特斯尼的追随者制造的骚乱。\n也许，现在是我们插手的时候了？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4"), SubResource("Opt5")])

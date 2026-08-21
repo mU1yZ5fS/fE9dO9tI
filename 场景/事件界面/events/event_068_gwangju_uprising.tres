@@ -1,0 +1,100 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_067_070_crises_and_plenums.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_day"]
+script = ExtResource("3_expr")
+type = 0
+key = "day"
+value = 15.0
+
+[sub_resource type="Resource" id="Expr_month"]
+script = ExtResource("3_expr")
+type = 0
+key = "month"
+value = 8.0
+
+[sub_resource type="Resource" id="Expr_year_1980"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1980.0
+
+[sub_resource type="Resource" id="Expr_1980_date"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_day"), SubResource("Expr_month"), SubResource("Expr_year_1980")])
+
+[sub_resource type="Resource" id="Expr_year_1981"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1981.0
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_1980_date"), SubResource("Expr_year_1981")])
+
+[sub_resource type="Resource" id="Expr_agents"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 80.0
+
+[sub_resource type="Resource" id="Expr_army"]
+script = ExtResource("3_expr")
+type = 0
+key = "army"
+value = 80.0
+
+[sub_resource type="Resource" id="Expr_aid"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents"), SubResource("Expr_army")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "让他们自己处理"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "5月27日，韩国的空输部队作为入侵的五个师中的先头部队，仅用90分钟就占领了市中心。据各种估计，被杀害的平民人数从几百人到几千人不等。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "援助起义者和煽动动乱（需要8军事实力，10特工网络）"
+disabled_text = "我们没有足够的资源"
+enable_condition = SubResource("Expr_aid")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "因为我们提供的武器，和对韩军计划的扰乱和破坏，对光州的突击变得漫长而血腥。此外，韩国其他城市和地区的人在了解到了正在发生的大屠杀后（多亏了我们的特工），纷纷上街抗议，与军警公开冲突。最终，军队占领光州，严酷地镇压了起义，残存的起义者也被粉碎了。然而，其他城市的抗议活动仍在继续，全斗焕政府仍安危未定。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "呼吁各方对话"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "我们呼吁韩国当局和光州的起义者进行谈判，寻求妥协。这些声明得到了起义者的支持，但是由于美国（除了支持我们声明的一些政治家）没有表示任何支持抗议者和和平解决冲突的事实，我们的呼吁被当局忽视了。5月27日，韩国的空输部队作为入侵的五个师中的先头部队，冲进市中心，在90分钟内就控制了局面。据各种估计，被杀害的平民人数从几百人到几千人不等。"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "支持全斗焕的行动"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "韩国军队在90分钟内占领了这座城市，残酷镇压了起义，我们对全斗焕的行动表示支持，说这样的强硬措施是对叛乱者制造混乱的唯一适当反应。韩国政府对我们的支持表示感谢，但不少国家，特别是社会主义阵营，对此极为不满。"
+
+
+[resource]
+script = ExtResource("4_event")
+event_id = "gwangju_uprising"
+source_event_number = 68
+trigger_priority = 680
+title = "光州事件"
+description = "1979年12月政变后，全斗焕夺取了韩国大权，开始无情地镇压反对军政府的抗议者。5月17日，戒严开始了，5月18日，在光州市，为反对关闭全罗南道国立大学而组织的学生示威遭到军队镇压。这引起了城市的不满风暴，并引发了更大的骚乱，在此期间，起义者成功地占领了警察局和军事基地，并将军队赶出了城市。根据我们的情报，全斗焕政府正准备用正规军夺取光州。通过支持起义者使其能够坚持更长的时间，以及引导我们情报部门的力量煽动邻近地区的不满，我们可以严重破坏韩国政权的稳定。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

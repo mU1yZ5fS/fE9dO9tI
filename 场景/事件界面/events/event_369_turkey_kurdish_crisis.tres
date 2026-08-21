@@ -1,0 +1,81 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_369_turkey_kurdish_crisis.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E369_c84_sub9"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 9.0
+target = "84"
+
+[sub_resource type="Resource" id="E369_date_after"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.2.2"
+
+[sub_resource type="Resource" id="E369_date_before"]
+script = ExtResource("3_expr")
+type = 13
+key = "1984.12.31"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_369_turkey_kurdish_crisis.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_369_turkey_kurdish_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_369_turkey_kurdish_crisis.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_369_turkey_kurdish_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_369_turkey_kurdish_crisis.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_369_turkey_kurdish_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_369_turkey_kurdish_crisis.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_369_turkey_kurdish_crisis.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_369"
+source_event_number = 369
+trigger_priority = 36900
+title = "重蹈覆辙？"
+description = "由军政府官员与亲法西斯主义组织民族运动党联合执政的土耳其，已经走上了一条压迫少数民族的道路、自20世纪70年代末期，库尔德斯坦工人党便已开始为实现民族独立而战。但在土耳其军事政变后，该党的准军事组织便不得不躲藏在山区之中，并撤往土耳其与叙利亚和伊拉克之间的边界。\n近日，军政府批准了土耳其的新宪法，其中包含了民族主义色彩极其明显的条款。例如，土耳其国的领土与民族是不可分割的有机整体，且除去国语以外的其他语言均被禁止。政府同时还对库尔德人实施了歧视性政策：新生儿不得取库尔德人名字、位于边界的民族社群不得拥有自己的牲口。\n出于遏制库尔德民族主义的需要，军政府向库尔德人聚居区增派了部队，并对当地人口组织大屠杀。当局的这一行动被许多国家视为种族灭绝。上述事件甚至还引起了移民危机——难民纷纷逃往伊拉克与叙利亚。土耳其军方则使用各种各样的反人道战术，甚至将当地居民掠为人质以逼迫部分游击队投降。\n显然，一场区域危机即将愈演愈烈，它甚至可能激化全世界的紧张局势。对此，我们该怎么做？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E369_c84_sub9"), SubResource("E369_date_after"), SubResource("E369_date_before")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

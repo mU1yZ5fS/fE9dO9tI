@@ -7,10 +7,8 @@ func _on_右侧栏展开按钮_pressed() -> void:
 	$右侧栏展开按钮.hide()
 	$右侧栏收回按钮.show()
 	$右侧栏展开后背景.show()
-	音频总管.play_button_click_sound()
 
 func _on_右侧栏收回按钮_pressed() -> void:
 	$右侧栏收回按钮.hide()
 	$右侧栏展开后背景.hide()
 	$右侧栏展开按钮.show()
-	音频总管.play_button_click_sound()

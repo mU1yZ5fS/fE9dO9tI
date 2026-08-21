@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_419_normalization.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 29
+target = "87"
+key = "special"
+value = 50.0
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 27
+target = "87"
+key = "government"
+value = 2.0
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "与葡萄牙建交并发展经贸关系"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_419_normalization.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "不闻不问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_419_normalization.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_419"
+source_event_number = 419
+trigger_priority = 41900
+title = "正常化"
+description = "葡萄牙的局势终于稳定了下来。尽管面临长期的经济下行，通货膨胀，失业高企与频繁的政府更迭，人们对激进政治势力的热情还是走到了尽头。对葡萄牙革命委员会的压力也与日俱增——民主政党与政府已发起支持解散委员会的群众运动。毕竟，革命委员会是一个凌驾于民主体制的部门，并阻碍了该国深化改革。葡萄牙的新任民主主义政府选择加入欧洲经济共同体，并启动与其他欧洲国家的一体化进程。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

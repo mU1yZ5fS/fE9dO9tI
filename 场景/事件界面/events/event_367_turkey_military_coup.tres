@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_367_turkey_military_coup.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E367_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1980.9.12"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_367_turkey_military_coup.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_367_turkey_military_coup.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_367_turkey_military_coup.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_367_turkey_military_coup.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_367_turkey_military_coup.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_367_turkey_military_coup.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_367_turkey_military_coup.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_367_turkey_military_coup.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_367_turkey_military_coup.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_367_turkey_military_coup.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_367"
+source_event_number = 367
+trigger_priority = 36700
+title = "土耳其军事政变"
+description = "主席同志！来自土耳其的最新消息！在9月12日，国家安全委员会在国家电视台前宣布发动军事政变。前者由该国武装部队司令凯南·埃夫伦领导，并解散了土耳其议会与苏莱曼·德米雷尔领导的政府。军官团宣布在国内禁止罢工与工会运动，同时暂停了该国大多数政党的获得，乃至正延续的凯末尔世俗化改革。在近期公布的相关文件中，新政府表示将遵守与土耳其有关的全部条约与政治联盟，其中也包括北约。\n议会内的所有政党均遭到了镇压。\n根据目前的处境，我们可以考虑采取以下措施。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E367_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

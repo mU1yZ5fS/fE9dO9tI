@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_405_uk_election_1979.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.5.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "谁将得胜？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_405_uk_election_1979.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_405"
+source_event_number = 405
+trigger_priority = 40500
+title = "英国大选-1979"
+description = "1973年的石油危机严重影响了西欧经济，并为英国30年以来的经济繁荣踩下了刹车。工党政府试图通过继续实行凯恩斯主义改革以稳定局势。然而，这些措施只是小修小补，未能解决英国经济的结构性问题——该国产业在引用最新技术成果上滞后，相当数量的国有企业盈利能力不足。危机在“不满之冬”到达顶峰：英国工会在事件期间向政府施压，以切断国内交通物流与关键社会设施的形式，要求其抬高劳动者工资。该问题进一步激化了一系列的“分离主义”议题（例如苏格兰石油与北爱尔兰的相关议程）与该国加入欧洲共同体的系列矛盾。数月前，议会提出了对政府的不信任案，并最终导致内阁垮台。英国将举行新一届选举。在英国现行的政党制度中，下述三党最受欢迎：保守党承诺将结束工会的胡作非为、在对国内通货膨胀消肿的同时恢复经济增长、工党则倡导实现普遍就业与进步的社会改革、其次则是呼吁修订税收与经济政策的自由党。但谁将赢得接下来的选举呢？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

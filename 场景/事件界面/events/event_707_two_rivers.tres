@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_707_two_rivers.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.11.1"
+
+[sub_resource type="Resource" id="Expr_done36"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "iraqi_coalition"
+
+[sub_resource type="Resource" id="Expr_result36_0"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "iraqi_coalition"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_syria_sub15"]
+script = ExtResource("3_expr")
+type = 25
+target = "35"
+key = "sub_government"
+value = 15.0
+
+[sub_resource type="Resource" id="Expr_syria_prosov"]
+script = ExtResource("3_expr")
+type = 10
+target = "35"
+key = "亲苏"
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_done36"), SubResource("Expr_result36_0"), SubResource("Expr_syria_sub15"), SubResource("Expr_syria_prosov")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "为阿拉伯人民的斗争欢呼"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_707_two_rivers.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "无动于衷"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_707_two_rivers.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_707"
+source_event_number = 707
+trigger_priority = 7070
+title = "两河的新娘子"
+description = "阿拉伯世界传来了新的消息。在十月二十四日到二十七日之间，哈菲兹·阿萨德总统率代表团亲自访问了巴格达，同伊拉克总统贝克尔签到了民族联合行动宪章。不仅全面修复了两国的关系，在军事，经济和教育方面开展通力合作，两国还决定进行在军事和经济层面的一体化，尝试使用统一的阿拉伯镑，组建联合指挥部和最高革命指挥委员会，伊拉克还恢复了流经叙利亚的输油管道，减轻了两国人民自由流动的手续，并在哈菲兹总统的邀请下向黎巴嫩增派了维和部队。两国在联合公报中再次强调了巴勒斯坦解放事业的必然性，希望以实际行动来唤醒阿拉伯各国反抗以色列的斗争；强调了戈兰高地的归属权；支持在尊重各国主权的前提下展开多元外交。同时，作为各退一步的手段，双方心照不宣的平反了流亡于对方的己方政要，同时就库尔德人及其武装的跨境活动展开商讨。复兴主义之父，哲学家米歇尔·阿弗拉克对两国的新事态感到欣喜，他以个人身份前往了阔别已久的拉塔基亚，大马士革等地。虽然两国没有进一步实现如1961年阿拉伯联合共和国一样的打算，但一切都有待观望。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_360_manned_lunar_program.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E360_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.6.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_360_manned_lunar_program.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_360_manned_lunar_program.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_360_manned_lunar_program.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_360_manned_lunar_program.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_360"
+source_event_number = 360
+trigger_priority = 36000
+title = "月球计划——载人登月"
+description = "每个人都明白太空计划的最后阶段是什么——中国宇航员登陆月球。但是，正如美国太空计划所表明的那样，这更多像是一种政治行动，在科学上的好处可以忽略不计。那么，我们是现在就要登月，还是继续为月球站制定长期计划要更好一些呢？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E360_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

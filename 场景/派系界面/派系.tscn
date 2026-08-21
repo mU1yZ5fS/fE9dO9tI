@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bm60srjs7uir8" path="res://场景/派系界面/派系.gd" id="1_8ij5d"]
 [ext_resource type="Texture2D" uid="uid://cmiadnqdv8ahh" path="res://资产/UI/派系/派系背景图.png" id="1_tf04v"]
-[ext_resource type="Script" uid="uid://b86re1nkhk2qm" path="res://场景/派系界面/状态栏.gd" id="2_3n6cn"]
 [ext_resource type="Texture2D" uid="uid://cna2yftijoqqi" path="res://资产/UI/主游戏UI/状态栏背景.png" id="2_dy0na"]
 [ext_resource type="Texture2D" uid="uid://dy8kecb6d4loa" path="res://资产/UI/主游戏UI/状态背景.png" id="3_hjfdx"]
 [ext_resource type="Texture2D" uid="uid://ck3yssxxbuhru" path="res://资产/UI/主游戏UI/党内支持度.png" id="4_0krkq"]
@@ -28,10 +27,13 @@
 [ext_resource type="Texture2D" uid="uid://bojyve0hk82n4" path="res://资产/UI/派系/禁止.png" id="23_7ik0l"]
 [ext_resource type="Texture2D" uid="uid://drk7vm7tmdixy" path="res://资产/UI/派系/饼图背景.png" id="24_cw14h"]
 [ext_resource type="Texture2D" uid="uid://co6aal5apht58" path="res://资产/UI/派系/支持.png" id="27_t3xfp"]
+[ext_resource type="Texture2D" uid="uid://kwvpccpoe1ke" path="res://资产/UI/派系/生育政策按钮背景.png" id="29_5tyo3"]
 [ext_resource type="Texture2D" uid="uid://3ro3681budda" path="res://资产/UI/派系/右栏背景.png" id="29_xskvm"]
 [ext_resource type="Texture2D" uid="uid://vpxcj7guvu46" path="res://资产/UI/派系/右栏政策介绍.png" id="30_fxqvd"]
 [ext_resource type="Texture2D" uid="uid://c3wbwr2v5ukta" path="res://资产/UI/外交/右侧栏展开按钮.png" id="31_axfdf"]
 [ext_resource type="Texture2D" uid="uid://c3cumlalcrpiv" path="res://资产/UI/派系/政策背景图标.png" id="32_axfdf"]
+[ext_resource type="PackedScene" uid="uid://8cda01e84fe50" path="res://场景/复用/状态数值区.tscn" id="90_bar"]
+[ext_resource type="PackedScene" uid="uid://c9b4f1a2d3e45" path="res://场景/复用/导航栏.tscn" id="91_nav"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3xfp"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -44,431 +46,36 @@ bg_color = Color(0.6, 0.6, 0.6, 0.4509804)
 
 [node name="Control" type="Control" unique_id=1094361100]
 layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8ij5d")
+
+[node name="背景层" type="CanvasLayer" parent="." unique_id=915607589]
+layer = -1
+
+[node name="派系背景图" type="TextureRect" parent="背景层" unique_id=1326782302]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_8ij5d")
-
-[node name="状态栏" type="CanvasLayer" parent="." unique_id=412646823]
-script = ExtResource("2_3n6cn")
-
-[node name="状态栏背景" type="TextureRect" parent="状态栏" unique_id=1812718366]
-offset_right = 1920.0
-offset_bottom = 78.0
-texture = ExtResource("2_dy0na")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="状态背景" type="TextureRect" parent="状态栏" unique_id=479418468]
-offset_left = 40.0
-offset_top = 16.0
-offset_right = 246.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="党内支持度图标" type="TextureRect" parent="状态栏" unique_id=1782626149]
-offset_left = 44.0
-offset_top = 22.0
-offset_right = 90.0
-offset_bottom = 65.0
-texture = ExtResource("4_0krkq")
-metadata/_edit_use_anchors_ = true
-
-[node name="党内支持度" type="Label" parent="状态栏" unique_id=1984608140]
-offset_left = 73.0
-offset_top = 13.0
-offset_right = 222.0
-offset_bottom = 88.0
-scale = Vector2(0.8, 0.8)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="人民支持度背景" type="TextureRect" parent="状态栏" unique_id=783092855]
-offset_left = 216.0
-offset_top = 16.0
-offset_right = 422.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="人民支持度图标" type="TextureRect" parent="状态栏" unique_id=1193666875]
-offset_left = 224.0
-offset_top = 22.0
-offset_right = 270.0
-offset_bottom = 65.0
-texture = ExtResource("6_8ij5d")
-metadata/_edit_use_anchors_ = true
-
-[node name="人民支持度" type="Label" parent="状态栏" unique_id=1005072237]
-offset_left = 256.0
-offset_top = 16.0
-offset_right = 405.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="思想自由度背景" type="TextureRect" parent="状态栏" unique_id=1878622106]
-offset_left = 392.0
-offset_top = 16.0
-offset_right = 598.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="思想自由度图标" type="TextureRect" parent="状态栏" unique_id=1832332425]
-offset_left = 400.0
-offset_top = 22.0
-offset_right = 446.0
-offset_bottom = 65.0
-texture = ExtResource("7_8knlb")
-metadata/_edit_use_anchors_ = true
-
-[node name="思想自由度" type="Label" parent="状态栏" unique_id=2059256228]
-offset_left = 431.99997
-offset_top = 16.0
-offset_right = 581.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="生活水平背景" type="TextureRect" parent="状态栏" unique_id=1315618186]
-offset_left = 568.0
-offset_top = 16.0
-offset_right = 774.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="生活水平图标" type="TextureRect" parent="状态栏" unique_id=1574917760]
-offset_left = 576.0
-offset_top = 22.0
-offset_right = 622.0
-offset_bottom = 65.0
-texture = ExtResource("8_2kbdk")
-metadata/_edit_use_anchors_ = true
-
-[node name="生活水平" type="Label" parent="状态栏" unique_id=674800427]
-offset_left = 608.0
-offset_top = 16.0
-offset_right = 757.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="国际声望背景" type="TextureRect" parent="状态栏" unique_id=1435618980]
-offset_left = 744.0
-offset_top = 16.0
-offset_right = 950.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="国际声望图标" type="TextureRect" parent="状态栏" unique_id=1877887769]
-offset_left = 752.0
-offset_top = 22.0
-offset_right = 798.0
-offset_bottom = 65.0
-texture = ExtResource("9_on5gx")
-metadata/_edit_use_anchors_ = true
-
-[node name="国际声望" type="Label" parent="状态栏" unique_id=1754317727]
-offset_left = 784.0
-offset_top = 16.0
-offset_right = 933.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="特工网络背景" type="TextureRect" parent="状态栏" unique_id=1344352251]
-offset_left = 920.0
-offset_top = 16.0
-offset_right = 1126.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="特工网络图标" type="TextureRect" parent="状态栏" unique_id=713006403]
-offset_left = 926.0
-offset_top = 22.0
-offset_right = 972.0
-offset_bottom = 65.0
-texture = ExtResource("10_664wx")
-metadata/_edit_use_anchors_ = true
-
-[node name="特工网络" type="Label" parent="状态栏" unique_id=1402537450]
-offset_left = 952.0
-offset_top = 16.0
-offset_right = 1101.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="全球影响力背景" type="TextureRect" parent="状态栏" unique_id=654528547]
-offset_left = 1096.0
-offset_top = 16.0
-offset_right = 1302.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="全球影响力图标" type="TextureRect" parent="状态栏" unique_id=248651795]
-offset_left = 1104.0
-offset_top = 22.0
-offset_right = 1150.0
-offset_bottom = 65.0
-texture = ExtResource("11_7ik0l")
-metadata/_edit_use_anchors_ = true
-
-[node name="全球影响力" type="Label" parent="状态栏" unique_id=432166893]
-offset_left = 1132.0
-offset_top = 16.0
-offset_right = 1281.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="预算背景" type="TextureRect" parent="状态栏" unique_id=567284702]
-offset_left = 1624.0
-offset_top = 16.0
-offset_right = 1830.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="与苏联关系背景" type="TextureRect" parent="状态栏" unique_id=344840181]
-offset_left = 1272.0
-offset_top = 16.0
-offset_right = 1478.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="与苏联关系图标" type="TextureRect" parent="状态栏" unique_id=322533816]
-offset_left = 1280.0
-offset_top = 22.0
-offset_right = 1326.0
-offset_bottom = 65.0
-texture = ExtResource("12_3maiv")
-metadata/_edit_use_anchors_ = true
-
-[node name="与苏联关系" type="Label" parent="状态栏" unique_id=118884930]
-offset_left = 1311.0
-offset_top = 16.0
-offset_right = 1460.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="与美国关系背景" type="TextureRect" parent="状态栏" unique_id=1184492227]
-offset_left = 1448.0
-offset_top = 16.0
-offset_right = 1654.0
-offset_bottom = 90.0
-scale = Vector2(0.71, 0.71)
-texture = ExtResource("3_hjfdx")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="与美国关系图标" type="TextureRect" parent="状态栏" unique_id=1512867667]
-offset_left = 1456.0
-offset_top = 22.0
-offset_right = 1502.0
-offset_bottom = 65.0
-texture = ExtResource("13_3n6cn")
-metadata/_edit_use_anchors_ = true
-
-[node name="与美国关系" type="Label" parent="状态栏" unique_id=732280364]
-offset_left = 1487.0
-offset_top = 16.0
-offset_right = 1636.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="预算图标" type="TextureRect" parent="状态栏" unique_id=1263376673]
-offset_left = 1632.0
-offset_top = 24.0
-offset_right = 1678.0
-offset_bottom = 67.0
-texture = ExtResource("12_cw14h")
-metadata/_edit_use_anchors_ = true
-
-[node name="预算" type="Label" parent="状态栏" unique_id=1622977880]
-offset_left = 1661.0
-offset_top = 16.0
-offset_right = 1810.0
-offset_bottom = 91.0
-scale = Vector2(0.71, 0.71)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "100.0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="切场景菜单背景" type="TextureRect" parent="状态栏" unique_id=640080661]
-offset_top = 71.0
-offset_right = 1920.0
-offset_bottom = 159.0
-texture = ExtResource("13_1cqeh")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="世界地图" type="Button" parent="状态栏" unique_id=1161522308]
-offset_left = 56.0
-offset_top = 80.0
-offset_right = 335.0
-offset_bottom = 145.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "世界地图"
-icon = ExtResource("13_1cqeh")
-flat = true
-icon_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="经济" type="Button" parent="状态栏" unique_id=1878655427]
-offset_left = 360.0
-offset_top = 80.0
-offset_right = 639.0
-offset_bottom = 145.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "经济"
-icon = ExtResource("13_1cqeh")
-flat = true
-icon_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="科学" type="Button" parent="状态栏" unique_id=1518286600]
-offset_left = 672.0
-offset_top = 80.0
-offset_right = 951.0
-offset_bottom = 145.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "科学"
-icon = ExtResource("13_1cqeh")
-flat = true
-icon_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="概览" type="Button" parent="状态栏" unique_id=1413272035]
-offset_left = 977.0
-offset_top = 80.0
-offset_right = 1256.0
-offset_bottom = 145.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "概览"
-icon = ExtResource("13_1cqeh")
-flat = true
-icon_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="政治" type="Button" parent="状态栏" unique_id=1784699875]
-offset_left = 1290.0
-offset_top = 80.0
-offset_right = 1569.0
-offset_bottom = 145.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "政治"
-icon = ExtResource("13_1cqeh")
-flat = true
-icon_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="战争" type="Button" parent="状态栏" unique_id=422780003]
-offset_left = 1594.0
-offset_top = 80.0
-offset_right = 1873.0
-offset_bottom = 145.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 45
-text = "战争"
-icon = ExtResource("13_1cqeh")
-flat = true
-icon_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="派系背景图" type="TextureRect" parent="." unique_id=1326782302]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
 texture = ExtResource("1_tf04v")
+expand_mode = 1
+stretch_mode = 6
 
+[node name="状态栏" parent="." instance=ExtResource("90_bar")]
+
+[node name="导航栏" parent="." instance=ExtResource("91_nav")]
+current_screen = "faction"
 [node name="军队力量背景图" type="TextureRect" parent="." unique_id=1480023552]
 layout_mode = 0
 offset_left = 41.0
@@ -813,7 +420,7 @@ offset_right = 1376.0
 offset_bottom = 338.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -827,9 +434,9 @@ texture = ExtResource("21_on5gx")
 
 [node name="中共党内派系" type="Label" parent="." unique_id=13573174]
 layout_mode = 0
-offset_left = 592.0
+offset_left = 520.0
 offset_top = 400.0
-offset_right = 772.0
+offset_right = 840.0
 offset_bottom = 435.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
@@ -849,11 +456,11 @@ expand_mode = 1
 
 [node name="极左派" type="Label" parent="." unique_id=1176394223]
 layout_mode = 0
-offset_left = 600.0
+offset_left = 560.0
 offset_top = 468.0
-offset_right = 768.0
+offset_right = 800.0
 offset_bottom = 533.0
-theme_override_colors/font_color = Color(0.7194535, 2.5509298e-06, 5.7756904e-07, 1)
+theme_override_colors/font_color = Color(0.725, 0.008, 0.008, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 30
 text = "极左派"
@@ -896,11 +503,11 @@ expand_mode = 1
 
 [node name="保守派" type="Label" parent="." unique_id=679436393]
 layout_mode = 0
-offset_left = 600.0
+offset_left = 560.0
 offset_top = 572.0
-offset_right = 768.0
+offset_right = 800.0
 offset_bottom = 637.0
-theme_override_colors/font_color = Color(0.60000014, 0, 0.72, 1)
+theme_override_colors/font_color = Color(0.588, 0.102, 0.984, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 30
 text = "保守派"
@@ -943,11 +550,11 @@ stretch_mode = 0
 
 [node name="温和派" type="Label" parent="." unique_id=851929863]
 layout_mode = 0
-offset_left = 600.0
+offset_left = 560.0
 offset_top = 676.0
-offset_right = 768.0
+offset_right = 800.0
 offset_bottom = 741.0
-theme_override_colors/font_color = Color(1, 0.46268857, 0.74722046, 1)
+theme_override_colors/font_color = Color(0.98, 0.337, 0.325, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 30
 text = "温和派"
@@ -1003,11 +610,11 @@ stretch_mode = 0
 
 [node name="改革派" type="Label" parent="." unique_id=1202670113]
 layout_mode = 0
-offset_left = 600.0
+offset_left = 560.0
 offset_top = 780.0
-offset_right = 768.0
+offset_right = 800.0
 offset_bottom = 845.0
-theme_override_colors/font_color = Color(7.2196126e-06, 0.5439388, 0.098313786, 1)
+theme_override_colors/font_color = Color(0, 0.659, 0.043, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 30
 text = "改革派"
@@ -1050,11 +657,11 @@ stretch_mode = 0
 
 [node name="自由派" type="Label" parent="." unique_id=726926416]
 layout_mode = 0
-offset_left = 600.0
+offset_left = 560.0
 offset_top = 884.0
-offset_right = 768.0
+offset_right = 800.0
 offset_bottom = 949.0
-theme_override_colors/font_color = Color(0.2759, 0.56248003, 0.89, 1)
+theme_override_colors/font_color = Color(0, 0.502, 0.737, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 30
 text = "自由派"
@@ -1093,7 +700,7 @@ offset_bottom = 879.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 37
-text = "生育政策"
+text = "家庭政策"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1105,6 +712,10 @@ offset_right = 1408.0
 offset_bottom = 967.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.9490196, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 39
 toggle_mode = true
@@ -1121,6 +732,10 @@ offset_right = 1409.0
 offset_bottom = 1012.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.9490196, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 39
 toggle_mode = true
@@ -1137,11 +752,78 @@ offset_right = 1650.0
 offset_bottom = 1012.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9490196, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.9490196, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 39
 toggle_mode = true
 text = "无限制"
 icon = ExtResource("21_on5gx")
+icon_alignment = 1
+expand_icon = true
+
+[node name="演讲" type="Button" parent="." unique_id=1098271231]
+visible = false
+layout_mode = 0
+offset_left = 951.0
+offset_top = 423.0
+offset_right = 1151.0
+offset_bottom = 453.0
+tooltip_text = "Update in May and November"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_nr6g2")
+theme_override_font_sizes/font_size = 18
+text = "演讲"
+icon = ExtResource("29_5tyo3")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="经济同盟" type="Button" parent="." unique_id=1934683356]
+layout_mode = 0
+offset_left = 1176.0
+offset_top = 423.0
+offset_right = 1376.0
+offset_bottom = 453.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_nr6g2")
+theme_override_font_sizes/font_size = 18
+text = "经济同盟"
+icon = ExtResource("29_5tyo3")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="选举" type="Button" parent="." unique_id=1063187249]
+layout_mode = 0
+offset_left = 951.0
+offset_top = 386.0
+offset_right = 1151.0
+offset_bottom = 416.0
+tooltip_text = "每年一次"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_nr6g2")
+theme_override_font_sizes/font_size = 18
+text = "选举"
+icon = ExtResource("29_5tyo3")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="军事同盟" type="Button" parent="." unique_id=1187328431]
+layout_mode = 0
+offset_left = 1176.0
+offset_top = 386.0
+offset_right = 1376.0
+offset_bottom = 416.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_nr6g2")
+theme_override_font_sizes/font_size = 18
+text = "军事同盟"
+icon = ExtResource("29_5tyo3")
+flat = true
 icon_alignment = 1
 expand_icon = true
 
@@ -1187,14 +869,17 @@ offset_bottom = 70.0
 rotation = 1.5707964
 texture_normal = ExtResource("31_axfdf")
 
-[node name="右栏政策介绍文案" type="Label" parent="右栏政策介绍" unique_id=243015377]
+[node name="右栏政策介绍文案" type="RichTextLabel" parent="右栏政策介绍" unique_id=243015377]
 layout_mode = 0
 offset_left = -104.0
 offset_top = -136.0
 offset_right = 336.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 25
+offset_bottom = 414.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("5_nr6g2")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+scroll_active = false
 
 [node name="右栏经济类型" type="Control" parent="." unique_id=2043003623]
 visible = false
@@ -1358,21 +1043,6 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
 theme_override_font_sizes/font_size = 19
 text = "西式民主"
-icon = ExtResource("32_axfdf")
-flat = true
-icon_alignment = 1
-expand_icon = true
-
-[node name="公社" type="Button" parent="右栏党政" unique_id=871356654]
-layout_mode = 0
-offset_top = 96.0
-offset_right = 151.0
-offset_bottom = 133.0
-scale = Vector2(1.145, 1.33)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 19
-text = "公社"
 icon = ExtResource("32_axfdf")
 flat = true
 icon_alignment = 1
@@ -1683,14 +1353,19 @@ expand_icon = true
 
 [node name="右栏条件显示" type="Label" parent="." unique_id=1041981016]
 visible = false
-layout_mode = 0
-offset_left = 1493.0
-offset_top = 387.0
-offset_right = 1856.0
-offset_bottom = 917.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.77900004
+anchor_top = 0.356
+anchor_right = 0.96700007
+anchor_bottom = 0.84900004
+offset_left = -2.6800537
+offset_top = 2.519989
+offset_right = -0.6401367
+offset_bottom = 0.079956055
 theme_override_colors/font_color = Color(1, 1, 0.61960787, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 15
 text = "预算中的资金:10[未满足]
 
 
@@ -1704,3 +1379,5 @@ text = "预算中的资金:10[未满足]
 
 "
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

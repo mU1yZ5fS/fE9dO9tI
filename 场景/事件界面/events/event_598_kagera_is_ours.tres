@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_598_kagera_is_ours.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.11.2"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们可不会搞背叛同志这一套，当然得支持坦桑尼亚"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_598_kagera_is_ours.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "听取非统组织观点，秘密支持阿明教育一下尼雷尔"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_598_kagera_is_ours.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "在战争中作壁上观，呼吁双方保持冷静"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_598_kagera_is_ours.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_598"
+source_event_number = 598
+trigger_priority = 59800
+title = "卡盖拉是我们的！"
+description = "乌干达——非洲的明珠，是个美丽的国家，在这片美丽的土地上，生活着同样美丽的人民。但是，自独立以来，没有哪个国家像它一样，如此愧对自己美丽的国土和美丽的人民。1971年，亲坦桑尼亚的乌干达总统米尔顿·奥博特被伊迪·阿明少将发动政变赶下了台。阿明的统治无疑是混乱的。尽管由于他在政变之初宣布的恢复自由选举、释放政治犯、将布干达国王穆特萨二世的遗体运回乌干达安葬等举措使这场政变在最初赢得了广泛欢迎，但仅仅不到一个月的时间，这张假面便被撕了个稀碎。刚逃出狼穴的乌干达就这样又踏入了虎窝之中。伴随着阿明的登台而来的，是对作为前政府的部族根基的兰戈人与阿乔利人的清洗，对卡夸人（阿明的部族）等西尼罗河同乡与外国人（主要是苏丹人与刚果人）的大力提拔，和对反对派的屠杀。东非共同体也在该国与其他成员的冲突下而解散。1972年驱逐4万印度人并将他们的财产分配给自己部下的行动更是摧毁了乌干达的商业支柱，各行各业的生产都陷入萎缩，生活必需品普遍短缺。|在这样的高压统治下，乌干达人民的反抗当然不可能少。1971年，年轻的马克思主义者约韦里·穆塞韦尼流亡坦桑尼亚后在莫解阵支持下成立了救国阵线，并在乌干达国内数个地点建立了游击根据地，其他各路反阿明武装也在坦桑尼亚的支持下整装待发。1972年9月，奥博特的“人民军”从坦桑尼亚对乌干达发起了“闹剧”般的进攻，在未攻占任何一个据点的情况下便折损了三分之一的成员。而坦桑尼亚对行动的支持致使乌干达轰炸了姆万扎与布科巴地区，双方一度剑拔弩张。最后，在西亚德·巴雷的斡旋下，两国签署《摩加迪沙协定》结束了冲突，坦桑尼亚也被迫承认阿明政府的合法性，中断了对“颠覆活动”的支持。|八年时间一晃而过，阿明的统治成功使乌干达沦为战争、国家煽动的暴力、饥荒、军事独裁、经济衰退、货币贬值、侵犯人权、践踏宪法和普遍绝望——这所有一切的代名词的新殖民主义统治下的非洲普遍危机中最典型、也是最引人注目的地区之一。为了转移愈来愈烈的国内矛盾，内外交困的阿明政府只得将矛头再次对准转坦桑尼亚。在边境制造了数场摩擦后，1978年10月，乌干达以“自卫反击”为借口向坦桑尼亚发动入侵，宣布吞并卡盖拉地区，并在当地进行了大屠杀。作为回应，11月2日，坦桑尼亚对乌干达宣战。|值得注意的是，非洲统一组织也跟随乌干达谴责坦桑尼亚挑起了这场冲突。作为坦桑尼亚的坚定盟友，无论于情于理我们都应该帮助该国解决掉这个麻烦，但是，或许我们也该不那么死脑筋，听听非洲统一组织的意见，在这场战争中押宝于乌干达，来个两头下注？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

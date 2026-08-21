@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="PoliticianData" format=3 uid="uid://s4njnn3jcqva"]
+
+[ext_resource type="Texture2D" uid="uid://dy2usv223xl7r" path="res://资产/政治家/54_80.png" id="1_jnglt"]
+[ext_resource type="Texture2D" path="res://资产/政治家/54_80.png" id="1_portrait"]
+[ext_resource type="Script" uid="uid://b2huwoa1jp02c" path="res://数据脚本/core/politician_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+name_display = "许世友"
+portrait = ExtResource("1_portrait")
+portrait = ExtResource("1_jnglt")
+pool_priority = 73
+trait_personality = 2
+trait_alignment = 41
+trait_special = 10
+trait_background = 25
+loyalty = 340
+power = 150
+age = 70
+faction = 3
+name_first = 54
+name_last = 80

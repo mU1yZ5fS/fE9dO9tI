@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_600_tanzania_election.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1985.10.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "给尼雷尔施压一下，让其同意巴布成为继任者"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_600_tanzania_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "让姆维鲁来代替姆维尼"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_600_tanzania_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "施压尼雷尔，让利彭巴来辅助姆维尼进行改革"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_600_tanzania_election.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "额，我们为何要干预我们盟友的选举？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_600_tanzania_election.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_600"
+source_event_number = 600
+trigger_priority = 60000
+title = "坦桑尼亚大选"
+description = "在坦桑尼亚成立之后，自1965年开始，每五年将会进行一次总统选举，但是由于坦桑尼亚是革命党的一党制共和国，自然这五年的总统选举都会是革命党推举的总统候选人。然而据传言，已经连任四届坦桑尼亚总统的尼雷尔已经决定不参与总统选举并将自己的继承人扶上位。根据我们的情报，尼雷尔的继承人大概率是阿里·哈桑·姆维尼，他是1984年的桑给巴尔总统，因其治下的市场自由化政策得以恢复桑给巴尔的经济而知名。\n如果我们对坦桑尼亚的影响力足够大到可以让尼雷尔转变主意的话，我们其实还有几个备用人选，第一个就是前桑给巴尔政党乌玛党的党主席阿卜杜勒拉赫曼·穆罕默德·巴布，他是一位激进的马克思主义者，巴布参加过全非洲人民会议，访问过我国并于我国高层建立了密切联系，其为坦赞铁路的建成发挥了关键作用，但其并不看好尼雷尔的乌贾马社会主义，且因时任桑给巴尔总统阿贝德·阿马尼·卡鲁梅刺杀案而被错捕，最后被特赦"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

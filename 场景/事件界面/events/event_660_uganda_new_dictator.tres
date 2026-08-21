@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_660_uganda_new_dictator.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "对政变不予置评"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_660_uganda_new_dictator.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "发动战略反攻，一股作气，打到坎帕拉去！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_660_uganda_new_dictator.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_660"
+source_event_number = 660
+trigger_priority = 66000
+title = "七丘之城的新狄克推多"
+description = "经过艰苦的武装斗争，乌干达的人民战争已经从游击战转入了运动战阶段，全国抵抗军不仅控制了卢韦罗三角地带解放区，发展到数千名游击队员的规模，还在弗雷德·鲁维吉耶马指挥官的带领下在乌干达西部的鲁文佐里山地区开辟了第二战场。与之相反，政府军则是遭遇了多次重大失败，且由于奥博特对全国抵抗军的西征行动作出的错误判断导致主力部队在围剿时受到重创。精锐部队的失败给政府军带来了巨大的心理打击，至此，政府军彻底军心涣散，无力再组织起对全国抵抗军的围剿。\n令人始料未及的是，在接连惨败于全国抵抗军后，由于军事失败、政治前景黯淡，与政府军内部的兰戈派和阿乔利派矛盾，最终引爆了奥博特集团的内部分裂，以乌干达民族解放军司令蒂托·奥凯洛将军与另一名阿乔利人高级军官、精锐的第十旅旅长巴西里奥·奥凯洛准将联手阿明旧部，从阿乔利人的大本营古卢向首都坎帕拉进军，在经过了数日激烈交战后，政变军人彻底控制了这座乌干达的七丘之城，奥博特又一次被迫流亡。政变成功后，军事委员会暂停了宪法，解散了议会，并罢免了所有政府部长。新政府以蒂托·奥凯洛为总统，巴西里奥·奥凯洛为总参谋长。为了改变被动的军事局面，巩固自己岌岌可危的地位，新的军政府呼吁各反政府武装停火，同他们一道共商国是。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

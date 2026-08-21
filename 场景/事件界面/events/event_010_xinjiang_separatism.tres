@@ -1,125 +1,198 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_3pe70"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_sir7f"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_nsmhh"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_o41p8"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_6ax5d"]
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_010_xinjiang_separatism.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_tvvbs"]
-script = ExtResource("3_nsmhh")
-key = "people_support"
-value = -200.0
+[sub_resource type="Resource" id="E0_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_b5xge"]
-script = ExtResource("3_nsmhh")
-key = "party_support"
-value = -200.0
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "我们管不着啊"
+effects = Array[ExtResource("2_effect")]([SubResource("E0_custom")])
+result_text = "（结果由 event_010_xinjiang_separatism.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_xasxc"]
-script = ExtResource("3_nsmhh")
-key = "money"
-value = -50.0
+[sub_resource type="Resource" id="Expr_terr23"]
+script = ExtResource("3_expr")
+type = 1
+key = "territory"
+value = 22.0
 
-[sub_resource type="Resource" id="Resource_f27ye"]
-script = ExtResource("3_nsmhh")
-key = "manpower"
-value = -50.0
+[sub_resource type="Resource" id="E1_free"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
+value = 70.0
 
-[sub_resource type="Resource" id="Resource_hojh7"]
-script = ExtResource("2_sir7f")
-text = "Allow independence"
-effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_tvvbs"), SubResource("Resource_b5xge"), SubResource("Resource_xasxc"), SubResource("Resource_f27ye")])
-result_text = "Xinjiang Uygur Autonomous Region officially declared its independence. This will be a big blow for us and a great opportunity for the USSR and the USA."
-
-[sub_resource type="Resource" id="Resource_5x2q2"]
-script = ExtResource("3_nsmhh")
-key = "party_support"
-value = -200.0
-
-[sub_resource type="Resource" id="Resource_wkqns"]
-script = ExtResource("3_nsmhh")
+[sub_resource type="Resource" id="E1_man"]
+script = ExtResource("2_effect")
 key = "manpower"
 value = -20.0
 
-[sub_resource type="Resource" id="Resource_7gmw0"]
-script = ExtResource("2_sir7f")
-text = "Expand autonomy"
-effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_5x2q2"), SubResource("Resource_wkqns")])
-result_text = "We have further expanded the powers of local authorities and the rights of Xinjiang autonomy. It seems that the majority of the population is satisfied, but it gives the radicals more opportunities to promote separatism."
+[sub_resource type="Resource" id="E1_party"]
+script = ExtResource("2_effect")
+key = "party_support"
+value = -200.0
 
-[sub_resource type="Resource" id="Resource_jvjuj"]
-script = ExtResource("3_nsmhh")
-key = "people_support"
-value = -100.0
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "给予他们更多自治权"
+disabled_text = "我们不能给予更多的自治权"
+enable_condition = SubResource("Expr_terr23")
+effects = Array[ExtResource("2_effect")]([SubResource("E1_free"), SubResource("E1_man"), SubResource("E1_party")])
+result_text = "我们进一步扩大地方的权力和新疆维吾尔地区的自治权。大多数人似乎都很满意，但这给了激进派更多的机会来发展分离主义，其他自治区也有了更大的独立倾向。"
 
-[sub_resource type="Resource" id="Resource_q05h0"]
-script = ExtResource("3_nsmhh")
+[sub_resource type="Resource" id="Expr_line4"]
+script = ExtResource("3_expr")
+type = 22
+key = "political_line"
+value = 4.0
+
+[sub_resource type="Resource" id="Expr_army100"]
+script = ExtResource("3_expr")
 key = "army"
-value = -100.0
+value = 100.0
 
-[sub_resource type="Resource" id="Resource_nxarn"]
-script = ExtResource("3_nsmhh")
-key = "diplo"
+[sub_resource type="Resource" id="Expr_opt2_enable"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line4"), SubResource("Expr_army100")])
+
+[sub_resource type="Resource" id="E2_free"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
 value = 50.0
 
-[sub_resource type="Resource" id="Resource_8kypp"]
-script = ExtResource("3_nsmhh")
+[sub_resource type="Resource" id="E2_man"]
+script = ExtResource("2_effect")
 key = "manpower"
 value = 30.0
 
-[sub_resource type="Resource" id="Resource_5e2is"]
-script = ExtResource("2_sir7f")
-text = "Send in the PLA to restore order"
-effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_jvjuj"), SubResource("Resource_q05h0"), SubResource("Resource_nxarn"), SubResource("Resource_8kypp")])
-result_text = "The loyal parts of the PLA entered Xinjiang and quickly restored order. But the nationalists and the opposition will not forget this."
-
-[sub_resource type="Resource" id="Resource_6kyr3"]
-script = ExtResource("3_nsmhh")
+[sub_resource type="Resource" id="E2_people"]
+script = ExtResource("2_effect")
 key = "people_support"
-value = -20.0
+value = -100.0
 
-[sub_resource type="Resource" id="Resource_4xhu0"]
-script = ExtResource("3_nsmhh")
+[sub_resource type="Resource" id="E2_army"]
+script = ExtResource("2_effect")
+key = "army"
+value = -100.0
+
+[sub_resource type="Resource" id="E2_diplo"]
+script = ExtResource("2_effect")
+key = "diplo"
+value = 50.0
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_option")
+text = "派部队去恢复秩序"
+disabled_text = "只用军队镇压他们是行不通的"
+enable_condition = SubResource("Expr_opt2_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("E2_free"), SubResource("E2_man"), SubResource("E2_people"), SubResource("E2_army"), SubResource("E2_diplo")])
+result_text = "忠诚的解放军进入了新疆，并且迅速恢复了新疆的秩序。但民族主义者和反对派不会忘记这一天。"
+
+[sub_resource type="Resource" id="Expr_sum20"]
+script = ExtResource("3_expr")
+type = 23
+keys = Array[String](["money", "reserve"])
+value = 20.0
+
+[sub_resource type="Resource" id="Expr_res20"]
+script = ExtResource("3_expr")
+key = "reserve"
+value = 20.0
+
+[sub_resource type="Resource" id="Expr_ag40"]
+script = ExtResource("3_expr")
 key = "agents"
-value = -50.0
+value = 40.0
 
-[sub_resource type="Resource" id="Resource_sc6yf"]
-script = ExtResource("3_nsmhh")
-key = "money"
-value = -40.0
+[sub_resource type="Resource" id="Expr_opt3_enable"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_sum20"), SubResource("Expr_res20"), SubResource("Expr_ag40")])
 
-[sub_resource type="Resource" id="Resource_kuiv2"]
-script = ExtResource("3_nsmhh")
+[sub_resource type="Resource" id="E3_free"]
+script = ExtResource("2_effect")
+key = "thought_freedom"
+value = 30.0
+
+[sub_resource type="Resource" id="E3_man"]
+script = ExtResource("2_effect")
 key = "manpower"
 value = 20.0
 
-[sub_resource type="Resource" id="Resource_orxmd"]
-script = ExtResource("4_o41p8")
+[sub_resource type="Resource" id="E3_people"]
+script = ExtResource("2_effect")
+key = "people_support"
+value = -20.0
+
+[sub_resource type="Resource" id="E3_agents"]
+script = ExtResource("2_effect")
 key = "agents"
-value = 50.0
+value = -50.0
 
-[sub_resource type="Resource" id="Resource_b6qgq"]
-script = ExtResource("4_o41p8")
+[sub_resource type="Resource" id="E3_money"]
+script = ExtResource("2_effect")
 key = "money"
-value = 40.0
+value = -40.0
 
-[sub_resource type="Resource" id="Resource_84tjk"]
-script = ExtResource("4_o41p8")
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_option")
+text = "顺水推舟，举行主权公投，但暗中使绊子"
+disabled_text = "我们既没有造假的手段，也没有造假的实力"
+enable_condition = SubResource("Expr_opt3_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("E3_free"), SubResource("E3_man"), SubResource("E3_people"), SubResource("E3_agents"), SubResource("E3_money")])
+result_text = "我们组织了一次全民公决，大多数人投票赞成保留新疆的现有地位。不满的民族主义者和其他激进分子走上街头，他们声称公投结果是伪造的，但是没有了过去我们对他们的纵容，这些抗议活动不再构成严重威胁。"
+
+[sub_resource type="Resource" id="Expr_man300"]
+script = ExtResource("3_expr")
+type = 1
+key = "manpower"
+value = 300.0
+
+[sub_resource type="Resource" id="Expr_dec3"]
+script = ExtResource("3_expr")
+type = 38
+key = "3"
+
+[sub_resource type="Resource" id="Expr_dec4"]
+script = ExtResource("3_expr")
+type = 38
+key = "4"
+
+[sub_resource type="Resource" id="Expr_notdec3"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_dec3")])
+
+[sub_resource type="Resource" id="Expr_notdec4"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_dec4")])
+
+[sub_resource type="Resource" id="Expr_xj0"]
+script = ExtResource("3_expr")
+type = 21
+key = "xinjiang_policy"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
 type = 18
-children = Array[ExtResource("4_o41p8")]([SubResource("Resource_orxmd"), SubResource("Resource_b6qgq")])
-
-[sub_resource type="Resource" id="Resource_b5j6h"]
-script = ExtResource("2_sir7f")
-text = "Organize a referendum"
-disabled_text = "Need agents: 50 and money: 40"
-enable_condition = SubResource("Resource_84tjk")
-effects = Array[ExtResource("3_nsmhh")]([SubResource("Resource_6kyr3"), SubResource("Resource_4xhu0"), SubResource("Resource_sc6yf"), SubResource("Resource_kuiv2")])
-result_text = "We organized a referendum in which the majority, of course, voted to preserve the status of Xinjiang. Dissatisfied nationalists and other radicals took to the streets, claiming falsification, but without past support these protests no longer pose a serious threat."
+children = Array[ExtResource("3_expr")]([SubResource("Expr_man300"), SubResource("Expr_notdec3"), SubResource("Expr_notdec4"), SubResource("Expr_xj0")])
 
 [resource]
-script = ExtResource("5_6ax5d")
+script = ExtResource("4_event")
 event_id = "xinjiang_separatism"
-title = "Separatism in Xinjiang"
-description = "Encouraged by liberals and nationalists, residents of the Xinjiang Uygur Autonomous Region took to mass demonstrations for independence and secession from the PRC, which gradually develop into unrest. People demand \"liberation\" from \"the occupation of 1949\" and the majority of ethnic Uighurs support them. However, there is a counterweight to them from the Hanzu, and some of the Uighurs are just satisfied with the requirements of greater autonomy than we can take advantage of."
-options = Array[ExtResource("2_sir7f")]([SubResource("Resource_hojh7"), SubResource("Resource_7gmw0"), SubResource("Resource_5e2is"), SubResource("Resource_b5j6h")])
+source_event_number = 10
+title = "新疆的分离主义"
+description = "在自由主义者和民族主义者的鼓励下，新疆维吾尔自治区居民举行了群众性的要求独立和脱离中华人民共和国的示威活动，并逐渐演变为骚乱。人们要求从“1949年的占领”中“解放”，大多数维吾尔族人支持他们。但是，汉民族对他们有一种制衡，一些维吾尔人只是满足于更高度的自治的要求，这是我们可以利用的。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

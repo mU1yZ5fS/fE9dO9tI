@@ -1,0 +1,102 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_433_gorbachev_dissolves_wto.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Expr_433_leader"]
+script = ExtResource("3_expr")
+type = 39
+key = "1"
+value = 6.0
+
+[sub_resource type="Resource" id="Expr_n2_ovd_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "ovd"
+target = "2"
+
+[sub_resource type="Resource" id="Expr_n2_ovd"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n2_ovd_c")])
+
+[sub_resource type="Resource" id="Expr_n5_ovd_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "ovd"
+target = "5"
+
+[sub_resource type="Resource" id="Expr_n5_ovd"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n5_ovd_c")])
+
+[sub_resource type="Resource" id="Expr_n4_ovd_c"]
+script = ExtResource("3_expr")
+type = 10
+key = "ovd"
+target = "4"
+
+[sub_resource type="Resource" id="Expr_n4_ovd"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_n4_ovd_c")])
+
+[sub_resource type="Resource" id="Expr_h51_nato"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "51"
+
+[sub_resource type="Resource" id="Expr_f17_development_2"]
+script = ExtResource("3_expr")
+type = 25
+key = "development"
+value = 2.0
+target = "17"
+
+[sub_resource type="Resource" id="Expr_f17_government_3"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 3.0
+target = "17"
+
+[sub_resource type="Resource" id="Expr_fn4_sub_government_19"]
+script = ExtResource("3_expr")
+type = 26
+key = "sub_government"
+value = 19.0
+target = "4"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_433_leader"), SubResource("Expr_n2_ovd"), SubResource("Expr_n5_ovd"), SubResource("Expr_n4_ovd"), SubResource("Expr_h51_nato"), SubResource("Expr_f17_development_2"), SubResource("Expr_f17_government_3"), SubResource("Expr_fn4_sub_government_19")])
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "冷战真的结束了吗？！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_433_gorbachev_dissolves_wto.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_433"
+source_event_number = 433
+trigger_priority = 43300
+title = "戈尔巴乔夫解散华沙条约组织"
+description = "新任苏联领导人米哈伊尔·戈尔巴乔夫上任之初，便遭遇了空前的外交挫败。在美国、中国与欧洲公众的联合压力下，他不得不批准“统一德国”的方案，然而这一计划甚至没有确认新国家的中立地位。莫斯科在东欧地区最忠诚的盟友，就此在政治版图上消失。\n因此，华沙条约组织本身的存在都已经成为了问题，尤其是在维谢格拉德圈子已脱离苏联影响力的情况下。在1985年，原本应当被续签的，延续30余年的《友好合作互助条约》被修订；原本在筹划的相关庆祝活动也被取消。戈尔巴乔夫不得不表示，这只是苏联与美国和解的“善意姿态”，但所有人都知道，莫斯科真正的盟友只剩下捷克斯洛伐克与保加利亚：前者只与苏维埃乌克兰有些微接壤、后者则同华约国家在陆路上完全隔绝。\n持续30年的冷战就此结束了......"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

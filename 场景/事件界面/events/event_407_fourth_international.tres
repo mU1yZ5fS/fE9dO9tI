@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_407_fourth_international.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "与托洛茨基主义者建立联盟，并更改我党指导思想（需要30.0百万预算与30.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_407_fourth_international.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "不闻不问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_407_fourth_international.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_407"
+source_event_number = 407
+trigger_priority = 40700
+title = "第四国际？"
+description = "今天，英国首相泰德·格兰特与“国际社会主义者趋势”领导人托尼·克里夫宣布将复兴第四国际（世界社会主义革命党），后者是成立于1938年的托洛茨基主义组织，并于20世纪60年代初解散为多个支部。而“国际社会主义者趋势”则自认为是它的合法继承者。他们将此举定义为“统合一切进步力量，从而实现实现世界范围的革命转型”的关键行动。当然，对于这样一支新兴势力，我们可以向他们提供来自中方的支持，甚至以此修改我们的指导思想，让马克思主义跟上现代社会的发展步伐。十月革命的精神与动力已经枯竭，我们必须尝试走入一场新的革命中！这次，革命将成为世界的革命！"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

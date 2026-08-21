@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_385_french_election_act2.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们得教教法国选民该支持谁......开闸，放吉斯卡尔·德斯坦的黑材料！（需要10.0百万{0}与5.0点{1}）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_385_french_election_act2.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "谁将赢得最后的胜利？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_385_french_election_act2.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_385"
+source_event_number = 385
+trigger_priority = 38500
+title = "法国选举-第二幕"
+description = "在法国的首轮总统选举结束后，两位竞选人得以进入次轮选举。其中{1}以{3}%的得票率领先对手{2}。然而，他们当中的每个人都有各种各样的黑材料。如果能够灵活运用它们，我们足以在第二轮选举内起到四两拨千斤的效果。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

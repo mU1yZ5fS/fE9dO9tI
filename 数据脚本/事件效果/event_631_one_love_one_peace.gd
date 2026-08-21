@@ -1,0 +1,74 @@
+extends "res://数据脚本/event_script_base.gd"
+
+## 原作 Event631.cs：一份爱，一份和平（牙买加政治和解演唱会，五选项）。
+## 触发：ReqEventsDLC02.cs:966-969 —— DATE_AFTER 1978.4.22（原 (1978&&m>=4&&d>=22)||(1978&&m>=5)||y>=1979）。
+## 差异：原版按条件 Destroy(button[i])；Godot 用 _disable 灰显同义。
+##   cw→内战中、Gosstroy/SubGosstroy→government/sub_government、Torg/proprc→标签、name→chinese_name。
+
+const TXT_OPT0_DIS := "我们在当地没有如此巨大的影响力"
+const TXT_OPT4_DIS := "额……他们是不是大烟抽多了？"
+const TXT_R0 := "在演唱会开始前几天，一伙自称是支持牙买加工党的帮派对鲍勃·马利进行了一次刺杀，由于伤势较轻，马利依旧坚持着参与演唱会。此次演唱会汇集了16场雷鬼音乐最盛大的表演，被媒体称为“第三世界的伍德斯托克音乐节”、“鲍勃·马利为和平而唱”，更简略点“鲍勃·马利回来了”。这场演唱会吸引了超过32,000名观众，演出收益将用于“西金斯敦平民急需的卫生设施和住房”。演唱会于下午5：00开始，前埃塞俄比亚王储阿斯法·沃森发表了致辞，赞扬了演唱会组织者为恢复牙买加和平所做的努力。演唱会的后半场，鲍勃·马利将迈克尔·曼利和爱德华·西加都叫到舞台上，三人一起举起双手以表示他们的团结。然而，这场演唱会并没有平息政治暴力，组织这次演唱会的两位帮派头目在之后两年内均遭杀害，在1980年这一牙买加的选举年内发生的谋杀案比1979年多了一倍。由于牙买加工党的帮派的刺杀举动导致牙买加工党支持率有所下降。"
+const TXT_R1 := "在演唱会开始前几天，一伙自称是支持人民民族党的帮派对鲍勃·马利进行了一次刺杀，由于伤势较轻，马利依旧坚持着参与演唱会。此次演唱会汇集了16场雷鬼音乐最盛大的表演，被媒体称为“第三世界的伍德斯托克音乐节”、“鲍勃·马利为和平而唱”，更简略点“鲍勃·马利回来了”。这场演唱会吸引了超过32,000名观众，演出收益将用于“西金斯敦平民急需的卫生设施和住房”。演唱会于下午5：00开始，前埃塞俄比亚王储阿斯法·沃森发表了致辞，赞扬了演唱会组织者为恢复牙买加和平所做的努力。演唱会的后半场，鲍勃·马利将迈克尔·曼利和爱德华·西加都叫到舞台上，三人一起举起双手以表示他们的团结。然而，这场演唱会并没有平息政治暴力，组织这次演唱会的两位帮派头目在之后两年内均遭杀害，在1980年这一牙买加的选举年内发生的谋杀案比1979年多了一倍。由于人民民族党的帮派的刺杀举动导致人民民族党支持率有所下降。"
+const TXT_R2 := "在我们的帮助下，迈克尔·曼利（牙买加总理，PNP领袖）和爱德华·西加（JLP领袖）均被邀请参加演唱会。此次演唱会汇集了16场雷鬼音乐最盛大的表演，被媒体称为“第三世界的伍德斯托克音乐节”、“鲍勃·马利为和平而唱”，更简略点“鲍勃·马利回来了”。这场演唱会吸引了超过32,000名观众，演出收益将用于“西金斯敦平民急需的卫生设施和住房”。演唱会于下午5：00开始，前埃塞俄比亚王储阿斯法·沃森发表了致辞，赞扬了演唱会组织者为恢复牙买加和平所做的努力。演唱会的后半场，鲍勃·马利将迈克尔·曼利和爱德华·西加都叫到舞台上，三人一起举起双手以表示他们的团结，看起来牙买加要实现奇迹般的政治性和解了。然而，这场演唱会并没有平息政治暴力，组织这次演唱会的两位帮派头目在之后两年内均遭杀害，在1980年这一牙买加的选举年内发生的谋杀案比1979年多了一倍。"
+const TXT_R3 := "“一份爱，一份和平”演唱会汇集了16场雷鬼音乐最盛大的表演，被媒体称为“第三世界的伍德斯托克音乐节”、“鲍勃·马利为和平而唱”，更简略点“鲍勃·马利回来了”。这场演唱会吸引了超过32,000名观众，演出收益将用于“西金斯敦平民急需的卫生设施和住房”。演唱会于下午5：00开始，前埃塞俄比亚王储阿斯法·沃森发表了致辞，赞扬了演唱会组织者为恢复牙买加和平所做的努力。在演唱会的后半场，鲍勃·马利将迈克尔·曼利（牙买加总理，PNP领袖）和爱德华·西加（JLP领袖）都叫到舞台上，三人一起举起双手以表示他们的团结。然而，这场演唱会并没有平息政治暴力，组织这次演唱会的两位帮派头目在之后两年内均遭杀害，在1980年这一牙买加的选举年内发生的谋杀案比1979年多了一倍。"
+const TXT_R4 := "兴许是酒精的冲动、大麻的作用，亦或者真的被海尔·塞拉西上身……总而言之，在“一份爱，一份和平”演唱会上，被邀请到台上的迈克尔·曼利与爱德华·西加两人分别被鲍勃·马利痛斥为“走上与黑人精神相悖的社会主义道路的堕落者”和“勾结扬基帝国主义的民族败类”，随即号召全体拉斯塔法里教徒“跟随我们在天上的父Jah与行走于人间的弥赛亚海尔·塞拉西的指引，让牙买加代替被布尔什维克大撒旦控制的锡安地（埃塞俄比亚），成为黑人觉醒的前哨站”，受此鼓舞冲上街头的教徒们与军警和各式黑帮发生了激烈交火，很快……他们就奇迹般地攻破了牙买加政府大楼并全面夺取了政权。\n鲍勃·马利在第二天醒酒后坚决否认了自己的所作所为并明确表态拒绝参与新政府，然而，木已成舟，马利的遁逃和他对新政府的批评并不能改变拉斯塔法里运动执掌国政的局面，相反，“预言了曾被堕落白人文明所包围、被黑人叛徒所执掌的牙买加推翻西方控制，踏上民族复兴之路”的他被尊奉为“与马库斯·加维同等的先知”（但我们都知道，加维向来厌恶海尔·塞拉西）。新政府开启了一系列旨在“拒斥西方巴比伦堕落文化，复兴黑人文明”的改革，埃塞俄比亚先皇海尔·塞拉西的儿子阿斯法·沃森王储被教徒们邀请到牙买加加冕登基为阿姆哈·塞拉西一世，拉斯塔法里教被确立为国教，该国还合法化了大麻（以其为原料加工成的毒品则被视为“不洁之物”），西方文化被视为禁忌，该国已开始募集学者编纂新一代教科书，旨在重新发掘与建构历史（特别是“被白人篡改”的基督教史），彻底将被“尼布甲尼撒们”所颠倒的历史颠倒回来。\n尽管其他加勒比国家（尤其是古巴黑人与格林纳达）的部分拉斯塔法里教徒攻击牙买加篡改了教义，但那不过是耳边蚊蝇的聒噪，牙买加自会用行动向他们证明自己的成功。"
+
+
+func prepare(event_def: EventDef, _world: WorldState) -> void:
+	_bind_world()
+	if event_def == null or event_def.options.size() < 5:
+		return
+	var jamaica := ws.get_country_by_legacy_index(152)
+	var cw := jamaica != null and jamaica.内战中
+	var line := _res(W.I_POLITICAL_LINE)
+	var rich := _res(W.I_BUDGET) + _res(W.I_RESERVE) >= 2500 \
+		and _res(W.I_AGENTS) >= 2500 and _res(W.I_ARMY) >= 2500
+	var opt := event_def.options
+	if line < 3 and cw:
+		_enable(opt[0], event_def.options[0].text)
+	else:
+		_disable(opt[0], TXT_OPT0_DIS)
+	if line > 1 and cw:
+		_enable(opt[1], event_def.options[1].text)
+	else:
+		_disable(opt[1], TXT_OPT0_DIS)
+	if cw:
+		_enable(opt[2], event_def.options[2].text)
+	else:
+		_disable(opt[2], TXT_OPT0_DIS)
+	_enable(opt[3], event_def.options[3].text)
+	if cw and rich:
+		_enable(opt[4], event_def.options[4].text)
+	else:
+		_disable(opt[4], TXT_OPT4_DIS)
+
+
+func execute(context: Dictionary) -> void:
+	if not _bind_world():
+		return
+	var jamaica := ws.get_country_by_legacy_index(152)
+	var opt := int(context.get("option_index", -1))
+	match opt:
+		0:
+			context["result_text"] = TXT_R0
+			_add(W.I_BUDGET, -20)
+		1:
+			context["result_text"] = TXT_R1
+			_add(W.I_BUDGET, -20)
+		2:
+			context["result_text"] = TXT_R2
+			_add(W.I_BUDGET, -20)
+		3:
+			context["result_text"] = TXT_R3
+		4:
+			context["result_text"] = TXT_R4
+			_add(W.I_BUDGET, -2500)
+			_add(W.I_AGENTS, -2500)
+			_add(W.I_ARMY, -2500)
+			if jamaica != null:
+				jamaica.government = GameConstants.Government.AUTHORITARIAN
+				jamaica.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
+				_leave_alliances(jamaica)
+				jamaica.set_tag("对华贸易", true)
+				jamaica.set_tag("亲中", true)
+				jamaica.chinese_name = "牙买加阿非利加帝国"

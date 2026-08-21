@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_291_italy_hot_autumn.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "完成“持续斗争”的未竟之事，以目前最具影响力的工人主义组织为基础建立革命先锋队"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_291_italy_hot_autumn.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "将现存极左翼巨头撮合在该国左翼叛逃者的旗下，奉行“以政党对政党”策略"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_291_italy_hot_autumn.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "拿出“老大哥”的手腕，尽其所能整合意大利内部的反修正主义运动"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_291_italy_hot_autumn.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "不，我们应当支持那些更“正确”的人为改善该国而开展的“实验”"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_291_italy_hot_autumn.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "实际上不只是我们，他们也该学学“逍遥派”"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_291_italy_hot_autumn.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_291"
+source_event_number = 291
+trigger_priority = 29100
+title = "秋风萧瑟，洪波涌起"
+description = "时代在变，革命亦如此。自1968年运动以来，意大利便陷入多事之秋。虽说该国经济得以通过挂靠大西洋主义与欧洲一体化迈上快车道，可罗马当局陈旧的上层建筑显然未为“繁荣”做好准备：大学教育已然走向大众，可教学制度仍沿用精英主义老一套；全民识字率实现普遍提升，但作为国民的普遍平等也仅限于此。值此背景之下，长期掌握该国大权并充当保守势力总后台的执政党天主教民主党；以及姿态过分温和，近乎同前者绥靖的意大利共产党自然成为众矢之的。阶级意识与反建制理念已成为燎原之势，并令该国学生和工人心驰神往。而这恰是以罢课罢工，占领学校/工厂为底色的“火热之秋”，乃至主张拿起武器，对阶级敌人实施武器批判的“铅色岁月”两大关键时期与诸多标榜另类共产主义道路的新兴政治势力诞生的历史背景：除却我们的老朋友意大利共产党（马列）、脱胎自1976年学生运动，持亲斯大林倾向的社会主义工人运动等马列主义者外，主张建立纯粹“工人领导权”，驱逐专业技工霸权、改良主义工会和共产党的所谓“工人主义”系组织（如“持续斗争”-依托同名杂志形成的政治共识平台；“工人力量”-数个理论编辑部与学生工运的综合，并在1973年派生出基于自办广播开展武装斗争的“工人自主”；“工人先锋队”-从多家托洛茨基研究俱乐部发展而来，并逐渐同共产党的分裂团体“宣言派”走近）更成为彼时激进左翼的代名词。\n然而，如此“生动”的实践终究难以转化为革命运动——极左翼组织虽得以逐步成长为一股势力，可相关团体却各自为战，无法形成足以挑战政治巨头的强大合力；且上述团体内亦未诞生足以承担改造社会重任的革命党：试图实现集中化与统一行动的尝试或以造就宗派主义关门小团体告终，或直接激化组织内部的危机，造成“革命联合”的解体并加剧意大利政界的碎片化格局（而这只会让既有的政坛托拉斯获益）。60-70年代期间的种种变化则是对此的最佳证明：意共（马列）为路线争执所困，导致原成员纷纷出走，转而成立意共（马列）-红线等山头；试图将自身转化为左翼政党的“持续斗争”更在第二次代表大会时宣告自我解散，化作一滩散沙。如果他们想要有所成就，来自革命同志的点拨自是必不可少。而这恰为我国的欧洲布局提供了极好机会：由于文革时代的旋风，意大利几乎所有的激进左翼均对“东方智慧”持积极态度。唯一缺的便是橄榄枝……我们要做的便是在其中择优录取，赶在68运动浪潮完全褪去前，完成发动新一轮革命的准备工作。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

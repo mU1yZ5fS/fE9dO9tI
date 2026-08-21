@@ -1,0 +1,93 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_529_japan_40_day_struggle.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_t0_0"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_t0_1"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_2"]
+script = ExtResource("3_expr")
+type = 4
+value = 2.0
+ref_event_id = "event_522"
+
+[sub_resource type="Resource" id="Expr_t0_3"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_527"
+
+[sub_resource type="Resource" id="Expr_t0_4_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 3.0
+ref_event_id = "event_527"
+
+[sub_resource type="Resource" id="Expr_t0_4_1"]
+script = ExtResource("3_expr")
+type = 4
+value = 4.0
+ref_event_id = "event_527"
+
+[sub_resource type="Resource" id="Expr_t0_4"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_4_0"), SubResource("Expr_t0_4_1")])
+
+[sub_resource type="Resource" id="Expr_t0_5"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.11.1"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_t0"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_t0_0"), SubResource("Expr_t0_1"), SubResource("Expr_t0_2"), SubResource("Expr_t0_3"), SubResource("Expr_t0_4"), SubResource("Expr_t0_5")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "帮助自由民主党处理危机并趁机让亲华派主导政党"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_529_japan_40_day_struggle.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "静观局势发展"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_529_japan_40_day_struggle.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_529"
+source_event_number = 529
+trigger_priority = 52900
+title = "四十日抗争"
+description = "在刚刚结束的选举中，自由民主党虽然保住了执政地位，但是其内部矛盾不仅没有平息反而愈发激烈。党内的大批势力均要求首相大平正芳引咎辞职。但在得到最大派阀田中派的支持后，大平正芳表示不打算引退，也不承认选举失败，“勉强过半数也是过半数”。他自信在党议会总会上的投票能够取胜。面对由福田、三木、中曾根三大派阀和中川集团等组成的反主流派以脱离自民党组织新党为威胁的辞职要求，主流派的田中派和大平派也提出了与中道政党成立连立政权的可能性。这让原本就未彻底尘埃落定的选举再添变数。\n在调解希望失败之后，11月2日，由反主流派组成的“自民党改进会”召开总会，确认了推举福田赳夫为首相候补者。同一天，主流派在自民党执行部也举行了议员总会，不过会场已经被反主流派的人占据，少壮派议员们和秘书团的人守在党执行部会场的入口处，用桌椅堆起“街垒”，阻止主流派议员的进入。主流派的一名长老滨田幸一议员与反主流派交涉未果，于是将那些强行桌椅拆除，双方骤起肢体冲突，这一幕被电视直播至日本全国。最终反主流派撤走，主流派议员进入会场，会议决定推举大平正芳为首相候选者。就这样，自由民主党有史以来第一次同时推举不同的两名首相候选者。\n之后的4天里，两派人马进行了多次的接触，也提出了多个妥协方案，包括“大平总理，福田总裁”和“明年1月举行党总裁公选，大平体制维持到明年1月”等，但是仍然得不到共识。一个政党国会上的首相指名选举中分裂成两派针锋相对似乎已成定局。\n主席同志，考虑到我们先前已经对自由民主党多次伸出援手并且已经在其内部扶植起了亲华派，我们是否应该在这个关键时刻出手帮助它渡过难关并趁机让党内的亲华派取得主导地位？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_t0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

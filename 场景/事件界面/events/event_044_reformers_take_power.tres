@@ -1,0 +1,87 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_042_047_revolution_and_reform.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_year"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1978.0
+
+[sub_resource type="Resource" id="Expr_stage_0"]
+script = ExtResource("3_expr")
+type = 21
+key = "reform_stage"
+value = 0.0
+
+[sub_resource type="Resource" id="Expr_reform_power"]
+script = ExtResource("3_expr")
+type = 33
+key = "2"
+target = "0"
+
+[sub_resource type="Resource" id="Expr_agents_150"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 150.0
+
+[sub_resource type="Resource" id="Expr_course_not_1"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_course_not_2"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_keep_power"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_course_not_1"), SubResource("Expr_course_not_2")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "同意改革派的要求，以体面退场交换邓小平主持国政"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由 event_042_047_revolution_and_reform.gd 动态生成）"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "调动中央警卫团与国家安全人员做最后一搏！"
+disabled_text = "我们既无动机，也力不从心"
+enable_condition = SubResource("Expr_agents_150")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由 event_042_047_revolution_and_reform.gd 动态生成）"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "我现在换思想能保证不换人吗"
+disabled_text = "救无可救，吐故纳新"
+enable_condition = SubResource("Expr_keep_power")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由 event_042_047_revolution_and_reform.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "reformers_take_power"
+source_event_number = 44
+trigger_priority = 440
+title = "不管黑猫白猫…"
+description = "国内的债务高企与缺乏根本改观的糜烂经济局势已让既定方针难以为继，而党内改革派与实用主义政客的做大更是使得力行的保守政策丧失了社会基础。最近中央召开的工作会议更使这种趋势趋于公开化，斗争就此走向白热化：不满于的政客已经团结在党内“经济专家”，曾在“文化大革命”期间主持国内全面整顿的老主管邓小平周围。他们将纯粹的经济问题探讨变成了算政治账的法庭，并对“彭德怀案”、“四五运动”、“文革余毒”乃至“六十一人叛徒集团”等故事重提，甚至将目前的经济失败与往日的所谓“唯意志论”等挂钩在一起。由此要求对此做出交代——他们的要求显而易见，不换思想就换人。邓小平更是趁机撮合起所谓“求是派”圈子，在平反冤假错案，确立科学发展路线的旗下玩起经济核算、自筹资金与拓展市场要素的把戏，从而描摹起不同于既定路线的所谓“恢宏蓝图”，大有当中国版卡达尔·亚诺什的野心。出席会议的绝大多数角色基本上成了他的盟友。倘若你不想失去权力的话，总得做些什么！"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_year"), SubResource("Expr_stage_0"), SubResource("Expr_reform_power")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])
+display_script = ExtResource("5_custom")

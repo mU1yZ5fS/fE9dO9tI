@@ -1,0 +1,61 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_042_047_revolution_and_reform.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.11"
+
+[sub_resource type="Resource" id="Expr_agents_30"]
+script = ExtResource("3_expr")
+type = 0
+key = "agents"
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_vietnam_socialist"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 1.0
+target = "23"
+
+[sub_resource type="Resource" id="Expr_stop"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_agents_30"), SubResource("Expr_vietnam_socialist")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "不干涉"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "1978年11月，越南加入经济互助委员会，导致中越两国关系进一步恶化。反越情绪已经在中国共产党内活跃成熟。希望这不会导致大规模冲突。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "尽全力阻止整个进程"
+disabled_text = "我们管不着啊"
+enable_condition = SubResource("Expr_stop")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "我们的干预，和对越南支持温和路线的人的动员最终迫使黎笋和越共领导层无限期推迟加入经互会的计划，遵循更为平衡的外交政策。苏联当然不开心，但这至少帮助我们暂时避免越南和苏联进一步加深友好关系。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "vietnam_cmea"
+source_event_number = 43
+trigger_priority = 430
+title = "经互会的扩张"
+description = "长期以来，越南一直试图在我们和苏联之间取得平衡，因为尽管我们与苏联存在分歧，但我们的志愿者们在印度支那战争中与社会主义越南并肩作战。但随着战争结束和越南统一，越南逐渐变得越来越亲苏联，越来越疏远我们。|黎笋1977年访问莫斯科后，越南与苏联又开始了一次友好关系，他日复一日地希望加入经互会。然而，该国部分领导人反对与苏联建立如此热烈的友好关系，因为越南没有特别的威胁，特别是在柬埔寨的波尔布特政权被推翻后。这是我们干预和制止苏联霸权扩散的机会。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1")])
+display_script = ExtResource("5_custom")

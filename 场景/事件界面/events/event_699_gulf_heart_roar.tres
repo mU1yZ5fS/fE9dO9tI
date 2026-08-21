@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_699_gulf_heart_roar.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们坚决站在被压迫者的一边！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_699_gulf_heart_roar.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "让我们帮帮潜在的新朋友。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_699_gulf_heart_roar.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "蒜泥？参叶？"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_699_gulf_heart_roar.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_699"
+source_event_number = 699
+trigger_priority = 69900
+title = "海湾之心的怒吼"
+description = "在两圣地遭遇袭击后的数日内，沙特阿拉伯的东部省也出现动荡：在长期处于被压迫地位、同时蕴藏丰富石油资源的什叶派聚居区卡提夫，自沙特王国成立以来，便受到政治、经济、文化的各方面压制，什叶派信徒被政府的学者轻蔑地称呼为拉菲德派（拒绝者）。自1979年伊朗革命后，当地什叶派逐渐兴起反君主制与反西方思潮。并在伊朗及其他地区什叶派教法学家的支持下，当地领袖寻求与逊尼派平等的权利，并通过动员信众向政府施压。对此，沙特政府对日益高涨的什叶派不满情绪感到忧虑，不仅增强了国家安全机构的力量，也默许执法部门随意拘捕所谓“涉嫌叛乱者”。\n不断激化的矛盾终于在伊斯兰历元月（穆哈兰姆月）第十日的阿舒拉节全面爆发：众多什叶派信徒走上街头，举行宗教性质的纪念与哀悼活动，这令本已草木皆兵的沙特当局更为紧张。政府派出大批警察人员驱散这些“非法聚集”的人群，却适得其反，使原本的宗教游行转变为公开抗议。愤怒的什叶派群众高呼“国王退位””先知的宗教是没有歧视的宗教”的口号，要求信仰自由与权利平等。作为回应，沙特国民警卫队以警棍和电击强行清场，并逮捕了许多和平示威的领头人。\n然而镇压并未平息事态，反而进一步加剧矛盾，一些抗议者开始转向暴力反抗。他们在“半岛伊斯兰革命组织”（简称OIR，深受阿亚图拉设拉子这位什叶派民主主义者的影响）的协助下实现了一定程度的武装化，以此对抗沙特政府的专制统治。与此同时，伊朗与伊拉克的什叶派宗教领袖纷纷发声，就此事抨击沙特政府，并赞扬抗议者效仿“阿里与侯赛因”那样反抗不公正的秩序。此外，沙特阿拉伯共产党、全国学生联合会及多个人权团体也参与到这场运动中，试图借此动摇王室长年以来的专制统治，并推动沙特走向更为民主的政治生态。"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

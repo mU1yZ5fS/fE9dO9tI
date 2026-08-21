@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_414_portugal_revolution_end.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 12
+key = "1976.4.20"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "给葡萄牙民主政体来点“尖叫”（需要2.0百万预算与2.0点特工网络）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_414_portugal_revolution_end.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "不闻不问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_414_portugal_revolution_end.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_414"
+source_event_number = 414
+trigger_priority = 41400
+title = "葡萄牙革命的结束？"
+description = "结束新国家体制的1974年康乃馨革命并没能扭转局势，反而进一步将葡萄牙推入到了经济与政治危机当中。成立于1975年的葡萄牙革命委员会内山头林立，各大派系均对国家未来有属于自己的野心——这个囊括左翼与右翼激进派、温和社会主义者与温和民主主义者的大帐篷内动荡不安。来自军方的激进派两翼的冲突导致了葡萄牙的未遂政变迭起，因此，该时期也被称为“1975年躁热之夏”。对左翼与右翼政变的镇压，最终导致了政府内激进主义派系的影响力衰退。前者已经开始实行部分社会主义改革，而社会也厌倦了浪潮迭起的革命。因此，那些在1976年便进入政府的民主党派的势力得到了大大提升，他们满怀信心地认为，革命将理所当然的结束。在今年4月，葡萄牙通过了一部新宪法。尽管如此，她还是巩固了将在该国建立社会主义的基本原则，并宣称绝不动摇先前的改革成果。在同期举行的议会选举中，由马里奥·苏亚雷斯领导的社会党拿下35%的选票，而两个右翼政党（即人民党与社会民主党）合计获得40%的选票。共产党仅得票15%。该国将在不久后举行总统选举，其中，由主要政党支持的拉马尔霍·埃亚内斯最有可能获胜。然而，尽管该国局势日趋稳定，但葡萄牙依然没能解决其发展的最主要问题——民主体制依然不受欢迎，哪怕是一点风吹草动，都有可能让革命春风吹又生。提示：倘若葡萄牙的稳定指数超过50%，该国将建立稳定的自由派政权。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_0")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

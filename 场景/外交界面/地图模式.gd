@@ -6,9 +6,9 @@
 #
 # 四种模式（属性经 gwcode 从 WorldState 干净直查）：
 #   政府 — 按政体类型（社会主义/自由/改良/威权）
-#   影响 — 按超级大国势力范围（美/苏/中/法/中立）
-#   军事 — 按军事同盟（NATO/华约/SEATO...）
-#   经济 — 按经济同盟（经互会/欧盟/东盟...）
+#   影响 — 按势力范围（法国/南非/伊拉克/西班牙/美/苏/中/中立，原版 Repaint map_type==3）
+#   军事 — 按军事同盟（NAZIMAO/FXSEU/NATO/SEATO/SENTO/OVD/OAR/AU/RIM/OKB）
+#   经济 — 按经济同盟与贸易伙伴（BALECON/EU/ASEAN/SocEU/石油/SEV/econ/对华贸易，含叠加）
 #
 # 原理：region_map 标识每个像素属于哪个国家(gwcode)，color 调色板决定该国显示什么色。
 #   切换模式 = 重建 color 调色板。无需预烘焙，联盟/政体变化后立即可见。
@@ -60,6 +60,12 @@ func _ready() -> void:
 	if _btn_terrain != null:
 		_btn_terrain.visible = false
 	_connect_signals()
+	# 贸易/联盟/政体等标签变化时实时重建当前模式调色板
+	if GameManager:
+		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(refresh):
+			GameManager.stats_changed.connect(refresh)
+		if GameManager.has_signal("world_state_loaded") and not GameManager.world_state_loaded.is_connected(refresh):
+			GameManager.world_state_loaded.connect(refresh)
 	current_mode = DisplayMode.GOVERNMENT
 	_apply_mode()
 	_refresh_button_styles()

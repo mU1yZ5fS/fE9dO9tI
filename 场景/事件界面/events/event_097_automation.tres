@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_097_automation.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_tech17"]
+script = ExtResource("3_expr")
+type = 29
+value = 17.0
+
+[sub_resource type="Resource" id="Expr_econ10"]
+script = ExtResource("3_expr")
+type = 21
+key = "economy_system"
+value = 10.0
+
+[sub_resource type="Resource" id="Expr_econ11"]
+script = ExtResource("3_expr")
+type = 21
+key = "economy_system"
+value = 11.0
+
+[sub_resource type="Resource" id="Expr_any_econ"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_econ10"), SubResource("Expr_econ11")])
+
+[sub_resource type="Resource" id="Expr_trigger"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_tech17"), SubResource("Expr_any_econ")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "我们开始大规模实施自动化系统"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_097_automation.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "急于求成不会有好结果，要循序渐进，不要想一蹴而就。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_097_automation.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_097"
+source_event_number = 97
+trigger_priority = 9700
+title = "自动化？"
+description = "这是我们最伟大的科学突破－最近以来我们与经济完全落后的情况斗争，现在我们的科学家在基于计算机系统开发自动化经济计划的机制方面取得了杰出成就，并开始开发允许自动化计划和调节全国企业的系统。距离系统的全面实施仍有相当距离，但现在如果我们想取得自动化经济的成功的话，我们可以并也应该引入基层地区的系统和协作。但是，许多官员和党员，认为引入这样一个不熟悉的系统太匆忙了，他们显然不喜欢它…"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_trigger")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

@@ -1,0 +1,102 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_536_japan_election_1983_opp.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_534"
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_527"
+
+[sub_resource type="Resource" id="Expr_5"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_528"
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_4"), SubResource("Expr_5")])
+
+[sub_resource type="Resource" id="Expr_6"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 8.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_8"]
+script = ExtResource("3_expr")
+type = 12
+key = "1983.10.1"
+
+[sub_resource type="Resource" id="Expr_9"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.1.1"
+
+[sub_resource type="Resource" id="Expr_7"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_8"), SubResource("Expr_9")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = ""
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_536_japan_election_1983_opp.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持社会革新党"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_536_japan_election_1983_opp.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "保持观望"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_536_japan_election_1983_opp.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_536"
+source_event_number = 536
+trigger_priority = 53600
+title = "保革伯仲：第三幕"
+description = "在大平正芳于1980年去世后，中曾根康弘替代过渡的西村英一成为自由民主党新总裁以及日本首相。1983年10月12日，在东京地方法院对洛克希德公司案进行的一审中，前首相田中角荣被判处4年有期徒刑和5亿日元附加费，但田中坚持无罪，提出上诉并拒绝辞去众议院议员职务。议会也因为前首相的刑期而陷入混乱，在野党强力坚持提出并表决建议田中辞去国会职务的决议案，审议陷入僵局。最终众参两院的议长提出了调解方案并获得通过，中曾根内阁决定在重要法案获得通过后解散众议院。11月28日，众议院解散。12月18日，新一轮选举将正式开始。\n革新政权内部依旧存在不稳定因素，现任政府几年来的政策也同样褒贬不一。自由民主党正在紧锣密鼓地筹划重夺政权。不管怎样，现在是我们该行动的时候了！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_3"), SubResource("Expr_6"), SubResource("Expr_7")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

@@ -1,0 +1,102 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_531_japan_road_choice.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_530"
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_527"
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_528"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_3"), SubResource("Expr_4")])
+
+[sub_resource type="Resource" id="Expr_5"]
+script = ExtResource("3_expr")
+type = 28
+key = "puppet_of"
+value = -1.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_6"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 8.0
+target = "44"
+
+[sub_resource type="Resource" id="Expr_8"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.6.1"
+
+[sub_resource type="Resource" id="Expr_9"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.1.1"
+
+[sub_resource type="Resource" id="Expr_7"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_8"), SubResource("Expr_9")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "紧密团结执政联盟并促使它们合并"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_531_japan_road_choice.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "全力支持社会主义协会并将共产党与社会党重新聚在一起"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_531_japan_road_choice.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "关注局势变化"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_531_japan_road_choice.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_531"
+source_event_number = 531
+trigger_priority = 53100
+title = "变则善，常变则至善"
+description = "多亏了我们的帮助，社会党终于摆脱了“万年在野党”的尴尬名头，实现了“保革逆转”。在飞鸟田一雄的带领下，社会党在坚持护宪平和主义的同时也根据国际局势的变化做出了一定调整：巩固工人权益的同时平衡市民阶层与劳工之间的关系，推动公有化进程并准备筹划建立“国家计划委员会”。对外则全面加强了与各国社会主义政党的联系，与苏联和社会主义阵营的经贸关系也愈发紧密，《日美安保条约》的重新谈判已经启动，同时积极组织国际会议以试图推动全球裁军以及无核化。这些政策自然引起了许多人的不满（尤其是保守势力），美国也对新政府的行为十分警惕，秘密加强了在太平洋区域的兵力和演习次数。\n同时在日本国内，反对党自由民主党对社会党的“激进左倾”政策表示强烈不满，称其“希望把日本置于苏联的势力范围之下”。而处于联合政府内的公明党和民主社会党也对社会党的政策颇有微词，尽管他们已经为了适应社会党的主要主张已经对自身的纲领路线进行了调整。而在另一边，共产党对社会党不再坚持“社共共斗”路线以及两党势力的此消彼长（尤其是在基层）极为不满，共产党领导人宫本显治多次在公开场合批评社会党，称其不仅是一个“中道政党”且有进一步右倾化的苗头。但需要注意的是，共产党内仍有一部分人希望保持与社会党的关系。\n主席同志，考虑到目前的情况，现在是我们做出选择的时候了。是促使联合政府的三党更加紧密地团结在一起，还是重建“社共共斗”的路线。请务必谨慎选择，考虑到日本的政坛现状，您的任何选择都将产生巨大影响。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_5"), SubResource("Expr_6"), SubResource("Expr_7")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

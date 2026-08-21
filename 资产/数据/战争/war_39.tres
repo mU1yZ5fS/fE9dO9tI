@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 39
+name_zh = "第二次西撒哈拉独立战争"
+name_en = ""
+fortnight_max = 20
+drift_infl1 = 3
+drift_infl2 = -3
+drift_extra_infl1 = 0
+drift_extra_infl2 = 0
+drift_extra_flag = ""
+default_side1 = "摩洛哥王国"
+default_side2 = "西撒哈拉"
+default_usa_side = 0
+default_ussr_side = -1
+default_infl1 = 500
+default_infl2 = 500

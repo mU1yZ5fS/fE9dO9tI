@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WarDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/war_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = 12
+name_zh = "土耳其危机战争（伊朗战场）"
+name_en = "Turkish Crisis War (Iran)"
+fortnight_max = 12
+drift_infl1 = 5
+drift_infl2 = -5
+drift_extra_infl1 = 20
+drift_extra_infl2 = -20
+drift_extra_flag = "turkey_crisis"
+default_side1 = "土耳其"
+default_side2 = "伊朗"
+default_usa_side = 0
+default_ussr_side = 1
+default_infl1 = 500
+default_infl2 = 500

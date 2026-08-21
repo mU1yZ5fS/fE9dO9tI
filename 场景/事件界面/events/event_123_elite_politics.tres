@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_123_elite_politics.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "派系民主，任期轮换"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_123_elite_politics.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "儒家思想"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_123_elite_politics.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "法家思想"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_123_elite_politics.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "军队为主体的民主"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_123_elite_politics.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_123"
+source_event_number = 123
+trigger_priority = 12300
+title = "精英政治"
+description = "现在，老一辈的革命领袖已然逝去，他们掀起的变革也没有让中国走向伟大，我们可以抛弃他们失败的实验，转向一种基于特定历史时期的全新治国模式。第一种选择是再次允许党内存在山头，允许某些派系的形成与存在，只要它们都忠实于一个理念，即孙中山的理念便可。第二种选择是让儒家思想回归到国家法律与国家机器的建构之中，从此宣告建设一个精神和谐的国家。第三种选择是法家思想，旨在建立一个强有力的中央集权机构，推行严刑峻法，狂热地忠于中国，并以经济为导向，而非教条主义。最后一个选择是制定一套平平无奇的服役制度——谁在军队服役，并得以晋升到军官一级，谁就应该享有选举和被选举权，也许这种选贤任能的制度能给中国带来伟人？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

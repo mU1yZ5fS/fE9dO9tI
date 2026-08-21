@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_071_073_india_and_iran_war.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_day"]
+script = ExtResource("3_expr")
+type = 0
+key = "day"
+value = 15.0
+
+[sub_resource type="Resource" id="Expr_month"]
+script = ExtResource("3_expr")
+type = 0
+key = "month"
+value = 9.0
+
+[sub_resource type="Resource" id="Expr_year_1980"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1980.0
+
+[sub_resource type="Resource" id="Expr_1980_date"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_day"), SubResource("Expr_month"), SubResource("Expr_year_1980")])
+
+[sub_resource type="Resource" id="Expr_year_1981"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1981.0
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_1980_date"), SubResource("Expr_year_1981")])
+
+[sub_resource type="Resource" id="Expr_pro_usa"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲美"
+target = "8"
+
+[sub_resource type="Resource" id="Expr_not_pro_usa"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_pro_usa")])
+
+[sub_resource type="Resource" id="Expr_authoritarian"]
+script = ExtResource("3_expr")
+type = 25
+key = "government"
+value = 0.0
+target = "8"
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "战争即地狱"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "（结果由事件脚本动态生成）"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "iran_iraq_war"
+source_event_number = 73
+trigger_priority = 730
+title = "两伊战争"
+description = "伊朗与伊拉克间的关系长期紧张，这主要是由于领土争端。1969年，伊朗根据1937年的协议控制了伊拉克的阿拉伯河，1971年伊朗占领了伊拉克宣称的霍尔木兹海峡内的三个岛屿。然而，伊朗伊斯兰革命胜利后，形势进一步恶化，霍梅尼想把革命传播到整个穆斯林世界，开始积极派遣煽动者和代理人到伊拉克。以及支持伊拉克库尔德人争取独立的斗争。作为对此的回应，同时考虑到伊朗军队因革命和伊斯兰清洗而混乱，萨达姆·侯赛因决定入侵伊朗，以占领石油资源丰富的胡兹斯坦省。9月22日中午左右，伊拉克军队入侵伊朗，遭遇了强烈的抵抗，目前正在伊朗领土内缓慢地进军。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_not_pro_usa"), SubResource("Expr_authoritarian")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0")])

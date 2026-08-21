@@ -3,6 +3,47 @@
 [ext_resource type="Script" uid="uid://cdg7a5ltf7001" path="res://场景/科研界面/科研.gd" id="1_13msm"]
 [ext_resource type="Texture2D" uid="uid://dknh0tkp0npsn" path="res://资产/UI/科研/科研背景.png" id="1_xqk0p"]
 [ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="2_ujbyv"]
+[ext_resource type="Texture2D" uid="uid://bncv8nmopowl7" path="res://资产/UI/科研/科研点数图标.png" id="4_dm5kf"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="5_4vumy"]
+[ext_resource type="Texture2D" uid="uid://ka0km240wql3" path="res://资产/UI/科研/科研预算背景.png" id="5_afeuu"]
+[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="6_5jtnw"]
+[ext_resource type="Texture2D" uid="uid://gi5c5ivj8uuk" path="res://资产/UI/科研/农业科技_大跃进的遗产.png" id="9_py5tl"]
+[ext_resource type="Texture2D" uid="uid://ca775o76xtwbm" path="res://资产/UI/科研/农业科技_巩固农业设施.png" id="10_bb3wn"]
+[ext_resource type="Texture2D" uid="uid://b5xx6fe3r8v3s" path="res://资产/UI/科研/农业科技_农业方法革新.png" id="11_daoj1"]
+[ext_resource type="Texture2D" uid="uid://d0qnbsexx6jni" path="res://资产/UI/科研/农业科技_发展农业机械化.png" id="12_bb3wn"]
+[ext_resource type="Texture2D" uid="uid://ctdh8xves6v84" path="res://资产/UI/科研/农业科技_新型肥料与杀虫剂.png" id="13_2ihq2"]
+[ext_resource type="Texture2D" uid="uid://bsodgaprgd0rm" path="res://资产/UI/科研/农业科技_选育与基因研究.png" id="13_daoj1"]
+[ext_resource type="Texture2D" uid="uid://ckbqg386k4as3" path="res://资产/UI/科研/农业科技_开垦处女地.png" id="14_barmv"]
+[ext_resource type="Texture2D" uid="uid://d2plpqneopitn" path="res://资产/UI/科研/农业科技_新增研究设施.png" id="16_2e0e8"]
+[ext_resource type="Texture2D" uid="uid://db2anybq6q4wo" path="res://资产/UI/科研/农业科技_遗传修饰.png" id="17_d6p7u"]
+[ext_resource type="Texture2D" uid="uid://0212vbn42s5p" path="res://资产/UI/科研/工业科技_改良流水线生产模式.png" id="18_nle5s"]
+[ext_resource type="Texture2D" uid="uid://xuupg53pofk1" path="res://资产/UI/科研/工业科技_自研工业科技.png" id="19_86rxl"]
+[ext_resource type="Texture2D" uid="uid://h8sxh4oh674s" path="res://资产/UI/科研/工业科技_工业设施中国化.png" id="20_rx1we"]
+[ext_resource type="Texture2D" uid="uid://cjadv1k0jo3v1" path="res://资产/UI/科研/工业科技_电子工业中国化.png" id="21_epajj"]
+[ext_resource type="Texture2D" uid="uid://bxpagsmeuyyd7" path="res://资产/UI/科研/工业科技_中国版的OGAS.png" id="22_86rxl"]
+[ext_resource type="Texture2D" uid="uid://d2nmhs8rk4401" path="res://资产/UI/科研/工业科技_现代制造业.png" id="23_0cg41"]
+[ext_resource type="Texture2D" uid="uid://bkhcyl8p22fk0" path="res://资产/UI/科研/工业科技_改进国内工业机械.png" id="24_ckr4w"]
+[ext_resource type="Texture2D" uid="uid://b434rufog2eji" path="res://资产/UI/科研/工业科技_计算机化.png" id="25_oi1ie"]
+[ext_resource type="Texture2D" uid="uid://b83bv2luwfhr0" path="res://资产/UI/科研/工业科技_自动化生产控制.png" id="26_5ctrl"]
+[ext_resource type="Texture2D" uid="uid://cy12p15kdu0yu" path="res://资产/UI/科研/军事科技_加强军备开发.png" id="27_7fiuk"]
+[ext_resource type="Texture2D" uid="uid://djghrnerh5r8q" path="res://资产/UI/科研/军事科技_更新军队装备.png" id="28_ig3b0"]
+[ext_resource type="Texture2D" uid="uid://sa7jsxoiso2a" path="res://资产/UI/科研/军事科技_情报部门新装备.png" id="29_go5jp"]
+[ext_resource type="Texture2D" uid="uid://detfrycl1i0ph" path="res://资产/UI/科研/军事科技_发展海军与空军.png" id="30_x5wro"]
+[ext_resource type="Texture2D" uid="uid://ci638dpjfu0gy" path="res://资产/UI/科研/军事科技_发展核武器与导弹.png" id="31_f2sby"]
+[ext_resource type="Texture2D" uid="uid://yay1cue3mdls" path="res://资产/UI/科研/军事科技_指挥链与军事组织改革.png" id="32_eiakt"]
+[ext_resource type="Texture2D" uid="uid://d0v8rbbnpw1dk" path="res://资产/UI/科研/军事科技_新式间谍装备.png" id="33_74ls4"]
+[ext_resource type="Texture2D" uid="uid://cpim4wd5cgwjo" path="res://资产/UI/科研/军事科技_现代间谍装备.png" id="34_006bw"]
+[ext_resource type="Texture2D" uid="uid://djhr83jlaffec" path="res://资产/UI/科研/军事科技_迎接信息化战争.png" id="35_q7mjd"]
+[ext_resource type="Texture2D" uid="uid://h3ful3cgix68" path="res://资产/UI/科研/航天科技_通讯卫星.png" id="36_0mczk"]
+[ext_resource type="Texture2D" uid="uid://c35t1rksivwmk" path="res://资产/UI/科研/航天科技_导航卫星.png" id="37_1mczk"]
+[ext_resource type="Texture2D" uid="uid://dtnewdki61lr0" path="res://资产/UI/科研/航天科技_军事卫星.png" id="38_2mczk"]
+[ext_resource type="Texture2D" uid="uid://b41urgleiemye" path="res://资产/UI/科研/航天科技_载人航天.png" id="39_3mczk"]
+[ext_resource type="Texture2D" uid="uid://dwkuhbxu7d6di" path="res://资产/UI/科研/航天科技_行星际飞行器.png" id="40_4mczk"]
+[ext_resource type="Texture2D" uid="uid://ddgo4kk5thnvi" path="res://资产/UI/科研/航天科技_轨道空间站.png" id="41_5mczk"]
+[ext_resource type="Texture2D" uid="uid://2kredme6a3hs" path="res://资产/UI/科研/航天科技_航天飞机.png" id="42_6mczk"]
+[ext_resource type="Texture2D" uid="uid://b5pe8abpiemtx" path="res://资产/UI/科研/科研提示板.png" id="43_7mczk"]
+[ext_resource type="PackedScene" uid="uid://c8e4f2a6b0d17" path="res://场景/科研界面/科技条目.tscn" id="87_entry"]
+[ext_resource type="Script" uid="uid://c83ufj468hcky" path="res://场景/科研界面/科研关系线.gd" id="88_rel"]
 
 [node name="Control" type="Control" unique_id=81003301]
 layout_mode = 3
@@ -13,20 +54,472 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_13msm")
 
-[node name="科研背景" type="TextureRect" parent="." unique_id=1361839528]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+[node name="固定" type="CanvasLayer" parent="." unique_id=1312751075]
+layer = -1
+
+[node name="科研背景" type="TextureRect" parent="固定" unique_id=1361839528]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_xqk0p")
 expand_mode = 1
-stretch_mode = 1
+stretch_mode = 6
 
-[node name="返回外交" type="TextureButton" parent="." unique_id=1865736311]
-layout_mode = 0
+[node name="返回外交" type="TextureButton" parent="固定" unique_id=1865736311]
 offset_left = 48.0
 offset_top = 56.0
 offset_right = 159.0
 offset_bottom = 168.0
 texture_normal = ExtResource("2_ujbyv")
 
-[connection signal="pressed" from="返回外交" to="." method="_on_返回外交_pressed"]
+[node name="科研点数背景" type="TextureRect" parent="固定" unique_id=1227064643]
+offset_left = 45.0
+offset_top = 284.0
+offset_right = 298.0
+offset_bottom = 709.0
+texture = ExtResource("4_dm5kf")
+
+[node name="预算背景" type="TextureRect" parent="固定" unique_id=268949194]
+offset_left = 48.0
+offset_top = 184.0
+offset_right = 296.0
+offset_bottom = 264.0
+texture = ExtResource("5_afeuu")
+expand_mode = 2
+
+[node name="预算图标" type="TextureRect" parent="固定" unique_id=2102922054]
+offset_left = 58.0
+offset_top = 192.0
+offset_right = 128.0
+offset_bottom = 256.0
+texture = ExtResource("6_5jtnw")
+
+[node name="预算数值" type="Label" parent="固定" unique_id=1570852886]
+offset_left = 136.0
+offset_top = 192.0
+offset_right = 288.0
+offset_bottom = 257.0
+theme_override_colors/font_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 56
+text = "11111"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="科研点数文字" type="Label" parent="固定" unique_id=477181297]
+offset_left = 58.0
+offset_top = 614.0
+offset_right = 282.0
+offset_bottom = 679.0
+theme_override_colors/font_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 56
+text = "科研点数"
+
+[node name="科研点数数值" type="Label" parent="固定" unique_id=927048691]
+offset_left = 58.0
+offset_top = 312.0
+offset_right = 282.0
+offset_bottom = 377.0
+theme_override_colors/font_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 56
+text = "11111"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="提示层" type="CanvasLayer" parent="." unique_id=403998931]
+layer = 10
+
+[node name="科研提示板" type="TextureRect" parent="提示层" unique_id=392226900]
+visible = false
+offset_left = 91.0
+offset_top = 789.0
+offset_right = 1711.0
+offset_bottom = 1057.0
+mouse_filter = 2
+texture = ExtResource("43_7mczk")
+
+[node name="提示标题" type="Label" parent="提示层" unique_id=48448193]
+visible = false
+offset_left = 662.0
+offset_top = 790.0
+offset_right = 1262.0
+offset_bottom = 840.0
+theme_override_colors/font_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/font = ExtResource("5_4vumy")
+theme_override_font_sizes/font_size = 28
+text = "科技名称"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="提示状态" type="RichTextLabel" parent="提示层" unique_id=1151459217]
+visible = false
+offset_left = 462.0
+offset_top = 824.0
+offset_right = 1462.0
+offset_bottom = 872.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/normal_font = ExtResource("5_4vumy")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "[center][color=red]0.0[/color] 资金[/center]"
+scroll_active = false
+
+[node name="提示描述" type="RichTextLabel" parent="提示层" unique_id=1961879916]
+visible = false
+offset_left = 116.0
+offset_top = 868.0
+offset_right = 1701.0
+offset_bottom = 1041.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.2901961, 0.11764706, 0.1882353, 1)
+theme_override_fonts/normal_font = ExtResource("5_4vumy")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "科技介绍"
+scroll_active = false
+
+[node name="科研关系线" type="Node2D" parent="." unique_id=1937715074]
+script = ExtResource("88_rel")
+
+[node name="农业科技" type="Control" parent="." unique_id=1234245710]
+anchors_preset = 0
+offset_left = 472.0
+offset_right = 512.0
+offset_bottom = 40.0
+
+[node name="大跃进的遗产" parent="农业科技" unique_id=197835481 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 48.0
+offset_right = 596.0
+offset_bottom = 200.0
+tech_name = "大跃进的遗产"
+button_texture = ExtResource("9_py5tl")
+
+[node name="巩固农业设施" parent="农业科技" unique_id=1253751864 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 232.0
+offset_right = 596.0
+offset_bottom = 384.0
+tech_name = "巩固农业设施"
+button_texture = ExtResource("10_bb3wn")
+
+[node name="农业方法革新" parent="农业科技" unique_id=1664440881 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 416.0
+offset_right = 596.0
+offset_bottom = 568.0
+tech_name = "农业方法革新"
+button_texture = ExtResource("11_daoj1")
+
+[node name="发展农业机械化" parent="农业科技" unique_id=1115651672 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 416.0
+offset_right = 372.0
+offset_bottom = 568.0
+tech_name = "发展农业机械化"
+button_texture = ExtResource("12_bb3wn")
+
+[node name="新型肥料与杀虫剂" parent="农业科技" unique_id=957914089 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 608.0
+offset_right = 372.0
+offset_bottom = 760.0
+tech_name = "新型肥料与杀虫剂"
+button_texture = ExtResource("13_2ihq2")
+
+[node name="开垦处女地" parent="农业科技" unique_id=1353828458 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 792.0
+offset_right = 372.0
+offset_bottom = 944.0
+tech_name = "开垦处女地"
+button_texture = ExtResource("14_barmv")
+
+[node name="选育与基因研究" parent="农业科技" unique_id=745368393 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 416.0
+offset_right = 820.0
+offset_bottom = 568.0
+tech_name = "选育与基因研究"
+button_texture = ExtResource("13_daoj1")
+
+[node name="新增研究设施" parent="农业科技" unique_id=1086525571 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 608.0
+offset_right = 820.0
+offset_bottom = 760.0
+tech_name = "新增研究设施"
+button_texture = ExtResource("16_2e0e8")
+
+[node name="遗传修饰" parent="农业科技" unique_id=767537275 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 784.0
+offset_right = 820.0
+offset_bottom = 936.0
+tech_name = "遗传修饰"
+button_texture = ExtResource("17_d6p7u")
+
+[node name="工业科技" type="Control" parent="." unique_id=1201367591]
+anchors_preset = 0
+offset_left = 472.0
+offset_top = 1008.0
+offset_right = 512.0
+offset_bottom = 1048.0
+
+[node name="改良流水线生产模式" parent="工业科技" unique_id=453803055 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 48.0
+offset_right = 596.0
+offset_bottom = 200.0
+tech_name = "改良流水线生产模式"
+button_texture = ExtResource("18_nle5s")
+
+[node name="自研工业科技" parent="工业科技" unique_id=2029777339 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 232.0
+offset_right = 596.0
+offset_bottom = 384.0
+tech_name = "自研工业科技"
+button_texture = ExtResource("19_86rxl")
+
+[node name="工业设施中国化" parent="工业科技" unique_id=1183777166 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 416.0
+offset_right = 596.0
+offset_bottom = 568.0
+tech_name = "工业设施中国化"
+button_texture = ExtResource("20_rx1we")
+
+[node name="电子工业中国化" parent="工业科技" unique_id=1081775178 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 416.0
+offset_right = 372.0
+offset_bottom = 568.0
+tech_name = "电子工业中国化"
+button_texture = ExtResource("21_epajj")
+
+[node name="自动化生产控制" parent="工业科技" unique_id=82891492 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 608.0
+offset_right = 372.0
+offset_bottom = 760.0
+tech_name = "自动化生产控制"
+button_texture = ExtResource("26_5ctrl")
+
+[node name="中国版的OGAS" parent="工业科技" unique_id=267818151 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 792.0
+offset_right = 372.0
+offset_bottom = 944.0
+tech_name = "中国版的OGAS"
+button_texture = ExtResource("22_86rxl")
+
+[node name="现代制造业" parent="工业科技" unique_id=1642930259 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 416.0
+offset_right = 820.0
+offset_bottom = 568.0
+tech_name = "现代制造业"
+button_texture = ExtResource("23_0cg41")
+
+[node name="改进国内工业机械" parent="工业科技" unique_id=668283324 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 608.0
+offset_right = 820.0
+offset_bottom = 760.0
+tech_name = "改进国内工业机械"
+button_texture = ExtResource("24_ckr4w")
+
+[node name="计算机化" parent="工业科技" unique_id=1997937259 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 784.0
+offset_right = 820.0
+offset_bottom = 936.0
+tech_name = "计算机化"
+button_texture = ExtResource("25_oi1ie")
+
+[node name="军事科技" type="Control" parent="." unique_id=1133990878]
+anchors_preset = 0
+offset_left = 472.0
+offset_top = 2000.0
+offset_right = 512.0
+offset_bottom = 2040.0
+
+[node name="加强军备开发" parent="军事科技" unique_id=541049299 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 48.0
+offset_right = 596.0
+offset_bottom = 200.0
+tech_name = "加强军备开发"
+button_texture = ExtResource("27_7fiuk")
+
+[node name="更新军队装备" parent="军事科技" unique_id=438246542 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 232.0
+offset_right = 596.0
+offset_bottom = 384.0
+tech_name = "更新军队装备"
+button_texture = ExtResource("28_ig3b0")
+
+[node name="情报部门新装备" parent="军事科技" unique_id=2097067683 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 416.0
+offset_top = 416.0
+offset_right = 596.0
+offset_bottom = 568.0
+tech_name = "情报部门新装备"
+button_texture = ExtResource("29_go5jp")
+
+[node name="发展海军与空军" parent="军事科技" unique_id=1204604350 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 416.0
+offset_right = 372.0
+offset_bottom = 568.0
+tech_name = "发展海军与空军"
+button_texture = ExtResource("30_x5wro")
+
+[node name="发展核武器与导弹" parent="军事科技" unique_id=1913603742 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 608.0
+offset_right = 372.0
+offset_bottom = 760.0
+tech_name = "发展核武器与导弹"
+button_texture = ExtResource("31_f2sby")
+
+[node name="指挥链与军事组织改革" parent="军事科技" unique_id=1495322444 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 792.0
+offset_right = 372.0
+offset_bottom = 944.0
+tech_name = "指挥链与军事组织改革"
+button_texture = ExtResource("32_eiakt")
+
+[node name="新式间谍装备" parent="军事科技" unique_id=175005954 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 416.0
+offset_right = 820.0
+offset_bottom = 568.0
+tech_name = "新式间谍装备"
+button_texture = ExtResource("33_74ls4")
+
+[node name="现代间谍装备" parent="军事科技" unique_id=100215297 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 608.0
+offset_right = 820.0
+offset_bottom = 760.0
+tech_name = "现代间谍装备"
+button_texture = ExtResource("34_006bw")
+
+[node name="迎接信息化战争" parent="军事科技" unique_id=537383222 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 640.0
+offset_top = 784.0
+offset_right = 820.0
+offset_bottom = 936.0
+tech_name = "迎接信息化战争"
+button_texture = ExtResource("35_q7mjd")
+
+[node name="航天科技" type="Control" parent="." unique_id=117949530]
+anchors_preset = 0
+offset_left = 472.0
+offset_top = 1008.0
+offset_right = 512.0
+offset_bottom = 1048.0
+
+[node name="通讯卫星" parent="航天科技" unique_id=2059484701 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 864.0
+offset_top = 48.0
+offset_right = 1044.0
+offset_bottom = 200.0
+tech_name = "通讯卫星"
+button_texture = ExtResource("36_0mczk")
+
+[node name="导航卫星" parent="航天科技" unique_id=945559187 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 864.0
+offset_top = 232.0
+offset_right = 1044.0
+offset_bottom = 384.0
+tech_name = "导航卫星"
+button_texture = ExtResource("37_1mczk")
+
+[node name="军事卫星" parent="航天科技" unique_id=381311650 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 864.0
+offset_top = 416.0
+offset_right = 1044.0
+offset_bottom = 568.0
+tech_name = "军事卫星"
+button_texture = ExtResource("38_2mczk")
+
+[node name="载人航天" parent="航天科技" unique_id=1568820501 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 864.0
+offset_top = 608.0
+offset_right = 1044.0
+offset_bottom = 760.0
+tech_name = "载人航天"
+button_texture = ExtResource("39_3mczk")
+
+[node name="行星际飞行器" parent="航天科技" unique_id=1886957456 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 864.0
+offset_top = 792.0
+offset_right = 1044.0
+offset_bottom = 944.0
+tech_name = "行星际飞行器"
+button_texture = ExtResource("40_4mczk")
+
+[node name="轨道空间站" parent="航天科技" unique_id=517559459 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 864.0
+offset_top = 976.0
+offset_right = 1044.0
+offset_bottom = 1128.0
+tech_name = "轨道空间站"
+button_texture = ExtResource("41_5mczk")
+
+[node name="航天飞机" parent="航天科技" unique_id=2065880949 instance=ExtResource("87_entry")]
+anchors_preset = 0
+offset_left = 864.0
+offset_top = 1160.0
+offset_right = 1044.0
+offset_bottom = 1312.0
+tech_name = "航天飞机"
+button_texture = ExtResource("42_6mczk")
+
+[node name="移动视角摄像机" type="Camera2D" parent="." unique_id=718388811]
+position = Vector2(970, 556)
+
+[connection signal="pressed" from="固定/返回外交" to="." method="_on_返回外交_pressed"]

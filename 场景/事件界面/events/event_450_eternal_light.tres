@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_450_eternal_light.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_done447"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_447"
+
+[sub_resource type="Resource" id="Expr_not448"]
+script = ExtResource("3_expr")
+type = 6
+ref_event_id = "event_448"
+
+[sub_resource type="Resource" id="Expr_no_iranrev"]
+script = ExtResource("3_expr")
+type = 15
+key = "iranrev"
+
+[sub_resource type="Resource" id="Expr_war3_going"]
+script = ExtResource("3_expr")
+type = 30
+value = 3
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1982.5.1"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_done447"), SubResource("Expr_not448"), SubResource("Expr_no_iranrev"), SubResource("Expr_war3_going"), SubResource("Expr_date")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "在我们的帮助下，组建伊朗民族解放军"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_450_eternal_light.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "是时候执行计划了，执行“烈日行动”！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_450_eternal_light.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "我们暂时没有这个意向"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_450_eternal_light.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_450"
+source_event_number = 450
+trigger_priority = 45000
+title = "永恒之光"
+description = "自伊朗——伊拉克爆发大规模冲突以来，拉贾维和前总统巴尼萨德尔的伊朗全国抵抗委员会NCRI，已融入了包括人民圣战者，库尔德斯坦民主党，民族阵线、共产主义者联盟等倒霍力量。虽然其人数众多，但缺少强有力的支持。而伊拉克同时也陷入了和伊朗的堑壕战中，如果能得到NCRI，那么对于快速结束两伊战争也会有很大帮助。而随着伊拉克倒向我们，也许组建一支伊朗人自己的反神权武装力量或许也是可行的？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_done447"), SubResource("Expr_not448"), SubResource("Expr_no_iranrev"), SubResource("Expr_war3_going"), SubResource("Expr_date"), SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

@@ -1,0 +1,112 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_426_spanish_civil_war_vortex.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx5"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Expr_date_1979_2_2"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.2.2"
+
+[sub_resource type="Resource" id="Expr_prev_result_424_0"]
+script = ExtResource("3_expr")
+type = 4
+value = 0.0
+ref_event_id = "event_424"
+
+[sub_resource type="Resource" id="Expr_prev_done_424"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_424"
+
+[sub_resource type="Resource" id="Expr_war_30"]
+script = ExtResource("3_expr")
+type = 30
+value = 30.0
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date_1979_2_2"), SubResource("Expr_prev_result_424_0"), SubResource("Expr_prev_done_424"), SubResource("Expr_war_30")])
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "向加泰罗尼亚与巴斯克国送去军事与人道主义援助（需要10.0百万{0}、5.0点{1}与15.0点{2}）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_426_spanish_civil_war_vortex.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "承认加泰罗尼亚与巴斯克国的独立"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_426_spanish_civil_war_vortex.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "谴责分离主义者"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_426_spanish_civil_war_vortex.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "清除两地顽固的民族主义者，将左翼游击队联合起来组成革命统一阵线"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_426_spanish_civil_war_vortex.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "左翼卡洛斯派，人民联合王国！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_426_spanish_civil_war_vortex.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt5"]
+script = ExtResource("1_opt")
+text = "不闻不问"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx5")])
+result_text = "（结果由 event_426_spanish_civil_war_vortex.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_426"
+source_event_number = 426
+trigger_priority = 42600
+title = "西班牙内战的漩涡"
+description = "随着西班牙内战的进行，原本就暗流涌动的西班牙政治局势变得更加混乱了。\n在长枪党赢得第一次内战后，佛朗哥便决定“清洗”少数民主群体内的共和国支持者，并在国内建立了单一制：自治区被彻底废除，西班牙语成为了该国唯一官方语言，学校与媒体内禁止出现民族地区的语言。上述政策的长期实行增进了民族地区的分离主义情绪。20世纪70年代以来，西班牙的左翼民族武装团体（如加泰罗尼亚的“自由之地”，巴斯克的埃塔，加利西亚的“革命武装斗争”，安达卢西亚的2月28日武装团体和阿斯图里亚斯的AndechaObrera等等）开始变得越加活跃，并成为了西班牙政府的心头大患。而在1977-1978年赋予各地区自治权的举措并没有削弱他们的分离情绪。现在，在内战席卷西班牙的情况下，分离主义力量最强大的巴斯克和加泰罗尼亚借机宣布独立。在意识到内战各方的军队都会回击分离主义势力的情况下，他们依托于左翼分离主义的武装团体，建立了自己的国防军。超级大国谴责了上述地区的分离主义。\n西班牙的反修派的两大游击队——西共（马列）领导的革命反法西斯和爱国阵线（因为内战爆发，该游击队并未解散）、西共（重建）领导的10月1日反法西斯抵抗组织——也在内战时期加强了活动，于此同时，西班牙工人党也利用它与工会运动的联系，加强了反法西斯活动。"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4"), SubResource("Opt5")])

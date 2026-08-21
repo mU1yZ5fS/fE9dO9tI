@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_127_brazil_revival.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Fx4"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "坦克雷多·内维斯，巴西民主运动党（右翼独裁主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_127_brazil_revival.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "保罗·马卢夫，民主社会党（左倾保守主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_127_brazil_revival.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "马里奥·安德里亚扎，民主社会党（自由主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_127_brazil_revival.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "莱昂内尔·布里佐拉，民主工党-工党-劳工党（民主社会主义）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_127_brazil_revival.gd 动态生成）"
+
+[sub_resource type="Resource" id="Opt4"]
+script = ExtResource("1_opt")
+text = "保持距离"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx4")])
+result_text = "（结果由 event_127_brazil_revival.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_127"
+source_event_number = 127
+trigger_priority = 12700
+title = "巴西复兴"
+description = "目前，巴西原有的两党局面已经不复存在。民主运动党（PMDB）和国家社会党（PDS）分别在巴民运（MDB）和国家革新联盟（ARENA）的基础上建立起来。在1980至1981年期间，军方极反动派别从事恐怖主义活动，制造了一系列爆炸案与绑架案，并将袭击归咎于左翼激进分子，但这样的嫁祸未能让民众信服（毕竟左翼地下组织早在1974年便消亡殆尽）。在本次1985年大选的数月前，名为“直接行动”的平民运动席卷了全国，要求在大选中实现直接选举，但这一诉求遭到了议会的否决。在这一形势下，在野势力联合起来支持民主运动党候选人坦克雷多·内维斯，他提出了最终实现巴西政治制度与经济体制自由化的方针；相对应的是，议会中的多数党民主社会党则陷入分裂，在保罗·马卢夫与马里奥·安德里亚扎两位候选人的提名上摇摆不定。安德利亚扎在推动基础设施、航运、住宅综合体和环境工程的高质量快速发展上表现出色；而马卢夫是一位相对保守的候选人，他在其职业生涯中主要处于经济与金融岗位，负责在金融与税务系统反对官僚主义、减少基础教育学校普遍存在的歧视、创设市民休闲设施，以及改善脏乱的人居环境。如果马卢夫获胜，则民主化将稳步推进；而如果安德利亚扎当选，工作重心将放在经济上。与此同时，在这样不稳与撕裂的政局中，如果左翼政党能够联合起来组成一个联盟，那么他们也会有可乘之机......"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3"), SubResource("Opt4")])

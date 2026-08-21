@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_444_long_revolution.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_0"]
+script = ExtResource("3_expr")
+type = 2
+key = "3"
+
+[sub_resource type="Resource" id="Expr_1"]
+script = ExtResource("3_expr")
+type = 2
+key = "6"
+
+[sub_resource type="Resource" id="Expr_2"]
+script = ExtResource("3_expr")
+type = 2
+key = "11"
+
+[sub_resource type="Resource" id="Expr_3"]
+script = ExtResource("3_expr")
+type = 0
+key = "year"
+value = 1985.0
+
+[sub_resource type="Resource" id="Expr_4"]
+script = ExtResource("3_expr")
+type = 15
+key = "is_gkchp"
+
+[sub_resource type="Resource" id="Expr_5"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1"), SubResource("Expr_2"), SubResource("Expr_3"), SubResource("Expr_4")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "相信我们的人民！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_444_long_revolution.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们的人民还没准备好迎接和反动派的斗争......"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_444_long_revolution.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_444"
+source_event_number = 444
+trigger_priority = 44400
+title = "漫长的革命"
+description = "主席同志！伟大领袖毛主席发起的无产阶级文化大革命经历重重波折，延续至今。可以这么说，这场革命一直在党的保护下发展。虽然在过去，我们粉碎了刘少奇反革命集团和邓小平反革命集团，取得了许多成果；但是，这场革命仍然有许多仍然有许多遗留的问题以及过去不得不妥协之处。我们的党在过去对这场革命有些包办替代了，群众终究还是需要自己解放自己，不然，反动的旧势力总有反扑的时候......现在，我们有了成长于革命的新一代人，他们已经成为了当代革命的中坚力量，大量新生的造反派已经进入的党中央——就像60年代革命刚刚发动时一样，民众重拾了革命的热情，自发地与腐朽思想和反动的旧势力作斗争。他们批判革命委员会制度的妥协、批评出版审查的严厉和不够落实的“四大自由”甚至是散乱的群众组织本身……人民群众已经有了足够的成长，他们自发地与资产阶级反动思想战斗，决定彻底的自由，他们渴望进行彻底的变革！"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_5")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

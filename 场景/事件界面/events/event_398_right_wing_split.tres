@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_398_right_wing_split.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "支持阿尔米兰特的“后法西斯主义”议程"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_398_right_wing_split.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "支持罗穆阿尔迪的“新社会共和国”计划"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_398_right_wing_split.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "支持菲尼对意大利社会运动的政治现代化"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_398_right_wing_split.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "我们将静观其变"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_398_right_wing_split.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_398"
+source_event_number = 398
+trigger_priority = 39800
+title = "右翼阵营内的分裂"
+description = "意大利腐败丑闻与右翼在议会内的大胜都已成为过去时。如今，撮合右翼共治的政治实验已然走到了崩溃边缘：由于党内就意大利改革前途与如何实践民族主义议程等系列问题存在争议，右翼联盟的领头羊意大利社会运动已经走到了十字路口。由于政治版图的空前洗牌。曾借助实用主义政策巧妙平衡党内温和派与激进派，并将前恐怖分子、君主主义者同宪政威权主义者共同团结在“没有墨索里尼的法西斯主义”旗帜下的老狐狸乔治·阿尔米兰特已无法照常玩弄权力跷跷板，并在最大化社会运动政治影响力的同时确立起“实用主义法西斯主义者”对党内的政治领导权。他不仅是直面党内另一位巨头，与皮诺·劳蒂牵头的激进派结盟的皮诺·罗穆阿尔迪挑战；更遭受着其政治门生詹弗兰科·菲尼的背刺：前者宣称应借助社会运动确立政治领导权的良机逐步摒弃无谓的第一共和国余毒与肃清所有政治对手，迅速向萨罗共和国与民族工团主义模式过渡；后者则在吸纳天主教民主党成员的基础上热心于实现社会运动事业的和平演变，计划为社会运动彻底洗去其法西斯主义历史污点，事实上将该党改造为契合现代民主主义价值观的民族保守主义阵营一份子。目前，社会运动党内斗争仍悬而未决，这便提供了借题发挥的好机会。我们当然可以选择扶持其中一个派系，但这将为我们带来多少回报呢？"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

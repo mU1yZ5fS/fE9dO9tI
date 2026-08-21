@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_496_congo_yhombi.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.2.1"
+
+[sub_resource type="Resource" id="Expr_done696"]
+script = ExtResource("3_expr")
+type = 5
+ref_event_id = "event_696"
+
+[sub_resource type="Resource" id="Expr_result696_2"]
+script = ExtResource("3_expr")
+type = 4
+ref_event_id = "event_696"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_done696"), SubResource("Expr_result696_2")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "让我们帮助雍比的改革派"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_496_congo_yhombi.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "既然雍比那么想要法国的帮助，那就满足他……"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_496_congo_yhombi.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "支持萨苏-恩格索和蒂斯特雷·契卡雅一派"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_496_congo_yhombi.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "没理由帮助一群墙头草"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_496_congo_yhombi.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_496"
+source_event_number = 496
+trigger_priority = 49600
+title = "恩古瓦比的大会？——第一幕"
+description = "在雍比的治下，刚果的右转是显而易见的，明显“向西方摇摆”，企图求助于法国的经济援助以摆脱经济困境，并与美国重新建立了外交关系，但收效甚微，并鼓励外资进入刚果。雍比以“清算刺杀恩古瓦比总统的‘反动势力’”为由展开了全国的大清洗，不久前被恩古瓦比大赦出狱的来自前M-22集团的幸存者也因此再度入狱，前总统马桑巴-代巴也被作为替罪羊处决。这使得他和作为党内保守派代表的军事委员会第一副主席和国防部长德尼·萨苏-恩格索之间的冲突越来越大。皮埃尔·安加上尉发表了一份题为“是什么使我们分裂以及在革命进程中避免危机的手段”的文件，其中谴责了萨苏为取代雍比而进行秘密活动，并强调他作为国防部长，在1977年3月18日未能保护恩古瓦比总统，他的疏忽大意导致了总统的死亡。党的军事委员会把作为第一副主席的萨苏停职了。\n萨苏开始与党的前二号人物和理论家让-皮埃尔·蒂斯特雷·契卡雅结盟，开始反击，他们动员刚果劳动党的群众组织（工会、青年组织和妇女组织）要求召开自军事委员会成立以来一直处于休眠状态的刚果劳动党中央委员会会议。雍比与他的前任截然相反的尚武特质使其与民众疏离，不受群众欢迎，萨苏派也开始借助传单谴责他的“腐化”并暗示他参与暗杀恩古瓦比的活动。萨苏派和雍比派之间的冲突很快将决出胜负，日益失去民心的雍比似乎已经失去了靠自己反击的力量……\n主席同志，我们是否要做些什么？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

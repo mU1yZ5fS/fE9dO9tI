@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_033_041_world_and_party.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1977.3"
+
+[sub_resource type="Resource" id="Expr_course_not_2"]
+script = ExtResource("3_expr")
+type = 22
+key = "post_mao_course"
+value = 2.0
+
+[sub_resource type="Resource" id="Expr_modifier_3_inactive"]
+script = ExtResource("3_expr")
+type = 3
+key = "3"
+
+[sub_resource type="Resource" id="Expr_line_at_least_2"]
+script = ExtResource("3_expr")
+key = "political_line"
+value = 2.0
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "有必要让“两个凡是”的总后台汪东兴主持《决议》工作，以重建毛泽东主席与党中央的权威！"
+disabled_text = "汪东兴的教条主义已不合时宜！新时代需要新思维！"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "根据政治局的决定，以“毛主席的卫士”、8341部队政委以及中共中央办公厅主任等多重身份闻名的汪东兴很快多了个新头衔，不久后便去了《决议》起草委员会上发光发热。根据他的人事安排：《决议》起草委员会很快便成为了“凡是派”的司令部，其中甚至吸纳了“文化大革命”时期内发迹，但最终识时务选择远离其激进潮流的同志作为副手。他们很快便将工作中心放在了毛泽东主席在中苏论战后的活动内，并以“斗私批修”的基调写史：《决议》强调了毛泽东主席作为中国革命与建设事业唯一领导核心的地位，并为他开出了相当积极的评价——即领导中国人民站起来，并在独立自主的基础上走上了社会主义道路的伟大舵手。而毛时代的挫折则基本分给了早已蒙羞的刘少奇等失势官员。这只会导致毛主席下达的部分决议也跟着被“凡是派”选择性利用并神圣化：紧随其后的文件学习与整风工作只会让相关政策被进一步贯彻落实——意味着已被毛主席定调的邓小平将永世不得翻身，其他的老干部也将遭受不同程度的掣肘。借文革之风站稳脚跟的新一代领导层就此彻底确立了自身的领导权，并准备好以毛主席的名义走出中国社会主义之路。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "党的笔杆子胡乔木与胡绳最能把握分寸，他能够做出客观评价。"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "根据政治局的决定，以胡乔木与胡绳为代表的党内理论家被委以重任。他们均有邓小平牵头组织的国务院政治研究室背景，并在相当程度上接受了前者的部分观点。不久后，这群知识分子便对毛主席审阅过的《关于无产阶级专政的历史经验》一文按图索骥，对毛泽东给出了类似毛泽东本人对斯大林的评价（即“七分成绩，三分过错”）。而包括“大跃进”与“文化大革命”等在的历史错误则被归咎于党内一部分阴谋家利用了晚年毛主席的战略误判，并利用了这一错误。除此之外，《决议》也将建国至1976年以来的历史做了区分：即成就斐然的前17年，作为转折点的1957年（此后的错误“越来越多”）与应被完全否定，只能在纠偏内“争取部分成绩”的文革10年。中国的社会主义建设也应当回归毛泽东思想的本源——即中共八大提出的主要矛盾与政治任务。除此之外，胡乔木更是聪明地提出了分割“毛泽东思想”（即集体智慧的结晶）与“毛泽东的思想”（唯意志论的专断实践）的方略，并复刻了毛泽东曾对孙中山政治形象与三民主义开展的政治实践。从而最大限度地把毛泽东晚年思想上行动上的错误，同毛泽东思想加以区别，加以对照；对毛泽东思想加以肯定的同时对毛泽东晚年的错误理论和错误实践加以批判。接下来则是在团结一致的氛围下平反该平反的，谴责该谴责的，并对党内进行重新洗牌——下一步便是在贯彻落实集体领导的原则与基于谋稳定、促发展的观点上重新整理行囊。我们的党就此能够相对稳妥的摆脱过往历史负担，并在尽可能摆脱毛泽东时代弊病的同时以他的形象收编社会舆论，用稳定压倒一切。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "决议起草应贯彻“民主集中”的原则，让大家说话，天塌不下来！"
+disabled_text = "党的纪律性呢？！我们绝不能在这一问题上如此松懈！"
+enable_condition = SubResource("Expr_line_at_least_2")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "没了党内纪律的约束，准备筹建《决议》起草委员会的会议很快便炸开了锅，没多久便成了老干部们的诉苦现场——这些早在土地革命时期参加中共事业的“中版老布尔什维克”可受不了“文化大革命”时期的被迫靠边与紧随其后的政治迫害，上述经历只会让其觉得“伟大领袖”不过是卸磨杀驴的两面派，而刚得到平反消息官复原职的他们没多久便占据了会议的主流。叶剑英的意气发言（即将毛时代政治实践称之为“封建法西斯专政”）更是引来场上掌声不断。最终，党会议以多数表决将曾长期主持首都党务工作，并在“文革”时期首当其冲的彭真推上《决议》起草委员会主要负责人一职。他很快便伙同自己传媒界内的同僚们将老干部们的复仇愿望转化为了现实：建国以来的一系列悲剧均被归结于“抛弃集体领导，践踏法治原则”的一系列政治冲动，而毛泽东正是这一股思潮的代表——他最大的过错便在于没能实现从中共由“革命党”到“执政党”的转型，并痴迷于采用命令式的军事动员与战时突击方法掌管全国，将革命战争时期的三人团、小圈子与军事专断等经验神圣化。而这恰是国内各类冤假错案、政治迫害与个人崇拜乱象的起源。因此，有必要树立起“真理面前人人平等，法律面前人人平等”的价值观，并以建立集体领导，形成相应制度的方式彻底断绝个人独大可能。虽说这份文件决绝地同过往的各项实践与乱象做了切割，可考虑到它的严厉措辞、坚决态度与其中满溢出的价值判断，并不能指望这份“中国版本的秘密报告”能对通常党员与普通群众有多少规范作用。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "historical_resolution"
+source_event_number = 39
+trigger_priority = 3900
+title = "《党的若干历史问题的决议》起草委员会"
+description = "老一代领导人的离去，文化大革命的结束与体制改革的进行事实上在国内开了逐渐脱离毛泽东既定路线的先例，并为一系列不稳定因素持续加码。组织部与公安部传来的消息更是令人不安：部分地方党组织与活动人士已开始借结束文革之势炮击建国以来的一系列历史，试图将我国建国以来的历史描述成“漆黑一片”，“过错是主要的，成就是靠纠偏得来的”，并试图将中国社会的一系列灾害与责任归咎于已逝的“舵手”毛泽东以推进自身乐见的政治议程。而上述现象甚至得到了某些在毛时代遭遇打压的老干部的默许以至支持：他们显然是出于复仇情绪或政治野心对此乐见其成。与此同时，虽说我党已剔除了国内最激进的政治活动家，可深受毛时代思想与政治实践影响的政治新人们仍在相当规模的党政机器内活跃，且围绕毛泽东形成的个人崇拜也开始被我国人民选择性诠释进行“暗度陈仓”——一如文化大革命时期的效忠行动那般。若纵容上述现象继续发展，我们极有可能重蹈匈牙利的覆辙，在同一条阴沟内翻船。中共中央政治局与书记处已决定在整顿党籍与规范社会秩序的同时起草一份文件，以彻底解决这一问题：如你所料，我们曾在革命战争时期以一纸《关于若干历史问题的决议》奠定了毛泽东与其思想的霸权，并将党内早期风云人物系数边缘化。而现在，是时候对1949年以来在毛泽东领导下的中华人民共和国和中国共产党走过的道路进行正式评估，并以新版总路线对其取而代之了。当然，我们绝不能对冠以《关于建国以来党的若干历史问题的决议》之名的高规格的文件有所马虎：毕竟，这可是我们时代的《联共（布）党史简明教程》与未来新党纲的潜在原型，并极有可能决定未来数十年内我国的政治基调。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_course_not_2"), SubResource("Expr_modifier_3_inactive")])
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2")])

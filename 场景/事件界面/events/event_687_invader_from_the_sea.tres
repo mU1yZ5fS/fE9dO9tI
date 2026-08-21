@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_687_invader_from_the_sea.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "打倒文化汉奸！"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_687_invader_from_the_sea.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_687"
+source_event_number = 687
+trigger_priority = 68700
+title = "侵略者自海上来"
+description = "其实大约在十年前我国的经济界掀起过一股大规模采购西方技术的风潮，这场被称为“洋跃进”的运动给我们带来了大量之前没有但无法吃透的先进技术，为此几乎掏空了我国的外汇储备，这次文化上的“洋跃进”我们又要付出怎样的代价呢……\n大规模引入西方作品填补我国文化空缺的政策在一段时间里被认为是有效的，民众的精神生活得到满足，单一的文化产出系统也不得不吸收了一些新血液，我国在国际面前“封闭僵化”的印象也得到了一些改变……可支付这一切的账单终于到来了。最近，不知由谁牵头拍摄的政论片《河殇》正式出笼，在全国范围内造成了巨大地震，片中将欧美描述为“民主与文明”的海洋文明，而将我国列为“封闭与专制”的大河文明之列，并从民族历史与政治方面对我国进行了全方位的抨击，将欧美西方世界誉为“文明灯塔”，以知识分子甚至是部分中共党员为主的群体受到由我们自己“精心挑选”而出的优秀欧美文化作品的影响，他们醉心于好莱坞大片里描述的“舒适”“体面”的现代都市生活，艺术与现实的反差让他们产生了严重的自恨心理，竟自发的接受了这种历史虚无主义论断。他们开始在各大场合输出自己的暴论，包括但不限于“解散中国共产党”“用民主法治取代共产党专制”，涉及“民族性”的言论更是不堪入目，有关宣传“白种人优越”甚至是“取消汉字”的论调开始零星但广泛的出现于各大刊物上，名为全盘西化的幽灵再次笼罩了文化界。\n同志，局势已经濒临失控，趁一切还可以挽回，我们必须采取坚决的行动！"
+display_script = ExtResource("5_custom")
+trigger_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0")])

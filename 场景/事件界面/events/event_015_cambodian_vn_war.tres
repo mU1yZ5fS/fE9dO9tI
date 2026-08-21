@@ -1,59 +1,108 @@
 [gd_resource type="Resource" script_class="EventDef" format=3]
 
-[ext_resource type="Script" uid="uid://byltjpdxl4ifv" path="res://数据脚本/mtth_modifier.gd" id="1_32tmr"]
-[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/event_option.gd" id="2_5y7hh"]
-[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/effect_node.gd" id="3_mln7p"]
-[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/expr_node.gd" id="4_ht34l"]
-[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/event_def.gd" id="5_x6miu"]
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_015_cambodian_vn_war.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Resource_7if4f"]
-script = ExtResource("2_5y7hh")
-text = "Do not interfere"
-result_text = "We decided not to intervene in the conflict. Pol Pot and the Khmer Rouge leadership, of course, are very unhappy with this, but it does not seem that they will live long..."
+[sub_resource type="Resource" id="Expr_no_vietnam_peace"]
+script = ExtResource("3_expr")
+type = 15
+key = "vietnampeace"
 
-[sub_resource type="Resource" id="Resource_u82pv"]
-script = ExtResource("3_mln7p")
-key = "agents"
-value = -30.0
+[sub_resource type="Resource" id="E0_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
 
-[sub_resource type="Resource" id="Resource_kbt30"]
-script = ExtResource("4_ht34l")
-key = "agents"
-value = 30.0
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_option")
+text = "我们无能为力"
+effects = Array[ExtResource("2_effect")]([SubResource("E0_custom")])
+result_text = "（结果由 event_015_cambodian_vn_war.gd 动态生成）"
 
-[sub_resource type="Resource" id="Resource_w1t1b"]
-script = ExtResource("2_5y7hh")
-text = "Remove Pol Pot in favor of the trio of Hu Nim, Hou Yuon and Khieu Samphan"
-disabled_text = "We can't remove Pol Pot"
-enable_condition = SubResource("Resource_kbt30")
-effects = Array[ExtResource("3_mln7p")]([SubResource("Resource_u82pv")])
-result_text = "Coming in contact with the Left Opposition within the Kampuchean army, we were able to organize the displacement and arrest of Pol Pot..."
+[sub_resource type="Resource" id="Expr_line_lt2"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 1.0
 
-[sub_resource type="Resource" id="Resource_1jpx4"]
-script = ExtResource("3_mln7p")
-key = "army"
-value = -50.0
+[sub_resource type="Resource" id="Expr_line_gt3"]
+script = ExtResource("3_expr")
+key = "political_line"
+value = 4.0
 
-[sub_resource type="Resource" id="Resource_j5ukc"]
-script = ExtResource("3_mln7p")
-key = "money"
-value = -10.0
+[sub_resource type="Resource" id="Expr_line_out"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_lt2"), SubResource("Expr_line_gt3")])
 
-[sub_resource type="Resource" id="Resource_w1ygu"]
-script = ExtResource("3_mln7p")
-type = 8
-key = "1"
-value = -50.0
+[sub_resource type="Resource" id="Expr_stab1"]
+script = ExtResource("3_expr")
+type = 25
+target = "23"
+key = "stab"
+value = 1.0
 
-[sub_resource type="Resource" id="Resource_5k4iu"]
-script = ExtResource("2_5y7hh")
-text = "Help the Khmer Rouge"
-effects = Array[ExtResource("3_mln7p")]([SubResource("Resource_1jpx4"), SubResource("Resource_j5ukc"), SubResource("Resource_w1ygu")])
-result_text = "We sent help to our old ally, Pol Pot, but it is not known whether this is enough for him..."
+[sub_resource type="Resource" id="Expr_branch_a"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_out"), SubResource("Expr_stab1")])
+
+[sub_resource type="Resource" id="Expr_line_ge1"]
+script = ExtResource("3_expr")
+key = "political_line"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_line_le3"]
+script = ExtResource("3_expr")
+type = 1
+key = "political_line"
+value = 3.0
+
+[sub_resource type="Resource" id="Expr_stab_not1"]
+script = ExtResource("3_expr")
+type = 26
+target = "23"
+key = "stab"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_branch_b"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_line_ge1"), SubResource("Expr_line_le3"), SubResource("Expr_stab_not1")])
+
+[sub_resource type="Resource" id="Expr_opt1_enable"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_branch_a"), SubResource("Expr_branch_b")])
+
+[sub_resource type="Resource" id="E1_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_option")
+text = "支持民主柬埔寨"
+disabled_text = "没人愿意帮助他们"
+enable_condition = SubResource("Expr_opt1_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("E1_custom")])
+result_text = "（结果由 event_015_cambodian_vn_war.gd 动态生成）"
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1978.12.25"
 
 [resource]
-script = ExtResource("5_x6miu")
+script = ExtResource("4_event")
 event_id = "cambodian_vietnam_war"
-title = "Cambodian-Vietnamese war"
-description = "For several years, ruling in Democratic Kampuchea, the Red Khmers of Pol Pot pursued an openly aggressive policy towards neighboring Vietnam, often attacking border villages and killing civilians en masse. And it seems that Vietnam's patience has come to an end - quite recently the Vietnamese army launched a full-scale invasion of Cambodia to overthrow the Pol Pot regime..."
-options = Array[ExtResource("2_5y7hh")]([SubResource("Resource_7if4f"), SubResource("Resource_w1t1b"), SubResource("Resource_5k4iu")])
+source_event_number = 15
+title = "柬越战争"
+description = "越共对印度支那地区的共产主义运动一直存在“老子党”情结——老挝党和早期的柬埔寨党一直都处于越南的控制之下。而高棉劳动党在重建以来一直在执行独立路线，和“听话的”老挝截然不同，这令越南很不高兴——越共一直想恢复对柬埔寨共产党的控制，建立一个统一的社会主义印支。看起来越南的耐心也到头了——最近越南军队对柬埔寨发起了全面侵略，以推翻民主柬埔寨政权，利用包括高棉左翼异见者和流亡的亲越派的柬埔寨民族救亡阵线作为掩盖。考虑到民主柬埔寨一直是我们忠实的盟友，帮助他们是有价值的。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_no_vietnam_peace")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_option")]([SubResource("Opt0"), SubResource("Opt1")])

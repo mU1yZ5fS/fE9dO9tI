@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_455_iran_hostage_crisis.gd" id="5_custom"]
+
+
+[sub_resource type="Resource" id="Expr_iran_sub8"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 8
+target = "8"
+
+[sub_resource type="Resource" id="Expr_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1979.11.4"
+
+[sub_resource type="Resource" id="Expr_root"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iran_sub8"), SubResource("Expr_date")])
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "安抚伊朗人，勒令其放人"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_455_iran_hostage_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "我们派遣人员去营救"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_455_iran_hostage_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "火上浇油，激化时局"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_455_iran_hostage_crisis.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx3"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt3"]
+script = ExtResource("1_opt")
+text = "让杨基佬自个头疼去吧，我们还有自己的事要搞。"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx3")])
+result_text = "（结果由 event_455_iran_hostage_crisis.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_455"
+source_event_number = 455
+trigger_priority = 45500
+title = "伊朗人质危机"
+description = "在过去的数十年来，伊朗的沙阿一直是美国在中东坚定的盟友，但是1979年的伊朗革命却打断了这一切，原本美国希望尝试向伊朗新政府建立关系，但是1979年10月，巴列维前往美国治疗淋巴瘤，此事激怒了伊朗的革命者。更加坐实了其“美国人的走狗”这一称号。\n1979年11月4日，大约有500名自称“伊玛目的门徒”的伊朗学生占领了使馆的主体建筑。一部分伊朗人民党党员也宣布支持“杂碎帝国主义余孽”的行为。从而加入了对大使馆的占领。为避免引起更大的纷争，美国海军陆战队卫兵只进行了象征性抵抗，而使馆馆员不得不破坏通讯设备并将敏感的档案文件予以销毁。在90名使馆人员中，有66名被扣，其中有3人是在伊朗外交部所俘。暴乱人群还对外界展示了从使馆获得的密文，其中有些此前已透过美方的碎纸机破坏，后来又由革命军拼接起来。虽然人质的处境还算不错，但他们时常会被蒙上眼睛带到当地人和电视镜头前。\n伊朗政府对此事表默认支持，部分革命卫队甚至加入了抗议群众。美国总统吉米·卡特已宣布对伊朗进行制裁。主席同志，我们怎么办？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_iran_sub8"), SubResource("Expr_date"), SubResource("Expr_root")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2"), SubResource("Opt3")])

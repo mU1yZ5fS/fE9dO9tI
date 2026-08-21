@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_opt"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_fx"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_def"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_365_finland_koivisto.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="E365_date"]
+script = ExtResource("3_expr")
+type = 12
+key = "1981.10.1"
+
+[sub_resource type="Resource" id="Fx0"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt0"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_365_finland_koivisto.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx0")])
+result_text = "（结果由 event_365_finland_koivisto.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx1"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt1"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_365_finland_koivisto.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx1")])
+result_text = "（结果由 event_365_finland_koivisto.gd 动态生成）"
+
+[sub_resource type="Resource" id="Fx2"]
+script = ExtResource("2_fx")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Opt2"]
+script = ExtResource("1_opt")
+text = "（选项文本由 event_365_finland_koivisto.gd 动态设置）"
+effects = Array[ExtResource("2_fx")]([SubResource("Fx2")])
+result_text = "（结果由 event_365_finland_koivisto.gd 动态生成）"
+
+[resource]
+script = ExtResource("4_def")
+event_id = "event_365"
+source_event_number = 365
+trigger_priority = 36500
+title = "亲苏反共派的离任"
+description = "近日，由于身体状况迅速恶化与高龄在岗，乌尔霍·吉科宁选择自愿离职。他是芬兰政坛的元老，并在该国担任总统长达25年。他的四个总统任期都以巧妙的走独木桥为鲜明特征：吉科宁对芬兰国内局势了如指掌，尽管在贸易与文化政策上更偏向苏联。但总体而言，他还是在美国与苏联之间奉行中立外交政策。\n在即将到来的总统选举中，离开了这位脍炙人口领导人的中央党，不太可能成为现代芬兰政治内两大巨头的威胁。他们分别是来自芬兰社会民主党的总理毛诺·科伊维斯托，他试图照吉科宁的既定方针办，并维持与苏联的非正式联盟关系；以及来自中右翼阵营的哈里·霍尔克里，他力图立即摆脱莫斯科的影响，并深化与西方的合作。\n一方面，我们可以支持亲莫斯科的社会主义运动，以打击该国越加壮大的民族民主运动，并维持苏联在世界舞台上的影响力。另一方面，我们也可以通过支持哈里·霍尔克里，从而在新政府处获得一份有利可图的贸易合同。\n以及，如果您再仔细想想的话，我们为什么要对如此遥远的芬兰如此上心呢？"
+display_script = ExtResource("5_custom")
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("E365_date")])
+show_notification = false
+fire_only_once = true
+options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1"), SubResource("Opt2")])

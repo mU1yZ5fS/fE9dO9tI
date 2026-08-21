@@ -1,0 +1,352 @@
+[gd_resource type="Resource" script_class="EventDef" format=3]
+
+[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" path="res://数据脚本/事件效果/event_370_turkey_crisis.gd" id="5_custom"]
+
+[sub_resource type="Resource" id="Expr_turkey_sub9"]
+script = ExtResource("3_expr")
+type = 25
+key = "sub_government"
+value = 9.0
+target = "84"
+
+[sub_resource type="Resource" id="Expr_syria_prosov"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲苏"
+target = "35"
+
+[sub_resource type="Resource" id="Expr_not_syria_prosov"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_syria_prosov")])
+
+[sub_resource type="Resource" id="Expr_syria_oar"]
+script = ExtResource("3_expr")
+type = 10
+key = "oar"
+target = "35"
+
+[sub_resource type="Resource" id="Expr_not_syria_oar"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_syria_oar")])
+
+[sub_resource type="Resource" id="Expr_syria_usa"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲美"
+target = "35"
+
+[sub_resource type="Resource" id="Expr_not_syria_usa"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_syria_usa")])
+
+[sub_resource type="Resource" id="Expr_syria_okb"]
+script = ExtResource("3_expr")
+type = 10
+key = "okb"
+target = "35"
+
+[sub_resource type="Resource" id="Expr_not_syria_okb"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_syria_okb")])
+
+[sub_resource type="Resource" id="Expr_syria_seato"]
+script = ExtResource("3_expr")
+type = 10
+key = "seato"
+target = "35"
+
+[sub_resource type="Resource" id="Expr_not_syria_seato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_syria_seato")])
+
+[sub_resource type="Resource" id="Expr_syria_neutral"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_not_syria_prosov"), SubResource("Expr_not_syria_oar"), SubResource("Expr_not_syria_usa"), SubResource("Expr_not_syria_okb"), SubResource("Expr_not_syria_seato")])
+
+[sub_resource type="Resource" id="Expr_iraq_prosov"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲苏"
+target = "14"
+
+[sub_resource type="Resource" id="Expr_not_iraq_prosov"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iraq_prosov")])
+
+[sub_resource type="Resource" id="Expr_iraq_oar"]
+script = ExtResource("3_expr")
+type = 10
+key = "oar"
+target = "14"
+
+[sub_resource type="Resource" id="Expr_not_iraq_oar"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iraq_oar")])
+
+[sub_resource type="Resource" id="Expr_iraq_okb"]
+script = ExtResource("3_expr")
+type = 10
+key = "okb"
+target = "14"
+
+[sub_resource type="Resource" id="Expr_not_iraq_okb"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iraq_okb")])
+
+[sub_resource type="Resource" id="Expr_iraq_ovd"]
+script = ExtResource("3_expr")
+type = 10
+key = "ovd"
+target = "14"
+
+[sub_resource type="Resource" id="Expr_not_iraq_ovd"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iraq_ovd")])
+
+[sub_resource type="Resource" id="Expr_iraq_seato"]
+script = ExtResource("3_expr")
+type = 10
+key = "seato"
+target = "14"
+
+[sub_resource type="Resource" id="Expr_not_iraq_seato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iraq_seato")])
+
+[sub_resource type="Resource" id="Expr_iraq_neutral"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_not_iraq_prosov"), SubResource("Expr_not_iraq_oar"), SubResource("Expr_not_iraq_okb"), SubResource("Expr_not_iraq_ovd"), SubResource("Expr_not_iraq_seato")])
+
+[sub_resource type="Resource" id="Expr_iran_usa"]
+script = ExtResource("3_expr")
+type = 10
+key = "亲美"
+target = "8"
+
+[sub_resource type="Resource" id="Expr_not_iran_usa"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iran_usa")])
+
+[sub_resource type="Resource" id="Expr_iran_okb"]
+script = ExtResource("3_expr")
+type = 10
+key = "okb"
+target = "8"
+
+[sub_resource type="Resource" id="Expr_not_iran_okb"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iran_okb")])
+
+[sub_resource type="Resource" id="Expr_iran_ovd"]
+script = ExtResource("3_expr")
+type = 10
+key = "ovd"
+target = "8"
+
+[sub_resource type="Resource" id="Expr_not_iran_ovd"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iran_ovd")])
+
+[sub_resource type="Resource" id="Expr_iran_seato"]
+script = ExtResource("3_expr")
+type = 10
+key = "seato"
+target = "8"
+
+[sub_resource type="Resource" id="Expr_not_iran_seato"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_iran_seato")])
+
+[sub_resource type="Resource" id="Expr_iran_neutral"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_not_iran_usa"), SubResource("Expr_not_iran_okb"), SubResource("Expr_not_iran_ovd"), SubResource("Expr_not_iran_seato")])
+
+[sub_resource type="Resource" id="Expr_any_neutral"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_syria_neutral"), SubResource("Expr_iraq_neutral"), SubResource("Expr_iran_neutral")])
+
+[sub_resource type="Resource" id="Expr_war9_active"]
+script = ExtResource("3_expr")
+type = 30
+value = 9.0
+
+[sub_resource type="Resource" id="Expr_not_war9"]
+script = ExtResource("3_expr")
+type = 20
+children = Array[ExtResource("3_expr")]([SubResource("Expr_war9_active")])
+
+[sub_resource type="Resource" id="Expr_date_1984_12_21"]
+script = ExtResource("3_expr")
+type = 12
+key = "1984.12.21"
+
+[sub_resource type="Resource" id="Expr_budget_sum_250"]
+script = ExtResource("3_expr")
+type = 23
+keys = Array[String](["budget", "money_reserve"])
+value = 250.0
+
+[sub_resource type="Resource" id="Expr_agents_150"]
+script = ExtResource("3_expr")
+key = "agents"
+value = 150.0
+
+[sub_resource type="Resource" id="Expr_army_400"]
+script = ExtResource("3_expr")
+key = "army"
+value = 400.0
+
+[sub_resource type="Resource" id="Expr_opt0_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_budget_sum_250"), SubResource("Expr_agents_150"), SubResource("Expr_army_400")])
+
+[sub_resource type="Resource" id="Expr_usa_torg"]
+script = ExtResource("3_expr")
+type = 10
+key = "对华贸易"
+target = "51"
+
+[sub_resource type="Resource" id="Expr_usa_dev_positive"]
+script = ExtResource("3_expr")
+type = 27
+key = "development"
+value = 1.0
+target = "51"
+
+[sub_resource type="Resource" id="Expr_opt1_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_usa_torg"), SubResource("Expr_usa_dev_positive")])
+
+[sub_resource type="Resource" id="Expr_xinjiang_positive"]
+script = ExtResource("3_expr")
+key = "xinjiang_policy"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_tibet_positive"]
+script = ExtResource("3_expr")
+key = "tibet_policy"
+value = 1.0
+
+[sub_resource type="Resource" id="Expr_xinjiang_or_tibet"]
+script = ExtResource("3_expr")
+type = 19
+children = Array[ExtResource("3_expr")]([SubResource("Expr_xinjiang_positive"), SubResource("Expr_tibet_positive")])
+
+[sub_resource type="Resource" id="Expr_budget_sum_150"]
+script = ExtResource("3_expr")
+type = 23
+keys = Array[String](["budget", "money_reserve"])
+value = 150.0
+
+[sub_resource type="Resource" id="Expr_army_200"]
+script = ExtResource("3_expr")
+key = "army"
+value = 200.0
+
+[sub_resource type="Resource" id="Expr_territory_20"]
+script = ExtResource("3_expr")
+type = 21
+key = "territorial_policy"
+value = 20.0
+
+[sub_resource type="Resource" id="Expr_opt3_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_xinjiang_or_tibet"), SubResource("Expr_budget_sum_150"), SubResource("Expr_army_200"), SubResource("Expr_territory_20")])
+
+[sub_resource type="Resource" id="Expr_diplo_below_800"]
+script = ExtResource("3_expr")
+type = 1
+key = "diplo"
+value = 799.0
+
+[sub_resource type="Resource" id="Expr_greece_nato"]
+script = ExtResource("3_expr")
+type = 10
+key = "nato"
+target = "45"
+
+[sub_resource type="Resource" id="Expr_opt4_enable"]
+script = ExtResource("3_expr")
+type = 18
+children = Array[ExtResource("3_expr")]([SubResource("Expr_diplo_below_800"), SubResource("Expr_greece_nato")])
+
+[sub_resource type="Resource" id="Effect_custom"]
+script = ExtResource("2_effect")
+type = 18
+custom_script = ExtResource("5_custom")
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("1_option")
+text = "我们将不遗余力支持中东国家的反侵略斗争（需要25.0百万预算、15.0点特工网络与40.0点军事实力）"
+disabled_text = "军事实力必须强于40......"
+enable_condition = SubResource("Expr_opt0_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "我们向送去了军事援助，以支援他们对抗土耳其侵略者。现在仍很难预测战争的结果如何。但很显然，双方之间的力量对比并不平衡作为对我国支援上述政权的回应，土耳其宣布与中国断交。"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("1_option")
+text = "施压美方，将土耳其逐出北约"
+disabled_text = "还未签署中美合作协定......"
+enable_condition = SubResource("Expr_opt1_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "尽管在北大西洋公约组织的宪章中，并没有关于开除其成员的相关规定，但美国与西欧地区多国已经在北约理事会上提出了一项议案，土耳其“因发动侵略战争并违背民主价值观”而被开除出该联盟。现在仍很难预测战争的结果如何。但很显然，双方之间的力量对比并不平衡。"
+
+[sub_resource type="Resource" id="Option_2"]
+script = ExtResource("1_option")
+text = "我们对此爱莫能助"
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "现在仍很难预测战争的结果如何。但很显然，双方之间的力量对比并不平衡。"
+
+[sub_resource type="Resource" id="Option_3"]
+script = ExtResource("1_option")
+text = "用土耳其式铁拳对付国内分离主义者（需要15.0百万预算与20.0点军事实力）"
+disabled_text = "分离主义？我国没有这些东西！"
+enable_condition = SubResource("Expr_opt3_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "我们打算借题发挥，好好借用土耳其人的方法。我们宣称，西藏与维吾尔斯坦的分离主义分子在边界进行了多次挑衅，因此，我国将以“稳定当地局势”为名，向上述地区派出部队。从而迫使那些“割据藩镇”同我们缔结不平等经济协定，并允许我们在当地建立军事基地。至于发生在土耳其的冲突，现在仍很难预测战争的结果如何。但很显然，双方之间的力量对比并不平衡。"
+
+[sub_resource type="Resource" id="Option_4"]
+script = ExtResource("1_option")
+text = "在联合国安理会发言，建议对土耳其发起维和行动"
+disabled_text = "希腊应该是北约成员国......"
+enable_condition = SubResource("Expr_opt4_enable")
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_custom")])
+result_text = "联合国安理会同意了实行维和行动的必要性。根据行动计划，苏联将从高加索方向出兵土耳其，而北约将以希腊为入口。对此，土耳其宣布退出北约。"
+
+[resource]
+script = ExtResource("4_event")
+event_id = "event_370"
+source_event_number = 370
+trigger_priority = 182
+title = "种族灭绝出口"
+description = "极其重要的大新闻！本周，土耳其国内的所有主要大城市均发生了爆炸，例如，对安卡拉机场的恐怖袭击导致了超过30人死亡。国家安全委员会政府宣布，库尔德斯坦工人党因对上述事件负全责。尽管该党在土耳其国内的运动已经屡遭打击，但据称，他们依然得到了来自土耳其阿拉伯邻国的援助，以实行其动摇土耳其社会秩序的阴谋。政府领导人凯南·埃夫伦宣称，将对叙利亚伊拉克伊朗开展“增进和平的特别军事行动”。依照既定计划，该行动将花费6个月的时间，彻底摧毁土耳其边界的库尔德人地下恐怖组织。被土耳其侵略的国家们已经向国际社会寻求援助。"
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_turkey_sub9"), SubResource("Expr_any_neutral"), SubResource("Expr_not_war9"), SubResource("Expr_date_1984_12_21")])
+show_notification = false
+display_script = ExtResource("5_custom")
+fire_only_once = true
+options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3"), SubResource("Option_4")])
