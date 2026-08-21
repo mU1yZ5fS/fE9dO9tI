@@ -36,9 +36,8 @@
     "mode": "country"
   },
   "8": {
-    "a": 42,
-    "b": 41,
-    "mode": "midpoint"
+    "a": 29,
+    "mode": "region"
   },
   "9": {
     "a": 84,
@@ -74,7 +73,7 @@
     "mode": "midpoint"
   },
   "17": {
-    "a": 77,
+    "a": 343,
     "mode": "region"
   },
   "18": {
@@ -301,9 +300,8 @@
     "mode": "country"
   },
   "69": {
-    "a": 1,
-    "b": 9,
-    "mode": "midpoint"
+    "a": 115,
+    "mode": "region"
   },
   "70": {
     "a": 1,
@@ -311,19 +309,16 @@
     "mode": "midpoint"
   },
   "71": {
-    "a": 1,
-    "b": 11,
-    "mode": "midpoint"
+    "a": 250,
+    "mode": "region"
   },
   "72": {
-    "a": 1,
-    "b": 10,
-    "mode": "midpoint"
+    "a": 959,
+    "mode": "region"
   },
   "73": {
-    "a": 1,
-    "b": 47,
-    "mode": "midpoint"
+    "a": 2014,
+    "mode": "region"
   },
   "74": {
     "a": 43,

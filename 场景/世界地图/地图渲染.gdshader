@@ -83,7 +83,7 @@ void fragment() {
 		vec3 base = texture(color_palette, pal_uv(owner)).rgb;
 
 		// 国界线：邻域 owner 不同即为边界（同国下属区域自然合并）
-		vec2 px = 1.0 / vec2(textureSize(region_map, 0));
+		vec2 px = 2.0 / vec2(textureSize(region_map, 0));
 		bool border = owner_at(UV + vec2(px.x, 0.0)) != owner
 			|| owner_at(UV - vec2(px.x, 0.0)) != owner
 			|| owner_at(UV + vec2(0.0, px.y)) != owner

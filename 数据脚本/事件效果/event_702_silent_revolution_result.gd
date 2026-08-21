@@ -27,9 +27,9 @@ func execute(context: Dictionary) -> void:
 		num += 1
 	if usa != null and usa.power <= 0:
 		num += 99999
-	if portugal != null and portugal.parts.size() > 1 and portugal.parts[0] and portugal.parts[1]:
+	if spain != null and spain.parts.size() > 1 and spain.parts[0] and spain.parts[1]:
 		num += 1
-	if spain != null and spain.government != GameConstants.Government.LIBERAL:
+	if portugal != null and portugal.government != GameConstants.Government.LIBERAL:
 		num += 1
 	if quebec != null and quebec.内战中:
 		num += 1

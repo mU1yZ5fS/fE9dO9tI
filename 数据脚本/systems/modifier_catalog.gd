@@ -80,8 +80,12 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 			return _iraq_palestine_status(w)
 		2:
 			return _effect_services(w)
+		3:
+			return _effect_cultural_revolution(w)
 		6:
 			return _effect_maoist_bulwark(w)
+		7:
+			return _effect_black_cat(w)
 		11:
 			return _effect_automation(w)
 		13:
@@ -367,6 +371,24 @@ static func _effect_13(w: WorldState) -> String:
 	@warning_ignore("integer_division")
 	var frac := absi(living / denom % 10)
 	return "预算收入约 +%d.%d（随生活水平）" % [whole, frac]
+
+
+static func _effect_cultural_revolution(w: WorldState) -> String:
+	var base := String(MT.EFFECT_ZH[3]).replace("|", "\n")
+	if w == null or not _event_done(w, "event_668") or _event_result(w, "event_668") != 0:
+		return base
+	# Event668 结果0：文化大革命新高潮，Event543 结果0 时数值更强（ModifiesInfuence.cs:1222-1236）。
+	if _event_done(w, "event_543") and _event_result(w, "event_543") == 0:
+		return base + "\n<color=red>全 新 的 高 潮 ：</color>党 内 团 结 度+1 ， 人 民 支 持 度+1 ， 思 想 自 由 化+1 ， 极 左 力 量+2"
+	return base + "\n<color=red>全 新 的 高 潮 ：</color>党 内 团 结 度+0.5 ， 人 民 支 持 度+0.5 ， 思 想 自 由 化+0.5 ， 极 左 力 量+1"
+
+
+static func _effect_black_cat(w: WorldState) -> String:
+	var base := String(MT.EFFECT_ZH[7]).replace("|", "\n")
+	if w == null or not _event_done(w, "event_668") or _event_result(w, "event_668") != 2:
+		return base
+	# Event668 结果2：伤痕文学，给“黑猫白猫论”追加以往未收录的说明文案。
+	return base + "\n<color=red>难 以 忘 却 的 伤 痕</color>党 内 团 结 度-0.5 ， 人 民 支 持 度+0.5 ， 思 想 自 由 化+1 ， 改 革 力 量+1 ， 自 由 力 量+1 ， 极 左 力 量-1"
 
 
 static func _effect_integration(w: WorldState, agents: bool) -> String:

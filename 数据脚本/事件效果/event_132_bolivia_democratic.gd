@@ -15,6 +15,44 @@ const TXT_R2 := "1980年7月17日，路易斯·加西亚·梅萨领导的一群�
 func _proprc_suffix(c: CountryData) -> String:
 	return TXT_PROPRC_YES if c.has_tag("亲中") else TXT_PROPRC_NO
 
+
+func _d(index: int) -> int:
+	if d.size() > index:
+		return d.get_data_by_index(index)
+	return 0
+
+
+## Country.WantToLeave() 逐行移植（GameState.cs:7370-7394）。
+## 原版 Event132 设 proprc=true 后调 WantToLeave，不是 LeaveAlliances。
+func _want_to_leave(c: CountryData) -> void:
+	if c == null:
+		return
+	var flag := true
+	var sub := c.sub_government
+	if sub == 0:
+		if _d(W.I_IDEOLOGY) > 2 or _d(W.I_ECON_SYSTEM) >= 13 or _d(W.I_DIPLO) < 700 or _d(W.I_PARTY_SYSTEM) >= 8:
+			flag = false
+	elif (sub >= 1 and sub <= 3) or sub == 8 or sub == 17:
+		if _d(W.I_IDEOLOGY) > 3 or _d(W.I_ECON_SYSTEM) > 13 or _d(W.I_DIPLO) < 500:
+			flag = false
+	elif sub >= 4 and sub <= 6:
+		var china := ws.get_country_by_legacy_index(1)
+		if _d(W.I_IDEOLOGY) < 2 or _d(W.I_ECON_SYSTEM) < 13 or _d(W.I_DIPLO) > 700 \
+				or _d(W.I_PARTY_SYSTEM) < 8 or _d(W.I_PRESS_POLICY) < 18 \
+				or (china != null and china.has_tag("ovd")):
+			flag = false
+	elif sub >= 7:
+		var china2 := ws.get_country_by_legacy_index(1)
+		if _d(W.I_IDEOLOGY) == 1 or _d(W.I_ECON_SYSTEM) <= 11 or _d(W.I_DIPLO) < 300 \
+				or (china2 != null and china2.has_tag("sev")):
+			flag = false
+	if c.has_tag("亲中"):
+		c.set_tag("对华贸易", flag)
+		c.set_tag("亲中", flag)
+		if c.has_tag("亲美"):
+			c.set_tag("亲美", not flag)
+
+
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
@@ -32,7 +70,7 @@ func execute(context: Dictionary) -> void:
 				bolivia.level_of_development += 10
 				bolivia.set_tag("亲中", true)
 				bolivia.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
-				_leave_alliances(bolivia)
+				_want_to_leave(bolivia)
 				# 原作 Event132.cs:37：iron_and_blood → achievements.Set(90)
 				Achievements.set_achievement(90)
 				context["result_text"] = TXT_R0 + _proprc_suffix(bolivia)
@@ -49,7 +87,7 @@ func execute(context: Dictionary) -> void:
 				bolivia.level_of_development -= 10
 				bolivia.set_tag("亲中", true)
 				bolivia.sub_government = GameConstants.SubGovernment.NEO_FASCIST
-				_leave_alliances(bolivia)
+				_want_to_leave(bolivia)
 				context["result_text"] = TXT_R1 + _proprc_suffix(bolivia)
 			else:
 				bolivia.level_of_instability -= 15

@@ -20,6 +20,7 @@ extends CanvasLayer
 const W = preload("res://数据脚本/world_state.gd")
 const ACTION_CATALOG_SCRIPT := preload("res://数据脚本/外交互动/外交互动目录.gd")
 const COUNTRY_CHAIN_SCRIPT := preload("res://场景/外交界面/国家面板/国家面板_逐国链.gd")
+const IDEOLOGY_INFO_SCENE := preload("res://场景/外交界面/国家面板/意识形态介绍.tscn")
 
 ## 子意识形态图标：原版最终显示的是 sub_znachki[SubGosstroy]
 ## （CountryScript.cs:52，ChangeIcons() 末尾会调用 ChangeSubIcons() 覆盖政体图标）。
@@ -150,6 +151,14 @@ func _ready() -> void:
 	if earth and earth.has_signal("country_selected"):
 		earth.country_selected.connect(_on_country_selected)
 
+	# 意识形态图标做成可点击：左键打开子意识形态介绍/编辑弹窗
+	var gov_icon := find_child("政府类型", true, false) as TextureRect
+	if gov_icon:
+		gov_icon.mouse_filter = Control.MOUSE_FILTER_STOP
+		gov_icon.tooltip_text = "点击查看/编辑子意识形态介绍"
+		if not gov_icon.gui_input.is_connected(_on_ideology_icon_gui_input):
+			gov_icon.gui_input.connect(_on_ideology_icon_gui_input)
+
 	# 实时刷新：贸易/联盟/影响力等由事件或外交互动改完后，面板保持打开也要立即更新
 	if GameManager:
 		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_on_stats_changed):
@@ -205,6 +214,19 @@ func _close() -> void:
 	_current_country = null
 
 
+## 意识形态图标点击：打开子意识形态介绍/编辑弹窗（动态实例化子 tscn）
+func _on_ideology_icon_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if _current_country == null:
+			return
+		var popup := find_child("意识形态介绍", true, false)
+		if popup == null:
+			popup = IDEOLOGY_INFO_SCENE.instantiate()
+			add_child(popup)
+		if popup.has_method("open"):
+			popup.open(_current_country.sub_government, _current_country.display_name())
+
+
 ## 无 CountryData 时显示只有名字的基本面板
 func _show_basic_panel(display_name: String) -> void:
 	var name_label := find_child("当前选中国家名称", true, false) as Label
@@ -244,14 +266,14 @@ func _refresh_icons(country: CountryData) -> void:
 	var trade_icon := find_child("贸易伙伴", true, false) as TextureRect
 	var inf_icon := find_child("在某国影响下", true, false) as TextureRect
 
-	# 子意识形态图标（原版 ChangeSubIcons 最终覆盖政体图标后的显示）+ 政体/意识形态 tooltip
+	# 子意识形态图标（原版 ChangeSubIcons 最终覆盖政体图标后的显示）+ 子意识形态 tooltip
 	if gov_icon:
 		var tex: Texture2D = SUB_ICONS.get(country.sub_government)
 		if tex:
 			gov_icon.texture = tex
-			var gov_label: String = CountryData.GOV_NAME.get(country.government, "")
 			var ideo_label: String = country.ideology_name()
-			gov_icon.tooltip_text = "%s\n%s" % [gov_label, ideo_label]
+			# 只显示子意识形态，不再显示大类（威权/社会主义等）
+			gov_icon.tooltip_text = ideo_label
 			gov_icon.visible = true
 		else:
 			gov_icon.visible = false
@@ -317,6 +339,12 @@ func _refresh_icons(country: CountryData) -> void:
 				label = "法国的一部分"
 			elif sphere == CountryData.SPHERE_FRANCE and country.原版序号 == 159:
 				label = "英-法共同托管"
+			# 当前项目“影响系统”尚有多套数值（对华/北约阈值等），
+			# 先尽量把关键数值放进悬浮说明，便于人工校验和后续统一。
+			if country.influence_china > 0 or country.influence_nato > 0:
+				label += "\n中国影响:%d  北约影响:%d" % [country.influence_china, country.influence_nato]
+			if country.prc_influence > 0 or country.usa_influence > 0 or country.sov_influence > 0:
+				label += "\n中国势力:%d  美国势力:%d  苏联势力:%d" % [country.prc_influence, country.usa_influence, country.sov_influence]
 			inf_icon.tooltip_text = label
 			inf_icon.visible = true
 		else:

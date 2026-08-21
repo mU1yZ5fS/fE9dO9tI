@@ -1700,8 +1700,8 @@ func _apply_modifier2_services(d: WorldState, w: WorldState) -> void:
 
 ## 民众不满事件触发冷却：同一事件至少间隔 24 个双周（约 1 年）才允许再次入队。
 ## 原版有 event_done[5] 一次性门槛；这里再加一层冷却，防止读档/异常状态下重复弹窗。
-func _try_popular_discontent(w: WorldState, gm: Node) -> void:
-	if w == null or gm == null:
+func _try_popular_discontent(w: WorldState, gm_node: Node) -> void:
+	if w == null or gm_node == null:
 		return
 	if w.event_done_num(5):
 		return
@@ -1710,7 +1710,7 @@ func _try_popular_discontent(w: WorldState, gm: Node) -> void:
 	if now > 0 and last > 0 and now - last < 24:
 		return
 	w.set_flag("popular_discontent_last_tick", now)
-	gm.start_event("popular_discontent")
+	gm_node.start_event("popular_discontent")
 
 
 ## 票证制度按经济体制与工农业产值分档结算（ModifiesInfuence.cs:670-1092）。
@@ -3083,6 +3083,17 @@ func _fortnight_modifiers(
 			d.living_standard -= 5
 			if w.empires.size() > EmpireData.USA:
 				w.empires[EmpireData.USA].relations -= 5
+
+		# Event668 结果0：文化大革命“新高潮”，原版 ModifiesInfuence.cs:1203-1238 追加效果。
+		if w.event_done_num(668) and w.result_of_event_num(668) == 0:
+			var extra := 10 if (w.event_done_num(543) and w.result_of_event_num(543) == 0) else 5
+			d.party_support += extra
+			d.people_support += extra
+			d.thought_freedom += extra
+			for p in w.politicians:
+				if p != null and not PoliticianSystem.is_vacant_politician(p) \
+						and p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
+					p.power += extra * 2
 
 	# 5 市场改革冲击。
 	if gm._mod_active(w, GameConstants.Modifier.COMPROMISE_WITH_UNDERWORLD):
