@@ -21,9 +21,11 @@ const CHEAT_KEYS := {
 	KEY_6: "global_influence",
 	KEY_7: "budget",
 	KEY_8: "agents",
-	KEY_9: "budget_army",
+	KEY_9: "army",
 	KEY_0: "relations_both",
 	KEY_A: "ussr_toggle",
+	KEY_D: "diplo_down",
+	KEY_I: "mil_add",
 }
 
 @onready var _output: RichTextLabel = $居中/面板/布局/输出
@@ -103,6 +105,12 @@ func _handle_cheat(key: int) -> void:
 			_print_cheat("与美苏关系 +10")
 		"ussr_toggle":
 			_toggle_ussr_relation()
+		"diplo_down":
+			w.add_data_value("diplo", -CHEAT_DELTA)
+			_print_cheat("外交声望 -10")
+		"mil_add":
+			w.add_data_value("mil_intervention", CHEAT_DELTA)
+			_print_cheat("军事介入点 +10")
 		_:
 			w.add_data_value(data_key, CHEAT_DELTA)
 			_print_cheat("%s +10" % data_key)
@@ -156,6 +164,10 @@ func _execute(line: String) -> void:
 			_close_console()
 		"stat", "set", "add":
 			_cmd_stat(parts)
+		"diplo", "外交声望", "声望":
+			_cmd_diplo(parts)
+		"mil", "intervention", "介入", "军事介入":
+			_cmd_mil(parts)
 		"event":
 			_cmd_event(parts)
 		"war":
@@ -198,6 +210,44 @@ func _cmd_stat(parts: Array) -> void:
 	w.sync_economy()
 	GameManager.notify_stats_changed()
 	_print_line("[color=green]已设置 %s = %s[/color]" % [key, val_text])
+
+
+func _cmd_diplo(parts: Array) -> void:
+	if parts.size() < 2:
+		# 不带参数时默认降低 10 点外交声望
+		_cmd_tenfold_stat("diplo", "外交声望", ["diplo", "-10"])
+	else:
+		_cmd_tenfold_stat("diplo", "外交声望", parts)
+
+
+func _cmd_mil(parts: Array) -> void:
+	if parts.size() < 2:
+		# 不带参数时默认增加 10 点军事介入点
+		_cmd_tenfold_stat("mil_intervention", "军事介入点", ["mil", "+10"])
+	else:
+		_cmd_tenfold_stat("mil_intervention", "军事介入点", parts)
+
+
+## 显示值命令：内部多数数值按 ×10 存储，这里把用户输入按显示值自动 ×10。
+func _cmd_tenfold_stat(key: String, label: String, parts: Array) -> void:
+	if parts.size() < 2:
+		_print_line("[color=yellow]用法：%s <值|+增量|-增量>（显示值，内部自动 ×10）[/color]" % parts[0])
+		return
+	var w: WorldState = GameManager.world if GameManager else null
+	if w == null:
+		_print_line("[color=red]当前没有活动世界。[/color]")
+		return
+	if w.get_data_index(key) < 0:
+		_print_line("[color=red]未知键名：%s[/color]" % key)
+		return
+	var val_text: String = parts[1]
+	if val_text.begins_with("+") or val_text.begins_with("-"):
+		w.add_data_value(key, int(val_text) * 10)
+	else:
+		w.set_data_value(key, int(val_text) * 10)
+	w.sync_economy()
+	GameManager.notify_stats_changed()
+	_print_line("[color=green]已设置 %s = %s[/color]" % [label, val_text])
 
 
 func _cmd_event(parts: Array) -> void:
@@ -516,6 +566,8 @@ func _print_help() -> void:
 [color=green]stat <键名> <值>[/color]      设置数值（例：stat budget 9999）
 [color=green]stat <键名> +增量[/color]     增加数值（例：stat party_support +100）
 [color=green]stat <键名> -增量[/color]     减少数值（例：stat living_standard -50）
+[color=green]diplo <值|+增量|-增量>[/color]  设置/增减外交声望（不带参数默认 -10；例：diplo -10）
+[color=green]mil <值|+增量|-增量>[/color]   设置/增减军事介入点（不带参数默认 +10；例：mil +10）
 [color=green]event <事件id>[/color]        触发事件（例：event death_of_mao）
 [color=green]war <战争id>[/color]          强制开始战争（例：war 0）
 [color=green]relations <usa|ussr> <0-1000>[/color]  设置美/苏关系
@@ -527,6 +579,8 @@ func _print_help() -> void:
 [color=green]country <国家> ...[/color]     查看/修改国家政体、势力圈、影响力（输入 country 查看用法）
 
 [color=yellow]===== 沙盒作弊快捷键（仅沙盒难度）=====[/color]
-左Ctrl+1~9、0：党支持/民支持/思想/生活/国际声望/全球影响/预算/特工/军费/美苏关系 +10
+左Ctrl+1~9、0：党支持/民支持/思想/生活/国际声望/全球影响/预算/特工/军事力量/美苏关系 +10
+左Ctrl+D：外交声望 -10
+左Ctrl+I：军事介入点 +10
 左Ctrl+A：与苏联关系 恢复/破裂 切换
 """)

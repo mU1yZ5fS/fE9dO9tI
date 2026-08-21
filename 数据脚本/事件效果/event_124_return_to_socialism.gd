@@ -7,6 +7,14 @@ extends "res://数据脚本/event_script_base.gd"
 
 const TXT_R0 := "当如今的前领导人到达时，大会已经结束了，他已被解雇，并且获得了荣誉养老金，正如其他许多反对者一样。王明的道路是成功的，而只有时间能告诉我们，他的亲戚们是能原汁原味地保留他的想法，还是会让党利用他们，将其作为木偶来实现自己的梦想。"
 
+## 回归社会主义事件用到的原版姓名（polit_names1/2_en 索引）。
+const RETURN_TO_SOCIALISM_NAMES := {
+	"3_42": "王芳妮",
+	"3_43": "王丹芝",
+	"3_44": "王丹丁",
+	"41_45": "孟庆树",
+}
+
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
@@ -82,13 +90,14 @@ func _set_politician(p: PoliticianData, name_first: int, name_last: int, traits:
 		_face_bounds: Array, jacket: int, face_type: int, face_max: Array) -> void:
 	if p == null:
 		return
-	p.name_first = name_first
-	p.name_last = name_last
-	p.trait_personality = traits[0]
-	p.trait_alignment = traits[1]
-	p.trait_special = traits[2]
-	p.trait_background = traits[3]
-	p.age = age
+	var display_name := _display_name_for(name_first, name_last)
+	if display_name == "":
+		return
+	PoliticianSystem.apply_historical_profile(
+		p, display_name, name_first, name_last,
+		traits[0], traits[3], traits[1], traits[2], age,
+		p.power, p.loyalty
+	)
 	while p.face_parts.size() < 8:
 		p.face_parts.append(0)
 	p.face_parts[0] = randi_range(0, face_max[0] - 1) if face_max[0] > 1 else 0
@@ -103,6 +112,8 @@ func _set_politician(p: PoliticianData, name_first: int, name_last: int, traits:
 	p.face_type = face_type
 
 
+func _display_name_for(name_first: int, name_last: int) -> String:
+	return RETURN_TO_SOCIALISM_NAMES.get("%d_%d" % [name_first, name_last], "")
 
 
 func _set_modifier_active(index: int, active: bool) -> void:

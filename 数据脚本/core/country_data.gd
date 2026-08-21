@@ -135,11 +135,9 @@ func _init(p_slot: int = 0, p_gwcode: int = 0, p_name: String = "") -> void:
 	name = p_name
 
 
-## 动态国名：按当前政体查 gov_names，没有则回退 chinese_name → name
+## 显示名：取消“政体/意识形态自动匹配国名”的动态机制。
+## 只返回固定国名；事件/战争等特殊改国名通过直接写 chinese_name/name 生效。
 func display_name() -> String:
-	var gn: String = gov_names.get(government, "")
-	if gn != "":
-		return gn
 	if chinese_name != "":
 		return chinese_name
 	return name

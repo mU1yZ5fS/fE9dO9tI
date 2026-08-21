@@ -636,7 +636,9 @@ theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
 text = "[color=red]沙盒模式作弊快捷键（仅难度0）[/color]
-左Ctrl+1~9/0：党支持/民支持/思想/生活/国际声望/全球影响/预算/特工/军费/美苏关系 +10
+左Ctrl+1~9/0：党支持/民支持/思想/生活/国际声望/全球影响/预算/特工/军事力量/美苏关系 +10
+左Ctrl+D：外交声望 -10
+左Ctrl+I：军事介入点 +10
 左Ctrl+A：与苏联关系 恢复/破裂 切换
 F12：打开/关闭调试控制台"
 

@@ -48,6 +48,7 @@ func execute(context: Dictionary) -> void:
 			if c62 != null: c62.puppet_of = GameConstants.LegacySlot.FRANCE
 			if c62 != null: c62.set_tag("对华贸易", true)
 			if c62 != null: c62.name = "达荷美"
+			if c62 != null: c62.chinese_name = "达荷美"
 			_add_relation(0, 80)
 			_add_power(0, 50)
 		2:

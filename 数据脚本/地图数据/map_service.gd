@@ -226,6 +226,7 @@ func _on_region_map_preloaded(
 	# 读档/继续游戏时，地图数据刚重建，需把存档中持久化的归属覆盖重新套上，
 	# 否则独立后的领土会显示回初始宗主国（例如吉布提又变法国）。
 	_apply_map_owner_overrides()
+	sync_map_merges()
 
 	is_map_data_preloaded = true
 	map_data_preloaded.emit()
@@ -324,6 +325,93 @@ func set_region_owner(region_ids: Array, to_gwcode: int) -> void:
 func _persist_owner_override(r_id: int, to_gwcode: int) -> void:
 	if world != null:
 		world.map_owner_overrides[r_id] = to_gwcode
+
+
+## 统一把原版 CountryScript.Repaint()/MapChangesScript 的“地图合并”规则同步到 Godot 地块归属。
+## 原版通过 this_number 重映射 + parts 覆盖层显示合并；Godot 无覆盖层，等价为整国地块转移。
+func sync_map_merges() -> void:
+	var w := world
+	if w == null:
+		return
+	# 朝鲜统一：data.korea_result 1=北胜（南并入北），2=南胜（北并入南）
+	if w.korea_result == 1:
+		_merge_legacy(w, 46, 10)
+	elif w.korea_result == 2:
+		_merge_legacy(w, 10, 46)
+	# 台湾：completedDecisions[7] 或 taiwan_status==2 -> 台湾(38)并入中国(1)
+	if (w.decisions != null and w.decisions.completed.size() > 7 and w.decisions.completed[7]) or w.taiwan_status == 2:
+		_merge_legacy(w, 38, 1)
+	# 金马澎：台海岛屿被解放军控制 -> 金门(2917)、澎湖(3088)归中国
+	if w.taiwan_islands == 1:
+		set_region_owner([2917, 3088], 710)
+	# 藏南：arunachal_status>=2 -> 藏南地块(43)归中国
+	if w.arunachal_status >= 2:
+		set_region_owner([43], 710)
+	# 蒙古：mongolia_china_route==1 -> 蒙古(9)并入中国(1)
+	if w.mongolia_china_route == 1:
+		_merge_legacy(w, 9, 1)
+	# 中国“解放/征服”路线：任何 parts[0] 且傀儡为中国（原版战争70-75等）→ 领土并入中国
+	for c in w.countries:
+		if c != null and c.parts.size() > 0 and c.parts[0] and c.puppet_of == GameConstants.LegacySlot.CHINA:
+			_merge_legacy(w, c.原版序号, 1)
+	# 阿拉伯革命共和国联盟（OAR）：completedDecisions[20] + 30.parts[0..2]
+	if w.decisions != null and w.decisions.completed.size() > 20 and w.decisions.completed[20]:
+		var c30 := w.get_country_by_legacy_index(30)
+		if c30 != null and _has_part(c30, 0) and _has_part(c30, 1) and _has_part(c30, 2):
+			for src in [54, 55, 18, 14, 35, 13, 40]:
+				_merge_legacy(w, src, 30)
+	# 文莱并入马来西亚：49.parts[0]
+	var c49 := w.get_country_by_legacy_index(49)
+	if c49 != null and _has_part(c49, 0):
+		_merge_legacy(w, 111, 49)
+	# 吉布提：Event585 未发生 -> 仍属法国(21)；若非洲之角(41.parts[1])则并入 41
+	if not w.event_done_num(585):
+		_merge_legacy(w, 106, 21)
+	var c41 := w.get_country_by_legacy_index(41)
+	if c41 != null and (_has_part(c41, 0) or _has_part(c41, 1)):
+		_merge_legacy(w, 42, 41)
+		_merge_legacy(w, 106, 41)
+	# 西撒哈拉：摩洛哥(54).parts[0] 为真时西撒(18)并入摩洛哥
+	var c54 := w.get_country_by_legacy_index(54)
+	if c54 != null and _has_part(c54, 0):
+		_merge_legacy(w, 18, 54)
+	# 印支/东南亚合并：11.parts[0] 时 22、23 并入 11
+	var c11 := w.get_country_by_legacy_index(11)
+	if c11 != null and _has_part(c11, 0):
+		_merge_legacy(w, 22, 11)
+		_merge_legacy(w, 23, 11)
+	# 也门统一：24/25 谁置 parts[0] 就吞并对方
+	var c24 := w.get_country_by_legacy_index(24)
+	var c25 := w.get_country_by_legacy_index(25)
+	if c24 != null and _has_part(c24, 0):
+		_merge_legacy(w, 25, 24)
+	if c25 != null and _has_part(c25, 0):
+		_merge_legacy(w, 24, 25)
+	# 危地马拉统一：149.parts[0] 时伯利兹(142)并入危地马拉
+	var c149 := w.get_country_by_legacy_index(149)
+	if c149 != null and _has_part(c149, 0):
+		_merge_legacy(w, 142, 149)
+	# 爱尔兰统一：29.parts[0] 时另一爱尔兰(166)并入 29
+	var c29 := w.get_country_by_legacy_index(29)
+	var c166 := w.get_country_by_legacy_index(166)
+	if c29 != null and _has_part(c29, 0) and c166 != null:
+		_merge_legacy(w, 166, 29)
+
+
+func _merge_legacy(w: WorldState, from_idx: int, to_idx: int) -> void:
+	if from_idx == to_idx:
+		return
+	var from_c := w.get_country_by_legacy_index(from_idx)
+	var to_c := w.get_country_by_legacy_index(to_idx)
+	if from_c == null or to_c == null:
+		return
+	if from_c.gwcode == to_c.gwcode or from_c.gwcode <= 0 or to_c.gwcode <= 0:
+		return
+	transfer_owner(from_c.gwcode, to_c.gwcode)
+
+
+func _has_part(c: CountryData, idx: int) -> bool:
+	return c != null and idx >= 0 and idx < c.parts.size() and c.parts[idx]
 
 
 ## 旧档兼容：在地图归属持久化功能加入前，Event585 已让吉布提独立、Event589/1035 已成立

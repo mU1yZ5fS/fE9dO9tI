@@ -43,6 +43,10 @@ func _ready() -> void:
 	# 始终处理，确保暂停时仍能接收 ESC 输入
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
+	# 防止从事件/子界面返回时残留全局暂停（ESC菜单→事件等路径）
+	if get_tree() != null:
+		get_tree().paused = false
+
 	# 标记外交场景已激活 —— GameManager 仅在此期间推进时间
 	if GameManager:
 		GameManager.is_diplomacy_active = true

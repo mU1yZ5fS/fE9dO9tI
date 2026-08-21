@@ -37,6 +37,7 @@ func execute(context: Dictionary) -> void:
 				c44.set_tag("亲中", true)
 				c44.set_tag("对华贸易", true)
 				c44.name = "日本革命社会主义共和国"
+				c44.chinese_name = "日本革命社会主义共和国"
 				_join_alliances(c44)
 			_add(W.I_BUDGET, -200)
 			_add(W.I_AGENTS, -200)

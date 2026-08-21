@@ -379,6 +379,9 @@ static func resolve_war_finished(war_id: int = -1) -> void:
 		var restarted := apply_war_result(id)
 		w.wars[id].is_going = restarted
 	w.war_resolve = -10
+	# 战争结算后统一应用原版地图合并规则（朝鲜/也门/OAR/文莱/西撒等）
+	if MapService.instance != null:
+		MapService.instance.sync_map_merges()
 	if _notify_stats_cb.is_valid():
 				_notify_stats_cb.call()
 
@@ -882,6 +885,7 @@ static func _war19_result(w: WorldState, war: WarData, d: WorldState) -> void:
 			alb.set_tag("亲中", false)
 			alb.set_tag("对华贸易", false)
 			alb.name = "大 阿 尔 巴 尼 亚"
+			alb.chinese_name = "大 阿 尔 巴 尼 亚"
 			alb.government = GameConstants.Government.AUTHORITARIAN
 			alb.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 		if greece != null:
@@ -927,6 +931,7 @@ static func _war23_result(w: WorldState, war: WarData, d: WorldState) -> void:
 			add_empire_power(EmpireData.USA, -50)
 			if italy != null:
 				italy.name = "意 大 利 人 民 国"
+				italy.chinese_name = "意 大 利 人 民 国"
 			# GameState.cs:1259-1262
 			Achievements.set_achievement(123)
 			if c87 != null:
@@ -965,14 +970,17 @@ static func _war23_result(w: WorldState, war: WarData, d: WorldState) -> void:
 				italy.government = GameConstants.Government.AUTHORITARIAN
 				italy.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				italy.name = "意 大 利 苏 维 埃 联 邦"
+				italy.chinese_name = "意 大 利 苏 维 埃 联 邦"
 			elif d.size() > 184 and d.italy_hot_autumn_route == 2:
 				italy.government = GameConstants.Government.SOCIALIST
 				italy.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				italy.name = "意 大 利 苏 维 埃 共 和 国"
+				italy.chinese_name = "意 大 利 苏 维 埃 共 和 国"
 			else:
 				italy.government = GameConstants.Government.SOCIALIST
 				italy.sub_government = GameConstants.SubGovernment.MAOIST
 				italy.name = "意 大 利 社 会 主 义 共 和 国"
+				italy.chinese_name = "意 大 利 社 会 主 义 共 和 国"
 	else:
 		add_empire_power(EmpireData.USA, 20)
 		if d.size() > W.I_INFLUENCE:
@@ -1094,13 +1102,16 @@ static func _war30_result(w: WorldState, war: WarData, _d: WorldState) -> bool:
 			spain.set_tag("亲中", true)
 			spain.set_tag("对华贸易", true)
 			spain.name = "西 班 牙 联 邦"
+			spain.chinese_name = "西 班 牙 联 邦"
 		elif w.result_of_event_num(426) == 4 and spain != null:
 			spain.government = GameConstants.Government.REFORMIST
 			spain.sub_government = GameConstants.SubGovernment.TITOIST
 			spain.leave_alliances()
 			spain.name = "西 班 牙 人 民 联 合 王 国"
+			spain.chinese_name = "西 班 牙 人 民 联 合 王 国"
 		elif spain != null:
 			spain.name = "西 班 牙 共 和 国"
+			spain.chinese_name = "西 班 牙 共 和 国"
 	elif war.infl2 >= 800:
 		if w.result_of_event_num(426) == 4:
 			# 第二阶段重启（GameState.cs:1665-1677）
@@ -1123,6 +1134,7 @@ static func _war30_result(w: WorldState, war: WarData, _d: WorldState) -> bool:
 					spain.parts[1] = false
 				_revert_spain_parts_map(w, true, true)
 				spain.name = "长 枪 党 西 班 牙"
+				spain.chinese_name = "长 枪 党 西 班 牙"
 				spain.government = GameConstants.Government.AUTHORITARIAN
 				spain.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 	else:
@@ -2662,10 +2674,13 @@ static func _apply_war1_result(war: WarData, d: WorldState) -> void:
 				match china.sub_government:
 					0, 17, 1, 2:
 						c11.name = "越南人民共和国"
+						c11.chinese_name = "越南人民共和国"
 					16:
 						c11.name = "越南社会主义共和国"
+						c11.chinese_name = "越南社会主义共和国"
 					18:
 						c11.name = "不可思议的托派越南"
+						c11.chinese_name = "不可思议的托派越南"
 					13, 9:
 						c11.name = "越南民主人民共和国"
 					10, 15, 7, 19, 20, 22, 21:
@@ -3670,6 +3685,7 @@ static func _apply_war69_result(war: WarData, d: WorldState) -> void:
 			_join_all_our_alliances(w, c9)
 			c9.name = "蒙古占领区"
 			c9.chinese_name = "蒙古占领区"
+			d.mongolia_china_route = 1
 		_add_d(d, W.I_PARTY_SUPPORT, 300)
 		_add_d(d, W.I_PEOPLE_SUPPORT, 300)
 		_add_d(d, W.I_THOUGHT_FREEDOM, -300)
@@ -4598,9 +4614,11 @@ static func _war74_victory(w: WorldState, d: WorldState) -> void:
 	var c19 := WarQueries.wc(w, 19)
 	if c19 != null:
 		c19.name = "前 印 度 斯 坦 地 区"
+		c19.chinese_name = "前 印 度 斯 坦 地 区"
 	var c43 := WarQueries.wc(w, 43)
 	if c43 != null:
 		c43.name = "大 尼 泊 尔"
+		c43.chinese_name = "大 尼 泊 尔"
 	WarQueries.wc_name(w, 97, "布 鲁 克 巴 （ 军 管 区 ）")
 	WarQueries.wc_name(w, 171, "哲 孟 雄 （ 军 管 区 ）")
 	WarQueries.wc_name(w, 172, "底 马 撒 （ 军 管 区 ）")

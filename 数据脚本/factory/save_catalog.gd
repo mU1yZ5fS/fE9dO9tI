@@ -128,7 +128,7 @@ static func format_opis(slot: int, meta: Dictionary = {}, 激活: bool = false) 
 	var iron := bool(meta.get("is_ironman", slot == 0))
 	return "%s\n体制：%s\n日期：%s\n难度：%s\n成就：%s" % [
 		head, ideo_name, date_line, diff_name,
-		"[color=red] 可 解 锁 [/color]" if iron else "[color=red] 不 可 解 锁 [/color]",
+		" 可 解 锁 " if iron else " 不 可 解 锁 ",
 	]
 
 

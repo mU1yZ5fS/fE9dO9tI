@@ -46,18 +46,22 @@ func _replace_mao_with_mao_yuanxin() -> void:
 		return
 	# 移除毛泽东槽，固定点名补入毛远新（原版死亡补员后极左派槽由毛远新接任）。
 	# 若毛远新已入场/未到年份/池中无人，才回退常规补员规则。
+	var mao_yuanxin_already_exists := PoliticianSystem.has_politician("毛远新", 1, 41)
 	game.kill_politician(0, "毛远新")
 	if ws.politicians.size() > 0 and ws.politicians[0] != null:
 		var p: PoliticianData = ws.politicians[0]
-		# Event3.cs:30-37 逐字段覆写：
-		p.name_first = 1
-		p.name_last = 41
-		p.age = d.year - 1941
-		p.power = 700
-		p.trait_personality = GameConstants.PoliticianPersonality.FAR_LEFT    # traits[0]
-		p.trait_alignment = GameConstants.PoliticianAlignment.HARDLINER      # traits[1]
-		p.trait_special = GameConstants.PoliticianSpecial.PEOPLES_FRIEND       # traits[2]（原版越界值逐字保留）
-		p.trait_background = GameConstants.PoliticianBackground.MASS_LEADER    # traits[3]
+		# 防重名：毛远新已在场时不再把 0 号槽覆写成第二个毛远新。
+		if not mao_yuanxin_already_exists:
+			# Event3.cs:30-37 逐字段覆写。
+			PoliticianSystem.apply_historical_profile(
+				p, "毛远新", 1, 41,
+				GameConstants.PoliticianPersonality.FAR_LEFT,
+				GameConstants.PoliticianBackground.MASS_LEADER,
+				GameConstants.PoliticianAlignment.HARDLINER,
+				GameConstants.PoliticianSpecial.PEOPLES_FRIEND,
+				d.year - 1941,
+				700, p.loyalty
+			)
 	# 军委由实权领袖本人担任（原 politics_dolshnost[1]=150）
 	if ws.politics_positions.size() > 1:
 		ws.politics_positions[1] = WorldFactory.LEADER_POSITION_SENTINEL

@@ -63,7 +63,6 @@ func _apply_event_25(option_index: int) -> void:
 			_change_loyalty_custom({0: -50, 1: 50, 2: 50})
 			_add_faction_ideology({1: 250, 2: 150, 3: 150})
 			_kill_many([0, 1, 2, 3, 4, 17])
-			_remake_as_wang_dongxing(1)
 			_add_power_by_index({6: 100, 7: 100})
 		1:
 			_add_data({
@@ -74,7 +73,6 @@ func _apply_event_25(option_index: int) -> void:
 			_change_loyalty_custom({0: -20, 1: 50, 2: 50})
 			_add_faction_ideology({1: 200, 2: 100, 3: 100})
 			_kill_many([1, 2])
-			_remake_as_wang_dongxing(1)
 			_add_power_by_index({6: 100, 7: 100})
 			_force_position_threshold(2, 3, 50)
 		2:
@@ -105,7 +103,6 @@ func _apply_event_26(option_index: int) -> void:
 			_change_loyalty_custom({0: -100, 1: 50, 2: 50})
 			_add_faction_ideology({1: 250, 2: 150, 3: 150})
 			_kill_many([1, 2, 3, 4])
-			_remake_as_wang_dongxing(1)
 			_add_power_by_index({5: 400, 6: 100, 7: 100})
 		1:
 			_add_data({
@@ -116,7 +113,6 @@ func _apply_event_26(option_index: int) -> void:
 			_change_loyalty_custom({0: -50, 1: 50, 2: 50})
 			_add_faction_ideology({1: 200, 2: 100, 3: 100})
 			_kill_many([1, 2])
-			_remake_as_wang_dongxing(1)
 			_add_power_by_index({3: 100, 4: 100})
 			_force_position_threshold(2, 3, 100)
 		2:
@@ -125,7 +121,6 @@ func _apply_event_26(option_index: int) -> void:
 				W.I_THOUGHT_FREEDOM: 100, W.I_DIPLO: 100,
 			})
 			_kill_many([7])
-			_remake_as_wang_dongxing(7)
 			_recalc_relations()
 			_add_power_by_index({1: 500, 3: 500, 4: 500})
 			_change_loyalty_power_26_2()
@@ -249,23 +244,6 @@ func _add_empire_relation(empire_index: int, delta: int) -> void:
 func _kill_many(indexes: Array[int]) -> void:
 	for index in indexes:
 		game.kill_politician(index)
-
-
-func _remake_as_wang_dongxing(index: int) -> void:
-	if index < 0 or index >= ws.politicians.size() or ws.politicians[index] == null:
-		return
-	var politician := ws.politicians[index]
-	politician.name_first = 16
-	politician.name_last = 16
-	politician.name_display = "汪东兴"
-	politician.age = d.year - 1905
-	politician.trait_personality = GameConstants.PoliticianPersonality.MODERATE
-	politician.trait_background = GameConstants.PoliticianBackground.PARTY_CADRE
-	politician.trait_alignment = GameConstants.PoliticianAlignment.PRAGMATIST
-	politician.trait_special = GameConstants.PoliticianSpecial.ECONOMIST
-	politician.power = 800
-	politician.loyalty = 800
-	politician.wanted_position = 0
 
 
 func _recalc_relations() -> void:

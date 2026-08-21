@@ -93,6 +93,7 @@ func execute(context: Dictionary) -> void:
 					_leave_alliances(c54)
 					c54.set_tag("亲中", true)
 					c54.name = "摩洛哥人民共和国"
+					c54.chinese_name = "摩洛哥人民共和国"
 					c54.set_tag("对华贸易", true)
 				_add_relation(EmpireData.USSR, 50)
 				_add_relation(EmpireData.USA, -100)
@@ -107,6 +108,7 @@ func execute(context: Dictionary) -> void:
 					_leave_alliances(c54)
 					c54.set_tag("亲中", true)
 					c54.name = "摩洛哥王国"
+					c54.chinese_name = "摩洛哥王国"
 					c54.set_tag("对华贸易", true)
 				_add_relation(EmpireData.USSR, -50)
 				_add_relation(EmpireData.USA, -150)
@@ -131,6 +133,7 @@ func execute(context: Dictionary) -> void:
 				_leave_alliances(c54)
 				c54.set_tag("亲中", true)
 				c54.name = "摩洛哥人民联邦王国"
+				c54.chinese_name = "摩洛哥人民联邦王国"
 				c54.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, -100)
 			_add(W.I_DIPLO, 50)

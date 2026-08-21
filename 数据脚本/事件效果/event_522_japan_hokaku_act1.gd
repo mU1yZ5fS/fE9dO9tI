@@ -39,38 +39,42 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = TXT_R0_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 2
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 8
+			if _c44 != null:
+				_c44.government = GameConstants.Government.REFORMIST
+				_c44.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			_add(6, 5)
-			# UNHANDLED: GlobalScript.inst.gameState.data.party_support += 50
-			# UNHANDLED: GlobalScript.inst.gameState.influencePRC += 5
-			# UNHANDLED: GlobalScript.inst.gameState.empires[0].relations -= 50
-			# UNHANDLED: GlobalScript.inst.gameState.data.budget -= 40
-			# UNHANDLED: GlobalScript.inst.gameState.data.agents -= 40
+			_add(W.I_PARTY_SUPPORT, 50)
+			ws.influence_prc += 5
+			_add_relation(0, -50)
+			_add(W.I_BUDGET, -40)
+			_add(W.I_AGENTS, -40)
 		1:
 			context["result_text"] = TXT_R1_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 6
+			if _c44 != null:
+				_c44.government = GameConstants.Government.LIBERAL
+				_c44.sub_government = GameConstants.SubGovernment.LIBERAL
 			_add(6, 5)
-			# UNHANDLED: GlobalScript.inst.gameState.data.party_support += 50
-			# UNHANDLED: GlobalScript.inst.gameState.influencePRC += 5
-			# UNHANDLED: GlobalScript.inst.gameState.data.budget -= 30
-			# UNHANDLED: GlobalScript.inst.gameState.data.agents -= 30
+			_add(W.I_PARTY_SUPPORT, 50)
+			ws.influence_prc += 5
+			_add(W.I_BUDGET, -30)
+			_add(W.I_AGENTS, -30)
 		2:
 			context["result_text"] = TXT_R2_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 6
-			# UNHANDLED: this.a.allcountries[44].prcinfl = 10
+			if _c44 != null:
+				_c44.government = GameConstants.Government.LIBERAL
+				_c44.sub_government = GameConstants.SubGovernment.LIBERAL
+				_c44.prc_influence = 10
 			_add(6, -(5))
-			# UNHANDLED: GlobalScript.inst.gameState.data.party_support += 50
-			# UNHANDLED: GlobalScript.inst.gameState.influencePRC += 5
-			# UNHANDLED: GlobalScript.inst.gameState.empires[0].relations += 50
-			# UNHANDLED: GlobalScript.inst.gameState.data.budget -= 30
-			# UNHANDLED: GlobalScript.inst.gameState.data.agents -= 30
+			_add(W.I_PARTY_SUPPORT, 50)
+			ws.influence_prc += 5
+			_add_relation(0, 50)
+			_add(W.I_BUDGET, -30)
+			_add(W.I_AGENTS, -30)
 		3:
 			context["result_text"] = TXT_R3_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 6
+			if _c44 != null:
+				_c44.government = GameConstants.Government.LIBERAL
+				_c44.sub_government = GameConstants.SubGovernment.LIBERAL
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

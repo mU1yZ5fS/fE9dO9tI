@@ -504,6 +504,9 @@ func tick() -> void:
 	world.clamp_empire_relations()
 	_mirror_empires_to_data(world)
 	world.sync_economy()
+	# 月度同步原版 UpdateMap 的地图合并规则（金马澎/藏南/蒙古/也门/朝鲜等）
+	if _map_service != null:
+		_map_service.sync_map_merges()
 	date_changed.emit(world.date)
 	stats_changed.emit()
 	# 原作自动存档在月块末尾（TimeScript.cs:6021-6030），所有月度效果结算后再写。
@@ -625,6 +628,9 @@ func _on_event_triggered(event_id: String, is_timeout: bool) -> void:
 		if display_inst != null and display_inst.has_method("prepare"):
 			display_inst.prepare(event_def, world)
 	pause()
+	# 防止 ESC 菜单暂停状态被带进事件场景：事件场景自身可交互，进入前先解除全局暂停
+	if get_tree() != null:
+		get_tree().paused = false
 	event_started.emit(event_id)
 	get_tree().change_scene_to_file("uid://bheujwt4qte1y")
 
@@ -2660,6 +2666,8 @@ func _trigger_ending(ending_id: int) -> void:
 		return
 	current_ending_id = ending_id
 	pause()
+	if get_tree() != null:
+		get_tree().paused = false
 	get_tree().change_scene_to_file("uid://b1dm8nycmn3gw")
 # ============================================================================
 # 代理战争 — 逻辑已拆至 数据脚本/war_system.gd，此处仅保留公开 API 转发 stub

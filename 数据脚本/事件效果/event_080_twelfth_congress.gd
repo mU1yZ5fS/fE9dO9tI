@@ -384,28 +384,17 @@ func _overwrite_new_politician(
 	if idx < 0 or idx >= ws.politicians.size():
 		return
 	# 防重名：若该历史人物已由预备池/其它事件登场，不再重复覆写。
-	for i in ws.politicians.size():
-		if i == idx:
-			continue
-		var other: PoliticianData = ws.politicians[i]
-		if other != null and not PoliticianSystem.is_vacant_politician(other) \
-				and other.name_display == display_name:
-			return
+	if PoliticianSystem.has_politician(display_name, name_first, name_last):
+		return
 	var p: PoliticianData = ws.politicians[idx]
 	if p == null:
 		return
 	var year := ws.date.year if ws.date != null else 1982
-	p.name_display = display_name
-	p.name_first = name_first
-	p.name_last = name_last
-	p.age = maxi(0, year - birth_year)
-	p.trait_personality = personality
-	p.trait_background = background
-	p.trait_alignment = alignment
-	p.trait_special = special
-	p.power = 800
-	p.loyalty = 800
-	p.portrait = null
+	PoliticianSystem.apply_historical_profile(
+		p, display_name, name_first, name_last,
+		personality, background, alignment, special,
+		maxi(0, year - birth_year), 800, 800
+	)
 	p.is_historical = false
 	p.faction = -1
 	p.faction = PoliticianSystem.trait_faction_slot(p)

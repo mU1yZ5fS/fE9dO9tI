@@ -220,7 +220,9 @@ func evaluate(world: WorldState) -> bool:
 			num += 1
 		if politic.name_first == 15 and politic.name_last == 15:
 			num += 1
-		if politic.name_first == 16 and politic.name_last == 16:
+		if (politic.name_first == 6 and politic.name_last == 6) \
+				or (politic.name_first == 16 and politic.name_last == 16) \
+				or politic.name_display == "汪东兴":
 			num += 1
 	if world.leader == null:
 		return false

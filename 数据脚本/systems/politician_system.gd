@@ -491,6 +491,124 @@ static func kill_politician(pol_index: int, preferred_name: String = "") -> void
 		_notify_stats_cb.call()
 
 
+# ============================================================================
+# 历史人物统一写入 / 生成（收敛事件里散落的 name_display/portrait/防重名）
+# ============================================================================
+
+## 是否已有同名或同 id 的历史人物在政坛（空位不算）。
+static func has_politician(name_display: String, name_first: int = -1, name_last: int = -1) -> bool:
+	var w: WorldState = current_world
+	if w == null:
+		return false
+	for p in w.politicians:
+		if p == null or is_vacant_politician(p):
+			continue
+		if name_display != "" and p.name_display == name_display:
+			return true
+		if name_first >= 0 and name_last >= 0 and p.name_first == name_first and p.name_last == name_last:
+			return true
+	return false
+
+
+## 按 id 优先、显示名次之，解析历史人物肖像路径；没有则返回空串。
+static func portrait_path_for(name_display: String, name_first: int, name_last: int) -> String:
+	var numbered := "res://资产/政治家/%d_%d.png" % [name_first, name_last]
+	if ResourceLoader.exists(numbered):
+		return numbered
+	var named := "res://资产/政治家/%s.png" % name_display
+	if ResourceLoader.exists(named):
+		return named
+	return ""
+
+
+## 把一段完整历史人物档案写到指定对象（政客槽或 leader 都可用）。
+## 统一处理 name_display / name_first / name_last / 特质 / 数值 / 肖像。
+static func apply_historical_profile(
+	p: PoliticianData,
+	name_display: String,
+	name_first: int,
+	name_last: int,
+	personality: int,
+	background: int,
+	alignment: int,
+	special: int,
+	age: int,
+	power: int = 800,
+	loyalty: int = 800
+) -> void:
+	if p == null:
+		return
+	p.name_display = name_display
+	p.name_first = name_first
+	p.name_last = name_last
+	p.trait_personality = personality
+	p.trait_background = background
+	p.trait_alignment = alignment
+	p.trait_special = special
+	p.age = age
+	p.power = power
+	p.loyalty = loyalty
+	var path := portrait_path_for(name_display, name_first, name_last)
+	if path != "":
+		p.portrait = load(path) as Texture2D
+	else:
+		p.portrait = null
+
+
+## 找 power 最低且（可选）排除某性格的空位外政客槽。
+static func _weakest_politician_slot(excluded_personality: int = -1) -> int:
+	var w: WorldState = current_world
+	if w == null:
+		return -1
+	var best := -1
+	var best_power := 0
+	for i in w.politicians.size():
+		var p: PoliticianData = w.politicians[i]
+		if p == null or is_vacant_politician(p):
+			continue
+		if excluded_personality >= 0 and p.trait_personality == excluded_personality:
+			continue
+		if best == -1 or p.power < best_power:
+			best = i
+			best_power = p.power
+	return best
+
+
+## 统一“生成/补入历史人物”：查重 → 找最弱槽 → kill → 写入档案。
+## 返回新槽位索引；已存在或失败返回 -1。
+static func spawn_historical_politician(
+	name_display: String,
+	name_first: int,
+	name_last: int,
+	personality: int,
+	background: int,
+	alignment: int,
+	special: int,
+	age: int,
+	power: int = 800,
+	loyalty: int = 800,
+	excluded_personality: int = -1
+) -> int:
+	var w: WorldState = current_world
+	if w == null:
+		return -1
+	if has_politician(name_display, name_first, name_last):
+		return -1
+	var idx := _weakest_politician_slot(excluded_personality)
+	if idx < 0:
+		return -1
+	kill_politician(idx)
+	if idx >= w.politicians.size() or w.politicians[idx] == null:
+		return -1
+	apply_historical_profile(
+		w.politicians[idx], name_display, name_first, name_last,
+		personality, background, alignment, special, age, power, loyalty
+	)
+	fill_vacant_faction_leaders()
+	sync_in_power_flags(w)
+	return idx
+
+
 ## POL-10 任命：按职位细表改 loyalty / matrix，并 POL-20 重算关系
 ## position_id: 0总理 1军委 2外交 3首都 4北方 5西方 6南方 7东方
 ## 对齐 Button_Pol_Script num7/5/6/8-12（注意原版按钮编号与 dolshnost 索引映射）

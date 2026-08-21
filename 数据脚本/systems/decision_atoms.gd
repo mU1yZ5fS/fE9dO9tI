@@ -17,6 +17,15 @@ extends RefCounted
 
 const W = preload("res://数据脚本/world_state.gd")
 
+## CreateNewLeader / CreateNewPolitician 用到的原版姓名（polit_names1/2_en 索引）。
+const DECISION_NEW_NAMES := {
+	"10_69": "陈伯达",
+	"12_70": "黄永胜",
+	"32_47": "朱镕基",
+	"39_66": "冯友兰",
+	"47_65": "梁漱溟",
+}
+
 ## 跨系统注入（GameManager 设置）。
 static var current_world: WorldState = null
 static var event_engine: Node = null
@@ -979,27 +988,14 @@ static func get_lin_biao(_yes: bool = true) -> void:
 
 
 static func _replace_lowest_politician(n1: int, n2: int, age: int, t0: int, t3: int, t1: int, t2: int) -> void:
-	var ws := _ws()
-	if ws == null or ws.politicians.is_empty():
+	var display_name := _decision_display_name(n1, n2)
+	if display_name == "":
 		return
-	var num := 0
-	for i in ws.politicians.size():
-		var p: PoliticianData = ws.politicians[i]
-		if p != null and p.power < ws.politicians[num].power and p.trait_personality != GameConstants.PoliticianPersonality.CONSERVATIVE:
-			num = i
-	if _kill_politician_cb.is_valid():
-		_kill_politician_cb.call(num)
-	if num < ws.politicians.size() and ws.politicians[num] != null:
-		var p2: PoliticianData = ws.politicians[num]
-		p2.name_first = n1
-		p2.name_last = n2
-		p2.age = age
-		p2.trait_personality = t0
-		p2.trait_background = t3
-		p2.trait_alignment = t1
-		p2.trait_special = t2
-		p2.power = 800
-		p2.loyalty = 800
+	PoliticianSystem.spawn_historical_politician(
+		display_name, n1, n2,
+		t0, t3, t1, t2, age, 800, 800,
+		GameConstants.PoliticianPersonality.CONSERVATIVE
+	)
 
 
 ## StartEvent — 原版 number_event=num + LoadScene("Event")
@@ -1569,6 +1565,7 @@ static func create_big_oar(_yes: bool = true) -> void:
 		c30.set_tag("对华贸易", true)
 		c30.set_tag("亲中", true)
 		c30.name = "阿拉伯联合共和国"
+		c30.chinese_name = "阿拉伯联合共和国"
 		c30.government = GameConstants.Government.REFORMIST
 		c30.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 	_mod(46).is_active = true
@@ -1589,18 +1586,23 @@ static func create_big_oar(_yes: bool = true) -> void:
 				c30.set_tag("econ", true)
 
 
+static func _decision_display_name(name1: int, name2: int) -> String:
+	return DECISION_NEW_NAMES.get("%d_%d" % [name1, name2], "")
+
+
 ## CreateNewLeader — 直接改写领袖字段 + LeaderAsset/MoneyLevel/modifies[65]/ServeRMB 清零
 static func create_new_leader(name1: int, name2: int, t0: int, t3: int, t1: int, t2: int, age: int) -> void:
 	var ws := _ws()
 	if ws == null or ws.leader == null:
 		return
-	ws.leader.name_first = name1
-	ws.leader.name_last = name2
-	ws.leader.trait_personality = t0
-	ws.leader.trait_background = t3
-	ws.leader.trait_alignment = t1
-	ws.leader.trait_special = t2
-	ws.leader.age = age
+	var display_name := _decision_display_name(name1, name2)
+	if display_name == "":
+		return
+	PoliticianSystem.apply_historical_profile(
+		ws.leader, display_name, name1, name2,
+		t0, t3, t1, t2, age,
+		ws.leader.power, ws.leader.loyalty
+	)
 	ws.leader_asset = 0
 	ws.money_level = 0
 	var m65 := _mod(65)
@@ -1611,27 +1613,13 @@ static func create_new_leader(name1: int, name2: int, t0: int, t3: int, t1: int,
 
 ## CreateNewPolitician — 替换 power 最低且 traits[0]!=trait0 的槽位
 static func create_new_politician(name1: int, name2: int, t0: int, t3: int, t1: int, t2: int, age: int) -> void:
-	var ws := _ws()
-	if ws == null or ws.politicians.is_empty():
+	var display_name := _decision_display_name(name1, name2)
+	if display_name == "":
 		return
-	var num := 0
-	for i in ws.politicians.size():
-		var p: PoliticianData = ws.politicians[i]
-		if p != null and p.power < ws.politicians[num].power and p.trait_personality != t0:
-			num = i
-	if _kill_politician_cb.is_valid():
-		_kill_politician_cb.call(num)
-	if num < ws.politicians.size() and ws.politicians[num] != null:
-		var p2: PoliticianData = ws.politicians[num]
-		p2.name_first = name1
-		p2.name_last = name2
-		p2.age = age
-		p2.trait_personality = t0
-		p2.trait_background = t3
-		p2.trait_alignment = t1
-		p2.trait_special = t2
-		p2.power = 800
-		p2.loyalty = 800
+	PoliticianSystem.spawn_historical_politician(
+		display_name, name1, name2,
+		t0, t3, t1, t2, age, 800, 800, t0
+	)
 
 
 ## DoTimer — desnull[cock] = month
@@ -1767,6 +1755,7 @@ static func unite_arab() -> void:
 	if c30.parts.size() > 2:
 		c30.parts[2] = true
 	c30.name = "阿拉伯革命社会主义\n联邦共和国"
+	c30.chinese_name = "阿拉伯革命社会主义\n联邦共和国"
 	c30.government = GameConstants.Government.SOCIALIST
 	c30.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 	_leave_all_legacy(c30)

@@ -19,6 +19,9 @@ func execute(context: Dictionary) -> void:
 	game.start_war(75, "中华人民共和国", "中华民国", 700, 300, 2, 2)
 	if ws.wars.size() > 75 and ws.wars[75] != null:
 		ws.wars[75].name_war = "第三次中国内战"
+	# 金门马祖（澎湖）立即由解放军接管；地图上金门 2917 / 澎湖 3088 归中国 710
+	ws.taiwan_islands = 1
+	game.set_map_region_owner([2917, 3088], 710)
 	_add(W.I_PARTY_SUPPORT, 300)
 	_add(W.I_PEOPLE_SUPPORT, 300)
 	_add(W.I_THOUGHT_FREEDOM, -200)

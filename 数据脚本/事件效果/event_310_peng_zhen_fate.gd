@@ -29,22 +29,23 @@ func execute(context: Dictionary) -> void:
 				var minp := ws.politicians[num] if ws.politicians.size() > 0 else null
 				if p != null and minp != null and p.power < minp.power:
 					num = i
-			if num >= 0 and num < ws.politicians.size():
+			# 防重名：彭真已登场时不再把别的槽位覆写成彭真。
+			if num >= 0 and num < ws.politicians.size() and not PoliticianSystem.has_politician("彭真", 27, 48):
 				game.kill_politician(num)
 				var p2 := ws.politicians[num]
 				if p2 != null:
-					p2.name_first = 27
-					p2.name_last = 48
-					p2.age = d.year - 1902
-					p2.trait_personality = GameConstants.PoliticianPersonality.MODERATE
-					p2.trait_background = GameConstants.PoliticianBackground.PARTY_CADRE
-					p2.trait_alignment = GameConstants.PoliticianAlignment.TOLERANT
-					p2.trait_special = GameConstants.PoliticianSpecial.ECONOMIST
-					p2.power = 1500
-					p2.loyalty = 500
+					PoliticianSystem.apply_historical_profile(
+						p2, "彭真", 27, 48,
+						GameConstants.PoliticianPersonality.MODERATE,
+						GameConstants.PoliticianBackground.PARTY_CADRE,
+						GameConstants.PoliticianAlignment.TOLERANT,
+						GameConstants.PoliticianSpecial.ECONOMIST,
+						d.year - 1902,
+						1500, 500
+					)
 			context["result_text"] = TXT_R0
 		1:
-			var num2 := _find_politician(27, 17)
+			var num2 := _find_politician(27, 48)
 			_add(W.I_ARMY, 50)
 			for p in ws.politicians:
 				if p == null:

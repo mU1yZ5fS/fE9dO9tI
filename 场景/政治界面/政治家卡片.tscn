@@ -52,9 +52,9 @@ vertical_alignment = 1
 [node name="派系" type="Label" parent="." unique_id=279966524]
 layout_mode = 0
 offset_left = 111.0
-offset_top = 8.0
+offset_top = 11.0
 offset_right = 215.0
-offset_bottom = 32.0
+offset_bottom = 35.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 16
@@ -65,9 +65,9 @@ vertical_alignment = 1
 [node name="特质1" type="Label" parent="." unique_id=1939824717]
 layout_mode = 0
 offset_left = 112.0
-offset_top = 48.0
+offset_top = 47.0
 offset_right = 216.0
-offset_bottom = 72.0
+offset_bottom = 71.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 16
@@ -78,9 +78,9 @@ vertical_alignment = 1
 [node name="特质2" type="Label" parent="." unique_id=1803055630]
 layout_mode = 0
 offset_left = 112.0
-offset_top = 80.0
+offset_top = 84.0
 offset_right = 216.0
-offset_bottom = 104.0
+offset_bottom = 108.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_font")
 theme_override_font_sizes/font_size = 16

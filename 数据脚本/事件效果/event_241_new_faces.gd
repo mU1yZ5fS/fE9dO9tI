@@ -116,28 +116,17 @@ func _overwrite_politician(
 	if index < 0 or index >= ws.politicians.size():
 		return
 	# 防重名：预备池可能已把该历史人物补入政坛（如陈永贵），事件再覆写会造成两个同名者。
-	for i in ws.politicians.size():
-		if i == index:
-			continue
-		var other: PoliticianData = ws.politicians[i]
-		if other != null and not PoliticianSystem.is_vacant_politician(other) \
-				and other.name_display == display_name:
-			return
+	if PoliticianSystem.has_politician(display_name, name_first, name_last):
+		return
 	var p: PoliticianData = ws.politicians[index]
 	if p == null:
 		return
 	var year := ws.date.year if ws.date != null else 1977
-	p.name_display = display_name
-	p.name_first = name_first
-	p.name_last = name_last
-	p.age = maxi(0, year - birth_year)
-	p.trait_personality = personality
-	p.trait_background = background
-	p.trait_alignment = alignment
-	p.trait_special = special
-	p.power = 800
-	p.loyalty = 800
-	p.portrait = null
+	PoliticianSystem.apply_historical_profile(
+		p, display_name, name_first, name_last,
+		personality, background, alignment, special,
+		maxi(0, year - birth_year), 800, 800
+	)
 	p.is_historical = false
 	# 必须先清掉旧 faction，再按新 traits 推导；否则 trait_faction_slot 会直接返回旧派系。
 	p.faction = -1
