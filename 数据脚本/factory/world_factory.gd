@@ -453,6 +453,10 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 			_apply_map_country_meta(c, map_countries)
 			if c.gwcode < FICTIONAL_COUNTRY_OFFSET:
 				matched += 1
+			else:
+				# 9000+ 为地图上不存在的虚构/分离实体，map_countries 中没有中文名，
+				# 必须用 OFFSET_COUNTRY_NAMES_ZH 补齐，否则加丹加等国不显示国名。
+				_apply_offset_name(c)
 		else:
 			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
 			_apply_offset_name(c)

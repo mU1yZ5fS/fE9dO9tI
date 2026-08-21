@@ -80,6 +80,8 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 			return _iraq_palestine_status(w)
 		2:
 			return _effect_services(w)
+		6:
+			return _effect_maoist_bulwark(w)
 		11:
 			return _effect_automation(w)
 		13:
@@ -617,6 +619,29 @@ static func _effect_automation(w: WorldState) -> String:
 		# ModifiesInfuence.cs:1560-1570：激活时覆盖为 +5.0 版本。
 		return "农业、工业和服务业+5.0|预算+5.0，生活水平+1.0，腐败-1.0|党内支持度-5.0|每两周"
 	return MT.EFFECT_ZH[11].replace("|", "\n")
+
+
+## Event670/Event548 会动态追加到 6 号修正“毛主义的坚实壁垒”的说明。
+## 对齐 Event670.cs / ModifiesInfuence.cs 中 old_modify_desc[6] 的拼接。
+static func _effect_maoist_bulwark(w: WorldState) -> String:
+	var s := MT.EFFECT_ZH[6].replace("|", "\n")
+	if w == null:
+		return s
+	if _event_done(w, "event_548") and _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
+		match _event_result(w, "event_548"):
+			0, 2:
+				s += "\n<color=red>|革命国际主义运动——深化国间经济-政治一体化：</color>\n农业、工业和服务业+0.4；生活水平+0.2；人民支持度+0.5；凝聚力+0.1；思想自由化-0.2；与美苏关系-0.2"
+			1:
+				s += "\n<color=red>|革命国际主义运动——共产党情报局：</color>\n极左派+1；极左派力量+1；干涉点数+3.0；国际声望+0.1；与美苏关系-0.6；国际影响力+0.5；预算-0.6；特工-0.6；特勤援助的效果+1；人道主义援助的效果+1；中国一次性外交声援的效果+3"
+		if _event_result(w, "event_548") == 2:
+			s += "\n<color=red>|革命国际主义运动——新国际：</color>\n极左派+2；极左派力量+2；干涉点数+5.0；国际声望+0.2；国际声望低于90.0时，国际声望额外+0.1；与美苏关系-1；国际影响力+1；预算-1；特工-1；军力-1；军事援助的效果+2；特勤援助的效果+3；人道主义援助的效果+3；中国一次性外交声援的效果+6"
+	if w.result_of_event_num(670) == 0 and _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
+		s += "\n<color=red>|宣传鼓动——群众自己解放自己：</color>\n党内团结度-1.5，人民支持度+0.4，思想自由化+0.4，极左力量+1；每5点宣传投资：党内团结度+0.1，人民支持度+0.1，思想自由化-0.1；宣传投资不低于40时，党内团结度+0.7，人民支持度+1.0，思想自由化-1.0，特勤网络+2.0"
+	elif w.result_of_event_num(670) == 1:
+		s += "\n<color=red>|新时代红卫兵——革命的大联合：</color>\n党内团结度-0.2，人民支持度+0.2，军事实力-0.4，特勤网络-0.4；每10点行政投资：党内团结度+0.1，人民支持度+0.2，思想自由化-0.2，军事实力+0.1，特勤网络+0.1；行政投资不低于50时，党内团结度+1.0，人民支持度+1.0，思想自由化-1.0，特勤网络+1.0"
+	elif w.result_of_event_num(670) == 2:
+		s += "\n<color=red>|东南西北中，党领导一切：</color>\n党内团结度+1.0，特勤网络+0.2，腐败+0.2；每10点行政投资：党内团结度+0.2，人民支持度+0.1，思想自由化-0.1；行政投资不低于40时，特勤网络+1.0，腐败-0.2"
+	return s
 
 
 static func _effect_france_mod44(w: WorldState) -> String:

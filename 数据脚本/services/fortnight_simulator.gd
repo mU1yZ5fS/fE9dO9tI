@@ -3101,6 +3101,97 @@ func _fortnight_modifiers(
 		if w.empires.size() > EmpireData.USSR:
 			w.empires[EmpireData.USSR].relations -= 4
 
+		# Event548 联动：革命国际主义运动为“毛主义的坚实壁垒”追加效果。
+		if w.event_done_num(548) and gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
+			var r548 := w.result_of_event_num(548)
+			if r548 == 0 or r548 == 2:
+				d.industry += 4
+				d.agriculture += 4
+				d.services += 4
+				d.living_standard += 2
+				d.people_support += 5
+				d.manpower += 1
+				d.thought_freedom -= 2
+				if w.empires.size() > EmpireData.USA:
+					w.empires[EmpireData.USA].relations -= 2
+				if w.empires.size() > EmpireData.USSR:
+					w.empires[EmpireData.USSR].relations -= 2
+			elif r548 == 1:
+				_add_ideology(w, 0, 1)
+				for p in w.politicians:
+					if p != null and not PoliticianSystem.is_vacant_politician(p) \
+							and p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
+						p.power += 10
+				d.mil_intervention += 30
+				d.diplomatic_reputation += 1
+				if w.empires.size() > EmpireData.USA:
+					w.empires[EmpireData.USA].relations -= 6
+				if w.empires.size() > EmpireData.USSR:
+					w.empires[EmpireData.USSR].relations -= 6
+				w.influence_prc += 5
+				d.budget -= 6
+				d.agents -= 6
+			if r548 == 2:
+				_add_ideology(w, 0, 2)
+				for p in w.politicians:
+					if p != null and not PoliticianSystem.is_vacant_politician(p) \
+							and p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
+						p.power += 30
+				d.mil_intervention += 50
+				d.diplomatic_reputation += 2
+				if d.diplomatic_reputation < 900:
+					d.diplomatic_reputation += 1
+				if w.empires.size() > EmpireData.USA:
+					w.empires[EmpireData.USA].relations -= 10
+				if w.empires.size() > EmpireData.USSR:
+					w.empires[EmpireData.USSR].relations -= 10
+				w.influence_prc += 10
+				d.budget -= 10
+				d.agents -= 10
+				d.army -= 10
+
+		# Event670 联动：群众组织路线为“毛主义的坚实壁垒”追加效果。
+		# 原版 resultOfEvents[670] 默认 0，即事件发生前就按“宣传鼓动”分支结算；
+		# 事件选择 1/2 后才切换为另外两条路线。
+		var r670 := w.result_of_event_num(670)
+		if r670 == 0 and gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
+			d.party_support -= 15
+			d.people_support += 4
+			d.thought_freedom += 4
+			d.party_support += d.budget_propaganda / 50
+			d.people_support += d.budget_propaganda / 50
+			d.thought_freedom -= d.budget_propaganda / 50
+			if d.budget_propaganda >= 400:
+				d.party_support += 7
+				d.people_support += 10
+				d.thought_freedom -= 10
+				d.agents += 20
+		elif r670 == 1:
+			d.party_support -= 2
+			d.people_support += 2
+			d.army -= 4
+			d.agents -= 4
+			d.party_support += d.budget_admin / 100
+			d.people_support += d.budget_admin / 50
+			d.thought_freedom -= d.budget_admin / 50
+			d.army += d.budget_admin / 100
+			d.agents += d.budget_admin / 100
+			if d.budget_admin >= 500:
+				d.party_support += 10
+				d.people_support += 10
+				d.thought_freedom -= 10
+				d.agents += 10
+		elif r670 == 2:
+			d.party_support += 10
+			d.agents += 2
+			d.corruption += 2
+			d.party_support += d.budget_admin / 100
+			d.people_support += d.budget_admin / 50
+			d.thought_freedom -= d.budget_admin / 50
+			if d.budget_admin >= 400:
+				d.agents += 10
+				d.corruption -= 2
+
 	# 7 五年计划：条件动态激活/解除。
 	var plan_condition := (
 		d.ideology == 3
