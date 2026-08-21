@@ -60,8 +60,8 @@ const PART_MERGE_RULES := [
 	{"legacy": 149, "part": 0, "type": "merge", "sources": [142]},
 	# 爱尔兰统一：吞并北爱尔兰
 	{"legacy": 29, "part": 0, "type": "merge", "sources": [166]},
-	# 西撒哈拉并入摩洛哥
-	{"legacy": 54, "part": 0, "type": "merge", "sources": [18]},
+	# 西撒哈拉并入摩洛哥（直接按地块转移，原 merge 18->54 因 18 无初始地块无效）
+	{"legacy": 54, "part": 0, "type": "regions", "regions": [54, 55, 56, 57]},
 	# 魁北克独立
 	{"legacy": 167, "part": 0, "type": "regions", "regions": [1250]},
 	# 南墨西哥独立：墨西哥 parts[1] → 恰帕斯/瓦哈卡划给南墨西哥(168)
@@ -70,6 +70,28 @@ const PART_MERGE_RULES := [
 	{"legacy": 157, "part": 0, "type": "regions", "regions": [
 		381, 382, 384, 402, 403, 979, 980, 989, 990, 1408,
 		1723, 4068, 4072, 4074, 4075, 4077, 4091, 4092, 4094,
+	]},
+	# 库尔德斯坦“北叙-北伊联邦”：伊拉克/叙利亚库尔德区
+	{"legacy": 157, "part": 2, "type": "regions", "regions": [
+		381, 384, 979, 989, 1408, 1723,
+	]},
+	# 欧加登：索马里获胜/大索马里时，欧加登（索马里州）划给索马里
+	{"legacy": 42, "part": 0, "type": "regions", "regions": [29]},
+	{"legacy": 42, "part": 2, "type": "regions", "regions": [29]},
+	# 阿扎尼亚独立/建国：南非地块划给阿扎尼亚(153)
+	{"legacy": 153, "part": 0, "type": "regions", "regions": [
+		82, 1066, 1068, 1071, 1079, 1081, 1544, 1771, 3424,
+	]},
+	# 加丹加独立：加丹加省划给加丹加(163)
+	{"legacy": 163, "part": 0, "type": "regions", "regions": [373]},
+	# 尼日利亚分裂：豪萨兰（北部）划给 164
+	{"legacy": 164, "part": 0, "type": "regions", "regions": [
+		475, 477, 574, 1142, 1149, 1154, 1155, 1157, 1158,
+		4082, 4085, 4186, 4187,
+	]},
+	# 尼日利亚分裂：约鲁巴兰（西南）划给 165
+	{"legacy": 165, "part": 0, "type": "regions", "regions": [
+		479, 480, 483, 484, 1915, 4088, 4185, 4087,
 	]},
 	# 阿尔巴尼亚对南斯拉夫战争胜利
 	{"legacy": 20, "part": 0, "type": "regions", "regions": [

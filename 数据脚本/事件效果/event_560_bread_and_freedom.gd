@@ -87,6 +87,8 @@ func execute(context: Dictionary) -> void:
 						c18.set_tag("对华贸易", true)
 						c18.set_tag("亲中", true)
 					ws.influence_prc += 20
+				if c18 != null:
+					game.set_map_region_owner([54, 55, 56, 57], c18.gwcode)
 				if c54 != null:
 					c54.government = GameConstants.Government.SOCIALIST
 					c54.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
@@ -123,6 +125,7 @@ func execute(context: Dictionary) -> void:
 				if c54 != null:
 					c54.parts.resize(maxi(c54.parts.size(), 1))
 					c54.parts[0] = true
+					game.set_map_region_owner([54, 55, 56, 57], c54.gwcode)
 				if c18 != null:
 					_leave_alliances(c18)
 			text += TXT_R1_TAIL

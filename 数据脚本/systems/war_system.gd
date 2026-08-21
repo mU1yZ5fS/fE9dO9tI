@@ -2035,9 +2035,21 @@ static func _apply_war39_result(war: WarData, d: WorldState) -> void:
 				polisario.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
 				polisario.set_tag("亲中", true)
 				d.global_influence += 20
+		# 西撒哈拉独立：把整个西撒地块划给波利萨里奥
+		if polisario != null:
+			if GameManager != null:
+				GameManager.set_map_region_owner([54, 55, 56, 57], polisario.gwcode)
+			elif MapService.instance != null:
+				MapService.instance.set_region_owner([54, 55, 56, 57], polisario.gwcode)
 	else:
 		add_empire_power(EmpireData.USA, 50)
 		d.global_influence -= 20
+		# 摩洛哥获胜：西撒全部归摩洛哥
+		if morocco != null:
+			if GameManager != null:
+				GameManager.set_map_region_owner([54, 55, 56, 57], morocco.gwcode)
+			elif MapService.instance != null:
+				MapService.instance.set_region_owner([54, 55, 56, 57], morocco.gwcode)
 
 
 ## 战争 40 号结算：GameState.cs:2009-2059。
