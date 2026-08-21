@@ -18,4 +18,4 @@ default_side2 = "北约组织"
 default_usa_side = 1
 default_ussr_side = 1
 default_infl1 = 60
-default_infl2 = 1000
+default_infl2 = 940

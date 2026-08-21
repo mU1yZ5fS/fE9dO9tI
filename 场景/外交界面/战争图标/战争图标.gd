@@ -94,10 +94,10 @@ func _ensure_label() -> void:
 	_label.no_depth_test = true
 	_label.modulate = Color(1, 1, 1)
 	_label.outline_modulate = Color(0, 0, 0, 0.85)
-	_label.outline_size = 10
+	_label.outline_size = 8
 	_label.font = 统一字体
-	_label.font_size = 48
-	_label.pixel_size = 0.0012
+	_label.font_size = 30
+	_label.pixel_size = 0.0009
 	_label.position = Vector3(0, 0.018, 0)
 	_label.visible = false
 	add_child(_label)
