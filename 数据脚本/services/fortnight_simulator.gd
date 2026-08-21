@@ -1698,6 +1698,21 @@ func _apply_modifier2_services(d: WorldState, w: WorldState) -> void:
 				p.loyalty += 10
 
 
+## 民众不满事件触发冷却：同一事件至少间隔 24 个双周（约 1 年）才允许再次入队。
+## 原版有 event_done[5] 一次性门槛；这里再加一层冷却，防止读档/异常状态下重复弹窗。
+func _try_popular_discontent(w: WorldState, gm: Node) -> void:
+	if w == null or gm == null:
+		return
+	if w.event_done_num(5):
+		return
+	var now := w.date.tick_count if w.date != null else 0
+	var last := int(w.get_flag("popular_discontent_last_tick"))
+	if now > 0 and last > 0 and now - last < 24:
+		return
+	w.set_flag("popular_discontent_last_tick", now)
+	gm.start_event("popular_discontent")
+
+
 ## 票证制度按经济体制与工农业产值分档结算（ModifiesInfuence.cs:670-1092）。
 func _apply_coupon_tiers(d: WorldState, w: WorldState) -> void:
 	var sum := _dv(d, W.I_INDUSTRY) + _dv(d, W.I_AGRICULTURE)
@@ -1740,13 +1755,13 @@ func _apply_coupon_tiers(d: WorldState, w: WorldState) -> void:
 			d.corruption += 5
 			d.thought_freedom += 4
 			if not w.event_done_num(5):
-				gm.start_event("popular_discontent")
+				_try_popular_discontent(w, gm)
 		else:
 			d.people_support -= 6
 			d.corruption += 6
 			d.thought_freedom += 5
 			if d.thought_freedom > 400 or not w.event_done_num(5):
-				gm.start_event("popular_discontent")
+				_try_popular_discontent(w, gm)
 	elif econ <= 13:
 		if sum < 400:
 			d.party_support += 3
@@ -1806,13 +1821,13 @@ func _apply_coupon_tiers(d: WorldState, w: WorldState) -> void:
 			d.corruption += 5
 			d.thought_freedom += 4
 			if not w.event_done_num(5):
-				gm.start_event("popular_discontent")
+				_try_popular_discontent(w, gm)
 		else:
 			d.people_support -= 6
 			d.corruption += 6
 			d.thought_freedom += 5
 			if d.thought_freedom > 400 or not w.event_done_num(5):
-				gm.start_event("popular_discontent")
+				_try_popular_discontent(w, gm)
 	elif econ == 14:
 		if sum < 400:
 			d.people_support -= 3
@@ -1864,14 +1879,14 @@ func _apply_coupon_tiers(d: WorldState, w: WorldState) -> void:
 			d.thought_freedom += 4
 			d.budget -= 3
 			if not w.event_done_num(5):
-				gm.start_event("popular_discontent")
+				_try_popular_discontent(w, gm)
 		else:
 			d.people_support -= 6
 			d.corruption += 6
 			d.thought_freedom += 5
 			d.budget -= 3
 			if d.thought_freedom > 400 or not w.event_done_num(5):
-				gm.start_event("popular_discontent")
+				_try_popular_discontent(w, gm)
 
 
 ## ModifiesInfuence.cs:1618-1720 的 15 号修正「农业的发展进程」逐字移植。
@@ -3681,7 +3696,7 @@ func _fortnight_modifiers(
 			d.mil_intervention += 10
 			_add_empire_relation(w, EmpireData.USSR, -2)
 		if ml > 20 and d.mao_mausoleum != 9:
-			gm.start_event("popular_discontent")
+			_try_popular_discontent(w, gm)
 
 	gm._mirror_empires_to_data(world)
 

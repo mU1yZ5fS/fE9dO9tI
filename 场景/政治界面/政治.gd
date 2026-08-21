@@ -309,13 +309,13 @@ func _refresh_left_panel() -> void:
 
 	# 调查 / 监视（Politic_Manager.cs:116-133）
 	if pol.is_under_investigation:
-		sb += "距 纪 律 审 查 结 束 ：[color=green]%d.get_data_by_index(/color) 个 月" % clampi(7 - pol.investigator_index, 0, 7)
+		sb += "距 纪 律 审 查 结 束 ：[color=green]%d[/color] 个 月" % clampi(7 - pol.investigator_index, 0, 7)
 	else:
 		sb += "尚 未 被 纪 律 审 查"
 	sb += "|"
 	if pol.is_under_surveillance:
 		var rate: float = GameManager.change_of_killing(_selected_pol_index)
-		sb += "已 处 于 监 察 调 查 ：[color=green]%d.get_data_by_index(/color) 个 月|留 置 后 的 影 响 ：%s%%" % [
+		sb += "已 处 于 监 察 调 查 ：[color=green]%d[/color] 个 月|留 置 后 的 影 响 ：%s%%" % [
 			pol.days_surveillance, rate * 100.0
 		]
 	else:

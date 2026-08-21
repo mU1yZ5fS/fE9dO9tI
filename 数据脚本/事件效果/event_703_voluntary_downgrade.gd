@@ -25,7 +25,7 @@ func execute(context: Dictionary) -> void:
 	var usa := ws.empires[EmpireData.USA] if ws.empires.size() > EmpireData.USA else null
 	var quebec := ws.get_country_by_legacy_index(167)
 	var france := ws.get_country_by_legacy_index(21)
-	var spain := ws.get_country_by_legacy_index(85)
+	var spain := ws.get_country_by_legacy_index(86)
 	var china := ws.get_country_by_legacy_index(1)
 	if usa != null and usa.power > 400:
 		context["result_text"] = TXT_R_USA
@@ -101,6 +101,8 @@ func execute(context: Dictionary) -> void:
 		quebec.government = GameConstants.Government.LIBERAL
 		quebec.sub_government = GameConstants.SubGovernment.LIBERAL
 		quebec.set_tag("亲美", true)
+	if MapService.instance != null:
+		MapService.instance.sync_map_merges()
 
 
 func evaluate(world: WorldState) -> bool:

@@ -71,6 +71,8 @@ func _ready() -> void:
 	if GameManager:
 		GameManager.date_changed.connect(_on_date_changed)
 		GameManager.world_state_loaded.connect(_on_world_loaded)
+		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_refresh_interactive_countries):
+			GameManager.stats_changed.connect(_refresh_interactive_countries)
 		if not GameManager.tech_completed.is_connected(_on_tech_completed):
 			GameManager.tech_completed.connect(_on_tech_completed)
 		if GameManager.world != null:
@@ -127,9 +129,11 @@ func _refresh_interactive_countries(_unused = null) -> void:
 			for country in w.countries:
 				if country == null:
 					continue
-				# 只提示玩家能在地图上点击/打开面板的真实国家；9000+ 为虚构/分离实体（厄立特里亚/提格雷等）
+				# 只提示玩家能在地图上点击/打开面板的真实国家；9000+ 为虚构/分离实体（厄立特里亚/提格雷等）。
+				# 但魁北克/南墨西哥/库尔德斯坦/北爱尔兰等事件与外交动作明确引用，需放行。
 				if country.gwcode <= 0 or country.gwcode >= 9000:
-					continue
+					if not (country.原版序号 in [157, 166, 167, 168]):
+						continue
 				var actions: Array = panel._build_actions_v2(country)
 				var has_available := false
 				for action in actions:

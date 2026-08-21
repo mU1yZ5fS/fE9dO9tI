@@ -70,6 +70,8 @@ func execute(context: Dictionary) -> void:
 			_indochina_names()
 			_indochina_torg(false, false, false)
 			ws.influence_prc -= 50
+	if MapService.instance != null:
+		MapService.instance.sync_map_merges()
 
 
 
@@ -80,13 +82,16 @@ func _indochina_names() -> void:
 	if c11 != null:
 		c11.government = GameConstants.Government.AUTHORITARIAN
 		c11.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
+		c11.name = TXT_NAME_FED
 		c11.chinese_name = TXT_NAME_FED
 		_set_part(c11, 0, true)
 		c11.set_tag("sev", true)
 	if c22 != null:
+		c22.name = TXT_NAME_LAOS
 		c22.chinese_name = TXT_NAME_LAOS
 		c22.set_tag("sev", true)
 	if c23 != null:
+		c23.name = TXT_NAME_CAMBODIA
 		c23.chinese_name = TXT_NAME_CAMBODIA
 		c23.set_tag("sev", true)
 

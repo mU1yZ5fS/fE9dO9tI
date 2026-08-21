@@ -396,6 +396,8 @@ func load_game(path: String) -> void:
 		WAR_SYS.migrate_legacy_war_timeouts(world)
 		# 旧档兼容：越南和平标志统一为原版字段名 vietnampeace。
 		_migrate_legacy_global_flags()
+		# 旧档兼容：补建魁北克/南墨西哥虚拟国（新档在 WorldFactory 中已生成）。
+		WF.ensure_fictional_countries(world)
 		reset_map_runtime_state()
 		# 运行时缓存不序列化，读档后重建
 		world.rebuild_gwcode_index()

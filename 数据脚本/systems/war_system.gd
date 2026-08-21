@@ -180,14 +180,32 @@ static func check_war_endings() -> void:
 		return
 	if w.size() <= W.I_WAR_RESOLVE:
 		return
+	# 旧档可能出现 war_resolve 残留为 0 或已结束的战争 id，导致后续战争永远无法结算；
+	# 若指向的战争已不存在/未进行，则视为无待结算，恢复 -1。
 	if w.war_resolve >= 0:
-		return
+		if w.war_resolve >= w.wars.size() or w.wars[w.war_resolve] == null \
+				or not w.wars[w.war_resolve].is_going:
+			w.war_resolve = -1
+		else:
+			return
 	for i in w.wars.size():
 		var war: WarData = w.wars[i]
 		if war == null or not war.is_going:
 			continue
 		var by_time := war.fortnight_max >= 0 and war.fortnight_elapsed >= war.fortnight_max
-		var by_infl := war.infl1 >= 1000 or war.infl2 >= 1000
+		# 部分战争有独立阈值，按原版结算分支判定，避免“到数值了却不结算”。
+		var by_infl := false
+		if i == 4:
+			# 黎巴嫩战争：GameState.cs 分支中以色列胜 900（第二次黎巴嫩战争为 700）、以色列败 500。
+			if w.event_done_num(371):
+				by_infl = war.infl1 >= 700 or war.infl2 >= 500
+			else:
+				by_infl = war.infl1 >= 900 or war.infl2 >= 500
+		elif i == 17:
+			# 苏联遗产战争（war17）原版结算阈值是 850（GameState.cs:1005-1042），不是通用 1000。
+			by_infl = war.infl1 >= 850 or war.infl2 >= 850
+		else:
+			by_infl = war.infl1 >= 1000 or war.infl2 >= 1000
 		if by_time or by_infl:
 			w.war_resolve = i
 			if _start_event_cb.is_valid():

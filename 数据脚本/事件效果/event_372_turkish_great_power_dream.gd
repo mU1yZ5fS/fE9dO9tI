@@ -161,6 +161,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		_set_part(turkey, 1)
 		_turkish_client_sub3(95)
 		_add_data143(3)
+		_activate_kurdistan()
 		context["result_text"] = _fmt372(TXT_372_707, TXT_372_708, _t372_709(false), _t372_748(0))
 	elif ws.influence_prc >= 600 and num >= 3:
 		# Event372.cs:93-113
@@ -169,6 +170,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		_set_part(ws.get_country_by_legacy_index(14), 1)
 		_turkish_client_sub3(95)
 		_add_data143(3)
+		_activate_kurdistan()
 		context["result_text"] = _fmt372(TXT_372_710, TXT_372_708, _t372_709(true), _t372_748(0))
 	elif ws.influence_prc >= 500 and num >= 2 and flag2:
 		# Event372.cs:117-157
@@ -186,6 +188,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 			_turkey_gov2_sub8()
 		var second372 := _t372_708_or_713()
 		var main372 := TXT_372_711 if (flag2 and flag3) else TXT_372_712
+		_activate_kurdistan()
 		context["result_text"] = _fmt372(main372, second372, _t372_709(true), _t372_748(0))
 	else:
 		if ws.influence_prc < 400 or num < 1:
@@ -229,6 +232,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 					_set_part(ws.get_country_by_legacy_index(8), 0)
 					main372b = TXT_372_715
 			_upgrade_turkish_puppets(flag, flag2, flag3)
+			_activate_kurdistan()
 			var second372b := _t372_708_or_713()
 			context["result_text"] = _fmt372(main372b, second372b, _t372_709(true), _t372_748(0))
 
@@ -317,6 +321,24 @@ func _turkish_client_sub3(legacy_idx: int) -> void:
 	if c != null:
 		c.government = GameConstants.Government.REFORMIST
 		c.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
+
+
+## 事件372 独立建国分支：激活“库尔德斯坦二号”(157)，使地图/外交能识别库尔德国家。
+func _activate_kurdistan() -> void:
+	var c := ws.get_country_by_legacy_index(157)
+	if c == null:
+		return
+	if c.parts.size() <= 0:
+		c.parts.resize(1)
+	c.parts[0] = true
+	c.name = "库尔德斯坦共和国"
+	c.chinese_name = "库尔德斯坦共和国"
+	c.leave_alliances()
+	c.government = GameConstants.Government.REFORMIST
+	c.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
+	c.puppet_of = GameConstants.LegacySlot.NONE
+	if MapService.instance != null:
+		MapService.instance.sync_map_merges()
 
 
 func _set_part(c: CountryData, index: int) -> void:

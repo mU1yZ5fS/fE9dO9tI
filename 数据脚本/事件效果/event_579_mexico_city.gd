@@ -95,6 +95,16 @@ func execute(context: Dictionary) -> void:
 		1:
 			if c140 != null:
 				_set_part(c140, 1, true)
+			var c168 := ws.get_country_by_legacy_index(168)
+			if c168 != null:
+				if c168.parts.size() <= 0:
+					c168.parts.resize(1)
+				c168.parts[0] = true
+				c168.name = "墨西哥南方民主共和国"
+				c168.chinese_name = "墨西哥南方民主共和国"
+				c168.leave_alliances()
+				c168.government = GameConstants.Government.REFORMIST
+				c168.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			game.start_war(46, WAR46_SIDE1, WAR46_SIDE2, 500, 500, 0, 1)
 			if ws.wars.size() > 46 and ws.wars[46] != null:
 				ws.wars[46].name_war = WAR46_NAME
@@ -117,6 +127,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -100)
 			_add_relation(EmpireData.USA, -300)
 			context["result_text"] = TXT_R2
+	if MapService.instance != null:
+		MapService.instance.sync_map_merges()
 
 
 func _set_part(c: CountryData, i: int, value: bool) -> void:

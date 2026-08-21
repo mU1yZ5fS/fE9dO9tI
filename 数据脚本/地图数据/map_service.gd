@@ -396,6 +396,22 @@ func sync_map_merges() -> void:
 	var c166 := w.get_country_by_legacy_index(166)
 	if c29 != null and _has_part(c29, 0) and c166 != null:
 		_merge_legacy(w, 166, 29)
+	# 魁北克独立：167.parts[0] 时加拿大魁北克地块划给魁北克
+	var c167 := w.get_country_by_legacy_index(167)
+	if c167 != null and _has_part(c167, 0):
+		set_region_owner([1250], c167.gwcode)
+	# 南墨西哥独立：墨西哥(140).parts[1] 时恰帕斯/瓦哈卡划给南墨西哥(168)
+	var c168 := w.get_country_by_legacy_index(168)
+	var c140 := w.get_country_by_legacy_index(140)
+	if c168 != null and c140 != null and _has_part(c140, 1):
+		set_region_owner([1272, 2101], c168.gwcode)
+	# 库尔德斯坦独立：157.parts[0] 时把主要库尔德人聚居区划给库尔德斯坦
+	var c157 := w.get_country_by_legacy_index(157)
+	if c157 != null and _has_part(c157, 0):
+		set_region_owner([
+			381, 382, 384, 402, 403, 979, 980, 989, 990, 1408,
+			1723, 4068, 4072, 4074, 4075, 4077, 4091, 4092, 4094,
+		], c157.gwcode)
 
 
 func _merge_legacy(w: WorldState, from_idx: int, to_idx: int) -> void:

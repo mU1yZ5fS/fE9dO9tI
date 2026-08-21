@@ -32,6 +32,7 @@ const OFFSET_COUNTRY_NAMES_ZH := {
 	153: "阿扎尼亚", 155: "塞舌尔", 156: "阿扎瓦德",
 	157: "库尔德斯坦二号", 159: "瓦努阿图", 162: "南极洲",
 	163: "加丹加", 164: "安哥拉独", 165: "尼日利亚独", 166: "北爱尔兰",
+	167: "魁北克", 168: "南墨西哥",
 }
 
 
@@ -473,10 +474,11 @@ static func _build_countries(ws: WorldState) -> void:
 	#   1. Country_data_1.txt 主表（0-70、1、84-111 已在 COUNTRY_ROWS 中）
 	#   2. South_data.txt 南美 71-83（DLC00 补载）
 	#   3. Country_data_1.txt 112-166：原版 55 行字段完全同构，批量生成
+	#     167/168 为项目补建的魁北克/南墨西哥虚拟国（原版事件引用但原版不生成独立国家）
 	var rows: Array = []
 	rows.append_array(_load_country_rows())
 	rows.append_array(_load_south_country_rows())
-	for i in range(112, 167):
+	for i in range(112, 169):
 		rows.append([i, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13])
 
 	for row in rows:
@@ -519,6 +521,27 @@ static func _build_countries(ws: WorldState) -> void:
 		ws.countries.append(cd)
 
 	print("WorldFactory: 构建了 %d 个国家" % ws.countries.size())
+
+
+## 旧档兼容：补建魁北克(167)/南墨西哥(168)两个虚拟国。
+## 新档由 _build_countries 直接生成；旧档序列化时可能缺失。
+static func ensure_fictional_countries(ws: WorldState) -> void:
+	if ws == null:
+		return
+	for sid in [167, 168]:
+		if ws.get_country_by_legacy_index(sid) != null:
+			continue
+		var cd := CountryData.new()
+		cd.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
+		cd.原版序号 = sid
+		cd.slot = ws.countries.size()
+		cd.stability = 0
+		cd.development = 13
+		cd.government = 0
+		cd.sub_government = 0
+		_apply_offset_name(cd)
+		ws.countries.append(cd)
+	ws.rebuild_gwcode_index()
 
 
 # ============================================================================
