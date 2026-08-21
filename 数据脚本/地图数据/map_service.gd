@@ -412,6 +412,17 @@ func sync_map_merges() -> void:
 			381, 382, 384, 402, 403, 979, 980, 989, 990, 1408,
 			1723, 4068, 4072, 4074, 4075, 4077, 4091, 4092, 4094,
 		], c157.gwcode)
+	# 阿尔巴尼亚扩张：
+	#   parts[0] = 对南斯拉夫战争胜利（科索沃/斯科普里/波德戈里察一带）
+	#   parts[1] = 对希腊战争胜利（大阿尔巴尼亚，伊庇鲁斯/查梅尼亚）
+	var c20 := w.get_country_by_legacy_index(20)
+	if c20 != null:
+		if _has_part(c20, 0):
+			set_region_owner([
+				704, 705, 4555, 4245, 4216, 871, 814, 873,
+			], c20.gwcode)
+		if _has_part(c20, 1):
+			set_region_owner([334], c20.gwcode)
 
 
 func _merge_legacy(w: WorldState, from_idx: int, to_idx: int) -> void:
