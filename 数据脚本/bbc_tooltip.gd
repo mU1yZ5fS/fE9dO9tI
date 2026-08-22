@@ -47,6 +47,24 @@ static func _load_event_color_fragments() -> Dictionary:
 	return _event_color_fragments
 
 
+const EVENT_COLOR_FRAGMENTS_CONTEXT_PATH := "res://资产/数据/event_color_fragments_context.json"
+
+static var _event_color_fragments_context: Dictionary = {}
+static var _event_color_fragments_context_loaded: bool = false
+
+
+static func _load_event_color_fragments_context() -> Dictionary:
+	if _event_color_fragments_context_loaded:
+		return _event_color_fragments_context
+	_event_color_fragments_context_loaded = true
+	if not FileAccess.file_exists(EVENT_COLOR_FRAGMENTS_CONTEXT_PATH):
+		return {}
+	var parsed = JSON.parse_string(FileAccess.get_file_as_string(EVENT_COLOR_FRAGMENTS_CONTEXT_PATH))
+	if parsed is Dictionary:
+		_event_color_fragments_context = parsed
+	return _event_color_fragments_context
+
+
 ## 给一段事件文本按原版彩色片段补回 <color> 标签。
 ## event_key 传原版事件编号字符串（如 "36"），没有编号的可传空串。
 ## 注意：只使用当前事件的专属片段。JSON 里的 “global” 实际是全事件片段的并集
@@ -55,41 +73,46 @@ static func _load_event_color_fragments() -> Dictionary:
 static func restore_event_colors(text: String, event_key: String = "") -> String:
 	if text.is_empty():
 		return text
-	var frag_dict := _load_event_color_fragments()
+	var frag_dict := _event_fragments_for(event_key)
 	if frag_dict.is_empty():
 		return text
 	var by_plain := {}
-	if event_key != "" and frag_dict.has(event_key):
-		for f in frag_dict[event_key]:
-			var plain_e := String(f.get("plain", ""))
-			if plain_e != "":
-				by_plain[plain_e] = String(f.get("color", ""))
+	for f in frag_dict:
+		var plain_e := String(f.get("plain", ""))
+		if plain_e == "":
+			continue
+		if not by_plain.has(plain_e):
+			by_plain[plain_e] = []
+		by_plain[plain_e].append({
+			"plain": plain_e,
+			"color": String(f.get("color", "")),
+			"before": String(f.get("before", "")),
+			"after": String(f.get("after", "")),
+		})
 	if by_plain.is_empty():
 		return text
-	var frags: Array = []
-	for plain_key in by_plain:
-		frags.append({"plain": plain_key, "color": by_plain[plain_key]})
 	# 长片段优先占位，短片段不能拆开已经命中的长词。
 	# 例如“民主社会党”先命中后，后面的“社会党”不能再在它内部二次上色。
-	frags.sort_custom(func(a, b) -> bool:
-		return String(a.get("plain", "")).length() > String(b.get("plain", "")).length()
+	var plains := by_plain.keys()
+	plains.sort_custom(func(a, b) -> bool:
+		return String(a).length() > String(b).length()
 	)
 	var spans: Array = []
-	for frag in frags:
-		var plain := String(frag.get("plain", ""))
-		var color_name := String(frag.get("color", ""))
-		if plain.is_empty() or color_name.is_empty():
-			continue
-		var search_from := 0
-		var idx := text.find(plain, search_from)
+	for plain in plains:
+		var idx := text.find(plain, 0)
 		while idx != -1:
-			var span_end := idx + plain.length()
+			var span_end := idx + String(plain).length()
 			if not _span_overlaps(spans, idx, span_end):
-				spans.append({"start": idx, "end": span_end, "color": color_name})
-				search_from = span_end
-			else:
-				search_from = idx + 1
-			idx = text.find(plain, search_from)
+				var chosen := _choose_fragment(by_plain[plain], text, idx, span_end)
+				if chosen != null:
+					spans.append({
+						"start": idx,
+						"end": span_end,
+						"color": String(chosen.get("color", "")),
+					})
+					idx = text.find(plain, span_end)
+					continue
+			idx = text.find(plain, idx + 1)
 	if spans.is_empty():
 		return text
 	spans.sort_custom(func(a, b) -> bool:
@@ -107,6 +130,41 @@ static func restore_event_colors(text: String, event_key: String = "") -> String
 	if cursor < text.length():
 		out += text.substr(cursor)
 	return out
+
+
+## 取某个事件的颜色片段：优先用带上下文的新数据；旧 JSON 作为兜底。
+static func _event_fragments_for(event_key: String) -> Array:
+	var ctx := _load_event_color_fragments_context()
+	if event_key != "" and ctx.has(event_key):
+		return ctx[event_key]
+	var old := _load_event_color_fragments()
+	if event_key != "" and old.has(event_key):
+		return old[event_key]
+	return []
+
+
+## 同一 plain 可能有多个颜色（不同结果分支/上下文）。优先用上下文匹配；
+## 匹配不到且有唯一候选时使用唯一候选；仍有多候选时取第一个，避免漏色。
+static func _choose_fragment(candidates: Array, text: String, start: int, end: int) -> Dictionary:
+	if candidates.is_empty():
+		return {}
+	if candidates.size() == 1:
+		return candidates[0]
+	var best: Dictionary = {}
+	var best_ctx_len := -1
+	for c in candidates:
+		var before := String(c.get("before", ""))
+		var after := String(c.get("after", ""))
+		var before_ok := before.is_empty() or text.substr(maxi(0, start - before.length()), before.length()) == before
+		var after_ok := after.is_empty() or text.substr(end, after.length()) == after
+		if before_ok and after_ok:
+			var ctx_len := before.length() + after.length()
+			if ctx_len > best_ctx_len:
+				best = c
+				best_ctx_len = ctx_len
+	if not best.is_empty():
+		return best
+	return candidates[0]
 
 
 static func _span_overlaps(spans: Array, start: int, end: int) -> bool:
