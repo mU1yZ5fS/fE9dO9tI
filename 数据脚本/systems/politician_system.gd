@@ -33,7 +33,20 @@ static func is_vacant_politician(p: PoliticianData) -> bool:
 	return p == null or p.name_display == "空位" or (p.power <= 0 and p.portrait == null)
 
 
-## 统一领导人资料拷贝：事件换领袖时不再各自复制 name/traits/age/face 字段。
+## 检查某张头像是否已被当前政坛中的其他政客使用。
+static func _portrait_already_in_use(w: WorldState, portrait: Texture2D) -> bool:
+	if w == null or portrait == null:
+		return false
+	var path := portrait.resource_path
+	for p in w.politicians:
+		if p == null or p.portrait == null:
+			continue
+		if p.portrait.resource_path != "" and p.portrait.resource_path == path:
+			return true
+	return false
+
+
+## 统一领导人资料拷贝：事件换领袖时不再各自复制 name/traits/age/face/portrait 字段。
 ## 肖像系统仍使用 face_* 旧字段，后续迁移到 portrait 资源后可只改这里。
 static func copy_leader_profile(leader: PoliticianData, source: PoliticianData) -> void:
 	if leader == null or source == null:
@@ -50,6 +63,7 @@ static func copy_leader_profile(leader: PoliticianData, source: PoliticianData) 
 	if source.face_parts.size() >= 8:
 		leader.face_parts = source.face_parts.duplicate()
 	leader.jacket = source.jacket
+	leader.portrait = source.portrait
 
 
 ## 仅拷贝肖像相关字段（事件只换脸不换人设的场合）。
@@ -60,6 +74,7 @@ static func copy_leader_appearance(leader: PoliticianData, source: PoliticianDat
 	if source.face_parts.size() >= 8:
 		leader.face_parts = source.face_parts.duplicate()
 	leader.jacket = source.jacket
+	leader.portrait = source.portrait
 
 
 ## 领导人资料互换（Event80 等需要保留双方身份的场合）。
@@ -77,6 +92,7 @@ static func swap_leader_profile(a: PoliticianData, b: PoliticianData) -> void:
 	var tmp_face := a.face_type
 	var tmp_parts := a.face_parts.duplicate()
 	var tmp_jacket := a.jacket
+	var tmp_portrait := a.portrait
 	copy_leader_profile(a, b)
 	b.name_display = tmp_display
 	b.name_first = tmp_first
@@ -89,6 +105,7 @@ static func swap_leader_profile(a: PoliticianData, b: PoliticianData) -> void:
 	b.face_type = tmp_face
 	b.face_parts = tmp_parts
 	b.jacket = tmp_jacket
+	b.portrait = tmp_portrait
 
 
 # ============================================================================
@@ -311,6 +328,8 @@ static func _game_rule(w: WorldState, idx: int) -> int:
 
 
 static func sync_in_power_flags(w: WorldState) -> void:
+	# 统一清理历史人物占位头像的重复引用，避免多个不同人物顶同一张脸。
+	_clear_duplicate_portraits(w)
 	var holders: Dictionary = {}
 	for pos_id in w.politics_positions.size():
 		var h: int = w.politics_positions[pos_id]
@@ -325,6 +344,24 @@ static func sync_in_power_flags(w: WorldState) -> void:
 		if now and not p.in_power:
 			p.years_in_power = 0
 		p.in_power = now
+
+
+## 清除政坛中重复使用的头像：同一张图片只允许一名政客使用，
+## 后续重复者置为 null（显示“无肖像”），避免克隆脸。
+static func _clear_duplicate_portraits(w: WorldState) -> void:
+	if w == null or w.politicians.is_empty():
+		return
+	var seen := {}
+	for p in w.politicians:
+		if p == null or p.portrait == null:
+			continue
+		var path := p.portrait.resource_path
+		if path == "":
+			continue
+		if seen.has(path):
+			p.portrait = null
+		else:
+			seen[path] = true
 
 
 ## POL-08：监视/再教育「发现·成功率」显示用（GameState.ChangeOfKilling）
@@ -462,6 +499,10 @@ static func kill_politician(pol_index: int, preferred_name: String = "") -> void
 			w.politician_reserve, year, existing_parties
 		)
 	if replacement != null:
+		# 防止历史人物占位肖像被复用：如果新补员与现有政客使用同一张头像，
+		# 则清空该补员头像，避免出现“顶着别人头像”的克隆人。
+		if replacement.portrait != null and _portrait_already_in_use(w, replacement.portrait):
+			replacement.portrait = null
 		# 保持 matrix 长度与槽位数一致
 		if replacement.loyalty_matrix.size() < w.politicians.size():
 			replacement.loyalty_matrix.resize(w.politicians.size())

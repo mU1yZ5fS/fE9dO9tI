@@ -354,23 +354,32 @@ func refresh_palette() -> void:
 
 
 ## GameManager.stats_changed / world_state_loaded 回调：
-## 同步地图归属缓存 + 重新生成着色调色板，让外交互动/事件改动实时生效。
+## 同步本地地图归属查询字典 + 重新生成着色调色板，让外交互动/事件改动实时生效。
+## owner 调色板由 MapService 统一维护（与这里共享同一 Image/Texture），无需重复重建。
 func _on_stats_changed() -> void:
 	if GameManager == null:
 		return
 	if GameManager.cached_region_owner.size() > 0:
 		_region_owner = GameManager.cached_region_owner.duplicate()
-		if _owner_palette_image:
-			_sync_owner_palette_image()
-			if _owner_palette_tex:
-				_owner_palette_tex.update(_owner_palette_image)
 	refresh_palette()
 
 
 func _sync_color_palette_image() -> void:
 	_color_palette_image.fill(BLOC_NEUTRAL)
+	var seen := {}
 	for gwcode in _countries:
+		seen[gwcode] = true
 		_set_palette_pixel(_color_palette_image, gwcode, _color_for_country(gwcode))
+	# map_countries 里没有 9000+ 虚构/分离实体（库尔德斯坦二号、魁北克、南墨西哥等），
+	# 但它们激活后会被 MapService 移到相应地块；若不在调色板写入对应颜色，
+	# 地图上会一直显示中立色，且影响模式也无法显示“在谁影响下”。
+	var ws := _get_world_state()
+	if ws != null:
+		for c in ws.countries:
+			if c == null or c.gwcode <= 0 or seen.has(c.gwcode):
+				continue
+			seen[c.gwcode] = true
+			_set_palette_pixel(_color_palette_image, c.gwcode, _color_for_country(c.gwcode))
 
 
 func _color_for_country(gwcode: int) -> Color:

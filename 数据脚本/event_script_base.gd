@@ -150,3 +150,16 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+
+
+## 领导人与指定政治家双向互换身份（Event44/80/94 共用）。
+## 第二个参数为兼容现有调用点保留；互换本身不需要额外修改派系领袖索引。
+func _swap_leader_with_politician(slot: int, _faction_index: int = -1) -> void:
+	if ws == null or ws.leader == null:
+		return
+	if slot < 0 or slot >= ws.politicians.size():
+		return
+	var other: PoliticianData = ws.politicians[slot]
+	if other == null:
+		return
+	PoliticianSystem.swap_leader_profile(ws.leader, other)

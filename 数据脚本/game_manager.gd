@@ -332,6 +332,7 @@ func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	world = WF.create_world(player_gwcode, p_difficulty)
 	WarSystem.current_world = world
 	PoliticianSystem.set_world(world)
+	PoliticianSystem.sync_in_power_flags(world)
 	PoliticianPool.current_world = world
 	DecisionSystem.current_world = world
 	ModifierCatalog.current_world = world
@@ -368,6 +369,7 @@ func load_game(path: String) -> void:
 		world = loaded as WorldState
 		WarSystem.current_world = world
 		PoliticianSystem.set_world(world)
+		PoliticianSystem.sync_in_power_flags(world)
 		PoliticianPool.current_world = world
 		DecisionSystem.current_world = world
 		ModifierCatalog.current_world = world

@@ -37,6 +37,10 @@ const 政治场景 := "uid://dsmslhxc0e8u5"
 
 # 可互动国家提示缓存
 var _interactive_countries: Array[CountryData] = []
+## 可互动国家全量扫描开销较大（逐国构建外交动作），最高速度下不能每 tick 刷新；
+## 改为低频周期刷新，打开弹窗和关键事件时仍可强制即时刷新。
+const INTERACTIVE_REFRESH_INTERVAL := 1.0
+var _interactive_refresh_timer := 0.0
 
 
 func _ready() -> void:
@@ -71,8 +75,6 @@ func _ready() -> void:
 	if GameManager:
 		GameManager.date_changed.connect(_on_date_changed)
 		GameManager.world_state_loaded.connect(_on_world_loaded)
-		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_refresh_interactive_countries):
-			GameManager.stats_changed.connect(_refresh_interactive_countries)
 		if not GameManager.tech_completed.is_connected(_on_tech_completed):
 			GameManager.tech_completed.connect(_on_tech_completed)
 		if GameManager.world != null:
@@ -110,6 +112,16 @@ func _ready() -> void:
 	# 战争图标 v2：点击图标只高亮参战国（不切场景、不弹文本面板）。
 	_connect_war_icon_click()
 
+
+func _process(delta: float) -> void:
+	# 可互动国家扫描开销大，改为低频刷新，避免最高速度下每 tick 全量构建外交动作。
+	_interactive_refresh_timer -= delta
+	if _interactive_refresh_timer <= 0.0:
+		_interactive_refresh_timer = INTERACTIVE_REFRESH_INTERVAL
+		if GameManager != null and GameManager.world != null:
+			_refresh_interactive_countries()
+
+
 # ── 可互动国家提示 ──
 
 func _close_interactive_popup() -> void:
@@ -124,16 +136,17 @@ func _refresh_interactive_countries(_unused = null) -> void:
 	_interactive_countries.clear()
 	var w: WorldState = GameManager.world if GameManager else null
 	if w != null:
+		var live_gw := _collect_live_gwcodes()
 		var panel := get_node_or_null("国家面板")
 		if panel != null and panel.has_method("_build_actions_v2"):
 			for country in w.countries:
 				if country == null:
 					continue
-				# 只提示玩家能在地图上点击/打开面板的真实国家；9000+ 为虚构/分离实体（厄立特里亚/提格雷等）。
-				# 但魁北克/南墨西哥/库尔德斯坦/北爱尔兰等事件与外交动作明确引用，需放行。
-				if country.gwcode <= 0 or country.gwcode >= 9000:
-					if not (country.原版序号 in [157, 166, 167, 168]):
-						continue
+				# 只提示当前确实存在于地图上/已经通过事件激活的国家。
+				# 9000+ 的库尔德斯坦二号、魁北克、南墨西哥、北爱尔兰等，
+				# 以及尚无初始地块的纳米比亚等，必须在 parts/地图归属激活后才进入列表。
+				if not _country_is_live(country, live_gw):
+					continue
 				var actions: Array = panel._build_actions_v2(country)
 				var has_available := false
 				for action in actions:
@@ -143,6 +156,31 @@ func _refresh_interactive_countries(_unused = null) -> void:
 				if has_available:
 					_interactive_countries.append(country)
 	btn.text = "可互动国家（%d）" % _interactive_countries.size()
+
+
+func _collect_live_gwcodes() -> Dictionary:
+	var live := {}
+	var owners: Dictionary = GameManager.cached_region_owner if GameManager else {}
+	for r_id in owners:
+		var gw := int(owners[r_id])
+		if gw > 0:
+			live[gw] = true
+	return live
+
+
+func _country_is_live(country: CountryData, live_gw: Dictionary) -> bool:
+	if country == null:
+		return false
+	# 地图缓存尚未就绪时退化为旧行为：真实地图国家放行，幽灵国家仍看 parts。
+	if live_gw.is_empty() and country.gwcode > 0 and country.gwcode < 9000:
+		return true
+	if live_gw.has(country.gwcode):
+		return true
+	# 事件建立的幽灵国家先通过 parts 标记激活，再交给 MapService 转移地图地块。
+	for p in country.parts:
+		if p:
+			return true
+	return false
 
 
 func _action_available(action: Dictionary) -> bool:
@@ -267,7 +305,6 @@ func _on_world_loaded() -> void:
 func _on_date_changed(date: GameDate) -> void:
 	_refresh_date(date)
 	_refresh_alert_icons()
-	_refresh_interactive_countries()
 
 func _refresh_date(date: GameDate) -> void:
 	var lbl := get_node_or_null("时间/时间")

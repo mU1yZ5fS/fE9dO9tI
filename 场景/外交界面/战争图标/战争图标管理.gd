@@ -34,8 +34,8 @@ func _ready() -> void:
 	if GameManager:
 		if not GameManager.world_state_loaded.is_connected(_refresh):
 			GameManager.world_state_loaded.connect(_refresh)
-		if not GameManager.date_changed.is_connected(_on_date_changed):
-			GameManager.date_changed.connect(_on_date_changed)
+		# 每一日 tick 都会同时发出 stats_changed，因此不需要再单独监听 date_changed，
+		# 否则最高速度下战争图标会每 tick 重复刷新两次。
 		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_refresh):
 			GameManager.stats_changed.connect(_refresh)
 	var earth := get_parent()

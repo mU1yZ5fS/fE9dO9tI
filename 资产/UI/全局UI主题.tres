@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=5 format=3]
+[gd_resource type="Theme" format=3 uid="uid://b3v31chcs6vss"]
 
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="1_font"]
 
@@ -58,7 +58,7 @@ default_font_size = 16
 Panel/styles/panel = SubResource("StyleBoxFlat_panel")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_panel")
 PopupPanel/styles/panel = SubResource("StyleBoxFlat_popup")
-TooltipPanel/styles/panel = SubResource("StyleBoxFlat_tooltip")
-TooltipLabel/fonts/font = ExtResource("1_font")
-TooltipLabel/font_sizes/font_size = 18
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
+TooltipLabel/font_sizes/font_size = 18
+TooltipLabel/fonts/font = ExtResource("1_font")
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_tooltip")

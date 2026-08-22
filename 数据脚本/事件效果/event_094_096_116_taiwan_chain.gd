@@ -29,7 +29,6 @@ extends "res://数据脚本/event_script_base.gd"
 ##   - Event96 的 data.press_policy++ 是 Unity 原码 bug（值未写回数组），Godot 按原行为保持 no-op。
 ##   - Event116 的 ILoveSuckCocks 是刷新中国地图 parts 的辅助方法，这里按主要分支近似移植。
 
-const POLITICAL_TRANSITION = preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
 # ============================================================================
 # 原版逐字中文文案（Event94/95/96/116.cs 去空格、||→\n、剥 color）
 # ============================================================================
@@ -274,11 +273,7 @@ func _swap_leader_with_liberal() -> void:
 	var liberal_idx := _liberal_leader_index()
 	if liberal_idx < 0:
 		return
-	var transition = POLITICAL_TRANSITION.new()
-	# transition 是新建实例，必须先用基类 _bind_world 绑定世界状态。
-	if not transition._bind_world():
-		return
-	transition._swap_leader_with_politician(liberal_idx, FactionData.LIBERAL)
+	_swap_leader_with_politician(liberal_idx)
 	PoliticianSystem.sync_in_power_flags(ws)
 
 

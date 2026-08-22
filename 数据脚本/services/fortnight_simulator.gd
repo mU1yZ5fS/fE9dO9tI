@@ -6,6 +6,7 @@ extends RefCounted
 ## 通过 run(gm, world) 注入 GameManager 引用与 WorldState；跨系统调用走 gm.* 显式依赖。
 
 const W = preload("res://数据脚本/world_state.gd")
+const DIPLO_BASE_SCRIPT = preload("res://数据脚本/外交互动/外交互动_基础.gd")
 
 var gm: Node = null
 var world: WorldState = null
@@ -2593,7 +2594,21 @@ func _political_system_recalc(d: WorldState, w: WorldState) -> void:
 	if gm._mod_active(w, GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION) and pc != null and pc.government == GameConstants.Government.SOCIALIST:
 		d.ideology = 3
 		pc.government = GameConstants.Government.REFORMIST
+	# 政体重算后同步玩家国家（中国）的子意识形态，避免国家面板图标与地图/派系显示不一致。
+	_sync_player_sub_government(w)
 	# 注意：data.political_line 政治路线重算也在日块（tick 中先于本函数调用），不在此处
+
+
+## 同步玩家国家的子意识形态。移植自原版 ChineseSubGosstroy，
+## 使国家面板的 sub_government 图标与 government/ideology/派系显示保持一致。
+func _sync_player_sub_government(w: WorldState) -> void:
+	if w == null:
+		return
+	var pc := w.get_player_country()
+	if pc == null or pc.原版序号 != GameConstants.LegacySlot.CHINA:
+		return
+	var diplo_utils := DIPLO_BASE_SCRIPT.new()
+	pc.sub_government = diplo_utils.chinese_sub_gosstroy(w)
 
 
 ## 政治路线 data.political_line：一党制(≤7)下每月跟随席位(support)最大的派系。

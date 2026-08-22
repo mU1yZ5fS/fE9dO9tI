@@ -119,6 +119,18 @@ static func pick_replacement(
 				continue
 			existing_names[p.name_display] = true
 
+	# ── 事件241“全都要”后续人物：先于普通预备池补入 ──
+	# 原版 GameState.BalancePolitic -> GeneratePolitic：result0 依次补孙健/吴桂贤，
+	# result1 依次补孙健/吴桂贤/王秀珍/马天水。
+	var wave := _try_event241_spawn(current_year, existing_names)
+	if wave != null:
+		return wave
+
+	# ── 9.9 动态特殊人物：池子为空/无候选时作为历史人物生成 ──
+	var special := _try_random_special_spawn(current_year, existing_names)
+	if special != null:
+		return special
+
 	# 池不足：直接随机生成（名称/特质/无肖像）。
 	if reserve.is_empty():
 		return generate_random_politician(current_year, faction_count, existing_names)
@@ -145,6 +157,108 @@ static func pick_replacement(
 	var picked := candidates[0]
 	reserve.erase(picked)
 	return picked.make_instance()
+
+
+# ============================================================================
+# 原版 GeneratePolitic 特殊历史人物生成（GameState.cs 6500-7070）
+# ============================================================================
+
+## 原版 Event241 结果后补入的四人顺序表。
+static func _event241_defs() -> Array[Dictionary]:
+	return [
+		{"name": "孙健", "first": 30, "last": 50, "personality": 20, "background": 24, "alignment": 5, "special": 9, "birth": 1936, "power": 500},
+		{"name": "吴桂贤", "first": 11, "last": 67, "personality": 0, "background": 24, "alignment": 5, "special": 11, "birth": 1938, "power": 500},
+		{"name": "王秀珍", "first": 3, "last": 52, "personality": 0, "background": 24, "alignment": 6, "special": 16, "birth": 1935, "power": 500},
+		{"name": "马天水", "first": 31, "last": 53, "personality": 0, "background": 21, "alignment": 5, "special": 8, "birth": 1911, "power": 500},
+	]
+
+## 9.9 随机特殊历史人物表（原版 GeneratePolitic 的 num13 分支；不含已由预备池负责的人）。
+static func _random_special_defs() -> Array[Dictionary]:
+	return [
+		{"name": "钱学森", "first": 51, "last": 75, "personality": 0, "background": 27, "alignment": 7, "special": 13, "birth": 1911, "power": 500},
+		{"name": "曾培洪", "first": 52, "last": 76, "personality": 1, "background": 27, "alignment": 7, "special": 11, "birth": 1905, "power": 500},
+		{"name": "谢静宜", "first": 36, "last": 77, "personality": 0, "background": 26, "alignment": 42, "special": 38, "birth": 1935, "power": 500, "requires_wenge_pair": true},
+		{"name": "孙玉国", "first": 30, "last": 78, "personality": 0, "background": 25, "alignment": 4, "special": 32, "birth": 1941, "power": 500, "requires_wenge_pair": true},
+		{"name": "宋平", "first": 37, "last": 33, "personality": 1, "background": 21, "alignment": 5, "special": 31, "birth": 1917, "power": 500},
+		{"name": "任仲夷", "first": 55, "last": 81, "personality": 2, "background": 21, "alignment": 6, "special": 11, "birth": 1914, "power": 500},
+		{"name": "吴敬琏", "first": 11, "last": 83, "personality": 3, "background": 26, "alignment": 5, "special": 11, "birth": 1930, "power": 500},
+		{"name": "厉以宁", "first": 57, "last": 84, "personality": 3, "background": 26, "alignment": 6, "special": 11, "birth": 1930, "power": 500},
+		{"name": "乌兰夫", "first": 58, "last": 85, "personality": 1, "background": 21, "alignment": 41, "special": 9, "birth": 1906, "power": 500},
+	]
+
+
+static func _try_event241_spawn(current_year: int, existing_names: Dictionary) -> PoliticianData:
+	if current_world == null:
+		return null
+	if not current_world.event_done_num(241):
+		return null
+	var result := current_world.result_of_event_num(241)
+	if result >= 2:
+		return null
+	var defs := _event241_defs()
+	# 原版：result0 只补孙健、吴桂贤；result1 补满四人
+	var limit := 2 if result == 0 else 4
+	for i in limit:
+		var d: Dictionary = defs[i]
+		var pd := _make_named_politician(d, current_year, existing_names)
+		if pd != null:
+			return pd
+	return null
+
+
+static func _try_random_special_spawn(current_year: int, existing_names: Dictionary) -> PoliticianData:
+	if current_world == null:
+		return null
+	# 原版 10%*1/12 命中分支；这里复刻一次随机判定，避免每空必刷特殊人物。
+	var rng: RandomNumberGenerator = current_world.ensure_rng()
+	if rng.randi_range(0, 9) >= 3:
+		return null
+	var defs := _random_special_defs()
+	var idx := rng.randi_range(0, defs.size() - 1)
+	if idx >= defs.size():
+		return null
+	var d: Dictionary = defs[idx]
+	# 谢静宜/孙玉国需 resultOfEvents[25]==2 且 resultOfEvents[26]==2
+	if d.has("requires_wenge_pair") and bool(d["requires_wenge_pair"]):
+		if current_world.result_of_event_num(25) != 2 or current_world.result_of_event_num(26) != 2:
+			return null
+	return _make_named_politician(d, current_year, existing_names)
+
+
+static func _make_named_politician(
+	d: Dictionary,
+	current_year: int,
+	existing_names: Dictionary,
+) -> PoliticianData:
+	var name: String = d["name"]
+	var first: int = d["first"]
+	var last: int = d["last"]
+	if existing_names.has(name):
+		return null
+	if PoliticianSystem.has_politician(name, first, last):
+		return null
+	var pd := PoliticianData.new()
+	pd.is_historical = true
+	pd.entry_year = 1976
+	pd.exit_year = 9999
+	pd.faction = -1
+	pd.wanted_position = 3
+	pd.pool_priority = 60
+	PoliticianSystem.apply_historical_profile(
+		pd,
+		name,
+		first,
+		last,
+		int(d["personality"]),
+		int(d["background"]),
+		int(d["alignment"]),
+		int(d["special"]),
+		clampi(current_year - int(d["birth"]), 30, 99),
+		int(d.get("power", 500)),
+		800
+	)
+	existing_names[name] = true
+	return pd
 
 
 ## 池子耗尽时的兜底：随机生成一位新政治家（名称、特质、无肖像）。
