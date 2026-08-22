@@ -12,18 +12,9 @@
 | `map_neighbors.json` | region_id -> 邻接 region_id 数组（当前缺失，需补齐） |
 | `map_claims.json` | 可选：显式宣称/分裂关系；缺省时由生成器从 map_countries 重复 region 自动推导 |
 
-## 生成运行时资源
+## 运行时数据源
 
-在 Godot 编辑器或工具脚本中执行：
+运行时直接解析根目录下的 `map_meta.json` / `map_regions.json` / `map_countries.json`，
+不再加载 `map_data.res`，也不需要先运行 MapBuilder。
 
-```gdscript
-var md := MapBuilder.build()
-```
-
-输出：
-
-```
-res://资产/地图/generated/map_data.res
-```
-
-运行时只加载 `map_data.res`，不再解析 JSON。
+`MapBuilder` / `MapData` 仅作为可选的离线生成工具保留，不参与游戏加载。

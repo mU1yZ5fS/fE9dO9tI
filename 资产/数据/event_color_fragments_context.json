@@ -3429,7 +3429,7 @@
   "36": [
     {
       "plain": "艾哈迈德·贝克尔",
-      "color": "green",
+      "color": "darkgreen",
       "before": "了脚跟，",
       "after": "和他的侄",
       "source": "TextOfEvents"
@@ -3464,7 +3464,7 @@
     },
     {
       "plain": "阿齐兹·穆罕默德",
-      "color": "green",
+      "color": "darkgreen",
       "before": "。总书记",
       "after": "曾经展开",
       "source": "TextOfEvents"
@@ -3478,7 +3478,7 @@
     },
     {
       "plain": "阿齐兹",
-      "color": "green",
+      "color": "darkgreen",
       "before": "经架空了",
       "after": "，并愿意",
       "source": "TextOfEvents"
@@ -3499,14 +3499,14 @@
     },
     {
       "plain": "穆希·阿卜杜勒--侯赛因·马什哈迪",
-      "color": "green",
+      "color": "darkgreen",
       "before": "己的秘书",
       "after": "提拔为副",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "加姆尼·阿卜杜勒—贾利勒",
-      "color": "green",
+      "color": "darkgreen",
       "before": "密盟友如",
       "after": "占据要职",
       "source": "ResultsOfEvents"
@@ -3520,14 +3520,14 @@
     },
     {
       "plain": "马什哈迪",
-      "color": "green",
+      "color": "darkgreen",
       "before": "，这迫使",
       "after": "副总统前",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "穆希·阿卜杜勒--侯赛因·马什哈迪",
-      "color": "green",
+      "color": "darkgreen",
       "before": "尔的秘书",
       "after": "为锡安主",
       "source": "ResultsOfEvents"
@@ -4182,14 +4182,14 @@
   "384": [
     {
       "plain": "法国社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "。||由",
       "after": "领导人<",
       "source": "TextOfEvents"
     },
     {
       "plain": "弗朗索瓦·密特朗",
-      "color": "green",
+      "color": "darkgreen",
       "before": ">领导人",
       "after": "与<co",
       "source": "TextOfEvents"
@@ -4217,7 +4217,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "正尝试与",
       "after": "及其左翼",
       "source": "TextOfEvents"
@@ -4252,7 +4252,7 @@
     },
     {
       "plain": "密特朗",
-      "color": "green",
+      "color": "darkgreen",
       "before": "位候选人",
       "after": "因其可疑",
       "source": "TextOfEvents"
@@ -4273,7 +4273,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "新以及与",
       "after": "的团结态",
       "source": "TextOfEvents"
@@ -9464,7 +9464,7 @@
     },
     {
       "plain": "迈克尔·富特",
-      "color": "green",
+      "color": "darkgreen",
       "before": "倾。尽管",
       "after": "并不希望",
       "source": "ResultsOfEvents"
@@ -9485,7 +9485,7 @@
     },
     {
       "plain": "富特",
-      "color": "green",
+      "color": "darkgreen",
       "before": "民主。在",
       "after": "和<co",
       "source": "ResultsOfEvents"
@@ -9527,7 +9527,7 @@
     },
     {
       "plain": "社会民主党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "转而建立",
       "after": "。尽管采",
       "source": "new_events_text[1196]"
@@ -9671,7 +9671,7 @@
     },
     {
       "plain": "社会民主党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "or>与",
       "after": "则已在联",
       "source": "new_events_text[1199]"
@@ -9720,7 +9720,7 @@
     },
     {
       "plain": "社会民主党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "or>与",
       "after": "的联盟赢",
       "source": "new_events_text[1287]"
@@ -9769,7 +9769,7 @@
     },
     {
       "plain": "社会民主党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "or>与",
       "after": "三方的“",
       "source": "new_events_text[1202]"
@@ -9811,7 +9811,7 @@
     },
     {
       "plain": "社会民主党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "7人来自",
       "after": "。",
       "source": "new_events_text[1203]"
@@ -9894,7 +9894,7 @@
   "415": [
     {
       "plain": "格林纳达联合工党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "粹主义的",
       "after": "被推翻。",
       "source": "new_events_text[1292]"
@@ -10669,7 +10669,7 @@
     },
     {
       "plain": "卡洛斯主义行动小组",
-      "color": "green",
+      "color": "darkgreen",
       "before": "团体——",
       "after": "——也依",
       "source": "ResultsOfEvents"
@@ -10720,7 +10720,7 @@
     },
     {
       "plain": "阿方索·阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "人看来，",
       "after": "便是新戴",
       "source": "new_events_text[1422]"
@@ -10741,7 +10741,7 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "。其中，",
       "after": "便与军方",
       "source": "new_events_text[1422]"
@@ -10762,7 +10762,7 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "：其中，",
       "after": "认为民主",
       "source": "new_events_text[1422]"
@@ -10839,21 +10839,21 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "任首相的",
       "after": "那却出了",
       "source": "new_events_text[1427]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "开始阻止",
       "after": "进入国会",
       "source": "new_events_text[1427]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "会宫后，",
       "after": "便与特赫",
       "source": "new_events_text[1427]"
@@ -10867,7 +10867,7 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "从们逮捕",
       "after": "，并向议",
       "source": "new_events_text[1427]"
@@ -10937,21 +10937,21 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "任首相的",
       "after": "那却出了",
       "source": "new_events_text[1428]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "开始阻止",
       "after": "进入国会",
       "source": "new_events_text[1428]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "会宫后，",
       "after": "便与特赫",
       "source": "new_events_text[1428]"
@@ -10965,7 +10965,7 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "，并宣布",
       "after": "与<co",
       "source": "new_events_text[1428]"
@@ -11056,28 +11056,28 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "任首相的",
       "after": "那却出了",
       "source": "new_events_text[1429]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "开始阻止",
       "after": "进入国会",
       "source": "new_events_text[1429]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "会宫后，",
       "after": "便与特赫",
       "source": "new_events_text[1429]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "了冲突。",
       "after": "要求他的",
       "source": "new_events_text[1429]"
@@ -11091,14 +11091,14 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "多数任命",
       "after": "为西班牙",
       "source": "new_events_text[1429]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "。从而让",
       "after": "领导该国",
       "source": "new_events_text[1429]"
@@ -11154,21 +11154,21 @@
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "任首相的",
       "after": "那却出了",
       "source": "new_events_text[1430]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "开始阻止",
       "after": "进入国会",
       "source": "new_events_text[1430]"
     },
     {
       "plain": "阿曼达",
-      "color": "green",
+      "color": "darkgreen",
       "before": "会宫后，",
       "after": "便与特赫",
       "source": "new_events_text[1430]"
@@ -11758,7 +11758,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "挫，而以",
       "after": "和<co",
       "source": "TextOfEvents"
@@ -11786,7 +11786,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "量，以及",
       "after": "“把社会",
       "source": "TextOfEvents"
@@ -11800,7 +11800,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "金并挑拨",
       "after": "与<co",
       "source": "VariantsOfEvents"
@@ -11814,7 +11814,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "公布了。",
       "after": "获得了3",
       "source": "ResultsOfEvents"
@@ -11856,7 +11856,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "的成绩。",
       "after": "起初想与",
       "source": "ResultsOfEvents"
@@ -11877,7 +11877,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "烈反对，",
       "after": "最终被迫",
       "source": "ResultsOfEvents"
@@ -11898,7 +11898,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "举标志着",
       "after": "和<co",
       "source": "ResultsOfEvents"
@@ -11912,14 +11912,14 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "情况下，",
       "after": "领袖<c",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "马里奥·苏亚雷斯",
-      "color": "green",
+      "color": "darkgreen",
       "before": "r>领袖",
       "after": "决定与<",
       "source": "ResultsOfEvents"
@@ -11935,7 +11935,7 @@
   "480": [
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "",
       "after": "和<co",
       "source": "TextOfEvents"
@@ -11977,7 +11977,7 @@
     },
     {
       "plain": "苏亚雷斯",
-      "color": "green",
+      "color": "darkgreen",
       "before": "。同时，",
       "after": "总理决定",
       "source": "TextOfEvents"
@@ -12005,14 +12005,14 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "2天后，",
       "after": "因为没能",
       "source": "TextOfEvents"
     },
     {
       "plain": "马里奥·苏亚雷斯",
-      "color": "green",
+      "color": "darkgreen",
       "before": "的信任，",
       "after": "向共和国",
       "source": "TextOfEvents"
@@ -12033,21 +12033,21 @@
     },
     {
       "plain": "阿尔梅达·桑托斯",
-      "color": "green",
+      "color": "darkgreen",
       "before": "大党。由",
       "after": "领导的<",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": ">领导的",
       "after": "则在全国",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "民主复兴党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "惊讶的是",
       "after": "的崛起，",
       "source": "ResultsOfEvents"
@@ -12082,7 +12082,7 @@
     },
     {
       "plain": "民主复兴党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "人民党和",
       "after": "的支持，",
       "source": "ResultsOfEvents"
@@ -12373,7 +12373,7 @@
     },
     {
       "plain": "乔治·马歇",
-      "color": "green",
+      "color": "darkgreen",
       "before": "随总书记",
       "after": "的法国特",
       "source": "TextOfEvents"
@@ -12387,7 +12387,7 @@
     },
     {
       "plain": "马歇",
-      "color": "green",
+      "color": "darkgreen",
       "before": "人一起把",
       "after": "这个右倾",
       "source": "TextOfEvents"
@@ -12415,28 +12415,28 @@
     },
     {
       "plain": "乔治·马歇",
-      "color": "green",
+      "color": "darkgreen",
       "before": "指总书记",
       "after": "——他指",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "马歇",
-      "color": "green",
+      "color": "darkgreen",
       "before": "指出：“",
       "after": "同志的右",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "马歇",
-      "color": "green",
+      "color": "darkgreen",
       "before": "直接批评",
       "after": "背叛了工",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "乔治·马歇",
-      "color": "green",
+      "color": "darkgreen",
       "before": "情况下，",
       "after": "不得不辞",
       "source": "ResultsOfEvents"
@@ -13752,21 +13752,21 @@
   "526": [
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "来，日本",
       "after": "一直维持",
       "source": "TextOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "他国家的",
       "after": "，它显得",
       "source": "TextOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "64年，",
       "after": "确定了纲",
       "source": "TextOfEvents"
@@ -13780,14 +13780,14 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "的措辞。",
       "after": "也由此成",
       "source": "TextOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "|此时的",
       "after": "内，以<",
       "source": "TextOfEvents"
@@ -13801,7 +13801,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "始终坚持",
       "after": "是一个要",
       "source": "TextOfEvents"
@@ -13815,21 +13815,21 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": ">则希望",
       "after": "能够专注",
       "source": "TextOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "选举中，",
       "after": "并未抓住",
       "source": "TextOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "位，这让",
       "after": "内部的矛",
       "source": "TextOfEvents"
@@ -13857,14 +13857,14 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "。最终，",
       "after": "内逐渐形",
       "source": "TextOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "派并促使",
       "after": "完成进一",
       "source": "TextOfEvents"
@@ -13906,7 +13906,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "|不久在",
       "after": "的中央会",
       "source": "ResultsOfEvents"
@@ -13920,7 +13920,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "我整肃。",
       "after": "长期的左",
       "source": "ResultsOfEvents"
@@ -13934,7 +13934,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "。现在的",
       "after": "开始与英",
       "source": "ResultsOfEvents"
@@ -13948,14 +13948,14 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "。考虑到",
       "after": "目前的变",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "结起来的",
       "after": "已经准备",
       "source": "ResultsOfEvents"
@@ -13976,7 +13976,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "凭借着对",
       "after": "中基层组",
       "source": "ResultsOfEvents"
@@ -13997,7 +13997,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "宣布退出",
       "after": "，并筹划",
       "source": "ResultsOfEvents"
@@ -14018,7 +14018,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "三郎这位",
       "after": "老党员在",
       "source": "ResultsOfEvents"
@@ -14032,42 +14032,42 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "大会上，",
       "after": "正式宣布",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "继续担任",
       "after": "的书记长",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "||尽管",
       "after": "由于右派",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "，我们对",
       "after": "的影响力",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "发巩固的",
       "after": "左派已经",
       "source": "ResultsOfEvents"
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "我们与",
       "after": "内部的各",
       "source": "ResultsOfEvents"
@@ -14102,7 +14102,7 @@
     },
     {
       "plain": "社会党",
-      "color": "green",
+      "color": "darkgreen",
       "before": "的位置。",
       "after": "的内部纷",
       "source": "ResultsOfEvents"

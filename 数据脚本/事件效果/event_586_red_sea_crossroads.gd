@@ -28,9 +28,9 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	var c42 := world.get_country_by_legacy_index(42)
 	var c41 := world.get_country_by_legacy_index(41)
-	if c42 != null and c42.parts.size() > 0 and c42.parts[0]:
+	if c42 != null and c42.has_part(0):
 		return false
-	if c41 != null and c41.parts.size() > 1 and c41.parts[1]:
+	if c41 != null and c41.has_part(1):
 		return false
 	@warning_ignore("shadowed_variable_base_class")
 	var d := world

@@ -21,8 +21,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var ethiopia := world.get_country_by_legacy_index(41)
 	var opt := event_def.options
 	var ethiopia_ok := false
-	if ethiopia != null and ethiopia.parts.size() > 1:
-		ethiopia_ok = (ethiopia.parts[1] or ethiopia.parts[0]) and ethiopia.has_tag("亲中") and ethiopia.government == GameConstants.Government.SOCIALIST
+	if ethiopia != null:
+		# Event589“埃索情深”只写 parts[0]，所以两条非洲之角路线都要认。
+		var horn_federation := ethiopia.has_part(0) or ethiopia.has_part(1)
+		ethiopia_ok = horn_federation and ethiopia.has_tag("亲中") \
+				and ethiopia.government == GameConstants.Government.SOCIALIST
 	var cond := (somalia != null and somalia.has_tag("亲中")) or ethiopia_ok
 	# 原版条件读 data[7]，而 data[7] 是 influencePRC 的镜像；这里必须用 influence_prc，
 	# 否则玩家影响力攒在 influence_prc 时仍会错误显示“无从下手”。

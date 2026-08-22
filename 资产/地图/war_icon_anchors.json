@@ -159,10 +159,40 @@
     "a": 44,
     "mode": "country"
   },
-  "37": {
-    "a": 101,
-    "mode": "country"
-  },
+  "37": [
+    {
+      "a": 101,
+      "mode": "country"
+    },
+    {
+      "a": 8,
+      "mode": "country"
+    },
+    {
+      "a": 14,
+      "mode": "country"
+    },
+    {
+      "a": 36,
+      "mode": "country"
+    },
+    {
+      "a": 104,
+      "mode": "country"
+    },
+    {
+      "a": 103,
+      "mode": "country"
+    },
+    {
+      "a": 102,
+      "mode": "country"
+    },
+    {
+      "a": 105,
+      "mode": "country"
+    }
+  ],
   "38": {
     "a": 2057,
     "mode": "region"
@@ -183,10 +213,32 @@
     "a": 14,
     "mode": "country"
   },
-  "43": {
-    "a": 102,
-    "mode": "country"
-  },
+  "43": [
+    {
+      "a": 102,
+      "mode": "country"
+    },
+    {
+      "a": 8,
+      "mode": "country"
+    },
+    {
+      "a": 14,
+      "mode": "country"
+    },
+    {
+      "a": 36,
+      "mode": "country"
+    },
+    {
+      "a": 103,
+      "mode": "country"
+    },
+    {
+      "a": 101,
+      "mode": "country"
+    }
+  ],
   "44": {
     "a": 131,
     "b": 127,
@@ -303,37 +355,95 @@
     "a": 115,
     "mode": "region"
   },
-  "70": {
-    "a": 1,
-    "b": 7,
-    "mode": "midpoint"
-  },
-  "71": {
-    "a": 250,
-    "mode": "region"
-  },
+  "70": [
+    {
+      "a": 1,
+      "b": 7,
+      "mode": "midpoint"
+    },
+    {
+      "a": 9,
+      "mode": "country"
+    }
+  ],
+  "71": [
+    {
+      "a": 250,
+      "mode": "region"
+    },
+    {
+      "a": 11,
+      "mode": "country"
+    },
+    {
+      "a": 34,
+      "mode": "country"
+    },
+    {
+      "a": 47,
+      "mode": "country"
+    }
+  ],
   "72": {
     "a": 959,
     "mode": "region"
   },
-  "73": {
-    "a": 2014,
-    "mode": "region"
-  },
-  "74": {
-    "a": 43,
-    "mode": "region"
-  },
+  "73": [
+    {
+      "a": 2014,
+      "mode": "region"
+    },
+    {
+      "a": 50,
+      "mode": "country"
+    },
+    {
+      "a": 49,
+      "mode": "country"
+    },
+    {
+      "a": 47,
+      "mode": "country"
+    }
+  ],
+  "74": [
+    {
+      "a": 43,
+      "mode": "region"
+    },
+    {
+      "a": 19,
+      "mode": "country"
+    },
+    {
+      "a": 31,
+      "mode": "country"
+    },
+    {
+      "a": 32,
+      "mode": "country"
+    }
+  ],
   "75": {
     "a": 1,
     "b": 38,
     "mode": "b"
   },
-  "76": {
-    "a": 5,
-    "b": 7,
-    "mode": "midpoint"
-  },
+  "76": [
+    {
+      "a": 5,
+      "b": 7,
+      "mode": "midpoint"
+    },
+    {
+      "a": 27,
+      "mode": "country"
+    },
+    {
+      "a": 17,
+      "mode": "country"
+    }
+  ],
   "77": {
     "a": 107,
     "mode": "country"
@@ -388,11 +498,20 @@
     "a": 1409,
     "mode": "region"
   },
-  "90": {
-    "a": 1,
-    "b": 44,
-    "mode": "b"
-  },
+  "90": [
+    {
+      "a": 1,
+      "b": 44,
+      "mode": "b"
+    },
+    {
+      "a": 10,
+      "b": 46,
+      "mode": "midpoint",
+      "when": "korea_not_unified",
+      "priority": 1500
+    }
+  ],
   "-1": {
     "a": 8,
     "mode": "country",
@@ -413,5 +532,10 @@
     "a": 47,
     "mode": "country",
     "priority": 2000
+  },
+  "-7": {
+    "a": 126,
+    "mode": "country",
+    "priority": 1800
   }
 }

@@ -315,7 +315,7 @@ static func _tag(w: WorldState, idx: int, tag: String) -> bool:
 
 static func _parts(w: WorldState, idx: int, part: int) -> bool:
 	var c := _c(w, idx)
-	return c != null and part >= 0 and part < c.parts.size() and c.parts[part]
+	return c != null and c.has_part(part)
 
 
 static func _infl_ch(w: WorldState, idx: int) -> int:

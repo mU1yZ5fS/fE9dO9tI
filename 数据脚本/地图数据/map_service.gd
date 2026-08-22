@@ -22,8 +22,6 @@ var world: WorldState = null
 var is_map_data_preloaded: bool = false
 
 const REGION_MAP_PATH: String = "res://资产/地图/map_color.png"
-## 优先加载 MapBuilder 生成的运行时资源；未生成时回退到直接解析 JSON。
-const GENERATED_MAP_DATA_PATH: String = "res://资产/地图/generated/map_data.res"
 var cached_map_meta: Dictionary = {}
 var cached_map_regions: Dictionary = {}
 var cached_map_countries: Dictionary = {}
@@ -148,19 +146,6 @@ func preload_region_map() -> void:
 	_map_preload_thread.start(_decode_region_map)
 
 
-## 当生成资源缺失或比任一源 JSON 旧时返回 false（需回退 JSON 并提示重建）。
-func _generated_map_is_fresh() -> bool:
-	if not FileAccess.file_exists(GENERATED_MAP_DATA_PATH):
-		return false
-	var res_time := FileAccess.get_modified_time(GENERATED_MAP_DATA_PATH)
-	for fname in ["map_regions.json", "map_countries.json", "map_actors.json", "map_neighbors.json"]:
-		var src_path: String = "res://资产/地图/" + str(fname)
-		if FileAccess.file_exists(src_path):
-			if FileAccess.get_modified_time(src_path) > res_time:
-				return false
-	return true
-
-
 func _decode_region_map() -> void:
 	var img: Image = null
 
@@ -177,65 +162,7 @@ func _decode_region_map() -> void:
 
 	# 按原分辨率加载，不缩放/压缩底图。
 
-	# 2. 优先使用 MapBuilder 生成的运行时 Resource（仅当它比源 JSON 新）
-	if _generated_map_is_fresh():
-		var map_data: MapData = load(GENERATED_MAP_DATA_PATH)
-		if map_data != null:
-			var gd_regions_dict: Dictionary = {}
-			var gd_countries_dict: Dictionary = {}
-			var gd_region_owner_dict: Dictionary = {}
-			var gd_initial_owner_dict: Dictionary = {}
-
-			for rid in map_data.region_order:
-				var rd: RegionDef = map_data.regions[rid]
-				gd_regions_dict[rid] = {
-					"name": rd.name,
-					"name_zh": rd.name_zh,
-					"owner_1976_gwcode": rd.base_owner_gwcode,
-					"is_water": rd.is_water,
-					"longitude": rd.center.x,
-					"latitude": rd.center.y,
-				}
-				gd_region_owner_dict[rid] = rd.base_owner_gwcode
-				gd_initial_owner_dict[rid] = rd.base_owner_gwcode
-
-			for gw in map_data.countries:
-				var cd: CountryDef = map_data.countries[gw]
-				gd_countries_dict[gw] = {
-					"gwcode": cd.gwcode,
-					"name_1976": cd.name_1976,
-					"name_zh": cd.name_zh,
-					"regions": cd.region_ids,
-				}
-
-			# 3. 初始化调色板
-			const GD_PALETTE_SIZE := 256
-			var gd_owner_pal_img := Image.create(GD_PALETTE_SIZE, GD_PALETTE_SIZE, false, Image.FORMAT_RGB8)
-			var gd_color_pal_img := Image.create(GD_PALETTE_SIZE, GD_PALETTE_SIZE, false, Image.FORMAT_RGB8)
-			gd_owner_pal_img.fill(Color.BLACK)
-			for r_id in gd_region_owner_dict:
-				var val: int = gd_region_owner_dict[r_id]
-				var col := Color8((val >> 16) & 0xFF, (val >> 8) & 0xFF, val & 0xFF)
-				if r_id > 0:
-					gd_owner_pal_img.set_pixel(r_id & 0xFF, (r_id >> 8) & 0xFF, col)
-			gd_color_pal_img.fill(Color(0.46, 0.46, 0.46))
-
-			call_deferred(
-				"_on_region_map_preloaded",
-				img,
-				map_data.meta,
-				gd_regions_dict,
-				gd_countries_dict,
-				gd_region_owner_dict,
-				gd_initial_owner_dict,
-				gd_owner_pal_img,
-				gd_color_pal_img
-			)
-			return
-
-	# 3. 回退：直接解析 JSON（res 缺失/过期/加载失败时）
-	if FileAccess.file_exists(GENERATED_MAP_DATA_PATH):
-		push_warning("MapService: map_data.res 已过期或不可用，已回退 JSON；请运行 res://tools/rebuild_map_data.gd 重建")
+	# 2. 直接解析 JSON（唯一数据源）
 	const META_PATH := "res://资产/地图/map_meta.json"
 	const REGIONS_PATH := "res://资产/地图/map_regions.json"
 	const COUNTRIES_PATH := "res://资产/地图/map_countries.json"
@@ -244,7 +171,7 @@ func _decode_region_map() -> void:
 	var regions_raw := _load_json_async(REGIONS_PATH)
 	var countries_raw := _load_json_async(COUNTRIES_PATH)
 
-	# 4. 在后台子线程洗数据（把 key 转换为 int，构建归属字典，规避主线程 CPU 瓶颈）
+	# 3. 在后台子线程洗数据（把 key 转换为 int，构建归属字典，规避主线程 CPU 瓶颈）
 	var regions_dict: Dictionary = {}
 	var countries_dict: Dictionary = {}
 	var region_owner_dict: Dictionary = {}
@@ -260,7 +187,7 @@ func _decode_region_map() -> void:
 	for key in countries_raw:
 		countries_dict[int(key)] = countries_raw[key]
 
-	# 5. 初始化 owner_palette 和 color_palette 图像（像素级填充在子线程完成）
+	# 4. 初始化 owner_palette 和 color_palette 图像（像素级填充在子线程完成）
 	const PALETTE_SIZE := 256
 	var owner_pal_img := Image.create(PALETTE_SIZE, PALETTE_SIZE, false, Image.FORMAT_RGB8)
 	var color_pal_img := Image.create(PALETTE_SIZE, PALETTE_SIZE, false, Image.FORMAT_RGB8)
@@ -274,7 +201,7 @@ func _decode_region_map() -> void:
 
 	color_pal_img.fill(Color(0.46, 0.46, 0.46)) # 预填 BLOC_NEUTRAL
 
-	# 6. 传回主线程生成 GPU 纹理与缓存更新
+	# 5. 传回主线程生成 GPU 纹理与缓存更新
 	call_deferred(
 		"_on_region_map_preloaded",
 		img,
@@ -511,7 +438,7 @@ func _merge_legacy(w: WorldState, from_idx: int, to_idx: int) -> void:
 
 
 func _has_part(c: CountryData, idx: int) -> bool:
-	return c != null and idx >= 0 and idx < c.parts.size() and c.parts[idx]
+	return c != null and c.has_part(idx)
 
 
 ## 旧档兼容：在地图归属持久化功能加入前，Event585 已让吉布提独立、Event589/1035 已成立

@@ -111,9 +111,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if not ethiopia.has_tag("亲苏"):
 		return false
-	if ethiopia.parts.size() > 0 and ethiopia.parts[0]:
-		return false
-	if ethiopia.parts.size() > 1 and ethiopia.parts[1]:
+	if ethiopia.has_part(0) or ethiopia.has_part(1):
 		return false
 	return true
 
@@ -171,7 +169,7 @@ func execute(context: Dictionary) -> void:
 	if opt == 0:
 		var num := 0
 		var somalia := ws.get_country_by_legacy_index(42)
-		if somalia != null and somalia.parts.size() > 0 and somalia.parts[0]:
+		if somalia != null and somalia.has_part(0):
 			num += 150
 		_add(W.I_BUDGET, -150)
 		_add(W.I_ARMY, -350)
@@ -185,9 +183,7 @@ func execute(context: Dictionary) -> void:
 		for cid in [99, 100]:
 			var c := ws.get_country_by_legacy_index(cid)
 			if c != null:
-				while c.parts.size() <= 0:
-					c.parts.append(false)
-				c.parts[0] = true
+				c.set_part(0, true)
 		_start_war(25, "提格雷独立战争", "军委", "提革阵", 600, 400, 20)
 		_start_war(26, "厄立特里亚独立战争", "军委", "厄革阵", 600, 400, 20)
 		context["result_text"] = TXT_R[1]

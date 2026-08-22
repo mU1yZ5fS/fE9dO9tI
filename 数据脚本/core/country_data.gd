@@ -148,6 +148,20 @@ func ideology_name() -> String:
 	return IDEOLOGY.get(sub_government, "未知")
 
 
+## parts 是稀疏/动态增长的数组；统一走这里读取，避免到处写 parts.size() > N。
+func has_part(index: int) -> bool:
+	return index >= 0 and index < parts.size() and parts[index]
+
+
+## 统一写入 parts：自动扩容到 index，避免各脚本手写 while/append。
+func set_part(index: int, value: bool) -> void:
+	if index < 0:
+		return
+	while parts.size() <= index:
+		parts.append(false)
+	parts[index] = value
+
+
 func is_communist_bloc() -> bool:
 	return has_tag("sev") or has_tag("ovd")
 

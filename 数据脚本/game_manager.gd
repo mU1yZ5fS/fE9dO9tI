@@ -606,7 +606,7 @@ func science_alert_active() -> bool:
 
 
 ## 顶栏「政治局缺人」提示图标判定。
-## 用户口径：中央三职（总理/军委/外交）与地方主管（京畿/华北/华西/华南/华东）
+## 用户口径：中央三职（总理/军委/外交）与地方主管（北京/华北/华西/华南/华东）
 ## 任一槽为 -1 空缺时显示。
 func political_bureau_vacancy_alert_active() -> bool:
 	const SLOT_COUNT := 8  # 与 WorldState._init 的 politics_positions.resize(8) 对齐
