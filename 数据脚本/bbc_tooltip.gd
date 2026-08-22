@@ -69,20 +69,53 @@ static func restore_event_colors(text: String, event_key: String = "") -> String
 	var frags: Array = []
 	for plain_key in by_plain:
 		frags.append({"plain": plain_key, "color": by_plain[plain_key]})
-	# 长片段先包，避免短片段把长片段拆开。
+	# 长片段优先占位，短片段不能拆开已经命中的长词。
+	# 例如“民主社会党”先命中后，后面的“社会党”不能再在它内部二次上色。
 	frags.sort_custom(func(a, b) -> bool:
 		return String(a.get("plain", "")).length() > String(b.get("plain", "")).length()
 	)
-	var out := text
+	var spans: Array = []
 	for frag in frags:
 		var plain := String(frag.get("plain", ""))
 		var color_name := String(frag.get("color", ""))
 		if plain.is_empty() or color_name.is_empty():
 			continue
-		if out.find(plain) == -1:
-			continue
-		out = out.replace(plain, "<color=%s>%s</color>" % [color_name, plain])
+		var search_from := 0
+		var idx := text.find(plain, search_from)
+		while idx != -1:
+			var span_end := idx + plain.length()
+			if not _span_overlaps(spans, idx, span_end):
+				spans.append({"start": idx, "end": span_end, "color": color_name})
+				search_from = span_end
+			else:
+				search_from = idx + 1
+			idx = text.find(plain, search_from)
+	if spans.is_empty():
+		return text
+	spans.sort_custom(func(a, b) -> bool:
+		return int(a.get("start", 0)) < int(b.get("start", 0))
+	)
+	var out := ""
+	var cursor := 0
+	for span in spans:
+		var start := int(span.get("start", 0))
+		var end := int(span.get("end", 0))
+		if start > cursor:
+			out += text.substr(cursor, start - cursor)
+		out += "<color=%s>%s</color>" % [String(span.get("color", "")), text.substr(start, end - start)]
+		cursor = end
+	if cursor < text.length():
+		out += text.substr(cursor)
 	return out
+
+
+static func _span_overlaps(spans: Array, start: int, end: int) -> bool:
+	for s in spans:
+		var s_start := int(s.get("start", 0))
+		var s_end := int(s.get("end", 0))
+		if start < s_end and end > s_start:
+			return true
+	return false
 
 
 ## 事件文本统一入口：先补原版色彩片段，再转 Godot BBCode。
