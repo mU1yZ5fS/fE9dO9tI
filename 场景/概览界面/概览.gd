@@ -346,6 +346,7 @@ func _build_influence(w: WorldState) -> String:
 	var ussr: EmpireData = w.empires[1] if w.empires.size() > 1 else null
 	var usa: EmpireData = w.empires[0] if w.empires.size() > 0 else null
 	var s := _h("全球影响")
+	s += "[color=darkgreen][font_size=25]中国的世界影响力:[/font_size][/color]\n%s\n" % _iv(w.influence_prc)
 	if ussr != null:
 		s += "[color=darkred][font_size=25]苏联的世界影响力:[/font_size][/color]\n%s\n" % _iv(ussr.power)
 	if usa != null:

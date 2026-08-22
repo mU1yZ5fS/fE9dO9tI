@@ -43,12 +43,26 @@ var cached_color_palette_tex: ImageTexture = null
 
 var _map_preload_thread: Thread = null
 
+## 罗曼诺夫/土耳其海峡危机（Event375）：苏联吞并土耳其欧洲部分、海峡与
+## 卡尔斯-阿尔特温-阿尔达汉，叙利亚拿回哈塔伊省。
+const SOVIET_TURKISH_CLAIM_REGIONS: Array[int] = [
+	242, 244, 928,      # 阿尔达汉 / 阿尔特温 / 卡尔斯（东北三省）
+	514, 516, 2276, 2277, 2278, # 欧洲部分与博斯普鲁斯/达达尼尔海峡
+]
+const HATAY_REGION_ID := 986
+
+
 ## 统一“国家 parts 标志 → 地图归属变更”的规则表。
 ## 每一条表示：当 legacy 国家的 parts[part] 为 true 时，执行对应地图合并/区域转移。
 ## 这样避免结算逻辑设置 parts 后，地图层漏写规则（如阿尔巴尼亚/库尔德斯坦）。
 ## 目前只收录“纯 parts 条件”的规则；带额外条件的（OAR、中国征服、非洲之角等）
 ## 仍保留在 sync_map_merges() 的显式分支中，后续可逐步收编。
 const PART_MERGE_RULES := [
+	# 罗曼诺夫土耳其海峡危机：苏联 parts[0] 或 parts[2]（二者任一）→ 土耳其割让海峡/东北三省
+	{"legacy": 7, "part": 0, "type": "regions", "regions": SOVIET_TURKISH_CLAIM_REGIONS},
+	{"legacy": 7, "part": 2, "type": "regions", "regions": SOVIET_TURKISH_CLAIM_REGIONS},
+	# 土耳其 parts[3]：哈塔伊省归还叙利亚
+	{"legacy": 84, "part": 3, "type": "regions", "regions": [HATAY_REGION_ID], "target_legacy": 35},
 	# 马来西亚吞并文莱
 	{"legacy": 49, "part": 0, "type": "merge", "sources": [111]},
 	# 越南印支联邦：吞并老挝/柬埔寨
@@ -99,6 +113,30 @@ const PART_MERGE_RULES := [
 	]},
 	# 阿尔巴尼亚对希腊战争胜利（大阿尔巴尼亚/查梅尼亚）
 	{"legacy": 20, "part": 1, "type": "regions", "regions": [334]},
+]
+
+
+## 外东北/外西北：原清朝版图、1976 年归苏联的地块（map_baker 的 qing_province 非空子集）。
+## 注意：这里按 war70 约定“外东北、外西北、唐努乌梁海、阿尔泰卓尔乌梁海”收窄，
+## 不能把 qing_province 元数据里所有归属苏联的历史省界全收进来，
+## 否则萨哈/克拉斯诺亚尔斯克/克麦罗沃/哈卡斯/布里亚特/外贝加尔等西伯利亚地区会被整片划给中国。
+## 雪耻之战（war70）胜利后归中国 710，属于“事件后回归”而非开局领土。
+const QING_LOST_TERRITORY_REGIONS: Array[int] = [
+	# 外东北：阿穆尔/犹太自治/哈巴罗夫斯克/滨海/萨哈林
+	952, 953, 954, 955, 2244,
+	# 外西北：哈萨克东南部、吉尔吉斯、塔吉克等原清代新疆辖境
+	96, 97, 260, 261, 262, 263, 253, 254, 255, 304, 331, 332, 3672, 4368,
+	# 唐努乌梁海与阿尔泰卓尔乌梁海
+	944, 116, 1389,
+]
+
+
+## 北爱尔兰 26 个地区（map_regions.json，1976 年属英国 200）。
+## war86“北爱尔兰冲突”中爱尔兰武装/北爱一方获胜后，划给 166 号北爱尔兰实体（gwcode 9166）。
+const NORTHERN_IRELAND_REGIONS: Array[int] = [
+	315, 316, 317, 321, 322, 323,
+	2260, 2261, 2262, 2263, 2264, 2265, 2266, 2267, 2268, 2269,
+	3940, 3941, 3942, 3943, 3944, 3945, 3946, 3947, 3948, 3949,
 ]
 
 
@@ -405,6 +443,13 @@ func sync_map_merges() -> void:
 	# 藏南：arunachal_status>=2 -> 藏南地块(43)归中国
 	if w.arunachal_status >= 2:
 		set_region_owner([43], 710)
+	# 雪耻之战（war70）胜利：外东北/外西北原清朝版图地块归中国
+	if w.get_flag("is_gkchp") or w.ind_opp or w.get_flag("IndOpp"):
+		set_region_owner(QING_LOST_TERRITORY_REGIONS, 710)
+	# 北爱尔兰独立：166 号 parts[0] 成立时，北爱 26 区从英国划给北爱尔兰实体。
+	var c166 := w.get_country_by_legacy_index(166)
+	if c166 != null and _has_part(c166, 0):
+		set_region_owner(NORTHERN_IRELAND_REGIONS, c166.gwcode)
 	# 蒙古：mongolia_china_route==1 -> 蒙古(9)并入中国(1)
 	if w.mongolia_china_route == 1:
 		_merge_legacy(w, 9, 1)

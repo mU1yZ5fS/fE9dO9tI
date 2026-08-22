@@ -85,10 +85,12 @@ func _enable(opt: EventOption, text: String) -> void:
 
 
 ## 选项禁用（RESOURCE_AT_LEAST party_system=99999 恒不满足）
+## 注意：不要覆盖 opt.text。EventDef 是共享资源，prepare 会被反复调用；
+## 若禁用时把 text 改成禁用文案，之后条件满足再 _enable(opt, event_def.options[i].text)
+## 就会拿被污染的文本当模板，导致“满足条件但仍显示巧妇难为无米之炊”那类问题。
 func _disable(opt: EventOption, text: String) -> void:
 	if opt == null:
 		return
-	opt.text = text
 	opt.disabled_text = text
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_AT_LEAST
@@ -125,7 +127,7 @@ func _add_relation(empire_index: int, delta: int) -> void:
 ## 帝国力量加减
 func _add_power(empire_index: int, delta: int) -> void:
 	if ws.empires.size() > empire_index and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
+		ws.empires[empire_index].power = clampi(ws.empires[empire_index].power + delta, 0, 1000)
 
 
 ## Country.LeaveAlliances() 逐项映射

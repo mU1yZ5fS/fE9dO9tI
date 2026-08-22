@@ -1058,7 +1058,7 @@ func _set_empire_relation(empire_index: int, value: int) -> void:
 func _add_empire_power(empire_index: int, delta: int) -> void:
 	var ws: WorldState = world
 	if empire_index < 0 or empire_index >= ws.empires.size(): return
-	ws.empires[empire_index].power += delta
+	ws.empires[empire_index].power = clampi(ws.empires[empire_index].power + delta, 0, 1000)
 
 func _add_faction_support(faction_index: int, delta: int) -> void:
 	var ws: WorldState = world

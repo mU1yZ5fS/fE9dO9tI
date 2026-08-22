@@ -82,7 +82,7 @@ func _load_event() -> void:
 		return
 
 	_title.text = _event_def.title
-	_desc.text = BbcTooltip.unity_color_to_bbcode(_event_def.description)
+	_desc.text = BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number))
 	# 事件配图规则：
 	#   1. 资源文件（EventDef.image）设置了图片 → 优先使用；
 	#   2. 否则按 source_event_number 找 资产/事件插画/<编号>.png；
@@ -141,6 +141,7 @@ func _setup_options() -> void:
 		var has_option := i < count
 		if i < _option_labels.size():
 			_option_labels[i].visible = has_option
+			_option_labels[i].autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		if i < _option_buttons.size():
 			var btn: TextureButton = _option_buttons[i]
 			btn.visible = false
@@ -150,7 +151,9 @@ func _setup_options() -> void:
 				# enable_condition 为 null 表示选项无门槛；否则交给 EventEngine 统一求值。
 				if opt.enable_condition != null and EventEngine:
 					can_select = EventEngine.evaluate(opt.enable_condition)
-				_option_labels[i].text = opt.text if can_select else (opt.disabled_text if opt.disabled_text != "" else opt.text)
+				# _disable 不再覆盖 opt.text（保留原模板供后续 _enable 恢复），
+				# 因此禁用且没有单独禁用文案的选项要显式置空，避免把隐藏项原文显示出来。
+				_option_labels[i].text = opt.text if can_select else (opt.disabled_text if opt.disabled_text != "" else "")
 				# 玩家选不了的选项不显示选框（只保留灰字提示，避免误导可点）。
 				btn.visible = can_select
 				btn.disabled = not can_select
@@ -176,7 +179,7 @@ func _on_next_pressed() -> void:
 				_desc.hide()
 				_options_root.hide()
 				_back_button.hide()
-				_result_desc.text = BbcTooltip.unity_color_to_bbcode(_event_def.description)
+				_result_desc.text = BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number))
 				_result_root.show()
 				_page = Page.RESULT
 				return
@@ -195,7 +198,7 @@ func _on_next_pressed() -> void:
 			_back_button.hide()   # 结果页不能返回
 			_title.show()
 			_title.text = result.get("name", "")
-			_result_desc.text = BbcTooltip.unity_color_to_bbcode(String(result.get("text", "")))
+			_result_desc.text = BbcTooltip.event_text_to_bbcode(String(result.get("text", "")), str(_event_def.source_event_number))
 			_result_root.show()
 			_page = Page.RESULT
 

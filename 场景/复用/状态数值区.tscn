@@ -232,7 +232,7 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 
-[node name="全球影响力背景" type="TextureRect" parent="." unique_id=1919406467]
+[node name="国际影响力背景" type="TextureRect" parent="." unique_id=1919406467]
 offset_left = 1096.0
 offset_top = 16.0
 offset_right = 1302.0
@@ -243,7 +243,7 @@ expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
 
-[node name="全球影响力图标" type="TextureRect" parent="." unique_id=1537892696]
+[node name="国际影响力图标" type="TextureRect" parent="." unique_id=1537892696]
 offset_left = 1104.0
 offset_top = 22.0
 offset_right = 1150.0
@@ -252,7 +252,7 @@ texture = ExtResource("10_glb")
 metadata/_edit_use_anchors_ = true
 
 
-[node name="全球影响力" type="Label" parent="." unique_id=886299265]
+[node name="国际影响力" type="Label" parent="." unique_id=886299265]
 offset_left = 1132.0
 offset_top = 16.0
 offset_right = 1281.0

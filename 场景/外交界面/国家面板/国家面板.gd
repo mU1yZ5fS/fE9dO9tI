@@ -95,11 +95,13 @@ const INFLUENCE_ICONS := {
 	2: preload("res://资产/UI/外交/在某国影响下_中国.png"),
 	4: preload("res://资产/UI/外交/在某国影响下_法国.png"),
 	5: preload("res://资产/UI/外交/在某国影响下_南非.png"),
+	7: preload("res://资产/UI/外交/在某国影响下_土耳其.png"),
 	# 6 澳大利亚影响：原版 znachki[26]，暂缺对应图标资源，待补充后加 preload。
 }
 const INFLUENCE_NAMES := {
 	0: "在美国影响下", 1: "在苏联影响下", 2: "在我国影响下",
 	4: "在法国影响下", 5: "在南非影响下", 6: "在澳大利亚影响下",
+	7: "在土耳其影响下",
 }
 
 

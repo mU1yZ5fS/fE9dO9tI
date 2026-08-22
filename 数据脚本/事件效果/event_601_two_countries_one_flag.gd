@@ -59,6 +59,10 @@ func execute(context: Dictionary) -> void:
 					guinea_bissau.set_tag("亲中", true)
 					guinea_bissau.set_tag("对华贸易", true)
 					guinea_bissau.chinese_name = TXT_NAME_UNION
+				# “几内亚佛得角共和国”必须把佛得角岛也并入地图归属（佛得角地图 gwcode=402，
+				# 几内亚比绍/联合国家 gwcode=404），否则地图上只有几内亚比绍、没有佛得角。
+				if GameManager != null and GameManager.has_method("transfer_map_owner"):
+					GameManager.transfer_map_owner(402, 404)
 				ws.influence_prc += 10
 			else:
 				context["result_text"] = TXT_R0_FAIL

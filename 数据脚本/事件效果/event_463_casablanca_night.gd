@@ -89,6 +89,7 @@ func execute(context: Dictionary) -> void:
 			var c86 := _country(86)
 			if c86 != null and c86.sub_government != GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 				num += 30
+			_ensure_western_sahara()
 			game.start_war(39, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 700 - num, 300 + num, 0)
 			var war := _get_war(39)
 			if war != null:
@@ -133,6 +134,15 @@ func _get_war(war_id: int) -> WarData:
 	if ws == null or war_id < 0 or war_id >= ws.wars.size():
 		return null
 	return ws.wars[war_id]
+
+
+func _ensure_western_sahara() -> void:
+	## 沿用原版 18 号“西撒哈拉”实体（gwcode 9018）；地图归属留给战争结算，
+	## 不在开战时提前把 55 号地块从毛里塔尼亚划走。
+	var c18 := _country(18)
+	if c18 != null and c18.chinese_name.is_empty():
+		c18.chinese_name = "西撒哈拉"
+		c18.name = "Western Sahara"
 
 func _country(idx: int) -> CountryData:
 	return ws.get_country_by_legacy_index(idx)

@@ -94,6 +94,8 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 			return _effect_agriculture(w)
 		28:
 			return _effect_constitution(w)
+		34:
+			return _effect_china_nature_transform(w)
 		44:
 			return _effect_france_mod44(w)
 		47:
@@ -396,7 +398,7 @@ static func _effect_integration(w: WorldState, agents: bool) -> String:
 	var bonus := float(okb * 2) / 10.0 if agents else float(okb) / 10.0
 	var cost := 1 if okb < 7 else (2 if okb < 14 else 3)
 	var what := "特工网络" if agents else "军队力量"
-	return "<color=lime>%s+%s</color>\n<color=#DC143C>预算-%d.0</color>" % [what, _num(bonus), cost]
+	return "<color=darkgreen>%s+%s</color>\n<color=#DC143C>预算-%d.0</color>" % [what, _num(bonus), cost]
 
 
 static func _effect_oil(w: WorldState) -> String:
@@ -419,7 +421,7 @@ static func _effect_subsidy(w: WorldState) -> String:
 	# 原版 ModifyButtonScript 参数 {9} = data.foreign_aid/10（外援强度），
 	# 不是“贸易同盟国家数 × 0.1”；两者在部分决策下会不同，按原文修正。
 	var cost := float(_raw(d, WorldState.I_FOREIGN_AID)) / 10.0
-	return ("月度变化：\n<color=lime>%s的影响力-1.0|中国影响力+0.5.</color>\n" % target) \
+	return ("月度变化：\n<color=darkgreen>%s的影响力-1.0|中国影响力+0.5.</color>\n" % target) \
 		+ ("<color=#DC143C>特工网络-%s|预算-%s|军队力量-%s</color>\n" % [_num(cost), _num(cost), _num(cost)]) \
 		+ ("（每多补贴一个国家，多消耗0.1）")
 
@@ -565,7 +567,7 @@ static func _effect_leader(w: WorldState) -> String:
 
 static func _leader_public_image(asset: int) -> String:
 	if asset <= 0:
-		return " <color=lime>两袖清风</color>"
+		return " <color=darkgreen>两袖清风</color>"
 	if asset <= 500:
 		return " <color=green>党管干部</color>"
 	if asset <= 1500:
@@ -582,7 +584,7 @@ static func _leader_social_prestige(w: WorldState) -> String:
 		return " <color=orange>臭名昭著</color>"
 	if _raw(w, W.I_PEOPLE_SUPPORT) < 700:
 		return " <color=yellow>毁誉参半</color>"
-	return " <color=lime>好评如潮</color>"
+	return " <color=darkgreen>好评如潮</color>"
 
 
 static func _leader_property_lines(w: WorldState, leader: PoliticianData) -> String:
@@ -636,6 +638,25 @@ static func _effect_constitution(w: WorldState) -> String:
 	return MT.EFFECT_ZH[28].replace("|", "\n")
 
 
+## Event320“大型工程”：四个选项共用 34 号修正“中国自然改造计划”，
+## 但效果说明按所选子项目动态变化（对齐原版 old_modify_desc[34] 的逐项覆盖）。
+static func _effect_china_nature_transform(w: WorldState) -> String:
+	if w == null:
+		return MT.EFFECT_ZH[34].replace("|", "\n")
+	var r320 := w.result_of_event_num(320)
+	match r320:
+		1:
+			return "三北防护林：\n农业+0.7，工业+0.2，预算-0.3，统一度+0.2，人民支持度+0.1"
+		2:
+			return "南水北调工程：\n农业+0.3，工业+0.5，预算-0.5，凝聚力+0.2"
+		3:
+			return "三北防护林：\n农业+0.7，工业+0.2，预算-0.3，统一度+0.2，人民支持度+0.1\n南水北调工程：\n农业+0.3，工业+0.5，预算-0.5，凝聚力+0.2"
+		4:
+			return "江淮运河：\n服务业+0.1，工业+0.1，预算+0.2"
+		_:
+			return MT.EFFECT_ZH[34].replace("|", "\n")
+
+
 static func _effect_automation(w: WorldState) -> String:
 	if _mod_active(w, GameConstants.Modifier.AUTOMATION_AMBITION):
 		# ModifiesInfuence.cs:1560-1570：激活时覆盖为 +5.0 版本。
@@ -669,7 +690,7 @@ static func _effect_maoist_bulwark(w: WorldState) -> String:
 static func _effect_france_mod44(w: WorldState) -> String:
 	if w != null and w.get_flag("YugAgree"):
 		# ModifiesInfuence.cs:2236-2239：南斯拉夫同意统一时改写条件与数值。
-		return "在党内路线比“中式社会主义”更激进，未遭受苏联禁运且与法国建立贸易关系时：|<color=lime>|与苏联关系+0.5;|预算+0.3;|科研点数+0.3|</color>||<color=#9370DB>苏联影响+0.1.</color>"
+		return "在党内路线比“中式社会主义”更激进，未遭受苏联禁运且与法国建立贸易关系时：|<color=darkgreen>|与苏联关系+0.5;|预算+0.3;|科研点数+0.3|</color>||<color=#9370DB>苏联影响+0.1.</color>"
 	return MT.EFFECT_ZH[44].replace("|", "\n")
 
 
@@ -873,7 +894,7 @@ static func _effect_services(w: WorldState) -> String:
 	# 原版 ModifiesInfuence.cs:1086-1093：data.econ_system==15 时票证制度自动废止。
 	var phase_out := w.has_coupon_system_phase_out or _raw(d, WorldState.I_ECON_SYSTEM) == 15
 	if not phase_out:
-		parts.append("<color=red>|票证制度：</color>农业+0.1，党内支持度+0.2，不同经济模式下随着发展程度的不同有额外加成|<color=lime>当前额外加成：</color>" + _services_coupon_text(w, _raw(d, WorldState.I_ECON_SYSTEM), _raw(d, WorldState.I_INDUSTRY) + _raw(d, WorldState.I_AGRICULTURE)))
+		parts.append("<color=red>|票证制度：</color>农业+0.1，党内支持度+0.2，不同经济模式下随着发展程度的不同有额外加成|<color=darkgreen>当前额外加成：</color>" + _services_coupon_text(w, _raw(d, WorldState.I_ECON_SYSTEM), _raw(d, WorldState.I_INDUSTRY) + _raw(d, WorldState.I_AGRICULTURE)))
 	else:
 		parts.append("<color=red>|自由供应：</color>腐败-0.2，服务业+0.3，人民支持度+0.5，思想自由化+0.5，“普遍的贫困”的触发阈值生活水平提高10.0且效果翻倍")
 	if w.planned_price_reduction > 0:
@@ -1337,7 +1358,7 @@ static func _oil_numbers(w: WorldState) -> Dictionary:
 	else:
 		num12 = price * 7.7 * (oil_eat - oil_prod) / 10000.0
 	var budget_delta := num12 / 10.0 * -1.0
-	var budget_color := "lime" if budget_delta > 0.0 else "#DC143C"
+	var budget_color := "darkgreen" if budget_delta > 0.0 else "#DC143C"
 	var budget_sign := "+" if budget_delta > 0.0 else ""
 	# num13/num14（ModifyButtonScript.cs:563-584，C# 整数除法）
 	var p := _raw(d, 143)

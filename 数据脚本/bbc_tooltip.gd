@@ -24,6 +24,72 @@ static func unity_color_to_bbcode(text: String) -> String:
 	return out
 
 
+# ============================================================================
+# 事件文本色彩还原：原版 C# 文本中的 <color> 片段在移植到 .tres/.gd 时被剥掉。
+# 这里用从逆向源码生成的 event_color_fragments.json，把纯文本里对应的
+# 人名/专名/引文片段重新包上颜色，再交给 unity_color_to_bbcode() 转 BBCode。
+# ============================================================================
+const EVENT_COLOR_FRAGMENTS_PATH := "res://资产/数据/event_color_fragments.json"
+
+static var _event_color_fragments: Dictionary = {}
+static var _event_color_fragments_loaded: bool = false
+
+
+static func _load_event_color_fragments() -> Dictionary:
+	if _event_color_fragments_loaded:
+		return _event_color_fragments
+	_event_color_fragments_loaded = true
+	if not FileAccess.file_exists(EVENT_COLOR_FRAGMENTS_PATH):
+		return {}
+	var parsed = JSON.parse_string(FileAccess.get_file_as_string(EVENT_COLOR_FRAGMENTS_PATH))
+	if parsed is Dictionary:
+		_event_color_fragments = parsed
+	return _event_color_fragments
+
+
+## 给一段事件文本按原版彩色片段补回 <color> 标签。
+## event_key 传原版事件编号字符串（如 "36"），没有编号的可传空串。
+## 注意：只使用当前事件的专属片段。JSON 里的 “global” 实际是全事件片段的并集
+## （每个事件专属片段都能在其中找到），若把它当全局公共片段应用，会让无关事件
+## 出现其他事件的人名/专名颜色，导致串色。
+static func restore_event_colors(text: String, event_key: String = "") -> String:
+	if text.is_empty():
+		return text
+	var frag_dict := _load_event_color_fragments()
+	if frag_dict.is_empty():
+		return text
+	var by_plain := {}
+	if event_key != "" and frag_dict.has(event_key):
+		for f in frag_dict[event_key]:
+			var plain_e := String(f.get("plain", ""))
+			if plain_e != "":
+				by_plain[plain_e] = String(f.get("color", ""))
+	if by_plain.is_empty():
+		return text
+	var frags: Array = []
+	for plain_key in by_plain:
+		frags.append({"plain": plain_key, "color": by_plain[plain_key]})
+	# 长片段先包，避免短片段把长片段拆开。
+	frags.sort_custom(func(a, b) -> bool:
+		return String(a.get("plain", "")).length() > String(b.get("plain", "")).length()
+	)
+	var out := text
+	for frag in frags:
+		var plain := String(frag.get("plain", ""))
+		var color_name := String(frag.get("color", ""))
+		if plain.is_empty() or color_name.is_empty():
+			continue
+		if out.find(plain) == -1:
+			continue
+		out = out.replace(plain, "<color=%s>%s</color>" % [color_name, plain])
+	return out
+
+
+## 事件文本统一入口：先补原版色彩片段，再转 Godot BBCode。
+static func event_text_to_bbcode(text: String, event_key: String = "") -> String:
+	return unity_color_to_bbcode(restore_event_colors(text, event_key))
+
+
 ## 给任意无脚本的 Control 挂上本提示脚本（一次性，重复调用无副作用）。
 ## Label 默认 mouse_filter = MOUSE_FILTER_IGNORE（gdd_0638_Label.md 属性表），
 ## 按 tooltip_text 文档要求必须不是 IGNORE 才会显示悬浮提示，这里统一改成 STOP。

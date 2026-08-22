@@ -2243,7 +2243,7 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 		_add_empire_relation(w, EmpireData.USSR, 8)
 		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
 			w.empires[EmpireData.USSR].money += 6
-			w.empires[EmpireData.USSR].power += 1
+			w.empires[EmpireData.USSR].power = clampi(w.empires[EmpireData.USSR].power + 1, 0, 1000)
 	if w.pmc > 0:
 		d.budget += 10
 		d.army -= 10
@@ -2319,7 +2319,7 @@ func _apply_tech_periodic(w: WorldState) -> void:
 		d.people_support += 3
 		# 原版不对称：美国 empire.power -1、苏联 empire.relations -1（照抄）
 		if w.empires.size() > 0:
-			w.empires[0].power -= 1
+			w.empires[0].power = clampi(w.empires[0].power - 1, 0, 1000)
 		if w.empires.size() > 1:
 			w.empires[1].relations -= 1
 	if u[31]: d.army += 5; d.science += 5
@@ -4093,17 +4093,17 @@ func _fortnight_leader_effects(d: WorldState, w: WorldState) -> void:
 		usa.relations += 10
 	elif usa.current_leader == 4:
 		usa.money += 2
-		usa.power -= 2
-		ussr.power += 1
+		usa.power = clampi(usa.power - 2, 0, 1000)
+		ussr.power = clampi(ussr.power + 1, 0, 1000)
 	elif usa.current_leader == 5:
-		usa.power -= 4
-		ussr.power += 2
+		usa.power = clampi(usa.power - 4, 0, 1000)
+		ussr.power = clampi(ussr.power + 2, 0, 1000)
 		usa.relations += 2
 		if player != null and player.government == GameConstants.Government.LIBERAL:
 			usa.relations += 2
 	elif usa.current_leader == 6:
 		usa.money += 1
-		usa.power -= 1
+		usa.power = clampi(usa.power - 1, 0, 1000)
 	elif usa.current_leader == 7:
 		usa.money -= 2
 		if player != null and player.government == GameConstants.Government.REFORMIST:

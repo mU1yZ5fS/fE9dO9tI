@@ -140,7 +140,7 @@ func _def_1(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 					pen = 75
 				elif usa.current_leader == 5:
 					pen = 100
-				usa.power -= pen
+				usa.power = clampi(usa.power - pen, 0, 1000)
 				usa.relations -= 200
 			_set_war_active(w, 0, true)
 			if has(c(w, 1), "rim"):
@@ -153,7 +153,7 @@ func _def_1(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 			if usa2 != null and usa2.current_leader == 5:
 				pen2 = 100
 			if ussr != null:
-				ussr.power -= pen2
+				ussr.power = clampi(ussr.power - pen2, 0, 1000)
 				ussr.relations -= 200
 			_set_war_active(w, 1, true)
 			if _decision_done(w, 9):

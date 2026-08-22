@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 	var sgr: int = _leader_support(ussr, LDR_GRISHIN)
 	if sg >= sgr and sg >= sr:
 		ussr.current_leader = LDR_GORBACHEV
-		ussr.power -= 250
+		ussr.power = clampi(ussr.power - 250, 0, 1000)
 		context["result_text"] = "结果，米哈伊尔·戈尔巴乔夫被选为苏共中央委员会总书记。他惊人地迅速组织了一次代表大会，并通过军机确保政治局成员的顺利交接，而没有让他的对手罗曼诺夫说任何话。在葛罗米柯和温和派的支持下，他以极低的得票率领导了共产党。等待苏联的是什么?"
 	elif sr >= sgr and sr >= sg:
 		ussr.current_leader = LDR_ROMANOV
@@ -63,7 +63,7 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = "结果，维克托·格里申当选为苏共中央委员会总书记。在保守的多数派的支持下，他成功地领导了苏共，这没有任何问题。苏联希望拥有几年的勃列日涅夫式稳定。"
 	elif sg > sr:
 		ussr.current_leader = LDR_GORBACHEV
-		ussr.power -= 250
+		ussr.power = clampi(ussr.power - 250, 0, 1000)
 		context["result_text"] = "尽管有很多争论，结果，米哈伊尔·戈尔巴乔夫被选为苏共中央委员会总书记。他惊人地迅速组织了一次代表大会，并通过军机确保政治局成员的顺利交接，而没有让他的对手罗曼诺夫说任何话。在葛罗米柯和温和派的支持下，他以极低的得票率领导了共产党。等待苏联的是什么?"
 	elif sg < sr:
 		ussr.current_leader = LDR_ROMANOV

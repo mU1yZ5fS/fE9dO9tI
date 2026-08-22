@@ -56,14 +56,21 @@ const MIL_NAZIMAO := Color(0.435, 0.6274, 1.0)
 const MIL_FXSEU := Color(0.47, 0.498, 0.584)
 const MIL_AU := Color(0.0, 0.0, 0.5)
 const MIL_RIM := Color(0.3, 1.0, 1.0)
-## 经济：BALECON（:5077-5080）与 Torg 组合/纯贸易（:5081-5110）
-const ECO_BALECON := Color(0.5, 0.25, 0.5)
+## 经济：按玩家提供的原游戏开局经济模式截图逐色对齐。
+## 原版是双色 _MainColor + _MainColor2；本端口单色调色板取其可见主色近似。
+## 对华贸易 Torg：截图实测为绿色 RGB(0,147,99)。
+const ECO_BALECON := Color8(142, 0, 126)
 const ECO_EU_TORG := Color(1.0, 0.1, 0.0)
 const ECO_ASEAN_TORG := Color(0.0, 0.22, 0.6431)
 const ECO_SOCEU_TORG := Color(1.0, 0.1367925, 0.1367925)
 const ECO_SEV_TORG := Color(0.0, 1.0, 0.1)
-const ECO_TORG := Color(0.0, 0.0, 0.72)
-const ECO_OIL := Color(0.18, 0.18, 0.18)
+const ECO_TORG := Color8(0, 100, 60)
+const ECO_OIL := Color8(0, 100, 60)
+const ECO_EU := Color8(0, 65, 225)
+const ECO_SEV := Color8(142, 0, 0)
+const ECO_ASEAN := Color8(0, 65, 225)
+const ECO_SOCEU := Color(1.0, 0.1367925, 0.1367925)
+const ECO_ECON := Color(1.0, 0.549, 0.0)
 const PRC_GWCODE := 710
 const PALETTE_SIZE := 256
 
@@ -426,20 +433,21 @@ func _color_for_country(gwcode: int) -> Color:
 			if c.has_tag("okb"): return MAP_PRC
 
 		ColorMode.ECONOMIC:
-			# 原版 Repaint map_type==2 顺序（CountryScript.cs:5075-5110）；
+			# 原版 map_type==2 顺序（CountryScript.cs:4521-4590）；
 			# Torg=对华贸易，按原版优先级叠加在联盟色之上。
+			# 单色显示统一用上面 ECO_* 常量近似原版双色。
 			var has_torg := c.has_tag("对华贸易")
 			if _balecon_active(c): return ECO_BALECON
 			if c.has_tag("eu") and has_torg: return ECO_EU_TORG
 			if c.has_tag("asean") and has_torg: return ECO_ASEAN_TORG
-			if c.has_tag("eu"): return MAP_BLUE
+			if c.has_tag("eu"): return ECO_EU
 			if c.has_tag("soc_eu") and has_torg: return ECO_SOCEU_TORG
-			if c.has_tag("soc_eu"): return MAP_RED
+			if c.has_tag("soc_eu"): return ECO_SOCEU
 			if c.has_tag("oil"): return ECO_OIL
-			if c.has_tag("asean"): return MAP_CYAN
+			if c.has_tag("asean"): return ECO_ASEAN
 			if c.has_tag("sev") and has_torg: return ECO_SEV_TORG
-			if c.has_tag("sev"): return MAP_RED
-			if c.has_tag("econ"): return MAP_PRC
+			if c.has_tag("sev"): return ECO_SEV
+			if c.has_tag("econ"): return ECO_ECON
 			if has_torg: return ECO_TORG
 
 	return BLOC_NEUTRAL

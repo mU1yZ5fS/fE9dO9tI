@@ -76,40 +76,40 @@ const TECH_DESC: Array[String] = [
 
 # 悬停提示：影响Buff（原版 other_text[390+编号]，出处 other_text_en.txt 391-424 行）
 const TECH_EFFECTS: Array[String] = [
-	"影 响: <color=green>生 活 水 平+0.2, 农 业+0.1</color>",
-	"影 响: <color=green>农 业+0.2</color>",
-	"影 响: <color=green>生 活 水 平+0.1, 农 业+0.1, 财 政 预 算+0.1</color>",
-	"影 响: <color=green>生 活 水 平+0.2, 农 业+0.1</color>",
-	"影 响: <color=green>生 活 水 平+0.4, 农 业+0.5</color>",
-	"影 响: <color=green>生 活 水 平+0.2, 科 学 点 数+1.0</color>",
-	"影 响: <color=green>生 活 水 平+0.2, 农 业+0.1</color>",
-	"影 响: <color=green>生 活 水 平+0.2, 财 政 预 算+0.1</color>",
-	"影 响: <color=green>农 业+0.2</color>",
-	"影 响: <color=green>财 政 预 算+0.1, 工 业+0.2</color>",
-	"影 响: <color=green>财 政 预 算+0.1, 工 业+0.2, 军 事 实 力+0.4</color>, <color=red>移 除 “ 低 效 的 工 业 ” 修 正</color>",
-	"影 响: <color=green>生 活 水 平+0.2</color>",
-	"影 响: <color=green>财 政 预 算+0.2, 工 业+0.1</color>",
-	"影 响: <color=green>生 活 水 平+0.3</color>",
-	"影 响: <color=green>生 活 水 平+0.2, 财 政 预 算+0.1, 工 业+0.2</color>",
-	"影 响: <color=green>生 活 水 平+0.2, 财 政 预 算+0.1, 工 业+0.1, 农 业+0.1</color>",
-	"影 响: <color=green>生 活 水 平+0.3, 财 政 预 算+0.2, 科 学 点 数+0.5, 国 内 团 结 度+0.4</color>",
-	"影 响: <color=green>生 活 水 平+0.3, 财 政 预 算+0.3</color>",
-	"影 响: <color=green>军 事 实 力+0.2</color>",
-	"影 响: <color=green>特 工 网 络+0.3, 思 想 自 由 化-0.3</color>",
-	"影 响: <color=green>特 工 网 络+0.2, 思 想 自 由 化-0.2, 人 民 支 持 度+0.2</color>",
-	"影 响: <color=green>军 事 实 力+0.2, 党 内 支 持 度+0.3, 人 民 支 持 度+0.3</color>",
-	"影 响: <color=green>人 民 支 持 度+0.3, 思 想 自 由 化-0.2, 党 内 支 持 度+0.2</color>",
-	"影 响: <color=green>军 事 实 力+0.4</color>",
-	"影 响: <color=green>军 事 实 力+0.4, 人 民 支 持 度+0.2</color>",
-	"影 响: <color=green>特 工 网 络+0.2, 思 想 自 由 化-0.2, 党 内 支 持 度+0.3</color>",
-	"影 响: <color=green>军 事 实 力+0.4, 思 想 自 由 化-0.2</color>",
-	"影 响: <color=green>财 政 预 算+0.2, 生 活 水 平+0.2, 人 民 支 持 度+0.2</color>",
-	"影 响: <color=green>军 事 实 力+0.5, 特 工 网 络+0.5</color>",
-	"影 响: <color=green>军 事 实 力+1.0, </color><color=red>与 美 苏 的 关 系-0.5</color>",
-	"影 响: <color=green>人 民 支 持 度+0.3, 美 苏 全 球 影 响 力-0.1</color>",
-	"影 响: <color=green>军 事 实 力+0.5, 科 学 点 数+0.5</color>",
-	"影 响: <color=green>农 业+0.5, 生 活 水 平+0.5</color>",
-	"影 响: <color=green>军 事 实 力+0.5, 工 业+0.5, </color><color=red>与 美 苏 的 关 系-0.5</color>",
+	"影 响: <color=#006400>生 活 水 平+0.2, 农 业+0.1</color>",
+	"影 响: <color=#006400>农 业+0.2</color>",
+	"影 响: <color=#006400>生 活 水 平+0.1, 农 业+0.1, 财 政 预 算+0.1</color>",
+	"影 响: <color=#006400>生 活 水 平+0.2, 农 业+0.1</color>",
+	"影 响: <color=#006400>生 活 水 平+0.4, 农 业+0.5</color>",
+	"影 响: <color=#006400>生 活 水 平+0.2, 科 学 点 数+1.0</color>",
+	"影 响: <color=#006400>生 活 水 平+0.2, 农 业+0.1</color>",
+	"影 响: <color=#006400>生 活 水 平+0.2, 财 政 预 算+0.1</color>",
+	"影 响: <color=#006400>农 业+0.2</color>",
+	"影 响: <color=#006400>财 政 预 算+0.1, 工 业+0.2</color>",
+	"影 响: <color=#006400>财 政 预 算+0.1, 工 业+0.2, 军 事 实 力+0.4</color>, <color=red>移 除 “ 低 效 的 工 业 ” 修 正</color>",
+	"影 响: <color=#006400>生 活 水 平+0.2</color>",
+	"影 响: <color=#006400>财 政 预 算+0.2, 工 业+0.1</color>",
+	"影 响: <color=#006400>生 活 水 平+0.3</color>",
+	"影 响: <color=#006400>生 活 水 平+0.2, 财 政 预 算+0.1, 工 业+0.2</color>",
+	"影 响: <color=#006400>生 活 水 平+0.2, 财 政 预 算+0.1, 工 业+0.1, 农 业+0.1</color>",
+	"影 响: <color=#006400>生 活 水 平+0.3, 财 政 预 算+0.2, 科 学 点 数+0.5, 国 内 团 结 度+0.4</color>",
+	"影 响: <color=#006400>生 活 水 平+0.3, 财 政 预 算+0.3</color>",
+	"影 响: <color=#006400>军 事 实 力+0.2</color>",
+	"影 响: <color=#006400>特 工 网 络+0.3, 思 想 自 由 化-0.3</color>",
+	"影 响: <color=#006400>特 工 网 络+0.2, 思 想 自 由 化-0.2, 人 民 支 持 度+0.2</color>",
+	"影 响: <color=#006400>军 事 实 力+0.2, 党 内 支 持 度+0.3, 人 民 支 持 度+0.3</color>",
+	"影 响: <color=#006400>人 民 支 持 度+0.3, 思 想 自 由 化-0.2, 党 内 支 持 度+0.2</color>",
+	"影 响: <color=#006400>军 事 实 力+0.4</color>",
+	"影 响: <color=#006400>军 事 实 力+0.4, 人 民 支 持 度+0.2</color>",
+	"影 响: <color=#006400>特 工 网 络+0.2, 思 想 自 由 化-0.2, 党 内 支 持 度+0.3</color>",
+	"影 响: <color=#006400>军 事 实 力+0.4, 思 想 自 由 化-0.2</color>",
+	"影 响: <color=#006400>财 政 预 算+0.2, 生 活 水 平+0.2, 人 民 支 持 度+0.2</color>",
+	"影 响: <color=#006400>军 事 实 力+0.5, 特 工 网 络+0.5</color>",
+	"影 响: <color=#006400>军 事 实 力+1.0, </color><color=red>与 美 苏 的 关 系-0.5</color>",
+	"影 响: <color=#006400>人 民 支 持 度+0.3, 美 苏 全 球 影 响 力-0.1</color>",
+	"影 响: <color=#006400>军 事 实 力+0.5, 科 学 点 数+0.5</color>",
+	"影 响: <color=#006400>农 业+0.5, 生 活 水 平+0.5</color>",
+	"影 响: <color=#006400>军 事 实 力+0.5, 工 业+0.5, </color><color=red>与 美 苏 的 关 系-0.5</color>",
 ]
 
 # 悬停提示：modifies[51] 激活时的额外石油消耗行（原版 other_text[433+编号]）
@@ -120,10 +120,10 @@ const TECH_OIL_LINES: Dictionary = {
 	6: "<color=red>石 油 消 费 +20</color>",
 	7: "<color=red>石 油 消 费 +40</color>",
 	8: "<color=red>石 油 消 费 +25</color>",
-	10: "<color=green>石 油 消 费 -20</color>",
-	11: "<color=green>石 油 消 费 -35</color>",
-	13: "<color=green>石 油 消 费 -60</color>",
-	14: "<color=green>石 油 消 费 -60</color>",
+	10: "<color=#006400>石 油 消 费 -20</color>",
+	11: "<color=#006400>石 油 消 费 -35</color>",
+	13: "<color=#006400>石 油 消 费 -60</color>",
+	14: "<color=#006400>石 油 消 费 -60</color>",
 }
 
 # 鼠标滚轮滚动参数
@@ -297,9 +297,9 @@ func _tooltip_status(ts: TechState, i: int) -> String:
 	var s: String
 
 	if ts.unlocked[i]:
-		s = "[color=red]%s[/color] 资金 | [color=green] 研究完成 [/color]" % money_s
+		s = "[color=red]%s[/color] 资金 | [color=#006400] 研究完成 [/color]" % money_s
 	elif ts.in_progress[i]:
-		s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=green] 研究中... [/color]" % [money_s, elapsed, days]
+		s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=#006400] 研究中... [/color]" % [money_s, elapsed, days]
 	elif ts.is_researching():
 		s = "[color=red]%s[/color] 资金 | [color=blue]%d[/color]/%d 科研点 | [color=red] 只能研究单个项目 [/color]" % [money_s, elapsed, days]
 	else:

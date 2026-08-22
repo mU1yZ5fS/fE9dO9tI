@@ -207,3 +207,12 @@ func _zoom(factor: float) -> void:
 		min_distance,
 		max_distance
 	)
+
+
+## 将镜头旋转中心对准球面上的一个点（由 TerritoryMap.latlon_to_sphere_pos 提供）。
+## 相机枢轴是 SpringArm3D 的父节点：SpringArm 把相机放在枢轴 +Z 一侧，
+## 因此必须让枢轴的“模型正面”+Z 指向目标，相机才会位于该球面点所在一侧。
+func focus_on_sphere_point(point: Vector3) -> void:
+	if point.length() < 0.0001:
+		return
+	look_at(point, Vector3.UP, true)

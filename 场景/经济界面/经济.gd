@@ -173,6 +173,9 @@ func _set_tip_node(node_name: String) -> void:
 	var n := _find(node_name)
 	if n is Control:
 		BBC.attach(n)
+		# 悬停瞬间刷新动态 ±变化，避免显示上一期结算的旧值。
+		if not n.mouse_entered.is_connected(_on_tip_hover):
+			n.mouse_entered.connect(_on_tip_hover.bind(node_name))
 
 
 func _set_tip_text(node_name: String, text: String) -> void:
@@ -180,6 +183,30 @@ func _set_tip_text(node_name: String, text: String) -> void:
 	if n is Control:
 		BBC.attach(n)
 		n.tooltip_text = text
+
+
+func _on_tip_hover(node_name: String) -> void:
+	var w: WorldState = GameManager.world if GameManager else null
+	if w == null:
+		return
+	var tip := _dynamic_tip_text(node_name, w)
+	if tip != "":
+		_set_tip_text(node_name, tip)
+
+
+func _dynamic_tip_text(node_name: String, w: WorldState) -> String:
+	match node_name:
+		"工业数值":
+			return "%s: %s" % ["两周内", _delta_str(w.即时两周变化(W.I_INDUSTRY))]
+		"农业数值":
+			return "%s: %s" % ["两周内", _delta_str(w.即时两周变化(W.I_AGRICULTURE))]
+		"服务业数值":
+			return "%s: %s" % ["两周内", _delta_str(w.即时两周变化(W.I_SERVICES))]
+		"腐败数值":
+			return "%s: %s" % ["两周内", _delta_str(w.即时两周变化(W.I_CORRUPTION))]
+		"贷款数值":
+			return "%s: %s" % ["国家债务 (每两周)", _delta_str(w.即时两周变化(W.I_LOAN))]
+	return ""
 
 
 ## 原版 data_old 显示规则：非负强制 +，负号保留；整数位/十分位分别取绝对值。
@@ -191,12 +218,10 @@ func _delta_str(v: int) -> String:
 
 func _refresh_tooltips(w: WorldState) -> void:
 	# 顶部四栏：原版 OkoshkoScript.text_en = "两周内"
-	_set_tip_text("工业数值", "%s: %s" % ["两周内", _delta_str(w.两周变化(W.I_INDUSTRY))])
-	_set_tip_text("农业数值", "%s: %s" % ["两周内", _delta_str(w.两周变化(W.I_AGRICULTURE))])
-	_set_tip_text("服务业数值", "%s: %s" % ["两周内", _delta_str(w.两周变化(W.I_SERVICES))])
-	_set_tip_text("腐败数值", "%s: %s" % ["两周内", _delta_str(w.两周变化(W.I_CORRUPTION))])
-	# 贷款：原版 OkoshkoScript.text_en = "国家债务 (每两周)"
-	_set_tip_text("贷款数值", "%s: %s" % ["国家债务 (每两周)", _delta_str(w.两周变化(W.I_LOAN))])
+	for node_name in ["工业数值", "农业数值", "服务业数值", "腐败数值", "贷款数值"]:
+		var tip := _dynamic_tip_text(node_name, w)
+		if tip != "":
+			_set_tip_text(node_name, tip)
 	for item_name in 预算项:
 		var idx: int = 预算项[item_name]
 		var tip: String = 预算提示.get(idx, "").replace("{0}", "\n")

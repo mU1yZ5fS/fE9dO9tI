@@ -94,6 +94,8 @@ func execute(context: Dictionary) -> void:
 		return
 	var option_index := int(context.get("option_index", -1))
 	_event_375(option_index, context)
+	if MapService.instance != null:
+		MapService.instance.sync_map_merges()
 	ws.clamp_empire_relations()
 	_sync_empire_mirrors()
 
@@ -313,7 +315,7 @@ func _add_empire_relation(empire_index: int, delta: int) -> void:
 
 func _add_empire_power(empire_index: int, delta: int) -> void:
 	if empire_index >= 0 and empire_index < ws.empires.size() and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
+		ws.empires[empire_index].power = clampi(ws.empires[empire_index].power + delta, 0, 1000)
 
 
 func _sync_empire_mirrors() -> void:

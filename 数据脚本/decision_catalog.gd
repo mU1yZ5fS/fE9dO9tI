@@ -73,7 +73,7 @@ static func _build_req(entries: Array) -> String:
 		var e: Array = entries[i]
 		var text: String = e[0]
 		var ok: bool = e[1].call()
-		var mark := "<color=lime>√</color>" if ok else "<color=red>×</color>"
+		var mark := "<color=darkgreen>√</color>" if ok else "<color=red>×</color>"
 		if i == 0:
 			lines.append("%s %s" % [text, mark])
 		else:
@@ -117,7 +117,7 @@ static func _build_v1() -> void:
 	d0.result = DecisionCatalog._build_result([
 		"特 工 网 络: <color=red>-25.0</color>",
 		"军 队 力 量: <color=red>-25.0</color>",
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d0)
 
@@ -143,10 +143,10 @@ static func _build_v1() -> void:
 		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=red>-50.0</color>",
 		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 温 和 派: <color=red>-50.0</color>",
 		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 改 革 派: <color=red>-50.0</color>",
-		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 自 由 派: <color=lime>+25.0</color>",
-		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
-		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
-		"<color=lime>触 发 事 件</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 自 由 派: <color=darkgreen>+25.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=darkgreen>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=darkgreen>+25.0</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d1)
 
@@ -187,21 +187,21 @@ static func _build_v1() -> void:
 		["军 队 力 量 - 25.0", func() -> bool: return A.has_army(250)],
 	])
 	d2.result = DecisionCatalog._build_result([
-		"<color=lime>西 藏 将 不 再 有 分 裂 可 能 性</color>",
+		"<color=darkgreen>西 藏 将 不 再 有 分 裂 可 能 性</color>",
 		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+2.5</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+2.5</color>",
 		"预 算 将 变 更: <color=red>-25.0</color>",
-		"爱 国 情 绪 将 变 更: <color=lime>+25.0</color>",
+		"爱 国 情 绪 将 变 更: <color=darkgreen>+25.0</color>",
 		"<color=red>将 改 变 结 算 界 面 的 国 家 状 态</color>",
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	]) if A._faction_leading(0) else DecisionCatalog._build_result([
-		"<color=lime>西 藏 将 不 再 有 分 裂 可 能 性</color>",
+		"<color=darkgreen>西 藏 将 不 再 有 分 裂 可 能 性</color>",
 		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+2.5</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+2.5</color>",
 		"预 算 将 变 更: <color=red>-25.0</color>",
-		"爱 国 情 绪 将 变 更: <color=lime>+25.0</color>",
+		"爱 国 情 绪 将 变 更: <color=darkgreen>+25.0</color>",
 		"<color=red>将 改 变 结 算 界 面 的 国 家 状 态</color>",
 	])
 	_defs.append(d2)
@@ -228,10 +228,10 @@ static func _build_v1() -> void:
 		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=red>-50.0</color>",
 		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 温 和 派: <color=red>-50.0</color>",
 		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 改 革 派: <color=red>-50.0</color>",
-		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 自 由 派: <color=lime>+25.0</color>",
-		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
-		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
-		"<color=lime>触 发 事 件</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 自 由 派: <color=darkgreen>+25.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=darkgreen>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=darkgreen>+25.0</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d3)
 
@@ -272,21 +272,21 @@ static func _build_v1() -> void:
 		["军 队 力 量 - 25.0", func() -> bool: return A.has_army(250)],
 	])
 	d4.result = DecisionCatalog._build_result([
-		"<color=lime>新 疆 将 不 再 有 分 裂 可 能 性</color>",
+		"<color=darkgreen>新 疆 将 不 再 有 分 裂 可 能 性</color>",
 		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+2.5</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+2.5</color>",
 		"预 算 将 变 更: <color=red>-25.0</color>",
-		"爱 国 情 绪 将 变 更: <color=lime>+25.0</color>",
+		"爱 国 情 绪 将 变 更: <color=darkgreen>+25.0</color>",
 		"<color=red>将 改 变 结 算 界 面 的 国 家 状 态</color>",
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	]) if A._faction_leading(0) else DecisionCatalog._build_result([
-		"<color=lime>新 疆 将 不 再 有 分 裂 可 能 性</color>",
+		"<color=darkgreen>新 疆 将 不 再 有 分 裂 可 能 性</color>",
 		"将 会 改 变 关 系 和 美 国: <color=red>-25.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+2.5</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+2.5</color>",
 		"预 算 将 变 更: <color=red>-25.0</color>",
-		"爱 国 情 绪 将 变 更: <color=lime>+25.0</color>",
+		"爱 国 情 绪 将 变 更: <color=darkgreen>+25.0</color>",
 		"<color=red>将 改 变 结 算 界 面 的 国 家 状 态</color>",
 	])
 	_defs.append(d4)
@@ -302,7 +302,7 @@ static func _build_v1() -> void:
 		["华 国 锋 ， 邓 小 平 ， “ 四 人 帮 ” 不 在 政 治 局 任 职", func() -> bool: return A.all_leaders_are_dead()],
 	])
 	d5.result = DecisionCatalog._build_result([
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d5)
 
@@ -333,13 +333,13 @@ static func _build_v1() -> void:
 		["国 际 声 誉 ≺ 50.0", func() -> bool: return A.is_dip_rep_less_than(true, 500)],
 	])
 	d6.result = DecisionCatalog._build_result([
-		"台 湾 - 属 于 我 们 的 影 响 范 围: <color=lime>√</color>",
+		"台 湾 - 属 于 我 们 的 影 响 范 围: <color=darkgreen>√</color>",
 		"台 湾 - 处 于 美 国 影 响 下: <color=red>×</color>",
-		"台 湾 - 将 国 家 体 制 更 改 为: <color=lime>改 良 主 义</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+3.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+5.0</color>",
-		"思 想 自 由 化 将 变 更: <color=lime>-5.0</color>",
-		"<color=lime>触 发 事 件</color>",
+		"台 湾 - 将 国 家 体 制 更 改 为: <color=darkgreen>改 良 主 义</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+3.0</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+5.0</color>",
+		"思 想 自 由 化 将 变 更: <color=darkgreen>-5.0</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d6)
 
@@ -411,25 +411,25 @@ static func _build_v1() -> void:
 		["科 技 «发 展 海 军 与 空 军» 研 发 完 毕", func() -> bool: return A.is_science_done(24, true)],
 	])
 	d7.result = DecisionCatalog._build_result([
-		"<color=lime>台 湾 - 被 吞 并 于 红 色 中 国</color>",
+		"<color=darkgreen>台 湾 - 被 吞 并 于 红 色 中 国</color>",
 		"台 湾 - 处 于 美 国 影 响 下: <color=red>×</color>",
 		"将 会 改 变 关 系 和 美 国: <color=red>-100.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+5.0</color>",
-		"人 口 将 变 更: <color=lime>+18.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+5.0</color>",
-		"思 想 自 由 化 将 变 更: <color=lime>-5.0</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+5.0</color>",
+		"人 口 将 变 更: <color=darkgreen>+18.0</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+5.0</color>",
+		"思 想 自 由 化 将 变 更: <color=darkgreen>-5.0</color>",
 		"特 工 网 络: <color=red>-150.0</color>",
 		"预 算 将 变 更: <color=red>-150.0</color>",
 		"军 队 力 量: <color=red>-150.0</color>",
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	]) if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else DecisionCatalog._build_result([
-		"<color=lime>台 湾 - 被 吞 并 于 红 色 中 国</color>",
+		"<color=darkgreen>台 湾 - 被 吞 并 于 红 色 中 国</color>",
 		"台 湾 - 处 于 美 国 影 响 下: <color=red>×</color>",
 		"将 会 改 变 关 系 和 美 国: <color=red>-100.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+5.0</color>",
-		"人 口 将 变 更: <color=lime>+18.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+5.0</color>",
-		"思 想 自 由 化 将 变 更: <color=lime>-5.0</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+5.0</color>",
+		"人 口 将 变 更: <color=darkgreen>+18.0</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+5.0</color>",
+		"思 想 自 由 化 将 变 更: <color=darkgreen>-5.0</color>",
 		"特 工 网 络: <color=red>-150.0</color>",
 		"预 算 将 变 更: <color=red>-150.0</color>",
 		"军 队 力 量: <color=red>-150.0</color>",
@@ -460,14 +460,14 @@ static func _build_v1() -> void:
 	])
 	d8.result = DecisionCatalog._build_result([
 		"思 想 自 由 化 将 变 更: <color=red>+25.0</color>",
-		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
-		"增加与领导人同一派系政治家的影响力: <color=lime>+20.0</color>",
-		"<color=lime>林彪集团的成员将陆续加入政治局</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=darkgreen>+25.0</color>",
+		"增加与领导人同一派系政治家的影响力: <color=darkgreen>+20.0</color>",
+		"<color=darkgreen>林彪集团的成员将陆续加入政治局</color>",
 	]) if A._mod_active(GameConstants.Modifier.MAOIST_BULWARK) else DecisionCatalog._build_result([
 		"思 想 自 由 化 将 变 更: <color=red>+25.0</color>",
-		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
-		"增加与领导人同一派系政治家的影响力: <color=lime>+20.0</color>",
-		"<color=lime>林彪集团的成员将陆续加入政治局</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=darkgreen>+25.0</color>",
+		"增加与领导人同一派系政治家的影响力: <color=darkgreen>+20.0</color>",
+		"<color=darkgreen>林彪集团的成员将陆续加入政治局</color>",
 	])
 	_defs.append(d8)
 
@@ -509,13 +509,13 @@ static func _build_v1() -> void:
 	d9.result = DecisionCatalog._build_result([
 		"匈牙利、波兰、罗马尼亚将退出华约和经互会",
 		"匈牙利、波兰、罗马尼亚将加入集安条约和经合组织",
-		"改 变 美 国 影 响 力: <color=lime>+10.0</color>",
-		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
+		"改 变 美 国 影 响 力: <color=darkgreen>+10.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=darkgreen>+25.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=red>-100.0</color>",
 		"改 变 苏 联 影 响 力: <color=red>-100.0</color>",
-		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=lime>+50.0</color>",
-		"<color=lime>支 援 东 欧 毛 派 势 力 将 会 增 加 世 界 影 响 力</color>",
-		"<color=lime>触 发 事 件</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=darkgreen>+50.0</color>",
+		"<color=darkgreen>支 援 东 欧 毛 派 势 力 将 会 增 加 世 界 影 响 力</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d9)
 
@@ -558,13 +558,13 @@ static func _build_v1() -> void:
 		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
 		"改 变 美 国 影 响 力: <color=red>-10.0</color>",
 		"改 变 苏 联 影 响 力: <color=red>-10.0</color>",
-		"国 际 声 誉 将 改 变: <color=lime>+10.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+10.0</color>",
-		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=lime>+50.0</color>",
+		"国 际 声 誉 将 改 变: <color=darkgreen>+10.0</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+10.0</color>",
+		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 极 左 派: <color=darkgreen>+50.0</color>",
 		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 改 革 派: <color=red>-50.0</color>",
 		"将 改 变 该 派 系 政 治 家 的 忠 诚 度 自 由 派: <color=red>-50.0</color>",
-		"<color=lime>支 援 西 方 毛 派 势 力 将 会 增 加 世 界 影 响 力</color>",
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>支 援 西 方 毛 派 势 力 将 会 增 加 世 界 影 响 力</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d10)
 
@@ -595,13 +595,13 @@ static func _build_v1() -> void:
 		["中国领袖为保守派 / 温和派/ 改革派 - 是", func() -> bool: return A.has_moderate_leader(true)],
 	])
 	d11.result = DecisionCatalog._build_result([
-		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
-		"将 会 改 变 关 系 和 苏 联: <color=lime>+25.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=darkgreen>+25.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=darkgreen>+25.0</color>",
 		"特 工 网 络: <color=red>-25.0</color>",
 		"思 想 自 由 化 将 变 更: <color=red>+25.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+15.0</color>",
-		"生 活 水 平 将 变 更: <color=lime>+5.0</color>",
-		"<color=lime>陈 云 将 会 成 为 国 家 领 袖</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+15.0</color>",
+		"生 活 水 平 将 变 更: <color=darkgreen>+5.0</color>",
+		"<color=darkgreen>陈 云 将 会 成 为 国 家 领 袖</color>",
 		"<color=red>该 政 治 派 系 领 袖 将 离 任 ： 极 左 派</color>",
 		"<color=red>该 政 治 派 系 领 袖 将 离 任 ： 保 守 派</color>",
 		"<color=red>该 政 治 派 系 领 袖 将 离 任 ： 改 革 派</color>",
@@ -625,7 +625,7 @@ static func _build_v1() -> void:
 		["寡 头 权 力 ≻  60", func() -> bool: return A.has_oligarchy_power_less(false, 60)],
 	])
 	d12.result = DecisionCatalog._build_result([
-		"<color=lime>寡 头 权 力 将 不 会 高 于75 或 低 于40</color>",
+		"<color=darkgreen>寡 头 权 力 将 不 会 高 于75 或 低 于40</color>",
 	])
 	_defs.append(d12)
 
@@ -649,9 +649,9 @@ static func _build_v1() -> void:
 		["中 国 领 导 人 不 是 极 左 派 ， 不 是 改 革 派 ， 不 是 自 由 派 - 是", func() -> bool: return A.has_real_moderate_leader(true)],
 	])
 	d13.result = DecisionCatalog._build_result([
-		"将 会 改 变 关 系 和 苏 联: <color=lime>+100.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=darkgreen>+100.0</color>",
 		"<color=red>开 放 的 资 产 阶 级 路 线 将 不 再 可 行</color>",
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d13)
 
@@ -678,8 +678,8 @@ static func _build_v1() -> void:
 		"预 算 将 变 更: <color=red>-50.0</color>",
 		"特 工 网 络: <color=red>-150.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=red>-100.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+5.0</color>",
-		"<color=lime>触 发 事 件</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+5.0</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d14)
 
@@ -707,10 +707,10 @@ static func _build_v2() -> void:
 		["经济类型为市场经济 - 是", func() -> bool: return A.has_capitalist_economy(true)],
 	])
 	d15.result = DecisionCatalog._build_result([
-		"<color=lime>朱镕 基将 会 成 为 国 家 领 袖</color>",
+		"<color=darkgreen>朱镕 基将 会 成 为 国 家 领 袖</color>",
 		"思 想 自 由 化 将 变 更: <color=red>+5.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+5.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+0.1</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+5.0</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+0.1</color>",
 	])
 	_defs.append(d15)
 
@@ -734,7 +734,7 @@ static func _build_v2() -> void:
 	])
 	d16.result = DecisionCatalog._build_result([
 		"<color=red>自 由 民 主 路 线 将 不 再 可 行</color>",
-		"<color=lime>将 新 添 加 修 正</color>",
+		"<color=darkgreen>将 新 添 加 修 正</color>",
 		"特 工 网 络: <color=red>-150.0</color>",
 		"军 队 力 量: <color=red>-150.0</color>",
 	])
@@ -759,7 +759,7 @@ static func _build_v2() -> void:
 	d17.result = DecisionCatalog._build_result([
 		"特 工 网 络: <color=red>-50.0</color>",
 		"预 算 将 变 更: <color=red>-50.0</color>",
-		"<color=lime>将 新 添 加 修 正</color>",
+		"<color=darkgreen>将 新 添 加 修 正</color>",
 	])
 	_defs.append(d17)
 
@@ -800,11 +800,11 @@ static func _build_v2() -> void:
 	d18.result = DecisionCatalog._build_result([
 		"特 工 网 络: <color=red>-50.0</color>",
 		"预 算 将 变 更: <color=red>-50.0</color>",
-		"<color=lime>将 新 添 加 修 正</color>",
+		"<color=darkgreen>将 新 添 加 修 正</color>",
 		"<color=red>仅国家垄断资本主义可用</color>",
 		"<color=red>仅仅 国 家 垄 断 资 本 主 义 可 用可用</color>",
-		"<color=lime>梁漱 溟将 会 成 为 国 家 领 袖</color>",
-		"<color=lime>冯友 兰 将加入政治局</color>",
+		"<color=darkgreen>梁漱 溟将 会 成 为 国 家 领 袖</color>",
+		"<color=darkgreen>冯友 兰 将加入政治局</color>",
 	])
 	_defs.append(d18)
 
@@ -847,17 +847,17 @@ static func _build_v2() -> void:
 		["我 们 在 联 盟 中", func() -> bool: return A.they_are_ours(1)],
 	])
 	d19.result = DecisionCatalog._build_result([
-		"人 口 将 变 更: <color=lime>+2.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+10.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+1.0</color>",
+		"人 口 将 变 更: <color=darkgreen>+2.0</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+10.0</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+1.0</color>",
 		"特 工 网 络: <color=red>-50.0</color>",
 		"预 算 将 变 更: <color=red>-50.0</color>",
 		"<color=red>蒙 古 将 作 为 自 治 共 和 国 成 为 中 国 的 一 部 分</color>",
 		"<color=red>蒙古将成为历史名词</color>",
 	]) if A._country(9) != null and A._country(9).puppet_of != GameConstants.LegacySlot.CHINA else DecisionCatalog._build_result([
-		"人 口 将 变 更: <color=lime>+2.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+10.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+10.0</color>",
+		"人 口 将 变 更: <color=darkgreen>+2.0</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+10.0</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+10.0</color>",
 		"<color=red>蒙 古 将 作 为 自 治 共 和 国 成 为 中 国 的 一 部 分</color>",
 		"<color=red>蒙古将成为历史名词</color>",
 	])
@@ -922,11 +922,11 @@ static func _build_v3() -> void:
 		"特 工 网 络: <color=red>-30.0</color>",
 		"预 算 将 变 更: <color=red>-30.0</color>",
 		"阿 拉 伯 联 合 共 和 国 将 统 一 为 单 一 国 家",
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	]) if A._country(30) != null and A._country(30).government != GameConstants.Government.SOCIALIST else DecisionCatalog._build_result([
 		"特 工 网 络: <color=red>-10.0</color>",
 		"预 算 将 变 更: <color=red>-10.0</color>",
-		"<color=lime>阿拉伯革命社会主义共和国联盟将整合为一个国家</color>",
+		"<color=darkgreen>阿拉伯革命社会主义共和国联盟将整合为一个国家</color>",
 	])
 	_defs.append(d20)
 
@@ -993,12 +993,12 @@ static func _build_v3() -> void:
 	d23.result = DecisionCatalog._build_result([
 		"预 算 将 变 更: <color=red>-30.0</color>",
 		"军 队 力 量: <color=red>-30.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+5.0</color>",
-		"改 变 美 国 影 响 力: <color=lime>+5.0</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+5.0</color>",
+		"改 变 美 国 影 响 力: <color=darkgreen>+5.0</color>",
 		"改 变 苏 联 影 响 力: <color=red>-5.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=red>-25.0</color>",
-		"将 会 改 变 关 系 和 美 国: <color=lime>+25.0</color>",
-		"蒙 古 - 加 入 华 沙 条 约: <color=lime>√</color>",
+		"将 会 改 变 关 系 和 美 国: <color=darkgreen>+25.0</color>",
+		"蒙 古 - 加 入 华 沙 条 约: <color=darkgreen>√</color>",
 		"中 央 条 约 组 织 与 东 南 亚 条 约 组 织 将 开 始 实 现 统 一 ， 巴 基 斯 坦 与 伊 朗 将 加 入 我 们 的 军 事 联 盟",
 	])
 	_defs.append(d23)
@@ -1074,7 +1074,7 @@ static func _build_v3() -> void:
 		"该 决 议 将 在  6 月 后 解 锁",
 		"改 变 苏 联 影 响 力: <color=red>-1.0</color>",
 		"苏 联 对 联 盟 内 各 国 的 影 响 力 ：: <color=red>-35.0</color>",
-		"中 国 对 联 盟 内 各 国 的 影 响 力 ：: <color=lime>+20.0</color>",
+		"中 国 对 联 盟 内 各 国 的 影 响 力 ：: <color=darkgreen>+20.0</color>",
 	])
 	_defs.append(d26)
 
@@ -1107,7 +1107,7 @@ static func _build_v3() -> void:
 		"该 决 议 将 在  6 月 后 解 锁",
 		"改 变 美 国 影 响 力: <color=red>-1.0</color>",
 		"美 国 对 联 盟 内 各 国 的 影 响 力 ：: <color=red>-35.0</color>",
-		"中 国 对 联 盟 内 各 国 的 影 响 力 ：: <color=lime>+20.0</color>",
+		"中 国 对 联 盟 内 各 国 的 影 响 力 ：: <color=darkgreen>+20.0</color>",
 	])
 	_defs.append(d27)
 
@@ -1141,7 +1141,7 @@ static func _build_v3() -> void:
 		"该 决 议 将 在  6 月 后 解 锁",
 		"改 变 苏 联 影 响 力: <color=red>-1.0</color>",
 		"苏 联 对 非 洲 国 家 的 影 响 力 ：: <color=red>-25.0</color>",
-		"中 国 对 非 洲 国 家 的 影 响 力 ：: <color=lime>+10.0</color>",
+		"中 国 对 非 洲 国 家 的 影 响 力 ：: <color=darkgreen>+10.0</color>",
 		"非 洲 国 家 稳 定: <color=red>-10.0</color>",
 	])
 	_defs.append(d28)
@@ -1176,7 +1176,7 @@ static func _build_v3() -> void:
 		"该 决 议 将 在  6 月 后 解 锁",
 		"改 变 美 国 影 响 力: <color=red>-1.0</color>",
 		"美 国 对 非 洲 国 家 的 影 响 力 ：: <color=red>-25.0</color>",
-		"中 国 对 非 洲 国 家 的 影 响 力 ：: <color=lime>+10.0</color>",
+		"中 国 对 非 洲 国 家 的 影 响 力 ：: <color=darkgreen>+10.0</color>",
 		"非 洲 国 家 稳 定: <color=red>-10.0</color>",
 	])
 	_defs.append(d29)
@@ -1203,7 +1203,7 @@ static func _build_v3() -> void:
 		"世 界 影 响 力 将 变 更: <color=red>-1.0</color>",
 		"将 会 改 变 关 系 和 美 国: <color=red>-15.0</color>",
 		"将 会 改 变 关 系 和 苏 联: <color=red>-15.0</color>",
-		"国 际 声 誉 将 改 变: <color=lime>+10.0</color>",
+		"国 际 声 誉 将 改 变: <color=darkgreen>+10.0</color>",
 	])
 	_defs.append(d30)
 
@@ -1227,8 +1227,8 @@ static func _build_v3() -> void:
 		"预 算 将 变 更: <color=red>-5.0</color>",
 		"该 决 议 将 在  6 月 后 解 锁",
 		"世 界 影 响 力 将 变 更: <color=red>-1.0</color>",
-		"将 会 改 变 关 系 和 美 国: <color=lime>+15.0</color>",
-		"将 会 改 变 关 系 和 苏 联: <color=lime>+15.0</color>",
+		"将 会 改 变 关 系 和 美 国: <color=darkgreen>+15.0</color>",
+		"将 会 改 变 关 系 和 苏 联: <color=darkgreen>+15.0</color>",
 		"国 际 声 誉 将 改 变: <color=red>-10.0</color>",
 	])
 	_defs.append(d31)
@@ -1255,7 +1255,7 @@ static func _build_v3() -> void:
 	d32.result = DecisionCatalog._build_result([
 		"该 决 议 将 在  6 月 后 解 锁",
 		"预 算 将 变 更: <color=red>-5.0</color>",
-		(("%s: <color=lime>+%s</color> (%s %s)") % ["石 油 产 量", 150, "将 增 长 至", str((A._ws().oil_prod if A._ws() != null else 0.0) + 150)]),
+		(("%s: <color=darkgreen>+%s</color> (%s %s)") % ["石 油 产 量", 150, "将 增 长 至", str((A._ws().oil_prod if A._ws() != null else 0.0) + 150)]),
 	])
 	_defs.append(d32)
 
@@ -1278,7 +1278,7 @@ static func _build_v3() -> void:
 	])
 	d33.result = DecisionCatalog._build_result([
 		"预 算 将 变 更: <color=red>-10.0</color>",
-		"<color=lime>将 新 添 加 修 正 «东 西 伯 利 亚 - 太 平 洋 管 道 计 划»</color>",
+		"<color=darkgreen>将 新 添 加 修 正 «东 西 伯 利 亚 - 太 平 洋 管 道 计 划»</color>",
 	])
 	_defs.append(d33)
 
@@ -1343,8 +1343,8 @@ static func _build_v3() -> void:
 		"特 工 网 络: <color=red>-10.0</color>",
 		(("%s: <color=%s>%s%s$</color> (%s)") % ["油 价 将 降 低", "red", "", -10, "油 价 不 会 跌 破 每 桶 $10"]),
 		"改 变 苏 联 影 响 力: <color=red>-20.0</color>",
-		"改 变 美 国 影 响 力: <color=lime>+15.0</color>",
-		"世 界 影 响 力 将 变 更: <color=lime>+10.0</color>",
+		"改 变 美 国 影 响 力: <color=darkgreen>+15.0</color>",
+		"世 界 影 响 力 将 变 更: <color=darkgreen>+10.0</color>",
 	])
 	_defs.append(d35)
 
@@ -1368,7 +1368,7 @@ static func _build_v3() -> void:
 	])
 	d36.result = DecisionCatalog._build_result([
 		"非洲联盟将成立",
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d36)
 
@@ -1386,7 +1386,7 @@ static func _build_v3() -> void:
 		["是: 我们尚未彻底实现伟大复兴", func() -> bool: return A.hasnt_jue_qi(true)],
 	])
 	d37.result = DecisionCatalog._build_result([
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d37)
 
@@ -1403,7 +1403,7 @@ static func _build_v3() -> void:
 		["预 算 - 20.0", func() -> bool: return A.has_money(200)],
 	])
 	d38.result = DecisionCatalog._build_result([
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d38)
 
@@ -1422,7 +1422,7 @@ static func _build_v3() -> void:
 		["4年一次", func() -> bool: return A.has_anthem_confirmed(true)],
 	])
 	d39.result = DecisionCatalog._build_result([
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d39)
 
@@ -1448,14 +1448,14 @@ static func _build_v3() -> void:
 	])
 	d40.result = DecisionCatalog._build_result([
 		"预 算 将 变 更: <color=red>-5.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+25.0</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+25.0</color>",
 		"党内支持度将变更: <color=red>-10.0</color>",
-		"<color=lime>票证制度将被废除（修正效果将在下回合刷新）</color>",
+		"<color=darkgreen>票证制度将被废除（修正效果将在下回合刷新）</color>",
 	]) if A._d().size() > WorldState.I_ECON_SYSTEM and A._d().get_data_by_index(WorldState.I_ECON_SYSTEM) < 14 else DecisionCatalog._build_result([
 		"预 算 将 变 更: <color=red>-5.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+25.0</color>",
-		"党内支持度将变更: <color=lime>+20.0</color>",
-		"<color=lime>票证制度将被废除（修正效果将在下回合刷新）</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+25.0</color>",
+		"党内支持度将变更: <color=darkgreen>+20.0</color>",
+		"<color=darkgreen>票证制度将被废除（修正效果将在下回合刷新）</color>",
 	])
 	_defs.append(d40)
 
@@ -1482,8 +1482,8 @@ static func _build_v3() -> void:
 	])
 	d41.result = DecisionCatalog._build_result([
 		"预 算 将 变 更: <color=red>-5.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+25.0</color>",
-		"<color=lime>获得修正效果“计划性降价”，持续一年（修正效果将在下回合刷新）</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+25.0</color>",
+		"<color=darkgreen>获得修正效果“计划性降价”，持续一年（修正效果将在下回合刷新）</color>",
 	])
 	_defs.append(d41)
 
@@ -1509,11 +1509,11 @@ static func _build_v3() -> void:
 		["拥有“自力更生”修正 - 否", func() -> bool: return A.has_austerity(false)],
 	])
 	d42.result = DecisionCatalog._build_result([
-		"预 算 将 变 更: <color=lime>+10.0</color>",
+		"预 算 将 变 更: <color=darkgreen>+10.0</color>",
 		"党内支持度将变更: <color=red>-25.0</color>",
 		"人 民 支 持 度 将 变 更: <color=red>-25.0</color>",
-		"进口需求将变更: <color=lime>-10</color>",
-		"<color=lime>获得修正效果“自力更生”，持续一年（修正效果将在下回合刷新）</color>",
+		"进口需求将变更: <color=darkgreen>-10</color>",
+		"<color=darkgreen>获得修正效果“自力更生”，持续一年（修正效果将在下回合刷新）</color>",
 	])
 	_defs.append(d42)
 
@@ -1535,8 +1535,8 @@ static func _build_v3() -> void:
 		["拥有“发达消费主义”修正 - 否", func() -> bool: return A.has_developed_consumerism(false)],
 	])
 	d43.result = DecisionCatalog._build_result([
-		"人 民 支 持 度 将 变 更: <color=lime>+20.0</color>",
-		"<color=lime>获得修正效果“发达消费主义”，持续一年（修正效果将在下回合刷新）</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+20.0</color>",
+		"<color=darkgreen>获得修正效果“发达消费主义”，持续一年（修正效果将在下回合刷新）</color>",
 	])
 	_defs.append(d43)
 
@@ -1564,8 +1564,8 @@ static func _build_v3() -> void:
 	])
 	d44.result = DecisionCatalog._build_result([
 		"党内支持度将变更: <color=red>-25.0</color>",
-		"人 民 支 持 度 将 变 更: <color=lime>+25.0</color>",
-		"<color=lime>获得修正效果“我们是新时代的公社社员！”，持续6个月（修正效果将在下回合刷新）</color>",
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+25.0</color>",
+		"<color=darkgreen>获得修正效果“我们是新时代的公社社员！”，持续6个月（修正效果将在下回合刷新）</color>",
 		"党内将不会产生贪腐政客",
 	])
 	_defs.append(d44)
@@ -1592,9 +1592,9 @@ static func _build_v3() -> void:
 	])
 	d45.result = DecisionCatalog._build_result([
 		"预 算 将 变 更: <color=red>-5.0</color>",
-		"党内支持度将变更: <color=lime>+10.0</color>",
-		"改变所有政客的忠诚度: <color=lime>+50.0</color>",
-		"<color=lime>获得修正效果“政党即派对”，持续6个月（修正效果将在下回合刷新）</color>",
+		"党内支持度将变更: <color=darkgreen>+10.0</color>",
+		"改变所有政客的忠诚度: <color=darkgreen>+50.0</color>",
+		"<color=darkgreen>获得修正效果“政党即派对”，持续6个月（修正效果将在下回合刷新）</color>",
 	])
 	_defs.append(d45)
 
@@ -1617,10 +1617,10 @@ static func _build_v3() -> void:
 		["拥有“政党补助金”修正 - 否", func() -> bool: return A.has_party_subsidy(false)],
 	])
 	d46.result = DecisionCatalog._build_result([
-		"党内支持度将变更: <color=lime>+10.0</color>",
-		"改变所有政客的忠诚度: <color=lime>+50.0</color>",
+		"党内支持度将变更: <color=darkgreen>+10.0</color>",
+		"改变所有政客的忠诚度: <color=darkgreen>+50.0</color>",
 		"将与议会内席位大于90的政党结盟（异端社会主义者除外）",
-		"<color=lime>获得修正效果“政党补助金”，持续6个月（修正效果将在下回合刷新）</color>",
+		"<color=darkgreen>获得修正效果“政党补助金”，持续6个月（修正效果将在下回合刷新）</color>",
 	])
 	_defs.append(d46)
 
@@ -1644,7 +1644,7 @@ static func _build_v3() -> void:
 	])
 	d47.result = DecisionCatalog._build_result([
 		"预 算 将 变 更: <color=red>-5.0</color>",
-		"<color=lime>获得修正效果“T-72坦克军购协定”，持续3个月（修正效果将在下回合刷新）</color>",
+		"<color=darkgreen>获得修正效果“T-72坦克军购协定”，持续3个月（修正效果将在下回合刷新）</color>",
 	])
 	_defs.append(d47)
 
@@ -1673,7 +1673,7 @@ static func _build_v3() -> void:
 		"党内支持度将变更: <color=red>-10.0</color>",
 		"军 队 力 量: <color=red>-10.0</color>",
 		"预 算 将 变 更: <color=red>-10.0</color>",
-		"<color=lime>获得修正效果“第五纵队”，持续6个月（修正效果将在下回合刷新）</color>",
+		"<color=darkgreen>获得修正效果“第五纵队”，持续6个月（修正效果将在下回合刷新）</color>",
 	])
 	_defs.append(d48)
 
@@ -1700,7 +1700,7 @@ static func _build_v3() -> void:
 	d49.result = DecisionCatalog._build_result([
 		"党内支持度将变更: <color=red>-10.0</color>",
 		"预 算 将 变 更: <color=red>-15.0</color>",
-		"军 队 力 量: <color=lime>+10.0</color>",
+		"军 队 力 量: <color=darkgreen>+10.0</color>",
 		"<color=yellow>或许会发生什么事情……</color>",
 	])
 	_defs.append(d49)
@@ -1719,7 +1719,7 @@ static func _build_v3() -> void:
 		["一月一次", func() -> bool: return A.once_a_month(true)],
 	])
 	d50.result = DecisionCatalog._build_result([
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d50)
 
@@ -1749,10 +1749,10 @@ static func _build_v3() -> void:
 	])
 	d51.result = DecisionCatalog._build_result([
 		"领袖资产规模将变更: <color=red>-10.0</color>",
-		(("%s: <color=%s>%s%s</color>") % ["党内支持度将变更", ("lime" if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else ""), str((50 if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else 0))]),
-		"人 民 支 持 度 将 变 更: <color=lime>+10.0</color>",
-		(("%s: <color=%s>%s%s</color>") % ["特 工 网 络", ("lime" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else ""), str((25 if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else 0))]),
-		(("%s: <color=%s>%s%s</color>") % ["军 队 力 量", ("lime" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else ""), str((25 if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else 0))]),
+		(("%s: <color=%s>%s%s</color>") % ["党内支持度将变更", ("darkgreen" if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else ""), str((50 if (A._ws() != null and A._ws().leader_property.size() > 3 and A._ws().leader_property[3]) else 0))]),
+		"人 民 支 持 度 将 变 更: <color=darkgreen>+10.0</color>",
+		(("%s: <color=%s>%s%s</color>") % ["特 工 网 络", ("darkgreen" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else ""), str((25 if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else 0))]),
+		(("%s: <color=%s>%s%s</color>") % ["军 队 力 量", ("darkgreen" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else "red"), ("+" if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else ""), str((25 if (A._ws() != null and A._ws().leader_property.size() > 2 and A._ws().leader_property[2]) else 0))]),
 	])
 	_defs.append(d51)
 
@@ -1767,6 +1767,6 @@ static func _build_v3() -> void:
 		["一月一次", func() -> bool: return A.once_a_month(true)],
 	])
 	d52.result = DecisionCatalog._build_result([
-		"<color=lime>触 发 事 件</color>",
+		"<color=darkgreen>触 发 事 件</color>",
 	])
 	_defs.append(d52)

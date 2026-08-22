@@ -238,7 +238,9 @@ const 数值索引 := {
 ## 6 国际声望
 @export var diplomatic_reputation: int = 0
 
-## 7 全球影响力
+## 7 全球影响力（Godot 独立字段）。
+## 注意：原版 TimeScript.KumihaRepaint 会把 data[7] 刷成 gameState.influencePRC，
+## 即顶栏“全球影响力/国际影响力”实际应读 influence_prc；本字段保留给内部 data[7] 语义。
 @export var global_influence: int = 0
 
 ## 8 预算余额
@@ -1482,6 +1484,23 @@ func 两周变化(idx: int) -> int:
 		return 上期影响变化
 	if idx >= 0 and idx < 上期变化.size():
 		return 上期变化[idx]
+	return 0
+
+
+## 即时双周变化：直接用当前值减入口快照，供悬浮提示在鼠标悬停时立刻刷新，
+## 不等待“结算两周变化”写入 上期变化。
+func 即时两周变化(idx: int) -> int:
+	if 入口快照.size() == 0:
+		return 0
+	if idx == I_USA_RELATIONS or idx == I_USSR_RELATIONS:
+		var ei := 0 if idx == I_USA_RELATIONS else 1
+		var before := 入口快照关系[ei] if ei < 入口快照关系.size() else 0
+		var cur := empires[ei].relations if ei < empires.size() and empires[ei] != null else 0
+		return cur - before
+	if idx == I_INFLUENCE:
+		return influence_prc - 入口快照影响
+	if idx >= 0 and idx < 入口快照.size():
+		return get_data_by_index(idx) - 入口快照[idx]
 	return 0
 
 

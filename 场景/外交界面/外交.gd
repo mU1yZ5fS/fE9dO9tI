@@ -215,12 +215,29 @@ func _on_interactive_country_item_activated(index: int) -> void:
 	var panel := get_node_or_null("国家面板")
 	if panel != null and panel.has_method("_on_country_selected"):
 		panel._on_country_selected(country.gwcode, country.display_name())
+	_focus_country(country.gwcode)
 
 
 # ── 国家选择 ──
 
 func _on_country_selected(gwcode: int, _country_name: String) -> void:
 	GameManager.select_country(gwcode)
+	# 正常点选国家不自动跳镜头，避免玩家只是想选国研究/操作时视角被拉走；
+	# 只有从“可互动国家”弹窗点选时才跳转（见 _on_interactive_country_item_activated）。
+
+
+## 点击/选择国家后把镜头转到该国质心（首都/几何中心均可，这里用地图质心）。
+func _focus_country(gwcode: int) -> void:
+	var earth := get_node_or_null("地球")
+	if earth == null or not earth.has_method("country_centroid") or not earth.has_method("latlon_to_sphere_pos"):
+		return
+	var ll: Vector2 = earth.country_centroid(gwcode)
+	if ll.x == INF or ll.y == INF:
+		return
+	var point: Vector3 = earth.latlon_to_sphere_pos(ll.x, ll.y, 0.501)
+	var pivot := get_node_or_null("相机枢轴")
+	if pivot != null and pivot.has_method("focus_on_sphere_point"):
+		pivot.focus_on_sphere_point(point)
 
 
 ## 离开外交场景时清除激活标记，停止时间流动

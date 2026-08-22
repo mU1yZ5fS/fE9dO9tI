@@ -2,20 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bm60srjs7uir8" path="res://场景/派系界面/派系.gd" id="1_8ij5d"]
 [ext_resource type="Texture2D" uid="uid://cmiadnqdv8ahh" path="res://资产/UI/派系/派系背景图.png" id="1_tf04v"]
-[ext_resource type="Texture2D" uid="uid://cna2yftijoqqi" path="res://资产/UI/主游戏UI/状态栏背景.png" id="2_dy0na"]
-[ext_resource type="Texture2D" uid="uid://dy8kecb6d4loa" path="res://资产/UI/主游戏UI/状态背景.png" id="3_hjfdx"]
-[ext_resource type="Texture2D" uid="uid://ck3yssxxbuhru" path="res://资产/UI/主游戏UI/党内支持度.png" id="4_0krkq"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="5_nr6g2"]
-[ext_resource type="Texture2D" uid="uid://bp4vslkj6seye" path="res://资产/UI/主游戏UI/人民支持度.png" id="6_8ij5d"]
-[ext_resource type="Texture2D" uid="uid://b6bb575lb8cw0" path="res://资产/UI/主游戏UI/思想自由度.png" id="7_8knlb"]
-[ext_resource type="Texture2D" uid="uid://cbi2105s7kje2" path="res://资产/UI/主游戏UI/生活水平.png" id="8_2kbdk"]
-[ext_resource type="Texture2D" uid="uid://cjr8ydvc7fuh0" path="res://资产/UI/主游戏UI/国际声望.png" id="9_on5gx"]
-[ext_resource type="Texture2D" uid="uid://cq007uywcr5pc" path="res://资产/UI/主游戏UI/特工网络.png" id="10_664wx"]
-[ext_resource type="Texture2D" uid="uid://cw0u78fykq5ws" path="res://资产/UI/主游戏UI/全球影响力.png" id="11_7ik0l"]
-[ext_resource type="Texture2D" uid="uid://ccqh1h787cp5c" path="res://资产/UI/主游戏UI/与苏联关系.png" id="12_3maiv"]
-[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="12_cw14h"]
-[ext_resource type="Texture2D" uid="uid://bqaw1khohkkov" path="res://资产/UI/主游戏UI/切场景菜单背景.png" id="13_1cqeh"]
-[ext_resource type="Texture2D" uid="uid://b5rynoptf3d37" path="res://资产/UI/主游戏UI/与美国关系.png" id="13_3n6cn"]
 [ext_resource type="Texture2D" uid="uid://0oinxkd73cpk" path="res://资产/UI/派系/军队力量背景图.png" id="14_hjfdx"]
 [ext_resource type="Texture2D" uid="uid://kaaytygqd24b" path="res://资产/UI/派系/军队力量图标.png" id="15_0krkq"]
 [ext_resource type="Texture2D" uid="uid://panckf24owcq" path="res://资产/UI/派系/左栏卡片背景.png" id="16_nr6g2"]
@@ -32,8 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://vpxcj7guvu46" path="res://资产/UI/派系/右栏政策介绍.png" id="30_fxqvd"]
 [ext_resource type="Texture2D" uid="uid://c3wbwr2v5ukta" path="res://资产/UI/外交/右侧栏展开按钮.png" id="31_axfdf"]
 [ext_resource type="Texture2D" uid="uid://c3cumlalcrpiv" path="res://资产/UI/派系/政策背景图标.png" id="32_axfdf"]
-[ext_resource type="PackedScene" uid="uid://8cda01e84fe50" path="res://场景/复用/状态数值区.tscn" id="90_bar"]
-[ext_resource type="PackedScene" uid="uid://c9b4f1a2d3e45" path="res://场景/复用/导航栏.tscn" id="91_nav"]
+[ext_resource type="PackedScene" uid="uid://ce3cbk18lse3v" path="res://场景/复用/状态数值区.tscn" id="90_bar"]
+[ext_resource type="PackedScene" uid="uid://dab4f1a2d3e45" path="res://场景/复用/导航栏.tscn" id="91_nav"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3xfp"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -72,10 +59,11 @@ texture = ExtResource("1_tf04v")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="状态栏" parent="." instance=ExtResource("90_bar")]
+[node name="状态栏" parent="." unique_id=2057575870 instance=ExtResource("90_bar")]
 
-[node name="导航栏" parent="." instance=ExtResource("91_nav")]
+[node name="导航栏" parent="." unique_id=1716831839 instance=ExtResource("91_nav")]
 current_screen = "faction"
+
 [node name="军队力量背景图" type="TextureRect" parent="." unique_id=1480023552]
 layout_mode = 0
 offset_left = 41.0
@@ -896,7 +884,7 @@ offset_bottom = 37.0
 scale = Vector2(1.145, 1.33)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 15
 text = "中央计划经济"
 icon = ExtResource("32_axfdf")
 flat = true
@@ -911,7 +899,7 @@ offset_bottom = 37.0
 scale = Vector2(1.145, 1.33)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 15
 text = "中式计划经济"
 icon = ExtResource("32_axfdf")
 flat = true
@@ -926,7 +914,7 @@ offset_bottom = 85.0
 scale = Vector2(1.145, 1.33)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 15
 text = "国家资本主义"
 icon = ExtResource("32_axfdf")
 flat = true
@@ -942,7 +930,7 @@ offset_bottom = 85.0
 scale = Vector2(1.145, 1.33)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 15
 text = "国控资本主义"
 icon = ExtResource("32_axfdf")
 flat = true
@@ -957,7 +945,7 @@ offset_bottom = 133.0
 scale = Vector2(1.145, 1.33)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 15
 text = "市场经济"
 icon = ExtResource("32_axfdf")
 flat = true
@@ -973,7 +961,7 @@ offset_bottom = 133.0
 scale = Vector2(1.145, 1.33)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_nr6g2")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 15
 text = "自由市场"
 icon = ExtResource("32_axfdf")
 flat = true

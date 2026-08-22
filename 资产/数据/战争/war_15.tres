@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_def")
 id = 15
-name_zh = "索马里-埃塞边境冲突"
+name_zh = "欧加登战争"
 name_en = ""
 fortnight_max = 16
 drift_infl1 = 0
@@ -13,8 +13,8 @@ drift_infl2 = 0
 drift_extra_infl1 = 0
 drift_extra_infl2 = 0
 drift_extra_flag = ""
-default_side1 = "side1"
-default_side2 = "side2"
+default_side1 = "索马里"
+default_side2 = "埃塞俄比亚"
 default_usa_side = 1
 default_ussr_side = 0
 default_infl1 = 400

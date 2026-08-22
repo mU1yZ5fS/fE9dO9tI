@@ -35,7 +35,9 @@ func sync_from_world(world: WorldState) -> void:
 	思想自由度 = float(world.thought_freedom) / 10.0
 	生活水平 = float(world.living_standard) / 10.0
 	国际声望 = float(world.diplomatic_reputation) / 10.0
-	全球影响力 = float(world.global_influence) / 10.0
+	# 原版 TimeScript.KumihaRepaint 把 data[7] 镜像为 gameState.influencePRC，
+	# 因此顶栏“全球影响力/国际影响力”应显示 influence_prc，而不是独立字段 global_influence。
+	全球影响力 = float(world.influence_prc) / 10.0
 	预算 = world.budget
 	特工网络 = world.agents
 	科研点数 = world.science

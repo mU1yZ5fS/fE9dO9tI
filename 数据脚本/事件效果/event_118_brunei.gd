@@ -21,7 +21,7 @@ func execute(context: Dictionary) -> void:
 			brunei.government = GameConstants.Government.AUTHORITARIAN
 			brunei.sub_government = GameConstants.SubGovernment.NEOPATRIARCHAL
 		if ws.empires.size() > EmpireData.USA and ws.empires[EmpireData.USA] != null:
-			ws.empires[EmpireData.USA].power += 20
+			ws.empires[EmpireData.USA].power = clampi(ws.empires[EmpireData.USA].power + 20, 0, 1000)
 		context["result_text"] = TXT_RESULT
 
 
