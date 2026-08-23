@@ -749,14 +749,14 @@ static func add_agents(num: int) -> void:
 static func add_american_influence(num: int) -> void:
 	var e := _empire(0)
 	if e != null:
-		e.power += num
+		e.power = clampi(e.power + num, 0, 1000)
 
 
 ## AddSovietInfluence — empires[1].power += num
 static func add_soviet_influence(num: int) -> void:
 	var e := _empire(1)
 	if e != null:
-		e.power += num
+		e.power = clampi(e.power + num, 0, 1000)
 
 
 ## AddChineseInfluence — influencePRC += num

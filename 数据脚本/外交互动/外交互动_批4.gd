@@ -1062,7 +1062,7 @@ func _def_1041(w: WorldState, country: CountryData, caption: String) -> Dictiona
 	conds.append(cond(" 我 们 顺 应 了 时 代 潮 流 成 为 自 由 世 界 的 一 员",
 		func(): return _gov(w, 1) == 3))
 	conds.append(cond(" 我 们 还 没 有 和 蒙 博 托 撕 破 脸", func(): return _has(w, 117, "对华贸易")))
-	conds.append(cond(" UDPS 被 建 立 起 来 了 ", func(): return res(w, 613) == 0))
+	conds.append(cond(" UDPS 被 建 立 起 来 了 ", func(): return ev(w, 613) and res(w, 613) == 0))
 	conds.append(cond(" 尚 未 支 持", func(): return country.government != GameConstants.Government.LIBERAL))
 	var eff := func():
 		_add_d(w, 8, -100)

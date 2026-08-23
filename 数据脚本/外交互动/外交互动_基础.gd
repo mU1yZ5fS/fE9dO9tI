@@ -322,7 +322,7 @@ func set_rel(w: WorldState, idx: int, value: int) -> void:
 func add_power(w: WorldState, idx: int, delta: int) -> void:
 	var e := emp(w, idx)
 	if e != null:
-		e.power += delta
+		e.power = clampi(e.power + delta, 0, 1000)
 
 
 func set_power(w: WorldState, idx: int, value: int) -> void:

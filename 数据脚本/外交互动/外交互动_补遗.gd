@@ -29,7 +29,7 @@ func _def_12(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		var ussr := emp(w, 1)
 		if ussr != null:
 			ussr.relations -= 50
-			ussr.power -= 200
+			ussr.power = clampi(ussr.power - 200, 0, 1000)
 		set_d(w, W.I_INFLUENCE, d(w, W.I_INFLUENCE) + 20)
 		set_d(w, W.I_AGENTS, d(w, W.I_AGENTS) - 100)
 		set_d(w, W.I_BUDGET, d(w, W.I_BUDGET) - 80)
@@ -134,7 +134,7 @@ func _def_47(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		var usa := emp(w, 0)
 		if usa != null:
 			usa.relations += 200
-			usa.power += 10
+			usa.power = clampi(usa.power + 10, 0, 1000)
 		set_d(w, W.I_INFLUENCE, d(w, W.I_INFLUENCE) - 10)
 		country.set_tag("对华贸易", true)
 	return make_def(caption, " 为 双 边 关 系 正 常 化 搭 建 磋 商 平 台", conds, eff)
@@ -175,11 +175,11 @@ func _def_83(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		var ussr := emp(w, 1)
 		if country.has_tag("亲美"):
 			if usa != null:
-				usa.power -= 10
+				usa.power = clampi(usa.power - 10, 0, 1000)
 				usa.relations -= 150
 		elif country.has_tag("亲苏"):
 			if ussr != null:
-				ussr.power -= 10
+				ussr.power = clampi(ussr.power - 10, 0, 1000)
 				ussr.relations -= 150
 		country.set_tag("亲美", false)
 		country.set_tag("亲苏", false)
@@ -190,7 +190,7 @@ func _def_83(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		set_d(w, W.I_ARMY, d(w, W.I_ARMY) - 50)
 		set_d(w, W.I_INFLUENCE, d(w, W.I_INFLUENCE) + 5)
 		if usa != null:
-			usa.power -= 10
+			usa.power = clampi(usa.power - 10, 0, 1000)
 			usa.relations -= 250
 		country.sub_government = _sub_gosstory(w)
 		var china := c(w, 1)
@@ -288,7 +288,7 @@ func _def_129(w: WorldState, country: CountryData, caption: String) -> Dictionar
 			var ussr := emp(w, 1)
 			if china != null and china.has_tag("sev") and ussr != null and ussr.power > d(w, W.I_INFLUENCE):
 				c49.set_tag("亲苏", true)
-				ussr.power += 40
+				ussr.power = clampi(ussr.power + 40, 0, 1000)
 				var c7 := c(w, 7)
 				if c7 != null:
 					c49.government = c7.government
@@ -429,7 +429,7 @@ func _def_147(w: WorldState, country: CountryData, caption: String) -> Dictionar
 		var usa := emp(w, 0)
 		if usa != null:
 			usa.relations -= 300
-			usa.power -= 30
+			usa.power = clampi(usa.power - 30, 0, 1000)
 	return make_def(caption, " 组 织 新 加 坡 民 主 派 推 翻 右 翼 独 裁 体 制", conds, eff)
 
 

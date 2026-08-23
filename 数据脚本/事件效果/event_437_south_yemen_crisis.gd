@@ -21,11 +21,16 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var ethiopia := world.get_country_by_legacy_index(41)
 	var opt := event_def.options
 	var ethiopia_ok := false
-	if ethiopia != null and ethiopia.parts.size() > 1:
-		ethiopia_ok = (ethiopia.parts[1] or ethiopia.parts[0]) and ethiopia.has_tag("亲中") and ethiopia.government == GameConstants.Government.SOCIALIST
+	if ethiopia != null:
+		# Event589“埃索情深”只写 parts[0]，所以两条非洲之角路线都要认。
+		var horn_federation := ethiopia.has_part(0) or ethiopia.has_part(1)
+		ethiopia_ok = horn_federation and ethiopia.has_tag("亲中") \
+				and ethiopia.government == GameConstants.Government.SOCIALIST
 	var cond := (somalia != null and somalia.has_tag("亲中")) or ethiopia_ok
+	# 原版条件读 data[7]，而 data[7] 是 influencePRC 的镜像；这里必须用 influence_prc，
+	# 否则玩家影响力攒在 influence_prc 时仍会错误显示“无从下手”。
 	cond = cond and data.budget + data.reserve >= 50 \
-			and data.agents >= 50 and data.global_influence >= 100
+			and data.agents >= 50 and world.influence_prc >= 100
 	if cond:
 		_enable(opt[0], event_def.options[0].text)
 	else:
@@ -40,7 +45,8 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			_add(W.I_INFLUENCE, 50)
+			# 原版 EffectsOfEvents 写 data[7]；按本端口语义 data[7] 镜像 influence_prc。
+			ws.influence_prc += 50
 			_add_relation(EmpireData.USSR, -150)
 			if south_yemen != null:
 				south_yemen.sub_government = GameConstants.SubGovernment.MAOIST
@@ -49,7 +55,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -50)
 			context["result_text"] = TXT_R0
 		1:
-			_add(W.I_INFLUENCE, -10)
+			ws.influence_prc -= 10
 			if south_yemen != null:
 				south_yemen.set_tag("亲苏", true)
 				south_yemen.set_tag("对华贸易", false)
@@ -59,7 +65,6 @@ func execute(context: Dictionary) -> void:
 
 
 func _disable_blank(opt: EventOption) -> void:
-	opt.text = ""
 	opt.disabled_text = ""
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_AT_LEAST

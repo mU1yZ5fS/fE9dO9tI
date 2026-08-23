@@ -44,10 +44,10 @@ func execute(context: Dictionary) -> void:
 		d.army -= 300
 	if ws.empires.size() > EmpireData.USA:
 		ws.empires[EmpireData.USA].relations -= 100
-		ws.empires[EmpireData.USA].power -= 200
+		ws.empires[EmpireData.USA].power = clampi(ws.empires[EmpireData.USA].power - 200, 0, 1000)
 	if ws.empires.size() > EmpireData.USSR:
 		ws.empires[EmpireData.USSR].relations -= 100
-		ws.empires[EmpireData.USSR].power -= 200
+		ws.empires[EmpireData.USSR].power = clampi(ws.empires[EmpireData.USSR].power - 200, 0, 1000)
 	ws.influence_prc += 100
 
 	# 项目惯例：概览/国家面板读 global_flags.event_done_500（国家面板.gd:983 等）。

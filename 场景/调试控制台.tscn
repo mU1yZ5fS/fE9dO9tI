@@ -2,6 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bht1b0xkjhncc" path="res://数据脚本/ui/调试控制台.gd" id="1_console"]
 
+[sub_resource type="Theme" id="Theme_hnm86"]
+
+[sub_resource type="Theme" id="Theme_ieq0r"]
+
+[sub_resource type="Theme" id="Theme_hi1gm"]
+
 [node name="调试控制台" type="CanvasLayer" unique_id=1393342397]
 process_mode = 3
 layer = 100
@@ -49,18 +55,25 @@ text = "关闭"
 custom_minimum_size = Vector2(860, 480)
 layout_mode = 2
 size_flags_vertical = 3
+theme = SubResource("Theme_hnm86")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 bbcode_enabled = true
-text = "欢迎使用调试控制台。输入 help 查看命令。"
+text = "欢迎使用调试控制台"
 scroll_following = true
 
 [node name="输入行" type="HBoxContainer" parent="居中/面板/布局" unique_id=193068990]
 layout_mode = 2
+theme = SubResource("Theme_ieq0r")
 theme_override_constants/separation = 8
 
 [node name="输入" type="LineEdit" parent="居中/面板/布局/输入行" unique_id=876659863]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
+theme = SubResource("Theme_hi1gm")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 placeholder_text = "输入命令，help 查看帮助"
 
 [node name="执行" type="Button" parent="居中/面板/布局/输入行" unique_id=1434541787]

@@ -22,8 +22,6 @@ var world: WorldState = null
 var is_map_data_preloaded: bool = false
 
 const REGION_MAP_PATH: String = "res://资产/地图/map_color.png"
-## 优先加载 MapBuilder 生成的运行时资源；未生成时回退到直接解析 JSON。
-const GENERATED_MAP_DATA_PATH: String = "res://资产/地图/generated/map_data.res"
 var cached_map_meta: Dictionary = {}
 var cached_map_regions: Dictionary = {}
 var cached_map_countries: Dictionary = {}
@@ -43,12 +41,63 @@ var cached_color_palette_tex: ImageTexture = null
 
 var _map_preload_thread: Thread = null
 
+## 罗曼诺夫/土耳其海峡危机（Event375）：苏联吞并土耳其欧洲部分、海峡与
+## 卡尔斯-阿尔特温-阿尔达汉，叙利亚拿回哈塔伊省。
+const SOVIET_TURKISH_CLAIM_REGIONS: Array[int] = [
+	242, 244, 928,      # 阿尔达汉 / 阿尔特温 / 卡尔斯（东北三省）
+	514, 516, 2276, 2277, 2278, # 欧洲部分与博斯普鲁斯/达达尼尔海峡
+]
+const HATAY_REGION_ID := 986
+
+
+# 库尔德斯坦共和国（157）不同成立范围对应的地图地块。
+# 按四个国家分别列出，供 Event372 / 战争9 按实际建国范围精确转移领土。
+const KURDISH_TURKEY_REGIONS: Array[int] = [
+	382, 383, 401, 402, 403, 980, 4068, 4072, 4074, 4075, 4076, 4077,
+	4091, 4092, 4093, 4094,
+]
+const KURDISH_IRAQ_REGIONS: Array[int] = [
+	381, 384, 989, 992, 1408, 1723,
+]
+const KURDISH_SYRIA_REGIONS: Array[int] = [
+	979,
+]
+const KURDISH_IRAN_REGIONS: Array[int] = [
+	400, 990, 991, 993,
+]
+
+## 最大边界：四国库尔德地区全部并入。
+const KURDISTAN_MAX_REGIONS: Array[int] = [
+	382, 383, 401, 402, 403, 980, 4068, 4072, 4074, 4075, 4076, 4077,
+	4091, 4092, 4093, 4094,
+	381, 384, 989, 992, 1408, 1723,
+	979,
+	400, 990, 991, 993,
+]
+
+## 157 号库尔德实体的 parts 位：0=最大边界，3=伊拉克+叙利亚+伊朗，4=伊拉克+伊朗，
+## 5=伊拉克+叙利亚，6=伊拉克，7=伊朗，8=叙利亚，9=土耳其；2 保留给北叙-北伊联邦。
+const KURDISTAN_SCOPE_FULL := 0
+const KURDISTAN_SCOPE_IRAQ_SYRIA_IRAN := 3
+const KURDISTAN_SCOPE_IRAQ_IRAN := 4
+const KURDISTAN_SCOPE_IRAQ_SYRIA := 5
+const KURDISTAN_SCOPE_IRAQ := 6
+const KURDISTAN_SCOPE_IRAN := 7
+const KURDISTAN_SCOPE_SYRIA := 8
+const KURDISTAN_SCOPE_TURKEY := 9
+
+
 ## 统一“国家 parts 标志 → 地图归属变更”的规则表。
 ## 每一条表示：当 legacy 国家的 parts[part] 为 true 时，执行对应地图合并/区域转移。
 ## 这样避免结算逻辑设置 parts 后，地图层漏写规则（如阿尔巴尼亚/库尔德斯坦）。
 ## 目前只收录“纯 parts 条件”的规则；带额外条件的（OAR、中国征服、非洲之角等）
 ## 仍保留在 sync_map_merges() 的显式分支中，后续可逐步收编。
 const PART_MERGE_RULES := [
+	# 罗曼诺夫土耳其海峡危机：苏联 parts[0] 或 parts[2]（二者任一）→ 土耳其割让海峡/东北三省
+	{"legacy": 7, "part": 0, "type": "regions", "regions": SOVIET_TURKISH_CLAIM_REGIONS},
+	{"legacy": 7, "part": 2, "type": "regions", "regions": SOVIET_TURKISH_CLAIM_REGIONS},
+	# 土耳其 parts[3]：哈塔伊省归还叙利亚
+	{"legacy": 84, "part": 3, "type": "regions", "regions": [HATAY_REGION_ID], "target_legacy": 35},
 	# 马来西亚吞并文莱
 	{"legacy": 49, "part": 0, "type": "merge", "sources": [111]},
 	# 越南印支联邦：吞并老挝/柬埔寨
@@ -66,11 +115,32 @@ const PART_MERGE_RULES := [
 	{"legacy": 167, "part": 0, "type": "regions", "regions": [1250]},
 	# 南墨西哥独立：墨西哥 parts[1] → 恰帕斯/瓦哈卡划给南墨西哥(168)
 	{"legacy": 140, "part": 1, "type": "regions", "regions": [1272, 2101], "target_legacy": 168},
-	# 库尔德斯坦独立
-	{"legacy": 157, "part": 0, "type": "regions", "regions": [
-		381, 382, 384, 402, 403, 979, 980, 989, 990, 1408,
-		1723, 4068, 4072, 4074, 4075, 4077, 4091, 4092, 4094,
+	# 库尔德斯坦独立：最大边界（四国库尔德地区）
+	{"legacy": 157, "part": KURDISTAN_SCOPE_FULL, "type": "regions", "regions": KURDISTAN_MAX_REGIONS},
+	# 库尔德斯坦独立：伊拉克+叙利亚+伊朗（不含土耳其）
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAQ_SYRIA_IRAN, "type": "regions", "regions": [
+		381, 384, 989, 992, 1408, 1723,
+		979,
+		400, 990, 991, 993,
 	]},
+	# 库尔德斯坦独立：伊拉克+伊朗
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAQ_IRAN, "type": "regions", "regions": [
+		381, 384, 989, 992, 1408, 1723,
+		400, 990, 991, 993,
+	]},
+	# 库尔德斯坦独立：伊拉克+叙利亚
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAQ_SYRIA, "type": "regions", "regions": [
+		381, 384, 989, 992, 1408, 1723,
+		979,
+	]},
+	# 库尔德斯坦独立：伊拉克单区
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAQ, "type": "regions", "regions": KURDISH_IRAQ_REGIONS},
+	# 库尔德斯坦独立：伊朗单区
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAN, "type": "regions", "regions": KURDISH_IRAN_REGIONS},
+	# 库尔德斯坦独立：叙利亚单区
+	{"legacy": 157, "part": KURDISTAN_SCOPE_SYRIA, "type": "regions", "regions": KURDISH_SYRIA_REGIONS},
+	# 土耳其-库尔德之战获胜：仅土耳其属库尔德斯坦
+	{"legacy": 157, "part": KURDISTAN_SCOPE_TURKEY, "type": "regions", "regions": KURDISH_TURKEY_REGIONS},
 	# 库尔德斯坦“北叙-北伊联邦”：伊拉克/叙利亚库尔德区
 	{"legacy": 157, "part": 2, "type": "regions", "regions": [
 		381, 384, 979, 989, 1408, 1723,
@@ -102,25 +172,36 @@ const PART_MERGE_RULES := [
 ]
 
 
+## 外东北/外西北：原清朝版图、1976 年归苏联的地块（map_baker 的 qing_province 非空子集）。
+## 注意：这里按 war70 约定“外东北、外西北、唐努乌梁海、阿尔泰卓尔乌梁海”收窄，
+## 不能把 qing_province 元数据里所有归属苏联的历史省界全收进来，
+## 否则萨哈/克拉斯诺亚尔斯克/克麦罗沃/哈卡斯/布里亚特/外贝加尔等西伯利亚地区会被整片划给中国。
+## 雪耻之战（war70）胜利后归中国 710，属于“事件后回归”而非开局领土。
+const QING_LOST_TERRITORY_REGIONS: Array[int] = [
+	# 外东北：阿穆尔/犹太自治/哈巴罗夫斯克/滨海/萨哈林
+	952, 953, 954, 955, 2244,
+	# 外西北：哈萨克东南部、吉尔吉斯、塔吉克等原清代新疆辖境
+	96, 97, 260, 261, 262, 263, 253, 254, 255, 304, 331, 332, 3672, 4368,
+	# 唐努乌梁海与阿尔泰卓尔乌梁海
+	944, 116, 1389,
+]
+
+
+## 北爱尔兰 26 个地区（map_regions.json，1976 年属英国 200）。
+## war86“北爱尔兰冲突”中爱尔兰武装/北爱一方获胜后，划给 166 号北爱尔兰实体（gwcode 9166）。
+const NORTHERN_IRELAND_REGIONS: Array[int] = [
+	315, 316, 317, 321, 322, 323,
+	2260, 2261, 2262, 2263, 2264, 2265, 2266, 2267, 2268, 2269,
+	3940, 3941, 3942, 3943, 3944, 3945, 3946, 3947, 3948, 3949,
+]
+
+
 func preload_region_map() -> void:
 	if cached_region_map_image != null:
 		return
 	# 按原分辨率加载底图，不做 GPU 上限缩放/压缩。
 	_map_preload_thread = Thread.new()
 	_map_preload_thread.start(_decode_region_map)
-
-
-## 当生成资源缺失或比任一源 JSON 旧时返回 false（需回退 JSON 并提示重建）。
-func _generated_map_is_fresh() -> bool:
-	if not FileAccess.file_exists(GENERATED_MAP_DATA_PATH):
-		return false
-	var res_time := FileAccess.get_modified_time(GENERATED_MAP_DATA_PATH)
-	for fname in ["map_regions.json", "map_countries.json", "map_actors.json", "map_neighbors.json"]:
-		var src_path: String = "res://资产/地图/" + str(fname)
-		if FileAccess.file_exists(src_path):
-			if FileAccess.get_modified_time(src_path) > res_time:
-				return false
-	return true
 
 
 func _decode_region_map() -> void:
@@ -139,65 +220,7 @@ func _decode_region_map() -> void:
 
 	# 按原分辨率加载，不缩放/压缩底图。
 
-	# 2. 优先使用 MapBuilder 生成的运行时 Resource（仅当它比源 JSON 新）
-	if _generated_map_is_fresh():
-		var map_data: MapData = load(GENERATED_MAP_DATA_PATH)
-		if map_data != null:
-			var gd_regions_dict: Dictionary = {}
-			var gd_countries_dict: Dictionary = {}
-			var gd_region_owner_dict: Dictionary = {}
-			var gd_initial_owner_dict: Dictionary = {}
-
-			for rid in map_data.region_order:
-				var rd: RegionDef = map_data.regions[rid]
-				gd_regions_dict[rid] = {
-					"name": rd.name,
-					"name_zh": rd.name_zh,
-					"owner_1976_gwcode": rd.base_owner_gwcode,
-					"is_water": rd.is_water,
-					"longitude": rd.center.x,
-					"latitude": rd.center.y,
-				}
-				gd_region_owner_dict[rid] = rd.base_owner_gwcode
-				gd_initial_owner_dict[rid] = rd.base_owner_gwcode
-
-			for gw in map_data.countries:
-				var cd: CountryDef = map_data.countries[gw]
-				gd_countries_dict[gw] = {
-					"gwcode": cd.gwcode,
-					"name_1976": cd.name_1976,
-					"name_zh": cd.name_zh,
-					"regions": cd.region_ids,
-				}
-
-			# 3. 初始化调色板
-			const GD_PALETTE_SIZE := 256
-			var gd_owner_pal_img := Image.create(GD_PALETTE_SIZE, GD_PALETTE_SIZE, false, Image.FORMAT_RGB8)
-			var gd_color_pal_img := Image.create(GD_PALETTE_SIZE, GD_PALETTE_SIZE, false, Image.FORMAT_RGB8)
-			gd_owner_pal_img.fill(Color.BLACK)
-			for r_id in gd_region_owner_dict:
-				var val: int = gd_region_owner_dict[r_id]
-				var col := Color8((val >> 16) & 0xFF, (val >> 8) & 0xFF, val & 0xFF)
-				if r_id > 0:
-					gd_owner_pal_img.set_pixel(r_id & 0xFF, (r_id >> 8) & 0xFF, col)
-			gd_color_pal_img.fill(Color(0.46, 0.46, 0.46))
-
-			call_deferred(
-				"_on_region_map_preloaded",
-				img,
-				map_data.meta,
-				gd_regions_dict,
-				gd_countries_dict,
-				gd_region_owner_dict,
-				gd_initial_owner_dict,
-				gd_owner_pal_img,
-				gd_color_pal_img
-			)
-			return
-
-	# 3. 回退：直接解析 JSON（res 缺失/过期/加载失败时）
-	if FileAccess.file_exists(GENERATED_MAP_DATA_PATH):
-		push_warning("MapService: map_data.res 已过期或不可用，已回退 JSON；请运行 res://tools/rebuild_map_data.gd 重建")
+	# 2. 直接解析 JSON（唯一数据源）
 	const META_PATH := "res://资产/地图/map_meta.json"
 	const REGIONS_PATH := "res://资产/地图/map_regions.json"
 	const COUNTRIES_PATH := "res://资产/地图/map_countries.json"
@@ -206,7 +229,7 @@ func _decode_region_map() -> void:
 	var regions_raw := _load_json_async(REGIONS_PATH)
 	var countries_raw := _load_json_async(COUNTRIES_PATH)
 
-	# 4. 在后台子线程洗数据（把 key 转换为 int，构建归属字典，规避主线程 CPU 瓶颈）
+	# 3. 在后台子线程洗数据（把 key 转换为 int，构建归属字典，规避主线程 CPU 瓶颈）
 	var regions_dict: Dictionary = {}
 	var countries_dict: Dictionary = {}
 	var region_owner_dict: Dictionary = {}
@@ -222,7 +245,7 @@ func _decode_region_map() -> void:
 	for key in countries_raw:
 		countries_dict[int(key)] = countries_raw[key]
 
-	# 5. 初始化 owner_palette 和 color_palette 图像（像素级填充在子线程完成）
+	# 4. 初始化 owner_palette 和 color_palette 图像（像素级填充在子线程完成）
 	const PALETTE_SIZE := 256
 	var owner_pal_img := Image.create(PALETTE_SIZE, PALETTE_SIZE, false, Image.FORMAT_RGB8)
 	var color_pal_img := Image.create(PALETTE_SIZE, PALETTE_SIZE, false, Image.FORMAT_RGB8)
@@ -236,7 +259,7 @@ func _decode_region_map() -> void:
 
 	color_pal_img.fill(Color(0.46, 0.46, 0.46)) # 预填 BLOC_NEUTRAL
 
-	# 6. 传回主线程生成 GPU 纹理与缓存更新
+	# 5. 传回主线程生成 GPU 纹理与缓存更新
 	call_deferred(
 		"_on_region_map_preloaded",
 		img,
@@ -405,6 +428,13 @@ func sync_map_merges() -> void:
 	# 藏南：arunachal_status>=2 -> 藏南地块(43)归中国
 	if w.arunachal_status >= 2:
 		set_region_owner([43], 710)
+	# 雪耻之战（war70）胜利：外东北/外西北原清朝版图地块归中国
+	if w.get_flag("is_gkchp") or w.ind_opp or w.get_flag("IndOpp"):
+		set_region_owner(QING_LOST_TERRITORY_REGIONS, 710)
+	# 北爱尔兰独立：166 号 parts[0] 成立时，北爱 26 区从英国划给北爱尔兰实体。
+	var c166 := w.get_country_by_legacy_index(166)
+	if c166 != null and _has_part(c166, 0):
+		set_region_owner(NORTHERN_IRELAND_REGIONS, c166.gwcode)
 	# 蒙古：mongolia_china_route==1 -> 蒙古(9)并入中国(1)
 	if w.mongolia_china_route == 1:
 		_merge_legacy(w, 9, 1)
@@ -466,7 +496,7 @@ func _merge_legacy(w: WorldState, from_idx: int, to_idx: int) -> void:
 
 
 func _has_part(c: CountryData, idx: int) -> bool:
-	return c != null and idx >= 0 and idx < c.parts.size() and c.parts[idx]
+	return c != null and c.has_part(idx)
 
 
 ## 旧档兼容：在地图归属持久化功能加入前，Event585 已让吉布提独立、Event589/1035 已成立

@@ -20,3 +20,7 @@ extends Resource
 @export var default_ussr_side: int = 1
 @export var default_infl1: int = 500
 @export var default_infl2: int = 500
+## 战争条目左右双方图标：可指定图片资源。不设置时回退到通用左右图标。
+## 不使用子意识形态图标，避免内战/非国家势力被意识形态图标错误表达。
+@export var icon_side1: Texture2D = null
+@export var icon_side2: Texture2D = null

@@ -197,6 +197,7 @@ func _def_43(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	conds.append(cond(" 至 少 4 特 工 网 络", func(): return d(w, 9) >= 40))
 	conds.append(cond(" 至 少 2 百 万 预 算", func(): return d(w, 8) + d(w, 36) >= 20))
 	conds.append(cond(" 泰 国 尚 未 发 生 政 变", func(): return not fl(w, "TaiCoup")))
+	conds.append(cond(" 泰 国 尚 未 翻 红", func(): return country == null or (country.government != GameConstants.Government.SOCIALIST and not country.has_tag("亲中"))))
 	conds.append(cond(" 尚 未 提 供 支 持", func(): return country.stab == 0))
 	var eff := func():
 		set_d(w, 9, d(w, 9) - 40)

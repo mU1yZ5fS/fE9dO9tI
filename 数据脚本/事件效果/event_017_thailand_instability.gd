@@ -33,7 +33,7 @@ func _set_thai_govt() -> void:
 # 选项0：这不关我们的事（Event17.cs result 0）
 func _opt_ignore(context: Dictionary) -> void:
 	if ws.empires.size() > 0 and ws.empires[0] != null:
-		ws.empires[0].power += 5
+		ws.empires[0].power = clampi(ws.empires[0].power + 5, 0, 1000)
 	context["result_text"] = "在10月6号，警察部队和右翼民兵最终控制了大学，学生们虽然愿意投降，但是随后政府军还是开始了屠杀，据被引用最多的报道，至少有100名学生死于屠杀之中。同一天晚上，军方迫使总理普拉莫吉辞职。在国王的支持下，军方组建了军政府，结束了维持了三年的民主政治。泰国又一次进入了专制的时代，只有北方的游击队活动区域仍在泰国共产党的控制之下。"
 
 
@@ -68,6 +68,6 @@ func _opt_condemn(context: Dictionary) -> void:
 		ws.empires[1].relations += 20
 	if ws.empires.size() > 0 and ws.empires[0] != null:
 		ws.empires[0].relations -= 20
-		ws.empires[0].power += 5
+		ws.empires[0].power = clampi(ws.empires[0].power + 5, 0, 1000)
 	ws.influence_prc += 10
 	context["result_text"] = "在10月6号，警察部队和右翼民兵最终控制了大学，学生们虽然愿意投降，但是随后政府军还是开始了屠杀，据被引用最多的报道，至少有100名学生死于屠杀之中。同一天晚上，军方迫使总理普拉莫吉辞职。在国王的支持下，军方组建了军政府，结束了三年的民主政治。泰国又一次进入了专制的时代，只有北方的游击队活动区域仍在泰国共产党的控制之下。我们虽然愿意支持他们并谴责军政府的残暴，但我们都明白这已经毫无意义了。"

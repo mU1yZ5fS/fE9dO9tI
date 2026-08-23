@@ -18,7 +18,8 @@ const CHEAT_KEYS := {
 	KEY_3: "thought_freedom",
 	KEY_4: "living_standard",
 	KEY_5: "diplo",
-	KEY_6: "global_influence",
+	# 原版 Ctrl+6 改的是 influencePRC（顶栏“国际影响力”），不是 data[7]/global_influence。
+	KEY_6: "influence_prc",
 	KEY_7: "budget",
 	KEY_8: "agents",
 	KEY_9: "army",
@@ -31,9 +32,18 @@ const CHEAT_KEYS := {
 @onready var _output: RichTextLabel = $居中/面板/布局/输出
 @onready var _input: LineEdit = $居中/面板/布局/输入行/输入
 
+## claim 指令的控制台侧记忆：默认 false，保证第一次输入显示“开启”。
+var _last_claim_mode: bool = false
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	# 控制台改用引擎默认字体：项目全局字体不区分大小写，影响命令/事件 ID 识别。
+	# RichTextLabel/LineEdit 的字体 override 名称不同，分别设置。
+	if _output:
+		_output.add_theme_font_override("normal_font", ThemeDB.fallback_font)
+	if _input:
+		_input.add_theme_font_override("font", ThemeDB.fallback_font)
 	_input.text_submitted.connect(_on_输入_text_submitted)
 	_print_line("输入 [color=yellow]help[/color] 查看可用命令。")
 
@@ -111,6 +121,9 @@ func _handle_cheat(key: int) -> void:
 		"mil_add":
 			w.add_data_value("mil_intervention", CHEAT_DELTA)
 			_print_cheat("军事介入点 +10")
+		"influence_prc":
+			w.add_data_value("influence_prc", CHEAT_DELTA)
+			_print_cheat("国际影响力 +10")
 		_:
 			w.add_data_value(data_key, CHEAT_DELTA)
 			_print_cheat("%s +10" % data_key)
@@ -130,13 +143,14 @@ func _toggle_ussr_relation() -> void:
 	var w: WorldState = GameManager.world
 	if w == null or w.empires.size() < 2:
 		return
-	var ussr := w.empires[1]
-	if ussr.relations >= 600:
-		ussr.relations = RELATION_BREAK
-		_print_cheat("与苏联关系：破裂")
-	else:
-		ussr.relations = RELATION_RESTORE
+	# 原版沙盒 Ctrl+A 只切换 relres（中苏关系是否恢复正常化）标志，
+	# 不改 empires[1].relations 数值。
+	var new_relres := not w.get_flag("relres")
+	w.set_flag("relres", new_relres)
+	if new_relres:
 		_print_cheat("与苏联关系：恢复")
+	else:
+		_print_cheat("与苏联关系：破裂")
 	w.mirror_empires_to_data()
 
 
@@ -184,6 +198,8 @@ func _execute(line: String) -> void:
 			_cmd_start_all_wars()
 		"claim", "claim_territory", "take_land":
 			_cmd_claim_territory()
+		"list_countries", "国家列表":
+			_cmd_list_countries()
 		"country", "国家":
 			_cmd_country(parts)
 		_:
@@ -365,11 +381,28 @@ func _cmd_claim_territory() -> void:
 	if not earth.has_method("set_test_mode_enabled"):
 		_print_line("[color=red]当前场景不支持领土标记模式。[/color]")
 		return
-	var enabled := true
-	if earth.has_method("is_test_mode_enabled"):
-		enabled = not earth.is_test_mode_enabled()
+	# 用控制台自身状态切换，不依赖地图节点可能残留的 is_test_mode_enabled，
+	# 保证第一次输入一定是“开启”。
+	var enabled := not _last_claim_mode
+	_last_claim_mode = enabled
 	earth.set_test_mode_enabled(enabled)
 	_print_line("[color=green]点击划归中国模式：%s。关闭控制台后点击地图即可。[/color]" % ("开启" if enabled else "关闭"))
+
+
+func _cmd_list_countries() -> void:
+	var w: WorldState = GameManager.world if GameManager else null
+	if w == null:
+		_print_line("[color=red]当前没有活动世界。[/color]")
+		return
+	var list: Array[CountryData] = []
+	for c in w.countries:
+		if c != null:
+			list.append(c)
+	list.sort_custom(func(a: CountryData, b: CountryData) -> bool: return a.gwcode < b.gwcode)
+	_print_line("[color=yellow]共 %d 个国家：[/color]" % list.size())
+	_print_line("gwcode | 原版 | 中文名")
+	for c in list:
+		_print_line("%d | %d | %s" % [c.gwcode, c.原版序号, c.display_name()])
 
 
 func _cmd_country(parts: Array) -> void:
@@ -407,6 +440,20 @@ func _cmd_country(parts: Array) -> void:
 
 func _find_country(w: WorldState, query: String) -> CountryData:
 	var q := query.strip_edges()
+	# 统一：控制台里裸数字一律按 gwcode 解析（国名不受影响）。
+	# 若要按“原版序号/数组下标”查询，请显式写 legacy:<数字> 或 原版:<数字>。
+	if q.is_valid_int():
+		return w.get_country_by_gwcode(int(q))
+	if q.begins_with("legacy:") or q.begins_with("原版:"):
+		var sid := q.substr(q.find(":") + 1).strip_edges()
+		if sid.is_valid_int():
+			return w.get_country_by_legacy_index(int(sid))
+		return null
+	if q.begins_with("slot:"):
+		var slot := q.substr(q.find(":") + 1).strip_edges()
+		if slot.is_valid_int():
+			return w.get_country_by_slot(int(slot))
+		return null
 	var c := w.resolve_country(q)
 	if c != null:
 		return c
@@ -429,6 +476,7 @@ func _print_country_info(c: CountryData) -> void:
 		CountryData.SPHERE_FRANCE: "法国",
 		CountryData.SPHERE_SOUTH_AFRICA: "南非",
 		CountryData.SPHERE_AUSTRALIA: "澳大利亚",
+		CountryData.SPHERE_TURKEY: "土耳其",
 	}
 	_print_line("[color=yellow]%s[/color] gwcode=%d 原版=%d" % [c.display_name(), c.gwcode, c.原版序号])
 	_print_line("政体=%s(%d) 子意识形态=%s(%d)" % [
@@ -574,12 +622,13 @@ func _print_help() -> void:
 [color=green]date <年> <月> <日>[/color]   设置日期
 [color=green]list_events[/color]           列出全部事件 id
 [color=green]list_wars[/color]             列出全部战争 id
+[color=green]list_countries[/color]        列出全部国家（gwcode/原版序号/名称）
 [color=green]start_all_wars[/color]        开启全部战争
 [color=green]claim[/color]                 切换“点击地图划归中国”模式
 [color=green]country <国家> ...[/color]     查看/修改国家政体、势力圈、影响力（输入 country 查看用法）
 
 [color=yellow]===== 沙盒作弊快捷键（仅沙盒难度）=====[/color]
-左Ctrl+1~9、0：党支持/民支持/思想/生活/国际声望/全球影响/预算/特工/军事力量/美苏关系 +10
+左Ctrl+1~9、0：党支持/民支持/思想/生活/国际声望/国际影响力/预算/特工/军事力量/美苏关系 +10
 左Ctrl+D：外交声望 -10
 左Ctrl+I：军事介入点 +10
 左Ctrl+A：与苏联关系 恢复/破裂 切换

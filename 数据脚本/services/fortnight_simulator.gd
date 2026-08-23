@@ -6,6 +6,7 @@ extends RefCounted
 ## 通过 run(gm, world) 注入 GameManager 引用与 WorldState；跨系统调用走 gm.* 显式依赖。
 
 const W = preload("res://数据脚本/world_state.gd")
+const DIPLO_BASE_SCRIPT = preload("res://数据脚本/外交互动/外交互动_基础.gd")
 
 var gm: Node = null
 var world: WorldState = null
@@ -1700,8 +1701,8 @@ func _apply_modifier2_services(d: WorldState, w: WorldState) -> void:
 
 ## 民众不满事件触发冷却：同一事件至少间隔 24 个双周（约 1 年）才允许再次入队。
 ## 原版有 event_done[5] 一次性门槛；这里再加一层冷却，防止读档/异常状态下重复弹窗。
-func _try_popular_discontent(w: WorldState, gm: Node) -> void:
-	if w == null or gm == null:
+func _try_popular_discontent(w: WorldState, gm_node: Node) -> void:
+	if w == null or gm_node == null:
 		return
 	if w.event_done_num(5):
 		return
@@ -1710,7 +1711,7 @@ func _try_popular_discontent(w: WorldState, gm: Node) -> void:
 	if now > 0 and last > 0 and now - last < 24:
 		return
 	w.set_flag("popular_discontent_last_tick", now)
-	gm.start_event("popular_discontent")
+	gm_node.start_event("popular_discontent")
 
 
 ## 票证制度按经济体制与工农业产值分档结算（ModifiesInfuence.cs:670-1092）。
@@ -2242,7 +2243,7 @@ func _apply_modifier50_military(d: WorldState, w: WorldState) -> void:
 		_add_empire_relation(w, EmpireData.USSR, 8)
 		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
 			w.empires[EmpireData.USSR].money += 6
-			w.empires[EmpireData.USSR].power += 1
+			w.empires[EmpireData.USSR].power = clampi(w.empires[EmpireData.USSR].power + 1, 0, 1000)
 	if w.pmc > 0:
 		d.budget += 10
 		d.army -= 10
@@ -2318,7 +2319,7 @@ func _apply_tech_periodic(w: WorldState) -> void:
 		d.people_support += 3
 		# 原版不对称：美国 empire.power -1、苏联 empire.relations -1（照抄）
 		if w.empires.size() > 0:
-			w.empires[0].power -= 1
+			w.empires[0].power = clampi(w.empires[0].power - 1, 0, 1000)
 		if w.empires.size() > 1:
 			w.empires[1].relations -= 1
 	if u[31]: d.army += 5; d.science += 5
@@ -2593,7 +2594,21 @@ func _political_system_recalc(d: WorldState, w: WorldState) -> void:
 	if gm._mod_active(w, GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION) and pc != null and pc.government == GameConstants.Government.SOCIALIST:
 		d.ideology = 3
 		pc.government = GameConstants.Government.REFORMIST
+	# 政体重算后同步玩家国家（中国）的子意识形态，避免国家面板图标与地图/派系显示不一致。
+	_sync_player_sub_government(w)
 	# 注意：data.political_line 政治路线重算也在日块（tick 中先于本函数调用），不在此处
+
+
+## 同步玩家国家的子意识形态。移植自原版 ChineseSubGosstroy，
+## 使国家面板的 sub_government 图标与 government/ideology/派系显示保持一致。
+func _sync_player_sub_government(w: WorldState) -> void:
+	if w == null:
+		return
+	var pc := w.get_player_country()
+	if pc == null or pc.原版序号 != GameConstants.LegacySlot.CHINA:
+		return
+	var diplo_utils := DIPLO_BASE_SCRIPT.new()
+	pc.sub_government = diplo_utils.chinese_sub_gosstroy(w)
 
 
 ## 政治路线 data.political_line：一党制(≤7)下每月跟随席位(support)最大的派系。
@@ -3084,6 +3099,17 @@ func _fortnight_modifiers(
 			if w.empires.size() > EmpireData.USA:
 				w.empires[EmpireData.USA].relations -= 5
 
+		# Event668 结果0：文化大革命“新高潮”，原版 ModifiesInfuence.cs:1203-1238 追加效果。
+		if w.event_done_num(668) and w.result_of_event_num(668) == 0:
+			var extra := 10 if (w.event_done_num(543) and w.result_of_event_num(543) == 0) else 5
+			d.party_support += extra
+			d.people_support += extra
+			d.thought_freedom += extra
+			for p in w.politicians:
+				if p != null and not PoliticianSystem.is_vacant_politician(p) \
+						and p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
+					p.power += extra * 2
+
 	# 5 市场改革冲击。
 	if gm._mod_active(w, GameConstants.Modifier.COMPROMISE_WITH_UNDERWORLD):
 		d.people_support -= 2
@@ -3100,6 +3126,97 @@ func _fortnight_modifiers(
 			w.empires[EmpireData.USA].relations -= 2
 		if w.empires.size() > EmpireData.USSR:
 			w.empires[EmpireData.USSR].relations -= 4
+
+		# Event548 联动：革命国际主义运动为“毛主义的坚实壁垒”追加效果。
+		if w.event_done_num(548) and gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
+			var r548 := w.result_of_event_num(548)
+			if r548 == 0 or r548 == 2:
+				d.industry += 4
+				d.agriculture += 4
+				d.services += 4
+				d.living_standard += 2
+				d.people_support += 5
+				d.manpower += 1
+				d.thought_freedom -= 2
+				if w.empires.size() > EmpireData.USA:
+					w.empires[EmpireData.USA].relations -= 2
+				if w.empires.size() > EmpireData.USSR:
+					w.empires[EmpireData.USSR].relations -= 2
+			elif r548 == 1:
+				_add_ideology(w, 0, 1)
+				for p in w.politicians:
+					if p != null and not PoliticianSystem.is_vacant_politician(p) \
+							and p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
+						p.power += 10
+				d.mil_intervention += 30
+				d.diplomatic_reputation += 1
+				if w.empires.size() > EmpireData.USA:
+					w.empires[EmpireData.USA].relations -= 6
+				if w.empires.size() > EmpireData.USSR:
+					w.empires[EmpireData.USSR].relations -= 6
+				w.influence_prc += 5
+				d.budget -= 6
+				d.agents -= 6
+			if r548 == 2:
+				_add_ideology(w, 0, 2)
+				for p in w.politicians:
+					if p != null and not PoliticianSystem.is_vacant_politician(p) \
+							and p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
+						p.power += 30
+				d.mil_intervention += 50
+				d.diplomatic_reputation += 2
+				if d.diplomatic_reputation < 900:
+					d.diplomatic_reputation += 1
+				if w.empires.size() > EmpireData.USA:
+					w.empires[EmpireData.USA].relations -= 10
+				if w.empires.size() > EmpireData.USSR:
+					w.empires[EmpireData.USSR].relations -= 10
+				w.influence_prc += 10
+				d.budget -= 10
+				d.agents -= 10
+				d.army -= 10
+
+		# Event670 联动：群众组织路线为“毛主义的坚实壁垒”追加效果。
+		# 原版 resultOfEvents[670] 默认 0，即事件发生前就按“宣传鼓动”分支结算；
+		# 事件选择 1/2 后才切换为另外两条路线。
+		var r670 := w.result_of_event_num(670)
+		if r670 == 0 and gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
+			d.party_support -= 15
+			d.people_support += 4
+			d.thought_freedom += 4
+			d.party_support += d.budget_propaganda / 50
+			d.people_support += d.budget_propaganda / 50
+			d.thought_freedom -= d.budget_propaganda / 50
+			if d.budget_propaganda >= 400:
+				d.party_support += 7
+				d.people_support += 10
+				d.thought_freedom -= 10
+				d.agents += 20
+		elif r670 == 1:
+			d.party_support -= 2
+			d.people_support += 2
+			d.army -= 4
+			d.agents -= 4
+			d.party_support += d.budget_admin / 100
+			d.people_support += d.budget_admin / 50
+			d.thought_freedom -= d.budget_admin / 50
+			d.army += d.budget_admin / 100
+			d.agents += d.budget_admin / 100
+			if d.budget_admin >= 500:
+				d.party_support += 10
+				d.people_support += 10
+				d.thought_freedom -= 10
+				d.agents += 10
+		elif r670 == 2:
+			d.party_support += 10
+			d.agents += 2
+			d.corruption += 2
+			d.party_support += d.budget_admin / 100
+			d.people_support += d.budget_admin / 50
+			d.thought_freedom -= d.budget_admin / 50
+			if d.budget_admin >= 400:
+				d.agents += 10
+				d.corruption -= 2
 
 	# 7 五年计划：条件动态激活/解除。
 	var plan_condition := (
@@ -3976,17 +4093,17 @@ func _fortnight_leader_effects(d: WorldState, w: WorldState) -> void:
 		usa.relations += 10
 	elif usa.current_leader == 4:
 		usa.money += 2
-		usa.power -= 2
-		ussr.power += 1
+		usa.power = clampi(usa.power - 2, 0, 1000)
+		ussr.power = clampi(ussr.power + 1, 0, 1000)
 	elif usa.current_leader == 5:
-		usa.power -= 4
-		ussr.power += 2
+		usa.power = clampi(usa.power - 4, 0, 1000)
+		ussr.power = clampi(ussr.power + 2, 0, 1000)
 		usa.relations += 2
 		if player != null and player.government == GameConstants.Government.LIBERAL:
 			usa.relations += 2
 	elif usa.current_leader == 6:
 		usa.money += 1
-		usa.power -= 1
+		usa.power = clampi(usa.power - 1, 0, 1000)
 	elif usa.current_leader == 7:
 		usa.money -= 2
 		if player != null and player.government == GameConstants.Government.REFORMIST:

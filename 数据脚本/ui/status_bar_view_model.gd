@@ -27,7 +27,10 @@ func get_values() -> Dictionary:
 	values["生活水平"] = "%.1f" % eco.生活水平
 	values["国际声望"] = "%.1f" % eco.国际声望
 	values["特工网络"] = "%.1f" % (float(eco.特工网络) / 10.0)
-	values["全球影响力"] = "%.1f" % eco.全球影响力
+	# 顶栏此处对应原版 data[7]；TimeScript.KumihaRepaint 每周期把 data[7] 刷成 influencePRC，
+	# 所以它显示的是 world.influence_prc（外交条件同款字段），不是独立字段 global_influence。
+	# 显示名用“国际影响力”以便与“国际声望”（diplomatic_reputation）区分。
+	values["国际影响力"] = "%.1f" % eco.全球影响力
 	values["预算"] = "%.1f" % (float(eco.预算) / 10.0)
 	if w.empires.size() >= 2:
 		values["与美国关系"] = w.display_relation(w.empires[0].relations)

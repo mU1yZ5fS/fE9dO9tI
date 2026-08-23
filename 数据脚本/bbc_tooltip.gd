@@ -24,6 +24,163 @@ static func unity_color_to_bbcode(text: String) -> String:
 	return out
 
 
+# ============================================================================
+# 事件文本色彩还原：原版 C# 文本中的 <color> 片段在移植到 .tres/.gd 时被剥掉。
+# 这里用从逆向源码生成的 event_color_fragments.json，把纯文本里对应的
+# 人名/专名/引文片段重新包上颜色，再交给 unity_color_to_bbcode() 转 BBCode。
+# ============================================================================
+const EVENT_COLOR_FRAGMENTS_PATH := "res://资产/数据/event_color_fragments.json"
+
+static var _event_color_fragments: Dictionary = {}
+static var _event_color_fragments_loaded: bool = false
+
+
+static func _load_event_color_fragments() -> Dictionary:
+	if _event_color_fragments_loaded:
+		return _event_color_fragments
+	_event_color_fragments_loaded = true
+	if not FileAccess.file_exists(EVENT_COLOR_FRAGMENTS_PATH):
+		return {}
+	var parsed = JSON.parse_string(FileAccess.get_file_as_string(EVENT_COLOR_FRAGMENTS_PATH))
+	if parsed is Dictionary:
+		_event_color_fragments = parsed
+	return _event_color_fragments
+
+
+const EVENT_COLOR_FRAGMENTS_CONTEXT_PATH := "res://资产/数据/event_color_fragments_context.json"
+
+static var _event_color_fragments_context: Dictionary = {}
+static var _event_color_fragments_context_loaded: bool = false
+
+
+static func _load_event_color_fragments_context() -> Dictionary:
+	if _event_color_fragments_context_loaded:
+		return _event_color_fragments_context
+	_event_color_fragments_context_loaded = true
+	if not FileAccess.file_exists(EVENT_COLOR_FRAGMENTS_CONTEXT_PATH):
+		return {}
+	var parsed = JSON.parse_string(FileAccess.get_file_as_string(EVENT_COLOR_FRAGMENTS_CONTEXT_PATH))
+	if parsed is Dictionary:
+		_event_color_fragments_context = parsed
+	return _event_color_fragments_context
+
+
+## 给一段事件文本按原版彩色片段补回 <color> 标签。
+## event_key 传原版事件编号字符串（如 "36"），没有编号的可传空串。
+## 注意：只使用当前事件的专属片段。JSON 里的 “global” 实际是全事件片段的并集
+## （每个事件专属片段都能在其中找到），若把它当全局公共片段应用，会让无关事件
+## 出现其他事件的人名/专名颜色，导致串色。
+static func restore_event_colors(text: String, event_key: String = "") -> String:
+	if text.is_empty():
+		return text
+	var frag_dict := _event_fragments_for(event_key)
+	if frag_dict.is_empty():
+		return text
+	var by_plain := {}
+	for f in frag_dict:
+		var plain_e := String(f.get("plain", ""))
+		if plain_e == "":
+			continue
+		if not by_plain.has(plain_e):
+			by_plain[plain_e] = []
+		by_plain[plain_e].append({
+			"plain": plain_e,
+			"color": String(f.get("color", "")),
+			"before": String(f.get("before", "")),
+			"after": String(f.get("after", "")),
+		})
+	if by_plain.is_empty():
+		return text
+	# 长片段优先占位，短片段不能拆开已经命中的长词。
+	# 例如“民主社会党”先命中后，后面的“社会党”不能再在它内部二次上色。
+	var plains := by_plain.keys()
+	plains.sort_custom(func(a, b) -> bool:
+		return String(a).length() > String(b).length()
+	)
+	var spans: Array = []
+	for plain in plains:
+		var idx := text.find(plain, 0)
+		while idx != -1:
+			var span_end := idx + String(plain).length()
+			if not _span_overlaps(spans, idx, span_end):
+				var chosen := _choose_fragment(by_plain[plain], text, idx, span_end)
+				if chosen != null:
+					spans.append({
+						"start": idx,
+						"end": span_end,
+						"color": String(chosen.get("color", "")),
+					})
+					idx = text.find(plain, span_end)
+					continue
+			idx = text.find(plain, idx + 1)
+	if spans.is_empty():
+		return text
+	spans.sort_custom(func(a, b) -> bool:
+		return int(a.get("start", 0)) < int(b.get("start", 0))
+	)
+	var out := ""
+	var cursor := 0
+	for span in spans:
+		var start := int(span.get("start", 0))
+		var end := int(span.get("end", 0))
+		if start > cursor:
+			out += text.substr(cursor, start - cursor)
+		out += "<color=%s>%s</color>" % [String(span.get("color", "")), text.substr(start, end - start)]
+		cursor = end
+	if cursor < text.length():
+		out += text.substr(cursor)
+	return out
+
+
+## 取某个事件的颜色片段：优先用带上下文的新数据；旧 JSON 作为兜底。
+static func _event_fragments_for(event_key: String) -> Array:
+	var ctx := _load_event_color_fragments_context()
+	if event_key != "" and ctx.has(event_key):
+		return ctx[event_key]
+	var old := _load_event_color_fragments()
+	if event_key != "" and old.has(event_key):
+		return old[event_key]
+	return []
+
+
+## 同一 plain 可能有多个颜色（不同结果分支/上下文）。优先用上下文匹配；
+## 匹配不到且有唯一候选时使用唯一候选；仍有多候选时取第一个，避免漏色。
+static func _choose_fragment(candidates: Array, text: String, start: int, end: int) -> Dictionary:
+	if candidates.is_empty():
+		return {}
+	if candidates.size() == 1:
+		return candidates[0]
+	var best: Dictionary = {}
+	var best_ctx_len := -1
+	for c in candidates:
+		var before := String(c.get("before", ""))
+		var after := String(c.get("after", ""))
+		var before_ok := before.is_empty() or text.substr(maxi(0, start - before.length()), before.length()) == before
+		var after_ok := after.is_empty() or text.substr(end, after.length()) == after
+		if before_ok and after_ok:
+			var ctx_len := before.length() + after.length()
+			if ctx_len > best_ctx_len:
+				best = c
+				best_ctx_len = ctx_len
+	if not best.is_empty():
+		return best
+	return candidates[0]
+
+
+static func _span_overlaps(spans: Array, start: int, end: int) -> bool:
+	for s in spans:
+		var s_start := int(s.get("start", 0))
+		var s_end := int(s.get("end", 0))
+		if start < s_end and end > s_start:
+			return true
+	return false
+
+
+## 事件文本统一入口：先补原版色彩片段，再转 Godot BBCode。
+static func event_text_to_bbcode(text: String, event_key: String = "") -> String:
+	return unity_color_to_bbcode(restore_event_colors(text, event_key))
+
+
 ## 给任意无脚本的 Control 挂上本提示脚本（一次性，重复调用无副作用）。
 ## Label 默认 mouse_filter = MOUSE_FILTER_IGNORE（gdd_0638_Label.md 属性表），
 ## 按 tooltip_text 文档要求必须不是 IGNORE 才会显示悬浮提示，这里统一改成 STOP。

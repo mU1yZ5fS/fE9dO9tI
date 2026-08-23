@@ -196,11 +196,9 @@ static func check_war_endings() -> void:
 		# 部分战争有独立阈值，按原版结算分支判定，避免“到数值了却不结算”。
 		var by_infl := false
 		if i == 4:
-			# 黎巴嫩战争：GameState.cs 分支中以色列胜 900（第二次黎巴嫩战争为 700）、以色列败 500。
-			if w.event_done_num(371):
-				by_infl = war.infl1 >= 700 or war.infl2 >= 500
-			else:
-				by_infl = war.infl1 >= 900 or war.infl2 >= 500
+			# 黎巴嫩战争：原版 WorldWarsDone 统一按 1000/1000 结算（可配合 24 双周超时），
+			# 不是按 event371/711 的结果来提前结束。
+			by_infl = war.infl1 >= 1000 or war.infl2 >= 1000
 		elif i == 17:
 			# 苏联遗产战争（war17）原版结算阈值是 850（GameState.cs:1005-1042），不是通用 1000。
 			by_infl = war.infl1 >= 850 or war.infl2 >= 850
@@ -208,8 +206,11 @@ static func check_war_endings() -> void:
 			by_infl = war.infl1 >= 1000 or war.infl2 >= 1000
 		if by_time or by_infl:
 			w.war_resolve = i
+			# 原版 TimeScript.cs:7090-7095：WarCheck(81) 走 Reelect(661)（乌干达内战有专属结算事件），
+			# 其余战争统一 Reelect(18) / war_is_over。
+			var ending_event := "event_661" if i == 81 else "war_is_over"
 			if _start_event_cb.is_valid():
-				_start_event_cb.call("war_is_over")
+				_start_event_cb.call(ending_event)
 			if _notify_stats_cb.is_valid():
 				_notify_stats_cb.call()
 			return
@@ -262,8 +263,9 @@ static func start_war(
 		war.fortnight_max = def.fortnight_max
 	else:
 		war.name_war = "战争 #%d" % war_id
-		war.side1 = side1 if side1 != "" else "side1"
-		war.side2 = side2 if side2 != "" else "side2"
+		# 若确实没有 WarDef 且调用方也没给侧名，至少不再显示英文 side1/side2 占位符。
+		war.side1 = side1 if side1 != "" else "未知势力（左）"
+		war.side2 = side2 if side2 != "" else "未知势力（右）"
 		war.infl1 = infl1 if infl1 >= 0 else 500
 		war.infl2 = infl2 if infl2 >= 0 else 500
 		war.usa_side = usa_side if usa_side >= GameConstants.WarSide.SIDE1 else 0
@@ -895,10 +897,10 @@ static func _war19_result(w: WorldState, war: WarData, d: WorldState) -> void:
 		if alb != null and alb.has_tag("亲中") and d.size() > W.I_INFLUENCE:
 			d.global_influence -= 100
 		if alb != null:
-			if alb.parts.size() > 1:
-				alb.parts[1] = true
-			if alb.parts.size() > 0:
-				alb.parts[0] = false
+			if alb.parts.size() < 2:
+				alb.parts.resize(2)
+			alb.parts[0] = false
+			alb.parts[1] = true
 			alb.leave_alliances()
 			alb.set_tag("亲中", false)
 			alb.set_tag("对华贸易", false)
@@ -1896,8 +1898,9 @@ static func _apply_war35_result(war: WarData, d: WorldState) -> void:
 	if w == null:
 		return
 	var indo := w.get_country_by_legacy_index(50)
-	# 注意：原 128 是纳米比亚，不是东帝汶；东帝汶在本项目无独立国家实体（地图区域开局归印尼），
-	# 因此不再对 128 做“东帝汶”改名/设置，避免误改纳米比亚。
+	# 东帝汶在地图上是独立 gwcode 860（原版 allcountries[128]，但本项目 128 是纳米比亚）。
+	# 印尼革命结算时创建/补建东帝汶国家实体，并把东帝汶地块从印尼(850)划走。
+	const EAST_TIMOR_REGIONS: Array[int] = [583, 584, 585, 2958, 2959, 2960, 2961, 2962, 2963, 2964, 2965, 3318, 3319]
 	if war.infl1 >= 850:
 		add_empire_power(EmpireData.USA, -50)
 		d.global_influence += 40
@@ -1916,6 +1919,15 @@ static func _apply_war35_result(war: WarData, d: WorldState) -> void:
 			indo.parts[0] = true
 			indo.social_stability = 1000
 			indo.prc_power = 1000
+		var et := _ensure_east_timor(w)
+		if et != null:
+			et.set_tag("对华贸易", true)
+			et.set_tag("亲中", true)
+			et.government = GameConstants.Government.SOCIALIST
+			et.sub_government = GameConstants.SubGovernment.MAOIST
+			et.social_stability = 1000
+			_join_all_our_alliances(w, et)
+		_transfer_east_timor_regions(EAST_TIMOR_REGIONS)
 	else:
 		if indo != null:
 			indo.government = GameConstants.Government.AUTHORITARIAN
@@ -1924,6 +1936,36 @@ static func _apply_war35_result(war: WarData, d: WorldState) -> void:
 			if indo.parts.size() <= 0:
 				indo.parts.resize(1)
 			indo.parts[0] = true
+		var et2 := _ensure_east_timor(w)
+		if et2 != null:
+			et2.government = GameConstants.Government.SOCIALIST
+			et2.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
+			et2.social_stability = 1000
+		_transfer_east_timor_regions(EAST_TIMOR_REGIONS)
+
+
+static func _ensure_east_timor(w: WorldState) -> CountryData:
+	var et := w.get_country_by_gwcode(860)
+	if et != null:
+		return et
+	et = CountryData.new()
+	et.gwcode = 860
+	et.原版序号 = 169
+	et.slot = w.countries.size()
+	et.chinese_name = "东帝汶"
+	et.name = "East Timor"
+	et.government = GameConstants.Government.SOCIALIST
+	et.sub_government = GameConstants.SubGovernment.MAOIST
+	w.countries.append(et)
+	w.rebuild_gwcode_index()
+	return et
+
+
+static func _transfer_east_timor_regions(region_ids: Array[int]) -> void:
+	if GameManager != null:
+		GameManager.set_map_region_owner(region_ids, 860)
+	elif MapService.instance != null:
+		MapService.instance.set_region_owner(region_ids, 860)
 
 
 ## 战争 37 号结算：GameState.cs:1877-1934。
@@ -4228,6 +4270,11 @@ static func _apply_war86_result(war: WarData, d: WorldState) -> void:
 					elif _dval(d, 164) >= 100:
 						c166.government = GameConstants.Government.SOCIALIST
 						c166.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
+					else:
+						# 三个组织强度都未达标时，不能再保留 112-168 默认的
+						# 0/13（威权/新父权主义），否则会出现“爱尔兰社会主义共和国=新父权主义”。
+						c166.government = GameConstants.Government.SOCIALIST
+						c166.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 			_add_d(d, W.I_INFLUENCE, 30)
 			_add_empire_rel(w, 0, -50)
 		else:
@@ -4241,6 +4288,12 @@ static func _apply_war86_result(war: WarData, d: WorldState) -> void:
 				c166.government = GameConstants.Government.SOCIALIST
 				c166.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 				c166.set_tag("对华贸易", true)
+		# 北爱尔兰一方获胜：把北爱 26 区从英国划给独立的北爱尔兰实体。
+		if c166 != null and c166.gwcode > 0:
+			if GameManager != null:
+				GameManager.set_map_region_owner(MapService.NORTHERN_IRELAND_REGIONS, c166.gwcode)
+			elif MapService.instance != null:
+				MapService.instance.set_region_owner(MapService.NORTHERN_IRELAND_REGIONS, c166.gwcode)
 
 
 ## 战争 87 号结算：GameState.cs:4592-4640。
@@ -4474,7 +4527,7 @@ static func _apply_war9_result(war: WarData, d: WorldState) -> void:
 	if w == null:
 		return
 	var turkey := w.get_country_by_legacy_index(84)
-	var syria := w.get_country_by_legacy_index(95)
+	var kurdistan := w.get_country_by_legacy_index(95)
 	if war.infl1 >= 600:
 		return
 	if war.infl2 >= 800:
@@ -4486,16 +4539,53 @@ static func _apply_war9_result(war: WarData, d: WorldState) -> void:
 				turkey.parts.resize(1)
 			turkey.parts[0] = true
 		d.global_influence += 30
-		if syria != null:
-			syria.government = GameConstants.Government.SOCIALIST
-			syria.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
-			syria.set_tag("亲中", true)
-			syria.set_tag("亲苏", false)
-			syria.set_tag("亲美", false)
+		# 原版把 allcountries[95]（库尔德斯坦）设为社会主义/国控社会主义并亲中。
+		if kurdistan != null:
+			kurdistan.government = GameConstants.Government.SOCIALIST
+			kurdistan.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
+			kurdistan.set_tag("亲中", true)
+			kurdistan.set_tag("亲苏", false)
+			kurdistan.set_tag("亲美", false)
+			kurdistan.puppet_of = GameConstants.LegacySlot.NONE
+			if kurdistan.chinese_name == "":
+				kurdistan.chinese_name = "库尔德斯坦"
+		# 项目用 157（库尔德斯坦二号）承载库尔德地区的地图实体；战争9获胜只划土耳其库尔德区，
+		# 由 map_service 的 PART_MERGE_RULES 按 scope 转移，不再“打赢无变化”或误吞四国全部库尔德区。
+		_activate_kurdistan_map(
+			w,
+			GameConstants.Government.SOCIALIST,
+			GameConstants.SubGovernment.STATE_SOCIALIST,
+			MapService.KURDISTAN_SCOPE_TURKEY
+		)
+		var kurd_map := w.get_country_by_legacy_index(157)
+		if kurd_map != null:
+			kurd_map.set_tag("亲中", true)
+			kurd_map.set_tag("亲苏", false)
+			kurd_map.set_tag("亲美", false)
 	else:
 		if turkey != null:
 			turkey.government = GameConstants.Government.LIBERAL
 			turkey.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
+
+
+## 激活 157 号库尔德地图实体（等价 Event372 的 _activate_kurdistan()）。
+## scope_part 决定地图领土范围；战争9 传 KURDISTAN_SCOPE_TURKEY，只划土耳其属库尔德斯坦。
+static func _activate_kurdistan_map(w: WorldState, gov: int, sub_gov: int, scope_part: int = 0) -> void: # 0 = 最大边界
+	var c := w.get_country_by_legacy_index(157)
+	if c == null:
+		return
+	# 先清掉旧的库尔德范围位，避免存档/重复触发时叠加出“超范围”领土。
+	for idx in [0, 2, 3, 4, 5, 6, 7, 8, 9]:
+		c.set_part(idx, false)
+	c.set_part(scope_part, true)
+	c.name = "库尔德斯坦共和国"
+	c.chinese_name = "库尔德斯坦共和国"
+	_leave_alliances(c)
+	c.government = gov
+	c.sub_government = sub_gov
+	c.puppet_of = GameConstants.LegacySlot.NONE
+	if MapService.instance != null:
+		MapService.instance.sync_map_merges()
 
 
 ## WarResult 950 阈值战争集合：{war_id: 失败结局编号}。
@@ -4595,6 +4685,12 @@ static func _war70_victory(w: WorldState, d: WorldState) -> void:
 		_add_empire_rel(w, 0, -300)
 		_add_d(d, W.I_INFLUENCE, 250)
 		_set_decision(w, 37, true)
+
+	# 雪耻之战胜利：外东北/外西北原清朝版图地块归中国。
+	if GameManager != null:
+		GameManager.set_map_region_owner(MapService.QING_LOST_TERRITORY_REGIONS, 710)
+	elif MapService.instance != null:
+		MapService.instance.set_region_owner(MapService.QING_LOST_TERRITORY_REGIONS, 710)
 
 
 static func _war71_victory(w: WorldState, d: WorldState) -> void:
@@ -5140,4 +5236,4 @@ static func _set_pro_soviet(country: CountryData) -> void:
 static func add_empire_power(empire_index: int, delta: int) -> void:
 	var w: WorldState = current_world
 	if empire_index >= 0 and empire_index < w.empires.size() and w.empires[empire_index] != null:
-		w.empires[empire_index].power += delta
+		w.empires[empire_index].power = clampi(w.empires[empire_index].power + delta, 0, 1000)

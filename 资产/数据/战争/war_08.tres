@@ -5,17 +5,17 @@
 [resource]
 script = ExtResource("1_def")
 id = 8
-name_zh = "欧加登战争"
-name_en = "Ogaden War"
+name_zh = "土耳其内战"
+name_en = "Turkish Civil War"
 fortnight_max = 20
 drift_infl1 = 0
 drift_infl2 = 0
 drift_extra_infl1 = 0
 drift_extra_infl2 = 0
 drift_extra_flag = ""
-default_side1 = "索马里"
-default_side2 = "埃塞俄比亚"
+default_side1 = "军方"
+default_side2 = "地下网络"
 default_usa_side = 0
 default_ussr_side = 1
-default_infl1 = 250
-default_infl2 = 750
+default_infl1 = 800
+default_infl2 = 200

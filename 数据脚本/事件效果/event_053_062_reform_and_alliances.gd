@@ -95,6 +95,8 @@ const TXT_62_OPT3_DIS1 := "你想吃共产主义的饭还是民族主义的饭�
 const TXT_62_OPT3_DIS2 := "做事，要做绝"
 const TXT_62_OPT4 := "内蒙古问题是一面照妖镜……我们将借此机会一劳永逸的解决民族问题！"
 const TXT_62_OPT4_DIS := "你说什么？"
+const TXT_62_OPT5 := "暂时搁置，维持现状"
+const TXT_62_R5 := "我们决定将内蒙古问题暂时搁置，维持现行区划与政策不变，留待以后条件成熟时再议。"
 
 const TXT_62_R0 := "最终，人民日报特约评论员“马辉腾”发表了一篇社论《再论‘论民族问题的提法’》。其中高度强调了团结在我党周围的各民族爱国人民必须坚持爱国主义和社会主义理念的统一；团结在党，国家和红旗之下，和狭隘民族主义与分裂主义斗争；强烈反对，拒绝以“纠正历史错误”的名义鼓舞，煽动各民族对党的路线的错误认识。这篇社论还对斯大林著作的基础，即给民族问题的解决方法提供了新的中国方案：要帮助和协助落后民族提高文化水平和经济水平，从“民族权利平等”转向各民族事实上的平等，譬如：（1）研究落后民族和部族的经济状况、生活习惯和文化；（2）发展他们的文化；（3）对他们进行政治教育；（4）把他们逐步地无痛苦地引向高级的经济形式；（5）建立落后民族劳动者和先进民族劳动者之间的经济合作；（6）在尊重国内情况的前提下，巩固以主体民族为主的爱国主义情怀；（7）坚定反对打着解放旗号的分离主义势力。这份社论事实上钉死了“乌兰夫”之流的棺材板，中央屡次驳回了内蒙古地方要求调整行政区划的决议。但是额外强调了要发展，巩固内蒙古的基础建设，并追加了一笔用于修缮自治区内铁路系统的投资。内蒙古自治区的情况一切照常，没有什么特别的变化。"
 const TXT_62_R1 := "最终，中央决定重新考虑内蒙古问题，并给出公平公正的答复。国务院在决定恢复乌兰夫同志名誉的同时，决定重新调整内蒙古及临近省份的行政区划。人民日报特约评论员“马辉腾”发表了一篇社论《各族人民团结起来，为繁荣的边疆和巩固的边防而战斗》。其中高度强调了团结在我党周围的各民族爱国人民必须坚持维护国土完整统一；团结在党，国家和红旗之下，和狭隘民族主义与分裂主义斗争；并指出正是在我党的领导下，边疆各区获得了近千年以来未曾有的天翻地覆：不论是水利，电气还是政治生活的空前繁荣，正是我党的功劳。因此，这篇社论在最后提到了要结合我国实际国情，维护各族团结。借此机会，国务院公布了调整后的内蒙古行政区图，将呼伦贝尔、兴安等蒙东地区和阿拉善两旗重新从东北三省，甘肃和宁夏划出，交还给内蒙古自治区。行政机构的交接造成了一定的混乱，尤其是曾大力援助蒙东地区的东三省对这一决定高度不满。而且由于内蒙古的版图急速扩大导致北京军区难以形成完全的管辖，蒙东和阿拉善地区的边防将长期由沈阳和兰州军区分别辅助管理。不过党内的一部分人物认为这是个好迹象：完成了对民族问题的定论之外，有效维护我国的领土完整。蒙古方面也希望能借此机会重新修复两国的关系，二连浩特和满洲里口岸正在筹备重新开张，而内蒙古自治区的“乌兰牧骑”也受蒙古人民革命党的邀请前往了当地演出。"
@@ -288,6 +290,7 @@ func _event_58(context: Dictionary) -> void:
 			ws.oil_price -= 7
 		context["result_text"] = TXT_58_R_SHAH
 	ws.set_flag("iran_revolution_started", false)
+	ws.set_flag("iranrev", false)
 
 
 func _event_59(option_index: int, context: Dictionary) -> void:
@@ -413,7 +416,7 @@ func _event_61(option_index: int, context: Dictionary) -> void:
 	# 原版 AnthemCooldownTime = 4（四年一次国策冷却）；本版无该字段，跳过。
 	match option_index:
 		0:
-			context["result_text"] = TXT_61_R_INTRO + TXT_61_R0
+			context["result_text"] = TXT_61_R_INTRO + _fmt_leader(TXT_61_R0)
 		1:
 			context["result_text"] = TXT_61_R_INTRO + TXT_61_R1
 		2:
@@ -476,6 +479,8 @@ func _event_62(option_index: int, context: Dictionary) -> void:
 			if int(ws.territory_policy) < 23:
 				ws.territory_policy += 1
 			context["result_text"] = TXT_62_R4
+		5:
+			context["result_text"] = TXT_62_R5
 	# 原版 NumberOfPolitician(58,85)（乌兰夫）在 Godot 政治家表无 name_1/name_2 索引，相关忠诚/权力/死亡效果移植说明。
 
 
@@ -577,7 +582,7 @@ func _add_empire_relation(empire_index: int, delta: int) -> void:
 
 func _add_empire_power(empire_index: int, delta: int) -> void:
 	if empire_index >= 0 and empire_index < ws.empires.size() and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
+		ws.empires[empire_index].power = clampi(ws.empires[empire_index].power + delta, 0, 1000)
 
 
 func _sync_empire_mirrors() -> void:
@@ -699,6 +704,18 @@ func _prepare_62(event_def: EventDef) -> void:
 		_enable(opts[4], TXT_62_OPT4)
 	else:
 		_disable(opts[4], TXT_62_OPT4_DIS)
+
+	# 保底：若上述条件全部不满足（例如自由派+多党制+联盟席位不足），
+	# 提供“维持现状/暂时搁置”选项，避免事件出现零可选按钮的软锁。
+	var any_enabled := false
+	for i in range(5):
+		if i < opts.size() and opts[i] != null and opts[i].enable_condition == null:
+			any_enabled = true
+			break
+	if opts.size() > 5:
+		_disable(opts[5], TXT_62_OPT5)
+		if not any_enabled:
+			_enable(opts[5], TXT_62_OPT5)
 
 
 func _summa_3_2() -> int:

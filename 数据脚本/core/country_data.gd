@@ -148,6 +148,20 @@ func ideology_name() -> String:
 	return IDEOLOGY.get(sub_government, "未知")
 
 
+## parts 是稀疏/动态增长的数组；统一走这里读取，避免到处写 parts.size() > N。
+func has_part(index: int) -> bool:
+	return index >= 0 and index < parts.size() and parts[index]
+
+
+## 统一写入 parts：自动扩容到 index，避免各脚本手写 while/append。
+func set_part(index: int, value: bool) -> void:
+	if index < 0:
+		return
+	while parts.size() <= index:
+		parts.append(false)
+	parts[index] = value
+
+
 func is_communist_bloc() -> bool:
 	return has_tag("sev") or has_tag("ovd")
 
@@ -160,6 +174,7 @@ const SPHERE_NEUTRAL := 3
 const SPHERE_FRANCE := 4
 const SPHERE_SOUTH_AFRICA := 5
 const SPHERE_AUSTRALIA := 6
+const SPHERE_TURKEY := 7
 
 ## 原版地图影响模式/国家面板的法国判定（CountryScript.cs:302-305, 5150-5153）：
 ## puppetOf == 21，或法国自身保持中立（不亲中/不亲苏/不亲美）时显示法国势力。
@@ -174,6 +189,12 @@ func is_french_influence() -> bool:
 ## 原版澳大利亚势力（CountryScript.cs:379）：puppetOf == 135 时显示澳大利亚影响。
 func is_australian_influence() -> bool:
 	return puppet_of == GameConstants.LegacySlot.AUSTRALIA
+
+
+## 原版泛用傀儡图标（CountryScript.cs:417-425）：puppetOf >= 0 且非 21 时，
+## 显示 PuppetIcons/{puppetOf}.png；土耳其对应 84.png。
+func is_turkish_influence() -> bool:
+	return puppet_of == 84
 
 
 ## 原版南非判定（CountryScript.cs:391-395, 5155-5158）：
@@ -213,11 +234,12 @@ func alliance_zone_counts() -> bool:
 ## 国家面板"在某国影响下"单槽判定。
 ## 原版分两个槽：Znach(4)=法国→美国→苏联→中国（:302-339），
 ## Znach(5)=南非等傀儡（:391-395）。Godot 合并为一个槽：
-## 法国 → 南非 → 美国 → 苏联 → 中国，其余中立。
+## 法国 → 南非 → 土耳其 → 美国 → 苏联 → 中国，其余中立。
 func in_sphere_of_influence() -> int:
 	if is_french_influence(): return SPHERE_FRANCE
 	if is_australian_influence(): return SPHERE_AUSTRALIA
 	if is_south_african_influence(): return SPHERE_SOUTH_AFRICA
+	if is_turkish_influence(): return SPHERE_TURKEY
 	if has_tag("亲美") or (alliance_zone_counts() and has_tag("美国盟友")): return SPHERE_USA
 	if has_tag("亲苏") or (alliance_zone_counts() and has_tag("苏联盟友")): return SPHERE_USSR
 	if has_tag("亲中"): return SPHERE_CHINA

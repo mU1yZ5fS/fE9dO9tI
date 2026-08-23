@@ -3,7 +3,6 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作事件 42–47：伊朗革命、越南经互会、改革派夺权、改革开放、匈牙利与北京之春。
 ## 来源：TimeScript.cs:3793-3837，doneventscript.cs:1102-1244，
 ##       Results_text.cs:3667-4170。
-const POLITICAL_TRANSITION = preload("res://数据脚本/事件效果/event_024_026_political_transition.gd")
 
 ## 原版 Event42 选项1 的第二种禁用文案（agents>=50 但 political_line>1）。
 const TXT_42_OPT1_DIS_USA := "美国人会怎么想？他们会勃然大怒的！"
@@ -128,6 +127,8 @@ func _prepare_44(event_def: EventDef) -> void:
 func _event_42(option_index: int) -> void:
 	var iran := ws.get_country_by_legacy_index(8)
 	ws.set_flag("iran_revolution_started", true)
+	# 原版 Event42.cs 三选项均设 iranrev=true，供战争图标特殊标记与后续事件链使用。
+	ws.set_flag("iranrev", true)
 	match option_index:
 		0:
 			if iran != null: iran.development = 4
@@ -183,8 +184,7 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 			_change_politicians({0: [-500, -200], 1: [-100, 100], 2: [200, 200], 3: [70, 80]})
 			var reform_leader := _faction_leader_index(FactionData.REFORMIST)
 			if reform_leader >= 0:
-				var transition = POLITICAL_TRANSITION.new()
-				transition._swap_leader_with_politician(reform_leader, FactionData.REFORMIST)
+				_swap_leader_with_politician(reform_leader)
 			PoliticianSystem.sync_in_power_flags(ws)
 		1:
 			_add_data({W.I_PARTY_SUPPORT: -150, W.I_PEOPLE_SUPPORT: -120,
@@ -427,7 +427,7 @@ func _add_empire_relation(empire_index: int, delta: int) -> void:
 
 func _add_empire_power(empire_index: int, delta: int) -> void:
 	if empire_index >= 0 and empire_index < ws.empires.size() and ws.empires[empire_index] != null:
-		ws.empires[empire_index].power += delta
+		ws.empires[empire_index].power = clampi(ws.empires[empire_index].power + delta, 0, 1000)
 
 
 func _sync_empire_mirrors() -> void:

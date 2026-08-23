@@ -342,7 +342,7 @@ func _set_modifier(index: int, active: bool) -> void:
 		ws.modifiers[index].is_active = active
 
 
-func _swap_leader_with_politician(slot: int) -> void:
+func _swap_leader_with_politician(slot: int, _faction_index: int = -1) -> void:
 	if ws.leader == null or slot < 0 or slot >= ws.politicians.size():
 		return
 	var other: PoliticianData = ws.politicians[slot]

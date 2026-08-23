@@ -70,7 +70,6 @@ func execute(context: Dictionary) -> void:
 
 
 func _disable_blank(opt: EventOption) -> void:
-	opt.text = ""
 	opt.disabled_text = ""
 	var n := ExprNode.new()
 	n.type = ExprNode.Type.RESOURCE_AT_LEAST

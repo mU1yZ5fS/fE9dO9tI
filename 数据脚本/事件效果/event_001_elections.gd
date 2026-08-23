@@ -48,7 +48,7 @@ func execute(context: Dictionary) -> void:
 		head = _resolve_branch(false)
 		suffix = "，总席位3000"                        # :434
 		if ws.empires.size() > 1 and ws.empires[1] != null:   # :439-443
-			ws.empires[1].power += 150
+			ws.empires[1].power = clampi(ws.empires[1].power + 150, 0, 1000)
 		d.thought_freedom += 30
 		d.army -= 10
 		d.war_support -= 10

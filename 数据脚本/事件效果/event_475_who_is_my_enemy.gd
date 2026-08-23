@@ -49,9 +49,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.wars[24].infl2 < 900:
 		return false
-	if ethiopia.parts.size() > 0 and ethiopia.parts[0]:
-		return false
-	if ethiopia.parts.size() > 1 and ethiopia.parts[1]:
+	if ethiopia.has_part(0) or ethiopia.has_part(1):
 		return false
 	return true
 
@@ -99,15 +97,13 @@ func _tag(idx: int, tag: String, value: bool) -> void:
 func _set_part(c: CountryData, index: int, value: bool) -> void:
 	if c == null:
 		return
-	while c.parts.size() <= index:
-		c.parts.append(false)
-	c.parts[index] = value
+	c.set_part(index, value)
 
 func _part(idx: int, index: int) -> bool:
 	var c := _country(idx)
 	if c == null:
 		return false
-	return c.parts.size() > index and c.parts[index]
+	return c.has_part(index)
 
 func _done(ev: String) -> bool:
 	return ws != null and ws.completed_event_ids.has(ev)

@@ -346,6 +346,7 @@ func _build_influence(w: WorldState) -> String:
 	var ussr: EmpireData = w.empires[1] if w.empires.size() > 1 else null
 	var usa: EmpireData = w.empires[0] if w.empires.size() > 0 else null
 	var s := _h("全球影响")
+	s += "[color=darkgreen][font_size=25]中国的世界影响力:[/font_size][/color]\n%s\n" % _iv(w.influence_prc)
 	if ussr != null:
 		s += "[color=darkred][font_size=25]苏联的世界影响力:[/font_size][/color]\n%s\n" % _iv(ussr.power)
 	if usa != null:
@@ -764,8 +765,10 @@ func _build_allies(w: WorldState) -> String:
 		return _build_african_union(w)
 	var pc := w.get_player_country()
 	var s := _h("中国人民的老朋友")
-	# 只有中国加入经济联盟才显示列表，否则恒为空态（modify_choose.cs:872-931）
-	if pc == null or not pc.has_tag("econ"):
+	# 中国加入自建经济联盟(econ)或经互会(sev)时都显示盟友列表；
+	# 军事一体化同时认 okb 与 ovd（华沙条约），避免经互会/华约下误显示“不属于任何联盟”。
+	var in_any_econ := pc != null and (pc.has_tag("econ") or pc.has_tag("sev"))
+	if pc == null or not in_any_econ:
 		s += "我们不属于任何联盟"
 		return s
 	s += "[color=red]国家 - 合作程度 - 革命立场是否坚定 - 稳定度[/color]\n"
@@ -773,8 +776,8 @@ func _build_allies(w: WorldState) -> String:
 		var c := w.get_country_by_legacy_index(legacy_idx)
 		if c == null:
 			continue
-		var in_econ := c.has_tag("econ")
-		var in_okb := c.has_tag("okb")
+		var in_econ := c.has_tag("econ") or c.has_tag("sev")
+		var in_okb := c.has_tag("okb") or c.has_tag("ovd")
 		var role := ""
 		if in_econ and in_okb:
 			role = "经济军事一体化"

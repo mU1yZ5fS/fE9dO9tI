@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://c0gv08g63f874"]
+
+[ext_resource type="Script" uid="uid://dei300hx5gcpw" path="res://场景/外交界面/国家面板/意识形态介绍.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://cvelfla0t853n" path="res://资产/UI/概览/概览背景.png" id="2_hi1gm"]
+[ext_resource type="Texture2D" uid="uid://b11sk2plk2cbu" path="res://资产/UI/外交/国家面板关闭覆盖.png" id="4_ieq0r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hi1gm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ieq0r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hnm86"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uk3th"]
+
+[node name="意识形态介绍" type="Control" unique_id=2074092039]
+layout_mode = 3
+anchor_left = 0.079
+anchor_top = 0.563
+anchor_right = 0.3
+anchor_bottom = 1.1190001
+offset_left = 0.31999207
+offset_top = -0.040039063
+offset_bottom = -0.5201416
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2129485126]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.5258789e-05
+offset_bottom = -144.0
+texture = ExtResource("2_hi1gm")
+expand_mode = 1
+
+[node name="关闭" type="Button" parent="." unique_id=1915912311]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.58
+anchor_top = 1.0
+anchor_right = 0.58
+anchor_bottom = 1.0
+offset_left = 137.08
+offset_top = -596.0
+offset_right = 171.47997
+offset_bottom = -564.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hi1gm")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ieq0r")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_hnm86")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_uk3th")
+icon = ExtResource("4_ieq0r")
+icon_alignment = 1
+expand_icon = true
+
+[node name="介绍" type="RichTextLabel" parent="." unique_id=1790767458]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 40.0
+offset_right = 400.0
+offset_bottom = 440.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/normal_font = ExtResource("2_font")
+
+[node name="图标" type="TextureRect" parent="." unique_id=174474524]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 16.0
+offset_right = 168.0
+offset_bottom = 64.0
+expand_mode = 1

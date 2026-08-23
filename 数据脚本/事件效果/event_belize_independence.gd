@@ -7,7 +7,7 @@ extends EventScriptBase
 
 const TXT_RESULT := "1981年9月21日，伯利兹正式独立，成为英联邦内的主权国家。乔治·卡德尔·普赖斯出任首任总理。由于危地马拉长期声称对伯利兹拥有主权，英国承诺在独立后继续驻军保卫伯利兹的安全。\n我们的代表出席了独立庆典，并向这个中美洲的新国家表达了祝贺——伯利兹成为加勒比共同体与不结盟运动的成员，也开启了与整个地区交往的新篇章。"
 
-const BELIZE_REGION_IDS: Array[int] = [2095]
+const BELIZE_REGION_IDS: Array[int] = [1265, 1267, 1268, 1635, 2094, 2095]
 const BELIZE_GWCODE := 80
 
 

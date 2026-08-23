@@ -599,6 +599,8 @@ offset_bottom = 165.0
 texture = ExtResource("10_07vlq")
 
 [node name="国务院总理" type="Label" parent="." unique_id=895509289]
+tooltip_text = "国务院总理"
+mouse_filter = 1
 layout_mode = 0
 offset_left = 418.0
 offset_top = 12.0
@@ -612,6 +614,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="中央军委主席" type="Label" parent="." unique_id=316409936]
+tooltip_text = "中央军委主席"
+mouse_filter = 1
 layout_mode = 0
 offset_left = 418.0
 offset_top = 63.0
@@ -625,6 +629,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="外交部长" type="Label" parent="." unique_id=277393892]
+tooltip_text = "外交部长"
+mouse_filter = 1
 layout_mode = 0
 offset_left = 418.0
 offset_top = 114.0
@@ -646,6 +652,8 @@ offset_bottom = 427.0
 texture = ExtResource("11_whbwe")
 
 [node name="首都主管" type="Label" parent="." unique_id=1894084682]
+tooltip_text = "首都主管（北京）"
+mouse_filter = 1
 layout_mode = 0
 offset_left = 418.0
 offset_top = 172.0
@@ -659,6 +667,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="北方主管" type="Label" parent="." unique_id=1222698630]
+tooltip_text = "北方主管（华北）"
+mouse_filter = 1
 layout_mode = 0
 offset_left = 418.0
 offset_top = 223.0
@@ -672,6 +682,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="西方主管" type="Label" parent="." unique_id=286185090]
+tooltip_text = "西方主管（华西）"
+mouse_filter = 1
 layout_mode = 0
 offset_left = 418.0
 offset_top = 274.0
@@ -685,6 +697,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="南方主管" type="Label" parent="." unique_id=125190554]
+tooltip_text = "南方主管（华南）"
+mouse_filter = 1
 layout_mode = 0
 offset_left = 418.0
 offset_top = 325.0
@@ -698,6 +712,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="东方主管" type="Label" parent="." unique_id=316556338]
+tooltip_text = "东方主管（华东）"
+mouse_filter = 1
 layout_mode = 0
 offset_left = 418.0
 offset_top = 376.0

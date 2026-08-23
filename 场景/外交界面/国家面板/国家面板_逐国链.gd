@@ -1623,7 +1623,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 								and player != null and player.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 							_show(slots, 3, 70, " 扎 伊 尔 化")
 					elif country.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST:
-						if w.result_of_event_num(613) == 0:
+						if w.event_done_num(613) and w.result_of_event_num(613) == 0:
 							_show(slots, 1, 1041, "施 压")
 						_show(slots, 2, 1042, "掀 起 革 命")
 				elif country.has_tag("亲中"):
@@ -2085,6 +2085,12 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 					_show(slots, 3, 5000, "革 命 国 际")
 			if country.government == GameConstants.Government.LIBERAL:
 				_show(slots, 3, 1051, "支 持 政 府")
+		elif n == 163:
+			# 加丹加独立实体：原版没有独立国面板链，这里按用户需求补“影响力/经济一体化”
+			_show(slots, 0, 103, " 影 响 力")
+			_show(slots, 1, 104, " 一 体 化")
+			if country.has_tag("亲中"):
+				_show(slots, 2, 5000, "革 命 国 际")
 
 
 # ── 主链之后的独立块（CS L3710-L3932）──

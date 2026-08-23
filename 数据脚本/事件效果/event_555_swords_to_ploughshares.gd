@@ -4,7 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1239-1241 —— c17.isNATO && (1983.10.22 或 1984+)。
 ## 差异：isNATO/isSocEU→has_tag；data.britain_political_route raw index；empires[0].now_leader→current_leader。
 
-const TXT_DESC := ""
+const TXT_DESC := """1979年12月12日北约各国在布鲁塞尔首脑会议上通过了一项关于中程核武器的决议《北约双重决议》：北约决定从1983年起在欧洲部署美国提供的108枚潘兴II式导弹和464枚陆基巡航导弹，以对抗苏联部署的SS-20导弹。从1979年到1983年，西欧和美国出现了反对北约双重决议和核军备的强烈抗议。抗议者呼吁撤回双重决议并建立无核化的欧洲；在西德，人们呼吁德国的中立化。
+1981年6月，德国新教教会在汉堡举行了首批大型和平示威活动。1981年10月10日，超过300,000人在波恩宫廷花园举行了反对核武器的和平示威；1981年10月25日，布鲁塞尔有200,000人示威，11月21日，阿姆斯特丹有400,000人示威。1982年，在美国总统{0}进行国事访问之际，波恩和柏林举行了大规模的和平示威活动，6月10日在波恩的莱茵河草地上举行了约500,000人参与的大型示威，6月11日在柏林举行了约50,000人的示威。1981年至1983年的复活节游行也定期在西德的许多城市和地区动员数十万人。在汉诺威举行的德国新教大会上，再次有数十万人参加和平示威。
+在西德，这些和平示威活动获得了左翼的广泛支持，前总理维利·勃兰特、社民党左翼的代表人物艾哈德·埃普勒和奥斯卡·拉方丹、绿党、亲东德的德国共产党、各路左翼小党以及各类和平组织都已广泛地参与到这些运动之中了。基民盟/基社盟攻击参与和平运动的社民党成员“与那里的共产党人形成了‘人民阵线’”，执政的社民党右翼也对埃普勒和拉方丹的参与感到不满。
+如今，西德爆发了全国性的大型和平抗议，1983年10月22日，共有130万人在波恩、柏林、汉堡以及斯图加特和乌尔姆之间举行了示威活动，示威者在斯图加特和乌尔姆之间组成了一条连续的人链，以施压政府结束北约双重决议的最终实施，阻止导弹的最终布置。
+我们是否要干预西德这一冷战的前沿的群众运动，以达成有利于运动的局势？"""
 const TXT_OPT0_DIS := "我们无法插手"
 const TXT_OPT1_DIS_0 := "只是声援吗？"
 const TXT_OPT1_DIS_1 := "我们怎么能和美国对着干？"
@@ -23,6 +27,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
+	var usa_name := "罗纳德·里根"
+	if world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null 			and world.empires[EmpireData.USA].current_leader != 0:
+		usa_name = "吉米·卡特"
+	event_def.description = TXT_DESC.replace("{0}", usa_name)
 	var opt := event_def.options
 	var line := d.political_line
 	if line <= 2 and ws.influence_prc >= 500:

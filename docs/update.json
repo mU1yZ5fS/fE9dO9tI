@@ -1,0 +1,19 @@
+{
+  "version": "0.3.0",
+  "version_code": 30,
+  "title": "中国:毛的遗产[Godot] 更新公告",
+  "is_force": false,
+  "download_url": "https://github.com/mU1yZ5fS/fE9dO9tI/releases/latest",
+  "announcement": "在线更新与QQ群二维码提示已接入。",
+  "changelog": [
+    "新增在线更新提示与更新日志查看",
+    "新增QQ群二维码提示",
+    "后续请在 docs/update.json 中维护版本与更新内容"
+  ],
+  "qq_group": {
+    "name": "QQ交流群",
+    "qr_url": "https://raw.githubusercontent.com/mU1yZ5fS/fE9dO9tI/main/docs/qq_group.png",
+    "qr_page_url": "https://mU1yZ5fS.github.io/fE9dO9tI/qq_group.png",
+    "join_url": ""
+  }
+}

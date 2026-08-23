@@ -38,9 +38,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if ethiopia != null:
-				while ethiopia.parts.size() <= 0:
-					ethiopia.parts.append(false)
-				ethiopia.parts[0] = true
+				ethiopia.set_part(0, true)
 				ethiopia.chinese_name = TXT_NAME_ETHIOPIA
 				# 政体名优先于 chinese_name，必须同步改 gov_names 才能在世界地图/国家面板显示“非洲之角联邦”。
 				# 原版 name 固定为联邦名，不随政体变化，因此覆盖全部政体名。

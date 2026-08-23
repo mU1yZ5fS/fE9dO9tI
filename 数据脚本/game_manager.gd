@@ -211,6 +211,16 @@ func _migrate_legacy_global_flags() -> void:
 		world.global_flags.erase("vietnam_peace")
 
 
+func _migrate_legacy_oil_modifier() -> void:
+	if world == null or world.modifiers.size() <= 51 or world.modifiers[51] == null:
+		return
+	# 早期 Godot 档漏激活 51「黑金/OIL_MONEY」；原版在 dlc[3] 环境开局恒激活。
+	# 读档补齐，否则石油决议、石油经济和 event_418 黑金事件全部被卡死。
+	world.modifiers[51].is_active = true
+	if world.modifiers[51].level <= 0:
+		world.modifiers[51].level = 1
+
+
 ## 地图预加载完成时补执行之前排队的领土转移。
 
 
@@ -332,6 +342,7 @@ func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	world = WF.create_world(player_gwcode, p_difficulty)
 	WarSystem.current_world = world
 	PoliticianSystem.set_world(world)
+	PoliticianSystem.sync_in_power_flags(world)
 	PoliticianPool.current_world = world
 	DecisionSystem.current_world = world
 	ModifierCatalog.current_world = world
@@ -368,6 +379,7 @@ func load_game(path: String) -> void:
 		world = loaded as WorldState
 		WarSystem.current_world = world
 		PoliticianSystem.set_world(world)
+		PoliticianSystem.sync_in_power_flags(world)
 		PoliticianPool.current_world = world
 		DecisionSystem.current_world = world
 		ModifierCatalog.current_world = world
@@ -396,6 +408,8 @@ func load_game(path: String) -> void:
 		WAR_SYS.migrate_legacy_war_timeouts(world)
 		# 旧档兼容：越南和平标志统一为原版字段名 vietnampeace。
 		_migrate_legacy_global_flags()
+		# 旧档兼容：早期档漏激活 51 黑金/OIL_MONEY，读档补齐以解锁石油经济。
+		_migrate_legacy_oil_modifier()
 		# 旧档兼容：补建魁北克/南墨西哥虚拟国（新档在 WorldFactory 中已生成）。
 		WF.ensure_fictional_countries(world)
 		reset_map_runtime_state()
@@ -403,6 +417,9 @@ func load_game(path: String) -> void:
 		world.rebuild_gwcode_index()
 		world.sync_economy()
 		world.ensure_rng()  # 从 rng_seed + rng_state 恢复随机流位置
+		# 读档后清洗旧版本存档中可能残留的越界美苏影响力/关系，
+		# 避免概览页直接显示 int32 回绕脏值（合法内部区间 [0, 1000]）。
+		world.clamp_empire_relations()
 		if EventEngine and EventEngine.has_method("import_runtime_from_world"):
 			EventEngine.import_runtime_from_world(world)
 		selected_country_gwcode = world.player_country_gwcode
@@ -601,7 +618,7 @@ func science_alert_active() -> bool:
 
 
 ## 顶栏「政治局缺人」提示图标判定。
-## 用户口径：中央三职（总理/军委/外交）与地方主管（京畿/华北/华西/华南/华东）
+## 用户口径：中央三职（总理/军委/外交）与地方主管（北京/华北/华西/华南/华东）
 ## 任一槽为 -1 空缺时显示。
 func political_bureau_vacancy_alert_active() -> bool:
 	const SLOT_COUNT := 8  # 与 WorldState._init 的 politics_positions.resize(8) 对齐
@@ -982,7 +999,7 @@ func set_country_social_stability(country: CountryData, value: int) -> void:
 
 func add_empire_power(empire: EmpireData, delta: int) -> void:
 	if empire != null:
-		empire.power += delta
+		empire.power = clampi(empire.power + delta, 0, 1000)
 
 
 func add_empire_relations(empire: EmpireData, delta: int) -> void:
@@ -1308,7 +1325,7 @@ func _daily_finland_linkage(w: WorldState) -> void:
 		w.influence_prc += 50
 		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
 			w.empires[EmpireData.USSR].relations -= 200
-			w.empires[EmpireData.USSR].power -= 50
+			w.empires[EmpireData.USSR].power = clampi(w.empires[EmpireData.USSR].power - 50, 0, 1000)
 		var china_fin := w.get_country_by_legacy_index(1)
 		if china_fin != null and w.is_socialism(china_fin, true):
 			finland.government = GameConstants.Government.SOCIALIST
@@ -1651,7 +1668,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 		if greece != null and greece.government == GameConstants.Government.LIBERAL:
 			greece.set_tag("eu", true)
 			if w.empires.size() > 0 and w.empires[0] != null:
-				w.empires[0].power += 10
+				w.empires[0].power = clampi(w.empires[0].power + 10, 0, 1000)
 
 	# 2336-2345：美国/苏联 spec 月度递减。
 	for legacy_idx in [51, 7]:
@@ -1664,7 +1681,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 	# 2351-2355：1979.5 英国亲美路线（原版 !dlc[3] 分支；Godot 改版 dlc[3]=true 全免费 → 不执行）。
 	if w.date.year == 1979 and w.date.month == 5 and not w.dlc[3]:
 		if w.empires.size() > 0 and w.empires[0] != null:
-			w.empires[0].power += 10
+			w.empires[0].power = clampi(w.empires[0].power + 10, 0, 1000)
 		if britain != null:
 			britain.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 
@@ -1764,12 +1781,12 @@ func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 				c.set_tag("asean", false)
 				c.set_tag("seato", false)
 				if w.empires.size() > 0 and w.empires[0] != null:
-					w.empires[0].power -= 5
+					w.empires[0].power = clampi(w.empires[0].power - 5, 0, 1000)
 			else:
 				c.set_tag("ovd", false)
 				c.set_tag("sev", false)
 				if w.empires.size() > 1 and w.empires[1] != null:
-					w.empires[1].power -= 5
+					w.empires[1].power = clampi(w.empires[1].power - 5, 0, 1000)
 		if d.restore_econ_alliance:
 			d.restore_econ_alliance = false
 			for c in w.countries:
@@ -1789,7 +1806,7 @@ func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 	# 2471-2475：1983.6 法国亲美路线（原版 !dlc[3] 分支；Godot 改版 dlc[3]=true 全免费 → 不执行）。
 	if w.date.year == 1983 and w.date.month == 6 and not w.dlc[3]:
 		if w.empires.size() > 0 and w.empires[0] != null:
-			w.empires[0].power += 10
+			w.empires[0].power = clampi(w.empires[0].power + 10, 0, 1000)
 		var france83 := w.get_country_by_legacy_index(21)
 		if france83 != null:
 			france83.sub_government = GameConstants.SubGovernment.NEOLIBERAL
@@ -2472,7 +2489,7 @@ func _monthly_african_coups(w: WorldState) -> void:
 				c.set_tag("亲苏", true)
 				c.set_tag("对华贸易", false)
 				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
-					w.empires[EmpireData.USSR].power += 1
+					w.empires[EmpireData.USSR].power = clampi(w.empires[EmpireData.USSR].power + 1, 0, 1000)
 		elif not c.has_tag("亲美") and c.government != GameConstants.Government.SOCIALIST and not c.has_tag("亲苏") \
 				and not c.has_tag("亲中") and c.usa_power > 300 and c.sov_power < c.usa_power:
 			# 6452-6465：亲美和平转向。
@@ -2482,7 +2499,7 @@ func _monthly_african_coups(w: WorldState) -> void:
 				c.set_tag("亲美", true)
 				c.set_tag("对华贸易", false)
 				if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
-					w.empires[EmpireData.USA].power += 1
+					w.empires[EmpireData.USA].power = clampi(w.empires[EmpireData.USA].power + 1, 0, 1000)
 		elif not c.has_tag("亲苏") and c.sov_power > 300 and c.sov_power >= c.usa_power:
 			# 6466-6489：苏联策动政变。
 			c.stab -= c.sov_power
@@ -2494,7 +2511,7 @@ func _monthly_african_coups(w: WorldState) -> void:
 					or (c.stab < -200 and c.has_tag("亲美") and ussr_power > usa_power):
 				if c.has_tag("亲美"):
 					if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
-						w.empires[EmpireData.USA].power -= 5
+						w.empires[EmpireData.USA].power = clampi(w.empires[EmpireData.USA].power - 5, 0, 1000)
 					c.set_tag("亲美", false)
 				if c.has_tag("亲中"):
 					w.influence_prc -= 5
@@ -2510,7 +2527,7 @@ func _monthly_african_coups(w: WorldState) -> void:
 				@warning_ignore("integer_division")
 				c.prc_power -= c.prc_power / 2
 				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
-					w.empires[EmpireData.USSR].power += 5
+					w.empires[EmpireData.USSR].power = clampi(w.empires[EmpireData.USSR].power + 5, 0, 1000)
 		elif not c.has_tag("亲美") and c.usa_power > 300 and c.sov_power < c.usa_power:
 			# 6490-6519：美国策动政变。
 			c.stab -= c.usa_power
@@ -2522,7 +2539,7 @@ func _monthly_african_coups(w: WorldState) -> void:
 					or (c.stab < -200 and c.has_tag("亲苏") and usa_power > ussr_power):
 				if c.has_tag("亲苏"):
 					if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
-						w.empires[EmpireData.USSR].power -= 5
+						w.empires[EmpireData.USSR].power = clampi(w.empires[EmpireData.USSR].power - 5, 0, 1000)
 					c.set_tag("亲苏", false)
 				if c.has_tag("亲中"):
 					w.influence_prc -= 5
@@ -2540,7 +2557,7 @@ func _monthly_african_coups(w: WorldState) -> void:
 				@warning_ignore("integer_division")
 				c.prc_power -= c.prc_power / 2
 				if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null:
-					w.empires[EmpireData.USA].power += 5
+					w.empires[EmpireData.USA].power = clampi(w.empires[EmpireData.USA].power + 5, 0, 1000)
 
 
 ## 原版 GameState.cs:5057-5127 AfricanSubGosstroy 逐字移植。

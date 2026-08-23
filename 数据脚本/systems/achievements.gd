@@ -22,6 +22,9 @@
 
 extends Node
 
+## 本地解锁弹窗通知（成就解锁管理器监听）
+signal achievement_unlocked(number: int)
+
 ## 对齐 Ach.prefab 序列化长度（原作 achievements.cs 代码初值 100 被 prefab 覆盖为 1000）
 const QUEUE_SIZE := 1000
 
@@ -56,6 +59,9 @@ func set_achievement(number: int) -> void:
 			number, ach_this.size() - 1
 		])
 		return
+	# 与原版 LocalAchievementsPlugin.UnlockLocal 一致：已解锁的成就不再重复入队/重复弹通知。
+	if is_unlocked(number):
+		return
 	ach_this[number] = true
 
 
@@ -70,7 +76,11 @@ func _process(_delta: float) -> void:
 ## 原作 UnlockAchievement → SteamUserStats.SetAchievement("ACH_n")；
 ## 本端口不接 Steam，改为：置 unlocked 位 + 写 user:// 持久化 + print 记录。
 func _unlock(number: int) -> void:
+	# 防重复：即使旧存档/重复调用残留了待解锁位，已解锁也直接跳过。
+	if unlocked[number]:
+		return
 	unlocked[number] = true
+	achievement_unlocked.emit(number)
 	_save_unlocked()
 	print("Achievements: ACH_%d 解锁（已写入 user:// 本地记录）" % number)
 

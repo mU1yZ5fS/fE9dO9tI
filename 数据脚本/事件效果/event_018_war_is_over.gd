@@ -6,9 +6,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 本脚本负责复刻 Event18 的显示层（动态标题/描述/按钮）与结果层（result 0）。
 ## 差异：
 ##  - 原版 result 0 先置 text="另一场战争结束了。" 再经 WarResult(ref text) 追加结算文案；
-##    端口结算文案无（_apply_war_result 无文案），result_text 仅保留首句，结算效果由引擎执行。
-##  - 69/70 号战争战败 → data.ending_route=11/12 + load_scene_after_click（蒙古/海参崴结局）：
-##    端口 ENDINGS 表仅 0-7 → 差异注释，不触发结局（69/70 号战争端口也不存在）。
+##    端口现在用 war_result_texts.json 查表复刻 WarResult 文案，数值/领土/政体效果仍由
+##    war_system.gd（事件关闭后）执行，本脚本不做数值修改。
+##  - 69/70 号战争战败 → data.ending_route=11/12 + load_scene_after_click（蒙古/海参崴结局）。
 ##  - 端口触发：GameManager._check_war_endings（战争达结算条件 → start_event("war_is_over")），
 ##    原版由 Event476 链触发，等价。
 
@@ -86,24 +86,285 @@ func execute(context: Dictionary) -> void:
 		return
 	var war_id: int = d.war_resolve if d.size() > W.I_WAR_RESOLVE else -1
 	var war := _get_war(war_id)
-	# 西撒哈拉战争（war39）补原版 GameState.cs:1969-2007 专属结算文案。
-	if war_id == 39 and war != null:
-		context["result_text"] = _war39_result_text(war)
-		return
-	context["result_text"] = "另一场战争结束了。"
-	# 差异：原版此处追加 WarResult 结算文案；端口结算效果由 game.resolve_war_finished
-	# （事件关闭后）执行，无结算文案。
+	# 统一从战争结束文本查找表读取。原版 WarResult 的数值/领土效果已由
+	# war_system.gd 在事件关闭后执行，这里只负责文案显示。
+	context["result_text"] = _lookup_war_result_text(war_id, war)
 	if _is_mongol_defeat(war_id, war):
 		context["result_title"] = "真该死！"
-		context["result_text"] = "出乎我们的意料，孱弱的蒙古军队设法逼退了中国人民解放军。由于战争初期的失误指挥，我们的先遣部队在乌兰巴托残酷的巷战中损失惨痛。而蒙古民众也并不相信我们能为他们带来解放。纷纷拿起苏制装备躲进山区里，或是骑在马上把我们的巡逻队员绞杀至死。极端民族主义组织“白色十字”甚至成功的暗杀了我们指挥对蒙作战的军事首长。苏联以自愿报名为由派遣了成建制的“志愿军”，古巴和法国的雇佣兵也通过苏联来到蒙古，在各个地方运用他们在非洲学到的知识，打击我们的战士。在惨痛的绞肉战后，这场军事冒险在丢下几万具尸体后惨败收场。最耻辱的莫过于蒙古甚至设法攻克了二连浩特，当着我们全体电视观众的面把我们的国旗扯下并点燃。在各国的斡旋和美国的武力威胁下，我们只得灰溜溜的撤出蒙古。蒙古政府把这次胜利比做二十一世纪的土木堡之战。他们增加了军费，甚至采购了导弹。等等，门口的敲门声是？"
 		# 原 Event18.cs:143：data.war_resolve==69 && ingamewars[69].infl1<1000 → data.ending_route=11 + load_scene_after_click。
 		# Godot 用 queue_ending_after_event 复现「结果页确认后进结局」。
 		game.queue_ending_after_event(11)
 	elif _is_ussr_victory(war_id, war):
 		context["result_title"] = "真该死！"
-		context["result_text"] = "苏联通过背靠北约盟友，将亚洲大战变为了不亚于日俄战争的残酷绞肉机。虽然我们的海军得以封锁库页岛，并将苏联的海军困死在港口内；但我们的陆军并没能在各个方向取得进展，他们只能困守海参崴和伯力。此后，苏联人更是借助美方导弹平台轰炸我核心工业区与关键城市，甚至让北京也陷入威胁当中。在付出数十万人的伤亡后，我们不得不回到谈判桌上同苏联达成妥协，而作为战争的发起者的你定没有好下场……"
 		# 原 Event18.cs:151：data.war_resolve==70 && ingamewars[70].infl1<1000 → data.ending_route=12 + load_scene_after_click。
 		game.queue_ending_after_event(12)
+
+
+# ── WarResult 文案查找表（资产/数据/war_result_texts.json） ──
+
+const WAR_RESULT_TEXTS_PATH := "res://资产/数据/war_result_texts.json"
+const WAR_RESULT_FALLBACK := "另一场战争结束了。"
+
+static var _war_result_texts: Dictionary = {}
+static var _war_result_texts_loaded := false
+
+
+static func _load_war_result_texts() -> Dictionary:
+	if _war_result_texts_loaded:
+		return _war_result_texts
+	_war_result_texts_loaded = true
+	if not FileAccess.file_exists(WAR_RESULT_TEXTS_PATH):
+		return {}
+	var parsed = JSON.parse_string(FileAccess.get_file_as_string(WAR_RESULT_TEXTS_PATH))
+	if parsed is Dictionary:
+		_war_result_texts = parsed
+	return _war_result_texts
+
+
+## 从当前战争条目里取一个分支文案。
+func _t(entry: Dictionary, key: String) -> String:
+	if entry.has(key):
+		return String(entry.get(key, ""))
+	return ""
+
+
+## 统一入口：按 war_id 分派到 JSON 分支；找不到时安全回退通用文案。
+func _lookup_war_result_text(war_id: int, war: WarData) -> String:
+	if war == null or d == null:
+		return WAR_RESULT_FALLBACK
+	var table := _load_war_result_texts()
+	var entry := {}
+	if table.has(str(war_id)) and table.get(str(war_id)) is Dictionary:
+		entry = table.get(str(war_id))
+	if entry.is_empty():
+		return WAR_RESULT_FALLBACK
+	var txt := ""
+	match war_id:
+		0:
+			if war.infl1 >= 900:
+				txt = _t(entry, "a")
+			elif war.infl2 >= 900:
+				txt = _t(entry, "b")
+			else:
+				txt = _t(entry, "draw")
+		1:
+			# 原版还有 gameState.war==1 的全套越南解放子分支；端口暂无该独立状态，
+			# 先用主胜负分支（结果页不再显示通用“另一场战争结束了”）。
+			if war.infl1 >= 900:
+				txt = _t(entry, "a")
+			elif war.infl2 >= 900:
+				txt = _t(entry, "b")
+			else:
+				txt = _t(entry, "draw")
+		2:
+			txt = _t(entry, "a") if war.infl1 >= 750 else _t(entry, "b")
+		3:
+			txt = _war3_result_text_from_table(entry, war)
+		4:
+			txt = _war4_result_text_from_table(entry, war)
+		6:
+			txt = _t(entry, "a") if war.infl1 >= 400 else _t(entry, "b")
+		7:
+			txt = _war7_result_text_from_table(entry, war)
+		8:
+			if war.infl1 >= 500:
+				txt = _t(entry, "a")
+			elif war.infl2 >= 800:
+				txt = _t(entry, "b")
+			else:
+				txt = _t(entry, "draw")
+		9:
+			if war.infl1 >= 600:
+				txt = _t(entry, "a")
+			elif war.infl2 >= 800:
+				txt = _t(entry, "b")
+			else:
+				txt = _t(entry, "draw")
+		10:
+			txt = _t(entry, "a") if war.infl1 >= 700 else _t(entry, "b")
+		11:
+			txt = _t(entry, "a") if war.infl1 >= 700 else _t(entry, "b")
+		12:
+			txt = _t(entry, "a") if war.infl1 >= 700 else _t(entry, "b")
+		17:
+			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
+		18:
+			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
+		24:
+			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
+		25:
+			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
+		26:
+			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
+		27:
+			txt = _war27_result_text_from_table(entry, war)
+		29:
+			txt = _war29_result_text_from_table(entry, war)
+		31:
+			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
+		32:
+			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
+		15:
+			txt = _war15_result_text_from_table(entry, war)
+		16:
+			txt = _war16_result_text_from_table(entry, war)
+		22:
+			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
+		34:
+			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
+		35:
+			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
+		39:
+			txt = _war39_result_text(war)
+		69:
+			# 保留现有战败结局：infl1 < 1000 时走蒙古战败文案。
+			txt = _t(entry, "b") if _is_mongol_defeat(war_id, war) else _t(entry, "a")
+		70:
+			# 原版按 event_done[642] 区分两条获胜/失败路线；端口保留两条文案。
+			if d.event_done_num(642):
+				txt = _t(entry, "win_b") if war.infl1 >= 950 else _t(entry, "defeat_b")
+			else:
+				txt = _t(entry, "win_a") if war.infl1 >= 950 else _t(entry, "defeat_a")
+		86:
+			txt = _war86_result_text_from_table(entry, war)
+		_:
+			# 未精细接线的战争：若表里有 a/b/draw，按通用胜负阈值取一条。
+			if entry.has("a") and entry.has("b"):
+				if war.infl1 >= 900:
+					txt = _t(entry, "a")
+				elif war.infl2 >= 900:
+					txt = _t(entry, "b")
+				else:
+					txt = _t(entry, "draw") if entry.has("draw") else _t(entry, "b")
+			elif entry.has("a"):
+				txt = _t(entry, "a")
+	if txt.is_empty():
+		return WAR_RESULT_FALLBACK
+	return txt
+
+
+## 两伊战争（war3）分支：按原版 GameState.cs:216-351 的政体/战争态势拆文本。
+func _war3_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	var iraq := ws.get_country_by_legacy_index(14) if ws != null else null
+	var iran := ws.get_country_by_legacy_index(8) if ws != null else null
+	if iraq != null and (iraq.sub_government == 4 or iraq.sub_government == 20) \
+			and iraq.puppet_of < 0:
+		return _t(entry, "peace")
+	var iraq_soc: bool = iraq != null and ws.is_socialism(iraq, true)
+	var iran_soc: bool = iran != null and ws.is_socialism(iran, true)
+	if war.infl1 >= 900:
+		if iran_soc:
+			return _t(entry, "both_socialist") if iraq_soc else _t(entry, "iran_socialist_only")
+		if iraq != null and iraq.sub_government == 2:
+			return _t(entry, "iran_mao_revolution")
+		if iraq != null and iraq.sub_government == 16:
+			return _t(entry, "iran_other_revolution")
+		return _t(entry, "iraq_meks_win")
+	if iran_soc:
+		return _t(entry, "both_socialist") if iraq_soc else _t(entry, "iran_socialist_only")
+	if iraq_soc:
+		return _t(entry, "iraq_islamic_puppet")
+	return _t(entry, "china_aid_iran")
+
+
+## 黎巴嫩/中东战争（war4）：按 event711/event371 分支取文本。
+func _war4_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	if d.event_done_num(711):
+		return _t(entry, "r0") if war.infl1 >= 900 else _t(entry, "r1")
+	if not d.event_done_num(371):
+		return _t(entry, "r2") if war.infl1 >= 900 else _t(entry, "r3")
+	if war.infl1 >= 700:
+		return _t(entry, "r4")
+	if war.infl2 >= 500:
+		return _t(entry, "r5")
+	return _t(entry, "r6")
+
+
+## 印度内战（war7）：原版 GameState.cs:505-571，按 infl1 与 resultOfEvents[125] 分四支。
+func _war7_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	var result125 := d.result_of_event_num(125) if d != null else 0
+	if war.infl1 >= 900:
+		return _t(entry, "win_125_0") if result125 == 0 else _t(entry, "win_125_1")
+	return _t(entry, "lose_125_1") if result125 == 1 else _t(entry, "lose_125_0")
+
+
+## 老挝内战（war27）：infl1>=500 政府胜，否则叛军胜（原版 1241 模板无占位符，proprc 后缀实际不参与）。
+func _war27_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	return _t(entry, "a") if war.infl1 >= 500 else _t(entry, "b")
+
+
+## 伊拉克-科威特战争（war29）：原版 GameState.cs:1532-1626，按中国阵营/影响力分多支。
+func _war29_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	var china := ws.get_country_by_legacy_index(1) if ws != null else null
+	var is_ovd: bool = china != null and china.has_tag("ovd")
+	var is_seato: bool = china != null and china.has_tag("seato")
+	var prc_influence: int = d.influence_prc if d != null else 0
+	var ussr_power: int = 0
+	var usa_power: int = 0
+	if d != null and d.empires.size() > EmpireData.USSR and d.empires[EmpireData.USSR] != null:
+		ussr_power = d.empires[EmpireData.USSR].power
+	if d != null and d.empires.size() > EmpireData.USA and d.empires[EmpireData.USA] != null:
+		usa_power = d.empires[EmpireData.USA].power
+	if war.infl1 >= 900:
+		if is_ovd:
+			return _t(entry, "a_ovd_prc") if prc_influence >= ussr_power else _t(entry, "a_ovd_sov")
+		if is_seato:
+			return _t(entry, "a_seato_prc") if prc_influence >= usa_power else _t(entry, "a_seato_usa")
+		return _t(entry, "a_neutral")
+	if war.infl2 >= 500:
+		if is_ovd:
+			return _t(entry, "b_ovd")
+		if is_seato:
+			return _t(entry, "b_seato")
+		return _t(entry, "b_neutral")
+	if is_ovd:
+		return _t(entry, "draw_ovd")
+	if is_seato:
+		return _t(entry, "draw_seato")
+	return _t(entry, "draw_neutral")
+
+
+## 欧加登战争（war15）：按是否已触发 event588 分两阶段。
+func _war15_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	if not d.event_done_num(588):
+		return _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
+	if war.infl1 >= 900:
+		return _t(entry, "a2")
+	if war.infl2 >= 900:
+		return _t(entry, "b2")
+	return _t(entry, "draw2")
+
+
+## 朝鲜统一战争（war16）：动态模板填充国号/执政党，第三段先用默认延安派文本。
+func _war16_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	if war.infl1 < 950:
+		return _t(entry, "defeat")
+	var china := ws.get_country_by_legacy_index(1) if ws != null else null
+	var num := 2
+	if china != null:
+		match china.government:
+			GameConstants.Government.AUTHORITARIAN:
+				num = 1
+			GameConstants.Government.SOCIALIST:
+				num = 2
+			GameConstants.Government.REFORMIST:
+				num = 3
+			_:
+				num = 4
+	var tpl := _t(entry, "victory_template")
+	return tpl \
+		.replace("{1}", _t(entry, "country_%d" % num)) \
+		.replace("{2}", _t(entry, "party_%d" % num)) \
+		.replace("{3}", _t(entry, "third_default"))
+
+
+## 北爱尔兰（war86）：简化按 infl1/infl2 取分支；原版 data[147]/data[166] 细节暂未接线。
+func _war86_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	if war.infl1 >= 900:
+		return _t(entry, "rebel_win")
+	if war.infl2 >= 900:
+		return _t(entry, "britain_win")
+	return _t(entry, "peaceful_withdrawal")
 
 
 # ── 分支判定辅助（逐字复刻 Event18.cs 条件） ──

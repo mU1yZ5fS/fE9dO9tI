@@ -67,18 +67,20 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(event_def.options[0], TXT_OPT0[0])
 		_enable(event_def.options[1], TXT_OPT1[0])
 		_enable(event_def.options[2], TXT_OPT2[0])
+		# current_leader==1 = 卡特连任成功；应显示“共和党失败”的 TXT_DESC[0]，
+		# 不能与“民主党惨败”的 TXT_DESC[1] 写反。
 		if world.empires[0].current_leader == 1:
-			event_def.description = TXT_DESC[1]
-		else:
 			event_def.description = TXT_DESC[0]
+		else:
+			event_def.description = TXT_DESC[1]
 	else:
 		_enable(event_def.options[0], TXT_OPT0[1])
 		_disable(event_def.options[1], "")
 		_disable(event_def.options[2], "")
 		if world.empires.size() > 0 and world.empires[0] != null and world.empires[0].current_leader == 1:
-			event_def.description = TXT_DESC[1]
-		else:
 			event_def.description = TXT_DESC[0]
+		else:
+			event_def.description = TXT_DESC[1]
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():

@@ -607,7 +607,7 @@ func _assassinate_historic_allowed(idx: int) -> bool:
 ## 原版 num2 修改器尾部条件（Button_Pol_Script.cs:540 末尾）
 func _assassinate_modifier_allowed(idx: int) -> bool:
 	var mod3: bool = GameManager._mod_active(_world, GameConstants.Modifier.CULTURAL_REVOLUTION)
-	var ev80 := _world.completed_event_ids.has("event_80")
+	var ev80 := _world.completed_event_ids.has("event_080")
 	return (idx > 4 or not mod3 or ev80) and (idx > 4 or idx == 2 or not mod3 or not ev80)
 
 
@@ -695,7 +695,7 @@ func _refresh_button_tooltips() -> void:
 	elif not _assassinate_historic_allowed(idx):
 		kill_tip = " 等 待 事 件"
 	elif idx <= 4 and idx != 2 and GameManager._mod_active(_world, GameConstants.Modifier.CULTURAL_REVOLUTION) \
-			and _world.completed_event_ids.has("event_80"):
+			and _world.completed_event_ids.has("event_080"):
 		kill_tip = " 我 们 正 走 在 正 确 的 道 路 上 ！"
 	elif investigating:
 		kill_tip = " 正 被 纪 律 审 查"

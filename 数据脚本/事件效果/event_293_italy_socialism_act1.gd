@@ -74,7 +74,7 @@ func execute(context: Dictionary) -> void:
 				italy.government = GameConstants.Government.REFORMIST
 				italy.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 			var t0 := _leader_name()
-			context["result_text"] = TXT_R0.format([t0, t0])
+			context["result_text"] = TXT_R0.format([t0, ""])
 		1:
 			_add(W.I_BUDGET, -10)
 			if ws.factions.size() > 0 and ws.factions[0] != null:
@@ -91,7 +91,7 @@ func execute(context: Dictionary) -> void:
 				italy.set_tag("对华贸易", true)
 			_add(181, 2)
 			var t1 := _leader_name()
-			context["result_text"] = TXT_R1.format([t1, t1])
+			context["result_text"] = TXT_R1.format([t1, ""])
 		2:
 			_add(W.I_AGENTS, -60)
 			_add_relation(EmpireData.USSR, 100)

@@ -16,7 +16,7 @@ const 提示配置 := {
 	"生活水平": ["生活水平", W.I_LIVING],
 	"国际声望": ["国际声誉", W.I_DIPLO],
 	"特工网络": ["特工网络", W.I_AGENTS],
-	"全球影响力": ["全球影响力", W.I_INFLUENCE],
+	"国际影响力": ["国际影响力", W.I_INFLUENCE],
 	"预算": ["预算", W.I_BUDGET],
 	"与美国关系": ["与美国的关系", W.I_USA_RELATIONS],
 	"与苏联关系": ["与苏联的关系", W.I_USSR_RELATIONS],
@@ -92,6 +92,9 @@ func _set_tip_node(node_name: String) -> void:
 	var n := find_child(node_name, true, false)
 	if n is Control:
 		BBC.attach(n)
+		# 悬停瞬间立即刷新该栏的 ±变化，不等待 stats_changed/date_changed。
+		if not n.mouse_entered.is_connected(_on_tip_hover):
+			n.mouse_entered.connect(_on_tip_hover.bind(node_name))
 
 
 func _set_tip(node_name: String, text: String) -> void:
@@ -99,6 +102,21 @@ func _set_tip(node_name: String, text: String) -> void:
 	if n is Control:
 		BBC.attach(n)
 		n.tooltip_text = text
+
+
+func _on_tip_hover(label_name: String) -> void:
+	_set_tip(label_name, _tip_text(label_name, GameManager.world if GameManager else null))
+
+
+func _tip_text(label_name: String, w: WorldState) -> String:
+	if w == null:
+		return ""
+	var cfg: Array = 提示配置[label_name]
+	var idx: int = cfg[1]
+	var tip := "%s: %s" % [cfg[0], _delta_str(w.两周变化(idx))]
+	if idx == W.I_DIPLO:
+		tip += _faction_suffix(w.diplomatic_reputation)
+	return tip
 
 
 func _delta_str(v: int) -> String:
@@ -123,9 +141,4 @@ func _faction_suffix(v: int) -> String:
 
 func _refresh_tooltips(w: WorldState) -> void:
 	for label_name in 提示配置:
-		var cfg: Array = 提示配置[label_name]
-		var idx: int = cfg[1]
-		var tip := "%s: %s" % [cfg[0], _delta_str(w.两周变化(idx))]
-		if idx == W.I_DIPLO:
-			tip += _faction_suffix(w.diplomatic_reputation)
-		_set_tip(label_name, tip)
+		_set_tip(label_name, _tip_text(label_name, w))

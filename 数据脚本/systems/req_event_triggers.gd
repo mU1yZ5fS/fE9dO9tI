@@ -64,6 +64,26 @@ static func _req_dlc02(w: WorldState) -> bool:
 	if not _done(310) and w.date.year >= 1981 \
 			and (_find_politician(w, 16, 16) < 0 or _done(309)):
 		return _start(310)
+
+	# ── 左线补齐：PDF/原版有日期但没有触发入口的国内事件 ──
+	# 原版 ReqEventForDLC02.cs:34-45：Event32 乌兰巴托的夜（1984-08-09/1984-09/1985 起）
+	if not _done(32) and _ge(w, 1984, 8, 9):
+		return _start(32)
+	# CS/L：Event456 高考（1977-10-14）
+	if not _done(456) and _ge(w, 1977, 10, 14):
+		return _start(456)
+	# Event313 教育质量的下降（1984-02-03）
+	if not _done(313) and _ge(w, 1984, 2, 3):
+		return _start(313)
+	# Event327 修宪？（1980-09-09）
+	if not _done(327) and _ge(w, 1980, 9, 9):
+		return _start(327)
+	# Event669 教育路线大论战（1977-10-12）：原版有日期但被全局优先序饿死
+	if not _done(669) and _ge(w, 1977, 10, 12):
+		return _start(669)
+	# Event670 群众生活、工作方法（1977-11-01）：同因，一并兜底
+	if not _done(670) and _ge(w, 1977, 11, 1):
+		return _start(670)
 	return false
 
 
@@ -295,7 +315,7 @@ static func _tag(w: WorldState, idx: int, tag: String) -> bool:
 
 static func _parts(w: WorldState, idx: int, part: int) -> bool:
 	var c := _c(w, idx)
-	return c != null and part >= 0 and part < c.parts.size() and c.parts[part]
+	return c != null and c.has_part(part)
 
 
 static func _infl_ch(w: WorldState, idx: int) -> int:

@@ -311,6 +311,8 @@ func _on_policy_slot(cat_name: String, slot_idx: int) -> void:
 		return
 	if GameManager.change_policy(int(政策类别[cat_name]["idx"]), target_val):
 		_refresh()
+	# 点击后保持显示“被点击的政策”的条件，而不是被 _refresh_policy_panel 重置成相邻政策。
+	_on_policy_slot_hover(cat_name, slot_idx)
 
 
 ## 常驻 4 条件文案（原版 uslovie_text[0..3] 逐字，含空格排版）。

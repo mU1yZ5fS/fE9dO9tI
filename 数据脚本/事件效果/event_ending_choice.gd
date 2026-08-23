@@ -63,7 +63,7 @@ func _apply_farewell_updates() -> void:
 	# in1992_script.cs:79-82
 	if c61 != null and c51 != null and c61.sub_government != GameConstants.SubGovernment.LEFT_RADICAL and c51.has_tag("nato"):
 		if usa != null:
-			usa.power += 5
+			usa.power = clampi(usa.power + 5, 0, 1000)
 	# :83-86
 	if c1 != null and c51 != null and (c1.government == GameConstants.Government.SOCIALIST or c1.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
 		c51.development = 0
@@ -85,9 +85,9 @@ func _apply_farewell_updates() -> void:
 		return
 	# :107-113
 	if ussr.current_leader == 3:
-		ussr.power += 50
+		ussr.power = clampi(ussr.power + 50, 0, 1000)
 	elif ussr.current_leader == 5:
-		ussr.power -= 50
+		ussr.power = clampi(ussr.power - 50, 0, 1000)
 	elif ussr.current_leader == 6:
 		if d.xinjiang_policy == 1:
 			d.xinjiang_policy = 2
@@ -96,9 +96,9 @@ func _apply_farewell_updates() -> void:
 		var relres: bool = ws.get_flag("relres")
 		var c4_prosov: bool = c4 != null and c4.has_tag("亲苏")
 		if (relres and d.econ_system == 11) or (c4 != null and c4.government == GameConstants.Government.SOCIALIST and c4_prosov):
-			ussr.power += 100
+			ussr.power = clampi(ussr.power + 100, 0, 1000)
 		else:
-			ussr.power += 50
+			ussr.power = clampi(ussr.power + 50, 0, 1000)
 
 
 func _war_going(idx: int) -> bool:

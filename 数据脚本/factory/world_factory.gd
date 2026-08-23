@@ -27,7 +27,9 @@ const FICTIONAL_COUNTRY_OFFSET := 9000
 
 ## 9000+ 实体的中文名## 9000+ 实体的中文名（逐行取自逆向 Assets/Resources/Country_en.txt 的 id 行）。
 const OFFSET_COUNTRY_NAMES_ZH := {
+	18: "西撒哈拉",
 	69: "西藏", 70: "维吾尔斯坦",
+	95: "库尔德斯坦",
 	145: "格陵兰岛", 150: "南苏丹", 151: "达尔富尔",
 	153: "阿扎尼亚", 155: "塞舌尔", 156: "阿扎瓦德",
 	157: "库尔德斯坦二号", 159: "瓦努阿图", 162: "南极洲",
@@ -307,8 +309,9 @@ const LEADER_POSITION_SENTINEL := -2
 # ============================================================================
 # 对齐 GameStartScript.cs:72-84：0,1,2,3,6,14,15,28,54,55,61,62,64；
 # 另按 dlc[3] 恒真（Godot 改版全 DLC 免费可玩）补 42/50/56（GameStartScript.cs:87-89）。
-# 旧值 [0,1,3,6,14,15,54,55,59] 缺 2/28/61/62/64 且多 59，2026-08-14 主控亲验修正。
-const START_MODIFIER_IDS := [0, 1, 2, 3, 6, 14, 15, 28, 42, 50, 54, 55, 56, 61, 62, 64]
+# 51 号「黑金/OIL_MONEY」在原版也是 dlc[3] 环境下开局激活（GameStartScript.cs:829），
+# 缺失会导致石油决议、石油经济、event_418 全部死锁；旧值未含 51，已补齐。
+const START_MODIFIER_IDS := [0, 1, 2, 3, 6, 14, 15, 28, 42, 50, 51, 54, 55, 56, 61, 62, 64]
 
 
 # ============================================================================
@@ -453,6 +456,10 @@ static func _assign_real_gwcodes(ws: WorldState) -> void:
 			_apply_map_country_meta(c, map_countries)
 			if c.gwcode < FICTIONAL_COUNTRY_OFFSET:
 				matched += 1
+			else:
+				# 9000+ 为地图上不存在的虚构/分离实体，map_countries 中没有中文名，
+				# 必须用 OFFSET_COUNTRY_NAMES_ZH 补齐，否则加丹加等国不显示国名。
+				_apply_offset_name(c)
 		else:
 			c.gwcode = FICTIONAL_COUNTRY_OFFSET + sid
 			_apply_offset_name(c)
