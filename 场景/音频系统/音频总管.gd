@@ -68,6 +68,7 @@ var 随机: bool = true
 
 
 func _ready() -> void:
+	_确保总线()
 	# 创建背景音乐播放器并路由到「背景音乐」总线
 	背景音乐播放器 = AudioStreamPlayer.new()
 	背景音乐播放器.name = "背景音乐播放器"
@@ -493,6 +494,21 @@ func _加载图片(path: String) -> Texture2D:
 	if img == null:
 		return null
 	return ImageTexture.create_from_image(img)
+
+
+# ============================== 总线保障 ==============================
+## 兜底：若 default_bus_layout 因 uid 解析失败等原因未加载，
+## 「背景音乐」「音效」总线不存在时，AudioStreamPlayer 路由到空总线会静音。
+## 这里在 _ready 最前面确保两条总线存在（已存在则跳过），避免「进游戏没音乐」。
+func _确保总线() -> void:
+	for 名 in ["背景音乐", "音效"]:
+		if AudioServer.get_bus_index(名) >= 0:
+			continue
+		AudioServer.add_bus()
+		var idx := AudioServer.bus_count - 1
+		AudioServer.set_bus_name(idx, 名)
+		AudioServer.set_bus_send(idx, "Master")
+		AudioServer.set_bus_volume_db(idx, 0.0)
 
 
 # ============================== 音量 ==============================

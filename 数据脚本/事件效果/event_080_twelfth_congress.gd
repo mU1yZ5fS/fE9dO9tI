@@ -349,6 +349,14 @@ func _swap_leader_with_politician(slot: int, _faction_index: int = -1) -> void:
 	if other == null:
 		return
 	PoliticianSystem.swap_leader_profile(ws.leader, other)
+	var leader_post_swap: Array[int] = []
+	for i in ws.politics_positions.size():
+		if ws.politics_positions[i] == -2:
+			ws.politics_positions[i] = slot
+		elif ws.politics_positions[i] == slot:
+			leader_post_swap.append(i)
+	for i in leader_post_swap:
+		ws.politics_positions[i] = -2
 
 
 func _find_politician_by_names(name_first: int, name_last: int) -> int:

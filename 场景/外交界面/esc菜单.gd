@@ -1,9 +1,36 @@
 extends CanvasLayer
 
+## preload 而非 class_name 全局引用：新增全局类在未重建 .godot 类缓存时不可见。
+const EndingSvc := preload("res://数据脚本/services/ending_service.gd")
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	refresh_post_exit()
+
+
+## 原版 CascadScrupt.cs:26-36 —— ESC 菜单（menu）在游戏年份 >= 1986 时显示
+## PostExit（「结束」）按钮，点击走 in1992_script.cs 右按钮的「功成身退」判定。
+func refresh_post_exit() -> void:
+	var btn := get_node_or_null("结束") as Button
+	if btn == null:
+		return
+	var show_btn := false
+	if GameManager != null and GameManager.world != null and GameManager.world.date != null:
+		show_btn = GameManager.world.date.year >= 1986
+	btn.visible = show_btn
+
+
+## 原版 PostExit 即 in1992_script.cs（is_left=false）右按钮：直接进入结局判定。
+func _on_结束_pressed() -> void:
+	if GameManager == null or GameManager.world == null:
+		return
+	var parent := get_parent()
+	if parent != null and parent.has_method("close_esc_menu"):
+		parent.close_esc_menu()
+	else:
+		get_tree().paused = false
+	EndingSvc.end_after_1986_via_menu(GameManager.world, GameManager, EventEngine)
 
 
 func _on_存档_pressed() -> void:

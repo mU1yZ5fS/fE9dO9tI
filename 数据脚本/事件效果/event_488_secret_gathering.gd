@@ -61,7 +61,7 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	if world.empires.size() <= EmpireData.USSR or world.empires[EmpireData.USSR] == null:
 		return false
-	if world.empires[EmpireData.USSR].power > 100:
+	if world.empires[EmpireData.USSR].power > 400:
 		return false
 	var leader := world.empires[EmpireData.USSR].current_leader
 	if leader != 5 and leader != 6 and leader != 8:

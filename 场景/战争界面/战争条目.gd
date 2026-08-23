@@ -65,7 +65,7 @@ func setup(p_war_id: int, war: WarData) -> void:
 
 ## 按 WarDef 中显式指定的图片资源设置左右图标；
 ## 未指定时回退到通用左右图标，不再按国家/子意识形态推断。
-func _apply_side_icons(p_war_id: int, war: WarData) -> void:
+func _apply_side_icons(p_war_id: int, _war: WarData) -> void:
 	var def := WarCatalog.get_def(p_war_id)
 	var left_icon := GENERIC_LEFT_ICON
 	var right_icon := GENERIC_RIGHT_ICON

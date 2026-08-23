@@ -155,7 +155,8 @@ func _join_alliances(c: CountryData) -> void:
 
 
 ## 领导人与指定政治家双向互换身份（Event44/80/94 共用）。
-## 第二个参数为兼容现有调用点保留；互换本身不需要额外修改派系领袖索引。
+## 第二个参数为兼容现有调用点保留；按原版 MakeNewLeader 同步职位重映射，
+## 否则换领袖后原领袖/新领袖兼任的官职会变成空缺。
 func _swap_leader_with_politician(slot: int, _faction_index: int = -1) -> void:
 	if ws == null or ws.leader == null:
 		return
@@ -165,3 +166,16 @@ func _swap_leader_with_politician(slot: int, _faction_index: int = -1) -> void:
 	if other == null:
 		return
 	PoliticianSystem.swap_leader_profile(ws.leader, other)
+	_remap_leader_positions_after_swap(ws, slot)
+
+
+## 职位重映射：原领袖兼任职位 (-2) 交给 slot；slot 原本兼任职位由领袖本人承担。
+func _remap_leader_positions_after_swap(w: WorldState, slot: int) -> void:
+	var leader_post_swap: Array[int] = []
+	for i in w.politics_positions.size():
+		if w.politics_positions[i] == -2:  # 实权领袖本人
+			w.politics_positions[i] = slot
+		elif w.politics_positions[i] == slot:
+			leader_post_swap.append(i)
+	for i in leader_post_swap:
+		w.politics_positions[i] = -2

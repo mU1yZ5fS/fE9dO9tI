@@ -39,6 +39,7 @@ func _ready() -> void:
 	# 事件场景会在 GameManager 暂停时间后打开；设为 ALWAYS 保证按钮仍响应。
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_collect_option_nodes()
+	_apply_event_ui_settings()
 
 	_button_group = ButtonGroup.new()
 	for i in _option_buttons.size():
@@ -52,6 +53,50 @@ func _ready() -> void:
 	_options_root.hide()
 	_result_root.hide()
 	_load_event()
+
+
+## 按设置应用事件界面字体大小与对齐方式。
+func _apply_event_ui_settings() -> void:
+	if GameManager == null:
+		return
+	var align: int = GameManager.event_text_alignment
+	var align_enum := HORIZONTAL_ALIGNMENT_LEFT
+	if align == 1:
+		align_enum = HORIZONTAL_ALIGNMENT_CENTER
+	elif align == 2:
+		align_enum = HORIZONTAL_ALIGNMENT_RIGHT
+	if _title:
+		_title.add_theme_font_size_override("font_size", clampi(GameManager.event_desc_font_size + 10, 12, 96))
+	# 事件文案对齐只作用于正文/结果，不影响事件标题和选项。
+	if _desc:
+		_desc.horizontal_alignment = align_enum
+		_desc.add_theme_font_size_override("normal_font_size", clampi(GameManager.event_desc_font_size, 12, 72))
+	if _result_desc:
+		_result_desc.horizontal_alignment = align_enum
+		_result_desc.add_theme_font_size_override("normal_font_size", clampi(GameManager.event_result_font_size, 12, 72))
+	for lbl in _option_labels:
+		if lbl is Label:
+			lbl.add_theme_font_size_override("font_size", clampi(GameManager.event_option_font_size, 12, 72))
+
+
+## 事件文本显示前处理：段首空两格、段落之间留空隙（由设置开关控制）。
+func _format_event_text(text: String) -> String:
+	if text.is_empty() or GameManager == null:
+		return text
+	var out := text
+	if GameManager.paragraph_indent_enabled or GameManager.paragraph_spacing_enabled:
+		var lines := out.split("\n")
+		var formatted: Array[String] = []
+		for raw_line in lines:
+			var line := raw_line
+			if GameManager.paragraph_indent_enabled and line.strip_edges() != "":
+				if not line.begins_with("　　"):
+					line = "　　" + line
+			formatted.append(line)
+		out = "\n".join(formatted)
+		if GameManager.paragraph_spacing_enabled:
+			out = out.replace("\n", "\n\n")
+	return out
 
 
 func _collect_option_nodes() -> void:
@@ -82,7 +127,7 @@ func _load_event() -> void:
 		return
 
 	_title.text = _event_def.title
-	_desc.text = BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number))
+	_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number)))
 	# 事件配图规则：
 	#   1. 资源文件（EventDef.image）设置了图片 → 优先使用；
 	#   2. 否则按 source_event_number 找 资产/事件插画/<编号>.png；
@@ -179,7 +224,7 @@ func _on_next_pressed() -> void:
 				_desc.hide()
 				_options_root.hide()
 				_back_button.hide()
-				_result_desc.text = BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number))
+				_result_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number)))
 				_result_root.show()
 				_page = Page.RESULT
 				return
@@ -198,7 +243,7 @@ func _on_next_pressed() -> void:
 			_back_button.hide()   # 结果页不能返回
 			_title.show()
 			_title.text = result.get("name", "")
-			_result_desc.text = BbcTooltip.event_text_to_bbcode(String(result.get("text", "")), str(_event_def.source_event_number))
+			_result_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(String(result.get("text", "")), str(_event_def.source_event_number)))
 			_result_root.show()
 			_page = Page.RESULT
 

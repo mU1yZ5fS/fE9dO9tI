@@ -87,6 +87,12 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "QQ交流群"
 
+[node name="二维码状态" type="Label" parent="布局/二维码区/二维码说明" unique_id=525917171]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.45, 0.25, 1)
+theme_override_font_sizes/font_size = 22
+text = "游戏内置二维码"
+
 [node name="按钮行" type="HBoxContainer" parent="布局" unique_id=1229375844]
 layout_mode = 2
 theme_override_constants/separation = 16

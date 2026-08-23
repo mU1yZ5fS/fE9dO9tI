@@ -46,6 +46,8 @@ func execute(context: Dictionary) -> void:
 		d.italy_power_174 -= 999
 	if ws.modifiers[28].is_active:
 		d.italy_power_172 += 1
+	# 改版：意大利毛派分数（174）仅在“无产阶级宪法”（极左宪法）下加成，普通75宪法不加。
+	if ModifierCatalog._is_proletarian_constitution(ws):
 		d.italy_power_174 += 1
 	if c85 != null and c85.usa_influence > 0:
 		d.italy_power_173 += 2

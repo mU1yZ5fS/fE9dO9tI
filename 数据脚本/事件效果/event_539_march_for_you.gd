@@ -2,7 +2,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event539.cs：献给你的进行曲（韩国光州后续，2选项）。
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:312-314 —— 复杂条件见 evaluate()。
-## 差异：SKRebel→ws.get_flag("SKRebel")；ingamewars[0]→ws.wars[0]；
+## 差异：south_korea_gwangju_rebellion→ws.get_flag("south_korea_gwangju_rebellion")；ingamewars[0]→ws.wars[0]；
 ##   parts[0]→CountryData.parts[0]；IsSocialism 谓词对应关系见 evaluate。
 
 const TXT_OPT0_DIS := "我们无法支持！"
@@ -49,7 +49,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	var r474 := int(ws.completed_event_ids.get("event_474", 0))
-	if ws.get_flag("SKRebel") and r474 == 0 and ws.completed_event_ids.has("event_474"):
+	if ws.get_flag("south_korea_gwangju_rebellion") and r474 == 0 and ws.completed_event_ids.has("event_474"):
 		_enable(opt[0], event_def.options[0].text)
 	else:
 		_disable(opt[0], TXT_OPT0_DIS)

@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://cyvh88oq1sybe" path="res://资产/UI/设置/增大1音量.png" id="7_cm5al"]
 [ext_resource type="Script" uid="uid://witg74bkog08" path="res://场景/音频系统/音频信息.gd" id="7_v75l0"]
 [ext_resource type="Texture2D" uid="uid://gu82xjrtnb7e" path="res://资产/UI/设置/增大10音量.png" id="8_owh4n"]
+[ext_resource type="Texture2D" uid="uid://eprjrxt2krfc" path="res://资产/UI/外交/国家互动按钮背景.png" id="8_r4j0p"]
 [ext_resource type="Texture2D" uid="uid://cp3ou6l8whjic" path="res://资产/UI/设置/循环播放.png" id="12_cm5al"]
 [ext_resource type="Texture2D" uid="uid://l7yjfwrmjs3" path="res://资产/UI/设置/随机播放.png" id="13_owh4n"]
 [ext_resource type="Texture2D" uid="uid://8eufacjq8ce2" path="res://资产/UI/设置/歌名背景.png" id="14_owh4n"]
@@ -18,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://er1exkjd2a6b" path="res://场景/音乐界面/专辑.tscn" id="17_ujnel"]
 [ext_resource type="Texture2D" uid="uid://cpwi1qdw7s3s" path="res://资产/UI/设置/右翻页.png" id="18_upx2b"]
 [ext_resource type="Texture2D" uid="uid://cgkvinhaed2ke" path="res://资产/UI/加载/加载文本栏.png" id="19_rowbar"]
+[ext_resource type="PackedScene" uid="uid://donvn7hklp528" path="res://场景/设置界面/自定义页.tscn" id="20_custom"]
 
 [sub_resource type="Theme" id="Theme_34yt3"]
 default_font = ExtResource("1_ioabl")
@@ -626,21 +628,46 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="沙盒作弊说明" type="RichTextLabel" parent="." unique_id=2026081702]
+[node name="页导航" type="HBoxContainer" parent="." unique_id=2026081801]
 layout_mode = 0
-offset_left = 587.0
-offset_top = 97.0
-offset_right = 1338.0
-offset_bottom = 217.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 18
-bbcode_enabled = true
-text = "[color=red]沙盒模式作弊快捷键（仅难度0）[/color]
-左Ctrl+1~9/0：党支持/民支持/思想/生活/国际声望/国际影响力/预算/特工/军事力量/美苏关系 +10
-左Ctrl+D：外交声望 -10
-左Ctrl+I：军事介入点 +10
-左Ctrl+A：与苏联关系 恢复/破裂 切换
-F12：打开/关闭调试控制台"
+anchor_left = 0.5
+anchor_top = 0.16
+anchor_right = 0.5
+anchor_bottom = 0.16
+offset_left = -240.0
+offset_top = -32.0
+offset_right = 240.0
+offset_bottom = 32.0
+grow_horizontal = 2
+theme_override_constants/separation = 16
+
+[node name="基础页按钮" type="Button" parent="页导航" unique_id=2026081802]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "◀ 基础/音乐"
+icon = ExtResource("8_r4j0p")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="自定义页按钮" type="Button" parent="页导航" unique_id=2026081803]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "自定义 ▶"
+icon = ExtResource("8_r4j0p")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="自定义页" parent="." unique_id=176730194 instance=ExtResource("20_custom")]
+visible = false
+layout_mode = 1
 
 [node name="音频信息背景图" type="TextureRect" parent="." unique_id=738632101]
 layout_mode = 0

@@ -1979,6 +1979,11 @@ static func _apply_war37_result(war: WarData, d: WorldState) -> void:
 		add_empire_power(EmpireData.USA, -50)
 		d.global_influence += 40
 		d.diplomatic_reputation += 20
+		# 原版 GameState.cs:1884-1890：极左/保守派政客忠诚 +100。
+		for p in w.politicians:
+			if p != null and (p.trait_personality < GameConstants.PoliticianPersonality.MODERATE \
+					or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE):
+				p.loyalty = clampi(p.loyalty + 100, 0, 1000)
 		if c24 != null and c24.parts.size() > 0 and c24.parts[0] and c24.has_tag("亲中"):
 			if c101 != null:
 				c101.government = GameConstants.Government.SOCIALIST
@@ -3541,7 +3546,7 @@ static func _apply_war68_result(war: WarData, d: WorldState) -> void:
 			war.infl1 = 600
 			war.infl2 = 400
 			war.usa_side = GameConstants.WarSide.SIDE2
-			war.ussr_side = GameConstants.WarSide.SIDE2
+			war.ussr_side = GameConstants.WarSide.NONE
 			if c123.parts.size() > 0:
 				c123.parts[0] = true
 			c123.内战中 = false
@@ -3638,7 +3643,7 @@ static func _apply_war68_result(war: WarData, d: WorldState) -> void:
 			war.infl1 = 600
 			war.infl2 = 400
 			war.usa_side = GameConstants.WarSide.SIDE2
-			war.ussr_side = GameConstants.WarSide.SIDE2
+			war.ussr_side = GameConstants.WarSide.SIDE1
 			if c123.parts.size() > 0:
 				c123.parts[0] = true
 			c123.内战中 = false
@@ -4829,14 +4834,40 @@ static func _puppet_to_china(w: WorldState, idx: int, new_name: String, parts_se
 
 
 
+## JoinAllOurAlliances(true) 等价（原版 Country.cs:42-87 逐条）。
+## 中国 okb→okb；OVD→ovd；SEATO→seato；econ→econ；SEV→sev；ASEAN→asean；
+## 事件548 后中国 RIM、该国 (社会主义 且 !gkchp) 或 (gkchp 且 sub∈{0,2,17,10})、
+## sub∉{16,18}、非 sev/ovd、亲中、非傀儡 → rim。
 static func _join_all_our_alliances(w: WorldState, c: CountryData) -> void:
 	var china := WarQueries.wc(w, 1)
-	if china == null:
+	if china == null or c == null:
 		return
+	if china.has_tag("okb"):
+		c.set_tag("okb", true)
+	elif china.has_tag("ovd"):
+		c.set_tag("ovd", true)
+	elif china.has_tag("seato"):
+		c.set_tag("seato", true)
 	if china.has_tag("econ"):
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+	elif china.has_tag("asean"):
+		c.set_tag("asean", true)
+	var gkchp: bool = w.get_flag("is_gkchp")
+	var soc_ok: bool = (c.government == GameConstants.Government.SOCIALIST \
+			or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) and not gkchp
+	var gkchp_ok: bool = gkchp and c.sub_government in [
+		GameConstants.SubGovernment.LEFT_RADICAL,
+		GameConstants.SubGovernment.MARXIST_LENINIST,
+		GameConstants.SubGovernment.MAOIST,
+		GameConstants.SubGovernment.LEFT_NATIONALIST,
+	]
+	if w.event_done_num(548) and china.has_tag("rim") and (soc_ok or gkchp_ok) \
+			and c.sub_government not in [GameConstants.SubGovernment.SOVIET_STYLE, GameConstants.SubGovernment.TROTSKYIST] \
+			and not c.has_tag("sev") and not c.has_tag("ovd") \
+			and c.has_tag("亲中") and c.puppet_of < 0:
+		c.set_tag("rim", true)
 
 
 static func _add_d(d: WorldState, idx: int, delta: int) -> void:

@@ -19,6 +19,8 @@ var _info_label: Label
 
 
 func _ready() -> void:
+	if GameManager:
+		UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 	SaveCatalog.ensure_dir()
 	_info_label = get_node_or_null("保存文本") as Label
 	_wire_slots()

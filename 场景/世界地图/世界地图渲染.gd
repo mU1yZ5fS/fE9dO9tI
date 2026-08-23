@@ -18,6 +18,7 @@ signal map_data_ready
 @export var border_color: Color = Color(0.02, 0.02, 0.02, 0.75)
 @export var selected_color: Color = Color(1.0, 0.92, 0.15, 1.0)
 @export var hover_color: Color = Color(1.0, 1.0, 1.0, 0.85)
+@export_range(1.0, 12.0, 0.5) var border_width: float = 3.0
 
 # ── 昼夜系统 ──
 @export var day_night_enabled: bool = true
@@ -146,6 +147,7 @@ func _ready() -> void:
 			_color_palette_tex.update(_color_palette_image)
 			
 			_inject_dynamic_textures()
+			_apply_map_settings()
 			set_process(day_night_enabled)
 			print("[TerritoryMap] 共享缓存加载完成 regions=%d countries=%d" % [_region_owner.size(), _countries.size()])
 			map_data_ready.emit()
@@ -170,12 +172,6 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	# 键盘：测试模式开关（始终响应）
-	if event is InputEventKey and event.pressed and not event.is_echo() and event.keycode == KEY_M:
-		_test_mode_enabled = not _test_mode_enabled
-		print("[TerritoryMap] 测试模式 %s" % ("开启" if _test_mode_enabled else "关闭"))
-		return
-
 	# 触控路径
 	if event is InputEventScreenTouch:
 		_handle_touch(event as InputEventScreenTouch)
@@ -321,6 +317,7 @@ func _on_region_map_loaded(img: Image, thread: Thread) -> void:
 	_color_palette_tex = ImageTexture.create_from_image(_color_palette_image)
 
 	_inject_dynamic_textures()
+	_apply_map_settings()
 	set_process(day_night_enabled)
 	print("[TerritoryMap] 加载完成 regions=%d countries=%d" % [_region_owner.size(), _countries.size()])
 
@@ -342,6 +339,42 @@ func _get_shader_material() -> ShaderMaterial:
 	if mesh is PrimitiveMesh and mesh.material is ShaderMaterial:
 		return mesh.material as ShaderMaterial
 	return null
+
+
+## 从设置读取地图边界粗细和配色预设，并写入 shader。
+func _apply_map_settings() -> void:
+	var mat := _get_shader_material()
+	if mat == null:
+		return
+	if GameManager:
+		border_width = GameManager.map_border_width
+		var preset: int = GameManager.map_color_preset
+		match preset:
+			1:  # 明亮
+				water_color = Color(0.14, 0.40, 0.60)
+				border_color = Color(0.10, 0.10, 0.10, 0.92)
+				selected_color = Color(1.0, 0.72, 0.10, 1.0)
+				hover_color = Color(1.0, 1.0, 1.0, 0.95)
+			2:  # 暗色
+				water_color = Color(0.015, 0.055, 0.12)
+				border_color = Color(0.0, 0.0, 0.0, 1.0)
+				selected_color = Color(1.0, 0.42, 0.05, 1.0)
+				hover_color = Color(0.75, 0.9, 1.0, 0.8)
+			3:  # 高对比
+				water_color = Color(0.02, 0.12, 0.25)
+				border_color = Color(1.0, 1.0, 1.0, 0.85)
+				selected_color = Color(1.0, 0.15, 0.1, 1.0)
+				hover_color = Color(1.0, 1.0, 0.1, 0.9)
+			_:  # 原版
+				water_color = Color(0.07, 0.22, 0.38)
+				border_color = Color(0.02, 0.02, 0.02, 0.75)
+				selected_color = Color(1.0, 0.92, 0.15, 1.0)
+				hover_color = Color(1.0, 1.0, 1.0, 0.85)
+	mat.set_shader_parameter("border_width", border_width)
+	mat.set_shader_parameter("water_color", water_color)
+	mat.set_shader_parameter("border_color", border_color)
+	mat.set_shader_parameter("selected_color", selected_color)
+	mat.set_shader_parameter("hover_color", hover_color)
 
 
 # ============================================================================
@@ -372,11 +405,11 @@ func _on_stats_changed() -> void:
 
 
 func _sync_color_palette_image() -> void:
-	_color_palette_image.fill(BLOC_NEUTRAL)
+	_color_palette_image.fill(_apply_map_variant(BLOC_NEUTRAL))
 	var seen := {}
 	for gwcode in _countries:
 		seen[gwcode] = true
-		_set_palette_pixel(_color_palette_image, gwcode, _color_for_country(gwcode))
+		_set_palette_pixel(_color_palette_image, gwcode, _apply_map_variant(_color_for_country(gwcode)))
 	# map_countries 里没有 9000+ 虚构/分离实体（库尔德斯坦二号、魁北克、南墨西哥等），
 	# 但它们激活后会被 MapService 移到相应地块；若不在调色板写入对应颜色，
 	# 地图上会一直显示中立色，且影响模式也无法显示“在谁影响下”。
@@ -386,7 +419,39 @@ func _sync_color_palette_image() -> void:
 			if c == null or c.gwcode <= 0 or seen.has(c.gwcode):
 				continue
 			seen[c.gwcode] = true
-			_set_palette_pixel(_color_palette_image, c.gwcode, _color_for_country(c.gwcode))
+			_set_palette_pixel(_color_palette_image, c.gwcode, _apply_map_variant(_color_for_country(c.gwcode)))
+
+
+## 地图配色预设：在保持原版国家配色的基础上整体调整明暗/对比，和 shader 的水色/边界色联动。
+func _apply_map_variant(c: Color) -> Color:
+	if GameManager == null:
+		return c
+	match GameManager.map_color_preset:
+		1:  # 明亮
+			return Color(
+				clampf(c.r * 0.82 + 0.16, 0.0, 1.0),
+				clampf(c.g * 0.82 + 0.16, 0.0, 1.0),
+				clampf(c.b * 0.82 + 0.16, 0.0, 1.0),
+				c.a
+			)
+		2:  # 暗色
+			return Color(c.r * 0.52, c.g * 0.52, c.b * 0.52, c.a)
+		3:  # 高对比
+			var lum := c.get_luminance()
+			if lum > 0.5:
+				return Color(
+					clampf(c.r * 1.25 + 0.03, 0.0, 1.0),
+					clampf(c.g * 1.25 + 0.03, 0.0, 1.0),
+					clampf(c.b * 1.25 + 0.03, 0.0, 1.0),
+					c.a
+				)
+			return Color(
+				clampf(c.r * 0.75, 0.0, 1.0),
+				clampf(c.g * 0.75, 0.0, 1.0),
+				clampf(c.b * 0.75, 0.0, 1.0),
+				c.a
+			)
+	return c
 
 
 func _color_for_country(gwcode: int) -> Color:

@@ -2,31 +2,29 @@ extends CanvasLayer
 
 ## 沙盒作弊快捷键 + 全局调试控制台。
 ## 作弊快捷键仅在沙盒难度（world.difficulty == 0）且控制台关闭时生效。
-## 控制台用 F12 开关，命令面向玩家/开发者，用于测试事件、战争、数值与关系。
-
-const CONSOLE_TOGGLE_KEY := KEY_F12
+## 控制台可通过设置里的“调试控制台开关”启用，默认 F12 呼出。
+## 命令面向玩家/开发者，用于测试事件、战争、数值、政策与关系。
 
 ## 作弊快捷键：显示值 +10 对应内部原始值 +100（多数数值表按 ×10 存储）。
 const CHEAT_DELTA := 100
 const RELATION_RESTORE := 1000
 const RELATION_BREAK := 0
 
-## 作弊键位表：physical_keycode → 数值表 key
-const CHEAT_KEYS := {
-	KEY_1: "party_support",
-	KEY_2: "people_support",
-	KEY_3: "thought_freedom",
-	KEY_4: "living_standard",
-	KEY_5: "diplo",
-	# 原版 Ctrl+6 改的是 influencePRC（顶栏“国际影响力”），不是 data[7]/global_influence。
-	KEY_6: "influence_prc",
-	KEY_7: "budget",
-	KEY_8: "agents",
-	KEY_9: "army",
-	KEY_0: "relations_both",
-	KEY_A: "ussr_toggle",
-	KEY_D: "diplo_down",
-	KEY_I: "mil_add",
+## 作弊动作显示名（帮助/设置页复用）。
+const CHEAT_ACTION_NAMES := {
+	"party_support": "党支持",
+	"people_support": "民众支持",
+	"thought_freedom": "思想自由",
+	"living_standard": "生活水平",
+	"diplo": "国际声望",
+	"influence_prc": "国际影响力",
+	"budget": "预算",
+	"agents": "特工",
+	"army": "军力",
+	"relations_both": "美苏关系",
+	"ussr_toggle": "中苏关系切换",
+	"diplo_down": "外交声望-10",
+	"mil_add": "军事介入点+10",
 }
 
 @onready var _output: RichTextLabel = $居中/面板/布局/输出
@@ -51,17 +49,32 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.is_echo():
 		var key: int = event.physical_keycode if event.physical_keycode != 0 else event.keycode
-		if key == CONSOLE_TOGGLE_KEY:
-			_toggle_console()
+		var toggle_key: int = GameManager.debug_console_toggle_key if GameManager != null else KEY_F12
+		if key == toggle_key:
+			# 只有设置里的“调试控制台”开关开启后才允许打开；关闭时顺带收起已打开的控制台。
+			if GameManager == null or GameManager.debug_console_enabled:
+				_toggle_console()
+			elif visible:
+				_close_console()
 			get_viewport().set_input_as_handled()
 			return
 		if visible:
 			return
 		# 沙盒作弊快捷键：仅沙盒难度生效，且控制台关闭时不干扰输入框
 		if event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed:
-			if CHEAT_KEYS.has(key):
-				_handle_cheat(key)
+			var action := _cheat_key_to_action(key)
+			if action != "":
+				_handle_cheat(action)
 				get_viewport().set_input_as_handled()
+
+
+func _cheat_key_to_action(key: int) -> String:
+	if GameManager == null:
+		return ""
+	for action in SettingsService.CHEAT_SHORTCUT_ACTIONS:
+		if GameManager.get_cheat_hotkey_key(action) == key:
+			return action
+	return ""
 
 
 # ── 控制台开关 ──
@@ -101,13 +114,13 @@ func _on_输入_text_submitted(_text: String) -> void:
 
 # ── 沙盒作弊 ──
 
-func _handle_cheat(key: int) -> void:
+func _handle_cheat(action: String) -> void:
 	if GameManager == null or GameManager.world == null:
 		return
 	if GameManager.world.difficulty != 0:
 		return
 	var w: WorldState = GameManager.world
-	var data_key: String = CHEAT_KEYS[key]
+	var data_key: String = action
 	match data_key:
 		"relations_both":
 			_add_empire_relation(0, CHEAT_DELTA)
@@ -126,7 +139,7 @@ func _handle_cheat(key: int) -> void:
 			_print_cheat("国际影响力 +10")
 		_:
 			w.add_data_value(data_key, CHEAT_DELTA)
-			_print_cheat("%s +10" % data_key)
+			_print_cheat("%s +10" % CHEAT_ACTION_NAMES.get(data_key, data_key))
 	w.sync_economy()
 	GameManager.notify_stats_changed()
 
@@ -202,6 +215,8 @@ func _execute(line: String) -> void:
 			_cmd_list_countries()
 		"country", "国家":
 			_cmd_country(parts)
+		"policy", "政策", "player_policy":
+			_cmd_policy(parts)
 		_:
 			_print_line("[color=red]未知命令：%s（输入 help 查看帮助）[/color]" % cmd)
 
@@ -586,6 +601,78 @@ func _cmd_country_tag(c: CountryData, parts: Array) -> void:
 	_print_line("[color=green]%s 标签 %s -> %s[/color]" % [c.display_name(), parts[3], "true" if val else "false"])
 
 
+# ── 玩家政策调整 ──
+
+const POLICY_CATEGORIES := {
+	"econ": {"idx": WorldState.I_ECON_SYSTEM, "name": "经济体制", "alias": ["经济", "经济体制", "economy", "economic"]},
+	"party": {"idx": WorldState.I_PARTY_SYSTEM, "name": "党政", "alias": ["党政", "政党制度", "party_system"]},
+	"press": {"idx": WorldState.I_PRESS_POLICY, "name": "人权/舆论", "alias": ["人权", "舆论", "press"]},
+	"territory": {"idx": WorldState.I_TERRITORY, "name": "国家体制", "alias": ["国家体制", "领土", "territory"]},
+	"religion": {"idx": WorldState.I_RELIGION, "name": "宗教政策", "alias": ["宗教", "religion"]},
+	"military": {"idx": WorldState.I_MIL_DOCTRINE, "name": "军事力量", "alias": ["军事", "军事学说", "military"]},
+	"birth": {"idx": WorldState.I_BIRTH_POLICY, "name": "生育政策", "alias": ["生育", "birth"]},
+}
+
+
+func _cmd_policy(parts: Array) -> void:
+	var w: WorldState = GameManager.world if GameManager else null
+	if w == null:
+		_print_line("[color=red]当前没有活动世界。[/color]")
+		return
+	if parts.size() < 2:
+		_print_line("[color=yellow]当前玩家政策：[/color]")
+		for key in POLICY_CATEGORIES:
+			var c: Dictionary = POLICY_CATEGORIES[key]
+			var v: int = w.get_data_by_index(int(c["idx"]))
+			_print_line("%s：%d" % [c["name"], v])
+		_print_help_policy()
+		return
+	var query := String(parts[1]).to_lower()
+	var cat_key := ""
+	var cat: Dictionary = {}
+	for key in POLICY_CATEGORIES:
+		var c: Dictionary = POLICY_CATEGORIES[key]
+		if query == key or query in c["alias"]:
+			cat_key = key
+			cat = c
+			break
+	if cat.is_empty():
+		_print_line("[color=red]未知政策类别：%s（输入 policy 查看列表）[/color]" % parts[1])
+		return
+	var idx: int = int(cat["idx"])
+	var current: int = w.get_data_by_index(idx)
+	if parts.size() < 3:
+		_print_line("[color=yellow]%s 当前值：%d（政策数值表索引 %d）[/color]" % [cat["name"], current, idx])
+		_print_help_policy()
+		return
+	var val := int(parts[2])
+	if cat_key == "birth":
+		GameManager.set_birth_policy(clampi(val, 1, 3))
+		_print_line("[color=green]%s 已切换 -> %d[/color]" % [cat["name"], val])
+		w.sync_economy()
+		GameManager.notify_stats_changed()
+		return
+	if GameManager.change_policy(idx, val):
+		_print_line("[color=green]%s 已切换 -> %d[/color]" % [cat["name"], val])
+	else:
+		# 调试控制台可直接改数值；若常规政策切换条件不满足，这里强制写入。
+		w.set_data_by_index(idx, val)
+		_print_line("[color=yellow]常规切换条件未通过，已强制写入 %s = %d[/color]" % [cat["name"], val])
+	w.sync_economy()
+	GameManager.notify_stats_changed()
+
+
+func _print_help_policy() -> void:
+	_print_line("""
+[color=yellow]===== policy 玩家政策调整 =====[/color]
+[color=green]policy[/color]                            查看所有政策类别与当前值
+[color=green]policy <类别>[/color]                     查看某类政策当前值
+[color=green]policy <类别> <值>[/color]                切换/强制写入政策
+类别：econ(经济体制) party(党政) press(人权/舆论)
+      territory(国家体制) religion(宗教) military(军事) birth(生育)
+""")
+
+
 func _print_help_country() -> void:
 	_print_line("""
 [color=yellow]===== country 国家调试命令 =====[/color]
@@ -626,9 +713,11 @@ func _print_help() -> void:
 [color=green]start_all_wars[/color]        开启全部战争
 [color=green]claim[/color]                 切换“点击地图划归中国”模式
 [color=green]country <国家> ...[/color]     查看/修改国家政体、势力圈、影响力（输入 country 查看用法）
+[color=green]policy <类别> <值>[/color]     调整玩家政策（输入 policy 查看类别）
 
 [color=yellow]===== 沙盒作弊快捷键（仅沙盒难度）=====[/color]
-左Ctrl+1~9、0：党支持/民支持/思想/生活/国际声望/国际影响力/预算/特工/军事力量/美苏关系 +10
+快捷键在“设置 → 自定义页 → 作弊快捷键”中自定义。
+当前默认：左Ctrl+1~9、0：党支持/民支持/思想/生活/国际声望/国际影响力/预算/特工/军力/美苏关系 +10
 左Ctrl+D：外交声望 -10
 左Ctrl+I：军事介入点 +10
 左Ctrl+A：与苏联关系 恢复/破裂 切换

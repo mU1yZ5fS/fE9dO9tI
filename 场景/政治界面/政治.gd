@@ -96,6 +96,7 @@ func _ready() -> void:
 	if _world == null:
 		push_error("政治界面: GameManager.world 为空")
 		return
+	UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 
 	_action_buttons = [
 		_btn_support, _btn_suppress, _btn_assassinate, _btn_investigate, _btn_surveil,
@@ -494,9 +495,9 @@ func _update_politician_button_states(pol: PoliticianData) -> void:
 		and _tier_allows_negative(tier, pol) and not mao_protected
 	)
 	# num2 再教育/暗杀（Button_Pol_Script.cs:540）
+	# 改版：去掉人物排名（层级）要求，任何排名的政治人物都可送去再教育。
 	_btn_assassinate.disabled = not (
 		money20 and not investigating and d.agents >= 60
-		and _tier_allows_negative(tier, pol)
 		and _assassinate_historic_allowed(idx)
 		and not mao_protected
 		and _assassinate_modifier_allowed(idx)
