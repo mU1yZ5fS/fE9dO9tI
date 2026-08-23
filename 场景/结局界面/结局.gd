@@ -120,6 +120,9 @@ func _render_text(text: String) -> void:
 	text = text.replace("</color>", "[/color]")
 	text = text.replace("<size=", "[font_size=")
 	text = text.replace("</size>", "[/font_size]")
+	# 亮色归一：例如 <color=#00A80B>（亮绿）、<color=#FFFF00> 在结局文本里仅剩的亮绿亮黄，
+	# 统一压暗到 darkgreen / darkgoldenrod。
+	text = BbcTooltip.darken_bright_colors(text)
 	text = text.replace("|", "\n")
 	结局文案.text = text
 

@@ -420,7 +420,8 @@ func _wrap_text(text: String, col: int = 30) -> String:
 	out = out.replace("<y>", "[color=yellow]")
 	out = out.replace("<p>", "[color=brown]")
 	out = out.replace("<c>", "[/color]")
-	return out
+	# 亮色归一：green/yellow 等 Godot 命名色(0,1,0)/(1,1,0) 太刺眼，统一压暗。
+	return BbcTooltip.darken_bright_colors(out)
 
 
 func _refresh_left_for_leader() -> void:

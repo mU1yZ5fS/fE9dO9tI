@@ -66,7 +66,7 @@ func _apply_event_ui_settings() -> void:
 	elif align == 2:
 		align_enum = HORIZONTAL_ALIGNMENT_RIGHT
 	if _title:
-		_title.add_theme_font_size_override("font_size", clampi(GameManager.event_desc_font_size + 10, 12, 96))
+		_title.add_theme_font_size_override("font_size", clampi(GameManager.event_title_font_size, 12, 96))
 	# 事件文案对齐只作用于正文/结果，不影响事件标题和选项。
 	if _desc:
 		_desc.horizontal_alignment = align_enum
@@ -80,23 +80,31 @@ func _apply_event_ui_settings() -> void:
 
 
 ## 事件文本显示前处理：段首空两格、段落之间留空隙（由设置开关控制）。
+## 注意：渲染字体（方正跃进简体）不显示空格字形（ASCII 空格 advance≈0、U+3000 无轮廓），
+## 且 Godot 4.7 的 RichTextLabel 不解析 [indent=2]（会原样显示字面量）。
+## 因此首行缩进用两个“无色全角字形”占位：[color=#00000000]中中[/color] 排版照常占两字宽、
+## 像素完全透明，不依赖任何空格/空白处理；段间距统一由段落拼接控制（开=空一行，关=不空）。
+const INDENT_MARK := "[color=#00000000]中中[/color]"
+
 func _format_event_text(text: String) -> String:
 	if text.is_empty() or GameManager == null:
 		return text
-	var out := text
-	if GameManager.paragraph_indent_enabled or GameManager.paragraph_spacing_enabled:
-		var lines := out.split("\n")
-		var formatted: Array[String] = []
-		for raw_line in lines:
-			var line := raw_line
-			if GameManager.paragraph_indent_enabled and line.strip_edges() != "":
-				if not line.begins_with("　　"):
-					line = "　　" + line
-			formatted.append(line)
-		out = "\n".join(formatted)
-		if GameManager.paragraph_spacing_enabled:
-			out = out.replace("\n", "\n\n")
-	return out
+	var indent_on: bool = GameManager.paragraph_indent_enabled
+	var spacing_on: bool = GameManager.paragraph_spacing_enabled
+	if not indent_on and not spacing_on:
+		return text
+	# 统一换行符：\r\n / \r 一律归一为 \n，避免 CR 残留导致“空行判断、段首缩进”失效。
+	var out := text.replace("\r\n", "\n").replace("\r", "\n")
+	# 每行视为一个段落：非空行加首行缩进占位，空行丢弃（段间距在最后统一拼接）。
+	var paragraphs: Array[String] = []
+	for raw_line in out.split("\n"):
+		if raw_line.strip_edges() == "":
+			continue
+		var line := raw_line
+		if indent_on:
+			line = INDENT_MARK + line
+		paragraphs.append(line)
+	return "\n\n".join(paragraphs) if spacing_on else "\n".join(paragraphs)
 
 
 func _collect_option_nodes() -> void:

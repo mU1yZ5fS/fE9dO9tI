@@ -21,6 +21,44 @@ static func unity_color_to_bbcode(text: String) -> String:
 			break
 		var color_name: String = out.substr(start + 7, end - start - 7)
 		out = out.substr(0, start) + "[color=" + color_name + "]" + out.substr(end + 1)
+	return darken_bright_colors(out)
+
+
+# ============================================================================
+# 亮色统一压暗：Godot 命名色 green=(0,1,0)、yellow=(1,1,0) 饱和度极高，在白底上
+# 近乎看不见 / 刺眼；原版 Unity 文本还残留大量 #FFFF00/#008000/#00A80B 亮绿亮黄。
+# 这里在统一出口把“绿→darkgreen(#006400)、黄→darkgoldenrod(#B8860B)”一次性归一。
+# 提示：渲染字体（方正跃进简体）不显示空格字形（ASCII 空格 advance≈0、U+3000 无轮廓），
+# 且 Godot 4.7 的 [indent] BBCode 标签不被解析（会原样显示字面量）；
+# 需要“空两格/字间距”效果时用无色全角字形占位，参考 事件.gd 的 INDENT_MARK 方案。
+# ============================================================================
+const COLOR_DARKEN_MAP := {
+	"green": "darkgreen",
+	"lime": "darkgreen",
+	"yellow": "#b8860b",
+	"gold": "#b8860b",
+	"#00ff00": "darkgreen",
+	"#008000": "darkgreen",
+	"#00a80b": "darkgreen",
+	"#ffff00": "#b8860b",
+}
+
+static var _color_darken_re: RegEx = null
+
+
+## 把所有 [color=X] 的亮色标签替换为暗色档。输入应为 [color=...] 形态（统一转换后）。
+## 未匹配的颜色（红/蓝/橙/暗色系等）原样保留。
+static func darken_bright_colors(text: String) -> String:
+	if text.is_empty() or text.find("[color=") == -1:
+		return text
+	if _color_darken_re == null:
+		_color_darken_re = RegEx.new()
+		_color_darken_re.compile("\\[color=([^\\]]+)\\]")
+	var out := text
+	for m in _color_darken_re.search_all(out):
+		var col := String(m.get_string(1)).to_lower()
+		if COLOR_DARKEN_MAP.has(col):
+			out = out.replace(m.get_string(0), "[color=" + COLOR_DARKEN_MAP[col] + "]")
 	return out
 
 

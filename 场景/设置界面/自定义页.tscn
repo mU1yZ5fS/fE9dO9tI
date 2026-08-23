@@ -171,6 +171,48 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
+[node name="EventTitleRow" type="HBoxContainer" parent="滚动/列表" unique_id=310000001]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="标题" type="Label" parent="滚动/列表/EventTitleRow" unique_id=310000002]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "事件标题字号"
+
+[node name="EventTitlePrev" type="Button" parent="滚动/列表/EventTitleRow" unique_id=310000003]
+custom_minimum_size = Vector2(56, 40)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "◀"
+icon = ExtResource("2_bgbtn")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="EventTitleValue" type="Label" parent="滚动/列表/EventTitleRow" unique_id=310000004]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "39"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EventTitleNext" type="Button" parent="滚动/列表/EventTitleRow" unique_id=310000005]
+custom_minimum_size = Vector2(56, 40)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "▶"
+icon = ExtResource("2_bgbtn")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
 [node name="EventDescRow" type="HBoxContainer" parent="滚动/列表" unique_id=1007013607]
 layout_mode = 2
 theme_override_constants/separation = 12

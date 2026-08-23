@@ -124,6 +124,14 @@ var event_desc_font_size: int:
 		if _settings != null:
 			_settings.set_event_desc_font_size(value)
 
+## 事件标题字号（简介页与结果页共用的顶部标题）。
+var event_title_font_size: int:
+	get:
+		return _settings.event_title_font_size if _settings != null else 39
+	set(value):
+		if _settings != null:
+			_settings.set_event_title_font_size(value)
+
 var event_option_font_size: int:
 	get:
 		return _settings.event_option_font_size if _settings != null else 28
@@ -427,6 +435,11 @@ func set_event_text_alignment(value: int) -> void:
 func set_event_desc_font_size(value: int) -> void:
 	if _settings != null:
 		_settings.set_event_desc_font_size(value)
+
+
+func set_event_title_font_size(value: int) -> void:
+	if _settings != null:
+		_settings.set_event_title_font_size(value)
 
 
 func set_event_option_font_size(value: int) -> void:
