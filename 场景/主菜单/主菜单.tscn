@@ -233,7 +233,7 @@ tooltip_text = "当前版本内容：90%改版内容+未知可能bug"
 mouse_filter = 1
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 43
-text = "v0.3.1进京赶考"
+text = "v0.3.2进京赶考"
 horizontal_alignment = 2
 
 [node name="更新公告" type="Button" parent="." unique_id=1074079381]

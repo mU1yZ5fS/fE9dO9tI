@@ -68,7 +68,8 @@ var events_enabled: bool = true
 
 ## 事件文本对齐方式。0=左 1=中 2=右。
 var event_text_alignment: int = 0
-## 事件描述/正文、选项、结果字体大小。
+## 事件描述/正文、选项、结果、标题字体大小。
+var event_title_font_size: int = 39
 var event_desc_font_size: int = 29
 var event_option_font_size: int = 28
 var event_result_font_size: int = 29
@@ -103,6 +104,7 @@ func load_config() -> void:
 	debug_console_toggle_key = int(cfg.get_value("settings", "debug_console_toggle_key", KEY_F12))
 	events_enabled = bool(cfg.get_value("settings", "events_enabled", true))
 	event_text_alignment = clampi(int(cfg.get_value("ui", "event_text_alignment", 0)), 0, 2)
+	event_title_font_size = clampi(int(cfg.get_value("ui", "event_title_font_size", 39)), 12, 96)
 	event_desc_font_size = clampi(int(cfg.get_value("ui", "event_desc_font_size", 29)), 12, 72)
 	event_option_font_size = clampi(int(cfg.get_value("ui", "event_option_font_size", 28)), 12, 72)
 	event_result_font_size = clampi(int(cfg.get_value("ui", "event_result_font_size", 29)), 12, 72)
@@ -127,6 +129,7 @@ func save_config() -> void:
 	cfg.set_value("settings", "debug_console_toggle_key", debug_console_toggle_key)
 	cfg.set_value("settings", "events_enabled", events_enabled)
 	cfg.set_value("ui", "event_text_alignment", event_text_alignment)
+	cfg.set_value("ui", "event_title_font_size", event_title_font_size)
 	cfg.set_value("ui", "event_desc_font_size", event_desc_font_size)
 	cfg.set_value("ui", "event_option_font_size", event_option_font_size)
 	cfg.set_value("ui", "event_result_font_size", event_result_font_size)
@@ -155,6 +158,7 @@ func reset_to_defaults() -> void:
 	debug_console_toggle_key = KEY_F12
 	events_enabled = true
 	event_text_alignment = 0
+	event_title_font_size = 39
 	event_desc_font_size = 29
 	event_option_font_size = 28
 	event_result_font_size = 29
@@ -258,6 +262,11 @@ func set_event_text_alignment(value: int) -> void:
 
 func set_event_desc_font_size(value: int) -> void:
 	event_desc_font_size = clampi(value, 12, 72)
+	save_config()
+
+
+func set_event_title_font_size(value: int) -> void:
+	event_title_font_size = clampi(value, 12, 96)
 	save_config()
 
 

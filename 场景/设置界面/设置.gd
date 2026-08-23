@@ -17,6 +17,8 @@ extends Control
 @onready var 速度4快捷键值: Label = get_node_or_null("速度4快捷键行/值")
 
 ## 显示名逐字对齐原作 DiffScript.cs / Need_save.cs 的字符串（含原空格）。
+## 渲染字体（方正跃进简体）不渲染空格字形（ASCII 空格 advance≈0、U+3000 无轮廓），
+## 这些字符串显示出来天然不带空格（按要求保持“无空格显示”），不要再加转换。
 const DIFF_NAMES := [" 沙 盒", " 上 山 下 乡", " 斗 私 批 修", " 造 反 有 理", " 浩 荡 文 革"]
 const AUTOSAVE_NAMES := [" 不 自 动 保 存", " 每 月 自 动 保 存", " 半 年 自 动 保 存"]
 const SAVEPLACE_NAMES := {
@@ -270,6 +272,7 @@ const TOGGLE_ROWS := {
 }
 
 const NUMBER_DEFS := {
+	"event_title": ["EventTitleRow", "EventTitlePrev", "EventTitleValue", "EventTitleNext", 12, 96, 1],
 	"event_desc": ["EventDescRow", "EventDescPrev", "EventDescValue", "EventDescNext", 12, 72, 1],
 	"event_option": ["EventOptionRow", "EventOptionPrev", "EventOptionValue", "EventOptionNext", 12, 72, 1],
 	"event_result": ["EventResultRow", "EventResultPrev", "EventResultValue", "EventResultNext", 12, 72, 1],
@@ -412,6 +415,8 @@ func _selector_index(key: String) -> int:
 
 func _number_current(key: String) -> int:
 	match key:
+		"event_title":
+			return GameManager.event_title_font_size
 		"event_desc":
 			return GameManager.event_desc_font_size
 		"event_option":
@@ -428,6 +433,8 @@ func _number_current(key: String) -> int:
 func _change_number(key: String, delta: int, min_v: int, max_v: int) -> void:
 	var value := clampi(_number_current(key) + delta, min_v, max_v)
 	match key:
+		"event_title":
+			GameManager.set_event_title_font_size(value)
 		"event_desc":
 			GameManager.set_event_desc_font_size(value)
 		"event_option":
@@ -457,6 +464,9 @@ func _刷新自定义页() -> void:
 	if _custom_labels.has("event_align"):
 		var lbl := _custom_labels["event_align"] as Label
 		lbl.text = SettingsService.EVENT_ALIGN_NAMES[clampi(GameManager.event_text_alignment, 0, 2)]
+	if _custom_labels.has("event_title"):
+		var lbl := _custom_labels["event_title"] as Label
+		lbl.text = str(GameManager.event_title_font_size)
 	if _custom_labels.has("event_desc"):
 		var lbl := _custom_labels["event_desc"] as Label
 		lbl.text = str(GameManager.event_desc_font_size)
