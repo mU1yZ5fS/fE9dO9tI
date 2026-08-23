@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>更新中心 - 中国:毛的遗产[Godot]</title>
+<style>
+  :root {
+    --bg: #1b1b1f;
+    --panel: #26262c;
+    --text: #f0f0f0;
+    --muted: #b0b0b0;
+    --accent: #d4a017;
+    --green: #3f9b4f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+  }
+  .card {
+    max-width: 760px;
+    width: 100%;
+    background: var(--panel);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    color: var(--accent);
+  }
+  .version {
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .section {
+    margin-bottom: 22px;
+  }
+  .section-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+  }
+  .announcement {
+    background: rgba(212,160,23,.12);
+    border: 1px solid rgba(212,160,23,.4);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text);
+  }
+  ul.changelog {
+    margin: 0;
+    padding-left: 22px;
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .qr-row {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .qr-box {
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px;
+    width: 220px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qr-box img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 4px;
+  }
+  .qr-hint {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .btn {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #111;
+    background: var(--accent);
+    font-weight: bold;
+  }
+  .btn.secondary {
+    background: #3a3a42;
+    color: var(--text);
+  }
+  .loading, .error {
+    color: var(--muted);
+  }
+  .footer {
+    margin-top: 28px;
+    color: #777;
+    font-size: 12px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>游戏更新中心</h1>
+  <div class="version" id="version">正在读取更新信息…</div>
+  <div id="content">
+    <div class="loading">加载中…</div>
+  </div>
+  <div class="footer">由 GitHub Pages 静态托管 · 替换 docs/qq_group.png 可实时更新二维码</div>
+</div>
+
+<script>
+async function loadData() {
+  const versionEl = document.getElementById('version');
+  const contentEl = document.getElementById('content');
+  try {
+    const resp = await fetch('./update.json', { cache: 'no-cache' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+
+    versionEl.textContent = '当前版本：v' + (data.version || '未知')
+      + (data.title ? ' · ' + data.title : '');
+
+    let html = '';
+    if (data.announcement) {
+      html += '<div class="section"><div class="section-title">公告</div>'
+        + '<div class="announcement">' + escapeHtml(data.announcement) + '</div></div>';
+    }
+    if (Array.isArray(data.changelog) && data.changelog.length > 0) {
+      html += '<div class="section"><div class="section-title">更新内容</div><ul class="changelog">';
+      for (const item of data.changelog) {
+        html += '<li>' + escapeHtml(String(item)) + '</li>';
+      }
+      html += '</ul></div>';
+    } else {
+      html += '<div class="section"><div class="section-title">更新内容</div><div class="loading">暂无更新内容</div></div>';
+    }
+
+    const qq = data.qq_group || {};
+    html += '<div class="section"><div class="section-title">'
+      + escapeHtml(qq.name || 'QQ交流群') + '</div><div class="qr-row">'
+      + '<div class="qr-box"><img id="qr" src="./qq_group.png" alt="QQ群二维码" '
+      + 'onerror="this.style.display=\'none\'; document.getElementById(\'qr-fallback\').style.display=\'block\';"></div>'
+      + '<div class="qr-hint" id="qr-fallback" style="display:none;">二维码图片暂未上传，<br>请等待群主替换 <code>docs/qq_group.png</code>。</div>'
+      + '<div class="qr-hint">二维码由仓库内 <code>docs/qq_group.png</code> 提供，<br>群主替换该图片后本页会自动更新。</div>'
+      + '</div></div>';
+
+    if (data.download_url) {
+      html += '<div class="actions"><a class="btn" href="' + escapeAttr(data.download_url) + '" target="_blank" rel="noopener">下载最新版本</a>';
+      if (qq.join_url) {
+        html += '<a class="btn secondary" href="' + escapeAttr(qq.join_url) + '" target="_blank" rel="noopener">加入QQ群</a>';
+      }
+      html += '</div>';
+    }
+
+    contentEl.innerHTML = html;
+  } catch (e) {
+    versionEl.textContent = '无法读取更新信息';
+    contentEl.innerHTML = '<div class="error">读取 update.json 失败：' + escapeHtml(e.message) + '<br>请确认 GitHub Pages 已部署或稍后重试。</div>';
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+function escapeAttr(s) {
+  return escapeHtml(s);
+}
+
+loadData();
+</script>
+</body>
+</html>

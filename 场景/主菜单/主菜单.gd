@@ -4,6 +4,7 @@ const CAT = preload("res://数据脚本/achievement_catalog.gd")
 
 const ACH_FRAME_TEX := preload("uid://byw8pr1qq7a4w")
 const ACH_HANDLE_TEX := preload("uid://cx2p3gjuloxo5")
+const UPDATE_POPUP_SCENE := preload("res://场景/主菜单/更新弹窗.tscn")
 
 @onready var _ach_mask: ColorRect = $成就遮罩
 @onready var _ach_popup: PopupPanel = $成就弹窗
@@ -16,6 +17,7 @@ const COLOR_LOCKED := Color(0.5, 0.5, 0.5, 1)
 const COLOR_TITLE_GREEN := Color(0.1, 0.55, 0.2, 1)
 
 var _row_style: StyleBoxTexture = null
+var _update_popup: PopupPanel = null
 
 
 func _ready() -> void:
@@ -171,3 +173,10 @@ func _on_加载_pressed() -> void:
 	if GameManager:
 		GameManager.save_return_scene = "uid://bydan4iqthbaa"
 	get_tree().change_scene_to_file("uid://b1x75pv02eanc")
+
+
+func _on_更新公告_pressed() -> void:
+	if _update_popup == null:
+		_update_popup = UPDATE_POPUP_SCENE.instantiate()
+		add_child(_update_popup)
+	_update_popup.open_update_popup()

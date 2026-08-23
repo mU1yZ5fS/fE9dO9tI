@@ -211,6 +211,16 @@ func _migrate_legacy_global_flags() -> void:
 		world.global_flags.erase("vietnam_peace")
 
 
+func _migrate_legacy_oil_modifier() -> void:
+	if world == null or world.modifiers.size() <= 51 or world.modifiers[51] == null:
+		return
+	# 早期 Godot 档漏激活 51「黑金/OIL_MONEY」；原版在 dlc[3] 环境开局恒激活。
+	# 读档补齐，否则石油决议、石油经济和 event_418 黑金事件全部被卡死。
+	world.modifiers[51].is_active = true
+	if world.modifiers[51].level <= 0:
+		world.modifiers[51].level = 1
+
+
 ## 地图预加载完成时补执行之前排队的领土转移。
 
 
@@ -398,6 +408,8 @@ func load_game(path: String) -> void:
 		WAR_SYS.migrate_legacy_war_timeouts(world)
 		# 旧档兼容：越南和平标志统一为原版字段名 vietnampeace。
 		_migrate_legacy_global_flags()
+		# 旧档兼容：早期档漏激活 51 黑金/OIL_MONEY，读档补齐以解锁石油经济。
+		_migrate_legacy_oil_modifier()
 		# 旧档兼容：补建魁北克/南墨西哥虚拟国（新档在 WorldFactory 中已生成）。
 		WF.ensure_fictional_countries(world)
 		reset_map_runtime_state()

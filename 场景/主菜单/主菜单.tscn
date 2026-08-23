@@ -236,6 +236,25 @@ theme_override_font_sizes/font_size = 43
 text = "v0.3.0进京赶考"
 horizontal_alignment = 2
 
+[node name="更新公告" type="Button" parent="." unique_id=1074079381]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.08
+anchor_right = 0.22
+anchor_bottom = 0.18
+offset_left = 1410.4
+offset_top = 132.6
+offset_right = 1493.6
+offset_bottom = 168.59999
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "更新/QQ群"
+icon = ExtResource("2_ngrxy")
+flat = true
+icon_alignment = 1
+
 [connection signal="pressed" from="开始游戏" to="." method="_on_开始游戏_pressed"]
 [connection signal="pressed" from="关于" to="." method="_on_关于_pressed"]
 [connection signal="pressed" from="退出" to="." method="_on_退出_pressed"]
@@ -243,3 +262,4 @@ horizontal_alignment = 2
 [connection signal="pressed" from="设置" to="." method="_on_设置_pressed"]
 [connection signal="pressed" from="成就" to="." method="_on_成就_pressed"]
 [connection signal="pressed" from="成就弹窗/布局/标题栏/关闭" to="." method="_on_成就关闭_pressed"]
+[connection signal="pressed" from="更新公告" to="." method="_on_更新公告_pressed"]

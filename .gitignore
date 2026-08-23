@@ -45,5 +45,11 @@ Thumbs.db
 Desktop.ini
 
 # ── 项目本地内容（不入库）──
+# docs/ 默认不入库；仅 GitHub Pages 更新中心所需文件入库。
 docs/
+!docs/
+!docs/README.md
+!docs/index.html
+!docs/update.json
+!docs/qq_group.png
 资产/音频/专辑
