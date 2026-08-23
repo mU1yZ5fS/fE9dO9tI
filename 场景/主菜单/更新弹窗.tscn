@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://场景/主菜单/更新弹窗.gd" id="1_update"]
 [ext_resource type="Texture2D" uid="uid://cvujiu0bjxwl8" path="res://资产/UI/成就/ui_window_bg.png" id="2_bg"]
 [ext_resource type="Texture2D" uid="uid://cjwwrjeyr3uuo" path="res://资产/UI/成就/ui_close.png" id="3_close"]
+[ext_resource type="Texture2D" path="res://资产/UI/更新/qq_group.png" id="4_qr"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_win"]
 content_margin_left = 28.0
@@ -73,6 +74,7 @@ custom_minimum_size = Vector2(260, 260)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
+texture = ExtResource("4_qr")
 
 [node name="二维码说明" type="VBoxContainer" parent="布局/二维码区"]
 layout_mode = 2
@@ -89,34 +91,18 @@ text = "QQ交流群"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.35, 0.35, 1)
 theme_override_font_sizes/font_size = 22
-text = "二维码加载中…"
+text = "游戏内置二维码"
 
 [node name="二维码提示" type="Label" parent="布局/二维码区/二维码说明"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 2
-text = "二维码由官方在更新页维护；替换二维码图片后，游戏内会自动显示新图。"
+text = "二维码为游戏内置本地图片，不进行在线维护。"
 
 [node name="按钮行" type="HBoxContainer" parent="布局"]
 layout_mode = 2
 theme_override_constants/separation = 16
-
-[node name="下载" type="Button" parent="布局/按钮行"]
-custom_minimum_size = Vector2(180, 52)
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 26
-text = "下载最新版"
-disabled = true
-
-[node name="加入QQ群" type="Button" parent="布局/按钮行"]
-custom_minimum_size = Vector2(180, 52)
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 26
-text = "查看二维码"
-disabled = true
 
 [node name="关闭" type="Button" parent="布局/按钮行"]
 custom_minimum_size = Vector2(120, 52)

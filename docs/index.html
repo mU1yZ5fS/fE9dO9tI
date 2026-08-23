@@ -128,7 +128,7 @@
   <div id="content">
     <div class="loading">加载中…</div>
   </div>
-  <div class="footer">由 GitHub Pages 静态托管 · 替换 docs/qq_group.png 可实时更新二维码</div>
+  <div class="footer">由 GitHub Pages 静态托管 · QQ群二维码请查看游戏内</div>
 </div>
 
 <script>
@@ -158,22 +158,8 @@ async function loadData() {
       html += '<div class="section"><div class="section-title">更新内容</div><div class="loading">暂无更新内容</div></div>';
     }
 
-    const qq = data.qq_group || {};
-    html += '<div class="section"><div class="section-title">'
-      + escapeHtml(qq.name || 'QQ交流群') + '</div><div class="qr-row">'
-      + '<div class="qr-box"><img id="qr" src="./qq_group.png" alt="QQ群二维码" '
-      + 'onerror="this.style.display=\'none\'; document.getElementById(\'qr-fallback\').style.display=\'block\';"></div>'
-      + '<div class="qr-hint" id="qr-fallback" style="display:none;">二维码图片暂未上传，<br>请等待群主替换 <code>docs/qq_group.png</code>。</div>'
-      + '<div class="qr-hint">二维码由仓库内 <code>docs/qq_group.png</code> 提供，<br>群主替换该图片后本页会自动更新。</div>'
-      + '</div></div>';
-
-    if (data.download_url) {
-      html += '<div class="actions"><a class="btn" href="' + escapeAttr(data.download_url) + '" target="_blank" rel="noopener">下载最新版本</a>';
-      if (qq.join_url) {
-        html += '<a class="btn secondary" href="' + escapeAttr(qq.join_url) + '" target="_blank" rel="noopener">加入QQ群</a>';
-      }
-      html += '</div>';
-    }
+    html += '<div class="section"><div class="section-title">QQ交流群</div>'
+      + '<div class="announcement">QQ群二维码请直接查看游戏内「更新/QQ群」弹窗。</div></div>';
 
     contentEl.innerHTML = html;
   } catch (e) {
