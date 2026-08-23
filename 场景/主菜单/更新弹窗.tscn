@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://ba01ucac27h5f"]
 
-[ext_resource type="Script" path="res://场景/主菜单/更新弹窗.gd" id="1_update"]
+[ext_resource type="Script" uid="uid://cm7srey860mvg" path="res://场景/主菜单/更新弹窗.gd" id="1_update"]
 [ext_resource type="Texture2D" uid="uid://cvujiu0bjxwl8" path="res://资产/UI/成就/ui_window_bg.png" id="2_bg"]
 [ext_resource type="Texture2D" uid="uid://cjwwrjeyr3uuo" path="res://资产/UI/成就/ui_close.png" id="3_close"]
-[ext_resource type="Texture2D" path="res://资产/UI/更新/qq_group.png" id="4_qr"]
+[ext_resource type="Texture2D" uid="uid://rhloeaajvcsn" path="res://资产/UI/更新/qq_group.png" id="4_qr"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_win"]
 content_margin_left = 28.0
@@ -16,95 +16,82 @@ texture_margin_top = 24.0
 texture_margin_right = 24.0
 texture_margin_bottom = 24.0
 
-[node name="更新弹窗" type="PopupPanel"]
-size = Vector2i(940, 760)
+[node name="更新弹窗" type="PopupPanel" unique_id=1323934721]
+oversampling_override = 1.0
+size = Vector2i(940, 812)
+visible = true
 theme_override_styles/panel = SubResource("StyleBoxTexture_win")
 script = ExtResource("1_update")
 
-[node name="布局" type="VBoxContainer" parent="."]
+[node name="布局" type="VBoxContainer" parent="." unique_id=818017913]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
+offset_left = 28.0
 offset_top = 24.0
-offset_right = 910.0
-offset_bottom = 736.0
+offset_right = -28.0
+offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
 
-[node name="标题" type="Label" parent="布局"]
+[node name="标题" type="Label" parent="布局" unique_id=2057802560]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
 text = "更新公告"
 
-[node name="状态" type="Label" parent="布局"]
+[node name="状态" type="Label" parent="布局" unique_id=1515422767]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1, 0.45, 0.2, 1)
 theme_override_font_sizes/font_size = 26
 text = "正在检查更新…"
 
-[node name="公告" type="Label" parent="布局"]
+[node name="公告" type="Label" parent="布局" unique_id=589124433]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 theme_override_font_sizes/font_size = 22
 autowrap_mode = 2
-text = ""
 
-[node name="日志滚动" type="ScrollContainer" parent="布局"]
+[node name="日志滚动" type="ScrollContainer" parent="布局" unique_id=1320694933]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="更新日志" type="RichTextLabel" parent="布局/日志滚动"]
+[node name="更新日志" type="RichTextLabel" parent="布局/日志滚动" unique_id=453334027]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 22
-bbcode_enabled = false
 text = "正在连接更新服务器…"
 
-[node name="二维码区" type="HBoxContainer" parent="布局"]
+[node name="二维码区" type="HBoxContainer" parent="布局" unique_id=1996579448]
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="二维码" type="TextureRect" parent="布局/二维码区"]
+[node name="二维码" type="TextureRect" parent="布局/二维码区" unique_id=1622455647]
 custom_minimum_size = Vector2(260, 260)
 layout_mode = 2
+texture = ExtResource("4_qr")
 expand_mode = 1
 stretch_mode = 5
-texture = ExtResource("4_qr")
 
-[node name="二维码说明" type="VBoxContainer" parent="布局/二维码区"]
+[node name="二维码说明" type="VBoxContainer" parent="布局/二维码区" unique_id=428137490]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="群名称" type="Label" parent="布局/二维码区/二维码说明"]
+[node name="群名称" type="Label" parent="布局/二维码区/二维码说明" unique_id=525917170]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "QQ交流群"
 
-[node name="二维码状态" type="Label" parent="布局/二维码区/二维码说明"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.35, 0.35, 0.35, 1)
-theme_override_font_sizes/font_size = 22
-text = "游戏内置二维码"
-
-[node name="二维码提示" type="Label" parent="布局/二维码区/二维码说明"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-theme_override_font_sizes/font_size = 18
-autowrap_mode = 2
-text = "二维码为游戏内置本地图片，不进行在线维护。"
-
-[node name="按钮行" type="HBoxContainer" parent="布局"]
+[node name="按钮行" type="HBoxContainer" parent="布局" unique_id=1229375844]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="关闭" type="Button" parent="布局/按钮行"]
+[node name="关闭" type="Button" parent="布局/按钮行" unique_id=1852880174]
 custom_minimum_size = Vector2(120, 52)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
