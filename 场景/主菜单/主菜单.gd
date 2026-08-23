@@ -13,6 +13,7 @@ const ACH_HANDLE_TEX := preload("uid://cx2p3gjuloxo5")
 
 const COLOR_UNLOCKED := Color(0.13, 0.5, 0.16, 1)
 const COLOR_LOCKED := Color(0.5, 0.5, 0.5, 1)
+const COLOR_TITLE_GREEN := Color(0.1, 0.55, 0.2, 1)
 
 var _row_style: StyleBoxTexture = null
 
@@ -65,8 +66,12 @@ func _refresh_achievement_rows() -> void:
 	_ach_count.text = "%d/%d" % [CAT.unlocked_count(), CAT.LIST.size()]
 	for child in _ach_list.get_children():
 		child.queue_free()
+	var i := 0
 	for item in CAT.LIST:
-		_ach_list.add_child(_make_row(int(item["number"]), String(item["title"]), String(item["desc"])))
+		var row := _make_row(int(item["number"]), String(item["title"]), String(item["desc"]))
+		_ach_list.add_child(row)
+		_animate_row(row, i)
+		i += 1
 
 
 func _style_scrollbar() -> void:
@@ -105,6 +110,13 @@ func _make_row(number: int, title: String, desc: String) -> PanelContainer:
 
 	var unlocked: bool = Achievements.is_unlocked(number)
 
+	var icon := TextureRect.new()
+	icon.custom_minimum_size = Vector2(56, 56)
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.texture = load(CAT.icon_path(number)) as Texture2D
+	row.add_child(icon)
+
 	var status := Label.new()
 	status.custom_minimum_size = Vector2(110, 0)
 	status.add_theme_font_size_override("font_size", 26)
@@ -116,7 +128,7 @@ func _make_row(number: int, title: String, desc: String) -> PanelContainer:
 	title_label.custom_minimum_size = Vector2(160, 0)
 	title_label.add_theme_font_size_override("font_size", 26)
 	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	title_label.add_theme_color_override("font_color", Color(0, 0, 0, 1) if unlocked else COLOR_LOCKED)
+	title_label.add_theme_color_override("font_color", COLOR_TITLE_GREEN)
 	title_label.text = title
 
 	var desc_label := Label.new()
@@ -132,6 +144,16 @@ func _make_row(number: int, title: String, desc: String) -> PanelContainer:
 	row.add_child(desc_label)
 	panel.add_child(row)
 	return panel
+
+
+## 成就列表行淡入动效：从上到下依次出现，避免一次性刷出来。
+func _animate_row(row: CanvasItem, index: int) -> void:
+	row.modulate.a = 0.0
+	var tw := row.create_tween()
+	if index > 0:
+		tw.tween_interval(index * 0.03)
+	tw.tween_property(row, "modulate:a", 1.0, 0.22) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 func _on_开始游戏_pressed() -> void:

@@ -290,6 +290,7 @@ func _event_58(context: Dictionary) -> void:
 			ws.oil_price -= 7
 		context["result_text"] = TXT_58_R_SHAH
 	ws.set_flag("iran_revolution_started", false)
+	ws.set_flag("iranrev", false)
 
 
 func _event_59(option_index: int, context: Dictionary) -> void:
@@ -415,7 +416,7 @@ func _event_61(option_index: int, context: Dictionary) -> void:
 	# 原版 AnthemCooldownTime = 4（四年一次国策冷却）；本版无该字段，跳过。
 	match option_index:
 		0:
-			context["result_text"] = TXT_61_R_INTRO + TXT_61_R0
+			context["result_text"] = TXT_61_R_INTRO + _fmt_leader(TXT_61_R0)
 		1:
 			context["result_text"] = TXT_61_R_INTRO + TXT_61_R1
 		2:

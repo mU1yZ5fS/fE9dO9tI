@@ -50,6 +50,43 @@ const SOVIET_TURKISH_CLAIM_REGIONS: Array[int] = [
 const HATAY_REGION_ID := 986
 
 
+# 库尔德斯坦共和国（157）不同成立范围对应的地图地块。
+# 按四个国家分别列出，供 Event372 / 战争9 按实际建国范围精确转移领土。
+const KURDISH_TURKEY_REGIONS: Array[int] = [
+	382, 383, 401, 402, 403, 980, 4068, 4072, 4074, 4075, 4076, 4077,
+	4091, 4092, 4093, 4094,
+]
+const KURDISH_IRAQ_REGIONS: Array[int] = [
+	381, 384, 989, 992, 1408, 1723,
+]
+const KURDISH_SYRIA_REGIONS: Array[int] = [
+	979,
+]
+const KURDISH_IRAN_REGIONS: Array[int] = [
+	400, 990, 991, 993,
+]
+
+## 最大边界：四国库尔德地区全部并入。
+const KURDISTAN_MAX_REGIONS: Array[int] = [
+	382, 383, 401, 402, 403, 980, 4068, 4072, 4074, 4075, 4076, 4077,
+	4091, 4092, 4093, 4094,
+	381, 384, 989, 992, 1408, 1723,
+	979,
+	400, 990, 991, 993,
+]
+
+## 157 号库尔德实体的 parts 位：0=最大边界，3=伊拉克+叙利亚+伊朗，4=伊拉克+伊朗，
+## 5=伊拉克+叙利亚，6=伊拉克，7=伊朗，8=叙利亚，9=土耳其；2 保留给北叙-北伊联邦。
+const KURDISTAN_SCOPE_FULL := 0
+const KURDISTAN_SCOPE_IRAQ_SYRIA_IRAN := 3
+const KURDISTAN_SCOPE_IRAQ_IRAN := 4
+const KURDISTAN_SCOPE_IRAQ_SYRIA := 5
+const KURDISTAN_SCOPE_IRAQ := 6
+const KURDISTAN_SCOPE_IRAN := 7
+const KURDISTAN_SCOPE_SYRIA := 8
+const KURDISTAN_SCOPE_TURKEY := 9
+
+
 ## 统一“国家 parts 标志 → 地图归属变更”的规则表。
 ## 每一条表示：当 legacy 国家的 parts[part] 为 true 时，执行对应地图合并/区域转移。
 ## 这样避免结算逻辑设置 parts 后，地图层漏写规则（如阿尔巴尼亚/库尔德斯坦）。
@@ -78,11 +115,32 @@ const PART_MERGE_RULES := [
 	{"legacy": 167, "part": 0, "type": "regions", "regions": [1250]},
 	# 南墨西哥独立：墨西哥 parts[1] → 恰帕斯/瓦哈卡划给南墨西哥(168)
 	{"legacy": 140, "part": 1, "type": "regions", "regions": [1272, 2101], "target_legacy": 168},
-	# 库尔德斯坦独立
-	{"legacy": 157, "part": 0, "type": "regions", "regions": [
-		381, 382, 384, 402, 403, 979, 980, 989, 990, 1408,
-		1723, 4068, 4072, 4074, 4075, 4077, 4091, 4092, 4094,
+	# 库尔德斯坦独立：最大边界（四国库尔德地区）
+	{"legacy": 157, "part": KURDISTAN_SCOPE_FULL, "type": "regions", "regions": KURDISTAN_MAX_REGIONS},
+	# 库尔德斯坦独立：伊拉克+叙利亚+伊朗（不含土耳其）
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAQ_SYRIA_IRAN, "type": "regions", "regions": [
+		381, 384, 989, 992, 1408, 1723,
+		979,
+		400, 990, 991, 993,
 	]},
+	# 库尔德斯坦独立：伊拉克+伊朗
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAQ_IRAN, "type": "regions", "regions": [
+		381, 384, 989, 992, 1408, 1723,
+		400, 990, 991, 993,
+	]},
+	# 库尔德斯坦独立：伊拉克+叙利亚
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAQ_SYRIA, "type": "regions", "regions": [
+		381, 384, 989, 992, 1408, 1723,
+		979,
+	]},
+	# 库尔德斯坦独立：伊拉克单区
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAQ, "type": "regions", "regions": KURDISH_IRAQ_REGIONS},
+	# 库尔德斯坦独立：伊朗单区
+	{"legacy": 157, "part": KURDISTAN_SCOPE_IRAN, "type": "regions", "regions": KURDISH_IRAN_REGIONS},
+	# 库尔德斯坦独立：叙利亚单区
+	{"legacy": 157, "part": KURDISTAN_SCOPE_SYRIA, "type": "regions", "regions": KURDISH_SYRIA_REGIONS},
+	# 土耳其-库尔德之战获胜：仅土耳其属库尔德斯坦
+	{"legacy": 157, "part": KURDISTAN_SCOPE_TURKEY, "type": "regions", "regions": KURDISH_TURKEY_REGIONS},
 	# 库尔德斯坦“北叙-北伊联邦”：伊拉克/叙利亚库尔德区
 	{"legacy": 157, "part": 2, "type": "regions", "regions": [
 		381, 384, 979, 989, 1408, 1723,

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_def")
-id =    
+id = 69
 name_zh = "中 蒙 战 争 "
 name_en = ""
 fortnight_max = 15

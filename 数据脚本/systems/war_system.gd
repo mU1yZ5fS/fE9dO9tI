@@ -196,11 +196,9 @@ static func check_war_endings() -> void:
 		# 部分战争有独立阈值，按原版结算分支判定，避免“到数值了却不结算”。
 		var by_infl := false
 		if i == 4:
-			# 黎巴嫩战争：GameState.cs 分支中以色列胜 900（第二次黎巴嫩战争为 700）、以色列败 500。
-			if w.event_done_num(371):
-				by_infl = war.infl1 >= 700 or war.infl2 >= 500
-			else:
-				by_infl = war.infl1 >= 900 or war.infl2 >= 500
+			# 黎巴嫩战争：原版 WorldWarsDone 统一按 1000/1000 结算（可配合 24 双周超时），
+			# 不是按 event371/711 的结果来提前结束。
+			by_infl = war.infl1 >= 1000 or war.infl2 >= 1000
 		elif i == 17:
 			# 苏联遗产战争（war17）原版结算阈值是 850（GameState.cs:1005-1042），不是通用 1000。
 			by_infl = war.infl1 >= 850 or war.infl2 >= 850
@@ -208,8 +206,11 @@ static func check_war_endings() -> void:
 			by_infl = war.infl1 >= 1000 or war.infl2 >= 1000
 		if by_time or by_infl:
 			w.war_resolve = i
+			# 原版 TimeScript.cs:7090-7095：WarCheck(81) 走 Reelect(661)（乌干达内战有专属结算事件），
+			# 其余战争统一 Reelect(18) / war_is_over。
+			var ending_event := "event_661" if i == 81 else "war_is_over"
 			if _start_event_cb.is_valid():
-				_start_event_cb.call("war_is_over")
+				_start_event_cb.call(ending_event)
 			if _notify_stats_cb.is_valid():
 				_notify_stats_cb.call()
 			return
@@ -4548,9 +4549,14 @@ static func _apply_war9_result(war: WarData, d: WorldState) -> void:
 			kurdistan.puppet_of = GameConstants.LegacySlot.NONE
 			if kurdistan.chinese_name == "":
 				kurdistan.chinese_name = "库尔德斯坦"
-		# 项目用 157（库尔德斯坦二号）承载库尔德地区的地图实体；激活 parts[0]，
-		# 由 map_service 的 PART_MERGE_RULES 把库尔德聚居区划给该实体，不再“打赢无变化”。
-		_activate_kurdistan_map(w, GameConstants.Government.SOCIALIST, GameConstants.SubGovernment.STATE_SOCIALIST)
+		# 项目用 157（库尔德斯坦二号）承载库尔德地区的地图实体；战争9获胜只划土耳其库尔德区，
+		# 由 map_service 的 PART_MERGE_RULES 按 scope 转移，不再“打赢无变化”或误吞四国全部库尔德区。
+		_activate_kurdistan_map(
+			w,
+			GameConstants.Government.SOCIALIST,
+			GameConstants.SubGovernment.STATE_SOCIALIST,
+			MapService.KURDISTAN_SCOPE_TURKEY
+		)
 		var kurd_map := w.get_country_by_legacy_index(157)
 		if kurd_map != null:
 			kurd_map.set_tag("亲中", true)
@@ -4563,13 +4569,15 @@ static func _apply_war9_result(war: WarData, d: WorldState) -> void:
 
 
 ## 激活 157 号库尔德地图实体（等价 Event372 的 _activate_kurdistan()）。
-static func _activate_kurdistan_map(w: WorldState, gov: int, sub_gov: int) -> void:
+## scope_part 决定地图领土范围；战争9 传 KURDISTAN_SCOPE_TURKEY，只划土耳其属库尔德斯坦。
+static func _activate_kurdistan_map(w: WorldState, gov: int, sub_gov: int, scope_part: int = 0) -> void: # 0 = 最大边界
 	var c := w.get_country_by_legacy_index(157)
 	if c == null:
 		return
-	if c.parts.size() <= 0:
-		c.parts.resize(1)
-	c.parts[0] = true
+	# 先清掉旧的库尔德范围位，避免存档/重复触发时叠加出“超范围”领土。
+	for idx in [0, 2, 3, 4, 5, 6, 7, 8, 9]:
+		c.set_part(idx, false)
+	c.set_part(scope_part, true)
 	c.name = "库尔德斯坦共和国"
 	c.chinese_name = "库尔德斯坦共和国"
 	_leave_alliances(c)

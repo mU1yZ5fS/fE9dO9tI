@@ -305,7 +305,7 @@ static func _plot_kill_allowed(w: WorldState, i: int) -> bool:
 	var d := w
 	var ev25 := w.completed_event_ids.has("gang_of_four")
 	var ev26 := w.completed_event_ids.has("weak_alliance")
-	var ev80 := w.completed_event_ids.has("event_80")  # 原版 event_done[80]，Godot 移植说明 → 恒 false
+	var ev80 := w.completed_event_ids.has("event_080")  # 原版 event_done[80]，Godot 移植说明 → 恒 false
 	var mod3: bool = w.modifier_active(3)
 	var year_ok := d.year >= 1978
 	var basic := i > 5 and i != 7 and (i < 11 or i > 15) and i != 17

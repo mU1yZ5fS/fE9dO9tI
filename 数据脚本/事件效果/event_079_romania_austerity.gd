@@ -82,8 +82,15 @@ func execute(context: Dictionary) -> void:
 			_ussr_leader_add(4, 1)
 			context["result_text"] = TXT_R1.replace("{0}{1}", leader_name)
 		2:
-			# 原版 result2 无文案无效果
-			context["result_text"] = ""
+			# 原版 Event79.cs result2：号召经互会共同援助罗马尼亚（含文案与效果）。
+			_add(W.I_BUDGET, -150)
+			_add_power(EmpireData.USSR, 30)
+			ws.influence_prc += 30
+			if romania != null:
+				romania.set_tag("对华贸易", true)
+			_add(W.I_SCIENCE, 200)
+			_ussr_leader_add(4, 1)
+			context["result_text"] = TXT_R2.replace("{0}{1}", leader_name)
 		3:
 			_add(W.I_BUDGET, -150)
 			_add(W.I_AGENTS, -150)

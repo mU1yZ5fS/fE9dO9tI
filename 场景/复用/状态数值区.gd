@@ -113,7 +113,7 @@ func _tip_text(label_name: String, w: WorldState) -> String:
 		return ""
 	var cfg: Array = 提示配置[label_name]
 	var idx: int = cfg[1]
-	var tip := "%s: %s" % [cfg[0], _delta_str(w.即时两周变化(idx))]
+	var tip := "%s: %s" % [cfg[0], _delta_str(w.两周变化(idx))]
 	if idx == W.I_DIPLO:
 		tip += _faction_suffix(w.diplomatic_reputation)
 	return tip

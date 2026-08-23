@@ -127,6 +127,8 @@ func _prepare_44(event_def: EventDef) -> void:
 func _event_42(option_index: int) -> void:
 	var iran := ws.get_country_by_legacy_index(8)
 	ws.set_flag("iran_revolution_started", true)
+	# 原版 Event42.cs 三选项均设 iranrev=true，供战争图标特殊标记与后续事件链使用。
+	ws.set_flag("iranrev", true)
 	match option_index:
 		0:
 			if iran != null: iran.development = 4

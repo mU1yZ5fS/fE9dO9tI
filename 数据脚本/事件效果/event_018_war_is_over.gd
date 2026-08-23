@@ -164,12 +164,54 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 			txt = _war4_result_text_from_table(entry, war)
 		6:
 			txt = _t(entry, "a") if war.infl1 >= 400 else _t(entry, "b")
+		7:
+			txt = _war7_result_text_from_table(entry, war)
+		8:
+			if war.infl1 >= 500:
+				txt = _t(entry, "a")
+			elif war.infl2 >= 800:
+				txt = _t(entry, "b")
+			else:
+				txt = _t(entry, "draw")
+		9:
+			if war.infl1 >= 600:
+				txt = _t(entry, "a")
+			elif war.infl2 >= 800:
+				txt = _t(entry, "b")
+			else:
+				txt = _t(entry, "draw")
+		10:
+			txt = _t(entry, "a") if war.infl1 >= 700 else _t(entry, "b")
+		11:
+			txt = _t(entry, "a") if war.infl1 >= 700 else _t(entry, "b")
+		12:
+			txt = _t(entry, "a") if war.infl1 >= 700 else _t(entry, "b")
+		17:
+			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
+		18:
+			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
+		24:
+			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
+		25:
+			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
+		26:
+			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
+		27:
+			txt = _war27_result_text_from_table(entry, war)
+		29:
+			txt = _war29_result_text_from_table(entry, war)
+		31:
+			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
+		32:
+			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
 		15:
 			txt = _war15_result_text_from_table(entry, war)
 		16:
 			txt = _war16_result_text_from_table(entry, war)
 		22:
 			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
+		34:
+			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
 		35:
 			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
 		39:
@@ -236,6 +278,50 @@ func _war4_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 	if war.infl2 >= 500:
 		return _t(entry, "r5")
 	return _t(entry, "r6")
+
+
+## 印度内战（war7）：原版 GameState.cs:505-571，按 infl1 与 resultOfEvents[125] 分四支。
+func _war7_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	var result125 := d.result_of_event_num(125) if d != null else 0
+	if war.infl1 >= 900:
+		return _t(entry, "win_125_0") if result125 == 0 else _t(entry, "win_125_1")
+	return _t(entry, "lose_125_1") if result125 == 1 else _t(entry, "lose_125_0")
+
+
+## 老挝内战（war27）：infl1>=500 政府胜，否则叛军胜（原版 1241 模板无占位符，proprc 后缀实际不参与）。
+func _war27_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	return _t(entry, "a") if war.infl1 >= 500 else _t(entry, "b")
+
+
+## 伊拉克-科威特战争（war29）：原版 GameState.cs:1532-1626，按中国阵营/影响力分多支。
+func _war29_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	var china := ws.get_country_by_legacy_index(1) if ws != null else null
+	var is_ovd: bool = china != null and china.has_tag("ovd")
+	var is_seato: bool = china != null and china.has_tag("seato")
+	var prc_influence: int = d.influence_prc if d != null else 0
+	var ussr_power: int = 0
+	var usa_power: int = 0
+	if d != null and d.empires.size() > EmpireData.USSR and d.empires[EmpireData.USSR] != null:
+		ussr_power = d.empires[EmpireData.USSR].power
+	if d != null and d.empires.size() > EmpireData.USA and d.empires[EmpireData.USA] != null:
+		usa_power = d.empires[EmpireData.USA].power
+	if war.infl1 >= 900:
+		if is_ovd:
+			return _t(entry, "a_ovd_prc") if prc_influence >= ussr_power else _t(entry, "a_ovd_sov")
+		if is_seato:
+			return _t(entry, "a_seato_prc") if prc_influence >= usa_power else _t(entry, "a_seato_usa")
+		return _t(entry, "a_neutral")
+	if war.infl2 >= 500:
+		if is_ovd:
+			return _t(entry, "b_ovd")
+		if is_seato:
+			return _t(entry, "b_seato")
+		return _t(entry, "b_neutral")
+	if is_ovd:
+		return _t(entry, "draw_ovd")
+	if is_seato:
+		return _t(entry, "draw_seato")
+	return _t(entry, "draw_neutral")
 
 
 ## 欧加登战争（war15）：按是否已触发 event588 分两阶段。
