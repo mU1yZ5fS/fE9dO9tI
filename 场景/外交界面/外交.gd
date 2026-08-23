@@ -46,6 +46,8 @@ var _interactive_refresh_timer := 0.0
 func _ready() -> void:
 	# 始终处理，确保暂停时仍能接收 ESC 输入
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	if GameManager:
+		UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 
 	# 防止从事件/子界面返回时残留全局暂停（ESC菜单→事件等路径）
 	if get_tree() != null:
@@ -381,22 +383,30 @@ func _on_tech_completed(_tech_id: int) -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		if ESC菜单_open:
-			ESC菜单_open = false
-			get_tree().paused = false
-			$ESC菜单.hide()
-			if _resume_after_esc:
-				GameManager.play()
-			_resume_after_esc = false
+			close_esc_menu()
 		else:
 			ESC菜单_open = true
 			_resume_after_esc = GameManager.is_playing
 			GameManager.pause()
 			get_tree().paused = true
+			# 原版 CascadScrupt.cs：菜单在 1986 后显示「结束」按钮，每次打开时刷新。
+			$ESC菜单.refresh_post_exit()
 			$ESC菜单.show()
 		return
 	# 调试：按 F9 触发「五不准」事件测试（仅调试构建）
 	if OS.is_debug_build() and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F9:
 		_trigger_test_event()
+
+
+## 关闭 ESC 菜单并恢复暂停前的速度（存档/加载/设置/结束按钮共用）。
+func close_esc_menu() -> void:
+	ESC菜单_open = false
+	if get_tree() != null:
+		get_tree().paused = false
+	$ESC菜单.hide()
+	if _resume_after_esc:
+		GameManager.play()
+	_resume_after_esc = false
 
 
 # ── 事件通知弹窗 ──

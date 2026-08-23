@@ -77,6 +77,104 @@ var time_shortcut_keys: Dictionary:
 		if _settings != null:
 			_settings.time_shortcut_keys = value
 
+## 作弊快捷键绑定：action → 物理键码（Key）。空字典时用默认值兜底。
+var cheat_hotkey_keys: Dictionary:
+	get:
+		return _settings.cheat_hotkey_keys if _settings != null else {}
+	set(value):
+		if _settings != null:
+			_settings.cheat_hotkey_keys = value
+
+## 调试控制台总开关。关闭后任何模式都无法用快捷键打开。
+var debug_console_enabled: bool:
+	get:
+		return _settings.debug_console_enabled if _settings != null else false
+	set(value):
+		if _settings != null:
+			_settings.set_debug_console_enabled(value)
+
+## 调试控制台开关快捷键（默认 F12）。
+var debug_console_toggle_key: int:
+	get:
+		return _settings.debug_console_toggle_key if _settings != null else KEY_F12
+	set(value):
+		if _settings != null:
+			_settings.set_debug_console_toggle_key(value)
+
+## 事件系统自动触发总开关。
+var events_enabled: bool:
+	get:
+		return _settings.events_enabled if _settings != null else true
+	set(value):
+		if _settings != null:
+			_settings.set_events_enabled(value)
+
+## 事件文本对齐方式：0=左 1=中 2=右。
+var event_text_alignment: int:
+	get:
+		return _settings.event_text_alignment if _settings != null else 0
+	set(value):
+		if _settings != null:
+			_settings.set_event_text_alignment(value)
+
+var event_desc_font_size: int:
+	get:
+		return _settings.event_desc_font_size if _settings != null else 29
+	set(value):
+		if _settings != null:
+			_settings.set_event_desc_font_size(value)
+
+var event_option_font_size: int:
+	get:
+		return _settings.event_option_font_size if _settings != null else 28
+	set(value):
+		if _settings != null:
+			_settings.set_event_option_font_size(value)
+
+var event_result_font_size: int:
+	get:
+		return _settings.event_result_font_size if _settings != null else 29
+	set(value):
+		if _settings != null:
+			_settings.set_event_result_font_size(value)
+
+## 全局 UI 字体倍率（1.0 = 原始大小）。
+var ui_font_scale: float:
+	get:
+		return _settings.ui_font_scale if _settings != null else 1.0
+	set(value):
+		if _settings != null:
+			_settings.set_ui_font_scale(value)
+
+var paragraph_spacing_enabled: bool:
+	get:
+		return _settings.paragraph_spacing_enabled if _settings != null else true
+	set(value):
+		if _settings != null:
+			_settings.set_paragraph_spacing_enabled(value)
+
+var paragraph_indent_enabled: bool:
+	get:
+		return _settings.paragraph_indent_enabled if _settings != null else true
+	set(value):
+		if _settings != null:
+			_settings.set_paragraph_indent_enabled(value)
+
+## 地图国界粗细（像素采样范围）。
+var map_border_width: float:
+	get:
+		return _settings.map_border_width if _settings != null else 3.0
+	set(value):
+		if _settings != null:
+			_settings.set_map_border_width(value)
+
+var map_color_preset: int:
+	get:
+		return _settings.map_color_preset if _settings != null else 0
+	set(value):
+		if _settings != null:
+			_settings.set_map_color_preset(value)
+
 ## 外交（主游戏）场景是否处于激活状态。
 ## 只有外交场景激活时，时间才会流动 —— 与原版 Unity 行为一致
 ## （原版 TimeScript 只在主地图场景的 Update() 中运行，切到子界面场景时自然暂停）。
@@ -289,6 +387,81 @@ func get_time_shortcut_label(action: String) -> String:
 func rebind_time_shortcut(action: String, physical_keycode: int) -> void:
 	if _settings != null:
 		_settings.rebind_time_shortcut(action, physical_keycode)
+
+
+# ── 作弊快捷键（仅沙盒难度生效）──
+
+func get_cheat_hotkey_key(action: String) -> int:
+	return _settings.get_cheat_hotkey_key(action) if _settings != null else 0
+
+
+func get_cheat_hotkey_label(action: String) -> String:
+	return _settings.get_cheat_hotkey_label(action) if _settings != null else "未设置"
+
+
+func rebind_cheat_hotkey(action: String, physical_keycode: int) -> void:
+	if _settings != null:
+		_settings.rebind_cheat_hotkey(action, physical_keycode)
+
+
+func set_debug_console_enabled(value: bool) -> void:
+	if _settings != null:
+		_settings.set_debug_console_enabled(value)
+
+
+func set_debug_console_toggle_key(physical_keycode: int) -> void:
+	if _settings != null:
+		_settings.set_debug_console_toggle_key(physical_keycode)
+
+
+func set_events_enabled(value: bool) -> void:
+	if _settings != null:
+		_settings.set_events_enabled(value)
+
+
+func set_event_text_alignment(value: int) -> void:
+	if _settings != null:
+		_settings.set_event_text_alignment(value)
+
+
+func set_event_desc_font_size(value: int) -> void:
+	if _settings != null:
+		_settings.set_event_desc_font_size(value)
+
+
+func set_event_option_font_size(value: int) -> void:
+	if _settings != null:
+		_settings.set_event_option_font_size(value)
+
+
+func set_event_result_font_size(value: int) -> void:
+	if _settings != null:
+		_settings.set_event_result_font_size(value)
+
+
+func set_ui_font_scale(value: float) -> void:
+	if _settings != null:
+		_settings.set_ui_font_scale(value)
+
+
+func set_paragraph_spacing_enabled(value: bool) -> void:
+	if _settings != null:
+		_settings.set_paragraph_spacing_enabled(value)
+
+
+func set_paragraph_indent_enabled(value: bool) -> void:
+	if _settings != null:
+		_settings.set_paragraph_indent_enabled(value)
+
+
+func set_map_border_width(value: float) -> void:
+	if _settings != null:
+		_settings.set_map_border_width(value)
+
+
+func set_map_color_preset(value: int) -> void:
+	if _settings != null:
+		_settings.set_map_color_preset(value)
 
 
 func set_voice(value: int) -> void:
@@ -1525,10 +1698,12 @@ func _monthly_rim_and_alliance_cleanup(w: WorldState) -> void:
 	if kenya_infl != null and kenya_infl.influence_nato > 0:
 		kenya_infl.influence_nato -= 1
 
-	# 1770-1881 事件686 月块（本项目先移植其中的芬兰 based 分支）。
+	# 1770-1881 事件686 月块（事件686 后欧洲中立国苏联影响力累积/芬兰分支）。
 	_monthly_finland_linkage(w)
 	# 1898-1917：乌干达事件659/661 月块推进与开战。
 	_monthly_uganda_linkage(w, d)
+	# 3302-3340：安哥拉事件638 后三方势力月度增长与内战 68 自动爆发。
+	_monthly_angola_linkage(w)
 	# 2090-2300：事件418 中东影响力争夺。
 	_monthly_event418_mideast(w)
 	# 2299-2565：外援消耗、英法西葡政体、被美苏逐出联盟等月块维护。
@@ -1870,22 +2045,76 @@ func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 	# DaysInSouthAmerica 建模说明 → 跳过（项目月块不处理南美选举漂移）。
 
 
-## TimeScript.cs:1770-1881 事件686 月块中的芬兰(26)部分（1860-1890）：
-## 瑞典(28)/丹麦(90)/挪威(91) 都 based 且芬兰未 based 时，芬兰按苏联领导人转亲苏。
+## TimeScript.cs:1770-1881 事件686 月块：对西欧/北欧中立国进行苏联影响力累积，
+## 达到 1000 后苏联化（based/亲苏/加入经互会华约），并处理芬兰(26)特殊分支。
 ## （1648-1679 三国 econ+okb 转亲中分支是日块，已移 _daily_finland_linkage。）
-## Phase 2 缺口：1772-1856 北欧 sovpower 累积/封顶/转 based 的 80 行尚移植说明，
-## 目前三国“有驻军基地”主要靠外交/事件置位。
 func _monthly_finland_linkage(w: WorldState) -> void:
+	if not w.event_done_num(686):
+		return
+	var spain_eu := w.get_country_by_legacy_index(85)
+	var france_fx := w.get_country_by_legacy_index(21)
+	if spain_eu != null and spain_eu.has_tag("soc_eu"):
+		return
+	if france_fx != null and (france_fx.has_tag("fxseu") or france_fx.has_tag("nazimao")):
+		return
+
+	var gdr := w.get_country_by_legacy_index(7)
+	var ussr_leader := -1
+	if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
+		ussr_leader = w.empires[EmpireData.USSR].current_leader
+
+	var neutral_indices: Array[int] = [0, 27, 28, 88, 89, 90, 91]
+	var pro_sov_indices: Array[int] = [21, 85, 86, 87, 92]
+	for idx in neutral_indices:
+		var c := w.get_country_by_legacy_index(idx)
+		if c == null:
+			continue
+		c.stab = 0
+		c.special = 0
+		if not c.has_tag("okb") and not c.有驻军基地 and not c.has_tag("rim"):
+			if c.sov_power < 1000:
+				c.sov_power += 10
+				if ussr_leader == 3 or ussr_leader == 4:
+					c.sov_power += 10
+				if gdr != null and gdr.has_tag("sev"):
+					c.sov_power += 20
+				if gdr != null and gdr.has_tag("ovd"):
+					c.sov_power += 20
+				for pro_idx in pro_sov_indices:
+					var p := w.get_country_by_legacy_index(pro_idx)
+					if p != null and (p.has_tag("亲苏") or p.has_tag("sev")):
+						c.sov_power += 10
+				if c.has_tag("econ"):
+					c.sov_power -= 30
+			if c.sov_power >= 1000:
+				c.sov_power = 1000
+				c.有驻军基地 = true
+				c.prc_power = 0
+				if ussr_leader == 6:
+					c.government = GameConstants.Government.REFORMIST
+					c.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
+				else:
+					c.government = GameConstants.Government.SOCIALIST
+					c.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
+				c.set_tag("亲苏", true)
+				c.set_tag("亲中", false)
+				c.set_tag("econ", false)
+				c.set_tag("对华贸易", false)
+				if gdr != null and gdr.has_tag("sev"):
+					c.set_tag("sev", true)
+				if gdr != null and gdr.has_tag("ovd"):
+					c.set_tag("ovd", true)
+		elif c.has_tag("okb") and not c.有驻军基地:
+			c.sov_power = 0
+
+	# 芬兰：瑞典/丹麦/挪威都已苏联化后，芬兰自动转亲苏（1860-1890）。
 	var sweden := w.get_country_by_legacy_index(28)
 	var denmark := w.get_country_by_legacy_index(90)
 	var norway := w.get_country_by_legacy_index(91)
 	var finland := w.get_country_by_legacy_index(26)
-
 	if sweden != null and sweden.有驻军基地 and denmark != null and denmark.有驻军基地 \
 			and norway != null and norway.有驻军基地 and finland != null and not finland.有驻军基地:
-		var ussr_now := w.empires[EmpireData.USSR].current_leader \
-			if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null else -1
-		if ussr_now == 6:
+		if ussr_leader == 6:
 			finland.government = GameConstants.Government.REFORMIST
 			finland.sub_government = GameConstants.SubGovernment.EUROCOMMUNIST
 		else:
@@ -1893,12 +2122,9 @@ func _monthly_finland_linkage(w: WorldState) -> void:
 			finland.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
 		finland.set_tag("亲中", false)
 		finland.set_tag("亲苏", true)
-		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
-			pass
-		var ussr_fin := w.get_country_by_legacy_index(7)
-		if ussr_fin != null and ussr_fin.has_tag("sev"):
+		if gdr != null and gdr.has_tag("sev"):
 			finland.set_tag("sev", true)
-		if ussr_fin != null and ussr_fin.has_tag("ovd"):
+		if gdr != null and gdr.has_tag("ovd"):
 			finland.set_tag("ovd", true)
 		finland.有驻军基地 = true
 
@@ -1930,6 +2156,71 @@ func _monthly_uganda_linkage(w: WorldState, _d: WorldState) -> void:
 			uganda.parts.append(false)
 		uganda.parts[0] = true
 		GameManager.start_war(81, "布 干 达 武 装", "政 府 军", 600, 400)
+
+
+## TimeScript.cs:3302-3340：安哥拉事件638 后，三方势力按美苏国力每月增长；
+## 同时 TimeScript.cs:656-681 在一方达到 900 且另两方仍存在时自动爆发战争 68。
+func _monthly_angola_linkage(w: WorldState) -> void:
+	if not w.event_done_num(638):
+		return
+	var angola := w.get_country_by_legacy_index(123)
+	if angola == null or angola.内战中:
+		return
+	if w.war_going(68):
+		return
+	var usa_power_emp: int = w.empires[EmpireData.USA].power \
+		if w.empires.size() > EmpireData.USA and w.empires[EmpireData.USA] != null else 0
+	var ussr_power_emp: int = w.empires[EmpireData.USSR].power \
+		if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null else 0
+
+	# 月度势力增长（原版 3302/3324/3337）。
+	if angola.prc_power > 0 and angola.prc_power < 900:
+		if ussr_power_emp > 0:
+			@warning_ignore("integer_division")
+			angola.prc_power += ussr_power_emp * 3 / 100
+		if w.result_of_event_num(638) == 0:
+			angola.prc_power += 10
+	if angola.sov_power > 0 and angola.sov_power < 900:
+		if usa_power_emp > 0:
+			@warning_ignore("integer_division")
+			angola.sov_power += usa_power_emp * 3 / 100
+		if w.result_of_event_num(638) == 1:
+			angola.sov_power += 10
+	if angola.usa_power > 0 and angola.usa_power < 900:
+		if usa_power_emp > 0:
+			@warning_ignore("integer_division")
+			angola.usa_power += usa_power_emp * 3 / 100
+		if w.result_of_event_num(638) == 2:
+			angola.usa_power += 10
+
+	# 自动开战（原版 TimeScript 656-681）。
+	if angola.prc_power >= 900 and angola.sov_power > 0 and angola.usa_power > 0:
+		angola.prc_power = 1000
+		angola.sov_power = 0
+		angola.usa_power = 0
+		while angola.parts.size() <= 0:
+			angola.parts.append(false)
+		angola.parts[0] = true
+		WAR_SYS.start_war(68, "安 人 运", "安 盟 - 安 解 阵", 700, 300,
+			GameConstants.WarSide.SIDE2, GameConstants.WarSide.SIDE1)
+	elif angola.sov_power >= 900 and angola.prc_power > 0 and angola.usa_power > 0:
+		angola.sov_power = 1000
+		angola.prc_power = 0
+		angola.usa_power = 0
+		while angola.parts.size() <= 0:
+			angola.parts.append(false)
+		angola.parts[0] = true
+		WAR_SYS.start_war(68, "安 盟", "安 人 运", 600, 400,
+			GameConstants.WarSide.SIDE1, GameConstants.WarSide.SIDE2)
+	elif angola.usa_power >= 900 and angola.prc_power > 0 and angola.sov_power > 0:
+		angola.usa_power = 1000
+		angola.prc_power = 0
+		angola.sov_power = 0
+		while angola.parts.size() <= 0:
+			angola.parts.append(false)
+		angola.parts[0] = true
+		WAR_SYS.start_war(68, "安 解 阵", "安 人 运 - 安 盟", 500, 500,
+			GameConstants.WarSide.SIDE1, GameConstants.WarSide.SIDE2)
 
 
 func _war_at_ensure(w: WorldState, idx: int) -> WarData:

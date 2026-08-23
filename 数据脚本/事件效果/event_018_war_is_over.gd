@@ -216,6 +216,9 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
 		39:
 			txt = _war39_result_text(war)
+		45, 46, 47:
+			# 墨西哥起义/统一战争：原版以 side2（南方解放军/教权派）胜利显示 a，否则 b。
+			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
 		69:
 			# 保留现有战败结局：infl1 < 1000 时走蒙古战败文案。
 			txt = _t(entry, "b") if _is_mongol_defeat(war_id, war) else _t(entry, "a")

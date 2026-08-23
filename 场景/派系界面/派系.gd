@@ -56,6 +56,7 @@ var _当前类别: String = ""
 func _ready() -> void:
 	if not GameManager:
 		return
+	UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 	# 标题 hover 文案对齐原版 Politic.unity OkoshkoScript.text_en（政体“国家体制”、路线“党的路线”、军力“军事力量”）
 	for pair in [["政体类型", "国家体制"], ["政治路线类型", "党的路线"], ["军队力量", "军事力量"], ["军队力量背景图", "军事力量"]]:
 		var tip_node := _find(pair[0])
@@ -92,9 +93,13 @@ func _ready() -> void:
 	var expand_btn := _find("右栏政策介绍展开")
 	var collapse_btn := _find("右栏政策介绍收回")
 	if expand_btn is TextureButton:
-		expand_btn.pressed.connect(func(): _set_visible("右栏政策介绍", true))
+		expand_btn.pressed.connect(func():
+			_set_visible("右栏政策介绍", true)
+			_set_visible("右栏政策介绍展开", false))
 	if collapse_btn is TextureButton:
-		collapse_btn.pressed.connect(func(): _set_visible("右栏政策介绍", false))
+		collapse_btn.pressed.connect(func():
+			_set_visible("右栏政策介绍", false)
+			_set_visible("右栏政策介绍展开", true))
 	# 原版 Politic.unity 按钮：演讲(speechscript)、选举(ElectScript)、经济/军事同盟(ElectScript is_alliance)
 	var elect_btn := _find("选举")
 	if elect_btn is Button:

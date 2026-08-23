@@ -17,6 +17,7 @@ var _refresh_queued: bool = false
 
 func _ready() -> void:
 	if GameManager:
+		UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_on_stats):
 			GameManager.stats_changed.connect(_on_stats)
 		if not GameManager.world_state_loaded.is_connected(_on_world_loaded):

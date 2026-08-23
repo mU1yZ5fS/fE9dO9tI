@@ -351,6 +351,9 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	_assign_real_gwcodes(ws)
 	ws.rebuild_gwcode_index()
 	_fill_data_array(ws)
+	# 开局中国国际影响力 = 原版 Data1.txt data[7] = 50（顶栏 /10 显示 5.0），
+	# 原版 GameStartScript.cs:304 influencePRC = data[7]；KumihaRepaint 每周期回写 data[7]。
+	ws.influence_prc = 50
 	# 原版 GameStartScript.cs:90：开局 OilProd=850；OilEat 由 modifier51/经济计算按公式生成。
 	ws.oil_prod = 850.0
 	_build_politicians(ws)
@@ -598,11 +601,14 @@ static func _set_leader(ws: WorldState) -> void:
 	var leader := PoliticianData.new()
 	leader.name_display = LEADER_NAME
 	leader.age = LEADER_AGE
-	# Politics_leader.txt: traits[0..3] = 20, 21, 5, 16（保守/党务干部/实用主义/谋士）
+	# Politics_leader.txt 文件字段序: name1;name2;traits[0];traits[3];traits[1];traits[2];birth
+	# （原版 GameStartScript.cs:383-388 逐字段读取），因此：
+	#   LEADER_TRAITS[0]=20 → 保守派   LEADER_TRAITS[1]=21 → 党务干部(background)
+	#   LEADER_TRAITS[2]=5  → 实用主义(alignment)  LEADER_TRAITS[3]=16 → 谋士(special)
 	leader.trait_personality = LEADER_TRAITS[0]
-	leader.trait_alignment = LEADER_TRAITS[1]
-	leader.trait_special = LEADER_TRAITS[2]
-	leader.trait_background = LEADER_TRAITS[3]
+	leader.trait_background = LEADER_TRAITS[1]
+	leader.trait_alignment = LEADER_TRAITS[2]
+	leader.trait_special = LEADER_TRAITS[3]
 	leader.name_first = LEADER_NAME_FIRST
 	leader.name_last = LEADER_NAME_LAST
 	# 改版中文界面沿用真实姓名+照片；faction=1 仅作 Party 槽显示

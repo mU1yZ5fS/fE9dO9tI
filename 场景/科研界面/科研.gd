@@ -142,6 +142,8 @@ func _ready() -> void:
 	_tex_yes = preload("res://资产/UI/科研/是否可科研状态_是.png")
 	_tex_no = preload("res://资产/UI/科研/是否可科研状态_否.png")
 	_camera = _find("移动视角摄像机") as Camera2D
+	if GameManager:
+		UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 
 	# 将所有 Control 节点设为鼠标穿透，避免遮挡按钮点击
 	_make_mouse_transparent(self)

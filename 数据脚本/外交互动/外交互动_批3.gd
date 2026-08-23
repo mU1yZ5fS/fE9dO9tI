@@ -795,9 +795,9 @@ func _def_1000(w: WorldState, country: CountryData, caption: String) -> Dictiona
 func _def_1001(w: WorldState, country: CountryData, caption: String) -> Dictionary:
 	var opis := " 就 戈 兰 高 地 的 归 属 问 题 组 织 谈 判"
 	var conds: Array = []
-	var israel_lost := w.get_flag("israellost") or w.get_flag("israel_lost_lebanon_war")
 	conds.append(cond(" 黎 巴 嫩 战 争 已 结 束",
-		func(): return israel_lost or (c(w, 93) != null and c(w, 93).puppet_of == 37)))
+		func(): return w.get_flag("israellost") or w.get_flag("israel_lost_lebanon_war") \
+			or (c(w, 93) != null and c(w, 93).puppet_of == 37)))
 	conds.append(cond(" 还 未 组 织 谈 判", func(): return not ev(w, 439) or res(w, 439) == 3))
 	conds.append(cond(" 叙 利 亚 不 受 美 国 影 响", func(): return not has(country, "亲美")))
 	var eff := func():

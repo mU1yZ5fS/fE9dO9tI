@@ -6,39 +6,10 @@
 [ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
 [ext_resource type="Script" path="res://数据脚本/事件效果/event_067_070_crises_and_plenums.gd" id="5_custom"]
 
-[sub_resource type="Resource" id="Expr_day"]
+[sub_resource type="Resource" id="Expr_date_after"]
 script = ExtResource("3_expr")
-type = 0
-key = "day"
-value = 15.0
-
-[sub_resource type="Resource" id="Expr_month"]
-script = ExtResource("3_expr")
-type = 0
-key = "month"
-value = 8.0
-
-[sub_resource type="Resource" id="Expr_year_1980"]
-script = ExtResource("3_expr")
-type = 0
-key = "year"
-value = 1980.0
-
-[sub_resource type="Resource" id="Expr_1980_date"]
-script = ExtResource("3_expr")
-type = 18
-children = Array[ExtResource("3_expr")]([SubResource("Expr_day"), SubResource("Expr_month"), SubResource("Expr_year_1980")])
-
-[sub_resource type="Resource" id="Expr_year_1981"]
-script = ExtResource("3_expr")
-type = 0
-key = "year"
-value = 1981.0
-
-[sub_resource type="Resource" id="Expr_date"]
-script = ExtResource("3_expr")
-type = 19
-children = Array[ExtResource("3_expr")]([SubResource("Expr_1980_date"), SubResource("Expr_year_1981")])
+type = 12
+key = "1980.5.18"
 
 [sub_resource type="Resource" id="Expr_agents"]
 script = ExtResource("3_expr")
@@ -96,5 +67,5 @@ source_event_number = 68
 trigger_priority = 680
 title = "光州事件"
 description = "1979年12月政变后，全斗焕夺取了韩国大权，开始无情地镇压反对军政府的抗议者。5月17日，戒严开始了，5月18日，在光州市，为反对关闭全罗南道国立大学而组织的学生示威遭到军队镇压。这引起了城市的不满风暴，并引发了更大的骚乱，在此期间，起义者成功地占领了警察局和军事基地，并将军队赶出了城市。根据我们的情报，全斗焕政府正准备用正规军夺取光州。通过支持起义者使其能够坚持更长的时间，以及引导我们情报部门的力量煽动邻近地区的不满，我们可以严重破坏韩国政权的稳定。"
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date_after")])
 options = Array[ExtResource("1_option")]([SubResource("Option_0"), SubResource("Option_1"), SubResource("Option_2"), SubResource("Option_3")])

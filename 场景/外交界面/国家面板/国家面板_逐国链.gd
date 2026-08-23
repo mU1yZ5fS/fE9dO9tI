@@ -694,7 +694,8 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 				_show(slots, 2, 53, "经 济 合 作")
 				_show(slots, 3, 19, "军 事 同 盟")
 				var c93 := _c(w, 93)
-				if w.get_flag("Israellost") or (c93 != null and c93.puppet_of == 37):  # 散落 bool Israellost 用 global_flags 建模
+				if w.get_flag("israellost") or w.get_flag("israel_lost_lebanon_war") \
+						or (c93 != null and c93.puppet_of == 37):  # 散落 bool Israellost 用 global_flags 建模
 					_show(slots, 1, 1001, "组 织 谈 判")
 				if _revint_core_ok(w, country) and country.has_tag("亲中") and country.has_tag("okb"):
 					_show(slots, 3, 5000, "革 命 国 际")
@@ -1338,7 +1339,7 @@ func _main_chain(w: WorldState, country: CountryData, slots: Array) -> void:
 			if not country.has_tag("fxseu") and not country.has_tag("nazimao") and _dlc3(w):
 				_show(slots, 0, 93, " 发 展 贸 易")
 				var c35 := _c(w, 35)
-				if (w.get_flag("Israellost") and not w.event_done_num(440)) \
+				if ((w.get_flag("israellost") or w.get_flag("israel_lost_lebanon_war")) and not w.event_done_num(440)) \
 						or w.result_of_event_num(440) == 2:  # 散落 bool Israellost 用 global_flags 建模
 					_show(slots, 1, 1002, "谈 判 结 束 内 战")
 				if c35 != null and c35.puppet_of == GameConstants.LegacySlot.IRAQ:

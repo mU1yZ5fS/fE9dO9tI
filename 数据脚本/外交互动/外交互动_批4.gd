@@ -1506,7 +1506,7 @@ func _def_1045(w: WorldState, country: CountryData, caption: String) -> Dictiona
 		var c129 := c(w, 129)
 		var opis := " 吉 时 已 到 ， 是 时 候 开 展 行 动 了"
 		var conds: Array = []
-		conds.append(cond(" 特 工 网 络 不 少 于 10", func(): return d(w, 22) >= 100))
+		conds.append(cond(" 军 力 不 少 于 10", func(): return d(w, 22) >= 100))
 		conds.append(cond(" 该 国 左 派 已 统 一", func(): return c129 != null and c129.level_of_instability > 0))
 		conds.append(cond(" 尚 未 起 义", func(): return not ev(w, 628)))
 		var eff := func():

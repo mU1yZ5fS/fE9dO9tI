@@ -140,6 +140,7 @@ func _event_64(option_index: int, context: Dictionary) -> void:
 				c.set_tag("oar", true)
 		_set_modifier(46, true)
 		ws.set_flag("oar", true)
+		ws.oar = true
 		for i in range(1, ws.countries.size()):
 			var c := ws.countries[i]
 			if c == null:
@@ -166,6 +167,7 @@ func _event_64(option_index: int, context: Dictionary) -> void:
 	_add_empire_power(EmpireData.USSR, 10)
 	_add_empire_power(EmpireData.USA, -10)
 	ws.set_flag("oar", true)
+	ws.oar = true
 	var uar := [30, 14, 35]
 	for idx in uar:
 		var c := ws.get_country_by_legacy_index(idx)

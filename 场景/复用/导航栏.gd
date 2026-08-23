@@ -59,4 +59,8 @@ func _refresh() -> void:
 func _goto(scene_uid: String) -> void:
 	if scene_uid == "":
 		return
+	# 从外交页 ESC 菜单暂停状态下切到其他界面时，必须先解除场景级暂停，
+	# 否则新界面全部节点仍处于暂停，导致无法操作。
+	if get_tree() != null:
+		get_tree().paused = false
 	get_tree().change_scene_to_file(scene_uid)

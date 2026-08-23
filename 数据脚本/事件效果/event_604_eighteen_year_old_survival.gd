@@ -45,16 +45,16 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = TXT_R0
-			_start_war(56, TXT_WAR0_NAME, TXT_WAR0_SIDE1, TXT_WAR0_SIDE2, 300, 700, 0, 0, 24)
+			_start_war(56, TXT_WAR0_NAME, TXT_WAR0_SIDE1, TXT_WAR0_SIDE2, 300, 700, 1, 0, 24)
 			if south_africa != null:
 				_set_part(south_africa, 2, true)
-			_start_war(57, TXT_WAR1_NAME, TXT_WAR1_SIDE1, TXT_WAR1_SIDE2, 300, 700, 0, 0, 24)
+			_start_war(57, TXT_WAR1_NAME, TXT_WAR1_SIDE1, TXT_WAR1_SIDE2, 300, 700, 1, 0, 24)
 			if south_africa != null:
 				_set_part(south_africa, 3, true)
-			_start_war(58, TXT_WAR2_NAME, TXT_WAR2_SIDE1, TXT_WAR2_SIDE2, 300, 700, 0, 0, 24)
+			_start_war(58, TXT_WAR2_NAME, TXT_WAR2_SIDE1, TXT_WAR2_SIDE2, 300, 700, 1, 0, 24)
 			if south_africa != null:
 				_set_part(south_africa, 4, true)
-			_start_war(59, TXT_WAR3_NAME, TXT_WAR3_SIDE1, TXT_WAR3_SIDE2, 300, 700, 0, 0, 24)
+			_start_war(59, TXT_WAR3_NAME, TXT_WAR3_SIDE1, TXT_WAR3_SIDE2, 300, 700, 1, 0, 24)
 			if zimbabwe != null:
 				_set_part(zimbabwe, 0, true)
 

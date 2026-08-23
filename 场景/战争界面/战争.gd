@@ -13,6 +13,7 @@ var _refresh_list_queued: bool = false
 func _ready() -> void:
 	_ensure_list_host()
 	if GameManager:
+		UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_on_stats):
 			GameManager.stats_changed.connect(_on_stats)
 		if not GameManager.date_changed.is_connected(_on_date):

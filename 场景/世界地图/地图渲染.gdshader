@@ -23,6 +23,7 @@ uniform vec4 water_color : source_color = vec4(0.07, 0.22, 0.38, 1.0);
 uniform vec4 border_color : source_color = vec4(0.02, 0.02, 0.02, 0.75);
 uniform vec4 selected_color : source_color = vec4(1.0, 0.92, 0.15, 1.0);
 uniform vec4 hover_color : source_color = vec4(1.0, 1.0, 1.0, 0.85);
+uniform float border_width : hint_range(1.0, 12.0) = 3.0;
 
 // ---- 昼夜 ----
 uniform bool day_night_enabled = true;
@@ -83,7 +84,7 @@ void fragment() {
 		vec3 base = texture(color_palette, pal_uv(owner)).rgb;
 
 		// 国界线：邻域 owner 不同即为边界（同国下属区域自然合并）
-		vec2 px = 3.0 / vec2(textureSize(region_map, 0));
+		vec2 px = border_width / vec2(textureSize(region_map, 0));
 		bool border = owner_at(UV + vec2(px.x, 0.0)) != owner
 			|| owner_at(UV - vec2(px.x, 0.0)) != owner
 			|| owner_at(UV + vec2(0.0, px.y)) != owner

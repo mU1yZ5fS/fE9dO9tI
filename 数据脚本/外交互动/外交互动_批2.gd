@@ -273,7 +273,7 @@ func _def_46(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		return {}
 	var opis := " 为 解 决 巴 勒 斯 坦 问 题 组 织 双 方 调 解"
 	var conds: Array = []
-	conds.append(cond(" 以 色 列 输 掉 了 黎 巴 嫩 战 争", func(): return fl(w, "Israellost")))
+	conds.append(cond(" 以 色 列 输 掉 了 黎 巴 嫩 战 争", func(): return fl(w, "israellost") or fl(w, "israel_lost_lebanon_war")))
 	conds.append(cond(" 尚 未 组 织 调 解", func(): return country.development == 0))
 	var eff := func():
 		country.development = 1
@@ -615,7 +615,7 @@ func _def_55(w: WorldState, country: CountryData, caption: String) -> Dictionary
 	var conds: Array = []
 	conds.append(cond(" 越 南 ， 泰 国 ， 菲 律 宾| 与 我 们 在 同 一 经 济 联 盟 中", func(): return (c(w, 11) != null and c(w, 11).has_tag("econ") and c(w, 34) != null and c(w, 34).has_tag("econ") and c(w, 47) != null and c(w, 47).has_tag("econ")) or (c(w, 11) != null and c(w, 11).has_tag("sev") and c(w, 34) != null and c(w, 34).has_tag("sev") and c(w, 47) != null and c(w, 47).has_tag("sev")) or (c(w, 11) != null and c(w, 11).has_tag("asean") and c(w, 34) != null and c(w, 34).has_tag("asean") and c(w, 47) != null and c(w, 47).has_tag("asean"))))
 	conds.append(cond(" 至 少 4 特 工 网 络", func(): return d(w, 9) >= 40))
-	conds.append(cond(" 支 持 釜 山 起 义 和 光 州 起 义", func(): return fl(w, "SKRebel") and res(w, 474) == 0))
+	conds.append(cond(" 支 持 釜 山 起 义 和 光 州 起 义", func(): return fl(w, "south_korea_gwangju_rebellion") and res(w, 474) == 0))
 	var c46 := c(w, 46)
 	if c46 != null and c46.government == GameConstants.Government.SOCIALIST:
 		conds.append(cond(" 左 翼 分 子 尚 未 在 韩 国 掌 权", func(): return c46 != null and c46.government != GameConstants.Government.SOCIALIST))

@@ -21,6 +21,8 @@ var _update_popup: PopupPanel = null
 
 
 func _ready() -> void:
+	if GameManager:
+		UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 	_ach_mask.gui_input.connect(_on_成就遮罩_gui_input)
 	_style_scrollbar()
 	_refresh_achievement_rows()

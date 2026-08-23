@@ -127,9 +127,8 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 			return _effect_italy(w)
 		63:
 			return _effect_culture(w)
-		# 64 已停用：见 MT.NAME_ZH 中注释。
-		# 64:
-		# 	return _effect_leader(w)
+		64:
+			return _effect_leader(w)
 		65:
 			return _effect_money(w)
 	var def := get_def(id)
@@ -558,9 +557,9 @@ static func _effect_leader(w: WorldState) -> String:
 	var asset_f := float(w.leader_asset) / 10.0
 	var public_image := _leader_public_image(w.leader_asset)
 	var social_prestige := _leader_social_prestige(w)
-	var base := "此处记录了我国最高领导人的概况\n姓名：%s\n政治立场：%s\n资产规模：%s 亿\n公众形象：%s\n社会声望：%s\n任职年限：%d年" % [
+	var base := "此处记录了我国最高领导人的概况\n姓名：%s\n政治立场：%s\n资产规模：%s 亿\n公众形象：%s\n社会声望：%s" % [
 		leader.name_display, party_label, String.num(asset_f, 1),
-		public_image, social_prestige, leader.years_in_power,
+		public_image, social_prestige,
 	]
 	return base + _leader_property_lines(w, leader)
 
@@ -591,12 +590,36 @@ static func _leader_property_lines(w: WorldState, leader: PoliticianData) -> Str
 	if w.money_level <= 0:
 		return ""
 	var s := ""
+	var nick := leader.name_display
+	# 原版 ModifyButtonScript.cs:1282-1327：MoneyLevel>0 时逐条追加。
+	if w.leader_property.size() > 0 and w.leader_property[0]:
+		s += "\n<color=yellow>一口顶一万句：</color>得到我国领导同志批示上架友谊商店的古巴进口雪茄不仅风味独到，更在养生、润肺、化痰止咳等方面具有奇效。即便是功德林战犯与上海监狱内托派都无法抗拒其魅力：烟雾一下腹，投诚念便起。"
 	if w.leader_property.size() > 1 and w.leader_property[1]:
-		s += "\n<color=yellow>空中霸主，铁路帝王：</color>%s 先生在交通体系内打造的个人圈子当然不只限于个人享受那么简单——预算-1.0，与苏联关系-0.2，科研点+0.5，干预点数+1.0，可免费监视政治局内的政客" % leader.name_display
+		s += "\n<color=yellow>空中霸主，铁路帝王：</color>%s 先生在交通体系内打造的个人圈子当然不只限于个人享受那么简单——预算-1.0，与苏联关系-0.2，科研点+0.5，干预点数+1.0，可免费监视政治局内的政客" % nick
 	if w.leader_property.size() > 2 and w.leader_property[2]:
-		s += "\n<color=yellow>白道宗师，黑道救主：</color>%s 先生亲自领导并指挥的“各路诸侯”与“地下军队”令人印象深刻——预算-2.0；强化“破财消灾”决议的效果；与超级大国的关系不会跌破25.0；可无视外交声誉与非社会主义政权建立友好关系；可免费调查政治局内的政客；可在阴谋事件内无条件取得政治辩论胜利" % leader.name_display
+		s += "\n<color=yellow>白道宗师，黑道救主：</color>%s 先生亲自领导并指挥的“各路诸侯”与“地下军队”令人印象深刻——预算-2.0；强化“破财消灾”决议的效果；与超级大国的关系不会跌破25.0；可无视外交声誉与非社会主义政权建立友好关系；可免费调查政治局内的政客；可在阴谋事件内无条件取得政治辩论胜利" % nick
 	if w.leader_property.size() > 3 and w.leader_property[3]:
-		s += "\n<color=yellow>志向高远，胸怀广阔：</color>预算-2.0，党内支持度+0.5；党内支持度不会跌破40.0；若在多党制环境下，思想自由化不会高于40.0；可以免费扶持政客；强化“破财消灾”决议的效果；与%s 同政治派系的政客，其出现病弱属性的阈值将变为88岁" % leader.name_display
+		s += "\n<color=yellow>志向高远，胸怀广阔：</color>预算-2.0，党内支持度+0.5；党内支持度不会跌破40.0；若在多党制环境下，思想自由化不会高于40.0；可以免费扶持政客；强化“破财消灾”决议的效果；与%s 同政治派系的政客，其出现病弱属性的阈值将变为88岁" % nick
+	if _event_done(w, "event_391") and _event_result(w, "event_391") == 3:
+		s += "\n<color=yellow>黑手党酒肉朋友：</color>冷冰冰的邪恶导师奈格里变成了暖洋洋的古驰潮酷皮大衣。意大利的黄金20年得以延续直至永恒，这也是托了中国领袖的福。"
+	if _event_done(w, "event_602") and _event_result(w, "event_602") == 4:
+		s += "\n<color=yellow>鳄鱼的眼泪：</color>你问领导同志说笑了还是哭了，领导同志只能说和南非的好兄弟一起吃饱了——“投降万岁，管他妈解放不解放，为颗钻石就交出阿扎尼亚！”"
+	if _event_done(w, "event_576") and _event_result(w, "event_576") == 1:
+		s += "\n<color=yellow>非常好工作，爱来自瓷器：</color>无敌的彼得森爵士倒下了，彼得森先生为印钱而抵押的牧场、矿山与袋鼠狩猎特许权也就跟着落到了我们领导同志手里。"
+	var c67 := _country(w, 67)
+	if c67 != null and c67.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST:
+		s += "\n<color=yellow>第二波托西：</color>多伊统领的圣质如初加中国人的革命胆略将合力开出一条通向共同富裕的光辉道路——于是挖出的黄金得三七分成。当然领导同志意思是，我们至少拿七成！"
+	if _event_done(w, "event_637") and _event_result(w, "event_637") == 3:
+		s += "\n<color=yellow>组织部来了个年轻人：</color>小塔乔犯了罪，你们怎么判我不管，可我就得收留他。他还年轻，又是一代俊杰，我要等他打回家乡！"
+	var c117 := _country(w, 117)
+	if _event_done(w, "event_610") and _event_result(w, "event_610") == 0 \
+			and ((c117 != null and w.is_authoritarian(c117) and c117.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST) \
+				or (c117 != null and c117.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE)):
+		s += "\n<color=yellow>中国人民的老朋友：</color>“怎么样，跑到北京住得惯吗？”“很好。在这里对我们的欢迎是非常友好、热烈的。”“过去了吗？”“是的，这些都已经过去了，所以我们才能坐在一起共同庆祝中扎友谊。”"
+	var c8 := _country(w, 8)
+	if _event_done(w, "iranian_revolution") and _event_result(w, "iranian_revolution") == 2:
+		var suffix := " 资产" if (c8 != null and c8.sub_government == GameConstants.SubGovernment.NEOPATRIARCHAL) else " 遗产"
+		s += "\n<color=yellow>万王之王的%s：</color>“全球有上万亿资产的不止我们一家，光中国就至少有17家；上千亿资产的，在中国则至少有50家，多数是勤劳致富的，希望大家不要嫉妒，有本事可以自己挣嘛。”——礼萨·巴列维" % suffix
 	return s
 
 
@@ -678,7 +701,9 @@ static func _effect_maoist_bulwark(w: WorldState) -> String:
 				s += "\n<color=red>|革命国际主义运动——共产党情报局：</color>\n极左派+1；极左派力量+1；干涉点数+3.0；国际声望+0.1；与美苏关系-0.6；国际影响力+0.5；预算-0.6；特工-0.6；特勤援助的效果+1；人道主义援助的效果+1；中国一次性外交声援的效果+3"
 		if _event_result(w, "event_548") == 2:
 			s += "\n<color=red>|革命国际主义运动——新国际：</color>\n极左派+2；极左派力量+2；干涉点数+5.0；国际声望+0.2；国际声望低于90.0时，国际声望额外+0.1；与美苏关系-1；国际影响力+1；预算-1；特工-1；军力-1；军事援助的效果+2；特勤援助的效果+3；人道主义援助的效果+3；中国一次性外交声援的效果+6"
-	if w.result_of_event_num(670) == 0 and _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
+	# 未完成事件 resultOfEvents[670] 默认 0，需先判断 event_done，
+	# 否则开局（事件尚未触发）就会误显示“宣传鼓动”分支效果。
+	if w.event_done_num(670) and w.result_of_event_num(670) == 0 and _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
 		s += "\n<color=red>|宣传鼓动——群众自己解放自己：</color>\n党内团结度-1.5，人民支持度+0.4，思想自由化+0.4，极左力量+1；每5点宣传投资：党内团结度+0.1，人民支持度+0.1，思想自由化-0.1；宣传投资不低于40时，党内团结度+0.7，人民支持度+1.0，思想自由化-1.0，特勤网络+2.0"
 	elif w.result_of_event_num(670) == 1:
 		s += "\n<color=red>|新时代红卫兵——革命的大联合：</color>\n党内团结度-0.2，人民支持度+0.2，军事实力-0.4，特勤网络-0.4；每10点行政投资：党内团结度+0.1，人民支持度+0.2，思想自由化-0.2，军事实力+0.1，特勤网络+0.1；行政投资不低于50时，党内团结度+1.0，人民支持度+1.0，思想自由化-1.0，特勤网络+1.0"

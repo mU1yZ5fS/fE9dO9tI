@@ -8,7 +8,7 @@
 
 [sub_resource type="Resource" id="Expr_cyprus_not_cw"]
 script = ExtResource("3_expr")
-type = 26
+type = 25
 key = "cw"
 value = 0.0
 target = "94"

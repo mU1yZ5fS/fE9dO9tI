@@ -194,7 +194,7 @@ func _event_30(option_index: int, context: Dictionary) -> void:
 			d.palestine_status = 1
 		2:
 			var player := ws.get_player_country()
-			var oar_active := ws.get_flag("oar_founded") or (player != null and player.has_tag("oar"))
+			var oar_active := ws.oar or ws.get_flag("oar") or (player != null and player.has_tag("oar"))
 			if d.global_influence >= 200 and oar_active:
 				var china := ws.get_country_by_legacy_index(1)
 				d.global_influence += 30

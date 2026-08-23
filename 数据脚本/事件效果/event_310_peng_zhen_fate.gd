@@ -43,6 +43,11 @@ func execute(context: Dictionary) -> void:
 						d.year - 1902,
 						1500, 500
 					)
+					# 手动从预备池拉人后必须移除同名模板，否则后续死亡补员会再生成一个彭真。
+					for i in range(ws.politician_reserve.size() - 1, -1, -1):
+						var rp: PoliticianData = ws.politician_reserve[i]
+						if rp != null and rp.name_display == "彭真":
+							ws.politician_reserve.remove_at(i)
 			context["result_text"] = TXT_R0
 		1:
 			var num2 := _find_politician(27, 48)

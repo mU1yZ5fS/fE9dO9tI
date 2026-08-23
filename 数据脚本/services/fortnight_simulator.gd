@@ -3177,10 +3177,10 @@ func _fortnight_modifiers(
 				d.army -= 10
 
 		# Event670 联动：群众组织路线为“毛主义的坚实壁垒”追加效果。
-		# 原版 resultOfEvents[670] 默认 0，即事件发生前就按“宣传鼓动”分支结算；
-		# 事件选择 1/2 后才切换为另外两条路线。
+		# 仅事件完成后才按结果分支结算：未完成时 resultOfEvents[670] 默认 0，
+		# 若不先判断 event_done，会把“宣传鼓动”分支当作开局即生效的错误效果。
 		var r670 := w.result_of_event_num(670)
-		if r670 == 0 and gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
+		if w.event_done_num(670) and r670 == 0 and gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION):
 			d.party_support -= 15
 			d.people_support += 4
 			d.thought_freedom += 4

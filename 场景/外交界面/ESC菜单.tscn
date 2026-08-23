@@ -118,6 +118,27 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
+[node name="结束" type="Button" parent="." unique_id=216678352]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = 120.0
+offset_right = 70.0
+offset_bottom = 204.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("17_v5qqf")
+theme_override_font_sizes/font_size = 28
+text = "结 束
+"
+icon = ExtResource("19_puxd1")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
 
 [connection signal="pressed" from="存档" to="." method="_on_存档_pressed"]
 
@@ -126,3 +147,5 @@ expand_icon = true
 [connection signal="pressed" from="设置" to="." method="_on_设置_pressed"]
 
 [connection signal="pressed" from="退出" to="." method="_on_退出_pressed"]
+
+[connection signal="pressed" from="结束" to="." method="_on_结束_pressed"]

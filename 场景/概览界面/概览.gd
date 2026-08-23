@@ -84,6 +84,8 @@ var _chinese_page: int = 0
 
 func _ready() -> void:
 	_cache_nodes()
+	if GameManager:
+		UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 	_ensure_modifier_list()
 	for key in PANEL_KEYS:
 		var btn: Button = _buttons.get(key)
@@ -854,9 +856,6 @@ func _refresh_modifiers() -> void:
 		if slot != null and slot.is_active and not seen.has(slot.id):
 			ids.append(slot.id)
 			seen[slot.id] = true
-	# 64「最高领导人概况」：改版存在多个数据源尚未统一（faction/traits/LeaderAsset），
-	# 主人要求先注释掉，不显示在概览修正列表。
-	ids = ids.filter(func(id: int) -> bool: return id != 64)
 	# 生效中的修正排在前面；同组按 id 升序，保持目录阅读顺序
 	ids.sort_custom(func(a: int, b: int) -> bool:
 		var active_a := _modifier_is_active(w, a)

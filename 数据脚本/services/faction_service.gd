@@ -178,24 +178,32 @@ static func mod_active(w: WorldState, n: int) -> bool:
 static func dec_done(w: WorldState, n: int) -> bool:
 	return w != null and w.decisions != null and w.decisions.completed.size() > n and w.decisions.completed[n]
 
-# 数字键事件（444/502/503/550/551/682…）在本移植中未启用（completed_event_ids 用字符串键）
-# → resultOfEvents 恒 -1、event_done 恒 false，与原版 GameStartScript.cs:48-51 初始态一致。
+# 数字事件统一走 WorldState 的原版事件查询口（event_done_num/result_of_event_num），
+# 它会先查覆盖表，再回退 EventEngine 的 source_event_number → event_id 映射。
+# 之前直接 `completed_event_ids.get(整数)` 永远查不到字符串键，导致 Event444 等
+# 事件完成后政策选项与介绍文案仍停留在未完成状态。
 static func event_result(w: WorldState, n: int) -> int:
-	return w.completed_event_ids.get(n, -1) if w != null else -1
+	return w.result_of_event_num(n) if w != null else 0
 
 static func event_done(w: WorldState, n: int) -> bool:
-	return w != null and w.completed_event_ids.has(n)
+	return w != null and w.event_done_num(n)
 
 
 ## 当前政策值 id → 显示名（doctr[id]，modifies[6] 覆盖）。原版 doctr[data.get_data_by_index(idx)]。
+## Event444 选择“进一步放权”（result0）后，原版还会把 doctr[19] 改为“自由境界”。
 static func doctr_name(w: WorldState, id: int) -> String:
+	if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) \
+			and event_done(w, GameConstants.EventNumber.LONG_REVOLUTION) \
+			and event_result(w, GameConstants.EventNumber.LONG_REVOLUTION) == 0 \
+			and id == 19:
+		return "自由境界"
 	if mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) and DOCTR_MOD6.has(id):
 		return DOCTR_MOD6[id]
 	return DOCTR_BASE.get(id, "未知")
 
 
 ## 忠实移植 Doctrine_script.cs OnMouseDown()：按 this_number 与真实状态位生成有序选项 [{id,text}]。
-## 数字事件（444/503/550/551/682）移植说明 → _evt_* 恒 -1/false，与原版开局初始态一致。
+## 数字事件（444/503/550/551/682）经 event_done_num/result_of_event_num 读取，完成后正确生效。
 ## 开局态 modifies[6]=true、completedDecisions/其余 modifies 全 false → 各类满编选项。
 static func build_options(w: WorldState, num: int) -> Array[Dictionary]:
 	var o: Array[Dictionary] = []

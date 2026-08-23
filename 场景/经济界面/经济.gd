@@ -45,6 +45,7 @@ const 预算提示 := {
 func _ready() -> void:
 	if not GameManager:
 		return
+	UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 	GameManager.world_state_loaded.connect(_refresh)
 	GameManager.date_changed.connect(func(_d): _refresh())
 	for item_name in 预算项:

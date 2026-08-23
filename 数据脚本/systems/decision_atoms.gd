@@ -947,13 +947,26 @@ static func maoism_sov_is_better(num: int) -> void:
 
 
 ## MakeHimLeader — 原版 GameState.MakeNewLeader(FindPerson(...))
+## 原版会把领袖与当选政客的身份对调，并同步 politics_dolshnost：
+## 原领袖兼任的职位转给该政客，该政客原任职位转由领袖本人担任；
+## 端口必须做同样的“职位重映射”，否则内政换领袖后会出现官员空缺。
 static func make_him_leader(name1: int, name2: int, t0: int, t3: int, t1: int, t2: int) -> void:
 	var idx := _find_person(name1, name2, t0, t3, t1, t2)
 	var ws := _ws()
 	if idx < 0 or ws == null or idx >= ws.politicians.size():
 		return
-	ws.leader = ws.politicians[idx]
-	ws.leader_politician_index = idx
+	if ws.leader == null or ws.politicians[idx] == null:
+		return
+	PoliticianSystem.swap_leader_profile(ws.leader, ws.politicians[idx])
+	var leader_post_swap: Array[int] = []
+	for i in ws.politics_positions.size():
+		if ws.politics_positions[i] == -2:  # 原版 150 = 实权领袖本人
+			ws.politics_positions[i] = idx
+		elif ws.politics_positions[i] == idx:
+			leader_post_swap.append(i)
+	for i in leader_post_swap:
+		ws.politics_positions[i] = -2
+	ws.leader_politician_index = -1
 
 
 ## KillTheLeaderOfTheFaction — faction_leader[num]<100 → KillPerson(...)
@@ -1283,10 +1296,10 @@ static func is_no_wars(yes: bool) -> bool:
 	return v if yes else not v
 
 
-## IsOARCreated — yes: GameState.OAR
+## IsOARCreated — yes: GameState.OAR（兼容旧档只写了 global_flags 的情况）
 static func is_oar_created(yes: bool) -> bool:
 	var ws := _ws()
-	var v := ws != null and ws.oar
+	var v := ws != null and (ws.oar or ws.get_flag("oar"))
 	return v if yes else not v
 
 
@@ -1328,7 +1341,8 @@ static func is_realtions(how: int, empire: int, yes: bool) -> bool:
 
 
 ## IsRevotionaryOARfull — yes: 16 国全部社会主义、非亲苏、SubGosstroy!=16、oar；
-## 且 101/105 SubGosstroy==17；且 resultOfEvents[437]!=1
+## 且 101/105 SubGosstroy==17（毛派）；且 resultOfEvents[437]!=1
+## （原版 QueryDecisions'1.cs:4524-4562 逐条复刻：101/105 的 MAOIST 门槛是原版条件，不可删）。
 static func is_revotionary_oar_full(yes: bool) -> bool:
 	var ws := _ws()
 	var flag := true
@@ -1341,7 +1355,8 @@ static func is_revotionary_oar_full(yes: bool) -> bool:
 				break
 		var c101 := _country(101)
 		var c105 := _country(105)
-		if c101 == null or c101.sub_government != GameConstants.SubGovernment.MAOIST or c105 == null or c105.sub_government != GameConstants.SubGovernment.MAOIST:
+		if c101 == null or c101.sub_government != GameConstants.SubGovernment.MAOIST \
+				or c105 == null or c105.sub_government != GameConstants.SubGovernment.MAOIST:
 			flag = false
 		if _event_result(GameConstants.EventNumber.SOUTH_YEMEN_CRISIS, 1):
 			flag = false
@@ -1569,6 +1584,8 @@ static func create_big_oar(_yes: bool = true) -> void:
 		c30.government = GameConstants.Government.REFORMIST
 		c30.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 	_mod(46).is_active = true
+	ws.oar = true
+	ws.set_flag("oar", true)
 	if china != null:
 		if china.has_tag("okb"):
 			if c30 != null:
@@ -1752,8 +1769,8 @@ static func unite_arab() -> void:
 		c54.parts[0] = false
 	if c30 == null:
 		return
-	if c30.parts.size() > 2:
-		c30.parts[2] = true
+	# 改版 UniteArab 无条件置 parts[2]；这里用 set_part 自动扩容，避免 parts 不足时漏掉“已整合”标记。
+	c30.set_part(2, true)
 	c30.name = "阿拉伯革命社会主义\n联邦共和国"
 	c30.chinese_name = "阿拉伯革命社会主义\n联邦共和国"
 	c30.government = GameConstants.Government.SOCIALIST
@@ -1762,6 +1779,9 @@ static func unite_arab() -> void:
 	c30.set_tag("对华贸易", true)
 	c30.set_tag("亲中", true)
 	c30.set_tag("oar", true)
+	# 端口后续判定（结局/外交/联盟清理）读 ws.oar / global flag；补写后“阿革共”才会被视为已成立。
+	ws.oar = true
+	ws.set_flag("oar", true)
 	_join_all_legacy(c30)
 
 
@@ -1774,12 +1794,33 @@ static func _leave_all_legacy(c: CountryData) -> void:
 	c.puppet_of = GameConstants.LegacySlot.NONE
 
 
-## JoinAllOurAlliances(true) 等价（中国 econ→econ；否则 sev→sev）
+## JoinAllOurAlliances(true) 等价（原版 Country.cs:42-87 逐条）。
+## 中国 okb→okb；OVD→ovd；SEATO→seato；econ→econ；SEV→sev；ASEAN→asean；
+## 事件548 后中国 RIM、该国社会主义且 sub∉{16,18}、非 sev/ovd、亲中、非傀儡 → rim。
 static func _join_all_legacy(c: CountryData) -> void:
 	var china := _country(1)
 	if china == null or c == null:
 		return
+	if china.has_tag("okb"):
+		c.set_tag("okb", true)
+	elif china.has_tag("ovd"):
+		c.set_tag("ovd", true)
+	elif china.has_tag("seato"):
+		c.set_tag("seato", true)
 	if china.has_tag("econ"):
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+	elif china.has_tag("asean"):
+		c.set_tag("asean", true)
+	var ws := _ws()
+	var rim_ok: bool = ws != null \
+		and (ws.completed_event_ids.has("event_548") or ws.global_flags.has("event_done_event_548")) \
+		and china.has_tag("rim") \
+		and (c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) \
+		and c.sub_government != GameConstants.SubGovernment.SOVIET_STYLE \
+		and c.sub_government != GameConstants.SubGovernment.TROTSKYIST \
+		and not c.has_tag("sev") and not c.has_tag("ovd") \
+		and c.has_tag("亲中") and c.puppet_of < 0
+	if rim_ok:
+		c.set_tag("rim", true)

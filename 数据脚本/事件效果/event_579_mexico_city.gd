@@ -103,8 +103,14 @@ func execute(context: Dictionary) -> void:
 				c168.name = "墨西哥南方民主共和国"
 				c168.chinese_name = "墨西哥南方民主共和国"
 				c168.leave_alliances()
-				c168.government = GameConstants.Government.REFORMIST
-				c168.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
+				# 南墨西哥的政体/子意识形态应由南方解放军中获胜派系决定（对应 c145 的 sub_government）。
+				var c145_south := ws.get_country_by_legacy_index(145)
+				if c145_south != null:
+					c168.government = c145_south.government
+					c168.sub_government = c145_south.sub_government
+				else:
+					c168.government = GameConstants.Government.REFORMIST
+					c168.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 			game.start_war(46, WAR46_SIDE1, WAR46_SIDE2, 500, 500, 0, 1)
 			if ws.wars.size() > 46 and ws.wars[46] != null:
 				ws.wars[46].name_war = WAR46_NAME
