@@ -4,12 +4,12 @@
 ##  禁用项文本按 data.political_line>2 / 预算+储备<50 两分支复刻；文本来自 Events_text_en 索引 85-91、122 与 Event308.cs 内联。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_DESC_INACTIVE := "文革失败后，红卫兵被遣散，其中一些人锒铛入狱。几年来，极左派在现代中国已无立足之地，如今，他们在香港成立了犯罪集团，其在东南亚和北美国家的影响力也愈发强大。我们可以与他们建立合作关系，以更好地影响外国政策。当然，天上不会掉馅饼，黑手党也会想干涉我党事务。"
-const TXT_DESC_ACTIVE := "文革的混乱时期，全国一些地区的造反派被大规模镇压，其中就有一批在广州的造反派出逃到了港澳地区。如今，他们在香港成立了犯罪集团，其在东南亚和北美国家的影响力也愈发强大。我们可以与他们建立合作关系，以更好地影响外国政策。当然，天上不会掉馅饼，黑手党也会想干涉我党事务。"
-const TXT_OPT1_DIS_LINE := "这种想法是文明国家无法接受的！"
-const TXT_OPT1_DIS_BUDGET := "我们绝对没有那么多钱。"
-const TXT_R0 := "我们不能同黑手党同流合污。最好还是把他们成员的名单交给外国警方。"
-const TXT_R1 := "中国商务人士通常会在一家香港餐馆里见面。至少从外人看来是这样。事实上，我们在此与犯罪集团的领导人进行了幕后谈判，结果是我们向他们承诺在他们的犯罪活动中给予庇护，并将他们的代表提拔到我们的队伍中，而他们反过来又同意代表我们在美国的利益，并“说服”当地政客相信我们的善意。尽管一些党员对这一决定表示不满，但我们现在有了在海外宣传我们利益的有力工具。"
+const TXT_DESC_INACTIVE := "event.script.event_308_big_circle.c0"
+const TXT_DESC_ACTIVE := "event.script.event_308_big_circle.c1"
+const TXT_OPT1_DIS_LINE := "event.script.event_308_big_circle.c2"
+const TXT_OPT1_DIS_BUDGET := "event.script.event_308_big_circle.c3"
+const TXT_R0 := "event.script.event_308_big_circle.c4"
+const TXT_R1 := "event.script.event_308_big_circle.c5"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -18,9 +18,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var mod3 := _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION)
 	if mod3:
-		event_def.description = TXT_DESC_ACTIVE
+		event_def.description = tr(TXT_DESC_ACTIVE)
 	else:
-		event_def.description = TXT_DESC_INACTIVE
+		event_def.description = tr(TXT_DESC_INACTIVE)
 	var budget := world.budget if world.size() > W.I_BUDGET else 0
 	var reserve := world.reserve if world.size() > W.I_RESERVE else 0
 	var line := world.political_line if world.size() > W.I_POLITICAL_LINE else 1
@@ -29,9 +29,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if budget + reserve >= 50 and line <= 2:
 		_enable(opt[1], event_def.options[1].text)
 	elif line > 2:
-		_disable(opt[1], TXT_OPT1_DIS_LINE)
+		_disable(opt[1], tr(TXT_OPT1_DIS_LINE))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_BUDGET)
+		_disable(opt[1], tr(TXT_OPT1_DIS_BUDGET))
 
 
 func execute(context: Dictionary) -> void:
@@ -41,13 +41,13 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_BUDGET, 50)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_INFLUENCE, 100)
 			_add(W.I_BUDGET, -30)
 			if ws.factions.size() > 0 and ws.factions[0] != null:
 				ws.factions[0].support += 50
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -98,3 +98,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_308_big_circle.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_308",
+	"num": 308,
+	"priority": 30800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_308_big_circle.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -10,13 +10,13 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0_DIS := "我们还能以社会主义者自居吗？"
+const TXT_OPT0_DIS := "event.script.event_567_gulf_hot_wind.c0"
 
-const TXT_R0_A := "在我们外交人员的努力下，我们联系到阿曼人阵和巴林人阵，在也门开展了一场谈判，谈判最终决定，阿曼人阵和巴林人阵将重新组成解放被占领的阿拉伯湾人民阵线。在一场新的特别代表大会上，阿湾人阵宣布重建，而马克思列宁主义"
-const TXT_R0_MAO := "和毛泽东思想"
-const TXT_R0_B := "重新成为了阵线的指导思想，留在阿曼的游击小组也被改组为“阿拉伯湾人民解放军”。战斗仍将继续！…"
-const TXT_R0_ELSE := "在我们外交人员的努力下，也门、埃及和利比亚同意继续为阿拉伯湾人民提供支持。我们联系到阿曼人阵和巴林人阵，在也门开展了一场谈判，谈判最终决定，阿曼人阵和巴林人阵将重新组成解放阿曼和阿拉伯湾人民阵线。在一场新的特别代表大会上，阿湾人阵宣布重建，并在也门、埃及和利比亚的影响下吸收了过去阿湾人阵宣扬无神论的教训，对伊斯兰教采取更温和的态度，将阿拉伯社会主义和泛阿拉伯主义列为指导思想。留在阿曼的游击小组也被改组为“阿拉伯湾人民解放军”。战斗仍将继续！"
-const TXT_R1 := "重建阿湾人阵意味着在阿拉伯湾掀起与英美帝国主义的对抗，我们还没有准备好……"
+const TXT_R0_A := "event.script.event_567_gulf_hot_wind.c1"
+const TXT_R0_MAO := "event.script.event_567_gulf_hot_wind.c2"
+const TXT_R0_B := "event.script.event_567_gulf_hot_wind.c3"
+const TXT_R0_ELSE := "event.script.event_567_gulf_hot_wind.c4"
+const TXT_R1 := "event.script.event_567_gulf_hot_wind.c5"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -34,7 +34,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if cond:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 
 
@@ -47,17 +47,17 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if _part(c24, 0):
-				var text := TXT_R0_A
+				var text := tr(TXT_R0_A)
 				if c24 != null and c24.has_tag("亲中"):
-					text += TXT_R0_MAO
-				text += TXT_R0_B
+					text += tr(TXT_R0_MAO)
+				text += tr(TXT_R0_B)
 				if c24 != null:
 					c24.内战中 = true
 				context["result_text"] = text
 			else:
 				if c23 != null:
 					c23.内战中 = true
-				context["result_text"] = TXT_R0_ELSE
+				context["result_text"] = tr(TXT_R0_ELSE)
 			if c24 != null:
 				c24.prc_power = 50
 			_add(W.I_BUDGET, -100)
@@ -65,8 +65,23 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -100)
 		1:
 			ws.completed_event_ids.erase("event_567")
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 func _part(c: CountryData, i: int) -> bool:
 	return c != null and c.parts.size() > i and c.parts[i]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_567_gulf_hot_wind.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_567",
+	"num": 567,
+	"priority": 56700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_567_gulf_hot_wind.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

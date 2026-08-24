@@ -5,8 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：Awake 的 summa_3_2 计算为派系支持率缓存，事件内未使用，跳过；
 ##   button_text[5]/result_num==5 为死代码，跳过。
 
-const TXT_R1 := "在我们的特工简单地制造了一场“意外”除掉了相当右倾的印共（马列）解放的领导人维诺德·米什拉——他同另外几派组织的分歧最大——之后，一切变得相当顺利。在我们的顾问团的指导和施压下，印共（马列）人民战争、印度毛主义共产主义中心、印共（马列）中央重组委员会和印共（马列）解放以及一些小型的纳萨尔派组织开展了一场谈判，谈判解决了关于查鲁·马宗达等人的历史遗留问题，议定了在当下的印度进行新民主主义革命和社会主义革命的必要性，明确了马列毛主义的共同指导思想和人民战争的共同革命路线。不久后，在的一场联合代表大会上，印度共产党（毛主义）成立了。现在印度革命有了一个统一的组织，距离查鲁·马宗达同志的定下的目标又近了一大步！"
-const TXT_R0 := "由于维诺德·米什拉的右倾政策，印共（马列）解放否定了马宗达，开始鼓吹议会斗争并营造对米什拉的个人崇拜，他们甚至与另外几派纳萨尔团体发生了武装冲突。而印共（马列）人民战争、印度毛主义共产主义中心和印共（马列）中央重组委员会则团结起来了，他们将组织合并为印度共产党（毛主义），继续进行武装斗争。"
+const TXT_R1 := "event.script.event_466_unity_is_strength.c0"
+const TXT_R0 := "event.script.event_466_unity_is_strength.c1"
 
 
 func execute(context: Dictionary) -> void:
@@ -16,10 +16,10 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			ws.influence_prc -= 20
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -50)
 			_add_relation(EmpireData.USSR, -100)
@@ -85,3 +85,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_466_unity_is_strength.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_466",
+	"num": 466,
+	"priority": 46600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_466_unity_is_strength.gd",
+	"trigger": [{"t": "RESOURCE_AT_LEAST", "key": "naxalite_power", "v": 700}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

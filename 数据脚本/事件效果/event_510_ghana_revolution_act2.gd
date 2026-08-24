@@ -1,17 +1,15 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event510.cs：黄金海岸的再革命？——第二幕（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event510.cs：黄金海岸的再革命？——第二幕（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "我们党内还有几个左派？"
-const TXT_OPT1_DIS := "我们不是帝国主义者！"
-const TXT_R0_A := "我们向加纳派出了大使并援助了他们一批用以解决经济困难的物资，罗林斯回忆到恩克鲁玛时代我国与加纳的深厚友谊，对我们表示感谢，我们同加纳签订了贸易协定。目前，加纳的局势正在向好。"
-const TXT_R0_B := "我们继续为加纳提供了大批援助，作为交换，他将为我们提供廉价可可，并为我们在加纳开采黄金和勘探石油提供最大的帮助，我们将为加纳提供农业专家、工业设施和武器。全非人民革命党宣布将准备“非洲的人民战争”，为全非的联合与解放做出最大努力。加纳同几内亚、坦桑尼亚等非洲社会主义国家建立了深入的联系。西方的帝国主义者对“另一个恩克鲁玛的回归”并不高兴。"
-const TXT_R1_A := "加纳再度左转将可能加强苏东阵营的力量投射，我们应该阻止这种事情的发生！我们秘密通知了美国。不久，来自邻国科特迪瓦和多哥的雇佣军便在中情局的帮助下攻破了阿克拉，加纳政府猝不及防，没有组织起像样的抵抗。左翼政府被推翻，新的军政府成立了。"
-const TXT_R1_B := "加纳的情报机构发现了来自科特迪瓦和多哥方向的异动。他们宣布全国进入战时状态，并在边界和首都加强了防御，同时向苏联请求援助。最后，加纳政府粉碎了政变阴谋，宣布与美国和我们断绝关系并倒向苏联。"
-const TXT_R2_A := "罗林斯继续实施他那将社会主义、民族主义和民粹主义混合起来的理念，他积极与古巴和利比亚展开合作，并接待了德西·鲍特瑟（苏里南）、丹尼尔·奥尔特加（桑解阵）和萨姆·乔努马（纳米比亚）等“革命者”的访问。西方的帝国主义者对罗林斯的政府并不高兴。这样的一个进步政权究竟能在非洲坚持多久？"
-const TXT_R2_B := "罗林斯与卡迈克尔的革命政权致力于科学社会主义下的泛非主义，新政府与我们开展合作，并同几内亚、坦桑尼亚等非洲社会主义国家建立了深入的联系。西方的帝国主义者对“另一个恩克鲁玛的回归”并不高兴。"
+const TXT_OPT0_DIS := "event.script.event_510_ghana_revolution_act2.c0"
+const TXT_OPT1_DIS := "event.script.event_510_ghana_revolution_act2.c1"
+const TXT_R0_A := "event.script.event_510_ghana_revolution_act2.c2"
+const TXT_R0_B := "event.script.event_510_ghana_revolution_act2.c3"
+const TXT_R1_A := "event.script.event_510_ghana_revolution_act2.c4"
+const TXT_R1_B := "event.script.event_510_ghana_revolution_act2.c5"
+const TXT_R2_A := "event.script.event_510_ghana_revolution_act2.c6"
+const TXT_R2_B := "event.script.event_510_ghana_revolution_act2.c7"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -21,11 +19,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line < 2:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.political_line > 1 and _cf(51, "dev") == 1:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
@@ -36,9 +34,9 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if int(ws.completed_event_ids.get("event_509", 0)) != 2:
-				context["result_text"] = TXT_R0_A
+				context["result_text"] = tr(TXT_R0_A)
 			else:
-				context["result_text"] = TXT_R0_B
+				context["result_text"] = tr(TXT_R0_B)
 			if int(ws.completed_event_ids.get("event_509", 0)) != 2:
 				if c63 != null: _leave_alliances(c63)
 				if c63 != null: c63.government = GameConstants.Government.AUTHORITARIAN
@@ -55,9 +53,9 @@ func execute(context: Dictionary) -> void:
 				if c63 != null: c63.set_tag("对华贸易", true)
 		1:
 			if ws.empires[0].relations >= 500:
-				context["result_text"] = TXT_R1_A
+				context["result_text"] = tr(TXT_R1_A)
 			else:
-				context["result_text"] = TXT_R1_B
+				context["result_text"] = tr(TXT_R1_B)
 			_add(9, -(50))
 			if ws.empires[0].relations >= 500:
 				if c63 != null: _leave_alliances(c63)
@@ -73,9 +71,9 @@ func execute(context: Dictionary) -> void:
 				if c63 != null: c63.set_tag("对华贸易", false)
 		2:
 			if int(ws.completed_event_ids.get("event_509", 0)) != 2:
-				context["result_text"] = TXT_R2_A
+				context["result_text"] = tr(TXT_R2_A)
 			else:
-				context["result_text"] = TXT_R2_B
+				context["result_text"] = tr(TXT_R2_B)
 			if int(ws.completed_event_ids.get("event_509", 0)) != 2:
 				if c63 != null: _leave_alliances(c63)
 				if c63 != null: c63.government = GameConstants.Government.AUTHORITARIAN
@@ -219,3 +217,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_510_ghana_revolution_act2.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_510",
+	"num": 510,
+	"priority": 51000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_510_ghana_revolution_act2.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_509"}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "ref": "event_509"}]}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_509"}]}, {"t": "DATE_AFTER", "key": "1982.1.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

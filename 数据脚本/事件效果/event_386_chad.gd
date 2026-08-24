@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录检索 this_num_event/Reset/event_done/resultOfEvents/StartEvent
 ##   均未发现本编号的自动触发调用，原版无自动条件，trigger_conditions=[]。
 
-const TXT_R0 := "五国组建了一支统一调度的武装部队，代号“乍得湖”的行动一触即发。联军同东南西北四个方向攻入了乍得，喀麦隆人民军迅速开入了恩贾梅纳，在该国国内的乍得团结与社会主义行动以及FROLINAT残存的马克思主义派系的帮助下顺利击溃了乍得南北的两个政府，并号召全体人民起义，开展人民革命。而法国和美国拒绝武装介入这一问题，仅仅对这一事件表达了“强烈谴责”。\n乍得人民联邦共和国成立了，乍得\t团结与社会主义行动吸收了FROLINAT的马克思主义派系，并邀请来自前非洲社会主义运动-乍得的反殖民主义领袖艾哈迈德·库拉马拉加入，该党正式成为了该国的领导力量，总书记菲德勒·蒙加尔成为了该国的新领导人。随后，在特别法庭上，哈布雷被宣判犯有战争罪、反人类罪、强奸罪、性侵罪、故意杀人罪、叛国罪和种族灭绝罪而被判处死刑。新政府宣布要继承易卜拉欣·阿巴查的遗志，以马克思列宁主义为指导，建立各民族完全平等的社会主义和泛非主义新乍得。"
+const TXT_R0 := "event.script.event_386_chad.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -25,7 +25,7 @@ func execute(context: Dictionary) -> void:
 		chad.set_tag("对华贸易", true)
 		chad.set_tag("亲中", true)
 		_join_alliances(chad)
-	context["result_text"] = TXT_R0
+	context["result_text"] = tr(TXT_R0)
 
 
 
@@ -39,3 +39,18 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("sev", true)
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_386_chad.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_386",
+	"num": 386,
+	"priority": 38600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_386_chad.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

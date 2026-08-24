@@ -1,22 +1,14 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event588.cs：欧加登战火重燃（索马里-埃塞俄比亚边境冲突，三选项）。
-## 触发：TimeScript.cs:10901-10906 ——
-##   日期>=1982.6.1 && c42.SubGosstroy==10
-##   && ((!c42.亲苏 && c41.亲苏) || (!c42.亲苏 && c41.亲中) || (c42.亲苏 && c41.亲中))。
-## 差异：
-##  - 原版 !c42.parts[0] && !c42.parts[2] 由 CountryData.parts 建模；
-##  - Attacker/Defender 用 new_events_text[794]/[795] = 索马里/埃塞俄比亚；
-##  - SovietSupportAttacker/Defender → ussr_side 0/1，美国不介入 → usa_side = GameConstants.WarSide.NONE；
-##  - TickTime(16/4) → fortnight_max=16/4。
+## 原作 Event588.cs：欧加登战火重燃（索马里-埃塞俄比亚边境冲突，三选项）。 ## 触发：TimeScript.cs:10901-10906 —— ##   日期>=1982.6.1 && c42.SubGosstroy==10 ##   && ((!c42.亲苏 && c41.亲苏) (!c42.亲苏 && c41.亲中) (c42.亲苏 && c41.亲中))。 ## 差异： ##  - 原版 !c42.parts[0] && !c42.parts[2] 由 CountryData.parts 建模； ##  - Attacker/Defender 用 new_events_text[794]/[795] = 索马里/埃塞俄比亚； ##  - SovietSupportAttacker/Defender → ussr_side 0/1，美国不介入 → usa_side = GameConstants.WarSide.NONE； ##  - TickTime(16/4) → fortnight_max=16/4。
 
 
 
-const TXT_R0 := "大约10,000至15,000名埃塞俄比亚军队发动了入侵，他们装备了苏联提供的米格战斗机和t-55坦克。3000名SSDF成员同样装备了坦克，并得到了埃塞俄比亚炮兵和空军的支持。\n索马里国民军（SNA）只能派出2500名士兵参加边境战役。保卫边境地区的索马里部队指挥官是优素福·艾哈迈德·萨尔汉将军和他的下属穆罕默德·法拉·艾迪德准将，他指挥中央区军事区。西方观察家估计，在战役开始时，SNA的总兵力约为50,000人。自1978年初欧加登战争结束时遭受严重损失后，SNA装备严重不足，对冲突准备不足。但好在有我们的志愿军，SNA得以获得歼-7战斗机和足够的火炮与反坦克火箭弹。\n现在摆在我们面前的问题是，这到底是一场短暂的边境冲突，还是一次地缘政治大洗牌？"
-const TXT_R1 := "大约10,000至15,000名埃塞俄比亚军队发动了入侵，他们装备了苏联提供的米格战斗机和t-55坦克。3000名SSDF成员同样装备了坦克，并得到了埃塞俄比亚炮兵和空军的支持。同时我们也押宝于埃塞俄比亚，他们获得了我们的志愿者和武器装备。\n索马里国民军（SNA）只能派出2500名士兵参加边境战役。保卫边境地区的索马里部队指挥官是优素福·艾哈迈德·萨尔汉将军和他的下属穆罕默德·法拉·艾迪德准将，他指挥中央区军事区。西方观察家估计，在战役开始时，SNA的总兵力约为50,000人。自1978年初欧加登战争结束时遭受严重损失后，SNA装备严重不足，他们不一定能和埃塞俄比亚人扳手腕。他们呼吁白宫/克里姆林方面兑现承诺。\n现在摆在我们的问题是，这到底是一场短暂的边境冲突，还是一次地缘政治大洗牌？"
-const TXT_R2 := "大约10,000至15,000名埃塞俄比亚军队发动了入侵，他们装备了苏联提供的米格战斗机和t-55坦克。3000名SSDF成员同样装备了坦克，并得到了埃塞俄比亚炮兵和空军的支持。\n索马里国民军（SNA）只能派出2500名士兵参加边境战役。保卫边境地区的索马里部队指挥官是优素福·艾哈迈德·萨尔汉将军和他的下属穆罕默德·法拉·艾迪德准将，他指挥中央区军事区。西方观察家估计，在战役开始时，SNA的总兵力约为50,000人。自1978年初欧加登战争结束时遭受严重损失后，SNA装备严重不足，他们不一定能和埃塞俄比亚人扳手腕。他们呼吁白宫方面兑现承诺。\n现在摆在我们的问题是，这到底是一场短暂的边境冲突，还是一次地缘政治大洗牌？"
+const TXT_R0 := "event.script.event_588_ogaden_war_rekindled.c0"
+const TXT_R1 := "event.script.event_588_ogaden_war_rekindled.c1"
+const TXT_R2 := "event.script.event_588_ogaden_war_rekindled.c2"
 
-const WAR15_NAME := "索马里-埃塞边境冲突"
+const WAR15_NAME := "event.script.event_588_ogaden_war_rekindled.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -38,25 +30,35 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_ARMY, -100)
 			_start_war_15(somalia, num, 500, 500, 16)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_ARMY, -100)
 			_start_war_15(somalia, num, 300, 700, 16)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_ARMY, -50)
-			# 原版 TickTime(4)，但 TimeScript.WorldWarsDone 对 war15 另有 fortnight_go>=16 门槛，
-			# 有效超时 = max(4,16)=16。
-			_start_war_15(somalia, num, 400, 600, 16)
-			context["result_text"] = TXT_R2
+			# 原版 TickTime(4)，但 TimeScript.WorldWarsDone 对 war15 另有 fortnight_go>=16 门槛， # 有效超时 = max(4,16)=16。 _start_war_15(somalia, num, 400, 600, 16) context["result_text"] = tr(TXT_R2)
 
 
 func _start_war_15(somalia: CountryData, num: int, infl1: int, infl2: int, tick: int) -> void:
 	var ussr_side := 0 if somalia != null and somalia.has_tag("亲苏") else 1
 	game.start_war(15, "索马里", "埃塞俄比亚", infl1 + num, infl2 - num, -1, ussr_side)
 	if ws.wars.size() > 15 and ws.wars[15] != null:
-		ws.wars[15].name_war = WAR15_NAME
+		ws.wars[15].name_war = tr(WAR15_NAME)
 		ws.wars[15].fortnight_max = tick
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_588_ogaden_war_rekindled.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_588",
+	"num": 588,
+	"priority": 58800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_588_ogaden_war_rekindled.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1982.6.1"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 10, "target": "42"}, {"t": "ANY", "c": [{"t": "ALL", "c": [{"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "亲苏", "target": "42"}]}, {"t": "COUNTRY_HAS_TAG", "key": "亲苏", "target": "41"}]}, {"t": "ALL", "c": [{"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "亲苏", "target": "42"}]}, {"t": "COUNTRY_HAS_TAG", "key": "亲中", "target": "41"}]}, {"t": "ALL", "c": [{"t": "COUNTRY_HAS_TAG", "key": "亲苏", "target": "42"}, {"t": "COUNTRY_HAS_TAG", "key": "亲中", "target": "41"}]}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

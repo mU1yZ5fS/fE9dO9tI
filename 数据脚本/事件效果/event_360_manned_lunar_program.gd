@@ -1,18 +1,15 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event360.cs：月球计划——载人登月。
-## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。
-## 说明：原版触发中的 (resultOfEvents[361]<=1 || resultOfEvents[358]<=1 || resultOfEvents[359]<=1)
-## 恒为真（358/359 各只有 0/1 两个选项，<=1 必真），故 .tres 仅保留日期条件。
+## 原作 Event360.cs：月球计划——载人登月。 ## 触发：见 .tres trigger_conditions（由 ReqEventsDLC02.cs else-if 链照抄）。 ## 说明：原版触发中的 (resultOfEvents[361]<=1 resultOfEvents[358]<=1 resultOfEvents[359]<=1) ## 恒为真（358/359 各只有 0/1 两个选项，<=1 必真），故 .tres 仅保留日期条件。
 
 
 
-const TXT_OPT0 := "我们要在20世纪80年代末登上月球！"
-const TXT_OPT0_DIS := "登月没有必要。"
-const TXT_OPT1 := "我们押宝于一个长期项目。"
+const TXT_OPT0 := "event.script.event_360_manned_lunar_program.c0"
+const TXT_OPT0_DIS := "event.script.event_360_manned_lunar_program.c1"
+const TXT_OPT1 := "event.script.event_360_manned_lunar_program.c2"
 
-const TXT_R0 := "因此，在1990年之前的登上月球的计划被采纳。工业和科技企业已经开始加班加点。但很多人怀疑这样做的必要性......"
-const TXT_R1 := "急着让一个人着陆月球被认为是没有希望的。相反，工程师和科学家的任务是在2030年之前在月球表面建设一个长期定居点。"
+const TXT_R0 := "event.script.event_360_manned_lunar_program.c3"
+const TXT_R1 := "event.script.event_360_manned_lunar_program.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -21,10 +18,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if _prev_result(world, "event_353") == 1 and _budget_reserve(world) >= 200:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
+	_enable(opt[1], tr(TXT_OPT1))
 
 
 func execute(context: Dictionary) -> void:
@@ -36,9 +33,9 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_SCIENCE, 40)
 			_add(W.I_BUDGET, -180)
 			_add(W.I_DIPLO, 70)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -87,3 +84,16 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_360_manned_lunar_program.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_360",
+	"num": 360,
+	"priority": 36000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_360_manned_lunar_program.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1985.6.1"}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -9,7 +9,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 原版 Gosstroy=0/SubGosstroy=19 → government/sub_government。
 ##  - Torg=true → set_tag("对华贸易", true)。
 
-const TXT_RESULT := "最终，沙特阿拉伯王室屈服了，沙特将退出红海沿岸并放弃对当地的主权，沙特在当地的石油企业和伊拉克国家碳氢化合物公司联合组建开采公司，但开采权和76%的收益都会交给伊拉克作为战争赔偿。伊拉克行政机关正在进入并取代沙特的管理机构，新征服的领土将被命名为萨达姆省，省会定于达曼，现在也将改名为萨达姆市。沙特的国防力量也必须被解散，转而有伊拉克提供军事保护。萨达姆的次子，库塞·侯赛因被自己的父亲任命为首任萨达姆省省长，兼任萨达姆省复兴党支部书记。在签订了不受欢迎的卖国条约后，伊本·沙特国王被一名沙特建筑巨头开发商的儿子袭击，刺客被立刻逮捕，老国王伤势严重，并很快由亲伊拉克的军官组成了临时军事委员会接管全国。据信，此次袭击完全是因为王国政府拒绝和本拉登建筑集团展开进一步合作。\n两位主要成员的先后离开使得成立不久的海合会濒临崩溃，阿拉伯联合酋长国希望借此分得一杯羹，同时也是为了防止伊拉克的秋后算账，联合酋长国迅速倒向了伊拉克方面，通过引入伊拉克军队来对抗西方国家的压力，并开展了类似伊拉克的改革，允许复兴党伊拉克派在当地开设支部，组织萨达姆主义学习班。同时还允许伊拉克军队和海军在当地驻军，让伊拉克军官担任军事观察家等。伊拉克还成立了由自己主导的“石油与主权委员会”来处理这些国家的油气问题，同时还率领各国退出欧佩克，加入新的石油主权委员会。美国和苏联都对伊拉克的扩展表示严重关切。"
+const TXT_RESULT := "event.script.event_709_tawakkalna.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -32,7 +32,7 @@ func execute(context: Dictionary) -> void:
 		if saudi != null:
 			saudi.name = "半岛阿拉伯共和国"
 			saudi.chinese_name = "半岛阿拉伯共和国"
-		context["result_text"] = TXT_RESULT
+		context["result_text"] = tr(TXT_RESULT)
 
 
 func _convert_country(legacy_index: int) -> void:

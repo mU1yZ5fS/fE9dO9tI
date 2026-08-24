@@ -12,17 +12,17 @@ extends "res://数据脚本/event_script_base.gd"
 ##    不再取 new_events_text[900] 的 else 分支。
 ##  - data.yugoslavia_kosovo_chain（科索沃状态）直访 d.yugoslavia_kosovo_chain。
 
-const TXT_R0 := "中华人民共和国外交部发布公报，正式向科索沃示威者表示支持，因为“抗议者享有合法的民主权利”。这引起了南斯拉夫的强烈愤慨，南斯拉夫指责中国干涉其内政，它领导下的不结盟运动指责中国为“毛主义霸权”。苏联和美国忽视了这一点，主要是因为南斯拉夫社会主义联邦共和国不在任何一个集团中的“独立”立场。科索沃进入紧急状态，部分南斯拉夫人民军进入，到4月3日，该省所有抗议活动都已被镇压，并恢复了秩序。南斯拉夫当局发现了阿尔巴尼亚介入的证据。对分离主义者的大规模清洗开始了。"
+const TXT_R0 := "event.script.event_076_kosovo.c0"
 
-const TXT_R1_BASE := "我们在地拉那的大使照会恩维尔·霍查与拉米兹·阿利雅（西古里米领导人）两位同志，并向他们表达了中方的合作意愿。"
+const TXT_R1_BASE := "event.script.event_076_kosovo.c1"
 
-const TXT_R1_OK := "他们同意我们的帮助。在阿尔巴尼亚，中国国安部的一批员工已经抵达，很快与西古里米建立了合作关系。结果，尽管南斯拉夫人民军成功地镇压了叛乱，但他们并不能完全平定该省。我们可以在那里再次发动暴乱。"
+const TXT_R1_OK := "event.script.event_076_kosovo.c2"
 
-const TXT_R1_FAIL := "不幸的是，他们拒绝我们的帮助，声称我们的特工在南欧力量太弱。叛乱很快被镇压下去，南斯拉夫国家安全局揭露并挫败了三条主要的西古里米情报网络，取缔了一个非法的“斯派—霍查派共产党”，对阿尔巴尼亚在南斯拉夫的情报部门造成了沉重打击。"
+const TXT_R1_FAIL := "event.script.event_076_kosovo.c3"
 
-const TXT_R2 := "科索沃进入紧急状态，部分南斯拉夫人民军进入，到4月3日，该省所有抗议活动都已被镇压，恢复了秩序。"
+const TXT_R2 := "event.script.event_076_kosovo.c4"
 
-const TXT_R3 := "在政治局内部会议上，决定了利用南斯拉夫问题，为科索沃分离主义者提供全面协助。我们决定将驻贝尔格莱德使馆作为“中转站”。科索沃分离主义者在得到我们提供的武器和资金后，开始对部分南人民军和民兵进行武装抵抗。普里什蒂纳爆发了最残酷的巷战，南斯拉夫军队积极地使用炮兵和航空兵，结果导致城市被毁。“普里什蒂纳在燃烧”的新闻传遍全球，严重打击了南斯拉夫联邦的国际威望，尽管叛军在六月份最终被镇压下去，却需要大量资金重建这个地区，而南斯拉夫拿不出这笔钱。\n1981年4月，在南斯拉夫联邦主席团和联邦宪法秩序保护委员会的一次会议上，拉扎尔·科利舍夫斯基说：“我们必须充分认识到这一论题的荒谬和极端反动性质——即塞尔维亚越弱，科索沃越强（或我们的任何其他共和国）。以及另一论题——科索沃在塞尔维亚的自治权越小，塞尔维亚越强大。这也可以说是关于——塞尔维亚越弱，南斯拉夫越强这一论题。”民族主义者开始加强他们在这个国家的地位…"
+const TXT_R3 := "event.script.event_076_kosovo.c5"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -58,25 +58,25 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_DIPLO, 20)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			var text := TXT_R1_BASE
+			var text := tr(TXT_R1_BASE)
 			if d.size() > W.I_BUDGET and d.size() > W.I_RESERVE and d.size() > W.I_AGENTS \
 					and d.budget + d.reserve >= 50 and d.agents >= 50:
-				text += TXT_R1_OK
+				text += tr(TXT_R1_OK)
 				_add_power(EmpireData.USA, 10)
 				if d.size() > 86:
 					d.yugoslavia_kosovo_chain -= 2
 				_add(W.I_BUDGET, -50)
 				_add(W.I_AGENTS, -50)
 			else:
-				text += TXT_R1_FAIL
+				text += tr(TXT_R1_FAIL)
 				# 官方版 DLL 反编译（tmp_Event76.cs:109-112）证实 data[8](预算)++ 为
 				# ref 真实写入，旧转储 ptr 模式系反编译伪影，已恢复。
 				_add(W.I_BUDGET, 1)
 			context["result_text"] = text
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			# dlc[3] 恒真（项目惯例 world_factory.gd:1462）
 			_add(W.I_BUDGET, -100)
@@ -84,7 +84,7 @@ func execute(context: Dictionary) -> void:
 			if d.size() > 86:
 				d.yugoslavia_kosovo_chain -= 4
 			_add_power(EmpireData.USA, 20)
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 ## 原版 summa_3_2 复算（同 event_075）。
@@ -110,3 +110,19 @@ func _coalition_percent(world: WorldState) -> int:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_076_kosovo.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_076",
+	"num": 76,
+	"priority": 7600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_076_kosovo.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1981.3.1"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "对华贸易", "target": "15"}]}, {"t": "RESOURCE_EQUALS", "key": "albania_break"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

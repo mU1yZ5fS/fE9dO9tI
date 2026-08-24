@@ -1,16 +1,13 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event625.cs：莫桑比克，光明到来？（莫桑比克内战结算，单选项）。
-## 触发：TimeScript.cs:7160 —— (c126.level_of_unstab>=1000 || c126.level_of_unstab<=0) && !event_done[625] && c126.parts[0]；
-##  parts/level_of_unstab ExprNode 不支持 → trigger_script。
-## 差异：描述与结果按 level_of_instability 分支；TextOfEvents 的 parts[0]=false 在 prepare 中复刻。
+## 原作 Event625.cs：莫桑比克，光明到来？（莫桑比克内战结算，单选项）。 ## 触发：TimeScript.cs:7160 —— (c126.level_of_unstab>=1000 c126.level_of_unstab<=0) && !event_done[625] && c126.parts[0]； ##  parts/level_of_unstab ExprNode 不支持 → trigger_script。 ## 差异：描述与结果按 level_of_instability 分支；TextOfEvents 的 parts[0]=false 在 prepare 中复刻。
 
-const TXT_DESC_A := "随着莫桑比克全国抵抗运动的最后一个据点被拔除，莫桑比克解放阵线党终于控制了全国。抵运的残军狼狈撤往了南非。"
-const TXT_DESC_B := "随着莫桑比克解放阵线党的最后一个据点被拔除，莫桑比克抵抗运动终于控制了全国。解阵的残军撤往了坦桑尼亚和赞比亚。"
-const TXT_R0_A := "莫解阵在莫桑比克首都马普托举行了盛大的阅兵仪式，庆祝着属于莫桑比克人民的胜利。在内战中犯下重大罪行的抵运成员被公审处决。为了报复南非和支持南部的同志，莫桑比克加大了对阿扎尼亚泛非主义大会、非洲人国民大会和南非共产党的支持。没有了内部的大敌，莫解阵终于能够更加专注于人民民主革命和国家建设，并借鉴"
-const TXT_R0_MID := "中国和"
-const TXT_R0_B := "苏联的经验开展工业化和进行反部落主义的文化革命。"
-const TXT_R0_FAIL := "在南非的支持下，莫桑比克全国抵抗运动终于赢得内战，莫解阵党被查禁，新政权开始对前政权的国有资产和集体资产的劫收式私有化——在城市，国有企业直接成为了抵运高官的私有物，而在乡村，部落酋长的权力也再度膨胀，他们开始霸占公社村，将其据为己有，合作社也被解散。这个组织似乎并不像他们自己所宣扬的那样，是反共的民主斗士——从该国传来了抵运犯下各类暴行的消息。在电视上，被俘的莫解阵的高官被脱光衣服，割去身体的各种部位后被绑在海滩的柱子上暴晒；幸存的莫解阵成员撤入了坦桑尼亚，在坦桑尼亚的支持下进行着最后的游击抵抗。这个被CIA称为“非洲红色高棉”的组织的胜利让国际观察者感到非常不安，新的政府几乎只得到了南非和联邦德国的承认，甚至在美国，也只有最强硬的保守派才愿意承认这个政权……与此同时，在莫桑比克，由于抵运支持基督教，事实上的对于宗教自由的剥夺开始了，这无疑激起了海岸线一带穆斯林人口的不满，让我们看看接下来局势会如何发展……"
+const TXT_DESC_A := "event.script.event_625_mozambique_light_comes.c0"
+const TXT_DESC_B := "event.script.event_625_mozambique_light_comes.c1"
+const TXT_R0_A := "event.script.event_625_mozambique_light_comes.c2"
+const TXT_R0_MID := "event.script.event_625_mozambique_light_comes.c3"
+const TXT_R0_B := "event.script.event_625_mozambique_light_comes.c4"
+const TXT_R0_FAIL := "event.script.event_625_mozambique_light_comes.c5"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,9 +19,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if mozambique == null:
 		return
 	if mozambique.level_of_instability >= 1000:
-		event_def.description = TXT_DESC_A
+		event_def.description = tr(TXT_DESC_A)
 	else:
-		event_def.description = TXT_DESC_B
+		event_def.description = tr(TXT_DESC_B)
 	_set_part(mozambique, 0, false)
 
 
@@ -39,10 +36,10 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if mozambique != null and mozambique.level_of_instability >= 1000:
-				var text := TXT_R0_A
+				var text := tr(TXT_R0_A)
 				if ws.is_socialism(china, true) and _res_ev("event_623") != 1:
-					text += TXT_R0_MID
-				text += TXT_R0_B
+					text += tr(TXT_R0_MID)
+				text += tr(TXT_R0_B)
 				context["result_text"] = text
 				if mozambique != null:
 					mozambique.government = GameConstants.Government.SOCIALIST
@@ -57,7 +54,7 @@ func execute(context: Dictionary) -> void:
 				_add_relation(EmpireData.USA, -50)
 				_add_power(EmpireData.USA, -30)
 			else:
-				context["result_text"] = TXT_R0_FAIL
+				context["result_text"] = tr(TXT_R0_FAIL)
 				if mozambique != null:
 					mozambique.government = GameConstants.Government.AUTHORITARIAN
 					mozambique.sub_government = GameConstants.SubGovernment.NEO_FASCIST
@@ -168,3 +165,16 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_625_mozambique_light_comes.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_625",
+	"num": 625,
+	"priority": 62500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_625_mozambique_light_comes.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_625_mozambique_light_comes.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

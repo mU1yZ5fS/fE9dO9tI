@@ -7,8 +7,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "在我们和越南的施压下，凯山·丰威汉承认在过去他的政策“有重大的失误”后辞去了老挝人民革命党总书记和政府总理的的职务，仅保留了政治局委员职务。苏发努冯被选为新的老挝人民革命党总书记和政府总理，富米·冯维希当选为新的老挝国家主席和最高人民议会主席。老挝新领导层同我们和越南重新签订了合作协议。原本老挝政府中大量的越南顾问撤回了越南国内；同时，我们给老挝发放了大批无息贷款，转让了一批工业设施，他们的社会主义经济正在稳步发展。"
-const TXT_R1 := "有了越南，我们已经在中南半岛有了立足之地，所以我们可以先把目光放在别处，暂时不管老挝的事......"
+const TXT_R0 := "event.script.event_445_laos_fate.c0"
+const TXT_R1 := "event.script.event_445_laos_fate.c1"
 
 
 func execute(context: Dictionary) -> void:
@@ -31,9 +31,9 @@ func execute(context: Dictionary) -> void:
 					laos.government = china.government
 					laos.sub_government = china.sub_government
 				laos.prc_power = 1000
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -65,3 +65,18 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_445_laos_fate.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_445",
+	"num": 445,
+	"priority": 44500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_445_laos_fate.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

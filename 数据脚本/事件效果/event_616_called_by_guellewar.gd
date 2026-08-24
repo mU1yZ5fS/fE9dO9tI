@@ -4,8 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：无自动触发点——原版由 DiploButtonScript.cs:4533-4535（this_type 外交按钮）手动 number_event=616。
 ## 差异：IsSocialism(true,id) 计数用 ws.is_socialism(c,true)；proprc→亲中、Torg→对华贸易。
 
-const TXT_R0 := "在几内亚、几内亚比绍、冈比亚等国的支持下，塞内加尔共产党/马列将自己所掌握的武装力量与受革命思想影响的军人改编为由该党中央统一指挥的塞内加尔民族解放军，西非的社会主义国家将为他们提供他们所需要的一切支持。\n随着塞内加尔的局势日益恶化，陆军总参谋长约瑟夫·路易斯·塔瓦雷斯·德苏萨将军发动了一场政变，轻而易举地占领了达喀尔的政府大楼，在广播中宣布成立革命军事委员会，无限期暂停议会选举与宪法，接管政府。而这遭到了全国上下的激烈反对，很快，该国的混乱局势便演化为一场内战。而几内亚、几内亚比绍与冈比亚的志愿军则直接介入了内战，倚仗于他们的支持，塞共/马列得以四两拨千斤，彻底击溃了政府军，最终接管了全国。一个彻底脱离殖民主义阴魂的新塞内加尔诞生了。"
-const TXT_R0_FAIL := "在几内亚、几内亚比绍、冈比亚等国的支持下，塞内加尔共产党/马列将自己所掌握的武装力量与的军人改编为由该党中央统一指挥的塞内加尔民族解放军，而西非的社会主义国家将为他们提供他们所需要的一切支持。\n随着塞内加尔的局势日益恶化，陆军总参谋长约瑟夫·路易斯·塔瓦雷斯·德苏萨将军发动了一场政变，轻而易举地占领了达喀尔的政府大楼，在广播中宣布成立革命军事委员会，无限期暂停议会选举与宪法，接管政府。而这遭到了全国上下的激烈反对，很快，该国的混乱局势便演化为一场内战。而几内亚、几内亚比绍与冈比亚的志愿军则直接介入了内战。最终，尽管在面对卡萨芒斯的分离主义叛军遭遇一系列惨败，军政府还是成功击退了所有外国干涉军。\n在大天使的剑影下，塞内加尔河、冈比亚河、卡萨芒斯河全被染红了……"
+const TXT_R0 := "event.script.event_616_called_by_guellewar.c0"
+const TXT_R0_FAIL := "event.script.event_616_called_by_guellewar.c1"
 
 
 func execute(context: Dictionary) -> void:
@@ -22,7 +22,7 @@ func execute(context: Dictionary) -> void:
 				if c != null and ws.is_socialism(c, true):
 					num += 1
 			if num >= 5 and _socialism(68) and _socialism(114) and _socialism(113):
-				context["result_text"] = TXT_R0
+				context["result_text"] = tr(TXT_R0)
 				if senegal != null:
 					senegal.government = GameConstants.Government.SOCIALIST
 					senegal.sub_government = GameConstants.SubGovernment.MAOIST
@@ -32,7 +32,7 @@ func execute(context: Dictionary) -> void:
 				_add_relation(EmpireData.USSR, -150)
 				_add_relation(EmpireData.USA, -150)
 			else:
-				context["result_text"] = TXT_R0_FAIL
+				context["result_text"] = tr(TXT_R0_FAIL)
 				if senegal != null:
 					senegal.government = GameConstants.Government.AUTHORITARIAN
 					senegal.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
@@ -130,3 +130,18 @@ func _socialism(idx: int) -> bool:
 	var c := _country(idx)
 	return c != null and ws.is_socialism(c, true)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_616_called_by_guellewar.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_616",
+	"num": 616,
+	"priority": 61600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_616_called_by_guellewar.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

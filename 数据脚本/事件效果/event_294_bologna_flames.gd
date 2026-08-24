@@ -3,12 +3,12 @@
 ## 差异：result0/1 原版 string.Format 但未使用 {0}{1}，按无占位符逐字处理。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_OPT1_DIS := "政治议题工具化不符合民主社会的原则"
-const TXT_OPT2_DIS := "我们为什么要帮潜在的杀人犯洗手？"
-const TXT_R0 := "我国外交部向意大利当局表示慰问，并为惨案受害者们送去了人道主义援助——当然，事情可不会到此为止。相当数量的资金被用于打点媒体（主要是《团结报》、《浓缩精华》与《宣言》等持社会进步立场，在博洛尼亚事件中要求彻查并对极右翼恐怖主义采取措施的传媒）与援助博洛尼亚本地的司法部门。以此倒逼意大利当局深入调查，并将矛头指向最可能同此次事件瓜葛的恐怖主义活动家们。这一挤压政策很快便收获了成效——当局调查结果表明，极右翼恐怖团体“革命武装核心”的成员积极参与了此案，并借此迅速逮捕了相关人员。该组织亦被卡宾枪骑兵彻底查封。博洛尼亚事件至此迅速结案。然而，在暂无详细证据，仅基于有罪推定并下达逮捕并结束调查的如此草率的做法不由得引人思考——仿佛一切的一切都只是“革命武装核心”的独狼式袭击而已，而意大利国家体制完全不须为此次事件负责……"
-const TXT_R1 := "我们决定以博洛尼亚惨案为契机，全面插手意大利国内政局——不论是事件受害者，博洛尼亚地方当局及司法部门，还是以《团结报》、《浓缩精华》与《宣言》等持社会进步立场，在博洛尼亚事件中要求彻查并对极右翼恐怖主义采取措施的传媒，都得到了相当分量的“人道主义援助”：这些赞助足以使其在弥合伤痕的同时迅速发起并长久维持一场规模空前的宣传运动。在我国外勤人员的“特别关照”下，上述势力力推的舆论共识很快便取得了成效——意大利当局不得不屈服于汹涌民意，竭尽所能寻找最为理想的“替罪羊”。调查很快便指向了该国的主要极右翼恐怖团体“革命武装核心”，相关人员被迅速逮捕，该组织亦被卡宾枪骑兵彻底查封。然而，事情并未到此为止：借案情侦办这一敏感时期，我们特意为意大利当局送上了份“惊喜”——渗入另一极右翼恐怖组织“新秩序”政治运动的特洛伊木马成功在罗马引爆了一枚烈性炸药，至此让该国极右翼运动成为众矢之的。考虑到政治暴力有愈演愈烈之风险，意大利当局不得不选择积极清理该国所有成气候的极右翼恐怖运动倾向，并实施严苛的连坐制度——这直接导致了该国极右翼建制派的代表与作为“新秩序”政治运动母体的意大利社会运动惨遭打击，后者至此分裂为持更温和立场，并同天主教民主党内右翼靠拢的民族保守主义者与主张直接通过恐怖运动颠覆该国的运动家群体。“合法阶级调和”的路线至此终结了……与此同时，通过对意大利国家的深入调查亦让我国情报人员摸到了些许蛛丝马迹——即意大利第一共和国运转的根本逻辑——“恐怖主义越猖獗，国家机器越强大，在这种意义上双方实现共生”……"
-const TXT_R2 := "意大利政界的裙带关系并非秘密——只需要点小钱，不论是企业还是黑手党，亦或是境外势力代言人，皆可在该国境内畅通无阻。该国各级机构内的反共情绪更是在长期霸占内务部的“铁腕权臣”弗朗切斯科·科西加控制下逐年走高，事实上形成了极左恐惧症。而来自局外人的视角足以让当局者将局势看得更为“清楚”——只需要稍稍向深耕国家机关的要员们暗示同自己共事的军情体制究竟能多么“无法无天”，并罗列其在70年代多次独走的历史经验，那让政府官员与司法部门们寻找替代信源不过是时间问题。我国情报人员的工作很快便达到四两拨千斤的成效：不仅促使政治大鳄，对安全事务有相当发言权的科西加放弃了“黑色恐怖分子更倾向于采取大规模恐怖袭击”的假设，转而将嫌疑转向“红色旅”，乃至巴勒斯坦地区的左翼武装团体上。意大利安全部门更将《团结报》掀起，更得到进步派传媒巨头《浓缩精华》附和的“右翼恐怖分子主谋”论打上了意图以“宣传阴谋论形式扰乱调查方向”，“加剧国内政治对立”并最终以不当竞争形式为意大利共产党谋求政治资本等帽子，至此为激进右翼洗清了指控。在“红色旅”与“革命武装核心”两大恐怖组织均宣称自己“无辜”的政治声明被广而告之的背景下，如此局势只会让调查举步维艰：警方只能抛弃民意与媒体影响，在缺乏出发点与线索的情况下重新搜寻真相——事实上意味着调查的长期停滞乃至冻结。这便为为该国的恐怖组织们做了表率：既然国家对如此规模的袭击行动都无动于衷，那接下来自是广阔天地，大有可为。而意大利国家对于“恐怖活动”的实质纵容，乃至安全部门对于相关信息的深入操纵，事实上将国民注意力转移到恐惧极端主义势力本身的做法亦让我国情报人员摸到了些许蛛丝马迹——即意大利第一共和国运转的根本逻辑——“恐怖主义越猖獗，国家机器越强大，在这种意义上双方实现共生”……"
-const TXT_R3 := "我们决定向意大利人民表示慰问，并对该国国内政治暴力愈演愈烈的局势表示高度关切——此后当局调查结果表明，极右翼恐怖团体“革命武装核心”的成员积极参与了此案，并借此迅速逮捕了相关人员。博洛尼亚事件就这样草草结束了。"
+const TXT_OPT1_DIS := "event.script.event_294_bologna_flames.c0"
+const TXT_OPT2_DIS := "event.script.event_294_bologna_flames.c1"
+const TXT_R0 := "event.script.event_294_bologna_flames.c2"
+const TXT_R1 := "event.script.event_294_bologna_flames.c3"
+const TXT_R2 := "event.script.event_294_bologna_flames.c4"
+const TXT_R3 := "event.script.event_294_bologna_flames.c5"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -23,11 +23,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line < 3:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if line <= 3 and diplo >= 900 and war > 300:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	_enable(opt[3], event_def.options[3].text)
 
 
@@ -40,14 +40,14 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_BUDGET, -30)
 			_add(182, 1)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -40)
 			_add(W.I_AGENTS, -60)
 			_add(176, 1)
 			_add(177, -999)
 			_add(182, 2)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_BUDGET, -80)
 			_add(W.I_AGENTS, -80)
@@ -56,9 +56,9 @@ func execute(context: Dictionary) -> void:
 			_add(134, 10)
 			_add(177, 1)
 			_add(182, 2)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 
@@ -109,3 +109,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_294_bologna_flames.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_294",
+	"num": 294,
+	"priority": 29400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_294_bologna_flames.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

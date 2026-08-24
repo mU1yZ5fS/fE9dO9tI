@@ -4,10 +4,10 @@
 ##  modifies[3/65].active→_set_mod_active；显示字段跳过；文本来自 Events_text_en 索引 69-76（禁用项复用 index 52）。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_OPT2_DIS := "和平解决方案已无可能！"
-const TXT_R0 := "军队使各城市的局势稳定下来。我们成功在几乎不流血也不抓人的情况下稳定了局势，尽管人民已不太信任我们，抗议者被坦克轰击的图片也见诸西方媒体报端。"
-const TXT_R1 := "耀邦退休了，不久就死于心肌梗塞。人民很高兴，党员们也很高兴，对极左派来说，他是修正主义者，温和派对他激进的思想不满意，而对自由派来说，把他们所有的罪过都推到一个前同事身上是有利的......"
-const TXT_R2 := "党支持抗议活动，并开始分裂。执政派系失去了支持，甚至连军队都抛弃了他们。不久，我国便建立了一个新政府，前统治者不是老死就是被判犯有叛国罪。"
+const TXT_OPT2_DIS := "event.script.event_306_party_line_protest.c0"
+const TXT_R0 := "event.script.event_306_party_line_protest.c1"
+const TXT_R1 := "event.script.event_306_party_line_protest.c2"
+const TXT_R2 := "event.script.event_306_party_line_protest.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -23,7 +23,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if p15 >= 0 and (not ev444_done or ev444_res != 0):
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -33,12 +33,12 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_PEOPLE_SUPPORT, -100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			var num := _find_politician(15, 15)
 			if num >= 0:
 				game.kill_politician(num)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			var num2 := _find_politician(15, 15)
 			_add(W.I_PARTY_SUPPORT, -250)
@@ -55,7 +55,7 @@ func execute(context: Dictionary) -> void:
 					game.kill_politician(num2)
 					_set_mod_active(65, false)
 			# LeaderAsset/MoneyLevel/ServeRMB 为显示字段，跳过
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -106,3 +106,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_306_party_line_protest.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_306",
+	"num": 306,
+	"priority": 30600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_306_party_line_protest.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

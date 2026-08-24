@@ -6,18 +6,18 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "劫机。"
-const TXT_OPT0_DIS := "我们没那个能力。"
-const TXT_OPT1 := "窃取蓝图。"
-const TXT_OPT1_DIS := "我们没那个能力。"
-const TXT_OPT2 := "购买飞机。"
-const TXT_OPT2_DIS := "我们一点钱都没有了。"
-const TXT_OPT3 := "什么都不做。"
+const TXT_OPT0 := "event.script.event_351_mig29_defection.c0"
+const TXT_OPT0_DIS := "event.script.event_351_mig29_defection.c1"
+const TXT_OPT1 := "event.script.event_351_mig29_defection.c2"
+const TXT_OPT1_DIS := "event.script.event_351_mig29_defection.c3"
+const TXT_OPT2 := "event.script.event_351_mig29_defection.c4"
+const TXT_OPT2_DIS := "event.script.event_351_mig29_defection.c5"
+const TXT_OPT3 := "event.script.event_351_mig29_defection.c6"
 
-const TXT_R0 := "一名同情中国共产党的苏联飞行员驾驶米格-29战斗机逃往中国。当然，与苏联的关系受到了影响，但我们得到了最新的战机。"
-const TXT_R1 := "一群中国特工从一家苏联工厂窃取了最新的米格-29飞机的图纸。与苏联的关系并没有受到影响。他们怎么知道这事？但我们的空军将用上最新的飞机。"
-const TXT_R2 := "中国代表团访问了苏联。除了解决许多小问题外，代表团还决定购买最新的米格-29战斗机。事实上，这是自20世纪50年代以来我们收到的第一批苏联军事装备。当然，这只是我国发展的基础罢了。"
-const TXT_R3 := "其他问题更为重要。"
+const TXT_R0 := "event.script.event_351_mig29_defection.c7"
+const TXT_R1 := "event.script.event_351_mig29_defection.c8"
+const TXT_R2 := "event.script.event_351_mig29_defection.c9"
+const TXT_R3 := "event.script.event_351_mig29_defection.c10"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -27,19 +27,19 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var dv := world
 	var opt := event_def.options
 	if dv.size() > W.I_AGENTS and dv.agents >= 20:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if dv.size() > W.I_AGENTS and dv.agents >= 30:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if world.empires.size() > 1 and world.empires[1] != null and world.empires[1].relations >= 400 \
 			and _budget_reserve(world) >= 20:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], tr(TXT_OPT2))
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
+	_enable(opt[3], tr(TXT_OPT3))
 
 
 func execute(context: Dictionary) -> void:
@@ -50,17 +50,17 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add_relation(EmpireData.USSR, -70)
 			_add(W.I_ARMY, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_ARMY, 100)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add_relation(EmpireData.USSR, 70)
 			_add(W.I_ARMY, 100)
 			_add(W.I_BUDGET, -10)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 
@@ -109,3 +109,18 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_351_mig29_defection.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_351",
+	"num": 351,
+	"priority": 35100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_351_mig29_defection.gd",
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

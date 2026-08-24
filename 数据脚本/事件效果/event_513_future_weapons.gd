@@ -1,14 +1,12 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event513.cs：我们未来的武器（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event513.cs：我们未来的武器（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "那么，钱从哪来？"
-const TXT_OPT1_DIS := "自力更生是好事，但我们显然没有这个能力"
-const TXT_R0_A := "通过我们和伊拉克的秘密协议，我们从萨达姆手上拿到了大量AK-74自动步枪。在中国轻武器研究所的不懈努力下，76式自动步枪诞生了。相比AK-74，它更加耐保存，短导气管防止了火药燃气进入机闸的可能性。而且它的另一项优势便是它的简单，只需要三分钟，下至初中生，上至六旬老人，只要能拿得动这杆枪，都能学会拆解，组装和使用这把武器。很快这些武器就会取代老旧的56式冲锋枪，成为民兵和解放军士兵的主流武器。而相对应的PKM班用机枪也被引入我国，用于补齐我国缺少班用火力压制武器的空缺。小口径的自研武器还是再等等吧……"
-const TXT_R1_A := "我们决定研制一款口径更小的自研轻武器来逐步取代现役装备。在中国国家兵工厂研究部的数位工程师和设计师热烈的讨论后，由朵英贤团队设计的QBZ-76自动步枪得到了一致好评。该枪看起来和传统苏式武器别无二样。但它采用了杀伤力更为巨大的5.8mm子弹，在打入伤口之后不会贯穿，而是在体内“爆”开。5.8mm子弹也防止了美国等西方国家缴获了我们的武器之后直接使用。工程塑料也创造性的在这件武器上得到了运用。很快这些武器就会投入量产，并在不久的将来取代56式自动步枪。而相对应的，带有弹鼓的机枪型号也在紧锣密鼓的研制中。"
-const TXT_R2_A := "我们决定向超级大国购买武器以填补空缺，武器的问题得到了解决。苏联和美国的军工集团都感谢我们的订单。但未来的武器该怎么办？恐怕没人知道……"
+const TXT_OPT0_DIS := "event.script.event_513_future_weapons.c0"
+const TXT_OPT1_DIS := "event.script.event_513_future_weapons.c1"
+const TXT_R0_A := "event.script.event_513_future_weapons.c2"
+const TXT_R1_A := "event.script.event_513_future_weapons.c3"
+const TXT_R2_A := "event.script.event_513_future_weapons.c4"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -19,11 +17,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.budget + ws.reserve > 20:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.budget + ws.reserve > 40:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
@@ -32,26 +30,12 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(20))
 			_add(22, 50)
 			ws.influence_prc += 10
 			_add_relation(1, -(50))
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc[num] += "<color=red>| 仿 制 苏 械 ：</color>| 军 力+0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |仿制苏械：|军力+0.1
-		1:
-			context["result_text"] = TXT_R1_A
-			_add(8, -(40))
-			ws.influence_prc += 15
-			_add(22, 80)
-			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc2[num2] += "<color=red>| 自 研 军 械 ：</color>| 军 力+0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |自研军械：|军力+0.2
-		2:
-			context["result_text"] = TXT_R2_A
-			_add(8, -(5))
-			_add(22, 20)
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 仿 制 苏 械 ：</color>| 军 力+0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |仿制苏械：|军力+0.1 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(40)) ws.influence_prc += 15 _add(22, 80) # 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 自 研 军 械 ：</color>| 军 力+0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |自研军械：|军力+0.2 2: context["result_text"] = tr(TXT_R2_A) _add(8, -(5)) _add(22, 20)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -186,3 +170,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_513_future_weapons.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_513",
+	"num": 513,
+	"priority": 51300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_513_future_weapons.gd",
+	"trigger": [{"t": "TECH_UNLOCKED", "v": 18}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

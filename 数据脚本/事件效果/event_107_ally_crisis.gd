@@ -1,35 +1,29 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event107.cs：盟友危机（联盟成员叛离，五选项）。
-## 触发：TimeScript.cs:10985-10990 —— data.ally_crisis_target > 0 && c1.econ && !active。
-## 差异：
-##  - data.ally_crisis_target 为目标国家原版序号，结果显示后置 -1（原版 ResultsOfEvents 末尾）。
-##  - 国家名取 Godot display_name()（原版 .name）；|| → \n；
-##    usalliance→美国盟友、sovalliance→苏联盟友、proprc→亲中、
-##    Gosstroy→government、SubGosstroy→sub_government、soc_stab→social_stability。
+## 原作 Event107.cs：盟友危机（联盟成员叛离，五选项）。 ## 触发：TimeScript.cs:10985-10990 —— data.ally_crisis_target > 0 && c1.econ && !active。 ## 差异： ##  - data.ally_crisis_target 为目标国家原版序号，结果显示后置 -1（原版 ResultsOfEvents 末尾）。 ##  - 国家名取 Godot display_name()（原版 .name）； → \n； ##    usalliance→美国盟友、sovalliance→苏联盟友、proprc→亲中、 ##    Gosstroy→government、SubGosstroy→sub_government、soc_stab→social_stability。
 
 
-const TXT_DESC_BASE := "众所周知，我们的集团是最民主、最平等的……这就产生了后果。"
-const TXT_DESC_TAIL := "最近一直在奉行越来越独立于我们政策，想进行一些改革的不忠势力正在其政治体系中获得权力。"
-const TXT_DESC_US := "但更糟糕的是他们与美国和西方的外交调情！如果这种情况继续下去，那么我们就有失去盟友的危险，所以我们需要做些什么，但是怎么办？我们不想表现得像苏联修正主义者在捷克斯洛伐克做的那样。或者……？"
-const TXT_DESC_SU := "但更糟糕的是他们与苏联的外交调情！如果这种情况继续下去，那么我们就有失去盟友的危险，所以我们需要做些什么，但是怎么办？我们不想表现得像苏联修正主义者在捷克斯洛伐克做的那样。或者……？"
-const TXT_DESC_OKB := "\n这一切都是在我们盟国政府即将宣布中立政策的背景下发生的，这意味着一件事：他们想离开我们的军事同盟"
-const TXT_DESC_ECON := "\n而这一切发生的背景是，我们的盟友政府正狂热地切断与我们的所有贸易关系，宣布调整其经济方向，这意味着一件事：他们想离开我们的经济联盟。"
+const TXT_DESC_BASE := "event.script.event_107_ally_crisis.c0"
+const TXT_DESC_TAIL := "event.script.event_107_ally_crisis.c1"
+const TXT_DESC_US := "event.script.event_107_ally_crisis.c2"
+const TXT_DESC_SU := "event.script.event_107_ally_crisis.c3"
+const TXT_DESC_OKB := "event.script.event_107_ally_crisis.c4"
+const TXT_DESC_ECON := "event.script.event_107_ally_crisis.c5"
 
-const TXT_OPT0_DIS := "我们的军队没有足够的力量和权威"
-const TXT_OPT1_OKB := "组织一场亲中派政变（需要10特工网络，需要3百万预算）"
-const TXT_OPT1_NOT_OKB := "组织一场亲中派政变（需要20特工网络，需要3百万预算）"
-const TXT_OPT1_DIS := "我们的情报机构对此无能为力"
+const TXT_OPT0_DIS := "event.script.event_107_ally_crisis.c6"
+const TXT_OPT1_OKB := "event.script.event_107_ally_crisis.c7"
+const TXT_OPT1_NOT_OKB := "event.script.event_107_ally_crisis.c8"
+const TXT_OPT1_DIS := "event.script.event_107_ally_crisis.c9"
 
-const TXT_R0_A := "在演习的掩护下，我们的部队进入了这个国家，迅速解除了他们的武装，逮捕了政府并镇压了不满情绪。新政府得到了财政援助以巩固他们的忠诚，"
-const TXT_R0_B := "。再次回到我们身边，但我们的外交声誉仍有许多不足之处。"
-const TXT_R1_A := "通过幕后阴谋、秘密暗杀和动员忠于我们的政客和军队，我们成功地组织了一场有利于那些准备继续与我们合作的人的政变。新政府得到了财政援助以巩固忠诚。"
-const TXT_R1_B := "再次与我们同在，但其他国家怀疑并表达了他们的不满"
-const TXT_R2_A := "我们决定不采取激进的措施，而是安抚这个国家，同时在经济上把它与我们联系在一起。这有助于迫使独立的支持者放弃草率的计划，与中国的友谊支持者获得了额外的力量。"
-const TXT_R2_B := "再次与我们在一起，我们设法避免了任何外交问题，但只是独立的支持者没有消失。"
-const TXT_R3_A := "我们决定不采取激进的措施，而只要求该国领导人保证在我们集团的成员资格，同时保持奉行独立外交政策的能力。经过长时间的谈判和犹豫，他们终于同意了。"
-const TXT_R3_B := "仍然在我们的联盟中，但正在积极与其他国家建立新的联系，这可能在未来会适得其反。"
-const TXT_R4 := "结果，在没有遭到我方任何抵抗的情况下，该国决定离开我们的集团，并已在建立新的与别国的联系。至少比社会帝国主义好!"
+const TXT_R0_A := "event.script.event_107_ally_crisis.c10"
+const TXT_R0_B := "event.script.event_107_ally_crisis.c11"
+const TXT_R1_A := "event.script.event_107_ally_crisis.c12"
+const TXT_R1_B := "event.script.event_107_ally_crisis.c13"
+const TXT_R2_A := "event.script.event_107_ally_crisis.c14"
+const TXT_R2_B := "event.script.event_107_ally_crisis.c15"
+const TXT_R3_A := "event.script.event_107_ally_crisis.c16"
+const TXT_R3_B := "event.script.event_107_ally_crisis.c17"
+const TXT_R4 := "event.script.event_107_ally_crisis.c18"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -38,15 +32,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var target := _target_country(world)
 	var tname := target.display_name() if target != null else "盟国"
-	var desc := TXT_DESC_BASE + tname + TXT_DESC_TAIL
+	var desc := tr(TXT_DESC_BASE) + tname + tr(TXT_DESC_TAIL)
 	if target != null and target.has_tag("美国盟友"):
-		desc += TXT_DESC_US
+		desc += tr(TXT_DESC_US)
 	elif target != null and target.has_tag("苏联盟友"):
-		desc += TXT_DESC_SU
+		desc += tr(TXT_DESC_SU)
 	elif target != null and target.has_tag("okb"):
-		desc += TXT_DESC_OKB
+		desc += tr(TXT_DESC_OKB)
 	elif target != null and target.has_tag("econ"):
-		desc += TXT_DESC_ECON
+		desc += tr(TXT_DESC_ECON)
 	event_def.description = desc
 
 	var data := world
@@ -57,18 +51,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if army >= 200 and okb:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if agents >= 100 and okb:
-		_enable(opt[1], TXT_OPT1_OKB)
+		_enable(opt[1], tr(TXT_OPT1_OKB))
 	elif agents >= 200 and not okb:
-		_enable(opt[1], TXT_OPT1_NOT_OKB)
+		_enable(opt[1], tr(TXT_OPT1_NOT_OKB))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 	if agents >= 50:
 		_enable(opt[3], event_def.options[3].text)
 	else:
-		_disable(opt[3], TXT_OPT1_DIS)
+		_disable(opt[3], tr(TXT_OPT1_DIS))
 	_enable(opt[4], event_def.options[4].text)
 
 
@@ -99,7 +93,7 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_DIPLO, -30)
 			if target != null:
 				target.set_tag("亲中", true)
-			context["result_text"] = TXT_R0_A + tname + TXT_R0_B
+			context["result_text"] = tr(TXT_R0_A) + tname + tr(TXT_R0_B)
 		1:
 			if target != null:
 				target.social_stability = 1000
@@ -118,7 +112,7 @@ func execute(context: Dictionary) -> void:
 					_add_relation(EmpireData.USSR, -100)
 					target.set_tag("苏联盟友", false)
 					_add(W.I_DIPLO, -10)
-			context["result_text"] = TXT_R1_A + tname + TXT_R1_B
+			context["result_text"] = tr(TXT_R1_A) + tname + tr(TXT_R1_B)
 		2:
 			_add(W.I_BUDGET, -100)
 			ws.influence_prc += 10
@@ -130,7 +124,7 @@ func execute(context: Dictionary) -> void:
 				elif target.has_tag("苏联盟友") and target.government != GameConstants.Government.AUTHORITARIAN and target.government != GameConstants.Government.SOCIALIST:
 					target.government = GameConstants.Government.REFORMIST
 					target.sub_government = GameConstants.SubGovernment.PRAGMATIST
-			context["result_text"] = TXT_R2_A + tname + TXT_R2_B
+			context["result_text"] = tr(TXT_R2_A) + tname + tr(TXT_R2_B)
 		3:
 			ws.influence_prc -= 10
 			if target != null:
@@ -154,7 +148,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -10)
 			if target != null:
 				target.social_stability = 500
-			context["result_text"] = TXT_R3_A + tname + TXT_R3_B
+			context["result_text"] = tr(TXT_R3_A) + tname + tr(TXT_R3_B)
 		4:
 			ws.influence_prc -= 20
 			if target != null:
@@ -175,7 +169,7 @@ func execute(context: Dictionary) -> void:
 				elif target.has_tag("econ"):
 					target.social_stability = 0
 					target.set_tag("econ", false)
-			context["result_text"] = TXT_R4
+			context["result_text"] = tr(TXT_R4)
 	# 原版 ResultsOfEvents 末尾无条件 data.ally_crisis_target = -1
 	if d.size() > 120:
 		d.ally_crisis_target = -1
@@ -191,3 +185,16 @@ func _target_country(world: WorldState) -> CountryData:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_107_ally_crisis.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_107",
+	"num": 107,
+	"priority": 11400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_107_ally_crisis.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "data_120", "v": 1}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

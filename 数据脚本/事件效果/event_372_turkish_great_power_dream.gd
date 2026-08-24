@@ -1,40 +1,36 @@
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_372_698 := "新版色佛尔条约？"
-const TXT_372_699 := "在土耳其于{1}战败后，世界的命运将直接取决于中东地区的局势。就解决这一问题，外交顾问提供了下述方案。第一项方案是建立独立的库尔德人国家，从而一劳永逸地解决当地的分离主义问题，并让当地人民自己决定其命运。然而，这将导致一个显著的问题——新库尔德国范围多大，其边界该如何划定？库尔德人分散居住在四个中东国家中，并且，这些国家并不想同库尔德人分享自己的领土。第二项方案则是建立民族自治区。是的，在部分国家内，这一制度已经得到了贯彻实行，但库尔德人依然受到当局的系统性同化。可即便是这样，也依然存在问题——谁的势力将主导这一进程，并控制未来世界的局势？此时，任何结果都在可预料的范畴中......"
-const TXT_372_700 := "库尔德斯坦必须获得完全独立！"
-const TXT_372_701 := "必须保证库尔德人的民族自治权！"
-const TXT_372_1012 := "忽略"
-const TXT_372_706 := "和平会议将在美国、苏联与中国三方的参与下在瑞士举行。其公布的结果如下：
-{1}
-{2}
-{3}
-{4}"
-const TXT_372_707 := "中东的四处库尔德人聚居区——即土耳其属库尔德斯坦、伊拉克属库尔德斯坦、叙利亚属库尔德斯坦与伊朗属库尔德斯坦，将被统一为单一的库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于土耳其的库尔德斯坦工人党、位于叙利亚的民主联盟党、位于伊朗的库尔德斯坦自由生活党、位于伊拉克的库尔德斯坦爱国联盟与库尔德斯坦民主党。因此，囊括左翼与民主党派政治力量的库尔德斯坦临时政府已经建立。"
-const TXT_372_708 := "由于土耳其国内爆发的大规模抗议运动，国家安全委员会政府最终倒台。在随后举行的选举中，土耳其工人党与共和人民党获得的选票旗鼓相当。因此，他们不得不达成协定，并建立由社会民主党人比伦特·埃杰维特领导的联合政府。"
-const TXT_372_709 := "根据相关协定，美苏两国的维和部队将在未来的两年内驻扎在土耳其。"
-const TXT_372_710 := "中东的三处库尔德人聚居区——即伊拉克属库尔德斯坦、叙利亚属库尔德斯坦与伊朗属库尔德斯坦，将被统一为单一的库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于叙利亚的民主联盟党、位于伊朗的库尔德斯坦自由生活党、位于伊拉克的库尔德斯坦爱国联盟与库尔德斯坦民主党。因此，囊括左翼与民主党派政治力量的库尔德斯坦临时政府已经建立。"
-const TXT_372_711 := "中东的两处库尔德人聚居区——即伊拉克属库尔德斯坦与伊朗属库尔德斯坦，将被统一为单一的库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于伊朗的库尔德斯坦自由生活党、位于伊拉克的库尔德斯坦爱国联盟与库尔德斯坦民主党。因此，囊括左翼与民主党派政治力量的库尔德斯坦临时政府已经建立。"
-const TXT_372_712 := "中东的两处库尔德人聚居区——即伊拉克属库尔德斯坦与叙利亚属库尔德斯坦，将被统一为单一的库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于叙利亚的民主联盟党和位于伊拉克的库尔德斯坦爱国联盟与库尔德斯坦民主党。因此，囊括左翼与民主党派政治力量的库尔德斯坦临时政府已经建立。"
-const TXT_372_713 := "国家安全委员会与民族运动党的联合政府驱散了大规模抗议，得以保住政权。所以，尽管所有人都呼吁建立一个清算土耳其军政府罪行的法庭，但土耳其的原法西斯威权主义制度还是延续了下去。"
-const TXT_372_714 := "伊拉克属库尔德斯坦将被改组库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于伊拉克的库尔德斯坦爱国联盟与库尔德斯坦民主党。因此，囊括左翼与民主党派政治力量的库尔德斯坦临时政府已经建立。"
-const TXT_372_715 := "伊朗属库尔德斯坦将被改组库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于伊朗的库尔德斯坦自由生活党。因此，库尔德斯坦临时政府已经建立。"
-const TXT_372_716 := "叙利亚属库尔德斯坦将被改组库尔德斯坦共和国。该国已经开始重建一个两院制的议会，而人民议会已经建立。在该国局势稳定以前（即2000年前），该国都将实行有限的多党制。到目前为止，只有已经存在的地区性政党才有资格参与议会选举：即位于叙利亚的民主联盟党。因此，库尔德斯坦临时政府已经建立。"
-const TXT_372_717 := "协商完全失败——美国与苏联拒绝参与其中。也许下次，情况会更好一些......"
-const TXT_372_718 := "我们将稍后再议......"
-const TXT_372_719 := "在国际社会的压力下，由国家安全委员会与民族运动党组成的联合军政府不得不引咎下台。尽管得到了豁免权，但许多前政府成员因策划对库尔德人的种族灭绝而被捕定罪。在随后举行的选举中，自由派的正义党赢得选举，该国则由苏莱曼·德米雷尔领导。"
-const TXT_372_720 := "合约通过了在伊拉克、伊朗与叙利亚三国境内建立库尔德民族自治区的方案。显然，由于中华人民共和国在上述国家对土耳其的战争中提供了援助，所以条款将由前者监督实行。"
-const TXT_372_721 := "合约通过了在伊拉克与伊朗两国境内建立库尔德民族自治区方案。显然，由于中华人民共和国在上述国家对土耳其的战争中提供了援助，所以条款将由前者监督实行。"
-const TXT_372_722 := "合约通过了在伊拉克与叙利亚两国境内建立库尔德民族自治区方案。显然，由于中华人民共和国在上述国家对土耳其的战争中提供了援助，所以条款将由前者监督实行。"
-const TXT_372_723 := "合约通过了在伊朗与叙利亚两国境内建立库尔德民族自治区方案。显然，由于中华人民共和国在上述国家对土耳其的战争中提供了援助，所以条款将由前者监督实行。"
-const TXT_372_724 := "合约通过了在伊拉克境内建立库尔德民族自治区的方案。显然，由于中华人民共和国在上述国家对土耳其的战争中提供了援助，所以条款将由前者监督实行。"
-const TXT_372_725 := "合约通过了在伊朗境内建立库尔德民族自治区的方案。显然，由于中华人民共和国在上述国家对土耳其的战争中提供了援助，所以条款将由前者监督实行。"
-const TXT_372_726 := "合约通过了在叙利亚境内建立库尔德民族自治区的方案。显然，由于中华人民共和国在上述国家对土耳其的战争中提供了援助，所以条款将由前者监督实行。"
-const TXT_372_748 := "尽管直接受到土耳其进攻的恐怖威胁，但伊朗和伊拉克的边界冲突仍在继续。"
-const TXT_372_702 := "近日爆发的军事冲突中"
-const TXT_372_703 := "近日爆发的军事冲突中"
-const TXT_372_704 := "近日爆发的两场军事冲突中"
-const TXT_372_705 := "近日爆发的三场军事冲突中"
+const TXT_372_698 := "event.script.event_372_turkish_great_power_dream.c0"
+const TXT_372_699 := "event.script.event_372_turkish_great_power_dream.c1"
+const TXT_372_700 := "event.script.event_372_turkish_great_power_dream.c2"
+const TXT_372_701 := "event.script.event_372_turkish_great_power_dream.c3"
+const TXT_372_1012 := "event.script.event_372_turkish_great_power_dream.c4"
+const TXT_372_706 := "event.script.turkish_great_power_dream.txt_372_706"
+const TXT_372_707 := "event.script.event_372_turkish_great_power_dream.c5"
+const TXT_372_708 := "event.script.event_372_turkish_great_power_dream.c6"
+const TXT_372_709 := "event.script.event_372_turkish_great_power_dream.c7"
+const TXT_372_710 := "event.script.event_372_turkish_great_power_dream.c8"
+const TXT_372_711 := "event.script.event_372_turkish_great_power_dream.c9"
+const TXT_372_712 := "event.script.event_372_turkish_great_power_dream.c10"
+const TXT_372_713 := "event.script.event_372_turkish_great_power_dream.c11"
+const TXT_372_714 := "event.script.event_372_turkish_great_power_dream.c12"
+const TXT_372_715 := "event.script.event_372_turkish_great_power_dream.c13"
+const TXT_372_716 := "event.script.event_372_turkish_great_power_dream.c14"
+const TXT_372_717 := "event.script.event_372_turkish_great_power_dream.c15"
+const TXT_372_718 := "event.script.event_372_turkish_great_power_dream.c16"
+const TXT_372_719 := "event.script.event_372_turkish_great_power_dream.c17"
+const TXT_372_720 := "event.script.event_372_turkish_great_power_dream.c18"
+const TXT_372_721 := "event.script.event_372_turkish_great_power_dream.c19"
+const TXT_372_722 := "event.script.event_372_turkish_great_power_dream.c20"
+const TXT_372_723 := "event.script.event_372_turkish_great_power_dream.c21"
+const TXT_372_724 := "event.script.event_372_turkish_great_power_dream.c22"
+const TXT_372_725 := "event.script.event_372_turkish_great_power_dream.c23"
+const TXT_372_726 := "event.script.event_372_turkish_great_power_dream.c24"
+const TXT_372_748 := "event.script.event_372_turkish_great_power_dream.c25"
+const TXT_372_702 := "event.script.event_372_turkish_great_power_dream.c26"
+const TXT_372_703 := "event.script.event_372_turkish_great_power_dream.c27"
+const TXT_372_704 := "event.script.event_372_turkish_great_power_dream.c28"
+const TXT_372_705 := "event.script.event_372_turkish_great_power_dream.c29"
 
 
 ## 原作 Event372.cs：土耳其大国梦（手动事件，入口 DBS this_type==94）。
@@ -58,14 +54,14 @@ func prepare(event_def: EventDef, p_ws: WorldState) -> void:
 		num += 1
 	if iraq != null and iraq.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
 		num += 1
-	var lead := TXT_372_702
+	var lead := tr(TXT_372_702)
 	if num == 1:
-		lead = TXT_372_703
+		lead = tr(TXT_372_703)
 	elif num == 2:
-		lead = TXT_372_704
+		lead = tr(TXT_372_704)
 	elif num >= 3:
-		lead = TXT_372_705
-	event_def.description = TXT_372_699.replace("{1}", lead)
+		lead = tr(TXT_372_705)
+	event_def.description = tr(TXT_372_699).replace("{1}", lead)
 
 
 func execute(context: Dictionary) -> void:
@@ -103,39 +99,39 @@ func _event_372(option_index: int, context: Dictionary) -> void:
 		_:
 			# Event372.cs:630
 			_set_data124(1)
-			context["result_text"] = TXT_372_718
+			context["result_text"] = tr(TXT_372_718)
 
 
 
 
 ## Event372.cs:72-78/96-102/123-129 的 string.Format(new_events_text[706], ...) 拼接。
 func _fmt372(main: String, second: String, third: String, fourth: String) -> String:
-	return TXT_372_706.replace("{1}", main).replace("{2}", second).replace("{3}", third).replace("{4}", fourth)
+	return tr(TXT_372_706).replace("{1}", main).replace("{2}", second).replace("{3}", third).replace("{4}", fourth)
 
 
 func _t372_709(flag: bool) -> String:
-	return TXT_372_709 if flag else ""
+	return tr(TXT_372_709) if flag else ""
 
 
 func _t372_748(flag: int) -> String:
-	return TXT_372_748 if flag > 0 else ""
+	return tr(TXT_372_748) if flag > 0 else ""
 
 
 ## Event372.cs:123-129 的 num3（708/719/713）选择。
 func _t372_num3(num: int, turkey: CountryData) -> String:
 	if num == 3 and turkey != null and not turkey.has_tag("nato"):
-		return TXT_372_708
+		return tr(TXT_372_708)
 	if ws.influence_prc >= 800:
-		return TXT_372_719
-	return TXT_372_713
+		return tr(TXT_372_719)
+	return tr(TXT_372_713)
 
 
 ## Event372.cs:123-129 的 {2}：d126>0 且土耳其非北约 → 708，否则 713。
 func _t372_708_or_713() -> String:
 	var turkey := ws.get_country_by_legacy_index(84)
 	if d.size() > 126 and d.turkish_straits_crisis > 0 and turkey != null and not turkey.has_tag("nato"):
-		return TXT_372_708
-	return TXT_372_713
+		return tr(TXT_372_708)
+	return tr(TXT_372_713)
 
 func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bool) -> void:
 	_add_data143(-7)
@@ -162,7 +158,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		_turkish_client_sub3(95)
 		_add_data143(3)
 		_activate_kurdistan(MapService.KURDISTAN_SCOPE_FULL)
-		context["result_text"] = _fmt372(TXT_372_707, TXT_372_708, _t372_709(false), _t372_748(0))
+		context["result_text"] = _fmt372(tr(TXT_372_707), tr(TXT_372_708), _t372_709(false), _t372_748(0))
 	elif ws.influence_prc >= 600 and num >= 3:
 		# Event372.cs:93-113
 		_turkey_gov2_sub8()
@@ -171,7 +167,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		_turkish_client_sub3(95)
 		_add_data143(3)
 		_activate_kurdistan(MapService.KURDISTAN_SCOPE_IRAQ_SYRIA_IRAN)
-		context["result_text"] = _fmt372(TXT_372_710, TXT_372_708, _t372_709(true), _t372_748(0))
+		context["result_text"] = _fmt372(tr(TXT_372_710), tr(TXT_372_708), _t372_709(true), _t372_748(0))
 	elif ws.influence_prc >= 500 and num >= 2 and flag2:
 		# Event372.cs:117-157
 		ws.influence_prc += 50
@@ -189,7 +185,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 		if d.size() > 126 and d.turkish_straits_crisis > 0 and turkey != null and not turkey.has_tag("nato"):
 			_turkey_gov2_sub8()
 		var second372 := _t372_708_or_713()
-		var main372 := TXT_372_711 if (flag2 and flag3) else TXT_372_712
+		var main372 := tr(TXT_372_711) if (flag2 and flag3) else tr(TXT_372_712)
 		_activate_kurdistan(kurd_scope)
 		context["result_text"] = _fmt372(main372, second372, _t372_709(true), _t372_748(0))
 	else:
@@ -198,7 +194,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 			ws.influence_prc -= 100
 			_set_data124(1)
 			_add_data(W.I_PARTY_SUPPORT, -500)
-			context["result_text"] = TXT_372_717
+			context["result_text"] = tr(TXT_372_717)
 		else:
 			# Event372.cs:168-281
 			ws.influence_prc += 30
@@ -206,7 +202,7 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 			if d.size() > 126 and d.turkish_straits_crisis > 0 and turkey != null and not turkey.has_tag("nato"):
 				_turkey_gov2_sub8()
 				_release_turkey_puppets()
-			var main372b := TXT_372_714
+			var main372b := tr(TXT_372_714)
 			var kurd_scope := MapService.KURDISTAN_SCOPE_IRAQ
 			if num >= 1 and num < 3:
 				if d.size() > 126 and d.turkish_straits_crisis > 0 and turkey != null and not turkey.has_tag("nato"):
@@ -215,29 +211,29 @@ func _result_0(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 				if flag2:
 					_set_part(ws.get_country_by_legacy_index(14), 0)
 					_add_data143(3)
-					main372b = TXT_372_714
+					main372b = tr(TXT_372_714)
 				elif flag3:
 					kurd_scope = MapService.KURDISTAN_SCOPE_IRAN
 					_set_part(ws.get_country_by_legacy_index(8), 0)
-					main372b = TXT_372_715
+					main372b = tr(TXT_372_715)
 				else:
 					kurd_scope = MapService.KURDISTAN_SCOPE_SYRIA
 					_set_part(ws.get_country_by_legacy_index(35), 0)
-					main372b = TXT_372_716
+					main372b = tr(TXT_372_716)
 			elif num == 3:
 				var r372 := randi() % 4
 				if r372 == 1:
 					kurd_scope = MapService.KURDISTAN_SCOPE_SYRIA
 					_set_part(ws.get_country_by_legacy_index(35), 0)
-					main372b = TXT_372_716
+					main372b = tr(TXT_372_716)
 				elif r372 == 2:
 					_set_part(ws.get_country_by_legacy_index(14), 0)
 					_add_data143(3)
-					main372b = TXT_372_714
+					main372b = tr(TXT_372_714)
 				else:
 					kurd_scope = MapService.KURDISTAN_SCOPE_IRAN
 					_set_part(ws.get_country_by_legacy_index(8), 0)
-					main372b = TXT_372_715
+					main372b = tr(TXT_372_715)
 			_upgrade_turkish_puppets(flag, flag2, flag3)
 			_activate_kurdistan(kurd_scope)
 			var second372b := _t372_708_or_713()
@@ -272,7 +268,7 @@ func _result_1(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 				if ws.wars[3] != null:
 					ws.wars[3].is_going = true
 		ws.influence_prc += 70
-		context["result_text"] = _fmt372(TXT_372_720, num3_372, _t372_709(false), _t372_748(1))
+		context["result_text"] = _fmt372(tr(TXT_372_720), num3_372, _t372_709(false), _t372_748(1))
 	elif ws.influence_prc >= 500 and num >= 2:
 		# Event372.cs:336-450
 		ws.influence_prc += 50
@@ -289,14 +285,14 @@ func _result_1(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 				if ws.wars[3] != null:
 					ws.wars[3].is_going = true
 		_upgrade_turkish_puppets(flag, flag2, flag3)
-		context["result_text"] = _fmt372(TXT_372_723, num3_372, _t372_709(false), _t372_748(1))
+		context["result_text"] = _fmt372(tr(TXT_372_723), num3_372, _t372_709(false), _t372_748(1))
 	else:
 		if ws.influence_prc < 400 or num < 1:
 			# Event372.cs:473-480
 			ws.influence_prc -= 100
 			_set_data124(1)
 			_add_data(W.I_PARTY_SUPPORT, -500)
-			context["result_text"] = TXT_372_717
+			context["result_text"] = tr(TXT_372_717)
 		else:
 			# Event372.cs:482-630
 			ws.influence_prc += 30
@@ -313,7 +309,7 @@ func _result_1(context: Dictionary, num: int, flag: bool, flag2: bool, flag3: bo
 						if ws.wars[3] != null:
 							ws.wars[3].is_going = true
 			_upgrade_turkish_puppets(flag, flag2, flag3)
-			context["result_text"] = _fmt372(TXT_372_725, num3_372, _t372_709(false), _t372_748(1))
+			context["result_text"] = _fmt372(tr(TXT_372_725), num3_372, _t372_709(false), _t372_748(1))
 
 
 func _turkey_gov2_sub8() -> void:
@@ -429,3 +425,17 @@ func _sync_empire_mirrors() -> void:
 	if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null:
 		d.ussr_relations = ws.empires[EmpireData.USSR].relations
 		d.soviet_influence = ws.empires[EmpireData.USSR].power
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_372_turkish_great_power_dream.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_372",
+	"num": 372,
+	"priority": 184,
+	"display_script": "res://数据脚本/事件效果/event_372_turkish_great_power_dream.gd",
+	"options": [{"result": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"result": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"result": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

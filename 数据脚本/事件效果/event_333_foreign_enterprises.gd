@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "没有必要用奇奇怪怪的要求把外国人吓跑。只要让他们在法律框架内，按照自己认为合适的方式纳税和做生意就行了。"
-const TXT_R1 := "不，我国的利益要比外国公司的贪欲重要得多。因此，我们应当为他们指定生产规章制度、对员工设定较高的劳动保障标准，并要求其强制分担国家责任。"
-const TXT_R2 := "外国人越多越好！为此，我们甚至会免征他们未来20年的税收，对他们提出任何要求都是不可接受的！"
+const TXT_R0 := "event.script.event_333_foreign_enterprises.c0"
+const TXT_R1 := "event.script.event_333_foreign_enterprises.c1"
+const TXT_R2 := "event.script.event_333_foreign_enterprises.c2"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -16,20 +16,20 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add_relation(0, 50)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, 50)
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_LIVING, 50)
 			_add_relation(0, -250)
 			_add(W.I_DIPLO, 100)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_THOUGHT_FREEDOM, 50)
 			_add(W.I_DIPLO, -100)
 			_add_relation(0, 150)
 			_add(W.I_BUDGET, 50)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -51,3 +51,19 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_333_foreign_enterprises.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_333",
+	"num": 333,
+	"priority": 33300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_333_foreign_enterprises.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1981.8.24"}, {"t": "HAS_FLAG", "key": "sez"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

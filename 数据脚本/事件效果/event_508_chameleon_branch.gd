@@ -1,16 +1,14 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event508.cs：树枝不会在变色龙手里折断（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event508.cs：树枝不会在变色龙手里折断（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "这是在做无用功"
-const TXT_OPT1_DIS := "我们不支持国际分工方案！"
-const TXT_R0_A := "我们宣布将承担贝宁的一切外债，克雷库同志就此对中方表达了感谢。在群众大会上，克雷库表示“贝宁比任何时候都做好了完全按照马克思，列宁和毛泽东的理念来建设祖国”，这公开表示了其对我国的支持。在我们的帮助下，贝宁重新确定了发展方向。贝宁的独特优势是其完善的农业基础，我们愿意为其提供农用机械，化肥和农业干部。在我们的帮助下，贝宁政府终于实现了粮食自给，而我们的钻机也让贝宁过了把“石油土豪”瘾，他们将会用石油赚来的钱来购买我们的工业设备。政治改革也在有条不紊的进行中，贝宁人民革命党再次确定了自己的地位：无产阶级的先锋党，并开始建设完整的党校等机构。部分“人民村”也开始搞直接民主，选举自己的村庄管理委员会成员。达荷美共产党也被合法化了，其中的成员（尽管极少）也被吸纳入贝宁社会主义革命党作为党内的左翼代表，党内的亲法右翼也被清洗。\n不久的将来，“红旗”卷烟火柴厂，“1026革命”体育场和帕拉库水泥厂将会在我们的帮助下落成，这也将为贝宁人民建设祖国添砖加瓦。一条从康迪到科托努的铁路也在建设中。贝宁公开投入了我们的怀抱。"
-const TXT_R0_B := "法国总统罗兰·勒罗伊支持了我们的方案，慷慨的免除了贝宁欠下法国的巨额债务。克雷库热情的赞扬勒罗伊总统“是全世界被压迫人民的代言人”，“第三世界和非洲解放运动的旗手”。贝宁和法国的关系显著改善了，与此同时，法国，中国和贝宁合资的“贝宁人民矿业公司”在法国的指导下开始建设。而贝宁经济或多或少稳定下来了。"
-const TXT_R1_A := "凭借着我们在经互会内的良好关系，我们提议将贝宁纳入经互会体系中。凭借得天独厚的区位优势，贝宁将为经互会提供足够的矿石和棉花。经互会也将稳定的为其建设工业。很快，贝宁的经济稳定下来了。"
-const TXT_R2_A := "随后，克雷库政府开始了大刀阔斧的经济改革。克雷库总统访问了法国以谋求改善和法国的关系，并号召其来贝宁建设工厂，宣布将不对法资企业做过多的限制。效果是立竿见影的：贝宁免除了外债，也爆发了大量劳工运动和抗议，人权组织一边欢迎克雷库放弃强硬的对外路线，一边谴责其暴力镇压工人运动。但只要法国还在，克雷库不会有问题的，对吧？"
-const TXT_R2_B := "法国总统罗兰·勒罗伊慷慨的免除了贝宁欠下法国的巨额债务。克雷库热情的赞扬勒罗伊总统“是全世界被压迫人民的代言人”，“第三世界和非洲解放运动的旗手”。贝宁和法国的关系显著改善了，与此同时，法国，中国和贝宁合资的“贝宁人民矿业公司”在法国的指导下开始建设。而贝宁经济或多或少稳定下来了。"
+const TXT_OPT0_DIS := "event.script.event_508_chameleon_branch.c0"
+const TXT_OPT1_DIS := "event.script.event_508_chameleon_branch.c1"
+const TXT_R0_A := "event.script.event_508_chameleon_branch.c2"
+const TXT_R0_B := "event.script.event_508_chameleon_branch.c3"
+const TXT_R1_A := "event.script.event_508_chameleon_branch.c4"
+const TXT_R2_A := "event.script.event_508_chameleon_branch.c5"
+const TXT_R2_B := "event.script.event_508_chameleon_branch.c6"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -20,11 +18,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line <= 2 and ws.influence_prc >= 600:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if _tag(1, "sev"):
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
@@ -34,9 +32,9 @@ func execute(context: Dictionary) -> void:
 	var c62 := ws.get_country_by_legacy_index(62)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			if ws.world_political_balance == 2  and  ws.get_flag("YugAgree"):
-				context["result_text"] = TXT_R0_B
+				context["result_text"] = tr(TXT_R0_B)
 			_add(8, -(80))
 			ws.influence_prc += 20
 			_add_relation(1, -(100))
@@ -54,7 +52,7 @@ func execute(context: Dictionary) -> void:
 				if c62 != null: c62.government = GameConstants.Government.REFORMIST
 				if c62 != null: c62.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 		1:
-			context["result_text"] = TXT_R1_A
+			context["result_text"] = tr(TXT_R1_A)
 			_add(8, -(10))
 			if c62 != null: c62.government = GameConstants.Government.SOCIALIST
 			if c62 != null: c62.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
@@ -64,9 +62,9 @@ func execute(context: Dictionary) -> void:
 			if c62 != null: c62.set_tag("sev", true)
 		2:
 			if ws.world_political_balance != 2 or not ws.get_flag("YugAgree"):
-				context["result_text"] = TXT_R2_A
+				context["result_text"] = tr(TXT_R2_A)
 			else:
-				context["result_text"] = TXT_R2_B
+				context["result_text"] = tr(TXT_R2_B)
 			if ws.world_political_balance != 2 or not ws.get_flag("YugAgree"):
 				if c62 != null: c62.government = GameConstants.Government.REFORMIST
 				if c62 != null: c62.sub_government = GameConstants.SubGovernment.PRAGMATIST
@@ -211,3 +209,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_508_chameleon_branch.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_508",
+	"num": 508,
+	"priority": 50800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_508_chameleon_branch.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "62"}, {"t": "DATE_AFTER", "key": "1982.2.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

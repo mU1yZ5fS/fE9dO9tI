@@ -8,11 +8,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##    （Event436.cs ResultsOfEvents 开头，result_num 分支之外）。
 ##  - SOV_PRC_PartiesConnection 映射为 I_COMMUNICATIONS（见 event_435 注释）。
 
-const TXT_R0 := "我们以苏联宪法为蓝本，已经将有关公民物质权利与其新义务的相关条款引入了中国宪法。尽管这些改革很可能只是流于形式上，但改革还是增强了公民对政府的信心。当然，这也招致了左翼政客的批评，他们指责我们同市侩情绪和小资产阶级道德调情。"
+const TXT_R0 := "event.script.event_436_soviet_constitution.c0"
 
-const TXT_R1 := "我们在《人民之报》的专栏上发文炮打苏联新宪法，指责苏联当局正同市侩情绪和小资产阶级道德调情，不注意做群众工作，不注意加强革命道德宣传，不注意培养适应新社会的生活方式：“苏联当局打算通过批量生产糖衣炮弹，搞各种各样的物质挂帅，将本国的人民给驯化为精神上的资产阶级。从而让他们远离革命的生活方式”。这便是我们这篇文章的主要论点。很显然，苏联领导层与我国的温和派政治家对此持消极态度。"
+const TXT_R1 := "event.script.event_436_soviet_constitution.c1"
 
-const TXT_R2 := "1977年10月4日至6日，最高苏维埃两院（即联盟院与民族院）会议听取并审议了苏联新宪法的相关内容。而在10月7日，苏联最高苏维埃两院举行了最后审议：在细致过目了每个章节，并仔细审视了宪法整体构成后，苏联通过了新宪法。同日，苏联最高苏维埃两院则分别表决通过《苏联最高苏维埃关于通过和宣布苏联宪法（根本法）的宣言》、《苏联关于宣布苏联宪法（根本法）通过日为国家法定假日的法律》和《苏联关于制定苏联宪法（根本法）程序的法律》。10月8日，苏联的新宪法在全国各大报纸上全文公布。"
+const TXT_R2 := "event.script.event_436_soviet_constitution.c2"
 
 
 func execute(context: Dictionary) -> void:
@@ -39,7 +39,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 100
 				else:
 					p.loyalty += 50
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			# Event436.cs result 1（联络规模 -5 已改为 .tres 显式 ADD_RESOURCE）
 			if d.size() > W.I_PARTY_SUPPORT:
@@ -54,10 +54,10 @@ func execute(context: Dictionary) -> void:
 					p.power += 25
 				else:
 					p.loyalty -= 50
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			# Event436.cs result 2：无效果
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 func _ussr_leader_add(index: int, delta: int) -> void:
@@ -66,3 +66,18 @@ func _ussr_leader_add(index: int, delta: int) -> void:
 	var leaders: Array[EmpireLeader] = ws.empires[EmpireData.USSR].leaders
 	if index >= 0 and index < leaders.size() and leaders[index] != null:
 		leaders[index].support += delta
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_436_soviet_constitution.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_436",
+	"num": 436,
+	"priority": 4360,
+	"notify": false,
+	"trigger": [{"t": "DATE_AFTER", "key": "1977.10.1"}],
+	"options": [{"fx": [{"t": "ADD_RESOURCE", "key": "communications", "v": 5}, {"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "ADD_RESOURCE", "key": "communications", "v": -5}, {"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

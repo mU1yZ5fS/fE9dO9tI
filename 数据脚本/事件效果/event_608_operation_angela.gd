@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:889-891 —— DATE_AFTER 1981.11.25；fire_only_once 承担 !event_done[608]。
 ## 差异：JoinECON→set_tag("econ")；proprc→亲中、Torg→对华贸易；puppetOf=131 照抄。
 
-const TXT_OPT0_DIS := "我们不该帮助这个极左独裁政府"
-const TXT_OPT1_DIS := "我们不能与南非的白人殖民主义者站在一起！"
-const TXT_R0 := "疯子迈克的大量招募雇佣兵的消息在伦敦，巴黎等地的雇佣兵圈子已经广为人知，自然我们的特工也获得了这个消息。11月25日傍晚，疯子迈克和数十名雇佣兵飞抵塞舌尔国际机场，但在经过安检途中，一名雇佣兵的ak步枪被发现，雇佣兵们意识到行动暴露了，随即拿起了武器，一名保安跑向办公室寻求帮助并锁上了门闩，成功拉响了警报。之后在我们脸涂黑的特勤和坦桑尼亚驻军的进攻下部分雇佣兵被击毙，疯子迈克等人被俘获并在审讯中透漏出此次行动为南非政府策划的，疯子迈克等雇佣兵随即便被判处死刑，看来南非雇佣兵的水平不过如此。南非政府本就败坏的国际形象变得更加破败，塞舌尔政府对此次行动中出力的坦桑尼亚和我们表达了感激，勒内政府决定学习坦桑尼亚的乌贾马社会主义，并宣布按照中国模式建设社会主义。"
-const TXT_R1 := "11月25日傍晚，疯子迈克和数十名雇佣兵以及部分我们的脸涂黑的特勤飞抵塞舌尔国际机场，成功通过安检并按照原计划分散在马埃岛的各个酒店。在数天之后，当勒内召开内阁会议之时，雇佣兵和我们的特勤占领了议会，机场，军营，广播电台等各战略要地并宣布他们代表曼卡姆对塞舌尔进行政变。勒内和一众塞舌尔高管被关进监狱，流亡在外的曼卡姆虽如愿重新当上总统，但实际则是傀儡，而以疯子迈克和南非雇佣兵为首的南非势力则在幕后掌权，塞舌尔对军队进行了清洗并以参与政变的雇佣兵为骨干进行扩编。塞舌尔实际上已经成为了另一个班图斯坦，而国际上对塞舌尔政变则是普遍的谴责。"
-const TXT_R2 := "11月25日傍晚，疯子迈克和数十名雇佣兵飞抵塞舌尔国际机场，但在经过安检途中，一名雇佣兵的ak步枪被发现，雇佣兵们意识到行动暴露了，随即拿起了武器，一名保安跑向办公室寻求帮助并锁上了门闩，成功拉响了警报。这导致了机场一场长达六个小时的枪战，就在此时，一架印度航空客机意外的降落在这座机场上，塞舌尔军队试图中止降落但未能奏效，部分雇佣兵借此机会登上这架客机，大约70名机组人员和乘客被雇佣兵劫持为人质。最终这家飞机被劫持飞往南非的德班市，机组人员和乘客全部释放，塞舌尔逮捕了六名雇佣兵，其余大部分雇佣兵则成功返回南非。\n看起来南非的雇佣兵水平不过如此。"
+const TXT_OPT0_DIS := "event.script.event_608_operation_angela.c0"
+const TXT_OPT1_DIS := "event.script.event_608_operation_angela.c1"
+const TXT_R0 := "event.script.event_608_operation_angela.c2"
+const TXT_R1 := "event.script.event_608_operation_angela.c3"
+const TXT_R2 := "event.script.event_608_operation_angela.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -24,11 +24,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line <= 1:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if seychelles != null and seychelles.government != GameConstants.Government.SOCIALIST and line > 1 and diplo <= 700:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -42,7 +42,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -30)
 			if seychelles != null:
@@ -57,7 +57,7 @@ func execute(context: Dictionary) -> void:
 				if china != null and china.has_tag("econ"):
 					seychelles.set_tag("econ", true)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			_add(W.I_AGENTS, -30)
 			if seychelles != null:
 				seychelles.government = GameConstants.Government.AUTHORITARIAN
@@ -65,7 +65,7 @@ func execute(context: Dictionary) -> void:
 				_leave_alliances(seychelles)
 				seychelles.puppet_of = GameConstants.LegacySlot.SOUTH_AFRICA
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			if seychelles != null:
 				seychelles.set_tag("亲中", false)
 
@@ -157,3 +157,19 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_608_operation_angela.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_608",
+	"num": 608,
+	"priority": 60800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_608_operation_angela.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1981.11.25"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

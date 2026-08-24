@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1364-1366 —— ExprNode 组合。
 ## 差异：isEU→标签 eu；power 直接。
 
-const TXT_RESULT := "欧洲的局势更类似于20世纪初的情况......"
-const TXT_IDX_1368 := "欧洲日落"
-const TXT_IDX_1369 := "显然，在欧洲经济共同体的基础上打造单一经济空间，并构建邦联国家架构的尝试已经落空。因此，实现全面的欧洲一体化的计划已经失败。该组织的主要成员纷纷抛弃了欧洲经济共同体。\n因此，其他仍留在欧共体的国家纷纷宣布取消绝大多数旨在建立单一的政治、货币、经济与关税空间的协定。\n欧洲共同市场实际上已不复存在。"
-const TXT_IDX_1370 := "全球主义计划的落幕！"
-const TXT_IDX_1371 := "欧洲的局势更类似于20世纪初的情况......"
+const TXT_RESULT := "event.script.event_422_europe_sunset.c0"
+const TXT_IDX_1368 := "event.script.event_422_europe_sunset.c1"
+const TXT_IDX_1369 := "event.script.event_422_europe_sunset.c2"
+const TXT_IDX_1370 := "event.script.event_422_europe_sunset.c3"
+const TXT_IDX_1371 := "event.script.event_422_europe_sunset.c4"
 
 
 
@@ -53,4 +53,20 @@ func execute(context: Dictionary) -> void:
 	for c in ws.countries:
 		if c != null:
 			c.set_tag("eu", false)
-	context["result_text"] = TXT_RESULT
+	context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_422_europe_sunset.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_422",
+	"num": 422,
+	"priority": 42200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_422_europe_sunset.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "eu", "target": "21"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "eu", "target": "85"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "eu", "target": "86"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "eu", "target": "92"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "eu", "target": "45"}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

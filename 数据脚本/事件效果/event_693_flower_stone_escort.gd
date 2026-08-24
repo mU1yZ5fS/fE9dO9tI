@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##   → 外交互动_批2.gd 的 _def_104? 分支，已改为 start_event_num(w, 693)。
 ## 差异：ServeRMB→ws.serve_rmb、LeaderAsset→ws.leader_asset、proprc→亲中。
 
-const TXT_OPT1_DIS := "为人民服务，不是为人民币服务！"
-const TXT_R0 := "瑞银集团人士已根据您的需求，将一切都办得妥当。我党预算由此得到相当补充，并足以通过更加频繁地开展文化宣传，团队建设与扩展党员福利制等方式拉拢广大党员的心。最终巩固了您与党中央的威信。"
-const TXT_R1 := "瑞银集团人士已根据您的需求，将一切都办得妥当。不久后，您的特殊业务便基本通过审批，在分流了一部分党款后混入了灰色世界中。虽说人们无法追踪这笔资金的去向，但他们只需要知道巨款失踪这点便已足够。党内高层已开始对您去巴塞尔度假与“公款吃喝”的系列行为窃窃私语，并试着在此方面上行下效。某种意义上来说挺好的。毕竟，他们也只是各扫门前雪，学习您的经验办“私事”而已。"
+const TXT_OPT1_DIS := "event.script.event_693_flower_stone_escort.c0"
+const TXT_R0 := "event.script.event_693_flower_stone_escort.c1"
+const TXT_R1 := "event.script.event_693_flower_stone_escort.c2"
 
 
 func prepare(event_def: EventDef, _world: WorldState) -> void:
@@ -21,7 +21,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	if not mod3 or not mod6:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -31,7 +31,7 @@ func execute(context: Dictionary) -> void:
 	var swiss := ws.get_country_by_legacy_index(39)
 	var proprc := swiss != null and swiss.has_tag("亲中")
 	if opt == 0:
-		context["result_text"] = TXT_R0
+		context["result_text"] = tr(TXT_R0)
 		_add(W.I_CORRUPTION, 10)
 		if not proprc:
 			_add(W.I_PARTY_SUPPORT, 200)
@@ -41,7 +41,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -50)
 		return
 	if opt == 1:
-		context["result_text"] = TXT_R1
+		context["result_text"] = tr(TXT_R1)
 		_add(W.I_CORRUPTION, 20)
 		ws.leader_asset += 20
 		ws.serve_rmb = true
@@ -51,3 +51,18 @@ func execute(context: Dictionary) -> void:
 		else:
 			_add(W.I_PARTY_SUPPORT, 200)
 			_add(W.I_BUDGET, -50)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_693_flower_stone_escort.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_693",
+	"num": 693,
+	"priority": 69300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_693_flower_stone_escort.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

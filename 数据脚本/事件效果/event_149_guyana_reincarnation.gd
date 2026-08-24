@@ -10,11 +10,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 已核对原作本文件无 achievements 调用（2026-08-16）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
-const TXT_R3 := "1980年12月15日选举结果公布，人民全国大会党（PNC）赢得了77%的民众选票，获得了国民议会43席与地区议会的10席。人民进步党（PPP）与联合力量（TUS）分别仅获得10席与12席。劳动人民先锋党（WPVP）宣称选举结果为事先伪造而拒绝参加选举，这一猜想被英国埃夫伯里勋爵所率的国际观察团所证实。在人大党获胜之后，圭亚那在80年代初期面临的经济危机明显加剧，基础设施严重恶化，生活水平普遍下降。停电拉闸几乎每天发生，河湖水质脏污难闻，大米、糖料食用油与煤油的短缺更是证实了圭亚那的严重衰退。在公开经济凋敝的同时，黑市逐渐泛滥成风。在这一艰难的时期，伯纳姆前往古巴进行了一次喉部手术。在古巴医生的护理下，圭亚那独立后的首位和首要领导人福布斯·伯纳姆突然去世。圭亚那就这样措手不及地从伯纳姆的时代过渡到一个新时期。"
-const TXT_R1 := "选举的结果是出人意料的，在下野20余年之后，来自人民进步党（PPP）的切迪·贾根再次当选总统。然而正如风传的一样，人民全国大会党（PNC）通过选举舞弊在国民议会获得了22个席位，在地区议会获得10个席位。而民进党和联合力量仅获得21席与2席。在议会危机即将爆发的关头，福布斯·伯纳姆特担心爆发民众骚乱，加入了人进党的执政联盟。作为妥协的成果，贾根成为了总统，并提名伯纳姆为总理，将内阁大多数部长职位任命给人大党党员。面对经济危机，尤其是农作物歉收与缺乏基础建设支持资金的情况，贾根起初试图向国际货币基金组织借款，但由于后者要求圭亚那实施私有化，贾根放弃了这一决定并转而接受社会主义诸国贷款。圭亚那的政治专制得到软化；开放向社会主义国家进口短缺品；东德、罗马尼亚、古巴的专家应邀来优化发展圭亚那的基础设施与医疗教育；圭亚那的专家也前往莫斯科和北京进修学习。解决圭亚那的社会经济问题有了暂时的可能性，但是经济增长陷入怠缓，而债务早晚需要偿付。"
-const TXT_R8 := "在成功同右翼激进主义的解放者党（LP）、温和主义的人民民主运动（PDM）和毛主义的工人人民先锋党达成谈判之后，马塞勒斯·辛格组建了一个囊括左右两方势力的解放与民主先锋队（VLD）赢得选举。然而，然而正如风传的一样，人民全国大会党（PNC）通过选举舞弊在国民议会获得了22个席位，在地区议会获得10个席位。解民党和人民进步党（PPP）分别获得16席与7席。在议会危机即将爆发的关头，福布斯·伯纳姆特担心爆发民众骚乱，加入了解民先锋队的执政联盟。作为妥协的成果，辛格成为了总统，并提名伯纳姆为总理"
-const TXT_FRIEND := "[color=red]新政府决心和我们做朋友。[/color]"
-const TXT_ENEMY := "[color=red]新政府不想和我们做朋友。[/color]"
+const TXT_R3 := "event.script.event_149_guyana_reincarnation.c0"
+const TXT_R1 := "event.script.event_149_guyana_reincarnation.c1"
+const TXT_R8 := "event.script.event_149_guyana_reincarnation.c2"
+const TXT_FRIEND := "event.script.event_149_guyana_reincarnation.c3"
+const TXT_ENEMY := "event.script.event_149_guyana_reincarnation.c4"
 
 
 
@@ -40,8 +40,8 @@ func _set_next_election(c: CountryData, year: int, month: int, day: int) -> void
 
 func _friend_suffix(c: CountryData) -> String:
 	if c != null and c.has_tag("亲中"):
-		return TXT_FRIEND
-	return TXT_ENEMY
+		return tr(TXT_FRIEND)
+	return tr(TXT_ENEMY)
 
 
 ## Country.WantToLeave() 逐行移植。
@@ -229,18 +229,33 @@ func execute(context: Dictionary) -> void:
 		c.level_of_instability -= 20
 		c.level_of_development -= 5
 		_add_power(EmpireData.USSR, 5)
-		context["result_text"] = TXT_R3 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R3) + _friend_suffix(c)
 		return
 	if c.sub_government == GameConstants.SubGovernment.STATE_SOCIALIST:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -5)
 		_add_power(EmpireData.USSR, 15)
-		context["result_text"] = TXT_R1 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R1) + _friend_suffix(c)
 		return
 	if c.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, 15)
 		_add_power(EmpireData.USSR, -5)
-		context["result_text"] = TXT_R8 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R8) + _friend_suffix(c)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_149_guyana_reincarnation.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_149",
+	"num": 149,
+	"priority": 14900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_149_guyana_reincarnation.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

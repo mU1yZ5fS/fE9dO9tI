@@ -1,11 +1,9 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event503.cs：交城的山水实呀实在美（2选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event503.cs：交城的山水实呀实在美（2选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_R0_A := "很快，一揽子改革计划开始了，你的雕像已经开始修建，对于您的个人崇拜的民谣与民俗故事已经在民间流传开来，你被誉为“黄土高原的天才”，“世界最著名革命家”、“毛泽东思想的永恒火焰”，是“前所未有的最天真、最自然、最有感情也最纯粹的革命者”…而在党内，已经有传言说你会培养你的儿子为唯一接班人。更有甚者认为你死后，会被安葬在一个纪念堂当中。在路线上，我们也开始了基于人民为主体叙事，批判其他社会主义国家党务精英化，强调反对社会帝国主义与美国帝国主义，将自力更生放在第一位的“民族特色社会主义”的建设-不过，我们自然需要花不少资源来平息并且党内对这些变化不满的人，但是在最有可能形成威胁的两翼消失后，党内已经很少有异议能够挑战到你了。"
-const TXT_R1_A := "主席同志，那只是个建议，你一向生活民主作风，包容党内各派思想，谦逊而富有智慧，我知道你自然不会选择这条邪路的，这真是个糟糕的笑话。"
+const TXT_R0_A := "event.script.event_503_jiaocheng_mountains.c0"
+const TXT_R1_A := "event.script.event_503_jiaocheng_mountains.c1"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -22,7 +20,7 @@ func execute(context: Dictionary) -> void:
 	var c1 := ws.get_country_by_legacy_index(1)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(1, 300)
 			_add(3, 300)
 			_add(4, -(100))
@@ -37,38 +35,17 @@ func execute(context: Dictionary) -> void:
 			if ws.modifiers.size() > 6: ws.modifiers[6].is_active = false
 			if _mod(6):
 				pass
-				# 原版 GlobalScript.inst.gameState.doctr[6] = "无 产 阶 级 专 政"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 无产阶级专政
-				# 原版 GlobalScript.inst.gameState.doctr[8] = "人 民 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 人民民主制度
-				# 原版 GlobalScript.inst.gameState.doctr[9] = "协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制
-				# 原版 GlobalScript.inst.gameState.doctr[10] = "经 典 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 经典计划经济
-				# 原版 GlobalScript.inst.gameState.doctr[11] = "中 式 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 中式计划经济
-				# 原版 GlobalScript.inst.gameState.doctr[13] = "国 家 监 护 资 本 主 义"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 国家监护资本主义
-				# 原版 GlobalScript.inst.gameState.doctr[14] = "社 会 主 义 导 向 市 场"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 社会主义导向市场
-				# 原版 GlobalScript.inst.gameState.doctr[15] = "左 翼 小 政 府"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 左翼小政府
-				# 原版 GlobalScript.inst.gameState.doctr[21] = "改 良 区 域 自 治 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 改良区域自治制度
-				# 原版 GlobalScript.inst.gameState.doctr[22] = "联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制
-				# 原版 GlobalScript.inst.gameState.doctr[24] = "文 化 革 命"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 文化革命
+				# 原版 GlobalScript.inst.gameState.doctr[6] = "无 产 阶 级 专 政"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 无产阶级专政 # 原版 GlobalScript.inst.gameState.doctr[8] = "人 民 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 人民民主制度 # 原版 GlobalScript.inst.gameState.doctr[9] = "协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制 # 原版 GlobalScript.inst.gameState.doctr[10] = "经 典 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 经典计划经济 # 原版 GlobalScript.inst.gameState.doctr[11] = "中 式 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 中式计划经济 # 原版 GlobalScript.inst.gameState.doctr[13] = "国 家 监 护 资 本 主 义"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 国家监护资本主义 # 原版 GlobalScript.inst.gameState.doctr[14] = "社 会 主 义 导 向 市 场"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 社会主义导向市场 # 原版 GlobalScript.inst.gameState.doctr[15] = "左 翼 小 政 府"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 左翼小政府 # 原版 GlobalScript.inst.gameState.doctr[21] = "改 良 区 域 自 治 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 改良区域自治制度 # 原版 GlobalScript.inst.gameState.doctr[22] = "联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制 # 原版 GlobalScript.inst.gameState.doctr[24] = "文 化 革 命"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 文化革命
 			else:
 				pass
-				# 原版 GlobalScript.inst.gameState.doctr[6] = " 一 党 制 共 和 国"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党制共和国
-				# 原版 GlobalScript.inst.gameState.doctr[7] = "一 党 独 大 式 民 主"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党独大式民主
-				# 原版 GlobalScript.inst.gameState.doctr[8] = " 宪 政 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 宪政民主制度
-				# 原版 GlobalScript.inst.gameState.doctr[9] = " 协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制
-				# 原版 GlobalScript.inst.gameState.doctr[10] = " 中 央 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 中央计划经济
-				# 原版 GlobalScript.inst.gameState.doctr[11] = " 分 权 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 分权计划经济
-				# 原版 GlobalScript.inst.gameState.doctr[13] = " 鸟 笼 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 鸟笼经济
-				# 原版 GlobalScript.inst.gameState.doctr[14] = " “ 社 会 ” 市 场 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: “社会”市场经济
-				# 原版 GlobalScript.inst.gameState.doctr[15] = " 最 小 干 预"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 最小干预
-				# 原版 GlobalScript.inst.gameState.doctr[21] = " 联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制
-				# 原版 GlobalScript.inst.gameState.doctr[22] = " 联 省 自 治"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联省自治
-				# 原版 GlobalScript.inst.gameState.doctr[24] = " 破 除 传 统"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 破除传统
+				# 原版 GlobalScript.inst.gameState.doctr[6] = " 一 党 制 共 和 国"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党制共和国 # 原版 GlobalScript.inst.gameState.doctr[7] = "一 党 独 大 式 民 主"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党独大式民主 # 原版 GlobalScript.inst.gameState.doctr[8] = " 宪 政 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 宪政民主制度 # 原版 GlobalScript.inst.gameState.doctr[9] = " 协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制 # 原版 GlobalScript.inst.gameState.doctr[10] = " 中 央 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 中央计划经济 # 原版 GlobalScript.inst.gameState.doctr[11] = " 分 权 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 分权计划经济 # 原版 GlobalScript.inst.gameState.doctr[13] = " 鸟 笼 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 鸟笼经济 # 原版 GlobalScript.inst.gameState.doctr[14] = " “ 社 会 ” 市 场 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: “社会”市场经济 # 原版 GlobalScript.inst.gameState.doctr[15] = " 最 小 干 预"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 最小干预 # 原版 GlobalScript.inst.gameState.doctr[21] = " 联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制 # 原版 GlobalScript.inst.gameState.doctr[22] = " 联 省 自 治"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联省自治 # 原版 GlobalScript.inst.gameState.doctr[24] = " 破 除 传 统"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 破除传统
 			if ws.modifiers.size() > 3: ws.modifiers[3].is_active = true
 			_add_relation(0, -(100))
 			_add_relation(1, -(100))
 			if c1 != null: c1.government = GameConstants.Government.AUTHORITARIAN
 			if c1 != null: c1.sub_government = _chinese_sub_government()
 		1:
-			context["result_text"] = TXT_R1_A
+			context["result_text"] = tr(TXT_R1_A)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -230,3 +207,16 @@ func evaluate(world: WorldState) -> bool:
 		and (world.modifiers.size() <= 3 or not world.modifiers[3].is_active) \
 		and int(world.completed_event_ids.get("event_668", 0)) == 3 \
 		and int(world.completed_event_ids.get("event_669", 0)) == 3
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_503_jiaocheng_mountains.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_503",
+	"num": 503,
+	"priority": 50300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_503_jiaocheng_mountains.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_503_jiaocheng_mountains.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

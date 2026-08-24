@@ -40,9 +40,9 @@ func _opt_stand_by(context: Dictionary) -> void:
 	var cambodia := ws.get_country_by_legacy_index(23)
 	var stab1: bool = cambodia != null and cambodia.stab == 1
 	if not stab1:
-		context["result_text"] = "我们决定不介入这场冲突。波尔布特和红色高棉领导人当然对此非常不满，但他们似乎也活不了多久了——越南军队行动迅速，柬埔寨士兵开始集体叛逃。波尔布特政权的垮台似乎只是个时间问题。"
+		context["result_text"] = tr("event.script.event_015_cambodian_vn_war.i0")
 	else:
-		context["result_text"] = "我们决定不介入这场冲突。民主柬埔寨领导人当然对此非常不满，但他们似乎也坚持不了多久——柬埔寨的经济仍未从战后恢复过来，也并没有太多的资源和产业能用于抵抗越南的侵略。"
+		context["result_text"] = tr("event.script.event_015_cambodian_vn_war.i1")
 
 
 # 选项1：支持民主柬埔寨（Event15.cs result 1）
@@ -52,4 +52,18 @@ func _opt_support(context: Dictionary) -> void:
 	if ws.wars.size() > 1:
 		ws.wars[1].infl1 = 450
 		ws.wars[1].infl2 = 550
-	context["result_text"] = "我们决定对我们的老朋友民主柬埔寨提供支持。双方之间的战争仍在进行，越南和苏联对我们的行动并不满意，他们很可能会加强合作并损害我们的利益。"
+	context["result_text"] = tr("event.script.event_015_cambodian_vn_war.i2")
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_015_cambodian_vn_war.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "cambodian_vietnam_war",
+	"num": 15,
+	"notify": false,
+	"trigger": [{"t": "DATE_AFTER", "key": "1978.12.25"}, {"t": "NOT_HAS_FLAG", "key": "vietnampeace"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ANY", "c": [{"t": "ALL", "c": [{"t": "ANY", "c": [{"t": "RESOURCE_AT_MOST", "key": "political_line", "v": 1}, {"t": "RESOURCE_AT_LEAST", "key": "political_line", "v": 4}]}, {"t": "COUNTRY_FIELD_EQUALS", "key": "stab", "v": 1, "target": "23"}]}, {"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "political_line", "v": 1}, {"t": "RESOURCE_AT_MOST", "key": "political_line", "v": 3}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "stab", "v": 1, "target": "23"}]}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

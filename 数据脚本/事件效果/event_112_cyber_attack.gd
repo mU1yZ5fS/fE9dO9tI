@@ -10,22 +10,22 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - data12/13/68 → 工业/农业/服务业产值。
 
 
-const TXT_DESC_494 := "主席同志，预料之中的大规模计算机网络攻击来临了!全国各地的部门间组织都收到了影响。基层企业之间的信息被破坏，食品被运送到有中断的地区，商店里的队伍越来越长。根据管理者们的保证，我们的设备遭到了来自外部的计算机攻击。情报机构认为，这些人是我们的外部对手，担心我们在世界舞台上的影响力不可避免地增长，所以他们与自动化的敌人合谋，试图通过破坏IECS来打击我们的经济。\n然而，考虑到我们之前已经建立了关于IECS系统的初步防护，也提前准备了关于IECS网络被攻击的应急预案，并在攻击来临时及时的执行了预案，这些攻击者攻击造成的损失没有预想中的那么大。专家建议继续升级规划系统的特殊保护防火墙，但这需要一些时间。但是，我们可以请求苏联专家的支持，这将使我们能够迅速地使设备恢复运作。还是……自动化真的只是乌托邦吗?"
+const TXT_DESC_494 := "event.script.event_112_cyber_attack.c0"
 
-const TXT_DESC_OTHER := "主席同志，怪事发生了!全国各地的部门间组织都失败了。基层企业之间的信息被破坏，食品被运送到有中断的地区，商店里的队伍越来越长。根据管理者们的保证，我们的设备遭到了来自外部的计算机攻击。情报机构认为，这些人是我们的外部对手，担心我们在世界舞台上的影响力不可避免地增长，所以他们与自动化的敌人合谋，他试图通过破坏IECS来打击我们的经济。如果我们仍然无所作为，这将导致我们国家的崩溃。专家建议为我们的规划系统开发特殊保护，但这需要一些时间。但是，我们可以请求苏联专家的支持，这将使我们能够迅速地使设备恢复运作。还是……自动化真的只是乌托邦吗?"
+const TXT_DESC_OTHER := "event.script.event_112_cyber_attack.c1"
 
-const TXT_OPT0_494 := "拨款发展一套保障制度（需要25百万预算）"
-const TXT_OPT0_OTHER := "继续升级我们的自动化系统的防护系统"
-const TXT_OPT1_494 := "为发展提供资金，并要求苏联专家提供援助(需要25百万预算)"
-const TXT_OPT1_OTHER := "继续升级我们的自动化系统的防护系统，并要求苏联科学家提供援助"
-const TXT_OPT1_DIS := "苏维埃不会帮助我们"
-const TXT_OPT2_DIS := "我们不能放弃我们的成就!"
+const TXT_OPT0_494 := "event.script.event_112_cyber_attack.c2"
+const TXT_OPT0_OTHER := "event.script.event_112_cyber_attack.c3"
+const TXT_OPT1_494 := "event.script.event_112_cyber_attack.c4"
+const TXT_OPT1_OTHER := "event.script.event_112_cyber_attack.c5"
+const TXT_OPT1_DIS := "event.script.event_112_cyber_attack.c6"
+const TXT_OPT2_DIS := "event.script.event_112_cyber_attack.c7"
 
-const TXT_R0_494 := "我们着手于继续升级并完善我们的“中国长城”防火墙系统，以提高IECS应对外部攻击的能力。得以于之前的防护系统，我们的经济所遭到的损失并不算严重。"
-const TXT_R0_OTHER := "政府紧急拨款开发了一个工作代号为“中国长城”的系统，以保护IECS免受外部攻击。人们认为，保护措施将在八个月内准备就绪并投入使用，但就目前而言，我们的经济不会一帆风顺。"
-const TXT_R1_494 := "我们着手于继续升级并完善我们的“中国长城”防火墙系统，以提高IECS应对外部攻击的能力，与此同时，我们寻求苏联科学家与工程师的帮助，他们将帮助我们迅速消除系统中的漏洞并升级防护系统。得以于之前的防护系统，我们的经济所遭到的损失并不算严重。"
-const TXT_R1_OTHER := "政府紧急拨款开发了一个工作代号为“中国长城”的系统，以保护IECS免受外部攻击。此外，我们请求苏联专家和工程师的帮助，他们将帮助我们迅速消除系统中的漏洞并使其恢复运行。人们认为，保护措施将在六个月内准备就绪并投入使用，但就目前而言，我们的经济不会一帆风顺。"
-const TXT_R2 := "你在自动化经济方面近乎开玩笑的态度惹毛了大多数党员——先是一厢情愿的宣布中国将全面施行自动化，又通过各种手段清除掉与你关系最不好的反对派头头，现在却又说中国没有准备好应对这种变化；党受够了你的领导，密谋者暗中组织了一场政变，将你解职并踢出中央委员会，丢到了一个偏远的清水衙门。"
+const TXT_R0_494 := "event.script.event_112_cyber_attack.c8"
+const TXT_R0_OTHER := "event.script.event_112_cyber_attack.c9"
+const TXT_R1_494 := "event.script.event_112_cyber_attack.c10"
+const TXT_R1_OTHER := "event.script.event_112_cyber_attack.c11"
+const TXT_R2 := "event.script.event_112_cyber_attack.c12"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -33,7 +33,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var is_494 := _is_494_route(world)
-	event_def.description = TXT_DESC_494 if is_494 else TXT_DESC_OTHER
+	event_def.description = tr(TXT_DESC_494) if is_494 else tr(TXT_DESC_OTHER)
 
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
@@ -42,15 +42,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var ussr_rel := world.empires[EmpireData.USSR].relations if world.empires.size() > EmpireData.USSR and world.empires[EmpireData.USSR] != null else 0
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0_494 if is_494 else TXT_OPT0_OTHER)
+	_enable(opt[0], tr(TXT_OPT0_494) if is_494 else tr(TXT_OPT0_OTHER))
 	if ussr_rel >= 800 and world.get_flag("relres") and mod3:
-		_enable(opt[1], TXT_OPT1_494 if is_494 else TXT_OPT1_OTHER)
+		_enable(opt[1], tr(TXT_OPT1_494) if is_494 else tr(TXT_OPT1_OTHER))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if (line > 0 and party < 8) or (coal > 66 and party > 7):
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -69,7 +69,7 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_INDUSTRY, -50)
 				_add(W.I_AGRICULTURE, -50)
 				_add(W.I_SERVICES, -50)
-				context["result_text"] = TXT_R0_494
+				context["result_text"] = tr(TXT_R0_494)
 			else:
 				_add(W.I_BUDGET, -250)
 				_add(W.I_PEOPLE_SUPPORT, -150)
@@ -79,7 +79,7 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_INDUSTRY, -200)
 				_add(W.I_AGRICULTURE, -200)
 				_add(W.I_SERVICES, -200)
-				context["result_text"] = TXT_R0_OTHER
+				context["result_text"] = tr(TXT_R0_OTHER)
 		1:
 			if is_494:
 				_add(W.I_BUDGET, -10)
@@ -87,14 +87,14 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_THOUGHT_FREEDOM, 100)
 				_add(W.I_PARTY_SUPPORT, -300)
 				_add(W.I_LIVING, -30)
-				context["result_text"] = TXT_R1_494
+				context["result_text"] = tr(TXT_R1_494)
 			else:
 				_add(W.I_BUDGET, -250)
 				_add(W.I_PEOPLE_SUPPORT, -150)
 				_add(W.I_THOUGHT_FREEDOM, 300)
 				_add(W.I_PARTY_SUPPORT, -300)
 				_add(W.I_LIVING, -100)
-				context["result_text"] = TXT_R1_OTHER
+				context["result_text"] = tr(TXT_R1_OTHER)
 		2:
 			_add(W.I_BUDGET, -250)
 			_add(W.I_PEOPLE_SUPPORT, -300)
@@ -115,7 +115,7 @@ func execute(context: Dictionary) -> void:
 				d.ending_route = 6
 			# 原 Event112.cs:164：data.ending_route=6 + load_scene_after_click。
 			game.queue_ending_after_event(6)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 func _is_494_route(world: WorldState) -> bool:
@@ -146,3 +146,19 @@ func _coalition_percent(world: WorldState) -> int:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_112_cyber_attack.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_112",
+	"num": 112,
+	"priority": 11200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_112_cyber_attack.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "MODIFIER_ACTIVE", "key": "11"}, {"t": "COUNTRY_HAS_TAG", "key": "okb", "target": "1"}, {"t": "DATE_AFTER", "key": "1984.1.1"}, {"t": "PREV_EVENT_DONE", "ref": "event_110"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

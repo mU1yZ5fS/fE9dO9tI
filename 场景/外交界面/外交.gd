@@ -393,9 +393,6 @@ func _input(event: InputEvent) -> void:
 			$ESC菜单.refresh_post_exit()
 			$ESC菜单.show()
 		return
-	# 调试：按 F9 触发「五不准」事件测试（仅调试构建）
-	if OS.is_debug_build() and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F9:
-		_trigger_test_event()
 
 
 ## 关闭 ESC 菜单并恢复暂停前的速度（存档/加载/设置/结束按钮共用）。

@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:559-562 —— 日>=23 月>=6 年>=1982。
 ## 差异：选项显隐 prepare 动态改写；modifies[35].active→_set_mod_active(35,true)；文本来自 Events_text_en 索引 223-232。
 
-const TXT_OPT1_DIS := "你明白这条线路就是为了作秀的吧？"
-const TXT_OPT2_DIS := "这没有意义。"
-const TXT_R0 := "以高铁连接城市的计划已经取消。老样子，我们还有其他领域需要资源。日本的例子也表明高铁没那么有效——事实上，如果早些时候从一个城市到另一个城市需要五个小时，那么现在坐高铁只需要两个小时，但由于高铁班列减少了，你到头来还是要等五个小时。所以高铁没有任何意义。"
-const TXT_R1 := "不久，北京和上海之间的第一条（也是唯一一条）高铁线路建成并庄严投入运营。在电视直播中，我们的领导人登上了一列火车，几小时后就到达了上海。当然，这个广告效果是惊人的，但并不是每个人都喜欢这种作秀的资源投资。"
-const TXT_R2 := "一项建设高速铁路的新计划被采纳，很快，各大城市之间的新高铁线路便纷纷开通。当然，一些经济学家会抱怨这是浪费钱，但人民是高兴的，他们的生活水平大大提高了，甚至连日本的工程师也开始了解起我国的高铁系统。"
+const TXT_OPT1_DIS := "event.script.event_325_high_speed_rail.c0"
+const TXT_OPT2_DIS := "event.script.event_325_high_speed_rail.c1"
+const TXT_R0 := "event.script.event_325_high_speed_rail.c2"
+const TXT_R1 := "event.script.event_325_high_speed_rail.c3"
+const TXT_R2 := "event.script.event_325_high_speed_rail.c4"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -23,11 +23,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if br >= 40 and data.industry > 60:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if br >= 110 and data.industry > 80:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -36,18 +36,18 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_PARTY_SUPPORT, -150)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_INFLUENCE, 5)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_INFLUENCE, 5)
 			_add(W.I_BUDGET, -100)
 			_set_mod_active(35, true)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 	
 
@@ -57,3 +57,19 @@ func _set_mod_active(idx: int, value: bool) -> void:
 		ws.modifiers[idx].is_active = value
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_325_high_speed_rail.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_325",
+	"num": 325,
+	"priority": 32500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_325_high_speed_rail.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1982.6.23"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

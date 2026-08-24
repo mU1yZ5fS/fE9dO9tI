@@ -1,0 +1,17 @@
+{
+  "_说明": "已人工审阅、确认故意偏离原版的不一致项。key 格式：data:{idx}.v / country:{id}.{field} / positions:0.array / modifiers.active。登记必须注明理由与证据行号。",
+  "_格式": "条目为字符串 key；数组值字段可整表登记（如 country:*）",
+  "approved": [
+    "positions:0.array  # 原版 politics_dolshnost[0]=150 表示领袖本人担任总理；Godot 用 -2 哨兵（world_factory.gd LEADER_POSITION_SENTINEL，文档化约定）",
+    "data:82.v          # war_resolve 负哨兵归一化：原版 Data1=-10，Godot 统一 -1（world_factory.gd:1145）；TimeScript 只判 <0，行为等价",
+    "data:96.v          # data[96](andropov支持度)+4 并入 EmpireLeader.support=4（world_factory._init_empires 注释引用 GameStartScript.cs:958-959）；待第2层验证 Event89 无直接读取",
+    "country:1.special_ending  # 原版 GameStartScript.cs:101 置 [1].numberOfSpecialEnding=0，但全工程无任何读取方（仅 EndingScript 读 [69]/[70]）；Godot 保持默认 -1",
+    "country:106.puppet_of  # 吉布提 106→法国 blob：原版 CountryScript.Repaint() 初始规则（manifest repaint:4930, matched），地图层权威管理",
+    "country:111.government  # 阿曼 111 政体/puppet：Repaint 初始规则（manifest repaint:4893 等），地图层权威管理",
+    "country:111.sub_government  # 同上",
+    "country:111.puppet_of  # 同上（111→92）",
+    "country:128.puppet_of  # 128→131 傀儡：地图层初始归属规则；manifest 暂无对应条目，待补登记（见 GAP 提示）",
+    "country:142.puppet_of  # 伯利兹 142：1981 归属呈现（manifest repaint:4908, divergent_equivalent）",
+    "country:161.puppet_of  # 161→92（manifest repaint:4919, divergent_equivalent）"
+  ]
+}

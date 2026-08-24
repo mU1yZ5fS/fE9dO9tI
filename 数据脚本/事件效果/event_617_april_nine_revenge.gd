@@ -5,12 +5,12 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && resultOfEvents[618]!=1 && resultOfEvents[618]!=2。
 ## 差异：描述按 c66.puppet_of == GameConstants.LegacySlot.FRANCE 动态插入“和法国外籍兵团”；AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE1。
 
-const TXT_R0_A := "依托于地下网络，UPC已经在城市中组织起总罢工和工人民兵部队，和JOSE的城市游击队一起发动起义同喀麦隆民族解放军配合作战。政府军"
-const TXT_R0_MID := "和法国外籍兵团"
-const TXT_R0_B := "采取了同上次一样的措施，大规模暴力镇压革命分子。第二次喀麦隆战争就此打响。"
-const TXT_WAR_NAME := "第二次喀麦隆战争"
-const TXT_WAR_SIDE1 := "喀麦隆政府"
-const TXT_WAR_SIDE2 := "喀麦隆人民联盟"
+const TXT_R0_A := "event.script.event_617_april_nine_revenge.c0"
+const TXT_R0_MID := "event.script.event_617_april_nine_revenge.c1"
+const TXT_R0_B := "event.script.event_617_april_nine_revenge.c2"
+const TXT_WAR_NAME := "event.script.event_617_april_nine_revenge.c3"
+const TXT_WAR_SIDE1 := "event.script.event_617_april_nine_revenge.c4"
+const TXT_WAR_SIDE2 := "event.script.event_617_april_nine_revenge.c5"
 
 
 func execute(context: Dictionary) -> void:
@@ -21,16 +21,16 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			var text := TXT_R0_A
+			var text := tr(TXT_R0_A)
 			if cameroon != null and cameroon.puppet_of == GameConstants.LegacySlot.FRANCE:
-				text += TXT_R0_MID
-			text += TXT_R0_B
+				text += tr(TXT_R0_MID)
+			text += tr(TXT_R0_B)
 			context["result_text"] = text
 			if cameroon != null:
 				_set_part(cameroon, 0, true)
 				cameroon.set_tag("对华贸易", false)
 			_add_relation(EmpireData.USA, -150)
-			_start_war(63, TXT_WAR_NAME, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 600, 400, 0, 1, 24)
+			_start_war(63, tr(TXT_WAR_NAME), tr(TXT_WAR_SIDE1), tr(TXT_WAR_SIDE2), 600, 400, 0, 1, 24)
 
 
 
@@ -120,3 +120,19 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_617_april_nine_revenge.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_617",
+	"num": 617,
+	"priority": 61700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_617_april_nine_revenge.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_680"}, {"t": "COUNTRY_FIELD_AT_MOST", "key": "level_of_instability", "v": 100, "target": "66"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 7, "target": "66"}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_618"}]}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_618"}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

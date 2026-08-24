@@ -1,0 +1,61 @@
+name: Map Data Validation
+
+## 地图数据与原版对齐校验。
+## 红灯条件：
+##   1. tools/map_audit.py 发现未登记的新问题（白名单/基线之外）
+##   2. tools/diff_map_rules.py 发现原版领土规则未在 manifest 登记
+## 基线棘轮：已知未修问题登记在 tools/map_audit_baseline.json，
+## 修一个删一条；禁止向基线新增条目（新增即本工作流的 PR diff 检查失败）。
+
+on:
+  pull_request:
+    paths:
+      - "资产/地图/**"
+      - "资产/数据/初始/**"
+      - "数据脚本/地图数据/**"
+      - "tools/generated/**"
+      - "tools/map_audit*"
+      - "tools/diff_map_rules*"
+      - ".github/workflows/validate-map.yml"
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install pillow
+
+      - name: Audit map data (JSON/PNG/gd refs)
+        run: python tools/map_audit.py --json > audit_report.json
+
+      - name: Diff original vs Godot map rules
+        run: python tools/diff_map_rules.py
+
+      - name: Baseline ratchet guard (baseline 只许缩小不许扩大)
+        run: |
+          BASELINE_LINES=$(python -c "import json,io;print(len(json.load(io.open('tools/map_audit_baseline.json',encoding='utf-8'))['entries']))")
+          echo "当前基线条目数: $BASELINE_LINES"
+          echo "BASELINE_LINES=$BASELINE_LINES" >> "$GITHUB_ENV"
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: map-audit-report
+          path: audit_report.json
+          retention-days: 14

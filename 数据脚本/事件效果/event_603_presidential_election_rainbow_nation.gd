@@ -4,9 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:869-871 —— c131.SubGosstroy==5 && DATE_AFTER 1985.8.15。
 ## 差异：name→chinese_name；puppetOf 循环→_free_puppets(131)；prosov→亲苏、proprc→亲中、Vyshi→亲美。
 
-const TXT_NAME_RSA := "南非共和国"
-const TXT_R_COMMON := "为期四天的大选热闹非凡，有数百万人排队投票，而结果正如普遍预期：非洲人国民大会、南非工会大会及南非共产党的三方联盟赢得全面胜利。新国民议会推选非洲人国民大会领导人纳尔逊·曼德拉为总统，黑人为主的国家也终于有了自己的黑人领袖。\n崭新的时代就此到来……\n\n“年月把拥有变做失去，疲倦的双眼带着期望——今天只有残留的躯壳，迎接光辉岁月，风雨中抱紧自由！”——黄家驹《光辉岁月》"
-const TXT_R2_PRORPC := "为期四天的大选热闹非凡，有数百万人排队投票，而结果却出人意料：由于阿扎尼亚泛非主义大会等激进左翼组织的参选分化了黑人选民，导致非国大选票分流。德克勒克、因卡蒂自由党和独立候选人的保守联盟由此险胜非国大取得胜利！尽管如此，德克勒克依然出于“稳定转型需要”，将曼德拉及非国大温和派纳入到民族团结政府中。美国对选举结果表示热烈祝贺，看起来南非终于可以翻过种族隔离的篇章，成为自由世界在非洲最大最亮的钻石……"
+const TXT_NAME_RSA := "event.script.event_603_presidential_election_rainbow_nation.c0"
+const TXT_R_COMMON := "event.script.event_603_presidential_election_rainbow_nation.c1"
+const TXT_R2_PRORPC := "event.script.event_603_presidential_election_rainbow_nation.c2"
 
 
 func execute(context: Dictionary) -> void:
@@ -16,10 +16,10 @@ func execute(context: Dictionary) -> void:
 	var south_africa := _country(131)
 	var opt := int(context.get("option_index", -1))
 	if south_africa != null:
-		south_africa.chinese_name = TXT_NAME_RSA
+		south_africa.chinese_name = tr(TXT_NAME_RSA)
 	match opt:
 		0:
-			context["result_text"] = TXT_R_COMMON
+			context["result_text"] = tr(TXT_R_COMMON)
 			if world_empire_power_gt(1, 0):
 				if south_africa != null:
 					south_africa.government = GameConstants.Government.REFORMIST
@@ -31,7 +31,7 @@ func execute(context: Dictionary) -> void:
 					south_africa.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 			_free_puppets(131)
 		1:
-			context["result_text"] = TXT_R_COMMON
+			context["result_text"] = tr(TXT_R_COMMON)
 			if ws.influence_prc + _empire_power(1) > _empire_power(0):
 				if south_africa != null:
 					south_africa.government = GameConstants.Government.REFORMIST
@@ -53,7 +53,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_free_puppets(131)
 			if ws.influence_prc > 700:
-				context["result_text"] = TXT_R2_PRORPC
+				context["result_text"] = tr(TXT_R2_PRORPC)
 				if ws.influence_prc > _empire_power(0):
 					if south_africa != null:
 						south_africa.government = GameConstants.Government.LIBERAL
@@ -67,7 +67,7 @@ func execute(context: Dictionary) -> void:
 						south_africa.set_tag("亲美", true)
 						south_africa.set_tag("对华贸易", true)
 			else:
-				context["result_text"] = TXT_R_COMMON
+				context["result_text"] = tr(TXT_R_COMMON)
 
 
 
@@ -167,3 +167,19 @@ func _empire_power(idx: int) -> int:
 func world_empire_power_gt(a: int, b: int) -> bool:
 	return _empire_power(a) > _empire_power(b)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_603_presidential_election_rainbow_nation.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_603",
+	"num": 603,
+	"priority": 60300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_603_presidential_election_rainbow_nation.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 5, "target": "131"}, {"t": "DATE_AFTER", "key": "1985.8.15"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

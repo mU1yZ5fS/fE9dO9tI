@@ -31,7 +31,7 @@ func _opt_do_nothing(context: Dictionary) -> void:
 		d.thought_freedom += 40
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].power -= 100
-	context["result_text"] = "在江青同志所控制的党刊中，开始了对邓小平其人及其思想的批判，现在邓小平已经解除一切公务，赋闲在家了。然而这些举动看起来有些收效甚微，邓小平作为周恩来的亲切战友和名义上纠正大跃进错误的“功臣”而备受尊敬。党的中央委员会在毛主席的3月3日指示确定了文化大革命的合法性和邓小平仍然是一个不称职的党员之后也开始了对邓小平的批判，各个省委也随之开始了对邓小平的批判。"
+	context["result_text"] = tr("event.script.event_020_criticize_deng.i0")
 
 
 # 选项1：加入对小平的迫害（Event20.cs result 1）
@@ -53,7 +53,7 @@ func _opt_join(context: Dictionary) -> void:
 			p.loyalty -= 100
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].power -= 130
-	context["result_text"] = "在江青同志所控制的党刊中，开始了对邓小平其人及其思想的批判，华国锋也认为邓小平以及背后的改革派只能让中国回到资本主义的奴役之中。现在邓小平已经解除一切公务，赋闲在家了。然而这些举动看起来有些收效甚微，邓小平作为周恩来的亲切战友和名义上纠正大跃进错误的“功臣”而备受尊敬。党的中央委员会在毛主席的3月3日指示确定了文化大革命的合法性和邓小平仍然是一个不称职的党员之后也开始了对邓小平的批判，各个省委也随之开始了对邓小平的批判。"
+	context["result_text"] = tr("event.script.event_020_criticize_deng.i1")
 
 
 # 选项2：支持小平（Event20.cs result 2）
@@ -81,4 +81,18 @@ func _opt_support(context: Dictionary) -> void:
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:
 		ws.politicians[12].power -= 80
 		ws.politicians[12].loyalty += 250
-	context["result_text"] = "在江青同志所控制的党刊中，开始了对邓小平其人及其思想的批判。然而你，作为邓小平的拥护者，声称尽管邓小平犯了错误，但他已经认识到了它们并且为中国的发展做出了贡献。这造成了中共高层的不满，但对人民来说，邓小平作为周恩来的亲切战友和名义上纠正大跃进错误的“功臣”而备受尊敬。党的中央委员会在毛主席的3月3日指示确定了文化大革命的合法性和邓小平仍然是一个不称职的党员之后也开始了对邓小平的批判，各个省委也随之开始了对邓小平的批判。"
+	context["result_text"] = tr("event.script.event_020_criticize_deng.i2")
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_020_criticize_deng.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "criticize_deng",
+	"num": 20,
+	"notify": false,
+	"trigger": [{"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "five_no"}, {"t": "DATE_AFTER", "key": "1976.2"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

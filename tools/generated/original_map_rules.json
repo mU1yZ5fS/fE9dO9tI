@@ -1,0 +1,316 @@
+{
+  "_readme": [
+    "由 tools/extract_original_map_rules.py 自动生成，勿手改。",
+    "来源: CountryScript.cs Repaint() —— 原版地图归属重映射的完整规格。",
+    "guards 为人审用的条件链摘要（AND 连接；'ELSE' 表示走 else 分支）；",
+    "精确语义以 cs_line 行号回查源码为准。",
+    "注意: ShowParts() 的 parts 覆盖层对象名在场景文件里，无法静态提取，",
+    "(legacy, part) 组合的对照仍需人工维护 manifest。"
+  ],
+  "generated_at": "2026-08-24T19:19:40Z",
+  "source_file": "CountryScript.cs",
+  "repaint_span": [
+    4829,
+    5222
+  ],
+  "rule_count": 27,
+  "rules": [
+    {
+      "cs_line": 4871,
+      "to": 46,
+      "from_hint": 10,
+      "guards": [
+        "data[83]==2"
+      ],
+      "raw_guards": [
+        "this.this_number == 10 && GlobalScript.inst.gameState.data[83] == 2"
+      ]
+    },
+    {
+      "cs_line": 4877,
+      "to": 10,
+      "from_hint": 46,
+      "guards": [
+        "data[83]==1"
+      ],
+      "raw_guards": [
+        "this.this_number == 46 && GlobalScript.inst.gameState.data[83] == 1"
+      ]
+    },
+    {
+      "cs_line": 4883,
+      "to": 1,
+      "from_hint": 38,
+      "guards": [
+        "completedDecisions[7]"
+      ],
+      "raw_guards": [
+        "this.this_number == 38 && GlobalScript.inst.gameState.completedDecisions[7]"
+      ]
+    },
+    {
+      "cs_line": 4887,
+      "to": 30,
+      "from_hint": 54,
+      "guards": [
+        "country[30].parts[0] AND country[30].parts[1] AND country[30].parts[2] AND completedDecisions[20]"
+      ],
+      "raw_guards": [
+        "(this.this_number == 54 || this.this_number == 55 || this.this_number == 18 || this.this_number == 14 || this.this_number == 35 || this.this_number == 30 || this.this_number == 13 || this.this_number == 40) && GlobalScript.inst.gameState.completedDecisions[20] && GlobalScript.inst.gameState.allcountries[30].parts[0] && GlobalScript.inst.gameState.allcountries[30].parts[1] && GlobalScript.inst.gameState.allcountries[30].parts[2]"
+      ]
+    },
+    {
+      "cs_line": 4893,
+      "to": 49,
+      "from_hint": 111,
+      "guards": [
+        "this_number==111",
+        "country[49].parts[0]"
+      ],
+      "raw_guards": [
+        "this.this_number == 111",
+        "GlobalScript.inst.gameState.allcountries[49].parts[0]"
+      ]
+    },
+    {
+      "cs_line": 4897,
+      "to": 92,
+      "from_hint": null,
+      "guards": [
+        "NOT !event_done[118]"
+      ],
+      "raw_guards": [
+        "!GlobalScript.inst.gameState.event_done[118]"
+      ]
+    },
+    {
+      "cs_line": 4901,
+      "to": 111,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4908,
+      "to": 142,
+      "from_hint": 142,
+      "guards": [
+        "this_number==142",
+        "data[21]>=1981 AND data[20]>=9 AND data[19]>=21 AND data[21]>=1981 AND data[20]>=10 AND data[21]>=1982"
+      ],
+      "raw_guards": [
+        "this.this_number == 142",
+        "(GlobalScript.inst.gameState.data[21] >= 1981 && GlobalScript.inst.gameState.data[20] >= 9 && GlobalScript.inst.gameState.data[19] >= 21) || (GlobalScript.inst.gameState.data[21] >= 1981 && GlobalScript.inst.gameState.data[20] >= 10) || GlobalScript.inst.gameState.data[21] >= 1982"
+      ]
+    },
+    {
+      "cs_line": 4912,
+      "to": 92,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4919,
+      "to": 161,
+      "from_hint": 161,
+      "guards": [
+        "this_number==161",
+        "data[21]>=1978 AND data[20]>=7 AND data[19]>=7 AND data[21]>=1978 AND data[20]>=8 AND data[21]>=1979"
+      ],
+      "raw_guards": [
+        "this.this_number == 161",
+        "(GlobalScript.inst.gameState.data[21] >= 1978 && GlobalScript.inst.gameState.data[20] >= 7 && GlobalScript.inst.gameState.data[19] >= 7) || (GlobalScript.inst.gameState.data[21] >= 1978 && GlobalScript.inst.gameState.data[20] >= 8) || GlobalScript.inst.gameState.data[21] >= 1979"
+      ]
+    },
+    {
+      "cs_line": 4923,
+      "to": 92,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4930,
+      "to": 21,
+      "from_hint": 106,
+      "guards": [
+        "this_number==106",
+        "NOT !event_done[585]"
+      ],
+      "raw_guards": [
+        "this.this_number == 106",
+        "!GlobalScript.inst.gameState.event_done[585]"
+      ]
+    },
+    {
+      "cs_line": 4934,
+      "to": 106,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4941,
+      "to": 92,
+      "from_hint": -2,
+      "guards": [
+        "this_number==-2",
+        "NOT !GlobalScript.inst.gameState.BritLost"
+      ],
+      "raw_guards": [
+        "this.this_number == -2",
+        "!GlobalScript.inst.gameState.BritLost"
+      ]
+    },
+    {
+      "cs_line": 4945,
+      "to": 71,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4952,
+      "to": 54,
+      "from_hint": 18,
+      "guards": [
+        "this_number==18",
+        "country[54].parts[0]"
+      ],
+      "raw_guards": [
+        "this.this_number == 18",
+        "GlobalScript.inst.gameState.allcountries[54].parts[0]"
+      ]
+    },
+    {
+      "cs_line": 4956,
+      "to": 18,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4963,
+      "to": 11,
+      "from_hint": 22,
+      "guards": [
+        "this_number==22",
+        "country[11].parts[0]"
+      ],
+      "raw_guards": [
+        "this.this_number == 22",
+        "GlobalScript.inst.gameState.allcountries[11].parts[0]"
+      ]
+    },
+    {
+      "cs_line": 4967,
+      "to": 22,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4974,
+      "to": 41,
+      "from_hint": 42,
+      "guards": [
+        "this_number==42",
+        "country[41].parts[0] AND country[41].parts[1]"
+      ],
+      "raw_guards": [
+        "this.this_number == 42",
+        "GlobalScript.inst.gameState.allcountries[41].parts[0] || GlobalScript.inst.gameState.allcountries[41].parts[1]"
+      ]
+    },
+    {
+      "cs_line": 4978,
+      "to": 42,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4985,
+      "to": 41,
+      "from_hint": 106,
+      "guards": [
+        "this_number==106",
+        "country[41].parts[1]"
+      ],
+      "raw_guards": [
+        "this.this_number == 106",
+        "GlobalScript.inst.gameState.allcountries[41].parts[1]"
+      ]
+    },
+    {
+      "cs_line": 4989,
+      "to": 106,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 4996,
+      "to": 11,
+      "from_hint": 23,
+      "guards": [
+        "this_number==23",
+        "country[11].parts[0]"
+      ],
+      "raw_guards": [
+        "this.this_number == 23",
+        "GlobalScript.inst.gameState.allcountries[11].parts[0]"
+      ]
+    },
+    {
+      "cs_line": 5000,
+      "to": 23,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    },
+    {
+      "cs_line": 5007,
+      "to": 51,
+      "from_hint": 168,
+      "guards": [
+        "this_number==168",
+        "NOT !GlobalScript.inst.gameState.allcountries[168].cw"
+      ],
+      "raw_guards": [
+        "this.this_number == 168",
+        "!GlobalScript.inst.gameState.allcountries[168].cw"
+      ]
+    },
+    {
+      "cs_line": 5011,
+      "to": 168,
+      "from_hint": null,
+      "guards": [
+        "ELSE"
+      ],
+      "raw_guards": []
+    }
+  ]
+}

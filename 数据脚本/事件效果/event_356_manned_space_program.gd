@@ -5,15 +5,15 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "自行改装卫星。"
-const TXT_OPT0_DIS := "太危险，又没用"
-const TXT_OPT1 := "在“联盟号”的基础上创造。"
-const TXT_OPT1_DIS := "行动的风险太大了。我们的技术也不允许我们做模拟。"
-const TXT_OPT2 := "再次取消项目。"
+const TXT_OPT0 := "event.script.event_356_manned_space_program.c0"
+const TXT_OPT0_DIS := "event.script.event_356_manned_space_program.c1"
+const TXT_OPT1 := "event.script.event_356_manned_space_program.c2"
+const TXT_OPT1_DIS := "event.script.event_356_manned_space_program.c3"
+const TXT_OPT2 := "event.script.event_356_manned_space_program.c4"
 
-const TXT_R0 := "总的来说，我们决定制造载人版本的FSW卫星。当然，这一飞行比起加加林来说算不了什么，也没有必要谈论基于这一太空舱的严肃项目，但这仍是通往太空之路的第一步！"
-const TXT_R1 := "要复制“联盟号”是很困难的。在一些地方，原有设计不得不被改变，在另一些地方，工程师们提出了改进建议。“神舟”系列就是这样出现的。这次飞行在宣传上取得了巨大的成功——一个第三世界国家能够制造出一种现代的多座宇宙飞船，甚至还超过了苏联“原型”。但这影响了与苏联的关系。"
-const TXT_R2 := "载人航天计划是没有希望的。复制“联盟”号是行不通的。一个太空舱也是没用的。我们还有别的事要干。"
+const TXT_R0 := "event.script.event_356_manned_space_program.c5"
+const TXT_R1 := "event.script.event_356_manned_space_program.c6"
+const TXT_R2 := "event.script.event_356_manned_space_program.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -23,15 +23,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var dv := world
 	if _budget_reserve(world) >= 40:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if _budget_reserve(world) >= 70 and dv.size() > W.I_AGENTS and dv.agents >= 20 \
 			and (_prev_result(world, "event_353") == 0 or _prev_result(world, "event_353") == 1):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
+	_enable(opt[2], tr(TXT_OPT2))
 
 
 func execute(context: Dictionary) -> void:
@@ -42,15 +42,15 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_DIPLO, 10)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -60)
 			_add(W.I_SCIENCE, 200)
 			_add_relation(EmpireData.USSR, -25)
 			_add(W.I_DIPLO, 40)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -99,3 +99,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_356_manned_space_program.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_356",
+	"num": 356,
+	"priority": 35600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_356_manned_space_program.gd",
+	"trigger": [{"t": "TECH_UNLOCKED", "v": 30}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_355"}]}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

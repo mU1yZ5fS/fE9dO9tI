@@ -24,3 +24,18 @@ func execute(context: Dictionary) -> void:
 		if d.size() > W.I_BUDGET:
 			d.budget -= 10
 		context["result_text"] = TXT_R[opt]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_092_five_year_plan.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_092",
+	"num": 92,
+	"priority": 9200,
+	"notify": false,
+	"trigger": [{"t": "ALL", "c": [{"t": "RESOURCE_AT_MOST", "key": "economy_system", "v": 11}, {"t": "PREV_EVENT_DONE", "ref": "back_to_roots"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

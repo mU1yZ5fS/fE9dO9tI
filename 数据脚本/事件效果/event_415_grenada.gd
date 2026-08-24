@@ -39,18 +39,18 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1291 := "我的格林纳达？"
-const TXT_IDX_1292 := "近日，加勒比海上的小岛国格林纳达爆发了一场政变。奉行威权民粹主义的格林纳达联合工党被推翻。在莫里斯·毕晓普的领导下，来自新宝石运动的左翼分子夺取了该国政权。新政府立即开始同古巴和苏联进行合作。但仍选择仍留在英联邦内。"
-const TXT_IDX_1293 := "提供援助并与该国发展贸易（需要5.0百万{0}）"
-const TXT_IDX_592 := "预算"
-const TXT_IDX_593 := "特工网络"
-const TXT_IDX_594 := "军事实力"
-const TXT_IDX_566 := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
-const TXT_IDX_1294 := "谴责政变"
-const TXT_IDX_1295 := "格林纳达在哪？不关我事"
-const TXT_IDX_1296 := "莫里斯·毕晓普对我们的援助表示感谢。格林纳达与中国间也签署了一份贸易协定。苏联也赞许我们对社会主义事业做出的贡献。但显然，美国并不满意“共产主义麻风病”的扩散，毕竟加勒比地区是其传统势力范围。另一个问题是，新政府能够解决国内的社会与经济问题吗？答案尚不清楚。"
-const TXT_IDX_1297 := "中华人民共和国外交部外交部选择谴责此次政变，认为其既“违宪”又“反民主”。美国对我们反对苏联在美国传统势力范围内扩张的举动感到满意，而苏联则对我们的举动表示遗憾。另一个问题是，新政府能够解决国内的社会与经济问题吗？答案尚不清楚。"
-const TXT_IDX_1298 := "我们对格林纳达政变不予置评。但显然，美国并不满意“共产主义麻风病”的扩散，毕竟加勒比地区是其传统势力范围。另一个问题是，新政府能够解决国内的社会与经济问题吗？答案尚不清楚。"
+const TXT_IDX_1291 := "event.script.event_415_grenada.c0"
+const TXT_IDX_1292 := "event.script.event_415_grenada.c1"
+const TXT_IDX_1293 := "event.script.event_415_grenada.c2"
+const TXT_IDX_592 := "event.script.event_415_grenada.c3"
+const TXT_IDX_593 := "event.script.event_415_grenada.c4"
+const TXT_IDX_594 := "event.script.event_415_grenada.c5"
+const TXT_IDX_566 := "event.script.event_415_grenada.c6"
+const TXT_IDX_1294 := "event.script.event_415_grenada.c7"
+const TXT_IDX_1295 := "event.script.event_415_grenada.c8"
+const TXT_IDX_1296 := "event.script.event_415_grenada.c9"
+const TXT_IDX_1297 := "event.script.event_415_grenada.c10"
+const TXT_IDX_1298 := "event.script.event_415_grenada.c11"
 
 ## 原文字符串附录（供自检）
 
@@ -108,3 +108,19 @@ func _set_pro_neutral(c: CountryData) -> void:
 	c.set_tag("亲中", false)
 	c.set_tag("亲苏", false)
 	c.set_tag("亲美", false)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_415_grenada.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_415",
+	"num": 415,
+	"priority": 41500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_415_grenada.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1979.3.14"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

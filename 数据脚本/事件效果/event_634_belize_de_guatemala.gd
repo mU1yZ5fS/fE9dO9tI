@@ -6,8 +6,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：ingamewars[65] 建模说明 WarDef → game.start_war 兜底创建后手工补名。
 ##   parts[0/2] 写前 resize；Gosstroy→government；SovietSupportAttacker→ussr_side = GameConstants.WarSide.SIDE2。
 
-const TXT_R_ANNEX := "危地马拉与英国双方都向伯利兹施加了压力，很快，伯利兹就陷入了物资短缺、经济崩溃。URNG的伯利兹部分和中美洲工人革命党伯利兹支部也趁机鼓动罢工和游行，而政府调集宪兵镇压示威的举措反而成了加速自己倒台的催化剂。在种种内外压力的逼迫下，伯利兹总理宣布辞职，共产主义者夺取了伯利兹的政权。随后，伯利兹宣布以自治形式加入社会主义危地马拉。很快当地便开展了轰轰烈烈的社会主义改造。外国公司与银行被收归国有，原住民权益得到保障，链接该地区的铁路与公路网也开始建设，尽管使用该语言的人口微乎其微，但英语与伯利兹克里奥尔语却也被列为合法语言。"
-const TXT_R_WAR := "新生的危地马拉革命军迅速跨过两国边境，一场战争打响了。"
+const TXT_R_ANNEX := "event.script.event_634_belize_de_guatemala.c0"
+const TXT_R_WAR := "event.script.event_634_belize_de_guatemala.c1"
 
 
 func execute(context: Dictionary) -> void:
@@ -19,7 +19,7 @@ func execute(context: Dictionary) -> void:
 	if opt != 0:
 		return
 	if uk != null and uk.government == GameConstants.Government.SOCIALIST:
-		context["result_text"] = TXT_R_ANNEX
+		context["result_text"] = tr(TXT_R_ANNEX)
 		if guatemala != null:
 			guatemala.level_of_instability += 50
 			_set_part(guatemala, 0, true)
@@ -27,7 +27,7 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USA, -5)
 		_add_relation(EmpireData.USA, -50)
 		return
-	context["result_text"] = TXT_R_WAR
+	context["result_text"] = tr(TXT_R_WAR)
 	if guatemala != null:
 		_set_part(guatemala, 2, true)
 	_add_relation(EmpireData.USA, -50)
@@ -43,3 +43,17 @@ func _set_part(c: CountryData, index: int, value: bool) -> void:
 	while c.parts.size() <= index:
 		c.parts.append(false)
 	c.parts[index] = value
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_634_belize_de_guatemala.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_634",
+	"num": 634,
+	"priority": 63400,
+	"notify": false,
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

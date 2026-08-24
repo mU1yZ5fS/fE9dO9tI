@@ -54,24 +54,24 @@ func execute(context: Dictionary) -> void:
 	if sg >= sgr and sg >= sr:
 		ussr.current_leader = LDR_GORBACHEV
 		ussr.power = clampi(ussr.power - 250, 0, 1000)
-		context["result_text"] = "结果，米哈伊尔·戈尔巴乔夫被选为苏共中央委员会总书记。他惊人地迅速组织了一次代表大会，并通过军机确保政治局成员的顺利交接，而没有让他的对手罗曼诺夫说任何话。在葛罗米柯和温和派的支持下，他以极低的得票率领导了共产党。等待苏联的是什么?"
+		context["result_text"] = tr("event.script.event_102_wind_of_change.i0")
 	elif sr >= sgr and sr >= sg:
 		ussr.current_leader = LDR_ROMANOV
-		context["result_text"] = "结果，格里戈里·罗曼诺夫被选为苏共中央委员会总书记，他得知契尔年科的死讯后，立即飞往莫斯科，在那里他成功地团结了保守派和温和派人士。有趣的事情等待着苏联。"
+		context["result_text"] = tr("event.script.event_102_wind_of_change.i1")
 	elif sgr + 1 > sr and sgr + 1 > sg:
 		ussr.current_leader = LDR_GRISHIN
-		context["result_text"] = "结果，维克托·格里申当选为苏共中央委员会总书记。在保守的多数派的支持下，他成功地领导了苏共，这没有任何问题。苏联希望拥有几年的勃列日涅夫式稳定。"
+		context["result_text"] = tr("event.script.event_102_wind_of_change.i2")
 	elif sg > sr:
 		ussr.current_leader = LDR_GORBACHEV
 		ussr.power = clampi(ussr.power - 250, 0, 1000)
-		context["result_text"] = "尽管有很多争论，结果，米哈伊尔·戈尔巴乔夫被选为苏共中央委员会总书记。他惊人地迅速组织了一次代表大会，并通过军机确保政治局成员的顺利交接，而没有让他的对手罗曼诺夫说任何话。在葛罗米柯和温和派的支持下，他以极低的得票率领导了共产党。等待苏联的是什么?"
+		context["result_text"] = tr("event.script.event_102_wind_of_change.i3")
 	elif sg < sr:
 		ussr.current_leader = LDR_ROMANOV
-		context["result_text"] = "尽管有很多争论，结果，格里戈里·罗曼诺夫被选为苏共中央委员会总书记，他得知契尔年科的死讯后，立即飞往莫斯科，在那里他成功地团结了保守派和温和派人士。有趣的事情等待着苏联。"
+		context["result_text"] = tr("event.script.event_102_wind_of_change.i4")
 	else:
 		ussr.current_leader = LDR_GRISHIN
-		context["result_text"] = "尽管有很多争议，结果，维克托·格里申当选为苏共中央委员会总书记。在保守的多数派的支持下，他成功地领导了苏共，这没有任何问题。苏联预期将拥有几年的勃列日涅夫式稳定。"
-	context["result_title"] = "变革之风？"
+		context["result_text"] = tr("event.script.event_102_wind_of_change.i5")
+	context["result_title"] = tr("event.script.event_102_wind_of_change.i6")
 
 
 ## 读取/修改领导人支持度（越界安全，返回修改后值）
@@ -81,3 +81,17 @@ func _leader_support(ussr: EmpireData, idx: int, delta: int = 0) -> int:
 	if delta != 0:
 		ussr.leaders[idx].support += delta
 	return ussr.leaders[idx].support
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_102_wind_of_change.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "wind_of_change",
+	"num": 102,
+	"notify": false,
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1985.3.10"}, {"t": "ANY", "c": [{"t": "EMPIRE_LEADER_IS", "key": "1", "v": 1}, {"t": "EMPIRE_LEADER_IS", "key": "1", "v": 2}]}]}],
+	"options": [{"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 500}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 500}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 500}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

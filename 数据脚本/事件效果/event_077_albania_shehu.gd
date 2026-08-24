@@ -7,13 +7,13 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：描述与选项显隐按原版动态改写（prepare）；c20 政体/标签映射为
 ##   government/sub_government/set_tag("对华贸易"/"亲中")。
 
-const TXT_R0 := "谢胡利用手中的国家机关和西古里米，成功地动员了他的支持者，孤立了霍查，然后召开了一次阿尔巴尼亚劳动党中央委员会特别会议，他说，由于医疗原因，第一书记将在一段时间内不能履行他的职责。他的对手最多只能放弃他们在党和政府中的职位，但他们中的许多人最终被关进了西古里米监狱，或者在可疑的情况下死亡。很快就有消息称，霍查死于病情加重，此后，谢胡毫不困难地担任阿尔巴尼亚劳动党中央第一书记。他已经开始与南斯拉夫、苏联和社会主义阵营国家进行谨慎的谈判，这些国家似乎欢迎领导层的这种转变，尽管阿尔巴尼亚的国内政策没有什么改变。"
+const TXT_R0 := "event.script.event_077_albania_shehu.c0"
 
-const TXT_R0_EXTRA := "同时，谢胡恢复了与中国的关系，建立贸易，并邀请我们的顾问到该国来。"
+const TXT_R0_EXTRA := "event.script.event_077_albania_shehu.c1"
 
-const TXT_R1 := "结果，谢胡与霍查的关系继续恶化，1981年12月18日，谢胡被宣布自杀，之后他被指控为叛国和为美国、苏联和南斯拉夫进行谍报活动。他的总理职位被缺乏主动性和忠诚的阿迪尔·查尔查尼所取代。"
+const TXT_R1 := "event.script.event_077_albania_shehu.c2"
 
-const TXT_R2 := "结果，谢胡与霍查的关系继续恶化，1981年12月18日，谢胡被宣布自杀，之后他被指控为叛国和为美国、苏联和南斯拉夫进行谍报活动。他的总理职位被缺乏主动性和忠诚的阿迪尔·查尔查尼所取代。在这段时间里，我们一直支持霍查的行动，欢迎阿尔巴尼亚从间谍谢胡手中解放出来，为此，我们得到了地拉那的感谢。"
+const TXT_R2 := "event.script.event_077_albania_shehu.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -47,9 +47,9 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			var text := TXT_R0
+			var text := tr(TXT_R0)
 			if albania == null or not albania.has_tag("亲中"):
-				text += TXT_R0_EXTRA
+				text += tr(TXT_R0_EXTRA)
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_AGENTS, -80)
 			_add(W.I_DIPLO, 10)
@@ -68,13 +68,13 @@ func execute(context: Dictionary) -> void:
 			if albania != null:
 				albania.government = GameConstants.Government.AUTHORITARIAN
 				albania.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_DIPLO, 20)
 			if albania != null:
 				albania.government = GameConstants.Government.AUTHORITARIAN
 				albania.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 ## 原版 summa_3_2 复算。
@@ -100,3 +100,19 @@ func _coalition_percent(world: WorldState) -> int:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_077_albania_shehu.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_077",
+	"num": 77,
+	"priority": 7700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_077_albania_shehu.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1981.11.1"}, {"t": "RESOURCE_AT_MOST", "key": "albania_break"}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "sub_government", "v": 11, "target": "20"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "20"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "rim", "target": "20"}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1414-1416 —— ExprNode 组合。
 ## 差异：Gosstroy→government；SubGosstroy→sub_government；isEU→标签 eu。
 
-const TXT_RESULT := "54%的西班牙人在投票中支持加入欧洲经济共同体。该国就此拥抱了欧洲一体化的道路。为了加入欧洲共同体，西班牙社会党人不得不在意识形态与实践上做出妥协：退休年龄被延迟，政府减少对经济的干预，中央银行的独立权限扩大，社会支出也被减少。出于适应上述变化的需要，该党将党纲内所有与马克思主义和无产阶级有关的内容删除殆尽。"
-const TXT_IDX_1450 := "西班牙加入欧洲经济共同体"
-const TXT_IDX_1451 := "西班牙工人社会党对欧洲一体化的态度发生了显著转变。如果说在之前，该党还会在马克思主义意识形态的影响下，将这样的联盟称之为“隐蔽的帝国主义”，而现在，社会党人则成为了加入欧洲经济共同体的排头兵。然而对他们来说，与他们结成执政联盟的共产党人是他们在当前局势下的最大挑战。共产党人绝对不会冒这个险。因此，冈萨雷斯不得不重新召开议会选举，从而让社会党人在其中获得绝对多数。\n在此之后，该国就加入欧洲经济共同体的问题举行了一场全民公投。而许多政治力量，包括来自左翼与右翼的激进派，呼吁反对该国的一体化进程。但结果会如何呢？"
-const TXT_IDX_1380 := "观察局势"
-const TXT_IDX_1452 := "54%的西班牙人在投票中支持加入欧洲经济共同体。该国就此拥抱了欧洲一体化的道路。为了加入欧洲共同体，西班牙社会党人不得不在意识形态与实践上做出妥协：退休年龄被延迟，政府减少对经济的干预，中央银行的独立权限扩大，社会支出也被减少。出于适应上述变化的需要，该党将党纲内所有与马克思主义和无产阶级有关的内容删除殆尽。"
+const TXT_RESULT := "event.script.event_431_spain_joins_ec.c0"
+const TXT_IDX_1450 := "event.script.event_431_spain_joins_ec.c1"
+const TXT_IDX_1451 := "event.script.event_431_spain_joins_ec.c2"
+const TXT_IDX_1380 := "event.script.event_431_spain_joins_ec.c3"
+const TXT_IDX_1452 := "event.script.event_431_spain_joins_ec.c4"
 
 
 
@@ -46,4 +46,20 @@ func execute(context: Dictionary) -> void:
 		spain.government = GameConstants.Government.LIBERAL
 		spain.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 		spain.set_tag("eu", true)
-	context["result_text"] = TXT_RESULT
+	context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_431_spain_joins_ec.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_431",
+	"num": 431,
+	"priority": 43100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_431_spain_joins_ec.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "PREV_EVENT_NOT_DONE", "ref": "event_432"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "soc_eu", "target": "86"}]}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 3, "target": "86"}, {"t": "COUNTRY_HAS_TAG", "key": "eu", "target": "0"}, {"t": "DATE_AFTER", "key": "1983.9.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

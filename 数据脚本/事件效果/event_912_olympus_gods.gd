@@ -14,9 +14,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##    为 display-only，跳过并注释；
 ##  - isBALECON→set_tag("balecon", false)；Torg/proprc/econ/okb 循环按严格社会主义清标签。
 
-const TXT_R0 := "在钓鱼台国宾馆，中央举行了一场别开生面的宴席。与会人员除了长袖善舞的尼古拉·齐奥塞斯库同志，我们长久以来的盟友金日成同志。更有新鲜的面孔：秘鲁的艾萨克·乌马拉，法国的毛-莫拉斯主义者，津巴布韦非洲民族联盟的罗伯特·穆加贝，非洲人国民大会的温妮·曼德拉代替其丈夫出席了宴会。{0}诸如霍亨索伦，哈布斯堡和波拿巴家族都收到了请柬（当然他们没有与会，我们深表遗憾）。会上，华国锋同志强调了西方世界的腐朽堕落，痛心疾首的批判欧洲国家背弃了前人所指出的明路。就在这时，与会的代表突然举手发言，高声欢呼中国革命经验的年轻与活力，同时感谢了我国对各国的革命者们提供各种程度上的支持，并欢呼我国的革命事业又一次取得了伟大胜利。各国革命者的代表们投以热烈的掌声，并纷纷在这一划时代的《北京协议》上签下了自己的名字。这份协议不仅是新生的礼炮，更是腐朽的旧秩序的丧钟。\n西方堕落国家和那些自以为正统的“左派”对我们的“倒行逆施”大加鞭笞，称其为新时代的梅特涅同盟。在部分欧洲国家甚至发生了有组织的针对华裔社区的抢劫，而我们都知道暴徒的背后是邪恶的资本主义旧秩序。这更展示了欧罗巴的堕落与野蛮，他们也没有资格成为什么世界秩序的缔造者了。既然如此，那就让他们羡慕我们好了，我们的战友遍天下，我们的英名将传遍四方。过去，现在和未来都掌握在我们手中。就让我们从他们手中夺走这个世界，把它砸个粉碎，缔造属于我们的新秩序！"
-const TXT_R0_IRAQ := "伊拉克总统萨达姆·侯赛因的心腹，阿比德·哈米德·马哈茂德·提克里提代表阿拉伯复兴社会党（伊拉克支部）参加了此次会议。他对会上所提及的一些内容非常感兴趣，称可能会有适用于伊拉克国情的部分。"
-const TXT_R1 := "大雨让野餐的计划泡汤了。"
+const TXT_R0 := "event.script.event_912_olympus_gods.c0"
+const TXT_R0_IRAQ := "event.script.event_912_olympus_gods.c1"
+const TXT_R1 := "event.script.event_912_olympus_gods.c2"
 
 
 ## 复杂触发钩子（EventDef.trigger_script 调用）。
@@ -49,8 +49,8 @@ func execute(context: Dictionary) -> void:
 			var iraq := ws.get_country_by_legacy_index(14)
 			var iraq_text := ""
 			if iraq != null and iraq.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST and iraq.puppet_of < 0:
-				iraq_text = TXT_R0_IRAQ
-			context["result_text"] = TXT_R0.format([iraq_text])
+				iraq_text = tr(TXT_R0_IRAQ)
+			context["result_text"] = tr(TXT_R0).format([iraq_text])
 			_add(W.I_PARTY_SUPPORT, 1000)
 			_add(W.I_PEOPLE_SUPPORT, 1000)
 			_add(W.I_THOUGHT_FREEDOM, -1000)
@@ -94,7 +94,7 @@ func execute(context: Dictionary) -> void:
 				china.government = GameConstants.Government.AUTHORITARIAN
 				china.sub_government = _chinese_sub_government()
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 ## GameState.cs:4934-5028 ChineseSubGosstroy 完整移植（同 Event713）。
@@ -185,3 +185,19 @@ func _set_data(index: int, value: int) -> void:
 		d.set_data_by_index(index, value)
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_912_olympus_gods.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_912",
+	"num": 912,
+	"priority": 91200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_912_olympus_gods.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_912_olympus_gods.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

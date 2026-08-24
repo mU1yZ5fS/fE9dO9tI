@@ -49,29 +49,29 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1244 := "苏联对我国内政不满"
-const TXT_IDX_1246 := "有中国特色的新资本主义"
-const TXT_IDX_1247 := "现实还是神话？——论中国的资本主义复辟"
-const TXT_IDX_1245 := "这天，《真理报》发表了题为《{1}》的社论，并借此批判中国内政。该文并没有点名批评我国领导人，但特别提及了我国国内存在“反社会主义势力反攻倒算”，“群众不信任群众的党”等现象。苏联官方报纸上的这些言论可被看作是一个信号：显然，苏联领导人要求我们调转航向。否则，就得做好应对一切手段的准备。可我们对此该怎么做呢？"
-const TXT_IDX_1249 := "实施社会主义改革"
-const TXT_IDX_592 := "预算"
-const TXT_IDX_593 := "特工网络"
-const TXT_IDX_594 := "军事实力"
-const TXT_IDX_1214 := "中国国际影响力"
-const TXT_IDX_1250 := "对苏修势力施压（{2}：-35.0；苏联影响力：-3.0；与苏联的关系：-15.0）"
-const TXT_IDX_776 := "军事实力必须高于{0}点......"
-const TXT_IDX_1251 := "将我们的资本主义装裱为社会主义（与苏联的关系：-30.0；党内团结：-45.0）"
-const TXT_IDX_1252 := "贿赂莫斯科，并对世界各地共产党提供财政支持（{0}：-15.0；美国影响力：-2.0；苏联影响力：+2.0；与苏联的关系：+10.0）"
-const TXT_IDX_566 := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
-const TXT_IDX_1253 := "做出友好合作姿态（中国影响力：-5.0；苏联影响力：+5.0；与苏联的关系：+10.0）"
-const TXT_IDX_620 := "中国的国际影响力应高于{0}......"
-const TXT_IDX_1254 := "他们拿我们没办法的！"
-const TXT_IDX_1255 := "对此，苏联驻我国大使热烈祝贺我们回归了“马克思列宁主义正道”，并成功战胜了“党内试图发动政变，实现资本主义复辟的走资派”。"
-const TXT_IDX_1256 := "我们决定绕开莫斯科，在中苏边界举行单方面军事演习。这让苏联政治局大惊失色，他们媒体对中华人民共和国的污蔑也就此打住。但安稳日子将持续多久呢？"
-const TXT_IDX_1257 := "今天，我国官方报纸《人民日报》发表了题为《走有中国特色的社会主义道路》一文，该文称：早在三国时期，中国便已经有了自己的马克思与社会主义理论。文章以这样一段话总结全文：“今天的中国特色社会主义可谓是我国民族传统、人民智慧与马克思主义理论的完美结合。中国不能不走这样的社会主义道路！”尽管这篇文章在党内引起了巨大争议，但莫斯科还是停止了对中华人民共和国的污蔑。但安稳日子将持续多久呢？"
-const TXT_IDX_1258 := "我们对世界共产主义运动的资助成功堵住了莫斯科的嘴，他们媒体对中华人民共和国的污蔑也就此打住。"
-const TXT_IDX_1259 := "苏联赞许我们的和平姿态，但我们为此牺牲了些许国际影响力。"
-const TXT_IDX_1260 := "我国在莫斯科发展的下线送来最新消息：如果中国方面仍不思悔改，苏联将准备与中国断交。"
+const TXT_IDX_1244 := "event.script.event_410_ussr_discontent.c0"
+const TXT_IDX_1246 := "event.script.ussr_discontent.txt_idx_1246"
+const TXT_IDX_1247 := "event.script.ussr_discontent.txt_idx_1247"
+const TXT_IDX_1245 := "event.script.ussr_discontent.txt_idx_1245"
+const TXT_IDX_1249 := "event.script.event_410_ussr_discontent.c1"
+const TXT_IDX_592 := "event.script.event_410_ussr_discontent.c2"
+const TXT_IDX_593 := "event.script.event_410_ussr_discontent.c3"
+const TXT_IDX_594 := "event.script.event_410_ussr_discontent.c4"
+const TXT_IDX_1214 := "event.script.event_410_ussr_discontent.c5"
+const TXT_IDX_1250 := "event.script.event_410_ussr_discontent.c6"
+const TXT_IDX_776 := "event.script.event_410_ussr_discontent.c7"
+const TXT_IDX_1251 := "event.script.event_410_ussr_discontent.c8"
+const TXT_IDX_1252 := "event.script.event_410_ussr_discontent.c9"
+const TXT_IDX_566 := "event.script.event_410_ussr_discontent.c10"
+const TXT_IDX_1253 := "event.script.event_410_ussr_discontent.c11"
+const TXT_IDX_620 := "event.script.event_410_ussr_discontent.c12"
+const TXT_IDX_1254 := "event.script.event_410_ussr_discontent.c13"
+const TXT_IDX_1255 := "event.script.event_410_ussr_discontent.c14"
+const TXT_IDX_1256 := "event.script.event_410_ussr_discontent.c15"
+const TXT_IDX_1257 := "event.script.event_410_ussr_discontent.c16"
+const TXT_IDX_1258 := "event.script.event_410_ussr_discontent.c17"
+const TXT_IDX_1259 := "event.script.event_410_ussr_discontent.c18"
+const TXT_IDX_1260 := "event.script.event_410_ussr_discontent.c19"
 
 ## 原文字符串附录（供自检）
 ## 我们已经无路可退！
@@ -99,25 +99,25 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var d := world
 	var opt := event_def.options
 	var pick := 0 if (randi() % 2 == 0) else 1
-	event_def.description = _fmt(TXT_IDX_1245, [TXT_IDX_1246 if pick == 0 else TXT_IDX_1247])
+	event_def.description = _fmt(tr(TXT_IDX_1245), [tr(TXT_IDX_1246) if pick == 0 else tr(TXT_IDX_1247)])
 	if 11 < world.modifiers.size() and world.modifiers[11] != null and world.modifiers[11].is_active:
-		_disable(opt[0], TXT_IDX_1249)
+		_disable(opt[0], tr(TXT_IDX_1249))
 	else:
-		_enable(opt[0], TXT_IDX_1249)
+		_enable(opt[0], tr(TXT_IDX_1249))
 	if d.army >= 350:
-		_enable(opt[1], _fmt(TXT_IDX_1250, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214]))
+		_enable(opt[1], _fmt(tr(TXT_IDX_1250), [tr(TXT_IDX_592), tr(TXT_IDX_593), tr(TXT_IDX_594), tr(TXT_IDX_1214)]))
 	else:
-		_disable(opt[1], _fmt(TXT_IDX_776, ["35"]))
-	_enable(opt[2], _fmt(TXT_IDX_1251, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214]))
+		_disable(opt[1], _fmt(tr(TXT_IDX_776), ["35"]))
+	_enable(opt[2], _fmt(tr(TXT_IDX_1251), [tr(TXT_IDX_592), tr(TXT_IDX_593), tr(TXT_IDX_594), tr(TXT_IDX_1214)]))
 	if d.budget + (d.reserve if d.size() > W.I_RESERVE else 0) >= 150:
-		_enable(opt[3], _fmt(TXT_IDX_1252, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214]))
+		_enable(opt[3], _fmt(tr(TXT_IDX_1252), [tr(TXT_IDX_592), tr(TXT_IDX_593), tr(TXT_IDX_594), tr(TXT_IDX_1214)]))
 	else:
-		_disable(opt[3], _fmt(TXT_IDX_566, ["15"]))
+		_disable(opt[3], _fmt(tr(TXT_IDX_566), ["15"]))
 	if world.influence_prc >= 50:
-		_enable(opt[4], _fmt(TXT_IDX_1253, [TXT_IDX_592, TXT_IDX_593, TXT_IDX_594, TXT_IDX_1214]))
+		_enable(opt[4], _fmt(tr(TXT_IDX_1253), [tr(TXT_IDX_592), tr(TXT_IDX_593), tr(TXT_IDX_594), tr(TXT_IDX_1214)]))
 	else:
-		_disable(opt[4], _fmt(TXT_IDX_620, ["5"]))
-	_enable(opt[5], TXT_IDX_1254)
+		_disable(opt[4], _fmt(tr(TXT_IDX_620), ["5"]))
+	_enable(opt[5], tr(TXT_IDX_1254))
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -191,3 +191,19 @@ func _loyalty_sov() -> void:
 			p.loyalty += 100
 		elif p.trait_personality > GameConstants.PoliticianPersonality.MODERATE:
 			p.loyalty -= 500
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_410_ussr_discontent.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_410",
+	"num": 410,
+	"priority": 41000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_410_ussr_discontent.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_410_ussr_discontent.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

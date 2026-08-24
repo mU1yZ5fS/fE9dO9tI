@@ -3,18 +3,18 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event127.cs：巴西复兴（5 选项）。
 ## 触发：原版未发现自动触发条件（trigger_conditions 为空），疑由未逆向的选举/地图系统手动触发。
 
-const TXT_PROPRC_YES := "[color=red]新政府决心和我们做朋友。[/color]"
-const TXT_PROPRC_NO := "[color=red]新政府不想和我们做朋友。[/color]"
-const TXT_R7 := "坦克雷多·内韦斯上任后不久便不幸逝世，并由副总统若泽·萨尔内接任总统，他是前巴民运成员，后来另行组党。在他的改革下，巴西最终宣告重回民主，审查制度得以完全废除，总统直选制得以恢复，新闻界、工会获得了言论自由，制宪会议得以召开。在诸多改革事项中值得一提的是，他以商业基础而非招标的方式出让了上千份公共广播电视的特许权，这标志着广电媒体的所有权来到私人垄断者手中，实现了“私有化”。在外交上，萨尔内重申了独立自主外交政策的理念，与众多拉美国家展开对话，其中也包括在1964年政变后断交的社会主义古巴。此外，萨尔内也从事农业改革、推动环境工程和削减官僚编制。然而他任内的诸项改革都未能阻止他任内猖獗的通货膨胀，这成为其执政期间最危险的危机。"
-const TXT_R8 := "由于国家的高度稳定，民主社会党的内部分裂影响被最小化了。因此，当马卢夫而非安德利亚扎被提名为候选人时，党内自由派作出了妥协，而没有退党抗议。总统直选制没有实现，作为向自由派的交换，直接选举在州长一级被引入了。紧接着，保罗着手于经济问题：为了克服通货膨胀、扶植商业发展，政府决定上马大型基础设施与工业项目，并分包给私人企业，以换取利润投资巴西经济。已结束10年的“大工程时代”宣告重启，路桥、学校、医院、发电厂、港口数量大幅增加，教育、医疗与电力产业快速发展。这些改革大大提升了消费人口的购买力，暂时遏止了通货膨胀。与此同时，随着新兴政党与政治运动的越加活跃，巴西的政治面貌日趋向好。尽管民主社会党尽力去维护“1964年革命”的政治遗产，但政治冷漠与两党相护的时代已经宣告落幕。"
-const TXT_R6 := "由于党内自由派与温和派威胁退党并与反对党组成选举联盟，保罗·马卢夫宣布退选，而民主社会党最终提名马里奥·安德利亚扎为候选人，这也为马卢夫在民主运动党的反对派中赢得了部分选票，并最终被任命为副总统以巩固党派力量。作为政治改革的一项议程，也是为了使指挥棒不被在野党夺走，新政府引入了州长直接选举与总统直接选举制度，成为首个实施这一制度的政党。这一举措不仅广受欢迎，也使执政党巧妙地避开了召开制宪会议的呼吁，保留了议会多数党的地位。在经济方面，新政府宣布展开“新经济计划”：将所有无利可图的国有企业私有化，并将所获得的的资金投入一项庞大的住房计划与环境工程，从而为所有人提供自住保障房。由于终止了对诸多国有企业的补贴，政府得以进一步大幅削减财政支出，从而有效遏制了威胁巴西经济的通货膨胀。"
-const TXT_R3 := "社会的动荡、局势的紧张与对未来的不安最终使右翼政党没能站稳脚跟。尽管三个左翼政党存在分歧，民主工党（PDT）、奉行左翼威权主义，与军方关系暧昧的巴西工党（PTB），以及同工会运动关系密切的劳工党（PT）最终组成了选举联盟并提名了共同候选人。同时，由于民主社会党的分裂，新诞生的中间派决定支持左翼候选人，因为他承诺将维持并深化巴西的民主化与联邦化。左翼联盟在获取执政权后，由于未能得到议会多数党地位，联盟不得不进行建立妥协式的统战联盟：接受中间派的方案以实施政治改革、接受民主社会党的方案实施经济改革。其结果是，总统和州长的直接选举制度被引入、审查制度得以废除，不过，广播电视媒体的私有化没有发生。在经济领域，政府采取了“国有化”改革，即强制收购石油、天然气公司51%的股份以及收回所有包含自然资源的土地财产。由于改革产生的效益，一种被称为“布里佐拉主义”的现象发生了：以贫困、弱势、边缘化人口为执政基本盘、广泛建设社会用住房、通过国家力量以非经济利益目的创造就业岗位、引入由国家买单的面包篮子......这些方案也被后来的委内瑞拉查韦斯政府所采纳。"
+const TXT_PROPRC_YES := "event.script.event_127_brazil_revival.c0"
+const TXT_PROPRC_NO := "event.script.event_127_brazil_revival.c1"
+const TXT_R7 := "event.script.event_127_brazil_revival.c2"
+const TXT_R8 := "event.script.event_127_brazil_revival.c3"
+const TXT_R6 := "event.script.event_127_brazil_revival.c4"
+const TXT_R3 := "event.script.event_127_brazil_revival.c5"
 
 
 
 
 func _proprc_suffix(c: CountryData) -> String:
-	return TXT_PROPRC_YES if c.has_tag("亲中") else TXT_PROPRC_NO
+	return tr(TXT_PROPRC_YES) if c.has_tag("亲中") else tr(TXT_PROPRC_NO)
 
 func _get_winner_in_america(country: CountryData, ideo: Array, sup: Array, coef: float, party: int) -> int:
 	if country == null:
@@ -173,15 +173,15 @@ func execute(context: Dictionary) -> void:
 	brazil.next_election_day = 15
 	if winner == 7:
 		brazil.level_of_instability -= 15
-		context["result_text"] = TXT_R7 + _proprc_suffix(brazil)
+		context["result_text"] = tr(TXT_R7) + _proprc_suffix(brazil)
 	elif winner == 8:
 		brazil.level_of_development += 15
 		_add_power(EmpireData.USA, -5)
-		context["result_text"] = TXT_R8 + _proprc_suffix(brazil)
+		context["result_text"] = tr(TXT_R8) + _proprc_suffix(brazil)
 	elif winner == 6:
 		brazil.level_of_instability -= 10
 		brazil.level_of_development += 5
-		context["result_text"] = TXT_R6 + _proprc_suffix(brazil)
+		context["result_text"] = tr(TXT_R6) + _proprc_suffix(brazil)
 	elif winner == 3:
 		brazil.level_of_instability -= 5
 		brazil.level_of_development += 10
@@ -189,5 +189,20 @@ func execute(context: Dictionary) -> void:
 		var argentina := ws.get_country_by_legacy_index(71)
 		if argentina != null:
 			argentina.set_tag("亲美", false)
-		context["result_text"] = TXT_R3 + _proprc_suffix(brazil)
+		context["result_text"] = tr(TXT_R3) + _proprc_suffix(brazil)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_127_brazil_revival.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_127",
+	"num": 127,
+	"priority": 12700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_127_brazil_revival.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

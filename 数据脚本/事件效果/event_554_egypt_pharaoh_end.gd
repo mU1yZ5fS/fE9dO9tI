@@ -5,14 +5,14 @@ extends "res://数据脚本/event_script_base.gd"
 ##   event_done[37] && IsAuthoritarianism(30) && c30.Vyshi && (1981.10.6 或 1982+)。
 ## 差异：isSEV/isASEAN→has_tag；spec→special；Vyshi→亲美。
 
-const TXT_OPT0_DIS := "我们不想要这样的国家"
-const TXT_OPT1_DIS := "我们没法和起义者取得联络"
-const TXT_OPT2_DIS := "我们没必要为了萨达特这么做"
-const TXT_R0 := "在我们的干预下，穆斯林兄弟会、埃及伊斯兰教大会和埃及伊斯兰圣战组织等伊斯兰团体组成了革命联盟，上埃及的阿斯尤特省的起义，得益于萨达特的对伊斯兰力量的扶持，他们得以迅速通过组织网络将起义扩散到全国。通过民族主义和伊斯兰主义宣传，革命联盟动员城市平民组成民兵，在伊斯兰派军官带领军队倒戈并发起政变的情况下，民族民主党政权很快在围攻中倒台，革命联盟组织起基于伊斯兰神权统治的政府……"
-const TXT_R1_A := "很快，埃及人民民主革命阵线得以组织起民兵，利用萨达特去世后的混乱，发起大规模的起义。革命阵线组织的民兵冲入位于开罗的政府机构，强行解除了萨达特的亲信们的职务，在我们的特工的帮助下，动员起来的力量迅速将各地政治机构和重要政要逮捕。埃及军队也在我们的干预下陷入了混乱，无法被当局动员起来，在此前渗透中被发展起来的左翼军人掌控。埃及人民民主革命阵线很快夺取了权力，阵线被改组为埃及人民革命党，阿拉伯埃及共和国也被改为埃及人民共和国。在新政权的领导下，埃及开始进行社会主义革命。"
-const TXT_R1_B := "很快，埃及民族自由联盟得以动员民众抗议，组织起民兵，利用萨达特去世后的混乱，发起大规模的起义。联盟组织的民兵冲入位于开罗的政府机构，强行解除了萨达特的亲信们的职务，在我们的特工的帮助下，动员起来的力量迅速将各地政治机构和重要政要逮捕。埃及军队也在联盟的渗透和我们的干预下陷入了混乱，意识到对抗毫无意义的军人和文官组织政变，在谈判后，埃及宣布组织真正民主的选举。"
-const TXT_R2 := "我们的外交部谴责了伊斯兰极端主义者对萨达特总统的刺杀，并派遣代表参加了萨达特的葬礼，随后，同埃及领导人达成了一些新的合作协定。\n在暗杀的同时，伊斯兰主义者在上埃及的阿斯尤特省组织了一场起义，叛军控制了安全部门总部一天，并又拖延了政府军一天。6名袭击者和68名警察和士兵在战斗中丧生。直到来自开罗的伞兵抵达后，空军出动两架喷气式飞机恐吓武装分子，政府才恢复了对该地的控制。\n伊斯兰世界政府普遍对这次暗杀表示热烈欢迎，他们将萨达特视为叛徒。叙利亚官报的标题是“今日埃及告别终极叛徒”，而伊朗则以伊斯兰布利的名字命名了德黑兰的一条街道。来自世界各地的政要出席了萨达特的葬礼，人数创下历史新高，其中，三位美国前总统——杰拉尔德·福特、吉米·卡特和理查德·尼克松同时出席。苏丹总统加法尔·尼迈里是唯一出席葬礼的阿拉伯国家元首。在阿拉伯联盟的24个国家中，只有3个国家——阿曼、索马里和苏丹——派出了代表。以色列总理梅纳赫姆·贝京将萨达特视为私人朋友，坚持参加葬礼。\n萨达特最初由人民议会议长苏菲·阿布·塔勒布继任，他就任代理总统并立即宣布进入紧急状态。八天后，即1981年10月14日，萨达特的副总统胡斯尼·穆巴拉克宣誓就任埃及新总统，开启了埃及在紧急状态法下长期统治的时代。穆巴拉克采取了更为多边的外交方式，寻求与阿拉伯国家的恢复关系。\n伊斯兰布利和其他刺客受到审判、定罪并被判处死刑。他们于1982年4月15日被处决，两名军人被行刑队处决，三名平民被绞死。"
-const TXT_R3 := "在暗杀的同时，伊斯兰主义者在上埃及的阿斯尤特省组织了一场起义，叛军控制了安全部门总部一天，并又拖延了政府军一天。6名袭击者和68名警察和士兵在战斗中丧生。直到来自开罗的伞兵抵达后，空军出动两架喷气式飞机恐吓武装分子，政府才恢复了对该地的控制。\n伊斯兰世界政府普遍对这次暗杀表示热烈欢迎，他们将萨达特视为叛徒。叙利亚官报的标题是“今日埃及告别终极叛徒”，而伊朗则以伊斯兰布利的名字命名了德黑兰的一条街道。来自世界各地的政要出席了萨达特的葬礼，人数创下历史新高，其中，三位美国前总统——杰拉尔德·福特、吉米·卡特和理查德·尼克松同时出席。苏丹总统加法尔·尼迈里是唯一出席葬礼的阿拉伯国家元首。在阿拉伯联盟的24个国家中，只有3个国家——阿曼、索马里和苏丹——派出了代表。以色列总理梅纳赫姆·贝京将萨达特视为私人朋友，坚持参加葬礼。\n萨达特最初由人民议会议长苏菲·阿布·塔勒布继任，他就任代理总统并立即宣布进入紧急状态。八天后，即1981年10月14日，萨达特的副总统胡斯尼·穆巴拉克宣誓就任埃及新总统，开启了埃及在紧急状态法下长期统治的时代。穆巴拉克采取了更为多边的外交方式，寻求与阿拉伯国家的恢复关系。\n伊斯兰布利和其他刺客受到审判、定罪并被判处死刑。他们于1982年4月15日被处决，两名军人被行刑队处决，三名平民被绞死。"
+const TXT_OPT0_DIS := "event.script.event_554_egypt_pharaoh_end.c0"
+const TXT_OPT1_DIS := "event.script.event_554_egypt_pharaoh_end.c1"
+const TXT_OPT2_DIS := "event.script.event_554_egypt_pharaoh_end.c2"
+const TXT_R0 := "event.script.event_554_egypt_pharaoh_end.c3"
+const TXT_R1_A := "event.script.event_554_egypt_pharaoh_end.c4"
+const TXT_R1_B := "event.script.event_554_egypt_pharaoh_end.c5"
+const TXT_R2 := "event.script.event_554_egypt_pharaoh_end.c6"
+const TXT_R3 := "event.script.event_554_egypt_pharaoh_end.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -25,15 +25,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.influence_prc >= 500 and d.war_support >= 600 and not ws.modifiers[3].is_active 			and c8 != null and c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if (d.political_line < 2 and r37 == 2) or (d.political_line > 2 and r37 == 3):
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if d.political_line > 1:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -57,7 +57,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PEOPLE_SUPPORT, 150)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			var r37 := int(ws.completed_event_ids.get("egyptian_unrest", 0))
 			if r37 == 2:
@@ -82,7 +82,7 @@ func execute(context: Dictionary) -> void:
 				_add_relation(EmpireData.USSR, 150)
 				_add_relation(EmpireData.USA, -250)
 				_add(W.I_DIPLO, 50)
-				context["result_text"] = TXT_R1_A
+				context["result_text"] = tr(TXT_R1_A)
 			else:
 				_add(W.I_BUDGET, -150)
 				_add(W.I_AGENTS, -150)
@@ -108,7 +108,7 @@ func execute(context: Dictionary) -> void:
 				_add_relation(EmpireData.USSR, -250)
 				_add_relation(EmpireData.USA, 150)
 				_add(W.I_DIPLO, -50)
-				context["result_text"] = TXT_R1_B
+				context["result_text"] = tr(TXT_R1_B)
 		2:
 			if c30 != null:
 				c30.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
@@ -118,11 +118,27 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, 100)
 			_add(W.I_DIPLO, 50)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			if c30 != null:
 				c30.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				c30.government = GameConstants.Government.AUTHORITARIAN
 				_leave_alliances(c30)
 				c30.set_tag("对华贸易", true)
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_554_egypt_pharaoh_end.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_554",
+	"num": 554,
+	"priority": 55400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_554_egypt_pharaoh_end.gd",
+	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "egyptian_unrest"}, {"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "government", "target": "30"}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "sub_government", "target": "30"}]}, {"t": "COUNTRY_HAS_TAG", "key": "亲美", "target": "30"}, {"t": "ANY", "c": [{"t": "DATE_AFTER", "key": "1981.10.6"}, {"t": "DATE_AFTER", "key": "1981.11.1"}, {"t": "DATE_AFTER", "key": "1982.1.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

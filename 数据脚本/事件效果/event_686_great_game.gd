@@ -1,22 +1,16 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event686.cs：大博弈（西欧影响力机制激活，三选项）。
-## 触发：ReqEventsDLC02.cs:1369-1371 —— !c0.eu && !c51.nato
-##   && ((c7.sev && c7.ovd) || is_gkchp) && !c85.soc_eu && !c21.fxseu && !c21.nazimao
-##   && !ev713 && (!ev548 || china.rim) → trigger_script evaluate。
-## 差异：sovpower/prcpower→sov_power/prc_power；spec→special；based→有驻军基地；
-##   isSEV→sev、isOVD→ovd、Torg→对华贸易、prosov→亲苏、isRIM→rim；
-##   politics_dolshnost[2]<100 用外长姓名，否则用领袖姓名；relres→get_flag("relres")。
+## 原作 Event686.cs：大博弈（西欧影响力机制激活，三选项）。 ## 触发：ReqEventsDLC02.cs:1369-1371 —— !c0.eu && !c51.nato ##   && ((c7.sev && c7.ovd) is_gkchp) && !c85.soc_eu && !c21.fxseu && !c21.nazimao ##   && !ev713 && (!ev548 china.rim) → trigger_script evaluate。 ## 差异：sovpower/prcpower→sov_power/prc_power；spec→special；based→有驻军基地； ##   isSEV→sev、isOVD→ovd、Torg→对华贸易、prosov→亲苏、isRIM→rim； ##   politics_dolshnost[2]<100 用外长姓名，否则用领袖姓名；relres→get_flag("relres")。
 
-const TXT_OPT0_FMT := "实际上，我们也有我们自己的{0}{1}计划。是时候对遏制政策故事重提了！"
-const TXT_OPT0_DIS_A := "干涉主义可不是我们的政策"
-const TXT_OPT0_DIS_B := "欧洲太过遥远，我们鞭长莫及"
-const TXT_OPT1_DIS_A := "苏联可不会任我国与东欧诸国眉来眼去！"
-const TXT_OPT1_DIS_B := "我们与苏联的关系还不足以如此"
-const TXT_R0_FM_FMT := "作为冷战牌局内不可忽视的玩家，我们可不会将好不容易得来的胜利成果拱手相让。不久后，得到我国外交部长{2}{3}同志亲自指导的《对苏联共产党的第十评》与作为参考文件的的乔治·凯南“长电报”便出现在您的桌前：苏联扩张主义的发展，欧洲作为冷战前线的战略价值，以及有必要开辟“第二战场”缓解中国国防压力的现实需要共同促使{0}{1}下定决心实行新时代的遏制政策。也就在苏联大肆宣扬其“葛罗米柯计划”并鼓励欧洲诸国安心接受“更公正合理的和平共存新关系”同时。我国公安部以中央人民广播电台名义建立了旨在向欧洲国家广播事实，促使其向东方之东看齐的“明灯”分部，并依托自己的西欧盟国建立其欧洲框架。它很快便会成为庇护欧洲亲中政治团体的主要赞助商与我们在欧洲的主要宣传阵地（讽刺的事情是，“明灯”内确实有颇多成员是从早已垮台的“自由欧洲”内转正，显然是为了饭碗）。与其同步推进的则是所谓“{2}{3}计划”——我们将通过输送投资金及廉价产品，提供基础设施建设与技术援助方案支持认可我国价值观的西欧政权，并在这一基础上培育亲近我国的本土政客与资产阶级。通过鼓励亲近我国的西欧盟友放开贸易壁垒，扮演中欧互动间桥梁，以及同奥地利、瑞典等中立政权达成部分领域内多边合作的方式。我们得以在控制成本的同时尽可能稳健而有效地拓展自身的影响力。对冷战中间地带的争夺就此开始，而这将决定欧洲的命运……"
-const TXT_R0_LEADER_FMT := "作为冷战牌局内不可忽视的玩家，我们可不会将好不容易得来的胜利成果拱手相让。不久后，《对苏联共产党的第十评》与作为参考文件的的乔治·凯南“长电报”便出现在您的桌前：苏联扩张主义的发展，欧洲作为冷战前线的战略价值，以及有必要开辟“第二战场”缓解中国国防压力的现实需要共同促使{0}{1}下定决心实行新时代的遏制政策。也就在苏联大肆宣扬其“葛罗米柯计划”并鼓励欧洲诸国安心接受“更公正合理的和平共存新关系”同时。我国公安部以中央人民广播电台名义建立了旨在向欧洲国家广播事实，促使其向东方之东看齐的“明灯”分部，并依托自己的西欧盟国建立其欧洲框架。它很快便会成为庇护欧洲亲中政治团体的主要赞助商与我们在欧洲的主要宣传阵地（讽刺的事情是，“明灯”内确实有颇多成员是从早已垮台的“自由欧洲”内转正，显然是为了饭碗）。与其同步推进的则是所谓“{0}{1}计划”——我们将通过输送投资金及廉价产品，提供基础设施建设与技术援助方案支持认可我国价值观的西欧政权，并在这一基础上培育亲近我国的本土政客与资产阶级。通过鼓励亲近我国的西欧盟友放开贸易壁垒，扮演中欧互动间桥梁，以及同奥地利、瑞典等中立政权达成部分领域内多边合作的方式。我们得以在控制成本的同时尽可能稳健而有效地拓展自身的影响力。对冷战中间地带的争夺就此开始，而这将决定欧洲的命运……"
-const TXT_R1 := "中国的一边倒立场事实上让苏联成为了欧洲棋盘的唯一玩家，并让后者的扩张如虎添翼。本就在欧洲地区享有绝对优势的苏联自然能轻易拿捏这些西欧政权，中国的加入则解决了上述政权“和平长入社会主义”所需的时间问题。背靠苏联支持的政党很快便参照40年代捷克斯洛伐克共产党的经验在西欧各地成功夺权，建立起以共产主义者为核心的人民民主政府。国家警察与武装工人民兵驱散了试图捍卫旧秩序的队伍，并开始指导那些试图同苏联合作的政治家将各类社会团体与政党组织转化为东德模式——前者作为国家机器与执政党的派生，后者则代表特定的社会阶层实施“参政”。接下来则是建立社会化经济并筹建国家计划委员会。新秩序就这样到来了……"
-const TXT_R2 := "中国的孤立主义立场事实上让苏联成为了欧洲棋盘的唯一玩家，并让后者的扩张畅通无阻。考虑到苏联在欧洲地区的绝对优势，这些西欧政权的倒戈不过是时间问题……"
+const TXT_OPT0_FMT := "event.script.event_686_great_game.c0"
+const TXT_OPT0_DIS_A := "event.script.event_686_great_game.c1"
+const TXT_OPT0_DIS_B := "event.script.event_686_great_game.c2"
+const TXT_OPT1_DIS_A := "event.script.event_686_great_game.c3"
+const TXT_OPT1_DIS_B := "event.script.event_686_great_game.c4"
+const TXT_R0_FM_FMT := "event.script.event_686_great_game.c5"
+const TXT_R0_LEADER_FMT := "event.script.event_686_great_game.c6"
+const TXT_R1 := "event.script.event_686_great_game.c7"
+const TXT_R2 := "event.script.event_686_great_game.c8"
 
 const PROPRC_LIST := [92, 21, 85, 86, 87, 29, 17]
 const NEUTRAL_LIST := [0, 27, 28, 88, 89, 90, 91]
@@ -32,18 +26,18 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	var can_contain := china != null and china.has_tag("econ") and china.has_tag("okb") \
 		and ws.influence_prc >= 1000 and _res(W.I_RESERVE) >= 250 and proprc_count >= 3
 	if can_contain:
-		_enable(opt[0], TXT_OPT0_FMT.replace("{0}{1}", _plan_author_name()))
+		_enable(opt[0], tr(TXT_OPT0_FMT).replace("{0}{1}", _plan_author_name()))
 	elif china == null or not china.has_tag("econ") or not china.has_tag("okb"):
-		_disable(opt[0], TXT_OPT0_DIS_A)
+		_disable(opt[0], tr(TXT_OPT0_DIS_A))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS_B)
+		_disable(opt[0], tr(TXT_OPT0_DIS_B))
 	if china != null and china.government != GameConstants.Government.LIBERAL and ws.get_flag("relres") \
 			and china.has_tag("sev"):
 		_enable(opt[1], event_def.options[1].text)
 	elif china != null and china.government == GameConstants.Government.LIBERAL:
-		_disable(opt[1], TXT_OPT1_DIS_A)
+		_disable(opt[1], tr(TXT_OPT1_DIS_A))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_B)
+		_disable(opt[1], tr(TXT_OPT1_DIS_B))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -75,10 +69,10 @@ func execute(context: Dictionary) -> void:
 		var leader := _leader_name()
 		var plan_author := _plan_author_name()
 		if _has_foreign_minister():
-			context["result_text"] = TXT_R0_FM_FMT.replace("{0}{1}", leader) \
+			context["result_text"] = tr(TXT_R0_FM_FMT).replace("{0}{1}", leader) \
 				.replace("{2}{3}", plan_author)
 		else:
-			context["result_text"] = TXT_R0_LEADER_FMT.replace("{0}{1}", leader)
+			context["result_text"] = tr(TXT_R0_LEADER_FMT).replace("{0}{1}", leader)
 		_add(W.I_BUDGET, -250)
 		_add(W.I_AGENTS, -250)
 		_add(W.I_ARMY, -50)
@@ -92,7 +86,7 @@ func execute(context: Dictionary) -> void:
 				c.prc_power = 250 + 50 * proprc_count
 		return
 	if opt == 1:
-		context["result_text"] = TXT_R1
+		context["result_text"] = tr(TXT_R1)
 		_add(W.I_BUDGET, -100)
 		_add_relation(EmpireData.USA, 500)
 		_add_relation(EmpireData.USSR, -250)
@@ -109,7 +103,7 @@ func execute(context: Dictionary) -> void:
 			_apply_finland_turn(finland, ussr)
 		return
 	if opt == 2:
-		context["result_text"] = TXT_R2
+		context["result_text"] = tr(TXT_R2)
 
 
 func evaluate(world: WorldState) -> bool:
@@ -206,3 +200,16 @@ func _apply_finland_turn(c: CountryData, ussr: EmpireData) -> void:
 	c.set_tag("sev", true)
 	c.set_tag("ovd", true)
 	c.有驻军基地 = true
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_686_great_game.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_686",
+	"num": 686,
+	"priority": 68600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_686_great_game.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_686_great_game.gd",
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

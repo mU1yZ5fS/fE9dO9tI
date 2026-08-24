@@ -1,9 +1,6 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event931.cs：民主的故乡——第二幕（希腊第三次议会选举）。
-## 触发：TimeScript.cs:10773-10779 ——
-##   ((日>=18 且 月>=10 且 年>=1981) || (月>=11 且 年>=1981) || 年>=1982)。
-## 差异：resultOfEvents[93] 分支决定 1/3 选项（prepare 动态替换）；其余逐字保留。
+## 原作 Event931.cs：民主的故乡——第二幕（希腊第三次议会选举）。 ## 触发：TimeScript.cs:10773-10779 —— ##   ((日>=18 且 月>=10 且 年>=1981) (月>=11 且 年>=1981) 年>=1982)。 ## 差异：resultOfEvents[93] 分支决定 1/3 选项（prepare 动态替换）；其余逐字保留。
 
 static var _opts_full: Array[EventOption] = []
 
@@ -63,7 +60,7 @@ func execute(context: Dictionary) -> void:
 				if cyprus != null:
 					cyprus.special -= 5
 				_add_power(EmpireData.USA, -50)
-				context["result_text"] = "我们的特勤部门帮助泛希腊社会主义运动开展竞选活动，并且积极地阻碍新民主党的竞选活动。他们成功赢得了大选，组建了希腊历史上第一个社会主义政府。在我们和苏联的支持下，希腊新政府设法排除了亲欧共体势力的影响，终止了加入欧共体的进程，但是因为反对意见过大，希腊最终未能退出北约。帕潘德里欧政府承认了民族抵抗运动和本都希腊人的种族灭绝。并开始着手建立国家卫生系统和废除希腊宪兵队与城市警察，将他们合并为一个单一的警察机构。"
+				context["result_text"] = tr("event.script.event_931_greece_act2.i0")
 			1:
 				_add(W.I_DIPLO, -10)
 				_add_relation(EmpireData.USA, 80)
@@ -74,14 +71,14 @@ func execute(context: Dictionary) -> void:
 						greece.set_tag("对华贸易", true)
 				if cyprus != null:
 					cyprus.special += 5
-				context["result_text"] = "我们的特勤部门帮助新民主党解决了党内问题，开展竞选活动，并且积极地阻碍泛希腊社会主义运动的竞选活动。新民主党成功赢得了选举。新政府希望开展进一步的经济改革，意在确保希腊欧共体成员的资格，以及恢复该国在北约中的活动。"
+				context["result_text"] = tr("event.script.event_931_greece_act2.i1")
 			2:
 				_add_power(EmpireData.USA, 20)
 				if greece != null:
 					greece.set_tag("eu", true)
 					greece.government = GameConstants.Government.REFORMIST
 					greece.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
-				context["result_text"] = "泛希腊社会主义运动成功赢得了大选，组建了希腊历史上第一个社会主义政府。帕潘德里欧的新政府在获胜后推出了几项有趣的政策（民事婚礼合法化、新的家庭法、某些私营公司的国有化，承认民族抵抗运动和本都希腊人的种族灭绝合并希腊宪兵队和城市警察为单一警察机构等）。在新民主党的总统和党内其他派系的阻挠下，希腊未能实现退出北约和终止加入欧共体。"
+				context["result_text"] = tr("event.script.event_931_greece_act2.i2")
 	else:
 		if opt == 0:
 			_add(W.I_DIPLO, 10)
@@ -95,7 +92,21 @@ func execute(context: Dictionary) -> void:
 			if cyprus != null:
 				cyprus.special -= 5
 			_add_power(EmpireData.USA, -50)
-			context["result_text"] = "左翼联合政府赢得了希腊大选。希腊继续维持左翼联盟政府，并在外交中继续保持中立。希腊将继续维持左翼多党霸权。不过，这种泛左翼的联合政府究竟还能维持多久？"
+			context["result_text"] = tr("event.script.event_931_greece_act2.i3")
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_931_greece_act2.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_931",
+	"nodesc": true,
+	"num": 931,
+	"priority": 9310,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_931_greece_act2.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1981.10.18"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

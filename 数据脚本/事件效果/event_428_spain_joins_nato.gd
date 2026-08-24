@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1399-1401 —— c86.Gosstroy==3 + resultOfEvents[424]==1 + DATE_AFTER。
 ## 差异：spec→special；isNATO→标签 nato；Vyshi→亲美。
 
-const TXT_RESULT := "然而，卡尔沃·索特洛与民主中间派联盟的支持率仍在下降。而在1979年选择抛弃马克思主义，并参与民主选举游戏的西班牙工人社会党则有望赢得接下来举行的选举。也许先前对北约极度谨慎的社会党人，将重新考虑西班牙的外交政策？"
-const TXT_IDX_1431 := "西班牙加入北约"
-const TXT_IDX_1432 := "军事政变的失败，反而让政治家坚定了决心：北约组织的部队，也许比他们本国深受长枪党思想与等级制影响的部队更加可靠。西班牙领导人们开始考虑改变他们的外交政策，并寻求让西班牙加入北大西洋公约组织。倘若说在苏亚雷斯时期，前首相还怀疑如此做的可行性，并相信中立才最有利于西班牙的发展。而到了他的继承人卡尔沃·索特洛这里，外交政策便发生了显著转变。1982年5月30日，西班牙被批准加入北约。"
-const TXT_IDX_1433 := "密切关注......"
-const TXT_IDX_1434 := "然而，卡尔沃·索特洛与民主中间派联盟的支持率仍在下降。而在1979年选择抛弃马克思主义，并参与民主选举游戏的西班牙工人社会党则有望赢得接下来举行的选举。也许先前对北约极度谨慎的社会党人，将重新考虑西班牙的外交政策？"
+const TXT_RESULT := "event.script.event_428_spain_joins_nato.c0"
+const TXT_IDX_1431 := "event.script.event_428_spain_joins_nato.c1"
+const TXT_IDX_1432 := "event.script.event_428_spain_joins_nato.c2"
+const TXT_IDX_1433 := "event.script.event_428_spain_joins_nato.c3"
+const TXT_IDX_1434 := "event.script.event_428_spain_joins_nato.c4"
 
 
 
@@ -49,4 +49,20 @@ func execute(context: Dictionary) -> void:
 		spain.set_tag("nato", true)
 		spain.set_tag("亲美", true)
 	_add_power(EmpireData.USA, 70)
-	context["result_text"] = TXT_RESULT
+	context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_428_spain_joins_nato.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_428",
+	"num": 428,
+	"priority": 42800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_428_spain_joins_nato.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "government", "v": 3, "target": "86"}, {"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_424"}, {"t": "DATE_AFTER", "key": "1982.6.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

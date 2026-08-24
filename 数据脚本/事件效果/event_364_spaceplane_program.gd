@@ -5,15 +5,15 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "设计个小的。"
-const TXT_OPT0_DIS := "没有这么做的资源。"
-const TXT_OPT1 := "设计个大的。"
-const TXT_OPT1_DIS := "也没有这么做的资源。"
-const TXT_OPT2 := "放弃该项目。"
+const TXT_OPT0 := "event.script.event_364_spaceplane_program.c0"
+const TXT_OPT0_DIS := "event.script.event_364_spaceplane_program.c1"
+const TXT_OPT1 := "event.script.event_364_spaceplane_program.c2"
+const TXT_OPT1_DIS := "event.script.event_364_spaceplane_program.c3"
+const TXT_OPT2 := "event.script.event_364_spaceplane_program.c4"
 
-const TXT_R0 := "不久，中国发射了小型太空飞机，在这方面超过了苏联。然而，管理层很快就失望了——这个设备几乎没有什么实际效益，而且永远也无法收回投入在它上的成本。因此，航天飞机计划很快就被关闭了。"
-const TXT_R1 := "中国决定制造一种基本类似于美国航天飞机和苏联暴风雪号的航天飞机。当然，这个项目最多几年就能完成，但它将真正能够发挥作用，不像轻型航天飞机项目一样。"
-const TXT_R2 := "我们决定放弃发展航天飞机。太空中还有其他更重要的任务。"
+const TXT_R0 := "event.script.event_364_spaceplane_program.c5"
+const TXT_R1 := "event.script.event_364_spaceplane_program.c6"
+const TXT_R2 := "event.script.event_364_spaceplane_program.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,14 +22,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if _budget_reserve(world) >= 50:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if _budget_reserve(world) >= 100:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
+	_enable(opt[2], tr(TXT_OPT2))
 
 
 func execute(context: Dictionary) -> void:
@@ -42,14 +42,14 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -50)
 			if d.size() > 143:
 				d.oil_price += 5  # 原 data.oil_price（无 I_ 常量）
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_SCIENCE, 100)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_DIPLO, 50)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -98,3 +98,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_364_spaceplane_program.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_364",
+	"num": 364,
+	"priority": 36400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_364_spaceplane_program.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1985.10.1"}, {"t": "TECH_UNLOCKED", "v": 33}, {"t": "PREV_EVENT_DONE", "ref": "event_363"}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

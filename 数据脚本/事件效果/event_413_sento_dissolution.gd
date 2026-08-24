@@ -31,13 +31,13 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1280 := "中央条约组织的解散"
-const TXT_IDX_1281 := "中央条约组织是20世纪50年代，由英国、美国与土耳其牵头组建的中东反苏政治军事联盟。尽管伊拉克在50年代末期离开了该组织，且该组织的支柱之一大英帝国已经崩溃。但中央条约组织依然继续存在了一段时间。{1}"
-const TXT_IDX_1282 := "然而巴基斯坦与伊朗的离开，为该组织钉上了棺材板的钉子。"
-const TXT_IDX_1283 := "然而巴基斯坦的离开，为该组织钉上了棺材板的钉子。"
-const TXT_IDX_1284 := "然而伊朗的离开，为该组织钉上了棺材板的钉子。"
-const TXT_IDX_1285 := "好的......"
-const TXT_IDX_1286 := "今天，由于中央条约组织的绝大多数成员都已离开了该组织。中央条约组织的常设部长理事会决定自我解散。"
+const TXT_IDX_1280 := "event.script.event_413_sento_dissolution.c0"
+const TXT_IDX_1281 := "event.script.event_413_sento_dissolution.c1"
+const TXT_IDX_1282 := "event.script.event_413_sento_dissolution.c2"
+const TXT_IDX_1283 := "event.script.event_413_sento_dissolution.c3"
+const TXT_IDX_1284 := "event.script.event_413_sento_dissolution.c4"
+const TXT_IDX_1285 := "event.script.event_413_sento_dissolution.c5"
+const TXT_IDX_1286 := "event.script.event_413_sento_dissolution.c6"
 
 ## 原文字符串附录（供自检）
 
@@ -89,3 +89,19 @@ func execute(context: Dictionary) -> void:
 	if c31 != null:
 		c31.set_tag("sento", false)
 	context["result_text"] = TXT_R[0]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_413_sento_dissolution.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_413",
+	"num": 413,
+	"priority": 41300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_413_sento_dissolution.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_413_sento_dissolution.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

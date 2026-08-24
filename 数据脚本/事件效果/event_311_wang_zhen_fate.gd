@@ -4,8 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:504-507 —— NumberOfPolitician(17,17)>=0 且 年>=1981 且 ((党内支持<=750 且 (路线0或1)) 或 event_done[310])。
 ## 差异：KillPerson→game.kill_politician；文本来自 Events_text_en 索引 104-109。
 
-const TXT_R0 := "关于王震的不利材料被送往档案馆，但在那里它们意外丢失了。"
-const TXT_R1 := "你下令开始对王震提起刑事诉讼。面对一切证据确凿的指控，一位前军人，现在的前党员，站在法庭上，疾呼他的敌人捏造了所有案件。但这只不过是为自己徒劳地开脱罢了，因此，王震很快便因与毒贩有牵连和犯下叛国罪而被枪决。"
+const TXT_R0 := "event.script.event_311_wang_zhen_fate.c0"
+const TXT_R1 := "event.script.event_311_wang_zhen_fate.c1"
 
 func evaluate(world: WorldState) -> bool:
 	if world == null:
@@ -28,7 +28,7 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_THOUGHT_FREEDOM, 150)
 			_add(W.I_ARMY, 150)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			var num := _find_politician(17, 17)
 			_add(W.I_ARMY, -150)
@@ -40,7 +40,7 @@ func execute(context: Dictionary) -> void:
 					p.power -= 250
 			if num >= 0:
 				game.kill_politician(num)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 	
 
@@ -59,3 +59,19 @@ func _has_politician(world: WorldState, name1: int, name2: int) -> bool:
 		if p != null and p.name_first == name1 and p.name_last == name2:
 			return true
 	return false
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_311_wang_zhen_fate.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_311",
+	"num": 311,
+	"priority": 31100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_311_wang_zhen_fate.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_311_wang_zhen_fate.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

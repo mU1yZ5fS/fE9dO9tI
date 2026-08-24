@@ -1,13 +1,11 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event515.cs：来自未来？（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event515.cs：来自未来？（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "无论是刀还是刀乐，总之就是——没有"
-const TXT_R0_A := "我们决定将资金投资在刀刃上，开始着手研究无人飞行器，这对我们的电子业提出了巨大的要求。但成果是显著的，绰号“红小兵”的无人侦察飞行器除开噪声问题外，没有过分的烦恼。而这个问题将会在未来得到解决，我们的侦察和测绘能力显著增强了，而具有察打一体的型号正在研发中。也许在未来，农民也可以在拖拉机站领到农用无人机，这将显著的解放生产力和劳作精力。"
-const TXT_R1_A := "我们决定把这项技术用在研究航模上，事实证明这是个极为正确的决定。我们的“耐摔王”型无人飞行器很快成为了全国孩子都梦寐以求的儿童节礼物。其中模仿三叉戟客机的一款销量尤其高，这是什么原因呢？"
-const TXT_R2_A := "没有必要研究这种武器，我们的战士无比英勇，用无人机的是一等一的孬种！"
+const TXT_OPT0_DIS := "event.script.event_515_from_the_future.c0"
+const TXT_R0_A := "event.script.event_515_from_the_future.c1"
+const TXT_R1_A := "event.script.event_515_from_the_future.c2"
+const TXT_R2_A := "event.script.event_515_from_the_future.c3"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -17,7 +15,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.budget + ws.reserve >= 50:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 	_enable(opt[2], event_def.options[2].text)
 
@@ -27,7 +25,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(50))
 			_add(9, 50)
 			_add(22, 50)
@@ -35,17 +33,7 @@ func execute(context: Dictionary) -> void:
 			_add(6, 5)
 			_add(3, 50)
 			ws.influence_prc += 20
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc[num] += "<color=red>| 无 人 飞 行 器 ：</color>| 军 力+0.2 ， 特 工 网 络 + 0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |无人飞行器：|军力+0.2，特工网络+0.1
-		1:
-			context["result_text"] = TXT_R1_A
-			_add(1, 50)
-			_add(3, 100)
-		2:
-			context["result_text"] = TXT_R2_A
-			_add(31, 50)
-			_add(57, 50)
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 无 人 飞 行 器 ：</color>| 军 力+0.2 ， 特 工 网 络 + 0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |无人飞行器：|军力+0.2，特工网络+0.1 1: context["result_text"] = tr(TXT_R1_A) _add(1, 50) _add(3, 100) 2: context["result_text"] = tr(TXT_R2_A) _add(31, 50) _add(57, 50)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -180,3 +168,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_515_from_the_future.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_515",
+	"num": 515,
+	"priority": 51500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_515_from_the_future.gd",
+	"trigger": [{"t": "TECH_UNLOCKED", "v": 23}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

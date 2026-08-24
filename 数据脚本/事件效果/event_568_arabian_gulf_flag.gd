@@ -11,11 +11,11 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "通过阿湾人阵在城市中对海湾国家的各企业中的地下组织，阿湾人阵得以在城市中把来自各地的工人、进步的学生和知识分子团结起来，发起罢工斗争，并利用我们提供的武器与警察和军队开展街垒战；与此同时，农村根据地也开展了全面动员，以进行对敌人的全面进攻。全面的战争开始了，而世界也在注视着这场战争，以及与此息息相关的油价……"
+const TXT_R0 := "event.script.event_568_arabian_gulf_flag.c0"
 
-const WAR43_NAME := "阿拉伯湾革命"
-const WAR43_SIDE1 := "阿拉伯湾国家政府"
-const WAR43_SIDE2 := "阿湾人阵起义军"
+const WAR43_NAME := "event.script.event_568_arabian_gulf_flag.c1"
+const WAR43_SIDE1 := "event.script.event_568_arabian_gulf_flag.c2"
+const WAR43_SIDE2 := "event.script.event_568_arabian_gulf_flag.c3"
 
 
 func execute(context: Dictionary) -> void:
@@ -38,8 +38,23 @@ func execute(context: Dictionary) -> void:
 		c36.set_tag("亲中", false)
 	if d.size() > 143:
 		d.oil_price += 10   # 原 data.oil_price（无命名键，同 Event114 约定）
-	game.start_war(43, WAR43_SIDE1, WAR43_SIDE2, 700 - num, 300 + num, 0, -1)
+	game.start_war(43, tr(WAR43_SIDE1), tr(WAR43_SIDE2), 700 - num, 300 + num, 0, -1)
 	if ws.wars.size() > 43 and ws.wars[43] != null:
-		ws.wars[43].name_war = WAR43_NAME
+		ws.wars[43].name_war = tr(WAR43_NAME)
 		ws.wars[43].fortnight_max = 24
-	context["result_text"] = TXT_R0
+	context["result_text"] = tr(TXT_R0)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_568_arabian_gulf_flag.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_568",
+	"num": 568,
+	"priority": 56800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_568_arabian_gulf_flag.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

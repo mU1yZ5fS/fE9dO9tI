@@ -4,8 +4,8 @@ const W = preload("res://数据脚本/world_state.gd")
 
 ## Event80 复杂触发钩子（EventDef.trigger_script 调用 evaluate(world) -> bool）。
 ## 对齐 TimeScript.cs:10637-10650 的两条 OR 分支：
-##   日期 = (月>=9 且 年>=1982) || 年>=1983
-##   A = (data.mao_history_line==1 || data.mao_history_line==2) && (!event_done[503] || resultOfEvents[503]!=0)
+##   日期 = (月>=9 且 年>=1982) 年>=1983
+##   A = (data.mao_history_line==1 data.mao_history_line==2) && (!event_done[503] resultOfEvents[503]!=0)
 ##   B = modifies[3].active && modifies[6].active && leader(name_1==2,name_2==2)
 ##       && NumberOfPolitician(0,0)>=0 && (3,3)>=0 && (4,4)>=0 && (5,5)>=0
 ## event_done[80] 由 fire_only_once 承担；result503 用 completed_event_ids

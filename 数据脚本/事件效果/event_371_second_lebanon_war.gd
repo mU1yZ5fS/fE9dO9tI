@@ -5,19 +5,19 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "战争即地狱"
-const TXT_WAR4_NAME := "第二次黎巴嫩战争"
-const TXT_WAR4_SIDE1 := "以色列"
-const TXT_WAR4_SIDE2 := "黎巴嫩"
+const TXT_OPT0 := "event.script.event_371_second_lebanon_war.c0"
+const TXT_WAR4_NAME := "event.script.event_371_second_lebanon_war.c1"
+const TXT_WAR4_SIDE1 := "event.script.event_371_second_lebanon_war.c2"
+const TXT_WAR4_SIDE2 := "event.script.event_371_second_lebanon_war.c3"
 
-const TXT_R0 := "希望这一切都将在不久后结束......"
+const TXT_R0 := "event.script.event_371_second_lebanon_war.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 1:
 		return
-	_enable(event_def.options[0], TXT_OPT0)
+	_enable(event_def.options[0], tr(TXT_OPT0))
 
 
 func execute(context: Dictionary) -> void:
@@ -29,8 +29,8 @@ func execute(context: Dictionary) -> void:
 			ws.set_flag("israellost", false)
 			# 原版 TickTime(12)，但 TimeScript.WorldWarsDone 对 war4 直接按 fortnight_go>=24 判定，
 			# 有效超时=24。
-			_start_war(4, TXT_WAR4_SIDE1, TXT_WAR4_SIDE2, 600, 400, 0, 1, TXT_WAR4_NAME, 24)
-			context["result_text"] = TXT_R0
+			_start_war(4, tr(TXT_WAR4_SIDE1), tr(TXT_WAR4_SIDE2), 600, 400, 0, 1, tr(TXT_WAR4_NAME), 24)
+			context["result_text"] = tr(TXT_R0)
 
 
 
@@ -79,3 +79,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_371_second_lebanon_war.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_371",
+	"num": 371,
+	"priority": 37100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_371_second_lebanon_war.gd",
+	"trigger": [{"t": "HAS_FLAG", "key": "israellost"}, {"t": "WAR_ACTIVE", "v": 10}, {"t": "COUNTRY_FIELD_EQUALS", "key": "government", "v": 3, "target": "37"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "亲中", "target": "37"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "亲美", "target": "35"}]}, {"t": "COUNTRY_FIELD_AT_MOST", "key": "development", "target": "37"}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

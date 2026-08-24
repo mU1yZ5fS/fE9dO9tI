@@ -4,13 +4,13 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:347-349 ——
 ##   event_done[459] && resultOfEvents[459]>=2 && (1980.1.26 或 1980.2 或 1981+)。
 
-const TXT_OPT0_DIS := "我们没有这个实力"
-const TXT_OPT1_DIS := "法国佬不会给我们好脸色"
-const TXT_OPT2_DIS := "有的时候不表态也是一种表态"
-const TXT_R0 := "意识到利比亚的计划不够完善，我们决定联系到与我们关系良好的阿尔及利亚，为利比亚清除阿拉伯民族叛徒的计划提供帮助。\n1月27日凌晨2点，突击队袭击了采矿小镇加夫萨的军营、国民警卫所和警察局，并占领了它。他们广播号召突尼斯人民发起一场反对布尔吉巴的民众起义，并通过法新社在巴黎发布的公报表明了自己的身份：“宣称此次行动旨在纪念1978年1月26日血腥屠杀事件的两周年，标志着突尼斯从社会主义宪政党的独裁统治及新殖民主义桎梏中解放国家的运动之始。”而与此同时，我们的特工同利比亚和阿尔及利亚和民兵和特勤人员共同行动，联系人民团结运动和工会等左翼反对派，在突尼斯国内掀起动乱。很快，占领了加夫萨的突尼斯解放军宣布成立“革命政府”并向利比亚和阿尔及利亚请求援助，随后，利比亚海陆空三军和阿尔及利亚的民兵同时出动，在内外交困的情况下，布尔吉巴发现自己完全失去了对局势的控制，它最终在混乱中逃亡法国，突尼斯进步力量民族阵线夺得了权力，阿拉伯突尼斯共和国成立了，该国由突尼斯进步力量民族阵线、人民团结运动和由突尼斯本土多个阿拉伯社会主义小团体整合而成的突尼斯阿拉伯社会主义联盟领导，埃泽丁·谢里夫成为了该国的新总统，并迅速同利比亚和阿尔及利亚签订了新的阿拉伯伊斯兰共和国的协议，将逐步推进合并进程。新政权同各个社会主义国家和阿拉伯进步国家建立了友好关系。西方阵营谴责利比亚：称这是侵略行为。"
-const TXT_R1 := "1月27日凌晨2点，突击队袭击了采矿小镇加夫萨的军营、国民警卫所和警察局，并占领了它。他们广播号召突尼斯人民发起一场反对布尔吉巴的民众起义，并通过法新社在巴黎发布的公报表明了自己的身份：“宣称此次行动旨在纪念1978年1月26日血腥屠杀事件的两周年，标志着突尼斯从社会主义宪政党的独裁统治及新殖民主义桎梏中解放国家的运动之始。”\n面对这一挑衅行为，我们向法国暗示到这条“中东疯狗”的狂妄。而法国也决定发起反击。空袭在深夜进行，乌压压的集群飞向利比亚。他们的目标有六个：的黎波里的阿奇奇耶兵营，西迪比拉勒港口的突击队训练中心和机场；班加西的贝尼纳机场和民众国兵营，以及苏尔特中心区。自法军驻突尼斯基地的轰炸机在短短的一小时内就将上述目标彻底摧毁。利比亚空军已完全瘫痪，卡扎菲本人和三个孩子也在空袭中丧生。随后，巴希尔·哈瓦迪上将所带领的军队则会同随后到来的法国陆地部队一起乘乱接管了利比亚的各大城市，西方各国和我们认可了他的举动，并迅速承认了临时政府。很快，一个意料之外但情理之中的选项：伊德里斯一世登上了台面。国王宣布重新回到他那最忠诚的的黎波里，西方世界也乐于承认这样一个君主，毕竟他又老又任人摆布，很快，西方石油公司和我们的石油企业也来到了这里，做着和革命前一样的事情……"
-const TXT_R2 := "我们谴责了利比亚干涉他国内政，称其妄图侵略突尼斯，并公开表达了对利比亚政府的不满。卡扎菲也很乐于谴责我们同帝国主义坐在一个桌子上，他甚至在最近公开接见了蒋经国。但我们和美国的关系显著改善了。\n1月27日凌晨2点，突击队袭击了采矿小镇加夫萨的军营、国民警卫所和警察局，并占领了它。他们广播号召突尼斯人民发起一场反对布尔吉巴的民众起义，并通过法新社在巴黎发布的公报表明了自己的身份：“宣称此次行动旨在纪念1978年1月26日血腥屠杀事件的两周年，标志着突尼斯从社会主义宪政党的独裁统治及新殖民主义桎梏中解放国家的运动之始。”但事与愿违，并没有突尼斯人响应他们的号召。\n面对局势，布尔吉巴向外国求援，法国随即决定派遣运输机、两架美洲狮直升机及军事顾问团队前往援助。此外，还计划从土伦调派三艘军舰，并辅以五艘潜艇护航，驶向突尼斯-利比亚海域。美国方面则通过向突尼斯近海派遣军舰及快速运送直升机与运输车辆，以“增强该国防御能力”。摩洛哥亦表示将派遣两架运输机与直升机支援。然而，所有这些援助均在袭击事件平息后抵达，突尼斯军队于2月3日成功夺回加夫萨，行动中共有48人丧生，包括24名士兵、21名平民及3名袭击者。\n1月30日，布尔吉巴与利比亚断绝了外交关系，并召回了驻扎在那里的400名突尼斯援助人员。2月4日，利比亚示威者纵火焚烧了法国驻的黎波里大使馆，班加西的法国文化中心也遭到袭击。作为回应，法国于2月5日召回了其大使。2月7日，利比亚指责突尼斯“在非洲架起了一座新的帝国主义桥梁”。利比亚和突尼斯两国至此已跌落至谷底，而阿尔及利亚和突尼斯两国关系也陷入冷淡。\n4月，国家安全法院对“突尼斯解放军”的大约40名被告判刑：15人被处决，25人被判处无期徒刑，其中10人本应被赦免，但巴解组织领导人亚西尔·阿拉法特代表他们求情，这激怒了布尔吉巴，他最终拒绝任何赦免。这次审判招致了突尼斯反对派的批评，尤其是艾哈迈德·本·萨拉赫的人民团结运动。"
-const TXT_R3 := "1月27日凌晨2点，突击队袭击了采矿小镇加夫萨的军营、国民警卫所和警察局，并占领了它。他们广播号召突尼斯人民发起一场反对布尔吉巴的民众起义，并通过法新社在巴黎发布的公报表明了自己的身份：“宣称此次行动旨在纪念1978年1月26日血腥屠杀事件的两周年，标志着突尼斯从社会主义宪政党的独裁统治及新殖民主义桎梏中解放国家的运动之始。”但事与愿违，并没有突尼斯人响应他们的号召。\n面对局势，布尔吉巴向外国求援，法国随即决定派遣运输机、两架美洲狮直升机及军事顾问团队前往援助。此外，还计划从土伦调派三艘军舰，并辅以五艘潜艇护航，驶向突尼斯-利比亚海域。美国方面则通过向突尼斯近海派遣军舰及快速运送直升机与运输车辆，以“增强该国防御能力”。摩洛哥亦表示将派遣两架运输机与直升机支援。然而，所有这些援助均在袭击事件平息后抵达，突尼斯军队于2月3日成功夺回加夫萨，行动中共有48人丧生，包括24名士兵、21名平民及3名袭击者。\n1月30日，布尔吉巴与利比亚断绝了外交关系，并召回了驻扎在那里的400名突尼斯援助人员。2月4日，利比亚示威者纵火焚烧了法国驻的黎波里大使馆，班加西的法国文化中心也遭到袭击。作为回应，法国于2月5日召回了其大使。2月7日，利比亚指责突尼斯“在非洲架起了一座新的帝国主义桥梁”。利比亚和突尼斯两国至此已跌落至谷底，而阿尔及利亚和突尼斯两国关系也陷入冷淡。\n4月，国家安全法院对“突尼斯解放军”的大约40名被告判刑：15人被处决，25人被判处无期徒刑，其中10人本应被赦免，但巴解组织领导人亚西尔·阿拉法特代表他们求情，这激怒了布尔吉巴，他最终拒绝任何赦免。这次审判招致了突尼斯反对派的批评，尤其是艾哈迈德·本·萨拉赫的人民团结运动。"
+const TXT_OPT0_DIS := "event.script.event_561_do_not_expect_me_to_yield.c0"
+const TXT_OPT1_DIS := "event.script.event_561_do_not_expect_me_to_yield.c1"
+const TXT_OPT2_DIS := "event.script.event_561_do_not_expect_me_to_yield.c2"
+const TXT_R0 := "event.script.event_561_do_not_expect_me_to_yield.c3"
+const TXT_R1 := "event.script.event_561_do_not_expect_me_to_yield.c4"
+const TXT_R2 := "event.script.event_561_do_not_expect_me_to_yield.c5"
+const TXT_R3 := "event.script.event_561_do_not_expect_me_to_yield.c6"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -25,15 +25,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line < 2 and c40 != null and c40.sub_government != GameConstants.SubGovernment.MODERATE and not c40.has_tag("亲美"):
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if line > 0 and c21 != null and c21.has_tag("对华贸易") and c55 != null and c55.puppet_of == GameConstants.LegacySlot.FRANCE:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if line > 1:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -55,7 +55,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
 			_add(W.I_DIPLO, 50)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -100)
 			if c13 != null:
@@ -68,12 +68,28 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USA, 20)
 			_add(W.I_AGENTS, -50)
 			_add(W.I_DIPLO, -10)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add_relation(EmpireData.USA, 100)
 			_add(W.I_DIPLO, -50)
 			if c13 != null:
 				c13.set_tag("对华贸易", false)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_561_do_not_expect_me_to_yield.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_561",
+	"num": 561,
+	"priority": 56100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_561_do_not_expect_me_to_yield.gd",
+	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "event_459"}, {"t": "ANY", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_459"}, {"t": "PREV_EVENT_RESULT_IS", "v": 3, "ref": "event_459"}]}, {"t": "ANY", "c": [{"t": "DATE_AFTER", "key": "1980.1.26"}, {"t": "DATE_AFTER", "key": "1980.2.1"}, {"t": "DATE_AFTER", "key": "1981.1.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

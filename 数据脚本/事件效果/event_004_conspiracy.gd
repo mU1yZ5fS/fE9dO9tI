@@ -18,19 +18,19 @@ func execute(context: Dictionary) -> void:
 		d.agents -= 100
 		_party_support_segmented()
 		_purge_politicians(-200)
-		context["result_text"] = "忠诚于你的特工在大会开始之前就成功的控制了刚到北京的阴谋者们并将他们送去蹲大牢去了。在大会中，你在他们缺席的情况下批评了他们，获得了大部分与会代表的支持。但是除去党的高阶成员不是那么简单的……"
+		context["result_text"] = tr("event.script.event_004_conspiracy.i0")
 	elif opt == 2:
 		d.people_support -= 80
 		_party_support_segmented()
 		d.army -= 100
 		_purge_politicians(-300)
-		context["result_text"] = "忠诚于你的军官在大会开始之前就成功的控制了刚到北京的阴谋者们并将他们送去蹲大牢去了。在士兵在场的大会中，你在他们缺席的情况下批评了他们，获得了大部分与会代表的支持。但是除去党的高阶成员不是那么简单的……"
+		context["result_text"] = tr("event.script.event_004_conspiracy.i1")
 	elif opt == 3:
 		_party_support_segmented()
 		d.people_support -= 200
 		d.living_standard -= 70
 		_purge_politicians(-100)
-		context["result_text"] = "你通过媒体呼吁人民支持你，保护你的权力。在大会开始之前。忠诚于你的群众参加了声援你的示威游行，并开始向你的对手控制的部门发起攻击。认识到了他们处于劣势之后，反对派们决定撤退，最后大会保卫了你的权力，但是人们已经厌倦了类似于文化大革命的运动。"
+		context["result_text"] = tr("event.script.event_004_conspiracy.i2")
 
 
 ## 选项0：论战胜负（Event4.cs:61-95）
@@ -44,11 +44,11 @@ func _option_debate(context: Dictionary) -> void:
 	if win:
 		d.party_support += 50
 		_purge_politicians(-100)
-		context["result_text"] = "在密谋者讲出他们的控告前你就用批评和反控告批判了他们。大多数出席全会的党员支持你，密谋者只得退却。"
+		context["result_text"] = tr("event.script.event_004_conspiracy.i3")
 	else:
 		d.party_support = 0
 		d.people_support = 0
-		context["result_text"] = "在密谋者讲出他们的控告前你就用批评和反控告批判了他们。但是，你的名誉显然不大好，大多数党员受够了你的领导。大多数出席全会的党员支持了密谋者，你被解职并被踢出中央委员会，丢到了一个偏远的清水衙门。"
+		context["result_text"] = tr("event.script.event_004_conspiracy.i4")
 		game.queue_ending_after_event(2)   # 原 data.ending_route=2「军事政变」
 
 
@@ -85,3 +85,17 @@ func _purge_politicians(loyalty_delta: int) -> void:
 			p.loyalty += loyalty_delta
 			p.is_under_investigation = true
 			p.investigator_index = 1
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_004_conspiracy.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "congress_conspiracy",
+	"num": 4,
+	"notify": false,
+	"once": false,
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "army", "v": 100}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "people_support", "v": 700}, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

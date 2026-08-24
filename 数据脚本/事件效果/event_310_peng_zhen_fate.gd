@@ -4,8 +4,8 @@
 ##  因此先 kill 再写槽位字段以对齐；文本来自 Events_text_en 索引 98-103。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_R0 := "党认为对彭真的指控太过牵强，毫无根据。平反期间，他被任命为第五届全国人民代表大会立法工作委员会代理主任。"
-const TXT_R1 := "事实证明，指责其为自由派对彭真的事业和健康的打击都太过沉重了。在受到严厉批评后，他离开了会议，不久就去世了。当然，他死于自然原因。自由派是不高兴，但谁在乎呢？"
+const TXT_R0 := "event.script.event_310_peng_zhen_fate.c0"
+const TXT_R1 := "event.script.event_310_peng_zhen_fate.c1"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -48,7 +48,7 @@ func execute(context: Dictionary) -> void:
 						var rp: PoliticianData = ws.politician_reserve[i]
 						if rp != null and rp.name_display == "彭真":
 							ws.politician_reserve.remove_at(i)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			var num2 := _find_politician(27, 48)
 			_add(W.I_ARMY, 50)
@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 					p.power -= 250
 			if num2 >= 0:
 				game.kill_politician(num2)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -111,3 +111,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_310_peng_zhen_fate.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_310",
+	"num": 310,
+	"priority": 31000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_310_peng_zhen_fate.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

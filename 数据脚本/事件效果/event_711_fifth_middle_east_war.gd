@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 效果：ingamewars[4] = 第五次中东战争，伊拉克(700) vs 以色列(300)，
 ##   TickTime(24)（→ fortnight_max=24），无美苏支持标记（usa/ussr_side = GameConstants.WarSide.SIDE1 默认）。
 
-const TXT_RESULT := "伊拉克的侯赛因-1型导弹带着五十年的怒火从巴格达飞向特拉维夫，惊恐的以色列人毫无防备，但以色列国防军也开始了全国总动员。伊拉克方面则从三个方向全面进攻，目标直指耶路撒冷。听命于伊拉克的巴勒斯坦解放组织也早就在当地就位，开展了自1967年的惨败以来最猛烈的回击。"
+const TXT_RESULT := "event.script.event_711_fifth_middle_east_war.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -19,4 +19,19 @@ func execute(context: Dictionary) -> void:
 		if ws.wars.size() > 4 and ws.wars[4] != null:
 			ws.wars[4].name_war = "第五次中东战争"
 			ws.wars[4].fortnight_max = 24  # 原版 TickTime(24)
-		context["result_text"] = TXT_RESULT
+		context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_711_fifth_middle_east_war.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_711",
+	"num": 711,
+	"priority": 7110,
+	"notify": false,
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 19, "target": "14"}, {"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "14"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "51"}]}, {"t": "COUNTRY_FIELD_EQUALS", "key": "government", "v": 3, "target": "37"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 19, "target": "35"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 19, "target": "93"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 19, "target": "104"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

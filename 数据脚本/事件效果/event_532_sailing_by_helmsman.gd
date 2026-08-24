@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##   event_done[524] && resultOfEvents[524]==0 && c44.puppetOf<0
 ##   && c44.prcpower>=100 && c44.SubGosstroy==6 && (1982.1 或 1983+)。
 
-const TXT_OPT0_DIS := "没人对他们有兴趣"
-const TXT_R0 := "我们迅速与日本共产党和日本共产主义抵抗者同盟展开了磋商。尽管二者对于合并一事有许多疑虑（特别是后者内部此时仍有个别人是托洛茨基主义的支持者），但我们还是耐心地说服了他们。很快，两个组织的中央委员展开了磋商，在我们的影响下，最终通过了一份正式协议：日本共产主义抵抗者同盟正式并入日本共产党，党名也更改为日本革命共产党，整体以毛主义作为指导思想。\n两股强劲左翼力量成功合二为一，这为接下来在全日本掀起进一步的革命斗争打下了重要的基础。但我们也必须抓紧时间，尤其考虑到目前政府已经对新左翼力量有所察觉的情况下，必须尽快集结力量抢在“窗口期”内发动新的起义。"
-const TXT_R1 := "我们与日本共产党和日本共产主义抵抗者同盟展开了磋商，但二者对于合并一事有许多疑虑（特别是后者内部此时仍有个别人是托洛茨基主义的支持者）。加之后者的力量和组织架构均欠缺很多，最终磋商不了了之。两股力量继续各自为战，尽管它们仍然试图扩大支持者群体并能够不定期收到援助，但缺少更大力量的它们已经难以为继了......"
+const TXT_OPT0_DIS := "event.script.event_532_sailing_by_helmsman.c0"
+const TXT_R0 := "event.script.event_532_sailing_by_helmsman.c1"
+const TXT_R1 := "event.script.event_532_sailing_by_helmsman.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -17,7 +17,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if d.political_line < 2:
 		_enable(event_def.options[0], event_def.options[0].text)
 	else:
-		_disable(event_def.options[0], TXT_OPT0_DIS)
+		_disable(event_def.options[0], tr(TXT_OPT0_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -37,7 +37,23 @@ func execute(context: Dictionary) -> void:
 			if c44 != null:
 				c44.prc_power += 10
 			ws.influence_prc += 10
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			ws.influence_prc -= 10
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_532_sailing_by_helmsman.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_532",
+	"num": 532,
+	"priority": 53200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_532_sailing_by_helmsman.gd",
+	"trigger": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "44"}, {"t": "PREV_EVENT_DONE", "ref": "event_524"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_524"}, {"t": "COUNTRY_FIELD_AT_LEAST", "key": "prc_power", "v": 100, "target": "44"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 6, "target": "44"}, {"t": "ANY", "c": [{"t": "DATE_AFTER", "key": "1982.1.1"}, {"t": "DATE_AFTER", "key": "1983.1.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

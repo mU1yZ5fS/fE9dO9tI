@@ -7,11 +7,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - SOV_PRC_PartiesConnection → I_COMMUNICATIONS（见 event_435 约定）；
 ##  - 选项全部常开，无 prepare 动态改文案。
 
-const TXT_R0 := "中国外交部对苏联实施“再斯大林化”的立场如下：“我们支持苏联领导层对约瑟夫·维萨里昂诺维奇·斯大林同志评价的拨乱反正。对斯大林同志在马克思主义理论上的贡献，以及他在社会主义实践中的创举应当有新研究。对斯大林同志的人生轨迹也应当实现根本的、客观的评价。”\n{1}\n{2}"
-const TXT_R1 := "中国外交部对苏联实施“再斯大林化”的立场如下：“苏联领导层把历史变成了面向过去的政策，他们将一个已死去30余年的领导人又是‘打入冷宫’，又让他‘登堂入室’的行为不过是自娱自乐，不会取得任何显著成就。”\n{1}\n{2}"
-const TXT_R2 := "让我们等着瞧新消息吧！\n{1}\n{2}"
-const TXT_ALBANIA := "阿尔巴尼亚领导层庆祝苏联领导层彻底战胜了社会帝国主义分子与赫鲁晓夫集团，并已开始申请回归经互会与华沙条约。"
-const TXT_YUGO := "在此背景下，南斯拉夫军政府领导层庆祝苏联领导层迈入了“新时代”，并寻求加入经互会与华沙条约。"
+const TXT_R0 := "event.script.event_380_re_stalinization.c0"
+const TXT_R1 := "event.script.event_380_re_stalinization.c1"
+const TXT_R2 := "event.script.event_380_re_stalinization.c2"
+const TXT_ALBANIA := "event.script.event_380_re_stalinization.c3"
+const TXT_YUGO := "event.script.event_380_re_stalinization.c4"
 
 
 func execute(context: Dictionary) -> void:
@@ -42,12 +42,12 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USSR, 50)
 		flag_yugo = true
 	_add_power(EmpireData.USSR, 10)
-	var t_albania: String = TXT_ALBANIA if flag_albania else ""
-	var t_yugo: String = TXT_YUGO if flag_yugo else ""
+	var t_albania: String = tr(TXT_ALBANIA) if flag_albania else ""
+	var t_yugo: String = tr(TXT_YUGO) if flag_yugo else ""
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0.format(["\n", t_albania, t_yugo])
+			context["result_text"] = tr(TXT_R0).format(["\n", t_albania, t_yugo])
 			for pol in ws.politicians:
 				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.power += 500
@@ -65,7 +65,7 @@ func execute(context: Dictionary) -> void:
 			if china != null and china.has_tag("sev"):
 				_add_relation(EmpireData.USSR, 200)
 		1:
-			context["result_text"] = TXT_R1.format(["\n", t_albania, t_yugo])
+			context["result_text"] = tr(TXT_R1).format(["\n", t_albania, t_yugo])
 			for pol in ws.politicians:
 				if pol != null and pol.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
 					pol.power -= 500
@@ -80,7 +80,7 @@ func execute(context: Dictionary) -> void:
 			else:
 				_add(W.I_PARTY_SUPPORT, 150)
 		_:
-			context["result_text"] = TXT_R2.format(["\n", t_albania, t_yugo])
+			context["result_text"] = tr(TXT_R2).format(["\n", t_albania, t_yugo])
 			if china != null and china.has_tag("sev"):
 				_add_relation(EmpireData.USSR, 200)
 
@@ -89,3 +89,18 @@ func execute(context: Dictionary) -> void:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_380_re_stalinization.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_380",
+	"num": 380,
+	"priority": 38000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_380_re_stalinization.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

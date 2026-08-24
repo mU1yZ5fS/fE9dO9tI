@@ -1,15 +1,13 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event505.cs：几内亚之父的终结（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event505.cs：几内亚之父的终结（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "我们不能帮助这样一个好斗分子"
-const TXT_OPT1_DIS := "为什么要这么做？"
-const TXT_R0_A := "我们决定支持杜尔总统的社会革命政策。这个成效是立竿见影的，杜尔总统立刻宣布脱离苏联的影响而倒向我们。并着手构建自己的社会主义社会。得益于我们为几内亚做担保。几内亚大胆的收回了所有的铝矿和钻石矿。为了防止潜在的反革命政变。杜尔总统宣布开始新的一轮“人民革命”，着手组建工人卫队和独立的矿工工会以保护自己的权力。相信在不远的未来，几内亚会脱下“极不发达国家”的帽子。"
-const TXT_R1_A := "我们向美国人秘密传递了这一条消息。在中情局的里挑外拨下，这场示威游行最终演化成了要求杜尔总统下台的暴力抗争。最终，总统卫队的首领兰萨纳·孔戴上校成立了国家军事复兴委员会，并积极向美国靠拢。"
-const TXT_R1_B := "杜尔总统设法察觉了一场推翻他的阴谋，在苏联的支持下，几内亚人民军粉碎了政变。主谋被丢入动物园中喂狮子。杜尔对我们的行为很是沮丧，宣布驱逐了我们的大使。"
-const TXT_R2_A := "在内外的极大压力下，杜尔总统宣布放弃对经济的严格管制。这为他赢得了美国的支持。西方国家宣布为几内亚提供一笔贷款。几内亚也开始考虑一条苏联以外的发展道路。"
+const TXT_OPT0_DIS := "event.script.event_505_end_of_father_of_guinea.c0"
+const TXT_OPT1_DIS := "event.script.event_505_end_of_father_of_guinea.c1"
+const TXT_R0_A := "event.script.event_505_end_of_father_of_guinea.c2"
+const TXT_R1_A := "event.script.event_505_end_of_father_of_guinea.c3"
+const TXT_R1_B := "event.script.event_505_end_of_father_of_guinea.c4"
+const TXT_R2_A := "event.script.event_505_end_of_father_of_guinea.c5"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -19,11 +17,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line <= 2:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.political_line > 1:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
@@ -33,7 +31,7 @@ func execute(context: Dictionary) -> void:
 	var c68 := ws.get_country_by_legacy_index(68)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(50))
 			ws.influence_prc += 20
 			if c68 != null: c68.government = GameConstants.Government.SOCIALIST
@@ -42,9 +40,9 @@ func execute(context: Dictionary) -> void:
 			if c68 != null: c68.set_tag("对华贸易", true)
 		1:
 			if ws.empires[0].relations >= 500:
-				context["result_text"] = TXT_R1_A
+				context["result_text"] = tr(TXT_R1_A)
 			else:
-				context["result_text"] = TXT_R1_B
+				context["result_text"] = tr(TXT_R1_B)
 			_add(9, -(40))
 			if ws.empires[0].relations >= 500:
 				if c68 != null: c68.government = GameConstants.Government.AUTHORITARIAN
@@ -61,7 +59,7 @@ func execute(context: Dictionary) -> void:
 				if c68 != null: c68.set_tag("亲苏", true)
 				_add_power(1, 20)
 		2:
-			context["result_text"] = TXT_R2_A
+			context["result_text"] = tr(TXT_R2_A)
 			if c68 != null: c68.government = GameConstants.Government.REFORMIST
 			if c68 != null: c68.sub_government = GameConstants.SubGovernment.PRAGMATIST
 			if c68 != null: _leave_alliances(c68)
@@ -199,3 +197,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_505_end_of_father_of_guinea.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_505",
+	"num": 505,
+	"priority": 50500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_505_end_of_father_of_guinea.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1977.8.27"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

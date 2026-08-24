@@ -124,7 +124,8 @@ func _render_text(text: String) -> void:
 	# 统一压暗到 darkgreen / darkgoldenrod。
 	text = BbcTooltip.darken_bright_colors(text)
 	text = text.replace("|", "\n")
-	结局文案.text = text
+	# 整篇强制居中（原版 Text() 的 TextMesh 对齐即视觉居中；忽略自动行间距设置）。
+	结局文案.text = "[center]" + text + "[/center]"
 
 
 func _refresh_dlc_buttons() -> void:

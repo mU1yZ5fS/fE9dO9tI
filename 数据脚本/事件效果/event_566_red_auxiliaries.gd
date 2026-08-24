@@ -1,15 +1,8 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event566.cs：和平宫的红色辅士（伊拉克爱国同盟总攻势，单选项）。
-## 触发：TimeScript.cs:10564-10570 —— (wars[3].is_going || c14.prcpower>=100)
-##   && c14.prcpower>50 && event_done[36] && resultOfEvents[36]==2。
-## 效果：ingamewars[42] = War().Name("伊拉克内战").Attacker("复兴党")
-##   .Defender("伊拉克爱国同盟").AttackerInfluence(700-num).DefenderInfluence(300+num)
-##   .TickTime(24).AmericanSupportAttacker（num = c14.prcpower/10 整数除法）。
-## 差异：Godot 用 game.start_war + fortnight_max=24（原版 TickTime(24)）；
-##   AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1（攻击方=复兴党）。
+## 原作 Event566.cs：和平宫的红色辅士（伊拉克爱国同盟总攻势，单选项）。 ## 触发：TimeScript.cs:10564-10570 —— (wars[3].is_going c14.prcpower>=100) ##   && c14.prcpower>50 && event_done[36] && resultOfEvents[36]==2。 ## 效果：ingamewars[42] = War().Name("伊拉克内战").Attacker("复兴党") ##   .Defender("伊拉克爱国同盟").AttackerInfluence(700-num).DefenderInfluence(300+num) ##   .TickTime(24).AmericanSupportAttacker（num = c14.prcpower/10 整数除法）。 ## 差异：Godot 用 game.start_war + fortnight_max=24（原版 TickTime(24)）； ##   AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE1（攻击方=复兴党）。
 
-const TXT_RESULT := "中东的局势还在持续的恶化……"
+const TXT_RESULT := "event.script.event_566_red_auxiliaries.c0"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -40,4 +33,18 @@ func execute(context: Dictionary) -> void:
 		if ws.wars.size() > 42 and ws.wars[42] != null:
 			ws.wars[42].name_war = "伊拉克内战"
 			ws.wars[42].fortnight_max = 24  # 原版 TickTime(24)
-		context["result_text"] = TXT_RESULT
+		context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_566_red_auxiliaries.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_566",
+	"nodesc": true,
+	"num": 566,
+	"priority": 5660,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_566_red_auxiliaries.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "ANY", "c": [{"t": "WAR_ACTIVE", "v": 3}, {"t": "COUNTRY_FIELD_AT_LEAST", "key": "prc_power", "v": 100, "target": "14"}]}, {"t": "COUNTRY_FIELD_AT_LEAST", "key": "prc_power", "v": 51, "target": "14"}, {"t": "PREV_EVENT_DONE", "ref": "iraqi_coalition"}, {"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "iraqi_coalition"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

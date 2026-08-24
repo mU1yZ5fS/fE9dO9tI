@@ -32,51 +32,51 @@ extends "res://数据脚本/event_script_base.gd"
 # ============================================================================
 # 原版逐字中文文案（Event94/95/96/116.cs 去空格、||→\n、剥 color）
 # ============================================================================
-const TXT94_TITLE := "又一次天安门事件？！"
-const TXT94_DESC_1 := "对各个涉及人民生活领域的大规模改革政策、日益猖獗的腐败、中国共产党与商界的勾结以及权贵与商人之间秘密的腐败联系，导致资产阶级自由化思想在相当一部分的中国知识分子和青年中广泛传播，他们要求更激进的改革，反对“共产主义传染病”。因此他们组织了一场由持不同政见的天体物理学家方励之（在西方被称为“中国的萨哈罗夫”）所领导的“退党”运动，运动的主张是宣布中国共产党为“犯罪组织”，并剥夺党的一切权力、要求国家的自由化和西方化、打击腐败和消灭官僚的特权。利用了政府内部的混乱，十万“退党”支持者聚集在北京天安门广场举行群众活动。他们要求“自由”、“民主”、“打击腐败官僚”和“打倒腐败的党的领导”，而其他包括工人在内的对我们的改革不满的人，每天都在加入他们的行列。中国共产党党内的自由派领导人"
-const TXT94_DESC_3 := "，倾向于对抗议者妥协让步，希望通过抗议活动执掌党政大权。国内局势极不稳定，但现在仍有机会进行干预——在动乱蔓延到其他城市之前..."
-const TXT94_OPT_0 := "这是一场反革命动乱，叛徒会为此负责的！给我拨通总参谋部的电话…"
-const TXT94_OPT_1 := "让武警封锁广场，尝试劝说抗议者散去"
-const TXT94_OPT_2 := "退休。在这个困难时期，让党决定谁应该领导国家"
+const TXT94_TITLE := "event.script.event_094_096_116_taiwan_chain.txt94_title"
+const TXT94_DESC_1 := "event.script.event_094_096_116_taiwan_chain.txt94_desc_1"
+const TXT94_DESC_3 := "event.script.event_094_096_116_taiwan_chain.txt94_desc_3"
+const TXT94_OPT_0 := "event.script.event_094_096_116_taiwan_chain.txt94_opt_0"
+const TXT94_OPT_1 := "event.script.event_094_096_116_taiwan_chain.txt94_opt_1"
+const TXT94_OPT_2 := "event.script.event_094_096_116_taiwan_chain.txt94_opt_2"
 const TXT94_OPT_3 := "满足抗议者的要求"
-const TXT94_R0_A := "在中共中央特别全会上，事件被称为“受美国和台湾特务机关指使的反革命叛乱”，随后对运动进行镇压的投票以大多数通过。根据中国人民解放军总参谋长杨得志将军的命令，部队在北京得到了坦克和装甲运兵车的增援，但当他们向广场推进时被路障所阻拦以及遭遇到了手持燃烧弹的歹徒的顽强抵抗。在装甲部队的支援下，路障被摧毁，之后解放军摧毁了抗议者的大本营，并对天安门广场进行了清理，对工人和学生宿舍的清理工作持续了几天。也因此，局势得到了控制。“退党”运动被宣布为非法组织，"
-const TXT94_R0_B := "和他的支持者被免除其职位，开除出中国共产党，改革开放的反对者开始被逮捕，方励之逃到美国。西方国家指责我们的政权为“血腥的暴政”，苏联及其盟国保持沉默。有组织的抗议运动被镇压，不满者转入地下。"
-const TXT94_R1_OK := "由于害怕抢劫事件发生，北京市市长下令引入人民武装警察的装甲部队，用警戒线封锁天安门广场，将抗议者从邻近的街道赶走（同时遭受了“莫洛托夫鸡尾酒”燃烧瓶袭击，造成严重损失）此后，主席同志亲自对示威者讲话，劝说他们散去。其中很大一部分人离开了广场，其余的人被警察用催泪瓦斯和空包弹驱散。首都的秩序恢复了，但骚乱蔓延到上海、宁波和其他几个城市……"
-const TXT94_R1_FAIL_A := "由于害怕抢劫事件发生，北京市市长下令引入人民武装警察的装甲部队，封锁了天安门广场，将抗议者赶出了广场及邻近的街道（同时遭到了“莫洛托夫鸡尾酒”的袭击，造成重大损失）。人们用嘘声和辱骂迎接主席的到来，他仓皇而逃。在中共中央特别全会上，中央决定向示威者做出让步，并要求党的领导层辞职。"
-const TXT94_R1_FAIL_B := "同志成为新的总书记，他宣布了深化改革和国家大规模民主化的政策。对此感到满意的大多数抗议者都散去了，其余的人被武警赶走了。中国正在等待变革…"
-const TXT94_R2_A := "在中共中央特别全会上，爆发了激烈的争论——保守派要求使用武力镇压（尤其是王震对此直言不讳），自由派想要做出让步，改革派则举棋不定。最终，自由派胜利了——中共领导层集体辞职。"
-const TXT94_R2_B := "同志成为新的总书记，他宣布了深化改革和国家大规模民主化的政策。对此感到满意的大多数抗议者都散去了，其余的人被武警赶走了。中国正在等待变革…"
-const TXT94_R3 := "同志成为新的总书记，他宣布了进一步深化改革和大规模民主化的政策。然而，“退党”运动的领导者认为这是中国领导层软弱无能的证明，并在全国各地组织了大规模示威，最终导致政府下台，中国进入了过渡时期。共产党失去了权力，其命运已经掌握在了他人手里……"
+const TXT94_R0_A := "event.script.event_094_096_116_taiwan_chain.txt94_r0_a"
+const TXT94_R0_B := "event.script.event_094_096_116_taiwan_chain.txt94_r0_b"
+const TXT94_R1_OK := "event.script.event_094_096_116_taiwan_chain.txt94_r1_ok"
+const TXT94_R1_FAIL_A := "event.script.event_094_096_116_taiwan_chain.txt94_r1_fail_a"
+const TXT94_R1_FAIL_B := "event.script.event_094_096_116_taiwan_chain.txt94_r1_fail_b"
+const TXT94_R2_A := "event.script.event_094_096_116_taiwan_chain.txt94_r2_a"
+const TXT94_R2_B := "event.script.event_094_096_116_taiwan_chain.txt94_r2_b"
+const TXT94_R3 := "event.script.event_094_096_116_taiwan_chain.txt94_r3"
 const TXT95_TITLE := "中国共产党的新开始"
-const TXT95_DESC_1 := "因此，北京的形势得到了控制，国家的权力移交给了以"
-const TXT95_DESC_3 := "为首的中国共产党内的自由派。议事日程上的问题是大规模深化“改革开放”政策以及向西式民主和自由市场的过渡。然而，我们现在不得不考虑“退党”运动要求在改革进程中考虑到使中国社会和执政党去共产主义化的必要性。原则上，现在中国共产党很难称之为“共产党”，但现在我们被要求完全抛弃马克思列宁主义。那么？…"
-const TXT95_OPT_0 := "我们拒绝马克思主义-毛泽东主义-邓小平主义，效仿日本共产党，改为支持欧洲共产主义"
-const TXT95_OPT_1 := "按照陈独秀的规范回归具有中国特色的社会民主主义"
-const TXT95_OPT_2 := "接受伟大的孙中山遗赠的中国左翼民族主义"
-const TXT95_OPT_3 := "为什么我们必须接受一些街头恶霸的要求？"
-const TXT95_R0 := "在中共中央特别全会上，以多数票决定放弃马克思列宁主义、毛泽东主义和邓小平主义，转而支持以法国、意大利、西班牙和日本共产党为代表的现代欧洲共产主义。对党的纲领性文件作了相应的修改。这引起了大多数党内保守派的某种不满，但总的来说，党采取了一种新的思想，认识到了变革的必要性。"
-const TXT95_R1 := "在中共中央特别全会上，经过长期的争论，最终决定回到陈独秀、张国焘的训诫上来，承认党的社会民主主义性质。对党的纲领性文件作了相应的修改。这导致了部分保守派党阀的强烈不满，中国共产党存在一定的分裂危险。时间会告诉你是否做了正确的事…"
-const TXT95_R2 := "在中共中央特别全会上，建议回到中国革命运动的始源——孙中山和他第二版的“三民主义”（反对封建主义和资本主义、国家和社会制度民主化、改善工人生活和限制垄断资本）的一群党员占了上风。对党的纲领性文件作了相应的修改。中国共产党开始与民革和左翼民族主义团体合流，虽然这在人民中很受欢迎，但也引起了党员的强烈不满。"
-const TXT95_R3 := "在中共中央特别全会上，支持维护马克思主义、毛泽东主义和邓小平主义的人士取得了胜利。“退党”运动愈演愈烈，对中国共产党的攻击也愈发猛烈，党已经失去了人民群众的支持，失去了政权的根基。在中国似乎没有它的立足之地了……"
+const TXT95_DESC_1 := "event.script.event_094_096_116_taiwan_chain.txt95_desc_1"
+const TXT95_DESC_3 := "event.script.event_094_096_116_taiwan_chain.txt95_desc_3"
+const TXT95_OPT_0 := "event.script.event_094_096_116_taiwan_chain.txt95_opt_0"
+const TXT95_OPT_1 := "event.script.event_094_096_116_taiwan_chain.txt95_opt_1"
+const TXT95_OPT_2 := "event.script.event_094_096_116_taiwan_chain.txt95_opt_2"
+const TXT95_OPT_3 := "event.script.event_094_096_116_taiwan_chain.txt95_opt_3"
+const TXT95_R0 := "event.script.event_094_096_116_taiwan_chain.txt95_r0"
+const TXT95_R1 := "event.script.event_094_096_116_taiwan_chain.txt95_r1"
+const TXT95_R2 := "event.script.event_094_096_116_taiwan_chain.txt95_r2"
+const TXT95_R3 := "event.script.event_094_096_116_taiwan_chain.txt95_r3"
 const TXT96_TITLE := "改革！民主！开放！"
-const TXT96_DESC := "现在，党组织上问题结束了，我们需要履行我们对人民关于按照西方模式对国家民主化的诺言。人民要求停止对宗教和教士施压，基于西方国家模式扩大民权和自由，更重要的是，解散“爱国统一战线”，进行人大内和各地方的自由选举。如果我们不能避免选举的到来，只要我们满足了人民其他的要求，就能使他们得到我们所需要的“自由选举”。"
-const TXT96_OPT_0 := "我们正在筹备全国人大的自由选举，所以我们要尽可能限制其他政党，同时还必须满足人民的要求"
-const TXT96_OPT_1 := "选举并没有让资产阶级“自由”那么可怕。不用理它"
-const TXT96_OPT_2 := "选举并没有让宗教自由那么可怕。不用管它"
-const TXT96_OPT_3 := "如果我们想让人们爱我们，我们必须满足它的所有要求"
-const TXT96_R0 := "爱国统一战线及其统战机构已被解散，各地正在建立大选机关，但我们的选举法将会有效的为那些想要谋朝篡位的宵小之徒提供足够的阻碍——选举法对执政方有着天然优势，我们已经禁止了一切可能威胁国体的政党，剩下的合法政党也有着一大堆程序要走才能和我们同台竞技。不过过去的严格媒体审核和无情镇压则被一种新的公开性和自由所冲淡。"
-const TXT96_R1 := "爱国统一战线及其统战机构已被解散，各地正在建立大选机关，我们将起草全世界最自由，最公正的《选举法》！但另一方面，这种大选临近的狂热的情绪使得我们可以不必进行大规模自由化，尽管我们不得不放松了对宗教的压力。"
-const TXT96_R2 := "爱国统一战线及其统战机构已被解散，各地正在建立大选机关，我们将起草全世界最自由，最公正的《选举法》！但另一方面，这种大选临近的狂热的情绪和公共生活的自由化有助于我们延续我们的宗教政策——的确，虽然对宗教组织的管理名义上简化了，但是各类宗教机构仍然被地方政府和国安部牢牢地盯着。"
-const TXT96_R3 := "一切放缓经济重组和民主化的提案都被我们的领导人狠狠地反驳了回去。爱国统一战线和统战组织已经被解散，各地正在建立大选机关，我们将起草全世界最自由，最公正的《选举法》！同时公共生活的逐步自由化也使得大众欢庆鼓舞，但是这能持续多久呢？"
+const TXT96_DESC := "event.script.event_094_096_116_taiwan_chain.txt96_desc"
+const TXT96_OPT_0 := "event.script.event_094_096_116_taiwan_chain.txt96_opt_0"
+const TXT96_OPT_1 := "event.script.event_094_096_116_taiwan_chain.txt96_opt_1"
+const TXT96_OPT_2 := "event.script.event_094_096_116_taiwan_chain.txt96_opt_2"
+const TXT96_OPT_3 := "event.script.event_094_096_116_taiwan_chain.txt96_opt_3"
+const TXT96_R0 := "event.script.event_094_096_116_taiwan_chain.txt96_r0"
+const TXT96_R1 := "event.script.event_094_096_116_taiwan_chain.txt96_r1"
+const TXT96_R2 := "event.script.event_094_096_116_taiwan_chain.txt96_r2"
+const TXT96_R3 := "event.script.event_094_096_116_taiwan_chain.txt96_r3"
 const TXT116_TITLE := "两个中国"
-const TXT116_DESC := "如你所知，解放战争胜利后，国民党败逃到台湾岛，西方社会长期认为他们是中国的合法政府。由于美国在台湾的基地和舰队，我们无法解放它，就像国民党无法反攻大陆一样，随着时间的推移，越来越多的国家承认中华人民共和国为中国唯一合法政府，尽管中华人民共和国和台湾政府都没有正式拒绝对全中国的主张。当然，我们之间的关系一直很糟糕，但是最近自由化和中国共产党结束了对权力的垄断之后，我们之间的关系明显升温。现在双方高层都在谈论期待已久的国家统一的可能性。但是，在这种情况下，台湾会旗帜鲜明地要求自治，我们需要在他们的根据地地位上与美国达成一致，而台湾人民成功地发展了他们的文化认同，这将如何影响这个国家已经不稳定的局势，目前还不知道。因此，有人建议我们与台湾相互承认对方为独立国家，建立睦邻友好关系。既然在这种情况下，美国的基地将继续存在，西方公司将免于官僚主义的大惊小怪，那就很好地暗示美国，年轻的民主需要钱……"
+const TXT116_DESC := "event.script.event_094_096_116_taiwan_chain.txt116_desc"
 const TXT116_OPT_0 := "保持原样"
-const TXT116_OPT_1 := "期待已久的统一时刻到了！"
-const TXT116_OPT_1_DISABLED := "他们不准备同意这样的协议"
-const TXT116_OPT_2 := "承认彼此，结束敌意！"
+const TXT116_OPT_1 := "event.script.event_094_096_116_taiwan_chain.txt116_opt_1"
+const TXT116_OPT_1_DISABLED := "event.script.event_094_096_116_taiwan_chain.txt116_opt_1_disabled"
+const TXT116_OPT_2 := "event.script.event_094_096_116_taiwan_chain.txt116_opt_2"
 const TXT116_R0 := "一切顺其自然。"
-const TXT116_R1 := "今天，我国领袖率领代表团对台北进行了历史性的访问，在此期间，经过闭门谈判后，决定成立一个委员会，制定台湾和中国大陆逐步统一的原则。当然，外国投资者将保留他们的所有权利，而台湾省将获得广泛的长期经济和政治自治权。所有与美军有关的事情都将由已经签订的条约来决定，然后由联合政府决定美军是否继续留在台湾。虽然所有这些都还只是纸上谈兵，需要在广泛考虑共同利益的基础上制定出来，台湾回归中国的时间还没有确定，但我们的人民热情地接受了这个消息，边境控制被大大削弱了。所有这一切的结果是，自由主义思想更容易从台湾渗透到我们中间，美国人担心他们对台湾的影响被削弱了，但我们的人民非常高兴。"
-const TXT116_R2 := "今天，我国领袖率领代表团对台北进行了历史性的访问，谈判双方决定相互承认对方。从现在起，中华人民共和国和台湾共和国（根据该协定的条款，中华民国改名为台湾共和国）将作为两个独立的国家存在。它也结束了多年来关于领土和合法政府的争端，使我们的关系达到了一个新的水平。美国对我们的行动表示欢迎，并提供了大量的财政援助以支持我们的政策。然而，许多人明显对两个中国的永久分裂感到不满。"
+const TXT116_R1 := "event.script.event_094_096_116_taiwan_chain.txt116_r1"
+const TXT116_R2 := "event.script.event_094_096_116_taiwan_chain.txt116_r2"
 
 # ============================================================================
 # prepare — 显示前动态文案（原版 TextOfEvents / VariantsOfEvents）
@@ -98,49 +98,49 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 
 func _prepare_94(event_def: EventDef, world: WorldState) -> void:
-	event_def.title = TXT94_TITLE
+	event_def.title = tr(TXT94_TITLE)
 	var leader := _liberal_leader_name(world)
-	event_def.description = TXT94_DESC_1 + leader + TXT94_DESC_3
+	event_def.description = tr(TXT94_DESC_1) + leader + tr(TXT94_DESC_3)
 	if event_def.options.size() < 4:
 		return
-	event_def.options[0].text = TXT94_OPT_0
-	event_def.options[1].text = TXT94_OPT_1
-	event_def.options[2].text = TXT94_OPT_2
+	event_def.options[0].text = tr(TXT94_OPT_0)
+	event_def.options[1].text = tr(TXT94_OPT_1)
+	event_def.options[2].text = tr(TXT94_OPT_2)
 	event_def.options[3].text = TXT94_OPT_3
 
 
 func _prepare_95(event_def: EventDef, world: WorldState) -> void:
 	event_def.title = TXT95_TITLE
 	var leader := _current_leader_name(world)
-	event_def.description = TXT95_DESC_1 + leader + TXT95_DESC_3
+	event_def.description = tr(TXT95_DESC_1) + leader + tr(TXT95_DESC_3)
 	if event_def.options.size() < 4:
 		return
-	event_def.options[0].text = TXT95_OPT_0
-	event_def.options[1].text = TXT95_OPT_1
-	event_def.options[2].text = TXT95_OPT_2
-	event_def.options[3].text = TXT95_OPT_3
+	event_def.options[0].text = tr(TXT95_OPT_0)
+	event_def.options[1].text = tr(TXT95_OPT_1)
+	event_def.options[2].text = tr(TXT95_OPT_2)
+	event_def.options[3].text = tr(TXT95_OPT_3)
 
 
 func _prepare_96(event_def: EventDef) -> void:
 	event_def.title = TXT96_TITLE
-	event_def.description = TXT96_DESC
+	event_def.description = tr(TXT96_DESC)
 	if event_def.options.size() < 4:
 		return
-	event_def.options[0].text = TXT96_OPT_0
-	event_def.options[1].text = TXT96_OPT_1
-	event_def.options[2].text = TXT96_OPT_2
-	event_def.options[3].text = TXT96_OPT_3
+	event_def.options[0].text = tr(TXT96_OPT_0)
+	event_def.options[1].text = tr(TXT96_OPT_1)
+	event_def.options[2].text = tr(TXT96_OPT_2)
+	event_def.options[3].text = tr(TXT96_OPT_3)
 
 
 func _prepare_116(event_def: EventDef) -> void:
 	event_def.title = TXT116_TITLE
-	event_def.description = TXT116_DESC
+	event_def.description = tr(TXT116_DESC)
 	if event_def.options.size() < 3:
 		return
 	event_def.options[0].text = TXT116_OPT_0
-	event_def.options[1].text = TXT116_OPT_1
-	event_def.options[1].disabled_text = TXT116_OPT_1_DISABLED
-	event_def.options[2].text = TXT116_OPT_2
+	event_def.options[1].text = tr(TXT116_OPT_1)
+	event_def.options[1].disabled_text = tr(TXT116_OPT_1_DISABLED)
+	event_def.options[2].text = tr(TXT116_OPT_2)
 
 
 func execute(context: Dictionary) -> void:
@@ -181,7 +181,7 @@ func _event_94(option_index: int, context: Dictionary) -> void:
 func _event_94_result_0(context: Dictionary) -> void:
 	# Event94.cs:64-78
 	var leader := _liberal_leader_name()
-	context["result_text"] = TXT94_R0_A + leader + TXT94_R0_B
+	context["result_text"] = tr(TXT94_R0_A) + leader + tr(TXT94_R0_B)
 	_add_empire_relation(EmpireData.USA, -150)
 	_add_data({W.I_MANPOWER: -150, W.I_PEOPLE_SUPPORT: -100,
 		W.I_THOUGHT_FREEDOM: -250, W.I_DIPLO: 80})
@@ -191,13 +191,13 @@ func _event_94_result_1(context: Dictionary) -> void:
 	# Event94.cs:80-185
 	if d.people_support >= 600 and d.thought_freedom < 500:
 		# 成功劝说（Event94.cs:82-88）
-		context["result_text"] = TXT94_R1_OK
+		context["result_text"] = tr(TXT94_R1_OK)
 		_add_data({W.I_THOUGHT_FREEDOM: 250, W.I_PEOPLE_SUPPORT: -100,
 			W.I_MANPOWER: -250})
 	else:
 		# 劝说失败，自由派接权并开启台湾路线（Event94.cs:89-184）
 		var leader := _liberal_leader_name()
-		context["result_text"] = TXT94_R1_FAIL_A + leader + TXT94_R1_FAIL_B
+		context["result_text"] = tr(TXT94_R1_FAIL_A) + leader + tr(TXT94_R1_FAIL_B)
 		_add_data({W.I_PEOPLE_SUPPORT: 90, W.I_DIPLO: -50,
 			W.I_MANPOWER: -350, W.I_THOUGHT_FREEDOM: 100})
 		# data.afghan_war_path 在本链中为台湾路线标志（双用途槽位，勿依赖 I_AFGHAN_WAR_PATH 常量名）
@@ -210,7 +210,7 @@ func _event_94_result_1(context: Dictionary) -> void:
 func _event_94_result_2(context: Dictionary) -> void:
 	# Event94.cs:186-280
 	var leader := _liberal_leader_name()
-	context["result_text"] = TXT94_R2_A + leader + TXT94_R2_B
+	context["result_text"] = tr(TXT94_R2_A) + leader + tr(TXT94_R2_B)
 	_add_data({W.I_PEOPLE_SUPPORT: 90, W.I_DIPLO: -50,
 		W.I_MANPOWER: -350, W.I_THOUGHT_FREEDOM: 100})
 	ws.afghan_war_path = 1
@@ -220,7 +220,7 @@ func _event_94_result_2(context: Dictionary) -> void:
 
 func _event_94_result_3(context: Dictionary) -> void:
 	# Event94.cs:281-351
-	context["result_text"] = _liberal_leader_name() + TXT94_R3
+	context["result_text"] = _liberal_leader_name() + tr(TXT94_R3)
 	d.thought_freedom = 1000
 	_swap_leader_with_liberal()
 	d.party_support = 0
@@ -300,7 +300,7 @@ func _event_95(option_index: int, context: Dictionary) -> void:
 
 func _event_95_result_0(context: Dictionary) -> void:
 	# Event95.cs:82-114（欧洲共产主义）
-	context["result_text"] = TXT95_R0
+	context["result_text"] = tr(TXT95_R0)
 	_add_data({W.I_PARTY_SUPPORT: -150, W.I_PEOPLE_SUPPORT: 50,
 		W.I_MANPOWER: -50, W.I_THOUGHT_FREEDOM: 100, W.I_DIPLO: -30})
 	d.ideology = 3
@@ -318,7 +318,7 @@ func _event_95_result_0(context: Dictionary) -> void:
 
 func _event_95_result_1(context: Dictionary) -> void:
 	# Event95.cs:115-180（陈独秀式社会民主主义）
-	context["result_text"] = TXT95_R1
+	context["result_text"] = tr(TXT95_R1)
 	_add_data({W.I_PARTY_SUPPORT: -300, W.I_PEOPLE_SUPPORT: 80,
 		W.I_MANPOWER: -50, W.I_THOUGHT_FREEDOM: 50, W.I_DIPLO: -50})
 	# Event95.cs:123-130 经济体制钳制：>=13 → 13；<12 → 12；12 保持。
@@ -351,7 +351,7 @@ func _event_95_result_1(context: Dictionary) -> void:
 
 func _event_95_result_2(context: Dictionary) -> void:
 	# Event95.cs:181-210（孙中山式左翼民族主义）
-	context["result_text"] = TXT95_R2
+	context["result_text"] = tr(TXT95_R2)
 	_add_data({W.I_PARTY_SUPPORT: -250, W.I_PEOPLE_SUPPORT: 50,
 		W.I_THOUGHT_FREEDOM: -80, W.I_DIPLO: -10})
 	_change_loyalty_by_personality({0: -400, 1: -100, 2: 100, 3: 400})
@@ -359,7 +359,7 @@ func _event_95_result_2(context: Dictionary) -> void:
 
 func _event_95_result_3(context: Dictionary) -> void:
 	# Event95.cs:211-216（拒绝退党要求）
-	context["result_text"] = TXT95_R3
+	context["result_text"] = tr(TXT95_R3)
 	_add_data({W.I_THOUGHT_FREEDOM: 500, W.I_PEOPLE_SUPPORT: -500})
 
 
@@ -412,7 +412,7 @@ func _event_96(option_index: int, context: Dictionary) -> void:
 
 func _event_96_result_0(context: Dictionary) -> void:
 	# Event96.cs:44-61
-	context["result_text"] = TXT96_R0
+	context["result_text"] = tr(TXT96_R0)
 	d.party_system = 8
 	d.religion_policy = 27
 	_add_data({W.I_MANPOWER: -80})
@@ -425,7 +425,7 @@ func _event_96_result_0(context: Dictionary) -> void:
 
 func _event_96_result_1(context: Dictionary) -> void:
 	# Event96.cs:62-71
-	context["result_text"] = TXT96_R1
+	context["result_text"] = tr(TXT96_R1)
 	d.party_system = 9
 	_add_data({W.I_PEOPLE_SUPPORT: 50, W.I_MANPOWER: -50})
 	d.religion_policy = 27
@@ -434,7 +434,7 @@ func _event_96_result_1(context: Dictionary) -> void:
 
 func _event_96_result_2(context: Dictionary) -> void:
 	# Event96.cs:72-88
-	context["result_text"] = TXT96_R2
+	context["result_text"] = tr(TXT96_R2)
 	d.party_system = 9
 	_add_data({W.I_PEOPLE_SUPPORT: 50, W.I_MANPOWER: -70})
 	# 官方版 DLL 反编译（tmp_Event96.cs case 2）证实 data[17]++ 为 ref 真实写入（<19 守卫）。
@@ -445,7 +445,7 @@ func _event_96_result_2(context: Dictionary) -> void:
 
 func _event_96_result_3(context: Dictionary) -> void:
 	# Event96.cs:89-106
-	context["result_text"] = TXT96_R3
+	context["result_text"] = tr(TXT96_R3)
 	d.party_system = 9
 	_add_data({W.I_PEOPLE_SUPPORT: 80, W.I_MANPOWER: -120})
 	# 官方版 DLL 反编译（tmp_Event96.cs case 3）证实 data[17]++ 为 ref 真实写入（<19 守卫）。
@@ -472,7 +472,7 @@ func _event_116(option_index: int, context: Dictionary) -> void:
 
 func _event_116_result_1(context: Dictionary) -> void:
 	# Event116.cs:55-66（统一路线）
-	context["result_text"] = TXT116_R1
+	context["result_text"] = tr(TXT116_R1)
 	_add_empire_relation(EmpireData.USA, -70)
 	_add_data({W.I_THOUGHT_FREEDOM: 80, W.I_PEOPLE_SUPPORT: 120})
 	var taiwan := ws.get_country_by_legacy_index(38)
@@ -488,7 +488,7 @@ func _event_116_result_1(context: Dictionary) -> void:
 
 func _event_116_result_2(context: Dictionary) -> void:
 	# Event116.cs:67-79（两个中国路线）
-	context["result_text"] = TXT116_R2
+	context["result_text"] = tr(TXT116_R2)
 	_add_data({W.I_BUDGET: 70})
 	_add_empire_relation(EmpireData.USA, 100)
 	_add_data({W.I_PEOPLE_SUPPORT: -80, W.I_THOUGHT_FREEDOM: 50,

@@ -9,9 +9,9 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "我们强烈谴责意大利帝国主义行径与其对非洲的新殖民主义政策，然而，我们的批判对意大利人来说不痛不痒，他们仍继续实行其掠夺性政策。据称。阿斯马拉当局已经接收到了第一批意援武器与相关军事顾问。"
-const TXT_R1 := "出于反对意大利帝国主义行径与其对非洲的新殖民主义政策的需要。我们向埃塞俄比亚政府送去了额外的武器与粮食援助，希望这些物资能够协助其对抗意大利人。于此同时，阿斯马拉当局已经接收到了第一批意援武器与相关军事顾问。"
-const TXT_R2 := "机会难得，我们决定不再袖手旁观。我们决定以意大利人的政策为蓝本，以提供武器与粮食援助，交换厄立特里亚当局对我国产品的十年关税减免。厄立特里亚毫不犹豫的就接受了我们的提议。与此同时，阿斯马拉当局已经接收到了第一批意援武器与相关军事顾问。"
+const TXT_R0 := "event.script.event_434_little_rome.c0"
+const TXT_R1 := "event.script.event_434_little_rome.c1"
+const TXT_R2 := "event.script.event_434_little_rome.c2"
 
 
 func evaluate(world: WorldState) -> bool:
@@ -47,7 +47,7 @@ func execute(context: Dictionary) -> void:
 			if war != null:
 				war.infl2 += 75
 				war.infl1 -= 75
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -10)
 			_add(W.I_ARMY, -25)
@@ -55,7 +55,7 @@ func execute(context: Dictionary) -> void:
 			if war != null:
 				war.infl2 += 25
 				war.infl1 -= 25
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_BUDGET, 5)
 			_add_relation(EmpireData.USSR, -25)
@@ -64,7 +64,7 @@ func execute(context: Dictionary) -> void:
 			if war != null:
 				war.infl2 += 80
 				war.infl1 -= 80
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -96,3 +96,19 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_434_little_rome.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_434",
+	"num": 434,
+	"priority": 43400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_434_little_rome.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_434_little_rome.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

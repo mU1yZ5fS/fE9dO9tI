@@ -116,3 +116,19 @@ func execute(context: Dictionary) -> void:
 				italy.government = GameConstants.Government.LIBERAL
 				italy.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 			context["result_text"] = TXT_R[3]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_398_right_wing_split.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_398",
+	"num": 398,
+	"priority": 39800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_398_right_wing_split.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_398_right_wing_split.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

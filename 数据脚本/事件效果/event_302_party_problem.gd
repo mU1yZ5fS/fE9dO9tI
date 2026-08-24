@@ -3,11 +3,11 @@
 ## 差异：party_number[0]/[4]→factions[0/4].support；文本来自 Events_text_en 索引 40-49。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_OPT1_DIS := "极左派的影响并不明显。"
-const TXT_OPT2_DIS := "自由派的影响并不明显"
-const TXT_R0 := "在党的下一次会议上，你指责一些虫豸导致了战争的失败。全党上下都明白你不希望发生冲突，但你在各派眼中变得软弱可欺，这对你有什么好处呢？"
-const TXT_R1 := "该死的极左分子，依照他们对世界革命的狂想，让我国陷入一场吞噬了所有资源的战争！我国也差点因此陷入另一场危机之中！战争本身和我们的失败都要怪这些虫豸！他们的双手沾满了在他们下达不计后果的进攻命令时牺牲士兵的鲜血！开始清洗这些叛徒！"
-const TXT_R2 := "自由派叛徒是失败的罪魁祸首！他们与帝国主义狼狈为奸，我们因此无法赢得战争！他们关于市场社会主义和向世界开放的机会主义思想是以我们人民的生命为代价的！右翼虫豸去死吧！"
+const TXT_OPT1_DIS := "event.script.event_302_party_problem.c0"
+const TXT_OPT2_DIS := "event.script.event_302_party_problem.c1"
+const TXT_R0 := "event.script.event_302_party_problem.c2"
+const TXT_R1 := "event.script.event_302_party_problem.c3"
+const TXT_R2 := "event.script.event_302_party_problem.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -19,11 +19,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if world.factions.size() > 0 and world.factions[0] != null and world.factions[0].support > 10:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if world.factions.size() > 4 and world.factions[4] != null and world.factions[4].support > 10:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -33,15 +33,15 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_PARTY_SUPPORT, -100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			if ws.factions.size() > 0 and ws.factions[0] != null:
 				ws.factions[0].support = 0
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			if ws.factions.size() > 4 and ws.factions[4] != null:
 				ws.factions[4].support = 0
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -92,3 +92,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_302_party_problem.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_302",
+	"num": 302,
+	"priority": 30200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_302_party_problem.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

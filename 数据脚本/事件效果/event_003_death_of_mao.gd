@@ -21,7 +21,7 @@ func execute(context: Dictionary) -> void:
 		d.thought_freedom -= 50
 		d.people_support += 20
 		_add_loyalty_1_to_4(200)
-		context["result_text"] = "在毛主席的死讯公布后，他的遗体在人民大会堂留置一周，以便全国人民向主席道别，追悼会在全国范围内举行。无数中国人来到这里向伟大领袖与导师致以最后的敬意。毛主席的遗体根据他的遗愿被火化，遗骨在三分钟的肃立哀悼和华国锋同志的告别演说后被封入了天安门广场上一座特别建造的纪念碑里。"
+		context["result_text"] = tr("event.script.event_003_death_of_mao.i0")
 	elif opt == 1:
 		d.thought_freedom -= 70
 		d.people_support += 50
@@ -29,14 +29,14 @@ func execute(context: Dictionary) -> void:
 		d.budget -= 10
 		_add_loyalty_1_to_4(-300)
 		d.mao_mausoleum = 10
-		context["result_text"] = "在毛主席的死讯公布后，他的遗体在人民大会堂留置一周，以便全国人民向主席道别，追悼会在全国范围内举行。无数中国人来到这里向伟大领袖与导师致以最后的敬意。在时限后，遗体被送往医院，进行特别防腐处理。在三分钟的肃立默哀与华国锋的告别演说后，毛主席正式安息在了天安门前，由治丧委员会特别要求建设的纪念堂里。"
+		context["result_text"] = tr("event.script.event_003_death_of_mao.i1")
 	elif opt == 2:
 		d.thought_freedom -= 70
 		d.people_support += 50
 		d.party_support -= 40
 		_add_loyalty_1_to_4(-500)
 		d.mao_mausoleum = 10
-		context["result_text"] = "华国锋决定不直接出面组织毛主席的葬礼，这件事没有被人忽视。在毛主席的死讯公布后，他的遗体在人民大会堂留置一周，以便全国人民向主席道别，追悼会在全国范围内举行。无数中国人来到这里向伟大领袖与导师致以最后的敬意。在时限后，遗体被送往医院，进行特别防腐处理。在三分钟的肃立默哀与华国锋的告别演说后，毛主席正式安息在了天安门前，由治丧委员会特别要求建设的纪念堂里。"
+		context["result_text"] = tr("event.script.event_003_death_of_mao.i2")
 
 
 ## 毛泽东逝世后的公共处理：移除毛槽、点名补入毛远新，并按 Event3.cs:29-37 原文覆写其档案字段。
@@ -72,3 +72,16 @@ func _add_loyalty_1_to_4(delta: int) -> void:
 	for i in range(1, 5):
 		if i < ws.politicians.size() and ws.politicians[i] != null:
 			ws.politicians[i].loyalty += delta
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_003_death_of_mao.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "death_of_mao",
+	"num": 3,
+	"trigger": [{"t": "DATE_AFTER", "key": "1976.9.9"}],
+	"options": [{"fx": [{"t": "SET_FLAG", "key": "mao_dead"}, {"t": "SET_FLAG", "key": "mao_cremated"}, {"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "SET_FLAG", "key": "mao_dead"}, {"t": "SET_FLAG", "key": "mao_mausoleum"}, {"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "SET_FLAG", "key": "mao_dead"}, {"t": "SET_FLAG", "key": "mao_mausoleum"}, {"t": "CUSTOM_SCRIPT"}]}],
+}

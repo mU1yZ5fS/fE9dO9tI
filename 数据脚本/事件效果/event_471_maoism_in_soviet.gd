@@ -5,13 +5,13 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：relres→ws.get_flag("relres")；proprc→亲中、Torg→对华贸易；
 ##   SOV_PRC_PartiesConnection 未出现在本事件，data.science 直接按原版。
 
-const TXT_OPT0_DIS := "我们已经不再需要过去错误的“极左”方法了，韬光养晦才是正道"
-const TXT_OPT1_DIS_A := "就算我们需要与北方缓和，也不至于要到这个地步！"
-const TXT_OPT1_DIS_B := "苏联不会和我们合作"
-const TXT_R0 := "借助在苏联境内布置的暗线，中国工作人员很快便将对古比雪夫地区的工业考察变为了针对潜在同志的摸底行动，并成功将其主要理论家阿列克谢·拉兹拉茨基安全送至北京以领导该党筹备的“海外机关”；格里戈里·伊萨耶夫则在公安同志支持下转入地下，计划巩固本土工人运动并确立其罢工委员会在古比雪夫地区作为第二权威的地位；阿尔巴尼亚同志则同样为其提供了相应助力，以派遣数十位西古里米探员协力的办法筹建了无产阶级专政党的首个东欧分支。当然，我们的目光并不会仅限于此：考虑到“工人中心”作为区域性组织与热心诉诸工团主义用语的特质，导致其不可避免地具有关门主义气息，必须对其进行更加深入的改造：因此，我们的目光同时转向了苏联境内活跃的各派“异端思想者”。其中包括但不限于借助非正式教育学发展壮大，并开始同共青团竞争青年的党外潮流“公社运动”与其主要领导者，计划将其作为发动社会革命契机的“旅长”（Kombrig）组织；从苏联版嬉皮士群体中汲取力量，推崇意大利红色旅、德国红军派与格瓦拉主义政治实践，且同“公社运动”积极串联的“大火”（Antares）俱乐部；以及莫斯科的以卡斯特罗、切·格瓦拉和德布雷精神的“革命马克思主义”思想为导向的切·格瓦拉支队；乃至在莫斯科、图拉和雅罗斯拉夫尔等地颇具影响，主张在1968年精神的基础上走革命马克思主义路线的“争取共产主义的青年”集团。此外，通过外联部同志的协力，我们还在留学苏联的拉美学生与苏联激进主义者中建立了特别关系，将当前正积极抵抗美帝国主义的尼加拉瓜桑解阵与智利的革左运等组织内的武装斗争政治观点与军事训练经验引入这一群体中，基本建成了具有纠察队性质的革命保卫组织“切·格瓦拉国际旅”。旨在替代苏共的苏联革命共产党（布尔什维克）至此雏形已现，并与阿尔巴尼亚在苏联境内寻得的反修正主义政治网络开始融合。当然，克格勃不可能不被完全蒙在鼓里，他们已开始采取相应手段切断“地下电台”、查封“自印出版”并“特别关注”涌入该国境内的第三世界移民。与之相对的则是苏联政府的态度，勃列日涅夫式自信仍在相当程度上支配着该国党政领导层，让其依旧假装列车仍在前进，计划照常进行。至于接下来会发生什么，那就等着瞧罢。"
-const TXT_R1_BASE := "我们将所知的异见者情报交给了苏联方面，包括前些年成功将信传递到我国的组织。苏方对我国的政策转变很是高兴，并称赞我国为“社会主义大家庭的团结”做出了巨大贡献。为此，他们与我方达成了一批新的合作协定。|由于“工人中心”一些积极分子非常仔细地坚持研究了十月革命前夕以及卫国战争期间的地下组织活动，这保证了“工人中心”得以在1974至1981年期间成功地活动着。因为他们井井有条的阴谋方法，克格勃无法找出大量激进分子的身份。到1981年，根据苏联法律，没有发现足以拘留或逮捕“工人中心”领导人的事实，安全部门也只能找出该组织领导人的姓名。但是到1981年底，苏联的国际局势变得越来越复杂。在苏共中央委员会上，他们非常担心波兰的工人运动会使苏联工人从中找到某种鼓动，因此，尤里·安德罗波夫亲自下令逮捕“工人中心”的领导人，尽管克格勃没有证据表明他们的非法活动。这是在1981年12月14日波兰宣布戒严状态后的第二天。在古比雪夫，伊萨耶夫和拉兹拉茨基被捕。尽管无论是搜查还是随后的调查都无法收集到任何有关其非法活动的证据，“工人中心”的领导人还是于1982年11月被判处长期徒刑。拉兹拉茨基被判处7年监禁加上5年流放，伊萨耶夫6年徒刑和5年流放。与此同时，其他的左翼异见者也在经历着苏联当局的管控，并继续按照他们的轨迹活动着，谁知道接下来会如何发展？毕竟，苏联这棵大树是如此难以撼动。|"
-const TXT_R1_ALB := "阿尔巴尼亚劳动党大力谴责了我们的行为，指责我们背叛革命，并事实上蜕变为莫斯科的傀儡。好吧，不过谁在乎？"
-const TXT_R2 := "这些组织在这些年层出不穷，但相比苏联强大的国家机器而言，他们仍是微不足道的。得益于“工人中心”一些积极分子非常仔细地坚持研究了十月革命前夕以及卫国战争期间的地下组织活动，这保证了“工人中心”得以在1974至1981年期间成功地活动着。多亏了井井有条的地下活动方法，克格勃无法找出大量激进分子的身份。到1981年，根据苏联法律，没有发现足以拘留或逮捕“工人中心”领导人的事实，安全部门也只能找出该组织领导人的姓名。但是到1981年底，苏联的国际局势变得越来越复杂。在苏共中央委员会上，他们非常担心波兰的工人运动会使苏联工人从中找到某种鼓动，因此，尤里·安德罗波夫亲自下令逮捕“工人中心”的领导人，尽管克格勃没有证据表明他们的非法活动。这是在1981年12月14日波兰宣布戒严状态后的第二天。在古比雪夫，伊萨耶夫和拉兹拉茨基被捕。尽管无论是搜查还是随后的调查都无法收集到任何有关其非法活动的证据，“工人中心”的领导人还是于1982年11月被判处长期徒刑。拉兹拉茨基被判处7年监禁加上5年流放，伊萨耶夫6年徒刑和5年流放。与此同时，其他的左翼异见者也在经历着苏联当局的管控，并继续按照他们的轨迹活动着，谁知道接下来会如何发展？毕竟，苏联这棵大树是如此难以撼动。"
+const TXT_OPT0_DIS := "event.script.event_471_maoism_in_soviet.c0"
+const TXT_OPT1_DIS_A := "event.script.event_471_maoism_in_soviet.c1"
+const TXT_OPT1_DIS_B := "event.script.event_471_maoism_in_soviet.c2"
+const TXT_R0 := "event.script.event_471_maoism_in_soviet.c3"
+const TXT_R1_BASE := "event.script.event_471_maoism_in_soviet.c4"
+const TXT_R1_ALB := "event.script.event_471_maoism_in_soviet.c5"
+const TXT_R2 := "event.script.event_471_maoism_in_soviet.c6"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -31,13 +31,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line56 < 2 and albania != null and albania.has_tag("亲中") and world.influence_prc >= 500 and mod6:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if not mod3 and line56 != 0 and world.get_flag("relres") and sov != null and sov.has_tag("对华贸易") and mod53:
 		_enable(opt[1], event_def.options[1].text)
 	elif line56 == 0:
-		_disable(opt[1], TXT_OPT1_DIS_A)
+		_disable(opt[1], tr(TXT_OPT1_DIS_A))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_B)
+		_disable(opt[1], tr(TXT_OPT1_DIS_B))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_add_relation(EmpireData.USSR, -100)
 			_add(W.I_PARTY_SUPPORT, 100)
 			_add(W.I_BUDGET, -150)
@@ -57,10 +57,10 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 20
 			_add_power(EmpireData.USSR, -10)
 		1:
-			var text := TXT_R1_BASE
+			var text := tr(TXT_R1_BASE)
 			var albania := _country(20)
 			if albania != null and albania.has_tag("亲中"):
-				text += TXT_R1_ALB
+				text += tr(TXT_R1_ALB)
 				albania.set_tag("亲中", false)
 				albania.set_tag("对华贸易", false)
 				albania.set_tag("econ", false)
@@ -73,7 +73,7 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc -= 50
 			_add_power(EmpireData.USSR, 50)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -135,3 +135,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_471_maoism_in_soviet.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_471",
+	"num": 471,
+	"priority": 47100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_471_maoism_in_soviet.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1980.9.1"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

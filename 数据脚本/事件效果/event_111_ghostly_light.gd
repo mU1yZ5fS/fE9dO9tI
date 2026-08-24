@@ -7,13 +7,13 @@ extends "res://数据脚本/event_script_base.gd"
 ##    Godot 设 d.ending_route=6（结局界面后续读取）。
 ##  - 忠诚<300 杀 3 人循环逐字保留（毛保护/姓名2-2/同领袖性格跳过）。
 
-const TXT_R0 := "末日已至。"
+const TXT_R0 := "event.script.event_111_ghostly_light.c0"
 
-const TXT_R1 := "今天,所有的报纸上都发表了《呼吁人民》这篇文章,在文中，主席呼吁每个爱党爱国、关心中国命运的公民抵制企图复辟的走资派和党内的修正主义者。受到鼓舞的群众自发聚集在天安门广场集会，支持政府和主席同志的行动。结果，三十多万人聚集在国家的主要广场，高呼把反对反动派的文化大革命继续下去的口号。在公众愤怒的压力下，阴谋者不得不辞职，地方官员安抚了人民的热情。这是我们人民的伟大胜利!光荣归于主席!光荣归于中国共产党!"
+const TXT_R1 := "event.script.event_111_ghostly_light.c1"
 
-const TXT_R2 := "由于我们情报部门的协调工作，反对我们的最高领导者提出的自动化政策的人被从所有职位上除名，并即将受到公正的审判。而在基层，一场铲除腐败的运动开始了，震撼了数万名反对党的政策的党内工作人员的立场。对我们亲爱的领袖的反对者的政治镇压激起了党内其他工作人员的不满，他们为了个人安全的原因，不得不隐藏他们的不满。然而，这是我们的伟大胜利!光荣归于主席!光荣归于中国共产党!"
+const TXT_R2 := "event.script.event_111_ghostly_light.c2"
 
-const TXT_R3 := "第二天，忠诚的军队进入北京，阴谋家被逮捕并接受审判。首都实施了宵禁，城市街道由军队控制，局势似乎逐渐稳定。最积极的反动派被开除了,其余人不得不平息他们对{0}主席同志疾风暴雨般的批评。然而，工人阶级的敌人被打败了，这是我们的伟大胜利!光荣归于主席!光荣归于中国共产党!"
+const TXT_R3 := "event.script.event_111_ghostly_light.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -54,27 +54,27 @@ func execute(context: Dictionary) -> void:
 				d.ending_route = 6
 			# 原 Event111.cs:162：load_scene_after_click → data.ending_route=6。
 			game.queue_ending_after_event(6)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_DIPLO, 70)
 			_add(W.I_PEOPLE_SUPPORT, 100)
 			_add(W.I_PARTY_SUPPORT, -400)
 			_kill_3_low_loyalty()
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_AGENTS, -400)
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_DIPLO, 50)
 			_add(W.I_PARTY_SUPPORT, -500)
 			_kill_3_low_loyalty()
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			_add(W.I_ARMY, -300)
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_PARTY_SUPPORT, -500)
 			_add(W.I_DIPLO, 50)
 			_kill_3_low_loyalty()
-			context["result_text"] = TXT_R3.replace("{0}", _leader_name())
+			context["result_text"] = tr(TXT_R3).replace("{0}", _leader_name())
 
 
 ## Event111.cs 三结果共同的忠诚<300 杀 3 循环（逐字条件）。
@@ -120,3 +120,19 @@ func _leader_name() -> String:
 	if ws.leader != null and ws.leader.name_display != "":
 		return ws.leader.name_display
 	return "华国锋"
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_111_ghostly_light.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_111",
+	"num": 111,
+	"priority": 11100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_111_ghostly_light.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1983.1.1"}, {"t": "TECH_UNLOCKED", "v": 15}, {"t": "MODIFIER_ACTIVE", "key": "11"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

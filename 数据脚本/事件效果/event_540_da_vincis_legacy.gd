@@ -4,12 +4,12 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:197-199 —— event_done[518]。
 ## 差异：old_modify_desc[50] → ModifierCatalog.get_def(50) 展示文案。
 
-const TXT_OPT0_DIS := "我们钱不够啊"
-const TXT_OPT1_DIS_TRADE := "法国人不会卖给我们东西"
-const TXT_OPT1_DIS_MONEY := "我们没有闲钱！"
-const TXT_R0 := "随着一纸号令的下达，我们决定研发更好的直升机。在原有型号和观察员的研究下，我们借鉴了美国“黑鹰”直升机和苏联mi-17的经验，得以设计出一款功能和技术都接近的通用直升机，直-12。这是一个大胆的决定，因为我们采用了大量新型技术：例如十一叶片的螺旋桨，内置在尾翼中的螺旋桨等。这将同时作为军队和民用设计。预计可以运载十人左右，尽管运量不高，但这款直升机将大量列装，旨在完全取代旧设计。同时，直12-w也在设计中，这是直12的双座升级版本，具有尾旋翼，从而降低了噪音水平，从而使其能够实现一定程度的声学隐身。排气装置的设计减少了红外线特征。该直升机配备了毫米波火控雷达。与大多数攻击直升机不同的是，它没有机头机枪或机炮。直-12还具有装甲板、弹射座椅和装有前视红外系统及激光测距仪的炮塔。特别设计的头盔型瞄具也在计划中。"
-const TXT_R1 := "我们和法国签署了一项协议，我们将在未来采购法国的农产品，而法国将会转让给我们SA365-N1的生产线。很快，哈尔滨飞机制造厂便试飞了第一架直-9，这至少能填补我们在军用和民用的空缺。这款直升机将被大量列装部队，军用的武装款也在设计中。"
-const TXT_R2 := "仔细想想，我们的直升机还挺先进的？总比那几个天天摔地上的好，对吧？"
+const TXT_OPT0_DIS := "event.script.event_540_da_vincis_legacy.c0"
+const TXT_OPT1_DIS_TRADE := "event.script.event_540_da_vincis_legacy.c1"
+const TXT_OPT1_DIS_MONEY := "event.script.event_540_da_vincis_legacy.c2"
+const TXT_R0 := "event.script.event_540_da_vincis_legacy.c3"
+const TXT_R1 := "event.script.event_540_da_vincis_legacy.c4"
+const TXT_R2 := "event.script.event_540_da_vincis_legacy.c5"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,14 +22,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if money >= 80:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if c21 != null and c21.has_tag("对华贸易"):
 		if money >= 30:
 			_enable(opt[1], event_def.options[1].text)
 		else:
-			_disable(opt[1], TXT_OPT1_DIS_MONEY)
+			_disable(opt[1], tr(TXT_OPT1_DIS_MONEY))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_TRADE)
+		_disable(opt[1], tr(TXT_OPT1_DIS_TRADE))
 
 
 func execute(context: Dictionary) -> void:
@@ -44,7 +44,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PEOPLE_SUPPORT, 100)
 			ws.influence_prc += 20
 			_set_mod50("自研直升机：", "军力+0.4，干涉点数+0.2")
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_ARMY, 50)
@@ -53,9 +53,9 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_DIPLO, -20)
 			ws.influence_prc += 20
 			_set_mod50("法式直升机：", "军力+0.2，干涉点数+0.1")
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 func _set_mod50(title: String, effect: String) -> void:
@@ -63,3 +63,19 @@ func _set_mod50(title: String, effect: String) -> void:
 	if def != null:
 		def.name_zh = title
 		def.effect_zh = effect
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_540_da_vincis_legacy.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_540",
+	"num": 540,
+	"priority": 54000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_540_da_vincis_legacy.gd",
+	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "event_518"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1424-1426 —— ExprNode 组合。
 ## 差异：now_leader→current_leader（ExprNode EMPIRE_LEADER_IS）；isOVD→标签 ovd；influencePRC→influence_prc。
 
-const TXT_RESULT := "戈尔巴乔夫的“姿态”，被苏联共产党内的保守派政治家给视为对伟大卫国战争时期成就的背叛与亵渎。事实上，正是这一场大战，直接导致了世界社会主义阵营的建立。然而，现在还没有人谈论废除经济互助委员会的事宜，尽管该党已经在为该组织的改革计划做准备，但他们能够改变这种格局吗？"
-const TXT_IDX_1492 := "戈尔巴乔夫解散华沙条约组织"
-const TXT_IDX_1493 := "新任苏联领导人米哈伊尔·戈尔巴乔夫上任之初，便遭遇了空前的外交挫败。在美国、中国与欧洲公众的联合压力下，他不得不批准“统一德国”的方案，然而这一计划甚至没有确认新国家的中立地位。莫斯科在东欧地区最忠诚的盟友，就此在政治版图上消失。\n因此，华沙条约组织本身的存在都已经成为了问题，尤其是在维谢格拉德圈子已脱离苏联影响力的情况下。在1985年，原本应当被续签的，延续30余年的《友好合作互助条约》被修订；原本在筹划的相关庆祝活动也被取消。戈尔巴乔夫不得不表示，这只是苏联与美国和解的“善意姿态”，但所有人都知道，莫斯科真正的盟友只剩下捷克斯洛伐克与保加利亚：前者只与苏维埃乌克兰有些微接壤、后者则同华约国家在陆路上完全隔绝。\n持续30年的冷战就此结束了......"
-const TXT_IDX_1494 := "冷战真的结束了吗？！"
-const TXT_IDX_1495 := "戈尔巴乔夫的“姿态”，被苏联共产党内的保守派政治家给视为对伟大卫国战争时期成就的背叛与亵渎。事实上，正是这一场大战，直接导致了世界社会主义阵营的建立。然而，现在还没有人谈论废除经济互助委员会的事宜，尽管该党已经在为该组织的改革计划做准备，但他们能够改变这种格局吗？"
+const TXT_RESULT := "event.script.event_433_gorbachev_dissolves_wto.c0"
+const TXT_IDX_1492 := "event.script.event_433_gorbachev_dissolves_wto.c1"
+const TXT_IDX_1493 := "event.script.event_433_gorbachev_dissolves_wto.c2"
+const TXT_IDX_1494 := "event.script.event_433_gorbachev_dissolves_wto.c3"
+const TXT_IDX_1495 := "event.script.event_433_gorbachev_dissolves_wto.c4"
 
 
 
@@ -50,4 +50,20 @@ func execute(context: Dictionary) -> void:
 	_add_power(EmpireData.USSR, -350)
 	_add_power(EmpireData.USA, 100)
 	ws.influence_prc += 100
-	context["result_text"] = TXT_RESULT
+	context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_433_gorbachev_dissolves_wto.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_433",
+	"num": 433,
+	"priority": 43300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_433_gorbachev_dissolves_wto.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "EMPIRE_LEADER_IS", "key": "1", "v": 6}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "ovd", "target": "2"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "ovd", "target": "5"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "ovd", "target": "4"}]}, {"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "51"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "development", "v": 2, "target": "17"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "government", "v": 3, "target": "17"}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "sub_government", "v": 19, "target": "4"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

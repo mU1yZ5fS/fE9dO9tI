@@ -28,10 +28,10 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1339 := "黑金"
-const TXT_IDX_1340 := "今天，来自阿拉伯半岛的6国领导人宣布建立阿拉伯国家海湾合作委员会。这是一个旨在实现各国在经济、社会与文化等领域合作，并全方面提升一体化水平的组织。海湾合作委员会由下述六国组成：沙特阿拉伯、科威特、巴林、卡塔尔、阿联酋与阿曼。"
-const TXT_IDX_1341 := "密切关注"
-const TXT_IDX_1342 := "专家预测，由于上述国家均是区域内的重要石油出口国，这一组织可能将深刻影响世界油价。"
+const TXT_IDX_1339 := "event.script.event_418_black_gold.c0"
+const TXT_IDX_1340 := "event.script.event_418_black_gold.c1"
+const TXT_IDX_1341 := "event.script.event_418_black_gold.c2"
+const TXT_IDX_1342 := "event.script.event_418_black_gold.c3"
 
 ## 原文字符串附录（供自检）
 
@@ -69,3 +69,19 @@ func execute(context: Dictionary) -> void:
 		if c != null:
 			c.set_tag("oil", true)
 	context["result_text"] = TXT_R[0]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_418_black_gold.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_418",
+	"num": 418,
+	"priority": 41800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_418_black_gold.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_418_black_gold.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

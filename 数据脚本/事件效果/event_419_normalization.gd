@@ -33,12 +33,12 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1351 := "正常化"
-const TXT_IDX_1352 := "葡萄牙的局势终于稳定了下来。尽管面临长期的经济下行，通货膨胀，失业高企与频繁的政府更迭，人们对激进政治势力的热情还是走到了尽头。对葡萄牙革命委员会的压力也与日俱增——民主政党与政府已发起支持解散委员会的群众运动。毕竟，革命委员会是一个凌驾于民主体制的部门，并阻碍了该国深化改革。葡萄牙的新任民主主义政府选择加入欧洲经济共同体，并启动与其他欧洲国家的一体化进程。"
-const TXT_IDX_1353 := "与葡萄牙建交并发展经贸关系"
-const TXT_IDX_1354 := "不闻不问"
-const TXT_IDX_1355 := "人们还记得当年毛主席的指示：“大国从严，小国从宽，葡萄牙是小国，可以宽大处理”。然而时代变了，中国居然和这样的一个小国确立了经贸与外交往来。"
-const TXT_IDX_1356 := "康乃馨革命结束了。"
+const TXT_IDX_1351 := "event.script.event_419_normalization.c0"
+const TXT_IDX_1352 := "event.script.event_419_normalization.c1"
+const TXT_IDX_1353 := "event.script.event_419_normalization.c2"
+const TXT_IDX_1354 := "event.script.event_419_normalization.c3"
+const TXT_IDX_1355 := "event.script.event_419_normalization.c4"
+const TXT_IDX_1356 := "event.script.event_419_normalization.c5"
 
 ## 原文字符串附录（供自检）
 
@@ -58,3 +58,19 @@ func execute(context: Dictionary) -> void:
 		context["result_text"] = TXT_R[0]
 	else:
 		context["result_text"] = TXT_R[1]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_419_normalization.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_419",
+	"num": 419,
+	"priority": 41900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_419_normalization.gd",
+	"trigger": [{"t": "TECH_UNLOCKED", "key": "special", "v": 50, "target": "87"}, {"t": "COUNTRY_FIELD_AT_LEAST", "key": "government", "v": 2, "target": "87"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

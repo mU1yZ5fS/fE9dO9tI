@@ -207,3 +207,17 @@ func _seats_report(suffix: String) -> String:
 		if ws.factions[i].is_enabled:
 			lines.append("%s: %d%s" % [FactionData.FACTION_NAMES[i], ws.factions[i].support, suffix])
 	return "\n".join(lines)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_001_elections.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "npc_elections",
+	"num": 1,
+	"notify": false,
+	"once": false,
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "party_support", "v": 501}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 50}, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -1,33 +1,26 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event932.cs：民主的故乡——第三幕（希腊大选终局，四选项）。
-## 触发：TimeScript.cs:10780-10786 ——
-##   ((日>=2 且 月>=6 且 年>=1985) || (月>=7 且 年>=1985) || 年>=1986)
-##   && c45.Gosstroy!=0。
-## 差异：
-##  - num/num2/num3 计分逐项移植（含 now_leader → current_leader、
-##    isSocEU → soc_eu 标签、c20.spec → special）。
-##  - result93==0 双文本、PASOK 连任两文本、SocEU 追加文本逐字保留。
+## 原作 Event932.cs：民主的故乡——第三幕（希腊大选终局，四选项）。 ## 触发：TimeScript.cs:10780-10786 —— ##   ((日>=2 且 月>=6 且 年>=1985) (月>=7 且 年>=1985) 年>=1986) ##   && c45.Gosstroy!=0。 ## 差异： ##  - num/num2/num3 计分逐项移植（含 now_leader → current_leader、 ##    isSocEU → soc_eu 标签、c20.spec → special）。 ##  - result93==0 双文本、PASOK 连任两文本、SocEU 追加文本逐字保留。
 
-const TXT_KKE_A := "在世界共产主义运动的发展以及此前希共在左翼联盟中积累的了充足实力的情况下，希共得以脱离左翼联盟，单独赢得选举。新政府决定立即带领希腊向社会主义过渡。希腊迅速向苏东阵营靠拢，并同他们展开了深度合作。"
+const TXT_KKE_A := "event.script.event_932_greece_act3.c0"
 
-const TXT_KKE_B := "在世界共产主义运动的发展以及此前希共在左翼联盟中积累的了充足实力的情况下，希共得以脱离左翼联盟，单独赢得选举。他们谴责苏联戈尔巴乔夫背叛了马列主义的原则，这导致希共中支持戈尔巴乔夫的革新派脱党。希腊开始向我们靠拢，他们在我们的支持下于多个毛派组织达成了和解并将党组织重组为希腊革命共产党，并开始带领国家向社会主义过渡。"
+const TXT_KKE_B := "event.script.event_932_greece_act3.c1"
 
-const TXT_KKE_C := "在世界共产主义运动的发展以及此前希共在左翼联盟中积累的了充足实力的情况下，希共得以脱离左翼联盟，单独赢得选举。他们谴责苏联背叛了马列主义的原则，这导致希共中支持雅科夫列夫的革新派脱党。希腊开始向我们靠拢，他们在我们的支持下于多个毛派组织达成了和解并将党组织重组为希腊革命共产党，并开始带领国家向社会主义过渡。"
+const TXT_KKE_C := "event.script.event_932_greece_act3.c2"
 
-const TXT_KKE_D := "在世界共产主义运动的发展以及此前希共在左翼联盟中积累的了充足实力的情况下，希共得以脱离左翼联盟，单独赢得选举。他们谴责苏联戈尔巴乔夫背叛了马列主义的原则，这导致希共中支持戈尔巴乔夫的革新派脱党。希共决定与社会主义展开合作，并带领希腊向社会主义过渡。我们将可以利用这个机会同他们合作。"
+const TXT_KKE_D := "event.script.event_932_greece_act3.c3"
 
-const TXT_KKE_E := "在世界共产主义运动的发展以及此前希共在左翼联盟中积累的了充足实力的情况下，希共得以脱离左翼联盟，单独赢得选举。他们谴责苏联背叛了马列主义的原则，这导致希共中支持雅科夫列夫的革新派脱党。希共决定与社会主义展开合作，并带领希腊向社会主义过渡。我们将可以利用这个机会同他们合作。"
+const TXT_KKE_E := "event.script.event_932_greece_act3.c4"
 
-const TXT_LEFT_UNION := "左翼联盟驱逐了希腊共产党，并设法使联盟稳定下来，让温和左翼能够继续带领希腊进行民主的社会主义改革。他们将与各个西欧温和左翼政府加强合作。希腊将继续维持中立政策。除左翼希共之外的左翼政党仍然维持着希腊的议会霸权。希共虽被驱逐，但仍有卷土重来的力量。"
+const TXT_LEFT_UNION := "event.script.event_932_greece_act3.c5"
 
-const TXT_PASOK_2 := "泛希腊社会主义运动获得了连任，他们将着手修改宪法，减少总统的权力。政府还将推行“稳定计划”，控制公共支出，尝试降低日益增大的福利开支。并在外交上在东西方之间保持中立。泛希腊社会主义运动继续着他们的掌权。"
+const TXT_PASOK_2 := "event.script.event_932_greece_act3.c6"
 
-const TXT_PASOK_3 := "泛希腊社会主义运动赢得了选举，他们将着手修改宪法，减少总统的权力。政府还将推行“稳定计划”，控制公共支出，尝试降低日益增大的福利开支。并在外交上在东西方之间保持中立。泛希腊社会主义运动继续着他们的掌权。"
+const TXT_PASOK_3 := "event.script.event_932_greece_act3.c7"
 
-const TXT_SOCEU_EXTRA := "鉴于执政政策和欧洲社会主义联盟理念的相似性，泛希腊社会主义运动向欧社联委员会递交了申请，很快，希腊也加入了社会主义联盟。"
+const TXT_SOCEU_EXTRA := "event.script.event_932_greece_act3.c8"
 
-const TXT_RIGHT := "右翼在欧洲的优势使得新民主党抓住了左翼的颓势，成功获得了大选胜利。他们将顺应新自由主义的浪潮，开展自由化改革，与西方更深度地融合。"
+const TXT_RIGHT := "event.script.event_932_greece_act3.c9"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -152,7 +145,7 @@ func _branch_kke(context: Dictionary, opt: int) -> void:
 		_add_power(EmpireData.USSR, 50)
 		if greece != null:
 			greece.内战中 = false
-		context["result_text"] = TXT_KKE_A
+		context["result_text"] = tr(TXT_KKE_A)
 	elif ussr_leader == 6 and opt == 0:
 		_greece_to(1, 2)
 		if greece != null:
@@ -167,7 +160,7 @@ func _branch_kke(context: Dictionary, opt: int) -> void:
 		if greece != null:
 			greece.内战中 = false
 		ws.influence_prc += 50
-		context["result_text"] = TXT_KKE_B
+		context["result_text"] = tr(TXT_KKE_B)
 	elif ussr_leader == 7 and opt == 0:
 		_greece_to(1, 2)
 		var cyprus := ws.get_country_by_legacy_index(94)
@@ -181,19 +174,19 @@ func _branch_kke(context: Dictionary, opt: int) -> void:
 		if greece != null:
 			greece.内战中 = false
 		ws.influence_prc += 50
-		context["result_text"] = TXT_KKE_C
+		context["result_text"] = tr(TXT_KKE_C)
 	elif ussr_leader == 6:
 		_greece_to(1, 2)
 		_add_power(EmpireData.USA, -50)
 		if greece != null:
 			greece.内战中 = false
-		context["result_text"] = TXT_KKE_D
+		context["result_text"] = tr(TXT_KKE_D)
 	elif ussr_leader == 7:
 		_greece_to(1, 2)
 		_add_power(EmpireData.USA, -50)
 		if greece != null:
 			greece.内战中 = false
-		context["result_text"] = TXT_KKE_E
+		context["result_text"] = tr(TXT_KKE_E)
 
 
 func _branch_pasok(context: Dictionary) -> void:
@@ -201,17 +194,17 @@ func _branch_pasok(context: Dictionary) -> void:
 	var result93: int = ws.completed_event_ids.get("event_093", -1)
 	if result93 == 0:
 		_greece_to(2, 3)
-		context["result_text"] = TXT_LEFT_UNION
+		context["result_text"] = tr(TXT_LEFT_UNION)
 	else:
-		var text := TXT_PASOK_2
+		var text := tr(TXT_PASOK_2)
 		if greece != null and greece.government == GameConstants.Government.LIBERAL:
-			text = TXT_PASOK_3
+			text = tr(TXT_PASOK_3)
 		_greece_to(2, 3)
 		if greece != null:
 			greece.内战中 = false
 		var c21 := ws.get_country_by_legacy_index(21)
 		if c21 != null and c21.has_tag("soc_eu"):
-			text += TXT_SOCEU_EXTRA
+			text += tr(TXT_SOCEU_EXTRA)
 			if greece != null:
 				greece.set_tag("soc_eu", true)
 		context["result_text"] = text
@@ -230,7 +223,7 @@ func _branch_right(context: Dictionary) -> void:
 			greece.set_tag("eu", true)
 		if france != null and france.has_tag("nato"):
 			greece.set_tag("nato", true)
-	context["result_text"] = TXT_RIGHT
+	context["result_text"] = tr(TXT_RIGHT)
 
 
 func _greece_to(government: int, sub: int) -> void:
@@ -274,3 +267,17 @@ func _ussr_leader_add(index: int, delta: int) -> void:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_932_greece_act3.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_932",
+	"nodesc": true,
+	"num": 932,
+	"priority": 9320,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_932_greece_act3.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1985.6.2"}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "government", "target": "45"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

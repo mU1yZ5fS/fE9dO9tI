@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "他们的条件很诱人......而且，这些宗派主义者明白过去几年来领导班子的一切错误，真正懂得孙中山思想的意义。在台湾分裂分子队伍之中，他们将成为“我们的人”。"
-const TXT_R1 := "当然，这些国民党人比别人好得多，但这有什么意义呢？你明白他们正打着接受我们国家的幌子，要我们主动承认分裂分子吧？让他们从哪来回哪去！"
-const TXT_R2 := "当然，国民党犯下了很多错误。但是为什么不让这个派系合法运作呢？他们仍然承认社会主义和我党。他们也明白他们的先辈们错在哪。将一个好政党合法化能够改善我国的状况"
+const TXT_R0 := "event.script.event_338_kuomintang_left.c0"
+const TXT_R1 := "event.script.event_338_kuomintang_left.c1"
+const TXT_R2 := "event.script.event_338_kuomintang_left.c2"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -16,16 +16,16 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_INFLUENCE, 50)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_PARTY_SUPPORT, 30)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_PARTY_SUPPORT, -30)
 			_add(W.I_THOUGHT_FREEDOM, 30)
 			for f in ws.factions:
 				f.is_enabled = true
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -47,3 +47,18 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_338_kuomintang_left.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_338",
+	"num": 338,
+	"priority": 33800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_338_kuomintang_left.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

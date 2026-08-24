@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "嗯，有就有吧。这个问题并没有认真讨论的必要。这些农场占比挺高，这证明它们的存在是绝对正常的！这些人都是老实人，他们的一切是通过劳动挣得的。"
-const TXT_R1 := "我们得明白，这些农场的主人是我们国家的未来。即勤劳、进取、熟练的所有者。他们将对我们的农业企业起支撑作用。他们需要我们的帮助，以保护他们摆脱野蛮竞争的问题和其他农民的攻击。"
-const TXT_R2 := "我们可以看到农村出现了新的阶级分化。我们得放弃“专业化农场”的委婉说法，更直截了当地称呼他们。有必要对他们进行全面检查，至少得有三分之一的农场要被淘汰，其余的也不能让他们积累这么多财富。"
+const TXT_R0 := "event.script.event_335_specialized_farms.c0"
+const TXT_R1 := "event.script.event_335_specialized_farms.c1"
+const TXT_R2 := "event.script.event_335_specialized_farms.c2"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -16,7 +16,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_PARTY_SUPPORT, 50)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, 50)
 			_add(W.I_THOUGHT_FREEDOM, 50)
@@ -25,7 +25,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGRICULTURE, 30)
 			_add_power(0, -15)
 			_add_power(1, -15)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_DIPLO, 50)
 			_add(W.I_BUDGET, 20)
@@ -33,7 +33,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_PARTY_SUPPORT, -150)
 			_add(W.I_ECON_SYSTEM, -1)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -55,3 +55,19 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_335_specialized_farms.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_335",
+	"num": 335,
+	"priority": 33500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_335_specialized_farms.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1984.6.13"}, {"t": "RESOURCE_AT_LEAST", "key": "economy_system", "v": 13}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

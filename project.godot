@@ -49,6 +49,11 @@ enabled=PackedStringArray("res://addons/copy_all_errors/plugin.cfg")
 
 theme/custom="res://资产/UI/全局UI主题.tres"
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://资产/本地化/events_zh_CN.zh_CN.translation")
+locale/fallback="zh_CN"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

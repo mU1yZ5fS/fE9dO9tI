@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && DATE_AFTER 1978.6.1；fire_only_once 承担 !event_done[452]。
 ## 差异：vietnampeace→global_flags；SOV_PRC_PartiesConnection→I_COMMUNICATIONS。
 
-const TXT_R0_A := "由于新的柬埔寨政府有不少成员与越南方面有良好关系，以及我们同苏联关系的回暖，在我们的斡旋下，新柬埔寨政府和越南最终达成了和解，并签订了边界协定和几项合作条约，两国关系得以正常化，柬埔寨真正开始了恢复和发展。同时由于越共亲华派的努力和苏联寻求解冻中苏关系的施压，我们和越南之间也成功达成了和平，越南的排华政策和双方的边境冲突都结束了，华人被允许自愿回国，越南也同我们签订了几项合作协定。"
-const TXT_R0_B := "虽然新的柬埔寨政府有不少成员与越南方面有良好关系，但是我们在柬越之间组织的谈判并未成功——新柬埔寨的领导人是亲中的毛派分子，越共认为这还是会威胁到他们；以及越南统治集团的亲苏路线和我们同苏联的恶劣关系不容。我们和越南的缓和谈判也因为缺乏谈判基础而失败了。柬埔寨真正开始了恢复和发展，但是战争的阴云仍未散去。"
-const TXT_R1 := "虽然新的柬埔寨政府有不少成员与越南方面有良好关系，但是柬越之间的自行组织的谈判并未成功——新柬埔寨的领导人是亲中的毛派分子，越共认为这还是会威胁到他们；以及越南统治集团的亲苏路线和柬共新领导层的毛主义路线不容。柬埔寨真正开始了恢复和发展，但是战争的阴云仍未散去。"
+const TXT_R0_A := "event.script.event_452_indochina_peace.c0"
+const TXT_R0_B := "event.script.event_452_indochina_peace.c1"
+const TXT_R1 := "event.script.event_452_indochina_peace.c2"
 
 
 func execute(context: Dictionary) -> void:
@@ -19,7 +19,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null and ws.empires[EmpireData.USSR].relations >= 500:
-				context["result_text"] = TXT_R0_A
+				context["result_text"] = tr(TXT_R0_A)
 				_add(W.I_PARTY_SUPPORT, -100)
 				ws.influence_prc += 10
 				_add_relation(EmpireData.USSR, 200)
@@ -27,10 +27,10 @@ func execute(context: Dictionary) -> void:
 				ws.set_flag("vietnampeace", true)
 				_add(W.I_COMMUNICATIONS, 40)
 			else:
-				context["result_text"] = TXT_R0_B
+				context["result_text"] = tr(TXT_R0_B)
 				ws.influence_prc -= 10
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			ws.influence_prc -= 10
 
 
@@ -93,3 +93,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_452_indochina_peace.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_452",
+	"num": 452,
+	"priority": 45200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_452_indochina_peace.gd",
+	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "event_451"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_451"}, {"t": "DATE_AFTER", "key": "1978.6.1"}, {"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_451"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_451"}, {"t": "DATE_AFTER", "key": "1978.6.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

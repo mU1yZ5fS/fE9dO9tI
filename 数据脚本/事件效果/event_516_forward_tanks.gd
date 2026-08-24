@@ -1,16 +1,14 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event516.cs：前进，坦克！（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event516.cs：前进，坦克！（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_DESC_VIETNAM := "主席同志，随着中越战争的结束，我们不得不意识到一件事情，我们的坦克：仿制于T-54A的59式坦克实在是过于老旧，而独立研发的69式坦克在战争的表现虽然说不上是糟糕，也可以说是在面对反坦克武器时毫无招架之力，若是用这般的武器很难保证在未来战场上的优势。我们的坦克急需现代化，但问题是：从哪个方面？包头一机的方案为替换原有的火控系统和火炮，换装79型105毫米滑膛炮将会大大提高战斗力；也有人觉得应该借鉴在“二四会战”中的坦克样车，以122工程为蓝本，从而从根本上改进我国坦克；也有少部分人认为应当借助我们和西方国家的关系而购入新坦克。无论如何，中央军事委员会仍然在等待您的意见。"
-const TXT_DESC_IRAN_IRAQ := "主席同志，随着两伊战争的结束，我们不得不意识到一件事情，我们的坦克：仿制于T-54A的59式坦克实在是过于老旧，而独立研发的69式坦克在战争的表现虽然说不上是糟糕，也可以说是在面对反坦克武器时毫无招架之力，若是用这般的武器很难保证在未来战场上的优势。我们的坦克急需现代化，但问题是：从哪个方面？包头一机的方案为替换原有的火控系统和火炮，换装79型105毫米滑膛炮将会大大提高战斗力；也有人觉得应该借鉴在“二四会战”中的坦克样车，以122工程为蓝本，从而从根本上改进我国坦克；也有少部分人认为应当借助我们和西方国家的关系而购入新坦克。无论如何，中央军事委员会仍然在等待您的意见。"
-const TXT_DESC_KOREA := "主席同志，随着对朝鲜作战的结束，我们不得不意识到一件事情，我们的坦克：仿制于T-54A的59式坦克实在是过于老旧，而独立研发的69式坦克在战争的表现虽然说不上是糟糕，也可以说是在面对反坦克武器时毫无招架之力，若是用这般的武器很难保证在未来战场上的优势。我们的坦克急需现代化，但问题是：从哪个方面？包头一机的方案为替换原有的火控系统和火炮，换装79型105毫米滑膛炮将会大大提高战斗力；也有人觉得应该借鉴在“二四会战”中的坦克样车，以122工程为蓝本，从而从根本上改进我国坦克；也有少部分人认为应当借助我们和西方国家的关系而购入新坦克。无论如何，中央军事委员会仍然在等待您的意见。"
-const TXT_DESC_KOREA2 := "主席同志，随着第二次朝鲜战争的结束，我们不得不意识到一件事情，我们的坦克：仿制于T-54A的59式坦克实在是过于老旧，而独立研发的69式坦克在战争的表现虽然说不上是糟糕，也可以说是在面对反坦克武器时毫无招架之力，若是用这般的武器很难保证在未来战场上的优势。我们的坦克急需现代化，但问题是：从哪个方面？包头一机的方案为替换原有的火控系统和火炮，换装79型105毫米滑膛炮将会大大提高战斗力；也有人觉得应该借鉴在“二四会战”中的坦克样车，以122工程为蓝本，从而从根本上改进我国坦克；也有少部分人认为应当借助我们和西方国家的关系而购入新坦克。无论如何，中央军事委员会仍然在等待您的意见。"
-const TXT_R0_A := "在您的指令下，代号1037的坦克改进工程开始了。以现有坦克的底盘，我们在其中安装了国产的105毫米滑膛炮，而在内部则有更多改进。我们安装了最新的通讯电台和电子夜视仪，同时列装了最新的自动灭火抑爆和三防系统，以及高压气瓶，用于清洁潜望镜。很快，一部分部队就开始列装这种新型59坦克，在未来，59式将被其完全取代。"
-const TXT_R1_A := "我们决定在122工程的基础上，彻底与苏联的传统设计做割裂。在底盘上，我们决定采用自主研发的六负重轮底盘，换装了扭矩和马力更为强大的发动机，相应的，空间略有缩小。而在主炮的选择上，我们选用了120毫米滑膛炮，而非传统的105毫米。同时安装了烟雾弹发射装置和裙甲，以及可隐藏的探照灯与伪装用天线。最后则是在装甲和内部的全面升级：我们采用的新式反应装甲吸足了战争中的经验，至少面对现在的大部分反坦克武器是绰绰有余的；而内部则开创性的使用了自动装弹机和三防系统，夜视仪等装备也进一步升级，最重要的则是安装了空调降温系统，并可以采用炮射导弹。在不久的将来，这辆样车就能完成万公里测试，从而投入量产阶段。"
-const TXT_R2_A := "我们决定采购其他国家的主战坦克，法国和联邦德国均愿意向我们出售。德国甚至决定和我们签订豹-2的购买与生产合同，无论如何，问题还是解决了，但是这能持续多久呢？迟早有一天，我们会兵戎相见……"
+const TXT_DESC_VIETNAM := "event.script.event_516_forward_tanks.c0"
+const TXT_DESC_IRAN_IRAQ := "event.script.event_516_forward_tanks.c1"
+const TXT_DESC_KOREA := "event.script.event_516_forward_tanks.c2"
+const TXT_DESC_KOREA2 := "event.script.event_516_forward_tanks.c3"
+const TXT_R0_A := "event.script.event_516_forward_tanks.c4"
+const TXT_R1_A := "event.script.event_516_forward_tanks.c5"
+const TXT_R2_A := "event.script.event_516_forward_tanks.c6"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -19,13 +17,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	# 原版 TextOfEvents 按战争结束情况四选一；这里在显示前动态改写。
 	if _is_war_done(1) and ws.completed_event_ids.has("event_56") and not ws.get_flag("vietnampeace"):
-		event_def.description = TXT_DESC_VIETNAM
+		event_def.description = tr(TXT_DESC_VIETNAM)
 	elif _is_war_done(3) and ws.completed_event_ids.has("event_73"):
-		event_def.description = TXT_DESC_IRAN_IRAQ
+		event_def.description = tr(TXT_DESC_IRAN_IRAQ)
 	elif ws.completed_event_ids.has("event_378") and int(ws.completed_event_ids.get("event_378", 0)) == 2 and _is_war_done(16):
-		event_def.description = TXT_DESC_KOREA
+		event_def.description = tr(TXT_DESC_KOREA)
 	elif _cf(10, "dev") == 1 and _is_war_done(0):
-		event_def.description = TXT_DESC_KOREA2
+		event_def.description = tr(TXT_DESC_KOREA2)
 	_enable(opt[0], event_def.options[0].text)
 	_enable(opt[1], event_def.options[1].text)
 	_enable(opt[2], event_def.options[2].text)
@@ -36,32 +34,13 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(50))
 			_add(22, 50)
 			_add(1, 50)
 			_add(3, 50)
 			ws.influence_prc += 20
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc[num] += "<color=red>| 改 进 坦 克 ：</color>| 军 力+0.3 ， 预 算-0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |改进坦克：|军力+0.3，预算-0.1
-		1:
-			context["result_text"] = TXT_R1_A
-			_add(8, -(80))
-			_add(22, 80)
-			_add(1, 80)
-			_add(6, 5)
-			_add(3, 100)
-			_add(57, 50)
-			ws.influence_prc += 50
-			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc2[num2] += "<color=red>| 自 研 坦 克 ：</color>| 军 力+0.6 ， 预 算-0.2 ， 凝 聚 力+0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |自研坦克：|军力+0.6，预算-0.2，凝聚力+0.2
-		2:
-			context["result_text"] = TXT_R2_A
-			_add(8, -(20))
-			_add(22, 30)
-			_add(6, -(15))
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 改 进 坦 克 ：</color>| 军 力+0.3 ， 预 算-0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |改进坦克：|军力+0.3，预算-0.1 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(80)) _add(22, 80) _add(1, 80) _add(6, 5) _add(3, 100) _add(57, 50) ws.influence_prc += 50 # 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 自 研 坦 克 ：</color>| 军 力+0.6 ， 预 算-0.2 ， 凝 聚 力+0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |自研坦克：|军力+0.6，预算-0.2，凝聚力+0.2 2: context["result_text"] = tr(TXT_R2_A) _add(8, -(20)) _add(22, 30) _add(6, -(15))
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -219,3 +198,16 @@ func evaluate(world: WorldState) -> bool:
 
 func _is_war_done(idx: int) -> bool:
 	return ws != null and idx >= 0 and idx < ws.wars.size() and ws.wars[idx] != null and not ws.wars[idx].is_going
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_516_forward_tanks.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_516",
+	"num": 516,
+	"priority": 51600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_516_forward_tanks.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_516_forward_tanks.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

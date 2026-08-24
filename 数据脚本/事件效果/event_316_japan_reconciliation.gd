@@ -4,8 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录搜索无 this_num_event = 316 / Reset(316) / StartEvent(316)；链外 REST 段，原版无自动条件（决策/其他事件链手动触发）。
 ## 差异：文本来自 Events_text_en 索引 140-145。
 
-const TXT_R0 := "没错，我们是采用了他们的方法，但别忘了这个国家的过去和现在。他们给我国和全亚洲犯下了罄竹难书的罪行，但由于他们背靠美国，他们得以逍遥法外。除非日本幡然醒悟，否则不会有和解可言！"
-const TXT_R1 := "我们从前有过冲突，但我国至少应该与邻国保持非负面关系，因为我们的国家安全是第一位的。克服分歧的愿望将增加我们的声望。"
+const TXT_R0 := "event.script.event_316_japan_reconciliation.c0"
+const TXT_R1 := "event.script.event_316_japan_reconciliation.c1"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -13,11 +13,26 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_INFLUENCE, 30)
 			_add_power(0, -50)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 	
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_316_japan_reconciliation.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_316",
+	"num": 316,
+	"priority": 31600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_316_japan_reconciliation.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

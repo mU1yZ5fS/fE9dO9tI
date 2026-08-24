@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "这个问题毫无意义。一切都按部就班地运转着，过火行为的发生是因为个别管理者的愚蠢。让我们转而处理更重要的问题吧。"
-const TXT_R1 := "私营企业主被判有罪，因为正是他们利用着自己的自由，拒绝为国家的利益工作。因此，有必要处理掉一批最失败的企业，并加强企业与国家间的融合。"
-const TXT_R2 := "当然，国家有罪，它阻止了商业的蓬勃发展！我们应该取消限制，让企业家自己解决企业的问题！让人民对物价上涨不满去吧......"
+const TXT_R0 := "event.script.event_331_hands_tied.c0"
+const TXT_R1 := "event.script.event_331_hands_tied.c1"
+const TXT_R2 := "event.script.event_331_hands_tied.c2"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -17,13 +17,13 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_PEOPLE_SUPPORT, -150)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_DIPLO, 100)
 			_add(W.I_PARTY_SUPPORT, -250)
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_ECON_SYSTEM, -1)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_DIPLO, -50)
 			_add(W.I_PARTY_SUPPORT, 150)
@@ -31,7 +31,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(0, 50)
 			if d.size() > W.I_ECON_SYSTEM and d.econ_system < 15:
 				_add(W.I_ECON_SYSTEM, 1)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -53,3 +53,19 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_331_hands_tied.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_331",
+	"num": 331,
+	"priority": 33100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_331_hands_tied.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1984.10.27"}, {"t": "RESOURCE_AT_LEAST", "key": "economy_system", "v": 13}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

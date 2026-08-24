@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：ingamewars[76] 建模说明 WarDef → 兜底创建后补名；
 ##   isSEV/isOVD→sev/ovd 标签；JoinAllOurAlliances(true)→_join_alliances。
 
-const TXT_R0 := "国际观察员认为。虽说苏东社会主义阵营内已生嫌隙，且力量不复往昔；可对付一个孤立无援，且扎根华约腹地的罗马尼亚仍是绰绰有余。以美国为首的西方国家已开始控诉华约对罗马尼亚的入侵，并大力渲染所谓“邪恶帝国余毒尚存”。显然，他们只能重弹1956年匈牙利事件与1968年捷克事件时的老调，只能用舆论给罗马尼亚拉些“同情”。而苏联则在标榜中立的同时悄然对罗马尼亚引入了封锁与制裁。现在，唯有我们才能够保护弃暗投明的好朋友！"
+const TXT_R0 := "event.script.event_645_chaos_ladder.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -14,7 +14,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	if opt != 0:
 		return
-	context["result_text"] = TXT_R0
+	context["result_text"] = tr(TXT_R0)
 	# 原版 ingamewars[76]：喀尔巴阡行动，罗马尼亚(300) vs 华沙条约(700)，
 	#   AmericanSupportAttacker → usa_side = GameConstants.WarSide.SIDE2、SovietSupportDefender → ussr_side=2
 	game.start_war(76, "罗马尼亚", "华沙条约", 300, 700, 1, 2)
@@ -39,3 +39,18 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	var romania := world.get_country_by_legacy_index(5)
 	return romania != null and romania.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_645_chaos_ladder.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_645",
+	"num": 645,
+	"priority": 64500,
+	"notify": false,
+	"trigger_script": "res://数据脚本/事件效果/event_645_chaos_ladder.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

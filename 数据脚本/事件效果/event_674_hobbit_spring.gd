@@ -5,22 +5,22 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && c87.sub∈{7,9} && 1985.11 起 && num(sub22计数)<3（num>=3 走 675）→ trigger_script evaluate。
 ## 差异：isFXSEU→fxseu 标签；LeaveAlliances→_leave_alliances；result2 中国转 gov0/sub9。
 
-const TXT_OPT2_DIS := "你没发烧吧？"
-const TXT_R0 := "中国外交部紧跟世界主要国家步伐，严正谴责了新法西斯主义者的所作所为。对此，欧洲社会国家组织对外发言人皮埃尔·西多斯只是以一句：“亚洲人依然没有看清历史并选对（右）边，如有必要，重提开化使命旧事也并非不可。”草草回应。\n不论如何，欧洲社会国家组织的成立都为世界各地的新法西斯主义者与多边主义派系打了强心针。国际局势预计将在相当一段时间内保持“沸腾”。"
-const TXT_R1 := "看起来，法西斯主义确实还没有完全成为“历史名词”……\n不论如何，欧洲社会国家组织的成立都为世界各地的新法西斯主义者与多边主义派系打了强心针。国际局势预计将在相当一段时间内保持“沸腾”。"
-const TXT_R2_FMT := "由于美国的暗中作梗（如独占日本与长期扶持台湾伪政权），中国只能长期扮演雅尔塔体系内的“有名无实”大国，直到70年代初才取得突破。因此，我们为何要支持这样一个将中国事实上置于边缘的体系，并让我们充当超级大国的附庸或类似法兰西共和国式的怨妇呢？很快，我国外交部便向全世界刊载了{0}{1}亲笔所写雄文《西方重亮：论世界新秩序》，并将欧洲社会国家组织视为“建构多极世界，彻底革新不合理国际关系”的第一步。此后便是中国外交官和欧洲社会国家组织外交官进行全面接触并签署合作协定。我们当然清楚鸡蛋放在多个篮子内的道理，因此我们只达成了经济协定与口头上的相互承认，以此最大限度地保证了我国仍忠于“联合国为主要舞台的旧秩序”并绕开了“欧洲文明优等论”。对此，对方则以“文明互鉴，相互尊重，互利共赢”的漂亮话予我们以高度评价。因此，我们多少赚到了。此后，我们更是同欧洲社会国家组织签署了一份备忘录与类似百分比协定的文件，确定了现代版本的教皇子午线：当然，基础包括乌拉尔山等在内的地理界线……\n不论如何，欧洲社会国家组织的成立都为世界各地的新法西斯主义者与多边主义派系打了强心针。国际局势预计将在相当一段时间内保持“沸腾”。"
-const TXT_IRAN_13 := "\n狐狸般狡黠的巴列维王朝决定从“国际孤儿抱团取暖”和“联合围堵苏联帝国主义”的角度押注新秩序，而欧洲社会国家组织自对此“甘之如饴”。现代版“法土不圣联盟”就此诞生。"
-const TXT_IRAN_9 := "\n新的伊朗帝国自诩为雅利安-白人秩序在亚洲的前锋，与欧洲的法西斯主义盟友的高强度互动，自然，渴望获得波斯湾石油的欧洲社会国家组织欣然将其吸纳为成员。"
-const TXT_GDR_9 := "\n意识到美苏再也无力主宰欧洲大局，主权欧洲则蒸蒸日上。德国领导人奥托·恩斯特·雷默终于可以彻底露出真面目并带领德国选择新秩序，轴心国的“头领”就此在新世界内找到了自己的位置。"
-const TXT_GDR_22 := "\n意识到美苏再也无力主宰欧洲大局，民族欧洲则蒸蒸日上。德国领导人亨宁·艾希伯格选择带领德国加入了泛欧革命大家庭的新秩序，轴心国的“头领”就此在新世界内找到了自己的位置。"
-const TXT_FRG_10 := "\n意识到美苏再也无力主宰欧洲大局，主权欧洲则蒸蒸日上。德国领导人埃里希·米尔克终于可以彻底露出真面目并带领德国选择新秩序，并在同时切断了同我国的联系。轴心国的“头领”就此在新世界内找到了自己的位置。"
-const TXT_GREECE := "\n被复仇主义情绪笼罩的希腊新上校政权自然搭上了所谓“基督教文明”快车，并迫切要求欧洲社会国家组织拿出铁腕对付“阿尔巴尼亚无神论匪徒”与“突厥穆斯林”，渴望用鲜血启动新一轮十字军东征。"
-const TXT_AUSTRALIA := "\n得知欧洲的新消息后，澳大利亚的彼德森政府立即回想起了“与不列颠母国的历史联系”，并借助英联邦框架转向了欧洲社会国家组织。"
-const TXT_SOUTH_AFRICA := "\n作为白人文明的“海外孤忠”。南非白人政权则相当欢迎这一巨变，很快便同欧洲社会国家组织的主要成员达成共识。该组织也将迈出向非洲扩张的第一步。"
-const TXT_MEXICO := "\n墨西哥天主教徒以该国同西班牙保守主义与法西斯主义的联系而闻名遐迩，欧洲社会国家组织的成立则给了其借题发挥，甚至让某些理想主义者重弹“欧化墨西哥”老调的空间。看来巴斯孔塞洛斯之梦将在不久后成真……"
-const TXT_LEBANON := "\n随着欧洲社会回到正路，他们的子嗣、十字军的残余也将目光投到这个生机勃勃的新欧洲。以马龙派为主的黎巴嫩长枪党主动联系上欧洲社会国家组织，并争取到了观察员的身份。然而，社会国家组织无法衡量他们对“事业”的忠诚度，毕竟，这些狡诈成性的坞堡领主压根不忠诚于任何一种意识形态——谁知道他们背后有没有跟某些大鼻子犹太猪或者穿着长袍、娶小女孩的圣战恐怖分子勾勾搭搭！"
-const TXT_FRANCE_PUPPETS := "\n与此同时，欧洲社会国家组织同那些仍与法兰西保持着“法非特殊关系”的非洲国家签订了《欧-非一体化条约》，将其国防、外交、经济与文化等大权收归欧洲，进而“纠正”其“历史错误”，以新的法兰西联邦形式重建了殖民帝国，并开始推行同化政策和白人-同化精英与混血儿-普通黑人的三阶等级制，重弹“文明开化”的老调……"
-const TXT_ITALY_PUPPETS := "\n意大利的总督们紧跟宗主国的步伐，为新的国际秩序三呼万岁，意大利在组织内的话语权大大加强了。"
+const TXT_OPT2_DIS := "event.script.event_674_hobbit_spring.c0"
+const TXT_R0 := "event.script.event_674_hobbit_spring.c1"
+const TXT_R1 := "event.script.event_674_hobbit_spring.c2"
+const TXT_R2_FMT := "event.script.event_674_hobbit_spring.c3"
+const TXT_IRAN_13 := "event.script.event_674_hobbit_spring.c4"
+const TXT_IRAN_9 := "event.script.event_674_hobbit_spring.c5"
+const TXT_GDR_9 := "event.script.event_674_hobbit_spring.c6"
+const TXT_GDR_22 := "event.script.event_674_hobbit_spring.c7"
+const TXT_FRG_10 := "event.script.event_674_hobbit_spring.c8"
+const TXT_GREECE := "event.script.event_674_hobbit_spring.c9"
+const TXT_AUSTRALIA := "event.script.event_674_hobbit_spring.c10"
+const TXT_SOUTH_AFRICA := "event.script.event_674_hobbit_spring.c11"
+const TXT_MEXICO := "event.script.event_674_hobbit_spring.c12"
+const TXT_LEBANON := "event.script.event_674_hobbit_spring.c13"
+const TXT_FRANCE_PUPPETS := "event.script.event_674_hobbit_spring.c14"
+const TXT_ITALY_PUPPETS := "event.script.event_674_hobbit_spring.c15"
 
 
 func prepare(event_def: EventDef, _world: WorldState) -> void:
@@ -33,7 +33,7 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 			and china.sub_government != GameConstants.SubGovernment.FEUDAL_SOCIALIST:
 		_enable(event_def.options[2], event_def.options[2].text)
 	else:
-		_disable(event_def.options[2], TXT_OPT2_DIS)
+		_disable(event_def.options[2], tr(TXT_OPT2_DIS))
 	_enable(event_def.options[0], event_def.options[0].text)
 	_enable(event_def.options[1], event_def.options[1].text)
 
@@ -45,9 +45,9 @@ func execute(context: Dictionary) -> void:
 	var trade := opt == 2
 	var text := ""
 	match opt:
-		0: text = TXT_R0
-		1: text = TXT_R1
-		2: text = TXT_R2_FMT.replace("{0}{1}", _leader_name())
+		0: text = tr(TXT_R0)
+		1: text = tr(TXT_R1)
+		2: text = tr(TXT_R2_FMT).replace("{0}{1}", _leader_name())
 	text += _chain_text(trade)
 	_apply_chain(trade)
 	if opt == 0:
@@ -108,39 +108,39 @@ func _chain_text(_trade: bool) -> String:
 	var iran := ws.get_country_by_legacy_index(8)
 	if iran != null:
 		if iran.sub_government == GameConstants.SubGovernment.NEOPATRIARCHAL:
-			s += TXT_IRAN_13
+			s += tr(TXT_IRAN_13)
 		elif iran.sub_government == GameConstants.SubGovernment.NEO_FASCIST and iran.puppet_of < 0:
-			s += TXT_IRAN_9
+			s += tr(TXT_IRAN_9)
 	var gdr := ws.get_country_by_legacy_index(17)
 	if gdr != null and gdr.parts.size() > 0 and gdr.parts[0]:
 		if gdr.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
-			s += TXT_GDR_9
+			s += tr(TXT_GDR_9)
 		elif gdr.sub_government == GameConstants.SubGovernment.REVOLUTIONARY_NATIONALIST:
-			s += TXT_GDR_22
+			s += tr(TXT_GDR_22)
 	var frg := ws.get_country_by_legacy_index(16)
 	if frg != null and frg.parts.size() > 0 and frg.parts[0] and frg.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
-		s += TXT_FRG_10
+		s += tr(TXT_FRG_10)
 	var greece := ws.get_country_by_legacy_index(45)
 	if greece != null and greece.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
-		s += TXT_GREECE
+		s += tr(TXT_GREECE)
 	var australia := ws.get_country_by_legacy_index(135)
 	if ws.is_authoritarian(australia):
-		s += TXT_AUSTRALIA
+		s += tr(TXT_AUSTRALIA)
 	var south_africa := ws.get_country_by_legacy_index(131)
 	if ws.is_authoritarian(south_africa):
-		s += TXT_SOUTH_AFRICA
+		s += tr(TXT_SOUTH_AFRICA)
 	var mexico := ws.get_country_by_legacy_index(140)
 	if mexico != null and mexico.sub_government == GameConstants.SubGovernment.NEO_FASCIST:
-		s += TXT_MEXICO
+		s += tr(TXT_MEXICO)
 	var lebanon := ws.get_country_by_legacy_index(93)
 	if ws.is_authoritarian(lebanon):
-		s += TXT_LEBANON
+		s += tr(TXT_LEBANON)
 	var france := ws.get_country_by_legacy_index(21)
 	if france != null and france.sub_government == GameConstants.SubGovernment.NEO_FASCIST and _has_puppet_of(21):
-		s += TXT_FRANCE_PUPPETS
+		s += tr(TXT_FRANCE_PUPPETS)
 	var spain := ws.get_country_by_legacy_index(85)
 	if spain != null and spain.sub_government == GameConstants.SubGovernment.NEO_FASCIST and _has_puppet_of(85):
-		s += TXT_ITALY_PUPPETS
+		s += tr(TXT_ITALY_PUPPETS)
 	return s
 
 
@@ -222,3 +222,19 @@ func _leader_name() -> String:
 	if ws.leader != null and ws.leader.name_display != "":
 		return ws.leader.name_display
 	return "华国锋"
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_674_hobbit_spring.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_674",
+	"num": 674,
+	"priority": 67400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_674_hobbit_spring.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_674_hobbit_spring.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

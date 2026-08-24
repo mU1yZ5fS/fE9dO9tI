@@ -1,23 +1,19 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event521.cs：840工程（4选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event521.cs：840工程（4选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_R0_A := "我们在大量的手稿中找出了055型驱逐舰的设计草图，尽管已经过去了数十年，但其理念仍然不输时代。很快，就有眼尖的摄影爱好者在上海的长兴岛发现了一款巨大的“货轮”建造设施。很快就传来了激动的消息，055已经完成了下水。采用全燃动力、射频综合集成及舰载通用垂直发射系统，由中国人民解放军海军701研究所设计、江南造船厂103基地与大连船舶812工厂承建。055型导弹驱逐舰是全亚洲，乃至全世界都排得上号的大型水面舰艇。此型舰的服役标志着中国驱逐舰已经跻身于全球先进军舰的行列，055型导弹驱逐舰亦有充足的空间进行动力与武器的升级，如高空反导系统，激光近防炮设施，电磁动力炮和超远程雷达等大型装备的升级正在逐步推进。首舰则被命名为“上海号”，用于纪念上海对于这艘船和共和国的独特地位。\n美国观察家指出，若美国海军进一步节约经费用去买可乐，就要连中国佬的海军都比不过了。"
-const TXT_R1_A := "我们开始尝试常规动力航母的研发，这是个困难的事情，因为这是个从无到有的过程。在借鉴了美国的“福莱斯特”号，"
-const TXT_R1_B := "“圣伊丽莎白”号"
-const TXT_R1_C := "“共和号”"
-const TXT_R1_D := "的经验之后，一个初步的方案得到了通过。这艘航母采用大量新设计、新材料，工程量巨大，建造总量超过20艘超大型油轮工程量总和。3000多个舱室，上万个零部件，上万台套各种设备遍布全船，许多特种装置属首次研制和安装，施工难度巨大。我们在这艘航母上搭载了（我国）最先进的蒸汽弹射系统，专门为海军研制的重型歼击机J-13I也得以列装。而核动力的版本与电磁弹射仍然在慢慢的摸索之中。\n其次，在航母上还首次实现了社区化管理。所谓社区化管理就是航母内部分成不同的功能单元，平时每个单元各司其职，各就其位，不相互串岗，只有在吃饭和集体活动时才会聚集在一起，这样做的好处就是提升了工作效率。江苏舰配置了内部即时通讯系统和个人移动通讯终端，如果有工作需要也可以随时进行联系，这也是我国电子工业进步的体现。\n在1984年4月23日，人民海军35周年之时，舷号10的中国首艘航母“江苏”完成了下水，"
-const TXT_R1_E := ""
-const TXT_R1_F := "同志也观摩了这一伟大的时刻。下一艘代号广东的航母也在计划中，预计会装有电弹射系统从而获得更大的推力。"
-const TXT_R2_A := "我们在大量的手稿中找出了055型驱逐舰的设计草图，尽管已经过去了数十年，但其理念仍然不输时代。很快，就有眼尖的摄影爱好者在上海的长兴岛发现了一款巨大的“货轮”建造设施。很快就传来了激动的消息，055已经完成了下水。采用全燃动力、射频综合集成及舰载通用垂直发射系统，由中国人民解放军海军701研究所设计、江南造船厂103基地与大连船舶812工厂承建。055型导弹驱逐舰是全亚洲，乃至全世界都排得上号的大型水面舰艇。此型舰的服役标志着中国驱逐舰已经跻身于全球先进军舰的行列，055型导弹驱逐舰亦有充足的空间进行动力与武器的升级，如高空反导系统，激光近防炮设施，电磁动力炮和超远程雷达等大型装备的升级正在逐步推进。首舰则被命名为“上海号”，用于纪念上海对于这艘船和共和国的独特地位。\n我们开始尝试常规动力航母的研发，这是个困难的事情，因为这是个从无到有的过程。在借鉴了美国的“福莱斯特”号，"
-const TXT_R2_B := "“圣伊丽莎白”号"
-const TXT_R2_C := "“共和号”"
-const TXT_R2_D := "的经验之后，一个初步的方案得到了通过。这艘航母采用大量新设计、新材料，工程量巨大，建造总量超过20艘超大型油轮工程量总和。3000多个舱室，上万个零部件，上万台套各种设备遍布全船，许多特种装置属首次研制和安装，施工难度巨大。我们在这艘航母上搭载了（我国）最先进的蒸汽弹射系统，专门为海军研制的重型歼击机J-13I也得以列装。而核动力的版本与电磁弹射仍然在慢慢的摸索之中。\n其次，在航母上还首次实现了社区化管理。所谓社区化管理就是航母内部分成不同的功能单元，平时每个单元各司其职，各就其位，不相互串岗，只有在吃饭和集体活动时才会聚集在一起，这样做的好处就是提升了工作效率。江苏舰配置了内部即时通讯系统和个人移动通讯终端，如果有工作需要也可以随时进行联系，这也是我国电子工业进步的体现。下一艘代号广东的航母也在计划中，预计会装有电弹射系统从而获得更大的推力。\n在1984年4月23日，人民海军35周年之时，舷号10的中国首艘航母“江苏”完成了下水实验，一并下水的还有055型导弹驱逐舰。"
-const TXT_R2_E := ""
-const TXT_R2_F := "同志也观摩了这一伟大的时刻。谁敢来侵犯我们，我们就叫他们灭亡！"
-const TXT_R3_A := "现在的舰船，我想也够了。未来是导弹的时代，而不是把游艇开出去当靶子的。但一系列宏伟的计划仍然得到了资金，我们预计在本世纪末可以和法国与英国的海军扳手腕，不过超过美国则仍然是一个遥远的梦想……"
+const TXT_R0_A := "event.script.event_521_project_840.c0"
+const TXT_R1_A := "event.script.event_521_project_840.c1"
+const TXT_R1_B := "event.script.event_521_project_840.c2"
+const TXT_R1_C := "event.script.event_521_project_840.c3"
+const TXT_R1_D := "event.script.event_521_project_840.c4"
+const TXT_R1_F := "event.script.event_521_project_840.c6"
+const TXT_R2_A := "event.script.event_521_project_840.c7"
+const TXT_R2_B := "event.script.event_521_project_840.c8"
+const TXT_R2_C := "event.script.event_521_project_840.c9"
+const TXT_R2_D := "event.script.event_521_project_840.c10"
+const TXT_R2_F := "event.script.event_521_project_840.c12"
+const TXT_R3_A := "event.script.event_521_project_840.c13"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -36,7 +32,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(100))
 			_add(12, -(100))
 			_add(22, 50)
@@ -44,18 +40,14 @@ func execute(context: Dictionary) -> void:
 			_add(3, 50)
 			_add(6, 5)
 			ws.influence_prc += 50
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc[num] += "<color=red>| 导 弹 驱 逐 舰 ：</color>| 军 力+3.0 ， 人 民 支 持 度+1.0 ， 影 响 力+0.5 "；display-only / 修正文案由 Godot 静态维护，跳过。文本: |导弹驱逐舰：|军力+3.0，人民支持度+1.0，影响力+0.5
-		1:
-			context["result_text"] = TXT_R1_A
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 导 弹 驱 逐 舰 ：</color>| 军 力+3.0 ， 人 民 支 持 度+1.0 ， 影 响 力+0.5 "；display-only / 修正文案由 Godot 静态维护，跳过。文本: |导弹驱逐舰：|军力+3.0，人民支持度+1.0，影响力+0.5 1: context["result_text"] = tr(TXT_R1_A)
 			if _cf(92, "Gosstroy") == 0  or  _cf(92, "Gosstroy") == 3:
-				context["result_text"] += TXT_R1_B
+				context["result_text"] += tr(TXT_R1_B)
 			else:
-				context["result_text"] += TXT_R1_C
-			context["result_text"] += TXT_R1_D
+				context["result_text"] += tr(TXT_R1_C)
+			context["result_text"] += tr(TXT_R1_D)
 			context["result_text"] += _leader_name()
-			context["result_text"] += TXT_R1_F
+			context["result_text"] += tr(TXT_R1_F)
 			_add(8, -(120))
 			_add(12, -(120))
 			_add(22, 80)
@@ -63,18 +55,14 @@ func execute(context: Dictionary) -> void:
 			_add(3, 100)
 			_add(6, 8)
 			ws.influence_prc += 80
-			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc2[num2] += "<color=red>| 航 空 母 舰 ：</color>| 军 力+3.0 ， 干 涉 点 数+2.0 ， 人 民 支 持 度+1.0 ， 影 响 力+0.5 ， 军 武 支 援 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |航空母舰：|军力+3.0，干涉点数+2.0，人民支持度+1.0，影响力+0.5，军武支援效果+1
-		2:
-			context["result_text"] = TXT_R2_A
+			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 航 空 母 舰 ：</color>| 军 力+3.0 ， 干 涉 点 数+2.0 ， 人 民 支 持 度+1.0 ， 影 响 力+0.5 ， 军 武 支 援 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |航空母舰：|军力+3.0，干涉点数+2.0，人民支持度+1.0，影响力+0.5，军武支援效果+1 2: context["result_text"] = tr(TXT_R2_A)
 			if _cf(92, "Gosstroy") == 0  or  _cf(92, "Gosstroy") == 3:
-				context["result_text"] += TXT_R2_B
+				context["result_text"] += tr(TXT_R2_B)
 			else:
-				context["result_text"] += TXT_R2_C
-			context["result_text"] += TXT_R2_D
+				context["result_text"] += tr(TXT_R2_C)
+			context["result_text"] += tr(TXT_R2_D)
 			context["result_text"] += _leader_name()
-			context["result_text"] += TXT_R2_F
+			context["result_text"] += tr(TXT_R2_F)
 			_add(8, -(150))
 			_add(12, -(150))
 			_add(22, 150)
@@ -83,18 +71,7 @@ func execute(context: Dictionary) -> void:
 			_add(6, 10)
 			_add(57, 50)
 			ws.influence_prc += 100
-			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num3 = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc3[num3] += "<color=red>| 导 弹 驱 逐 舰 与 航 空 母 舰 ：</color>| 军 力+5.0 ， 人 民 支 持 度+2.5 ， 干 涉 点 数+3.0 ， 影 响 力+1.0 ， 军 武 支 援 效 果+2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |导弹驱逐舰与航空母舰：|军力+5.0，人民支持度+2.5，干涉点数+3.0，影响力+1.0，军武支援效果+2
-		3:
-			context["result_text"] = TXT_R3_A
-			_add(8, -(30))
-			_add(22, 30)
-			_add(1, 50)
-			_add(6, 5)
-			_add(3, 50)
-			_add(57, 50)
-			ws.influence_prc += 50
+			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num3 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc3[num3] += "<color=red>| 导 弹 驱 逐 舰 与 航 空 母 舰 ：</color>| 军 力+5.0 ， 人 民 支 持 度+2.5 ， 干 涉 点 数+3.0 ， 影 响 力+1.0 ， 军 武 支 援 效 果+2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |导弹驱逐舰与航空母舰：|军力+5.0，人民支持度+2.5，干涉点数+3.0，影响力+1.0，军武支援效果+2 3: context["result_text"] = tr(TXT_R3_A) _add(8, -(30)) _add(22, 30) _add(1, 50) _add(6, 5) _add(3, 50) _add(57, 50) ws.influence_prc += 50
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -229,3 +206,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_521_project_840.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_521",
+	"num": 521,
+	"priority": 52100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_521_project_840.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "industry", "v": 1200}, {"t": "DATE_AFTER", "key": "1984.1.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

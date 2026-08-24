@@ -5,7 +5,7 @@ extends EventScriptBase
 ## 本事件按史实让伯利兹独立：脱离英国傀儡、政体沿用英国式社会民主主义，
 ## 并把地图上英国（200）的伯利兹地块转给伯利兹（80）。
 
-const TXT_RESULT := "1981年9月21日，伯利兹正式独立，成为英联邦内的主权国家。乔治·卡德尔·普赖斯出任首任总理。由于危地马拉长期声称对伯利兹拥有主权，英国承诺在独立后继续驻军保卫伯利兹的安全。\n我们的代表出席了独立庆典，并向这个中美洲的新国家表达了祝贺——伯利兹成为加勒比共同体与不结盟运动的成员，也开启了与整个地区交往的新篇章。"
+const TXT_RESULT := "event.script.event_belize_independence.c0"
 
 const BELIZE_REGION_IDS: Array[int] = [1265, 1267, 1268, 1635, 2094, 2095]
 const BELIZE_GWCODE := 80
@@ -21,4 +21,20 @@ func execute(context: Dictionary) -> void:
 		belize.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
 		if GameManager != null:
 			game.set_map_region_owner(BELIZE_REGION_IDS, BELIZE_GWCODE)
-	context["result_text"] = TXT_RESULT
+	context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_belize_independence.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "belize_independence",
+	"num": 1602,
+	"priority": 160200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_belize_independence.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1981.9.21"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "puppet_of", "v": 92, "target": "142"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -712,6 +712,7 @@ func tick() -> void:
 	# 月度同步原版 UpdateMap 的地图合并规则（金马澎/藏南/蒙古/也门/朝鲜等）
 	if _map_service != null:
 		_map_service.sync_map_merges()
+		_map_service.assert_map_consistent("monthly_%d-%d" % [world.date.year, world.date.month])
 	date_changed.emit(world.date)
 	stats_changed.emit()
 	# 原作自动存档在月块末尾（TimeScript.cs:6021-6030），所有月度效果结算后再写。

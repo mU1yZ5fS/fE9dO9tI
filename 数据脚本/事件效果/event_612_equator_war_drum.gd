@@ -4,14 +4,14 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：无自动触发点——原版由 DiploButtonScript.cs:4980-4982（this_type 外交按钮）手动 number_event=612。
 ## 差异：描述按 resultOfEvents[610]==2 动态插入书记名；AmericanSupportAttacker.SovietSupportAttacker→usa_side = GameConstants.WarSide.SIDE1/ussr_side = GameConstants.WarSide.SIDE1。
 
-const TXT_DESC_A := "一天又一天，游击队在刚果东方的密林里训练，一天又一天，无数的好男儿为崇高的理想献身，一天又一天，更多的“墨路波”们加入游击队，为自由的刚果献上一切。就在今日，"
-const TXT_NAME_KISASE := "刚果人民革命组织第一书记安德烈·基萨斯"
-const TXT_NAME_KABILA := "刚果人民革命党第一书记洛朗-德雷西·卡比拉"
-const TXT_DESC_B := "在多方支持下正式宣布发动革命战争，目标直指扎伊尔首都金沙萨。现在，是时候让熊熊烈火吞噬那位“从烈火中走出明路”的扎伊尔国父了。"
-const TXT_R0 := "在卢旺达，乌干达，刚果人民共和国（布拉柴维尔）等国的支持下，各路革命人马将自己所掌握的武装力量与受革命思想影响的军人改编为由该组织中央统一指挥的刚果民族解放军，东非的社会主义国家将为他们提供他们所需要的一切支持。\n蒙博托陷入了极度的惊慌中，除了呼吁国际社会的调停并再次召唤了联合国军下场外，他本人也做好了战斗的准备，大量的战车也被调往东部平叛，刚果人自己的战争还是爆发了。"
-const TXT_WAR_NAME := "刚果革命"
-const TXT_WAR_SIDE1 := "扎伊尔"
-const TXT_WAR_SIDE2 := "刚果革命军"
+const TXT_DESC_A := "event.script.event_612_equator_war_drum.c0"
+const TXT_NAME_KISASE := "event.script.event_612_equator_war_drum.c1"
+const TXT_NAME_KABILA := "event.script.event_612_equator_war_drum.c2"
+const TXT_DESC_B := "event.script.event_612_equator_war_drum.c3"
+const TXT_R0 := "event.script.event_612_equator_war_drum.c4"
+const TXT_WAR_NAME := "event.script.event_612_equator_war_drum.c5"
+const TXT_WAR_SIDE1 := "event.script.event_612_equator_war_drum.c6"
+const TXT_WAR_SIDE2 := "event.script.event_612_equator_war_drum.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -19,9 +19,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null:
 		return
 	if int(world.completed_event_ids.get("event_610", 0)) == 2:
-		event_def.description = TXT_DESC_A + TXT_NAME_KISASE + TXT_DESC_B
+		event_def.description = tr(TXT_DESC_A) + tr(TXT_NAME_KISASE) + tr(TXT_DESC_B)
 	else:
-		event_def.description = TXT_DESC_A + TXT_NAME_KABILA + TXT_DESC_B
+		event_def.description = tr(TXT_DESC_A) + tr(TXT_NAME_KABILA) + tr(TXT_DESC_B)
 
 
 
@@ -33,13 +33,13 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			if zaire != null:
 				_set_part(zaire, 1, true)
 				zaire.set_tag("对华贸易", false)
 			_add_relation(EmpireData.USSR, -150)
 			_add_relation(EmpireData.USA, -150)
-			_start_war(62, TXT_WAR_NAME, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 700, 300, 0, 0, 24)
+			_start_war(62, tr(TXT_WAR_NAME), tr(TXT_WAR_SIDE1), tr(TXT_WAR_SIDE2), 700, 300, 0, 0, 24)
 
 
 
@@ -129,3 +129,18 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_612_equator_war_drum.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_612",
+	"num": 612,
+	"priority": 61200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_612_equator_war_drum.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

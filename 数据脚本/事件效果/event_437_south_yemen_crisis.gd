@@ -7,10 +7,10 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0_DIS := "我们无从下手......"
+const TXT_OPT0_DIS := "event.script.event_437_south_yemen_crisis.c0"
 
-const TXT_R0 := "多亏了我们在索马里的部署，让我们有了力量支持鲁巴伊。在我们的警告以及特工小组的协助下，鲁巴伊得以逮捕部分亲苏的修正主义分子。残余的亲苏分子发觉了鲁巴伊的行动，匆匆拉起一支叛军，但很快被政府军和民兵粉碎。苏联军事基地内的驻军在我们和索马里的军事力量的联合封锁下，无法介入政变，最后整个军事基地都被南也门扣押。阿里·纳赛尔和伊斯梅尔最终被俘，他们被中央委员会设立的特别法庭判处叛国罪和反革命罪，死刑立即执行。亲苏分子完全被清洗，鲁巴伊稳固了他的领导地位。在“统一政治组织——民族阵线”的特别全国代表大会上，该组织被改组为也门共产党，党章加入了毛主义和反对修正主义的词条。会上，总书记萨利姆·鲁巴伊·阿里宣布将加强与中国的合作，这引起了苏联的不满。但鲁巴伊并未提出要驱逐苏联军事基地，因此苏联的不满也仅仅停留在牢骚层面。"
-const TXT_R1 := "1978年6月24日，伊斯梅尔一派策划了加什米遇刺案，企图嫁祸于鲁巴伊。这一事件加速了双方的武力摊牌。1978年6月26日召开的“统一政治组织——民族阵线”中央委员会非常会议上，两派因政见分歧而发生了流血冲突，伊斯梅尔和总理阿里·纳赛尔·穆罕默德在苏联、德意志民主共和国和古巴的支持下发动推翻鲁巴伊的武装政变，动用飞机轰炸鲁巴伊所在的总统府，派军舰封锁了海面，苏联和古巴的军事力量直接介入了冲突。鲁巴伊指挥警卫营进行抵抗，激战16小时。总统府被攻陷后，鲁巴伊失败被俘，被中央委员会设立的“特别法庭”判处死刑，并立即执行。政变后，伊斯梅尔又清洗了残余的鲁巴伊派。在的“统一政治组织——民族阵线”的特别全国代表大会上，该组织被改组为也门社会党，伊斯梅尔当选为该党总书记。会上，伊斯梅尔强调今后将努力“扩大和加强与以苏联为首的社会主义阵营的友好合作关系”。"
+const TXT_R0 := "event.script.event_437_south_yemen_crisis.c1"
+const TXT_R1 := "event.script.event_437_south_yemen_crisis.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -37,7 +37,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if cond:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 
 
@@ -56,13 +56,13 @@ func execute(context: Dictionary) -> void:
 				south_yemen.set_tag("亲中", true)
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			ws.influence_prc -= 10
 			if south_yemen != null:
 				south_yemen.set_tag("亲苏", true)
 				south_yemen.set_tag("对华贸易", false)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -94,3 +94,19 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_437_south_yemen_crisis.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_437",
+	"num": 437,
+	"priority": 43700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_437_south_yemen_crisis.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "day", "v": 26}, {"t": "RESOURCE_AT_LEAST", "key": "month", "v": 6}, {"t": "RESOURCE_AT_LEAST", "key": "year", "v": 1978}]}, {"t": "NOT_HAS_FLAG", "key": "yemen_unified"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

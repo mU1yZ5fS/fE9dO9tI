@@ -27,11 +27,25 @@ func execute(context: Dictionary) -> void:
 
 	# 差异：allcountries[7].isNATO → 雅科夫列夫(7)；端口无对应 → 恒走契尔年科(2)
 	ussr.current_leader = 2
-	context["result_title"] = "五年修葬"
-	var tail := "|| 不出所料，康斯坦丁·契尔年科当选为总书记。然而，考虑到他年事已高，他在这个职位上呆不了多久。"
+	context["result_title"] = tr("event.script.event_117_five_year_funeral.i0")
+	var tail := "\n 不出所料，康斯坦丁·契尔年科当选为总书记。然而，考虑到他年事已高，他在这个职位上呆不了多久。"
 	if opt == 0:
 		context["result_text"] = "安德罗波夫的葬礼于1984年2月14日12点在莫斯科红场克里姆林宫附近举行。多国国家元首和政府首脑出席了葬礼及告别仪式。" + tail
 	elif opt == 1:
 		context["result_text"] = "苏联感谢我们的慰问，并接待了中国代表团。安德罗波夫的葬礼于1984年2月14日12点在莫斯科红场克里姆林宫附近举行。多国国家元首和政府首脑出席了葬礼及告别仪式。" + tail
 	else:
 		context["result_text"] = "我们的领导人亲自带领中国代表团，并在苏联受到热烈欢迎。安德罗波夫的葬礼于1984年2月14日12点在莫斯科红场克里姆林宫附近举行。多国国家元首和政府首脑出席了葬礼及告别仪式。" + tail
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_117_five_year_funeral.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "five_year_funeral",
+	"num": 117,
+	"notify": false,
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1984.2.9"}, {"t": "EMPIRE_LEADER_IS", "key": "1", "v": 1}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

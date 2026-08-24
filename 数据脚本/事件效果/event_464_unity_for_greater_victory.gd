@@ -5,10 +5,10 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：soc_stab→social_stability；proprc→亲中、sovalliance→苏联盟友、usalliance→美国盟友；
 ##   isSocEU→soc_eu 标签。
 
-const TXT_OPT0_DIS := "我们没有军事联盟"
-const TXT_R0 := "我们与军事联盟国家之间的会议在上海举行，结束时签署了所谓的上海协定，这意味着创建一个我们联盟国家之间的简化的护照和签证控制空间的前景，并完全排斥外国护照的需要。协议逐渐开始生效，人民满意了，但也开始被外国文化冲昏头脑，对我们的国家原则产生了怀疑。现在，罪犯和持不同政见者更容易逃离中国，走私者也更容易把他们的货物走私到我们这里。但我们的盟友国家之间的联系已经进一步加强，旅游业的利润将补充我们的预算。"
-const TXT_R1 := "我们与所有联盟国家之间的会议在上海举行，结束时签署了所谓的上海协定，这意味着创建一个我们联盟国家之间的简化的护照和签证控制空间的前景，并完全排斥外国护照的需要。协议逐渐开始生效，人民满意了，但也开始被外国文化冲昏头脑，对我们的国家原则产生了怀疑。现在，罪犯和持不同政见者更容易逃离中国，走私者也更容易把他们的货物走私到我们这里。但我们的盟友国家之间的联系已经进一步加强，旅游业的利润将补充我们的预算。"
-const TXT_R2 := "既然除了我们的情报人员没人知道这件事，我们可以暂且搁置，日后再讨论"
+const TXT_OPT0_DIS := "event.script.event_464_unity_for_greater_victory.c0"
+const TXT_R0 := "event.script.event_464_unity_for_greater_victory.c1"
+const TXT_R1 := "event.script.event_464_unity_for_greater_victory.c2"
+const TXT_R2 := "event.script.event_464_unity_for_greater_victory.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -21,7 +21,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if china != null and china.has_tag("okb"):
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 	_enable(opt[2], event_def.options[2].text)
 
@@ -34,15 +34,15 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_shengen_base()
 			_shengen_loop(true)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			_shengen_base()
 			_shengen_loop(false)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -132,3 +132,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_464_unity_for_greater_victory.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_464",
+	"num": 464,
+	"priority": 46400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_464_unity_for_greater_victory.gd",
+	"trigger": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "21"}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "17"}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "16"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "development", "v": 3, "target": "17"}, {"t": "ANY", "c": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "17"}, {"t": "ALL", "c": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "16"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "development", "v": 3, "target": "17"}]}]}, {"t": "ALL", "c": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "16"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "development", "v": 3, "target": "17"}]}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "89"}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "88"}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "0"}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "1"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "soc_eu", "target": "85"}]}, {"t": "COUNTRY_HAS_TAG", "key": "soc_eu", "target": "85"}, {"t": "ALL", "c": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "21"}, {"t": "ANY", "c": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "17"}, {"t": "ALL", "c": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "16"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "development", "v": 3, "target": "17"}]}]}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "89"}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "88"}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "0"}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "1"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "soc_eu", "target": "85"}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -9,10 +9,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 死代码 result 5 测试分支跳过。
 
 
-const TXT_R0 := "扬塔特斯尼先发制人，依托群众基础和地下网络迅速发动起义和进攻，成功占领了北方大部分地区，政府军在北方遭遇了大量损失。在穆萨·阿里·苏莱曼的领导下，扬塔特斯尼开始准备南下反攻尼日利亚政府。第二次尼日利亚内战就这样爆发了。这将是一场烈度不会低于比夫拉战争的内战……尼日利亚将通往何方？"
-const TXT_WAR_NAME := "第二次尼日利亚内战"
-const TXT_WAR_ATTACKER := "扬塔特斯尼"
-const TXT_WAR_DEFENDER := "尼日利亚政府"
+const TXT_R0 := "event.script.event_657_fulani_jihad_embers.c0"
+const TXT_WAR_NAME := "event.script.event_657_fulani_jihad_embers.c1"
+const TXT_WAR_ATTACKER := "event.script.event_657_fulani_jihad_embers.c2"
+const TXT_WAR_DEFENDER := "event.script.event_657_fulani_jihad_embers.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -32,10 +32,26 @@ func execute(context: Dictionary) -> void:
 		nigeria.parts[0] = true
 		nigeria.内战中 = true
 		nigeria.set_tag("对华贸易", false)
-	game.start_war(79, TXT_WAR_ATTACKER, TXT_WAR_DEFENDER, 400, 600, 1, 1)
+	game.start_war(79, tr(TXT_WAR_ATTACKER), tr(TXT_WAR_DEFENDER), 400, 600, 1, 1)
 	if ws.wars.size() > 79 and ws.wars[79] != null:
-		ws.wars[79].name_war = TXT_WAR_NAME
+		ws.wars[79].name_war = tr(TXT_WAR_NAME)
 		ws.wars[79].fortnight_max = 999
-	context["result_text"] = TXT_R0
+	context["result_text"] = tr(TXT_R0)
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_657_fulani_jihad_embers.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_657",
+	"num": 657,
+	"priority": 65700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_657_fulani_jihad_embers.gd",
+	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "event_655"}, {"t": "COUNTRY_FIELD_AT_LEAST", "key": "prc_power", "v": 100, "target": "60"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "cw", "v": 1, "target": "60"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

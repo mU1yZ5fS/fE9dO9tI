@@ -4,15 +4,15 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：DiploButtonScript.cs:12361 —— 外交按钮 1063，手动触发。
 ## 差异：prcinfl→prc_influence；science[12]→techs.unlocked[12]；选项3 event_done[671]=false→skip_mark_done。
 
-const TXT_OPT0_DIS_DONE := "我们已经和法国合作"
-const TXT_OPT0_DIS_NO := "我们的工业还不支持更深的合作！"
-const TXT_OPT1_DIS_DONE := "我们已和德国合作"
-const TXT_OPT1_DIS_NO := "德国尚未统一……"
-const TXT_OPT2_DIS := "我们已经扩大了合作"
-const TXT_R0_FMT := "中国政府决定签署《核能合作与电子产业协同发展框架协议》，宣布共同启动新一代核电站建设项目，并加强在电子信息技术领域的深度合作。{0}{1}同志在广州白云会所亲切接见了法国领导人和随行代表，双方就工业合作达成了一揽子协议，其中还包括了在秦山和大亚湾建设两组欧洲标准的核电站。项目将聚焦安全性提升、核废料处理及智能化运维，打造全球核电技术合作标杆。中国国家能源局负责人表示，法国在核能领域的技术的陷阱经验将加速实现“双碳”目标，为全球提供稳，低碳的能源解决方案。这还会为我国提供更多的就业岗位以及更为便宜的电力。\n合作不仅限于能源领域。中国科技大学和法国巴黎高等师范学院以民间团体的身份决定建立“中法数字创新实验室”，在半导体材料，自动化工业及新一代芯片等关键领域展开联合攻关。法国驻华大使指出：“中国电子产业的蓬勃生态与法国在高端制造，基础研究上的优势深度融合，将重塑这一产业的国际格局。而新型的跨国合作更能彰显友好国家间的友谊，进一步促进马克思先生理想中没有国界的世界”。\n这将会带来丰厚的回报，我们只消等待……"
-const TXT_R1_FMT := "近日，中国与德国新一任领导层正式签署《军事工业技术合作与联合研发框架协议》，双方宣布在装备现代化，技术创新及人员培训等领域展开全方位协作。{0}{1}同志在广州白云会所亲切接见了德国领导人和随行代表，双方就工业合作达成了一揽子协议。这一合作标志着两国在推动防御性国防能力建设方面迈出重要步伐，彰显了社会主义国家间互信互助的深厚情谊。\n根据协议，中德将聚焦陆军主战装备升级和防空系统智能化，共同开发新一代机械化部队及模块化防空导弹平台。德方在机械精密制造，装甲材料工艺上的优势能弥补，打造适应现代防御需求的“高性价比”装备体系。军事委员会代表表示，此次合作遵循“非攻性，非排他”原则，旨在通过技术互通提升两国自主防卫能力，为全球安全治理提供新范式。德国的步兵战车，单兵防空系统和野战防空车也将填补我国在此处的空白。进一步构建现代化的军事体系，争取赶上超级大国做准备。\n合作不仅限于装备制造，双方将共建“中德军事技术联合学院”，围绕未来的电子对抗系统，无人作战平台，电子化指挥与战术分析系统等前沿领域开展联合攻关，并互派技术骨干参与研发项目。德国国防工业部负责人指出：“中国在国防科技产业化方面的经验，为提升装备实战效能提供了宝贵借鉴。”从实验室到生产线，中德军事工业合作始终秉持“平等协商、共同进步”理念。这一合作理念正是反对美帝国主义和苏联社会帝国主义集团鼓动世界大战的生动实践。正如{0}{1}同志在招待酒会上的发言那样：“中国历来不希望战争，正因如此，我们将以技术合作消弭隔阂，以共同发展取代零和博弈，为构建均衡，有效，可持续的国际安全架构注入正能量。中德两国正以务实行动诠释“止戈为武”的东方智慧，为世界和平与发展贡献社会主义国家的战略担当。”\n中德友谊万岁！没有常备军的世界万岁！"
-const TXT_R2_FMT := "我们决定进一步扩大我国和欧洲国家的跨国贸易，这将会为我们带来额外的外汇收入，并在一定程度上补齐我国内部的不足。近日，中国与德国，法国，意大利等欧洲主要国家联合发布《深化经济合作联合声明》，根据声明，中方将扩大精密机床，光刻机等高附加值产品对欧出口，同时新增15类欧洲优质农产品、医疗器械和精密仪器进口零关税清单。英国贸易代表表示：“中国与欧洲技术产业的互补性，正转化为实实在在的增长动能。这真的让小伙子们都提起干劲了，我们的工厂又一次充满了订单。”\n正如{0}{1}同志在招待酒会所言：“中欧不仅仅是意识形态盟友，也是发展伙伴。扩大贸易非但不会稀释彼此特色，反而能以差异化竞争锻造更高水平合作。”从亚得里亚海畔的风机到上海的高精度机床，中欧正以行动证明：开放包容的经贸纽带，最终会为一个没有剥削的共同发展的世界开辟新航向。"
-const TXT_R3 := "又是平静的一天。"
+const TXT_OPT0_DIS_DONE := "event.script.event_671_friend_wine.c0"
+const TXT_OPT0_DIS_NO := "event.script.event_671_friend_wine.c1"
+const TXT_OPT1_DIS_DONE := "event.script.event_671_friend_wine.c2"
+const TXT_OPT1_DIS_NO := "event.script.event_671_friend_wine.c3"
+const TXT_OPT2_DIS := "event.script.event_671_friend_wine.c4"
+const TXT_R0_FMT := "event.script.event_671_friend_wine.c5"
+const TXT_R1_FMT := "event.script.event_671_friend_wine.c6"
+const TXT_R2_FMT := "event.script.event_671_friend_wine.c7"
+const TXT_R3 := "event.script.event_671_friend_wine.c8"
 
 
 func prepare(event_def: EventDef, _world: WorldState) -> void:
@@ -27,21 +27,21 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	if _tech(12) and _res(W.I_INDUSTRY) >= 800 and france != null and france.prc_influence == 0:
 		_enable(opt[0], event_def.options[0].text)
 	elif france != null and france.prc_influence != 0:
-		_disable(opt[0], TXT_OPT0_DIS_DONE)
+		_disable(opt[0], tr(TXT_OPT0_DIS_DONE))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS_NO)
+		_disable(opt[0], tr(TXT_OPT0_DIS_NO))
 	var germany_unified := (west_germany != null and west_germany.parts.size() > 0 and west_germany.parts[0]) \
 		or (east_germany != null and east_germany.parts.size() > 0 and east_germany.parts[0])
 	if germany_unified and west_germany != null and west_germany.prc_influence == 0:
 		_enable(opt[1], event_def.options[1].text)
 	elif west_germany != null and west_germany.prc_influence != 0:
-		_disable(opt[1], TXT_OPT1_DIS_DONE)
+		_disable(opt[1], tr(TXT_OPT1_DIS_DONE))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_NO)
+		_disable(opt[1], tr(TXT_OPT1_DIS_NO))
 	if luxemburg == null or luxemburg.prc_influence == 0:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	_enable(opt[3], event_def.options[3].text)
 
 
@@ -54,23 +54,23 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = _fmt(TXT_R0_FMT)
+			context["result_text"] = _fmt(tr(TXT_R0_FMT))
 			_add(W.I_BUDGET, -150)
 			if france != null:
 				france.prc_influence = 1
 		1:
-			context["result_text"] = _fmt(TXT_R1_FMT)
+			context["result_text"] = _fmt(tr(TXT_R1_FMT))
 			_add(W.I_BUDGET, -300)
 			_add(W.I_INDUSTRY, -400)
 			if west_germany != null:
 				west_germany.prc_influence = 1
 		2:
-			context["result_text"] = _fmt(TXT_R2_FMT)
+			context["result_text"] = _fmt(tr(TXT_R2_FMT))
 			_add(W.I_BUDGET, -150)
 			if luxemburg != null:
 				luxemburg.prc_influence = 12
 		3:
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 			# 原版 :101 event_done[671]=false → 跳过完成标记
 			context["skip_mark_done"] = true
 
@@ -87,3 +87,18 @@ func _leader_name() -> String:
 
 func _tech(idx: int) -> bool:
 	return ws.techs != null and idx >= 0 and idx < ws.techs.unlocked.size() and ws.techs.unlocked[idx]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_671_friend_wine.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_671",
+	"num": 671,
+	"priority": 67100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_671_friend_wine.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -10,10 +10,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##    .AmericanSupportAttacker.SovietSupportDefender → game.start_war()
 ##    后覆盖 name_war/fortnight_max。
 
-const TXT_R0 := "赞比亚和坦桑尼亚惊恐的看着津巴布韦的现状，并呼吁联合国介入。但在如此多的“神秘人”的帮助下，谁还能阻挡伟大的白人酋长们呢？"
-const WAR_NAME := "南非入侵津巴布韦"
-const WAR_SIDE1 := "南非"
-const WAR_SIDE2 := "津巴布韦"
+const TXT_R0 := "event.script.event_882_zimbabwe_south_africa_invasion.c0"
+const WAR_NAME := "event.script.event_882_zimbabwe_south_africa_invasion.c1"
+const WAR_SIDE1 := "event.script.event_882_zimbabwe_south_africa_invasion.c2"
+const WAR_SIDE2 := "event.script.event_882_zimbabwe_south_africa_invasion.c3"
 
 
 func execute(context: Dictionary) -> void:
@@ -23,7 +23,7 @@ func execute(context: Dictionary) -> void:
 	var zambia := ws.get_country_by_legacy_index(126)
 	var opt := int(context.get("option_index", -1))
 	if opt == 0:
-		context["result_text"] = TXT_R0
+		context["result_text"] = tr(TXT_R0)
 		if zimbabwe != null:
 			if zimbabwe.parts.size() == 0:
 				zimbabwe.parts.resize(1)
@@ -34,7 +34,22 @@ func execute(context: Dictionary) -> void:
 		# 原版 resultOfEvents[609]==0 缺省为 0（未触发时同样成立）
 		if ws.completed_event_ids.get("event_609", 0) == 0:
 			num = 50
-		game.start_war(44, WAR_SIDE1, WAR_SIDE2, 700 - num, 300 + num, 0, 1)
+		game.start_war(44, tr(WAR_SIDE1), tr(WAR_SIDE2), 700 - num, 300 + num, 0, 1)
 		if ws.wars.size() > 44 and ws.wars[44] != null:
-			ws.wars[44].name_war = WAR_NAME
+			ws.wars[44].name_war = tr(WAR_NAME)
 			ws.wars[44].fortnight_max = 24
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_882_zimbabwe_south_africa_invasion.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_882",
+	"num": 882,
+	"priority": 88200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_882_zimbabwe_south_africa_invasion.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

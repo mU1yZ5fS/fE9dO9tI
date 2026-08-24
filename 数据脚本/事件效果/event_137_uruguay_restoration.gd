@@ -10,11 +10,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - iron_and_blood 成就已接 Achievements（Set 编号见 execute 内注释）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
-const TXT_R4 := "在当时人们眼里，桑吉内蒂是一个在政治上持进步立场的政治家，在经济上则比较保守，他成功地重树了其政党的形象，该党中最保守的势力支持1973年的政变。他立即解除了对积极反抗独裁政权的政党与领导人的活动禁令，并签署了对政治犯的大赦令。在国际关系领域，桑吉内蒂恢复了与西班牙的关系，重建了与共产主义国家的联系，并根据拉丁美洲一体化协会（ALADI）制定的目标，在推动区域经济一体化方面发挥了决定性作用。在经济领域，桑吉内蒂政府最重要的目标之一是削减近5.1亿美元、逼近国内生产总值的外债。政府开始通过满足国际货币基金组织的要求，如减少政府开支、紧缩开支和私有化来偿还债务。工会对此不满，要求退出IMF并拒绝偿还公共债务，但各政党间的开放协议安抚了他们，各政党也以此达成了共识，能够提出符合共同利益的立法。以此共识为基础，1986年4月1日，PC、PN、左翼的广泛阵线（FA）和保守的公民联盟（UC）共同签署了《国家协议》。在他的统治下，“逾期法”也得以通过，那些在乌拉圭军官文官独裁期间犯下反人类罪行的军人最终得到了某种程度的赦免。"
-const TXT_R8 := "作为民粹主义的中右翼政党候选人，祖马兰主要致力于在党内达成妥协。该党在一些议题上意见一致，但在其他社会问题上却存在种种分歧。一些政策在妥协协议后出台，然后由新任总统实施。在外交政策方面，乌拉圭采取了反帝国主义的立场，与共产主义国家、西班牙建立了联系，甚至还申请加入不结盟运动。同时，在社会问题上，禁止同性婚姻、禁止非传统性取向的人士领养孩子的规定被法律确认，但同时，堕胎和安乐死也不再视为犯罪，法律成年年龄也调高了，也只有成年人能被起诉。在经济问题上，新领导层直接采取了国家联邦化的路线，国有企业变成了股份制公司，并转交地方政府控制。乌拉圭的联邦化还伴随着经济上的权力下放改革，中央对市场的干预也减轻了（这些权力被转移到了地方当局手中）。与此同时，在祖马兰任期期间，文官政府与军方之间发生了摩擦，军方试图掌握对反人类罪进行追究的权力。最终，为避免再次发生政变，议会谴责了1973年政变，但将调查罪行与判罚的权力转交给了军事法庭，以此安抚军方，而军方只是谴责了一些替罪羊，其他人则恢复了自由身。"
-const TXT_R3 := "本职为专科医生的胡安·何塞·克罗托吉尼执政之后，开始背靠他成分复杂的执政联盟展开改革。他的第一项法令便是大规模赦免乌拉圭所有因政治原因受指控的人员，并且恢复他们的政治权利；并且提名著名的左翼人士、退役军官利伯·塞雷尼·莫斯克拉为总理，他此前被军政府囚禁而被禁止参选。在医疗教育领域的国有化的第一项改革未能获得所需票数，未获议会通过，塞雷尼总理称“我不能容忍同其他来历不明的政治势力谈判与勾结”从而提请辞职，广泛阵线（BF）显然对此处境表示不甘。新成立的内阁推出了一套温和改革方案：广泛发展社会保障、大力发展医药技术产业、推广成本低廉的免费高等教育。这些改革大幅降低了乌拉圭的死亡率与疾病率，提升了民众的购买力，创造了一批坚实的技术工人阶层。乌拉圭经济在为期10年的军事独裁后得以枯木逢春。人民生活质量得到改善，GDP与投资吸引力得到提升，随之而来的是通货膨胀率的提升。"
-const TXT_FRIEND := "[color=red]新政府决心和我们做朋友。[/color]"
-const TXT_ENEMY := "[color=red]新政府不想和我们做朋友。[/color]"
+const TXT_R4 := "event.script.event_137_uruguay_restoration.c0"
+const TXT_R8 := "event.script.event_137_uruguay_restoration.c1"
+const TXT_R3 := "event.script.event_137_uruguay_restoration.c2"
+const TXT_FRIEND := "event.script.event_137_uruguay_restoration.c3"
+const TXT_ENEMY := "event.script.event_137_uruguay_restoration.c4"
 
 
 
@@ -40,8 +40,8 @@ func _set_next_election(c: CountryData, year: int, month: int, day: int) -> void
 
 func _friend_suffix(c: CountryData) -> String:
 	if c != null and c.has_tag("亲中"):
-		return TXT_FRIEND
-	return TXT_ENEMY
+		return tr(TXT_FRIEND)
+	return tr(TXT_ENEMY)
 
 
 ## Country.WantToLeave() 逐行移植。
@@ -239,7 +239,7 @@ func execute(context: Dictionary) -> void:
 		c.level_of_instability -= 15
 		_add_power(EmpireData.USA, 5)
 		_add_power(EmpireData.USSR, -5)
-		context["result_text"] = TXT_R4 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R4) + _friend_suffix(c)
 		return
 	if c.sub_government == GameConstants.SubGovernment.LEFT_CONSERVATIVE:
 		c.level_of_instability -= 10
@@ -248,7 +248,7 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USSR, -5)
 		# 原作 Event137.cs:124：iron_and_blood → achievements.Set(92)
 		Achievements.set_achievement(92)
-		context["result_text"] = TXT_R8 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R8) + _friend_suffix(c)
 		return
 	if c.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		c.level_of_instability -= 5
@@ -256,4 +256,19 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USA, -15)
 		_add_power(EmpireData.USSR, 5)
 		c.set_tag("亲美", false)
-		context["result_text"] = TXT_R3 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R3) + _friend_suffix(c)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_137_uruguay_restoration.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_137",
+	"num": 137,
+	"priority": 13700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_137_uruguay_restoration.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

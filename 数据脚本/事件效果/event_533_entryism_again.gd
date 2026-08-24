@@ -5,11 +5,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##   event_done[523] && resultOfEvents[523]==0 && !modifies[3].active
 ##   && c44.puppetOf<0 && c44.SubGosstroy==6 && (1982.6 或 1983+)。
 
-const TXT_OPT0_DIS_TROT := "我们为什么要效仿托派？"
-const TXT_OPT0_DIS_POWER := "赤军力量不够强大！"
-const TXT_OPT0_DIS_OTHER := "支持恐怖分子？"
-const TXT_R0 := "我们很快为共产主义抵抗者同盟的成员梳理了一份日本共产党在各地的基层组织的名单。他们也迅速行动起来前往各地并加入那里的共产党基层组织。不久许多人便因其积极表现而得到提拔，同盟也由此迈出了打入的第一步，但我们仍需注意为他们提供更多的支持，不然前面的努力随时都可能付诸东流。"
-const TXT_R1 := "考虑到目前同盟的人手依旧不足，我们决定暂时按兵不动。但很快，同盟内部各个小组织成员间因为路线问题又一次爆发了矛盾。虽然我们尽力调节，但最终一大批人仍然脱离了同盟。这严重打击了我们的影响力和同盟本身的稳定性。最终同盟的中央委员会组织召开了最后一次大会。会上以大比例优势通过了共产主义抵抗者同盟解散的决议。我们的努力最终还是失败了......"
+const TXT_OPT0_DIS_TROT := "event.script.event_533_entryism_again.c0"
+const TXT_OPT0_DIS_POWER := "event.script.event_533_entryism_again.c1"
+const TXT_OPT0_DIS_OTHER := "event.script.event_533_entryism_again.c2"
+const TXT_R0 := "event.script.event_533_entryism_again.c3"
+const TXT_R1 := "event.script.event_533_entryism_again.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -21,11 +21,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if d.political_line == 0 and c44 != null and c44.prc_power >= 120 and not ws.modifiers[3].is_active:
 		_enable(opt[0], event_def.options[0].text)
 	elif ws.modifiers[3].is_active:
-		_disable(opt[0], TXT_OPT0_DIS_TROT)
+		_disable(opt[0], tr(TXT_OPT0_DIS_TROT))
 	elif c44 == null or c44.prc_power < 120:
-		_disable(opt[0], TXT_OPT0_DIS_POWER)
+		_disable(opt[0], tr(TXT_OPT0_DIS_POWER))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS_OTHER)
+		_disable(opt[0], tr(TXT_OPT0_DIS_OTHER))
 
 
 func execute(context: Dictionary) -> void:
@@ -40,6 +40,22 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_DIPLO, 10)
 			ws.influence_prc += 30
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_533_entryism_again.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_533",
+	"num": 533,
+	"priority": 53300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_533_entryism_again.gd",
+	"trigger": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "44"}, {"t": "MODIFIER_INACTIVE", "key": "3"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_523"}, {"t": "PREV_EVENT_DONE", "ref": "event_523"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 6, "target": "44"}, {"t": "ANY", "c": [{"t": "DATE_AFTER", "key": "1982.6.1"}, {"t": "DATE_AFTER", "key": "1983.1.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -5,15 +5,15 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "启动两个任务。"
-const TXT_OPT0_DIS := "这太冒险了。"
-const TXT_OPT1 := "启动两个任务。"
-const TXT_OPT1_DIS := "这太冒险了。"
-const TXT_OPT2 := "只发射月球车。"
+const TXT_OPT0 := "event.script.event_361_lunar_advanced_missions.c0"
+const TXT_OPT0_DIS := "event.script.event_361_lunar_advanced_missions.c1"
+const TXT_OPT1 := "event.script.event_361_lunar_advanced_missions.c2"
+const TXT_OPT1_DIS := "event.script.event_361_lunar_advanced_missions.c3"
+const TXT_OPT2 := "event.script.event_361_lunar_advanced_missions.c4"
 
-const TXT_R0 := "中国探月计划的成功继续令国际社会惊叹——中国已成为继苏联之后第二个有能力制造月球车并实现月球土壤自动输送的国家。当所有人都在猜测中国的技术时，我们的探月计划的第三阶段即将到来。"
-const TXT_R1 := "中国探月计划的成功继续令国际社会惊叹——中国已成为继苏联之后第二个有能力制造月球车并实现月球土壤自动输送的国家。当所有人都在猜测中国的技术时，我们的探月计划的第三阶段即将到来。"
-const TXT_R2 := "中国探月计划的成功继续令国际社会惊叹——中国已成为继苏联之后第二个有能力制造月球车的国家。但是，不幸的是，后续项目的复杂性迫使我们终止这一项目。"
+const TXT_R0 := "event.script.event_361_lunar_advanced_missions.c5"
+const TXT_R1 := "event.script.event_361_lunar_advanced_missions.c6"
+const TXT_R2 := "event.script.event_361_lunar_advanced_missions.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -23,14 +23,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var r353 := _prev_result(world, "event_353")
 	if r353 == 0 and _budget_reserve(world) >= 30:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if r353 == 1 and _budget_reserve(world) >= 50:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
+	_enable(opt[2], tr(TXT_OPT2))
 
 
 func execute(context: Dictionary) -> void:
@@ -42,14 +42,14 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_SCIENCE, 150)
 			_add(W.I_BUDGET, -20)
 			_add(W.I_DIPLO, 10)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_SCIENCE, 300)
 			_add(W.I_BUDGET, -40)
 			_add(W.I_DIPLO, 20)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -98,3 +98,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_361_lunar_advanced_missions.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_361",
+	"num": 361,
+	"priority": 36100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_361_lunar_advanced_missions.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1983.6.1"}, {"t": "TECH_UNLOCKED", "v": 31}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -5,8 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "专利法只会妨碍我们。是的，要是我们签署了专利法，我们就可以坐等利润滚滚来，但我们先得为“窃取”来的技术付出巨额代价。是谁提出了这个想法，真是胡说八道！？"
-const TXT_R1 := "中华人民共和国很快就加入了世界专利体系。当然，这一开始就引起了诸多冲突，但在头一年，我国的发明就被外国应用，先前的后果是可以接受的。我国的名声也变好了些......"
+const TXT_R0 := "event.script.event_334_patent_law.c0"
+const TXT_R1 := "event.script.event_334_patent_law.c1"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -16,14 +16,14 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add_relation(0, -150)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -150)
 			_add_relation(0, 150)
 			_add(W.I_DIPLO, -50)
 			_set_modifier_active(36)
 			_add(W.I_SCIENCE, 50)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -45,3 +45,19 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_334_patent_law.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_334",
+	"num": 334,
+	"priority": 33400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_334_patent_law.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1984.2.11"}, {"t": "RESOURCE_AT_LEAST", "key": "economy_system", "v": 13}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

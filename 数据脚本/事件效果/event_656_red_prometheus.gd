@@ -10,10 +10,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 死代码 result 5 测试分支跳过。
 
 
-const TXT_R0 := "依托于城市内的左翼工会网络组织起来的工人赤卫队发动起义，同尼日利亚人民军协调行动，开始进攻大城市。惊恐的尼日利亚国家机器不愿就此坐以待毙，开始宣布紧急状态和总动员，并放权各地部族精英，各个部族也趁机开始武装自己。这将是一场烈度不会低于比夫拉战争的内战……尼日利亚将通往何方？"
-const TXT_WAR_NAME := "第二次尼日利亚内战"
-const TXT_WAR_ATTACKER := "尼日利亚人民军"
-const TXT_WAR_DEFENDER := "尼日利亚政府"
+const TXT_R0 := "event.script.event_656_red_prometheus.c0"
+const TXT_WAR_NAME := "event.script.event_656_red_prometheus.c1"
+const TXT_WAR_ATTACKER := "event.script.event_656_red_prometheus.c2"
+const TXT_WAR_DEFENDER := "event.script.event_656_red_prometheus.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -32,10 +32,26 @@ func execute(context: Dictionary) -> void:
 			nigeria.parts.append(false)
 		nigeria.parts[0] = true
 		nigeria.set_tag("对华贸易", false)
-	game.start_war(79, TXT_WAR_ATTACKER, TXT_WAR_DEFENDER, 400, 600, 1, 1)
+	game.start_war(79, tr(TXT_WAR_ATTACKER), tr(TXT_WAR_DEFENDER), 400, 600, 1, 1)
 	if ws.wars.size() > 79 and ws.wars[79] != null:
-		ws.wars[79].name_war = TXT_WAR_NAME
+		ws.wars[79].name_war = tr(TXT_WAR_NAME)
 		ws.wars[79].fortnight_max = 999
-	context["result_text"] = TXT_R0
+	context["result_text"] = tr(TXT_R0)
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_656_red_prometheus.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_656",
+	"num": 656,
+	"priority": 65600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_656_red_prometheus.gd",
+	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "event_655"}, {"t": "COUNTRY_FIELD_AT_LEAST", "key": "prc_power", "v": 100, "target": "60"}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "government", "v": 2, "target": "60"}, {"t": "SOCIALIST_COUNT_AT_LEAST", "v": 5, "keys": ["59", "112", "113", "114", "68", "107", "67", "64", "63", "62", "108", "61", "56", "58"]}, {"t": "COUNTRY_FIELD_EQUALS", "key": "cw", "target": "60"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}
