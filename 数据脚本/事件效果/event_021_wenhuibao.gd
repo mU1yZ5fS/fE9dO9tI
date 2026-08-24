@@ -4,7 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：TimeScript.cs:10180 —— (日>=25 且 月>=3 且 年>=1976) || (月>=4 且 年>=1976) || 年>=1977，
 ##   端口为 DATE_AFTER "1976.3.25"。
 ## 差异：
-##  - result 2 的 data.democracy_movement = data.democracy_movement - 1：反编译为死代码（ptr 局部赋值未写回），跳过；
+##  - result 2 的 data.democracy_movement = data.democracy_movement - 1：官方版 DLL
+##    反编译证实为 ref 真实写入，旧转储 ptr 模式系反编译伪影，已恢复；
 ##  - result 1 的 data.democracy_movement += 2 为真实效果（保留，raw index + 注释）；
 ##  - politics[12].loyality += 200：端口 ws.politicians[12].loyalty（判空）。
 
@@ -67,7 +68,10 @@ func _opt_support(context: Dictionary) -> void:
 		d.thought_freedom += 70
 	if d.size() > W.I_PARTY_SUPPORT:
 		d.party_support += 50
-	# 原版此处的 data.democracy_movement = data.democracy_movement - 1 只写局部 ptr，未写回数组，属死代码，跳过。
+	# 官方版 DLL 反编译（tmp_Event21.cs:59-63）证实 data[88]-=1 为 ref 真实写入，
+	# 旧转储 ptr 模式系反编译伪影，v0.3.3 误判死代码，已恢复。
+	if d.size() > 88:
+		d.democracy_movement -= 1
 	for p in ws.politicians:
 		if p == null:
 			continue

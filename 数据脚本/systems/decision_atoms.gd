@@ -1814,13 +1814,34 @@ static func _join_all_legacy(c: CountryData) -> void:
 	elif china.has_tag("asean"):
 		c.set_tag("asean", true)
 	var ws := _ws()
+	var gkchp: bool = ws != null and (ws.get_flag("is_gkchp") if ws.has_method("get_flag") else false)
+	var soc_ok: bool = (c.government == GameConstants.Government.SOCIALIST \
+			or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) and not gkchp
+	var gkchp_ok: bool = gkchp and c.sub_government in [
+		GameConstants.SubGovernment.LEFT_RADICAL,
+		GameConstants.SubGovernment.MARXIST_LENINIST,
+		GameConstants.SubGovernment.MAOIST,
+		GameConstants.SubGovernment.LEFT_NATIONALIST,
+	]
 	var rim_ok: bool = ws != null \
 		and (ws.completed_event_ids.has("event_548") or ws.global_flags.has("event_done_event_548")) \
 		and china.has_tag("rim") \
-		and (c.government == GameConstants.Government.SOCIALIST or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) \
+		and (soc_ok or gkchp_ok) \
 		and c.sub_government != GameConstants.SubGovernment.SOVIET_STYLE \
 		and c.sub_government != GameConstants.SubGovernment.TROTSKYIST \
 		and not c.has_tag("sev") and not c.has_tag("ovd") \
 		and c.has_tag("亲中") and c.puppet_of < 0
 	if rim_ok:
 		c.set_tag("rim", true)
+	# 原版尾巴（改版 Country.cs:83-87）：非洲 id 范围 + 社会主义 + 事件500 → 自动入 AU。
+	var is_african: bool = c.原版序号 in [41, 42, 52] \
+		or (c.原版序号 >= 56 and c.原版序号 <= 68) \
+		or (c.原版序号 == 99 and c.parts.size() > 0 and c.parts[0]) \
+		or (c.原版序号 == 100 and c.parts.size() > 0 and c.parts[0]) \
+		or (c.原版序号 >= 106 and c.原版序号 <= 108) \
+		or (c.原版序号 >= 112 and c.原版序号 <= 133 and c.原版序号 != 128) \
+		or c.原版序号 in [150, 153, 155, 158]
+	if is_african and (c.government == GameConstants.Government.SOCIALIST \
+			or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) \
+		and ws != null and ws.completed_event_ids.has("event_500"):
+		c.set_tag("au", true)

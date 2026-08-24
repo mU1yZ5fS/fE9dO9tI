@@ -10,7 +10,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##    705 链后的海地状态，端口 UI 静态文案无法动态替换 → 仅复刻结果末尾的 cw=true 置位，
 ##    文案覆盖部分在 705 移植时补（届时海地状态恒不成立，行为一致）。
 ##  - dlc[3]（DLC 购买标志）：端口无 DLC 体系 → 视为恒真（同 game_manager.gd:2225 先例）。
-##  - opt3 的 data.hardline_crackdown_count++：反编译为死代码（ptr 局部变量自增未写回 data），跳过。
+##  - opt3 的 data.hardline_crackdown_count++：官方版 DLL 反编译证实为 ref 真实写入
+##    （data[111] 自增），旧转储 ptr 模式系反编译伪影，已恢复实装。
 
 
 func execute(context: Dictionary) -> void:
@@ -63,7 +64,8 @@ func _opt_indifferent(context: Dictionary) -> void:
 		if mod17 != null:
 			mod17.is_active = true
 			_set_mod17_text("美国禁运", "我们将减少与美国关系差额10%的收入|失去相当于与美国关系差额5%的特工网络")
-		# 差异：原 data.hardline_crackdown_count++ 为反编译死代码（ptr 局部自增未写回），跳过。
+		# 官方版 DLL 反编译（tmp_Event7.cs:114-119）证实 data[111]++ 为 ref 真实写入。
+		d.hardline_crackdown_count += 1
 	if mod17 != null and mod17.is_active and _usa_in_asean() and d.size() > 139 and d.alliance_kickout_timer <= 0:
 		d.alliance_kickout_timer = 5   # 原 data.alliance_kickout_timer（无端口命名键，数字索引直访）
 	context["result_text"] = "紧张度提升"

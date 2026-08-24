@@ -4,7 +4,8 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：
 ##  - 触发：TimeScript.cs:10175（event_done[19] && !event_done[20] && 日期>=1976.2）。
 ##    ref_event_id 用端口 event_id "five_no"（event_019）。
-##  - data.democracy_movement++/--：反编译为死代码（ptr 局部自增/自减未写回），跳过。
+##  - data.democracy_movement++（result 2）：官方版 DLL 反编译证实为 ref 真实写入
+##    （tmp_Event20.cs case 2，data[88] 自增），旧转储 ptr 模式系反编译伪影，已恢复。
 ##  - politics[12]（固定索引政治家）：端口 ws.politicians[12] 直访（判空）。
 ##  - 忠诚循环：原版独立 if/else-if 链（==0 → +X；非0 且 ==20 → +Y；非0 且非20 且 ==2 → -Z），逐字保留。
 
@@ -61,6 +62,9 @@ func _opt_support(context: Dictionary) -> void:
 		d.people_support += 20
 	if d.size() > W.I_PARTY_SUPPORT:
 		d.party_support -= 70
+	# 官方版 DLL 反编译（tmp_Event20.cs case 2）证实 data[88]++ 为 ref 真实写入。
+	if d.size() > 88:
+		d.democracy_movement += 1
 	if d.size() > W.I_THOUGHT_FREEDOM:
 		d.thought_freedom += 50
 	if ws.politicians.size() > 12 and ws.politicians[12] != null:

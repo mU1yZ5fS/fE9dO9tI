@@ -4876,6 +4876,19 @@ static func _join_all_our_alliances(w: WorldState, c: CountryData) -> void:
 			and not c.has_tag("sev") and not c.has_tag("ovd") \
 			and c.has_tag("亲中") and c.puppet_of < 0:
 		c.set_tag("rim", true)
+	# 原版尾巴（改版 Country.cs:83-87）：非洲 id 范围（flag）+ 社会主义 + 事件500 完成 → 自动入 AU。
+	# 缺此段会导致 event500 后才转向社会主义的非洲国家（政变链）不贡献 mod59 非洲联盟加成。
+	var is_african: bool = c.原版序号 in [41, 42, 52] \
+		or (c.原版序号 >= 56 and c.原版序号 <= 68) \
+		or (c.原版序号 == 99 and c.parts.size() > 0 and c.parts[0]) \
+		or (c.原版序号 == 100 and c.parts.size() > 0 and c.parts[0]) \
+		or (c.原版序号 >= 106 and c.原版序号 <= 108) \
+		or (c.原版序号 >= 112 and c.原版序号 <= 133 and c.原版序号 != 128) \
+		or c.原版序号 in [150, 153, 155, 158]
+	if is_african and (c.government == GameConstants.Government.SOCIALIST \
+			or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL) \
+			and w.event_done_num(500):
+		c.set_tag("au", true)
 
 
 static func _add_d(d: WorldState, idx: int, delta: int) -> void:

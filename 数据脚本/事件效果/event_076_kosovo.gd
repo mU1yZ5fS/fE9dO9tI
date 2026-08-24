@@ -6,7 +6,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 选项显隐（prepare 动态改写）：
 ##   原版 summa_3_2 阈值 66 → Godot factions 复算（见 event_075 同款辅助）。
 ## 差异：
-##  - 原版 result1 失败分支的 data.budget++ 为局部指针自增（未写回，死代码），跳过。
+##  - 原版 result1 失败分支的 data.budget++：官方版 DLL 反编译证实为 ref 真实写入，已恢复。
 ##  - 原版 result3 的 dlc[3] 分支：项目惯例 dlc[3] 视为恒真
 ##    （world_factory.gd:1462 注释），故采用中文长文本分支，
 ##    不再取 new_events_text[900] 的 else 分支。
@@ -71,7 +71,9 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_AGENTS, -50)
 			else:
 				text += TXT_R1_FAIL
-				# 原版死代码：int ptr = data.budget; ptr = data.budget + 1;（局部自增未写回），跳过
+				# 官方版 DLL 反编译（tmp_Event76.cs:109-112）证实 data[8](预算)++ 为
+				# ref 真实写入，旧转储 ptr 模式系反编译伪影，已恢复。
+				_add(W.I_BUDGET, 1)
 			context["result_text"] = text
 		2:
 			context["result_text"] = TXT_R2

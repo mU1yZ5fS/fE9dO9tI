@@ -26,7 +26,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   - Unity 的 doctr[] 是显示文案表；Godot 的政体/政策名由 派系界面 按数据索引实时
 ##     生成，因此 Event95 的 doctr 赋值不移植，只改数据索引。
 ##   - Unity 的 LeaderAsset/MoneyLevel/ServeRMB 在 Godot 无对应字段，跳过并注释。
-##   - Event96 的 data.press_policy++ 是 Unity 原码 bug（值未写回数组），Godot 按原行为保持 no-op。
+##   - Event96 的 data.press_policy++：官方版 DLL 反编译证实为 ref 真实写入（<19 守卫），已恢复。
 ##   - Event116 的 ILoveSuckCocks 是刷新中国地图 parts 的辅助方法，这里按主要分支近似移植。
 
 # ============================================================================
@@ -416,7 +416,10 @@ func _event_96_result_0(context: Dictionary) -> void:
 	d.party_system = 8
 	d.religion_policy = 27
 	_add_data({W.I_MANPOWER: -80})
-	# Event96.cs:50-57 data.press_policy++ 是 Unity 原码 bug（算出的新值未写回数组），按原行为保持 no-op。
+	# 官方版 DLL 反编译（tmp_Event96.cs case 0）证实 data[17](press_policy)++ 为 ref 真实
+	# 写入且带 data[17]<19 守卫；旧转储 ptr 模式系反编译伪影，已恢复。
+	if d.press_policy < 19:
+		d.press_policy += 1
 	_add_data({W.I_DIPLO: -10, W.I_PEOPLE_SUPPORT: 30, W.I_THOUGHT_FREEDOM: 80})
 
 
@@ -434,7 +437,9 @@ func _event_96_result_2(context: Dictionary) -> void:
 	context["result_text"] = TXT96_R2
 	d.party_system = 9
 	_add_data({W.I_PEOPLE_SUPPORT: 50, W.I_MANPOWER: -70})
-	# Event96.cs:78-85 data.press_policy++ 同样是未写回 no-op，见 result_0 注释。
+	# 官方版 DLL 反编译（tmp_Event96.cs case 2）证实 data[17]++ 为 ref 真实写入（<19 守卫）。
+	if d.press_policy < 19:
+		d.press_policy += 1
 	_add_data({W.I_THOUGHT_FREEDOM: 50, W.I_DIPLO: -20})
 
 
@@ -443,7 +448,9 @@ func _event_96_result_3(context: Dictionary) -> void:
 	context["result_text"] = TXT96_R3
 	d.party_system = 9
 	_add_data({W.I_PEOPLE_SUPPORT: 80, W.I_MANPOWER: -120})
-	# Event96.cs:95-102 data.press_policy++ 同样是未写回 no-op，见 result_0 注释。
+	# 官方版 DLL 反编译（tmp_Event96.cs case 3）证实 data[17]++ 为 ref 真实写入（<19 守卫）。
+	if d.press_policy < 19:
+		d.press_policy += 1
 	_add_data({W.I_THOUGHT_FREEDOM: 120, W.I_DIPLO: -40})
 	d.religion_policy = 27
 

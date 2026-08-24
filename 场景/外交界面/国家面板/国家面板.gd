@@ -63,6 +63,13 @@ const MIL_ALLIANCE_ICONS := {
 	"seato": preload("res://资产/UI/外交/军事联盟_东南亚条约.png"),
 	"sento": preload("res://资产/UI/外交/军事联盟_中央条约.png"),
 }
+## okb 变体图标（原版 Znach(1) okb 分支的三个子态，:150-180）：
+## 非洲革命链 → znachki[24]；mod49（第四国际）激活 → znachki[22]；普通 → znachki[6]。
+const OKB_AFRICA_REVOLUTION_ICON := preload("res://资产/UI/外交/军事联盟_非洲革命联盟.png")
+const OKB_FOURTH_INTERNATIONAL_ICON := preload("res://资产/UI/外交/军事联盟_第四国际.png")
+const OKB_GENERIC_ICON := preload("res://资产/UI/外交/军事联盟_军事同盟.png")
+## SEATO 成员且泰国(51)内战 → znachki[19] 东约-中央条约合并态（:193-201）。
+const SEATO_SENTO_MERGED_ICON := preload("res://资产/UI/外交/军事联盟_东约中央条约合并.png")
 const MIL_ALLIANCE_NAMES := {
 	"nazimao": "欧罗巴解放阵线", "fxseu": "欧洲社会国家组织",
 	"ovd": "华沙条约", "rim": "革命国际", "okb": "集体安全条约（由玩家组建）",
@@ -95,14 +102,39 @@ const INFLUENCE_ICONS := {
 	2: preload("res://资产/UI/外交/在某国影响下_中国.png"),
 	4: preload("res://资产/UI/外交/在某国影响下_法国.png"),
 	5: preload("res://资产/UI/外交/在某国影响下_南非.png"),
+	6: preload("res://资产/UI/外交/在某国影响下_澳大利亚.png"),
 	7: preload("res://资产/UI/外交/在某国影响下_土耳其.png"),
-	# 6 澳大利亚影响：原版 znachki[26]，暂缺对应图标资源，待补充后加 preload。
 }
 const INFLUENCE_NAMES := {
 	0: "在美国影响下", 1: "在苏联影响下", 2: "在我国影响下",
 	4: "在法国影响下", 5: "在南非影响下", 6: "在澳大利亚影响下",
 	7: "在土耳其影响下",
 }
+
+## 宗主国傀儡图标：原版 Resources/PuppetIcons/{puppetOf}.png 动态加载
+## （CountryScript.cs ChangeIcons Znach(5)：puppetOf>=0 且 !=21 时按宗主 legacy 序号取图）。
+const PUPPET_OVERLORD_ICONS := {
+	1: preload("res://资产/UI/外交/宗主影响/1.png"),    # 中国
+	8: preload("res://资产/UI/外交/宗主影响/8.png"),    # 伊朗
+	11: preload("res://资产/UI/外交/宗主影响/11.png"),  # 越南
+	13: preload("res://资产/UI/外交/宗主影响/13.png"),  # 利比亚
+	15: preload("res://资产/UI/外交/宗主影响/15.png"),  # 南斯拉夫
+	21: preload("res://资产/UI/外交/宗主影响/21.png"),  # 法国
+	37: preload("res://资产/UI/外交/宗主影响/37.png"),  # 以色列
+	84: preload("res://资产/UI/外交/宗主影响/84.png"),  # 土耳其
+	85: preload("res://资产/UI/外交/宗主影响/85.png"),  # 西班牙
+}
+const PUPPET_GENERIC_ICON := preload("res://资产/UI/外交/在某国影响下_傀儡通用.png")
+## 宝岛特供（znachki[28]）：台湾(puppetOf==1 && 本国38)专属，CountryScript.cs:397-402。
+const TAIWAN_PUPPET_ICON := preload("res://资产/UI/外交/在某国影响下_台湾特供.png")
+
+## 阿拉伯阵营图标（原版 Znach(5)，CountryScript.cs:404-430）：
+## OAR 成员且埃及(30)已社会主义化 → znachki[23]=revolution oar（阿革共）；
+## 否则 → znachki[12]=Arab（阿拉伯联合共和国）。
+const OAR_REVOLUTION_ICON := preload("res://资产/UI/外交/军事联盟_阿革共.png")
+const ARAB_UNION_ICON := preload("res://资产/UI/外交/在某国影响下_阿拉伯联合共和国.png")
+## 巴尔干联邦（znachki[29]）：阿尔巴尼亚(20).spec==1 后的巴尔干国家链，CountryScript.cs:404-410。
+const BALKAN_FEDERATION_ICON := preload("res://资产/UI/外交/在某国影响下_巴尔干联邦.png")
 
 
 # ── 外交互动定义 ──
@@ -286,6 +318,9 @@ func _refresh_icons(country: CountryData) -> void:
 		for tag in MIL_ALLIANCE_ICONS:
 			if country.has_tag(tag):
 				mil_icon.texture = MIL_ALLIANCE_ICONS[tag]
+				# okb 子态（原版 Znach(1) :150-180）：非洲革命链 > 第四国际(mod49) > 普通军盟
+				if tag == "okb":
+					mil_icon.texture = _okb_variant_texture(country)
 				mil_icon.tooltip_text = MIL_ALLIANCE_NAMES.get(tag, tag)
 				mil_icon.visible = true
 				found = true
@@ -297,6 +332,9 @@ func _refresh_icons(country: CountryData) -> void:
 					mil_icon.visible = true
 					found = true
 					break
+		# SEATO 成员且泰国内战 → 东约-中央条约合并态（原版 :193-201）
+		if found and country.has_tag("seato") and _thailand_in_civil_war():
+			mil_icon.texture = SEATO_SENTO_MERGED_ICON
 		if not found:
 			mil_icon.visible = false
 
@@ -329,28 +367,131 @@ func _refresh_icons(country: CountryData) -> void:
 		else:
 			trade_icon.visible = false
 
-	# 在某国影响下
+	# 在某国影响下（原版 Znach(4)/Znach(5)，CountryScript.cs:289-430 优先级逐条对齐）
 	if inf_icon:
-		var sphere := country.in_sphere_of_influence()
-		var tex: Texture2D = INFLUENCE_ICONS.get(sphere)
-		if tex:
+		var tex: Texture2D = null
+		var label := ""
+		var puppet := country.puppet_of
+		if country.原版序号 == GameConstants.LegacySlot.TAIWAN and puppet == GameConstants.LegacySlot.CHINA:
+			# 宝岛特供（znachki[28]）：台湾被中国控制时的专属图标（:397-402）
+			tex = TAIWAN_PUPPET_ICON
+			label = "宝岛特供"
+		elif puppet == GameConstants.LegacySlot.SOUTH_AFRICA:
+			tex = INFLUENCE_ICONS.get(CountryData.SPHERE_SOUTH_AFRICA)
+			label = "在南非影响下"
+		elif puppet == GameConstants.LegacySlot.AUSTRALIA:
+			tex = PUPPET_OVERLORD_ICONS.get(GameConstants.LegacySlot.AUSTRALIA)
+			label = "在澳大利亚影响下"
+		elif puppet >= 0 and PUPPET_OVERLORD_ICONS.has(puppet):
+			tex = PUPPET_OVERLORD_ICONS[puppet]
+			var overlord := ws_get_country_name(puppet)
+			label = "在%s影响下" % overlord
+		elif puppet >= 0:
+			tex = PUPPET_GENERIC_ICON
+			var overlord2 := ws_get_country_name(puppet)
+			label = "在%s影响下" % overlord2
+		elif country.has_tag("oar"):
+			# 阿拉伯阵营（原版 :404-430）：埃及(30)社会主义化后为革命态（阿革共），否则阿联
+			var egypt_socialist := false
+			var world: WorldState = GameManager.world if GameManager != null else null
+			if world != null:
+				var egypt := world.get_country_by_legacy_index(30)
+				if egypt != null:
+					egypt_socialist = egypt.government == GameConstants.Government.SOCIALIST
+			if egypt_socialist:
+				tex = OAR_REVOLUTION_ICON
+				label = "阿拉伯革命社会主义共和国联盟"
+			else:
+				tex = ARAB_UNION_ICON
+				label = "阿拉伯联合共和国"
+		elif _in_balkan_federation(country):
+			tex = BALKAN_FEDERATION_ICON
+			label = "巴尔干联邦"
+		else:
+			var sphere := country.in_sphere_of_influence()
+			tex = INFLUENCE_ICONS.get(sphere)
+			if tex:
+				label = INFLUENCE_NAMES.get(sphere, "")
+				# 原版法国托管地特殊文案（CountryScript.cs:306-315）
+				if sphere == CountryData.SPHERE_FRANCE and country.原版序号 == 154:
+					label = "法国的一部分"
+				elif sphere == CountryData.SPHERE_FRANCE and country.原版序号 == 159:
+					label = "英-法共同托管"
+				# 当前项目“影响系统”尚有多套数值（对华/北约阈值等），
+				# 先尽量把关键数值放进悬浮说明，便于人工校验和后续统一。
+				if country.influence_china > 0 or country.influence_nato > 0:
+					label += "\n中国影响:%d  北约影响:%d" % [country.influence_china, country.influence_nato]
+				if country.prc_influence > 0 or country.usa_influence > 0 or country.sov_influence > 0:
+					label += "\n中国势力:%d  美国势力:%d  苏联势力:%d" % [country.prc_influence, country.usa_influence, country.sov_influence]
+		if tex != null:
 			inf_icon.texture = tex
-			var label: String = INFLUENCE_NAMES.get(sphere, "")
-			# 原版法国托管地特殊文案（CountryScript.cs:306-315）
-			if sphere == CountryData.SPHERE_FRANCE and country.原版序号 == 154:
-				label = "法国的一部分"
-			elif sphere == CountryData.SPHERE_FRANCE and country.原版序号 == 159:
-				label = "英-法共同托管"
-			# 当前项目“影响系统”尚有多套数值（对华/北约阈值等），
-			# 先尽量把关键数值放进悬浮说明，便于人工校验和后续统一。
-			if country.influence_china > 0 or country.influence_nato > 0:
-				label += "\n中国影响:%d  北约影响:%d" % [country.influence_china, country.influence_nato]
-			if country.prc_influence > 0 or country.usa_influence > 0 or country.sov_influence > 0:
-				label += "\n中国势力:%d  美国势力:%d  苏联势力:%d" % [country.prc_influence, country.usa_influence, country.sov_influence]
 			inf_icon.tooltip_text = label
 			inf_icon.visible = true
 		else:
-			inf_icon.visible = false
+			inf_icon.tooltip_text = label
+			inf_icon.visible = label != ""
+
+
+## okb 军盟图标子态（原版 Znach(1) :150-180）：
+## 非洲革命链（非洲成员国+亲中+社会主义+事件500结果0）> 第四国际(mod49) > 普通军盟。
+func _okb_variant_texture(country: CountryData) -> Texture2D:
+	var w: WorldState = GameManager.world if GameManager != null else null
+	if w != null:
+		var is_african := country.原版序号 > 53 and country.原版序号 < 69 \
+			or (country.原版序号 > 105 and country.原版序号 < 109) \
+			or (country.原版序号 > 111 and country.原版序号 < 134) \
+			or country.原版序号 in [41, 42, 52, 99, 100, 150, 151, 153, 155, 158]
+		var event500_ok: bool = w.completed_event_ids.get("event_500", -1) == 0 \
+			or not w.completed_event_ids.has("event_500")
+		if is_african and country.has_tag("亲中") and event500_ok \
+				and (country.government == GameConstants.Government.SOCIALIST
+					or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
+			return OKB_AFRICA_REVOLUTION_ICON
+		if w.modifiers.size() > 49 and w.modifiers[49] != null and not w.modifiers[49].is_active:
+			return OKB_GENERIC_ICON
+		return OKB_FOURTH_INTERNATIONAL_ICON
+	return OKB_GENERIC_ICON
+
+
+## 泰国(51)内战判定（原版 allcountries[51].cw，:193-196）。
+func _thailand_in_civil_war() -> bool:
+	var w: WorldState = GameManager.world if GameManager != null else null
+	if w == null:
+		return false
+	var thailand := w.get_country_by_legacy_index(51)
+	return thailand != null and thailand.内战中
+
+
+## 宗主国显示名（other_text[154] 格式化用）。
+func ws_get_country_name(legacy_id: int) -> String:
+	var w: WorldState = GameManager.world if GameManager != null else null
+	if w != null:
+		var c := w.get_country_by_legacy_index(legacy_id)
+		if c != null:
+			return c.display_name()
+	return "未知国家"
+
+
+## 巴尔干联邦判定（原版 :404-410）：阿尔巴尼亚(20).spec==1 后，
+## 本国为 阿尔巴尼亚(20)/南斯拉夫(15)/罗马尼亚(5) 直接纳编；希腊(45)需社会主义+亲中；
+## 保加利亚(6)需（社会主义+亲中）或事件492结果1。
+func _in_balkan_federation(country: CountryData) -> bool:
+	var w: WorldState = GameManager.world if GameManager != null else null
+	if w == null:
+		return false
+	var albania := w.get_country_by_legacy_index(20)
+	if albania == null or albania.special != 1:
+		return false
+	var n := country.原版序号
+	if n == 20 or n == 15 or n == 5:
+		return true
+	var socialist_proprc: bool = country.government == GameConstants.Government.SOCIALIST \
+		and country.has_tag("亲中")
+	if n == 45 and socialist_proprc:
+		return true
+	if n == 6 and (socialist_proprc or int(w.completed_event_ids.get("event_492", -1)) == 1):
+		return true
+	return false
 
 
 # ── 互动按钮 ──
