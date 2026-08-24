@@ -44,6 +44,10 @@ __pycache__/
 Thumbs.db
 Desktop.ini
 
+# ── 本地临时备份 / 调试输出（不入库）──
+/_backup_corrupted_/
+/check_out.txt
+
 # ── 项目本地内容（不入库）──
 # docs/ 默认不入库；仅 GitHub Pages 更新中心所需文件入库。
 docs/
