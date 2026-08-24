@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="EventDef" format=3]
+[gd_resource type="Resource" script_class="EventDef" format=3 uid="uid://cb12q8dnxpjjw"]
 
-[ext_resource type="Script" path="res://数据脚本/core/event_option.gd" id="1_option"]
-[ext_resource type="Script" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
-[ext_resource type="Script" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
-[ext_resource type="Script" path="res://数据脚本/core/event_def.gd" id="4_event"]
-[ext_resource type="Script" path="res://数据脚本/事件效果/event_001_elections.gd" id="5_custom"]
+[ext_resource type="Script" uid="uid://qsp06hr13w66" path="res://数据脚本/core/event_option.gd" id="1_option"]
+[ext_resource type="Script" uid="uid://b52mhajg7absq" path="res://数据脚本/core/effect_node.gd" id="2_effect"]
+[ext_resource type="Script" uid="uid://nhq5lt7bhpnf" path="res://数据脚本/core/expr_node.gd" id="3_expr"]
+[ext_resource type="Script" uid="uid://db1go3clokreq" path="res://数据脚本/core/event_def.gd" id="4_event"]
+[ext_resource type="Script" uid="uid://dwlt7537atqdx" path="res://数据脚本/事件效果/event_001_elections.gd" id="5_custom"]
 
 [sub_resource type="Resource" id="Custom"]
 script = ExtResource("2_effect")
@@ -21,6 +21,7 @@ result_text = "（结果由 event_001_elections.gd 动态生成）"
 script = ExtResource("3_expr")
 key = "party_support"
 value = 501.0
+
 [sub_resource type="Resource" id="Opt1"]
 script = ExtResource("1_option")
 text = "推动公务员投票"
@@ -33,6 +34,7 @@ result_text = "（结果由 event_001_elections.gd 动态生成）"
 script = ExtResource("3_expr")
 key = "agents"
 value = 50.0
+
 [sub_resource type="Resource" id="Opt2"]
 script = ExtResource("1_option")
 text = "伪造大选结果"
