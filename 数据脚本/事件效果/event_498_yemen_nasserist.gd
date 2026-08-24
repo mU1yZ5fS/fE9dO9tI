@@ -15,6 +15,9 @@ const T_498_7 := "我们无动于衷，很快，加什米总统在前往亚丁�
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
+	# 也门已统一时不再触发（双保险：配合 .tres 的 NOT_HAS_FLAG 守卫，防御手动 queue 绕过扫描条件）
+	if ws != null and ws.get_flag("yemen_unified"):
+		return
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var data := world

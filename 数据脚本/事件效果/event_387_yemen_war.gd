@@ -96,6 +96,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -40)
 			ws.influence_prc += 20
+			# 也门已统一（建成联邦）：置标志，供事件 498/437 的触发守卫读取（.tres NOT_HAS_FLAG）
+			ws.set_flag("yemen_unified", true)
 		_:
 			context["result_text"] = TXT_R3
 

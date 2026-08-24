@@ -424,9 +424,9 @@ func _event_61(option_index: int, context: Dictionary) -> void:
 		3:
 			var r3 := _fmt_leader(TXT_61_R3)
 			if int(ws.completed_event_ids.get("event_668", -1)) == 0:
-				r3 = r3.replace("2", TXT_61_R3_ROCK)
+				r3 = r3.replace("{2}", TXT_61_R3_ROCK)
 			else:
-				r3 = r3.replace("2", "")
+				r3 = r3.replace("{2}", "")
 			context["result_text"] = TXT_61_R_INTRO + r3
 		4:
 			if _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and _mod_active(GameConstants.Modifier.MAOIST_BULWARK):
@@ -465,7 +465,7 @@ func _event_62(option_index: int, context: Dictionary) -> void:
 			_add_empire_relation(EmpireData.USSR, -100)
 			if inner_mongolia != null:
 				inner_mongolia.set_tag("对华贸易", false)
-			context["result_text"] = TXT_62_R2
+			context["result_text"] = _fmt_leader(TXT_62_R2)
 		3:
 			_add_data({W.I_PARTY_SUPPORT: 30, W.I_THOUGHT_FREEDOM: 30})
 			_add_empire_relation(EmpireData.USSR, 20)

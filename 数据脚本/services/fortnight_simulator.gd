@@ -2825,12 +2825,10 @@ func _fortnight_reserve_effect(d: WorldState, year: int) -> void:
 		d.industry += v
 
 
-# ── 双周：人口超限特工惩罚（原版 TimeScript.cs:4538-4541，经济体制效果前）──
-## 人口超过 9307 的部分，每 200 扣 1 特工。
-func _fortnight_population_agent_penalty(d: WorldState) -> void:
-	@warning_ignore("integer_division")
-	if (d.population - 9307) / 200 > 0:
-		d.agents -= (d.population - 9307) / 200
+# ── 双周：人口超限特工惩罚（原版 TimeScript.cs:4538-4541） ──
+## 原版该块为 ptr 局部变量无写回（空操作）：(data[34]-9307)/200 > 0 时只改局部 ptr，
+## 从不写回 data[9]。按原版对齐为 no-op（端口此前按“人口每超 200 万扣 1 特工”实扣，
+## 是原版不存在的惩罚，直接造成特工持续下滑）。
 
 
 # ── 双周：经济思想漂移（原版 TimeScript.cs:5311-5321，压力修正之后、工业衰减之前）──
@@ -2983,7 +2981,6 @@ func _on_fortnight() -> void:
 	_fortnight_trade_balance(d, w)
 	_fortnight_satisfaction_drift(d, w)
 	_fortnight_leader_effects(d, w)
-	_fortnight_population_agent_penalty(d)
 	_fortnight_econ_system_effect(d)
 	_fortnight_political_drift(d, w)
 	_fortnight_military_doctrine(d, w)
@@ -3334,21 +3331,50 @@ func _fortnight_modifiers(
 	if gm._mod_active(w, GameConstants.Modifier.AGRICULTURE_DEVELOPMENT):
 		_apply_modifier15_agriculture(d, w)
 
-	# 16/17 对苏/对美关系受损。
+	# 16/17 对苏/对美关系受损（ModifiesInfuence.cs:1828-1864 逐字对齐）。
+	# 此前端口实现遗漏的两处：① 扣除分支带 ×对方power/500（美方 /1000）系数；
+	# ②「我方禁运对方」（event7/8 结果4）走获利分支（我方+预算/特工，对方 money/power 受损），
+	#    端口此前不分方向一律扣款 → 已按原版修正。
 	if gm._mod_active(w, GameConstants.Modifier.SOVIET_EMBARGO):
 		var ussr_relation := w.empires[EmpireData.USSR].relations if w.empires.size() > EmpireData.USSR else d.ussr_relations
+		var ussr_power := w.empires[EmpireData.USSR].power if w.empires.size() > EmpireData.USSR else 0
 		if ussr_relation >= 500:
 			w.modifiers[16].is_active = false
+		elif int(w.completed_event_ids.get("event_008", 0)) != 4:
+			@warning_ignore("integer_division")
+			d.budget -= (500 - ussr_relation) / 50 * ussr_power / 500
+			@warning_ignore("integer_division")
+			d.agents -= (500 - ussr_relation) / 100 * ussr_power / 500
 		else:
-			d.budget -= (500 - ussr_relation) / 50
-			d.agents -= (500 - ussr_relation) / 100
+			@warning_ignore("integer_division")
+			var inf_delta_16 := w.influence_prc - ussr_power
+			d.budget += inf_delta_16 / 50
+			@warning_ignore("integer_division")
+			d.agents += inf_delta_16 / 100
+			if w.empires.size() > EmpireData.USSR:
+				w.empires[EmpireData.USSR].money -= inf_delta_16 / 50
+				@warning_ignore("integer_division")
+				w.empires[EmpireData.USSR].power -= inf_delta_16 / 100
 	if gm._mod_active(w, GameConstants.Modifier.USA_EMBARGO):
 		var usa_relation := w.empires[EmpireData.USA].relations if w.empires.size() > EmpireData.USA else d.usa_relations
+		var usa_power := w.empires[EmpireData.USA].power if w.empires.size() > EmpireData.USA else 0
 		if usa_relation >= 500:
 			w.modifiers[17].is_active = false
+		elif int(w.completed_event_ids.get("event_007", 0)) != 4:
+			@warning_ignore("integer_division")
+			d.budget -= (500 - usa_relation) / 50 * usa_power / 1000
+			@warning_ignore("integer_division")
+			d.agents -= (500 - usa_relation) / 100 * usa_power / 1000
 		else:
-			d.budget -= (500 - usa_relation) / 50
-			d.agents -= (500 - usa_relation) / 100
+			@warning_ignore("integer_division")
+			var inf_delta_17 := w.influence_prc - usa_power
+			d.budget += inf_delta_17 / 50
+			@warning_ignore("integer_division")
+			d.agents += inf_delta_17 / 100
+			if w.empires.size() > EmpireData.USA:
+				w.empires[EmpireData.USA].money -= inf_delta_17 / 50
+				@warning_ignore("integer_division")
+				w.empires[EmpireData.USA].power -= inf_delta_17 / 100
 
 	# ── 18-42：ModifiesInfuence.cs:1866-2260 ──
 	if gm._mod_active(w, GameConstants.Modifier.TENTH_PANCHEN_LAMA):
@@ -3979,39 +4005,19 @@ func _fortnight_trade_balance(d: WorldState, w: WorldState) -> void:
 	# 石油危机修正（原版 :4135-4139）：modifies[12] 激活时 data.income -= data.income/6
 	if gm._mod_active(w, GameConstants.Modifier.BACKWARD_ECONOMY):
 		d.income -= d.income / 6
-	# 贸易平衡（原版 :4140-4155）：顺差 budget+=(23-24)/10、people+=(23-24)/15；
-	# 逆差 budget-=(23-24)/10、people-=(23-24)/15、living-=(23-24)/20
-	@warning_ignore("integer_division")
-	var diff := d.income - d.import_needs
-	if diff > 0:
-		d.budget += diff / 10
-		d.people_support += diff / 15
-	else:
-		d.budget -= diff / 10
-		d.people_support -= diff / 15
-		d.living_standard -= diff / 20
-	# 伙伴数效应（原版 :4156-4167）：≤10 → thought/agents -= (-9+data.trade_partners)；>18 → thought += data.trade_partners-18
-	if d.trade_partners <= 10:
-		d.thought_freedom -= -9 + d.trade_partners
-		d.agents -= -9 + d.trade_partners
-	elif d.trade_partners > 18:
-		d.thought_freedom += d.trade_partners - 18
+	# 贸易平衡（原版 :4140-4155）与伙伴数效应（原版 :4156-4167）：
+	# 原版全部为 ptr 局部变量无写回（空操作）——顺逆差改预算/民支/生活、伙伴数≤10 扣
+	# 思想/特工、>18 加思想，均从未写回数组。按原版对齐为 no-op。
+	# （端口此前把顺逆差做成真实 ±、并把伙伴数≤10 做成每双周扣 -9+伙伴数特工，并不存在于原版。）
 
 
 # ── 满意度/异见漂移（TimeScript 4168-4201行） ──
-
+# 原版该块的 data[5]/data[1]/data[9]/data[6]（生活/党支/特工/外交声誉）漂移全部为
+# ptr 局部变量无写回（空操作）；仅 war_support<400 时美苏关系 ±（empires[x].relations）
+# 真实生效。按原版对齐：只保留关系项。
 func _fortnight_satisfaction_drift(d: WorldState, w: WorldState) -> void:
 	var ws := d.war_support
-	if ws > 700:
-		d.living_standard -= (ws - 500) / 100
-		d.party_support += (ws - 500) / 100
-		d.agents += (ws - 500) / 100
-		if d.diplomatic_reputation < 500:
-			d.diplomatic_reputation += 5
-	elif ws < 400:
-		d.thought_freedom += (500 - ws) / 100
-		d.party_support += (500 - ws) / 100
-		d.agents += (500 - ws) / 100
+	if ws < 400:
 		if w.empires.size() > 0:
 			w.empires[0].relations += (500 - ws) / 100
 		if w.empires.size() > 1:
@@ -4191,62 +4197,25 @@ func _fortnight_political_drift(d: WorldState, _w: WorldState) -> void:
 
 
 # ── 难度修正（TimeScript 5757-5853行） ──
-
+## 原版 diff 0-3 的全部数值修正（党支/民支/思想/生活/预算/特工/腐败…）以及 diff 4 的
+## party/people 项均为 ptr 局部变量无写回（空操作）；真实生效的只有 diff 4 的两项：
+## 美苏关系-5（:5855-5858）与 data[38](stability)==100 时的政治家 power/loyalty（:5859-5875，
+## 即毛逝世后：极左+50 权力、其余-10 忠诚）。按原版对齐为 no-op。
 func _fortnight_difficulty_bonus(d: WorldState, w: WorldState) -> void:
-	match w.difficulty:
-		0:
-			d.party_support += 5
-			d.people_support += 5
-			d.thought_freedom -= 5
-			d.living_standard += 5
-			d.budget += 50
-			d.agents += 50
-			if d.corruption > 200:
-				d.corruption -= 30
-			elif d.corruption > 100:
-				d.corruption -= 20
+	if w.difficulty != 4:
+		return
+	if w.empires.size() > 0 and w.empires[0] != null:
+		w.empires[0].relations -= 5
+	if w.empires.size() > 1 and w.empires[1] != null:
+		w.empires[1].relations -= 5
+	if d.size() > W.I_STABILITY and d.stability == 100:
+		for p in w.politicians:
+			if p == null:
+				continue
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
+				p.power += 50
 			else:
-				d.corruption -= 10
-		1:
-			d.party_support += 3
-			d.people_support += 3
-			d.thought_freedom -= 3
-			d.living_standard += 3
-			d.budget += 3
-			d.agents += 3
-		2:
-			if d.corruption < 50:
-				d.corruption += 8
-			elif d.corruption < 100:
-				d.corruption += 5
-		3:
-			d.party_support -= 6
-			d.people_support -= 7
-			d.thought_freedom += 7
-			d.living_standard -= 7
-			d.budget -= 7
-			d.agents -= 7
-			if d.corruption < 50:
-				d.corruption += 10
-			elif d.corruption < 100:
-				d.corruption += 6
-			else:
-				d.corruption += 1
-		4:
-			d.party_support -= d.ideology * 3
-			d.people_support -= d.ideology * 3
-			if w.empires.size() > 0:
-				w.empires[0].relations -= 5
-			if w.empires.size() > 1:
-				w.empires[1].relations -= 5
-			if gm.is_mao_dead():
-				for p in w.politicians:
-					if p == null:
-						continue
-					if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-						p.power += 50
-					else:
-						p.loyalty -= 10
+				p.loyalty -= 10
 
 
 # ── 政变条件（TimeScript.PlotPlayer 100-113行） ──

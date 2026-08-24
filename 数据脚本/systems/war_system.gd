@@ -1481,6 +1481,8 @@ static func _apply_war21_result(war: WarData, d: WorldState) -> void:
 			c25.parts[0] = true
 			c25.name = "也门共和国"
 			c25.chinese_name = "也门共和国"
+			# 也门已统一（war21 胜者改名）：置标志，供事件 498/437 的触发守卫读取
+			w.set_flag("yemen_unified", true)
 			c25.set_tag("对华贸易", true)
 			if c24 != null:
 				c24.set_tag("亲苏", false)
@@ -1492,6 +1494,8 @@ static func _apply_war21_result(war: WarData, d: WorldState) -> void:
 			c25.parts[0] = true
 			c25.name = "也门共和国"
 			c25.chinese_name = "也门共和国"
+			# 也门已统一（war21 胜者改名）：置标志，供事件 498/437 的触发守卫读取
+			w.set_flag("yemen_unified", true)
 			c25.set_tag("对华贸易", true)
 			if c24 != null:
 				c24.set_tag("亲苏", false)
@@ -1504,6 +1508,8 @@ static func _apply_war21_result(war: WarData, d: WorldState) -> void:
 			c24.parts[0] = true
 			c24.name = "也门共和国"
 			c24.chinese_name = "也门共和国"
+			# 也门已统一（war21 胜者改名）：置标志，供事件 498/437 的触发守卫读取
+			w.set_flag("yemen_unified", true)
 			c24.set_tag("对华贸易", true)
 			if c25 != null:
 				c25.set_tag("亲美", false)
@@ -1515,6 +1521,8 @@ static func _apply_war21_result(war: WarData, d: WorldState) -> void:
 			c24.parts[0] = true
 			c24.name = "也门共和国"
 			c24.chinese_name = "也门共和国"
+			# 也门已统一（war21 胜者改名）：置标志，供事件 498/437 的触发守卫读取
+			w.set_flag("yemen_unified", true)
 			c24.set_tag("对华贸易", true)
 			if c25 != null:
 				c25.set_tag("亲美", false)

@@ -118,6 +118,8 @@ static func effect_zh(id: int, w: WorldState = null) -> String:
 			return _effect_uk_labour(w)
 		58:
 			return _effect_pipeline(w)
+		59:
+			return _effect_military_alliance(w)
 		60:
 			# 原版 old_modify_opis 只有 0-59，60 号无底稿。
 			return "效果未录入"
@@ -479,6 +481,53 @@ static func _effect_pipeline(w: WorldState) -> String:
 		+ "<color=#DC143C>预算-0.5</color>\n" \
 		+ "降低中国境内油价$15（但不会低于$10）\n" \
 		+ "工期已完成：%s/12\n%s" % [status, _num(oil.soviet_influence_delta)])
+
+
+## 修正 59「我们的军事联盟」：原版 ModifiesInfuence.cs:2600-2703 每双周动态重写
+## old_modify_desc[59]，成员计数与真实结算（:2704-2725）同源；静态底稿 old_modify_opis[59]
+## 原版即为“测试”，因此这里按原版逐字生成动态文案。
+## 原版“革命国际主义运动”显示段误用 num154（集体安全联盟数）而非 num157（RIM 数），
+## 且小数位取 *3%10 —— 忠实保留原版行为（结算用 num157；如要修正需另行讨论）。
+static func _effect_military_alliance(w: WorldState) -> String:
+	if w == null:
+		return ""
+	var china := _country(w, 1)
+	var okb := _tag_count(w, "okb")
+	var oar := _tag_count(w, "oar")
+	var rim := _tag_count(w, "rim")
+	var au := 0
+	var au_done := _event_done(w, "event_500") and _event_result(w, "event_500", -1) == 0
+	if au_done:
+		for c in w.countries:
+			if c == null or not c.has_tag("au"):
+				continue
+			if c.government == GameConstants.Government.SOCIALIST \
+					or c.sub_government == GameConstants.SubGovernment.LEFT_RADICAL:
+				au += 1
+	var s := ""
+	if china != null and china.has_tag("okb"):
+		s += "集体安全联盟：|军事力量+%s；特工网络+%s；干涉点数+%s" % [
+			_xy(okb * 3, okb * 3), _xy(okb * 2, okb * 2), _xy(okb, okb)]
+	if au_done:
+		s += "|非洲联盟:|军事力量+%s；特工网络+%s；干涉点数+%s" % [
+			_xy(au * 3, au * 3), _xy(au * 2, au * 2), _xy(au, au)]
+	var egypt := _country(w, 30)
+	if egypt != null and egypt.has_tag("oar"):
+		if egypt.government == GameConstants.Government.SOCIALIST:
+			s += "|阿拉伯革命同盟:|军事力量+%s；特工网络+%s；干涉点数+%s" % [
+				_xy(oar * 3, oar * 3), _xy(oar * 2, oar * 2), _xy(oar, oar)]
+		else:
+			s += "|阿拉伯联合共和国:|军事力量+%s；特工网络+%s；干涉点数+%s" % [
+				_xy(oar * 3, oar * 3), _xy(oar * 2, oar * 2), _xy(oar, oar)]
+	if china != null and china.has_tag("rim"):
+		s += "|革命国际主义运动：|军事力量+%s；特工网络+%s；干涉点数+%s" % [
+			_xy(okb * 6, okb * 3), _xy(okb * 4, okb * 2), _xy(okb * 2, okb)]
+	return s
+
+
+## 原版组成式：整数部分 + "." + 十进一位（如 13*3=39 → "3.9"）
+static func _xy(whole: int, dec: int) -> String:
+	return "%d.%d" % [whole / 10, dec % 10]
 
 
 static func _effect_anthem(w: WorldState) -> String:

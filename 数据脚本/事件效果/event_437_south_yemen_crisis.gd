@@ -14,6 +14,9 @@ const TXT_R1 := "1978年6月24日，伊斯梅尔一派策划了加什米遇刺�
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
+	# 也门已统一时不再触发（双保险：配合 .tres 的 NOT_HAS_FLAG 守卫，防御手动 queue 绕过扫描条件）
+	if world != null and world.get_flag("yemen_unified"):
+		return
 	if event_def == null or world == null or event_def.options.size() < 2:
 		return
 	var data := world

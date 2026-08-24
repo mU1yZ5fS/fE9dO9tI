@@ -59,9 +59,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if d.budget + (d.reserve if d.size() > W.I_RESERVE else 0) >= 20 and d.agents >= 20:
 		_enable(opt[0], TXT_OPT0[0])
 	elif d.budget + (d.reserve if d.size() > W.I_RESERVE else 0) < 20:
-		_disable(opt[0], TXT_OPT0[1])
+		_disable(opt[0], _fmt(TXT_OPT0[1], [2]))
 	else:
-		_disable(opt[0], TXT_OPT0[2])
+		_disable(opt[0], _fmt(TXT_OPT0[2], [2]))
 	_enable(opt[1], TXT_OPT1[0])
 
 func execute(context: Dictionary) -> void:

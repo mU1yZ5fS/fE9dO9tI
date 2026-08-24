@@ -73,11 +73,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(event_def.options[0], TXT_OPT0[0])
 		_enable(event_def.options[1], TXT_OPT1[0])
 	elif budget_reserve < 200:
-		_disable(event_def.options[0], TXT_OPT0[1])
-		_disable(event_def.options[1], TXT_OPT1[1])
+		_disable(event_def.options[0], _fmt(TXT_OPT0[1], [20]))
+		_disable(event_def.options[1], _fmt(TXT_OPT1[1], [20]))
 	else:
-		_disable(event_def.options[0], TXT_OPT0[2])
-		_disable(event_def.options[1], TXT_OPT1[2])
+		_disable(event_def.options[0], _fmt(TXT_OPT0[2], [25]))
+		_disable(event_def.options[1], _fmt(TXT_OPT1[2], [25]))
 	_enable(event_def.options[2], TXT_OPT2[0])
 
 func execute(context: Dictionary) -> void:
