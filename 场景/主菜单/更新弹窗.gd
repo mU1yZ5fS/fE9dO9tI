@@ -4,8 +4,8 @@ extends PopupPanel
 ## 不显示任何可能跳转到 GitHub 仓库的按钮。
 
 # 当前游戏本地版本，发布新版本时同步修改。
-const LOCAL_VERSION_CODE := 34
-const LOCAL_VERSION_TEXT := "0.3.4"
+const LOCAL_VERSION_CODE := 35
+const LOCAL_VERSION_TEXT := "0.3.5"
 
 # GitHub Pages 地址（仓库开启 Pages 后生效）。
 const UPDATE_URL_PRIMARY := "https://mU1yZ5fS.github.io/fE9dO9tI/update.json"

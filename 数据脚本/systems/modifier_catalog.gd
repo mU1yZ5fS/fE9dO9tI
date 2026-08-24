@@ -1145,8 +1145,10 @@ static func _us_party_scores(w: WorldState) -> Dictionary:
 		if player3 != null and player3.has_tag("seato"):
 			rep += 1
 	# id54 模板：共和党={19}=num4(rep)；民主党={20}=array[1]。
-	var a1 := _american_score(w)
-	return {"dem": a1, "rep": rep}
+	# 用户规则：修正54“美国国内各党影响力对比”必须与真实选举（Event114/402）同口径，
+	# 因此民主党分数不再套用原版 array[1] 另算分（_american_score 保留备查），
+	# 而是直接返回本函数上方累计的 dem（与 Event114 计分一致）。
+	return {"dem": dem, "rep": rep}
 
 
 ## array[1]（ModifyButtonScript.cs:268-318）：民主党显示分

@@ -2,12 +2,13 @@ extends "res://数据脚本/event_script_base.gd"
 
 ## 原作 Event114.cs：驴象之争（1980 美国大选，卡特 vs 里根）。
 ## 触发：TimeScript.cs:10824（1980.11 后，fire_only_once）。
-## 13 项计分（num=民主党 / num2=共和党），num2>=num → 卡特连任(now_leader=1, data.oil_price+=2)；
+## 计分（用户规则）：与修正54“美国国内各党影响力对比”同口径（卡特+1/里根-1 净分），
+## 由 ModifierCatalog._us_party_scores 统一计算；民主 > 共和 → 卡特连任(now_leader=1, data.oil_price+=2)；
 ## 否则里根(now_leader=0, data.oil_price-=2, allcountries[51].SubGosstroy=12)。
 ## 差异：
 ##  - OAR → ws flag "oar"；allcountries[15].cw → legacy 15 内战中
-##  - allcountries[1]（中国）isASEAN/isSEATO：项目无对应 tag → 差异注释，按假跳过
-##  - resultOfEvents[46]==2 / event_done[455]：移植说明事件 → 按假跳过（注释差异）
+##  - allcountries[1]（中国）isASEAN/isSEATO：项目无对应 tag → 按玩家国家 tag 处理
+##  - resultOfEvents[46]==2 / event_done[455]：由 _us_party_scores 按原作完整条目计入
 ##  - allcountries[84].Gosstroy → legacy 84 government；allcountries[8] → legacy 8
 ##  - allcountries[51].SubGosstroy=12 → legacy 51（美国）sub_government = GameConstants.SubGovernment.NEOLIBERAL
 
@@ -17,52 +18,18 @@ func execute(context: Dictionary) -> void:
 	if ws.empires.size() <= EmpireData.USA:
 		return
 	var usa: EmpireData = ws.empires[EmpireData.USA]
-	var ussr: EmpireData = ws.empires[EmpireData.USSR] if ws.empires.size() > EmpireData.USSR else null
 	var opt := int(context.get("option_index", -1))
 
-	var num := 0   # 民主党（卡特）
-	var num2 := 0  # 共和党（里根）
-	if usa.power > ussr.power:
-		num2 += 1
-	else:
-		num += 1
-	if usa.power > ws.influence_prc:
-		num2 += 1
-	else:
-		num += 1
-	if ws.influence_prc > ussr.power:
-		num2 += 1
-	else:
-		num += 1
-	if ws.get_flag("oar"):
-		num += 1
-	var c15 := ws.get_country_by_legacy_index(15)
-	if c15 != null and c15.内战中:
-		num2 += 1
-	var player := ws.get_player_country()
-	if player != null:
-		if player.has_tag("asean"):
-			num2 += 1
-		if player.has_tag("seato"):
-			num2 += 1
-	# 差异：resultOfEvents[46]==2（移植说明事件 46）→ num++ 跳过
-	var w5 := ws.wars[5] if ws.wars.size() > 5 else null
-	if w5 != null and w5.is_going:
-		num += 1
-	var c84 := ws.get_country_by_legacy_index(84)
-	if c84 != null and c84.government == GameConstants.Government.AUTHORITARIAN:
-		num += 1
-	else:
-		num2 += 1
-	var c8 := ws.get_country_by_legacy_index(8)
-	if c8 != null and (c8.government == GameConstants.Government.LIBERAL or c8.有驻军基地):
-		num2 += 1
-	else:
-		num += 1
-	# 差异：event_done[455]/resultOfEvents[455]（移植说明事件 455）→ 跳过
+	# 用户规则：选举计分与修正54“美国国内各党影响力对比”同口径（卡特+1/里根-1 净分）。
+	# 原版 Event114.cs 的 num/num2 计分 + 原版 ModifyButtonScript 修正54 显示共用一套条目；
+	# 端口统一走 ModifierCatalog._us_party_scores（含匈牙利危机46、伊朗人质危机455 等完整条目），
+	# 民主 > 共和 → 卡特连任；否则里根当选（原版 num2>=num→卡特的胜负方向搞反了）。
+	var scores := ModifierCatalog._us_party_scores(ws)
+	var dem := int(scores.get("dem", 0))
+	var rep := int(scores.get("rep", 0))
 
 	context["result_title"] = "驴象之争"
-	if opt == 0 and num2 >= num:
+	if opt == 0 and dem >= rep:
 		# 卡特连任
 		usa.current_leader = 1
 		if d.size() > 143:

@@ -133,9 +133,11 @@ func execute(context: Dictionary) -> void:
 	if china != null and china.has_tag("seato"):
 		num2 += 1
 	if opt == 1:
-		num2 += 1
-	elif opt == 2:
+		# 暗中支持民主党人 → 民主党(num)+1；原版 result_num==1 误加到共和党(num2)，此处修正
 		num += 1
+	elif opt == 2:
+		# 暗中支持共和党人 → 共和党(num2)+1（原版误加到民主党）
+		num2 += 1
 	var c7 := ws.get_country_by_legacy_index(7)
 	if usa != null and usa.current_leader != 0 and (c7 != null and c7.has_tag("nato") or num <= num2):
 		if usa != null:

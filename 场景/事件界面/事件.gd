@@ -31,6 +31,7 @@ var _button_group: ButtonGroup
 @onready var _options_root: Control = $事件选项
 @onready var _result_root: Control = $事件结果
 @onready var _result_desc: RichTextLabel = $事件结果/事件结果描述
+@onready var _unread_hint: Label = $事件内容未读完提示
 @onready var _next_button: TextureButton = $事件切换页面按钮
 @onready var _back_button: TextureButton = $事件切换页面按钮2
 
@@ -52,6 +53,15 @@ func _ready() -> void:
 	_back_button.hide()   # INTRO 页不需要返回按钮
 	_options_root.hide()
 	_result_root.hide()
+	# 事件内容未读完提示：文案滚动 / 布局变化时刷新显示状态。
+	if _unread_hint:
+		_unread_hint.hide()
+	if _desc:
+		_desc.get_v_scroll_bar().value_changed.connect(func(_v: float): _update_unread_hint())
+		_desc.resized.connect(_update_unread_hint)
+	if _result_desc:
+		_result_desc.get_v_scroll_bar().value_changed.connect(func(_v: float): _update_unread_hint())
+		_result_desc.resized.connect(_update_unread_hint)
 	_load_event()
 
 
@@ -77,6 +87,27 @@ func _apply_event_ui_settings() -> void:
 	for lbl in _option_labels:
 		if lbl is Label:
 			lbl.add_theme_font_size_override("font_size", clampi(GameManager.event_option_font_size, 12, 72))
+	_update_unread_hint.call_deferred()
+
+
+## 事件内容未读完提示：当前可见的事件文本（简介或结果页）未滚动到底部时显示，
+## 文本可完整显示（无需滚动）或已滚到底部时隐藏。
+func _update_unread_hint() -> void:
+	if _unread_hint == null:
+		return
+	var rtl: RichTextLabel = null
+	if _page == Page.INTRO and _desc != null and _desc.visible:
+		rtl = _desc
+	elif _page == Page.RESULT and _result_root != null and _result_root.visible and _result_desc != null:
+		rtl = _result_desc
+	if rtl == null:
+		_unread_hint.hide()
+		return
+	var bar := rtl.get_v_scroll_bar()
+	# 内容高度 > 可视高度时才可滚动；value 未达到 max - page 即未读完。
+	var scrollable: bool = bar.max_value > bar.page + 1.0
+	var at_bottom: bool = bar.value >= bar.max_value - bar.page - 1.0
+	_unread_hint.visible = scrollable and not at_bottom
 
 
 ## 事件文本显示前处理：段首空两格、段落之间留空隙（由设置开关控制）。
@@ -136,6 +167,7 @@ func _load_event() -> void:
 
 	_title.text = _event_def.title
 	_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number)))
+	_update_unread_hint.call_deferred()
 	# 事件配图规则：
 	#   1. 资源文件（EventDef.image）设置了图片 → 优先使用；
 	#   2. 否则按 source_event_number 找 资产/事件插画/<编号>.png；
@@ -235,12 +267,14 @@ func _on_next_pressed() -> void:
 				_result_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number)))
 				_result_root.show()
 				_page = Page.RESULT
+				_update_unread_hint.call_deferred()
 				return
 			_title.hide()
 			_desc.hide()
 			_options_root.show()
 			_back_button.show()   # 选项页可以返回
 			_page = Page.OPTIONS
+			_update_unread_hint.call_deferred()
 
 		Page.OPTIONS:
 			if _selected_option < 0 or _event_def == null or EventEngine == null:
@@ -254,6 +288,7 @@ func _on_next_pressed() -> void:
 			_result_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(String(result.get("text", "")), str(_event_def.source_event_number)))
 			_result_root.show()
 			_page = Page.RESULT
+			_update_unread_hint.call_deferred()
 
 		Page.RESULT:
 			_return_to_diplomacy()
@@ -269,6 +304,7 @@ func _on_back_pressed() -> void:
 	_desc.show()
 	_clear_option_selection()
 	_page = Page.INTRO
+	_update_unread_hint.call_deferred()
 
 
 func _clear_option_selection() -> void:

@@ -210,6 +210,11 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 			txt = _war16_result_text_from_table(entry, war)
 		22:
 			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
+		23:
+			# 意大利战争（原版 GameState.cs:1247-1338）：两个阶段共用一个 war23 槽。
+			# 新阶段区分：event_556（意大利内战/激进派起义）→ 起义 a/b；
+			# event_396（第二次复兴运动）→ 复兴 rev_win/rev_lose。
+			txt = _war23_result_text_from_table(entry, war)
 		34:
 			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
 		35:
@@ -294,6 +299,17 @@ func _war7_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 ## 老挝内战（war27）：infl1>=500 政府胜，否则叛军胜（原版 1241 模板无占位符，proprc 后缀实际不参与）。
 func _war27_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 	return _t(entry, "a") if war.infl1 >= 500 else _t(entry, "b")
+
+
+## 意大利战争（war23）两个阶段（原版 GameState.cs:1247-1338）：
+## 事件556（意大利内战/激进派起义）→ 起义文本 a/b；
+## 事件396（第二次复兴运动）→ 复兴文本 rev_win/rev_lose。
+## 原文以 event_done[556] 区分；之前端口把两段都命中了 a/b/draw，
+## 导致“第二次复兴运动”结算显示起义文本（搞混），此处按原版分派。
+func _war23_result_text_from_table(entry: Dictionary, war: WarData) -> String:
+	if d != null and d.event_done_num(556):
+		return _t(entry, "rev_win") if war.infl1 >= 900 else _t(entry, "rev_lose")
+	return _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
 
 
 ## 伊拉克-科威特战争（war29）：原版 GameState.cs:1532-1626，按中国阵营/影响力分多支。
