@@ -98,23 +98,23 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if budget_reserve >= 100 and d.agents >= 150:
 		_enable(opt[0], TXT_OPT0[0])
 	elif budget_reserve < 100:
-		_disable(opt[0], TXT_OPT0[1])
+		_disable(opt[0], _fmt(TXT_OPT0[1], [15]))
 	else:
-		_disable(opt[0], TXT_OPT0[2])
+		_disable(opt[0], _fmt(TXT_OPT0[2], [15]))
 	if budget_reserve >= 50 and d.agents >= 100:
 		_enable(opt[1], TXT_OPT1[0])
 	elif budget_reserve < 50:
-		_disable(opt[1], TXT_OPT1[1])
+		_disable(opt[1], _fmt(TXT_OPT1[1], [5]))
 	else:
-		_disable(opt[1], TXT_OPT1[2])
+		_disable(opt[1], _fmt(TXT_OPT1[2], [10]))
 	_enable(opt[2], TXT_OPT2[0])
 	var us := world.get_country_by_legacy_index(51)
 	if budget_reserve >= 100 and d.agents >= 150 and us != null and us.development > 0:
 		_enable(opt[3], TXT_OPT3[0])
 	elif budget_reserve < 100:
-		_disable(opt[3], TXT_OPT3[1])
+		_disable(opt[3], _fmt(TXT_OPT3[1], [15]))
 	elif d.agents < 150:
-		_disable(opt[3], TXT_OPT3[2])
+		_disable(opt[3], _fmt(TXT_OPT3[2], [15]))
 	else:
 		_disable(opt[3], TXT_OPT3[3])
 

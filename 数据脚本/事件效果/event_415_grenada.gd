@@ -64,7 +64,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if d.budget + (d.reserve if d.size() > W.I_RESERVE else 0) >= 50:
 		_enable(opt[0], TXT_OPT0[0])
 	else:
-		_disable(opt[0], TXT_OPT0[1])
+		_disable(opt[0], _fmt(TXT_OPT0[1], [5]))
 	_enable(opt[1], TXT_OPT1[0])
 	_enable(opt[2], TXT_OPT2[0])
 

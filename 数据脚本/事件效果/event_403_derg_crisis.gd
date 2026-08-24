@@ -129,19 +129,19 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if budget_reserve >= 150 and army >= 150 and (world.influence_prc >= 600 or us_dev > 0):
 		_enable(opt[0], TXT_OPT0[0])
 	elif budget_reserve < 150:
-		_disable(opt[0], TXT_OPT0[1])
+		_disable(opt[0], _fmt(TXT_OPT0[1], [15]))
 	elif world.influence_prc < 600 and us_dev <= 0:
-		_disable(opt[0], TXT_OPT0[2])
+		_disable(opt[0], _fmt(TXT_OPT0[2], [60]))
 	else:
-		_disable(opt[0], TXT_OPT0[3])
+		_disable(opt[0], _fmt(TXT_OPT0[3], [35]))
 	if budget_reserve >= 150 and army >= 150 and (world.influence_prc >= 200 or us_dev > 0):
 		_enable(opt[1], TXT_OPT1[0])
 	elif budget_reserve < 150:
-		_disable(opt[1], TXT_OPT1[1])
+		_disable(opt[1], _fmt(TXT_OPT1[1], [15]))
 	elif world.influence_prc < 300 and us_dev <= 0:
-		_disable(opt[1], TXT_OPT1[2])
+		_disable(opt[1], _fmt(TXT_OPT1[2], [30]))
 	else:
-		_disable(opt[1], TXT_OPT1[3])
+		_disable(opt[1], _fmt(TXT_OPT1[3], [25]))
 	var ussr_leader := world.empires.size() > 1 and world.empires[1] != null and world.empires[1].current_leader != 3
 	if budget_reserve >= 250 and not world.get_flag("relres") and ussr_leader and world.influence_prc >= 500 and army >= 100:
 		_enable(opt[2], TXT_OPT2[0])
@@ -150,15 +150,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	elif world.empires.size() > 1 and world.empires[1] != null and world.empires[1].current_leader == 3:
 		_disable(opt[2], TXT_OPT2[2])
 	elif budget_reserve < 250:
-		_disable(opt[2], TXT_OPT2[3])
+		_disable(opt[2], _fmt(TXT_OPT2[3], [25]))
 	elif world.influence_prc <= 500:
-		_disable(opt[2], TXT_OPT2[4])
+		_disable(opt[2], _fmt(TXT_OPT2[4], [50]))
 	else:
-		_disable(opt[2], TXT_OPT2[5])
+		_disable(opt[2], _fmt(TXT_OPT2[5], [10]))
 	if budget_reserve >= 100:
 		_enable(opt[3], TXT_OPT3[0])
 	else:
-		_disable(opt[3], TXT_OPT3[1])
+		_disable(opt[3], _fmt(TXT_OPT3[1], [10]))
 	_enable(opt[4], TXT_OPT4[0])
 
 func execute(context: Dictionary) -> void:

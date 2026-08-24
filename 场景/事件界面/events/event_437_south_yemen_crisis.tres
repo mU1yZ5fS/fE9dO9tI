@@ -29,6 +29,12 @@ script = ExtResource("3_expr")
 type = 18
 children = Array[ExtResource("3_expr")]([SubResource("Expr_0"), SubResource("Expr_1"), SubResource("Expr_2")])
 
+; 也门已统一（event_387 联邦 / war21 胜者改名）后不再触发本历史事件
+[sub_resource type="Resource" id="Expr_no_yemen_unified"]
+script = ExtResource("3_expr")
+type = 15
+key = "yemen_unified"
+
 [sub_resource type="Resource" id="Fx0"]
 script = ExtResource("2_fx")
 type = 18
@@ -59,7 +65,7 @@ trigger_priority = 43700
 title = "南也门事变?"
 description = "在1966年的“六·二二”纠正运动后，南也门确定了走科学社会主义的道路，社会主义制度逐渐被建立起来。但是在实践中，南也门领导层的三巨头之间的分歧和矛盾逐渐显露。亲近苏联的阿里·纳赛尔·穆罕默德和阿普杜勒·法塔赫·伊斯梅尔同更支持毛主义观点的萨利姆·鲁巴伊·阿里总统之间的矛盾渐渐严重。有情报表明，阿里·纳赛尔和伊斯梅尔的亲苏派计划发动武装政变。同时，苏联在南也门的军事基地的军事调动也变得更加频繁，他们可能会介入并支持政变。或许我们可以尝试支持鲁巴伊，粉碎政变，让南也门彻底倒向我们？"
 display_script = ExtResource("5_custom")
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_3")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_3"), SubResource("Expr_no_yemen_unified")])
 show_notification = false
 fire_only_once = true
 options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

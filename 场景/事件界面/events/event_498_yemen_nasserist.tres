@@ -11,6 +11,12 @@ script = ExtResource("3_expr")
 type = 12
 key = "1978.6.14"
 
+; 也门已统一（event_387 联邦 / war21 胜者改名）后不再触发本历史事件
+[sub_resource type="Resource" id="Expr_no_yemen_unified"]
+script = ExtResource("3_expr")
+type = 15
+key = "yemen_unified"
+
 [sub_resource type="Resource" id="Fx0"]
 script = ExtResource("2_fx")
 type = 18
@@ -41,7 +47,7 @@ trigger_priority = 49800
 title = "也门最后的纳赛尔主义者？"
 description = "主席同志！我们最近截获了一份报告，称南也门党内正在谋划针对北也门领袖艾哈迈德·加什米的暗杀计划。加什米总统一贯反对美帝国主义和苏联修正主义者对阿拉伯世界的颐指气使，并大力推进阿拉伯统一事业。也许我们应当警告他们？毕竟这可以极大的促进我们和阿拉伯也门之间的合作。"
 display_script = ExtResource("5_custom")
-trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date")])
+trigger_conditions = Array[ExtResource("3_expr")]([SubResource("Expr_date"), SubResource("Expr_no_yemen_unified")])
 show_notification = false
 fire_only_once = true
 options = Array[ExtResource("1_opt")]([SubResource("Opt0"), SubResource("Opt1")])

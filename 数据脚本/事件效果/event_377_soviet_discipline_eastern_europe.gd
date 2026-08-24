@@ -90,7 +90,7 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = TXT_R0A_FMT.format(["\n", TXT_MONGOLIA if cond5 else ""])
 			_add(W.I_PARTY_SUPPORT, -550)
 		else:
-			context["result_text"] = TXT_R0B
+			context["result_text"] = TXT_R0B.format(["\n", TXT_MONGOLIA if cond5 else ""])
 			_add(W.I_PARTY_SUPPORT, -600)
 	elif opt == 1:
 		if bulgaria == null or not bulgaria.has_tag("亲中"):
@@ -100,7 +100,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, 100)
 			_add(W.I_DIPLO, -50)
 		else:
-			context["result_text"] = TXT_R1B
+			context["result_text"] = TXT_R1B.format(["\n", TXT_MONGOLIA if cond5 else ""])
 			_add(W.I_PARTY_SUPPORT, -250)
 			_add_relation(EmpireData.USSR, -500)
 			_add_relation(EmpireData.USA, 100)

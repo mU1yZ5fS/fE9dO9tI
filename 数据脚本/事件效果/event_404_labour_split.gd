@@ -81,9 +81,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	elif uk != null and uk.influence_nato < 50:
 		_disable(opt[3], TXT_OPT3[1])
 	elif budget_reserve < 100:
-		_disable(opt[3], TXT_OPT3[2])
+		_disable(opt[3], _fmt(TXT_OPT3[2], [10]))
 	else:
-		_disable(opt[3], TXT_OPT3[3])
+		_disable(opt[3], _fmt(TXT_OPT3[3], [15]))
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
