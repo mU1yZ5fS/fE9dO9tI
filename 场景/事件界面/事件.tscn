@@ -57,10 +57,10 @@ text = "事件描述"
 
 [node name="事件内容未读完提示" type="Label" parent="." unique_id=1165274146]
 layout_mode = 1
-offset_left = 1080.0
-offset_top = 950.0
-offset_right = 1500.0
-offset_bottom = 1020.0
+offset_left = 1096.0
+offset_top = 1028.0
+offset_right = 1516.0
+offset_bottom = 1098.0
 theme_override_colors/font_color = Color(0.55, 0.05, 0.05, 1)
 theme_override_fonts/font = ExtResource("6_nyx3b")
 theme_override_font_sizes/font_size = 26
