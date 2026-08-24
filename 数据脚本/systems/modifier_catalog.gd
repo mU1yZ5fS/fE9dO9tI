@@ -492,9 +492,14 @@ static func _effect_military_alliance(w: WorldState) -> String:
 	if w == null:
 		return ""
 	var china := _country(w, 1)
+	# 原版（改版 ModifiesInfuence.cs:2596-2712）整个 desc 生成包在 `if allcountries[1].okb` 内：
+	# 中国不在 okb 时不刷新文案。Godot 简化为返回空串（显示层面等价）。
+	if china == null or not china.has_tag("okb"):
+		return ""
 	var okb := _tag_count(w, "okb")
 	var oar := _tag_count(w, "oar")
-	var rim := _tag_count(w, "rim")
+	# 原版同样统计了 rim 数但 RIM 显示段错用 okb 数（固有现象，忠实保留）→ 按未使用处理。
+	var _rim := _tag_count(w, "rim")
 	var au := 0
 	var au_done := _event_done(w, "event_500") and _event_result(w, "event_500", -1) == 0
 	if au_done:
@@ -527,6 +532,7 @@ static func _effect_military_alliance(w: WorldState) -> String:
 
 ## 原版组成式：整数部分 + "." + 十进一位（如 13*3=39 → "3.9"）
 static func _xy(whole: int, dec: int) -> String:
+	@warning_ignore("integer_division")
 	return "%d.%d" % [whole / 10, dec % 10]
 
 

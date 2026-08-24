@@ -7,7 +7,8 @@ extends "res://数据脚本/event_script_base.gd"
 ##    trigger_conditions = EMPIRE_RELATION_AT_MOST(1,0) + PREV_EVENT_NOT_DONE(event_473)，
 ##    473 移植说明前视为恒真。
 ##  - dlc[3]（DLC 购买标志）：端口无 DLC 体系 → 视为恒真（同 game_manager.gd:2225 先例）。
-##  - opt3 的 data.hardline_crackdown_count++：反编译为死代码（ptr 局部变量自增未写回 data），跳过。
+##  - opt3 的 data.hardline_crackdown_count++：官方版 DLL 反编译证实为 ref 真实写入
+##    （data[111] 自增），旧转储 ptr 模式系反编译伪影，已恢复实装。
 ##  - button_text[5]=""（空按钮占位）：无实际内容，跳过。
 
 
@@ -57,7 +58,8 @@ func _opt_indifferent(context: Dictionary) -> void:
 		if mod16 != null:
 			mod16.is_active = true
 			_set_mod16_text("苏联禁运", "我们将减少与苏联关系差额10%的收入|失去相当于与苏联关系差额5%的特工网络")
-		# 差异：原 data.hardline_crackdown_count++ 为反编译死代码（ptr 局部自增未写回），跳过。
+		# 官方版 DLL 反编译（tmp_Event8.cs:113-118）证实 data[111]++ 为 ref 真实写入。
+		d.hardline_crackdown_count += 1
 	if mod16 != null and mod16.is_active and _usa_in_sev() and d.size() > 139 and d.alliance_kickout_timer <= 0:
 		d.alliance_kickout_timer = 5   # 原 data.alliance_kickout_timer（无端口命名键，数字索引直访）
 	context["result_text"] = "紧张度提升"

@@ -1670,11 +1670,13 @@ func _def_134(w: WorldState, country: CountryData, caption: String) -> Dictionar
 	var eff := func():
 		if not has(country, "贸易同盟"):
 			country.set_tag("贸易同盟", true)
-			# 原版反编译后 data.foreign_aid 的增减只写入局部变量 ptr，未写回数组；
-			# 疑似反编译丢失。按原版行为不修改 data.foreign_aid。
+			# 官方版 DLL 反编译（DiploButtonScript L9597-9605）证实：入盟时
+			# data[146](foreign_aid) 经 ref 写入真实 +1；旧转储 ptr 模式系反编译伪影。
+			w.foreign_aid += 1
 		else:
 			country.set_tag("贸易同盟", false)
-			# 同上：原版 data.foreign_aid 递减只写入局部变量，未写回数组，按原版不修改。
+			# 同上（DiploButtonScript L9606-9614）：退盟时 foreign_aid 真实 -1。
+			w.foreign_aid -= 1
 	return make_def(caption, opis, conds, eff)
 # ============================================================================
 # 编号 145 · 对海湾合作委员会施压，要求其减产石油

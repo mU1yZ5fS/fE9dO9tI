@@ -63,7 +63,10 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			# 原版 result0 的 data.yugoslavia_kosovo_chain 读写是局部 no-op（未写回数组）→ 跳过。
+			# 官方版 DLL 反编译（tmp_Event113.cs case 0，data[86]-=1）证实为 ref 真实写入，
+			# 旧转储 ptr 模式系反编译伪影，v0.3.3 误判 no-op，已恢复。
+			if d.size() > 86:
+				d.yugoslavia_kosovo_chain -= 1
 			context["result_text"] = TXT_R0
 		1:
 			ws.influence_prc += 20

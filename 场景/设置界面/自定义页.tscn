@@ -40,15 +40,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/DebugConsoleRow" unique_id=54775261]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "调试控制台（所有模式可开/关）"
 
 [node name="DebugConsoleToggle" type="CheckButton" parent="滚动/列表/DebugConsoleRow" unique_id=74491639]
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "开"
 
 [node name="ParagraphSpacingRow" type="HBoxContainer" parent="滚动/列表" unique_id=639554344]
@@ -58,15 +56,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/ParagraphSpacingRow" unique_id=1034761164]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "事件段落间距"
 
 [node name="ParagraphSpacingToggle" type="CheckButton" parent="滚动/列表/ParagraphSpacingRow" unique_id=1364222705]
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "开"
 
 [node name="ParagraphIndentRow" type="HBoxContainer" parent="滚动/列表" unique_id=1657919291]
@@ -76,15 +72,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/ParagraphIndentRow" unique_id=1472796674]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "事件段首空两格"
 
 [node name="ParagraphIndentToggle" type="CheckButton" parent="滚动/列表/ParagraphIndentRow" unique_id=1669777488]
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "开"
 
 [node name="EventAlignRow" type="HBoxContainer" parent="滚动/列表" unique_id=534985786]
@@ -94,15 +88,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/EventAlignRow" unique_id=376088391]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "事件文案对齐"
 
 [node name="EventAlignPrev" type="Button" parent="滚动/列表/EventAlignRow" unique_id=1426357298]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "◀"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -112,8 +104,7 @@ expand_icon = true
 [node name="EventAlignValue" type="Label" parent="滚动/列表/EventAlignRow" unique_id=1114370287]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "左对齐"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -121,8 +112,7 @@ vertical_alignment = 1
 [node name="EventAlignNext" type="Button" parent="滚动/列表/EventAlignRow" unique_id=1367239635]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "▶"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -136,15 +126,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/MapPaletteRow" unique_id=637927857]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "地图配色"
 
 [node name="MapPalettePrev" type="Button" parent="滚动/列表/MapPaletteRow" unique_id=47146701]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "◀"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -154,8 +142,7 @@ expand_icon = true
 [node name="MapPaletteValue" type="Label" parent="滚动/列表/MapPaletteRow" unique_id=1567369437]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "原版"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -163,8 +150,7 @@ vertical_alignment = 1
 [node name="MapPaletteNext" type="Button" parent="滚动/列表/MapPaletteRow" unique_id=585876724]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "▶"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -178,15 +164,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/EventTitleRow" unique_id=310000002]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "事件标题字号"
 
 [node name="EventTitlePrev" type="Button" parent="滚动/列表/EventTitleRow" unique_id=310000003]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "◀"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -196,8 +180,7 @@ expand_icon = true
 [node name="EventTitleValue" type="Label" parent="滚动/列表/EventTitleRow" unique_id=310000004]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "39"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -205,8 +188,7 @@ vertical_alignment = 1
 [node name="EventTitleNext" type="Button" parent="滚动/列表/EventTitleRow" unique_id=310000005]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "▶"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -220,15 +202,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/EventDescRow" unique_id=1733787124]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "事件正文字号"
 
 [node name="EventDescPrev" type="Button" parent="滚动/列表/EventDescRow" unique_id=967846836]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "◀"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -238,8 +218,7 @@ expand_icon = true
 [node name="EventDescValue" type="Label" parent="滚动/列表/EventDescRow" unique_id=1734088316]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "29"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -247,8 +226,7 @@ vertical_alignment = 1
 [node name="EventDescNext" type="Button" parent="滚动/列表/EventDescRow" unique_id=1954298715]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "▶"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -262,15 +240,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/EventOptionRow" unique_id=1468726565]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "事件选项字号"
 
 [node name="EventOptionPrev" type="Button" parent="滚动/列表/EventOptionRow" unique_id=2111272704]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "◀"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -280,8 +256,7 @@ expand_icon = true
 [node name="EventOptionValue" type="Label" parent="滚动/列表/EventOptionRow" unique_id=1301097576]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "28"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -289,8 +264,7 @@ vertical_alignment = 1
 [node name="EventOptionNext" type="Button" parent="滚动/列表/EventOptionRow" unique_id=1754494746]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "▶"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -304,15 +278,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/EventResultRow" unique_id=1826799786]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "事件结果字号"
 
 [node name="EventResultPrev" type="Button" parent="滚动/列表/EventResultRow" unique_id=1646740039]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "◀"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -322,8 +294,7 @@ expand_icon = true
 [node name="EventResultValue" type="Label" parent="滚动/列表/EventResultRow" unique_id=1800338174]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "29"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -331,8 +302,7 @@ vertical_alignment = 1
 [node name="EventResultNext" type="Button" parent="滚动/列表/EventResultRow" unique_id=1323994792]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "▶"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -346,15 +316,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/UiScaleRow" unique_id=220007671]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "全局UI字体倍率 %"
 
 [node name="UiScalePrev" type="Button" parent="滚动/列表/UiScaleRow" unique_id=1587007033]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "◀"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -364,8 +332,7 @@ expand_icon = true
 [node name="UiScaleValue" type="Label" parent="滚动/列表/UiScaleRow" unique_id=1585647038]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "100%"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -373,8 +340,7 @@ vertical_alignment = 1
 [node name="UiScaleNext" type="Button" parent="滚动/列表/UiScaleRow" unique_id=1534196945]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "▶"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -388,15 +354,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/MapBorderRow" unique_id=232636206]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "地图边界粗细"
 
 [node name="MapBorderPrev" type="Button" parent="滚动/列表/MapBorderRow" unique_id=965317559]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "◀"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -406,8 +370,7 @@ expand_icon = true
 [node name="MapBorderValue" type="Label" parent="滚动/列表/MapBorderRow" unique_id=1321215333]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "3.0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -415,8 +378,7 @@ vertical_alignment = 1
 [node name="MapBorderNext" type="Button" parent="滚动/列表/MapBorderRow" unique_id=990228964]
 custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "▶"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -425,8 +387,7 @@ expand_icon = true
 
 [node name="作弊快捷键" type="Label" parent="滚动/列表" unique_id=826598783]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 28
 text = "作弊快捷键（仅沙盒难度生效）"
 
@@ -437,15 +398,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatPartyRow" unique_id=341328580]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "党支持 +10"
 
 [node name="CheatPartyValue" type="Label" parent="滚动/列表/CheatPartyRow" unique_id=747757836]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -453,8 +412,7 @@ vertical_alignment = 1
 [node name="CheatPartyRebind" type="Button" parent="滚动/列表/CheatPartyRow" unique_id=1179497722]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -468,15 +426,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatPeopleRow" unique_id=580962803]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "民众支持 +10"
 
 [node name="CheatPeopleValue" type="Label" parent="滚动/列表/CheatPeopleRow" unique_id=134416370]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -484,8 +440,7 @@ vertical_alignment = 1
 [node name="CheatPeopleRebind" type="Button" parent="滚动/列表/CheatPeopleRow" unique_id=995829300]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -499,15 +454,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatThoughtRow" unique_id=1157947838]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "思想自由 +10"
 
 [node name="CheatThoughtValue" type="Label" parent="滚动/列表/CheatThoughtRow" unique_id=1811494059]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -515,8 +468,7 @@ vertical_alignment = 1
 [node name="CheatThoughtRebind" type="Button" parent="滚动/列表/CheatThoughtRow" unique_id=870558620]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -530,15 +482,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatLivingRow" unique_id=99933231]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "生活水平 +10"
 
 [node name="CheatLivingValue" type="Label" parent="滚动/列表/CheatLivingRow" unique_id=904815287]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -546,8 +496,7 @@ vertical_alignment = 1
 [node name="CheatLivingRebind" type="Button" parent="滚动/列表/CheatLivingRow" unique_id=1441785844]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -561,15 +510,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatDiploRow" unique_id=1333545355]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "国际声望 +10"
 
 [node name="CheatDiploValue" type="Label" parent="滚动/列表/CheatDiploRow" unique_id=445653663]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -577,8 +524,7 @@ vertical_alignment = 1
 [node name="CheatDiploRebind" type="Button" parent="滚动/列表/CheatDiploRow" unique_id=544026126]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -592,15 +538,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatInfluenceRow" unique_id=1036166591]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "国际影响力 +10"
 
 [node name="CheatInfluenceValue" type="Label" parent="滚动/列表/CheatInfluenceRow" unique_id=880134850]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -608,8 +552,7 @@ vertical_alignment = 1
 [node name="CheatInfluenceRebind" type="Button" parent="滚动/列表/CheatInfluenceRow" unique_id=598792603]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -623,15 +566,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatBudgetRow" unique_id=234636590]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "预算 +10"
 
 [node name="CheatBudgetValue" type="Label" parent="滚动/列表/CheatBudgetRow" unique_id=1328594639]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -639,8 +580,7 @@ vertical_alignment = 1
 [node name="CheatBudgetRebind" type="Button" parent="滚动/列表/CheatBudgetRow" unique_id=842243511]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -654,15 +594,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatAgentsRow" unique_id=80361261]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "特工 +10"
 
 [node name="CheatAgentsValue" type="Label" parent="滚动/列表/CheatAgentsRow" unique_id=393177829]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -670,8 +608,7 @@ vertical_alignment = 1
 [node name="CheatAgentsRebind" type="Button" parent="滚动/列表/CheatAgentsRow" unique_id=739811434]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -685,15 +622,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatArmyRow" unique_id=532658809]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "军力 +10"
 
 [node name="CheatArmyValue" type="Label" parent="滚动/列表/CheatArmyRow" unique_id=2052974462]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -701,8 +636,7 @@ vertical_alignment = 1
 [node name="CheatArmyRebind" type="Button" parent="滚动/列表/CheatArmyRow" unique_id=654757809]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -716,15 +650,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatRelationsRow" unique_id=971704008]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "美苏关系 +10"
 
 [node name="CheatRelationsValue" type="Label" parent="滚动/列表/CheatRelationsRow" unique_id=586342133]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -732,8 +664,7 @@ vertical_alignment = 1
 [node name="CheatRelationsRebind" type="Button" parent="滚动/列表/CheatRelationsRow" unique_id=441770954]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -747,15 +678,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatUssrRow" unique_id=1622766354]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "中苏关系切换"
 
 [node name="CheatUssrValue" type="Label" parent="滚动/列表/CheatUssrRow" unique_id=1985942709]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -763,8 +692,7 @@ vertical_alignment = 1
 [node name="CheatUssrRebind" type="Button" parent="滚动/列表/CheatUssrRow" unique_id=304166696]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -778,15 +706,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatDiploDownRow" unique_id=831572251]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "外交声望 -10"
 
 [node name="CheatDiploDownValue" type="Label" parent="滚动/列表/CheatDiploDownRow" unique_id=1033629605]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -794,8 +720,7 @@ vertical_alignment = 1
 [node name="CheatDiploDownRebind" type="Button" parent="滚动/列表/CheatDiploDownRow" unique_id=1746491416]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true
@@ -809,15 +734,13 @@ theme_override_constants/separation = 12
 [node name="标题" type="Label" parent="滚动/列表/CheatMilRow" unique_id=1663573094]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "军事介入点 +10"
 
 [node name="CheatMilValue" type="Label" parent="滚动/列表/CheatMilRow" unique_id=1951806117]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "—"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -825,8 +748,7 @@ vertical_alignment = 1
 [node name="CheatMilRebind" type="Button" parent="滚动/列表/CheatMilRow" unique_id=2015302066]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "重绑"
 icon = ExtResource("2_bgbtn")
 flat = true

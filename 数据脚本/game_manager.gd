@@ -1833,11 +1833,14 @@ func _monthly_event418_mideast(w: WorldState) -> void:
 func _monthly_ejection_and_misc(w: WorldState, d: WorldState) -> void:
 	var china := w.get_country_by_legacy_index(1)
 
-	# 2299-2325：data.foreign_aid “外援消耗”与贸易同盟国家影响。
-	# 原版（TimeScript.cs:2299-2306）对 data[8]/data[9]/data[22]（预算/特工/军力）的扣减
-	# 只写入局部变量 ptr，从未写回数组（空操作），仅下方 dota 国家的影响力变化真实生效。
-	# 按原版对齐：不扣预算/特工/军力（与外交互动_批6.gd:1673-1677 对 foreign_aid 的处理一致）。
+	# 2299-2325：data.foreign_aid 外援消耗与贸易同盟国家影响。
+	# 官方版 DLL 反编译（ILSpy，ts_official.cs:2631-2634）证实为直接写入：
+	# data[8]/data[9]/data[22]（预算/特工/军力）各扣 foreign_aid 全额。
+	# 旧转储的 ptr 无写回模式系反编译器伪影，v0.3.3 误判为空操作，已恢复。
 	if d.size() > W.I_FOREIGN_AID and d.foreign_aid > 0:
+		d.budget -= d.foreign_aid
+		d.agents -= d.foreign_aid
+		d.army -= d.foreign_aid
 		for c in w.countries:
 			if c == null or not c.has_tag("贸易同盟"):
 				continue
