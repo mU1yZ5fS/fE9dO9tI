@@ -26,7 +26,7 @@ GameManager="*uid://ci37skps0qpd1"
 Achievements="*uid://cocdd117gg3ye"
 AchievementToast="*res://场景/成就解锁/成就解锁管理器.gd"
 "音频总管"="*uid://dcs43210kry7n"
-"æé®ç¹æ"="*uid://b5p6g4wirepeq"
+"按钮特效"="*uid://b5p6g4wirepeq"
 "调试控制台"="*res://场景/调试控制台.tscn"
 
 [display]
