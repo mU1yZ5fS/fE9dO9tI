@@ -215,6 +215,10 @@ func _execute(line: String) -> void:
 			_cmd_claim_territory()
 		"map_check", "领土检查", "领土审计":
 			_cmd_map_check(parts)
+		"diplo_probe", "外交探针":
+			_cmd_diplo_probe(parts)
+		"ending", "结局":
+			_cmd_ending(parts)
 		"list_countries", "国家列表":
 			_cmd_list_countries()
 		"country", "国家":
@@ -435,6 +439,72 @@ func _cmd_map_check(parts: Array) -> void:
 		for iss in issues:
 			_print_line("[color=red]- %s：%s[/color]" % [iss["name"], iss["detail"]])
 		_print_line("[color=yellow]提示：可输入 map_check fix 立即重放规则后复审；月度结算也会自动修复可重放的规则。[/color]")
+
+
+## 外交按钮探针：直接调用逐国链，打印某国当前可用互动 + 关键门控状态。
+func _cmd_diplo_probe(parts: Array) -> void:
+	var w: WorldState = GameManager.world if GameManager else null
+	if w == null:
+		_print_line("[color=red]当前没有活动世界。[/color]")
+		return
+	var num := int(parts[1]) if parts.size() > 1 else 101
+	var c := w.get_country_by_legacy_index(num)
+	if c == null:
+		_print_line("[color=red]找不到原版序号 %d 对应国家。[/color]" % num)
+		return
+	var chain = load("res://场景/外交界面/国家面板/国家面板_逐国链.gd").new()
+	var slots: Array = chain._slots()
+	chain._hide_all(slots)
+	chain._main_chain(w, c, slots)
+	var res: Array = chain._finish(slots)
+	_print_line("[color=yellow]== 外交探针：legacy %d (%s) ==[/color]" % [num, c.display_name()])
+	if res.is_empty():
+		_print_line("  [color=red]（无任何可用互动）[/color]")
+	for b in res:
+		if b != null and not b.is_empty():
+			_print_line("  type=%d  %s" % [int(b.get("type", 0)), str(b.get("caption", ""))])
+	_print_line("mod51=%s | done567=%s done568=%s done569=%s done709=%s" % [
+		str(w.modifier_active(51)), str(w.event_done_num(567)),
+		str(w.event_done_num(568)), str(w.event_done_num(569)),
+		str(w.event_done_num(709))])
+	if num == 101:
+		for i in [36, 101, 102]:
+			var cc := w.get_country_by_legacy_index(i)
+			if cc != null:
+				_print_line("  legacy%d %s 政体=%d 威权判定=%s" % [
+					i, cc.display_name(), int(cc.government), str(w.is_authoritarian(cc))])
+	_print_line("政治路线=%d 影响力PRC=%d 年份=%d" % [
+		w.political_line, w.influence_prc, w.year])
+
+
+## 直跳结局场景，可指定面板与页码（核对小标题/分段用）。
+## 面板：0=本体(胜利+轮播1~3) 1=DLC1 2=DLC2 3=DLC3；页码从 0 起。
+## 用法：ending [面板 页码]；`ending bad <编号>` 直达坏结局。
+func _cmd_ending(parts: Array) -> void:
+	if GameManager == null:
+		return
+	if GameManager.world == null:
+		_print_line("[color=red]当前没有活动世界（结局内容依赖世界状态）。[/color]")
+		return
+	var panel := -1
+	var page := 0
+	if parts.size() >= 2:
+		if String(parts[1]).to_lower() in ["bad", "坏结局", "badend"]:
+			panel = -2
+			page = int(parts[2]) if parts.size() >= 3 else 1
+			GameManager.current_ending_id = page
+		else:
+			panel = clampi(int(parts[1]), 0, 3)
+			page = int(parts[2]) if parts.size() >= 3 else 0
+	GameManager.debug_ending_panel = panel
+	GameManager.debug_ending_page = page
+	var scene_path := "res://场景/结局界面/结局.tscn"
+	var err := get_tree().change_scene_to_file(scene_path)
+	if err != OK:
+		_print_line("[color=red]切换结局场景失败：%d[/color]" % err)
+	else:
+		_print_line("[color=green]已跳转结局场景%s。[/color]" % (
+			"" if panel < 0 else "（面板 %d / 页 %d）" % [panel, page]))
 
 
 func _cmd_list_countries() -> void:
@@ -797,6 +867,7 @@ func _print_help() -> void:
 [color=green]start_all_wars[/color]        开启全部战争
 [color=green]claim[/color]                 切换“点击地图划归中国”模式
 [color=green]map_check[/color]              领土审计：逐条核对全部领土变迁规则的条件与地图效果（map_check fix 重放后复审）
+[color=green]ending [面板 页][/color]       直跳结局场景核对文案（0=本体 1~3=DLC；bad N=坏结局；无参=默认页）
 [color=green]country <国家> ...[/color]     查看/修改国家政体、势力圈、影响力（输入 country 查看用法）
 [color=green]policy <类别> <值>[/color]     调整玩家政策（输入 policy 查看类别）
 

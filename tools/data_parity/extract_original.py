@@ -512,12 +512,22 @@ def extract_gamestart(cs_path: Path) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--assets", default=r"F:\work\毛的遗产改版逆向工程测试\改版最新完整逆向\Assets")
+    ap.add_argument("--scripts", default=None,
+                    help="C# 源码目录；默认优先用同级的 _语义还原 清洗版")
     ap.add_argument("--out", default=Path(__file__).parent / "snapshots" / "original")
     args = ap.parse_args()
 
     assets = Path(args.assets)
     res = assets / "Resources"
-    cs = assets / "Scripts" / "GameStartScript.cs"
+    if args.scripts:
+        cs_dir = Path(args.scripts)
+    else:
+        base = str(assets).replace(
+            "改版最新完整逆向", "改版最新完整逆向_语义还原").rstrip("\\/")
+        cands = [Path(base) / "Scripts", Path(base)]
+        cs_dir = next((c for c in cands if (c / "GameStartScript.cs").is_file()),
+                      assets / "Scripts")
+    cs = cs_dir / "GameStartScript.cs"
     if not res.is_dir() or not cs.is_file():
         print(f"[错误] 找不到 {res} 或 {cs}", file=sys.stderr)
         return 3

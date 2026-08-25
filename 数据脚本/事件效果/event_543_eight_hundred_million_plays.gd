@@ -58,7 +58,8 @@ func execute(context: Dictionary) -> void:
 
 func _fmt(s: String) -> String:
 	var n := _leader_name()
-	return s.replace("01", n)
+	# CSV 迁移后模板为 {0}{1}；兼容旧的 01 字面占位
+	return s.replace("{0}{1}", n).replace("01", n)
 
 
 func _leader_name() -> String:

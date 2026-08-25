@@ -195,7 +195,25 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 		22:
 			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
 		23:
-			# 意大利战争（原版 GameState.cs:1247-1338）：两个阶段共用一个 war23 槽。 # 新阶段区分：event_556（意大利内战/激进派起义）→ 起义 a/b； # event_396（第二次复兴运动）→ 复兴 rev_win/rev_lose。 txt = _war23_result_text_from_table(entry, war) 34: txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b") 35: txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b") 39: txt = _war39_result_text(war)		45, 46, 47: # 墨西哥起义/统一战争：原版以 side2（南方解放军/教权派）胜利显示 a，否则 b。 txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b") 69: # 保留现有战败结局：infl1 < 1000 时走蒙古战败文案。 txt = _t(entry, "b") if _is_mongol_defeat(war_id, war) else _t(entry, "a") 70: # 原版按 event_done[642] 区分两条获胜/失败路线；端口保留两条文案。
+			# 意大利战争（原版 GameState.cs:1247-1338）：两个阶段共用一个 war23 槽。 # 新阶段区分：event_556（意大利内战/激进派起义）→ 起义 a/b； # event_396（第二次复兴运动）→ 复兴 rev_win/rev_lose。 txt = _war23_result_text_from_table(entry, war) 34: txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b") 35: txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b") 		39:
+			txt = _war39_result_text(war)
+		43:
+			# 阿拉伯湾革命：side1=海湾政府方、side2=阿湾人阵起义军（Event568 开战）。
+			# 表内 a=人阵解放文案、b/draw=革命被绞杀文案——与默认 a/b 方向相反。
+			if war.infl1 >= 900:
+				txt = _t(entry, "b")
+			elif war.infl2 >= 900:
+				txt = _t(entry, "a")
+			else:
+				txt = _t(entry, "draw")
+		45, 46, 47:
+			# 墨西哥起义/统一战争：原版以 side2（南方解放军/教权派）胜利显示 a，否则 b。
+			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
+		69:
+			# 保留现有战败结局：infl1 < 1000 时走蒙古战败文案。
+			txt = _t(entry, "b") if _is_mongol_defeat(war_id, war) else _t(entry, "a")
+		70:
+			# 原版按 event_done[642] 区分两条获胜/失败路线；端口保留两条文案。
 			if d.event_done_num(642):
 				txt = _t(entry, "win_b") if war.infl1 >= 950 else _t(entry, "defeat_b")
 			else:

@@ -584,6 +584,20 @@ func evaluate(node: ExprNode) -> bool:
 			if ei < 0 or ei >= ws.empires.size() or ws.empires[ei] == null:
 				return false
 			return ws.empires[ei].current_leader == int(node.value)
+		ExprNode.Type.EMPIRE_LEADER_SUPPORT_AT_LEAST, ExprNode.Type.EMPIRE_LEADER_SUPPORT_AT_MOST:
+			# Event89.cs 继任选项门槛：领导人支持度阈值（target=索引，value=阈值）。
+			if ws == null or not node.key.is_valid_int() or not node.target.is_valid_int():
+				return false
+			var se := int(node.key)
+			if se < 0 or se >= ws.empires.size() or ws.empires[se] == null:
+				return false
+			var li := int(node.target)
+			var leaders: Array = ws.empires[se].leaders
+			if li < 0 or li >= leaders.size() or leaders[li] == null:
+				return false
+			if node.type == ExprNode.Type.EMPIRE_LEADER_SUPPORT_AT_LEAST:
+				return leaders[li].support >= node.value
+			return leaders[li].support <= node.value
 		ExprNode.Type.SOCIALIST_COUNT_AT_LEAST:
 			return _socialist_count(node.keys) >= int(node.value)
 		ExprNode.Type.MODIFIER_ACTIVE: return _is_modifier_active(node.key)
@@ -1133,6 +1147,22 @@ func export_runtime_to_world(ws: WorldState) -> void:
 	ws.event_pending_deadline = _pending_deadline
 	ws.event_chain_queue = _event_queue.duplicate()
 	ws.event_pending_queue = _pending_queue.duplicate()
+
+
+## 新开局（主菜单“开始游戏”，不经过读档）时重置跨局运行时状态。
+## EventEngine 是常驻 Autoload：上一局 fire_once 事件完成时会从 _active_event_order
+## 移除（_mark_done），pending/链/通知队列也可能残留；而新 WorldState 的
+## completed_event_ids 为空。若不重建活跃序列并清队列，第二局将永不触发
+## 任何上局已发生的事件（如 death_of_mao），残留 pending 还会按旧时间轴的
+## 截止 tick 阻塞全部自动事件。语义对齐 import_runtime_from_world 的重置部分。
+func reset_runtime_for_new_game(ws: WorldState) -> void:
+	world = ws
+	pending_event_id = ""
+	_pending_deadline = -1
+	_event_queue.clear()
+	_pending_queue.clear()
+	_rebuild_active_events()
+	event_notification_dismissed.emit()
 
 
 ## 从存档恢复 pending / 链队列

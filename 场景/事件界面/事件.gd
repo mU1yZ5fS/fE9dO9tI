@@ -154,6 +154,8 @@ const NOFMT_CLOSE := "[/原样]"
 func _format_event_text(text: String) -> String:
 	if text.is_empty() or GameManager == null:
 		return text
+	# 诗行分隔符惯例：| 即换行（原版 Part 文本约定，如"翱翔！翱翔！|欢唱！欢唱！"）
+	text = text.replace("|", "\n")
 	var indent_on: bool = GameManager.paragraph_indent_enabled
 	var spacing_on: bool = GameManager.paragraph_spacing_enabled
 	# 标记必须始终剥除（否则设置全关时会原样漏显），所以含标记时不走快速返回。

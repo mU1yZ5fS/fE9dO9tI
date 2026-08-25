@@ -3,7 +3,7 @@
 
 用法：
     python tools/extract_original_map_rules.py \
-        --cs "F:/work/毛的遗产改版逆向工程测试/改版最新完整逆向/Assets/Scripts/CountryScript.cs" \
+        --cs "F:/work/毛的遗产改版逆向工程测试/改版最新完整逆向_语义还原/Assets/Scripts/CountryScript.cs" \
         --out tools/generated/original_map_rules.json
 
 原理：

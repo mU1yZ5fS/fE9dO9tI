@@ -193,6 +193,9 @@ var current_event_id: String = ""
 var event_is_timeout: bool = false
 
 var current_ending_id: int = -1
+## 调试控制台 `ending` 命令的直达参数（结局场景 _ready 消费后自动复位）。
+var debug_ending_panel: int = -1
+var debug_ending_page: int = 0
 var _pending_event_ending_id: int = -1
 
 # 速度 → tick 间隔（秒），对齐原版 TimeScript.Update / Diplomacy.unity Speed 按钮：
@@ -535,8 +538,10 @@ func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	DecisionAtoms.current_world = world
 	if _fortnight_service != null:
 		_fortnight_service.configure(self, world)
+	# 新开局必须重置 EventEngine 跨局运行时状态（活跃事件序列/pending/链队列），
+	# 否则上一局已触发的 fire_once 事件（如 death_of_mao）在本局永不触发。
 	if EventEngine:
-		EventEngine.world = world
+		EventEngine.reset_runtime_for_new_game(world)
 	if _map_service:
 		_map_service.world = world
 	_sync_date_to_data(world)

@@ -1,0 +1,121 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://场景/调试界面/event_graph_viewer.gd" id="1_viewer"]
+
+[sub_resource type="StyleBoxFlat" id="SB_dark"]
+bg_color = Color(0.09, 0.09, 0.12, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.25, 0.32, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+
+[node name="EventGraphViewer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_viewer")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.06, 0.09, 1)
+
+[node name="Root" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="Root"]
+layout_mode = 2
+
+[node name="TopBar" type="HBoxContainer" parent="Root/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Root/VBox/TopBar"]
+layout_mode = 2
+text = "事件拓扑图"
+
+[node name="Filter" type="LineEdit" parent="Root/VBox/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "过滤：编号 / ID / 标题关键字…"
+
+[node name="ClearBtn" type="Button" parent="Root/VBox/TopBar"]
+layout_mode = 2
+text = "清空画布"
+
+[node name="CloseBtn" type="Button" parent="Root/VBox/TopBar"]
+layout_mode = 2
+text = "返回主菜单"
+
+[node name="Main" type="HSplitContainer" parent="Root/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+split_offset = 300
+
+[node name="LeftPanel" type="VBoxContainer" parent="Root/VBox/Main"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 0)
+
+[node name="ListHeader" type="Label" parent="Root/VBox/Main/LeftPanel"]
+layout_mode = 2
+text = "全部事件"
+
+[node name="List" type="ItemList" parent="Root/VBox/Main/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Right" type="VSplitContainer" parent="Root/VBox/Main"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Graph" type="GraphEdit" parent="Root/VBox/Main/Right"]
+layout_mode = 2
+size_flags_vertical = 3
+show_minimap = false
+zoom_min = 0.4
+zoom_max = 1.0
+
+[node name="DetailPanel" type="PanelContainer" parent="Root/VBox/Main/Right"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 260)
+theme_override_styles/panel = SubResource("SB_dark")
+
+[node name="Scroll" type="ScrollContainer" parent="Root/VBox/Main/Right/DetailPanel"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="DetailText" type="RichTextLabel" parent="Root/VBox/Main/Right/DetailPanel/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.91, 0.91, 0.93, 1)
+theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/bold_font_size = 16
+bbcode_enabled = true
+fit_content = true
+
+[node name="Status" type="Label" parent="Root/VBox"]
+layout_mode = 2
+text = "就绪"

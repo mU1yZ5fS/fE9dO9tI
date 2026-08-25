@@ -7,7 +7,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## （与 modify_choose.cs:154-212 显示分支自洽）。
 ## 差异：
 ##  - 前置副作用（TextOfEvents）：data.reform_stage==0 → leaders[3].support-=1；苏 power>美 power → leaders[2].support+=1
-##  - 支持选项需 relres && 苏关系≥50 && 特工≥100；安德罗波夫/谢尔比茨基选项另需对应 support 门槛
+##  - 支持选项需 relres && 苏关系≥50 && 特工≥100；安德罗波夫(support>0)/
+##    谢尔比茨基(support!=0) 的支持度门槛已用 EMPIRE_LEADER_SUPPORT_AT_*
+##    条件类型补齐（2026-08 复核）。
 ##  - relres → ws flag "relres"；allcountries[7].Torg → 玩家 has_tag("对华贸易")；
 ##    allcountries[1].isSEV/isOVD → 玩家 has_tag("sev"/"ovd")
 const LDR_ANDROPOV := 3     # leaders[3] = 尤里·安德罗波夫
@@ -106,5 +108,5 @@ const META := {
 	"num": 89,
 	"notify": false,
 	"trigger": [{"t": "DATE_AFTER", "key": "1982.11.10"}],
-	"options": [{"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 50}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 50}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 50}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+	"options": [{"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 50}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}, {"t": "EMPIRE_LEADER_SUPPORT_AT_LEAST", "key": "1", "target": "3", "v": 1}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 50}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}, {"t": "ANY", "c": [{"t": "EMPIRE_LEADER_SUPPORT_AT_LEAST", "key": "1", "target": "1", "v": 1}, {"t": "EMPIRE_LEADER_SUPPORT_AT_MOST", "key": "1", "target": "1", "v": -1}]}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "relres"}, {"t": "EMPIRE_RELATION_AT_LEAST", "key": "1", "v": 50}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 100}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
 }

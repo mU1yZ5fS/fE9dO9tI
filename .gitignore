@@ -11,7 +11,7 @@
 /android/
 /build/
 *.pck
-
+tools/
 # ── 编辑器 / IDE ──
 .vscode/
 .idea/
