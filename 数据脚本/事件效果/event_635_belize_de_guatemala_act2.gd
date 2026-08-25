@@ -6,9 +6,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：ingamewars[66] 建模说明 WarDef → game.start_war 兜底创建后手工补名；
 ##   AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE2、SovietSupportDefender→ussr_side=2。
 
-const TXT_R0 := "以凯比尔（kaibil）特种兵为主力，危地马拉军队迅速跨过两国边境，一场战争打响了。"
-const TXT_R1 := "以凯比尔（kaibil）特种兵为主力，危地马拉军队迅速跨过两国边境，一场战争打响了。\n我们大力支持了伯利兹抵抗危地马拉军政府侵略的行动，向英国提供了军事支持。在新一期人民日报的头版上，大幅刊登了伯利兹的反侵略战争，盛赞了伯利兹人民抗击危地马拉扩张主义侵略的英勇举动和英军千里迢迢赶来帮助伯利兹人民反击侵略的国际主义精神。"
-const TXT_R2 := "以凯比尔（kaibil）特种兵为主力，危地马拉军队迅速跨过两国边境，一场战争打响了。\n我们大力支持了危地马拉收复故土的行动，向其提供了军事支持。在新一期人民日报的头版上，大幅刊登了危地马拉统一战争，盛赞了军政府不畏强暴、敢于直面英帝而发动统一战争的魄力，而伯利兹也在文中被类比为“危地马拉的台湾”。"
+const TXT_R0 := "event.script.event_635_belize_de_guatemala_act2.c0"
+const TXT_R1 := "event.script.event_635_belize_de_guatemala_act2.c1"
+const TXT_R2 := "event.script.event_635_belize_de_guatemala_act2.c2"
 
 
 func execute(context: Dictionary) -> void:
@@ -21,16 +21,16 @@ func execute(context: Dictionary) -> void:
 		_set_part(guatemala, 2, true)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_start_war66(600, 400)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			_add(W.I_BUDGET, -20)
 			_add(W.I_THOUGHT_FREEDOM, 50)
 			_add_power(EmpireData.USA, 5)
 			_start_war66(550, 450)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			_add(W.I_THOUGHT_FREEDOM, -50)
 			_add_power(EmpireData.USA, 10)  # 原 :49/:52 两次 +5
 			_add(W.I_BUDGET, -20)
@@ -62,3 +62,18 @@ func _set_part(c: CountryData, index: int, value: bool) -> void:
 	while c.parts.size() <= index:
 		c.parts.append(false)
 	c.parts[index] = value
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_635_belize_de_guatemala_act2.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_635",
+	"num": 635,
+	"priority": 63500,
+	"notify": false,
+	"trigger_script": "res://数据脚本/事件效果/event_635_belize_de_guatemala_act2.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

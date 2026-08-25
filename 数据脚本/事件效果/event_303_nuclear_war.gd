@@ -4,9 +4,9 @@
 ##  GameObject.Find("Ach(Clone)") / iron_and_blood 成就 Set(112) 已接 Achievements；文本来自 Events_text_en 索引 50-56。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_OPT1_DIS := "但是下令核打击的是我们，不是极左派......"
-const TXT_R0 := "我们的城市已成为废土，但我们的导弹也在向敌人飞去。你和你的同僚们躲在地堡里。但是如雪花般飞来的关于数千万人死亡的报道让你无法理智地做出决定，你头痛欲裂，核战不会有赢家，世界将永不会重归常态的想法已无法抑制......"
-const TXT_R1 := "你下达了命令，很快极左派的头目就被逮捕了。联合国、苏联和美国都收到报告说，正是这些罪犯要对核打击负责，这群要为国际社会负责的党员也已被消灭。你已准备好以严重的经济与名誉损失的形式承担所有后果。此外，国际机构肯定会要求我国大幅裁减军队，并销毁所有核武器。但这对世界来说只是微不足道的代价。让极左派准备好上国际法庭吧。"
+const TXT_OPT1_DIS := "event.script.event_303_nuclear_war.c0"
+const TXT_R0 := "event.script.event_303_nuclear_war.c1"
+const TXT_R1 := "event.script.event_303_nuclear_war.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -19,7 +19,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if agents >= 150:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -29,7 +29,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			game.queue_ending_after_event(7)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			if ws.factions.size() > 0 and ws.factions[0] != null:
 				ws.factions[0].ideology = 0
@@ -48,7 +48,7 @@ func execute(context: Dictionary) -> void:
 					p.power -= 250
 			# 原作 Event303.cs:57：iron_and_blood → achievements.Set(112)
 			Achievements.set_achievement(112)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -99,3 +99,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_303_nuclear_war.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_303",
+	"num": 303,
+	"priority": 30300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_303_nuclear_war.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

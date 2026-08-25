@@ -1,0 +1,177 @@
+{
+  "_readme": "已知未修复的数据问题棘轮：出现在这里的发现不阻塞 CI，但应逐条修复后从本文件删除。禁止向本文件新增条目。",
+  "entries": [
+    {
+      "key": "double_claim:3047",
+      "reason": "纽阿斯群岛(3047)同时被汤加951和瓦努阿图971认领，应从瓦努阿图 regions 删除"
+    },
+    {
+      "key": "owner_mismatch:971:3047",
+      "reason": "同上，瓦努阿图列表混入汤加岛屿"
+    },
+    {
+      "key": "owner_mismatch:541:94",
+      "reason": "利科马县(94，马拉维湖中)归属写成马达加斯加553，疑似烘焙错；马拉维 gwcode 需核实"
+    },
+    {
+      "key": "orphan_region:2586",
+      "reason": "博奈尔岛(2586) owner=210 荷兰但无任何国家认领（荷属安的列斯未建实体）"
+    },
+    {
+      "key": "owner_mismatch:210:2586",
+      "reason": "博奈尔岛(2586) owner=210 荷兰但荷兰 regions 未列出（荷属安的列斯无实体），点击归属显示待产品决策"
+    },
+    {
+      "key": "png_missing:553",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:558",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:1621",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2659",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2663",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2788",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2834",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2836",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2850",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2851",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2856",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2857",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2974",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2976",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2977",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:2980",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:3139",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:3961",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4406",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4560",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4563",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4565",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4566",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4571",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4572",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4575",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4576",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4577",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4582",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4584",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4585",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4586",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4588",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4589",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4591",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4592",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4594",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    },
+    {
+      "key": "png_missing:4596",
+      "reason": "map_regions 声明了该 region 但底图未绘制（烘焙漂移），游戏内不可交互，需重烘焙或删声明"
+    }
+  ]
+}

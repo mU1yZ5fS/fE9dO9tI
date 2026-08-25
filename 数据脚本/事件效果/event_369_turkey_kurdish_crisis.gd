@@ -5,26 +5,26 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "与苏联一道施压联合国，将土耳其民族主义认定为法西斯主义变种"
-const TXT_OPT0_DIS := "与苏联的关系还未实现正常化......"
-const TXT_OPT1 := "武装库尔德人，并为其输送军事援助（需要25.0百万预算、15.0点特工网络与30.0点军事实力）"
-const TXT_OPT1_DIS := "我们对库尔德地区鞭长莫及......"
-const TXT_OPT2 := "我们支持一个民族，一个国家原则......"
-const TXT_OPT3 := "对土耳其实施经济制裁"
-const TXT_OPT1_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有20百万才能干活......"
-const TXT_OPT1_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有15支特工网络才能干活......"
-const TXT_OPT1_DIS_ARMY := "军事实力必须强于30......"
-const TXT_OPT1_DIS_OTHER := "我们对库尔德地区鞭长莫及......"
-const TXT_WAR9_NAME := "土耳其-库尔德之战"
-const TXT_WAR9_SIDE1 := "政府军"
-const TXT_WAR9_SIDE2 := "库尔德人"
+const TXT_OPT0 := "event.script.event_369_turkey_kurdish_crisis.c0"
+const TXT_OPT0_DIS := "event.script.event_369_turkey_kurdish_crisis.c1"
+const TXT_OPT1 := "event.script.event_369_turkey_kurdish_crisis.c2"
+const TXT_OPT1_DIS := "event.script.event_369_turkey_kurdish_crisis.c3"
+const TXT_OPT2 := "event.script.event_369_turkey_kurdish_crisis.c4"
+const TXT_OPT3 := "event.script.event_369_turkey_kurdish_crisis.c5"
+const TXT_OPT1_DIS_BUDGET := "event.script.event_369_turkey_kurdish_crisis.c6"
+const TXT_OPT1_DIS_AGENTS := "event.script.event_369_turkey_kurdish_crisis.c7"
+const TXT_OPT1_DIS_ARMY := "event.script.event_369_turkey_kurdish_crisis.c8"
+const TXT_OPT1_DIS_OTHER := "event.script.event_369_turkey_kurdish_crisis.c9"
+const TXT_WAR9_NAME := "event.script.event_369_turkey_kurdish_crisis.c10"
+const TXT_WAR9_SIDE1 := "event.script.event_369_turkey_kurdish_crisis.c11"
+const TXT_WAR9_SIDE2 := "event.script.event_369_turkey_kurdish_crisis.c12"
 
-const TXT_R0 := "联合国以多数投票通过了苏联与中国提出的决议案，并承认土耳其民族主义是一类种族主义与种族歧视。所有的社会主义国家与阿拉伯国家均对此表示“赞成”，而西方国家则选择“反对”。\n因此，土耳其民族主义将被同种族隔离制度与锡安主义等量齐观，许多中东与东欧国家选择与侵略者断绝外交关系。"
-const TXT_R1 := "位于土耳其边界的库尔德民族解放力量走上战场，并对土耳其属库尔德斯坦发起了进攻。他们成功的击败了政府部队。然而，土耳其方的增援将如期而至。目前还不清楚库尔德人游击队能够在冲突中支撑多久。"
-const TXT_R2 := "尽管国际社会已经对土耳其施加了各类压力。然而，军政府仍在实行其驱逐少数民族出境与种族灭绝政策。政府领导人凯南·埃夫伦声称：“直到最后一个库尔德恐怖分子人头落地，我们才会收手。”"
-const TXT_R3 := "我们已经单方面切断了与军政府的贸易与外交关系。\n尽管国际社会已经对土耳其施加了各类压力。然而，军政府仍在实行其驱逐少数民族出境与种族灭绝政策。政府领导人凯南·埃夫伦声称：“直到最后一个库尔德恐怖分子人头落地，我们才会收手。”"
-const TXT_R0_OK := "联合国以多数投票通过了苏联与中国提出的决议案，并承认土耳其民族主义是一类种族主义与种族歧视。所有的社会主义国家与阿拉伯国家均对此表示“赞成”，而西方国家则选择“反对”。\n因此，土耳其民族主义将被同种族隔离制度与锡安主义等量齐观，许多中东与东欧国家选择与侵略者断绝外交关系。"
-const TXT_R0_FAIL := "联合国以多数投票否决了苏联与中国提出的决议案，不承认土耳其民族主义是一类种族主义与种族歧视。尽管苏东集团的所有国家均投票“支持”该议案，但阿拉伯世界决定弃权。"
+const TXT_R0 := "event.script.event_369_turkey_kurdish_crisis.c13"
+const TXT_R1 := "event.script.event_369_turkey_kurdish_crisis.c14"
+const TXT_R2 := "event.script.event_369_turkey_kurdish_crisis.c15"
+const TXT_R3 := "event.script.event_369_turkey_kurdish_crisis.c16"
+const TXT_R0_OK := "event.script.event_369_turkey_kurdish_crisis.c17"
+const TXT_R0_FAIL := "event.script.event_369_turkey_kurdish_crisis.c18"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -37,9 +37,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var agents := dv.agents if dv.size() > W.I_AGENTS else 0
 	var army := dv.army if dv.size() > W.I_ARMY else 0
 	if world.get_flag("relres"):
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	var syria := world.get_country_by_legacy_index(35)
 	var iraq := world.get_country_by_legacy_index(14)
 	var iran := world.get_country_by_legacy_index(8)
@@ -47,20 +47,20 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 			or (iraq != null and iraq.has_tag("亲中")) \
 			or (iran != null and (iran.has_tag("亲中") or iran.has_tag("okb")))
 	if budget_reserve >= 250 and agents >= 150 and army >= 300 and any_pro:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		var dis1 := TXT_OPT1_DIS
+		var dis1 := tr(TXT_OPT1_DIS)
 		if budget_reserve < 200:
-			dis1 = TXT_OPT1_DIS_BUDGET
+			dis1 = tr(TXT_OPT1_DIS_BUDGET)
 		elif agents < 150:
-			dis1 = TXT_OPT1_DIS_AGENTS
+			dis1 = tr(TXT_OPT1_DIS_AGENTS)
 		elif army < 300:
-			dis1 = TXT_OPT1_DIS_ARMY
+			dis1 = tr(TXT_OPT1_DIS_ARMY)
 		else:
-			dis1 = TXT_OPT1_DIS_OTHER
+			dis1 = tr(TXT_OPT1_DIS_OTHER)
 		_disable(opt[1], dis1)
-	_enable(opt[2], TXT_OPT2)
-	_enable(opt[3], TXT_OPT3)
+	_enable(opt[2], tr(TXT_OPT2))
+	_enable(opt[3], tr(TXT_OPT3))
 
 
 func execute(context: Dictionary) -> void:
@@ -74,7 +74,7 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USA, 10)
 				_add(W.I_PARTY_SUPPORT, -50)
 				_add(W.I_THOUGHT_FREEDOM, 50)
-				context["result_text"] = TXT_R0_FAIL
+				context["result_text"] = tr(TXT_R0_FAIL)
 			else:
 				_add_power(EmpireData.USSR, 10)
 				ws.influence_prc += 10
@@ -87,7 +87,7 @@ func execute(context: Dictionary) -> void:
 					_add(W.I_PARTY_SUPPORT, 50)
 				else:
 					_add(W.I_PARTY_SUPPORT, -50)
-				context["result_text"] = TXT_R0_OK
+				context["result_text"] = tr(TXT_R0_OK)
 		1:
 			var syria := ws.get_country_by_legacy_index(35)
 			var iraq := ws.get_country_by_legacy_index(14)
@@ -106,10 +106,10 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USSR, -200)
 			# 原版 TickTime(10)，但 TimeScript.WorldWarsDone 对 war9 另有 fortnight_go>=12 门槛，
 			# 有效超时 = max(10,12)=12。
-			_start_war(9, TXT_WAR9_SIDE1, TXT_WAR9_SIDE2, 800 - num, 200 + num, 0, 1, TXT_WAR9_NAME, 12)
-			context["result_text"] = TXT_R1
+			_start_war(9, tr(TXT_WAR9_SIDE1), tr(TXT_WAR9_SIDE2), 800 - num, 200 + num, 0, 1, tr(TXT_WAR9_NAME), 12)
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			if turkey != null:
 				turkey.set_tag("对华贸易", false)
@@ -117,7 +117,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, -100)
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 
@@ -166,3 +166,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_369_turkey_kurdish_crisis.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_369",
+	"num": 369,
+	"priority": 36900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_369_turkey_kurdish_crisis.gd",
+	"trigger": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 9, "target": "84"}, {"t": "DATE_AFTER", "key": "1984.2.2"}, {"t": "DATE_BEFORE", "key": "1984.12.31"}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

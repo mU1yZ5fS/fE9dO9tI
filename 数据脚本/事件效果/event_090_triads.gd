@@ -5,17 +5,17 @@ extends "res://数据脚本/event_script_base.gd"
 ##   (月>=12 且 年>=1980 或 年>=1981) && data.hk_macau_status==1（hk_macau_status）。
 ## 差异：选项显隐 prepare 动态改写；result2 文本插领导人姓名。
 
-const TXT_R0 := "在特勤部队、国有企业和亲中游说组织的帮助下，我们与三合会的三个主要财团建立了联系，分别是“十四K”、“新义安”和“和胜和”。他们得到了我们对其成员和资产不受侵犯的保证，并提出了一项建议，即以极其优惠的条件将其资本投资于该地区经济（特别是生产麻黄）三合会的领导人已经准备在美国重新设置他们的中心，同意我们的建议。他们开始在我国南方省份进行大量投资，并利用他们的影响力压制反对中国统一的人的行动（特别是批评材料从媒体上消失，所有抗议活动在腐败警察的默许下迅速被三合会成员驱散，还有一些香港和澳门商人移居国外）。因此，我们现在得到了辛迪加的支持，但同时也受到了犯罪世界和腐败日益增长的影响。"
+const TXT_R0 := "event.script.event_090_triads.c0"
 
-const TXT_R1_OK := "我们与三合会最大的三个财团建立了联系，分别是“十四K”、“新义安”和“和胜和”。他们得到了我们的保证，保证他们的成员和资产不受侵犯，他们的领导人同意了这一点，利用自己的影响力压制反对中国统一的人的行动（特别是，媒体中的批评材料消失了，所有的抗议活动都被在腐败警察的默许下，被黑社会成员迅速驱散，一些商人从香港和澳门移居海外。）但是，国安部阻止三合会在中国南部省份站稳脚跟，1997年以后，我们将对他们展开系统性打击。"
+const TXT_R1_OK := "event.script.event_090_triads.c1"
 
-const TXT_R1_BAD := "我们与三合会最大的三个财团建立了联系，分别是“十四K”、“新义安”和“和胜和”。他们得到了我们的保证，保证他们的成员和资产不受侵犯，他们的领导人同意了这一点，利用自己的影响力压制反对中国统一的人的行动（特别是，媒体中的批评材料消失了，所有的抗议活动都被在腐败警察的默许下，被黑社会成员迅速驱散，一些商人从香港和澳门移居海外。）但是，国安部阻止三合会在中国南部省份站稳脚跟，1997年以后，我们将对他们展开系统性打击。"
+const TXT_R1_BAD := "event.script.event_090_triads.c2"
 
-const TXT_R2_A := "断然拒绝与香港犯罪集团进行任何谈判。之后在香港和澳门发生了一系列反华事件，一场系统性的运动开始败坏有关港澳回归协议的名声，最终导致在港澳两地发生的大规模屠杀，以及使得英国和葡萄牙的议会最终拒绝批准回归协议。"
+const TXT_R2_A := "event.script.event_090_triads.c3"
 
-const TXT_R2_B := "但是，我们的朋友给他们施加了压力，使英国和葡萄牙被迫履行了他们的义务。香港和澳门将分别于1997年和1999年回归。"
+const TXT_R2_B := "event.script.event_090_triads.c4"
 
-const TXT_R3 := "“要么共产党战胜腐败，要么腐败战胜共产党”——这一口号在政治局会议上被提出。中国公安部和中央纪委在毗邻香港和澳门的中国南方省份，以及最近开放的经济特区内发起了一场大规模的反腐运动。数百名各级官员被免职，成千上万的人被开除中共党籍，数以百万计的赃款都被没收，成都市长陈希同（被称为“中国的格里申”）因窃取了数十亿元的人民财产和为自己建造豪华别墅的行为被判处枪决。这完全打乱了腐败组织，使得可以在某种程度上矫正局势，切断了我们的精英阶层与和他们在港澳的“同伙”之间的腐败交易。后者以防万一，移民海外。"
+const TXT_R3 := "event.script.event_090_triads.c5"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -56,13 +56,13 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, 100)
 			_add(W.I_CORRUPTION, 150)
 			_set_modifier(5, true)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			if d.size() > W.I_DIPLO and d.size() > W.I_IDEOLOGY and d.diplomatic_reputation > 300 and d.ideology < 3:
 				_add(W.I_AGENTS, -20)
 				_add(W.I_PEOPLE_SUPPORT, -50)
 				_add(W.I_DIPLO, 20)
-				context["result_text"] = TXT_R1_OK
+				context["result_text"] = tr(TXT_R1_OK)
 			else:
 				_add(W.I_AGENTS, -20)
 				_add(W.I_PEOPLE_SUPPORT, -50)
@@ -70,14 +70,14 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_CORRUPTION, 80)
 				_add(W.I_BUDGET, 50)
 				_set_modifier(5, true)
-				context["result_text"] = TXT_R1_BAD
+				context["result_text"] = tr(TXT_R1_BAD)
 		2:
 			_set_data(W.I_HK_MACAU_STATUS, 0)
-			var text := _leader_name() + TXT_R2_A
+			var text := _leader_name() + tr(TXT_R2_A)
 			var hk := ws.get_country_by_legacy_index(51)
 			var china := ws.get_country_by_legacy_index(1)
 			if (hk != null and hk.has_tag("对华贸易")) or (china != null and china.has_tag("sev")):
-				text += TXT_R2_B
+				text += tr(TXT_R2_B)
 				_set_data(W.I_HK_MACAU_STATUS, 1)
 			context["result_text"] = text
 		3:
@@ -87,7 +87,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, -100)
 			_add(W.I_PEOPLE_SUPPORT, 100)
 			_add(W.I_CORRUPTION, -150)
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 func _coalition_percent(world: WorldState) -> int:
@@ -127,3 +127,19 @@ func _leader_name() -> String:
 	if ws.leader != null and ws.leader.name_display != "":
 		return ws.leader.name_display
 	return "华国锋"
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_090_triads.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_090",
+	"num": 90,
+	"priority": 9000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_090_triads.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1980.12.1"}, {"t": "RESOURCE_EQUALS", "key": "hk_macau_status", "v": 1}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

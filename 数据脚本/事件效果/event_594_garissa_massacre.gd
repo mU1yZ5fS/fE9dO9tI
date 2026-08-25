@@ -8,22 +8,22 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 仅 AmericanSupportDefender → usa_side = GameConstants.WarSide.SIDE2/ussr_side = GameConstants.WarSide.NONE；
 ##  - TickTime(24) → fortnight_max=24。
 
-const TXT_DESC_BASE := "在索马里人聚居区被欧美列强和埃塞俄比亚帝国瓜分之后，以索马里人为主的东北省便纳入英属肯尼亚领土中，在索马里独立之后，北部边界区便强烈要求分离出来加入索马里。自肯尼亚独立尤其是1967年盗匪战争（肯尼亚称索马里分离势力为盗匪）结束以来，肯尼亚对于东北省予以打压，甚至不惜为东北省单独立法来加强管控。1980年11月，在一名土匪的袭击下，有六名政府官员死亡，肯尼亚军队随即在东北省加里萨镇进行报复性行为，烧毁庄园，强奸，放火杀人，把当地镇民赶到幼儿园作为小型集中营关押，放走除了索马里人以外的其他人并断绝他们的水源和食物。至少有三千余人死于这场屠杀。\n索马里政府对此十分不满，并要求肯尼亚政府停止种族屠杀，否则将会推翻现政权并进行占领。"
-const TXT_DESC_EXTRA := "主席同志，我们或许可以借此机会帮助索马里人完成大索马里之梦，或者帮肯尼亚一忙，解决掉他们的心头之患？总之选择权在你。"
+const TXT_DESC_BASE := "event.script.event_594_garissa_massacre.c0"
+const TXT_DESC_EXTRA := "event.script.event_594_garissa_massacre.c1"
 
-const TXT_OPT0_DIS := "他们不愿意听我们的话"
-const TXT_OPT1_DIS := "支持他？这是给我们的敌人递子弹！"
+const TXT_OPT0_DIS := "event.script.event_594_garissa_massacre.c2"
+const TXT_OPT1_DIS := "event.script.event_594_garissa_massacre.c3"
 
-const TXT_R0_A := "在肯尼亚未作出回应之前，新华社发表社论支持索马里人民反抗肯尼亚反动政权并回到索马里的斗争，北部省人民进步党这个曾经试图让北部省重新加入索马里的组织重组了起来并在我们特工的协助下在东北省进行袭扰战，与此同时，索马里也宣布对肯尼亚再次发动战争并试图收复东北省，大量来自东方的货轮正在摩加迪沙港卸下“拖拉机”等“农业设备”，"
-const TXT_R0_B := "古巴雇佣兵又一次踏上了东非这片土地，"
-const TXT_R0_C := "而来自英国军火和西方的雇佣兵开始在肯尼亚出现。索马里和肯尼亚又一次爆发了战争。"
-const TXT_R1_A := "在我们的大力支持下，肯尼亚宣布拒绝接受索马里的条件，并提前在边境地区做好准备以痛击来侵之敌。大量来自东方的货轮正在蒙巴萨港卸下“拖拉机”等“农业设备”，来自英国军火和西方的雇佣兵开始在肯尼亚出现，"
-const TXT_R1_B := "索马里开始对肯尼亚宣战，古巴的雇佣兵和苏联的顾问又一次踏上了东非的土地。"
-const TXT_R1_C := "索马里在内部混乱之下仓促宣战。"
-const TXT_R1_D := "索马里和肯尼亚又一次爆发了战争。"
-const TXT_R2 := "肯尼亚被迫答应了要求，释放了被押的索马里人。即将到来的索肯大战也随之消逝。"
+const TXT_R0_A := "event.script.event_594_garissa_massacre.c4"
+const TXT_R0_B := "event.script.event_594_garissa_massacre.c5"
+const TXT_R0_C := "event.script.event_594_garissa_massacre.c6"
+const TXT_R1_A := "event.script.event_594_garissa_massacre.c7"
+const TXT_R1_B := "event.script.event_594_garissa_massacre.c8"
+const TXT_R1_C := "event.script.event_594_garissa_massacre.c9"
+const TXT_R1_D := "event.script.event_594_garissa_massacre.c10"
+const TXT_R2 := "event.script.event_594_garissa_massacre.c11"
 
-const WAR50_NAME := "索马里-肯尼亚战争"
+const WAR50_NAME := "event.script.event_594_garissa_massacre.c12"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -39,18 +39,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var china_sev := china != null and china.has_tag("sev")
 	var opt := event_def.options
 	if somalia != null and somalia.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
-		event_def.description = TXT_DESC_BASE + TXT_DESC_EXTRA
+		event_def.description = tr(TXT_DESC_BASE) + tr(TXT_DESC_EXTRA)
 		if line <= 2 and (somalia_proprc or (somalia_prosov and china_sev)):
 			_enable(opt[0], event_def.options[0].text)
 		else:
-			_disable(opt[0], TXT_OPT0_DIS)
+			_disable(opt[0], tr(TXT_OPT0_DIS))
 		if line >= 2 and (not somalia_proprc or (somalia_prosov and not china_sev)):
 			_enable(opt[1], event_def.options[1].text)
 		else:
-			_disable(opt[1], TXT_OPT1_DIS)
+			_disable(opt[1], tr(TXT_OPT1_DIS))
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		event_def.description = TXT_DESC_BASE
+		event_def.description = tr(TXT_DESC_BASE)
 		_disable(opt[0], "")
 		_disable(opt[1], "")
 		_enable(opt[2], event_def.options[2].text)
@@ -64,10 +64,10 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			var text := TXT_R0_A
+			var text := tr(TXT_R0_A)
 			if somalia != null and somalia.has_tag("亲苏"):
-				text += TXT_R0_B
-			text += TXT_R0_C
+				text += tr(TXT_R0_B)
+			text += tr(TXT_R0_C)
 			_start_war_50(somalia, 0)
 			if kenya != null:
 				while kenya.parts.size() <= 0:
@@ -77,12 +77,12 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -80)
 			context["result_text"] = text
 		1:
-			var text := TXT_R1_A
+			var text := tr(TXT_R1_A)
 			if somalia != null and somalia.has_tag("亲苏"):
-				text += TXT_R1_B
+				text += tr(TXT_R1_B)
 			elif somalia == null or not somalia.has_tag("亲中"):
-				text += TXT_R1_C
-			text += TXT_R1_D
+				text += tr(TXT_R1_C)
+			text += tr(TXT_R1_D)
 			_start_war_50(somalia, 1)
 			if kenya != null:
 				while kenya.parts.size() <= 0:
@@ -92,7 +92,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_ARMY, -80)
 			context["result_text"] = text
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 func _start_war_50(somalia: CountryData, branch: int) -> void:
@@ -108,8 +108,24 @@ func _start_war_50(somalia: CountryData, branch: int) -> void:
 		else:
 			game.start_war(50, "索马里", "肯尼亚", 450, 550, 1, -1)
 	if ws.wars.size() > 50 and ws.wars[50] != null:
-		ws.wars[50].name_war = WAR50_NAME
+		ws.wars[50].name_war = tr(WAR50_NAME)
 		ws.wars[50].fortnight_max = 24
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_594_garissa_massacre.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_594",
+	"num": 594,
+	"priority": 59400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_594_garissa_massacre.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1980.11.1"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 10, "target": "42"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1404-1406 —— c86.isNATO + DATE_AFTER。
 ## 差异：Gosstroy→government；SubGosstroy→sub_government；spec→special。
 
-const TXT_RESULT := "由费利佩·冈萨雷斯领导的工人社会党成为了议会选举内毋庸置疑的赢家，在选举中拿下几乎50%的选票。4%选民选择支持卡里略领导的西班牙共产党。佛朗哥所恐惧的共产党合法化将导致后者不可避免地拿下西班牙，并将该国拉入无政府状态的预言没有实现。苏亚雷斯与其新党仅获得不到3%的选票，而他的“心血结晶”民主中间派联盟则得票不到7%。曼努埃尔·弗拉加领导的保守派则利用了中间派的分裂，他的国民联盟党拿下了26%的选票。\n西班牙将首次迎来一个一党领导下的社会主义政府，该政府由冈萨雷斯领导。首先，新政府宣布开始“反思近期奉行的外交政策，并暂停西班牙与北约的军事一体化议程”。然而在1981年政变后，社会党对这一问题的立场发送了显著变化......"
-const TXT_IDX_1435 := "1982年西班牙选举"
-const TXT_IDX_1436 := "妥协候选人卡尔沃·索特洛的当选并不能解救执政党于崩溃之中。1982年8月，民主中间派联盟的创始人阿道弗·苏亚雷斯离开该党，并另建立了社会民主中心党。这导致了执政党内部派系的崩溃，该党也因此在议会内失去多数。结果，西班牙将迎来新一届议会代表选举。"
-const TXT_IDX_1154 := "谁将得胜？"
-const TXT_IDX_1437 := "由费利佩·冈萨雷斯领导的工人社会党成为了议会选举内毋庸置疑的赢家，在选举中拿下几乎50%的选票。4%选民选择支持卡里略领导的西班牙共产党。佛朗哥所恐惧的共产党合法化将导致后者不可避免地拿下西班牙，并将该国拉入无政府状态的预言没有实现。苏亚雷斯与其新党仅获得不到3%的选票，而他的“心血结晶”民主中间派联盟则得票不到7%。曼努埃尔·弗拉加领导的保守派则利用了中间派的分裂，他的国民联盟党拿下了26%的选票。\n西班牙将首次迎来一个一党领导下的社会主义政府，该政府由冈萨雷斯领导。首先，新政府宣布开始“反思近期奉行的外交政策，并暂停西班牙与北约的军事一体化议程”。然而在1981年政变后，社会党对这一问题的立场发送了显著变化......"
+const TXT_RESULT := "event.script.event_429_spain_election_1982.c0"
+const TXT_IDX_1435 := "event.script.event_429_spain_election_1982.c1"
+const TXT_IDX_1436 := "event.script.event_429_spain_election_1982.c2"
+const TXT_IDX_1154 := "event.script.event_429_spain_election_1982.c3"
+const TXT_IDX_1437 := "event.script.event_429_spain_election_1982.c4"
 
 
 
@@ -48,4 +48,20 @@ func execute(context: Dictionary) -> void:
 	if spain != null:
 		spain.government = GameConstants.Government.LIBERAL
 		spain.sub_government = GameConstants.SubGovernment.SOCIAL_DEMOCRAT
-	context["result_text"] = TXT_RESULT
+	context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_429_spain_election_1982.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_429",
+	"num": 429,
+	"priority": 42900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_429_spain_election_1982.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "86"}, {"t": "DATE_AFTER", "key": "1982.11.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

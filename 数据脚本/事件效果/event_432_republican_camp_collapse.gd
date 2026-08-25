@@ -5,29 +5,29 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：Gosstroy→government；SubGosstroy→sub_government；spec→special；prosov→亲苏；
 ##  - data.world_political_balance raw；resultOfEvents[424] 缺省 0 语义由 .tres 的 ANY(not_done, result==0) 表达。
 
-const TXT_OPT0_EN := "支持共产党人（需要10.0百万{0}与25.0点{1}）"
-const TXT_OPT1_EN := "支持社会党人（需要10.0百万{0}与25.0点{1}）"
-const TXT_OPT2_EN := "支持民主党人（需要10.0百万{0}与25.0点{1}）"
-const TXT_R1 := "选举结果表明，西班牙工人社会党赢得多数选票。弗朗西斯科·布斯特洛被推上领导人之位，宣布西班牙将开始彻底去殖民化（比如将修达、梅梅利亚和加那利群岛归还给摩洛哥）、落实西班牙的联邦化、确定中立的外交政策，并开始进行社会主义改革。"
-const TXT_R2 := "选举结果表明，西班牙共产党赢得多数选票。伊格纳西奥·加列戈被推上领导人之位，宣布西班牙将开始彻底去殖民化（比如将修达、梅梅利亚和加那利群岛归还给摩洛哥）、落实各民族真正的平等和自治、加强与苏东阵营的合作，并开始向社会主义过渡。"
-const TXT_R3 := "选举结果表明，苏亚雷斯的党再度赢得多数选票。苏亚雷斯宣布，西班牙有必要继续推动共和国民主化与自由化转型。"
-const TXT_NAME_PEOPLE_SPAIN := "人民西班牙"
-const TXT_IDX_1454 := "共和派阵营的崩溃？"
-const TXT_IDX_1455 := "第二次内战时期的团结与政治合作的时期已经结束。自1977年以来，西班牙就没有举行过选举。因此，该国议会的构成基本上延续了那时的模样，右翼与极右翼政党纷纷被驱逐出局。现在，每股政治势力对西班牙公众的影响力几乎相等，社会因为清理了一切右翼分子和恢复了共和国的记忆而显得相当左倾。其中，苏亚雷斯的党并不希望举行选举，毕竟他们害怕丢掉自己的议会多数与执政地位。然而在右派失败后，相当数量的资产阶级转而成为了他那中间派政党的支持者。西班牙工人社会党的社会主义左翼崛起了，费利佩·冈萨雷斯在一次大会上被谴责“个人主义、实用主义、放弃社会主义和大搞个人崇拜”而被轰下了台，左翼领袖弗朗西斯科·布斯特洛当选为新的总书记，帕布勒·卡斯蒂利亚和路易斯·戈麦斯·洛伦特则成为了他的副手。修正马克思主义和自我管理社会主义成为了社会党的主流意识形态。西班牙共产党则谴责了圣地亚哥·卡里略的“右倾、同君主制妥协”，导致他被迫辞职。党的大会选举正统派的领袖伊格纳西奥·加列戈作为新总书记。新领导层与过去因反对欧洲共产主义路线而分裂出去的正统派西班牙统一共产党达成了和解，两党重新合并。同时，西共加强了党在工人阶级内的影响力，并控制了工会，在社会上获得了广泛支持。|在左翼政党的压力下，政府不得不做出妥协并宣布举行新选举的日期。然而，尚不清楚谁将成为赢家。但可以推断，选举结果将取决于目前的外交局势。因此，我们得以在西班牙见缝插针。"
-const TXT_IDX_1456 := "支持共产党人（需要10.0百万{0}与25.0点{1}）"
-const TXT_IDX_1457 := "支持社会党人（需要10.0百万{0}与25.0点{1}）"
-const TXT_IDX_1458 := "支持民主党人（需要10.0百万{0}与25.0点{1}）"
-const TXT_IDX_1459 := "不闻不问"
-const TXT_IDX_1460 := "选举结果表明，西班牙工人社会党赢得多数选票。弗朗西斯科·布斯特洛被推上领导人之位，宣布西班牙将开始彻底去殖民化（比如将修达、梅梅利亚和加那利群岛归还给摩洛哥）、落实西班牙的联邦化、确定中立的外交政策，并开始进行社会主义改革。"
-const TXT_IDX_1461 := "选举结果表明，西班牙共产党赢得多数选票。伊格纳西奥·加列戈被推上领导人之位，宣布西班牙将开始彻底去殖民化（比如将修达、梅梅利亚和加那利群岛归还给摩洛哥）、落实各民族真正的平等和自治、加强与苏东阵营的合作，并开始向社会主义过渡。"
-const TXT_IDX_1462 := "选举结果表明，苏亚雷斯的党再度赢得多数选票。苏亚雷斯宣布，西班牙有必要继续推动共和国民主化与自由化转型。"
-const TXT_IDX_1463 := "人民西班牙"
-const TXT_IDX_566 := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
-const TXT_IDX_567 := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
-const TXT_IDX_776 := "军事实力必须高于{0}点......"
-const TXT_IDX_592 := "预算"
-const TXT_IDX_593 := "特工网络"
-const TXT_IDX_594 := "军事实力"
+const TXT_OPT0_EN := "event.script.event_432_republican_camp_collapse.c0"
+const TXT_OPT1_EN := "event.script.event_432_republican_camp_collapse.c1"
+const TXT_OPT2_EN := "event.script.event_432_republican_camp_collapse.c2"
+const TXT_R1 := "event.script.event_432_republican_camp_collapse.c3"
+const TXT_R2 := "event.script.event_432_republican_camp_collapse.c4"
+const TXT_R3 := "event.script.event_432_republican_camp_collapse.c5"
+const TXT_NAME_PEOPLE_SPAIN := "event.script.event_432_republican_camp_collapse.c6"
+const TXT_IDX_1454 := "event.script.event_432_republican_camp_collapse.c7"
+const TXT_IDX_1455 := "event.script.event_432_republican_camp_collapse.c8"
+const TXT_IDX_1456 := "event.script.event_432_republican_camp_collapse.c9"
+const TXT_IDX_1457 := "event.script.event_432_republican_camp_collapse.c10"
+const TXT_IDX_1458 := "event.script.event_432_republican_camp_collapse.c11"
+const TXT_IDX_1459 := "event.script.event_432_republican_camp_collapse.c12"
+const TXT_IDX_1460 := "event.script.event_432_republican_camp_collapse.c13"
+const TXT_IDX_1461 := "event.script.event_432_republican_camp_collapse.c14"
+const TXT_IDX_1462 := "event.script.event_432_republican_camp_collapse.c15"
+const TXT_IDX_1463 := "event.script.event_432_republican_camp_collapse.c16"
+const TXT_IDX_566 := "event.script.event_432_republican_camp_collapse.c17"
+const TXT_IDX_567 := "event.script.event_432_republican_camp_collapse.c18"
+const TXT_IDX_776 := "event.script.event_432_republican_camp_collapse.c19"
+const TXT_IDX_592 := "event.script.event_432_republican_camp_collapse.c20"
+const TXT_IDX_593 := "event.script.event_432_republican_camp_collapse.c21"
+const TXT_IDX_594 := "event.script.event_432_republican_camp_collapse.c22"
 
 
 
@@ -66,17 +66,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var budget_reserve := d.budget + (d.reserve if d.size() > W.I_RESERVE else 0)
 	var agents := d.agents if d.size() > W.I_AGENTS else 0
 	if budget_reserve >= 100 and agents >= 250:
-		_enable(event_def.options[0], _fmt(TXT_OPT0_EN, [TXT_IDX_592, TXT_IDX_593]))
-		_enable(event_def.options[1], _fmt(TXT_OPT1_EN, [TXT_IDX_592, TXT_IDX_593]))
-		_enable(event_def.options[2], _fmt(TXT_OPT2_EN, [TXT_IDX_592, TXT_IDX_593]))
+		_enable(event_def.options[0], _fmt(tr(TXT_OPT0_EN), [tr(TXT_IDX_592), tr(TXT_IDX_593)]))
+		_enable(event_def.options[1], _fmt(tr(TXT_OPT1_EN), [tr(TXT_IDX_592), tr(TXT_IDX_593)]))
+		_enable(event_def.options[2], _fmt(tr(TXT_OPT2_EN), [tr(TXT_IDX_592), tr(TXT_IDX_593)]))
 	elif budget_reserve < 100:
-		_disable(event_def.options[0], _fmt(TXT_IDX_566, [10]))
-		_disable(event_def.options[1], _fmt(TXT_IDX_566, [10]))
-		_disable(event_def.options[2], _fmt(TXT_IDX_566, [10]))
+		_disable(event_def.options[0], _fmt(tr(TXT_IDX_566), [10]))
+		_disable(event_def.options[1], _fmt(tr(TXT_IDX_566), [10]))
+		_disable(event_def.options[2], _fmt(tr(TXT_IDX_566), [10]))
 	else:
-		_disable(event_def.options[0], _fmt(TXT_IDX_567, [25]))
-		_disable(event_def.options[1], _fmt(TXT_IDX_567, [25]))
-		_disable(event_def.options[2], _fmt(TXT_IDX_567, [25]))
+		_disable(event_def.options[0], _fmt(tr(TXT_IDX_567), [25]))
+		_disable(event_def.options[1], _fmt(tr(TXT_IDX_567), [25]))
+		_disable(event_def.options[2], _fmt(tr(TXT_IDX_567), [25]))
 	_enable(event_def.options[3], event_def.options[3].text)
 
 
@@ -157,7 +157,7 @@ func execute(context: Dictionary) -> void:
 		elif num4 == 2:
 			spain.government = GameConstants.Government.SOCIALIST
 			spain.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
-			spain.name = TXT_NAME_PEOPLE_SPAIN
+			spain.name = tr(TXT_NAME_PEOPLE_SPAIN)
 			spain.set_tag("亲苏", true)
 			if ws.empires.size() > EmpireData.USSR and ws.empires[EmpireData.USSR] != null \
 					and ws.empires[EmpireData.USSR].leaders.size() > 4:
@@ -166,8 +166,24 @@ func execute(context: Dictionary) -> void:
 			spain.government = GameConstants.Government.LIBERAL
 			spain.sub_government = GameConstants.SubGovernment.MODERATE
 	if num4 == 1:
-		context["result_text"] = TXT_R1
+		context["result_text"] = tr(TXT_R1)
 	elif num4 == 2:
-		context["result_text"] = TXT_R2
+		context["result_text"] = tr(TXT_R2)
 	else:
-		context["result_text"] = TXT_R3
+		context["result_text"] = tr(TXT_R3)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_432_republican_camp_collapse.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_432",
+	"num": 432,
+	"priority": 43200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_432_republican_camp_collapse.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1983.8.1"}, {"t": "ANY", "c": [{"t": "PREV_EVENT_NOT_DONE", "ref": "event_424"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_424"}]}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 6, "target": "86"}, {"t": "NOT", "c": [{"t": "WAR_ACTIVE", "v": 30}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

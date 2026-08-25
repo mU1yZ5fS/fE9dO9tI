@@ -3,8 +3,8 @@
 ## 差异：KillPerson→game.kill_politician；文本来自 Events_text_en 索引 63-68。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_R0 := "小平是中国的未来！毛主义的恐怖将留在过去！自由和开放的光明未来在等待着我们！"
-const TXT_R1 := "对邓小平的思想和活动的一致批评始于党内会议。极左派指责他是修正主义，而温和派则担心失去权力。总的来说，到会议结束时，小平已经失去了所有的希望，因为就连他以前的盟友也背叛了他。这位雄心勃勃的前政治家失去了所有的职位，被迫离开首都，并对自己的倒台感到震惊，很快就因心脏病悄悄去世了。"
+const TXT_R0 := "event.script.event_305_deng_xiaoping_resignation.c0"
+const TXT_R1 := "event.script.event_305_deng_xiaoping_resignation.c1"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -21,12 +21,12 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			var num := _find_politician(13, 13)
 			if num >= 0:
 				game.kill_politician(num)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -77,3 +77,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_305_deng_xiaoping_resignation.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_305",
+	"num": 305,
+	"priority": 30500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_305_deng_xiaoping_resignation.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

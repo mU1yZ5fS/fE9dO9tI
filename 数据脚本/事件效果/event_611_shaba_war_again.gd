@@ -4,16 +4,16 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:904-906 —— DATE_AFTER 1978.5.11；fire_only_once 承担 !event_done[611]。
 ## 差异：描述/结果按 c163.parts[0] 分支；AmericanSupportAttacker→usa_side = GameConstants.WarSide.SIDE1；TickTime(9)→fortnight_max。
 
-const TXT_DESC_A := "在第一次沙巴战争惨痛的失败后，FNLC的成员痛定思痛，决心攻占科卢维齐这一重地作为前进的跳板。在古巴的支持下，6500名FNLC士兵又一次越过边界突袭该国。起义军已经攻下了边境的数个军火库和哨站，似乎这次他们的赢面很大？"
-const TXT_DESC_B := "在刚果民族解放阵线站稳了脚跟后，加丹加人民共和国一直尽力渗透着扎伊尔政权。而今天，塔纳尔·姆奔巴宣布发起又一次冲锋，他们将会彻底击溃孱弱的扎伊尔政权。很明显，一边是士气高昂的解放战士，另一边是依赖巫医，金钱和外国人的国防军，胜利的天平似乎已经开始倾斜了。"
-const TXT_R0_A := "我们像过去的那样呼吁各方冷静下来并停火，但谁会在乎我们的话呢？古巴人仍然在一波又一波的开往加丹加地区。"
-const TXT_WAR_A_NAME := "第二次沙巴战争"
-const TXT_WAR_A_SIDE1 := "扎伊尔"
-const TXT_WAR_A_SIDE2 := "刚果民族解放阵线"
-const TXT_R0_B := "在古巴人的大力支持下，如潮水般的刚果民族解放阵线士兵开始冲向北方，他们的主要目标是拿下金沙萨和基桑加尼。当然，具体问题仍然需要具体分析。如果他们有这般武勇，为什么没有趁蒙博托政权不稳之时就推翻他呢？"
-const TXT_WAR_B_NAME := "第二次沙巴战争"
-const TXT_WAR_B_SIDE1 := "扎伊尔"
-const TXT_WAR_B_SIDE2 := "刚果民族解放阵线"
+const TXT_DESC_A := "event.script.event_611_shaba_war_again.c0"
+const TXT_DESC_B := "event.script.event_611_shaba_war_again.c1"
+const TXT_R0_A := "event.script.event_611_shaba_war_again.c2"
+const TXT_WAR_A_NAME := "event.script.event_611_shaba_war_again.c3"
+const TXT_WAR_A_SIDE1 := "event.script.event_611_shaba_war_again.c4"
+const TXT_WAR_A_SIDE2 := "event.script.event_611_shaba_war_again.c5"
+const TXT_R0_B := "event.script.event_611_shaba_war_again.c6"
+const TXT_WAR_B_NAME := "event.script.event_611_shaba_war_again.c7"
+const TXT_WAR_B_SIDE1 := "event.script.event_611_shaba_war_again.c8"
+const TXT_WAR_B_SIDE2 := "event.script.event_611_shaba_war_again.c9"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,9 +22,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	_bind_world()
 	if not _part(163, 0):
-		event_def.description = TXT_DESC_A
+		event_def.description = tr(TXT_DESC_A)
 	else:
-		event_def.description = TXT_DESC_B
+		event_def.description = tr(TXT_DESC_B)
 
 
 
@@ -40,11 +40,11 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if katanga == null or not (katanga.parts.size() > 0 and katanga.parts[0]):
-				context["result_text"] = TXT_R0_A
-				_start_war(61, TXT_WAR_A_NAME, TXT_WAR_A_SIDE1, TXT_WAR_A_SIDE2, 700, 300, 0, 1, 9)
+				context["result_text"] = tr(TXT_R0_A)
+				_start_war(61, tr(TXT_WAR_A_NAME), tr(TXT_WAR_A_SIDE1), tr(TXT_WAR_A_SIDE2), 700, 300, 0, 1, 9)
 			else:
-				context["result_text"] = TXT_R0_B
-				_start_war(61, TXT_WAR_B_NAME, TXT_WAR_B_SIDE1, TXT_WAR_B_SIDE2, 500, 500, 0, 1, 9)
+				context["result_text"] = tr(TXT_R0_B)
+				_start_war(61, tr(TXT_WAR_B_NAME), tr(TXT_WAR_B_SIDE1), tr(TXT_WAR_B_SIDE2), 500, 500, 0, 1, 9)
 
 
 
@@ -134,3 +134,19 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_611_shaba_war_again.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_611",
+	"num": 611,
+	"priority": 61100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_611_shaba_war_again.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1978.5.11"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

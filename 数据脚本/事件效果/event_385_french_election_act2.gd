@@ -9,55 +9,55 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 原版 TextOfEvents 会改写 new_events_text[958]，端口只在 prepare 动态处理；
 ##  - 原版 modifies[56].active=false 与 modifies[42-45] 覆盖逐项移植。
 
-const TXT_DESC_FMT := "在法国的首轮总统选举结束后，两位竞选人得以进入次轮选举。其中{1}以{3}%的得票率领先对手{2}。然而，他们当中的每个人都有各种各样的黑材料。如果能够灵活运用它们，我们足以在第二轮选举内起到四两拨千斤的效果。"
-const TXT_OPT0_FMT := "我们得教教法国选民该支持谁......开闸，放吉斯卡尔·德斯坦的黑材料！（需要10.0百万{0}与5.0点{1}）"
-const TXT_OPT1_FMT := "我们得教教法国选民该支持谁......开闸，放密特朗的黑材料！（需要需要10.0百万{0}与5.0点{1}）"
-const TXT_OPT2_FMT := "我们得教教法国选民该支持谁......开闸，放马歇的黑材料！（需要需要10.0百万{0}与5.0点{1}）"
-const TXT_OPT3_FMT := "我们得教教法国选民该支持谁......开闸，放希拉克的黑材料！（需要需要10.0百万{0}与5.0点{1}）"
-const TXT_OPT_IGNORE := "谁将赢得最后的胜利？"
-const TXT_LABEL_BUDGET := "预算"
-const TXT_LABEL_AGENTS := "特工网络"
-const TXT_LABEL_ARMY := "军事实力"
-const TXT_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
-const TXT_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
-const TXT_952 := "“训练有素的苏共党棍”"
-const TXT_953 := "“保皇雅各宾派”"
-const TXT_954 := "“有种族歧视特色的共产党人”"
-const TXT_955 := "“窃国大盗”"
-const TXT_956 := "现任总统瓦莱里·吉斯卡尔·德斯坦"
-const TXT_957 := "社会党人弗朗索瓦·密特朗"
-const TXT_958 := "共产党人乔治·马歇"
-const TXT_959 := "戴高乐主义者雅克·希拉克"
-const TXT_965 := "纪录片指出，他收到了来自莫斯科的间接支持。苏联官方报纸的某位供稿人，是如此评价目前进行的如火如荼的法国选举的：“比起弗朗西斯·密特朗和雅克·希拉克这两个丑角，德斯坦显然是‘相对可取’的选择”。因此，《真理报》向亲苏的法国共产主义者展示了他们应选择支持谁。这就是明目张胆地“为弱势且无能的法国总统拉票贿选”。"
-const TXT_966 := "纪录片指控他曾为贝当政府工作，并支持镇压阿尔及利亚人民起义，同时又对1968年的五月风暴运动张开怀抱。"
-const TXT_967 := "纪录片指控他参与了多次有争议的反移民运动，并拆毁了用于安置马里工人的移民住宅。一些法国知识分子谴责这位共产党领导人的种族主义情绪。"
-const TXT_968 := "纪录片指控他在就任政府首脑期间深陷腐败，并与多次挪用预算的丑闻有关。"
-const TXT_969 := "勃列日涅夫的密友"
-const TXT_970 := "前法西斯分子"
-const TXT_971 := "种族主义者"
-const TXT_972 := "窃国大盗"
-const TXT_973 := "被控与苏联领导人列昂尼德·勃列日涅夫间关系过于密切的瓦莱里·吉斯卡尔·德斯坦"
-const TXT_974 := "曾为贝当维希政权效力的弗朗索瓦·密特朗"
-const TXT_975 := "被控有可疑言行的乔治·马歇"
-const TXT_976 := "已陷入数起腐败丑闻的雅克·希拉克"
-const TXT_977 := "瓦莱里·吉斯卡尔·德斯坦"
-const TXT_978 := "弗朗索瓦·密特朗"
-const TXT_979 := "乔治·马歇"
-const TXT_980 := "雅克·希拉克"
-const TXT_1039 := "瓦莱里·吉斯卡尔·德斯坦总统承诺将继续实行先前任期内的自由主义政策——包括实现国内政策与经济领域的进一步自由化，奉行亲欧外交政策并实现法国重回北约，同时支持与苏联间发展友好关系。总统上任之初便选择解散议会，并呼吁重新举行议会选举。预计民主派将在议会内取得大胜。"
-const TXT_1040 := "弗朗索瓦·密特朗总统承诺将实行社会主义政策——包括实现大型企业的国有化，国家权力的分权化，缩短工作日，降低退休年龄并拓展社会福利。总统上任之初便选择解散议会，并呼吁重新举行议会选举。预计左派将在议会内取得大胜。"
-const TXT_1041 := "乔治·马歇总统承诺将实行欧洲共产主义政策——包括实现大型企业的国有化，国家权力的分权化，缩短工作日，降低退休年龄并拓展社会福利。总统上任之初便选择解散议会，并呼吁重新举行议会选举。预计左派将在议会内取得大胜。"
+const TXT_DESC_FMT := "event.script.event_385_french_election_act2.c0"
+const TXT_OPT0_FMT := "event.script.event_385_french_election_act2.c1"
+const TXT_OPT1_FMT := "event.script.event_385_french_election_act2.c2"
+const TXT_OPT2_FMT := "event.script.event_385_french_election_act2.c3"
+const TXT_OPT3_FMT := "event.script.event_385_french_election_act2.c4"
+const TXT_OPT_IGNORE := "event.script.event_385_french_election_act2.c5"
+const TXT_LABEL_BUDGET := "event.script.event_385_french_election_act2.c6"
+const TXT_LABEL_AGENTS := "event.script.event_385_french_election_act2.c7"
+const TXT_LABEL_ARMY := "event.script.event_385_french_election_act2.c8"
+const TXT_DIS_BUDGET := "event.script.event_385_french_election_act2.c9"
+const TXT_DIS_AGENTS := "event.script.event_385_french_election_act2.c10"
+const TXT_952 := "event.script.french_election_act2.txt_952"
+const TXT_953 := "event.script.french_election_act2.txt_953"
+const TXT_954 := "event.script.french_election_act2.txt_954"
+const TXT_955 := "event.script.event_385_french_election_act2.c11"
+const TXT_956 := "event.script.french_election_act2.txt_956"
+const TXT_957 := "event.script.french_election_act2.txt_957"
+const TXT_958 := "event.script.french_election_act2.txt_958"
+const TXT_959 := "event.script.event_385_french_election_act2.c12"
+const TXT_965 := "event.script.french_election_act2.txt_965"
+const TXT_966 := "event.script.french_election_act2.txt_966"
+const TXT_967 := "event.script.french_election_act2.txt_967"
+const TXT_968 := "event.script.event_385_french_election_act2.c13"
+const TXT_969 := "event.script.french_election_act2.txt_969"
+const TXT_970 := "event.script.french_election_act2.txt_970"
+const TXT_971 := "event.script.french_election_act2.txt_971"
+const TXT_972 := "event.script.event_385_french_election_act2.c14"
+const TXT_973 := "event.script.french_election_act2.txt_973"
+const TXT_974 := "event.script.french_election_act2.txt_974"
+const TXT_975 := "event.script.french_election_act2.txt_975"
+const TXT_976 := "event.script.event_385_french_election_act2.c15"
+const TXT_977 := "event.script.french_election_act2.txt_977"
+const TXT_978 := "event.script.french_election_act2.txt_978"
+const TXT_979 := "event.script.french_election_act2.txt_979"
+const TXT_980 := "event.script.event_385_french_election_act2.c16"
+const TXT_1039 := "event.script.french_election_act2.txt_1039"
+const TXT_1040 := "event.script.french_election_act2.txt_1040"
+const TXT_1041 := "event.script.french_election_act2.txt_1041"
 
-const TXT_958_YUG := "共产党人罗兰·勒罗伊"
-const TXT_OPT2_YUG := "我们得教教法国选民该支持谁......开闸，放勒罗伊的黑材料！（需要需要10.0百万{0}与5.0点{1}）"
-const TXT_954_YUG := "“支持集中营的共产主义暴君”"
-const TXT_967_YUG := "纪录片指控他从1974年开始负责《人道报》，参与了当年反对索尔仁尼琴的大规模运动。一些法国知识分子谴责这位共产党领导人有“极权主义的倾向”。"
-const TXT_971_YUG := "极权主义者"
-const TXT_975_YUG := "被控有可疑言行的罗兰·勒罗伊"
-const TXT_979_YUG := "罗兰·勒罗伊"
-const TXT_1041_YUG := "罗兰·勒罗伊总统承诺将分阶段实施社会主义改革，第一个阶段包括实现大型企业的国有化，鼓励建立合作社，强化工会作用，改革选举制度，缩短工作日，降低退休年龄并拓展社会福利。总统上任之初便选择解散议会，并呼吁重新举行议会选举。预计左派将在议会内取得大胜。"
-const TXT_R_FMT := "法国国家电视频道“法国电视二台”（FranceDeux）播放了一段名为{1}的纪录片，从而揭了{2}这位总统候选人的老底。{3}\n这部电影最后以一句不寻常的短语结束——“宁要{4}，不要{5}！”。前者最可能指代的是{6}，而后者显然是{7}。对此，遭攻击的总统候选人亲自称这纪录片不过是“廉价的政治偷袭”，并呼吁选民“不要屈服于此类挑衅”。\n选举结果表明，有51%的选民选择支持{8}，因此，他成功当选法国新任总统！\n{9}"
-const TXT_R_NO_FMT := "选举结果表明，有51%的选民选择支持{1}，因此，他成功当选法国新任总统！\n{2}"
+const TXT_958_YUG := "event.script.french_election_act2.txt_958_yug"
+const TXT_OPT2_YUG := "event.script.event_385_french_election_act2.c17"
+const TXT_954_YUG := "event.script.french_election_act2.txt_954_yug"
+const TXT_967_YUG := "event.script.french_election_act2.txt_967_yug"
+const TXT_971_YUG := "event.script.french_election_act2.txt_971_yug"
+const TXT_975_YUG := "event.script.french_election_act2.txt_975_yug"
+const TXT_979_YUG := "event.script.french_election_act2.txt_979_yug"
+const TXT_1041_YUG := "event.script.french_election_act2.txt_1041_yug"
+const TXT_R_FMT := "event.script.event_385_french_election_act2.c18"
+const TXT_R_NO_FMT := "event.script.event_385_french_election_act2.c19"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -74,7 +74,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	event_def.description = _desc_text(world, press, infl_ch)
 	var opt := event_def.options
 	_prepare_opt385(opt[0], world, press)
-	_enable(opt[1], TXT_OPT_IGNORE)
+	_enable(opt[1], tr(TXT_OPT_IGNORE))
 
 
 func _prepare_opt385(opt: EventOption, world: WorldState, press: Array) -> void:
@@ -82,19 +82,19 @@ func _prepare_opt385(opt: EventOption, world: WorldState, press: Array) -> void:
 	var infl_ch := _infl_ch(world, press)
 	var fmt_text: String
 	if infl_ch == 0:
-		fmt_text = TXT_OPT0_FMT
+		fmt_text = tr(TXT_OPT0_FMT)
 	elif infl_ch == 1:
-		fmt_text = TXT_OPT1_FMT
+		fmt_text = tr(TXT_OPT1_FMT)
 	elif infl_ch == 2:
-		fmt_text = TXT_OPT2_YUG if world.get_flag("YugAgree") else TXT_OPT2_FMT
+		fmt_text = tr(TXT_OPT2_YUG) if world.get_flag("YugAgree") else tr(TXT_OPT2_FMT)
 	else:
-		fmt_text = TXT_OPT3_FMT
+		fmt_text = tr(TXT_OPT3_FMT)
 	if _d(W.I_AGENTS) >= 100 and _d(W.I_BUDGET) + _d(W.I_RESERVE) >= 50:
-		_enable(opt, fmt_text.format([TXT_LABEL_BUDGET, TXT_LABEL_AGENTS, TXT_LABEL_ARMY]))
+		_enable(opt, fmt_text.format([tr(TXT_LABEL_BUDGET), tr(TXT_LABEL_AGENTS), tr(TXT_LABEL_ARMY)]))
 	elif _d(W.I_BUDGET) + _d(W.I_RESERVE) < 50:
-		_disable(opt, TXT_DIS_BUDGET.format([10]))
+		_disable(opt, tr(TXT_DIS_BUDGET).format([10]))
 	else:
-		_disable(opt, TXT_DIS_AGENTS.format([5]))
+		_disable(opt, tr(TXT_DIS_AGENTS).format([5]))
 
 
 func _desc_text(world: WorldState, press: Array, infl_ch: int) -> String:
@@ -104,7 +104,7 @@ func _desc_text(world: WorldState, press: Array, infl_ch: int) -> String:
 	var res2: int = randi_range(20, 26)
 	var cand_ch := _cand_name(infl_ch)
 	var cand_nato := _cand_name(infl_nato)
-	return TXT_DESC_FMT.format(["\n", cand_ch, cand_nato, res1, res2])
+	return tr(TXT_DESC_FMT).format(["\n", cand_ch, cand_nato, res1, res2])
 
 
 func execute(context: Dictionary) -> void:
@@ -135,7 +135,7 @@ func execute(context: Dictionary) -> void:
 		var _cand_nato := _cand_name(infl_nato)
 		var winner_name := _cand_name(num)
 		var winner_promise := _promise(num)
-		context["result_text"] = TXT_R_FMT.format([
+		context["result_text"] = tr(TXT_R_FMT).format([
 			"\n",
 			_black_material(infl_ch), _black_target(infl_ch),
 			_black_detail(infl_ch),
@@ -185,7 +185,7 @@ func execute(context: Dictionary) -> void:
 				portugal4.special -= 10
 	else:
 		var cand_ch := _cand_name(infl_ch)
-		context["result_text"] = TXT_R_NO_FMT.format(["\n", cand_ch, _promise(infl_ch)])
+		context["result_text"] = tr(TXT_R_NO_FMT).format(["\n", cand_ch, _promise(infl_ch)])
 		d.world_political_balance = infl_ch  # 原版 data.world_political_balance
 		if infl_ch == 0:
 			if france != null:
@@ -391,52 +391,52 @@ func _winner(press: Array) -> int:
 
 
 func _cand_name(idx: int) -> String:
-	if idx == 0: return TXT_956
-	elif idx == 1: return TXT_957
-	elif idx == 2: return TXT_958_YUG if (ws != null and ws.get_flag("YugAgree")) else TXT_958
-	return TXT_959
+	if idx == 0: return tr(TXT_956)
+	elif idx == 1: return tr(TXT_957)
+	elif idx == 2: return tr(TXT_958_YUG) if (ws != null and ws.get_flag("YugAgree")) else tr(TXT_958)
+	return tr(TXT_959)
 
 
 func _promise(idx: int) -> String:
-	if idx == 0: return TXT_1039
-	elif idx == 1: return TXT_1040
-	elif idx == 2: return TXT_1041_YUG if (ws != null and ws.get_flag("YugAgree")) else TXT_1041
-	return TXT_1040
+	if idx == 0: return tr(TXT_1039)
+	elif idx == 1: return tr(TXT_1040)
+	elif idx == 2: return tr(TXT_1041_YUG) if (ws != null and ws.get_flag("YugAgree")) else tr(TXT_1041)
+	return tr(TXT_1040)
 
 
 func _black_material(idx: int) -> String:
-	if idx == 0: return TXT_952
-	elif idx == 1: return TXT_953
-	elif idx == 2: return TXT_954_YUG if (ws != null and ws.get_flag("YugAgree")) else TXT_954
-	return TXT_955
+	if idx == 0: return tr(TXT_952)
+	elif idx == 1: return tr(TXT_953)
+	elif idx == 2: return tr(TXT_954_YUG) if (ws != null and ws.get_flag("YugAgree")) else tr(TXT_954)
+	return tr(TXT_955)
 
 
 func _black_target(idx: int) -> String:
-	if idx == 0: return TXT_977
-	elif idx == 1: return TXT_978
-	elif idx == 2: return TXT_979_YUG if (ws != null and ws.get_flag("YugAgree")) else TXT_979
-	return TXT_980
+	if idx == 0: return tr(TXT_977)
+	elif idx == 1: return tr(TXT_978)
+	elif idx == 2: return tr(TXT_979_YUG) if (ws != null and ws.get_flag("YugAgree")) else tr(TXT_979)
+	return tr(TXT_980)
 
 
 func _black_detail(idx: int) -> String:
-	if idx == 0: return TXT_965
-	elif idx == 1: return TXT_966
-	elif idx == 2: return TXT_967_YUG if (ws != null and ws.get_flag("YugAgree")) else TXT_967
-	return TXT_968
+	if idx == 0: return tr(TXT_965)
+	elif idx == 1: return tr(TXT_966)
+	elif idx == 2: return tr(TXT_967_YUG) if (ws != null and ws.get_flag("YugAgree")) else tr(TXT_967)
+	return tr(TXT_968)
 
 
 func _black_epithet(idx: int) -> String:
-	if idx == 0: return TXT_969
-	elif idx == 1: return TXT_970
-	elif idx == 2: return TXT_971_YUG if (ws != null and ws.get_flag("YugAgree")) else TXT_971
-	return TXT_972
+	if idx == 0: return tr(TXT_969)
+	elif idx == 1: return tr(TXT_970)
+	elif idx == 2: return tr(TXT_971_YUG) if (ws != null and ws.get_flag("YugAgree")) else tr(TXT_971)
+	return tr(TXT_972)
 
 
 func _black_target2(idx: int) -> String:
-	if idx == 0: return TXT_973
-	elif idx == 1: return TXT_974
-	elif idx == 2: return TXT_975_YUG if (ws != null and ws.get_flag("YugAgree")) else TXT_975
-	return TXT_976
+	if idx == 0: return tr(TXT_973)
+	elif idx == 1: return tr(TXT_974)
+	elif idx == 2: return tr(TXT_975_YUG) if (ws != null and ws.get_flag("YugAgree")) else tr(TXT_975)
+	return tr(TXT_976)
 
 
 func _mod_active(idx: int) -> bool:
@@ -454,3 +454,18 @@ func _d(index: int) -> int:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_385_french_election_act2.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_385",
+	"num": 385,
+	"priority": 38500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_385_french_election_act2.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

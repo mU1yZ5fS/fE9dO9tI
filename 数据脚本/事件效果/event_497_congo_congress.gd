@@ -10,19 +10,19 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0_DIS := "我们没必要把手伸到非洲去"
-const TXT_OPT1_DIS := "我们没必要为苏联人做事"
-const TXT_OPT2_DIS := "我们不会支持他"
+const TXT_OPT0_DIS := "event.script.event_497_congo_congress.c0"
+const TXT_OPT1_DIS := "event.script.event_497_congo_congress.c1"
+const TXT_OPT2_DIS := "event.script.event_497_congo_congress.c2"
 
-const TXT_R0 := "我们的人适时地点醒了契卡雅同志。萨苏食用了苏联人送的鱼子酱，这导致他因食物中毒“意外”身亡。我们设法争取到部分军事派系、部分党代会代表、甚至是前M-22成员和八月革命元老克洛德-欧内斯特·恩达拉及其背后的南方人的支持，萨苏派的成员成功被排除在权力之外，让-皮埃尔·蒂斯特雷·契卡雅成功成为了新的领导人。他没有忘记是谁帮助了他，在大会上，前M-22的成员被大幅提拔。契卡雅总统宣布，刚果将彻底与新殖民主义决裂，回到真正的马列主义和由恩古瓦比同志指引的道路上，并站在以中国为首的革命阵营一边，这场党代会被称为“又一次恩古瓦比的大会”。我们将为刚果提供帝国主义离开后的经济支持。"
+const TXT_R0 := "event.script.event_497_congo_congress.c3"
 
-const TXT_R1 := "在党代会上，在卡塔利派、契卡雅派甚至是前M-22成员的支持下，萨苏因“右倾、向帝国主义投降”而被刚果劳动党全国代表大会罢免。弗朗索瓦·格扎维埃·卡塔利被选举为新的总书记。卡塔利宣布，刚果将彻底与殖民主义决裂，站在以苏联为首的社会主义阵营一边。经济互助委员会将为其提供帝国主义离开后的经济支持，许多刚果和法国合资的企业已经开始改为同包括苏联在内的经互会国家合资。"
+const TXT_R1 := "event.script.event_497_congo_congress.c4"
 
-const TXT_R2_FR_NEUTRAL := "我们的特工提前在刚果劳动党的中央委员会进行了打点，萨苏感谢了我们的支持，同我们签订了一批合作协议。在党代会上，契卡雅遭到了萨苏的突然袭击，他指控契卡雅应该为1982年在布拉柴维尔发生的炸弹袭击事件负责，这导致他被免职。于此同时，卡塔利派也在大会上被边缘化，卡塔利被降职到一个清水衙门。萨苏就这样巩固了他的地位，并将继续他的统治。"
+const TXT_R2_FR_NEUTRAL := "event.script.event_497_congo_congress.c5"
 
-const TXT_R2_FR_PROSU := "得益于我们的支持，萨苏在党代会上顶住了有法国和苏联撑腰的卡塔利派的挑战，调动军队“平息”了党内的异议，契卡雅以及卡塔利派的成员都被解职了。萨苏就这样巩固了他的地位，并将继续他的统治。萨苏谴责法国和苏联“是社会帝国主义，干涉刚果内政”。他感谢我们的支持，宣布倒向我国，并和我们扩大了合作。"
+const TXT_R2_FR_PROSU := "event.script.event_497_congo_congress.c6"
 
-const TXT_R3_FR_NEUTRAL := "在党代会上，契卡雅遭到了萨苏的突然袭击，他指控契卡雅应该为1982年在布拉柴维尔发生的炸弹袭击事件负责，这导致他被免职。于此同时，卡塔利派也在大会上被边缘化，卡塔利被降职到一个清水衙门。萨苏就这样巩固了他的地位，并将继续他的统治。"
+const TXT_R3_FR_NEUTRAL := "event.script.event_497_congo_congress.c7"
 
 const TXT_R3_FR_PROSU := TXT_R1
 
@@ -41,15 +41,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line < 2 and torg:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if world.get_flag("relres") and sev and line < 3:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if line != 0 and line != 4:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	_enable(opt[3], event_def.options[3].text)
 
 
@@ -71,7 +71,7 @@ func execute(context: Dictionary) -> void:
 				congo.set_tag("亲中", true)
 				congo.set_tag("对华贸易", true)
 			ws.influence_prc += 20
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
@@ -81,7 +81,7 @@ func execute(context: Dictionary) -> void:
 				_leave_alliances(congo)
 				congo.set_tag("亲苏", true)
 				congo.set_tag("对华贸易", true)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
@@ -94,7 +94,7 @@ func execute(context: Dictionary) -> void:
 					congo.government = GameConstants.Government.REFORMIST
 					congo.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				ws.influence_prc += 20
-				context["result_text"] = TXT_R2_FR_NEUTRAL
+				context["result_text"] = tr(TXT_R2_FR_NEUTRAL)
 			else:
 				if congo != null:
 					if ws.is_socialism(china, true):
@@ -106,7 +106,7 @@ func execute(context: Dictionary) -> void:
 						congo.government = GameConstants.Government.REFORMIST
 						congo.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
 				ws.influence_prc += 20
-				context["result_text"] = TXT_R2_FR_PROSU
+				context["result_text"] = tr(TXT_R2_FR_PROSU)
 		3:
 			if france != null and france.has_tag("亲苏"):
 				if congo != null:
@@ -120,7 +120,23 @@ func execute(context: Dictionary) -> void:
 					_leave_alliances(congo)
 					congo.government = GameConstants.Government.REFORMIST
 					congo.sub_government = GameConstants.SubGovernment.RENEWAL_SOCIALIST
-				context["result_text"] = TXT_R3_FR_NEUTRAL
+				context["result_text"] = tr(TXT_R3_FR_NEUTRAL)
 
 
 ## Country.LeaveAlliances() 逐项映射（同 Event587 约定）。
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_497_congo_congress.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_497",
+	"num": 497,
+	"priority": 49700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_497_congo_congress.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1984.10.17"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "government", "v": 1, "target": "52"}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "sub_government", "v": 16, "target": "52"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

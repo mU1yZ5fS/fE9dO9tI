@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:539-542 —— 日>=6 月>=3 年>=1982。
 ## 差异：选项显隐 prepare 动态改写；science[6]→techs.unlocked[6]；old_modify_desc[15] 拼接为修正说明文案跳过。
 
-const TXT_OPT1_DIS := "我们没有足够的资源。"
-const TXT_OPT2_DIS := "他们不卖"
-const TXT_R0 := "我们有更重要的任务，而化肥业的发展也可能让人民被化学废料毒害......"
-const TXT_R1 := "我们的科学家很快研制出了世界上最新的化肥。我们的农民也很积极地开始使用化肥。现在我们已经可以谈论关于提高产量和满足需求了，让我们看看这将如何影响人们的长期健康。"
-const TXT_R2 := "我们的贸易代表团购买了国外最新的化肥样品，此后中国农业的发展可谓是一日千里。世界上也有越来越多的国家想和我们进行贸易。"
+const TXT_OPT1_DIS := "event.script.event_321_rural_fertilizer.c0"
+const TXT_OPT2_DIS := "event.script.event_321_rural_fertilizer.c1"
+const TXT_R0 := "event.script.event_321_rural_fertilizer.c2"
+const TXT_R1 := "event.script.event_321_rural_fertilizer.c3"
+const TXT_R2 := "event.script.event_321_rural_fertilizer.c4"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -23,11 +23,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if br >= 50 and data.industry >= 500:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if data.diplomatic_reputation >= 700 and br >= 50:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -35,19 +35,19 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			if not _tech_unlocked(6):
 				_add(W.I_BUDGET, -50)
 				_add(W.I_INDUSTRY, -50)
 				_add(W.I_AGRICULTURE, 75)
 				ws.techs.unlocked[6] = true
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_DIPLO, 100)
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGRICULTURE, 50)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 	
 
@@ -75,3 +75,19 @@ func _tech_unlocked(idx: int) -> bool:
 ## |农业机械化：|农业+0.6，工业+0.4
 ## |普及化肥与杀虫剂：|农业+0.3，生活水平+0.4
 ## |转基因技术：|农业+0.2，工业+0.2，生活水平+0.5，预算+0.3
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_321_rural_fertilizer.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_321",
+	"num": 321,
+	"priority": 32100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_321_rural_fertilizer.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1982.3.6"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

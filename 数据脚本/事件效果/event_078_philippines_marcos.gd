@@ -6,11 +6,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && !c47.isSEV && !c47.econ && IsAuthoritarianism(47)（.tres ExprNode 表达）。
 ## 差异：选项显隐 prepare 动态改写；data.philippines_maoist_power 直访（菲律宾毛派力量，无命名键）。
 
-const TXT_R0 := "在我们的特勤部队和武器供应的帮助下，菲律宾共产党和国民运动能够展开大规模的煽动和抗议，伴随着大量的游击活动。其他政治力量和普通公民很快也加入了这些不满。当然，抗议很快就被警察镇压了，游击队的进攻也被军队控制了，但我们似乎对马科斯政权造成了严重的破坏，他没有料到中国会突然进行如此无耻的干预。最后，他成功地赢得了总统选举，获得了52%的选票，但他必须更加谨慎地采取行动，共产党的影响力显著增强。或许，帮助他们更进一步，我们将看到菲律宾革命的胜利……"
+const TXT_R0 := "event.script.event_078_philippines_marcos.c0"
 
-const TXT_R1 := "结果，马科斯赢得了总统选举，获得了88%的选票。菲律宾似乎在等待他的政策继续。"
+const TXT_R1 := "event.script.event_078_philippines_marcos.c1"
 
-const TXT_R2 := "在马科斯以压倒性的88%的选票赢得总统选举后，我们祝贺他获胜，并对1975年开始的我们国家的进一步和睦表示希望。马科斯很乐意利用我们的提议，但许多菲律宾的毛派团体称之为背叛，共产党的影响力有所下降。"
+const TXT_R2 := "event.script.event_078_philippines_marcos.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -52,10 +52,10 @@ func execute(context: Dictionary) -> void:
 				d.philippines_maoist_power += 300
 			if philippines != null:
 				philippines.set_tag("对华贸易", false)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add_power(EmpireData.USA, 10)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_DIPLO, -10)
 			_add_relation(EmpireData.USA, 50)
@@ -64,7 +64,7 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USA, 20)
 			if philippines != null:
 				philippines.set_tag("对华贸易", true)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 func _coalition_percent(world: WorldState) -> int:
@@ -89,3 +89,19 @@ func _coalition_percent(world: WorldState) -> int:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_078_philippines_marcos.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_078",
+	"num": 78,
+	"priority": 7800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_078_philippines_marcos.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1981.6.1"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "asean", "target": "1"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "okb", "target": "47"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "sev", "target": "47"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "47"}]}, {"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "government", "target": "47"}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "sub_government", "target": "47"}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

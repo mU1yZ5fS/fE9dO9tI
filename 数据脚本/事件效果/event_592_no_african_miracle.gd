@@ -9,7 +9,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "三国组建了一支统一调度的武装部队，代号“象牙”的行动一触即发。在得到阿比让的信息之后，三军从北，西和东方攻入了这个小国。加纳人民军迅速开入了阿比让内，在科国内的象牙海岸革命共产党的帮助下顺利攻占了首都总统府和广播电台，号召全体人民起义，夺权，彻底革命。与此同时几内亚和布基纳法索的武装力量攻入了亚穆克苏罗，来不及为城中的巨大教堂感到震惊，他们还需要快速的南下和加纳会师。而法国和美国拒绝武装介入这一问题。仅仅是谴责了三国的暴力行为，提供了除干涉外的一切帮助。\n随后，博瓦尼被宣判有战争罪，蓄意谋杀罪，种族灭绝罪而被判处死刑。象牙海岸革命共产党正式成为了该国的领导力量。不久以后该党便出台了执政纲领“社会主义与科特迪瓦”。宣布要以马克思列宁主义的为指导，毛泽东思想为武器，建立巩固和保卫社会主义科特迪瓦。大量的种植园从私人名义被转为公有，而一直被打压的工会也得到了一定的自主权。同时大量的法国和美国矿冶企业也被查收。在偏远的地区，建立新首都的工程也被暂时叫停，和平圣母大教堂中的宗教元素则被摘除。该建筑则被用于作为集会和纪念馆。"
+const TXT_R0 := "event.script.event_592_no_african_miracle.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -25,10 +25,25 @@ func execute(context: Dictionary) -> void:
 		_establish_prochina(c64)
 		c64.set_tag("对华贸易", true)
 		_join_alliances(c64)
-	context["result_text"] = TXT_R0
+	context["result_text"] = tr(TXT_R0)
 
 
 func _establish_prochina(c: CountryData) -> void:
 	c.set_tag("亲中", true)
 	c.set_tag("亲苏", false)
 	c.set_tag("亲美", false)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_592_no_african_miracle.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_592",
+	"num": 592,
+	"priority": 59200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_592_no_african_miracle.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

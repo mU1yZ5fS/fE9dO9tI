@@ -4,9 +4,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:909-911 —— c117.SubGosstroy==7 && c117.Torg && DATE_AFTER 1982.2.15。
 ## 差异：level_of_dev→level_of_development；Torg→对华贸易。
 
-const TXT_OPT0_DIS := "我们不在乎这些费拉不堪的自由派"
-const TXT_R0 := "扎伊尔军队在数次对外战争中的灾难性战果导致蒙博托的名声江河日下，MRP内部也因此出现了分裂，财政赤字与外债急剧飙升，罢工游行接连不断，加丹加和基伍省的叛乱层出不穷，为此，政府不得不出台紧急措施增收节支，然而这也只是杯水车薪，随着货币贬值，进口商品和生活必需品价格的大幅上涨，人民怨声载道。在这种情况下，反对派的声望水涨船高，其中更少不了我们的“改革换援助计划”大获成功。为了保证国家不至于崩溃，以及我们驻扎在扎伊尔的多支武装团体和工作队的压力下，蒙博托事实上向我们低头了。他接纳了这一支反对派作为御用狗哨。\n蒙博托迟早会滚蛋，只不过不是现在……"
-const TXT_R1 := "蒙博托能稳坐钓鱼台自有他的艺术，我们只需要顺其自然即可。\n不出意外，蒙博托又一次网罗了罪名，把这位黑暗大陆的自由斗士投入了大牢之中。"
+const TXT_OPT0_DIS := "event.script.event_613_dark_continent_freedom_fighter.c0"
+const TXT_R0 := "event.script.event_613_dark_continent_freedom_fighter.c1"
+const TXT_R1 := "event.script.event_613_dark_continent_freedom_fighter.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -20,7 +20,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line >= 3:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 
 
@@ -33,7 +33,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			if zaire != null:
 				zaire.government = GameConstants.Government.REFORMIST
 				zaire.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
@@ -46,7 +46,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -20)
 			_add(W.I_BUDGET, -20)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -136,3 +136,19 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_613_dark_continent_freedom_fighter.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_613",
+	"num": 613,
+	"priority": 61300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_613_dark_continent_freedom_fighter.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 7, "target": "117"}, {"t": "COUNTRY_HAS_TAG", "key": "对华贸易", "target": "117"}, {"t": "DATE_AFTER", "key": "1982.2.15"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

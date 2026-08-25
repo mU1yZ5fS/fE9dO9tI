@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   复合条件 → trigger_script evaluate。
 ## 差异：ingamewars[75] 建模说明 WarDef → 兜底创建后补名。
 
-const TXT_R0 := "中央一声令下，解放军海军立即包围了台湾岛，断绝了台湾岛与外界的一切联系。金门马祖立刻被福建省的解放军接管，而登岛作战貌似也并不困难。美苏谴责我们破坏台海和平，我们早已对此见怪不怪，甚至我们的联合国代表都能背出来他们谴责我们的台词，况且这只是我们解放自己的领土，又关他们何事呢？"
+const TXT_R0 := "event.script.event_643_liberate_taiwan.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -14,7 +14,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	if opt != 0:
 		return
-	context["result_text"] = TXT_R0
+	context["result_text"] = tr(TXT_R0)
 	# 原版 ingamewars[75]：第三次中国内战，中国(700) vs 中华民国(300)，美苏均支持防守方
 	game.start_war(75, "中华人民共和国", "中华民国", 700, 300, 2, 2)
 	if ws.wars.size() > 75 and ws.wars[75] != null:
@@ -49,3 +49,18 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	return world.decisions == null or world.decisions.completed.size() <= 7 \
 		or not world.decisions.completed[7]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_643_liberate_taiwan.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_643",
+	"num": 643,
+	"priority": 64300,
+	"notify": false,
+	"trigger_script": "res://数据脚本/事件效果/event_643_liberate_taiwan.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

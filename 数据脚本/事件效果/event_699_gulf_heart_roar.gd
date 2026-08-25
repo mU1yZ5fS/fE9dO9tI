@@ -5,11 +5,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##   → trigger_script evaluate。
 ## 差异：result0 的 load_scene_after_click+number_event=700 → EventEngine.enqueue_chain(["event_700"])。
 
-const TXT_OPT0_DIS := "我们不必多管闲事……"
-const TXT_OPT1_DIS := "我们不会支持反动的王国！"
-const TXT_R0 := "显然，瓦哈比学派的不宽容政策已使少数群体忍无可忍，而沙特王室日益暴虐的统治更是激起了广泛的民愤。此时正是推翻这个借伪教法来为自己寻求合法性的腐朽国度了！作为长期弱势方的什叶派有权反抗这个无能的王国！作为遭受压制的世俗主义者有权挑战这个蒙昧的王国！作为被压迫的广大海湾民众有权推翻这个不义的王国！\n始终支持革命力量的我方政府，迅速向卡提夫民众提供了人道主义物资以缓解困境，并派遣特勤人员提供协助，逐步瓦解沙特国民警卫队的行动部署。最终，素来训练松懈的沙特部队难以抵挡人民群众之怒火，丧失了对现场的控制，并在遭受严重损失后被迫选择撤退。这严重打击了沙特政府向来目空一切的态度。而大获全胜的OIR则乘势推进，在被占领的市政厅内宣布成立“自治政府”，并以更坚定的姿态要求现政府坐下来谈判。\n“伊斯兰革命是所有穆斯林的宗教义务；本质上，它是一场反对落后、压迫和暴政的革命。”——哈桑·萨法尔"
-const TXT_R1 := "就算沙特王室存在诸多过失，其危害仍远不及那些意欲输出狂热意识形态的什叶派教法学家，而双方针锋相对的情况恰恰是我们打压伊朗人传播“主道”的绝佳机会。对始终秉持唯物主义的我党而言，神权政治这一古老又极具破坏性的怪物必须被抑制，哪怕这意味着我们需要与恶魔携手。\n我国政府最终选择站在沙特政府一方，通过情报共享和部分军事援助，成功稳定了卡提夫的局势。尽管什叶派即使群情激奋，但在绝对人数的劣势下依然不敌。OIR最终被迫进入地下状态，领导人哈桑·萨法尔被拘留。虽然这些什叶派声称他们仅使用和平民主的方式，只是为了让现沙特王国进行一定程度的改革。但一群宗教分子的话怎么能够相信呢？即便他们的队伍里有学生和城市知识分子……\n“真正的麻烦根源是城市，因为那里的人们受过教育。”——沙特王室"
-const TXT_R2 := "11月28日晚，数千人走上靠近达曼的塞哈特街头示威。抗议者高呼反政府口号，要求国王退位，并向附近一队国民警卫队士兵逼近。这场与沙特安全部队的暴力冲突由抗议者主导，参与者包括侯赛因·曼苏尔·卡拉夫——一名刚从阿美公司工业培训中心毕业的青年。\n沙特国民警卫队最初使用警棍和电击棒控制人群，此举激怒了示威者，抗议者随即投掷石块，挥舞铁棍与木棍作为武器，部分什叶派示威者还持有锐器。随后国民警卫队向人群发射橡皮子弹，19岁的侯赛因·曼苏尔·卡拉夫等人中弹受伤。\n在最初的抗议与冲突之后，示威者与国家安全部队之间又爆发多起小规模冲突，主要集中在盖提夫地区。这些冲突造成更多人员死亡，其中包括10名抗议者——他们因试图破坏塔鲁特岛并袭击军官，被安全部队开枪击中。另有报道称，什叶派团伙殴打逊尼派民众，安全部队在周边居民区向这些团伙开火，导致多起随意枪击致死事件。\n抗议活动在12月3日后基本平息，此前达曼和胡拜尔曾举行大规模什叶派游行。军方与什叶派民众之间的血腥对峙导致数千人被捕、数百人受伤、24人死亡。\n针对此次抗议运动，沙特政府承认盖提夫地区发展滞后，并加大地方投入，以改善民生、平息抗议。12月初，盖提夫地方政府额外获得7亿沙特里亚尔用于新建污水管网，3900万里亚尔用于道路改善项目，325万里亚尔用于盖提夫试验农场。哈萨省省长同时宣布，再追加10亿里亚尔用于各类地方项目。这些举措仅是沙特政府推动盖提夫地区发展整体计划的一部分，政府还宣布新建医院、学校，并设立房地产发展基金，帮助当地民众自建住房。\n教友叽里咕噜说啥呢？\n不管怎么样，沙特好像……没事了？"
+const TXT_OPT0_DIS := "event.script.event_699_gulf_heart_roar.c0"
+const TXT_OPT1_DIS := "event.script.event_699_gulf_heart_roar.c1"
+const TXT_R0 := "event.script.event_699_gulf_heart_roar.c2"
+const TXT_R1 := "event.script.event_699_gulf_heart_roar.c3"
+const TXT_R2 := "event.script.event_699_gulf_heart_roar.c4"
 
 
 func prepare(event_def: EventDef, _world: WorldState) -> void:
@@ -20,12 +20,12 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	if ws.result_of_event_num(698) == 0:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if (_res(W.I_POLITICAL_LINE) > 2 or _res(W.I_DIPLO) < 800) \
 			and ws.result_of_event_num(698) != 0:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -35,13 +35,13 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -70)
 			_add_relation(EmpireData.USA, -100)
 			EventEngine.enqueue_chain(["event_700"])
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			_add(W.I_ARMY, -50)
 			_add(W.I_AGENTS, -50)
 			_add_relation(EmpireData.USA, 100)
@@ -51,7 +51,7 @@ func execute(context: Dictionary) -> void:
 			ws.oil_prod += 100.0
 			_add(W.I_BUDGET, 100)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 func evaluate(world: WorldState) -> bool:
@@ -61,3 +61,19 @@ func evaluate(world: WorldState) -> bool:
 		return false
 	var c8 := world.get_country_by_legacy_index(8)
 	return c8 == null or c8.sub_government != GameConstants.SubGovernment.NEOPATRIARCHAL
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_699_gulf_heart_roar.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_699",
+	"num": 699,
+	"priority": 69900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_699_gulf_heart_roar.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_699_gulf_heart_roar.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

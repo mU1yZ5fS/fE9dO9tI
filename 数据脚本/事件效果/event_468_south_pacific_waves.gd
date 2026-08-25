@@ -6,14 +6,14 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：usa_place=1→usa_side = GameConstants.WarSide.SIDE2；开战按项目约定 game.start_war(34,...) 后覆盖
 ##   name_war/fortnight_max（TickTime 20）；button_text[5]/result_num==5 死代码跳过。
 
-const TXT_OPT0_DIS := "他们根本没有这样的势力基础"
-const TXT_R0 := "世界各国人民的解放一直都是我们的夙愿，我们的兄弟党即将迎来自己民族的解放，我们怎么可能撒手不管！我们积极辅助了泰马两党的北马来根据地政权的转移工作。马来政府对我们的行为十分恼火，已经对我们的行为下了最后通牒，但是这又如何呢？一个买办政府是挡不住人民战争的汪洋大海的！新生的泰人民政权已经准备好投入进这一场兄弟民族的革命中去了，我们更应该履行无产阶级国际主义。同志们，向吉隆坡，进攻！"
-const TXT_WAR_NAME := "马来亚内战"
-const TXT_WAR_SIDE1 := "马来亚民族解放同盟"
-const TXT_WAR_SIDE2 := "马来西亚政府"
-const TXT_R1_BASE := "经过权衡，我们还是认为维持与现在马来西亚政府的友谊更好。为此，我们让马来亚民族解放军和马来西亚现政府签订《合艾和约》。泰国的人民政权对我国完全失望，转而加入了经济互助委员会，失去了一个这样的盟友也没有什么挽留的，天要下雨，娘要嫁人，随他去吧。而马来西亚现政府与我们现在的关系也变好了，"
-const TXT_R1_ASEAN := "我们与东盟的合作也深入了下去，"
-const TXT_R1_TAIL := "但愿这对我们的全球战略有好的影响。"
+const TXT_OPT0_DIS := "event.script.event_468_south_pacific_waves.c0"
+const TXT_R0 := "event.script.event_468_south_pacific_waves.c1"
+const TXT_WAR_NAME := "event.script.event_468_south_pacific_waves.c2"
+const TXT_WAR_SIDE1 := "event.script.event_468_south_pacific_waves.c3"
+const TXT_WAR_SIDE2 := "event.script.event_468_south_pacific_waves.c4"
+const TXT_R1_BASE := "event.script.event_468_south_pacific_waves.c5"
+const TXT_R1_ASEAN := "event.script.event_468_south_pacific_waves.c6"
+const TXT_R1_TAIL := "event.script.event_468_south_pacific_waves.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -27,7 +27,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if done467 and res467 == 0:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 
 
@@ -41,25 +41,25 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			if malaysia != null:
 				malaysia.government = GameConstants.Government.AUTHORITARIAN
 				malaysia.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
-			game.start_war(34, TXT_WAR_SIDE1, TXT_WAR_SIDE2, 300, 700, 1)
+			game.start_war(34, tr(TXT_WAR_SIDE1), tr(TXT_WAR_SIDE2), 300, 700, 1)
 			var war := _get_war(34)
 			if war != null:
-				war.name_war = TXT_WAR_NAME
+				war.name_war = tr(TXT_WAR_NAME)
 				war.fortnight_max = 20
 			_add(W.I_AGENTS, -100)
 			_add(W.I_BUDGET, -100)
 			_add_relation(EmpireData.USA, -300)
 			ws.influence_prc += 20
 		1:
-			var text := TXT_R1_BASE
+			var text := tr(TXT_R1_BASE)
 			var asean := _country(51)
 			if asean != null and asean.has_tag("对华贸易"):
-				text += TXT_R1_ASEAN
-			text += TXT_R1_TAIL
+				text += tr(TXT_R1_ASEAN)
+			text += tr(TXT_R1_TAIL)
 			context["result_text"] = text
 			_add_relation(EmpireData.USA, 150)
 			if thai != null:
@@ -133,3 +133,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_468_south_pacific_waves.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_468",
+	"num": 468,
+	"priority": 46800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_468_south_pacific_waves.gd",
+	"trigger": [{"t": "COUNTRY_FIELD_EQUALS", "key": "cw", "v": 1, "target": "34"}, {"t": "DATE_AFTER", "key": "1981.2.1"}, {"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "cw", "v": 1, "target": "34"}, {"t": "DATE_AFTER", "key": "1981.2.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

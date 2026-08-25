@@ -9,12 +9,12 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0_A := "在非盟的协调下，莫桑比克，赞比亚和坦桑尼亚地区开始对马拉维进行军事行动。这一次，没有了罗德西亚的帮助，"
-const TXT_R0_SA := "就算是白人南非部队都无法帮助马拉维。"
-const TXT_R0_OTHER := "谁都无法帮助被包围的马拉维。"
-const TXT_R0_MID_A := "很快，三国联军便将马拉维全境彻底占领，马拉维民主共和国成立，由LESOMA担任执政党。LESOMA上台之后，便宣布实行泛非的、马列主义的社会主义，加入非盟并实行类似乌贾马的合作化运动和工厂国有化运动，"
-const TXT_R0_BREAK := "与台湾当局断交并"
-const TXT_R0_MID_B := "与我们重新建交，将马拉维大会党及其准军事组织马拉维少先队进行强制解散，高层被关入大牢，班达本人则以反革命罪，叛国罪，镇压反对派等罪名被处以死刑，其私人财产则被充公。由于马拉维经济发展落后，非盟和我国开始为马拉维提供一笔发展资金，用以建造发电厂，发展教育等。"
+const TXT_R0_A := "event.script.event_584_bantustan_end.c0"
+const TXT_R0_SA := "event.script.event_584_bantustan_end.c1"
+const TXT_R0_OTHER := "event.script.event_584_bantustan_end.c2"
+const TXT_R0_MID_A := "event.script.event_584_bantustan_end.c3"
+const TXT_R0_BREAK := "event.script.event_584_bantustan_end.c4"
+const TXT_R0_MID_B := "event.script.event_584_bantustan_end.c5"
 
 
 func execute(context: Dictionary) -> void:
@@ -23,17 +23,17 @@ func execute(context: Dictionary) -> void:
 	var c131 := ws.get_country_by_legacy_index(131)
 	var c38 := ws.get_country_by_legacy_index(38)
 	var c125 := ws.get_country_by_legacy_index(125)
-	var text := TXT_R0_A
+	var text := tr(TXT_R0_A)
 	if c131 != null and c131.government == GameConstants.Government.AUTHORITARIAN:
-		text += TXT_R0_SA
+		text += tr(TXT_R0_SA)
 	else:
-		text += TXT_R0_OTHER
-	text += TXT_R0_MID_A
+		text += tr(TXT_R0_OTHER)
+	text += tr(TXT_R0_MID_A)
 	var break_cond := c38 != null and c38.government == GameConstants.Government.AUTHORITARIAN and ws.decisions != null \
 			and ws.decisions.completed.size() > 7 and not ws.decisions.completed[7]
 	if break_cond:
-		text += TXT_R0_BREAK
-	text += TXT_R0_MID_B
+		text += tr(TXT_R0_BREAK)
+	text += tr(TXT_R0_MID_B)
 	_add(W.I_BUDGET, -50)
 	if c125 != null:
 		c125.government = GameConstants.Government.SOCIALIST
@@ -44,3 +44,18 @@ func execute(context: Dictionary) -> void:
 	ws.influence_prc += 20
 	_add(W.I_DIPLO, 15)
 	context["result_text"] = text
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_584_bantustan_end.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_584",
+	"num": 584,
+	"priority": 58400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_584_bantustan_end.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

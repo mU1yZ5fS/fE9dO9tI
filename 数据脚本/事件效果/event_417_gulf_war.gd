@@ -13,7 +13,7 @@ const TXT_DESC := [
 	"在前些天的电视讲话中，“兄弟总统”，伊拉克领导人萨达姆·侯赛因指责海湾国家的统治者，尤其是科威特是帝国主义和犹太复国主义者发动的国际运动的工具，目的是阻止伊拉克的科技进步，使伊拉克人民陷入贫困。十天后，在伊拉克军队沿伊拉克-科威特边境调动的阴影下，欧佩克决定将其石油参考价格提高三美元，并允许各国增加产量，希望这能让伊拉克采取更温和的态度。但在欧佩克发表决议的第三天，伊拉克政府决定入侵并占领科威特。",
 ]
 
-const TXT_DESC_APPEND := "刚刚结束了卡迪西亚的萨达姆自然不只是希望夺回自己的石油，或者换取科威特让步，而是希望能恢复对科威特的绝对主权。所以，刚刚结束对伊朗的军事行动的伊拉克军队开始调向科威特边境地带，伊拉克空军也频频起飞。"
+const TXT_DESC_APPEND := "event.script.gulf_war.txt_desc_append"
 
 const TXT_OPT0 := [
 	"这就是万战之母吗……",
@@ -31,9 +31,9 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1314 := "伊拉克入侵科威特"
-const TXT_IDX_1315 := "伊拉克"
-const TXT_IDX_1316 := "科威特"
+const TXT_IDX_1314 := "event.script.event_417_gulf_war.c0"
+const TXT_IDX_1315 := "event.script.event_417_gulf_war.c1"
+const TXT_IDX_1316 := "event.script.event_417_gulf_war.c2"
 
 ## 原文字符串附录（供自检）
 ## 我们将走上战场
@@ -74,7 +74,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null:
 		return
 	var iraq := world.get_country_by_legacy_index(8)
-	var append_text := TXT_DESC_APPEND if iraq != null and iraq.puppet_of == GameConstants.LegacySlot.IRAQ else ""
+	var append_text := tr(TXT_DESC_APPEND) if iraq != null and iraq.puppet_of == GameConstants.LegacySlot.IRAQ else ""
 	event_def.description = _fmt(TXT_DESC[0], [append_text]) + TXT_DESC[1]
 
 func execute(context: Dictionary) -> void:
@@ -89,3 +89,19 @@ func execute(context: Dictionary) -> void:
 		ws.wars[28].name_war = "伊拉克入侵科威特"
 		ws.wars[28].fortnight_max = 25
 	context["result_text"] = TXT_R[0]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_417_gulf_war.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_417",
+	"num": 417,
+	"priority": 41700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_417_gulf_war.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_417_gulf_war.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

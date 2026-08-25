@@ -9,12 +9,12 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - empires[1].relations=-250 按项目约定 clampi(…,0,1000) 处理；
 ##  - 死代码 result_num==5 跳过。
 
-const TXT_OPT1_DIS := "我们绝不与资本主义者和修正主义者妥协！"
-const TXT_OPT3_DIS := "哪怕是为了对抗修正主义者，我们也不会先发动核打击"
-const TXT_R0 := "我们无法实现我们的目标，并决定立即撤军。很明显，我们的军队急需改革和现代化建设，党应该处理失败的具体原因。另一方面，越南正在巩固自身边界，要求我们对其赔款，并且已在就在其领土上部署一支苏联部队的问题与苏联进行谈判，并已申请加入华约，申请得到通过只是时间问题。"
-const TXT_R1 := "目睹了前线的失败，我们转而采取外交手段。不久，在联合国安理会的一次会议上，解决越南问题的议题被提了出来。借助我们的影响力与美国的支持，我们能够依照自身意志解决大多数问题，越南甚至还得把部分大陆领土割让给我们。尽管苏联和其他一些国家对此感到愤懑不满，这个决定还是给我们挽回了颜面。在那之后，越南政府加强了与苏联的军事和经济合作，并开始在我国边界附近定期举行军事演习。"
-const TXT_R2 := "我们不需要谈判！我们在武器和人力方面有巨大的优势。尽管难免有些军事和经济损失，我们仍将有条不紊地摧毁他们的防御。"
-const TXT_R3 := "凌晨五点，一架轰六轰炸机升空飞向河内。机上搭载着一枚300万吨当量的热核炸弹。不久后，越南首都便化作了一片废墟。当天结束时，蘑菇云已在越南的许多其他城市和工业重镇冉冉升起。解放军正从四面八方突破越军的防线。这是场压倒性的胜利，但这值得么？"
+const TXT_OPT1_DIS := "event.script.event_300_vietnam_war.c0"
+const TXT_OPT3_DIS := "event.script.event_300_vietnam_war.c1"
+const TXT_R0 := "event.script.event_300_vietnam_war.c2"
+const TXT_R1 := "event.script.event_300_vietnam_war.c3"
+const TXT_R2 := "event.script.event_300_vietnam_war.c4"
+const TXT_R3 := "event.script.event_300_vietnam_war.c5"
 
 
 func execute(context: Dictionary) -> void:
@@ -25,7 +25,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			ws.war_state = GameConstants.WarState.PEACE
 			_set_data(W.I_WAR_PRESSURE, 5)
 			if vietnam != null:
@@ -35,7 +35,7 @@ func execute(context: Dictionary) -> void:
 				war1.side1 = "柬埔寨"
 				war1.name_war = "柬埔寨－越南战争"
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			_add_relation(EmpireData.USSR, -200)
 			ws.war_state = GameConstants.WarState.PEACE
 			if vietnam != null:
@@ -44,9 +44,9 @@ func execute(context: Dictionary) -> void:
 				war1.side1 = "柬埔寨"
 				war1.name_war = "柬埔寨－越南战争"
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 			if war1 != null:
 				war1.infl1 = 1000
 				war1.infl2 = -1000
@@ -73,3 +73,19 @@ func _set_data(index: int, value: int) -> void:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_300_vietnam_war.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_300",
+	"num": 300,
+	"priority": 30000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_300_vietnam_war.gd",
+	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "event_056"}, {"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_056"}, {"t": "RESOURCE_EQUALS", "key": "war", "v": 1}, {"t": "RESOURCE_AT_LEAST", "key": "year", "v": 1979}, {"t": "RESOURCE_AT_LEAST", "key": "month", "v": 3}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "global_influence", "v": 500}, {"t": "RESOURCE_AT_LEAST", "key": "diplo", "v": 800}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "IS_FACTION_LEADER"}, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

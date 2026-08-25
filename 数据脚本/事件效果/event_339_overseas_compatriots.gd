@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "当然，家人离散、民族破碎是不好。但大量人口的到来不会对经济和生活水平产生什么好的影响......就这样吧。"
-const TXT_R1 := "党发表了一份示范性的声明，呼吁海外华人回归祖国。当然，有些人回国了，但那些已经身为其他国家公民的人仍然留在海外。还是那样，光说说是没用的。不过，这样也就足够了。"
-const TXT_R2 := "由中华人民共和国政府启动的华侨返乡项目马上就开始运作了。早在第一年，便已有大约10万人回国，依照预期，总共会有几百万人回国。是的，为每个人提供住房和工作是件难事，但我们的劳动力多了。若是我们再考虑到在归国人民中有对我们有用、具有特殊技术专长的公民，这完全是笔合算买卖。"
+const TXT_R0 := "event.script.event_339_overseas_compatriots.c0"
+const TXT_R1 := "event.script.event_339_overseas_compatriots.c1"
+const TXT_R2 := "event.script.event_339_overseas_compatriots.c2"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -15,19 +15,19 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_DIPLO, 15)
 			_add(W.I_THOUGHT_FREEDOM, 15)
 			_add(W.I_POPULATION, 3)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_SCIENCE, 250)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_THOUGHT_FREEDOM, 50)
 			_add(W.I_POPULATION, 44)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -49,3 +49,19 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_339_overseas_compatriots.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_339",
+	"num": 339,
+	"priority": 33900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_339_overseas_compatriots.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1983.12.30"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -1,14 +1,12 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event530.cs：变则善，常变则至善（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event530.cs：变则善，常变则至善（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "没人对他们有兴趣"
-const TXT_OPT1_DIS := "没人对他们有兴趣"
-const TXT_R0_A := "社会党背后的靠山——日本最大的左翼工会“总评”在“劳资调和”构想盛行以及企业工人群体日益现实主义化的背景下不断向社会党施压，要求其做出“真正的改变”。同时借助亲华的佐佐木派，我们派遣人员成功说服了社会党中央的大多数委员。而公明党和民主社会党在由于先前的援助，与我们的关系已经拉近，在与两党委员长多次沟通之后，它们也同意与改革后的社会党保持步调一致。\n不久，社会党召开了一次临时党代会，并以大比例优势通过了《日本社会党的新宣言——爱、知、力的创造》这一全新纲领，正式抛弃了旧有的《日本通向社会主义之路》。新纲领强调“和平长入社会主义”以及市民与国民的概念，事实否认了“阶级性”的理念。这标志着社会党第一次完全抛弃了马克思主义，踏入到社会民主主义的行列中。\n社会党党大会后不久，其与公明党和民主社会党在东京召开了一次联合会议并达成协议：三党以“中道革新”“国民先锋”为口号，正式合并为日本社会民主党，打出了“终结自民党垄断，建立符合国民需求的革新政权”的旗帜，以社会民主主义与护宪平和主义（当然对其中的自卫队问题、朝鲜半岛问题等进行了修订）为指导思想。很快，社会民主联合也宣布加入该党。\n日本媒体对于三党合并的消息感到惊讶。对于这一联盟在接下来的选举中能取得怎样的成绩也有不同的看法。但是对市民阶层而言，一个更具新时代革新色彩，提倡福利政策且并非传统“工会斗士”的左翼政党显然还是很对他们的胃口的。一些报纸已经开始预测在下一届国会选举中，社会民主党有望打破自由民主党的垄断地位。"
-const TXT_R1_A := "我们派出大量人员与共产党和社会党的中央委员进行沟通。在我们此前长期的积极行动下，绝大部分社会组织、青年活动家和工会干部都成功被我们团结了起来，借助他们的影响力以及此前与两党打下的关系基础，我们最终说服了大多数中央委员，尤其是共产党领导人宫本显治。\n不久，日本共产党与日本社会党召开了一次联合大会，会上宫本显治正式宣布将成立以两党为核心，囊括大批社会团体的“日本人民民主联合阵线”，以寻求“超越思想、信仰和政党支持的差异，汇集大多数人民的革新运动”为目标，在全国范围内树立新的创新阵线。社会党委员长飞鸟田一雄也宣布将与共产党步调一致。总的来说，该阵线的方针是以欧洲共产主义的思想为核心，并囊括了非武装中立、无核化政策等理念。\n日本媒体对于两党联盟的消息感到惊讶。对于这一联盟在接下来的选举中能取得怎样的成绩也有不同的看法。但是对市民阶层而言，一个更具新时代革新色彩，提倡福利政策且并非传统“工会斗士”的左翼联盟至少是可接受的。一些报纸已经开始预测在下一届国会选举中，日本人民民主联合阵线有望打破自由民主党的垄断地位。"
-const TXT_R2_A := "社会党背后的靠山——日本最大的左翼工会“总评”在“劳资调和”构想盛行以及企业工人群体日益现实主义化的背景下不断向社会党施压，要求其做出“真正的改变”。在飞鸟田一雄的带领下，社会党也最终完全抛弃了“社共共斗”转而一心建设“社公民路线”。但在党内纷争依旧且与其他在野党摩擦不断的情况下，大部分媒体对该路线并不乐观。社会党“万年在野党”的尴尬名头还将持续下去。而随着国际局势的变化，甚至社会党能否继续维持国会第二大党都成了一个问题，特别是在工会不再单独支持社会党的情况下。"
+const TXT_OPT0_DIS := "event.script.event_530_japan_change_is_good.c0"
+const TXT_OPT1_DIS := "event.script.event_530_japan_change_is_good.c1"
+const TXT_R0_A := "event.script.event_530_japan_change_is_good.c2"
+const TXT_R1_A := "event.script.event_530_japan_change_is_good.c3"
+const TXT_R2_A := "event.script.event_530_japan_change_is_good.c4"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -18,11 +16,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line == 3 and int(ws.completed_event_ids.get("event_522", 0)) == 1 and int(ws.completed_event_ids.get("event_527", 0)) == 1 and int(ws.completed_event_ids.get("event_525", 0)) != 1 and int(ws.completed_event_ids.get("event_526", 0)) != 1:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.political_line == 2 and int(ws.completed_event_ids.get("event_522", 0)) == 1 and int(ws.completed_event_ids.get("event_527", 0)) == 2 and int(ws.completed_event_ids.get("event_525", 0)) != 1 and int(ws.completed_event_ids.get("event_526", 0)) != 1:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
@@ -31,7 +29,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(100))
 			_add(9, -(100))
 			_add(1, 80)
@@ -40,7 +38,7 @@ func execute(context: Dictionary) -> void:
 			_add(6, 5)
 			ws.influence_prc += 10
 		1:
-			context["result_text"] = TXT_R1_A
+			context["result_text"] = tr(TXT_R1_A)
 			_add(8, -(100))
 			_add(9, -(100))
 			_add(1, 80)
@@ -49,7 +47,7 @@ func execute(context: Dictionary) -> void:
 			_add(6, 5)
 			ws.influence_prc += 10
 		2:
-			context["result_text"] = TXT_R2_A
+			context["result_text"] = tr(TXT_R2_A)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -184,3 +182,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_530_japan_change_is_good.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_530",
+	"num": 530,
+	"priority": 53000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_530_japan_change_is_good.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "44"}, {"t": "PREV_EVENT_NOT_DONE", "ref": "event_531"}, {"t": "ANY", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_527"}, {"t": "PREV_EVENT_DONE", "ref": "event_528"}]}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "sub_government", "v": 8, "target": "44"}, {"t": "DATE_AFTER", "key": "1981.6.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

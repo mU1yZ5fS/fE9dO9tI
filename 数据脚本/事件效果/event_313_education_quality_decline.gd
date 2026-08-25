@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录搜索无 this_num_event = 313 / Reset(313) / StartEvent(313)；链外 REST 段，原版无自动条件（决策/其他事件链手动触发）。
 ## 差异：选项显隐 prepare 动态改写；文本来自 Events_text_en 索引 116-125。
 
-const TXT_OPT1_DIS := "我们没有足够的预算"
-const TXT_OPT2_DIS := "我们绝对没有那么多钱。"
-const TXT_R0 := "在党的会议上，你发表了关于教育在国家建设中的重要性的讲话。的确，讲话归讲话，到头来只有一些学生开始睡得更少，花些时间在读书上......"
-const TXT_R1 := "我国教育状况并非尽善尽美，因此我们决定划拨额外的资金。新学校和新大学的建设、现有学校的现代化都已经开始，教师工资也已提高。这将使教育状况的长期改善成为可能。"
-const TXT_R2 := "根据党的决定，整个教育系统进行了大规模改革，价值存疑的科目的课时被削减，其余的课程也被改为更接轨现代科学成果的课程。同时，对确切科学领域的去意识形态化也在系统进行。依照预期，在几年内，我们便将感受到改革带来的强烈积极影响。"
+const TXT_OPT1_DIS := "event.script.event_313_education_quality_decline.c0"
+const TXT_OPT2_DIS := "event.script.event_313_education_quality_decline.c1"
+const TXT_R0 := "event.script.event_313_education_quality_decline.c2"
+const TXT_R1 := "event.script.event_313_education_quality_decline.c3"
+const TXT_R2 := "event.script.event_313_education_quality_decline.c4"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -23,11 +23,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if br >= 50:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if data.global_influence > 10:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -37,20 +37,35 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_PARTY_SUPPORT, 150)
 			_add(W.I_SCIENCE, -200)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_PEOPLE_SUPPORT, 20)
 			_add(W.I_PARTY_SUPPORT, 150)
 			_add(W.I_CORRUPTION, -5)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_BUDGET, -70)
 			_add(W.I_SCIENCE, 300)
 			_add(W.I_PEOPLE_SUPPORT, 20)
 			_add(W.I_PARTY_SUPPORT, 150)
 			_add(W.I_CORRUPTION, -5)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 	
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_313_education_quality_decline.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_313",
+	"num": 313,
+	"priority": 31300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_313_education_quality_decline.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

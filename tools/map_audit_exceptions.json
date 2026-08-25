@@ -1,0 +1,347 @@
+{
+  "_readme": "故意的 1976 殖民地/飞地状态：map_countries.regions 是国家民族范围，owner_1976_gwcode 是当年实际控制方。新增例外必须注明出处。",
+  "entries": [
+    {
+      "key": "owner_mismatch:80:1265",
+      "reason": "英属洪都拉斯（伯利兹1981独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:80:1267",
+      "reason": "英属洪都拉斯（伯利兹1981独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:80:1268",
+      "reason": "英属洪都拉斯（伯利兹1981独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:80:1635",
+      "reason": "英属洪都拉斯（伯利兹1981独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:80:2094",
+      "reason": "英属洪都拉斯（伯利兹1981独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:80:2095",
+      "reason": "英属洪都拉斯（伯利兹1981独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:120:47",
+      "reason": "法属圭亚那=法国海外省",
+      "actual_owner": 220
+    },
+    {
+      "key": "owner_mismatch:522:366",
+      "reason": "法属吉布提（Event585 独立）",
+      "actual_owner": 220
+    },
+    {
+      "key": "owner_mismatch:522:367",
+      "reason": "法属吉布提（Event585 独立）",
+      "actual_owner": 220
+    },
+    {
+      "key": "owner_mismatch:522:368",
+      "reason": "法属吉布提（Event585 独立）",
+      "actual_owner": 220
+    },
+    {
+      "key": "owner_mismatch:522:370",
+      "reason": "法属吉布提（Event585 独立）",
+      "actual_owner": 220
+    },
+    {
+      "key": "owner_mismatch:522:376",
+      "reason": "法属吉布提（Event585 独立）",
+      "actual_owner": 220
+    },
+    {
+      "key": "owner_mismatch:522:2032",
+      "reason": "法属吉布提（Event585 独立）",
+      "actual_owner": 220
+    },
+    {
+      "key": "owner_mismatch:565:81",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1497",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1499",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1500",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1501",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1502",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1514",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1515",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1516",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:1770",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:4190",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:4191",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:565:4192",
+      "reason": "西南非洲/纳米比亚归南非（war54/55）",
+      "actual_owner": 560
+    },
+    {
+      "key": "owner_mismatch:600:533",
+      "reason": "西属梅利利亚飞地",
+      "actual_owner": 230
+    },
+    {
+      "key": "owner_mismatch:835:587",
+      "reason": "英国保护国文莱（1984独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:835:1221",
+      "reason": "英国保护国文莱（1984独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:835:1222",
+      "reason": "英国保护国文莱（1984独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:835:1223",
+      "reason": "英国保护国文莱（1984独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:860:583",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:584",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:585",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:2958",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:2959",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:2960",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:2961",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:2962",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:2963",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:2964",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:2965",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:3318",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:860:3319",
+      "reason": "印尼1976吞并葡属帝汶（东帝汶）",
+      "actual_owner": 850
+    },
+    {
+      "key": "owner_mismatch:940:2946",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:2948",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:2949",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:2950",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:2951",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:2952",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:2953",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:2955",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:2957",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "owner_mismatch:940:3060",
+      "reason": "英属所罗门群岛（1978独立）",
+      "actual_owner": 200
+    },
+    {
+      "key": "identity_unmapped:781",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(马尔代夫)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:6",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(波多黎各)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:692",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(巴林)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:53",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(巴巴多斯)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:338",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(马耳他)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:52",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(特立尼达和多巴哥)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:402",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(佛得角)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:585",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(留尼汪)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:31",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(巴哈马)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:65",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(瓜德罗普)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:54",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(多米尼克)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:960",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(法属波利尼西亚)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:66",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(马提尼克)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:951",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(汤加)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:590",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(毛里求斯)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:830",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(新加坡)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:395",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(冰岛)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    },
+    {
+      "key": "identity_unmapped:860",
+      "reason": "原版国家表(allcountries 0-168)未收录的小国/属地(东帝汶)，仅作地图显示；事件系统无法经 legacy 序号引用属设计现实"
+    }
+  ]
+}

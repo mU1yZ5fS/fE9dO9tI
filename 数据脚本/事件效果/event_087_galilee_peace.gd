@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 效果：ingamewars[4] 黎巴嫩战争，以色列(650) vs 巴解组织(350)，
 ##   ussr_place=1、usa_place=0 → Godot ussr_side = GameConstants.WarSide.SIDE2 / usa_side = GameConstants.WarSide.SIDE1。
 
-const TXT_RESULT := "以色列宣布开始“加利利和平行动”，据以色列代表称，这项行动的目的是消灭巴解组织的基地，并在黎巴嫩南部建立一个非军事区。以色列已经宣布，它不会攻击叙利亚在黎巴嫩的武装部队，而叙利亚本身也在避免战斗，但鉴于叙利亚控制了黎巴嫩的大部分地区，他们与以色列国防军之间的冲突似乎只是时间问题。值得注意的是，传统上支持以色列的美国反应相当克制，并没有特别欣赏其“维和”的冲动。"
+const TXT_RESULT := "event.script.event_087_galilee_peace.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -27,4 +27,19 @@ func execute(context: Dictionary) -> void:
 			war.usa_side = GameConstants.WarSide.SIDE1
 			war.infl1 = 650
 			war.infl2 = 350
-		context["result_text"] = TXT_RESULT
+		context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_087_galilee_peace.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_087",
+	"num": 87,
+	"priority": 8700,
+	"notify": false,
+	"trigger": [{"t": "DATE_AFTER", "key": "1982.6.6"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -11,11 +11,11 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R_COMMUNIST := "选举结果表明，联合共产党赢得多数选票。新政府宣布国家将向社会主义过渡，同苏东阵营展开合作，并要“解决一切过去遗留的历史问题”。他们承认了土耳其历史上的亚美尼亚种族灭绝事件，同时表示要尊重库尔德民族自决——土耳其控制下的库尔德人聚集区被赋予了自治权。苏东阵营欢迎新的兄弟加入他们的阵营。"
+const TXT_R_COMMUNIST := "event.script.event_489_split_of_left_coalition.c0"
 
-const TXT_R_PEOPLES := "选举结果表明，人民共产党赢得多数选票。新政府宣布国家将向社会主义过渡，并解决一切历史遗留问题。他们承认了土耳其历史上的亚美尼亚种族灭绝事件；与此同时，土耳其控制下的库尔德人聚集区被赋予了自治权。新政府宣布土耳其将向世界上革命的革命阵营靠拢，谴责一切修正主义。"
+const TXT_R_PEOPLES := "event.script.event_489_split_of_left_coalition.c1"
 
-const TXT_R_REPUBLICAN := "选举结果表明，共和人民党赢得多数选票。新政府将推进土耳其式民主社会主义的构建，并推进国家的民主化进程。"
+const TXT_R_REPUBLICAN := "event.script.event_489_split_of_left_coalition.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -95,7 +95,7 @@ func execute(context: Dictionary) -> void:
 	if france != null and france.has_tag("soc_eu"):
 		num += 999
 	if num2 >= num3 and num2 >= num:
-		context["result_text"] = TXT_R_COMMUNIST
+		context["result_text"] = tr(TXT_R_COMMUNIST)
 		if turkey != null:
 			turkey.government = GameConstants.Government.SOCIALIST
 			turkey.sub_government = GameConstants.SubGovernment.SOVIET_STYLE
@@ -112,7 +112,7 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USSR, 50)
 		return
 	if num3 >= num2 and num3 >= num:
-		context["result_text"] = TXT_R_PEOPLES
+		context["result_text"] = tr(TXT_R_PEOPLES)
 		if turkey != null:
 			turkey.government = GameConstants.Government.SOCIALIST
 			turkey.sub_government = GameConstants.SubGovernment.MARXIST_LENINIST
@@ -126,7 +126,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -150)
 			ws.influence_prc += 50
 		return
-	context["result_text"] = TXT_R_REPUBLICAN
+	context["result_text"] = tr(TXT_R_REPUBLICAN)
 	if turkey != null:
 		turkey.government = GameConstants.Government.REFORMIST
 		turkey.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
@@ -158,3 +158,19 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("sev", true)
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_489_split_of_left_coalition.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_489",
+	"num": 489,
+	"priority": 48900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_489_split_of_left_coalition.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "cw", "v": 1, "target": "84"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "government", "v": 2, "target": "84"}, {"t": "DATE_AFTER", "key": "1984.1.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

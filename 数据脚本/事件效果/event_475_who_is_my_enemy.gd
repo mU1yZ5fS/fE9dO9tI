@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 ##   evaluate(world) 表达；fire_only_once 承担 !event_done[475]。
 ## 差异：based→有驻军基地；EstablishGovernment(ProChina) 在 Godot 侧以亲中/对华贸易标签近似。
 
-const TXT_R0 := "在武汉，埃塞俄比亚人民革命党，厄立特里亚人民解放阵线和提格雷人民解放阵线就组建统一的埃塞俄比亚联邦民主共和国达成了协议。埃塞俄比亚的各个少数民族得到了极大的自治权。民族谅解协定将会给埃塞俄比亚创造新的未来。尽管有些极端民族主义者拒绝这一协定，但大部分人都很满意，这也就够了，美苏对我们的行为很满意。"
-const TXT_R1 := "在武汉，埃塞俄比亚人民革命党，厄立特里亚人民解放阵线和提格雷人民解放阵线就各自成立单独的国家达成了协定。各国确定了自己的领土实际控制范围。这似乎给埃塞俄比亚造成了不小的麻烦，毕竟厄立特里亚是他们为数不多的港口，而现在，埃塞俄比亚很明显失去了海岸线……\n埃塞俄比亚境内对这一“卖国”决定感到非常不满，但我们的新盟友会解决这些问题的，对吧？"
-const TXT_R2 := "在武汉，埃塞俄比亚人民革命党和提格雷人民解放阵线就组建统一的埃塞俄比亚联邦民主共和国达成了协议。埃塞俄比亚的各个少数民族得到了极大的自治权。而厄立特里亚人民解放阵线则在埃塞政府的同意下脱离埃塞而独立。各国确定了自己的领土实际控制范围。这似乎给埃塞俄比亚造成了不小的麻烦，毕竟厄立特里亚是他们为数不多的港口，而现在，埃塞俄比亚很明显失去了海岸线……"
+const TXT_R0 := "event.script.event_475_who_is_my_enemy.c0"
+const TXT_R1 := "event.script.event_475_who_is_my_enemy.c1"
+const TXT_R2 := "event.script.event_475_who_is_my_enemy.c2"
 
 
 func execute(context: Dictionary) -> void:
@@ -20,18 +20,18 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_add_relation(EmpireData.USSR, 50)
 			_add_relation(EmpireData.USA, 50)
 			ws.influence_prc += 20
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			if ethiopia != null:
 				_setup_breakaway(eritrea, ethiopia)
 				_setup_breakaway(tigray, ethiopia)
 			ws.influence_prc += 10
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			if ethiopia != null:
 				_setup_breakaway(eritrea, ethiopia)
 			ws.influence_prc += 10
@@ -122,3 +122,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_475_who_is_my_enemy.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_475",
+	"num": 475,
+	"priority": 47500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_475_who_is_my_enemy.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_475_who_is_my_enemy.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

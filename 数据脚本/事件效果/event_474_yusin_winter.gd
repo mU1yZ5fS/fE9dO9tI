@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:1439-1441 —— DATE_AFTER 1979.10.10；fire_only_once 承担 !event_done[474]。
 ## 差异：SubGosstroy→sub_government；Torg→对华贸易。
 
-const TXT_OPT0_DIS := "我们有心无力啊"
-const TXT_OPT1_DIS := "我们不能帮助这个独裁者"
-const TXT_R0 := "在我们和朝鲜特工的帮助下，釜马地区的市民拿到了枪，开始反抗维新政权。但是与此同时，南朝鲜伪军第1，3，5空输特战旅团和海军陆战队第一师开始对釜马地区发起进攻，最后被平息，有五百多人被杀害，三千多人被捕。在之后，情报部长金载圭在宫井洞将朴正熙和车智澈杀死，成立以郑升和为首的新政府，但是随后便被保安司令部全斗换发动的政变赶下台。"
-const TXT_R1 := "我们选择高调支持韩国。之后维新政权颁布戒严令，并调出1，3，5空输特战旅团和海军陆战队第一师进行镇压，最终有约一千人被捕，釜马事件平息。与此同时，我们提前获悉了韩国情报部长金载圭试图刺杀朴正熙，并提醒了朴正熙，最后金载圭在宫井洞被捕并被处死。韩国很感激我们，并开始与我们进行贸易，我们也顺水推舟，帮助韩国与朝鲜进行联系，并再次进行南北谈判，朝鲜对我们的行为略有不满。"
-const TXT_R2 := "10月18日，维新政权颁布戒严令，调出1，3，5空输特战旅团和海军陆战队第一师进行镇压，最终有约一千人被捕，釜马事件平息。10月26日，情报部长金载圭在宫井洞将朴正熙，车智澈杀死，随后被捕并被秘密审判处决，在12月12日，保安司令部长官全斗焕发动政变，夺取了政权。"
+const TXT_OPT0_DIS := "event.script.event_474_yusin_winter.c0"
+const TXT_OPT1_DIS := "event.script.event_474_yusin_winter.c1"
+const TXT_R0 := "event.script.event_474_yusin_winter.c2"
+const TXT_R1 := "event.script.event_474_yusin_winter.c3"
+const TXT_R2 := "event.script.event_474_yusin_winter.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -25,11 +25,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if agents >= 50 and army >= 50:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if agents >= 50 and line56 >= 2:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -42,21 +42,21 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			if korea != null:
 				korea.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			_add_relation(EmpireData.USA, -100)
 			_add_power(EmpireData.USA, -10)
 			ws.influence_prc += 10
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			if korea != null:
 				korea.sub_government = GameConstants.SubGovernment.NEO_FASCIST
 				korea.set_tag("对华贸易", true)
 			_add_relation(EmpireData.USA, 150)
 			_add_relation(EmpireData.USSR, -100)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			if korea != null:
 				korea.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 
@@ -120,3 +120,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_474_yusin_winter.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_474",
+	"num": 474,
+	"priority": 47400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_474_yusin_winter.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1979.10.10"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

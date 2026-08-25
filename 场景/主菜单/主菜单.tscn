@@ -122,6 +122,24 @@ icon = ExtResource("2_ngrxy")
 flat = true
 icon_alignment = 1
 
+[node name="事件拓扑" type="Button" parent="." unique_id=91001]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.047396
+anchor_top = 0.79074
+anchor_right = 0.280729
+anchor_bottom = 0.885185
+offset_left = 1376.9996
+offset_top = -346.9992
+offset_right = 1377.0002
+offset_bottom = -304.99982
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
+text = "检索事件"
+icon = ExtResource("2_ngrxy")
+flat = true
+icon_alignment = 1
+
 [node name="成就" type="Button" parent="." unique_id=1337]
 layout_mode = 1
 anchors_preset = -1
@@ -130,9 +148,9 @@ anchor_top = 0.34500003
 anchor_right = 1.0
 anchor_bottom = 0.47900003
 offset_left = -0.8000488
-offset_top = 0.39996338
+offset_top = -11.600037
 offset_right = -4.0
-offset_bottom = -0.32000732
+offset_bottom = -12.320007
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0.4467768, 0.446777, 0.44677794, 1)
 text = "成就"
@@ -233,7 +251,7 @@ tooltip_text = "当前版本内容：90%改版内容+未知可能bug"
 mouse_filter = 1
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 43
-text = "v0.3.5进京赶考"
+text = "v0.3.6进京赶考"
 horizontal_alignment = 2
 
 [node name="更新公告" type="Button" parent="." unique_id=1074079381]
@@ -250,7 +268,7 @@ offset_bottom = 168.59999
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "更新/QQ群"
+text = "检查更新"
 icon = ExtResource("2_ngrxy")
 flat = true
 icon_alignment = 1
@@ -260,6 +278,7 @@ icon_alignment = 1
 [connection signal="pressed" from="退出" to="." method="_on_退出_pressed"]
 [connection signal="pressed" from="加载" to="." method="_on_加载_pressed"]
 [connection signal="pressed" from="设置" to="." method="_on_设置_pressed"]
+[connection signal="pressed" from="事件拓扑" to="." method="_on_事件拓扑_pressed"]
 [connection signal="pressed" from="成就" to="." method="_on_成就_pressed"]
 [connection signal="pressed" from="成就弹窗/布局/标题栏/关闭" to="." method="_on_成就关闭_pressed"]
 [connection signal="pressed" from="更新公告" to="." method="_on_更新公告_pressed"]

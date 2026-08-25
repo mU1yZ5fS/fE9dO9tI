@@ -10,11 +10,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - iron_and_blood 成就已接 Achievements（Set 编号见 execute 内注释）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
-const TXT_R7 := "莱昂·费夫雷斯-科尔德罗·里瓦德内拉就任总统后，寻求推行以自由市场关系为基础的政策，然而，基督教社会党（PSC）在国民议会中的席位并不足以推动这一政策。故而，里瓦德内拉采取了极其强硬的手段：他发布“经济紧急法令”以控制公共开支与企业，并通过法令大幅削减公共开支、精简国家机器、重组（事实上是减少）国有企业规模与份额、为外资企业为主的企业提供成长的有利环境。在里瓦德内拉执政期间，厄瓜多尔还修建了高速公路与最大的体育场馆，央行将每年5%的预算用于文化项目，卫生部实施了一项名为“美格兰”的计划，向五岁以下儿童推广医疗保健与免费分发药物。后来，美洲人权法庭指控称，在里瓦德内拉统治期间发生了严重的人权侵害事件，军政府时期反对派强制失踪的事件在其任期内屡次重演。据称，为了打击社会主义、共产主义叛军与原住民运动，里瓦德内拉批准成立了“处决小队”，在未经调查审判的情况下大规模处决被捕者。"
-const TXT_R4 := "罗德里戈·博尔哈·塞瓦略斯的政府致力于恢复民主与自由的价值观。他废除了作为酷刑执刑所而设立的刑事调查局（CIS），取而代之的是犯罪调查部，旨在专门处理反社会行为并保障公共安全。博尔哈承认原住民人民联盟（CONAIE）的合法地位，并致力于扩大他们的合法权益。同时，新总统也制定了一项国家社会改造计划，旨在完善监狱设施以克服刑事人员的身心不健康状况。政府捣毁了洛斯·雷耶斯·马格斯的贩毒集团，并建立了打击拉美毒品反对的国际合作机制。另一面，博尔哈也成功镇压工会运动，驱散集会并逮捕激进的工会领导人塔基。博尔哈对公共开支与货币发行作了严格控制，财政支出转而用于发展国内消费与出口粮食生产部门，工业渔船队也就此重建。然而，厄瓜多尔的通货膨胀率在博尔哈任期内急剧攀升，解决这一问题只能相信后人的智慧了。"
-const TXT_R3 := "安赫尔·杜阿尔特凭借精湛的演说技巧游走政坛，他和他的人民力量集中党（CFP）成功地联合了左翼民主主义的人民团结党（MPD）、厄瓜多尔共产党（PCE）与温和的厄瓜多尔社会党（PSE），从而建立了一个左翼全面联盟的联合人民阵线（UPF）。杜阿尔特刚一上台，便要求国家总检察署逮捕所有过去参与过军政府暴行的分子并对其展开大规模调查。许多执法部门人员辞职或遭到清洗，前军政府高级官员飞离厄瓜多尔，针对他们的国际通缉令发布了。成千上万的工会成员走上街头支持新政府。所有此前被禁止的工会得以恢复，尤其是工人总工会（UGTE）被宣布为“隶属于政府”，拥有接受津贴、参加国家所有会议和经受非机密文件的权限。杜阿尔特的新政策被称为“折衷路线”，依赖扩大社会项目、扩大劳工权利、发展国家工业与基础设施。厄瓜多尔宣布建立“社会主义市场经济”以及“依靠全国劳动群众”。"
-const TXT_FRIEND := "[color=red]新政府决心和我们做朋友。[/color]"
-const TXT_ENEMY := "[color=red]新政府不想和我们做朋友。[/color]"
+const TXT_R7 := "event.script.event_144_ecuador_second_election.c0"
+const TXT_R4 := "event.script.event_144_ecuador_second_election.c1"
+const TXT_R3 := "event.script.event_144_ecuador_second_election.c2"
+const TXT_FRIEND := "event.script.event_144_ecuador_second_election.c3"
+const TXT_ENEMY := "event.script.event_144_ecuador_second_election.c4"
 
 
 
@@ -40,8 +40,8 @@ func _set_next_election(c: CountryData, year: int, month: int, day: int) -> void
 
 func _friend_suffix(c: CountryData) -> String:
 	if c != null and c.has_tag("亲中"):
-		return TXT_FRIEND
-	return TXT_ENEMY
+		return tr(TXT_FRIEND)
+	return tr(TXT_ENEMY)
 
 
 ## Country.WantToLeave() 逐行移植。
@@ -229,13 +229,13 @@ func execute(context: Dictionary) -> void:
 		c.level_of_instability -= 15
 		_add_power(EmpireData.USA, 5)
 		_add_power(EmpireData.USSR, -5)
-		context["result_text"] = TXT_R7 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R7) + _friend_suffix(c)
 		return
 	if c.sub_government == GameConstants.SubGovernment.SOCIAL_DEMOCRAT:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -5)
-		context["result_text"] = TXT_R4 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R4) + _friend_suffix(c)
 		return
 	if c.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		c.level_of_instability -= 5
@@ -244,4 +244,19 @@ func execute(context: Dictionary) -> void:
 		_add_power(EmpireData.USSR, 5)
 		# 原作 Event144.cs:111：iron_and_blood → achievements.Set(95)
 		Achievements.set_achievement(95)
-		context["result_text"] = TXT_R3 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R3) + _friend_suffix(c)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_144_ecuador_second_election.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_144",
+	"num": 144,
+	"priority": 14400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_144_ecuador_second_election.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

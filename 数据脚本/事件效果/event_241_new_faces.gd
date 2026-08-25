@@ -13,11 +13,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - “找最弱且非 traits[0]==0 的槽”循环：原版 num 从 0 起且不校验 num 本人，
 ##    逐字保留（本实现用空位/边界保护）。
 
-const TXT_R0 := "华国锋同志亲自任命了三位新的常务委员：来自山西的农民总理陈永贵，河北工人孙健和陕西工人吴桂贤。在盛大的宴席上，华国锋同志亲自向三位新的委员敬上一杯。在委婉的表达了自己的水平欠佳之余，表示希望在将来的治国之途中获得三人的支持。三位草根出身的新面孔表示定不会辜负毛主席留下的既定方针，把革命进行到底。他们已经确定会出席1979的建国三十周年纪念庆典。\n各方对这三位出身简朴的政治家保持观望。但我们和党内左派的关系得到了改善。一部分温和派成员表示了自己的不满。"
+const TXT_R0 := "event.script.event_241_new_faces.c0"
 
-const TXT_R1 := "华国锋同志亲自任命了三位新的常务委员：来自山西的农民总理陈永贵，河北工人孙健和陕西工人吴桂贤。在盛大的宴席上，华国锋同志亲自向三位新的委员敬上一杯。在委婉的表达了自己的水平欠佳之余，表示希望在将来的治国之途中获得三人的支持。三位草根出身的新面孔泪流满面，表示定不会辜负毛主席留下的既定方针，把革命进行到底。他们已经确定会出席1979的建国三十周年纪念庆典。\n同时，为了保持和副主席的关系。华国锋还提拔了来自上海的三名革命闯将：徐景贤，马天水和王秀珍。这显著增加了极左派在党内的话语权。华国锋主席也同三人敬了一杯，三人向他表示不会辜负毛主席的期望，会尽力把在上海学习到的经验运用到全国的革命事业里去。这一决策受到了党内极左派，尤其是曾在上海工作的那一批的欢迎，他们在京城的力量又一次得到了增长。\n各方对这三位政治新人保持观望。我们和党内左派的关系得到了改善，但我们和温和派与残留的改革派的关系显著降低了。他们也对上海民兵经验的推广感到担忧。"
+const TXT_R1 := "event.script.event_241_new_faces.c1"
 
-const TXT_R2 := "华国锋主席决定按照既定方针办。也就是什么都不做，希望在未来不会酿成什么大灾祸……"
+const TXT_R2 := "event.script.event_241_new_faces.c2"
 
 
 func execute(context: Dictionary) -> void:
@@ -45,7 +45,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 150
 				elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty -= 50
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_PARTY_SUPPORT, -100)
 			_add(W.I_PEOPLE_SUPPORT, 100)
@@ -73,7 +73,7 @@ func execute(context: Dictionary) -> void:
 				elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 					p.loyalty -= 150
 					p.power -= 100
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_PEOPLE_SUPPORT, 30)
@@ -85,7 +85,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 20
 				elif p.trait_personality < GameConstants.PoliticianPersonality.REFORMIST:
 					p.loyalty += 100
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 	PoliticianSystem.sync_in_power_flags(ws)
 
 
@@ -133,3 +133,18 @@ func _overwrite_politician(
 	p.faction = PoliticianSystem.trait_faction_slot(p)
 	PoliticianSystem.fill_vacant_faction_leaders()
 	PoliticianSystem.sync_in_power_flags(ws)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_241_new_faces.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_241",
+	"num": 241,
+	"priority": 2410,
+	"notify": false,
+	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "event_240"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

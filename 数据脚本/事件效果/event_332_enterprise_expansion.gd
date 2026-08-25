@@ -5,8 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "不，这么做百害无一利。是的，我们是有一些经济部门，其中的现有企业无法向人民提供充足的产品。但重要的是，我们要搞清楚，倘若让其他行业的巨头进入这些领域，那些正经营着这些行业的小公司就会倒闭，垄断便会产生。私营经济活动的扩大也将不可避免地导致主要经济领域的生产能力的减弱......"
-const TXT_R1 := "是的，这个问题应当解决。不过，人民与国家的需要比市场竞争的思想更重要。尽管有一些企业被迫关门，但情况不久就稳定下来了。"
+const TXT_R0 := "event.script.event_332_enterprise_expansion.c0"
+const TXT_R1 := "event.script.event_332_enterprise_expansion.c1"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -14,12 +14,12 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_PEOPLE_SUPPORT, 50)
 			_add(W.I_LIVING, 50)
 			_add(W.I_INDUSTRY, -20)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -41,3 +41,18 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_332_enterprise_expansion.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_332",
+	"num": 332,
+	"priority": 33200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_332_enterprise_expansion.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

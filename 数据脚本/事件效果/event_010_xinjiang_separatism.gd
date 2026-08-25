@@ -62,7 +62,7 @@ func _opt_independent(context: Dictionary) -> void:
 			xinjiang.set_tag("亲苏", true)    # 差异：原 prosov=true
 		else:
 			xinjiang.set_tag("亲苏", false)   # 差异：原 prosov=false
-	context["result_text"] = "新疆维吾尔自治区正式宣布独立。这对我们来说是一个巨大的打击，对苏联和美国来说却是一个巨大的机遇。"
+	context["result_text"] = tr("event.script.event_010_xinjiang_separatism.i0")
 
 
 # 选项1：给予他们更多自治权（Event10.cs case 1，官方 IL 逐条）
@@ -102,3 +102,17 @@ func _mongolia_condition() -> bool:
 	if ws.wars.size() > 5 and ws.wars[5].is_going:
 		return false
 	return mongolia.government != GameConstants.Government.AUTHORITARIAN
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_010_xinjiang_separatism.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "xinjiang_separatism",
+	"num": 10,
+	"notify": false,
+	"trigger": [{"t": "ALL", "c": [{"t": "RESOURCE_AT_MOST", "key": "manpower", "v": 300}, {"t": "NOT", "c": [{"t": "DECISION_DONE", "key": "3"}]}, {"t": "NOT", "c": [{"t": "DECISION_DONE", "key": "4"}]}, {"t": "RESOURCE_EQUALS", "key": "xinjiang_policy"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "result": true, "cond": {"t": "RESOURCE_AT_MOST", "key": "territory", "v": 22}, "fx": [{"t": "ADD_RESOURCE", "key": "thought_freedom", "v": 70}, {"t": "ADD_RESOURCE", "key": "manpower", "v": -20}, {"t": "ADD_RESOURCE", "key": "party_support", "v": -200}]}, {"disabled": true, "result": true, "cond": {"t": "ANY", "c": [{"t": "RESOURCE_NOT_EQUALS", "key": "political_line", "v": 4}, {"t": "RESOURCE_AT_LEAST", "key": "army", "v": 100}]}, "fx": [{"t": "ADD_RESOURCE", "key": "thought_freedom", "v": 50}, {"t": "ADD_RESOURCE", "key": "manpower", "v": 30}, {"t": "ADD_RESOURCE", "key": "people_support", "v": -100}, {"t": "ADD_RESOURCE", "key": "army", "v": -100}, {"t": "ADD_RESOURCE", "key": "diplo", "v": 50}]}, {"disabled": true, "result": true, "cond": {"t": "ANY", "c": [{"t": "RESOURCE_SUM_AT_LEAST", "v": 20, "keys": ["money", "reserve"]}, {"t": "RESOURCE_AT_LEAST", "key": "reserve", "v": 20}, {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 40}]}, "fx": [{"t": "ADD_RESOURCE", "key": "thought_freedom", "v": 30}, {"t": "ADD_RESOURCE", "key": "manpower", "v": 20}, {"t": "ADD_RESOURCE", "key": "people_support", "v": -20}, {"t": "ADD_RESOURCE", "key": "agents", "v": -50}, {"t": "ADD_RESOURCE", "key": "money", "v": -40}]}],
+}

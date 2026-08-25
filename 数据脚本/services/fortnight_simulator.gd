@@ -2481,9 +2481,12 @@ func _influence_from_investments(d: WorldState, year: int) -> void:
 		d.diplomatic_reputation -= 2
 	elif d.budget_diplo < 60:
 		d.diplomatic_reputation -= 1
-	# 每 5 点外交支出 +0.1 军事介入点（内部 ×10，显示 0.1 = 内部 1）
-	@warning_ignore("integer_division")
-	d.mil_intervention += d.budget_diplo / 5
+	# 【对拍修正 2026-08-25】原版无此规则（全库 data[0] += 仅 data[81]/50 与
+	# flag2 门控 influencePRC/12 两处，见 TimeScript 清洗版 3074/3410）。
+	# budget_diplo 的外交贡献已由 war_system.gd 的 /50 规则承担。见 tools/replay/FINDINGS.md F-C。
+	# if d.budget_diplo >= 0:
+	# 	@warning_ignore("integer_division")
+	# 	d.mil_intervention += d.budget_diplo / 5
 
 	# ─ 腐败扣预算/生活水平（原版 8186-8187，投资块末尾，用投资后腐败值）──
 	d.budget -= d.corruption / 10

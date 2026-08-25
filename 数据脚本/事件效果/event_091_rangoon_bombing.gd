@@ -7,11 +7,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##   （c10.parts[0] 未置位时默认 false，端口建模说明 → 视为恒真，注释保留）。
 ## 差异：标题/描述 prepare 动态改写。
 
-const TXT_R0 := "作为对事件的回应，整个“文明世界”都对朝鲜表达了愤怒。我们并未做出官方回应，但在《人民日报》上发表了一篇文章，强烈地谴责了朝鲜的恐怖主义手段。同时，在朝韩边境上，双方都在做出了武装挑衅…"
+const TXT_R0 := "event.script.event_091_rangoon_bombing.c0"
 
-const TXT_R1 := "作为对事件的回应，整个“文明世界”都对朝鲜表达了愤怒。我们完全支持朝鲜的姿态，将事件称为韩国的挑衅行为，并谴责了韩国。同时，在朝韩边境上，双方都在做出了武装挑衅…"
+const TXT_R1 := "event.script.event_091_rangoon_bombing.c1"
 
-const TXT_R2 := "作为对事件的回应，整个“文明世界”都对朝鲜表达了愤怒。同时，在朝韩边境上，双方都在做出了武装挑衅…"
+const TXT_R2 := "event.script.event_091_rangoon_bombing.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -35,14 +35,31 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_DIPLO, -10)
 			_add_relation(EmpireData.USA, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_DIPLO, 20)
 			_add_relation(EmpireData.USA, -80)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_091_rangoon_bombing.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_091",
+	"nodesc": true,
+	"num": 91,
+	"priority": 9100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_091_rangoon_bombing.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1983.10.9"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "government", "target": "46"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 7, "target": "46"}, {"t": "NOT", "c": [{"t": "WAR_ACTIVE", "v": 90}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

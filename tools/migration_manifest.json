@@ -1,0 +1,3530 @@
+{
+	"anomalies": [],
+	"events": {
+		"event_001_elections": {
+			"def": "res://数据脚本/事件效果/event_001_elections.gd",
+			"id": "npc_elections",
+			"merged": true,
+			"num": 1
+		},
+		"event_003_death_of_mao": {
+			"def": "res://数据脚本/事件效果/event_003_death_of_mao.gd",
+			"id": "death_of_mao",
+			"merged": true,
+			"num": 3
+		},
+		"event_004_conspiracy": {
+			"def": "res://数据脚本/事件效果/event_004_conspiracy.gd",
+			"id": "congress_conspiracy",
+			"merged": true,
+			"num": 4
+		},
+		"event_005_popular_discontent": {
+			"def": "res://数据脚本/事件效果/event_005_popular_discontent.gd",
+			"id": "popular_discontent",
+			"merged": true,
+			"num": 5
+		},
+		"event_006_low_living": {
+			"def": "res://数据脚本/事件定义/event_006_low_living.gd",
+			"id": "low_living_standard",
+			"merged": false,
+			"num": 6
+		},
+		"event_007_diplo_crisis_usa": {
+			"def": "res://数据脚本/事件效果/event_007_diplo_crisis_usa.gd",
+			"id": "diplomatic_crisis_usa",
+			"merged": true,
+			"num": 7
+		},
+		"event_008_diplo_crisis_ussr": {
+			"def": "res://数据脚本/事件效果/event_008_diplo_crisis_ussr.gd",
+			"id": "diplomatic_crisis_ussr",
+			"merged": true,
+			"num": 8
+		},
+		"event_009_tibet_separatism": {
+			"def": "res://数据脚本/事件效果/event_009_tibet_separatism.gd",
+			"id": "tibet_separatism",
+			"merged": true,
+			"num": 9
+		},
+		"event_010_xinjiang_separatism": {
+			"def": "res://数据脚本/事件效果/event_010_xinjiang_separatism.gd",
+			"id": "xinjiang_separatism",
+			"merged": true,
+			"num": 10
+		},
+		"event_011_industry_decline": {
+			"def": "res://数据脚本/事件定义/event_011_industry_decline.gd",
+			"id": "industry_decline",
+			"merged": false,
+			"num": 11
+		},
+		"event_012_agriculture_decline": {
+			"def": "res://数据脚本/事件定义/event_012_agriculture_decline.gd",
+			"id": "agriculture_decline",
+			"merged": false,
+			"num": 12
+		},
+		"event_013_service_decline": {
+			"def": "res://数据脚本/事件定义/event_013_service_decline.gd",
+			"id": "service_decline",
+			"merged": false,
+			"num": 13
+		},
+		"event_014_budget_crisis": {
+			"def": "res://数据脚本/事件定义/event_014_budget_crisis.gd",
+			"id": "budget_crisis",
+			"merged": false,
+			"num": 14
+		},
+		"event_015_cambodian_vn_war": {
+			"def": "res://数据脚本/事件效果/event_015_cambodian_vn_war.gd",
+			"id": "cambodian_vietnam_war",
+			"merged": true,
+			"num": 15
+		},
+		"event_016_thailand_elections": {
+			"def": "res://数据脚本/事件效果/event_016_thailand_elections.gd",
+			"id": "thailand_elections",
+			"merged": true,
+			"num": 16
+		},
+		"event_017_thailand_instability": {
+			"def": "res://数据脚本/事件效果/event_017_thailand_instability.gd",
+			"id": "thailand_instability",
+			"merged": true,
+			"num": 17
+		},
+		"event_018_war_is_over": {
+			"def": "res://数据脚本/事件效果/event_018_war_is_over.gd",
+			"id": "war_is_over",
+			"merged": true,
+			"num": 18
+		},
+		"event_020_criticize_deng": {
+			"def": "res://数据脚本/事件效果/event_020_criticize_deng.gd",
+			"id": "criticize_deng",
+			"merged": true,
+			"num": 20
+		},
+		"event_021_wenhuibao_article": {
+			"def": "res://数据脚本/事件效果/event_021_wenhuibao.gd",
+			"id": "event_021",
+			"merged": true,
+			"num": 21
+		},
+		"event_022_tiananmen_incident": {
+			"def": "res://数据脚本/事件效果/event_022_tiananmen.gd",
+			"id": "event_022",
+			"merged": true,
+			"num": 22
+		},
+		"event_023_tangshan_earthquake": {
+			"def": "res://数据脚本/事件效果/event_023_tangshan.gd",
+			"id": "event_023",
+			"merged": true,
+			"num": 23
+		},
+		"event_024_post_mao_course": {
+			"def": "res://数据脚本/事件定义/event_024_post_mao_course.gd",
+			"id": "post_mao_course",
+			"merged": false,
+			"num": 24
+		},
+		"event_025_gang_of_four": {
+			"def": "res://数据脚本/事件定义/event_025_gang_of_four.gd",
+			"id": "gang_of_four",
+			"merged": false,
+			"num": 25
+		},
+		"event_026_weak_alliance": {
+			"def": "res://数据脚本/事件定义/event_026_weak_alliance.gd",
+			"id": "weak_alliance",
+			"merged": false,
+			"num": 26
+		},
+		"event_027_hong_kong_macau": {
+			"def": "res://数据脚本/事件定义/event_027_hong_kong_macau.gd",
+			"id": "hong_kong_macau",
+			"merged": false,
+			"num": 27
+		},
+		"event_028_indonesia_after_suharto": {
+			"def": "res://数据脚本/事件定义/event_028_indonesia_after_suharto.gd",
+			"id": "indonesia_after_suharto",
+			"merged": false,
+			"num": 28
+		},
+		"event_029_pressure_north_korea": {
+			"def": "res://数据脚本/事件定义/event_029_pressure_north_korea.gd",
+			"id": "pressure_north_korea",
+			"merged": false,
+			"num": 29
+		},
+		"event_030_palestine_settlement": {
+			"def": "res://数据脚本/事件定义/event_030_palestine_settlement.gd",
+			"id": "palestine_settlement",
+			"merged": false,
+			"num": 30
+		},
+		"event_031_south_korea_election": {
+			"def": "res://数据脚本/事件定义/event_031_south_korea_election.gd",
+			"id": "south_korea_election",
+			"merged": false,
+			"num": 31
+		},
+		"event_032_mongolia_reform": {
+			"def": "res://数据脚本/事件定义/event_032_mongolia_reform.gd",
+			"id": "mongolia_reform",
+			"merged": false,
+			"num": 32
+		},
+		"event_033_pakistan_coup": {
+			"def": "res://数据脚本/事件定义/event_033_pakistan_coup.gd",
+			"id": "pakistan_coup",
+			"merged": false,
+			"num": 33
+		},
+		"event_034_enemies_of_my_enemies": {
+			"def": "res://数据脚本/事件定义/event_034_enemies_of_my_enemies.gd",
+			"id": "enemies_of_my_enemies",
+			"merged": false,
+			"num": 34
+		},
+		"event_035_end_of_revolution": {
+			"def": "res://数据脚本/事件定义/event_035_end_of_revolution.gd",
+			"id": "end_of_revolution",
+			"merged": false,
+			"num": 35
+		},
+		"event_036_iraqi_coalition": {
+			"def": "res://数据脚本/事件定义/event_036_iraqi_coalition.gd",
+			"id": "iraqi_coalition",
+			"merged": false,
+			"num": 36
+		},
+		"event_037_egyptian_unrest": {
+			"def": "res://数据脚本/事件定义/event_037_egyptian_unrest.gd",
+			"id": "egyptian_unrest",
+			"merged": false,
+			"num": 37
+		},
+		"event_038_back_to_roots": {
+			"def": "res://数据脚本/事件定义/event_038_back_to_roots.gd",
+			"id": "back_to_roots",
+			"merged": false,
+			"num": 38
+		},
+		"event_039_historical_resolution": {
+			"def": "res://数据脚本/事件定义/event_039_historical_resolution.gd",
+			"id": "historical_resolution",
+			"merged": false,
+			"num": 39
+		},
+		"event_040_panchen_lama": {
+			"def": "res://数据脚本/事件定义/event_040_panchen_lama.gd",
+			"id": "panchen_lama",
+			"merged": false,
+			"num": 40
+		},
+		"event_041_indian_elections": {
+			"def": "res://数据脚本/事件定义/event_041_indian_elections.gd",
+			"id": "indian_elections",
+			"merged": false,
+			"num": 41
+		},
+		"event_042_iranian_revolution": {
+			"def": "res://数据脚本/事件定义/event_042_iranian_revolution.gd",
+			"id": "iranian_revolution",
+			"merged": false,
+			"num": 42
+		},
+		"event_043_vietnam_cmea": {
+			"def": "res://数据脚本/事件定义/event_043_vietnam_cmea.gd",
+			"id": "vietnam_cmea",
+			"merged": false,
+			"num": 43
+		},
+		"event_044_reformers_take_power": {
+			"def": "res://数据脚本/事件定义/event_044_reformers_take_power.gd",
+			"id": "reformers_take_power",
+			"merged": false,
+			"num": 44
+		},
+		"event_045_reform_and_openness": {
+			"def": "res://数据脚本/事件定义/event_045_reform_and_openness.gd",
+			"id": "reform_and_openness",
+			"merged": false,
+			"num": 45
+		},
+		"event_046_hungarian_crisis": {
+			"def": "res://数据脚本/事件定义/event_046_hungarian_crisis.gd",
+			"id": "hungarian_crisis",
+			"merged": false,
+			"num": 46
+		},
+		"event_047_beijing_spring": {
+			"def": "res://数据脚本/事件定义/event_047_beijing_spring.gd",
+			"id": "beijing_spring",
+			"merged": false,
+			"num": 47
+		},
+		"event_048_afghan_amin_coup": {
+			"def": "res://数据脚本/事件定义/event_048_afghan_amin_coup.gd",
+			"id": "afghan_amin_coup",
+			"merged": false,
+			"num": 48
+		},
+		"event_049_afghan_soviet_plot": {
+			"def": "res://数据脚本/事件定义/event_049_afghan_soviet_plot.gd",
+			"id": "afghan_soviet_plot",
+			"merged": false,
+			"num": 49
+		},
+		"event_050_afghan_civil_war": {
+			"def": "res://数据脚本/事件定义/event_050_afghan_civil_war.gd",
+			"id": "afghan_civil_war",
+			"merged": false,
+			"num": 50
+		},
+		"event_051_afghan_soviet_intervention": {
+			"def": "res://数据脚本/事件定义/event_051_afghan_soviet_intervention.gd",
+			"id": "afghan_soviet_intervention",
+			"merged": false,
+			"num": 51
+		},
+		"event_052_afghan_pakistan_border": {
+			"def": "res://数据脚本/事件定义/event_052_afghan_pakistan_border.gd",
+			"id": "afghan_pakistan_border",
+			"merged": false,
+			"num": 52
+		},
+		"event_053_agricultural_reform": {
+			"def": "res://数据脚本/事件定义/event_053_agricultural_reform.gd",
+			"id": "agricultural_reform",
+			"merged": false,
+			"num": 53
+		},
+		"event_054_reform_investment": {
+			"def": "res://数据脚本/事件定义/event_054_reform_investment.gd",
+			"id": "reform_investment",
+			"merged": false,
+			"num": 54
+		},
+		"event_055_burmese_socialism": {
+			"def": "res://数据脚本/事件定义/event_055_burmese_socialism.gd",
+			"id": "burmese_socialism",
+			"merged": false,
+			"num": 55
+		},
+		"event_056_teach_vietnam_lesson": {
+			"def": "res://数据脚本/事件定义/event_056_teach_vietnam_lesson.gd",
+			"id": "teach_vietnam_lesson",
+			"merged": false,
+			"num": 56
+		},
+		"event_057_red_rising_sun": {
+			"def": "res://数据脚本/事件定义/event_057_red_rising_sun.gd",
+			"id": "red_rising_sun",
+			"merged": false,
+			"num": 57
+		},
+		"event_058_iranian_revolution_endgame": {
+			"def": "res://数据脚本/事件定义/event_058_iranian_revolution_endgame.gd",
+			"id": "iranian_revolution_endgame",
+			"merged": false,
+			"num": 58
+		},
+		"event_059_economic_union": {
+			"def": "res://数据脚本/事件定义/event_059_economic_union.gd",
+			"id": "economic_union",
+			"merged": false,
+			"num": 59
+		},
+		"event_060_military_alliance": {
+			"def": "res://数据脚本/事件定义/event_060_military_alliance.gd",
+			"id": "military_alliance",
+			"merged": false,
+			"num": 60
+		},
+		"event_061_anthem_problem": {
+			"def": "res://数据脚本/事件定义/event_061_anthem_problem.gd",
+			"id": "anthem_problem",
+			"merged": false,
+			"num": 61
+		},
+		"event_062_inner_mongolia_problem": {
+			"def": "res://数据脚本/事件定义/event_062_inner_mongolia_problem.gd",
+			"id": "inner_mongolia_problem",
+			"merged": false,
+			"num": 62
+		},
+		"event_063_afghan_april_revolution": {
+			"def": "res://数据脚本/事件定义/event_063_afghan_april_revolution.gd",
+			"id": "afghan_april_revolution",
+			"merged": false,
+			"num": 63
+		},
+		"event_064_pan_arabism": {
+			"def": "res://数据脚本/事件定义/event_064_pan_arabism.gd",
+			"id": "pan_arabism",
+			"merged": false,
+			"num": 64
+		},
+		"event_065_moscow_olympics": {
+			"def": "res://数据脚本/事件定义/event_065_moscow_olympics.gd",
+			"id": "moscow_olympics",
+			"merged": false,
+			"num": 65
+		},
+		"event_066_death_of_tito": {
+			"def": "res://数据脚本/事件定义/event_066_death_of_tito.gd",
+			"id": "death_of_tito",
+			"merged": false,
+			"num": 66
+		},
+		"event_067_polish_crisis": {
+			"def": "res://数据脚本/事件定义/event_067_polish_crisis.gd",
+			"id": "polish_crisis",
+			"merged": false,
+			"num": 67
+		},
+		"event_068_gwangju_uprising": {
+			"def": "res://数据脚本/事件定义/event_068_gwangju_uprising.gd",
+			"id": "gwangju_uprising",
+			"merged": false,
+			"num": 68
+		},
+		"event_069_little_gang_of_four": {
+			"def": "res://数据脚本/事件定义/event_069_little_gang_of_four.gd",
+			"id": "little_gang_of_four",
+			"merged": false,
+			"num": 69
+		},
+		"event_070_zhou_enlai_heirs": {
+			"def": "res://数据脚本/事件定义/event_070_zhou_enlai_heirs.gd",
+			"id": "zhou_enlai_heirs",
+			"merged": false,
+			"num": 70
+		},
+		"event_071_naxalite_endgame": {
+			"def": "res://数据脚本/事件定义/event_071_naxalite_endgame.gd",
+			"id": "naxalite_endgame",
+			"merged": false,
+			"num": 71
+		},
+		"event_072_janata_crisis": {
+			"def": "res://数据脚本/事件定义/event_072_janata_crisis.gd",
+			"id": "janata_crisis",
+			"merged": false,
+			"num": 72
+		},
+		"event_073_iran_iraq_war": {
+			"def": "res://数据脚本/事件定义/event_073_iran_iraq_war.gd",
+			"id": "iran_iraq_war",
+			"merged": false,
+			"num": 73
+		},
+		"event_074_history_resolution": {
+			"def": "res://数据脚本/事件效果/event_074_history_resolution.gd",
+			"id": "history_resolution_1981",
+			"merged": true,
+			"num": 74
+		},
+		"event_075_iraq_nuclear": {
+			"def": "res://数据脚本/事件效果/event_075_iraq_nuclear.gd",
+			"id": "event_075",
+			"merged": true,
+			"num": 75
+		},
+		"event_076_kosovo": {
+			"def": "res://数据脚本/事件效果/event_076_kosovo.gd",
+			"id": "event_076",
+			"merged": true,
+			"num": 76
+		},
+		"event_077_albania_shehu": {
+			"def": "res://数据脚本/事件效果/event_077_albania_shehu.gd",
+			"id": "event_077",
+			"merged": true,
+			"num": 77
+		},
+		"event_078_philippines_marcos": {
+			"def": "res://数据脚本/事件效果/event_078_philippines_marcos.gd",
+			"id": "event_078",
+			"merged": true,
+			"num": 78
+		},
+		"event_079_romania_austerity": {
+			"def": "res://数据脚本/事件效果/event_079_romania_austerity.gd",
+			"id": "event_079",
+			"merged": true,
+			"num": 79
+		},
+		"event_080_twelfth_congress": {
+			"def": "res://数据脚本/事件定义/event_080_twelfth_congress.gd",
+			"id": "event_080",
+			"merged": false,
+			"num": 80
+		},
+		"event_081_hungary_rhapsody": {
+			"def": "res://数据脚本/事件效果/event_081_hungary_rhapsody.gd",
+			"id": "event_081",
+			"merged": true,
+			"num": 81
+		},
+		"event_082_falklands_war": {
+			"def": "res://数据脚本/事件效果/event_082_falklands_war.gd",
+			"id": "event_082",
+			"merged": true,
+			"num": 82
+		},
+		"event_083_stavropol_agronomist": {
+			"def": "res://数据脚本/事件效果/event_083_stavropol_agronomist.gd",
+			"id": "stavropol_agronomist",
+			"merged": true,
+			"num": 83
+		},
+		"event_084_old_partisan": {
+			"def": "res://数据脚本/事件效果/event_084_old_partisan.gd",
+			"id": "old_partisan",
+			"merged": true,
+			"num": 84
+		},
+		"event_085_kazakh_german": {
+			"def": "res://数据脚本/事件效果/event_085_kazakh_german.gd",
+			"id": "kazakh_german",
+			"merged": true,
+			"num": 85
+		},
+		"event_086_steel_yuri": {
+			"def": "res://数据脚本/事件效果/event_086_steel_yuri.gd",
+			"id": "steel_yuri",
+			"merged": true,
+			"num": 86
+		},
+		"event_087_galilee_peace": {
+			"def": "res://数据脚本/事件效果/event_087_galilee_peace.gd",
+			"id": "event_087",
+			"merged": true,
+			"num": 87
+		},
+		"event_088_rhodesia": {
+			"def": "res://数据脚本/事件效果/event_088_rhodesia.gd",
+			"id": "event_088",
+			"merged": true,
+			"num": 88
+		},
+		"event_089_era_of_the_end": {
+			"def": "res://数据脚本/事件效果/event_089_era_of_the_end.gd",
+			"id": "era_of_the_end",
+			"merged": true,
+			"num": 89
+		},
+		"event_090_triads": {
+			"def": "res://数据脚本/事件效果/event_090_triads.gd",
+			"id": "event_090",
+			"merged": true,
+			"num": 90
+		},
+		"event_091_rangoon_bombing": {
+			"def": "res://数据脚本/事件效果/event_091_rangoon_bombing.gd",
+			"id": "event_091",
+			"merged": true,
+			"num": 91
+		},
+		"event_092_five_year_plan": {
+			"def": "res://数据脚本/事件效果/event_092_five_year_plan.gd",
+			"id": "event_092",
+			"merged": true,
+			"num": 92
+		},
+		"event_093_greece_elections": {
+			"def": "res://数据脚本/事件效果/event_093_greece_elections.gd",
+			"id": "event_093",
+			"merged": true,
+			"num": 93
+		},
+		"event_094_taiwan_pressure_path": {
+			"def": "res://数据脚本/事件定义/event_094_taiwan_pressure_path.gd",
+			"id": "event_094",
+			"merged": false,
+			"num": 94
+		},
+		"event_095_taiwan_pressure_step_1": {
+			"def": "res://数据脚本/事件定义/event_095_taiwan_pressure_step_1.gd",
+			"id": "event_095",
+			"merged": false,
+			"num": 95
+		},
+		"event_096_taiwan_pressure_step_2": {
+			"def": "res://数据脚本/事件定义/event_096_taiwan_pressure_step_2.gd",
+			"id": "event_096",
+			"merged": false,
+			"num": 96
+		},
+		"event_097_automation": {
+			"def": "res://数据脚本/事件效果/event_097_automation.gd",
+			"id": "event_097",
+			"merged": true,
+			"num": 97
+		},
+		"event_098_sankara": {
+			"def": "res://数据脚本/事件效果/event_098_sankara.gd",
+			"id": "event_098",
+			"merged": true,
+			"num": 98
+		},
+		"event_099_yellow_scorpion": {
+			"def": "res://数据脚本/事件效果/event_099_yellow_scorpion.gd",
+			"id": "event_099",
+			"merged": true,
+			"num": 99
+		},
+		"event_1000_advisors": {
+			"def": "res://数据脚本/事件效果/event_1000_advisors.gd",
+			"id": "event_1000",
+			"merged": true,
+			"num": 1000
+		},
+		"event_100_government_crisis": {
+			"def": "res://数据脚本/事件效果/event_100_government_crisis.gd",
+			"id": "event_100",
+			"merged": true,
+			"num": 100
+		},
+		"event_102_wind_of_change": {
+			"def": "res://数据脚本/事件效果/event_102_wind_of_change.gd",
+			"id": "wind_of_change",
+			"merged": true,
+			"num": 102
+		},
+		"event_103_schengen": {
+			"def": "res://数据脚本/事件效果/event_103_schengen.gd",
+			"id": "event_103",
+			"merged": true,
+			"num": 103
+		},
+		"event_104_world_youth_festival": {
+			"def": "res://数据脚本/事件效果/event_104_world_youth_festival.gd",
+			"id": "event_104",
+			"merged": true,
+			"num": 104
+		},
+		"event_105_hoxha_death": {
+			"def": "res://数据脚本/事件效果/event_105_hoxha_death.gd",
+			"id": "event_105",
+			"merged": true,
+			"num": 105
+		},
+		"event_106_democratic_international": {
+			"def": "res://数据脚本/事件效果/event_106_democratic_international.gd",
+			"id": "event_106",
+			"merged": true,
+			"num": 106
+		},
+		"event_107_ally_crisis": {
+			"def": "res://数据脚本/事件效果/event_107_ally_crisis.gd",
+			"id": "event_107",
+			"merged": true,
+			"num": 107
+		},
+		"event_109_somalia": {
+			"def": "res://数据脚本/事件效果/event_109_somalia.gd",
+			"id": "event_109",
+			"merged": true,
+			"num": 109
+		},
+		"event_110_automation_progress": {
+			"def": "res://数据脚本/事件效果/event_110_automation_progress.gd",
+			"id": "event_110",
+			"merged": true,
+			"num": 110
+		},
+		"event_111_ghostly_light": {
+			"def": "res://数据脚本/事件效果/event_111_ghostly_light.gd",
+			"id": "event_111",
+			"merged": true,
+			"num": 111
+		},
+		"event_112_cyber_attack": {
+			"def": "res://数据脚本/事件效果/event_112_cyber_attack.gd",
+			"id": "event_112",
+			"merged": true,
+			"num": 112
+		},
+		"event_113_yugoslav_autonomy_pain": {
+			"def": "res://数据脚本/事件效果/event_113_yugoslav_autonomy_pain.gd",
+			"id": "event_113",
+			"merged": true,
+			"num": 113
+		},
+		"event_114_donkey_elephant": {
+			"def": "res://数据脚本/事件效果/event_114_donkey_elephant.gd",
+			"id": "donkey_elephant",
+			"merged": true,
+			"num": 114
+		},
+		"event_115_golden_triangle": {
+			"def": "res://数据脚本/事件效果/event_115_golden_triangle.gd",
+			"id": "event_115",
+			"merged": true,
+			"num": 115
+		},
+		"event_116_two_chinas": {
+			"def": "res://数据脚本/事件定义/event_116_two_chinas.gd",
+			"id": "event_116",
+			"merged": false,
+			"num": 116
+		},
+		"event_117_five_year_funeral": {
+			"def": "res://数据脚本/事件效果/event_117_five_year_funeral.gd",
+			"id": "five_year_funeral",
+			"merged": true,
+			"num": 117
+		},
+		"event_118_brunei": {
+			"def": "res://数据脚本/事件效果/event_118_brunei.gd",
+			"id": "event_118",
+			"merged": true,
+			"num": 118
+		},
+		"event_120_korea_unification": {
+			"def": "res://数据脚本/事件效果/event_120_korea_unification.gd",
+			"id": "event_120",
+			"merged": true,
+			"num": 120
+		},
+		"event_121_new_lama": {
+			"def": "res://数据脚本/事件效果/event_121_new_lama.gd",
+			"id": "event_121",
+			"merged": true,
+			"num": 121
+		},
+		"event_122_east_turkestan_leader": {
+			"def": "res://数据脚本/事件效果/event_122_east_turkestan_leader.gd",
+			"id": "event_122",
+			"merged": true,
+			"num": 122
+		},
+		"event_123_elite_politics": {
+			"def": "res://数据脚本/事件效果/event_123_elite_politics.gd",
+			"id": "event_123",
+			"merged": true,
+			"num": 123
+		},
+		"event_124_return_to_socialism": {
+			"def": "res://数据脚本/事件效果/event_124_return_to_socialism.gd",
+			"id": "event_124",
+			"merged": true,
+			"num": 124
+		},
+		"event_125_india_peoples_war": {
+			"def": "res://数据脚本/事件效果/event_125_india_peoples_war.gd",
+			"id": "event_125",
+			"merged": true,
+			"num": 125
+		},
+		"event_126_brazil_election_1978": {
+			"def": "res://数据脚本/事件效果/event_126_brazil_election_1978.gd",
+			"id": "event_126",
+			"merged": true,
+			"num": 126
+		},
+		"event_127_brazil_revival": {
+			"def": "res://数据脚本/事件效果/event_127_brazil_revival.gd",
+			"id": "event_127",
+			"merged": true,
+			"num": 127
+		},
+		"event_128_argentina_third_way": {
+			"def": "res://数据脚本/事件效果/event_128_argentina_third_way.gd",
+			"id": "event_128",
+			"merged": true,
+			"num": 128
+		},
+		"event_129_argentina_no_more": {
+			"def": "res://数据脚本/事件效果/event_129_argentina_no_more.gd",
+			"id": "event_129",
+			"merged": true,
+			"num": 129
+		},
+		"event_130_bolivia_my_homeland": {
+			"def": "res://数据脚本/事件效果/event_130_bolivia_my_homeland.gd",
+			"id": "event_130",
+			"merged": true,
+			"num": 130
+		},
+		"event_131_bolivia_again": {
+			"def": "res://数据脚本/事件效果/event_131_bolivia_again.gd",
+			"id": "event_131",
+			"merged": true,
+			"num": 131
+		},
+		"event_132_bolivia_democratic": {
+			"def": "res://数据脚本/事件效果/event_132_bolivia_democratic.gd",
+			"id": "event_132",
+			"merged": true,
+			"num": 132
+		},
+		"event_133_chile_helicopter_trip": {
+			"def": "res://数据脚本/事件效果/event_133_chile_helicopter_trip.gd",
+			"id": "event_133",
+			"merged": true,
+			"num": 133
+		},
+		"event_134_chile_step_back": {
+			"def": "res://数据脚本/事件效果/event_134_chile_step_back.gd",
+			"id": "event_134",
+			"merged": true,
+			"num": 134
+		},
+		"event_135_uruguay_military_standard": {
+			"def": "res://数据脚本/事件效果/event_135_uruguay_military_standard.gd",
+			"id": "event_135",
+			"merged": true,
+			"num": 135
+		},
+		"event_136_uruguay_internal_election": {
+			"def": "res://数据脚本/事件效果/event_136_uruguay_internal_election.gd",
+			"id": "event_136",
+			"merged": true,
+			"num": 136
+		},
+		"event_137_uruguay_restoration": {
+			"def": "res://数据脚本/事件效果/event_137_uruguay_restoration.gd",
+			"id": "event_137",
+			"merged": true,
+			"num": 137
+		},
+		"event_138_paraguay_stroessner_fall": {
+			"def": "res://数据脚本/事件效果/event_138_paraguay_stroessner_fall.gd",
+			"id": "event_138",
+			"merged": true,
+			"num": 138
+		},
+		"event_139_paraguay_democratic_transition": {
+			"def": "res://数据脚本/事件效果/event_139_paraguay_democratic_transition.gd",
+			"id": "event_139",
+			"merged": true,
+			"num": 139
+		},
+		"event_140_paraguay_dictator_eternal": {
+			"def": "res://数据脚本/事件效果/event_140_paraguay_dictator_eternal.gd",
+			"id": "event_140",
+			"merged": true,
+			"num": 140
+		},
+		"event_141_peru_shining_path": {
+			"def": "res://数据脚本/事件效果/event_141_peru_shining_path.gd",
+			"id": "event_141",
+			"merged": true,
+			"num": 141
+		},
+		"event_142_peru_election_1985": {
+			"def": "res://数据脚本/事件效果/event_142_peru_election_1985.gd",
+			"id": "event_142",
+			"merged": true,
+			"num": 142
+		},
+		"event_143_ecuador_oligarchy_end": {
+			"def": "res://数据脚本/事件效果/event_143_ecuador_oligarchy_end.gd",
+			"id": "event_143",
+			"merged": true,
+			"num": 143
+		},
+		"event_144_ecuador_second_election": {
+			"def": "res://数据脚本/事件效果/event_144_ecuador_second_election.gd",
+			"id": "event_144",
+			"merged": true,
+			"num": 144
+		},
+		"event_145_colombia_democratic_autocracy_end": {
+			"def": "res://数据脚本/事件效果/event_145_colombia_democratic_autocracy_end.gd",
+			"id": "event_145",
+			"merged": true,
+			"num": 145
+		},
+		"event_146_colombia_second_chance": {
+			"def": "res://数据脚本/事件效果/event_146_colombia_second_chance.gd",
+			"id": "event_146",
+			"merged": true,
+			"num": 146
+		},
+		"event_147_venezuela_two_headed_system": {
+			"def": "res://数据脚本/事件效果/event_147_venezuela_two_headed_system.gd",
+			"id": "event_147",
+			"merged": true,
+			"num": 147
+		},
+		"event_148_venezuela_repeat_mistake": {
+			"def": "res://数据脚本/事件效果/event_148_venezuela_repeat_mistake.gd",
+			"id": "event_148",
+			"merged": true,
+			"num": 148
+		},
+		"event_149_guyana_reincarnation": {
+			"def": "res://数据脚本/事件效果/event_149_guyana_reincarnation.gd",
+			"id": "event_149",
+			"merged": true,
+			"num": 149
+		},
+		"event_150_guyana_father_death": {
+			"def": "res://数据脚本/事件效果/event_150_guyana_father_death.gd",
+			"id": "event_150",
+			"merged": true,
+			"num": 150
+		},
+		"event_151_suriname_newborn_state": {
+			"def": "res://数据脚本/事件效果/event_151_suriname_newborn_state.gd",
+			"id": "event_151",
+			"merged": true,
+			"num": 151
+		},
+		"event_1999_test": {
+			"def": "res://数据脚本/事件效果/event_1999_test.gd",
+			"id": "event_1999",
+			"merged": true,
+			"num": 1999
+		},
+		"event_2000_test_2000": {
+			"def": "res://数据脚本/事件效果/event_2000_test_2000.gd",
+			"id": "event_2000",
+			"merged": true,
+			"num": 2000
+		},
+		"event_240_cultural_revolution_verdict": {
+			"def": "res://数据脚本/事件效果/event_240_cultural_revolution_verdict.gd",
+			"id": "event_240",
+			"merged": true,
+			"num": 240
+		},
+		"event_241_new_faces": {
+			"def": "res://数据脚本/事件效果/event_241_new_faces.gd",
+			"id": "event_241",
+			"merged": true,
+			"num": 241
+		},
+		"event_291_italy_hot_autumn": {
+			"def": "res://数据脚本/事件效果/event_291_italy_hot_autumn.gd",
+			"id": "event_291",
+			"merged": true,
+			"num": 291
+		},
+		"event_292_italy_salerno_turn": {
+			"def": "res://数据脚本/事件效果/event_292_italy_salerno_turn.gd",
+			"id": "event_292",
+			"merged": true,
+			"num": 292
+		},
+		"event_293_italy_socialism_act1": {
+			"def": "res://数据脚本/事件效果/event_293_italy_socialism_act1.gd",
+			"id": "event_293",
+			"merged": true,
+			"num": 293
+		},
+		"event_294_bologna_flames": {
+			"def": "res://数据脚本/事件效果/event_294_bologna_flames.gd",
+			"id": "event_294",
+			"merged": true,
+			"num": 294
+		},
+		"event_295_italy_nemesis": {
+			"def": "res://数据脚本/事件效果/event_295_italy_nemesis.gd",
+			"id": "event_295",
+			"merged": true,
+			"num": 295
+		},
+		"event_296_italy_propaganda_two": {
+			"def": "res://数据脚本/事件效果/event_296_italy_propaganda_two.gd",
+			"id": "event_296",
+			"merged": true,
+			"num": 296
+		},
+		"event_297_italy_people_welfare": {
+			"def": "res://数据脚本/事件效果/event_297_italy_people_welfare.gd",
+			"id": "event_297",
+			"merged": true,
+			"num": 297
+		},
+		"event_298_italy_kickbacks": {
+			"def": "res://数据脚本/事件效果/event_298_italy_kickbacks.gd",
+			"id": "event_298",
+			"merged": true,
+			"num": 298
+		},
+		"event_299_italy_total_collapse": {
+			"def": "res://数据脚本/事件效果/event_299_italy_total_collapse.gd",
+			"id": "event_299",
+			"merged": true,
+			"num": 299
+		},
+		"event_300_vietnam_war": {
+			"def": "res://数据脚本/事件效果/event_300_vietnam_war.gd",
+			"id": "event_300",
+			"merged": true,
+			"num": 300
+		},
+		"event_301_army_question": {
+			"def": "res://数据脚本/事件效果/event_301_army_question.gd",
+			"id": "event_301",
+			"merged": true,
+			"num": 301
+		},
+		"event_302_party_problem": {
+			"def": "res://数据脚本/事件效果/event_302_party_problem.gd",
+			"id": "event_302",
+			"merged": true,
+			"num": 302
+		},
+		"event_303_nuclear_war": {
+			"def": "res://数据脚本/事件效果/event_303_nuclear_war.gd",
+			"id": "event_303",
+			"merged": true,
+			"num": 303
+		},
+		"event_304_hua_guofeng_rise": {
+			"def": "res://数据脚本/事件效果/event_304_hua_guofeng_rise.gd",
+			"id": "event_304",
+			"merged": true,
+			"num": 304
+		},
+		"event_305_deng_xiaoping_resignation": {
+			"def": "res://数据脚本/事件效果/event_305_deng_xiaoping_resignation.gd",
+			"id": "event_305",
+			"merged": true,
+			"num": 305
+		},
+		"event_306_party_line_protest": {
+			"def": "res://数据脚本/事件效果/event_306_party_line_protest.gd",
+			"id": "event_306",
+			"merged": true,
+			"num": 306
+		},
+		"event_307_convict_red_guards": {
+			"def": "res://数据脚本/事件效果/event_307_convict_red_guards.gd",
+			"id": "event_307",
+			"merged": true,
+			"num": 307
+		},
+		"event_308_big_circle": {
+			"def": "res://数据脚本/事件效果/event_308_big_circle.gd",
+			"id": "event_308",
+			"merged": true,
+			"num": 308
+		},
+		"event_309_chen_yun_fate": {
+			"def": "res://数据脚本/事件效果/event_309_chen_yun_fate.gd",
+			"id": "event_309",
+			"merged": true,
+			"num": 309
+		},
+		"event_310_peng_zhen_fate": {
+			"def": "res://数据脚本/事件效果/event_310_peng_zhen_fate.gd",
+			"id": "event_310",
+			"merged": true,
+			"num": 310
+		},
+		"event_311_wang_zhen_fate": {
+			"def": "res://数据脚本/事件效果/event_311_wang_zhen_fate.gd",
+			"id": "event_311",
+			"merged": true,
+			"num": 311
+		},
+		"event_312_li_xiannian_fate": {
+			"def": "res://数据脚本/事件效果/event_312_li_xiannian_fate.gd",
+			"id": "event_312",
+			"merged": true,
+			"num": 312
+		},
+		"event_313_education_quality_decline": {
+			"def": "res://数据脚本/事件效果/event_313_education_quality_decline.gd",
+			"id": "event_313",
+			"merged": true,
+			"num": 313
+		},
+		"event_314_korean_boeing_shot_down": {
+			"def": "res://数据脚本/事件效果/event_314_korean_boeing_shot_down.gd",
+			"id": "event_314",
+			"merged": true,
+			"num": 314
+		},
+		"event_315_learn_from_japan": {
+			"def": "res://数据脚本/事件效果/event_315_learn_from_japan.gd",
+			"id": "event_315",
+			"merged": true,
+			"num": 315
+		},
+		"event_316_japan_reconciliation": {
+			"def": "res://数据脚本/事件效果/event_316_japan_reconciliation.gd",
+			"id": "event_316",
+			"merged": true,
+			"num": 316
+		},
+		"event_317_forget_the_past": {
+			"def": "res://数据脚本/事件效果/event_317_forget_the_past.gd",
+			"id": "event_317",
+			"merged": true,
+			"num": 317
+		},
+		"event_318_japan_communist_power": {
+			"def": "res://数据脚本/事件效果/event_318_japan_communist_power.gd",
+			"id": "event_318",
+			"merged": true,
+			"num": 318
+		},
+		"event_319_agricultural_mechanization": {
+			"def": "res://数据脚本/事件效果/event_319_agricultural_mechanization.gd",
+			"id": "event_319",
+			"merged": true,
+			"num": 319
+		},
+		"event_320_great_projects": {
+			"def": "res://数据脚本/事件效果/event_320_great_projects.gd",
+			"id": "event_320",
+			"merged": true,
+			"num": 320
+		},
+		"event_321_rural_fertilizer": {
+			"def": "res://数据脚本/事件效果/event_321_rural_fertilizer.gd",
+			"id": "event_321",
+			"merged": true,
+			"num": 321
+		},
+		"event_322_road_development": {
+			"def": "res://数据脚本/事件效果/event_322_road_development.gd",
+			"id": "event_322",
+			"merged": true,
+			"num": 322
+		},
+		"event_323_private_education": {
+			"def": "res://数据脚本/事件效果/event_323_private_education.gd",
+			"id": "event_323",
+			"merged": true,
+			"num": 323
+		},
+		"event_324_china_metro": {
+			"def": "res://数据脚本/事件效果/event_324_china_metro.gd",
+			"id": "event_324",
+			"merged": true,
+			"num": 324
+		},
+		"event_325_high_speed_rail": {
+			"def": "res://数据脚本/事件效果/event_325_high_speed_rail.gd",
+			"id": "event_325",
+			"merged": true,
+			"num": 325
+		},
+		"event_326_constitution_1978": {
+			"def": "res://数据脚本/事件效果/event_326_constitution_1978.gd",
+			"id": "event_326",
+			"merged": true,
+			"num": 326
+		},
+		"event_327_amend_constitution": {
+			"def": "res://数据脚本/事件效果/event_327_amend_constitution.gd",
+			"id": "event_327",
+			"merged": true,
+			"num": 327
+		},
+		"event_328_new_constitution": {
+			"def": "res://数据脚本/事件效果/event_328_new_constitution.gd",
+			"id": "event_328",
+			"merged": true,
+			"num": 328
+		},
+		"event_329_ownership_form": {
+			"def": "res://数据脚本/事件效果/event_329_ownership_form.gd",
+			"id": "event_329",
+			"merged": true,
+			"num": 329
+		},
+		"event_330_portugal_talks": {
+			"def": "res://数据脚本/事件效果/event_330_portugal_talks.gd",
+			"id": "event_330",
+			"merged": true,
+			"num": 330
+		},
+		"event_331_hands_tied": {
+			"def": "res://数据脚本/事件效果/event_331_hands_tied.gd",
+			"id": "event_331",
+			"merged": true,
+			"num": 331
+		},
+		"event_332_enterprise_expansion": {
+			"def": "res://数据脚本/事件效果/event_332_enterprise_expansion.gd",
+			"id": "event_332",
+			"merged": true,
+			"num": 332
+		},
+		"event_333_foreign_enterprises": {
+			"def": "res://数据脚本/事件效果/event_333_foreign_enterprises.gd",
+			"id": "event_333",
+			"merged": true,
+			"num": 333
+		},
+		"event_334_patent_law": {
+			"def": "res://数据脚本/事件效果/event_334_patent_law.gd",
+			"id": "event_334",
+			"merged": true,
+			"num": 334
+		},
+		"event_335_specialized_farms": {
+			"def": "res://数据脚本/事件效果/event_335_specialized_farms.gd",
+			"id": "event_335",
+			"merged": true,
+			"num": 335
+		},
+		"event_336_education_question": {
+			"def": "res://数据脚本/事件效果/event_336_education_question.gd",
+			"id": "event_336",
+			"merged": true,
+			"num": 336
+		},
+		"event_337_former_capitalists": {
+			"def": "res://数据脚本/事件效果/event_337_former_capitalists.gd",
+			"id": "event_337",
+			"merged": true,
+			"num": 337
+		},
+		"event_338_kuomintang_left": {
+			"def": "res://数据脚本/事件效果/event_338_kuomintang_left.gd",
+			"id": "event_338",
+			"merged": true,
+			"num": 338
+		},
+		"event_339_overseas_compatriots": {
+			"def": "res://数据脚本/事件效果/event_339_overseas_compatriots.gd",
+			"id": "event_339",
+			"merged": true,
+			"num": 339
+		},
+		"event_340_local_autonomy": {
+			"def": "res://数据脚本/事件效果/event_340_local_autonomy.gd",
+			"id": "event_340",
+			"merged": true,
+			"num": 340
+		},
+		"event_341_citizenship": {
+			"def": "res://数据脚本/事件效果/event_341_citizenship.gd",
+			"id": "event_341",
+			"merged": true,
+			"num": 341
+		},
+		"event_342_human_rights_commission": {
+			"def": "res://数据脚本/事件效果/event_342_human_rights_commission.gd",
+			"id": "event_342",
+			"merged": true,
+			"num": 342
+		},
+		"event_343_german_story": {
+			"def": "res://数据脚本/事件效果/event_343_german_story.gd",
+			"id": "event_343",
+			"merged": true,
+			"num": 343
+		},
+		"event_344_conscription_system": {
+			"def": "res://数据脚本/事件效果/event_344_conscription_system.gd",
+			"id": "event_344",
+			"merged": true,
+			"num": 344
+		},
+		"event_345_shoulder_boards": {
+			"def": "res://数据脚本/事件效果/event_345_shoulder_boards.gd",
+			"id": "event_345",
+			"merged": true,
+			"num": 345
+		},
+		"event_346_civilians_in_military": {
+			"def": "res://数据脚本/事件效果/event_346_civilians_in_military.gd",
+			"id": "event_346",
+			"merged": true,
+			"num": 346
+		},
+		"event_347_civilians_in_military_2": {
+			"def": "res://数据脚本/事件效果/event_347_civilians_in_military_2.gd",
+			"id": "event_347",
+			"merged": true,
+			"num": 347
+		},
+		"event_348_underground_city": {
+			"def": "res://数据脚本/事件效果/event_348_underground_city.gd",
+			"id": "event_348",
+			"merged": true,
+			"num": 348
+		},
+		"event_349_underground_city_2": {
+			"def": "res://数据脚本/事件效果/event_349_underground_city_2.gd",
+			"id": "event_349",
+			"merged": true,
+			"num": 349
+		},
+		"event_350_mig25_hijack": {
+			"def": "res://数据脚本/事件效果/event_350_mig25_hijack.gd",
+			"id": "event_350",
+			"merged": true,
+			"num": 350
+		},
+		"event_351_mig29_defection": {
+			"def": "res://数据脚本/事件效果/event_351_mig29_defection.gd",
+			"id": "event_351",
+			"merged": true,
+			"num": 351
+		},
+		"event_352_space_launch_sites": {
+			"def": "res://数据脚本/事件效果/event_352_space_launch_sites.gd",
+			"id": "event_352",
+			"merged": true,
+			"num": 352
+		},
+		"event_353_new_launch_vehicles": {
+			"def": "res://数据脚本/事件效果/event_353_new_launch_vehicles.gd",
+			"id": "event_353",
+			"merged": true,
+			"num": 353
+		},
+		"event_354_space_communications": {
+			"def": "res://数据脚本/事件效果/event_354_space_communications.gd",
+			"id": "event_354",
+			"merged": true,
+			"num": 354
+		},
+		"event_355_satellite_navigation": {
+			"def": "res://数据脚本/事件效果/event_355_satellite_navigation.gd",
+			"id": "event_355",
+			"merged": true,
+			"num": 355
+		},
+		"event_356_manned_space_program": {
+			"def": "res://数据脚本/事件效果/event_356_manned_space_program.gd",
+			"id": "event_356",
+			"merged": true,
+			"num": 356
+		},
+		"event_357_manned_program_advance": {
+			"def": "res://数据脚本/事件效果/event_357_manned_program_advance.gd",
+			"id": "event_357",
+			"merged": true,
+			"num": 357
+		},
+		"event_358_lunar_program_first_instruments": {
+			"def": "res://数据脚本/事件效果/event_358_lunar_program_first_instruments.gd",
+			"id": "event_358",
+			"merged": true,
+			"num": 358
+		},
+		"event_359_lunar_program_first_instruments_alt": {
+			"def": "res://数据脚本/事件效果/event_359_lunar_program_first_instruments_alt.gd",
+			"id": "event_359",
+			"merged": true,
+			"num": 359
+		},
+		"event_360_manned_lunar_program": {
+			"def": "res://数据脚本/事件效果/event_360_manned_lunar_program.gd",
+			"id": "event_360",
+			"merged": true,
+			"num": 360
+		},
+		"event_361_lunar_advanced_missions": {
+			"def": "res://数据脚本/事件效果/event_361_lunar_advanced_missions.gd",
+			"id": "event_361",
+			"merged": true,
+			"num": 361
+		},
+		"event_362_first_mars_mission": {
+			"def": "res://数据脚本/事件效果/event_362_first_mars_mission.gd",
+			"id": "event_362",
+			"merged": true,
+			"num": 362
+		},
+		"event_363_orbital_space_station": {
+			"def": "res://数据脚本/事件效果/event_363_orbital_space_station.gd",
+			"id": "event_363",
+			"merged": true,
+			"num": 363
+		},
+		"event_364_spaceplane_program": {
+			"def": "res://数据脚本/事件效果/event_364_spaceplane_program.gd",
+			"id": "event_364",
+			"merged": true,
+			"num": 364
+		},
+		"event_365_finland_koivisto": {
+			"def": "res://数据脚本/事件效果/event_365_finland_koivisto.gd",
+			"id": "event_365",
+			"merged": true,
+			"num": 365
+		},
+		"event_366_turkey_elections": {
+			"def": "res://数据脚本/事件效果/event_366_turkey_elections.gd",
+			"id": "event_366",
+			"merged": true,
+			"num": 366
+		},
+		"event_367_turkey_military_coup": {
+			"def": "res://数据脚本/事件效果/event_367_turkey_military_coup.gd",
+			"id": "event_367",
+			"merged": true,
+			"num": 367
+		},
+		"event_368_syria_1001_nights": {
+			"def": "res://数据脚本/事件效果/event_368_syria_1001_nights.gd",
+			"id": "event_368",
+			"merged": true,
+			"num": 368
+		},
+		"event_369_turkey_kurdish_crisis": {
+			"def": "res://数据脚本/事件效果/event_369_turkey_kurdish_crisis.gd",
+			"id": "event_369",
+			"merged": true,
+			"num": 369
+		},
+		"event_370_turkish_crisis_1984": {
+			"def": "res://数据脚本/事件效果/event_370_turkey_crisis.gd",
+			"id": "event_370",
+			"merged": true,
+			"num": 370
+		},
+		"event_371_second_lebanon_war": {
+			"def": "res://数据脚本/事件效果/event_371_second_lebanon_war.gd",
+			"id": "event_371",
+			"merged": true,
+			"num": 371
+		},
+		"event_372_turkish_great_power_dream": {
+			"def": "res://数据脚本/事件效果/event_372_turkish_great_power_dream.gd",
+			"id": "event_372",
+			"merged": true,
+			"num": 372
+		},
+		"event_373_cyprus_second_invasion": {
+			"def": "res://数据脚本/事件效果/event_373_cyprus_second_invasion.gd",
+			"id": "event_373",
+			"merged": true,
+			"num": 373
+		},
+		"event_374_cyprus_divided_again": {
+			"def": "res://数据脚本/事件效果/event_374_cyprus_divided.gd",
+			"id": "event_374",
+			"merged": true,
+			"num": 374
+		},
+		"event_375_turkish_straits_crisis": {
+			"def": "res://数据脚本/事件效果/event_375_turkish_straits.gd",
+			"id": "event_375",
+			"merged": true,
+			"num": 375
+		},
+		"event_376_ogaden_war": {
+			"def": "res://数据脚本/事件效果/event_376_ogaden_war.gd",
+			"id": "event_376",
+			"merged": true,
+			"num": 376
+		},
+		"event_377_soviet_discipline_eastern_europe": {
+			"def": "res://数据脚本/事件效果/event_377_soviet_discipline_eastern_europe.gd",
+			"id": "event_377",
+			"merged": true,
+			"num": 377
+		},
+		"event_378_juche_debate": {
+			"def": "res://数据脚本/事件效果/event_378_juche_debate.gd",
+			"id": "event_378",
+			"merged": true,
+			"num": 378
+		},
+		"event_379_nato_expansion": {
+			"def": "res://数据脚本/事件效果/event_379_nato_expansion.gd",
+			"id": "event_379",
+			"merged": true,
+			"num": 379
+		},
+		"event_380_re_stalinization": {
+			"def": "res://数据脚本/事件效果/event_380_re_stalinization.gd",
+			"id": "event_380",
+			"merged": true,
+			"num": 380
+		},
+		"event_381_yakovlev_brussels": {
+			"def": "res://数据脚本/事件效果/event_381_yakovlev_brussels.gd",
+			"id": "event_381",
+			"merged": true,
+			"num": 381
+		},
+		"event_382_albania_yugoslavia": {
+			"def": "res://数据脚本/事件效果/event_382_albania_yugoslavia.gd",
+			"id": "event_382",
+			"merged": true,
+			"num": 382
+		},
+		"event_383_new_chameria": {
+			"def": "res://数据脚本/事件效果/event_383_new_chameria.gd",
+			"id": "event_383",
+			"merged": true,
+			"num": 383
+		},
+		"event_384_french_election": {
+			"def": "res://数据脚本/事件效果/event_384_french_election.gd",
+			"id": "event_384",
+			"merged": true,
+			"num": 384
+		},
+		"event_385_french_election_act2": {
+			"def": "res://数据脚本/事件效果/event_385_french_election_act2.gd",
+			"id": "event_385",
+			"merged": true,
+			"num": 385
+		},
+		"event_386_chad": {
+			"def": "res://数据脚本/事件效果/event_386_chad.gd",
+			"id": "event_386",
+			"merged": true,
+			"num": 386
+		},
+		"event_387_yemen_war": {
+			"def": "res://数据脚本/事件效果/event_387_yemen_war.gd",
+			"id": "event_387",
+			"merged": true,
+			"num": 387
+		},
+		"event_388_neo_romanov_empire": {
+			"def": "res://数据脚本/事件效果/event_388_neo_romanov_empire.gd",
+			"id": "event_388",
+			"merged": true,
+			"num": 388
+		},
+		"event_389_globalism_collapse": {
+			"def": "res://数据脚本/事件定义/event_389_globalism_collapse.gd",
+			"id": "event_389",
+			"merged": false,
+			"num": 389
+		},
+		"event_390_france_turn_red": {
+			"def": "res://数据脚本/事件效果/event_390_france_turn_red.gd",
+			"id": "event_390",
+			"merged": true,
+			"num": 390
+		},
+		"event_391_final_struggle": {
+			"def": "res://数据脚本/事件效果/event_391_final_struggle.gd",
+			"id": "event_391",
+			"merged": true,
+			"num": 391
+		},
+		"event_392_historic_compromise_end": {
+			"def": "res://数据脚本/事件效果/event_392_historic_compromise_end.gd",
+			"id": "event_392",
+			"merged": true,
+			"num": 392
+		},
+		"event_393_historic_compromise": {
+			"def": "res://数据脚本/事件效果/event_393_historic_compromise.gd",
+			"id": "event_393",
+			"merged": true,
+			"num": 393
+		},
+		"event_394_italian_election_1979": {
+			"def": "res://数据脚本/事件效果/event_394_italian_election_1979.gd",
+			"id": "event_394",
+			"merged": true,
+			"num": 394
+		},
+		"event_395_horseshoe_theory": {
+			"def": "res://数据脚本/事件效果/event_395_horseshoe_theory.gd",
+			"id": "event_395",
+			"merged": true,
+			"num": 395
+		},
+		"event_396_second_renaissance": {
+			"def": "res://数据脚本/事件效果/event_396_second_renaissance.gd",
+			"id": "event_396",
+			"merged": true,
+			"num": 396
+		},
+		"event_397_italy_republic_crisis": {
+			"def": "res://数据脚本/事件效果/event_397_italy_republic_crisis.gd",
+			"id": "event_397",
+			"merged": true,
+			"num": 397
+		},
+		"event_398_right_wing_split": {
+			"def": "res://数据脚本/事件效果/event_398_right_wing_split.gd",
+			"id": "event_398",
+			"merged": true,
+			"num": 398
+		},
+		"event_399_italy_1983_election": {
+			"def": "res://数据脚本/事件效果/event_399_italy_1983_election.gd",
+			"id": "event_399",
+			"merged": true,
+			"num": 399
+		},
+		"event_400_final_verdict": {
+			"def": "res://数据脚本/事件效果/event_400_final_verdict.gd",
+			"id": "event_400",
+			"merged": true,
+			"num": 400
+		},
+		"event_401_left_wing_split": {
+			"def": "res://数据脚本/事件效果/event_401_left_wing_split.gd",
+			"id": "event_401",
+			"merged": true,
+			"num": 401
+		},
+		"event_402_donkey_elephant_act2": {
+			"def": "res://数据脚本/事件效果/event_402_donkey_elephant_act2.gd",
+			"id": "event_402",
+			"merged": true,
+			"num": 402
+		},
+		"event_403_derg_crisis": {
+			"def": "res://数据脚本/事件效果/event_403_derg_crisis.gd",
+			"id": "event_403",
+			"merged": true,
+			"num": 403
+		},
+		"event_404_labour_split": {
+			"def": "res://数据脚本/事件效果/event_404_labour_split.gd",
+			"id": "event_404",
+			"merged": true,
+			"num": 404
+		},
+		"event_405_uk_election_1979": {
+			"def": "res://数据脚本/事件效果/event_405_uk_election_1979.gd",
+			"id": "event_405",
+			"merged": true,
+			"num": 405
+		},
+		"event_406_uk_election_1983": {
+			"def": "res://数据脚本/事件效果/event_406_uk_election_1983.gd",
+			"id": "event_406",
+			"merged": true,
+			"num": 406
+		},
+		"event_407_fourth_international": {
+			"def": "res://数据脚本/事件效果/event_407_fourth_international.gd",
+			"id": "event_407",
+			"merged": true,
+			"num": 407
+		},
+		"event_408_military_agenda": {
+			"def": "res://数据脚本/事件效果/event_408_military_agenda.gd",
+			"id": "event_408",
+			"merged": true,
+			"num": 408
+		},
+		"event_409_intelligence_agenda": {
+			"def": "res://数据脚本/事件效果/event_409_intelligence_agenda.gd",
+			"id": "event_409",
+			"merged": true,
+			"num": 409
+		},
+		"event_410_ussr_discontent": {
+			"def": "res://数据脚本/事件效果/event_410_ussr_discontent.gd",
+			"id": "event_410",
+			"merged": true,
+			"num": 410
+		},
+		"event_411_usa_discontent": {
+			"def": "res://数据脚本/事件效果/event_411_usa_discontent.gd",
+			"id": "event_411",
+			"merged": true,
+			"num": 411
+		},
+		"event_412_sento_seato_merge": {
+			"def": "res://数据脚本/事件效果/event_412_sento_seato_merge.gd",
+			"id": "event_412",
+			"merged": true,
+			"num": 412
+		},
+		"event_413_sento_dissolution": {
+			"def": "res://数据脚本/事件效果/event_413_sento_dissolution.gd",
+			"id": "event_413",
+			"merged": true,
+			"num": 413
+		},
+		"event_414_portugal_revolution_end": {
+			"def": "res://数据脚本/事件效果/event_414_portugal_revolution_end.gd",
+			"id": "event_414",
+			"merged": true,
+			"num": 414
+		},
+		"event_415_grenada": {
+			"def": "res://数据脚本/事件效果/event_415_grenada.gd",
+			"id": "event_415",
+			"merged": true,
+			"num": 415
+		},
+		"event_416_grenada_act2": {
+			"def": "res://数据脚本/事件效果/event_416_grenada_act2.gd",
+			"id": "event_416",
+			"merged": true,
+			"num": 416
+		},
+		"event_417_gulf_war": {
+			"def": "res://数据脚本/事件效果/event_417_gulf_war.gd",
+			"id": "event_417",
+			"merged": true,
+			"num": 417
+		},
+		"event_418_black_gold": {
+			"def": "res://数据脚本/事件效果/event_418_black_gold.gd",
+			"id": "event_418",
+			"merged": true,
+			"num": 418
+		},
+		"event_419_normalization": {
+			"def": "res://数据脚本/事件效果/event_419_normalization.gd",
+			"id": "event_419",
+			"merged": true,
+			"num": 419
+		},
+		"event_420_carnation_new_revolution": {
+			"def": "res://数据脚本/事件效果/event_420_carnation_new_revolution.gd",
+			"id": "event_420",
+			"merged": true,
+			"num": 420
+		},
+		"event_421_eagle_falls": {
+			"def": "res://数据脚本/事件效果/event_421_eagle_falls.gd",
+			"id": "event_421",
+			"merged": true,
+			"num": 421
+		},
+		"event_422_europe_sunset": {
+			"def": "res://数据脚本/事件效果/event_422_europe_sunset.gd",
+			"id": "event_422",
+			"merged": true,
+			"num": 422
+		},
+		"event_423_spain_thaw": {
+			"def": "res://数据脚本/事件效果/event_423_spain_thaw.gd",
+			"id": "event_423",
+			"merged": true,
+			"num": 423
+		},
+		"event_424_galaxy_operation": {
+			"def": "res://数据脚本/事件效果/event_424_galaxy_operation.gd",
+			"id": "event_424",
+			"merged": true,
+			"num": 424
+		},
+		"event_425_spain_election_1979": {
+			"def": "res://数据脚本/事件效果/event_425_spain_election_1979.gd",
+			"id": "event_425",
+			"merged": true,
+			"num": 425
+		},
+		"event_426_spanish_civil_war_vortex": {
+			"def": "res://数据脚本/事件效果/event_426_spanish_civil_war_vortex.gd",
+			"id": "event_426",
+			"merged": true,
+			"num": 426
+		},
+		"event_427_spanish_coup": {
+			"def": "res://数据脚本/事件效果/event_427_spanish_coup.gd",
+			"id": "event_427",
+			"merged": true,
+			"num": 427
+		},
+		"event_428_spain_joins_nato": {
+			"def": "res://数据脚本/事件效果/event_428_spain_joins_nato.gd",
+			"id": "event_428",
+			"merged": true,
+			"num": 428
+		},
+		"event_429_spain_election_1982": {
+			"def": "res://数据脚本/事件效果/event_429_spain_election_1982.gd",
+			"id": "event_429",
+			"merged": true,
+			"num": 429
+		},
+		"event_430_socialist_union_rising": {
+			"def": "res://数据脚本/事件效果/event_430_socialist_union_rising.gd",
+			"id": "event_430",
+			"merged": true,
+			"num": 430
+		},
+		"event_431_spain_joins_ec": {
+			"def": "res://数据脚本/事件效果/event_431_spain_joins_ec.gd",
+			"id": "event_431",
+			"merged": true,
+			"num": 431
+		},
+		"event_432_republican_camp_collapse": {
+			"def": "res://数据脚本/事件效果/event_432_republican_camp_collapse.gd",
+			"id": "event_432",
+			"merged": true,
+			"num": 432
+		},
+		"event_433_gorbachev_dissolves_wto": {
+			"def": "res://数据脚本/事件效果/event_433_gorbachev_dissolves_wto.gd",
+			"id": "event_433",
+			"merged": true,
+			"num": 433
+		},
+		"event_434_little_rome": {
+			"def": "res://数据脚本/事件效果/event_434_little_rome.gd",
+			"id": "event_434",
+			"merged": true,
+			"num": 434
+		},
+		"event_435_soviet_number_two": {
+			"def": "res://数据脚本/事件效果/event_435_soviet_number_two.gd",
+			"id": "event_435",
+			"merged": true,
+			"num": 435
+		},
+		"event_436_soviet_constitution": {
+			"def": "res://数据脚本/事件效果/event_436_soviet_constitution.gd",
+			"id": "event_436",
+			"merged": true,
+			"num": 436
+		},
+		"event_437_south_yemen_crisis": {
+			"def": "res://数据脚本/事件效果/event_437_south_yemen_crisis.gd",
+			"id": "event_437",
+			"merged": true,
+			"num": 437
+		},
+		"event_438_fragile_revolution": {
+			"def": "res://数据脚本/事件效果/event_438_fragile_revolution.gd",
+			"id": "event_438",
+			"merged": true,
+			"num": 438
+		},
+		"event_439_golan_heights": {
+			"def": "res://数据脚本/事件效果/event_439_golan_heights.gd",
+			"id": "event_439",
+			"merged": true,
+			"num": 439
+		},
+		"event_440_lebanon_are_you_ok": {
+			"def": "res://数据脚本/事件效果/event_440_lebanon_are_you_ok.gd",
+			"id": "event_440",
+			"merged": true,
+			"num": 440
+		},
+		"event_441_luzon_red_dawn": {
+			"def": "res://数据脚本/事件效果/event_441_luzon_red_dawn.gd",
+			"id": "event_441",
+			"merged": true,
+			"num": 441
+		},
+		"event_442_black_september": {
+			"def": "res://数据脚本/事件效果/event_442_black_september.gd",
+			"id": "event_442",
+			"merged": true,
+			"num": 442
+		},
+		"event_443_recover_arunachal": {
+			"def": "res://数据脚本/事件效果/event_443_recover_arunachal.gd",
+			"id": "event_443",
+			"merged": true,
+			"num": 443
+		},
+		"event_444_long_revolution": {
+			"def": "res://数据脚本/事件效果/event_444_long_revolution.gd",
+			"id": "event_444",
+			"merged": true,
+			"num": 444
+		},
+		"event_445_laos_fate": {
+			"def": "res://数据脚本/事件效果/event_445_laos_fate.gd",
+			"id": "event_445",
+			"merged": true,
+			"num": 445
+		},
+		"event_446_iran_faqih_guardianship": {
+			"def": "res://数据脚本/事件定义/event_446_iran_faqih_guardianship.gd",
+			"id": "event_446",
+			"merged": false,
+			"num": 446
+		},
+		"event_447_save_iran_uprising": {
+			"def": "res://数据脚本/事件定义/event_447_save_iran_uprising.gd",
+			"id": "event_447",
+			"merged": false,
+			"num": 447
+		},
+		"event_448_iran_election_rebirth": {
+			"def": "res://数据脚本/事件定义/event_448_iran_election_rebirth.gd",
+			"id": "event_448",
+			"merged": false,
+			"num": 448
+		},
+		"event_449_iran_revolutionary_war": {
+			"def": "res://数据脚本/事件定义/event_449_iran_revolutionary_war.gd",
+			"id": "event_449",
+			"merged": false,
+			"num": 449
+		},
+		"event_450_eternal_light": {
+			"def": "res://数据脚本/事件效果/event_450_eternal_light.gd",
+			"id": "event_450",
+			"merged": true,
+			"num": 450
+		},
+		"event_451_indochina_dictator": {
+			"def": "res://数据脚本/事件效果/event_451_indochina_dictator.gd",
+			"id": "event_451",
+			"merged": true,
+			"num": 451
+		},
+		"event_452_indochina_peace": {
+			"def": "res://数据脚本/事件效果/event_452_indochina_peace.gd",
+			"id": "event_452",
+			"merged": true,
+			"num": 452
+		},
+		"event_453_burma_new_situation": {
+			"def": "res://数据脚本/事件效果/event_453_burma_new_situation.gd",
+			"id": "event_453",
+			"merged": true,
+			"num": 453
+		},
+		"event_454_vietnam_ambition": {
+			"def": "res://数据脚本/事件效果/event_454_vietnam_ambition.gd",
+			"id": "event_454",
+			"merged": true,
+			"num": 454
+		},
+		"event_455_iran_hostage_crisis": {
+			"def": "res://数据脚本/事件效果/event_455_iran_hostage_crisis.gd",
+			"id": "event_455",
+			"merged": true,
+			"num": 455
+		},
+		"event_456_gaokao_gaokao": {
+			"def": "res://数据脚本/事件效果/event_456_gaokao_gaokao.gd",
+			"id": "event_456",
+			"merged": true,
+			"num": 456
+		},
+		"event_457_treasure_island_return": {
+			"def": "res://数据脚本/事件效果/event_457_treasure_island_return.gd",
+			"id": "event_457",
+			"merged": true,
+			"num": 457
+		},
+		"event_458_mali_pull_the_fangs": {
+			"def": "res://数据脚本/事件效果/event_458_mali_pull_the_fangs.gd",
+			"id": "event_458",
+			"merged": true,
+			"num": 458
+		},
+		"event_459_tunisia_black_or_red_thursday": {
+			"def": "res://数据脚本/事件效果/event_459_tunisia_black_or_red_thursday.gd",
+			"id": "event_459",
+			"merged": true,
+			"num": 459
+		},
+		"event_460_formosa_winter": {
+			"def": "res://数据脚本/事件定义/event_460_formosa_winter.gd",
+			"id": "formosa_winter",
+			"merged": false,
+			"num": 460
+		},
+		"event_461_formosa_spring": {
+			"def": "res://数据脚本/事件定义/event_461_formosa_spring.gd",
+			"id": "formosa_spring",
+			"merged": false,
+			"num": 461
+		},
+		"event_462_one_china": {
+			"def": "res://数据脚本/事件效果/event_462_one_china.gd",
+			"id": "event_462",
+			"merged": true,
+			"num": 462
+		},
+		"event_463_casablanca_night": {
+			"def": "res://数据脚本/事件效果/event_463_casablanca_night.gd",
+			"id": "event_463",
+			"merged": true,
+			"num": 463
+		},
+		"event_464_unity_for_greater_victory": {
+			"def": "res://数据脚本/事件效果/event_464_unity_for_greater_victory.gd",
+			"id": "event_464",
+			"merged": true,
+			"num": 464
+		},
+		"event_465_glory_arab_flag": {
+			"def": "res://数据脚本/事件效果/event_465_glory_arab_flag.gd",
+			"id": "event_465",
+			"merged": true,
+			"num": 465
+		},
+		"event_466_unity_is_strength": {
+			"def": "res://数据脚本/事件效果/event_466_unity_is_strength.gd",
+			"id": "event_466",
+			"merged": true,
+			"num": 466
+		},
+		"event_467_i_love_you_golden_star_red_flag": {
+			"def": "res://数据脚本/事件效果/event_467_i_love_you_golden_star_red_flag.gd",
+			"id": "event_467",
+			"merged": true,
+			"num": 467
+		},
+		"event_468_south_pacific_waves": {
+			"def": "res://数据脚本/事件效果/event_468_south_pacific_waves.gd",
+			"id": "event_468",
+			"merged": true,
+			"num": 468
+		},
+		"event_469_red_hong_kong": {
+			"def": "res://数据脚本/事件效果/event_469_red_hong_kong.gd",
+			"id": "event_469",
+			"merged": true,
+			"num": 469
+		},
+		"event_470_which_east_is_red": {
+			"def": "res://数据脚本/事件效果/event_470_which_east_is_red.gd",
+			"id": "event_470",
+			"merged": true,
+			"num": 470
+		},
+		"event_471_maoism_in_soviet": {
+			"def": "res://数据脚本/事件效果/event_471_maoism_in_soviet.gd",
+			"id": "event_471",
+			"merged": true,
+			"num": 471
+		},
+		"event_472_bear_hibernation": {
+			"def": "res://数据脚本/事件效果/event_472_bear_hibernation.gd",
+			"id": "event_472",
+			"merged": true,
+			"num": 472
+		},
+		"event_473_comecon_last_day": {
+			"def": "res://数据脚本/事件效果/event_473_comecon_last_day.gd",
+			"id": "event_473",
+			"merged": true,
+			"num": 473
+		},
+		"event_474_yusin_winter": {
+			"def": "res://数据脚本/事件效果/event_474_yusin_winter.gd",
+			"id": "event_474",
+			"merged": true,
+			"num": 474
+		},
+		"event_475_who_is_my_enemy": {
+			"def": "res://数据脚本/事件效果/event_475_who_is_my_enemy.gd",
+			"id": "event_475",
+			"merged": true,
+			"num": 475
+		},
+		"event_476_britain_foot_benne_conspiracy": {
+			"def": "res://数据脚本/事件效果/event_476_britain_foot_benne_conspiracy.gd",
+			"id": "event_476",
+			"merged": true,
+			"num": 476
+		},
+		"event_477_britain_popular_satire": {
+			"def": "res://数据脚本/事件效果/event_477_britain_popular_satire.gd",
+			"id": "event_477",
+			"merged": true,
+			"num": 477
+		},
+		"event_478_portugal_hot_summer_continues": {
+			"def": "res://数据脚本/事件效果/event_478_portugal_hot_summer_continues.gd",
+			"id": "event_478",
+			"merged": true,
+			"num": 478
+		},
+		"event_479_portugal_1983_election": {
+			"def": "res://数据脚本/事件效果/event_479_portugal_1983_election.gd",
+			"id": "event_479",
+			"merged": true,
+			"num": 479
+		},
+		"event_480_portugal_1985_election": {
+			"def": "res://数据脚本/事件效果/event_480_portugal_1985_election.gd",
+			"id": "event_480",
+			"merged": true,
+			"num": 480
+		},
+		"event_481_italy_rusty_horseshoe": {
+			"def": "res://数据脚本/事件效果/event_481_italy_rusty_horseshoe.gd",
+			"id": "event_481",
+			"merged": true,
+			"num": 481
+		},
+		"event_482_france_orthodox_return": {
+			"def": "res://数据脚本/事件效果/event_482_france_orthodox_return.gd",
+			"id": "event_482",
+			"merged": true,
+			"num": 482
+		},
+		"event_483_france_second_may_storm": {
+			"def": "res://数据脚本/事件效果/event_483_france_second_may_storm.gd",
+			"id": "event_483",
+			"merged": true,
+			"num": 483
+		},
+		"event_484_germany_tear_down_wall": {
+			"def": "res://数据脚本/事件效果/event_484_germany_tear_down_wall.gd",
+			"id": "event_484",
+			"merged": true,
+			"num": 484
+		},
+		"event_485_germany_german_spring": {
+			"def": "res://数据脚本/事件效果/event_485_germany_german_spring.gd",
+			"id": "event_485",
+			"merged": true,
+			"num": 485
+		},
+		"event_486_german_autumn": {
+			"def": "res://数据脚本/事件效果/event_486_german_autumn.gd",
+			"id": "event_486",
+			"merged": true,
+			"num": 486
+		},
+		"event_487_return_of_imperial_eagle": {
+			"def": "res://数据脚本/事件效果/event_487_return_of_imperial_eagle.gd",
+			"id": "event_487",
+			"merged": true,
+			"num": 487
+		},
+		"event_488_secret_gathering": {
+			"def": "res://数据脚本/事件效果/event_488_secret_gathering.gd",
+			"id": "event_488",
+			"merged": true,
+			"num": 488
+		},
+		"event_489_split_of_left_coalition": {
+			"def": "res://数据脚本/事件效果/event_489_split_of_left_coalition.gd",
+			"id": "event_489",
+			"merged": true,
+			"num": 489
+		},
+		"event_490_danube_reversed": {
+			"def": "res://数据脚本/事件效果/event_490_danube_reversed.gd",
+			"id": "event_490",
+			"merged": true,
+			"num": 490
+		},
+		"event_491_under_balkan_stars": {
+			"def": "res://数据脚本/事件效果/event_491_under_balkan_stars.gd",
+			"id": "event_491",
+			"merged": true,
+			"num": 491
+		},
+		"event_492_balkan_roar": {
+			"def": "res://数据脚本/事件效果/event_492_balkan_roar.gd",
+			"id": "event_492",
+			"merged": true,
+			"num": 492
+		},
+		"event_493_we_need_oil": {
+			"def": "res://数据脚本/事件效果/event_493_we_need_oil.gd",
+			"id": "event_493",
+			"merged": true,
+			"num": 493
+		},
+		"event_494_firewall": {
+			"def": "res://数据脚本/事件效果/event_494_firewall.gd",
+			"id": "event_494",
+			"merged": true,
+			"num": 494
+		},
+		"event_495_arirang": {
+			"def": "res://数据脚本/事件效果/event_495_arirang.gd",
+			"id": "event_495",
+			"merged": true,
+			"num": 495
+		},
+		"event_496_congo_yhombi": {
+			"def": "res://数据脚本/事件效果/event_496_congo_yhombi.gd",
+			"id": "event_496",
+			"merged": true,
+			"num": 496
+		},
+		"event_497_congo_congress": {
+			"def": "res://数据脚本/事件效果/event_497_congo_congress.gd",
+			"id": "event_497",
+			"merged": true,
+			"num": 497
+		},
+		"event_498_yemen_nasserist": {
+			"def": "res://数据脚本/事件效果/event_498_yemen_nasserist.gd",
+			"id": "event_498",
+			"merged": true,
+			"num": 498
+		},
+		"event_499_sudan_may_revolution": {
+			"def": "res://数据脚本/事件效果/event_499_sudan_may_revolution.gd",
+			"id": "event_499",
+			"merged": true,
+			"num": 499
+		},
+		"event_500_african_union": {
+			"def": "res://数据脚本/事件效果/event_500_african_union.gd",
+			"id": "african_union",
+			"merged": true,
+			"num": 500
+		},
+		"event_501_western_81_exercise": {
+			"def": "res://数据脚本/事件效果/event_501_western_81_exercise.gd",
+			"id": "event_501",
+			"merged": true,
+			"num": 501
+		},
+		"event_502_brown_dawn_of_dharma_age": {
+			"def": "res://数据脚本/事件效果/event_502_brown_dawn_of_dharma_age.gd",
+			"id": "event_502",
+			"merged": true,
+			"num": 502
+		},
+		"event_503_jiaocheng_mountains": {
+			"def": "res://数据脚本/事件效果/event_503_jiaocheng_mountains.gd",
+			"id": "event_503",
+			"merged": true,
+			"num": 503
+		},
+		"event_504_poland_rocks": {
+			"def": "res://数据脚本/事件效果/event_504_poland_rocks.gd",
+			"id": "event_504",
+			"merged": true,
+			"num": 504
+		},
+		"event_505_end_of_father_of_guinea": {
+			"def": "res://数据脚本/事件效果/event_505_end_of_father_of_guinea.gd",
+			"id": "event_505",
+			"merged": true,
+			"num": 505
+		},
+		"event_506_from_1922_to_1984": {
+			"def": "res://数据脚本/事件效果/event_506_from_1922_to_1984.gd",
+			"id": "event_506",
+			"merged": true,
+			"num": 506
+		},
+		"event_507_operation_shrimp": {
+			"def": "res://数据脚本/事件效果/event_507_operation_shrimp.gd",
+			"id": "event_507",
+			"merged": true,
+			"num": 507
+		},
+		"event_508_chameleon_branch": {
+			"def": "res://数据脚本/事件效果/event_508_chameleon_branch.gd",
+			"id": "event_508",
+			"merged": true,
+			"num": 508
+		},
+		"event_509_ghana_revolution_act1": {
+			"def": "res://数据脚本/事件效果/event_509_ghana_revolution_act1.gd",
+			"id": "event_509",
+			"merged": true,
+			"num": 509
+		},
+		"event_510_ghana_revolution_act2": {
+			"def": "res://数据脚本/事件效果/event_510_ghana_revolution_act2.gd",
+			"id": "event_510",
+			"merged": true,
+			"num": 510
+		},
+		"event_511_ghana_revolution_act3": {
+			"def": "res://数据脚本/事件效果/event_511_ghana_revolution_act3.gd",
+			"id": "event_511",
+			"merged": true,
+			"num": 511
+		},
+		"event_512_gulf_of_sidra": {
+			"def": "res://数据脚本/事件效果/event_512_gulf_of_sidra.gd",
+			"id": "event_512",
+			"merged": true,
+			"num": 512
+		},
+		"event_513_future_weapons": {
+			"def": "res://数据脚本/事件效果/event_513_future_weapons.gd",
+			"id": "event_513",
+			"merged": true,
+			"num": 513
+		},
+		"event_514_red_star_on_head": {
+			"def": "res://数据脚本/事件效果/event_514_red_star_on_head.gd",
+			"id": "event_514",
+			"merged": true,
+			"num": 514
+		},
+		"event_515_from_the_future": {
+			"def": "res://数据脚本/事件效果/event_515_from_the_future.gd",
+			"id": "event_515",
+			"merged": true,
+			"num": 515
+		},
+		"event_516_forward_tanks": {
+			"def": "res://数据脚本/事件效果/event_516_forward_tanks.gd",
+			"id": "event_516",
+			"merged": true,
+			"num": 516
+		},
+		"event_517_blue_sky_of_homeland": {
+			"def": "res://数据脚本/事件效果/event_517_blue_sky_of_homeland.gd",
+			"id": "event_517",
+			"merged": true,
+			"num": 517
+		},
+		"event_518_brave_air_force": {
+			"def": "res://数据脚本/事件效果/event_518_brave_air_force.gd",
+			"id": "event_518",
+			"merged": true,
+			"num": 518
+		},
+		"event_519_red_flag_fluttering": {
+			"def": "res://数据脚本/事件效果/event_519_red_flag_fluttering.gd",
+			"id": "event_519",
+			"merged": true,
+			"num": 519
+		},
+		"event_520_no_dragon_palace_underwater": {
+			"def": "res://数据脚本/事件效果/event_520_no_dragon_palace_underwater.gd",
+			"id": "event_520",
+			"merged": true,
+			"num": 520
+		},
+		"event_521_project_840": {
+			"def": "res://数据脚本/事件效果/event_521_project_840.gd",
+			"id": "event_521",
+			"merged": true,
+			"num": 521
+		},
+		"event_522_japan_hokaku_act1": {
+			"def": "res://数据脚本/事件效果/event_522_japan_hokaku_act1.gd",
+			"id": "event_522",
+			"merged": true,
+			"num": 522
+		},
+		"event_523_japan_bullet_years": {
+			"def": "res://数据脚本/事件效果/event_523_japan_bullet_years.gd",
+			"id": "event_523",
+			"merged": true,
+			"num": 523
+		},
+		"event_524_bombard_yoyogi_hq": {
+			"def": "res://数据脚本/事件效果/event_524_bombard_yoyogi_hq.gd",
+			"id": "event_524",
+			"merged": true,
+			"num": 524
+		},
+		"event_525_japan_innovative_or_socialist": {
+			"def": "res://数据脚本/事件效果/event_525_japan_innovative_or_socialist.gd",
+			"id": "event_525",
+			"merged": true,
+			"num": 525
+		},
+		"event_526_japan_no_rose_only_fist": {
+			"def": "res://数据脚本/事件效果/event_526_japan_no_rose_only_fist.gd",
+			"id": "event_526",
+			"merged": true,
+			"num": 526
+		},
+		"event_527_japan_hokaku_act2_election": {
+			"def": "res://数据脚本/事件效果/event_527_japan_hokaku_act2_election.gd",
+			"id": "event_527",
+			"merged": true,
+			"num": 527
+		},
+		"event_528_japan_hokaku_act2_stable": {
+			"def": "res://数据脚本/事件效果/event_528_japan_hokaku_act2_stable.gd",
+			"id": "event_528",
+			"merged": true,
+			"num": 528
+		},
+		"event_529_japan_40_day_struggle": {
+			"def": "res://数据脚本/事件效果/event_529_japan_40_day_struggle.gd",
+			"id": "event_529",
+			"merged": true,
+			"num": 529
+		},
+		"event_530_japan_change_is_good": {
+			"def": "res://数据脚本/事件效果/event_530_japan_change_is_good.gd",
+			"id": "event_530",
+			"merged": true,
+			"num": 530
+		},
+		"event_531_japan_road_choice": {
+			"def": "res://数据脚本/事件效果/event_531_japan_road_choice.gd",
+			"id": "event_531",
+			"merged": true,
+			"num": 531
+		},
+		"event_532_sailing_by_helmsman": {
+			"def": "res://数据脚本/事件效果/event_532_sailing_by_helmsman.gd",
+			"id": "event_532",
+			"merged": true,
+			"num": 532
+		},
+		"event_533_entryism_again": {
+			"def": "res://数据脚本/事件效果/event_533_entryism_again.gd",
+			"id": "event_533",
+			"merged": true,
+			"num": 533
+		},
+		"event_534_japan_election_1983_ldp": {
+			"def": "res://数据脚本/事件效果/event_534_japan_election_1983_ldp.gd",
+			"id": "event_534",
+			"merged": true,
+			"num": 534
+		},
+		"event_535_vietnam_coup": {
+			"def": "res://数据脚本/事件效果/event_535_vietnam_coup.gd",
+			"id": "event_535",
+			"merged": true,
+			"num": 535
+		},
+		"event_536_japan_election_1983_opp": {
+			"def": "res://数据脚本/事件效果/event_536_japan_election_1983_opp.gd",
+			"id": "event_536",
+			"merged": true,
+			"num": 536
+		},
+		"event_537_january_storm": {
+			"def": "res://数据脚本/事件效果/event_537_january_storm.gd",
+			"id": "event_537",
+			"merged": true,
+			"num": 537
+		},
+		"event_538_peoples_revolution": {
+			"def": "res://数据脚本/事件效果/event_538_peoples_revolution.gd",
+			"id": "event_538",
+			"merged": true,
+			"num": 538
+		},
+		"event_539_march_for_you": {
+			"def": "res://数据脚本/事件效果/event_539_march_for_you.gd",
+			"id": "event_539",
+			"merged": true,
+			"num": 539
+		},
+		"event_540_da_vincis_legacy": {
+			"def": "res://数据脚本/事件效果/event_540_da_vincis_legacy.gd",
+			"id": "event_540",
+			"merged": true,
+			"num": 540
+		},
+		"event_541_sing_of_unity": {
+			"def": "res://数据脚本/事件效果/event_541_sing_of_unity.gd",
+			"id": "event_541",
+			"merged": true,
+			"num": 541
+		},
+		"event_542_first_world_revolutionary_youth": {
+			"def": "res://数据脚本/事件效果/event_542_first_world_revolutionary_youth.gd",
+			"id": "event_542",
+			"merged": true,
+			"num": 542
+		},
+		"event_543_eight_hundred_million_plays": {
+			"def": "res://数据脚本/事件效果/event_543_eight_hundred_million_plays.gd",
+			"id": "event_543",
+			"merged": true,
+			"num": 543
+		},
+		"event_544_sword_of_peace": {
+			"def": "res://数据脚本/事件效果/event_544_sword_of_peace.gd",
+			"id": "event_544",
+			"merged": true,
+			"num": 544
+		},
+		"event_545_airlift_pioneer": {
+			"def": "res://数据脚本/事件效果/event_545_airlift_pioneer.gd",
+			"id": "event_545",
+			"merged": true,
+			"num": 545
+		},
+		"event_546_xinjiang_red_sun": {
+			"def": "res://数据脚本/事件效果/event_546_xinjiang_red_sun.gd",
+			"id": "event_546",
+			"merged": true,
+			"num": 546
+		},
+		"event_547_tibet_sword": {
+			"def": "res://数据脚本/事件效果/event_547_tibet_sword.gd",
+			"id": "event_547",
+			"merged": true,
+			"num": 547
+		},
+		"event_548_inspiring_words": {
+			"def": "res://数据脚本/事件效果/event_548_inspiring_words.gd",
+			"id": "event_548",
+			"merged": true,
+			"num": 548
+		},
+		"event_549_weeding_out": {
+			"def": "res://数据脚本/事件效果/event_549_weeding_out.gd",
+			"id": "event_549",
+			"merged": true,
+			"num": 549
+		},
+		"event_550_ethnic_federalism": {
+			"def": "res://数据脚本/事件效果/event_550_ethnic_federalism.gd",
+			"id": "event_550",
+			"merged": true,
+			"num": 550
+		},
+		"event_551_mongolia_break": {
+			"def": "res://数据脚本/事件效果/event_551_mongolia_break.gd",
+			"id": "event_551",
+			"merged": true,
+			"num": 551
+		},
+		"event_552_acceleration_strategy": {
+			"def": "res://数据脚本/事件效果/event_552_acceleration_strategy.gd",
+			"id": "event_552",
+			"merged": true,
+			"num": 552
+		},
+		"event_553_new_italian_east_africa": {
+			"def": "res://数据脚本/事件效果/event_553_new_italian_east_africa.gd",
+			"id": "event_553",
+			"merged": true,
+			"num": 553
+		},
+		"event_554_egypt_pharaoh_end": {
+			"def": "res://数据脚本/事件效果/event_554_egypt_pharaoh_end.gd",
+			"id": "event_554",
+			"merged": true,
+			"num": 554
+		},
+		"event_555_swords_to_ploughshares": {
+			"def": "res://数据脚本/事件效果/event_555_swords_to_ploughshares.gd",
+			"id": "event_555",
+			"merged": true,
+			"num": 555
+		},
+		"event_556_hot_autumn_returns": {
+			"def": "res://数据脚本/事件效果/event_556_hot_autumn_returns.gd",
+			"id": "event_556",
+			"merged": true,
+			"num": 556
+		},
+		"event_557_peaceful_transition_socialism_2": {
+			"def": "res://数据脚本/事件效果/event_557_peaceful_transition_socialism_2.gd",
+			"id": "event_557",
+			"merged": true,
+			"num": 557
+		},
+		"event_558_general": {
+			"def": "res://数据脚本/事件效果/event_558_general.gd",
+			"id": "event_558",
+			"merged": true,
+			"num": 558
+		},
+		"event_559_morocco_berlin_wall": {
+			"def": "res://数据脚本/事件效果/event_559_morocco_berlin_wall.gd",
+			"id": "event_559",
+			"merged": true,
+			"num": 559
+		},
+		"event_560_bread_and_freedom": {
+			"def": "res://数据脚本/事件效果/event_560_bread_and_freedom.gd",
+			"id": "event_560",
+			"merged": true,
+			"num": 560
+		},
+		"event_561_do_not_expect_me_to_yield": {
+			"def": "res://数据脚本/事件效果/event_561_do_not_expect_me_to_yield.gd",
+			"id": "event_561",
+			"merged": true,
+			"num": 561
+		},
+		"event_562_land_of_olives": {
+			"def": "res://数据脚本/事件效果/event_562_land_of_olives.gd",
+			"id": "event_562",
+			"merged": true,
+			"num": 562
+		},
+		"event_563_tragedy_of_salvation": {
+			"def": "res://数据脚本/事件效果/event_563_tragedy_of_salvation.gd",
+			"id": "event_563",
+			"merged": true,
+			"num": 563
+		},
+		"event_564_allah_syria_asad": {
+			"def": "res://数据脚本/事件效果/event_564_allah_syria_asad.gd",
+			"id": "event_564",
+			"merged": true,
+			"num": 564
+		},
+		"event_565_get_out_asad": {
+			"def": "res://数据脚本/事件效果/event_565_get_out_asad.gd",
+			"id": "event_565",
+			"merged": true,
+			"num": 565
+		},
+		"event_566_red_auxiliaries": {
+			"def": "res://数据脚本/事件效果/event_566_red_auxiliaries.gd",
+			"id": "event_566",
+			"merged": true,
+			"num": 566
+		},
+		"event_567_gulf_hot_wind": {
+			"def": "res://数据脚本/事件效果/event_567_gulf_hot_wind.gd",
+			"id": "event_567",
+			"merged": true,
+			"num": 567
+		},
+		"event_568_arabian_gulf_flag": {
+			"def": "res://数据脚本/事件效果/event_568_arabian_gulf_flag.gd",
+			"id": "event_568",
+			"merged": true,
+			"num": 568
+		},
+		"event_569_tyrant_bad_end": {
+			"def": "res://数据脚本/事件效果/event_569_tyrant_bad_end.gd",
+			"id": "event_569",
+			"merged": true,
+			"num": 569
+		},
+		"event_570_iraq_kuwait_war": {
+			"def": "res://数据脚本/事件效果/event_570_iraq_kuwait_war.gd",
+			"id": "event_570",
+			"merged": true,
+			"num": 570
+		},
+		"event_571_uae_invades_kuwait": {
+			"def": "res://数据脚本/事件效果/event_571_uae_invades_kuwait.gd",
+			"id": "event_571",
+			"merged": true,
+			"num": 571
+		},
+		"event_572_atonement_journey": {
+			"def": "res://数据脚本/事件效果/event_572_atonement_journey.gd",
+			"id": "event_572",
+			"merged": true,
+			"num": 572
+		},
+		"event_573_land_beyond_earth": {
+			"def": "res://数据脚本/事件效果/event_573_land_beyond_earth.gd",
+			"id": "event_573",
+			"merged": true,
+			"num": 573
+		},
+		"event_574_election_spin_dance": {
+			"def": "res://数据脚本/事件效果/event_574_election_spin_dance.gd",
+			"id": "event_574",
+			"merged": true,
+			"num": 574
+		},
+		"event_575_london_bridge_down": {
+			"def": "res://数据脚本/事件效果/event_575_london_bridge_down.gd",
+			"id": "event_575",
+			"merged": true,
+			"num": 575
+		},
+		"event_576_australia_revolution": {
+			"def": "res://数据脚本/事件效果/event_576_australia_revolution.gd",
+			"id": "event_576",
+			"merged": true,
+			"num": 576
+		},
+		"event_577_mexico_crisis": {
+			"def": "res://数据脚本/事件效果/event_577_mexico_crisis.gd",
+			"id": "event_577",
+			"merged": true,
+			"num": 577
+		},
+		"event_578_zapatista_children": {
+			"def": "res://数据脚本/事件效果/event_578_zapatista_children.gd",
+			"id": "event_578",
+			"merged": true,
+			"num": 578
+		},
+		"event_579_mexico_city": {
+			"def": "res://数据脚本/事件效果/event_579_mexico_city.gd",
+			"id": "event_579",
+			"merged": true,
+			"num": 579
+		},
+		"event_580_madagascar": {
+			"def": "res://数据脚本/事件效果/event_580_madagascar.gd",
+			"id": "event_580",
+			"merged": true,
+			"num": 580
+		},
+		"event_581_copper_smell": {
+			"def": "res://数据脚本/事件效果/event_581_copper_smell.gd",
+			"id": "event_581",
+			"merged": true,
+			"num": 581
+		},
+		"event_582_last_colonial_expedition": {
+			"def": "res://数据脚本/事件效果/event_582_last_colonial_expedition.gd",
+			"id": "event_582",
+			"merged": true,
+			"num": 582
+		},
+		"event_583_break_chains": {
+			"def": "res://数据脚本/事件效果/event_583_break_chains.gd",
+			"id": "event_583",
+			"merged": true,
+			"num": 583
+		},
+		"event_584_bantustan_end": {
+			"def": "res://数据脚本/事件效果/event_584_bantustan_end.gd",
+			"id": "event_584",
+			"merged": true,
+			"num": 584
+		},
+		"event_585_french_colonialism_end": {
+			"def": "res://数据脚本/事件效果/event_585_french_colonialism_end.gd",
+			"id": "event_585",
+			"merged": true,
+			"num": 585
+		},
+		"event_586_red_sea_crossroads": {
+			"def": "res://数据脚本/事件效果/event_586_red_sea_crossroads.gd",
+			"id": "event_586",
+			"merged": true,
+			"num": 586
+		},
+		"event_587_ethiopia_teglachin": {
+			"def": "res://数据脚本/事件效果/event_587_ethiopia_teglachin.gd",
+			"id": "event_587",
+			"merged": true,
+			"num": 587
+		},
+		"event_588_ogaden_war_rekindled": {
+			"def": "res://数据脚本/事件效果/event_588_ogaden_war_rekindled.gd",
+			"id": "event_588",
+			"merged": true,
+			"num": 588
+		},
+		"event_589_horn_africa_federation": {
+			"def": "res://数据脚本/事件效果/event_589_horn_africa_federation.gd",
+			"id": "event_589",
+			"merged": true,
+			"num": 589
+		},
+		"event_590_red_solomon_lion": {
+			"def": "res://数据脚本/事件效果/event_590_red_solomon_lion.gd",
+			"id": "event_590",
+			"merged": true,
+			"num": 590
+		},
+		"event_591_homeland_or_death": {
+			"def": "res://数据脚本/事件效果/event_591_homeland_or_death.gd",
+			"id": "event_591",
+			"merged": true,
+			"num": 591
+		},
+		"event_592_no_african_miracle": {
+			"def": "res://数据脚本/事件效果/event_592_no_african_miracle.gd",
+			"id": "event_592",
+			"merged": true,
+			"num": 592
+		},
+		"event_593_down_with_tyrant": {
+			"def": "res://数据脚本/事件效果/event_593_down_with_tyrant.gd",
+			"id": "event_593",
+			"merged": true,
+			"num": 593
+		},
+		"event_594_garissa_massacre": {
+			"def": "res://数据脚本/事件效果/event_594_garissa_massacre.gd",
+			"id": "event_594",
+			"merged": true,
+			"num": 594
+		},
+		"event_595_land_and_freedom": {
+			"def": "res://数据脚本/事件效果/event_595_land_and_freedom.gd",
+			"id": "event_595",
+			"merged": true,
+			"num": 595
+		},
+		"event_596_wagalla_massacre": {
+			"def": "res://数据脚本/事件效果/event_596_wagalla_massacre.gd",
+			"id": "event_596",
+			"merged": true,
+			"num": 596
+		},
+		"event_597_gambia_socialism_or_death": {
+			"def": "res://数据脚本/事件效果/event_597_gambia_socialism_or_death.gd",
+			"id": "event_597",
+			"merged": true,
+			"num": 597
+		},
+		"event_598_kagera_is_ours": {
+			"def": "res://数据脚本/事件效果/event_598_kagera_is_ours.gd",
+			"id": "event_598",
+			"merged": true,
+			"num": 598
+		},
+		"event_599_medical_team_to_tanzania": {
+			"def": "res://数据脚本/事件效果/event_599_medical_team_to_tanzania.gd",
+			"id": "event_599",
+			"merged": true,
+			"num": 599
+		},
+		"event_600_tanzania_election": {
+			"def": "res://数据脚本/事件效果/event_600_tanzania_election.gd",
+			"id": "event_600",
+			"merged": true,
+			"num": 600
+		},
+		"event_601_two_countries_one_flag": {
+			"def": "res://数据脚本/事件效果/event_601_two_countries_one_flag.gd",
+			"id": "event_601",
+			"merged": true,
+			"num": 601
+		},
+		"event_602_south_africa_means_attack": {
+			"def": "res://数据脚本/事件效果/event_602_south_africa_means_attack.gd",
+			"id": "event_602",
+			"merged": true,
+			"num": 602
+		},
+		"event_603_presidential_election_rainbow_nation": {
+			"def": "res://数据脚本/事件效果/event_603_presidential_election_rainbow_nation.gd",
+			"id": "event_603",
+			"merged": true,
+			"num": 603
+		},
+		"event_604_eighteen_year_old_survival": {
+			"def": "res://数据脚本/事件效果/event_604_eighteen_year_old_survival.gd",
+			"id": "event_604",
+			"merged": true,
+			"num": 604
+		},
+		"event_605_wing_gambit": {
+			"def": "res://数据脚本/事件效果/event_605_wing_gambit.gd",
+			"id": "event_605",
+			"merged": true,
+			"num": 605
+		},
+		"event_606_la_patrie_ou_la_mort": {
+			"def": "res://数据脚本/事件效果/event_606_la_patrie_ou_la_mort.gd",
+			"id": "event_606",
+			"merged": true,
+			"num": 606
+		},
+		"event_607_seychelles_pride": {
+			"def": "res://数据脚本/事件效果/event_607_seychelles_pride.gd",
+			"id": "event_607",
+			"merged": true,
+			"num": 607
+		},
+		"event_608_operation_angela": {
+			"def": "res://数据脚本/事件效果/event_608_operation_angela.gd",
+			"id": "event_608",
+			"merged": true,
+			"num": 608
+		},
+		"event_609_forever_mr_president": {
+			"def": "res://数据脚本/事件效果/event_609_forever_mr_president.gd",
+			"id": "event_609",
+			"merged": true,
+			"num": 609
+		},
+		"event_610_shaba_war": {
+			"def": "res://数据脚本/事件效果/event_610_shaba_war.gd",
+			"id": "event_610",
+			"merged": true,
+			"num": 610
+		},
+		"event_611_shaba_war_again": {
+			"def": "res://数据脚本/事件效果/event_611_shaba_war_again.gd",
+			"id": "event_611",
+			"merged": true,
+			"num": 611
+		},
+		"event_612_equator_war_drum": {
+			"def": "res://数据脚本/事件效果/event_612_equator_war_drum.gd",
+			"id": "event_612",
+			"merged": true,
+			"num": 612
+		},
+		"event_613_dark_continent_freedom_fighter": {
+			"def": "res://数据脚本/事件效果/event_613_dark_continent_freedom_fighter.gd",
+			"id": "event_613",
+			"merged": true,
+			"num": 613
+		},
+		"event_614_traitor_die": {
+			"def": "res://数据脚本/事件效果/event_614_traitor_die.gd",
+			"id": "event_614",
+			"merged": true,
+			"num": 614
+		},
+		"event_615_red_lion": {
+			"def": "res://数据脚本/事件效果/event_615_red_lion.gd",
+			"id": "event_615",
+			"merged": true,
+			"num": 615
+		},
+		"event_616_called_by_guellewar": {
+			"def": "res://数据脚本/事件效果/event_616_called_by_guellewar.gd",
+			"id": "event_616",
+			"merged": true,
+			"num": 616
+		},
+		"event_617_april_nine_revenge": {
+			"def": "res://数据脚本/事件效果/event_617_april_nine_revenge.gd",
+			"id": "event_617",
+			"merged": true,
+			"num": 617
+		},
+		"event_618_chariots_of_the_gods": {
+			"def": "res://数据脚本/事件效果/event_618_chariots_of_the_gods.gd",
+			"id": "event_618",
+			"merged": true,
+			"num": 618
+		},
+		"event_619_bongoland_end": {
+			"def": "res://数据脚本/事件效果/event_619_bongoland_end.gd",
+			"id": "event_619",
+			"merged": true,
+			"num": 619
+		},
+		"event_620_equatorial_guinea_happy_road": {
+			"def": "res://数据脚本/事件效果/event_620_equatorial_guinea_happy_road.gd",
+			"id": "event_620",
+			"merged": true,
+			"num": 620
+		},
+		"event_621_dictator_killed_by_another": {
+			"def": "res://数据脚本/事件效果/event_621_dictator_killed_by_another.gd",
+			"id": "event_621",
+			"merged": true,
+			"num": 621
+		},
+		"event_622_equatorial_guinea_sole_genius": {
+			"def": "res://数据脚本/事件效果/event_622_equatorial_guinea_sole_genius.gd",
+			"id": "event_622",
+			"merged": true,
+			"num": 622
+		},
+		"event_623_from_ruvuma_to_maputo": {
+			"def": "res://数据脚本/事件效果/event_623_from_ruvuma_to_maputo.gd",
+			"id": "event_623",
+			"merged": true,
+			"num": 623
+		},
+		"event_624_no_tyrant_tramples_you": {
+			"def": "res://数据脚本/事件效果/event_624_no_tyrant_tramples_you.gd",
+			"id": "event_624",
+			"merged": true,
+			"num": 624
+		},
+		"event_625_mozambique_light_comes": {
+			"def": "res://数据脚本/事件效果/event_625_mozambique_light_comes.gd",
+			"id": "event_625",
+			"merged": true,
+			"num": 625
+		},
+		"event_626_moorish_land": {
+			"def": "res://数据脚本/事件效果/event_626_moorish_land.gd",
+			"id": "event_626",
+			"merged": true,
+			"num": 626
+		},
+		"event_627_mauritania_reform": {
+			"def": "res://数据脚本/事件效果/event_627_mauritania_reform.gd",
+			"id": "event_627",
+			"merged": true,
+			"num": 627
+		},
+		"event_628_botswana_revolution": {
+			"def": "res://数据脚本/事件效果/event_628_botswana_revolution.gd",
+			"id": "event_628",
+			"merged": true,
+			"num": 628
+		},
+		"event_629_vanuatu_independence": {
+			"def": "res://数据脚本/事件效果/event_629_vanuatu_independence.gd",
+			"id": "event_629",
+			"merged": true,
+			"num": 629
+		},
+		"event_630_new_caledonia_uprising": {
+			"def": "res://数据脚本/事件效果/event_630_new_caledonia_uprising.gd",
+			"id": "event_630",
+			"merged": true,
+			"num": 630
+		},
+		"event_631_one_love_one_peace": {
+			"def": "res://数据脚本/事件效果/event_631_one_love_one_peace.gd",
+			"id": "event_631",
+			"merged": true,
+			"num": 631
+		},
+		"event_632_jamaica_election": {
+			"def": "res://数据脚本/事件效果/event_632_jamaica_election.gd",
+			"id": "event_632",
+			"merged": true,
+			"num": 632
+		},
+		"event_633_eternal_spring": {
+			"def": "res://数据脚本/事件效果/event_633_eternal_spring.gd",
+			"id": "event_633",
+			"merged": true,
+			"num": 633
+		},
+		"event_634_belize_de_guatemala": {
+			"def": "res://数据脚本/事件效果/event_634_belize_de_guatemala.gd",
+			"id": "event_634",
+			"merged": true,
+			"num": 634
+		},
+		"event_635_belize_de_guatemala_act2": {
+			"def": "res://数据脚本/事件效果/event_635_belize_de_guatemala_act2.gd",
+			"id": "event_635",
+			"merged": true,
+			"num": 635
+		},
+		"event_636_sandinista_early": {
+			"def": "res://数据脚本/事件效果/event_636_sandinista_early.gd",
+			"id": "event_636",
+			"merged": true,
+			"num": 636
+		},
+		"event_637_nicaragua_victory": {
+			"def": "res://数据脚本/事件效果/event_637_nicaragua_victory.gd",
+			"id": "event_637",
+			"merged": true,
+			"num": 637
+		},
+		"event_638_angola_choice": {
+			"def": "res://数据脚本/事件效果/event_638_angola_choice.gd",
+			"id": "event_638",
+			"merged": true,
+			"num": 638
+		},
+		"event_639_fiji_for_all": {
+			"def": "res://数据脚本/事件效果/event_639_fiji_for_all.gd",
+			"id": "event_639",
+			"merged": true,
+			"num": 639
+		},
+		"event_640_gobi_storm": {
+			"def": "res://数据脚本/事件效果/event_640_gobi_storm.gd",
+			"id": "event_640",
+			"merged": true,
+			"num": 640
+		},
+		"event_641_if_lenin_could_see": {
+			"def": "res://数据脚本/事件效果/event_641_if_lenin_could_see.gd",
+			"id": "event_641",
+			"merged": true,
+			"num": 641
+		},
+		"event_642_red_star_war": {
+			"def": "res://数据脚本/事件效果/event_642_red_star_war.gd",
+			"id": "event_642",
+			"merged": true,
+			"num": 642
+		},
+		"event_643_liberate_taiwan": {
+			"def": "res://数据脚本/事件效果/event_643_liberate_taiwan.gd",
+			"id": "event_643",
+			"merged": true,
+			"num": 643
+		},
+		"event_644_red_africa_napoleon": {
+			"def": "res://数据脚本/事件效果/event_644_red_africa_napoleon.gd",
+			"id": "event_644",
+			"merged": true,
+			"num": 644
+		},
+		"event_645_chaos_ladder": {
+			"def": "res://数据脚本/事件效果/event_645_chaos_ladder.gd",
+			"id": "event_645",
+			"merged": true,
+			"num": 645
+		},
+		"event_646_healthcare_reform": {
+			"def": "res://数据脚本/事件效果/event_646_healthcare_reform.gd",
+			"id": "event_646",
+			"merged": true,
+			"num": 646
+		},
+		"event_648_taibai": {
+			"def": "res://数据脚本/事件效果/event_648_taibai.gd",
+			"id": "event_648",
+			"merged": true,
+			"num": 648
+		},
+		"event_649_liberia_doe": {
+			"def": "res://数据脚本/事件效果/event_649_liberia_doe.gd",
+			"id": "event_649",
+			"merged": true,
+			"num": 649
+		},
+		"event_650_liberia_doe_fall": {
+			"def": "res://数据脚本/事件效果/event_650_liberia_doe_fall.gd",
+			"id": "event_650",
+			"merged": true,
+			"num": 650
+		},
+		"event_651_sierra_leone_revolt": {
+			"def": "res://数据脚本/事件效果/event_651_sierra_leone_revolt.gd",
+			"id": "event_651",
+			"merged": true,
+			"num": 651
+		},
+		"event_652_africa_battle_royale": {
+			"def": "res://数据脚本/事件效果/event_652_africa_battle_royale.gd",
+			"id": "event_652",
+			"merged": true,
+			"num": 652
+		},
+		"event_653_west_african_giant_act1": {
+			"def": "res://数据脚本/事件效果/event_653_west_african_giant_act1.gd",
+			"id": "event_653",
+			"merged": true,
+			"num": 653
+		},
+		"event_654_west_african_giant_act2": {
+			"def": "res://数据脚本/事件效果/event_654_west_african_giant_act2.gd",
+			"id": "event_654",
+			"merged": true,
+			"num": 654
+		},
+		"event_655_west_african_giant_act3": {
+			"def": "res://数据脚本/事件效果/event_655_west_african_giant_act3.gd",
+			"id": "event_655",
+			"merged": true,
+			"num": 655
+		},
+		"event_656_red_prometheus": {
+			"def": "res://数据脚本/事件效果/event_656_red_prometheus.gd",
+			"id": "event_656",
+			"merged": true,
+			"num": 656
+		},
+		"event_657_fulani_jihad_embers": {
+			"def": "res://数据脚本/事件效果/event_657_fulani_jihad_embers.gd",
+			"id": "event_657",
+			"merged": true,
+			"num": 657
+		},
+		"event_658_chad_heart_of_death": {
+			"def": "res://数据脚本/事件效果/event_658_chad_heart_of_death.gd",
+			"id": "event_658",
+			"merged": true,
+			"num": 658
+		},
+		"event_659_uganda_mustard_seed": {
+			"def": "res://数据脚本/事件效果/event_659_uganda_mustard_seed.gd",
+			"id": "event_659",
+			"merged": true,
+			"num": 659
+		},
+		"event_660_uganda_new_dictator": {
+			"def": "res://数据脚本/事件效果/event_660_uganda_new_dictator.gd",
+			"id": "event_660",
+			"merged": true,
+			"num": 660
+		},
+		"event_661_uganda_war_over": {
+			"def": "res://数据脚本/事件效果/event_661_uganda_war_over.gd",
+			"id": "event_661",
+			"merged": true,
+			"num": 661
+		},
+		"event_662_burma_red_moth": {
+			"def": "res://数据脚本/事件效果/event_662_burma_red_moth.gd",
+			"id": "event_662",
+			"merged": true,
+			"num": 662
+		},
+		"event_663_burma_far_east_sparta_end": {
+			"def": "res://数据脚本/事件效果/event_663_burma_far_east_sparta_end.gd",
+			"id": "event_663",
+			"merged": true,
+			"num": 663
+		},
+		"event_664_burma_brother_shuangshi": {
+			"def": "res://数据脚本/事件效果/event_664_burma_brother_shuangshi.gd",
+			"id": "event_664",
+			"merged": true,
+			"num": 664
+		},
+		"event_665_panama_tailor": {
+			"def": "res://数据脚本/事件效果/event_665_panama_tailor.gd",
+			"id": "event_665",
+			"merged": true,
+			"num": 665
+		},
+		"event_666_mao_revenant": {
+			"def": "res://数据脚本/事件效果/event_666_mao_revenant.gd",
+			"id": "event_666",
+			"merged": true,
+			"num": 666
+		},
+		"event_667_panama_just_cause": {
+			"def": "res://数据脚本/事件效果/event_667_panama_just_cause.gd",
+			"id": "event_667",
+			"merged": true,
+			"num": 667
+		},
+		"event_668_literature_and_politics": {
+			"def": "res://数据脚本/事件效果/event_668_literature_and_politics.gd",
+			"id": "event_668",
+			"merged": true,
+			"num": 668
+		},
+		"event_669_education_route": {
+			"def": "res://数据脚本/事件效果/event_669_education_route.gd",
+			"id": "event_669",
+			"merged": true,
+			"num": 669
+		},
+		"event_670_mass_work": {
+			"def": "res://数据脚本/事件效果/event_670_mass_work.gd",
+			"id": "event_670",
+			"merged": true,
+			"num": 670
+		},
+		"event_671_friend_wine": {
+			"def": "res://数据脚本/事件效果/event_671_friend_wine.gd",
+			"id": "event_671",
+			"merged": true,
+			"num": 671
+		},
+		"event_672_poor_war": {
+			"def": "res://数据脚本/事件效果/event_672_poor_war.gd",
+			"id": "event_672",
+			"merged": true,
+			"num": 672
+		},
+		"event_673_uk_defense_government": {
+			"def": "res://数据脚本/事件效果/event_673_uk_defense_government.gd",
+			"id": "event_673",
+			"merged": true,
+			"num": 673
+		},
+		"event_674_hobbit_spring": {
+			"def": "res://数据脚本/事件效果/event_674_hobbit_spring.gd",
+			"id": "event_674",
+			"merged": true,
+			"num": 674
+		},
+		"event_675_hobbit_spring_nazimao": {
+			"def": "res://数据脚本/事件效果/event_675_hobbit_spring_nazimao.gd",
+			"id": "event_675",
+			"merged": true,
+			"num": 675
+		},
+		"event_676_zhu_de_funeral": {
+			"def": "res://数据脚本/事件效果/event_676_zhu_de_funeral.gd",
+			"id": "event_676",
+			"merged": true,
+			"num": 676
+		},
+		"event_677_shadow_five": {
+			"def": "res://数据脚本/事件效果/event_677_shadow_five.gd",
+			"id": "event_677",
+			"merged": true,
+			"num": 677
+		},
+		"event_678_free_derry": {
+			"def": "res://数据脚本/事件效果/event_678_free_derry.gd",
+			"id": "event_678",
+			"merged": true,
+			"num": 678
+		},
+		"event_679_ireland_unity_war": {
+			"def": "res://数据脚本/事件效果/event_679_ireland_unity_war.gd",
+			"id": "event_679",
+			"merged": true,
+			"num": 679
+		},
+		"event_680_blood_river": {
+			"def": "res://数据脚本/事件效果/event_680_blood_river.gd",
+			"id": "event_680",
+			"merged": true,
+			"num": 680
+		},
+		"event_681_shangshan_xiaxiang": {
+			"def": "res://数据脚本/事件效果/event_681_shangshan_xiaxiang.gd",
+			"id": "event_681",
+			"merged": true,
+			"num": 681
+		},
+		"event_682_countryman": {
+			"def": "res://数据脚本/事件效果/event_682_countryman.gd",
+			"id": "event_682",
+			"merged": true,
+			"num": 682
+		},
+		"event_683_curtain_falls_election": {
+			"def": "res://数据脚本/事件效果/event_683_curtain_falls_election.gd",
+			"id": "event_683",
+			"merged": true,
+			"num": 683
+		},
+		"event_684_new_leap": {
+			"def": "res://数据脚本/事件效果/event_684_new_leap.gd",
+			"id": "event_684",
+			"merged": true,
+			"num": 684
+		},
+		"event_685_salt_newcomer": {
+			"def": "res://数据脚本/事件效果/event_685_salt_newcomer.gd",
+			"id": "event_685",
+			"merged": true,
+			"num": 685
+		},
+		"event_686_great_game": {
+			"def": "res://数据脚本/事件效果/event_686_great_game.gd",
+			"id": "event_686",
+			"merged": true,
+			"num": 686
+		},
+		"event_687_invader_from_the_sea": {
+			"def": "res://数据脚本/事件效果/event_687_invader_from_the_sea.gd",
+			"id": "event_687",
+			"merged": true,
+			"num": 687
+		},
+		"event_691_trotsky": {
+			"def": "res://数据脚本/事件效果/event_691_trotsky.gd",
+			"id": "event_691",
+			"merged": true,
+			"num": 691
+		},
+		"event_692_mercenary_rebellion": {
+			"def": "res://数据脚本/事件效果/event_692_mercenary_rebellion.gd",
+			"id": "event_692",
+			"merged": true,
+			"num": 692
+		},
+		"event_693_flower_stone_escort": {
+			"def": "res://数据脚本/事件效果/event_693_flower_stone_escort.gd",
+			"id": "event_693",
+			"merged": true,
+			"num": 693
+		},
+		"event_694_thief_has_dao": {
+			"def": "res://数据脚本/事件效果/event_694_thief_has_dao.gd",
+			"id": "event_694",
+			"merged": true,
+			"num": 694
+		},
+		"event_695_makarios_death": {
+			"def": "res://数据脚本/事件效果/event_695_makarios_death.gd",
+			"id": "event_695",
+			"merged": true,
+			"num": 695
+		},
+		"event_696_congo_cultural_revolution": {
+			"def": "res://数据脚本/事件效果/event_696_congo_cultural_revolution.gd",
+			"id": "event_696",
+			"merged": true,
+			"num": 696
+		},
+		"event_697_cyprus_election": {
+			"def": "res://数据脚本/事件效果/event_697_cyprus_election.gd",
+			"id": "event_697",
+			"merged": true,
+			"num": 697
+		},
+		"event_698_holy_land_passion": {
+			"def": "res://数据脚本/事件效果/event_698_holy_land_passion.gd",
+			"id": "event_698",
+			"merged": true,
+			"num": 698
+		},
+		"event_699_gulf_heart_roar": {
+			"def": "res://数据脚本/事件效果/event_699_gulf_heart_roar.gd",
+			"id": "event_699",
+			"merged": true,
+			"num": 699
+		},
+		"event_700_red_sand_lawgiver": {
+			"def": "res://数据脚本/事件效果/event_700_red_sand_lawgiver.gd",
+			"id": "event_700",
+			"merged": true,
+			"num": 700
+		},
+		"event_701_great_white_north": {
+			"def": "res://数据脚本/事件效果/event_701_great_white_north.gd",
+			"id": "event_701",
+			"merged": true,
+			"num": 701
+		},
+		"event_702_silent_revolution_result": {
+			"def": "res://数据脚本/事件效果/event_702_silent_revolution_result.gd",
+			"id": "event_702",
+			"merged": true,
+			"num": 702
+		},
+		"event_703_voluntary_downgrade": {
+			"def": "res://数据脚本/事件效果/event_703_voluntary_downgrade.gd",
+			"id": "event_703",
+			"merged": true,
+			"num": 703
+		},
+		"event_704_your_responsibility": {
+			"def": "res://数据脚本/事件效果/event_704_your_responsibility.gd",
+			"id": "event_704",
+			"merged": true,
+			"num": 704
+		},
+		"event_705_coronation": {
+			"def": "res://数据脚本/事件效果/event_705_coronation.gd",
+			"id": "event_705",
+			"merged": true,
+			"num": 705
+		},
+		"event_706_third_new_process": {
+			"def": "res://数据脚本/事件效果/event_706_third_new_process.gd",
+			"id": "event_706",
+			"merged": true,
+			"num": 706
+		},
+		"event_707_two_rivers": {
+			"def": "res://数据脚本/事件效果/event_707_two_rivers.gd",
+			"id": "event_707",
+			"merged": true,
+			"num": 707
+		},
+		"event_708_imams_call": {
+			"def": "res://数据脚本/事件效果/event_708_imams_call.gd",
+			"id": "event_708",
+			"merged": true,
+			"num": 708
+		},
+		"event_709_tawakkalna": {
+			"def": "res://数据脚本/事件定义/event_709_tawakkalna.gd",
+			"id": "event_709",
+			"merged": false,
+			"num": 709
+		},
+		"event_710_lion_hunt": {
+			"def": "res://数据脚本/事件定义/event_710_lion_hunt.gd",
+			"id": "event_710",
+			"merged": false,
+			"num": 710
+		},
+		"event_711_fifth_middle_east_war": {
+			"def": "res://数据脚本/事件效果/event_711_fifth_middle_east_war.gd",
+			"id": "event_711",
+			"merged": true,
+			"num": 711
+		},
+		"event_712_golden_mountain": {
+			"def": "res://数据脚本/事件效果/event_712_golden_mountain.gd",
+			"id": "event_712",
+			"merged": true,
+			"num": 712
+		},
+		"event_713_revolutionary_international": {
+			"def": "res://数据脚本/事件定义/event_713_revolutionary_international.gd",
+			"id": "event_713",
+			"merged": false,
+			"num": 713
+		},
+		"event_791_national_day": {
+			"def": "res://数据脚本/事件效果/event_791_national_day.gd",
+			"id": "event_791",
+			"merged": true,
+			"num": 791
+		},
+		"event_880_lancaster_house": {
+			"def": "res://数据脚本/事件效果/event_880_lancaster_house.gd",
+			"id": "event_880",
+			"merged": true,
+			"num": 880
+		},
+		"event_881_zimbabwe_election": {
+			"def": "res://数据脚本/事件效果/event_881_zimbabwe_election.gd",
+			"id": "event_881",
+			"merged": true,
+			"num": 881
+		},
+		"event_882_zimbabwe_south_africa_invasion": {
+			"def": "res://数据脚本/事件效果/event_882_zimbabwe_south_africa_invasion.gd",
+			"id": "event_882",
+			"merged": true,
+			"num": 882
+		},
+		"event_883_mugabe_socialism": {
+			"def": "res://数据脚本/事件效果/event_883_mugabe_socialism.gd",
+			"id": "event_883",
+			"merged": true,
+			"num": 883
+		},
+		"event_912_olympus_gods": {
+			"def": "res://数据脚本/事件效果/event_912_olympus_gods.gd",
+			"id": "event_912",
+			"merged": true,
+			"num": 912
+		},
+		"event_913_sun_star": {
+			"def": "res://数据脚本/事件效果/event_913_sun_star.gd",
+			"id": "event_913",
+			"merged": true,
+			"num": 913
+		},
+		"event_931_greece_act2": {
+			"def": "res://数据脚本/事件效果/event_931_greece_act2.gd",
+			"id": "event_931",
+			"merged": true,
+			"num": 931
+		},
+		"event_932_greece_act3": {
+			"def": "res://数据脚本/事件效果/event_932_greece_act3.gd",
+			"id": "event_932",
+			"merged": true,
+			"num": 932
+		},
+		"event_999_dou_dou": {
+			"def": "res://数据脚本/事件效果/event_999_dou_dou.gd",
+			"id": "event_999",
+			"merged": true,
+			"num": 999
+		},
+		"event_belize_independence": {
+			"def": "res://数据脚本/事件效果/event_belize_independence.gd",
+			"id": "belize_independence",
+			"merged": true,
+			"num": 1602
+		},
+		"event_ending_choice": {
+			"def": "res://数据脚本/事件效果/event_ending_choice.gd",
+			"id": "ending_choice",
+			"merged": true,
+			"num": -1
+		},
+		"event_five_no": {
+			"def": "res://数据脚本/事件效果/event_019_five_no.gd",
+			"id": "five_no",
+			"merged": true,
+			"num": 19
+		},
+		"event_korea_unification": {
+			"def": "res://数据脚本/事件定义/event_korea_unification.gd",
+			"id": "korea_unification",
+			"merged": false,
+			"num": -1
+		},
+		"event_sino_soviet_split_eastern_europe": {
+			"def": "res://数据脚本/事件定义/event_sino_soviet_split_eastern_europe.gd",
+			"id": "sino_soviet_split_eastern_europe",
+			"merged": false,
+			"num": -1
+		},
+		"event_solomon_independence": {
+			"def": "res://数据脚本/事件效果/event_solomon_independence.gd",
+			"id": "solomon_independence",
+			"merged": true,
+			"num": 1601
+		}
+	},
+	"stats": {
+		"csv_rows": 3359,
+		"images": 0,
+		"merged": 514,
+		"placeholders": 1541,
+		"skipped": 0,
+		"standalone": 72,
+		"total": 586
+	}
+}

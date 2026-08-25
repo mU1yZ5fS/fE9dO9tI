@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##   !event_done[913] && allcountries[10].SubGosstroy==19 && science[30]。
 ##   science[30]→TECH_UNLOCKED(30)，fire_only_once 承担 !event_done[913]。
 
-const TXT_R0 := "中央广播电视总台播报了这样一条惊天动地的新闻，年仅26岁的复旦大学高材生张维为成为了全世界第一个登陆太阳的宇航员。为了避开太阳惊人的高温，中国航天局决定在晚上举行这一任务。在特制的飞船的帮助下，张维为得以在20小时之内抵达太阳。在太阳上，他看见了日冕和由太阳耀斑构成的“华国锋主席是革命的掌舵人”，“你办事，我放心”之类的口号。他感到了深深的触动，原来真的有天人感应这样的东西！据报道，他还从太阳上带回了一枚太阳耀斑作为献给华国锋同志的礼物。我们在首都为这位航天英雄举行了盛大的欢迎会。但世界各国的科学家和新闻界无所不用其集的嘲讽，挪揄我们的伟大创举。他们就是吃不到葡萄嫌葡萄酸罢了！"
+const TXT_R0 := "event.script.event_913_sun_star.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -13,7 +13,7 @@ func execute(context: Dictionary) -> void:
 		return
 	var opt := int(context.get("option_index", -1))
 	if opt == 0:
-		context["result_text"] = TXT_R0
+		context["result_text"] = tr(TXT_R0)
 		_add(W.I_PARTY_SUPPORT, 1000)
 		_add(W.I_PEOPLE_SUPPORT, 1000)
 		_add(W.I_THOUGHT_FREEDOM, -1000)
@@ -31,3 +31,19 @@ func _set_data(index: int, value: int) -> void:
 		d.set_data_by_index(index, value)
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_913_sun_star.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_913",
+	"num": 913,
+	"priority": 91300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_913_sun_star.gd",
+	"trigger": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 19, "target": "10"}, {"t": "TECH_UNLOCKED", "v": 30}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -5,11 +5,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##   按项目约定 trigger_conditions=[]（仅定义，待决策系统接入）。
 ## 差异：names1/names2 拼接→ws.leader.name_display。
 
-const TXT_R0_P1 := "当地时间"
-const TXT_R0_NIAN := "年"
-const TXT_R0_YUE := "月"
-const TXT_R0_P2 := "日，在美国的默许下，我国领袖"
-const TXT_R0_P3 := "率领代表团对台北进行了历史性的访问，在此期间，经过闭门谈判后，决定成立一个委员会，制定台湾和中国大陆逐步统一的原则。\n我们最终同意建立台湾特别行政区来解决两岸问题。台湾特别行政区保留自己现有的政治体制（蒋经国同意在中央政府指导下逐步实行民主政治）和经济体制，但在重大事宜（如外交）上要与中国大陆步调一致，并宣布统一于中央政府。谈判结束后，两岸领导人合影留念。在我们宣布谈判结果后，民众欢呼雀跃，高兴不已。两岸的经济文化交流迅速展开，不少由于国民党逃到台湾而离开大陆的的同胞也回到了自己的家乡，两岸的血又流到了一起。"
+const TXT_R0_P1 := "event.script.event_462_one_china.c0"
+const TXT_R0_NIAN := "event.script.event_462_one_china.c1"
+const TXT_R0_YUE := "event.script.event_462_one_china.c2"
+const TXT_R0_P2 := "event.script.event_462_one_china.c3"
+const TXT_R0_P3 := "event.script.event_462_one_china.c4"
 
 
 func execute(context: Dictionary) -> void:
@@ -23,7 +23,7 @@ func execute(context: Dictionary) -> void:
 			var year := str(_res(W.I_YEAR))
 			var month := str(_res(W.I_MONTH))
 			var day := str(_res(W.I_DAY))
-			context["result_text"] = TXT_R0_P1 + year + TXT_R0_NIAN + month + TXT_R0_YUE + day + TXT_R0_P2 + _leader_name() + TXT_R0_P3
+			context["result_text"] = tr(TXT_R0_P1) + year + tr(TXT_R0_NIAN) + month + tr(TXT_R0_YUE) + day + tr(TXT_R0_P2) + _leader_name() + tr(TXT_R0_P3)
 			if taiwan != null:
 				taiwan.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 
@@ -87,3 +87,18 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_462_one_china.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_462",
+	"num": 462,
+	"priority": 46200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_462_one_china.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

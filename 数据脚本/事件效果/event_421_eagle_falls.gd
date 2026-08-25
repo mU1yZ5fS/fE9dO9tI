@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:1359-1361 —— ExprNode 组合。
 ## 差异：Vyshi→亲美；isASEAN/isSEATO/isSENTO/isNATO→标签；power 直接。
 
-const TXT_RESULT := "冷战结束了吗......？"
-const TXT_IDX_1364 := "雄鹰陨落"
-const TXT_IDX_1365 := "北大西洋公约组织被绝大多数的创始国抛弃，导致该组织内拥有强大军事实力的国家少之又少。只有美国、加拿大与德国还能在其中苟延残喘。\n今天，北大西洋理事会决定废除有关1949年建立北约的协定。北约在布鲁塞尔的总部也在各成员国的降旗仪式结束后被关闭。在此之后，美国退出了其他仿照北约模式建立的地区性联盟。"
-const TXT_IDX_1366 := "美帝国主义的日子到头了！"
-const TXT_IDX_1367 := "冷战结束了吗......？"
+const TXT_RESULT := "event.script.event_421_eagle_falls.c0"
+const TXT_IDX_1364 := "event.script.event_421_eagle_falls.c1"
+const TXT_IDX_1365 := "event.script.event_421_eagle_falls.c2"
+const TXT_IDX_1366 := "event.script.event_421_eagle_falls.c3"
+const TXT_IDX_1367 := "event.script.event_421_eagle_falls.c4"
 
 
 
@@ -65,4 +65,20 @@ func execute(context: Dictionary) -> void:
 	var canada := ws.get_country_by_legacy_index(137)
 	if canada != null:
 		canada.set_tag("亲美", true)
-	context["result_text"] = TXT_RESULT
+	context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_421_eagle_falls.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_421",
+	"num": 421,
+	"priority": 42100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_421_eagle_falls.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "87"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "21"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "84"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "86"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "45"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "92"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "7"}]}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "development", "v": 2, "target": "17"}, {"t": "ANY", "c": [{"t": "DATE_AFTER", "key": "1984.1.1"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "17"}]}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

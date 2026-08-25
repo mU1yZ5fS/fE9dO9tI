@@ -30,6 +30,17 @@ extends Node
 ## 事件定义文件存放目录（仅在编辑器中由 GenerateEvents 工具使用）
 @export_dir var scan_directory: String = "res://场景/事件界面/events/"
 
+## 脚本事件定义目录（含 const META 的 .gd）。迁移完成后为唯一权威源：
+## 合并模式（META 在事件效果脚本内）与独立定义（数据脚本/事件定义/）都从这里扫出。
+@export var scan_script_directories: Array[String] = [
+	"res://数据脚本/事件效果/",
+	"res://数据脚本/事件定义/",
+]
+
+## 双源过渡开关：true 时同时扫描旧 .tres 与脚本 META（同 id 脚本版优先）。
+## 2026-08 迁移已完成并全量校验通过，.tres 已删除，此开关保持 false。
+var scan_legacy_tres := false
+
 ## 当前 WorldState。由 GameManager 在 new_game/load_game 后注入，避免直接依赖 GameManager.world。
 var world: WorldState = null
 
@@ -106,35 +117,50 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	# 启动期不再同步 load 531 个事件 .tres（曾是启动黑屏/硬控主因）。
 	# 只列目录，真正的加载交给 启动加载.gd 调 start_async_scan() 与地图预热并行。
-	_scan_paths = ResScan.list_files(scan_directory, [".tres"])
+	_scan_paths = _collect_scan_paths()
+
+
+## 收集全部扫描路径：旧 .tres（过渡期）+ 各脚本定义目录。
+## 统一按完整路径排序，保证加载次序确定（同 stem 约定下与旧 .tres 文件名序一致）。
+func _collect_scan_paths() -> PackedStringArray:
+	var paths := PackedStringArray()
+	if scan_legacy_tres:
+		paths.append_array(ResScan.list_files(scan_directory, [".tres"]))
+	for dir_path in scan_script_directories:
+		paths.append_array(ResScan.list_files(dir_path, [".gd"]))
+	paths.sort()
+	return paths
 
 
 ## 同步扫描：热重载与“不经过启动屏直接跑场景”的兜底路径。
 ## 正常启动路径请走 start_async_scan()，避免主线程一次性卡住。
 func _scan_events() -> void:
-	var paths := ResScan.list_files(scan_directory, [".tres"])
-	if paths.is_empty() and DirAccess.open(scan_directory) == null:
-		push_warning("EventEngine: 事件目录不存在 %s —— 请在编辑器中运行 GenerateEvents 工具" % scan_directory)
+	var paths := _collect_scan_paths()
+	if paths.is_empty():
+		push_warning("EventEngine: 未找到任何事件定义（.tres / META 脚本均无）")
 		_finish_scan()
 		return
 	_clear_registries()
 	for path in paths:
-		var res := load(path)
-		if res is EventDef:
-			_register_event(res)
+		if path.ends_with(".gd"):
+			var scr := load(path) as GDScript
+			# 无 META 的脚本是普通效果/工具脚本，静默跳过
+			if scr != null and scr.get_script_constant_map().has("META"):
+				_finalize_def(path, EventDefBuilder.build_from_script(scr))
 		else:
-			push_warning("EventEngine: 跳过非 EventDef 文件 %s" % path)
+			var res := load(path)
+			_finalize_def(path, res as EventDef)
 	_finish_scan()
 
 
-## 启动屏调用：把事件 .tres 批量交给 ResourceLoader 后台线程，与地图解码并行。
+## 启动屏调用：把事件定义批量交给 ResourceLoader 后台线程，与地图解码并行。
 func start_async_scan() -> void:
 	if _scan_running or _scan_finished:
 		return
 	if _scan_paths.is_empty():
-		_scan_paths = ResScan.list_files(scan_directory, [".tres"])
-	if _scan_paths.is_empty() and DirAccess.open(scan_directory) == null:
-		push_warning("EventEngine: 事件目录不存在 %s —— 请在编辑器中运行 GenerateEvents 工具" % scan_directory)
+		_scan_paths = _collect_scan_paths()
+	if _scan_paths.is_empty():
+		push_warning("EventEngine: 未找到任何事件定义（.tres / META 脚本均无）")
 	_clear_registries()
 	_scan_cursor = 0
 	_scan_done = 0
@@ -189,16 +215,37 @@ func _refill_async_requests() -> void:
 
 func _finalize_async_path(p: String, res: Resource) -> void:
 	_scan_done += 1
-	if res is EventDef:
-		_register_event(res)
+	if p.ends_with(".gd"):
+		var scr := res as GDScript
+		# 无 META 的脚本是共享效果/触发器等普通脚本，静默跳过（与同步扫描一致）
+		if scr != null and scr.get_script_constant_map().has("META"):
+			_finalize_def(p, EventDefBuilder.build_from_script(scr))
+	elif res is EventDef:
+		_finalize_def(p, res)
 	elif res == null:
 		push_warning("EventEngine: 加载失败 %s" % p)
 	else:
-		push_warning("EventEngine: 跳过非 EventDef 文件 %s" % p)
+		push_warning("EventEngine: 跳过非事件定义文件 %s" % p)
 	events_scan_progress.emit(_scan_done, _scan_total)
 
 
+## 注册一个已构建的事件定义；非法/重复 id 只告警不中断整批。
+func _finalize_def(source_path: String, def: EventDef) -> void:
+	if def == null:
+		push_warning("EventEngine: 事件构建失败 %s" % source_path)
+		return
+	if def.event_id == "":
+		push_warning("EventEngine: 事件缺少 id，跳过 %s" % source_path)
+		return
+	_register_event(def)
+
+
 func _register_event(res: EventDef) -> void:
+	# 双源过渡期：同一 id 先到先得（排序保证确定性），后到的告警跳过，
+	# 避免旧 .tres 与脚本版同时注册导致扫描序列出现重复表项。
+	if _events.has(res.event_id):
+		push_warning("EventEngine: 事件ID重复，保留先注册版本：%s" % res.event_id)
+		return
 	_events[res.event_id] = res
 	if res.source_event_number >= 0:
 		_events_by_number[res.source_event_number] = res
@@ -368,7 +415,7 @@ func _enter_pending(event_def: EventDef) -> void:
 	var grace_days := event_def.notification_days if event_def.notification_days > 0 else PENDING_GRACE_DAYS
 	_pending_deadline = ws.date.tick_count + grace_days if ws else -1
 	print("EventEngine: 延时事件待处理 %s (截止 %d)" % [event_def.event_id, _pending_deadline])
-	event_notification.emit(event_def.event_id, event_def.title)
+	event_notification.emit(event_def.event_id, EventText.t(event_def.title))
 
 
 ## 手动将事件加入待处理队列（供外部系统如 Decision / 战争结束 使用）。
@@ -537,6 +584,20 @@ func evaluate(node: ExprNode) -> bool:
 			if ei < 0 or ei >= ws.empires.size() or ws.empires[ei] == null:
 				return false
 			return ws.empires[ei].current_leader == int(node.value)
+		ExprNode.Type.EMPIRE_LEADER_SUPPORT_AT_LEAST, ExprNode.Type.EMPIRE_LEADER_SUPPORT_AT_MOST:
+			# Event89.cs 继任选项门槛：领导人支持度阈值（target=索引，value=阈值）。
+			if ws == null or not node.key.is_valid_int() or not node.target.is_valid_int():
+				return false
+			var se := int(node.key)
+			if se < 0 or se >= ws.empires.size() or ws.empires[se] == null:
+				return false
+			var li := int(node.target)
+			var leaders: Array = ws.empires[se].leaders
+			if li < 0 or li >= leaders.size() or leaders[li] == null:
+				return false
+			if node.type == ExprNode.Type.EMPIRE_LEADER_SUPPORT_AT_LEAST:
+				return leaders[li].support >= node.value
+			return leaders[li].support <= node.value
 		ExprNode.Type.SOCIALIST_COUNT_AT_LEAST:
 			return _socialist_count(node.keys) >= int(node.value)
 		ExprNode.Type.MODIFIER_ACTIVE: return _is_modifier_active(node.key)
@@ -711,7 +772,7 @@ func get_event_title(event_def: EventDef) -> String:
 		var key := "event.%s.title" % event_def.event_id
 		if text_library.has_text(key):
 			return text_library.get_text(key)
-	return event_def.title
+	return EventText.t(event_def.title)
 
 
 func get_event_description(event_def: EventDef) -> String:
@@ -719,7 +780,7 @@ func get_event_description(event_def: EventDef) -> String:
 		var key := "event.%s.desc" % event_def.event_id
 		if text_library.has_text(key):
 			return text_library.get_text(key)
-	return event_def.description
+	return EventText.t(event_def.description)
 
 
 func apply_event_option(event_def: EventDef, option_index: int) -> Dictionary:
@@ -748,19 +809,19 @@ func apply_event_option(event_def: EventDef, option_index: int) -> Dictionary:
 	if not event_def.triggers_on_complete.is_empty():
 		enqueue_chain(event_def.triggers_on_complete)
 	return {
-		"name": execution_context.get("result_title", _resolve_option_title(event_def, opt)),
-		"text": execution_context.get("result_text", _resolve_option_result(event_def, opt, option_index)),
+		"name": EventText.t(str(execution_context.get("result_title", _resolve_option_title(event_def, opt)))),
+		"text": EventText.t(str(execution_context.get("result_text", _resolve_option_result(event_def, opt, option_index)))),
 	}
 
 
 func _resolve_option_title(event_def: EventDef, opt: EventOption) -> String:
 	if opt.result_title != "":
-		return opt.result_title
+		return EventText.t(opt.result_title)
 	if text_library and text_library.has_method("get_text"):
 		var key := "event.%s.title" % event_def.event_id
 		if text_library.has_text(key):
 			return text_library.get_text(key)
-	return event_def.title
+	return EventText.t(event_def.title)
 
 
 func _resolve_option_result(event_def: EventDef, opt: EventOption, option_index: int) -> String:
@@ -768,7 +829,7 @@ func _resolve_option_result(event_def: EventDef, opt: EventOption, option_index:
 		var key := "event.%s.option_%d.result" % [event_def.event_id, option_index]
 		if text_library.has_text(key):
 			return text_library.get_text(key)
-	return opt.result_text
+	return EventText.t(opt.result_text)
 
 
 # ========================================================================
@@ -1088,6 +1149,22 @@ func export_runtime_to_world(ws: WorldState) -> void:
 	ws.event_pending_queue = _pending_queue.duplicate()
 
 
+## 新开局（主菜单“开始游戏”，不经过读档）时重置跨局运行时状态。
+## EventEngine 是常驻 Autoload：上一局 fire_once 事件完成时会从 _active_event_order
+## 移除（_mark_done），pending/链/通知队列也可能残留；而新 WorldState 的
+## completed_event_ids 为空。若不重建活跃序列并清队列，第二局将永不触发
+## 任何上局已发生的事件（如 death_of_mao），残留 pending 还会按旧时间轴的
+## 截止 tick 阻塞全部自动事件。语义对齐 import_runtime_from_world 的重置部分。
+func reset_runtime_for_new_game(ws: WorldState) -> void:
+	world = ws
+	pending_event_id = ""
+	_pending_deadline = -1
+	_event_queue.clear()
+	_pending_queue.clear()
+	_rebuild_active_events()
+	event_notification_dismissed.emit()
+
+
 ## 从存档恢复 pending / 链队列
 func import_runtime_from_world(ws: WorldState) -> void:
 	if ws == null:
@@ -1111,6 +1188,6 @@ func import_runtime_from_world(ws: WorldState) -> void:
 		if _pending_deadline >= 10000000:
 			var grace_days := edef.notification_days if edef != null else PENDING_GRACE_DAYS
 			_pending_deadline = ws.date.tick_count + grace_days
-		var title := edef.title if edef else pending_event_id
+		var title := EventText.t(edef.title) if edef else pending_event_id
 		event_notification.emit(pending_event_id, title)
 

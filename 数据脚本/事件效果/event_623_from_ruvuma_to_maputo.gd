@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:939-941 —— DATE_AFTER 1977.5.30；fire_only_once 承担 !event_done[623]。
 ## 差异：level_of_unstab→level_of_instability。
 
-const TXT_OPT0_DIS := "抓到老鼠就是好猫"
-const TXT_OPT1_DIS := "我们绝不支持种族主义者和莫桑比克革命的叛徒！"
-const TXT_R0 := "我们为莫桑比克政府继续提供武器和经济等援助，以帮助老朋友渡过困难时期。莫解阵在建设莫桑比克人民解放军和民兵的同时，开始逐步进行国有化和建立公社村、建设行政机构和党组织、发展教育和医疗卫生。与此同时，在南非和罗德西亚的袭扰下，莫解阵和莫抵运之间漫长的低烈度战争也开始了。"
-const TXT_R1 := "在声援莫解阵反帝斗争的同时，我们利用和美国的关系，将部分援助送到了莫抵运手里（当然，并没有援助中械）。莫解阵在建设莫桑比克人民解放军和民兵的同时，开始逐步进行国有化和建立公社村、建设行政机构和党组织、发展教育和医疗卫生。与此同时，在南非和罗德西亚的袭扰下，莫解阵和莫抵运之间漫长的低烈度战争也开始了。"
-const TXT_R2 := "我们没有做出太多的表示。莫解阵在建设莫桑比克人民解放军和民兵的同时，开始逐步进行国有化和建立公社村、建设行政机构和党组织、发展教育和医疗卫生。与此同时，在南非和罗德西亚的袭扰下，莫解阵和莫抵运之间漫长的低烈度战争也开始了。"
+const TXT_OPT0_DIS := "event.script.event_623_from_ruvuma_to_maputo.c0"
+const TXT_OPT1_DIS := "event.script.event_623_from_ruvuma_to_maputo.c1"
+const TXT_R0 := "event.script.event_623_from_ruvuma_to_maputo.c2"
+const TXT_R1 := "event.script.event_623_from_ruvuma_to_maputo.c3"
+const TXT_R2 := "event.script.event_623_from_ruvuma_to_maputo.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,12 +22,12 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line < 3:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if line > 1 and world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null \
 			and world.empires[EmpireData.USA].relations >= 600:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -43,19 +43,19 @@ func execute(context: Dictionary) -> void:
 		_set_part(mozambique, 0, true)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			if mozambique != null:
 				mozambique.level_of_instability += 20
 			_add(W.I_ARMY, -50)
 			_add(W.I_BUDGET, -60)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			if mozambique != null:
 				mozambique.level_of_instability -= 20
 			_add(W.I_ARMY, -100)
 			_add(W.I_AGENTS, -50)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -145,3 +145,19 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_623_from_ruvuma_to_maputo.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_623",
+	"num": 623,
+	"priority": 62300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_623_from_ruvuma_to_maputo.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1977.5.30"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

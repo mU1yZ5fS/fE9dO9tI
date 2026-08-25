@@ -5,12 +5,12 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "也发射登陆站。"
-const TXT_OPT0_DIS := "太复杂了。"
-const TXT_OPT1 := "只发射飞行器。"
+const TXT_OPT0 := "event.script.event_359_lunar_program_first_instruments_alt.c0"
+const TXT_OPT0_DIS := "event.script.event_359_lunar_program_first_instruments_alt.c1"
+const TXT_OPT1 := "event.script.event_359_lunar_program_first_instruments_alt.c2"
 
-const TXT_R0 := "中国在太空研究方面的成功并没有被忽视。在过去5年世界没有任何登月任务的背景下，我们的登月任务在某种程度上震惊了航天界。当世界其他国家都在艳羡不已的时候，中国开始了探月计划的新阶段。"
-const TXT_R1 := "中国的探月计划包括向月球发射飞行和进行轨道任务，摄影和一些科学测量任务包括其中。在发展中国家之外，这引起了轰动。但由于其复杂性和无意义性，该项目在中国国内被关闭。"
+const TXT_R0 := "event.script.event_359_lunar_program_first_instruments_alt.c3"
+const TXT_R1 := "event.script.event_359_lunar_program_first_instruments_alt.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -19,10 +19,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if _prev_result(world, "event_353") == 1:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
+	_enable(opt[1], tr(TXT_OPT1))
 
 
 func execute(context: Dictionary) -> void:
@@ -33,11 +33,11 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_SCIENCE, 400)
 			_add(W.I_DIPLO, 40)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_SCIENCE, 200)
 			_add(W.I_DIPLO, 100)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -86,3 +86,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_359_lunar_program_first_instruments_alt.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_359",
+	"num": 359,
+	"priority": 35900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_359_lunar_program_first_instruments_alt.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1984.6.1"}, {"t": "PREV_EVENT_NOT_DONE", "ref": "event_358"}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

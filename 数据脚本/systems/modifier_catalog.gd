@@ -1044,6 +1044,16 @@ static func _services_coupon_text(_w: WorldState, econ: int, sum: int) -> String
 # ============================================================================
 # 分数计算（ModifyButtonScript.cs 原样条件的 Godot 投影）
 # ============================================================================
+# 党派极性判定依据（2026-08 复核，推翻此前"原版方向搞反"的结论）：
+#  ModifyButtonScript.cs:585 string.Format 的实参序为
+#    {19}=num3、{20}=num4，而模板 old_modify_opis_en.txt:55 为
+#    "共和党声势：{19}|民主党声势：{20}"
+#  ⇒ num3=共和党声势、num4=民主党声势。
+#  Event114 的 num≡num3（共和）、num2≡num4（民主）条件逐条相同，
+#  且结果分支 num2>=num → 卡特连任 = 民主分高者当选，与显示标签自洽。
+#  Event402 同构：num=共和侧(里根+7)，num2=民主侧(蒙代尔)。
+# 故本函数按原版极性逐条对齐；此前把全部条件反相 + 多算
+# cia_cooperation + 伊朗误用「有驻军基地」的问题已修正。
 
 static func _us_party_scores(w: WorldState) -> Dictionary:
 	var dem := 0
@@ -1053,101 +1063,92 @@ static func _us_party_scores(w: WorldState) -> Dictionary:
 	var usa: EmpireData = w.empires[0] if w.empires.size() > 0 else null
 	var ussr: EmpireData = w.empires[1] if w.empires.size() > 1 else null
 	var year := w.date.year if w.date != null else 1976
+	var china := _country(w, 1)
 	if year < 1981:
-		# ModifyButtonScript.cs:17-103（Event114 同款计分）
+		# ModifyButtonScript.cs:17-103 / Event114.cs:29-112（逐条同款）
+		# num4→dem：美>苏、美>中影响力、中影响力>苏
 		if usa != null and ussr != null:
-			if usa.power > ussr.power: rep += 1
-			else: dem += 1
-			if usa.power > w.influence_prc: rep += 1
-			else: dem += 1
-			if w.influence_prc > ussr.power: rep += 1
-			else: dem += 1
+			if usa.power > ussr.power: dem += 1
+			else: rep += 1
+			if usa.power > w.influence_prc: dem += 1
+			else: rep += 1
+			if w.influence_prc > ussr.power: dem += 1
+			else: rep += 1
 		if w.get_flag("oar"):
-			dem += 1
+			rep += 1                     # OAR → num3（:53-56）
 		var c15 := _country(w, 15)
 		if c15 != null and c15.内战中:
-			rep += 1
-		var player := w.get_player_country()
-		if player != null:
-			if player.has_tag("asean"):
-				rep += 1
-			if player.has_tag("seato"):
-				rep += 2  # 原版 55-62 行重复计两次
+			dem += 1                     # 南斯拉夫内战 → num4（:57-60）
+		if china != null:
+			if china.has_tag("asean"):
+				dem += 1                 # :61-64
+			if china.has_tag("seato"):
+				dem += 2                 # 原版 65-72 行重复计两次
+		if _event_result(w, "hungarian_crisis", 0) == 2:
+			rep += 1                     # 匈牙利危机结果2 → num3（:73-76）
 		var war5 := w.wars[5] if w.wars.size() > 5 else null
 		if war5 != null and war5.is_going:
-			dem += 1
-		# ModifyButtonScript.cs:82：resultOfEvents[46]==2（匈牙利危机结果2）→ 民主党+1。
-		if _event_result(w, "hungarian_crisis", 0) == 2:
-			dem += 1
+			rep += 1                     # 阿富汗战争进行中 → num3（:77-80）
 		var c84 := _country(w, 84)
 		if c84 != null and c84.government == GameConstants.Government.AUTHORITARIAN:
-			dem += 1
+			rep += 1                     # 土耳其政体0 → num3（:81-88）
 		else:
-			rep += 1
+			dem += 1
 		var c8 := _country(w, 8)
-		if c8 != null and (c8.government == GameConstants.Government.LIBERAL or c8.有驻军基地):
-			rep += 1
+		if c8 != null and (c8.government == GameConstants.Government.LIBERAL or c8.has_tag("亲美")):
+			dem += 1                     # 伊朗君主制/亲美 → num4（:89-96；Vyshi=亲美 tag）
 		else:
-			dem += 1
-		# ModifyButtonScript.cs:86-102：伊朗人质危机（455）对共和党声势的影响
-		# （event_done[455] && result==0 → +1；==1 → +2；==2 → -2；==3 → -1）。
+			rep += 1
+		# 伊朗人质危机 455 → num4（:97-112）
 		var res455 := _event_result(w, "event_455", 0)
 		if _event_done(w, "event_455") and res455 == 0:
-			rep += 1
-		elif res455 == 1:
-			rep += 2
-		elif res455 == 2:
-			rep -= 2
-		elif res455 == 3:
-			rep -= 1
-	else:
-		# ModifyButtonScript.cs:106-214
-		if usa != null and usa.current_leader == 0:
-			dem += 7
-		if usa != null and ussr != null:
-			if usa.power > ussr.power: rep += 1
-			else: dem += 1
-			if usa.power > w.influence_prc: rep += 1
-			else: dem += 1
-		var player2 := w.get_player_country()
-		if player2 != null and player2.government == GameConstants.Government.LIBERAL:
-			rep += 1
-		else:
 			dem += 1
+		elif res455 == 1:
+			dem += 2
+		elif res455 == 2:
+			dem -= 2
+		elif res455 == 3:
+			dem -= 1
+	else:
+		# ModifyButtonScript.cs:106-214（post-1981 分支）
+		if usa != null and usa.current_leader == 0:
+			rep += 7                     # 里根在任 → num3+7（:108-111）
+		if usa != null and ussr != null:
+			if usa.power > ussr.power: dem += 1
+			else: rep += 1
+			if usa.power > w.influence_prc: dem += 1
+			else: rep += 1
+		if china != null and china.government == GameConstants.Government.LIBERAL:
+			dem += 1                     # 中国政体3 → num4（:118-124）
+		else:
+			rep += 1
 		for idx in [85, 92, 21, 84, 17]:
 			var c := _country(w, idx)
 			if c != null and c.has_tag("nato"):
-				rep += 1
+				dem += 1                 # 五国 NATO → num4（:125-160）
 			else:
-				dem += 1
-		var player3 := w.get_player_country()
-		if player3 == null or not player3.has_tag("sev"):
-			rep += 1
+				rep += 1
+		if china == null or not china.has_tag("sev"):
+			dem += 1                     # !isSEV → num4（:161-168）
 		else:
-			dem += 1
-		if player3 == null or not player3.has_tag("ovd"):
 			rep += 1
+		if china == null or not china.has_tag("ovd"):
+			dem += 1                     # !isOVD → num4（:169-176）
 		else:
-			dem += 1
+			rep += 1
 		var c15b := _country(w, 15)
 		if c15b != null and c15b.内战中:
-			rep += 1
+			dem += 1                     # :177-180
 		if ussr != null and ussr.current_leader == 3:
-			rep += 1
-		if player3 != null and player3.has_tag("asean"):
-			rep += 1
+			dem += 1                     # 苏联 now_leader==3 → num4（:181-184）
+		if china != null and china.has_tag("asean"):
+			dem += 1                     # :185-188
 		var war5b := w.wars[5] if w.wars.size() > 5 else null
 		if war5b != null and war5b.is_going:
-			dem += 1
-		var poland := _country(w, 2)
-		if poland != null and poland.puppet_of == 7:
-			dem += 1
-		if player3 != null and player3.has_tag("seato"):
-			rep += 1
-	# id54 模板：共和党={19}=num4(rep)；民主党={20}=array[1]。
-	# 用户规则：修正54“美国国内各党影响力对比”必须与真实选举（Event114/402）同口径，
-	# 因此民主党分数不再套用原版 array[1] 另算分（_american_score 保留备查），
-	# 而是直接返回本函数上方累计的 dem（与 Event114 计分一致）。
+			rep += 1                     # :189-192
+		if china != null and china.has_tag("seato"):
+			dem += 1                     # :213-216
+	# id54 模板：{19}=num3=共和党、{20}=num4=民主党 —— 与本函数 rep/dem 对应。
 	return {"dem": dem, "rep": rep}
 
 

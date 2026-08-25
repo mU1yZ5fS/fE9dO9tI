@@ -4,10 +4,10 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:422-424 —— DATE_AFTER 1980.6.1；fire_only_once 承担 !event_done[467]。
 ## 差异：cw→内战中；button_text[5]/result_num==5 死代码跳过。
 
-const TXT_OPT0_DIS := "鞭长莫及，鞭长莫及啊……"
-const TXT_R0 := "在我们和泰国同志的秘密联络下，双方的领导人达成了协定：马来西亚人民社会主义党秘密加入民族解放同盟，作为代价，马来亚共产党必须维护全马的统一，为此，人民社会主义党作为桥梁加强了马来亚和砂捞越党、军的联系。在来到中国与陈平进行和谈后，马共分裂出去的两派被平反，马列派与革命派回到了马来亚共产党的队伍中，革命派领导人黄一江还在和谈过程中“主动”将一切权力让出，虽然不太厚道，但他的隐退确实让谈判顺利了许多。在马共的领导下，与马来亚共产党建立联系的地下组织在吉隆坡进行会谈，统一合并到马来亚民族解放同盟中。在全新血液的输入下，文莱人民党，新加坡社会主义阵线也加入了马来亚民族解放同盟。一个全马来西亚的左派组织正冉冉升起，马来西亚的解放指日可待。"
-const TXT_R1 := "对外联络部努力劝说并没有使他们达成统一。马共（马列）和马共（革命派）希望以平等的方式与马共会谈，但是马共方面并不同意。革命派领导人黄一江出于他的投机立场和对丧失领导地位的担心，也没有同意统一。马来亚共产党始终是苦守马泰边区根据地，革命派与马列派跟马来亚共产党后来又产生了多次武装冲突，不过我们已经管不了了……"
-const TXT_R2 := "左派无限可分，这点果真是没错，直到人民社会主义党开始分裂，马来亚共产党也没与它联合。分裂后的人民社会主义党又上演了一遍逼上梁山的戏码，马来亚共产党始终是苦守马泰边区根据地，革命派与马列派跟马来亚共产党产生了多次武装冲突。好吧，的确是这样，属于革命的时代大概已经结束了……"
+const TXT_OPT0_DIS := "event.script.event_467_i_love_you_golden_star_red_flag.c0"
+const TXT_R0 := "event.script.event_467_i_love_you_golden_star_red_flag.c1"
+const TXT_R1 := "event.script.event_467_i_love_you_golden_star_red_flag.c2"
+const TXT_R2 := "event.script.event_467_i_love_you_golden_star_red_flag.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -23,7 +23,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if thai != null and thai.内战中 and line56 < 2:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 	_enable(opt[2], event_def.options[2].text)
 
@@ -36,7 +36,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_add(W.I_AGENTS, -50)
 			_add_relation(EmpireData.USSR, -100)
 			var brunei := _country(49)
@@ -44,10 +44,10 @@ func execute(context: Dictionary) -> void:
 				brunei.内战中 = true
 			ws.influence_prc += 30
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			ws.influence_prc -= 20
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			ws.influence_prc -= 30
 
 
@@ -110,3 +110,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_467_i_love_you_golden_star_red_flag.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_467",
+	"num": 467,
+	"priority": 46700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_467_i_love_you_golden_star_red_flag.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1980.6.1"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

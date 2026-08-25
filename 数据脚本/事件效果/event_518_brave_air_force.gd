@@ -1,16 +1,14 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event518.cs：人民空军，勇敢去闯荡（4选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event518.cs：人民空军，勇敢去闯荡（4选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "我们的航空器技术还是不太行啊……"
-const TXT_OPT1_DIS := "我们的航空器技术还是不太行啊……"
-const TXT_OPT2_DIS := "我们的航空器技术还是不太行啊……"
-const TXT_R0_A := "中央军事委员会决定研究J-18歼击机。该机型采取了不同以往的布局系统，采用了双发，鸭式气动布局的新格局。最新的航电系统允许其搭载超视距的霹雳10等空空导弹。隐形性能大概在0.0001左右，这已经是相当好的数据了。类似的系统将会被搭载在歼20上，预计在本世纪末之前完成理论实验和风洞测试。"
-const TXT_R1_A := "中央军事委员会决定投资轰-15战略轰炸机。和过去轰炸机最大的不同便是其强大的隐身性能，代价便是其载弹量显著小于我们现役的任何一种战略轰炸机。不过我们只要能突破敌人的第一道防线，也算是达成战略目的了。配套的“井冈山”型精确制导炸弹和红鸟-4远程巡航导弹也在研发中。我们的“三位一体”核打击能力大大加强了。"
-const TXT_R2_A := "中国空军正在向着超一流的水平发展，其中必不可少的便是全面研发先进航空器。\nJ-18歼击机项目上马了。该机型采取了不同以往的布局系统，采用了双发，鸭式气动布局的新格局。最新的航电系统允许其搭载超视距的霹雳10等空空导弹。隐形性能大概在0.0001左右，这已经是相当好的数据了。类似的系统将会被搭载在歼20上，预计在本世纪末之前完成理论实验和风洞测试。\n轰-15战略轰炸机也是个不可忽视的大项目。和过去轰炸机最大的不同便是其强大的隐身性能，代价便是其载弹量显著小于我们现役的任何一种战略轰炸机。不过我们只要能突破敌人的第一道防线，也算是达成战略目的了。配套的“井冈山”型精确制导炸弹和红鸟-4远程巡航导弹也在研发中。我们的“三位一体”核打击能力大大加强了。\n保卫领空，抵御侵略。迎着新世纪的曙光去飞翔，飞翔，飞翔！"
-const TXT_R3_A := "现在的飞机已经足够对付外在的侵略了，我们可以在下次会议上讨论这个问题。"
+const TXT_OPT0_DIS := "event.script.event_518_brave_air_force.c0"
+const TXT_OPT1_DIS := "event.script.event_518_brave_air_force.c1"
+const TXT_OPT2_DIS := "event.script.event_518_brave_air_force.c2"
+const TXT_R0_A := "event.script.event_518_brave_air_force.c3"
+const TXT_R1_A := "event.script.event_518_brave_air_force.c4"
+const TXT_R2_A := "event.script.event_518_brave_air_force.c5"
+const TXT_R3_A := "event.script.event_518_brave_air_force.c6"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -21,11 +19,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if int(ws.completed_event_ids.get("event_517", 0)) >= 1:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if int(ws.completed_event_ids.get("event_517", 0)) == 2:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	_enable(opt[3], event_def.options[3].text)
 
 func execute(context: Dictionary) -> void:
@@ -34,39 +32,13 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(50))
 			_add(22, 50)
 			_add(1, 50)
 			_add(3, 50)
 			ws.influence_prc += 20
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc[num] += "<color=red>| 隐 身 歼 击 机 ：</color>| 军 力+0.2 ， 人 民 支 持 度+0.2 ， 预 算-0.2 ， 干 预 点 数+1.0"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |隐身歼击机：|军力+0.2，人民支持度+0.2，预算-0.2，干预点数+1.0
-		1:
-			context["result_text"] = TXT_R1_A
-			_add(8, -(50))
-			_add(22, 50)
-			_add(1, 50)
-			_add(3, 50)
-			ws.influence_prc += 30
-			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc2[num2] += "<color=red>| 隐 身 轰 炸 机 ：</color>| 军 力+0.3 ， 预 算-0.2 ，与 美 苏 关 系-0.1 ，干 预 点 数+1.0"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |隐身轰炸机：|军力+0.3，预算-0.2，与美苏关系-0.1，干预点数+1.0
-		2:
-			context["result_text"] = TXT_R2_A
-			_add(8, -(80))
-			_add(22, 80)
-			_add(1, 100)
-			_add(6, 5)
-			_add(3, 100)
-			_add(57, 50)
-			ws.influence_prc += 50
-			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num3 = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc3[num3] += "<color=red>| 隐 身 歼 击 机 与 轰 炸 机 ：</color>| 军 力+0.8 ， 人 民 支 持 度+0.2 ， 预 算-0.3 ，与 美 苏 关 系-0.1 ， 干 预 点 数+2.0"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |隐身歼击机与轰炸机：|军力+0.8，人民支持度+0.2，预算-0.3，与美苏关系-0.1，干预点数+2.0
-		3:
-			context["result_text"] = TXT_R3_A
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 隐 身 歼 击 机 ：</color>| 军 力+0.2 ， 人 民 支 持 度+0.2 ， 预 算-0.2 ， 干 预 点 数+1.0"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |隐身歼击机：|军力+0.2，人民支持度+0.2，预算-0.2，干预点数+1.0 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(50)) _add(22, 50) _add(1, 50) _add(3, 50) ws.influence_prc += 30 # 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 隐 身 轰 炸 机 ：</color>| 军 力+0.3 ， 预 算-0.2 ，与 美 苏 关 系-0.1 ，干 预 点 数+1.0"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |隐身轰炸机：|军力+0.3，预算-0.2，与美苏关系-0.1，干预点数+1.0 2: context["result_text"] = tr(TXT_R2_A) _add(8, -(80)) _add(22, 80) _add(1, 100) _add(6, 5) _add(3, 100) _add(57, 50) ws.influence_prc += 50 # 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num3 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc3[num3] += "<color=red>| 隐 身 歼 击 机 与 轰 炸 机 ：</color>| 军 力+0.8 ， 人 民 支 持 度+0.2 ， 预 算-0.3 ，与 美 苏 关 系-0.1 ， 干 预 点 数+2.0"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |隐身歼击机与轰炸机：|军力+0.8，人民支持度+0.2，预算-0.3，与美苏关系-0.1，干预点数+2.0 3: context["result_text"] = tr(TXT_R3_A)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -201,3 +173,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_518_brave_air_force.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_518",
+	"num": 518,
+	"priority": 51800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_518_brave_air_force.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_517"}, {"t": "RESOURCE_AT_LEAST", "key": "year", "v": 1983}, {"t": "RESOURCE_AT_LEAST", "key": "industry", "v": 1000}, {"t": "TECH_UNLOCKED", "v": 16}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -81,13 +81,40 @@ func _apply_event_ui_settings() -> void:
 	if _desc:
 		_desc.horizontal_alignment = align_enum
 		_desc.add_theme_font_size_override("normal_font_size", clampi(GameManager.event_desc_font_size, 12, 72))
+		_setup_style_fonts(_desc)
 	if _result_desc:
 		_result_desc.horizontal_alignment = align_enum
 		_result_desc.add_theme_font_size_override("normal_font_size", clampi(GameManager.event_result_font_size, 12, 72))
+		_setup_style_fonts(_result_desc)
 	for lbl in _option_labels:
 		if lbl is Label:
 			lbl.add_theme_font_size_override("font_size", clampi(GameManager.event_option_font_size, 12, 72))
 	_update_unread_hint.call_deferred()
+
+
+## 为 RichTextLabel 配置 [b]/[i] 样式字体。
+## 中文整字字体通常没有粗体/斜体变体文件，这里用 FontVariation 合成：
+##   粗体 = embolden 笔画加粗；斜体 = transform 水平剪切（右倾）。
+## 若日后引入真实粗体/斜体字体文件，改为 add_theme_font_override 直接指定即可。
+func _setup_style_fonts(rtl: RichTextLabel) -> void:
+	if rtl == null:
+		return
+	var base := rtl.get_theme_font("normal_font")
+	if base == null:
+		return
+	var bold := FontVariation.new()
+	bold.base_font = base
+	bold.variation_embolden = 0.6
+	var italic := FontVariation.new()
+	italic.base_font = base
+	italic.variation_transform = Transform2D(Vector2(1, 0), Vector2(-0.22, 1), Vector2())
+	var bold_italic := FontVariation.new()
+	bold_italic.base_font = base
+	bold_italic.variation_embolden = 0.6
+	bold_italic.variation_transform = italic.variation_transform
+	rtl.add_theme_font_override("bold_font", bold)
+	rtl.add_theme_font_override("italics_font", italic)
+	rtl.add_theme_font_override("bold_italics_font", bold_italic)
 
 
 ## 事件内容未读完提示：当前可见的事件文本（简介或结果页）未滚动到底部时显示，
@@ -117,18 +144,62 @@ func _update_unread_hint() -> void:
 ## 像素完全透明，不依赖任何空格/空白处理；段间距统一由段落拼接控制（开=空一行，关=不空）。
 const INDENT_MARK := "[color=#00000000]中中[/color]"
 
+## 原样块标记：[原样]…[/原样] 之间的文本按作者写的换行结构原样渲染——
+## 不加首行缩进、行间不产生段落间距、不受玩家排版设置影响。
+## 适用诗歌/信件/清单等需要固定分行样式的文本。标记本身在任何设置下都会被剥除，
+## 未闭合时视为延伸到文末。文案里直接写即可（CSV 单元格内换行）。
+const NOFMT_OPEN := "[原样]"
+const NOFMT_CLOSE := "[/原样]"
+
 func _format_event_text(text: String) -> String:
 	if text.is_empty() or GameManager == null:
 		return text
+	# 诗行分隔符惯例：| 即换行（原版 Part 文本约定，如"翱翔！翱翔！|欢唱！欢唱！"）
+	text = text.replace("|", "\n")
 	var indent_on: bool = GameManager.paragraph_indent_enabled
 	var spacing_on: bool = GameManager.paragraph_spacing_enabled
-	if not indent_on and not spacing_on:
+	# 标记必须始终剥除（否则设置全关时会原样漏显），所以含标记时不走快速返回。
+	if not indent_on and not spacing_on and not text.contains(NOFMT_OPEN):
 		return text
-	# 统一换行符：\r\n / \r 一律归一为 \n，避免 CR 残留导致“空行判断、段首缩进”失效。
-	var out := text.replace("\r\n", "\n").replace("\r", "\n")
-	# 每行视为一个段落：非空行加首行缩进占位，空行丢弃（段间距在最后统一拼接）。
+	return _apply_layout(text, indent_on, spacing_on)
+
+
+## 纯函数：按缩进/间距设置排版文本；[原样]…[/原样] 块保持原样。
+static func _apply_layout(text: String, indent_on: bool, spacing_on: bool) -> String:
+	# 统一换行符：\r\n / \r 一律归一为 \n。
+	text = text.replace("\r\n", "\n").replace("\r", "\n")
+
+	# 切成 普通段 / 原样块 交替的片段，分别渲染后再用段落间距拼回。
+	var segments: Array[String] = []
+	var cursor := 0
+	while cursor <= text.length():
+		var open_at := text.find(NOFMT_OPEN, cursor)
+		var plain_end := open_at if open_at >= 0 else text.length()
+		segments.append(_layout_plain(text.substr(cursor, plain_end - cursor), indent_on, spacing_on))
+		if open_at < 0:
+			break
+		var body_start := open_at + NOFMT_OPEN.length()
+		var close_at := text.find(NOFMT_CLOSE, body_start)
+		var body_end := close_at if close_at >= 0 else text.length()
+		segments.append(_layout_verbatim(text.substr(body_start, body_end - body_start)))
+		if close_at < 0:
+			break
+		cursor = close_at + NOFMT_CLOSE.length()
+
+	# 过滤空片段后按“玩家设置的段间距”拼接：块与块之间仍是正常段落边界。
+	var sep := "\n\n" if spacing_on else "\n"
+	var out := ""
+	for seg in segments:
+		if seg.is_empty():
+			continue
+		out = seg if out == "" else out + sep + seg
+	return out
+
+
+## 普通文本段：非空行加首行缩进占位，空行丢弃（原逻辑）。
+static func _layout_plain(block: String, indent_on: bool, spacing_on: bool) -> String:
 	var paragraphs: Array[String] = []
-	for raw_line in out.split("\n"):
+	for raw_line in block.split("\n"):
 		if raw_line.strip_edges() == "":
 			continue
 		var line := raw_line
@@ -136,6 +207,15 @@ func _format_event_text(text: String) -> String:
 			line = INDENT_MARK + line
 		paragraphs.append(line)
 	return "\n\n".join(paragraphs) if spacing_on else "\n".join(paragraphs)
+
+
+## 原样块：剥掉首尾各一个换行（边界段距由外层拼接提供），内部逐行保留、不加缩进。
+static func _layout_verbatim(block: String) -> String:
+	if block.begins_with("\n"):
+		block = block.substr(1)
+	if block.ends_with("\n"):
+		block = block.substr(0, block.length() - 1)
+	return block
 
 
 func _collect_option_nodes() -> void:
@@ -165,8 +245,8 @@ func _load_event() -> void:
 		_desc.text = "事件 '%s' 不存在。" % event_id
 		return
 
-	_title.text = _event_def.title
-	_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number)))
+	_title.text = EventText.t(_event_def.title)
+	_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(EventText.t(_event_def.description), str(_event_def.source_event_number)))
 	_update_unread_hint.call_deferred()
 	# 事件配图规则：
 	#   1. 资源文件（EventDef.image）设置了图片 → 优先使用；
@@ -238,7 +318,7 @@ func _setup_options() -> void:
 					can_select = EventEngine.evaluate(opt.enable_condition)
 				# _disable 不再覆盖 opt.text（保留原模板供后续 _enable 恢复），
 				# 因此禁用且没有单独禁用文案的选项要显式置空，避免把隐藏项原文显示出来。
-				_option_labels[i].text = opt.text if can_select else (opt.disabled_text if opt.disabled_text != "" else "")
+				_option_labels[i].text = EventText.t(opt.text) if can_select else (EventText.t(opt.disabled_text) if opt.disabled_text != "" else "")
 				# 玩家选不了的选项不显示选框（只保留灰字提示，避免误导可点）。
 				btn.visible = can_select
 				btn.disabled = not can_select
@@ -264,7 +344,7 @@ func _on_next_pressed() -> void:
 				_desc.hide()
 				_options_root.hide()
 				_back_button.hide()
-				_result_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(_event_def.description, str(_event_def.source_event_number)))
+				_result_desc.text = _format_event_text(BbcTooltip.event_text_to_bbcode(EventText.t(_event_def.description), str(_event_def.source_event_number)))
 				_result_root.show()
 				_page = Page.RESULT
 				_update_unread_hint.call_deferred()

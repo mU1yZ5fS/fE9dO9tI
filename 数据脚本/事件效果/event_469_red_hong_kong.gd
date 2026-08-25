@@ -4,10 +4,10 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:432-434 —— BritLost && data.hk_macau_status<=0；fire_only_once 承担 !event_done[469]。
 ## 差异：BritLost→global_flags；names1/names2 拼接→ws.leader.name_display。
 
-const TXT_OPT0_DIS := "我们自己都不放心党内的左派！"
-const TXT_R0_P1 := "在"
-const TXT_R0_P2 := "主席的直接指示下，我们开始重启对香港左派同志们的援助工作。在深圳河畔，广东的军事基地向香港方面大量输送武器、装备，甚至越境协助香港同志们的斗争。很快，香港就陷入了新一轮的罢工潮，原本稳定下来的形势如今对港英政府而言正在向愈发严重的方向一路狂奔。尽管我们目前还不能举行正式的武装起义彻底夺回香港，但新的斗争无疑证明了我们要收回香港的决心和我们对革命事业的支持。当然，伦敦和华盛顿不会忘记这些武器是从哪里来的……"
-const TXT_R1 := "什么都没发生，或许有一天，我们能够通过另一种形式来收回香港，或许吧……"
+const TXT_OPT0_DIS := "event.script.event_469_red_hong_kong.c0"
+const TXT_R0_P1 := "event.script.event_469_red_hong_kong.c1"
+const TXT_R0_P2 := "event.script.event_469_red_hong_kong.c2"
+const TXT_R1 := "event.script.event_469_red_hong_kong.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,7 +22,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line56 <= 1:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 
 
@@ -34,7 +34,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_P1 + _leader_name() + TXT_R0_P2
+			context["result_text"] = tr(TXT_R0_P1) + _leader_name() + tr(TXT_R0_P2)
 			_add_relation(EmpireData.USA, -300)
 			_add(W.I_PARTY_SUPPORT, 300)
 			_add(W.I_PEOPLE_SUPPORT, 300)
@@ -42,7 +42,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -10)
 			_add(W.I_ARMY, -30)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -104,3 +104,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_469_red_hong_kong.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_469",
+	"num": 469,
+	"priority": 46900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_469_red_hong_kong.gd",
+	"trigger": [{"t": "HAS_FLAG", "key": "BritLost"}, {"t": "RESOURCE_AT_MOST", "key": "hk_macau_status"}, {"t": "ALL", "c": [{"t": "HAS_FLAG", "key": "BritLost"}, {"t": "RESOURCE_AT_MOST", "key": "hk_macau_status"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

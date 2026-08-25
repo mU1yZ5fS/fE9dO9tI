@@ -38,6 +38,11 @@ func _on_关于_pressed() -> void:
 	get_tree().change_scene_to_file("uid://cb1wvmuscp64r")
 
 
+func _on_事件拓扑_pressed() -> void:
+	#跳转到事件拓扑图（调试工具）
+	get_tree().change_scene_to_file("res://场景/调试界面/event_graph_viewer.tscn")
+
+
 func _on_设置_pressed() -> void:
 	#跳转到设置场景
 	GameManager.settings_return_scene = "uid://bydan4iqthbaa"

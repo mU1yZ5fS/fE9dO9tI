@@ -3,11 +3,11 @@
 ## 差异：data.usa_relations 用 W.I_USA_RELATIONS；文本来自 Events_text_en 索引 30-39。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_OPT1_DIS := "真是不幸，我们没有现代化军队的力量。"
-const TXT_OPT2_DIS := "帝国主义者的帮助绝不可接受！"
-const TXT_R0 := "很明显，我们的军队已表现出了最好的一面，他们英勇地同敌人作战。但是，对失败负有责任的人就藏在党内，他们需要被加急处理！"
-const TXT_R1 := "我们决定紧急开始军队现代化建设。几个月后，79式坦克和歼8截击机便进入了测试阶段。军队内部也开始了人事变动，所有表现不佳的部队指挥官都被降职或送去再培训。"
-const TXT_R2 := "与美国就我军现代化问题的谈判是通过封闭渠道展开的，在几个月之内，美国最新的坦克和作战飞机开始服役。士兵们现在正在西方教官的帮助下接受训练。我们的军队将为下一场战争做好更充分的准备，即使在苏联眼里我们现在看起来像帝国主义的走狗。"
+const TXT_OPT1_DIS := "event.script.event_301_army_question.c0"
+const TXT_OPT2_DIS := "event.script.event_301_army_question.c1"
+const TXT_R0 := "event.script.event_301_army_question.c2"
+const TXT_R1 := "event.script.event_301_army_question.c3"
+const TXT_R2 := "event.script.event_301_army_question.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -23,11 +23,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if budget + reserve >= 50 and industry >= 500:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if usa_rel >= 700 and budget + reserve >= 80:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -37,15 +37,15 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_PARTY_SUPPORT, -300)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -30)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_BUDGET, -60)
 			_add_relation(EmpireData.USA, 120)
 			_add_relation(EmpireData.USSR, -200)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -96,3 +96,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_301_army_question.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_301",
+	"num": 301,
+	"priority": 30100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_301_army_question.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

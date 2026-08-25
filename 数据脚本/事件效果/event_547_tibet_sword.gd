@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event547.cs：高原上巍峨利剑（西藏革命，1选项）。
 ## 触发：无自动触发（GlobalScript.cs:22 决议 StartEvent(547)）。
 
-const TXT_R0 := "曾经无比逍遥的喇嘛们仅仅过了一夜就被勒令离开寺庙，中上层的神职人员要不彻底放弃喇嘛身份作为普通的文化学者工作，要不配合党的宗教改造政策加入相应委员会。显然，大部分人两个选项都不想选择。作为回应，党立马发动马列主义武装起来的劳动群众去揭露那些死不合作者在解放前纸醉金迷的生活和对人民群众穷凶极恶的压迫。并且，党和政府实际上对全藏区大批斗期间对喇嘛和活佛的暴力行为睁一只眼闭一只眼，那些过去吃得油光满面的高级僧侣们如今脸上青一块紫一块，佛道秘法和奥义真传此时在阶级仇恨前完全失去了功效。还是在人民子弟兵和干部的及时劝阻和干预下，藏族群众们逐渐冷静了下来。最后，全藏人民公审大会宣判那些反动残余以颠覆政权和妄图分裂罪判处无期徒刑。\n与此同时，党和政府迅速地推广普通话，而内地调来的革命干部们也积极学习藏族文化和语言。汉藏群众守望相助，一齐学习马列毛思想，摒弃愚昧落后，共同谱写了一曲民族团结和阶级友爱的颂歌。过往的布达拉宫被彻底作为阶级教育的博物馆而存在，一座为纪念和平解放、屹立于布达拉宫对面的新纪念碑也正在筹建中。西藏的未来，正以一个全新的面貌而逐渐展开。"
+const TXT_R0 := "event.script.event_547_tibet_sword.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -12,4 +12,19 @@ func execute(context: Dictionary) -> void:
 	if int(context.get("option_index", -1)) == 0:
 		_add(W.I_PARTY_SUPPORT, 100)
 		_add(W.I_PEOPLE_SUPPORT, 100)
-		context["result_text"] = TXT_R0
+		context["result_text"] = tr(TXT_R0)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_547_tibet_sword.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_547",
+	"num": 547,
+	"priority": 54700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_547_tibet_sword.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -7,11 +7,11 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0_DIS := "可惜我们没有这么多钱"
+const TXT_OPT0_DIS := "event.script.event_494_firewall.c0"
 
-const TXT_R0 := "我们的科研人员正在着手开发基于IECS的网络防火墙。在此期间，我们的科研人员不断扮演着网络攻击者与防御者，这使得我们发现了IECS网络系统的大量潜在漏洞，我们的科研人员也借此收获颇丰，得到了大量的关于计算机网络系统攻防的实战经验。"
+const TXT_R0 := "event.script.event_494_firewall.c1"
 
-const TXT_R1 := "我们认为就算是美苏也不至于采用最先进的信息化技术战术来从这个角度进攻我们，所以这个天马行空的计划被搁置了。"
+const TXT_R1 := "event.script.event_494_firewall.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -24,7 +24,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if budget + reserve >= 100:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 
 
@@ -36,9 +36,25 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_SCIENCE, 300)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_494_firewall.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_494",
+	"num": 494,
+	"priority": 49400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_494_firewall.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "PREV_EVENT_NOT_DONE", "ref": "event_112"}, {"t": "PREV_EVENT_DONE", "ref": "event_097"}, {"t": "TECH_UNLOCKED", "v": 16}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

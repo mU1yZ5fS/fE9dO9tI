@@ -6,16 +6,16 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：描述按 resultOfEvents[56] 动态（原事件56在项目 event_id=teach_vietnam_lesson）；
 ##   name 改 chinese_name；isSEV→set_tag("sev")；Torg→set_tag("对华贸易")。
 
-const TXT_DESC_A := "越南成功击溃民主柬埔寨政府并挫败我们的进攻后，野心极度膨胀。在苏联的支持下，黎笋、凯山·丰威汉和韩桑林在胡志明市进行了一周的秘密协商和谈判，最终，三方签订了关于成立印度支那民主共和国联邦的协议。十日后，在印度支那联合人民军（主要是越南人民军）的监督下，三国通过一场超过90%支持率的全民公投，正式宣布成立印度支那民主共和国联邦，首都为胡志明市；同时，越南共产党、柬埔寨人民革命党和老挝人民革命党在一场联合代表大会中再次统一为印度支那共产党。新的“联邦政府“表示，三国的整合是长期性的，要经过从邦联到联邦缓慢整合的过程。苏联承认了联邦，并表示这是解决印度支那民族问题的最佳方案；新的印度支那政府宣布将加快和经互会的一体化，老挝和柬埔寨也正式融入了经互会体系；双方也将开展大规模军事合作，苏联军事基地正在处于筹备过程中，同时苏联将参与”柬埔寨平叛“。我们支持的民主柬埔寨联合政府谴责了这个所谓的联邦，称这是越南对主权国家的公然吞并。除了苏东阵营的国家外，大多国家都未承认这印度支那的合并。这对我国无疑是坏事，这证明，苏联对我们正式完成了南北合围。我们应该对这一“联邦”有所表示了。"
-const TXT_DESC_B := "越南成功击溃民主柬埔寨政府后，野心极度膨胀。在苏联的支持下，黎笋、凯山·丰威汉和韩桑林在胡志明市进行了一周的秘密协商和谈判，最终，三方签订了关于成立印度支那民主共和国联邦的协议。十日后，在印度支那联合人民军（主要是越南人民军）的监督下，三国通过一场超过90%支持率的全民公投，正式宣布成立印度支那民主共和国联邦，首都为胡志明市；同时，越南共产党、柬埔寨人民革命党和老挝人民革命党在一场联合代表大会中再次统一为印度支那共产党。新的“联邦政府“表示，三国的整合是长期性的，要经过从邦联到联邦缓慢整合的过程。苏联承认了联邦，并表示这是解决印度支那民族问题的最佳方案；新的印度支那政府宣布将加快和经互会的一体化，老挝和柬埔寨也正式融入了经互会体系；双方也将开展大规模军事合作，苏联军事基地正在处于筹备过程中，同时苏联将参与”柬埔寨平叛“。我们曾经支持的民主柬埔寨联合政府谴责了这个所谓的联邦，称这是越南对主权国家的公然吞并。除了苏东阵营的国家外，大多国家都未承认这印度支那的合并。这对我国无疑是坏事，这证明，苏联对我们正式完成了南北合围。我们应该对这一“联邦”有所表示了。"
-const TXT_OPT1_DIS_A := "你还嫌不够丢脸吗？！"
-const TXT_OPT1_DIS_B := "我们不可能为修正主义者欢呼！"
-const TXT_R0 := "我国外交部声明：“越南肆意侵略主权国家，支持傀儡政府，践踏国际秩序，应该受到强烈谴责！民主柬埔寨联合政府为民族解放的斗争是完全正义的！“印支方面并未对此做出回应，但是，我们南北边境紧张的局势也并未得到缓和。"
-const TXT_NAME_CAMBODIA := "印支联邦柬埔寨区"
-const TXT_NAME_FED := "印度支那联邦"
-const TXT_NAME_LAOS := "印支联邦老挝区"
-const TXT_R1 := "我国外交部表示：“越南推翻了残暴的波尔布特政权，为他们带去了真正的解放和真正的社会主义；联邦的成立合理合法，这是解决印度支那民族问题的最佳方案。”民主柬埔寨联合政府和我们断绝了联系。但是，我们和苏联、越南的关系获得了些许缓和，南北边境的边防压力也稍稍减小了。"
-const TXT_R2 := "我们的政府并未对这一行为进行评价，一切如常。"
+const TXT_DESC_A := "event.script.event_454_vietnam_ambition.c0"
+const TXT_DESC_B := "event.script.event_454_vietnam_ambition.c1"
+const TXT_OPT1_DIS_A := "event.script.event_454_vietnam_ambition.c2"
+const TXT_OPT1_DIS_B := "event.script.event_454_vietnam_ambition.c3"
+const TXT_R0 := "event.script.event_454_vietnam_ambition.c4"
+const TXT_NAME_CAMBODIA := "event.script.event_454_vietnam_ambition.c5"
+const TXT_NAME_FED := "event.script.event_454_vietnam_ambition.c6"
+const TXT_NAME_LAOS := "event.script.event_454_vietnam_ambition.c7"
+const TXT_R1 := "event.script.event_454_vietnam_ambition.c8"
+const TXT_R2 := "event.script.event_454_vietnam_ambition.c9"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -25,9 +25,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var res56 := int(world.completed_event_ids.get("teach_vietnam_lesson", 0))
 	if res56 == 1:
-		event_def.description = TXT_DESC_A
+		event_def.description = tr(TXT_DESC_A)
 	else:
-		event_def.description = TXT_DESC_B
+		event_def.description = tr(TXT_DESC_B)
 	var line56 := 0
 	if world.size() > W.I_POLITICAL_LINE:
 		line56 = world.political_line
@@ -36,9 +36,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if res56 == 0 and line56 >= 2:
 		_enable(opt[1], event_def.options[1].text)
 	elif res56 == 1:
-		_disable(opt[1], TXT_OPT1_DIS_A)
+		_disable(opt[1], tr(TXT_OPT1_DIS_A))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_B)
+		_disable(opt[1], tr(TXT_OPT1_DIS_B))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -50,7 +50,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_indochina_names()
 			_indochina_torg(false, false, false)
 			_add_relation(EmpireData.USSR, -100)
@@ -58,7 +58,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, 100)
 			ws.influence_prc -= 20
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			_indochina_names()
 			_indochina_torg(true, false, false)
 			_add_relation(EmpireData.USSR, 100)
@@ -66,7 +66,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, -100)
 			ws.influence_prc -= 30
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			_indochina_names()
 			_indochina_torg(false, false, false)
 			ws.influence_prc -= 50
@@ -82,17 +82,17 @@ func _indochina_names() -> void:
 	if c11 != null:
 		c11.government = GameConstants.Government.AUTHORITARIAN
 		c11.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
-		c11.name = TXT_NAME_FED
-		c11.chinese_name = TXT_NAME_FED
+		c11.name = tr(TXT_NAME_FED)
+		c11.chinese_name = tr(TXT_NAME_FED)
 		_set_part(c11, 0, true)
 		c11.set_tag("sev", true)
 	if c22 != null:
-		c22.name = TXT_NAME_LAOS
-		c22.chinese_name = TXT_NAME_LAOS
+		c22.name = tr(TXT_NAME_LAOS)
+		c22.chinese_name = tr(TXT_NAME_LAOS)
 		c22.set_tag("sev", true)
 	if c23 != null:
-		c23.name = TXT_NAME_CAMBODIA
-		c23.chinese_name = TXT_NAME_CAMBODIA
+		c23.name = tr(TXT_NAME_CAMBODIA)
+		c23.chinese_name = tr(TXT_NAME_CAMBODIA)
 		c23.set_tag("sev", true)
 
 
@@ -160,3 +160,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_454_vietnam_ambition.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_454",
+	"num": 454,
+	"priority": 45400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_454_vietnam_ambition.gd",
+	"trigger": [{"t": "COUNTRY_FIELD_EQUALS", "key": "puppet_of", "v": 11, "target": "23"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "puppet_of", "v": 11, "target": "22"}, {"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "puppet_of", "v": 11, "target": "23"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "puppet_of", "v": 11, "target": "22"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

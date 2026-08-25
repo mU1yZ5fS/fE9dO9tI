@@ -1,30 +1,30 @@
 extends "res://数据脚本/event_script_base.gd"
 
-const S_14 := "推倒这堵墙！"
-const S_15 := "随着中华人民共和国影响力不断提高，我们也得以对两个德国的命运做最终判决。我们有三个方案，分别是让西德主导统一，东德主导统一或者组成平等的联邦。但决定权在您的手上！"
-const S_23 := "西德主导统一"
-const S_28 := "他们啃不下东德的"
-const S_32 := "东德主导统一"
-const S_37 := "西德的情况似乎要好得多"
-const S_41 := "组成平等的联邦"
-const S_45 := "工农兄弟应当是一家！"
-const S_50 := "总有一方会不高兴的"
-const S_52 := "下次再说吧"
-const S_57 := "推倒这堵墙！"
-const S_60 := "Ach(Clone)"
-const S_66 := "在我们的大力撮合下，联邦德国成功和民主德国的外交部长得以在基尔就统一达成一致。双方确定了将由西德负责东德未来的发展，而东德地区将解散自己的武装力量，转而由西德接手一切的国营企业。前统社党高层被判以“叛国”和“腐败”罪，昂纳克在统一的前夜逃往智利大使馆寻求庇护。柏林墙最终也被拆除。两德最终统一了，但是代价呢？"
-const S_76 := "在东德经历了政局的大洗牌后，西德同志们得以在东德站稳脚跟，以革命领军人的姿态向西德发出邀请。出于对社会主义理念的向往，东德领导人似乎没有理由拒绝。随后，两个德国的领袖在基尔举行了会谈，双方决定了将由西德的同志们主导东德的革命。但东德在一些问题上仍然保有自己的权力。很快，再社会主义化的改革在东德如火如荼的召开了，而西德也为有了足够广阔的农业基地感到高兴。就史塔西问题，双方都一致同意史塔西的监控作用完全可以被工人赤卫队所取代，因此史塔西将被改组为“革命保卫办公室”而继续存在。德国人终于住在同一片屋檐下了。"
-const S_86 := "与革命保卫办公室合作"
-const S_87 := "特工网络+1.5;|极左派+1;|极左派力量+1."
-const S_97 := "统一德国"
-const S_100 := "在社会主义阵营在全球高歌猛进的背景下，作为资本主义孤岛的西德已是独木难支。因此，接下来发生的事情便是水到渠成：面对西德人民要求开放边界的汹涌民意，波恩当局不得不选择妥协。让民主德国得以一口吞下整个德国。德国统一社会党总书记昂纳克得以在CCTV，塔斯社和CNN的面前自信的推倒柏林墙，并正式宣布两个德国的统一。可考虑到西德社会的体量优势和资本主义体系绝无可能同社会主义共存的客观情况，统一后的社会转型绝非一日之功。因此，民主德国很自然地转向了促成统一的最大功臣，并按照得到后者放行的政治整合方案开始在全国范围内“狂飙突进”：大型与中型企业纷纷被国有化，并在所有权上被归为“人民企业”，价格管制与民主德国马克也同样走入了西德的大街小巷。两个德国的实质统一显然还要很久，但我们坚信他们必然胜利。"
-const S_105 := "在米尔克的强烈要求下，以东德为主导的新德国完成了统一。而新生的政权立刻将这位领袖比做是俾斯麦在世，他在任期内得以重新塑造一个德国，并且得以给德国人民他们想要的一切，诸如除了苏联方案以外的社会主义原则。而社会主义原则被“民族—阶级双斗争”给取代。西德人对于东德新领导人的观感与纳粹无异，在得知要统一后，巨大的人流挤爆了机场。而新政府立刻建立起来了。新政府尽管看上去和曾经的朝鲜民主主义人民共和国无异。但他知道要合理运用德国的优势——足够自给自足的工业和农业来提升生活水平。无论如何，现在的国内对于米尔克的崇拜已经达到了一个新的高度，而德国也得以统一。是非功过还是留给后人诉说吧。"
-const S_120 := "德意志自由社会主义共和国"
-const S_121 := "我们的苦心经营成功使得马克思列宁主义与亲中政治力量在两德地区同时就位，让和平统一方案已然成为可能。考虑到魏玛共和国的政治教训与昔日人民民主国家内的政党整合经验，第一步便是将早已碎片化的德国工人运动与社会主义潮流重新统一：囊括德国马列主义革命党、德国统一社会党、越加同德国社民党分道扬镳的左翼学生-激进青年运动与德意志人民武装力量在内的德国共产党（斯巴达克联盟）至此成立，宣称其将忠于“卡尔·李卜克内西、恩斯特·台尔曼与威廉·皮克”事业基础上综合“19-20世纪以来的一切成就”。事实上采纳“马克思-列宁-毛泽东主义”推论。紧接着便是在东方以东的特别关照下快速实现社会转型。此后，苏联军队亦按照协定撤离。"
-const S_131 := "德意志联邦民主共和国"
-const S_133 := "我们的计划得到了一众成员国，尤其是苏联和法国的认可。随着“红色恐慌”面纱的落下以及世界友谊思想的繁荣发展，提倡和平主义、社会改革、友谊与和平的左翼同盟赢得了大选。他们的胜利不仅仅是与民主德国建立关系。而东德的新晋领导人希望能更近一步，在双方的授权下，统一社会党和左翼联盟达成了政治上合并。新成立的德意志社会主义同盟宣布将在德国的领土上建立一个平等而自由的联邦。双方将为了中欧的无核化与和平而奋斗。让我们祝他们好运！"
-const S_136 := "而在两德统一后，欧洲社会主义联盟也向统一后的德国抛出了橄榄枝，显然，这个“新生”的国家很乐意接受，毕竟，两个分隔已久的国家合并后会有更多潜在的经济问题……"
-const S_143 := "我们下次再决定德国的命运。"
+const S_14 := "event.script.event_484_germany_tear_down_wall.c0"
+const S_15 := "event.script.event_484_germany_tear_down_wall.c1"
+const S_23 := "event.script.event_484_germany_tear_down_wall.c2"
+const S_28 := "event.script.event_484_germany_tear_down_wall.c3"
+const S_32 := "event.script.event_484_germany_tear_down_wall.c4"
+const S_37 := "event.script.event_484_germany_tear_down_wall.c5"
+const S_41 := "event.script.event_484_germany_tear_down_wall.c6"
+const S_45 := "event.script.event_484_germany_tear_down_wall.c7"
+const S_50 := "event.script.event_484_germany_tear_down_wall.c8"
+const S_52 := "event.script.event_484_germany_tear_down_wall.c9"
+const S_57 := "event.script.event_484_germany_tear_down_wall.c10"
+const S_60 := "event.script.event_484_germany_tear_down_wall.c11"
+const S_66 := "event.script.event_484_germany_tear_down_wall.c12"
+const S_76 := "event.script.event_484_germany_tear_down_wall.c13"
+const S_86 := "event.script.event_484_germany_tear_down_wall.c14"
+const S_87 := "event.script.event_484_germany_tear_down_wall.c15"
+const S_97 := "event.script.event_484_germany_tear_down_wall.c16"
+const S_100 := "event.script.event_484_germany_tear_down_wall.c17"
+const S_105 := "event.script.event_484_germany_tear_down_wall.c18"
+const S_120 := "event.script.event_484_germany_tear_down_wall.c19"
+const S_121 := "event.script.event_484_germany_tear_down_wall.c20"
+const S_131 := "event.script.event_484_germany_tear_down_wall.c21"
+const S_133 := "event.script.event_484_germany_tear_down_wall.c22"
+const S_136 := "event.script.event_484_germany_tear_down_wall.c23"
+const S_143 := "event.script.event_484_germany_tear_down_wall.c24"
 
 
 ## 原作 Event484.cs：推倒这堵墙！（四选项）。
@@ -48,25 +48,25 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 				or (c17.government == GameConstants.Government.SOCIALIST and c16.government != GameConstants.Government.REFORMIST and not c16.has_tag("亲苏"))) \
 				and c16.sub_government != GameConstants.SubGovernment.LEFT_NATIONALIST
 		if west_ok:
-			_enable(opt[0], S_23)
+			_enable(opt[0], tr(S_23))
 		else:
-			_disable(opt[0], S_28)
+			_disable(opt[0], tr(S_28))
 		var east_ok := ((c16.has_tag("亲苏") and c16.government == GameConstants.Government.SOCIALIST and c1 != null \
 				and c1.has_tag("sev") and c1.has_tag("ovd")) or c16.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST \
 				or (c16.government == GameConstants.Government.SOCIALIST and c16.has_tag("亲中"))) \
 				and c16.government != GameConstants.Government.REFORMIST and c17.government != GameConstants.Government.SOCIALIST and not c17.has_tag("nato")
 		if east_ok:
-			_enable(opt[1], S_32)
+			_enable(opt[1], tr(S_32))
 		else:
-			_disable(opt[1], S_37)
+			_disable(opt[1], tr(S_37))
 		if (c16.government == GameConstants.Government.REFORMIST or (c21 != null and c21.has_tag("soc_eu") and c17.has_tag("soc_eu") \
 				and ussr != null and ussr.current_leader == 6)) and c17.government == GameConstants.Government.REFORMIST:
-			_enable(opt[2], S_41)
+			_enable(opt[2], tr(S_41))
 		elif c16.government == GameConstants.Government.SOCIALIST and c17.government == GameConstants.Government.SOCIALIST and not c16.has_tag("亲苏"):
-			_enable(opt[2], S_45)
+			_enable(opt[2], tr(S_45))
 		else:
-			_disable(opt[2], S_50)
-	_enable(opt[3], S_52)
+			_disable(opt[2], tr(S_50))
+	_enable(opt[3], tr(S_52))
 
 
 func execute(context: Dictionary) -> void:
@@ -88,7 +88,7 @@ func execute(context: Dictionary) -> void:
 			c17.set_tag("对华贸易", true)
 			c17.development = 2
 			_set_mod_active(53, false)
-			context["result_text"] = S_66
+			context["result_text"] = tr(S_66)
 		elif c17.government == GameConstants.Government.SOCIALIST:
 			_set_part(c17, 0, true)
 			c17.set_tag("对华贸易", true)
@@ -99,9 +99,9 @@ func execute(context: Dictionary) -> void:
 			c17.sub_government = GameConstants.SubGovernment.MAOIST
 			c17.set_tag("亲中", true)
 			_join_our_alliances(c17)
-			context["result_text"] = S_76
+			context["result_text"] = tr(S_76)
 		else:
-			context["result_text"] = S_143
+			context["result_text"] = tr(S_143)
 	elif opt == 1:
 		if c16 == null or c17 == null:
 			return
@@ -109,13 +109,13 @@ func execute(context: Dictionary) -> void:
 		c16.set_tag("对华贸易", true)
 		_leave_alliances(c17)
 		c17.development = 3
-		c16.name = S_97
+		c16.name = tr(S_97)
 		if ws.is_socialism(c16, true):
-			context["result_text"] = S_100
+			context["result_text"] = tr(S_100)
 		elif c16.sub_government == GameConstants.SubGovernment.LEFT_NATIONALIST:
-			context["result_text"] = S_105
+			context["result_text"] = tr(S_105)
 		else:
-			context["result_text"] = S_143
+			context["result_text"] = tr(S_143)
 	elif opt == 2:
 		if c16 == null or c17 == null:
 			return
@@ -127,8 +127,8 @@ func execute(context: Dictionary) -> void:
 			c17.set_tag("对华贸易", true)
 			c17.government = GameConstants.Government.SOCIALIST
 			c17.sub_government = GameConstants.SubGovernment.MAOIST
-			c17.name = S_120
-			context["result_text"] = S_121
+			c17.name = tr(S_120)
+			context["result_text"] = tr(S_121)
 		else:
 			_leave_alliances(c16)
 			_set_part(c17, 0, true)
@@ -137,15 +137,15 @@ func execute(context: Dictionary) -> void:
 			c17.set_tag("对华贸易", true)
 			c17.government = GameConstants.Government.REFORMIST
 			c17.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
-			c17.name = S_131
+			c17.name = tr(S_131)
 			_set_mod_active(53, false)
-			var text := S_133
+			var text := tr(S_133)
 			if c21 != null and c21.has_tag("soc_eu"):
-				text += S_136
+				text += tr(S_136)
 				c17.set_tag("soc_eu", true)
 			context["result_text"] = text
 	else:
-		context["result_text"] = S_143
+		context["result_text"] = tr(S_143)
 
 
 func _set_mod_active(idx: int, active: bool) -> void:
@@ -181,3 +181,18 @@ func _set_part(c: CountryData, i: int, value: bool) -> void:
 	while c.parts.size() <= i:
 		c.parts.append(false)
 	c.parts[i] = value
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_484_germany_tear_down_wall.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_484",
+	"num": 484,
+	"priority": 48400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_484_germany_tear_down_wall.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

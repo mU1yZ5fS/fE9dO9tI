@@ -402,6 +402,7 @@ static func resolve_war_finished(war_id: int = -1) -> void:
 	# 战争结算后统一应用原版地图合并规则（朝鲜/也门/OAR/文莱/西撒等）
 	if MapService.instance != null:
 		MapService.instance.sync_map_merges()
+		MapService.instance.assert_map_consistent("war_end_%d" % id)
 	if _notify_stats_cb.is_valid():
 				_notify_stats_cb.call()
 
@@ -1728,8 +1729,11 @@ static func _apply_war16_result(war: WarData, d: WorldState) -> void:
 			_set_pro_china(north)
 			north.puppet_of = GameConstants.LegacySlot.CHINA
 			north.set_tag("对华贸易", true)
-			north.name = "朝鲜民主主义人民共和国"
-			north.chinese_name = "朝鲜民主主义人民共和国"
+			# 原版 GameState.cs:905-918：国名按玩家中国政体从 new_events_text[840..843] 四选一，
+			# 与 资产/数据/war_result_texts.json 的 country_1..4 同源。
+			var kname := _war16_korea_name(china)
+			north.name = kname
+			north.chinese_name = kname
 			if north.sub_government == GameConstants.SubGovernment.TROTSKYIST:
 				if w.empires.size() > EmpireData.USSR and w.empires[EmpireData.USSR] != null:
 					w.empires[EmpireData.USSR].relations = clampi(w.empires[EmpireData.USSR].relations + 120, 0, 1000)
@@ -1747,6 +1751,23 @@ static func _apply_war16_result(war: WarData, d: WorldState) -> void:
 		for p in w.politicians:
 			if p != null:
 				p.loyalty -= 750
+
+
+## war16 战后朝鲜国名：原版按玩家中国政体从 new_events_text[840..843] 四选一
+## （GameState.cs:905-918：威权→朝鲜国、社会主义→社会主义朝鲜、改良→朝鲜人民共和国、其余→朝鲜联盟）。
+## 注意：改名用的是短名 840..843；结算文案里的长名是另一组（846..849，即 country_1..4）。
+static func _war16_korea_name(china: CountryData) -> String:
+	var names := ["朝鲜国", "社会主义朝鲜", "朝鲜人民共和国", "朝鲜联盟"]
+	var gov := china.government if china != null else GameConstants.Government.SOCIALIST
+	match gov:
+		GameConstants.Government.AUTHORITARIAN:
+			return names[0]
+		GameConstants.Government.SOCIALIST:
+			return names[1]
+		GameConstants.Government.REFORMIST:
+			return names[2]
+		_:
+			return names[3]
 
 
 ## 战争 29 号结算：GameState.cs:1532-1610。
@@ -2093,9 +2114,9 @@ static func _apply_war39_result(war: WarData, d: WorldState) -> void:
 		# 西撒哈拉独立：把整个西撒地块划给波利萨里奥
 		if polisario != null:
 			if GameManager != null:
-				GameManager.set_map_region_owner([54, 55, 56, 57], polisario.gwcode)
+				GameManager.set_map_region_owner([56], polisario.gwcode)
 			elif MapService.instance != null:
-				MapService.instance.set_region_owner([54, 55, 56, 57], polisario.gwcode)
+				MapService.instance.set_region_owner([56], polisario.gwcode)
 	else:
 		add_empire_power(EmpireData.USA, 50)
 		d.global_influence -= 20
@@ -2701,8 +2722,9 @@ static func _apply_war0_result(war: WarData, d: WorldState) -> void:
 		if north != null and south != null and north.government == GameConstants.Government.LIBERAL and south.government == GameConstants.Government.AUTHORITARIAN:
 			_set_d(d, 157, 1)
 		if north != null:
-			north.name = "朝鲜民主主义人民共和国"
-			north.chinese_name = "朝鲜民主主义人民共和国"
+			# 原版 GameState.cs:44：北胜国名 = new_events_text[838]「朝鲜」。
+			north.name = "朝鲜"
+			north.chinese_name = "朝鲜"
 			if north.parts.size() <= 0:
 				north.parts.resize(1)
 			north.parts[0] = true

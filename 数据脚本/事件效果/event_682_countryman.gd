@@ -6,21 +6,21 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：doctr[13] 显示文案表建模说明，跳过并留原文；结果后的 old_modify_desc[15] 整段为
 ##   display-only 文案（按 r681/r682/r53 + 科技 3/6/7 重建），按项目惯例跳过，仅留溯源。
 
-const TXT_OPT0_DIS_A := "梁漱溟？！毛主席曾亲自批判过他！"
-const TXT_OPT0_DIS_B := "孔家余孽不准通过！"
-const TXT_OPT1_DIS_A := "二号吴廷琰不准通过！"
-const TXT_OPT1_DIS_B := "可晏阳初的东家不会支持我们的！"
-const TXT_OPT2_DIS_A := "官僚资本主义之路是最恶劣的资本主义，他们怎么可能懂建设农村？"
-const TXT_OPT2_DIS_B := "我们余力不足"
-const TXT_OPT4_DIS := "我们没有必要重走回头路"
-const TXT_OPT5_DIS_A := "当新时代种植园？！怎能不以为耻，反以为荣！"
-const TXT_OPT5_DIS_B := "我们怎能忘本，抛弃国内农民这条根！"
-const TXT_R0_FMT := "由于梁漱溟早在建国初便担任政协要职，且长期得到中央主要领导人的特别关照，将这位老人请出山并非难事。可从某种意义上说，选择他也意味着延续了毛时代的老一套问题：毕竟，毛泽东对农业的误判也正是从他远离农村生产实践开始。我们也没法奢求自50年代中后期便同乡村建设靠边的梁漱溟老先生能够免俗……总之，出于避免战略误判与建设和谐农村社会的共同需要，新政策将在国家新设立的“农民同志会”（其组织则遵循我党领导下的三三制分配原则：三分之一归知识分子、三分之一归乡村干部、以及三分之一归政治团体）的主持下开展，其改革模板则是混合30年代的村治实践与曾蒙羞的前任领导人刘少奇路线的综合：即经济上建立以农为本的国民经济发展模式，以最低支持价格取代义务征购与农业税，鼓励发展农村副业，扩大自留地并推进土地流转，实现灵活经营；在政治上则放开组织村民委员会作为“农民同志会”的基层组织与协助政府履职的自治单位，且在完全翻新各项基础设施的同时对教育体系与文化设施进行全面洗牌：全国出版物与审查红线将根据梁漱溟先生操刀，{0}{1}同志亲自过问的“新心学”思维进行修订——我们将由此开启“唱白打黑”新征程并彻底告别一切性质的革命，并要求社会各界为建立“和谐社会”、“大同社会”的目标自觉效力。当然，这只会让激进改革者不满。若计划照常进行，预计我们将在未来的十年内培育出一批新乡贤、模范村与遵奉现代儒学的有识一代，实现农业的自给自足与增产增效，并由此告别曾困扰我国农村的系列问题。而海外分析人士已将我们的新方针冠以“儒家新经济政策”之名，并将其同“国家法团主义”相提并论……"
-const TXT_R1_FMT := "通过与海外华人乃至美国国际伙伴的联系，我们很快便同晏阳初及其门徒组织的国际农村重建研究所（IIRR）取得了联系，该组织的主要干部曾参与组织始于20世纪50年代的菲律宾农村重建运动，并于此后转向印度、泰国、哥伦比亚等欠发达国家推广经验。晏阳初本人则以主持河北农村改造的“定县实验”与协助台湾当局中国农村复兴联合委员会的行动而闻名：通过背靠洛克菲勒等财团与西方超级大国的赞助，他得以泰然描摹其农村发展蓝图，并将其投入到发展大众教育、改善农业生产、建立自治机构等价值不菲的项目内。针对中方抛出的橄榄枝，晏阳初及其团队几乎是立刻对“定县实验”故事重提：他们计划用20年的时间基本解决民众的贫、愚、弱、私四大问题，并将各地农村转化为自筹资金、自负教育与自管政治的独立实体。相关计划所涉及的投资则由我国政府、国际农村重建研究所的人脉渠道与第三方赞助共同支持，意味着中国的农村改造也将成为三马分肥的场域——出于欢迎投资者参与建设的需要，政策上的让步也就成为了必然：首先便是为满足教育自由条件而放开基督教传教事业（众所周知，晏阳初是公开的基督教徒），其次便是市场的进一步自由化。诸如此类的变化在日后只会变得越来越多，这只会让作为绝大多数非政府组织后台的西方国家赞助者得利。批评人士已将晏阳初主持的改革同南越“战略村”计划与乌干达独裁者伊迪·阿明的暴政相提并论，它们均试图在无视国情与事实上践踏国家主权的政策基础上，通过金元政治或纯粹暴力手段，建立一个外来意识形态主导的征服者政权……"
-const TXT_R2_FMT := "就在调查团结束对韩国、日本、马来西亚等地的访问后，{0}{1}同志立即对农村发展问题做出定调：农业问题，究其根本是国家干预力度不足的问题。此后，我们特别邀请了曾参与设计韩国“新村运动”的韩方官员们协助制定中国版本的农村改造方案。重在改善农村生活，发展农业基础设施，并充分发展农村的多种经营形式的同时增强国家对农村基层的社会控制。也就在农村得到新一轮投资，各种家庭副业形式均告合法，且联产承包责任制与雇工形式均被合法化的同时；国家开始大张旗鼓启动“扫除精神污染”运动。预计农业将迎来腾飞，区域副业也将在同时迎来新一轮繁荣。不过，在农村能够真正实现自主经营之前，我们依然需要持续投入建设——也许需要更长的时间，我们才能从这一政策内得到回报。"
-const TXT_R3_FMT := "由于各方在农业问题上互不相让，事实上导致一切系统性的改革方案均无从下手。我们最终也只能从国内的最大共识出发改革农业农村政策，即事实上回归新民主主义时期与孙中山倡导的农业理念：既确保“耕者有其田”，又在同时形成国家支持的农业自由市场。随后，我国便立即放开并解散缺乏效益的国营农场与合作社，并以前者资产为基础向农民分配土地；接下来便是利用低息贷款、金融业务支持农业并改革税务制度。改革的核心思路与美国经济学家亨利·乔治的主张类似：既充分运用自由市场下的竞争机制与多种操作手段，又在同时形成一个资产与收益归社会全体共享的经济体。通过灵活嫁接市场与社会两方面要素，并在适当时刻诉诸历史。这一方案确实得到了国内主流的支持：左翼对其中的“劳有所获”表示满意，右翼则能从分配土地后的国家离场论内发掘出自由主义前景。此后，我国更是引入了单一税制试验：除土地税与必要的保护性税种外，其他一切税别均被废除。主要税种则根据土地用途规定：即对个人开发用地降低税率，对农业用地照常收税，对其他类别则征收重税。如此支持农业与放开自由竞争的政策自然能为农村经济带来繁荣，但代价也不可忽视：相较于其他类用地内的重税门槛，各路资本显然更加青睐农业内的较低税率与国家为农村精心配备的扶持政策，这只会导致实践内的农本位与其他产业的萎缩；而任何类自由市场的引入都将不可避免地带来资本主义经济周期，以及我们所熟悉的所谓“分化”问题……"
-const TXT_R4_FMT := "{0}{1}同志重申“实事求是”的基本原则，并要求全党同志回到列宁领导俄国革命与建设的系列主张上：“实际上，土地是‘归农民’、‘归集体’还是‘归国有’的问法本身便是片面且极端有害的，并事实上将农民、劳动集体与国家三者置于相互对抗的局面，最终只会导致离间与无谓的分权主义”。也就在他对土地所有权问题做出定调的同时，得到党中央过问的改革纲领《中国农村的新一轮社会主义高潮》便被立刻落到实践工作中：以俄国苏维埃组织为样板的农民委员会在各地农村纷纷成立，在被委以领导各地生产集体与国营农场经营的重任的同时协助政府实行基层自治。此后便是彻底废除农业税与产品义务销售，以国家招标与自愿认领计划指标形式取而代之。与此同时，国家也开始着重投资农村地区各项建设，计划在未来十年内完成下述任务：彻底翻新基础设施；全面更新农机设备；实现乡村建设“五通一平”（即通给水、通排水、通电、通路、通讯与平整土地）；建立稳固的乡村教育、医疗、卫生与社保体系；努力实现城乡基本公共服务均等化。地方农民也将在同时获得社会保障、荣誉称号与成为“斯达汉诺夫式”劳动模范的机会，其劳动生活也将同在城市内的工人无异——所有的一切都建立通过大规模投资农村以实现城乡完全平等的设想基础上。当然，天上可不会掉馅饼：如此规模的建设可少不了真金白银……"
-const TXT_R5_FMT := "若是古代封建帝王也能见识到如今中国领导人的“伟大创举”，想必他们也只能谦虚向国务院内的诸官僚取经：谁能想到，中国领导人会选择将农村与农业当作下金蛋的母鸡，并使用拉丁美洲式的剥削手段对其敲骨吸髓呢？效益低下的合作社与国营农场或被转让给了地方官僚，或直接在招标认购内出售给手持丰厚资本的强势主管。这两者在内部私有化过程中均享有优先征购的优惠，并与前公有经济内的管理者共享权益；绝大多数的自留地也在土地改革中流向他方——就在国家充分运用经济与行政大棒，靠农业税抵押与强行征收夺得相应土地的同时，此类地产便在国家、地方豪强与新资产阶级三方的共同划分中落入新人手中。其操作流程几乎同墨西哥威权总统波菲里奥·迪亚斯治下的发展性独裁无异：这位以强硬手腕著称的领导人通过持续打压印第安村社经济，扶持官僚与国内外商人阶级，从而任内实现了大规模的土地集中，为墨西哥未来的开发奠定了基础。也就在最后一批土地分配结束后，中国农业版图基本成为了数个控制关键产品产量与定价，并在河南、东北等地块拥有广袤资产，由国家-私人混合持股类卡特尔集团控制的圈地。农村的管理也转向了所谓的“庄园模式”：负责开发当地的公司与“本地贤达”共同掌握了当地生杀大权，且以类似财产权重投票与公民门槛的方式引入庇护制度与劳动纪律，无法适应农村生活者则被放逐在外，不得不转向城市求生并充盈工业。我们可说，该国基层事实上形成了类似墨西哥的考迪罗-卡西克二元权威体系。中产阶级与资产者在蓬勃发展的农村血汗工厂、城市产业人口与外向型经济内发展壮大，并在持续增长的指数内感慨大国崛起与制造强国之梦。与之对应的则是数千万劳动者落入普遍窘迫境地。“中版斯托雷平反动”的序幕就此开始了……"
+const TXT_OPT0_DIS_A := "event.script.event_682_countryman.c0"
+const TXT_OPT0_DIS_B := "event.script.event_682_countryman.c1"
+const TXT_OPT1_DIS_A := "event.script.event_682_countryman.c2"
+const TXT_OPT1_DIS_B := "event.script.event_682_countryman.c3"
+const TXT_OPT2_DIS_A := "event.script.event_682_countryman.c4"
+const TXT_OPT2_DIS_B := "event.script.event_682_countryman.c5"
+const TXT_OPT4_DIS := "event.script.event_682_countryman.c6"
+const TXT_OPT5_DIS_A := "event.script.event_682_countryman.c7"
+const TXT_OPT5_DIS_B := "event.script.event_682_countryman.c8"
+const TXT_R0_FMT := "event.script.event_682_countryman.c9"
+const TXT_R1_FMT := "event.script.event_682_countryman.c10"
+const TXT_R2_FMT := "event.script.event_682_countryman.c11"
+const TXT_R3_FMT := "event.script.event_682_countryman.c12"
+const TXT_R4_FMT := "event.script.event_682_countryman.c13"
+const TXT_R5_FMT := "event.script.event_682_countryman.c14"
 # 原版结果尾部 old_modify_desc[15] 重建（display-only，本版 ModifierCatalog 静态维护，跳过运行时拼接）：
 #   基础文案「根据农业发展情况获得效果」+ 按 r681（0-4）或 r682（0-5）选段
 #   + 按 r53（0-3）选段 + 科技 3/6/7 的机械化/化肥/转基因段。详见 Event682.cs 尾部 if/else 链。
@@ -39,32 +39,32 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	if _mod_active(GameConstants.Modifier.CONFUCIAN_VICTORY) and line > 2:
 		_enable(opt[0], event_def.options[0].text)
 	elif line <= 2:
-		_disable(opt[0], TXT_OPT0_DIS_A)
+		_disable(opt[0], tr(TXT_OPT0_DIS_A))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS_B)
+		_disable(opt[0], tr(TXT_OPT0_DIS_B))
 	if line == 4 and usa_rel > 600 and econ > 11:
 		_enable(opt[1], event_def.options[1].text)
 	elif line < 4:
-		_disable(opt[1], TXT_OPT1_DIS_A)
+		_disable(opt[1], tr(TXT_OPT1_DIS_A))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_B)
+		_disable(opt[1], tr(TXT_OPT1_DIS_B))
 	if line > 0 and (econ == 12 or econ == 13):
 		_enable(opt[2], event_def.options[2].text)
 	elif line == 0:
-		_disable(opt[2], TXT_OPT2_DIS_A)
+		_disable(opt[2], tr(TXT_OPT2_DIS_A))
 	else:
-		_disable(opt[2], TXT_OPT2_DIS_B)
+		_disable(opt[2], tr(TXT_OPT2_DIS_B))
 	_enable(opt[3], event_def.options[3].text)
 	if ws.is_socialism(china, true) and line <= 2:
 		_enable(opt[4], event_def.options[4].text)
 	else:
-		_disable(opt[4], TXT_OPT4_DIS)
+		_disable(opt[4], tr(TXT_OPT4_DIS))
 	if econ >= 14 and line == 4 and (ws.is_authoritarian(china) or (china != null and china.government == GameConstants.Government.LIBERAL)):
 		_enable(opt[5], event_def.options[5].text)
 	elif econ < 14:
-		_disable(opt[5], TXT_OPT5_DIS_A)
+		_disable(opt[5], tr(TXT_OPT5_DIS_A))
 	else:
-		_disable(opt[5], TXT_OPT5_DIS_B)
+		_disable(opt[5], tr(TXT_OPT5_DIS_B))
 
 
 func execute(context: Dictionary) -> void:
@@ -74,14 +74,14 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_FMT.replace("{0}{1}", leader)
+			context["result_text"] = tr(TXT_R0_FMT).replace("{0}{1}", leader)
 			_add(W.I_BUDGET, -150)
 			_add(W.I_PARTY_SUPPORT, -50)
 			_add(W.I_THOUGHT_FREEDOM, -100)
 			if _res(W.I_RELIGION) < 28:
 				_set_data(W.I_RELIGION, 28)
 		1:
-			context["result_text"] = TXT_R1_FMT.replace("{0}{1}", leader)
+			context["result_text"] = tr(TXT_R1_FMT).replace("{0}{1}", leader)
 			_add(W.I_BUDGET, -150)
 			_add(W.I_PARTY_SUPPORT, -100)
 			_add(W.I_THOUGHT_FREEDOM, 150)
@@ -95,7 +95,7 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_THOUGHT_FREEDOM, 50)
 			_set_data(W.I_RELIGION, 29)
 		2:
-			context["result_text"] = TXT_R2_FMT.replace("{0}{1}", leader)
+			context["result_text"] = tr(TXT_R2_FMT).replace("{0}{1}", leader)
 			_add(W.I_BUDGET, -200)
 			_add(W.I_PARTY_SUPPORT, 40)
 			_add(W.I_THOUGHT_FREEDOM, -50)
@@ -103,7 +103,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_SERVICES, 20)
 			_set_data(W.I_RELIGION, 24)
 		3:
-			context["result_text"] = TXT_R3_FMT.replace("{0}{1}", leader)
+			context["result_text"] = tr(TXT_R3_FMT).replace("{0}{1}", leader)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_PARTY_SUPPORT, 10)
 			_add(W.I_PEOPLE_SUPPORT, 50)
@@ -111,13 +111,13 @@ func execute(context: Dictionary) -> void:
 			_set_data(W.I_ECON_SYSTEM, 13)
 			# 原版 doctr[13] = "新乔治主义社会"：显示文案表建模说明，跳过。
 		4:
-			context["result_text"] = TXT_R4_FMT.replace("{0}{1}", leader)
+			context["result_text"] = tr(TXT_R4_FMT).replace("{0}{1}", leader)
 			_add(W.I_BUDGET, -200)
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_THOUGHT_FREEDOM, -100)
 			_add(W.I_AGRICULTURE, 50)
 		5:
-			context["result_text"] = TXT_R5_FMT.replace("{0}{1}", leader)
+			context["result_text"] = tr(TXT_R5_FMT).replace("{0}{1}", leader)
 			_add(W.I_BUDGET, -100)
 			_add(W.I_PARTY_SUPPORT, 20)
 			_add(W.I_PEOPLE_SUPPORT, -150)
@@ -137,3 +137,18 @@ func _leader_name() -> String:
 	if ws.leader != null and ws.leader.name_display != "":
 		return ws.leader.name_display
 	return "华国锋"
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_682_countryman.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_682",
+	"num": 682,
+	"priority": 68200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_682_countryman.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -6,14 +6,14 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：empires[1].leaders[6].support-- 按索引守护；isSEV/prosov/econ/proprc→set_tag；
 ##   resultOfEvents[62] 用项目 event_id=inner_mongolia_problem。
 
-const TXT_OPT1_0 := "这就是和修正主义者沆瀣一气的下场！"
-const TXT_OPT1_12 := "我们只能惊恐的看着老朋友的离去"
-const TXT_OPT1_3 := "或许他们也和我们一样改革的话就好了"
-const TXT_OPT1_4 := "这就是“共惨主义”的下场！"
-const TXT_R0_BASE := "在我们的提议下，剩下的经济互助委员会成员国学习了罗马尼亚，波兰和匈牙利的经验，公开转向中华人民共和国的怀抱。中华人民共和国的实力将允许我们接手戈尔巴乔夫无法掌握的力量。我们将提供足够的资金，"
-const TXT_R0_A := "为他们的经济去改革计划作准备。"
-const TXT_R0_B := "为他们的经济改革计划作准备。"
-const TXT_R1 := "很快，东欧国家的经济或多或少陷入了衰退，尤其是那些高度依赖苏联援助的国家。我们和苏联的贸易或多或少受到了些冲击。但这也是他们自找的路。"
+const TXT_OPT1_0 := "event.script.event_473_comecon_last_day.c0"
+const TXT_OPT1_12 := "event.script.event_473_comecon_last_day.c1"
+const TXT_OPT1_3 := "event.script.event_473_comecon_last_day.c2"
+const TXT_OPT1_4 := "event.script.event_473_comecon_last_day.c3"
+const TXT_R0_BASE := "event.script.event_473_comecon_last_day.c4"
+const TXT_R0_A := "event.script.event_473_comecon_last_day.c5"
+const TXT_R0_B := "event.script.event_473_comecon_last_day.c6"
+const TXT_R1 := "event.script.event_473_comecon_last_day.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -27,13 +27,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
 	if line56 <= 0:
-		_enable(opt[1], TXT_OPT1_0)
+		_enable(opt[1], tr(TXT_OPT1_0))
 	elif line56 == 1 or line56 == 2:
-		_enable(opt[1], TXT_OPT1_12)
+		_enable(opt[1], tr(TXT_OPT1_12))
 	elif line56 == 3:
-		_enable(opt[1], TXT_OPT1_3)
+		_enable(opt[1], tr(TXT_OPT1_3))
 	else:
-		_enable(opt[1], TXT_OPT1_4)
+		_enable(opt[1], tr(TXT_OPT1_4))
 
 
 
@@ -47,9 +47,9 @@ func execute(context: Dictionary) -> void:
 		0:
 			var line56 := _res(W.I_POLITICAL_LINE)
 			if line56 <= 2:
-				context["result_text"] = TXT_R0_BASE + TXT_R0_A
+				context["result_text"] = tr(TXT_R0_BASE) + tr(TXT_R0_A)
 			else:
-				context["result_text"] = TXT_R0_BASE + TXT_R0_B
+				context["result_text"] = tr(TXT_R0_BASE) + tr(TXT_R0_B)
 			var res62 := _res_ev("inner_mongolia_problem", 0)
 			for c in ws.countries:
 				if c == null or not c.has_tag("sev"):
@@ -69,7 +69,7 @@ func execute(context: Dictionary) -> void:
 			_add_power(EmpireData.USSR, -500)
 			ws.influence_prc += 300
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			for c in ws.countries:
 				if c != null and c.has_tag("sev"):
 					c.set_tag("sev", false)
@@ -178,3 +178,19 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_473_comecon_last_day.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_473",
+	"num": 473,
+	"priority": 47300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_473_comecon_last_day.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_473_comecon_last_day.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

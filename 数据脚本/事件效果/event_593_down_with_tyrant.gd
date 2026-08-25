@@ -11,20 +11,20 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0_A := "他们的行动是成功的。凌晨，一小伙工人民兵和空降部队越过加纳边境，借道攻进了洛美。他们和总统卫队发生了交火，埃亚德马在试图逃离总统府的路上被击毙。一枚火箭弹打中了他的座驾，烈火瞬间吞噬了他。多哥人民联盟的总书记也在袭击中遇刺身亡。很快，一场夺权运动在多哥共产党的领导下展开了。多亏了先前的布局，基层士兵拒绝对人民开火，而工人武装很快就建立了起来。在贝宁和加纳武装部队的帮助下，内战得以幸免。多哥共产党正式宣布多哥为“以马克思列宁主义，毛泽东思想为指导的人民共和国”，并宣布在多哥开展一场民族民主革命。泛非社会主义党的左派被吸纳入多哥共产党的预备党员，其余则被改组为多哥爱国主义阵线，成为了官方的统战组织。革命的内容包括彻底清算埃亚德马的毒草，同时大量的强制征收了外国资本的实业公司。以及更为公平的农村—城市发展计划。\n该国宣布对我国友好，"
-const TXT_R0_DONE := "并积极宣布将投身于非洲的革命斗争与解放"
-const TXT_R0_NOT := "并愿意深化与我们的合作关系。"
+const TXT_R0_A := "event.script.event_593_down_with_tyrant.c0"
+const TXT_R0_DONE := "event.script.event_593_down_with_tyrant.c1"
+const TXT_R0_NOT := "event.script.event_593_down_with_tyrant.c2"
 
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	var c108 := ws.get_country_by_legacy_index(108)
-	var text := TXT_R0_A
+	var text := tr(TXT_R0_A)
 	if ws.completed_event_ids.has("event_500"):
-		text += TXT_R0_DONE
+		text += tr(TXT_R0_DONE)
 	else:
-		text += TXT_R0_NOT
+		text += tr(TXT_R0_NOT)
 	_add(W.I_BUDGET, -80)
 	_add(W.I_AGENTS, -80)
 	if c108 != null:
@@ -43,3 +43,18 @@ func _establish_prochina(c: CountryData) -> void:
 	c.set_tag("亲中", true)
 	c.set_tag("亲苏", false)
 	c.set_tag("亲美", false)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_593_down_with_tyrant.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_593",
+	"num": 593,
+	"priority": 59300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_593_down_with_tyrant.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

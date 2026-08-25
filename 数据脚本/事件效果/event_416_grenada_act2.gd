@@ -50,22 +50,22 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1299 := "我的格林纳达？第二幕"
-const TXT_IDX_1300 := "尽管格林纳达的社会主义革命在社会改革方面取得了一系列成就，但还是未能解决该国的经济问题。在美国宣布对其进行制裁后，局势便进一步恶化。莫里斯·毕晓普政府决定向美国与国际货币基金组织妥协让步，以此换取后者对该国的制裁放松，但美国拒绝为格林纳达提供贷款。因此，执政党内的派系斗争加剧了。以代总理伯纳德·科尔德和格林纳达军队总司令赫德森·奥斯汀将军为首的激进左派对莫里斯·毕晓普总统的温和派方案相当反感。现在，格林纳达武装部队正计划逮捕莫里斯·毕晓普，并建立反美军事独裁政权。同时，格林纳达民主同盟在邻国巴巴多斯宣布建立。其成员均反对格林纳达现行的马克思主义政府。问题不只在于资助谁，还有要不要资助的问题，毕竟格林纳达不过是个偏远小岛而已。这样的小国在世界上怎么也掀不起波澜。"
-const TXT_IDX_1301 := "支持格林纳达激进左派，并让它们加入我方势力范围（需要15.0百万{0}与15.0点{1}）"
-const TXT_IDX_592 := "预算"
-const TXT_IDX_593 := "特工网络"
-const TXT_IDX_594 := "军事实力"
-const TXT_IDX_566 := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
-const TXT_IDX_567 := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
-const TXT_IDX_1302 := "支持毕晓普领导的温和共产主义者（需要5.0百万{0}与10.0点{1}）"
-const TXT_IDX_1295 := "格林纳达在哪？不关我事"
-const TXT_IDX_1303 := "加入美国的干涉行动并支持自由派"
-const TXT_IDX_659 := "我们还没有实现与美国中央情报局的合作......"
-const TXT_IDX_1304 := "10月13日，以科尔德·奥斯汀为首的激进左翼分子掀起了一场反对莫里斯·毕晓普的军事政变，后者因蓄谋发动亲美政变而被逮捕。随后，该国左翼激进派宣布将和中国同志们团结一致。而我们在联合国的代表公开了美国与其加勒比盟友计划入侵格林纳达的阴谋。在联合国聚焦我方声明的情况下，格利纳达政变很快就被忘记了。"
-const TXT_IDX_1305 := "我们向莫里斯·毕晓普送去了警告。他在得到军中效忠派的支持后，便以发动蓄谋军事政变为由，逮捕了科尔德·奥斯汀领导的左翼激进派。从而巩固了自己在格利纳达的权力。"
-const TXT_IDX_1306 := "10月13日，以科尔德·奥斯汀为首的激进左翼分子掀起了一场反对莫里斯·毕晓普的军事政变，后者因蓄谋发动亲美政变而被逮捕。政变军人们以临时的革命军事委员会取代了原政府，前者由奥斯汀将军坐镇。革命军事委员会引入了为期4天的戒严令。而支持者营救前总理的计划失败了，于10月19日被枪决。东加勒比国家组织、巴巴多斯和牙买加借机向美国寻求帮助。最终在10月25日，位于巴巴多斯的美国国家与区域安全体系联合部队入侵格林纳达。三天后，新政府便被击溃。联合国的绝大多数成员谴责入侵行动，并认为其违反了国际法。"
-const TXT_IDX_1307 := "10月13日，以科尔德·奥斯汀为首的激进左翼分子掀起了一场反对莫里斯·毕晓普的军事政变，后者因蓄谋发动亲美政变而被逮捕。政变军人们以临时的革命军事委员会取代了原政府，前者由奥斯汀将军坐镇。革命军事委员会引入了为期4天的戒严令。而支持者营救前总理的计划失败了，于10月19日被枪决。东加勒比国家组织、巴巴多斯和牙买加借机向美国寻求帮助。最终在10月25日，位于巴巴多斯的美国国家与区域安全体系联合部队入侵格林纳达。三天后，新政府便被击溃。联合国的绝大多数成员谴责入侵行动，并认为其违反了国际法。格林纳达民主联盟则在战后顺势夺权，并宣布将和中国开展合作。"
+const TXT_IDX_1299 := "event.script.event_416_grenada_act2.c0"
+const TXT_IDX_1300 := "event.script.event_416_grenada_act2.c1"
+const TXT_IDX_1301 := "event.script.event_416_grenada_act2.c2"
+const TXT_IDX_592 := "event.script.event_416_grenada_act2.c3"
+const TXT_IDX_593 := "event.script.event_416_grenada_act2.c4"
+const TXT_IDX_594 := "event.script.event_416_grenada_act2.c5"
+const TXT_IDX_566 := "event.script.event_416_grenada_act2.c6"
+const TXT_IDX_567 := "event.script.event_416_grenada_act2.c7"
+const TXT_IDX_1302 := "event.script.event_416_grenada_act2.c8"
+const TXT_IDX_1295 := "event.script.event_416_grenada_act2.c9"
+const TXT_IDX_1303 := "event.script.event_416_grenada_act2.c10"
+const TXT_IDX_659 := "event.script.event_416_grenada_act2.c11"
+const TXT_IDX_1304 := "event.script.event_416_grenada_act2.c12"
+const TXT_IDX_1305 := "event.script.event_416_grenada_act2.c13"
+const TXT_IDX_1306 := "event.script.event_416_grenada_act2.c14"
+const TXT_IDX_1307 := "event.script.event_416_grenada_act2.c15"
 
 ## 原文字符串附录（供自检）
 
@@ -221,3 +221,19 @@ func _set_pro_american(c: CountryData) -> void:
 	c.set_tag("亲中", false)
 	c.set_tag("亲苏", false)
 	c.set_tag("亲美", true)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_416_grenada_act2.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_416",
+	"num": 416,
+	"priority": 41600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_416_grenada_act2.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_416_grenada_act2.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

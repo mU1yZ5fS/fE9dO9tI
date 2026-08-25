@@ -5,8 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "前资本家仍然十分危险！忘记过去他们如何组织反革命组织，如何与外国情报机构合作，如何组织叛乱是愚不可及的。近来他们还在那么做。他们太过危险。"
-const TXT_R1 := "几十年过去了。指望大多数前资产阶级还抱着老一套的心态是愚蠢的。现在他们只是勤劳的普通公民。是时候冷静下来了。"
+const TXT_R0 := "event.script.event_337_former_capitalists.c0"
+const TXT_R1 := "event.script.event_337_former_capitalists.c1"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -15,10 +15,10 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_PEOPLE_SUPPORT, -50)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_THOUGHT_FREEDOM, 30)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -40,3 +40,18 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_337_former_capitalists.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_337",
+	"num": 337,
+	"priority": 33700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_337_former_capitalists.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

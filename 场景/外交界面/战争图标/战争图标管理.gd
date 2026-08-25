@@ -184,8 +184,11 @@ func _angola_civil_active(w: WorldState) -> bool:
 	var c := w.get_country_by_legacy_index(123)
 	if c == null:
 		return false
+	# 原版结算（GameState.cs:3332）会把 123.cw 置 true 并在胜利分支残留，
+	# 该标记在结算后阻止内战重启（TimeScript.cs:656 的 !cw 前置），
+	# 因此“内战中”在战争结束后仍为 true —— 不能作为图标活跃依据，视为已平定直接返回。
 	if c.内战中:
-		return true
+		return false
 	if w.event_done_num(638):
 		# 安哥拉内战需要至少两方力量仍在介入（原版自动开战条件：一方>=900 且另两方>0）。
 		var active_sides := 0

@@ -4,12 +4,12 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：无自动触发点——原版由 DiploButtonScript.cs:4364-4366（this_type 外交按钮）手动 number_event=606。
 ## 差异：描述按 c21.Gosstroy==3 动态插入“法国和”句；proprc→亲中、Torg→对华贸易。
 
-const TXT_TITLE := "La\u00a0Patrie\u00a0ou\u00a0la\u00a0Mort"
-const TXT_OPT0 := "Eux\u00a0vaincrons！"
-const TXT_R0_A := "三国组建了一支统一调度的武装部队，代号“尼日尔河”的行动一触即发。在得到尼亚美的信息之后，三军从北，西和南方攻入了该国。布基纳法索人民军迅速开入了尼亚美，在尼日尔国内的萨瓦巴的帮助下顺利攻占了首都总统府和广播电台，号召全体人民起义，夺权，彻底革命。而"
-const TXT_R0_MID := "法国和"
-const TXT_R0_B := "美国拒绝武装介入这一问题。仅仅是谴责了三国的暴力行为，提供了除干涉外的一切帮助。\n随后，孔切被宣判有蓄意谋杀罪，叛国罪，种族灭绝罪而被判处死刑。非洲社会主义运动-萨瓦巴党正式成为了该国的领导力量。不久以后该党便出台了执政纲领“尼日尔的共产主义道路”。宣布要以马克思列宁主义的理论为指导，毛泽东思想为武器，建立巩固和保卫社会主义新尼日尔。"
-const TXT_R0_TAIL := "法国大使被列为最不受欢迎的人和特务从而驱逐出境，法国掌握的铀矿也被完全国有化，是尼日尔人的国有化。"
+const TXT_TITLE := "event.script.event_606_la_patrie_ou_la_mort.c0"
+const TXT_OPT0 := "event.script.event_606_la_patrie_ou_la_mort.c1"
+const TXT_R0_A := "event.script.event_606_la_patrie_ou_la_mort.c2"
+const TXT_R0_MID := "event.script.event_606_la_patrie_ou_la_mort.c3"
+const TXT_R0_B := "event.script.event_606_la_patrie_ou_la_mort.c4"
+const TXT_R0_TAIL := "event.script.event_606_la_patrie_ou_la_mort.c5"
 
 
 func execute(context: Dictionary) -> void:
@@ -21,12 +21,12 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			var text := TXT_R0_A
+			var text := tr(TXT_R0_A)
 			if france != null and france.government == GameConstants.Government.LIBERAL:
-				text += TXT_R0_MID
-			text += TXT_R0_B
+				text += tr(TXT_R0_MID)
+			text += tr(TXT_R0_B)
 			if france != null and france.government == GameConstants.Government.LIBERAL:
-				text += TXT_R0_TAIL
+				text += tr(TXT_R0_TAIL)
 			context["result_text"] = text
 			if niger != null:
 				niger.government = GameConstants.Government.SOCIALIST
@@ -130,3 +130,18 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_606_la_patrie_ou_la_mort.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_606",
+	"num": 606,
+	"priority": 60600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_606_la_patrie_ou_la_mort.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

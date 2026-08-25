@@ -1,46 +1,44 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event512.cs：锡德拉湾事件（4选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event512.cs：锡德拉湾事件（4选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_DESC_A := "1969年8月31日，穆阿迈尔·卡扎菲上校发动政变成为利比亚的国家领导人，之后推行敌视美国等西方国家的政策，1970年收回美国在利比亚的惠勒斯空军基地并赶走当中的美军，1972年又宣布废除前政府和美国所有的合作项目并把两国关系由大使级降格为代办级。1973年，第四次中东战争当中美国军事援助以色列，此事进一步激怒卡扎菲，他宣布利比亚以北的锡德拉湾是利比亚领海，外国船只和飞机不得进入，但此事并未得到以美国为首的西方国家认可，而只认可距离利比亚北部沿岸12海里的范围内才是利比亚领海。\n"
-const TXT_DESC_B := "同志，据我们外务人事的最新情报，美国将在锡德拉湾开展一次突袭，彻底打消卡扎菲的念头，我们应该做点什么？"
-const TXT_R0_0 := "我们组织了一场支持卡扎菲的游行，首都的大量群众举着横幅，高喊着“美帝的黑手滚出阿拉伯！”“刽子手的罪行罄竹难书！”的口号。我们和美国的关系显著恶化了，但卡扎菲上校感谢了革命的中国人民支持利比亚的斗争，并宣布和我们扩大合作关系。\n1981年8月18日，一支以尼米兹号与福莱斯特号两艘航空母舰为首的美军舰队进入锡德拉湾进行实弹演习。8月19日清晨，一架E-2空中预警机侦测出正有两架战斗机接近，故通知两架隶属于“黑王牌”战斗机编队的F-14雄猫式战斗机上前拦截，并发现是利比亚空军的苏-22战斗机。\n美国飞行员示意叫利比亚战机离开，可是利比亚飞行员不但不理会，还向美军战机发射一枚K-13导弹。驾驶座机代号快鹰102（FastEagle102）的F-14飞行员克利曼中校避开来袭的导弹后，发现自己正好对着另一架Su-22战机，于是趁Su-22战机的飞行员尝试脱离冲突空域之际，发射一枚响尾蛇导弹将其击落。至于原本朝克利曼开火的那架苏-22，也在同时被驾驶快鹰107的穆钦斯基上校以响尾蛇导弹击落。空战前后为时不过维持约一分钟时间。\n随后，利比亚公开谴责了美国对其开展的军事行动，并公开强调“锡德拉湾以北200海里是利比亚的合法领土”，“北纬32度30分是不可逾越的死亡线”。他还宣称会对“地中海内所有的美军基地展开报复”。随后他便前往亚的斯亚贝巴"
-const TXT_R0_1 := "，和他的好同志门格斯图"
-const TXT_R0_2 := "强烈谴责了美帝干涉。"
-const TXT_R1_0 := "我们支持了美国的行动，公开表达了对利比亚政府的不满。卡扎菲也很乐于谴责我们背叛第三世界的理论，他甚至在最近公开接见了达赖喇嘛十四世。但我们和美国的关系显著改善了。\n1981年8月18日，一支以尼米兹号与福莱斯特号两艘航空母舰为首的美军舰队进入锡德拉湾进行实弹演习。8月19日清晨，一架E-2空中预警机侦测出正有两架战斗机接近，故通知两架隶属于“黑王牌”战斗机编队的F-14雄猫式战斗机上前拦截，并发现是利比亚空军的苏-22战斗机。\n美国飞行员示意叫利比亚战机离开，可是利比亚飞行员不但不理会，还向美军战机发射一枚K-13导弹。驾驶座机代号快鹰102（FastEagle102）的F-14飞行员克利曼中校避开来袭的导弹后，发现自己正好对着另一架Su-22战机，于是趁Su-22战机的飞行员尝试脱离冲突空域之际，发射一枚响尾蛇导弹将其击落。至于原本朝克利曼开火的那架苏-22，也在同时被驾驶快鹰107的穆钦斯基上校以响尾蛇导弹击落。空战前后为时不过维持约一分钟时间。\n随后，利比亚公开谴责了美国对其开展的军事行动，并公开强调“锡德拉湾以北200海里是利比亚的合法领土”，“北纬32度30分是不可逾越的死亡线”。他还宣称会对“地中海内所有的美军基地展开报复”。随后他便前往亚的斯亚贝巴"
-const TXT_R1_1 := "，和他的好同志门格斯图"
-const TXT_R1_2 := "强烈谴责了美帝干涉。"
-const TXT_R2_0 := "我们决定一劳永逸的解决问题：彻底让这个独裁暴君滚蛋。\n"
-const TXT_R2_1 := "清晨，乌压压的机群飞向利比亚。他们的目标有六个：的黎波里的阿奇奇耶兵营，西迪比拉勒港口的突击队训练中心和机场；班加西的贝尼纳机场和民众国兵营，以及苏尔特中心区。空袭在深夜进行，借道卡拉奇起飞的30余架轰-6在短短的一小时内就将上述目标彻底摧毁。利比亚空军已完全瘫痪，卡扎菲本人和三个孩子也在空袭中丧生。随后，巴希尔·哈瓦迪上将所带领的军队乘乱接管了利比亚的各大城市，我们也认可了他的举动，并迅速承认了临时政府。而原先的左翼反对派：马克思主义的利比亚民族民主阵线和复兴主义的利比亚民族运动（由利比亚复兴党的前成员在其被卡扎菲解散后重组而成），也得以正式在这样的一场爬竿政变中确认自己的领导地位，二者对科学社会主义和阿拉伯民族主义仍然抱有浓厚的兴趣。从海外的流亡结束后，他们再度踏上了利比亚的土地，不是反叛者，而是新的革命领军人。首先二者在的黎波里签署了合并协定，双方将合并为统一的利比亚劳动党，这是一个在阿拉伯社会主义的基础上吸纳了前马克思主义者，意大利工人主义和复兴主义元素的左翼组织。乌姆兰·卜尔维斯则被选举为新政府的首脑，阿杜拉希姆·萨利赫博士出任劳动党第一书记。新政府在继续石油国有化的同时也在加大和社会主义国家间的合作，并邀请我们派遣农业专家和政治委员帮助建设新的社会主义利比亚。"
-const TXT_R2_2 := "清晨，乌压压的集群飞向利比亚。他们的目标有六个：的黎波里的阿奇奇耶兵营，西迪比拉勒港口的突击队训练中心和机场；班加西的贝尼纳机场和民众国兵营，以及苏尔特中心区。空袭在深夜进行，借道卡拉奇起飞的30余架轰-6在短短的一小时内就将上述目标彻底摧毁。利比亚空军已完全瘫痪，卡扎菲本人也在空袭中丧生。随后，一场起义爆发了。穆斯塔法·贾利勒组织了一场宫廷政变并组建了全国解放委员会。我们迅速承认了临时政府。很快，全国解放委员会正式改组为利比亚民主党，国王得以重新回到他那最忠诚的的黎波里，西方世界也乐于承认这样一个政权。毕竟新政府第一件事便是快速的去国有化，很快，西方石油公司和我们的石油企业也来到了这里，做着和革命前一样的事情……"
-const TXT_R2_3 := "清晨，乌压压的集群飞向利比亚。他们的目标有六个：的黎波里的阿奇奇耶兵营，西迪比拉勒港口的突击队训练中心和机场；班加西的贝尼纳机场和民众国兵营，以及苏尔特中心区。空袭在深夜进行，珊瑚海号航空母舰起飞了6架A-6，从英国空军基地远道而来的16架共计30架次的B-52轰炸机在短短的一小时内就将上述目标彻底摧毁。利比亚空军已完全瘫痪，卡扎菲本人也在空袭中丧生。随后，巴希尔·哈瓦迪上将所带领的军队乘乱接管了利比亚的各大城市，西方各国和我们认可了他的举动，并迅速承认了临时政府。很快，一个意料之外但情理之中的选项：伊德里斯一世登上了台面。国王宣布重新回到他那最忠诚的的黎波里，西方世界也乐于承认这样一个君主，毕竟他又老又任人摆布，很快，西方石油公司和我们的石油企业也来到了这里，做着和革命前一样的事情……"
-const TXT_R3_0 := "1981年8月18日，一支以尼米兹号与福莱斯特号两艘航空母舰为首的美军舰队进入锡德拉湾进行实弹演习。8月19日清晨，一架E-2空中预警机侦测出正有两架战斗机接近，故通知两架隶属于“黑王牌”战斗机编队的F-14雄猫式战斗机上前拦截，并发现是利比亚空军的苏-22战斗机。\n美国飞行员示意叫利比亚战机离开，可是利比亚飞行员不单不理会，还向美军战机发射一枚K-13导弹。驾驶座机代号快鹰102（FastEagle102）的F-14飞行员克利曼中校避开来袭的导弹后，发现自己正好对着另一架Su-22战机，于是趁Su-22战机的飞行员尝试脱离冲突空域之际，发射一枚响尾蛇导弹将其击落。至于原本朝克利曼开火的那架苏-22，也在同时被驾驶快鹰107的穆钦斯基上校以响尾蛇导弹击落。空战前后为时不过维持约一分钟时间。\n随后，利比亚公开谴责了美国对其开展的军事行动，并公开强调“锡德拉湾以北200海里是利比亚的合法领土”，“北纬32度30分是不可逾越的死亡线”。他还宣称会对“地中海内所有的美军基地展开报复”。随后他便前往亚的斯亚贝巴"
-const TXT_R3_1 := "，和他的好同志门格斯图"
-const TXT_R3_2 := "强烈谴责了美帝干涉。"
-const TXT_OPT0_DIS := "为什么？为什么！"
-const TXT_OPT1_DIS := "别和帝国主义者走这么近！"
-const TXT_OPT2_DIS := "我们不能这么做"
+const TXT_DESC_A := "event.script.event_512_gulf_of_sidra.c0"
+const TXT_DESC_B := "event.script.event_512_gulf_of_sidra.c1"
+const TXT_R0_0 := "event.script.event_512_gulf_of_sidra.c2"
+const TXT_R0_1 := "event.script.event_512_gulf_of_sidra.c3"
+const TXT_R0_2 := "event.script.event_512_gulf_of_sidra.c4"
+const TXT_R1_0 := "event.script.event_512_gulf_of_sidra.c5"
+const TXT_R1_1 := "event.script.event_512_gulf_of_sidra.c6"
+const TXT_R1_2 := "event.script.event_512_gulf_of_sidra.c7"
+const TXT_R2_0 := "event.script.event_512_gulf_of_sidra.c8"
+const TXT_R2_1 := "event.script.event_512_gulf_of_sidra.c9"
+const TXT_R2_2 := "event.script.event_512_gulf_of_sidra.c10"
+const TXT_R2_3 := "event.script.event_512_gulf_of_sidra.c11"
+const TXT_R3_0 := "event.script.event_512_gulf_of_sidra.c12"
+const TXT_R3_1 := "event.script.event_512_gulf_of_sidra.c13"
+const TXT_R3_2 := "event.script.event_512_gulf_of_sidra.c14"
+const TXT_OPT0_DIS := "event.script.event_512_gulf_of_sidra.c15"
+const TXT_OPT1_DIS := "event.script.event_512_gulf_of_sidra.c16"
+const TXT_OPT2_DIS := "event.script.event_512_gulf_of_sidra.c17"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	event_def.description = TXT_DESC_A + _leader_name() + TXT_DESC_B
+	event_def.description = tr(TXT_DESC_A) + _leader_name() + tr(TXT_DESC_B)
 	if ws.political_line < 3:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.political_line > 2 and _tag(51, "对华贸易"):
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if (_tag(1, "okb") or _tag(1, "seato")) and ws.influence_prc >= 600 and _cf(13, "cw") == 1:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	_enable(opt[3], event_def.options[3].text)
 
 func execute(context: Dictionary) -> void:
@@ -52,10 +50,10 @@ func execute(context: Dictionary) -> void:
 	var c57 := ws.get_country_by_legacy_index(57)
 	match opt:
 		0:
-			var text0 := TXT_R0_0
+			var text0 := tr(TXT_R0_0)
 			if _cf(41, "SubGosstroy") == 10:
-				text0 += TXT_R0_1
-			text0 += TXT_R0_2
+				text0 += tr(TXT_R0_1)
+			text0 += tr(TXT_R0_2)
 			context["result_text"] = text0
 			if c13 != null: c13.set_tag("对华贸易", true)
 			if c13 != null: c13.government = GameConstants.Government.AUTHORITARIAN
@@ -65,10 +63,10 @@ func execute(context: Dictionary) -> void:
 			ws.oil_prod += 150.0  # Event512.cs result0：利比亚扩大合作
 		1:
 			_add(8, -30)
-			var text1 := TXT_R1_0
+			var text1 := tr(TXT_R1_0)
 			if _cf(41, "SubGosstroy") == 10:
-				text1 += TXT_R1_1
-			text1 += TXT_R1_2
+				text1 += tr(TXT_R1_1)
+			text1 += tr(TXT_R1_2)
 			context["result_text"] = text1
 			if c13 != null: c13.set_tag("对华贸易", false)
 			if c13 != null: c13.government = GameConstants.Government.AUTHORITARIAN
@@ -82,11 +80,11 @@ func execute(context: Dictionary) -> void:
 			for c in ws.countries:
 				if c != null and c.puppet_of == 13:
 					c.puppet_of = GameConstants.LegacySlot.NONE
-			var text2 := TXT_R2_0
+			var text2 := tr(TXT_R2_0)
 			if c57 != null and c57.puppet_of == 13:
 				c57.puppet_of = GameConstants.LegacySlot.NONE
 			if ws.political_line < 3 and _tag(1, "okb"):
-				text2 += TXT_R2_1
+				text2 += tr(TXT_R2_1)
 				if c13 != null:
 					_leave_alliances(c13)
 					c13.government = GameConstants.Government.SOCIALIST
@@ -98,7 +96,7 @@ func execute(context: Dictionary) -> void:
 					c13.parts[0] = false
 				ws.influence_prc += 30
 			if ws.political_line >= 3 and _tag(1, "okb"):
-				text2 += TXT_R2_2
+				text2 += tr(TXT_R2_2)
 				if c13 != null:
 					_leave_alliances(c13)
 					c13.government = GameConstants.Government.LIBERAL
@@ -108,7 +106,7 @@ func execute(context: Dictionary) -> void:
 					if c13.parts.size() <= 0: c13.parts.resize(1)
 					c13.parts[0] = false
 			if _tag(1, "seato"):
-				text2 += TXT_R2_3
+				text2 += tr(TXT_R2_3)
 				if c13 != null:
 					_leave_alliances(c13)
 					c13.government = GameConstants.Government.AUTHORITARIAN
@@ -119,10 +117,10 @@ func execute(context: Dictionary) -> void:
 					c13.parts[0] = false
 			context["result_text"] = text2
 		3:
-			var text3 := TXT_R3_0
+			var text3 := tr(TXT_R3_0)
 			if _cf(41, "SubGosstroy") == 10:
-				text3 += TXT_R3_1
-			text3 += TXT_R3_2
+				text3 += tr(TXT_R3_1)
+			text3 += tr(TXT_R3_2)
 			context["result_text"] = text3
 			if c13 != null: c13.government = GameConstants.Government.AUTHORITARIAN
 			if c13 != null: c13.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
@@ -261,3 +259,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_512_gulf_of_sidra.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_512",
+	"num": 512,
+	"priority": 51200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_512_gulf_of_sidra.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1981.8.18"}, {"t": "ANY", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 15, "target": "13"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 10, "target": "13"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

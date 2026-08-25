@@ -4,7 +4,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：全目录无 this_num_event=453 / StartEvent(453) / event_done[453] 自动触发点；
 ##   按项目约定 trigger_conditions=[]（仅定义，待外部入口接入）。
 
-const TXT_R0 := "在我们的干预下，左翼民族地方武装、红旗共产党余部最终达成了和解，同缅甸共产党合并，他们使用我们的新支援的武器挫败了缅军的围剿，并新占领了一些根据地；同时，我们的特工也为学生运动送去了武器支持，并帮助他们将学生运动与工人运动联合起来；我们也秘密与处于地下活动的民主派建立了联系，为他们送去了援助。更多的反对派加入了缅共领导的民族民主团结阵线。军政府对局势的恶化很不高兴。"
+const TXT_R0 := "event.script.event_453_burma_new_situation.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -14,7 +14,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 
 
 
@@ -76,3 +76,18 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_453_burma_new_situation.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_453",
+	"num": 453,
+	"priority": 45300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_453_burma_new_situation.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -1,22 +1,18 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event517.cs：我爱祖国的蓝天（4选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event517.cs：我爱祖国的蓝天（4选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "我们的工业水平不支持我们做这些"
-const TXT_OPT1_DIS := "我们的工业水平不支持我们做这些"
-const TXT_OPT2_DIS := "我们的工业水平不支持我们做这些"
-const TXT_R0_A := "在中央军事委员会的特别会议上，会议决定开始研发新型的第三代战斗机，假想敌为美军的F-15和苏联的mig-29战斗机。中国航空研究院606所紧锣密鼓的为其研制了涡扇-10型轮扇发动机和配套的全权数字发动机控制系统。能提供惊人的89.17千牛顿力。更大的弹仓和更快的速度决定了它的优势。该型飞机被命名为歼10。在不久的将来，也许会彻底取代歼8在中国人民解放军空军中的地位，但这都是后话了。"
-const TXT_R0_B := "可惜的是，我们尊敬的"
-const TXT_R0_C := ""
-const TXT_R0_D := "同志因为身高原因不能够亲自试着驾驶而只能作为乘客体验这架飞机，试飞过程中他一言不发，看上去好像很不高兴。"
-const TXT_R0_E := "令人意外的是，"
-const TXT_R0_F := ""
-const TXT_R0_G := "同志也试着驾驶了这架飞机，“太快了！”是他唯一的评语。"
-const TXT_R1_A := "在中央军事委员会的特别会议上，会议决定要研究更新更好的战略轰炸机和战术轰炸机用来满足战略目标。早在七十年代早期就有了关于研发高速战术轰炸机的计划。该类飞机要具有良好的飞行性能、在现代防空兵器对抗下有较强的战场生存能力、在战术战役纵深内完成轰炸任务，达到欧洲“龙卷风”式战斗轰炸机的性能，不仅要能投掷常规航空炸弹，还要能发射制导武器与战术核武器。对此，南昌制造厂的强-6型歼击轰炸机赢得了竞标。而西安603研究所的轰10型超音速战略轰炸机得到了军委的青睐。早在上个十年西安军工厂就提出了一款取代轰-6的新设计方案，这个设计案也获得我国空军指战员的大力支持。设计案的需求为航程至少5000公里，高空速率最少2马赫，低空穿透速率至少1马赫，载弹量20公吨，并且能够在刚刚整备完成的前进机场操作。这个方案得到了我们的倾力支持，配套的空射导弹系统也被提上了日程。"
-const TXT_R2_A := "在中央军事委员会的特别会议上，会议决定开始全面升级空中力量，谋求赶上苏联，争取和美国的差距不超过五年。新式战斗机的假想敌为美军的F-15和苏联的mig-29战斗机。中国航空研究院606所紧锣密鼓的为其研制了涡扇-10型轮扇发动机和配套的全权数字发动机控制系统。能提供惊人的89.17千牛顿力。更大的弹仓和更快的速度决定了它的优势。该型飞机被命名为歼10。在不久的将来，也许会彻底取代歼8在中国人民解放军空军中的地位，但这都是后话了。\n早在七十年代早期就有了关于研发高速战术轰炸机的计划。该类飞机要具有良好的飞行性能、在现代防空兵器对抗下有较强的战场生存能力、在战术战役纵深内完成轰炸任务，达到欧洲“龙卷风”式战斗轰炸机的性能，不仅要能投掷常规航空炸弹，还要能发射制导武器与战术核武器。对此，南昌制造厂的强-6型歼击轰炸机赢得了竞标。而西安603研究所的轰10型超音速战略轰炸机得到了军委的青睐。早在上个十年西安军工厂就提出了一款取代轰-6的新设计方案，这个设计案也获得我国空军指战员的大力支持。设计案的需求为航程至少5000公里，高空速率最少2马赫，低空穿透速率至少1马赫，载弹量20公吨，并且能够在刚刚整备完成的前进机场操作。这个方案得到了我们的倾力支持，配套的空射导弹系统也被提上了日程。"
-const TXT_R3_A := "我们有歼八就够了，大不了再研究些空空导弹就行了嘛！"
+const TXT_OPT0_DIS := "event.script.event_517_blue_sky_of_homeland.c0"
+const TXT_OPT1_DIS := "event.script.event_517_blue_sky_of_homeland.c1"
+const TXT_OPT2_DIS := "event.script.event_517_blue_sky_of_homeland.c2"
+const TXT_R0_A := "event.script.event_517_blue_sky_of_homeland.c3"
+const TXT_R0_B := "event.script.event_517_blue_sky_of_homeland.c4"
+const TXT_R0_D := "event.script.event_517_blue_sky_of_homeland.c6"
+const TXT_R0_E := "event.script.event_517_blue_sky_of_homeland.c7"
+const TXT_R0_G := "event.script.event_517_blue_sky_of_homeland.c9"
+const TXT_R1_A := "event.script.event_517_blue_sky_of_homeland.c10"
+const TXT_R2_A := "event.script.event_517_blue_sky_of_homeland.c11"
+const TXT_R3_A := "event.script.event_517_blue_sky_of_homeland.c12"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -26,15 +22,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.industry >= 600:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.industry >= 600:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if ws.industry >= 800:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	_enable(opt[3], event_def.options[3].text)
 
 func execute(context: Dictionary) -> void:
@@ -43,44 +39,18 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			var text := TXT_R0_A
+			var text := tr(TXT_R0_A)
 			if ws.leader != null and ws.leader.name_first == 13 and ws.leader.name_last == 13:
-				text += TXT_R0_B + _leader_name() + TXT_R0_D
+				text += tr(TXT_R0_B) + _leader_name() + tr(TXT_R0_D)
 			else:
-				text += TXT_R0_E + _leader_name() + TXT_R0_G
+				text += tr(TXT_R0_E) + _leader_name() + tr(TXT_R0_G)
 			context["result_text"] = text
 			_add(8, -(50))
 			_add(22, 50)
 			_add(1, 50)
 			_add(3, 50)
 			ws.influence_prc += 20
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc[num] += "<color=red>| 新 式 歼 击 机 ：</color>| 军 力+0.3 ， 人 民 支 持 度+0.2 ， 预 算-0.2 ， 军 武 援 助 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式歼击机：|军力+0.3，人民支持度+0.2，预算-0.2，军武援助效果+1
-		1:
-			context["result_text"] = TXT_R1_A
-			_add(8, -(50))
-			_add(22, 50)
-			_add(1, 50)
-			_add(3, 50)
-			ws.influence_prc += 30
-			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc2[num2] += "<color=red>| 新 式 轰 炸 机 ：</color>| 军 力+0.5 ， 预 算-0.2 ，与 美 苏 关 系-0.2 ， 军 武 援 助 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式轰炸机：|军力+0.5，预算-0.2，与美苏关系-0.2，军武援助效果+1
-		2:
-			context["result_text"] = TXT_R2_A
-			_add(8, -(80))
-			_add(22, 80)
-			_add(1, 100)
-			_add(6, 5)
-			_add(3, 100)
-			_add(57, 50)
-			ws.influence_prc += 50
-			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: 
-			# 原版 int num3 = 50；old_modify_desc 辅助变量，跳过
-			# 原版 old_modify_desc3[num3] += "<color=red>| 新 式 歼 击 机 与 轰 炸 机 ：</color>| 军 力+1.0 ， 人 民 支 持 度+0.2 ， 预 算-0.3 ，与 美 苏 关 系-0.2 ， 军 武 援 助 效 果+2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式歼击机与轰炸机：|军力+1.0，人民支持度+0.2，预算-0.3，与美苏关系-0.2，军武援助效果+2
-		3:
-			context["result_text"] = TXT_R3_A
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 新 式 歼 击 机 ：</color>| 军 力+0.3 ， 人 民 支 持 度+0.2 ， 预 算-0.2 ， 军 武 援 助 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式歼击机：|军力+0.3，人民支持度+0.2，预算-0.2，军武援助效果+1 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(50)) _add(22, 50) _add(1, 50) _add(3, 50) ws.influence_prc += 30 # 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 新 式 轰 炸 机 ：</color>| 军 力+0.5 ， 预 算-0.2 ，与 美 苏 关 系-0.2 ， 军 武 援 助 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式轰炸机：|军力+0.5，预算-0.2，与美苏关系-0.2，军武援助效果+1 2: context["result_text"] = tr(TXT_R2_A) _add(8, -(80)) _add(22, 80) _add(1, 100) _add(6, 5) _add(3, 100) _add(57, 50) ws.influence_prc += 50 # 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num3 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc3[num3] += "<color=red>| 新 式 歼 击 机 与 轰 炸 机 ：</color>| 军 力+1.0 ， 人 民 支 持 度+0.2 ， 预 算-0.3 ，与 美 苏 关 系-0.2 ， 军 武 援 助 效 果+2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式歼击机与轰炸机：|军力+1.0，人民支持度+0.2，预算-0.3，与美苏关系-0.2，军武援助效果+2 3: context["result_text"] = tr(TXT_R3_A)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -215,3 +185,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_517_blue_sky_of_homeland.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_517",
+	"num": 517,
+	"priority": 51700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_517_blue_sky_of_homeland.gd",
+	"trigger": [{"t": "TECH_UNLOCKED", "v": 24}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

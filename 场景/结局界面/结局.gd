@@ -63,6 +63,17 @@ func _ready() -> void:
 		_refresh_dlc_buttons()
 		_show_panel(0, 0)
 
+	# 调试控制台 `ending <面板> <页>` 直达指定页面（看小标题/分段用）。
+	if GameManager.debug_ending_panel >= 0:
+		var dbg_panel: int = GameManager.debug_ending_panel
+		var dbg_page: int = GameManager.debug_ending_page
+		GameManager.debug_ending_panel = -1
+		GameManager.debug_ending_page = -1
+		if dbg_panel == -2:
+			_show_bad_ending()
+		elif dbg_panel >= 0 and dbg_panel <= 3 and dbg_page >= 0:
+			_show_panel(dbg_panel, dbg_page)
+
 
 ## 原作 GameState.data.ending_route>0 → BadEnding 分支；Godot current_ending_id 即 data.ending_route。
 func _show_bad_ending() -> void:
@@ -124,7 +135,8 @@ func _render_text(text: String) -> void:
 	# 统一压暗到 darkgreen / darkgoldenrod。
 	text = BbcTooltip.darken_bright_colors(text)
 	text = text.replace("|", "\n")
-	结局文案.text = text
+	# 整篇强制居中（原版 Text() 的 TextMesh 对齐即视觉居中；忽略自动行间距设置）。
+	结局文案.text = "[center]" + text + "[/center]"
 
 
 func _refresh_dlc_buttons() -> void:

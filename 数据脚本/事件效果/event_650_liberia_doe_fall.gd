@@ -12,24 +12,24 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT1_DIS := "我们没处插针"
-const TXT_OPT2_DIS := "美国没心思对私生子的生活指手画脚"
-const TXT_OPT3_DIS := "我想我们确实是活在更开明的时代"
+const TXT_OPT1_DIS := "event.script.event_650_liberia_doe_fall.c0"
+const TXT_OPT2_DIS := "event.script.event_650_liberia_doe_fall.c1"
+const TXT_OPT3_DIS := "event.script.event_650_liberia_doe_fall.c2"
 
-const TXT_R0 := "显然，人们没法指望并不懂得治国的多伊能在选举上做出什么名堂：靠着猖獗的欺诈与胁迫投票的手段，多伊成功以“等额选举”方式获得压倒性选票，最终实现连任。然而，如此露骨的政治欺诈显然不会使人满意——即便是作为多伊最大靠山的华盛顿当局也愈加不满于该国持续恶化的治安环境，并认为多伊政府难以担当其西非战略的大任。显然，如今的利比里亚总统已是众叛亲离，其垮台也不过时间问题……"
+const TXT_R0 := "event.script.event_650_liberia_doe_fall.c3"
 
-const TXT_R1_INTRO := "通过布基纳法索方的联系，我们很快便找到了足以接管当地局势的代理人。布莱斯·孔波雷亲自向"
-const TXT_R1_TAYLOR := "引荐了正协助其改组布基纳法索安全部队，以及训练利比里亚流亡者队伍的查尔斯·泰勒。泰勒曾在利比亚接受反帝国主义训练，并以对利比里亚托尔伯特-多伊两代政权的不妥协斗争态度而著称。这位美籍利比里亚人在美国的黑人社区内也是打出了名头，凑齐了各路人脉资源。足以实现多伊倒台后该国的社会和解。靠着我们的人力与资金支持，泰勒很快便将自己的势力打入了利比里亚，顺势买通了该国数一数二的军官普林斯·约翰逊，接下来便是一场可被视为迷你内战的政变。曾不可一世的多伊在混战中被约翰逊逮捕，并最终在荧幕上以“以牙还牙”的方式被处决。由此开启了利比里亚全国爱国阵线的统治。然而，该政权似乎并没有如我们所料将带来稳定——泰勒与约翰逊间已开始就领导权问题争论不休，国内部族军阀也蠢蠢欲动，且新政权毫无结束管制的心思，甚至也开始同军阀那般养起私兵。看起来事情可不会就此结束。"
+const TXT_R1_INTRO := "event.script.event_650_liberia_doe_fall.c4"
+const TXT_R1_TAYLOR := "event.script.event_650_liberia_doe_fall.c5"
 
-const TXT_R1_QUIWONKPA := "通过布基纳法索方的联系，我们很快便找到了足以接管当地局势的代理人。即曾与多伊共事的人民救赎委员会前二把手托马斯·奎翁巴。虽说此人并无明显的政治倾向，但奎翁巴曾作为人民救赎委员会内“良心”的口碑足够让我们为其寄予期望。他在1983年被免去军事领导职务后便被迫流亡，如今正四处物色盟友寻求推翻多伊统治。考虑到仅靠奎翁巴一人单打独斗绝无可能推翻多伊政权，我们决定为其物色更多的盟友，并为奎翁巴训练了一只足够精干的突击队对多伊发起斩首行动。\n"
+const TXT_R1_QUIWONKPA := "event.script.event_650_liberia_doe_fall.c6"
 
-const TXT_R1_LEFT := "与此同时，我们还联系了曾在推翻托尔伯特政权时活跃的左翼人士（如阿莫斯·索耶律师的利比里亚人民党）和在政府内布有暗线的人民团结党领袖加布里埃尔·马修斯等人进行内外策应。终于发起了场可被视为迷你内战的政变。曾不可一世的多伊在混战中被我军逮捕，并最终在革命法庭前接受绞刑伏诛。考虑到利比里亚已因多伊的长期恶政残破不堪，急需休养生息。新政府很快便选择了拥抱民族和解政策，并试图靠加入非洲一体化引入外来活水的方式迅速稳定国内政治经济局势。而作为交换，该国自然得回顾若干历史问题，并承认自身在恩克鲁玛-博瓦尼争论时“错得离谱”，接下来便是对加纳、几内亚等国的经验按图索骥。曾作为蒙罗维亚派头面旗手的政权就此洗心革面，接纳了社会主义与泛非主义之梦。"
+const TXT_R1_LEFT := "event.script.event_650_liberia_doe_fall.c7"
 
-const TXT_R1_PROCHINA := "与此同时，我们还联系了利比里亚国内幸存的各派反建制势力和作为政府内投诚者的奇亚·奇波等人进行内外策应。终于发起了场可被视为迷你内战的政变。曾不可一世的多伊在混战中被我军逮捕，并最终在临时法庭前接受绞刑伏诛。考虑到利比里亚已因多伊的长期恶政残破不堪，急需休养生息。新政府很快便选择了拥抱民族和解政策，并试图靠向中国一边倒引入外来活水的方式迅速稳定国内政治经济局势。西非的橱窗就此染上了我们的颜色。"
+const TXT_R1_PROCHINA := "event.script.event_650_liberia_doe_fall.c8"
 
-const TXT_R2 := "我们决定将多伊政权的劣迹直接上报华盛顿，并将多伊许诺将在1985年时实现民主转型的说法对时任美国总统沃尔特·蒙代尔故事重提。最终，蒙代尔听取了我们的建议，决定以威逼多伊下台的方式实现该国领导层更替，并最终稳定局势。也就在中情局与美国舰队的威胁下，多伊不得不宣布退出大选，并以此秘密交换的接受政治庇护与不被新政权清算的许可。随后的选举则落入曾在托尔伯特时期参议院入主参议院的利比里亚行动党与其党魁杰克逊·多伊手中，看起来该国还是靠着兜兜转转回到了熟悉的民主内……兴许如此。"
+const TXT_R2 := "event.script.event_650_liberia_doe_fall.c9"
 
-const TXT_R3 := "我们的外交人员用简单易懂的方式向多伊表达了合作意愿：即只要多伊能够遵循东方大国发展世袭制度的智慧，那既能摆脱繁琐且需要周期性伪造民意的总统制，又能充分的实现国家上下一心，全体竭诚共进。与此同时，我们还为多伊举了扎伊尔“伟大领袖”黑色江山永不倒，民族情谊万年牢的案例，以及作为“实物参照”的门格斯图大元帅：后者更是对多伊晓之以情，动之以理，以非洲之角一代雄主的伟岸气魄让其心服口服。不久后，多伊便开始参照我们的蓝图设计“有利比里亚特色的社会主义”：可考虑到利比里亚长期受资本主义荼毒的土地实在没法立即供养如此先进的思想，多伊直截了当的将除克兰族黑人嫡系控制的机构纷纷外包给了我们（这事实上意味着彻底驱逐了美国等老牌列强在当地的全部经营，前者可不会高兴的），并要求中方人员以相关指导思想为纲首先向利比里亚精英传授江山代代传的好道理。由此以先觉带动后觉，最终实现共同觉醒。"
+const TXT_R3 := "event.script.event_650_liberia_doe_fall.c10"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -47,13 +47,13 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if burkina != null and burkina.has_tag("亲中"):
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	var usa_leader3 := world.empires.size() > EmpireData.USA and world.empires[EmpireData.USA] != null \
 			and world.empires[EmpireData.USA].current_leader == 3
 	if china != null and china.government == GameConstants.Government.LIBERAL and usa != null and usa.development == 1 and usa_leader3:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	var cond := liberia != null and liberia.has_tag("对华贸易") \
 			and china != null and china.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
 			and ethiopia != null and ethiopia.sub_government == GameConstants.SubGovernment.FEUDAL_SOCIALIST \
@@ -61,7 +61,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if cond:
 		_enable(opt[3], event_def.options[3].text)
 	else:
-		_disable(opt[3], TXT_OPT3_DIS)
+		_disable(opt[3], tr(TXT_OPT3_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -72,7 +72,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -30)
@@ -88,11 +88,11 @@ func execute(context: Dictionary) -> void:
 				_add_power(EmpireData.USA, -5)
 				_add_relation(EmpireData.USA, -200)
 				ws.influence_prc += 10
-				context["result_text"] = TXT_R1_INTRO + tname + TXT_R1_TAYLOR
+				context["result_text"] = tr(TXT_R1_INTRO) + tname + tr(TXT_R1_TAYLOR)
 			else:
-				var text := TXT_R1_QUIWONKPA
+				var text := tr(TXT_R1_QUIWONKPA)
 				if int(ws.completed_event_ids.get("event_500", 0)) == 0:
-					text += TXT_R1_LEFT
+					text += tr(TXT_R1_LEFT)
 					if liberia != null:
 						liberia.government = GameConstants.Government.SOCIALIST
 						liberia.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
@@ -104,7 +104,7 @@ func execute(context: Dictionary) -> void:
 					_add_relation(EmpireData.USA, -300)
 					ws.influence_prc += 25
 				else:
-					text += TXT_R1_PROCHINA
+					text += tr(TXT_R1_PROCHINA)
 					if liberia != null:
 						liberia.government = GameConstants.Government.REFORMIST
 						liberia.sub_government = GameConstants.SubGovernment.PRAGMATIST
@@ -128,7 +128,7 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 10
 			_add(W.I_AGENTS, -40)
 			_add(W.I_DIPLO, -30)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			if liberia != null:
 				liberia.government = GameConstants.Government.AUTHORITARIAN
@@ -143,7 +143,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -30)
 			_add(W.I_ARMY, -30)
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 func _leader_name() -> String:
@@ -165,3 +165,19 @@ func _join_alliances(c: CountryData) -> void:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_650_liberia_doe_fall.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_650",
+	"num": 650,
+	"priority": 65000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_650_liberia_doe_fall.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1985.10.1"}, {"t": "PREV_EVENT_DONE", "ref": "event_696"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

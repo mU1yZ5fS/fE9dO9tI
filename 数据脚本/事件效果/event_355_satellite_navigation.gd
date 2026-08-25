@@ -5,12 +5,12 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "开始发射北斗系统！"
-const TXT_OPT0_DIS := "没有这么做的资源。"
-const TXT_OPT1 := "这一系统不在优先考虑范围内。或许过十年再说吧。"
+const TXT_OPT0 := "event.script.event_355_satellite_navigation.c0"
+const TXT_OPT0_DIS := "event.script.event_355_satellite_navigation.c1"
+const TXT_OPT1 := "event.script.event_355_satellite_navigation.c2"
 
-const TXT_R0 := "不久，构成中国自己的卫星导航系统的第一颗卫星就发射了。因此，我国成为第二个部署这一系统的国家，超越了以前在技术上领先我们的苏联。"
-const TXT_R1 := "部署该系统被认为过于昂贵且冒险，因此该项目的实施推迟了几个五年计划。"
+const TXT_R0 := "event.script.event_355_satellite_navigation.c3"
+const TXT_R1 := "event.script.event_355_satellite_navigation.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -19,10 +19,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if _budget_reserve(world) >= 40:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
+	_enable(opt[1], tr(TXT_OPT1))
 
 
 func execute(context: Dictionary) -> void:
@@ -36,9 +36,9 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_INDUSTRY, 100)
 			_add(W.I_ARMY, 200)
 			_add(W.I_DIPLO, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -87,3 +87,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_355_satellite_navigation.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_355",
+	"num": 355,
+	"priority": 35500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_355_satellite_navigation.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1979.6.1"}, {"t": "TECH_UNLOCKED", "v": 28}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_354"}]}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

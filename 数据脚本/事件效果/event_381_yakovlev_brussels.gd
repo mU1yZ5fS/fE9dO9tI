@@ -7,10 +7,10 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 标题按 c87.isNATO 动态改写；c7/c17 政体与 c17.parts[0] 逐项移植；
 ##  - 原版 iron_and_blood 成就 Set(132) 已接 Achievements。
 
-const TXT_TITLE_NATO := "从里斯本到符拉迪沃斯托克"
-const TXT_TITLE_OTHER := "从波恩到符拉迪沃斯托克"
-const TXT_R0 := "又一件值得注意的大事——雅科夫列夫在结束自己的布鲁塞尔演讲后，便前往了东柏林城区。随后，便是又一场史无前例的胜利——苏联与美国领导人共同宣布“冷战已经彻底成为了历史名词”，因此，作为冷战主要象征的柏林墙“必须被摧毁，德国人民必须再度统一”。\n根据统一方案的要求，德国将被统一为拥有单一军队并实现政治自由的邦联国家，但仍沿用不同的货币、经济体制与政府（尽管已经建立了一个用以讨论全德事务的合议主席团）。\n最终，各方签署了《有关德国统一的法律文件》。参与者分别为东西德国各自的领导人——民主德国国务委员会主席埃里希·昂纳克，联邦德国议长赫尔穆特·科尔，以及以反希特勒联盟的胜者身份参与会议的美苏领导人。"
-const TXT_NAME_GERMANY := "统一德国"
+const TXT_TITLE_NATO := "event.script.event_381_yakovlev_brussels.c0"
+const TXT_TITLE_OTHER := "event.script.event_381_yakovlev_brussels.c1"
+const TXT_R0 := "event.script.event_381_yakovlev_brussels.c2"
+const TXT_NAME_GERMANY := "event.script.event_381_yakovlev_brussels.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -19,9 +19,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var portugal := world.get_country_by_legacy_index(87)
 	if portugal != null and portugal.has_tag("nato"):
-		event_def.title = TXT_TITLE_NATO
+		event_def.title = tr(TXT_TITLE_NATO)
 	else:
-		event_def.title = TXT_TITLE_OTHER
+		event_def.title = tr(TXT_TITLE_OTHER)
 	if event_def.options.size() >= 1:
 		_enable(event_def.options[0], event_def.options[0].text)
 
@@ -31,10 +31,10 @@ func execute(context: Dictionary) -> void:
 		return
 	var portugal := ws.get_country_by_legacy_index(87)
 	if portugal != null and portugal.has_tag("nato"):
-		context["result_title"] = TXT_TITLE_NATO
+		context["result_title"] = tr(TXT_TITLE_NATO)
 	else:
-		context["result_title"] = TXT_TITLE_OTHER
-	context["result_text"] = TXT_R0
+		context["result_title"] = tr(TXT_TITLE_OTHER)
+	context["result_text"] = tr(TXT_R0)
 	for c in ws.countries:
 		if c != null and c.has_tag("sev"):
 			c.set_tag("sev", false)
@@ -50,10 +50,25 @@ func execute(context: Dictionary) -> void:
 		if germany.parts.size() < 1:
 			germany.parts.resize(1)
 		germany.parts[0] = true
-		germany.name = TXT_NAME_GERMANY
-		germany.chinese_name = TXT_NAME_GERMANY
+		germany.name = tr(TXT_NAME_GERMANY)
+		germany.chinese_name = tr(TXT_NAME_GERMANY)
 		germany.set_tag("亲美", false)
 		germany.government = GameConstants.Government.REFORMIST
 		germany.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_381_yakovlev_brussels.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_381",
+	"num": 381,
+	"priority": 38100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_381_yakovlev_brussels.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

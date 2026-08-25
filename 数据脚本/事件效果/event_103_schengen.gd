@@ -1,13 +1,8 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event103.cs：申根/马德里协定（联盟签证空间，三选项）。
-## 触发：TimeScript.cs:10980-10986 ——
-##   (月>=7 且 年>=1985 或 年>=1986) && (c0.isEU || (c21.isSocEU && !c0.isEU))
-##   && c1.econ。
-## 差异：标题/描述/选项0 文案按 c0.isEU 动态改写（prepare）；
-##   sovalliance/usalliance → 苏联盟友/美国盟友 标签。
+## 原作 Event103.cs：申根/马德里协定（联盟签证空间，三选项）。 ## 触发：TimeScript.cs:10980-10986 —— ##   (月>=7 且 年>=1985 或 年>=1986) && (c0.isEU (c21.isSocEU && !c0.isEU)) ##   && c1.econ。 ## 差异：标题/描述/选项0 文案按 c0.isEU 动态改写（prepare）； ##   sovalliance/usalliance → 苏联盟友/美国盟友 标签。
 
-const TXT_R := "我们联盟国家之间的会议在上海举行，结束时签署了所谓的上海协定，这意味着创建一个我们联盟国家之间的简化的护照和签证控制空间的前景，并完全排斥外国护照的需要。协议逐渐开始生效，人民满意了，但也开始被外国文化冲昏头脑，对我们的国家原则产生了怀疑。现在，罪犯和持不同政见者更容易逃离中国，走私者也更容易把他们的货物走私到我们这里。但我们的盟友国家之间的联系已经进一步加强，旅游业的利润将补充我们的预算。"
+const TXT_R := "event.script.event_103_schengen.c0"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -53,7 +48,7 @@ func execute(context: Dictionary) -> void:
 				if c == null or not c.has_tag("okb"):
 					continue
 				_apply_alliance_country(c)
-			context["result_text"] = TXT_R
+			context["result_text"] = tr(TXT_R)
 		1:
 			_add(W.I_THOUGHT_FREEDOM, 50)
 			_add(W.I_PEOPLE_SUPPORT, 80)
@@ -64,13 +59,12 @@ func execute(context: Dictionary) -> void:
 				if c == null or not (c.has_tag("okb") or c.has_tag("econ")):
 					continue
 				_apply_alliance_country(c)
-			context["result_text"] = TXT_R
+			context["result_text"] = tr(TXT_R)
 		2:
-			context["result_text"] = "什么都没发生"
+			context["result_text"] = tr("event.script.event_103_schengen.i0")
 
 
-## Event103.cs result0/1 共同国家循环：soc_stab+=200、budget-=5；
-## 无倾向者转亲中（-20）；有美苏盟友者清盟友（-30）。
+## Event103.cs result0/1 共同国家循环：soc_stab+=200、budget-=5； ## 无倾向者转亲中（-20）；有美苏盟友者清盟友（-30）。
 func _apply_alliance_country(c: CountryData) -> void:
 	c.social_stability += 200
 	if d.size() > W.I_BUDGET:
@@ -87,3 +81,16 @@ func _apply_alliance_country(c: CountryData) -> void:
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_103_schengen.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_103",
+	"num": 103,
+	"priority": 11380,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_103_schengen.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1985.7.1"}, {"t": "ANY", "c": [{"t": "COUNTRY_HAS_TAG", "key": "eu", "target": "0"}, {"t": "ALL", "c": [{"t": "COUNTRY_HAS_TAG", "key": "soc_eu", "target": "21"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "eu", "target": "0"}]}]}]}, {"t": "COUNTRY_HAS_TAG", "key": "econ", "target": "1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

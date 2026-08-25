@@ -8,7 +8,7 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - result 3/4/5 为不可达“测试”分支（kolvo_variant=3），跳过。
 ##  - <color> 标签去除（UI 未开 bbcode）；字符间空格排版不保留；show_notification=false。
 
-const TXT_RESULT := "显然，改革永远在路上。建设现代国家的事业，仍任重而道远……"
+const TXT_RESULT := "event.script.event_1000_advisors.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -17,4 +17,19 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	# Event1000.cs result 0/1/2：无任何数值效果
 	if opt == 0 or opt == 1 or opt == 2:
-		context["result_text"] = TXT_RESULT
+		context["result_text"] = tr(TXT_RESULT)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_1000_advisors.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_1000",
+	"num": 1000,
+	"priority": 10000,
+	"notify": false,
+	"trigger": [{"t": "RESOURCE_AT_LEAST", "key": "party_system", "v": 8}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

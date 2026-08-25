@@ -10,14 +10,14 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0_DIS := "我们没必要染黑自己的手"
-const TXT_OPT1_DIS := "真的要支持外国代理人摘桃子吗？"
+const TXT_OPT0_DIS := "event.script.event_651_sierra_leone_revolt.c0"
+const TXT_OPT1_DIS := "event.script.event_651_sierra_leone_revolt.c1"
 
-const TXT_R0 := "我们坚决控诉塞拉利昂反对派不识大体并有意识充当外国势力侵略走卒的行为，并向政府送去了援助。斯蒂文森对此表示相当感动，并顺势同中国建立了合作伙伴关系。虽说塞拉利昂的暴乱迅速演变为了双边无差别攻击的大规模流血事件，可斯蒂文森还是能够背靠我国援助，以及自己同军方的关系牢牢掌握大局。国际社会对此则表示“高度关切”并附上谴责——当然也就到此为止了。"
+const TXT_R0 := "event.script.event_651_sierra_leone_revolt.c2"
 
-const TXT_R1 := "我们坚决控诉塞拉利昂政府的暴行并积极声援反对派，这最终导致塞拉利昂政府决定同我国断交并押注苏联——前提是在他们还能保住政权的情况下。得到了中国支持的人民党得以将暴乱升级为全国范围的起义，塞拉利昂完全陷入了无差别屠杀的血海……我们需要赶在一切无法挽回前尽快行动！"
+const TXT_R1 := "event.script.event_651_sierra_leone_revolt.c3"
 
-const TXT_R2 := "塞拉利昂的暴乱迅速演变为了双边无差别攻击的大规模流血事件，可斯蒂文森还是能够背靠自己同军方的关系牢牢掌握大局。国际社会对此则表示“高度关切”并附上谴责——当然也就到此为止了。"
+const TXT_R2 := "event.script.event_651_sierra_leone_revolt.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -30,11 +30,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line != 0 and line != 4:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if line >= 3:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -54,7 +54,7 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 15
 			_add(W.I_DIPLO, 15)
 			_add_relation(EmpireData.USA, -100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_AGENTS, -30)
 			_add(W.I_ARMY, -40)
@@ -68,9 +68,25 @@ func execute(context: Dictionary) -> void:
 			if ws.wars.size() > 77 and ws.wars[77] != null:
 				ws.wars[77].name_war = "塞拉利昂内战"
 				ws.wars[77].fortnight_max = 40
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_651_sierra_leone_revolt.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_651",
+	"num": 651,
+	"priority": 65100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_651_sierra_leone_revolt.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1982.5.1"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

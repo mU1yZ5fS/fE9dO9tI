@@ -34,7 +34,7 @@ func _set_thai_govt() -> void:
 func _opt_ignore(context: Dictionary) -> void:
 	if ws.empires.size() > 0 and ws.empires[0] != null:
 		ws.empires[0].power = clampi(ws.empires[0].power + 5, 0, 1000)
-	context["result_text"] = "在10月6号，警察部队和右翼民兵最终控制了大学，学生们虽然愿意投降，但是随后政府军还是开始了屠杀，据被引用最多的报道，至少有100名学生死于屠杀之中。同一天晚上，军方迫使总理普拉莫吉辞职。在国王的支持下，军方组建了军政府，结束了维持了三年的民主政治。泰国又一次进入了专制的时代，只有北方的游击队活动区域仍在泰国共产党的控制之下。"
+	context["result_text"] = tr("event.script.event_017_thailand_instability.i0")
 
 
 # 选项1：派遣武装的泰国共产党部队（Event17.cs result 1：启动战争2「泰国内战」）
@@ -59,7 +59,7 @@ func _opt_uprising(context: Dictionary) -> void:
 		if thai != null and thai.stab == 1:
 			war.infl1 += 50
 			war.infl2 -= 50
-	context["result_text"] = "由于我们的支持和特工组织的努力，泰共和社会党等左派政党以及民主派的各个政党建立了联系，并牵头组织了进步、爱国和民主力量统一阵线。与此同时，一批中国制式武器流通到了罢工工人和抗议学生那里，他们在泰共地下党员的领导下同阵线内其他势力联合起来，击退了政府的镇压队伍。全曼谷以及泰国多个城市都爆发了类似的起义，并随之开始了大规模的交火，并以军队和警察的失败告终。而普拉莫吉总理被军方以“动摇国体，破坏首都治安”而逮捕的消息震惊了全国，大量的学生，工运人士、工人以及其他左派政党和民主派政党聚集在泰国共产党领导的进步、爱国和民主力量统一阵线下，同保守派势力对战。泰国共产党领导的泰国人民解放军在我们和越南的大规模援助下趁此机会开始向全国展开全面攻势。"
+	context["result_text"] = tr("event.script.event_017_thailand_instability.i1")
 
 
 # 选项2：谴责泰国的暴行（Event17.cs result 2）
@@ -70,4 +70,18 @@ func _opt_condemn(context: Dictionary) -> void:
 		ws.empires[0].relations -= 20
 		ws.empires[0].power = clampi(ws.empires[0].power + 5, 0, 1000)
 	ws.influence_prc += 10
-	context["result_text"] = "在10月6号，警察部队和右翼民兵最终控制了大学，学生们虽然愿意投降，但是随后政府军还是开始了屠杀，据被引用最多的报道，至少有100名学生死于屠杀之中。同一天晚上，军方迫使总理普拉莫吉辞职。在国王的支持下，军方组建了军政府，结束了三年的民主政治。泰国又一次进入了专制的时代，只有北方的游击队活动区域仍在泰国共产党的控制之下。我们虽然愿意支持他们并谴责军政府的残暴，但我们都明白这已经毫无意义了。"
+	context["result_text"] = tr("event.script.event_017_thailand_instability.i2")
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_017_thailand_instability.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "thailand_instability",
+	"num": 17,
+	"notify": false,
+	"trigger": [{"t": "DATE_AFTER", "key": "1976.10"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 40}, {"t": "RESOURCE_AT_LEAST", "key": "army", "v": 30}, {"t": "RESOURCE_EQUALS", "key": "data_41", "v": 100}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

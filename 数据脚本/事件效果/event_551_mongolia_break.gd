@@ -4,13 +4,13 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventsDLC02/ReqEventForDLC02.cs:57-59 —— 复杂条件见 evaluate()。
 ## 差异：ILoveSuckCocks→_china_parts_change()；SOV_PRC_PartiesConnection→I_COMMUNICATIONS。
 
-const TXT_OPT0_DIS := "我们怎么能让煮熟的鸭子飞了？！"
-const TXT_OPT1_DIS := "蒙古特别行政区？这就是给苏联人渗透开方便之门！"
-const TXT_OPT2_DIS := "我们绝不能使用包办代替的做法！"
-const TXT_R0 := "今天，中国与蒙古领导人共同终止了所谓《中蒙联合条约》，从而结束了短暂的中蒙联合时期：此后，蒙古将以独立主权国家的形式与中国建立外交关系与开展合作——可考虑到蒙古本身的缓冲区性质，这种合作的规模注定有限。党与人民对此感到疑惑与愤怒，毕竟，无数为合并计划准备的人力物力都白花了，竹篮打水一场空。有反对派已将现任领导层的行径同宋真宗与宋高宗相比——前者曾在对敌优势时签署了辱国不平等条约，后者则更是在割地赔款后选择对北方政权称臣......苏联则为自己对华扩张窗口的再度开放感到满意。"
-const TXT_R1 := "中国领导人称，《中蒙联合条约》的法律效力高于新推行的《区域自治法》，并基于前者撰写了独立并行的法律文本《蒙古特别行政区基本法》。事实上在国内推行了混合式的区域管理制度：即对中国本部地区实行单一制，对蒙古区域则允许其自建民族联邦，实行“更高级民族自治形式”。当然，这不过是某种拆东墙补西墙：蒙古人确实对我们的慷慨表示满意，并决心以千万倍的努力回报我们的工作。但是仅在人口规模有限的蒙古实施特殊政策必然将导致其他民族区域，乃至中国内地本身的反弹与不满。有人甚至已经发明了“七万万小于两千万”的口号，愤怒地要求我们要么取消对蒙古的单独优待政策，要么则将蒙古模式在全国推广，实现全国区域间的完全平等。"
-const TXT_R2 := "人力资源部与国家安全局开始履行其既有职责——收买能收买的，分化能分化的，排挤能排挤的。通过灵活运用经济与信息手段，乃至安插来自内蒙古地区的党员。我们的情报机构成功分化了原蒙古党政体系，将主张同中国实现深度一体化合作关系的亲华派转为了蒙古人民革命党主流，并通过一系列经济扶持政策稳定了民间民心。改组后的蒙古领导层没多久便自愿要求修订《中蒙联合条约》，并事实上承认了民族区域自治政策。随后举行的全蒙公投则以97.2%的高票批准了修改——我们在内蒙古的长期经营发挥了大功，他们依靠自身的体量与国家支持跨界放牧的政策进入外蒙古，并成为了我党线人。随后，我国正式启动了在外蒙古引入民族区域自治制度的历史进程。当然，如此剧烈的变化必然多少会导致人心浮动。超级大国则已开始就表决环节流程的合理性问题添油加醋，竭力否认《中蒙新联合条约》内的合法性：其试图将蒙古从我国境内萃取出的贼心不死......"
-const TXT_R3 := "最终，有引入我国民族区域自治制度与地方管理制度的提案被全国人大所否决。相关的修宪计划也胎死腹中——人民对我们一贯坚持民族自决原则的革新态度表示满意。中国仍走在巩固与深化分权体系的路上，走着瞧罢......"
+const TXT_OPT0_DIS := "event.script.event_551_mongolia_break.c0"
+const TXT_OPT1_DIS := "event.script.event_551_mongolia_break.c1"
+const TXT_OPT2_DIS := "event.script.event_551_mongolia_break.c2"
+const TXT_R0 := "event.script.event_551_mongolia_break.c3"
+const TXT_R1 := "event.script.event_551_mongolia_break.c4"
+const TXT_R2 := "event.script.event_551_mongolia_break.c5"
+const TXT_R3 := "event.script.event_551_mongolia_break.c6"
 
 
 func evaluate(world: WorldState) -> bool:
@@ -32,15 +32,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line == 4:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if line > 1:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if line < 4:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -71,7 +71,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USSR, 500)
 			_add_power(EmpireData.USSR, 100)
 			_add(W.I_DIPLO, -100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -80)
 			_add(W.I_INDUSTRY, -50)
@@ -84,7 +84,7 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc -= 5
 			_add_relation(EmpireData.USSR, 500)
 			_add(W.I_DIPLO, -100)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -80)
@@ -96,7 +96,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -100)
 			_add_relation(EmpireData.USSR, -200)
 			_add(W.I_DIPLO, 50)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			_set_data(W.I_TERRITORY, 21)
 			_add(W.I_PARTY_SUPPORT, 20)
@@ -106,7 +106,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, 100)
 			_add(W.I_DIPLO, -20)
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 func _china_parts_change(c1: CountryData) -> void:
@@ -153,3 +153,19 @@ func _clear_parts_range(c1: CountryData) -> void:
 		if i < 7 or i > 9:
 			if i < c1.parts.size():
 				c1.parts[i] = false
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_551_mongolia_break.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_551",
+	"num": 551,
+	"priority": 55100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_551_mongolia_break.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_551_mongolia_break.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

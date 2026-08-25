@@ -6,16 +6,16 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - LeaveAlliances→_leave_alliances；Torg→对华贸易；empires[1].leaders[6]→leaders[6]；
 ##  - 原版 num/flag/flag2 死代码跳过；result_num 2 无额外效果。
 
-const TXT_IDX_1438 := "社会主义联盟的勃兴"
-const TXT_IDX_1440 := "支持社会主义联盟的建立，并与之签订贸易协定"
-const TXT_IDX_1441 := "谴责这一联盟在意识形态上的短视"
-const TXT_IDX_1442 := "静观其变"
-const TXT_IDX_1446 := "上述各国均退出了北约组织。"
-const TXT_IDX_1447 := "中国外交部祝贺欧洲各国打造了全新的联盟组织形式，并考虑与其确立新的贸易合作关系。\n{2}\n{1}"
-const TXT_IDX_1448 := "中国外交部谴责这一新联盟的“意识形态短视”，并认为“这将在其他政治力量参与其中时，导致欧洲局势不稳”。\n{2}\n{1}"
-const TXT_IDX_1449 := "我想知道这样的联盟将如何告终......\n{2}\n{1}"
-const TXT_APPEND_PT := "此外，在葡萄牙，不久前刚刚上台的社会党与联合人民联盟组成社会主义联合政府也表示，决定申请加入社会主义联盟。鉴于其最近宣布的政策和道路与社会主义联盟的理念十分贴近，申请很快就会通过。"
-const TXT_APPEND_UK := "刚刚赢得大选的英国工党政府看到了新兴社会主义联盟潜力，为更好贯彻“重建福利国家”的政策，主动申请加入社会主义联盟以寻求经济帮助。"
+const TXT_IDX_1438 := "event.script.event_430_socialist_union_rising.c0"
+const TXT_IDX_1440 := "event.script.event_430_socialist_union_rising.c1"
+const TXT_IDX_1441 := "event.script.event_430_socialist_union_rising.c2"
+const TXT_IDX_1442 := "event.script.event_430_socialist_union_rising.c3"
+const TXT_IDX_1446 := "event.script.event_430_socialist_union_rising.c4"
+const TXT_IDX_1447 := "event.script.event_430_socialist_union_rising.c5"
+const TXT_IDX_1448 := "event.script.event_430_socialist_union_rising.c6"
+const TXT_IDX_1449 := "event.script.event_430_socialist_union_rising.c7"
+const TXT_APPEND_PT := "event.script.event_430_socialist_union_rising.c8"
+const TXT_APPEND_UK := "event.script.event_430_socialist_union_rising.c9"
 
 
 
@@ -90,16 +90,16 @@ func execute(context: Dictionary) -> void:
 	_add_power(EmpireData.USA, -100)
 	var base := ""
 	if opt == 0:
-		base = TXT_IDX_1447
+		base = tr(TXT_IDX_1447)
 	elif opt == 1:
-		base = TXT_IDX_1448
+		base = tr(TXT_IDX_1448)
 	else:
-		base = TXT_IDX_1449
-	var text := base.replace("{1}", "").replace("{2}", TXT_IDX_1446 if flag3 else "")
+		base = tr(TXT_IDX_1449)
+	var text := base.replace("{1}", "").replace("{2}", tr(TXT_IDX_1446) if flag3 else "")
 	if portugal != null and portugal.has_tag("soc_eu"):
-		text += TXT_APPEND_PT
+		text += tr(TXT_APPEND_PT)
 	if italy != null and italy.has_tag("soc_eu") and _raw(147) == 3:
-		text += "\n" + TXT_APPEND_UK
+		text += "\n" + tr(TXT_APPEND_UK)
 		if uk != null:
 			uk.set_tag("soc_eu", true)
 			uk.set_tag("nato", false)
@@ -112,3 +112,19 @@ func execute(context: Dictionary) -> void:
 		return
 	if opt == 1:
 		_add_relation(EmpireData.USA, 300)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_430_socialist_union_rising.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_430",
+	"num": 430,
+	"priority": 43000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_430_socialist_union_rising.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 3, "target": "86"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 14, "target": "85"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 14, "target": "21"}, {"t": "PREV_EVENT_NOT_DONE", "ref": "event_556"}, {"t": "PREV_EVENT_NOT_DONE", "ref": "event_396"}, {"t": "COUNTRY_FIELD_NOT_EQUALS", "key": "sub_government", "v": 20, "target": "85"}, {"t": "DATE_AFTER", "key": "1983.5.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

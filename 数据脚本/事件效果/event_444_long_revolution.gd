@@ -8,8 +8,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "根据中央委员会的决议，我们的党决定开始逐步放松过去因为需要引导群众而采取的政策，实施真正的无产阶级大民主！在政治方面，各个革命委员会依靠造反派群众组织，开始改组为类似巴黎公社的体制；审查方面，由群众选举的审查委员会和党的干部共同审查的制度，过去仅供内部放映的内参片正在公开上映，交由群众批判；社会上，大字报、大辩论再次活跃于街头各处，这是和资产阶级的“自由”完全不同的风气……新一轮变革正在开始，无产阶级文化大革命进入了新的阶段！"
-const TXT_R1 := "现在还没有到那种程度，我们的国家和党还没有做好准备迎接那种状况。这种保守姿态令党内左派和革命群众感到不满，甚至有人开始贴大字报批评党中央的“右倾”......"
+const TXT_R0 := "event.script.event_444_long_revolution.c0"
+const TXT_R1 := "event.script.event_444_long_revolution.c1"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -59,7 +59,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 700
 				elif p.trait_personality == GameConstants.PoliticianPersonality.LIBERAL:
 					p.loyalty -= 1000
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_PEOPLE_SUPPORT, -200)
 			for p in ws.politicians:
@@ -69,7 +69,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 1000
 				elif p.trait_personality == GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty += 300
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -101,3 +101,19 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_444_long_revolution.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_444",
+	"num": 444,
+	"priority": 44400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_444_long_revolution.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "MODIFIER_ACTIVE", "key": "3"}, {"t": "MODIFIER_ACTIVE", "key": "6"}, {"t": "MODIFIER_ACTIVE", "key": "11"}, {"t": "RESOURCE_AT_LEAST", "key": "year", "v": 1985}, {"t": "NOT_HAS_FLAG", "key": "is_gkchp"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

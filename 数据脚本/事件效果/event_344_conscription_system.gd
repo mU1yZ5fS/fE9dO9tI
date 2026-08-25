@@ -5,10 +5,10 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "经过党内讨论，我们决定取消军队的征兵制度。取而代之的是，年轻人将在教育机构中接受最低限度的军事训练，保卫国家的重任将由配备先进武器和军事装备的专业且训练有素的军队担负。"
-const TXT_R1 := "当然，一年兵役尚且不够，许多军方人士也是这么说的。但我们要明白，如今对我国来说，在工业和一般行业中工作的工人更为重要。军队会毁掉年轻人，许多人在此之后将无法回归正常生活。"
-const TXT_R2 := "当然，三年兵役将会严重打击国家经济，并使其失去一批劳动力。但实业家将被迫下一番力气提高劳动力质量并解决自动化问题。而经过多年的服役，一位青年可以成为一名职业军人，为战场上一切可能出现的任务与困难做好准备。"
-const TXT_R3 := "我们先得明白我国周边群狼环伺的现实情况。在北边西边——是苏修分子，在东边——是美帝傀儡，在南边——是印度，他们都妄想夺走我们的土地，印度支那之上零零碎碎的独立政权也包括在内。我们的国家亟需保护，而这只能通过全社会的全面动员和建立朝鲜模式的人民军队来解决！"
+const TXT_R0 := "event.script.event_344_conscription_system.c0"
+const TXT_R1 := "event.script.event_344_conscription_system.c1"
+const TXT_R2 := "event.script.event_344_conscription_system.c2"
+const TXT_R3 := "event.script.event_344_conscription_system.c3"
 
 func execute(context: Dictionary) -> void:
 	if not _bind_world():
@@ -21,27 +21,27 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -50)
 			_add(W.I_PEOPLE_SUPPORT, 30)
 			_add(W.I_ARMY, 50)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_set_data(W.I_MIL_DOCTRINE, 32)
 			_add(W.I_PARTY_SUPPORT, -50)
 			_add(W.I_BUDGET, -20)
 			_add(W.I_PEOPLE_SUPPORT, -25)
 			_add(W.I_ARMY, 50)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_set_data(W.I_MIL_DOCTRINE, 31)
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_BUDGET, -5)
 			_add(W.I_PEOPLE_SUPPORT, -50)
 			_add(W.I_ARMY, 50)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			_set_data(W.I_MIL_DOCTRINE, 30)
 			_add(W.I_PARTY_SUPPORT, 150)
 			_add(W.I_PEOPLE_SUPPORT, -75)
 			_add(W.I_ARMY, 50)
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 
@@ -63,3 +63,19 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_344_conscription_system.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_344",
+	"num": 344,
+	"priority": 34400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_344_conscription_system.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1984.5.5"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

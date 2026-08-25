@@ -1,16 +1,6 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event18.cs：战争结束结算弹窗。逐字中文 + 完整效果复刻。
-## 架构说明：原版 WarResult（GameState.cs:24-4829，战争结算文案+效果）在端口由
-## GameManager._apply_war_result（简化版，覆盖 0-6+ 号战争）于事件关闭后执行；
-## 本脚本负责复刻 Event18 的显示层（动态标题/描述/按钮）与结果层（result 0）。
-## 差异：
-##  - 原版 result 0 先置 text="另一场战争结束了。" 再经 WarResult(ref text) 追加结算文案；
-##    端口现在用 war_result_texts.json 查表复刻 WarResult 文案，数值/领土/政体效果仍由
-##    war_system.gd（事件关闭后）执行，本脚本不做数值修改。
-##  - 69/70 号战争战败 → data.ending_route=11/12 + load_scene_after_click（蒙古/海参崴结局）。
-##  - 端口触发：GameManager._check_war_endings（战争达结算条件 → start_event("war_is_over")），
-##    原版由 Event476 链触发，等价。
+## 原作 Event18.cs：战争结束结算弹窗。逐字中文 + 完整效果复刻。 ## 架构说明：原版 WarResult（GameState.cs:24-4829，战争结算文案+效果）在端口由 ## GameManager._apply_war_result（简化版，覆盖 0-6+ 号战争）于事件关闭后执行； ## 本脚本负责复刻 Event18 的显示层（动态标题/描述/按钮）与结果层（result 0）。 ## 差异： ##  - 原版 result 0 先置 text="另一场战争结束了。" 再经 WarResult(ref text) 追加结算文案； ##    端口现在用 war_result_texts.json 查表复刻 WarResult 文案，数值/领土/政体效果仍由 ##    war_system.gd（事件关闭后）执行，本脚本不做数值修改。 ##  - 69/70 号战争战败 → data.ending_route=11/12 + load_scene_after_click（蒙古/海参崴结局）。 ##  - 端口触发：GameManager._check_war_endings（战争达结算条件 → start_event("war_is_over")）， ##    原版由 Event476 链触发，等价。
 
 
 # ── 显示前动态文案（复刻 Event18.cs TextOfEvents + VariantsOfEvents） ──
@@ -86,24 +76,19 @@ func execute(context: Dictionary) -> void:
 		return
 	var war_id: int = d.war_resolve if d.size() > W.I_WAR_RESOLVE else -1
 	var war := _get_war(war_id)
-	# 统一从战争结束文本查找表读取。原版 WarResult 的数值/领土效果已由
-	# war_system.gd 在事件关闭后执行，这里只负责文案显示。
-	context["result_text"] = _lookup_war_result_text(war_id, war)
+	# 统一从战争结束文本查找表读取。原版 WarResult 的数值/领土效果已由 # war_system.gd 在事件关闭后执行，这里只负责文案显示。 context["result_text"] = _lookup_war_result_text(war_id, war)
 	if _is_mongol_defeat(war_id, war):
-		context["result_title"] = "真该死！"
-		# 原 Event18.cs:143：data.war_resolve==69 && ingamewars[69].infl1<1000 → data.ending_route=11 + load_scene_after_click。
-		# Godot 用 queue_ending_after_event 复现「结果页确认后进结局」。
-		game.queue_ending_after_event(11)
+		context["result_title"] = tr("event.script.event_018_war_is_over.i0")
+		# 原 Event18.cs:143：data.war_resolve==69 && ingamewars[69].infl1<1000 → data.ending_route=11 + load_scene_after_click。 # Godot 用 queue_ending_after_event 复现「结果页确认后进结局」。 game.queue_ending_after_event(11)
 	elif _is_ussr_victory(war_id, war):
-		context["result_title"] = "真该死！"
-		# 原 Event18.cs:151：data.war_resolve==70 && ingamewars[70].infl1<1000 → data.ending_route=12 + load_scene_after_click。
-		game.queue_ending_after_event(12)
+		context["result_title"] = tr("event.script.event_018_war_is_over.i1")
+		# 原 Event18.cs:151：data.war_resolve==70 && ingamewars[70].infl1<1000 → data.ending_route=12 + load_scene_after_click。 game.queue_ending_after_event(12)
 
 
 # ── WarResult 文案查找表（资产/数据/war_result_texts.json） ──
 
 const WAR_RESULT_TEXTS_PATH := "res://资产/数据/war_result_texts.json"
-const WAR_RESULT_FALLBACK := "另一场战争结束了。"
+const WAR_RESULT_FALLBACK := "event.script.event_018_war_is_over.c1"
 
 static var _war_result_texts: Dictionary = {}
 static var _war_result_texts_loaded := false
@@ -131,13 +116,13 @@ func _t(entry: Dictionary, key: String) -> String:
 ## 统一入口：按 war_id 分派到 JSON 分支；找不到时安全回退通用文案。
 func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 	if war == null or d == null:
-		return WAR_RESULT_FALLBACK
+		return tr(WAR_RESULT_FALLBACK)
 	var table := _load_war_result_texts()
 	var entry := {}
 	if table.has(str(war_id)) and table.get(str(war_id)) is Dictionary:
 		entry = table.get(str(war_id))
 	if entry.is_empty():
-		return WAR_RESULT_FALLBACK
+		return tr(WAR_RESULT_FALLBACK)
 	var txt := ""
 	match war_id:
 		0:
@@ -148,8 +133,7 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 			else:
 				txt = _t(entry, "draw")
 		1:
-			# 原版还有 gameState.war==1 的全套越南解放子分支；端口暂无该独立状态，
-			# 先用主胜负分支（结果页不再显示通用“另一场战争结束了”）。
+			# 原版还有 gameState.war==1 的全套越南解放子分支；端口暂无该独立状态， # 先用主胜负分支（结果页不再显示通用“另一场战争结束了”）。
 			if war.infl1 >= 900:
 				txt = _t(entry, "a")
 			elif war.infl2 >= 900:
@@ -211,16 +195,17 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 		22:
 			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
 		23:
-			# 意大利战争（原版 GameState.cs:1247-1338）：两个阶段共用一个 war23 槽。
-			# 新阶段区分：event_556（意大利内战/激进派起义）→ 起义 a/b；
-			# event_396（第二次复兴运动）→ 复兴 rev_win/rev_lose。
-			txt = _war23_result_text_from_table(entry, war)
-		34:
-			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
-		35:
-			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
-		39:
+			# 意大利战争（原版 GameState.cs:1247-1338）：两个阶段共用一个 war23 槽。 # 新阶段区分：event_556（意大利内战/激进派起义）→ 起义 a/b； # event_396（第二次复兴运动）→ 复兴 rev_win/rev_lose。 txt = _war23_result_text_from_table(entry, war) 34: txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b") 35: txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b") 		39:
 			txt = _war39_result_text(war)
+		43:
+			# 阿拉伯湾革命：side1=海湾政府方、side2=阿湾人阵起义军（Event568 开战）。
+			# 表内 a=人阵解放文案、b/draw=革命被绞杀文案——与默认 a/b 方向相反。
+			if war.infl1 >= 900:
+				txt = _t(entry, "b")
+			elif war.infl2 >= 900:
+				txt = _t(entry, "a")
+			else:
+				txt = _t(entry, "draw")
 		45, 46, 47:
 			# 墨西哥起义/统一战争：原版以 side2（南方解放军/教权派）胜利显示 a，否则 b。
 			txt = _t(entry, "a") if war.infl2 >= 900 else _t(entry, "b")
@@ -235,6 +220,14 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 				txt = _t(entry, "win_a") if war.infl1 >= 950 else _t(entry, "defeat_a")
 		86:
 			txt = _war86_result_text_from_table(entry, war)
+		87:
+			# 爱尔兰统一战争：side1=北爱尔兰、side2=爱尔兰共和国。 # a=南方（爱尔兰共和国）吞并北方；b=北方空降都柏林获胜；draw=北方反推成功。 # 不能走默认 a/b 顺序，否则北胜会显示南胜文案。
+			if war.infl1 >= 900:
+				txt = _t(entry, "b")
+			elif war.infl2 >= 900:
+				txt = _t(entry, "a")
+			else:
+				txt = _t(entry, "draw")
 		_:
 			# 未精细接线的战争：若表里有 a/b/draw，按通用胜负阈值取一条。
 			if entry.has("a") and entry.has("b"):
@@ -247,7 +240,7 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 			elif entry.has("a"):
 				txt = _t(entry, "a")
 	if txt.is_empty():
-		return WAR_RESULT_FALLBACK
+		return tr(WAR_RESULT_FALLBACK)
 	return txt
 
 
@@ -301,11 +294,7 @@ func _war27_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 	return _t(entry, "a") if war.infl1 >= 500 else _t(entry, "b")
 
 
-## 意大利战争（war23）两个阶段（原版 GameState.cs:1247-1338）：
-## 事件556（意大利内战/激进派起义）→ 起义文本 a/b；
-## 事件396（第二次复兴运动）→ 复兴文本 rev_win/rev_lose。
-## 原文以 event_done[556] 区分；之前端口把两段都命中了 a/b/draw，
-## 导致“第二次复兴运动”结算显示起义文本（搞混），此处按原版分派。
+## 意大利战争（war23）两个阶段（原版 GameState.cs:1247-1338）： ## 事件556（意大利内战/激进派起义）→ 起义文本 a/b； ## 事件396（第二次复兴运动）→ 复兴文本 rev_win/rev_lose。 ## 原文以 event_done[556] 区分；之前端口把两段都命中了 a/b/draw， ## 导致“第二次复兴运动”结算显示起义文本（搞混），此处按原版分派。
 func _war23_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 	if d != null and d.event_done_num(556):
 		return _t(entry, "rev_win") if war.infl1 >= 900 else _t(entry, "rev_lose")
@@ -354,7 +343,7 @@ func _war15_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 	return _t(entry, "draw2")
 
 
-## 朝鲜统一战争（war16）：动态模板填充国号/执政党，第三段先用默认延安派文本。
+## 朝鲜统一战争（war16）：动态模板填充国号/执政党，第三段按北朝鲜 SubGosstroy 分支。 ## 原版 GameState.cs:928-1012：0-17 → new_events_text[983+sub]；18 → [1187]； ## 19（孔镇泰/红儒）与 20/21/22 为内联文案，已全部转录进 war_result_texts.json 的 third_*。
 func _war16_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 	if war.infl1 < 950:
 		return _t(entry, "defeat")
@@ -371,10 +360,15 @@ func _war16_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 			_:
 				num = 4
 	var tpl := _t(entry, "victory_template")
+	var north := ws.get_country_by_legacy_index(10) if ws != null else null
+	var sub := int(north.sub_government) if north != null else -1
+	var third := _t(entry, "third_%d" % sub) if sub >= 0 else ""
+	if third == "":
+		third = _t(entry, "third_default")
 	return tpl \
 		.replace("{1}", _t(entry, "country_%d" % num)) \
 		.replace("{2}", _t(entry, "party_%d" % num)) \
-		.replace("{3}", _t(entry, "third_default"))
+		.replace("{3}", third)
 
 
 ## 北爱尔兰（war86）：简化按 infl1/infl2 取分支；原版 data[147]/data[166] 细节暂未接线。
@@ -388,11 +382,14 @@ func _war86_result_text_from_table(entry: Dictionary, war: WarData) -> String:
 
 # ── 分支判定辅助（逐字复刻 Event18.cs 条件） ──
 
-## 西撒哈拉战争（war39）结算文案：GameState.cs:1969-2007 三分支。
+## 西撒哈拉战争（war39）结算文案：GameState.cs:1969-2007 三分支。 ## 注意：人阵可能是 side2（tres 默认：side1=摩洛哥）也可能是 side1 ## （其他事件以自定义顺序开战），按交战方名字动态判边，防止胜负文案颠倒。
 func _war39_result_text(war: WarData) -> String:
 	var polisario := ws.get_country_by_legacy_index(18) if ws != null else null
 	var is_cw: bool = polisario != null and polisario.内战中
-	if war.infl2 >= 900:
+	var polisario_is_side1: bool = String(war.side1).contains("西撒") \
+			or String(war.side1).contains("人阵") or String(war.side1).contains("波利萨里奥")
+	var polisario_win: bool = (war.infl1 >= 900) if polisario_is_side1 else (war.infl2 >= 900)
+	if polisario_win:
 		if is_cw:
 			return "在艰苦奋斗后，西撒人阵的步战车攻入了首府阿尤恩的市中心。胜利的旗帜飘扬在这座古老的城市上空，这天也被定为撒哈拉阿拉伯民主共和国的解放日。工人，游击战士和农民推着画有马克思，列宁和毛泽东的画像的花车。举着“共产主义带来大饼与和平”之类的标语牌走过市中心，这片古老的土地焕发着前所未有的生命力。而摩洛哥不得不打碎牙齿往嘴里吞，苦涩的承认了西撒哈拉的独立地位。\n国际观察家认为，西撒人阵背后的中华人民共和国又一次在国际交锋中为自己带来了战友和同志。"
 		return "在艰苦奋斗后，西撒人阵的步战车攻入了首府阿尤恩的市中心。胜利的旗帜飘扬在这座古老的城市上空，这天也被定为撒哈拉阿拉伯民主共和国的解放日。工人，游击战士和农民推着花车，举着“自由，独立，社会主义是我们的目标”之类的标语牌走过市中心，这片古老的土地焕发着前所未有的生命力。而摩洛哥不得不打碎牙齿往嘴里吞，苦涩的承认了西撒哈拉的独立地位。"
@@ -423,3 +420,15 @@ func _is_kefir_doom(war_id: int, war: WarData) -> bool:
 
 func _is_ussr_victory(war_id: int, war: WarData) -> bool:
 	return war_id == 70 and war != null and war.infl1 < 1000
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_018_war_is_over.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "war_is_over",
+	"num": 18,
+	"notify": false,
+	"once": false,
+	"display_script": "res://数据脚本/事件效果/event_018_war_is_over.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -247,3 +247,19 @@ func _append() -> String:
 	if ws.get_country_by_legacy_index(85) != null and ws.get_country_by_legacy_index(85).influence_china <= 0:
 		return TXT_R_APPEND[1]
 	return TXT_R_APPEND[2]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_399_italy_1983_election.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_399",
+	"num": 399,
+	"priority": 39900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_399_italy_1983_election.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_399_italy_1983_election.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

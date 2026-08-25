@@ -7,7 +7,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "在解放军的猛烈攻势下，印度军队终究没能守得住战线，开始溃退。解放军在挺进到地图上的国境线后便不再有大规模军事行动，而是开通新的稳定补给路线。印度东北部地区则出现了大规模的叛乱，印度因此忙于平叛，无暇顾及藏南地区。由于这次印军的失利，该届印度政府垮台，新一届的印度政府开始进一步反华，更加亲美亲苏，与美苏订立了更多的军事订单，可能会在中印边境开展新一轮的边境冲突......"
+const TXT_R0 := "event.script.event_443_recover_arunachal.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -27,7 +27,7 @@ func execute(context: Dictionary) -> void:
 			# 战争胜利已由月度结算转移过一次，此处幂等补执行（读档后覆盖仍在）。
 			if GameManager != null:
 				game.set_map_region_owner([43], 710)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 
 
 
@@ -59,3 +59,18 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_443_recover_arunachal.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_443",
+	"num": 443,
+	"priority": 44300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_443_recover_arunachal.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

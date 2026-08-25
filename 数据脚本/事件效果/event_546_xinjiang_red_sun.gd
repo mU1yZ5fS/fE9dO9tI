@@ -3,7 +3,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 原作 Event546.cs：塞上赤日耀玉关（新疆革命，1选项）。
 ## 触发：无自动触发（GlobalScript.cs:24 决议 StartEvent(546)）。
 
-const TXT_R0 := "我们整合了维吾尔、哈萨克等新疆诸少数民族以及汉族的革命委员会和民兵革命支队，形成新的“新疆各民族人民革命委员会”。迁来援助新疆的汉族青年干部和建设者们积极推广全面的普通话教育，推行无产阶级的民族观念和宗教观念。当然，我们也保护少数民族的文字语言和优秀文化，为此成立了新疆民族语言委员会，致力于简化以阿拉伯语和新波斯语为蓝本的各少数民族语言，推行语言文字的拼音化和规范化，使原先复杂难懂的文字得以普及到人民群众，从而实现识字率的提高。各级工作人员向那些感到疑惑的人们解释推行普通话不是出于一种狭隘的民族主义，而是为了加强各族人民的联系和相互理解，更好地实现各族人民的团结友爱，一齐建设和保卫社会主义祖国。人民革命委员会在全自治区推行无产阶级革命教育，让少数民族群众真正认清宗教的本质，并且鼓励他们主动去质疑宗教神权，开展对宗教信条的大辩论，针对性地冲击那些反动神职人员密谋聚集的宗教场所。"
+const TXT_R0 := "event.script.event_546_xinjiang_red_sun.c0"
 
 
 func execute(context: Dictionary) -> void:
@@ -12,4 +12,19 @@ func execute(context: Dictionary) -> void:
 	if int(context.get("option_index", -1)) == 0:
 		_add(W.I_PARTY_SUPPORT, 100)
 		_add(W.I_PEOPLE_SUPPORT, 100)
-		context["result_text"] = TXT_R0
+		context["result_text"] = tr(TXT_R0)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_546_xinjiang_red_sun.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_546",
+	"num": 546,
+	"priority": 54600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_546_xinjiang_red_sun.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -5,18 +5,18 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "重建西昌卫星发射中心。"
-const TXT_OPT0_DIS := "我们分身乏力"
-const TXT_OPT1 := "完成太原卫星发射中心。"
-const TXT_OPT1_DIS := "我们分身乏力"
-const TXT_OPT2 := "同时建造两个卫星发射中心。"
-const TXT_OPT2_DIS := "我们分身乏力"
-const TXT_OPT3 := "我们没有足够的资源。"
+const TXT_OPT0 := "event.script.event_352_space_launch_sites.c0"
+const TXT_OPT0_DIS := "event.script.event_352_space_launch_sites.c1"
+const TXT_OPT1 := "event.script.event_352_space_launch_sites.c2"
+const TXT_OPT1_DIS := "event.script.event_352_space_launch_sites.c3"
+const TXT_OPT2 := "event.script.event_352_space_launch_sites.c4"
+const TXT_OPT2_DIS := "event.script.event_352_space_launch_sites.c5"
+const TXT_OPT3 := "event.script.event_352_space_launch_sites.c6"
 
-const TXT_R0 := "西昌卫星发射中心复工了，如今我国可以进行更多的航天发射任务了。此外，监督工地建设的科学家们也得以将预算的一部分用于其他开发。"
-const TXT_R1 := "太原卫星发射中心落成了，如今我国可以进行更多的航天发射任务了。此外，监督工地建设的军方也得以将预算的一部分用于其他开发。"
-const TXT_R2 := "两个航天中心都已落成，因此我国的航天发射次数将创下记录！"
-const TXT_R3 := "比起在航天领域花大笔大笔钱，我国还有别的事要做！"
+const TXT_R0 := "event.script.event_352_space_launch_sites.c7"
+const TXT_R1 := "event.script.event_352_space_launch_sites.c8"
+const TXT_R2 := "event.script.event_352_space_launch_sites.c9"
+const TXT_R3 := "event.script.event_352_space_launch_sites.c10"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -25,18 +25,18 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if _budget_reserve(world) >= 30:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if _budget_reserve(world) >= 50:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if _budget_reserve(world) >= 70:
-		_enable(opt[2], TXT_OPT2)
+		_enable(opt[2], tr(TXT_OPT2))
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
-	_enable(opt[3], TXT_OPT3)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
+	_enable(opt[3], tr(TXT_OPT3))
 
 
 func execute(context: Dictionary) -> void:
@@ -47,18 +47,18 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_BUDGET, -20)
 			_add(W.I_SCIENCE, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -40)
 			_add(W.I_ARMY, 100)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_SCIENCE, 100)
 			_add(W.I_ARMY, 100)
 			_add(W.I_BUDGET, -60)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 
@@ -107,3 +107,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_352_space_launch_sites.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_352",
+	"num": 352,
+	"priority": 35200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_352_space_launch_sites.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1978.4.12"}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

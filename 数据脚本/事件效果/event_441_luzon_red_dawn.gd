@@ -9,7 +9,7 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "在统一全国之后，菲共立即开始了与中国的全方位合作，并和东南亚的其他兄弟国家一起对印尼进行封锁和渗透。工业设备，机械农具，化肥正逐渐运往菲律宾。菲共正在进行轰轰烈烈的土改，扫盲运动，工业化，并对各少数民族地区实行民族区域自治。菲共的胜利使得美国的亚太战略进一步遭受挫折。澳大利亚和新西兰等澳洲国家则认为澳洲地区现在更容易受到来自东南亚以及中国的威胁，要求美国进一步增加驻军和澳洲军费开支，东南亚的局势似乎变的更加紧张，但我们没什么好怕的！"
+const TXT_R0 := "event.script.event_441_luzon_red_dawn.c0"
 
 
 func evaluate(world: WorldState) -> bool:
@@ -54,7 +54,7 @@ func execute(context: Dictionary) -> void:
 					philippines.set_tag("对华贸易", true)
 					_join_alliances(philippines)
 					philippines.social_stability = 1000
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 
 
 
@@ -86,3 +86,19 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_441_luzon_red_dawn.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_441",
+	"num": 441,
+	"priority": 44100,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_441_luzon_red_dawn.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_441_luzon_red_dawn.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

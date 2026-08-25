@@ -31,6 +31,9 @@ var cached_initial_owner: Dictionary = {}
 ## 地图数据尚未预加载完成时，事件/外交请求的领土转移先挂在这里，等预加载完成后补执行。
 var _pending_map_owner_changes: Array = []
 
+## 会话内已告警过的键：结构性问题每次月度同步都会复现，去重避免刷屏。
+var _warned_once: Dictionary = {}
+
 var cached_region_map_image: Image = null
 var cached_owner_palette_image: Image = null
 var cached_color_palette_image: Image = null
@@ -148,9 +151,9 @@ const PART_MERGE_RULES := [
 	# 欧加登：索马里获胜/大索马里时，欧加登（索马里州）划给索马里
 	{"legacy": 42, "part": 0, "type": "regions", "regions": [29]},
 	{"legacy": 42, "part": 2, "type": "regions", "regions": [29]},
-	# 阿扎尼亚独立/建国：南非地块划给阿扎尼亚(153)
+	# 纳米比亚独立（war54/55 结算 153.parts[0]）：纳米比亚地块（1976 归南非 560）划给 153 号实体。
 	{"legacy": 153, "part": 0, "type": "regions", "regions": [
-		82, 1066, 1068, 1071, 1079, 1081, 1544, 1771, 3424,
+		81, 1497, 1499, 1500, 1501, 1502, 1514, 1515, 1516, 1770, 4190, 4191, 4192,
 	]},
 	# 加丹加独立：加丹加省划给加丹加(163)
 	{"legacy": 163, "part": 0, "type": "regions", "regions": [373]},
@@ -193,6 +196,14 @@ const NORTHERN_IRELAND_REGIONS: Array[int] = [
 	315, 316, 317, 321, 322, 323,
 	2260, 2261, 2262, 2263, 2264, 2265, 2266, 2267, 2268, 2269,
 	3940, 3941, 3942, 3943, 3944, 3945, 3946, 3947, 3948, 3949,
+]
+
+## 吉布提地区（1976 年属法国 220，Event585 后归吉布提实体 522）。
+const DJIBOUTI_REGION_IDS: Array[int] = [366, 367, 368, 370, 376, 2032]
+
+## 索马里地区（非洲之角联邦 Event589 并入埃塞俄比亚 530）。
+const SOMALIA_REGION_IDS: Array[int] = [
+	30, 31, 32, 33, 34, 35, 45, 46, 1466, 2028, 2029, 2030, 2031, 4115,
 ]
 
 
@@ -335,6 +346,294 @@ func _load_json_async(path: String) -> Dictionary:
 	return parsed if parsed is Dictionary else {}
 
 
+## 结构性问题去重告警：同一键每次月度同步都会复现，只报一次防刷屏。
+func _warn_once(key: String, msg: String) -> void:
+	if _warned_once.has(key):
+		return
+	_warned_once[key] = true
+	push_warning("MapService[%s]: %s" % [key, msg])
+
+
+## 战争结算/月度同步后的地图一致性自检（只上报，不中断游戏）。
+## 检查两类问题：
+##   1. 归属表中的 gwcode 解析不到任何现存国家（转移到了死编号/虚构国）；
+##   2. 高价值合并规则条件已成立、但失败方仍握有过半初始地块
+##      —— 即"政治上统一了地图却没统一"的直接信号。
+## reason 用于定位调用点（如 war_0 / monthly / load_game）。
+func assert_map_consistent(reason: String) -> void:
+	if not is_map_data_preloaded or world == null or cached_region_owner.is_empty():
+		return
+	var problems: Array[String] = []
+
+	# 合法归属集合 = 世界状态国家 ∪ 地图元数据国家。
+	# 后者包含原版国家表未收录的小国/属地（冰岛、巴哈马、马耳他等），
+	# 它们没有 CountryData 对象但是地图的永久合法居民。
+	var known_gwcodes := {}
+	for c in world.countries:
+		if c != null and c.gwcode > 0:
+			known_gwcodes[c.gwcode] = true
+	for gw_key in cached_map_countries:
+		var gw := int(gw_key)
+		if gw > 0:
+			known_gwcodes[gw] = true
+	var orphan_owners := {}
+	for r_id in cached_region_owner:
+		var ow := int(cached_region_owner[r_id])
+		if ow > 0 and not known_gwcodes.has(ow):
+			orphan_owners[ow] = int(orphan_owners.get(ow, 0)) + 1
+	if not orphan_owners.is_empty():
+		var sample := []
+		for ow in orphan_owners:
+			sample.append("%d(x%d)" % [ow, orphan_owners[ow]])
+		problems.append("%d 个地块归属到世界状态中不存在的 gwcode（%s）"
+				% [orphan_owners.size(), ", ".join(sample)])
+
+	_check_merge_applied(problems, world.korea_result == 1, 46, 10)
+	_check_merge_applied(problems, world.korea_result == 2, 10, 46)
+	if world.decisions != null and world.decisions.completed.size() > 7 \
+			and world.decisions.completed[7]:
+		_check_merge_applied(problems, true, 38, 1)
+	elif world.taiwan_status == 2:
+		_check_merge_applied(problems, true, 38, 1)
+	if world.mongolia_china_route == 1:
+		_check_merge_applied(problems, true, 9, 1)
+
+	if not problems.is_empty():
+		push_warning("MapService.assert_map_consistent(%s): %d 项异常 —— %s"
+				% [reason, problems.size(), "；".join(problems)])
+
+
+func _check_merge_applied(problems: Array[String], cond: bool,
+		loser_idx: int, winner_idx: int) -> void:
+	if not cond:
+		return
+	var loser := world.get_country_by_legacy_index(loser_idx)
+	var winner := world.get_country_by_legacy_index(winner_idx)
+	if loser == null or winner == null or winner.gwcode <= 0:
+		return
+	if loser.gwcode == winner.gwcode or loser.gwcode <= 0:
+		return
+	var total := 0
+	var held := 0
+	for r_id in cached_initial_owner:
+		if int(cached_initial_owner[r_id]) != loser.gwcode:
+			continue
+		total += 1
+		if int(cached_region_owner.get(r_id, 0)) == loser.gwcode:
+			held += 1
+	# 过半阈值：排除战争再征服造成的合理部分持有
+	if total > 0 and held * 2 > total:
+		problems.append("legacy %d 的合并条件已成立但仍持有 %d/%d 初始地块（疑似地图合并未生效）"
+				% [loser_idx, held, total])
+
+
+# ── 领土变迁全面审计（调试控制台 map_check 命令的数据源）──
+
+## 失败方仍持有的初始地块超过 1/AUDIT_HELD_RATIO 视为"规则未生效"。
+const AUDIT_HELD_RATIO := 2
+## 单条问题最多展示的地块明细数。
+const AUDIT_DETAIL_CAP := 8
+
+
+## 逐条检查全部领土变迁规则：条件成立 ⇒ 地图效果是否已正确应用。
+## 返回结构化报告，控制台负责渲染：
+##   preload_ok     地图数据是否已预加载
+##   pending        预加载前排队的待补变更数
+##   rules_checked  实际检查的规则条件数（含激活与未激活）
+##   inactive       条件未成立的规则数（剧情未走到，跳过效果验证）
+##   issues         [{name, detail}] 条件成立但地图效果不符/存疑的规则
+##   notes          [{name, detail}] 无害但值得知道的观察
+func audit_territory_rules() -> Dictionary:
+	var report := {
+		"preload_ok": is_map_data_preloaded,
+		"pending": _pending_map_owner_changes.size(),
+		"rules_checked": 0,
+		"inactive": 0,
+		"issues": [],
+		"notes": [],
+	}
+	if world == null or cached_region_owner.is_empty():
+		report["issues"].append({"name": "系统", "detail": "世界状态或地图缓存不可用，无法审计"})
+		return report
+
+	_audit_structure(report)
+	_audit_explicit_branches(report)
+	_audit_part_merge_rules(report)
+	return report
+
+
+## 结构层：孤儿归属 + 存档覆盖引用未知地块。
+func _audit_structure(report: Dictionary) -> void:
+	var known_gwcodes := {}
+	for c in world.countries:
+		if c != null and c.gwcode > 0:
+			known_gwcodes[c.gwcode] = true
+	for gw_key in cached_map_countries:
+		var gw := int(gw_key)
+		if gw > 0:
+			known_gwcodes[gw] = true
+	var orphan := {}
+	for r_id in cached_region_owner:
+		var ow := int(cached_region_owner[r_id])
+		if ow > 0 and not known_gwcodes.has(ow):
+			orphan[ow] = int(orphan.get(ow, 0)) + 1
+	if not orphan.is_empty():
+		var parts := []
+		for ow in orphan:
+			parts.append("gw%d×%d" % [ow, orphan[ow]])
+		parts.sort()
+		report["issues"].append({
+			"name": "结构/孤儿归属",
+			"detail": "%d 个地块归属到世界状态中不存在的国家：%s"
+					% [orphan.size(), ", ".join(parts.slice(0, AUDIT_DETAIL_CAP))],
+		})
+	var unknown_override := 0
+	for raw in world.map_owner_overrides:
+		if not cached_region_owner.has(int(raw)):
+			unknown_override += 1
+	if unknown_override > 0:
+		report["notes"].append({
+			"name": "结构/存档覆盖",
+			"detail": "%d 条归属覆盖指向当前地图上不存在的地块（底图变更或旧档残留）" % unknown_override,
+		})
+
+
+## 显式分支：sync_map_merges 中尚未收编进 PART_MERGE_RULES 的规则逐条核对。
+func _audit_explicit_branches(report: Dictionary) -> void:
+	_audit_merge(report, "朝鲜统一·北胜(korea_result=1)", world.korea_result == 1, 46, 10)
+	_audit_merge(report, "朝鲜统一·南胜(korea_result=2)", world.korea_result == 2, 10, 46)
+
+	var taiwan_by_decision: bool = world.decisions != null \
+			and world.decisions.completed.size() > 7 and world.decisions.completed[7]
+	var taiwan_active: bool = taiwan_by_decision or world.taiwan_status == 2
+	_audit_merge(report, "台湾回归(completedDecisions[7]/taiwan_status=2)", taiwan_active, 38, 1)
+
+	_audit_regions(report, "金马澎(taiwan_islands=1)", world.taiwan_islands == 1,
+			[2917, 3088], GameConstants.GwCode.CHINA)
+	_audit_regions(report, "藏南(arunachal_status>=2)", world.arunachal_status >= 2,
+			[43], GameConstants.GwCode.CHINA)
+
+	if world.get_flag("is_gkchp") or world.ind_opp or world.get_flag("IndOpp"):
+		_audit_regions(report, "雪耻之战故土回归", true, QING_LOST_TERRITORY_REGIONS,
+				GameConstants.GwCode.CHINA)
+
+	var c166 := world.get_country_by_legacy_index(166)
+	if c166 != null and _has_part(c166, 0):
+		_audit_regions(report, "北爱尔兰独立(166.parts0)", true, NORTHERN_IRELAND_REGIONS, c166.gwcode)
+
+	_audit_merge(report, "蒙古并入中国(mongolia_china_route=1)", world.mongolia_china_route == 1, 9, 1)
+
+	for c in world.countries:
+		if c != null and c.parts.size() > 0 and c.parts[0] \
+				and c.puppet_of == GameConstants.LegacySlot.CHINA:
+			_audit_merge(report, "%s 解放并入中国(parts0+傀儡)" % c.display_name(), true,
+					c.原版序号, 1)
+
+	if world.decisions != null and world.decisions.completed.size() > 20 \
+			and world.decisions.completed[20]:
+		var c30 := world.get_country_by_legacy_index(30)
+		if c30 != null and _has_part(c30, 0) and _has_part(c30, 1) and _has_part(c30, 2):
+			for src in [54, 55, 18, 14, 35, 13, 40]:
+				_audit_merge(report, "OAR 收编 legacy %d" % src, true, src, 30)
+
+	var c41 := world.get_country_by_legacy_index(41)
+	if c41 != null and (_has_part(c41, 0) or _has_part(c41, 1)):
+		_audit_regions(report, "非洲之角联邦(索马里地区)", true, SOMALIA_REGION_IDS, c41.gwcode)
+		if _has_part(c41, 1):
+			_audit_regions(report, "非洲之角联邦(吉布提地区)", true, DJIBOUTI_REGION_IDS, c41.gwcode)
+	elif not world.event_done_num(585):
+		var fra := world.get_country_by_legacy_index(21)
+		if fra != null:
+			_audit_regions(report, "吉布提仍属法国(Event585 前)", true, DJIBOUTI_REGION_IDS, fra.gwcode)
+
+
+## PART_MERGE_RULES 规则表逐条核对。
+func _audit_part_merge_rules(report: Dictionary) -> void:
+	for i in PART_MERGE_RULES.size():
+		var rule: Dictionary = PART_MERGE_RULES[i]
+		var legacy_idx := int(rule.get("legacy", -1))
+		var part_idx := int(rule.get("part", -1))
+		var c := world.get_country_by_legacy_index(legacy_idx) if legacy_idx >= 0 else null
+		if c == null:
+			continue
+		if not _has_part(c, part_idx):
+			report["inactive"] += 1
+			continue
+		var label := "规则[%d] legacy%d.parts%d(%s)" % [i, legacy_idx, part_idx, String(rule.get("type", ""))]
+		match String(rule.get("type", "")):
+			"merge":
+				for src in rule.get("sources", []):
+					_audit_merge(report, "%s src%d" % [label, int(src)], true, int(src), legacy_idx)
+			"regions":
+				var target_gw := c.gwcode
+				if rule.has("target_legacy"):
+					var tc := world.get_country_by_legacy_index(int(rule["target_legacy"]))
+					if tc == null:
+						continue
+					target_gw = tc.gwcode
+				_audit_regions(report, label, true, rule.get("regions", []), target_gw)
+
+
+## merge 型规则核对：来源国是否仍握有过半初始地块。
+func _audit_merge(report: Dictionary, label: String, cond: bool,
+		from_idx: int, to_idx: int) -> void:
+	report["rules_checked"] += 1
+	if not cond:
+		report["inactive"] += 1
+		return
+	var from_c := world.get_country_by_legacy_index(from_idx)
+	var to_c := world.get_country_by_legacy_index(to_idx)
+	if from_c == null or to_c == null:
+		report["notes"].append({"name": label, "detail": "legacy %d/%d 无法解析，运行时合并同样会跳过" % [from_idx, to_idx]})
+		return
+	if from_c.gwcode == to_c.gwcode:
+		return
+	var total := 0
+	var held := 0
+	for r_id in cached_initial_owner:
+		if int(cached_initial_owner[r_id]) != from_c.gwcode:
+			continue
+		total += 1
+		if int(cached_region_owner.get(r_id, 0)) == from_c.gwcode:
+			held += 1
+	if total == 0:
+		# 来源国在初始地图上没有地块：与原版一致的无害空转（如西撒 18 号实体）。
+		report["notes"].append({"name": label, "detail": "来源 gw%d 初始无地块，合并为无害空转" % from_c.gwcode})
+	elif held * AUDIT_HELD_RATIO > total:
+		report["issues"].append({
+			"name": label,
+			"detail": "疑似未生效：来源仍持有 %d/%d 初始地块" % [held, total],
+		})
+	elif held > 0:
+		report["notes"].append({
+			"name": label,
+			"detail": "部分持有 %d/%d（可能为后续战争再征服）" % [held, total],
+		})
+
+
+## regions 型规则核对：目标地块当前归属是否等于预期。
+func _audit_regions(report: Dictionary, label: String, cond: bool,
+		region_ids: Array, expect_gw: int) -> void:
+	report["rules_checked"] += 1
+	if not cond:
+		report["inactive"] += 1
+		return
+	var bad := []
+	for raw in region_ids:
+		var r_id := int(raw)
+		var cur := int(cached_region_owner.get(r_id, -1))
+		if cur != expect_gw:
+			bad.append("%d→%s" % [r_id, "缺失" if cur < 0 else str(cur)])
+	if bad.is_empty():
+		return
+	var detail := "%d/%d 地块归属不符：%s" % [
+		bad.size(), region_ids.size(), ", ".join(bad.slice(0, AUDIT_DETAIL_CAP)),
+	]
+	if bad.size() < region_ids.size():
+		detail += "（部分不符，或为后续战争所致）"
+	report["issues"].append({"name": label, "detail": detail})
+
+
 func reset_runtime_state() -> void:
 	if cached_initial_owner.size() > 0:
 		cached_region_owner = cached_initial_owner.duplicate()
@@ -360,11 +659,17 @@ func _apply_map_owner_overrides() -> void:
 	if cached_region_owner.is_empty():
 		return
 	var changed := false
+	var unknown := 0
 	for raw in world.map_owner_overrides:
 		var r_id := int(raw)
 		if cached_region_owner.has(r_id):
 			cached_region_owner[r_id] = int(world.map_owner_overrides[raw])
 			changed = true
+		else:
+			unknown += 1
+	if unknown > 0:
+		_warn_once("override_unknown_regions",
+				"存档归属覆盖中有 %d 个地块不在当前地图缓存（底图变更/旧档残留）" % unknown)
 	if changed:
 		_update_cached_owner_palette()
 
@@ -373,6 +678,8 @@ func _apply_map_owner_overrides() -> void:
 ## 世界地图渲染每次进入场景时从 cached_region_owner 复制，因此改这里即可让下次渲染生效。
 func transfer_owner(from_gwcode: int, to_gwcode: int) -> void:
 	if from_gwcode <= 0 or to_gwcode <= 0:
+		_warn_once("transfer_invalid_%d_%d" % [from_gwcode, to_gwcode],
+				"transfer_owner 收到非法 gwcode（%d -> %d），已忽略；检查调用方国家解析" % [from_gwcode, to_gwcode])
 		return
 	if cached_region_owner.is_empty():
 		_pending_map_owner_changes.append({"kind": "transfer", "from": from_gwcode, "to": to_gwcode})
@@ -399,6 +706,9 @@ func set_region_owner(region_ids: Array, to_gwcode: int) -> void:
 		if cached_region_owner.has(r_id):
 			cached_region_owner[r_id] = to_gwcode
 			_persist_owner_override(r_id, to_gwcode)
+		else:
+			_warn_once("region_missing_%d" % r_id,
+					"set_region_owner 引用了缓存中不存在的地块 %d（底图缺绘制或 ID 抄错）" % r_id)
 	_update_cached_owner_palette()
 	map_changed.emit()
 
@@ -467,7 +777,12 @@ func _apply_part_merge_rules(w: WorldState) -> void:
 		var legacy_idx := int(rule.get("legacy", -1))
 		var part_idx := int(rule.get("part", -1))
 		var c := w.get_country_by_legacy_index(legacy_idx) if legacy_idx >= 0 else null
-		if c == null or not _has_part(c, part_idx):
+		if c == null:
+			if legacy_idx >= 0:
+				_warn_once("rule_country_missing_%d" % legacy_idx,
+						"PART_MERGE_RULES 中 legacy %d 无对应国家对象，规则永不生效" % legacy_idx)
+			continue
+		if not _has_part(c, part_idx):
 			continue
 		match String(rule.get("type", "")):
 			"merge":
@@ -478,6 +793,8 @@ func _apply_part_merge_rules(w: WorldState) -> void:
 				if rule.has("target_legacy"):
 					var target_c := w.get_country_by_legacy_index(int(rule["target_legacy"]))
 					if target_c == null:
+						_warn_once("rule_target_missing_%d" % int(rule["target_legacy"]),
+								"PART_MERGE_RULES 的 target_legacy %d 无法解析，规则跳过" % int(rule["target_legacy"]))
 						continue
 					target_gw = target_c.gwcode
 				set_region_owner(rule.get("regions", []), target_gw)
@@ -489,8 +806,15 @@ func _merge_legacy(w: WorldState, from_idx: int, to_idx: int) -> void:
 	var from_c := w.get_country_by_legacy_index(from_idx)
 	var to_c := w.get_country_by_legacy_index(to_idx)
 	if from_c == null or to_c == null:
+		_warn_once("merge_country_missing_%d_%d" % [from_idx, to_idx],
+				"合并跳过：legacy %d 或 %d 无对应国家对象（检查 country_identity.json 与国家表构建）"
+						% [from_idx, to_idx])
 		return
-	if from_c.gwcode == to_c.gwcode or from_c.gwcode <= 0 or to_c.gwcode <= 0:
+	if from_c.gwcode <= 0 or to_c.gwcode <= 0:
+		_warn_once("merge_gwcode_invalid_%d_%d" % [from_idx, to_idx],
+				"合并跳过：%d(gw=%d) 或 %d(gw=%d) gwcode 非法" % [from_idx, from_c.gwcode, to_idx, to_c.gwcode])
+		return
+	if from_c.gwcode == to_c.gwcode:
 		return
 	transfer_owner(from_c.gwcode, to_c.gwcode)
 
@@ -504,8 +828,7 @@ func _has_part(c: CountryData, idx: int) -> bool:
 func migrate_legacy_map_owner_overrides() -> void:
 	if world == null:
 		return
-	const DJIBOUTI_REGION_IDS := [366, 367, 368, 370, 376, 2032]
-	const SOMALIA_REGION_IDS := [30, 31, 32, 33, 34, 35, 45, 46, 1466, 2028, 2029, 2030, 2031, 4115]
+	# 地块常量 DJIBOUTI_REGION_IDS / SOMALIA_REGION_IDS 已提升为类级，供审计复用。
 	# 台湾全部地块（map_countries.json gwcode=713）。原版 CountryScript.cs:4881：
 	# completedDecisions[7] 成立时把 38 号台湾地图对象重绘为中国(1)。
 	const TAIWAN_REGION_IDS := [2058, 2059, 2060, 2061, 2062, 2063, 2064, 2065, 2066,

@@ -44,12 +44,12 @@ func _opt_detente(context: Dictionary) -> void:
 		d.diplomatic_reputation -= d.diplomatic_reputation / 50
 	if d.size() > W.I_BUDGET:
 		d.budget -= 100
-	context["result_text"] = "我们紧急组织了中美两国外交部长之间的盛大会谈，美国代表团应邀参加了一次豪华的中国之旅，在那里我们准备了各种节日和活动来表达我们和平的愿望。缓和成功了，紧张局势得到了缓和。"
+	context["result_text"] = tr("event.script.event_007_diplo_crisis_usa.i0")
 
 
 # 选项2：向帝国主义者发射核武器！（Event7.cs result 2：load_scene_after_click → 结局）
 func _opt_nuke(context: Dictionary) -> void:
-	context["result_text"] = "紧张度提升"
+	context["result_text"] = tr("event.script.event_007_diplo_crisis_usa.i1")
 	game.queue_ending_after_event(3)
 
 
@@ -68,7 +68,7 @@ func _opt_indifferent(context: Dictionary) -> void:
 		d.hardline_crackdown_count += 1
 	if mod17 != null and mod17.is_active and _usa_in_asean() and d.size() > 139 and d.alliance_kickout_timer <= 0:
 		d.alliance_kickout_timer = 5   # 原 data.alliance_kickout_timer（无端口命名键，数字索引直访）
-	context["result_text"] = "紧张度提升"
+	context["result_text"] = tr("event.script.event_007_diplo_crisis_usa.i2")
 
 
 # 选项4：让我们给帝国主义者一点颜色瞧瞧！（Event7.cs result 4：激活修正17「禁运美国」）
@@ -77,7 +77,7 @@ func _opt_embargo(context: Dictionary) -> void:
 	if mod17 != null:
 		mod17.is_active = true
 		_set_mod17_text("禁运美国", "我们将增加与美国影响差额10%的特工网络|获得相当于与美国影响差额5%的预算|美国将减少与中国影响差额10%的影响力|失去相当于与中国影响差额5%的收入")
-	context["result_text"] = "很快，我们就发动了联盟内的国家对美国实施了禁运，美方对此十分震惊，谴责中国的“帝国主义行为”，但他们之前威胁我们的时候为什么不想想可能的后果呢？总而言之，美国佬会有一段“难忘”的时光了！"
+	context["result_text"] = tr("event.script.event_007_diplo_crisis_usa.i3")
 
 
 # 海地后果（Event7.cs 末尾：SubGosstroy==19 && !cw → cw=true）
@@ -104,3 +104,17 @@ func _set_mod17_text(title: String, effect: String) -> void:
 func _usa_in_asean() -> bool:
 	var usa := ws.get_country_by_legacy_index(1)
 	return usa != null and usa.has_tag("asean")
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_007_diplo_crisis_usa.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "diplomatic_crisis_usa",
+	"num": 7,
+	"notify": false,
+	"trigger": [{"t": "ALL", "c": [{"t": "EMPIRE_RELATION_AT_MOST", "key": "0"}, {"t": "PREV_EVENT_NOT_DONE", "ref": "event_421"}]}],
+	"options": [{"disabled": true, "cond": {"t": "ANY", "c": [{"t": "RESOURCE_NOT_EQUALS", "key": "military_doctrine", "v": 30}, {"t": "RESOURCE_AT_MOST", "key": "diplo", "v": 950}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "result": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "influence_prc", "v": 50}, "fx": [{"t": "SET_EMPIRE_RELATION", "key": "0", "v": 400}, {"t": "ADD_RESOURCE", "key": "influence_prc", "v": -50}, {"t": "ADD_RESOURCE", "key": "army", "v": -50}, {"t": "ADD_RESOURCE", "key": "agents", "v": -50}]}, {"disabled": true, "cond": {"t": "ANY", "c": [{"t": "ALL", "c": [{"t": "RESOURCE_EQUALS", "key": "political_line"}, {"t": "RESOURCE_AT_MOST", "key": "party_system", "v": 7}]}, {"t": "ALL", "c": [{"t": "COALITION_SUPPORT_AT_LEAST", "v": 67}, {"t": "RESOURCE_AT_LEAST", "key": "party_system", "v": 8}]}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"cond": {"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_544"}, {"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_544"}, {"t": "EMPIRE_POWER_DIFFERENCE_AT_LEAST", "key": "0", "v": 1}, {"t": "COUNTRY_FIELD_EQUALS", "key": "econ", "v": 1, "target": "1"}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

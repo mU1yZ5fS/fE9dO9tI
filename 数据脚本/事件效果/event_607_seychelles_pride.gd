@@ -4,10 +4,10 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:884-886 —— DATE_AFTER 1977.6.1；fire_only_once 承担 !event_done[607]。
 ## 差异：原版 button[1] 无条件 Destroy，prepare 恒 _disable；proprc→亲中、Torg→对华贸易。
 
-const TXT_OPT0_DIS := "我们的力量还是不够"
-const TXT_OPT1_DIS := "我们为什么要帮助英帝国主义者助纣为虐？"
-const TXT_R0 := "6月5日，在总统曼卡姆出国期间，近百名塞舌尔人民联合党的士兵与部分我们的特勤占领了首都所在岛马埃岛的战略要地，警局全部被攻下，并逮捕了六名英国军官顾问，这些顾问及其家属和塞舌尔最高法院首席大法官奥布莱恩·奎因被驱逐到欧洲。塞舌尔人民联合党党首和总理勒内宣誓就任新总统并组建了新的政府但其承诺1979年会再次进行选举；其宣布自己是印度洋社会主义和坦桑尼亚式的泛非主义者，并非苏联式的共产主义者，但其与社会主义阵营尤其对中国保持密切联系。勒内对我们提供的帮助表示十分感激，并开始对部分领域实行中国模式，我们和坦桑尼亚也开始对其进行援助，包括不限于帮助建设房屋，派遣军事顾问，派遣医疗队等。"
-const TXT_R2 := "6月5日，在总统曼卡姆出国期间，近百名塞舌尔人民联合党的士兵占领了首都所在岛马埃岛的战略要地，警局大部分被攻下，仅在有大量军火库的一个警局里发生激烈的交火，警员和士兵各有一人死亡，最终逮捕了六名英国军官顾问，这些顾问及其家属和塞舌尔最高法院首席大法官奥布莱恩·奎因被驱逐到欧洲。塞舌尔人民联合党党首和总理勒内宣誓就任新总统并组建了新的政府；其宣布自己是印度洋社会主义和泛非主义者，并非苏联式的共产主义者，并宣布于1979年进行大选，但其与社会主义阵营保持密切关系。坦桑尼亚以及数个社会主义阵营国家开始对其进行援助。"
+const TXT_OPT0_DIS := "event.script.event_607_seychelles_pride.c0"
+const TXT_OPT1_DIS := "event.script.event_607_seychelles_pride.c1"
+const TXT_R0 := "event.script.event_607_seychelles_pride.c2"
+const TXT_R2 := "event.script.event_607_seychelles_pride.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,8 +22,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if budget + agents >= 20 and agents >= 20:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
-	_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
+	_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -36,7 +36,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			if seychelles != null:
 				seychelles.government = GameConstants.Government.SOCIALIST
 				seychelles.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST
@@ -50,7 +50,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -100)
 			_add_power(EmpireData.USA, -20)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			if seychelles != null:
 				seychelles.government = GameConstants.Government.REFORMIST
 				seychelles.sub_government = GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST
@@ -145,3 +145,19 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_607_seychelles_pride.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_607",
+	"num": 607,
+	"priority": 60700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_607_seychelles_pride.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1977.6.1"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -5,15 +5,15 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "创建自己的空间站。"
-const TXT_OPT0_DIS := "太复杂了。"
-const TXT_OPT1 := "我们需要一个中华人民共和国和苏联的联合项目。"
-const TXT_OPT1_DIS := "不可能和他们合作。"
-const TXT_OPT2 := "我们不需要空间站。"
+const TXT_OPT0 := "event.script.event_363_orbital_space_station.c0"
+const TXT_OPT0_DIS := "event.script.event_363_orbital_space_station.c1"
+const TXT_OPT1 := "event.script.event_363_orbital_space_station.c2"
+const TXT_OPT1_DIS := "event.script.event_363_orbital_space_station.c3"
+const TXT_OPT2 := "event.script.event_363_orbital_space_station.c4"
 
-const TXT_R0 := "不久，中国第一个载人轨道天文台发射了。是的，第一批宇航员面临着许多困难，但迈出了这一步，我们就开启了太空计划的新阶段，其前景不可思议！"
-const TXT_R1 := "根据协议，首个国际空间站“黎明号”建成。中国和苏联宇航员的联合工作已经产生了重大的科学成果，该项目对国际关系的影响是无价的。与苏联和中华人民共和国结盟的一些国家已经表示愿意参加空间站的工作，我们的设计局已经在制定进一步扩大空间站的计划。"
-const TXT_R2 := "载人空间站需要恒河沙数的资源，而且几乎没什么实际用处。我们有更重要的任务。"
+const TXT_R0 := "event.script.event_363_orbital_space_station.c5"
+const TXT_R1 := "event.script.event_363_orbital_space_station.c6"
+const TXT_R2 := "event.script.event_363_orbital_space_station.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -24,15 +24,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var _dv := world
 	var r353 := _prev_result(world, "event_353")
 	if (r353 == 0 or r353 == 1) and _budget_reserve(world) >= 30:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if (r353 == 0 or r353 == 1) and _budget_reserve(world) >= 30 \
 			and world.empires.size() > 1 and world.empires[1] != null and world.empires[1].relations >= 50:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
+	_enable(opt[2], tr(TXT_OPT2))
 
 
 func execute(context: Dictionary) -> void:
@@ -44,15 +44,15 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_SCIENCE, 150)
 			_add(W.I_BUDGET, -20)
 			_add(W.I_DIPLO, 10)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_SCIENCE, 300)
 			_add(W.I_BUDGET, -20)
 			_add(W.I_DIPLO, 20)
 			_add_relation(EmpireData.USSR, 50)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -101,3 +101,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_363_orbital_space_station.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_363",
+	"num": 363,
+	"priority": 36300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_363_orbital_space_station.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1985.8.1"}, {"t": "TECH_UNLOCKED", "v": 32}, {"t": "ANY", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_356"}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_357"}]}]}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

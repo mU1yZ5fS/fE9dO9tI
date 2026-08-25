@@ -5,23 +5,23 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "支持哈菲兹·阿萨德，并向叙利亚输送援助（需要10.0百万预算与5.0点特工网络）"
-const TXT_OPT0_DIS := "中国的国际影响力应高于25......"
-const TXT_OPT1 := "支持里法特·阿萨德组织政变（需要5.0百万预算与15.0点特工网络）"
-const TXT_OPT1_DIS := "中国的国际影响力应高于35.0或我国正与中情局合作"
-const TXT_OPT2 := "忽略"
-const TXT_OPT0_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有10百万才能干活......"
-const TXT_OPT0_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有5支特工网络才能干活......"
-const TXT_OPT0_DIS_INFLUENCE := "中国的国际影响力应高于25......"
-const TXT_OPT1_DIS_BUDGET := "巧妇难为无米之炊，我们手头得有5百万才能干活......"
-const TXT_OPT1_DIS_AGENTS := "巧妇难为无米之炊，我们手头得有15支特工网络才能干活......"
-const TXT_OPT1_DIS_OTHER := "中国的国际影响力应高于35.0或我国正与中情局合作"
+const TXT_OPT0 := "event.script.event_368_syria_1001_nights.c0"
+const TXT_OPT0_DIS := "event.script.event_368_syria_1001_nights.c1"
+const TXT_OPT1 := "event.script.event_368_syria_1001_nights.c2"
+const TXT_OPT1_DIS := "event.script.event_368_syria_1001_nights.c3"
+const TXT_OPT2 := "event.script.event_368_syria_1001_nights.c4"
+const TXT_OPT0_DIS_BUDGET := "event.script.event_368_syria_1001_nights.c5"
+const TXT_OPT0_DIS_AGENTS := "event.script.event_368_syria_1001_nights.c6"
+const TXT_OPT0_DIS_INFLUENCE := "event.script.event_368_syria_1001_nights.c7"
+const TXT_OPT1_DIS_BUDGET := "event.script.event_368_syria_1001_nights.c8"
+const TXT_OPT1_DIS_AGENTS := "event.script.event_368_syria_1001_nights.c9"
+const TXT_OPT1_DIS_OTHER := "event.script.event_368_syria_1001_nights.c10"
 
-const TXT_R0 := "我们向叙利亚输送了大量经济援助，这足以让我们在叙利亚的最高层权力精英中组织亲中派政治势力。\n在此之前，因苏联提供优惠贷款而对其效忠的哈菲兹·阿萨德，也开始更密切地关注中国。\n于此相对应的是，阿萨德王朝内的冲突被严厉且毫不留情的方式给解决了：亲总统的共和国卫队解除了“国防旅”的武装。作为总统之弟的里法特·阿萨德也被公众看作是“腐败象征”，并因叛乱未遂而受审。"
-const TXT_R1 := "我们成功组织了对叙利亚现任总统哈菲兹·阿萨德的政变。\n里法特·阿萨德在得到不满于哈菲兹政策的政治精英们的忠诚后，便宣布有人在总统生病期间，试图策动政治阴谋。因此，他借机调动了自己的“国防旅”。不忠于里法特的势力被纷纷逮捕。尽管哈菲兹·阿萨德拒绝任命他的弟弟为代理总统，但大局已定。\n在新领导人的施政纲领中，里法特·阿萨德选择了亲美亲西的外交路线，并在国内实施自由化改革。"
-const TXT_R2 := "里法特·阿萨德的政变尝试失败了。在短暂的政治冲突与借总统生病而实行的舆论攻势后，里法特·阿萨德不得不抛下所有政府职位并离开叙利亚。\n作为回应，哈菲兹·阿萨德撤出了驻扎在黎巴嫩的叙利亚部队，并开始实施旨在实现自由化与经济复苏的改革。"
-const TXT_R1_OK := "我们成功组织了对叙利亚现任总统哈菲兹·阿萨德的政变。\n里法特·阿萨德在得到不满于哈菲兹政策的政治精英们的忠诚后，便宣布有人在总统生病期间，试图策动政治阴谋。因此，他借机调动了自己的“国防旅”。不忠于里法特的势力被纷纷逮捕。尽管哈菲兹·阿萨德拒绝任命他的弟弟为代理总统，但大局已定。\n在新领导人的施政纲领中，里法特·阿萨德选择了亲美亲西的外交路线，并在国内实施自由化改革。"
-const TXT_R1_FAIL := "政变失败了！有人（可能是苏联顾问）将里法特·阿萨德试图组织政变阴谋的消息传给了哈菲兹·阿萨德总统。这导致里法特迅速被捕，并被驱逐出境。“国防旅”也被解散。\n此前在外交上行动谨慎的哈菲兹·阿萨德，则越加向苏联靠拢。"
+const TXT_R0 := "event.script.event_368_syria_1001_nights.c11"
+const TXT_R1 := "event.script.event_368_syria_1001_nights.c12"
+const TXT_R2 := "event.script.event_368_syria_1001_nights.c13"
+const TXT_R1_OK := "event.script.event_368_syria_1001_nights.c14"
+const TXT_R1_FAIL := "event.script.event_368_syria_1001_nights.c15"
 
 
 func evaluate(world: WorldState) -> bool:
@@ -68,28 +68,28 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var usa := world.get_country_by_legacy_index(51)
 	var usa_dev := usa.development if usa != null else 0
 	if budget_reserve >= 100 and agents >= 50:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		var dis0 := TXT_OPT0_DIS
+		var dis0 := tr(TXT_OPT0_DIS)
 		if budget_reserve < 100:
-			dis0 = TXT_OPT0_DIS_BUDGET
+			dis0 = tr(TXT_OPT0_DIS_BUDGET)
 		elif agents < 50:
-			dis0 = TXT_OPT0_DIS_AGENTS
+			dis0 = tr(TXT_OPT0_DIS_AGENTS)
 		else:
-			dis0 = TXT_OPT0_DIS_INFLUENCE
+			dis0 = tr(TXT_OPT0_DIS_INFLUENCE)
 		_disable(opt[0], dis0)
 	if budget_reserve >= 50 and agents >= 150 and (world.influence_prc >= 350 or usa_dev > 0):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		var dis1 := TXT_OPT1_DIS
+		var dis1 := tr(TXT_OPT1_DIS)
 		if budget_reserve < 50:
-			dis1 = TXT_OPT1_DIS_BUDGET
+			dis1 = tr(TXT_OPT1_DIS_BUDGET)
 		elif agents < 150:
-			dis1 = TXT_OPT1_DIS_AGENTS
+			dis1 = tr(TXT_OPT1_DIS_AGENTS)
 		else:
-			dis1 = TXT_OPT1_DIS_OTHER
+			dis1 = tr(TXT_OPT1_DIS_OTHER)
 		_disable(opt[1], dis1)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[2], tr(TXT_OPT2))
 
 
 func execute(context: Dictionary) -> void:
@@ -110,7 +110,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_AGENTS, -50)
 			_add(W.I_PARTY_SUPPORT, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			if ws.influence_prc >= ws.empires[1].power:
 				if syria != null:
@@ -124,7 +124,7 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_BUDGET, -50)
 				_add(W.I_AGENTS, -150)
 				_add(W.I_PARTY_SUPPORT, 50)
-				context["result_text"] = TXT_R1_OK
+				context["result_text"] = tr(TXT_R1_OK)
 			else:
 				if syria != null:
 					syria.sub_government = GameConstants.SubGovernment.PRAGMATIST
@@ -133,12 +133,12 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_AGENTS, -150)
 				_add_power(EmpireData.USSR, 20)
 				_add(W.I_PARTY_SUPPORT, -300)
-				context["result_text"] = TXT_R1_FAIL
+				context["result_text"] = tr(TXT_R1_FAIL)
 		2:
 			if syria != null:
 				syria.government = GameConstants.Government.REFORMIST
 				syria.sub_government = GameConstants.SubGovernment.PRAGMATIST
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -187,3 +187,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_368_syria_1001_nights.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_368",
+	"num": 368,
+	"priority": 36800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_368_syria_1001_nights.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_368_syria_1001_nights.gd",
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

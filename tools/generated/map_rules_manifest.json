@@ -1,0 +1,223 @@
+{
+  "_readme": [
+    "原版地图规则逐条登记表。tools/diff_map_rules.py 强制：",
+    "  1. tools/generated/original_map_rules.json 中每条规则必须在此有对应条目，",
+    "     否则说明原版存在一条无人知晓的领土规则（红灯）。",
+    "  2. status 取值：",
+    "     matched                —— Godot 已实现且语义一致",
+    "     divergent_equivalent   —— 建模方式不同但玩家可见结果等价（注明方式）",
+    "     display_only           —— 原版仅为显示层行为，无领土数据含义",
+    "     pending_decision       —— 尚未决策，需产品/复刻负责人拍板（不阻塞CI，但持续曝光）",
+    "  3. 本文件新增条目必须附 cs 行号与 Godot 侧 file:line 证据。"
+  ],
+  "rules": [
+    {
+      "id": "repaint:4871",
+      "summary": "朝鲜战争南胜(data[83]==2)：半岛 blob 归南(46)",
+      "status": "matched",
+      "godot": ["数据脚本/地图数据/map_service.gd:420-421 sync_map_merges korea_result==2 -> _merge_legacy(10,46)"]
+    },
+    {
+      "id": "repaint:4877",
+      "summary": "朝鲜战争北胜(data[83]==1)：半岛 blob 归北(10)",
+      "status": "matched",
+      "godot": ["数据脚本/地图数据/map_service.gd:418-419 sync_map_merges korea_result==1 -> _merge_legacy(46,10)"]
+    },
+    {
+      "id": "repaint:4883",
+      "summary": "台湾 completedDecisions[7]：38->1 并入中国",
+      "status": "matched",
+      "godot": [
+        "数据脚本/地图数据/map_service.gd:422-424 completedDecisions[7]",
+        "差异备注: Godot 额外接受 taiwan_status==2 触发同一合并（改版扩展），原版仅决议位"
+      ]
+    },
+    {
+      "id": "repaint:4887",
+      "summary": "OAR 阿拉伯革命共和国联盟: {54,55,18,14,35,30,13,40}->30（decisions20+parts0/1/2）",
+      "status": "matched",
+      "godot": ["数据脚本/地图数据/map_service.gd:445-450 sync_map_merges OAR 分支，sources 一致"]
+    },
+    {
+      "id": "repaint:4893",
+      "summary": "文莱 111->49 当马来西亚(49).parts[0]",
+      "status": "matched",
+      "godot": ["数据脚本/地图数据/map_service.gd:102 PART_MERGE_RULES 马来西亚吞并文莱 sources:[111]"]
+    },
+    {
+      "id": "repaint:4897",
+      "summary": "文莱回退 111->92 当 !event_done[118]",
+      "status": "display_only",
+      "godot": ["原版把未触发Event118的文莱blob显示为空白92号；Godot 无覆盖层概念，文莱始终按国家着色，无需实现"]
+    },
+    {
+      "id": "repaint:4901",
+      "summary": "文莱 else 保持 111",
+      "status": "display_only",
+      "godot": ["同上，恒等分支无领土含义"]
+    },
+    {
+      "id": "repaint:4908",
+      "summary": "伯利兹 142 按 1981-09-21 独立日切换显示",
+      "status": "divergent_equivalent",
+      "godot": [
+        "建模差异: 原版用日期切换blob归属显示；Godot 用初始归属表达——伯利兹6区 owner=英属(200)，",
+        "由 Event634/635 危地马拉统一战争结算转出。玩家可见结果等价。",
+        "见 tools/map_audit_exceptions.json 英属洪都拉斯条目"
+      ]
+    },
+    {
+      "id": "repaint:4912",
+      "summary": "伯利兹 else -> 92 空白显示",
+      "status": "display_only",
+      "godot": ["同 repaint:4908，初始归属建模已覆盖"]
+    },
+    {
+      "id": "repaint:4919",
+      "summary": "161 号实体按 1978-10 独立日切换显示（荷属安的列斯系）",
+      "status": "divergent_equivalent",
+      "godot": ["与伯利兹同理：初始归属+事件转移建模"]
+    },
+    {
+      "id": "repaint:4923",
+      "summary": "161 else -> 92",
+      "status": "display_only",
+      "godot": ["同上"]
+    },
+    {
+      "id": "repaint:4930",
+      "summary": "吉布提 106->21 当 !event_done[585]（仍属法国显示）",
+      "status": "matched",
+      "godot": [
+        "数据脚本/地图数据/map_service.gd:451-453 sync_map_merges 吉布提分支",
+        "数据脚本/地图数据/map_service.gd:519-523 migrate_legacy_map_owner_overrides 旧档兼容"
+      ]
+    },
+    {
+      "id": "repaint:4934",
+      "summary": "吉布提 else 保持 106",
+      "status": "display_only",
+      "godot": ["恒等分支"]
+    },
+    {
+      "id": "repaint:4941",
+      "summary": "-2 号英国解体blob：BritLost 为假时显示 92",
+      "status": "pending_decision",
+      "godot": [
+        "war6 胜利设置 w.set_flag(\"BritLost\") (war_system.gd apply_war_side1_victory case 6)，",
+        "但 Godot 地图层没有任何 BritLost 消费方——疑似移植遗漏或改版有意舍弃，需拍板"
+      ]
+    },
+    {
+      "id": "repaint:4945",
+      "summary": "-2 blob BritLost 时 -> 71",
+      "status": "pending_decision",
+      "godot": ["同 repaint:4941，需先决定是否实现英国解体地图表现"]
+    },
+    {
+      "id": "repaint:4952",
+      "summary": "西撒 18->54 当西撒人阵(54).parts[0]",
+      "status": "matched",
+      "godot": [
+        "数据脚本/地图数据/map_service.gd:112-113 PART_MERGE_RULES 西撒哈拉并入摩洛哥",
+        "差异备注: 原版是 18->54 显示切换；Godot 直接按地块转移 regions [54,55,56,57]，注释已说明 18 无初始地块"
+      ]
+    },
+    {
+      "id": "repaint:4956",
+      "summary": "西撒 else 保持 18",
+      "status": "display_only",
+      "godot": ["恒等分支"]
+    },
+    {
+      "id": "repaint:4963",
+      "summary": "老挝 22->11 当越南(11).parts[0]",
+      "status": "matched",
+      "godot": ["数据脚本/地图数据/map_service.gd:104 PART_MERGE_RULES 越南印支联邦 sources:[22,23]"]
+    },
+    {
+      "id": "repaint:4967",
+      "summary": "老挝 else 保持 22",
+      "status": "display_only",
+      "godot": ["恒等分支"]
+    },
+    {
+      "id": "repaint:4974",
+      "summary": "多米尼加? 42->41 当非洲之角(41).parts[0] 或 parts[1]",
+      "status": "matched",
+      "godot": ["数据脚本/地图数据/map_service.gd:454-457 sync_map_merges 非洲之角分支 _merge_legacy(42,41)"]
+    },
+    {
+      "id": "repaint:4978",
+      "summary": "42 else 保持",
+      "status": "display_only",
+      "godot": ["恒等分支"]
+    },
+    {
+      "id": "repaint:4985",
+      "summary": "吉布提 106->41 当非洲之角 parts[1]",
+      "status": "matched",
+      "godot": ["数据脚本/地图数据/map_service.gd:456-457 _merge_legacy(106,41)"]
+    },
+    {
+      "id": "repaint:4989",
+      "summary": "106 else 保持",
+      "status": "display_only",
+      "godot": ["恒等分支"]
+    },
+    {
+      "id": "repaint:4996",
+      "summary": "柬埔寨 23->11 当越南.parts[0]",
+      "status": "matched",
+      "godot": ["数据脚本/地图数据/map_service.gd:104 sources:[22,23] 含柬埔寨"]
+    },
+    {
+      "id": "repaint:5000",
+      "summary": "23 else 保持",
+      "status": "display_only",
+      "godot": ["恒等分支"]
+    },
+    {
+      "id": "repaint:5007",
+      "summary": "南墨西哥 168 非 CW 时显示为 51(美国)?",
+      "status": "pending_decision",
+      "godot": [
+        "Godot 将 168 作为常驻虚拟国（world_factory ensure_fictional_countries），不随 cw 切换显示；",
+        "原版该分支疑似显示怪癖，需确认改版意图后标记 matched/divergent"
+      ]
+    },
+    {
+      "id": "repaint:5011",
+      "summary": "168 else 保持 168",
+      "status": "display_only",
+      "godot": ["恒等分支"]
+    }
+  ],
+  "godot_extras": {
+    "_readme": "Godot 侧有而 Repaint() 没有的领土规则（出处为其他 C# 文件或改版自创）。v1 仅登记不强制，后续逐步补齐出处。",
+    "entries_note": "完整清单见 数据脚本/地图数据/map_service.gd 的 PART_MERGE_RULES 与 sync_map_merges 显式分支；其中 war16 朝鲜统一战争(GameState.cs:890-1038)胜利后原版同样不重绘半岛——玩家报告的'统一了但地图没变'即此路径，是否追加规则属产品决策，登记于下。",
+    "known_decisions": [
+      {
+        "topic": "war16 朝鲜统一战争胜利后的半岛归属",
+        "evidence": "F:/work/毛的遗产改版逆向工程测试/.../GameState.cs:890-1038 vs 数据脚本/systems/war_system.gd:1713 _apply_war16_result",
+        "state": "pending_decision",
+        "options": [
+          "A 忠实复刻：维持现状，在开发文档标注'原版即如此'",
+          "B 改版增强：war16 胜利时设置 korea_result 或直接转移 46 号地块给 10"
+        ]
+      },
+      {
+        "topic": "war0/war16 战后朝鲜国名硬编码偏差（已修复 2026-08-25）",
+        "evidence": "原版 war16 国名四选一 GameState.cs:905-918 + Events_text_en.txt[840..843]；war0 北胜=「朝鲜」(GameState.cs:44, text[838])",
+        "state": "resolved",
+        "resolution": "war16 改为按中国政体选短名（_war16_korea_name：840..843）；结算文案沿用 country_1..4 长名（846..849）；war0 北胜改回「朝鲜」"
+      },
+      {
+        "topic": "war16 结算文案第三段按 SubGosstroy 分支简化（已补全 2026-08-25）",
+        "evidence": "GameState.cs:928-1012：sub 0-17→text[983+sub]、18→text[1187]、19 孔镇泰/20 天道教/21 金正日/22 吴振宇内联；源文本 Events_text_en.txt",
+        "state": "resolved",
+        "resolution": "war_result_texts.json entry 16 补全 third_0..third_22 共 23 条；_war16_result_text_from_table 按 north.sub_government 取 third_*，缺省回落 third_default"
+      }
+    ]
+  }
+}

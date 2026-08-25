@@ -42,17 +42,17 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1357 := "康乃“新”革命？"
-const TXT_IDX_1358 := "六年时间过去了，葡萄牙的民主体制依然活在动荡之中。中左翼政府与中右翼政府如走马灯般频繁更迭，然而他们都不足以解决该国自旧体制下延续的社会经济问题，以及最终完成去殖民化的任务。政治不稳定为该国局势火上浇油——激进左右翼势力频繁发动恐怖袭击与各类反政府行动，从而严重打击了现政府在人民眼中的人气。民主派政治家设法激起公众对革命委员会的不满，并宣称后者“高居于民主政体之上，阻碍政治现代化”。然而，尽管其权力受到限制，但军方还是成功抵挡住了对自己的进攻。议会内的激进政党也越加强势。在他们的压力下，新加入葡萄牙革命委员会的军官均是极端反对当局自由主义政策的成员。以贡萨尔维斯与萨赖瓦·德卡瓦略为代表的极左翼政治家们纷纷回归。同时登场的还有极右翼反共产主义组织的领导人阿尔波因·卡尔万与斯皮诺拉。革命委员会正变得日益撕裂且激进化，政治家相互指责对方背叛了康乃馨革命。社会内也传出了军方将再度接管政权，重建国家秩序的流言。但这次，我们将如何干预葡萄牙？"
-const TXT_IDX_1359 := "支持左翼团体（需要20.0百万{0}与25.0点{1}）"
-const TXT_IDX_592 := "预算"
-const TXT_IDX_593 := "特工网络"
-const TXT_IDX_594 := "军事实力"
-const TXT_IDX_566 := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
-const TXT_IDX_567 := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
-const TXT_IDX_1360 := "支持右翼团体（需要20.0百万{0}与25.0点{1}）"
-const TXT_IDX_1361 := "保持观望"
-const TXT_IDX_1363 := "里斯本爆发政变！根据《1976年宪法》，在革命委员会有权宣布一切法案违宪的情况下。为了应对政府颁布的有关解散革命委员会的法令。委员会宣称“政府长期向激进左派让步妥协，并将国家带到了内战的边缘”。军方拿下了首都的主要行政建筑，宣布推翻政府，并逮捕了那些没能逃出本国的行政部长们。右翼激进派与反共产主义势力纷纷支持政变。该国建立了由阿尔波因·卡尔万领导，斯皮诺拉任总统的新政府。葡萄牙新当局宣布将修改《1976年宪法》、对被没收财产进行再分配并奉行独立外交政策。第一步便是完全退出北大西洋公约组织的军事与政治框架。"
+const TXT_IDX_1357 := "event.script.event_420_carnation_new_revolution.c0"
+const TXT_IDX_1358 := "event.script.event_420_carnation_new_revolution.c1"
+const TXT_IDX_1359 := "event.script.event_420_carnation_new_revolution.c2"
+const TXT_IDX_592 := "event.script.event_420_carnation_new_revolution.c3"
+const TXT_IDX_593 := "event.script.event_420_carnation_new_revolution.c4"
+const TXT_IDX_594 := "event.script.event_420_carnation_new_revolution.c5"
+const TXT_IDX_566 := "event.script.event_420_carnation_new_revolution.c6"
+const TXT_IDX_567 := "event.script.event_420_carnation_new_revolution.c7"
+const TXT_IDX_1360 := "event.script.event_420_carnation_new_revolution.c8"
+const TXT_IDX_1361 := "event.script.event_420_carnation_new_revolution.c9"
+const TXT_IDX_1363 := "event.script.event_420_carnation_new_revolution.c10"
 
 ## 原文字符串附录（供自检）
 ## 里斯本爆发政变！根据《1976年宪法》，在革命委员会有权宣布一切法案违宪的情况下。为了应对政府颁布的有关解散革命委员会的法令。委员会宣称“政府背叛了1974年革命的理想，站在反革命营垒中，试图摧毁革命为该国带来的社会主义成就”。在共产党领导的工会和军队内左翼的支持下，军方拿下了首都的主要行政建筑，宣布推翻政府，并逮捕了那些没能逃出本国的行政部长们。军队内左翼最终与葡萄牙共产党合并改组成了新的葡萄牙共产党，该国军队开始改组为人民军，并将彻底清洗右翼分子。新的革命政府则由瓦斯科·贡萨尔维斯和葡共总书记阿尔瓦罗·库尼亚尔共同领导。葡萄牙新当局宣布将在国内建设社会主义、实行民主改革并加强与苏东阵营的合作。第一步便是完全退出北大西洋公约组织的军事与政治框架。
@@ -163,3 +163,19 @@ func _raw(i: int) -> int:
 	if d.size() > i:
 		return d.get_data_by_index(i)
 	return 0
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_420_carnation_new_revolution.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_420",
+	"num": 420,
+	"priority": 42000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_420_carnation_new_revolution.gd",
+	"trigger": [{"t": "PREV_EVENT_NOT_DONE", "ref": "event_420"}, {"t": "PREV_EVENT_NOT_DONE", "ref": "event_419"}, {"t": "COUNTRY_FIELD_AT_LEAST", "key": "government", "v": 2, "target": "87"}, {"t": "DATE_AFTER", "key": "1982.5.1"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

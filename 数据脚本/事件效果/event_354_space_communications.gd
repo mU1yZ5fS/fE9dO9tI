@@ -5,15 +5,15 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "在近地轨道上构建一个网络。"
-const TXT_OPT0_DIS := "没有这么做的资源。"
-const TXT_OPT1 := "发射地球同步卫星。"
-const TXT_OPT1_DIS := "没有这种科技。"
-const TXT_OPT2 := "连接别国的网络。"
+const TXT_OPT0 := "event.script.event_354_space_communications.c0"
+const TXT_OPT0_DIS := "event.script.event_354_space_communications.c1"
+const TXT_OPT1 := "event.script.event_354_space_communications.c2"
+const TXT_OPT1_DIS := "event.script.event_354_space_communications.c3"
+const TXT_OPT2 := "event.script.event_354_space_communications.c4"
 
-const TXT_R0 := "很快，中国在近地轨道上部署了由许多卫星组成的系统。当然，这并非最佳选择，但它能让我们完成任务。"
-const TXT_R1 := "我国成为世界上第四个能够依靠自己的力量将卫星发射到地球静止轨道的国家。很快，几颗卫星便用快速且高质量的通信覆盖了中国全境。"
-const TXT_R2 := "不幸的是，我国的技术不允许我们自己发射通信卫星，因此我们最好连接到别人的网络。"
+const TXT_R0 := "event.script.event_354_space_communications.c5"
+const TXT_R1 := "event.script.event_354_space_communications.c6"
+const TXT_R2 := "event.script.event_354_space_communications.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,14 +22,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if _budget_reserve(world) >= 30:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if _budget_reserve(world) >= 50 and (_prev_result(world, "event_353") == 0 or _prev_result(world, "event_353") == 1):
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
+	_enable(opt[2], tr(TXT_OPT2))
 
 
 func execute(context: Dictionary) -> void:
@@ -43,21 +43,21 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_INDUSTRY, 100)
 			_add(W.I_ARMY, 100)
 			_add(W.I_LIVING, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -40)
 			_add(W.I_SCIENCE, 300)
 			_add(W.I_INDUSTRY, 100)
 			_add(W.I_ARMY, 100)
 			_add(W.I_LIVING, 100)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_THOUGHT_FREEDOM, 40)
 			_add(W.I_SCIENCE, 300)
 			_add(W.I_INDUSTRY, 100)
 			_add(W.I_ARMY, 100)
 			_add(W.I_LIVING, 100)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -106,3 +106,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_354_space_communications.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_354",
+	"num": 354,
+	"priority": 35400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_354_space_communications.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1979.1.1"}, {"t": "TECH_UNLOCKED", "v": 27}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_353"}]}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

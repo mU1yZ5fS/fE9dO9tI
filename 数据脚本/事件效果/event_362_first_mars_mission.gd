@@ -5,15 +5,15 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "着陆就行。"
-const TXT_OPT0_DIS := "我们没有足够的资源。"
-const TXT_OPT1 := "火星探测器。"
-const TXT_OPT1_DIS := "风险太大了。"
-const TXT_OPT2 := "取消飞往火星的航天计划。"
+const TXT_OPT0 := "event.script.event_362_first_mars_mission.c0"
+const TXT_OPT0_DIS := "event.script.event_362_first_mars_mission.c1"
+const TXT_OPT1 := "event.script.event_362_first_mars_mission.c2"
+const TXT_OPT1_DIS := "event.script.event_362_first_mars_mission.c3"
+const TXT_OPT2 := "event.script.event_362_first_mars_mission.c4"
 
-const TXT_R0 := "中国成功发射了火星着陆器。因此，我们成为第三个能够在这颗红色星球表面着陆的国家，也是第二个同时保持模块运行的国家。科学家们已经预见到大量有用的信息。"
-const TXT_R1 := "中国已经成功发射了一个探测器。事实上，这是前所未有的项目，因此中国航天局的声望在国际社会的眼中如火箭般攀升。探测器继续在火星上旅行，收集有关火星的必要信息。"
-const TXT_R2 := "飞往火星太冒险了，因此最好放弃。"
+const TXT_R0 := "event.script.event_362_first_mars_mission.c5"
+const TXT_R1 := "event.script.event_362_first_mars_mission.c6"
+const TXT_R2 := "event.script.event_362_first_mars_mission.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -23,14 +23,14 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var opt := event_def.options
 	var r353 := _prev_result(world, "event_353")
 	if (r353 == 0 or r353 == 1) and _budget_reserve(world) >= 30:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if (r353 == 0 or r353 == 1) and _budget_reserve(world) >= 50:
-		_enable(opt[1], TXT_OPT1)
+		_enable(opt[1], tr(TXT_OPT1))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
-	_enable(opt[2], TXT_OPT2)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
+	_enable(opt[2], tr(TXT_OPT2))
 
 
 func execute(context: Dictionary) -> void:
@@ -42,14 +42,14 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_SCIENCE, 150)
 			_add(W.I_BUDGET, -20)
 			_add(W.I_DIPLO, 10)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_SCIENCE, 300)
 			_add(W.I_BUDGET, -40)
 			_add(W.I_DIPLO, 20)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -98,3 +98,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_362_first_mars_mission.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_362",
+	"num": 362,
+	"priority": 36200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_362_first_mars_mission.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1985.6.1"}, {"t": "TECH_UNLOCKED", "v": 31}, {"t": "PREV_EVENT_DONE", "ref": "event_360"}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

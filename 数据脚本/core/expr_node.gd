@@ -67,6 +67,9 @@ enum Type {
 	# 塞浦路斯大选链（Event697.cs:26-33）：keys=原版国家序号数组，value=最低数量。
 	# 严格社会主义判定：government == GameConstants.Government.SOCIALIST 或 sub_government == GameConstants.SubGovernment.LEFT_RADICAL（world_state.is_socialism(country, true)）。
 	SOCIALIST_COUNT_AT_LEAST,    # keys=[21,29,85,86,87,92] value=3 → IsSocialism(true) 命中数 >= 3
+	# 帝国领导人支持度门槛（Event89.cs 继任竞争选项，2026-08 追加）：
+	EMPIRE_LEADER_SUPPORT_AT_LEAST,  # key=帝国编号 target=领导人索引 value=阈值 → leaders[target].support >= value
+	EMPIRE_LEADER_SUPPORT_AT_MOST,   # 同上 → leaders[target].support <= value（配 ANY 表达 !=0）
 }
 
 ## 节点类型

@@ -6,13 +6,13 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：politic.traits[0]→trait_personality；原版随后改写 old_modify_desc[2] 的
 ##   大段修正描述为显示层文案，按项目约定跳过（display-only）。
 
-const TXT_OPT0_DIS := "恢复高考？你想和毛主席的七·二一指示对着干吗？"
-const TXT_OPT1_DIS_A := "现在的制度有什么问题？"
-const TXT_OPT1_DIS_B := "这还不如不改！"
-const TXT_OPT2_DIS := "总得来点变化，对吧？"
-const TXT_R0 := "中共中央和教育部颁布了一项通报，宣布将恢复自66年终止的全国高校统一招生考试。1977年10月21日，人民日报头版头条《高等学校招生进行重大改革》，宣布中断了十余年的高考将恢复考试，这一消息迅速传遍了全国各地。\n1977年冬天，举行了恢复高考后的第一次考试，考试分为文史与理工两科，文史类科目是思想政治、语文、数学、史地（历史和地理），理工类科目是政治、语文、数学、理化（物理和化学），报考外语专业的要加试外语。\n全国各地的考生对此投来了热切的目光，这是一个时代的终结，也是一个时代的开始。"
-const TXT_R1 := "中共中央和教育局决定引入预科制度。这将作为工农兵大学生的替代品，在每个学生接受了“工人农民和解放军的再教育”之后。他们将继续接受高等院校的教育（当然他们也可以选择结束教育，并得到专科学历）。这给了一些愿意为祖国做贡献的青年人接受进一步教育的机会，同时这也顾及到了一些高级知识份子的脸面。\n总体来说，这一方案刚刚好，反对的人不多，赞同的人不少。"
-const TXT_R2 := "我们必须承认现在的这些政策的确不妥，但这不是问题的核心。一旦恢复高考制，上海和北京这样的大都市和石河子，克拉玛依这样的地方的差距只会越来越大。高考制不会利好无产阶级，只会构建一批新的脱产者，他们不学无术，只会给祖国带来问题却不想着解决。而太多学校一听到要招收农民和工人子弟就难受的不得了，这难道是正确的吗？我们应该让更多优秀的高等教育机构进一步深入农村。而推荐制可以为我们找到最优秀的无产者，他们肯融入无产者，也愿意接受新知识。难道一个因为生产队长没时间复习，就一定表明他是个差生吗？恰恰相反！他只是想更好的建设农村，为无产阶级文化大革命添砖加瓦。而试图为高考辩护的人才是真正的资产阶级，恢复高考就是资产阶级对无产阶级的反扑，我们必须要说不！"
+const TXT_OPT0_DIS := "event.script.event_456_gaokao_gaokao.c0"
+const TXT_OPT1_DIS_A := "event.script.event_456_gaokao_gaokao.c1"
+const TXT_OPT1_DIS_B := "event.script.event_456_gaokao_gaokao.c2"
+const TXT_OPT2_DIS := "event.script.event_456_gaokao_gaokao.c3"
+const TXT_R0 := "event.script.event_456_gaokao_gaokao.c4"
+const TXT_R1 := "event.script.event_456_gaokao_gaokao.c5"
+const TXT_R2 := "event.script.event_456_gaokao_gaokao.c6"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -28,17 +28,17 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if not mod3:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if line56 >= 1 and line56 < 3 and not mod3:
 		_enable(opt[1], event_def.options[1].text)
 	elif mod3 or line56 == 0:
-		_disable(opt[1], TXT_OPT1_DIS_A)
+		_disable(opt[1], tr(TXT_OPT1_DIS_A))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_B)
+		_disable(opt[1], tr(TXT_OPT1_DIS_B))
 	if line56 == 0 or mod3:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 
@@ -49,7 +49,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			for p in ws.politicians:
 				if p != null:
 					if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
@@ -61,7 +61,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, 100)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			for p in ws.politicians:
 				if p != null:
 					if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
@@ -71,7 +71,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, 50)
 			_add(W.I_PEOPLE_SUPPORT, 100)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			for p in ws.politicians:
 				if p != null:
 					if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT:
@@ -141,3 +141,18 @@ func _leader_name() -> String:
 	return "华国锋"
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_456_gaokao_gaokao.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_456",
+	"num": 456,
+	"priority": 45600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_456_gaokao_gaokao.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

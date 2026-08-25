@@ -35,7 +35,7 @@ func _opt_pass(context: Dictionary) -> void:
 	# 官方版 DLL 反编译（tmp_Event19.cs otvet==1）证实 data[88]++ 为 ref 真实写入。
 	if d.size() > 88:
 		d.democracy_movement += 1
-	context["result_text"] = "作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了人民的不满，而江青同志则被认为是幕后黑手……"
+	context["result_text"] = tr("event.script.event_019_five_no.i0")
 
 
 # 选项1：严格执行这场运动（Event19.cs number_otvet==2）
@@ -47,7 +47,7 @@ func _opt_enforce(context: Dictionary) -> void:
 	if d.size() > W.I_DIPLO:
 		d.diplomatic_reputation += 10
 	_add_loyalty_by_trait(0, 70)
-	context["result_text"] = "作为国务院总理，公安部部长，您亲自指挥了这次驱散运动。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了广泛的不满，而江青同志和华国锋同志则被认为是幕后黑手……"
+	context["result_text"] = tr("event.script.event_019_five_no.i1")
 
 
 # 选项2：严格执行这场运动，并在媒体上批评这种行为（Event19.cs number_otvet==3）
@@ -62,7 +62,7 @@ func _opt_criticize(context: Dictionary) -> void:
 	if d.size() > 88:
 		d.democracy_movement -= 1
 	_add_loyalty_by_trait(0, 100)
-	context["result_text"] = "作为国务院总理，公安部部长，您亲自指挥了这次驱逐活动并在人民日报的头版发表了对纪念周恩来行为的批评，然而这看起来收效甚微，看起来群众已经厌倦了文化大革命中无止境的批判运动了。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制和在媒体上的批判引起了广泛的不满，而江青同志和华国锋同志则被认为是幕后黑手……"
+	context["result_text"] = tr("event.script.event_019_five_no.i2")
 
 
 # 选项3：轻微地破坏这场运动（Event19.cs number_otvet==4）
@@ -84,7 +84,7 @@ func _opt_sabotage(context: Dictionary) -> void:
 			p.loyalty -= 70
 		elif p.trait_personality >= GameConstants.PoliticianPersonality.MODERATE or p.trait_personality == GameConstants.PoliticianPersonality.CONSERVATIVE:
 			p.loyalty += 50
-	context["result_text"] = "作为国务院总理，公安部部长，您尽全力的将这次运动的规模控制在最小范围内，一些下令完全禁止纪念活动的官员被调任。作为运动的一部分，警察和工人民兵拆除了纪念周恩来的临时纪念碑，一些纪念周恩来的大字报和宣传画也被撤下。政府对祭奠周恩来行为的压制引起了人民的不满，而江青同志则被认为是幕后黑手。然而由于您的出手，这些不满并没有到不可收拾的程度……"
+	context["result_text"] = tr("event.script.event_019_five_no.i3")
 
 
 ## 指定 traits[0]（性格）的政治家忠诚变化
@@ -93,3 +93,17 @@ func _add_loyalty_by_trait(trait_id: int, delta: int) -> void:
 	for p in ws.politicians:
 		if p != null and p.trait_personality == trait_id:
 			p.loyalty += delta
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_five_no.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "five_no",
+	"num": 19,
+	"notify": false,
+	"trigger": [{"t": "DATE_AFTER", "key": "1976.2"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

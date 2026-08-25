@@ -22,11 +22,23 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = "你决定继续掌权，直至永远。"
+			context["result_text"] = tr("event.script.event_ending_choice.i0")
 		1:
 			_right_choice(context)
 
 
 func _right_choice(context: Dictionary) -> void:
-	context["result_text"] = ""
+	context["result_text"] = tr("event.script.event_ending_choice.i1")
 	EndingSvc.end_after_1986_via_event(ws, game, EventEngine)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_ending_choice.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "ending_choice",
+	"trigger": [{"t": "DATE_AFTER", "key": "1986.1.1"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

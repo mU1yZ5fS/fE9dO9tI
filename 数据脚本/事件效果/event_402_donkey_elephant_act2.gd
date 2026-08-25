@@ -41,13 +41,13 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1151 := "驴象之争-第二幕"
-const TXT_IDX_1153 := "共和党于1980年遭遇失败后，2位候选人参与了此次总统选举：分别是反共主义战鹰，支持实现经济自由化、扩张性外交政策与国内保守主义的乔治·赫伯特·布什其对手则是吉米·卡特时代的副总统，民主党人沃尔特·蒙代尔。蒙代尔呼吁政治自由，支持暂停核试验与《平等权利修正案》，并呼吁和平，倡导与苏联实现和平共存。"
-const TXT_IDX_1152 := "民主党于1980年遭遇惨败后，2位候选人参与了此次总统选举：分别是持有极端反主义与温和保守主义，并热衷于实现经济自由化与扩军的共和党人罗纳德·里根。其对手则是民主党人沃尔特·蒙代尔。蒙代尔呼吁政治自由，支持暂停核试验与《平等权利修正案》。他反对里根的经济政策，并倾向于削减联邦预算赤字。"
-const TXT_IDX_1154 := "谁将得胜？"
-const TXT_IDX_1157 := "选举结果表明，50.2%的选民支持蒙代尔。新任民主党总统承诺将实现预算平衡，增进对穷人的社会救济，并实行和平外交政策。"
-const TXT_IDX_1155 := "不出所料，“软弱”的蒙代尔输给了“强硬派”里根，后者的竞选攻势宛如电影一般猛烈。预计国际军备竞赛与冷战紧张程度将加剧，美国也将继续实施经济自由化政策。"
-const TXT_IDX_1156 := "选举结果表明，50.1%的选民支持布什。新任共和党总统承诺将实现经济自由化，抑制通货膨胀并解决失业问题，同时遏制共产主义的扩张。"
+const TXT_IDX_1151 := "event.script.event_402_donkey_elephant_act2.c0"
+const TXT_IDX_1153 := "event.script.event_402_donkey_elephant_act2.c1"
+const TXT_IDX_1152 := "event.script.event_402_donkey_elephant_act2.c2"
+const TXT_IDX_1154 := "event.script.event_402_donkey_elephant_act2.c3"
+const TXT_IDX_1157 := "event.script.event_402_donkey_elephant_act2.c4"
+const TXT_IDX_1155 := "event.script.event_402_donkey_elephant_act2.c5"
+const TXT_IDX_1156 := "event.script.event_402_donkey_elephant_act2.c6"
 
 ## 原文字符串附录（供自检）
 ## |话又说回来，既然我们已经和美国当地的华人黑帮建立了稳定的合作关系，而中国又已经成为国际舞台上一股举足轻重的力量，那这似乎意味着我们可以尝试对大选进行一些小小的“干涉”？
@@ -133,11 +133,14 @@ func execute(context: Dictionary) -> void:
 	if china != null and china.has_tag("seato"):
 		num2 += 1
 	if opt == 1:
-		# 暗中支持民主党人 → 民主党(num)+1；原版 result_num==1 误加到共和党(num2)，此处修正
-		num += 1
-	elif opt == 2:
-		# 暗中支持共和党人 → 共和党(num2)+1（原版误加到民主党）
 		num2 += 1
+		# 暗中支持民主党人 → result_num==1 → num2++（Event402.cs:146-147）。
+		# 极性复核：num 侧开局吃里根在任 +7（:34-36）= 共和党侧；num2 收集
+		# 美强于苏/NATO 完好等条目且 num<=num2 时蒙代尔当选（:168-171）= 民主党侧。
+		# 故支持民主党加 num2 与原版一致，原版此处并无方向错误。
+	elif opt == 2:
+		num += 1
+		# 暗中支持共和党人 → result_num==2 → num++（Event402.cs:148-151）。
 	var c7 := ws.get_country_by_legacy_index(7)
 	if usa != null and usa.current_leader != 0 and (c7 != null and c7.has_tag("nato") or num <= num2):
 		if usa != null:
@@ -161,3 +164,19 @@ func _raw(i: int) -> int:
 	if d.size() > i:
 		return d.get_data_by_index(i)
 	return 0
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_402_donkey_elephant_act2.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_402",
+	"num": 402,
+	"priority": 40200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_402_donkey_elephant_act2.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1984.11.1"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

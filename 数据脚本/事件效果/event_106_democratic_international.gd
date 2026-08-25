@@ -7,11 +7,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：选项1 按 data.agents>=100 动态显隐；国家循环字段映射
 ##   sovalliance→苏联盟友、Vyshi→亲美、dev→development、stab→stability。
 
-const TXT_R0 := "结果，民主国际成立了。很难说这是否有助于反共分子的行动，但这一事件意义重大，有助于美国影响力的增长，所以美国积极支持这一行动。"
+const TXT_R0 := "event.script.event_106_democratic_international.c0"
 
-const TXT_R1 := "我们设法在安哥拉和边境国家的特工人员之间紧急建立合作关系，并秘密说服苏联和亲苏的安哥拉当局进行合作，我们得以在贾巴组织了一系列恐怖袭击。不幸的是，安盟领导人乔纳斯·萨文比和美国傀儡师没有受伤，但我们设法消除了尼加拉瓜叛军的非正式领导人阿道夫·卡莱罗，著名的穆斯林圣战者代表阿卜杜勒·拉希姆·瓦尔达克和苗族运动领袖帕考赫。除了联合阵线的垮台，许多世界反共知名人士的去世严重打击了美国的影响力，也帮助了苏联。这就是为什么所有的主要指控都是针对他的，然而，美国人怀疑某些事情上我们的参与。"
+const TXT_R1 := "event.script.event_106_democratic_international.c1"
 
-const TXT_R2 := "我们支持民主国际的形成，并支持它随时准备在世界各地抗击苏联的侵略。参与者对此有不同的看法，但总体上做出了积极的反应，从中受益最多的美国人也是如此。我们的利益还不清楚，但苏联的影响力肯定已经下降了。"
+const TXT_R2 := "event.script.event_106_democratic_international.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -36,7 +36,7 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add_power(EmpireData.USA, 20)
 			_add_power(EmpireData.USSR, -10)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_AGENTS, -100)
 			_add_power(EmpireData.USSR, 20)
@@ -44,7 +44,7 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 10
 			_add_relation(EmpireData.USSR, 200)
 			_add_relation(EmpireData.USA, -100)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add_relation(EmpireData.USA, 100)
 			_add_relation(EmpireData.USSR, -120)
@@ -65,7 +65,23 @@ func execute(context: Dictionary) -> void:
 				elif (c.development > 50 or c.stability > 50) and c.has_tag("亲美"):
 					c.stability += 150
 					c.development -= 100
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_106_democratic_international.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_106",
+	"num": 106,
+	"priority": 10600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_106_democratic_international.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1985.6.1"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "7"}]}, {"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "51"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

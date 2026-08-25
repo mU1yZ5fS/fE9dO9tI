@@ -5,7 +5,7 @@ extends "res://数据脚本/event_script_base.gd"
 ## 故 trigger_conditions 为空，本脚本按原版复刻结果效果。
 
 
-const TXT_R0 := "当如今的前领导人到达时，大会已经结束了，他已被解雇，并且获得了荣誉养老金，正如其他许多反对者一样。王明的道路是成功的，而只有时间能告诉我们，他的亲戚们是能原汁原味地保留他的想法，还是会让党利用他们，将其作为木偶来实现自己的梦想。"
+const TXT_R0 := "event.script.event_124_return_to_socialism.c0"
 
 ## 回归社会主义事件用到的原版姓名（polit_names1/2_en 索引）。
 const RETURN_TO_SOCIALISM_NAMES := {
@@ -52,7 +52,7 @@ func execute(context: Dictionary) -> void:
 		_add(W.I_BUDGET, 50)
 	# LeaderAsset / MoneyLevel / ServeRMB 为 display-only 字段，端口跳过。
 	_set_modifier_active(65, false)
-	context["result_text"] = TXT_R0
+	context["result_text"] = tr(TXT_R0)
 	for i in ws.politicians.size():
 		WorldFactory._calc_rel(ws, i)
 		WorldFactory._calc_rel2(ws, i)
@@ -120,3 +120,18 @@ func _set_modifier_active(index: int, active: bool) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = active
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_124_return_to_socialism.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_124",
+	"num": 124,
+	"priority": 12400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_124_return_to_socialism.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

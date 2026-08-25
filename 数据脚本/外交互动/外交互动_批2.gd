@@ -799,6 +799,7 @@ func _def_61(w: WorldState, country: CountryData, caption: String) -> Dictionary
 		w.influence_prc -= 50
 		add_power(w, 1, -20)
 		add_power(w, 0, 50)
+		w.set_flag("cia_cooperation", true)
 		country.development = 1
 	return make_def(caption, opis, conds, eff)
 

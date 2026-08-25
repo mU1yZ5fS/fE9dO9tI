@@ -6,32 +6,32 @@ extends "res://数据脚本/event_script_base.gd"
 ##   loyality→loyalty；modifies[3]→ws.modifiers[3].is_active。
 
 
-const TXT_DESC_BASE := "在毛主席死后，我们仍然设法维持了他的遗产之一——文化大革命，并持续至今，但我们近期的一些政策似乎加剧了党和人民的不满："
-const TXT_DESC_PARTY := "在党政中引入过多的反对派政党，"
-const TXT_DESC_ECON := "经济上私有化程度的加剧，"
-const TXT_DESC_SPEECH := "对言论的管制过于放松导致资产阶级反动言论的音量越来越大，"
-const TXT_DESC_RELIGION := "对宗教的管控不力导致一些反党邪教的兴起，"
-const TXT_DESC_TAIL := "......；已经有越来越多反对文化大革命继续进行的声音了，对此，我们是要承认应该要让这一奇特的运动盖棺定论，还是修改一些政策使其继续进行下去呢？"
+const TXT_DESC_BASE := "event.script.event_438_fragile_revolution.c0"
+const TXT_DESC_PARTY := "event.script.event_438_fragile_revolution.c1"
+const TXT_DESC_ECON := "event.script.event_438_fragile_revolution.c2"
+const TXT_DESC_SPEECH := "event.script.event_438_fragile_revolution.c3"
+const TXT_DESC_RELIGION := "event.script.event_438_fragile_revolution.c4"
+const TXT_DESC_TAIL := "event.script.event_438_fragile_revolution.c5"
 
 
-const TXT_R0 := "你说文化大革命已经完成了它的历史任务，所以你开始消灭文化大革命的最后遗产，在全国各地苟延残喘至今的相关活动开始被逐步地大规模地取消，这当然使中国人民高兴了，但党内的一些激进左派分子非常愤怒，因为这意味着毛主席自认为一生中唯二做过的事之一被彻底地盖棺定论了......"
-const TXT_R1 := "我们做出了一些政策上的调整，让文化大革命得以继续维系下去，党和人民仍然是有些不满的，但也仅限于牢骚的程度，不会发展到失控的局面——至少在目前看来是如此......"
+const TXT_R0 := "event.script.event_438_fragile_revolution.c6"
+const TXT_R1 := "event.script.event_438_fragile_revolution.c7"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null:
 		return
 	var data := world
-	var desc := TXT_DESC_BASE
+	var desc := tr(TXT_DESC_BASE)
 	if data.size() > W.I_PARTY_SYSTEM and data.party_system >= 8:
-		desc += TXT_DESC_PARTY
+		desc += tr(TXT_DESC_PARTY)
 	if data.size() > W.I_ECON_SYSTEM and data.econ_system >= 14:
-		desc += TXT_DESC_ECON
+		desc += tr(TXT_DESC_ECON)
 	if data.size() > W.I_PRESS_POLICY and data.press_policy >= 19:
-		desc += TXT_DESC_SPEECH
+		desc += tr(TXT_DESC_SPEECH)
 	if data.size() > W.I_RELIGION and data.religion_policy >= 27:
-		desc += TXT_DESC_RELIGION
-	desc += TXT_DESC_TAIL
+		desc += tr(TXT_DESC_RELIGION)
+	desc += tr(TXT_DESC_TAIL)
 	event_def.description = desc
 	if event_def.options.size() >= 2:
 		_enable(event_def.options[0], event_def.options[0].text)
@@ -57,7 +57,7 @@ func execute(context: Dictionary) -> void:
 					p.loyalty -= 100
 				elif p.trait_personality > GameConstants.PoliticianPersonality.MODERATE:
 					p.loyalty += 100
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_THOUGHT_FREEDOM, 150)
 			_add(W.I_PEOPLE_SUPPORT, -100)
@@ -79,7 +79,7 @@ func execute(context: Dictionary) -> void:
 			if d.ideology >= 4:
 				d.ideology = 3
 			_add(W.I_BUDGET, -num * 10)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -111,3 +111,20 @@ func _join_alliances(c: CountryData) -> void:
 		c.set_tag("econ", true)
 	elif china.has_tag("sev"):
 		c.set_tag("sev", true)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_438_fragile_revolution.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_438",
+	"nodesc": true,
+	"num": 438,
+	"priority": 43800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_438_fragile_revolution.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "MODIFIER_ACTIVE", "key": "3"}, {"t": "MODIFIER_ACTIVE", "key": "6"}, {"t": "ANY", "c": [{"t": "RESOURCE_AT_LEAST", "key": "ideology", "v": 4}, {"t": "RESOURCE_AT_LEAST", "key": "economy_system", "v": 14}, {"t": "RESOURCE_AT_LEAST", "key": "speech_policy", "v": 19}, {"t": "RESOURCE_AT_LEAST", "key": "religion_policy", "v": 27}, {"t": "RESOURCE_AT_LEAST", "key": "party_system", "v": 8}]}, {"t": "ANY", "c": [{"t": "PREV_EVENT_NOT_DONE", "ref": "event_444"}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "ref": "event_444"}]}]}, {"t": "PREV_EVENT_NOT_DONE", "ref": "event_503"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

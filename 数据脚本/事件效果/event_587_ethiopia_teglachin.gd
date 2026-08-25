@@ -11,17 +11,17 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0_DIS := "他们不愿意听我们的话"
-const TXT_OPT1_DIS := "支持他？这是给我们的敌人递子弹！"
-const TXT_OPT2_DIS := "对别国内政的干涉太夸张了"
+const TXT_OPT0_DIS := "event.script.event_587_ethiopia_teglachin.c0"
+const TXT_OPT1_DIS := "event.script.event_587_ethiopia_teglachin.c1"
+const TXT_OPT2_DIS := "event.script.event_587_ethiopia_teglachin.c2"
 
-const TXT_R0 := "我们在人民日报上发表了这样一片文章：《警惕伪装成社会主义的法西斯主义者》，其中提到了埃塞俄比亚的现状。虚假的公有制政策，极力打击真正的左翼政党，并和帝国主义者沆瀣一气。同时我们向特法里·本蒂提供了来自我们的帮助，在1977年2月3日的中央例会上，门格斯图向军委主席本蒂准将汇报工作，在一旁旁听的提格雷代表突然抄起板凳扔向门格斯图，这是行动开始的记号。突然间把脸涂成黑色的中国特工和埃塞俄比亚人民解放军战士从会场后方杀出，在激烈的交火中，门格斯图身中十七枪身亡。随后，特法里·本蒂在电视上发表了特别报告，揭露了门格斯图的不雅往事：在美国留学时花天酒地，在革命时主张美国介入；出卖了埃塞主权；接纳了苏联的政治献金，却仅仅是为了孩子能上莫斯科大学。综上所述，他以反革命罪缺席判处门格斯图死刑（尽管他已经被击毙了）。\n随后，他在电视讲话中宣读了惊人的信息，他宣布临时军事委员会已经圆满完成了民族民主革命的阶段性目标，临时军委将自行解散。并会组建埃塞俄比亚社会主义革命党-马克思列宁主义，一个由埃人革党和左翼军人，贫下中农和势力更小的左翼政党组成的新党。在第一届全埃塞工农兵代表大会上，他被选举为名誉主席和总统，而贝尔哈纳·梅斯克尔·雷达则当选为新任党主席。该党秉持着坚实的毛主义原则，并加速深化土地革命运动，同时积极和厄立特里亚就自治问题达成协议。他们也和我们加大了互动。"
+const TXT_R0 := "event.script.event_587_ethiopia_teglachin.c3"
 
-const TXT_R1 := "我们决定支持埃塞俄比亚的实权人物门格斯图上校。意识到他并不是什么坚定的革命者，而是左右摇摆不定的投机家后，这使得我们更容易接触到他。在数盒高级酒心巧克力，20瓶35年茅台，500w打到他私人账户上的美元，一栋在北戴河的度假别墅和给她女儿（尽管只有三岁）准备的清华大学化学专业入学证书后。门格斯图的态度发生了一百八十度的大回环。他在多个场合公开赞扬中国革命的经验，并把毛泽东思想写进了革命火焰的章程中。\n在1977年2月3日的时候，门格斯图指示自己的亲信丹尼尔·安塞法上尉动手。在会议结束后，许多和特法里·本蒂关系紧密的临时军委成员被逮捕后处决。在亚迪斯亚贝巴的群众大会上，门格斯图绘声绘色的描述了本蒂是如何勾结苏联人和美帝的，谴责他的社会主义思想事实上是修正主义，只会破坏临时军委指出的科学社会主义道路。在演讲的最后，他从挎包里掏出了四瓶红色的液体，他高声喊着“和反革命们破罐子破摔吧！打倒美帝，苏修，厄立特里亚人和埃人革党！”随后把四个玻璃瓶砸碎在地上。当天就有数千名被指控为反革命的平民被当众吊死，或者被“消失”了。这段时间在后来被称为“qey\u00a0shibir”（红色恐怖）\n门格斯图也没有忘记是谁给他提供了最多的好处，他公开驱逐了苏联人，并把我们试做革命的标杆。很难说他做的到底是不是毛泽东主席希望看见的，但我们在非洲之角获得了自己的盟友。巴雷也获得了越来越多的苏联援助，希望这不是针对我们的……"
+const TXT_R1 := "event.script.event_587_ethiopia_teglachin.c4"
 
-const TXT_R2 := "在南也门和索马里人的帮助下，我们把大量的旧装甲车，63式步枪，56式半自动步枪和大量老旧装备出售给了反政府游击队。像西索马里解放阵线，提格雷人民解放阵线，厄立特里亚解放阵线，埃塞俄比亚人民革命军等组织也在我们的联合下达成了一致，就推翻军委政权的前提下，多方愿意展开合作。亚的斯亚贝巴要越来越头疼了。\n我们不关心军委双巨头之间脆弱的平衡，而这很快就被打破了。在1977年2月3日的时候，门格斯图指示自己的亲信丹尼尔·安塞法上尉动手。在会议结束后，许多和特法里·本蒂关系紧密的临时军委成员被逮捕后处决。在亚迪斯亚贝巴的群众大会上，门格斯图绘声绘色的描述了本蒂是如何勾结美帝的，谴责他的社会主义思想事实上是修正主义，只会破坏临时军委指出的科学社会主义道路。在演讲的最后，他从挎包里掏出了三瓶红色的液体，他高声喊着“和反革命们破罐子破摔吧！打倒美帝，厄立特里亚人和埃人革党！”随后把三个玻璃瓶砸碎在地上。当天就有数千名被指控为反革命的平民被当众吊死，或者被“消失”了。这段时间在后来被称为“qey\u00a0shibir”（红色恐怖）。"
+const TXT_R2 := "event.script.event_587_ethiopia_teglachin.c5"
 
-const TXT_R3 := "我们不关心军委双巨头之间脆弱的平衡，而这很快就被打破了。在1977年2月3日的时候，门格斯图指示自己的亲信丹尼尔·安塞法上尉动手。在会议结束后，许多和特法里·本蒂关系紧密的临时军委成员被逮捕后处决。在亚迪斯亚贝巴的群众大会上，门格斯图绘声绘色的描述了本蒂是如何勾结美帝的，谴责他的社会主义思想事实上是修正主义，只会破坏临时军委指出的科学社会主义道路。在演讲的最后，他从挎包里掏出了三瓶红色的液体，他高声喊着“和反革命们破罐子破摔吧！打倒美帝，厄立特里亚人和埃人革党！”随后把三个玻璃瓶砸碎在地上。当天就有数千名被指控为反革命的平民被当众吊死，或者被“消失”了。这段时间在后来被称为“qey\u00a0shibir”（红色恐怖）。"
+const TXT_R3 := "event.script.event_587_ethiopia_teglachin.c6"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -34,15 +34,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line <= 2:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if line != 0 and line != 4:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if line <= 1:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	_enable(opt[3], event_def.options[3].text)
 
 
@@ -60,7 +60,7 @@ func execute(context: Dictionary) -> void:
 				_leave_alliances(ethiopia)
 				ethiopia.set_tag("对华贸易", true)
 				ethiopia.chinese_name = "埃塞俄比亚民主联邦共和国"
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -80)
 			if ethiopia != null:
@@ -74,18 +74,34 @@ func execute(context: Dictionary) -> void:
 			_add_relation(EmpireData.USA, -100)
 			ws.influence_prc += 10
 			_add(W.I_DIPLO, 5)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_ARMY, -50)
 			if ethiopia != null:
 				ethiopia.government = GameConstants.Government.AUTHORITARIAN
 				ethiopia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			if ethiopia != null:
 				ethiopia.government = GameConstants.Government.AUTHORITARIAN
 				ethiopia.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 ## Country.LeaveAlliances() 逐项映射（含原版不常见的联盟标签）。
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_587_ethiopia_teglachin.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_587",
+	"num": 587,
+	"priority": 58700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_587_ethiopia_teglachin.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1977.2.3"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

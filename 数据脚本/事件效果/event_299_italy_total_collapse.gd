@@ -4,15 +4,15 @@
 ##  IsSocialism/IsAuthoritarianism 用 ws.is_socialism/ws.is_authoritarian；d.italian_radical_left_power/d.italy_power_176/d.italy_power_177 用 raw index。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_OPT0_DIS := "一头羊领导的狮群，远不如一头狮率领的羊群"
-const TXT_OPT1_DIS := "一头羊领导的狮群，远不如一头狮率领的羊群"
-const TXT_OPT0_DIS_A := "一头羊领导的狮群，远不如一头狮率领的羊群"
-const TXT_OPT0_DIS_B := "意大利不需要长颈鹿"
-const TXT_OPT1_DIS_A := "一头羊领导的狮群，远不如一头狮率领的羊群"
-const TXT_OPT1_DIS_B := "同新法西斯主义运动勾搭？党可不会作法自毙"
-const TXT_R_COLLAPSE := "意大利长期排斥极端主义政党的中间派政治实践最终产生了意想不到的效果：由于“净手行动”直接导致了该国建制派的终结，而极端主义者亦因长期处于政治舞台边缘而无力夺取政权。如此广泛的权力真空自然导致力量对比向新党运动与民粹主义浪潮看齐。这便为本就借助舆论高地聚敛空前资源的大寡头与政治投机客西尔维奥·贝卢斯科尼创造了机会。依托由自身足球俱乐部与商业伙伴改组而成的政党意大利力量党，并在此基础上大规模收编前天主教民主党与意大利社会党成员以扩充政治资本。他得以在第二共和国的乱局中迅速打出旗帜并合纵连横，直截了当地夺下该国最高权柄。"
-const TXT_R_LEFT := "根据投票结果显示，意大利共产党领导的左翼联盟拿下超半数议会席位，就此赢下选举。借助共产党长期深耕意大利政界积攒的庞大体量，以及该党同工会、学生运动乃至合作社系统的密切联系。这一执政联盟在实践内事实上表现得同共产党治下的一党独大无异。由恩里科·贝林格领导的政府得以成立，宣布将立即启动“意大利社会主义”议程并重新审定内政、经济与外交路线。然而，一党独大的确立并不代表着故事结束：意大利共产党因“接待”过多来自前天主教民主党与意大利社会党的成员而显得“消化不良”。这可能为意大利有史以来首个民选的共产主义政权开残酷玩笑。"
-const TXT_R_RIGHT := "根据投票结果显示，意大利社会运动领导的右翼联盟拿下超半数议会席位，就此赢下选举。借助社会运动长期深耕意大利政界积攒的庞大体量，以及该党同亲君主主义者、极右翼文化运动乃至保守主义倾向的密切联系。这一执政联盟在实践内事实上表现得同社会运动治下的一党独大无异。由乔治·阿尔米兰特领导的府得以成立，宣布将立即启动“革新法西斯主义”议程并重新审定内政、经济与外交路线。然而，一党独大的确立并不代表着故事结束：意大利社会运动因“接待”过多来自前天主教民主党的成员而显得“消化不良”。这可能为意大利有史以来首个民选的极端民族主义政权开残酷玩笑。"
+const TXT_OPT0_DIS := "event.script.event_299_italy_total_collapse.c0"
+const TXT_OPT1_DIS := "event.script.event_299_italy_total_collapse.c1"
+const TXT_OPT0_DIS_A := "event.script.event_299_italy_total_collapse.c2"
+const TXT_OPT0_DIS_B := "event.script.event_299_italy_total_collapse.c3"
+const TXT_OPT1_DIS_A := "event.script.event_299_italy_total_collapse.c4"
+const TXT_OPT1_DIS_B := "event.script.event_299_italy_total_collapse.c5"
+const TXT_R_COLLAPSE := "event.script.event_299_italy_total_collapse.c6"
+const TXT_R_LEFT := "event.script.event_299_italy_total_collapse.c7"
+const TXT_R_RIGHT := "event.script.event_299_italy_total_collapse.c8"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -28,15 +28,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if line >= 2 and line <= 3 and d176 > 0:
 		_enable(opt[0], event_def.options[0].text)
 	elif d176 <= 0:
-		_disable(opt[0], TXT_OPT0_DIS_A)
+		_disable(opt[0], tr(TXT_OPT0_DIS_A))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS_B)
+		_disable(opt[0], tr(TXT_OPT0_DIS_B))
 	if diplo >= 800 and war > 300 and line <= 3 and d177 > 0:
 		_enable(opt[1], event_def.options[1].text)
 	elif d177 <= 0:
-		_disable(opt[1], TXT_OPT1_DIS_A)
+		_disable(opt[1], tr(TXT_OPT1_DIS_A))
 	else:
-		_disable(opt[1], TXT_OPT1_DIS_B)
+		_disable(opt[1], tr(TXT_OPT1_DIS_B))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -102,17 +102,17 @@ func execute(context: Dictionary) -> void:
 		if italy != null:
 			italy.government = GameConstants.Government.LIBERAL
 			italy.sub_government = GameConstants.SubGovernment.NEOLIBERAL
-		context["result_text"] = TXT_R_COLLAPSE
+		context["result_text"] = tr(TXT_R_COLLAPSE)
 	elif d.size() > 177 and d.size() > 176 and d.italy_power_177 < d.italy_power_176:
 		if italy != null:
 			italy.government = GameConstants.Government.REFORMIST
 			italy.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
 			italy.influence_china = 1
-		context["result_text"] = TXT_R_LEFT
+		context["result_text"] = tr(TXT_R_LEFT)
 	else:
 		if italy != null:
 			italy.influence_nato = 1
-		context["result_text"] = TXT_R_RIGHT
+		context["result_text"] = tr(TXT_R_RIGHT)
 
 
 
@@ -203,3 +203,18 @@ func _c21_is_authoritarian() -> bool:
 	var c := ws.get_country_by_legacy_index(21)
 	return c != null and ws.is_authoritarian(c)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_299_italy_total_collapse.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_299",
+	"num": 299,
+	"priority": 29900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_299_italy_total_collapse.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -5,12 +5,12 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "开始发展。"
-const TXT_OPT0_DIS := "没有这么做的资源。"
-const TXT_OPT1 := "有人上太空就够了。"
+const TXT_OPT0 := "event.script.event_357_manned_program_advance.c0"
+const TXT_OPT0_DIS := "event.script.event_357_manned_program_advance.c1"
+const TXT_OPT1 := "event.script.event_357_manned_program_advance.c2"
 
-const TXT_R0 := "研究开始了，几年后，第一批由几人组成的中国宇航员进入了太空。世界为我们的成就感到惊讶，我国的科技前景也豁然开朗。"
-const TXT_R1 := "更先进的飞船的好处可以忽略不计，不值得认真对待。这是工程师与科学家们对发展一个类似苏联“联盟”号飞船计划的结论。中国应该关注无人驾驶汽车。"
+const TXT_R0 := "event.script.event_357_manned_program_advance.c3"
+const TXT_R1 := "event.script.event_357_manned_program_advance.c4"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -19,10 +19,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var opt := event_def.options
 	if _budget_reserve(world) >= 40:
-		_enable(opt[0], TXT_OPT0)
+		_enable(opt[0], tr(TXT_OPT0))
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
-	_enable(opt[1], TXT_OPT1)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
+	_enable(opt[1], tr(TXT_OPT1))
 
 
 func execute(context: Dictionary) -> void:
@@ -34,9 +34,9 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_SCIENCE, 200)
 			_add(W.I_DIPLO, 40)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -85,3 +85,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_357_manned_program_advance.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_357",
+	"num": 357,
+	"priority": 35700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_357_manned_program_advance.gd",
+	"trigger": [{"t": "TECH_UNLOCKED", "v": 30}, {"t": "PREV_EVENT_DONE", "ref": "event_356"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_356"}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_353"}]}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

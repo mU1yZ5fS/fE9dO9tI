@@ -5,13 +5,13 @@ extends "res://数据脚本/event_script_base.gd"
 ##   && science[15] && data.econ_system<=11。
 ## 差异：relres → global flag；modifies[17] → modifiers[17].is_active。
 
-const TXT_R0 := "社会主义经济继续稳定运行。至少目前如此......"
+const TXT_R0 := "event.script.event_110_automation_progress.c0"
 
-const TXT_R1 := "光荣的主席万岁!光荣的中国共产党万岁!这一天将作为“重大突破”的日子载入中国史册。我们敬爱的领袖宣布我们国家开始过渡到全面自动化和计算机化的规划和生产的重大变革,并宣布建立一个自动化经济管理中心，他们的工作即将开始。新项目的名称为IECS——跨部门电子控制系统。现在，在这个国家关于匆忙引入这些措施的激烈讨论已经爆发，一些党内政客宣称改革具有“反马克思主义性质”。然而，这个项目启动了，没有什么能阻止这个国家不可避免的变化，对吗?"
+const TXT_R1 := "event.script.event_110_automation_progress.c1"
 
-const TXT_R2 := "光荣的主席万岁!光荣的中国共产党万岁!这一天将作为“重大突破”的日子载入中国史册。我们敬爱的领袖宣布我们国家开始过渡到全面自动化和计算机化的规划和生产的重大变革,并宣布建立一个自动化经济管理中心，他们的工作即将开始。新项目的名称为IECS——跨部门电子控制系统。此外，由于我们同苏联人民的密切友谊，我们要求苏联提供有条件的援助，现在由阿纳托利·基托夫院士率领的代表团已经抵达中国。现在，在这个国家关于匆忙引入这些措施的激烈讨论已经爆发，一些党内政客宣称改革具有“反马克思主义性质”。然而，这个项目启动了，没有什么能阻止这个国家不可避免的变化，对吗?"
+const TXT_R2 := "event.script.event_110_automation_progress.c2"
 
-const TXT_R3 := "光荣的主席万岁!光荣的中国共产党万岁!这一天将作为“重大突破”的日子载入中国史册。我们敬爱的领袖宣布我们国家开始过渡到全面自动化和计算机化的规划和生产的重大变革,并宣布建立一个自动化经济管理中心，他们的工作即将开始。新项目的名称为IECS——跨部门电子控制系统。此外，由于我们与西方国家的友好关系，我们能够邀请由斯塔福德·比尔(StaffordBeer)领导的欧洲数学科学家代表团，他之前因开发智利的“赛博协同”(Cybersyn)工程而闻名。现在，在这个国家关于匆忙引入这些措施的激烈讨论已经爆发，一些党内政客宣称改革具有“反马克思主义性质”。然而，这个项目启动了，没有什么能阻止这个国家不可避免的变化，对吗?"
+const TXT_R3 := "event.script.event_110_automation_progress.c3"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -44,7 +44,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			_add(W.I_BUDGET, -100)
 			_add(W.I_PEOPLE_SUPPORT, 100)
@@ -52,7 +52,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, -600)
 			if d.size() > 118:
 				d.automation_progress = 1
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_BUDGET, -80)
 			_add(W.I_PEOPLE_SUPPORT, 100)
@@ -64,7 +64,7 @@ func execute(context: Dictionary) -> void:
 				d.automation_progress = 1
 			if d.size() > 73:
 				d.budget_science += 300
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 		3:
 			_add(W.I_BUDGET, -80)
 			_add(W.I_PEOPLE_SUPPORT, 100)
@@ -75,7 +75,23 @@ func execute(context: Dictionary) -> void:
 				d.automation_progress = 1
 			if d.size() > 73:
 				d.budget_science += 300
-			context["result_text"] = TXT_R3
+			context["result_text"] = tr(TXT_R3)
 
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_110_automation_progress.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_110",
+	"num": 110,
+	"priority": 11000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_110_automation_progress.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "DATE_AFTER", "key": "1980.1.1"}, {"t": "MODIFIER_INACTIVE", "key": "12"}, {"t": "TECH_UNLOCKED", "v": 15}, {"t": "RESOURCE_AT_MOST", "key": "economy_system", "v": 11}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -1,16 +1,14 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event522.cs：保革伯仲：第一幕（4选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event522.cs：保革伯仲：第一幕（4选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "美国会怎么想？"
-const TXT_OPT1_DIS := "社会运动不符合民主自由原则！"
-const TXT_OPT2_DIS := "和资本主义和解？你是认真的？"
-const TXT_R0_A := "我们最终决定给予社会党全方位的帮助。不仅向其在各地的竞选组织提供了资金援助，并且指示我们在日本的特工发起一系列行动，包括破坏自由民主党候选人竞选集会、向媒体提供更多现政府内幕与丑闻、组织城市市民集会抗议等，这对执政党的声誉造成了连环打击。\n最终我们的努力得到了回报。社会党赢得了史无前例的170席。其他党情况如下：公明党60席，民主社会党30席、新自由俱乐部12席、共产党22席，无所属议员21席。自由民主党迎来空前惨败，只获得196席，失去了半数多数并首次成为在野党。\n尽管党内依旧质疑声不断，但社会党高层最终还是决定与公明党、民主社会党建立联合政权。新政府由成田知巳领导，宣布将带领日本走向非武装积极中立路线，改组自卫队，推动公有化进程，筹备国家计划委员会、保护劳工阶层。在外交上，新政府表示不久便会与美国开展废除《日美安保条约》的谈判，同时开始加强与苏联和社会主义阵营的关系，发展同其他左翼政党的关系，并呼吁推动全球裁军以及无核化。"
-const TXT_R1_A := "我们向日本社会主义青年同盟、日本民主青年同盟等青年组织、左翼工会和其他社会组织提供援助，包括头盔、横幅、海报，以及最重要的资金。在我们的大力支持下，它们开展了一系列新的社会运动，对自由民主党的支持率造成了一定打击，也让社会党内“社共共斗”的呼声再次出现（尽管共产党对此兴趣不大且多次批评社会党是中派政党），而公明党、民主社会党和社会党之间的关系也变得更加微妙。\n最终社会党赢得150席，数量为历史第二多，但依旧不够打破自由民主党的垄断。其他党情况如下：公明党55席，民主社会党29席、新自由俱乐部17席、共产党17席，无所属议员21席。自由民主党席位则下跌至222席，不得不通过与无所属议员和新自由俱乐部组成联合政府来凑足半数以上的席位。\n新政府由福田赳夫领导，宣布将推行以平衡预算为导向的经济稳定增长理论，扩大基础投资，通过国内需求主导的经济管理来增加进口并进一步开放市场。在外交上，新政府将推动“全方位外交”，维持对美关系的同时也积极与其他国家维系往来并强调亚洲外交，包括开始向中国提供官方发展援助，并积极向东南亚提供支援。这一立场在次年8月福田赳夫访问东南亚期间得到鲜明体现：他强调日本将在不成为军事强国的情况下为世界和平与繁荣做出贡献。"
-const TXT_R2_A := "考虑到来之不易的外交成果，我们决定转向自由民主党，对该党在选举战况胶着地区的候选人提供大量帮助。并且依靠之前两国邦交正常化留下的人脉关系，我们进一步与自由民主党内部的亲华派议员取得了联系。由于自由民主党的大帐篷特性，想要保持与他们的联系并壮大其实力并不难做到。很快这些人便形成了一股新的派阀力量。为了更好地发展，他们正式注册了“政党政策研究会”这一名号并以此为掩护进行各种活动。不过请注意：我们需要经常性地为他们提供支持，这样才能在关键时刻发挥作用。\n同时得益于我们在当地人员的出色服务，执政党成功保住了多个地区的议员席位。不久我们收到了对方的电报，向我们表示感谢，并提出希望促成双方新的贸易合作。\n最终社会党获得115席，几乎没有变化。其他党情况如下：公明党50席，民主社会党24席，新自由俱乐部30席，共产党12席，无所属议员21席。自由民主党虽有所下滑但仍保住了半数以上的席位，获得258席。\n新政府由福田赳夫领导，宣布将推行以平衡预算为导向的经济稳定增长理论，扩大基础投资，通过国内需求主导的经济管理来增加进口并进一步开放市场。在外交上，新政府将推动“全方位外交”，维持对美关系的同时也积极与其他国家维系往来并强调亚洲外交，包括开始向中国提供官方发展援助，并积极向东南亚提供支援。这一立场在次年8月福田赳夫访问东南亚期间得到鲜明体现：他强调日本将在不成为军事强国的情况下为世界和平与繁荣做出贡献。"
-const TXT_R3_A := "考虑到我们自己还有问题需要处理，我们最终决定暂时不采取行动，积攒实力。\n不久选举结果正式公布：社会党获得123席，仅有小幅上涨。其他党情况如下：公明党55席，民主社会党29席，新自由俱乐部17席，共产党17席，无所属议员21席。自由民主党失去了半数多数，只有249席，不得不吸引无所属议员来保住半数以上的席位。\n新政府由福田赳夫领导，宣布将推行以平衡预算为导向的经济稳定增长理论，扩大基础投资，通过国内需求主导的经济管理来增加进口并进一步开放市场。在外交上，新政府将推动“全方位外交”，维持对美关系的同时也积极与其他国家维系往来并强调亚洲外交，包括开始向中国提供官方发展援助，并积极向东南亚提供支援。这一立场在次年8月福田赳夫访问东南亚期间得到鲜明体现：他强调日本将在不成为军事强国的情况下为世界和平与繁荣做出贡献。"
+const TXT_OPT0_DIS := "event.script.event_522_japan_hokaku_act1.c0"
+const TXT_OPT1_DIS := "event.script.event_522_japan_hokaku_act1.c1"
+const TXT_OPT2_DIS := "event.script.event_522_japan_hokaku_act1.c2"
+const TXT_R0_A := "event.script.event_522_japan_hokaku_act1.c3"
+const TXT_R1_A := "event.script.event_522_japan_hokaku_act1.c4"
+const TXT_R2_A := "event.script.event_522_japan_hokaku_act1.c5"
+const TXT_R3_A := "event.script.event_522_japan_hokaku_act1.c6"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -20,15 +18,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line <= 2:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.political_line <= 2:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if ws.political_line > 2:
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 	_enable(opt[3], event_def.options[3].text)
 
 func execute(context: Dictionary) -> void:
@@ -38,7 +36,7 @@ func execute(context: Dictionary) -> void:
 	var _c44 := ws.get_country_by_legacy_index(44)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			if _c44 != null:
 				_c44.government = GameConstants.Government.REFORMIST
 				_c44.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
@@ -49,7 +47,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -40)
 			_add(W.I_AGENTS, -40)
 		1:
-			context["result_text"] = TXT_R1_A
+			context["result_text"] = tr(TXT_R1_A)
 			if _c44 != null:
 				_c44.government = GameConstants.Government.LIBERAL
 				_c44.sub_government = GameConstants.SubGovernment.LIBERAL
@@ -59,7 +57,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -30)
 		2:
-			context["result_text"] = TXT_R2_A
+			context["result_text"] = tr(TXT_R2_A)
 			if _c44 != null:
 				_c44.government = GameConstants.Government.LIBERAL
 				_c44.sub_government = GameConstants.SubGovernment.LIBERAL
@@ -71,7 +69,7 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_BUDGET, -30)
 			_add(W.I_AGENTS, -30)
 		3:
-			context["result_text"] = TXT_R3_A
+			context["result_text"] = tr(TXT_R3_A)
 			if _c44 != null:
 				_c44.government = GameConstants.Government.LIBERAL
 				_c44.sub_government = GameConstants.SubGovernment.LIBERAL
@@ -209,3 +207,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_522_japan_hokaku_act1.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_522",
+	"num": 522,
+	"priority": 52200,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_522_japan_hokaku_act1.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "44"}, {"t": "DATE_AFTER", "key": "1976.12.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

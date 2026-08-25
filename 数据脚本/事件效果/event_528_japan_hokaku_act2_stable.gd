@@ -1,10 +1,8 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event528.cs：保革伯仲：第二幕（1选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event528.cs：保革伯仲：第二幕（1选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_R0_A := "社会党席位虽有所下滑，但仍有165席。联合政府的另外两党公明党与民主社会党各自拿下60席和35席，共产党32席，新自由俱乐部4席，无所属议员21席。自由民主党遭受进一步失败，只获得192席。\n新政府由飞鸟田一雄领导，宣布将延续非武装积极中立路线，完成自卫队的彻底改组，加速推动国有化进程，保护劳工阶层。在外交上，新政府将进一步加强与苏联和社会主义阵营的关系，发展同其他左翼政党的关系。并且就落实上一届政府任期中与美国达成的《日美安保条约》问题开展外交活动。据报道，不久日美双方就将签署一份最终协议。根据协议内容，驻日美军将在未来五年内分批次撤出日本。"
+const TXT_R0_A := "event.script.event_528_japan_hokaku_act2_stable.c0"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -20,7 +18,7 @@ func execute(context: Dictionary) -> void:
 	var _c44 := ws.get_country_by_legacy_index(44)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			if _c44 != null:
 				_c44.government = GameConstants.Government.REFORMIST
 				_c44.sub_government = GameConstants.SubGovernment.LEFT_CONSERVATIVE
@@ -166,3 +164,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_528_japan_hokaku_act2_stable.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_528",
+	"num": 528,
+	"priority": 52800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_528_japan_hokaku_act2_stable.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "44"}, {"t": "PREV_EVENT_DONE", "ref": "event_522"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_522"}, {"t": "PREV_EVENT_DONE", "ref": "event_525"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_525"}, {"t": "DATE_AFTER", "key": "1980.12.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -3,8 +3,8 @@
 ## 差异：KillPerson→game.kill_politician；文本来自 Events_text_en 索引 92-97。
 extends "res://数据脚本/event_script_base.gd"
 
-const TXT_R0 := "阴谋失败了，陈云受到了其余党员的保护。"
-const TXT_R1 := "在下一次党的会议上，陈云被指责要为大跃进政策的失败负责。在那之后，他被拘留了，很快便被立案，该案最后以射杀一个害虫、一个亲西方的机会主义者而告终。"
+const TXT_R0 := "event.script.event_309_chen_yun_fate.c0"
+const TXT_R1 := "event.script.event_309_chen_yun_fate.c1"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,7 +22,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			_add(W.I_PARTY_SUPPORT, -250)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
 			var num := _find_politician(10, 16)
 			if num < 0:
@@ -38,7 +38,7 @@ func execute(context: Dictionary) -> void:
 					p.power -= 250
 			if num >= 0:
 				game.kill_politician(num)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -89,3 +89,18 @@ func _set_leader_from(p: PoliticianData) -> void:
 	ws.leader.age = p.age
 	PoliticianSystem.copy_leader_appearance(ws.leader, p)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_309_chen_yun_fate.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_309",
+	"num": 309,
+	"priority": 30900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_309_chen_yun_fate.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

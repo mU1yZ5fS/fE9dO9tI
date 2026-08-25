@@ -1,14 +1,12 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event524.cs：炮打代代木司令部（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event524.cs：炮打代代木司令部（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "左派的社会实践太多了！"
-const TXT_OPT1_DIS := "和修正主义和解？你也想开修了？"
-const TXT_R0_A := "我们迅速与日本共产党（左派）、日本劳动党、日本共产党（马列）、日本共产党（行动派）等坚持毛主义思想的革命左翼派别建立了联系。在我们的帮助下，经过短暂的磋商，这些组织最终正式合并成为日本共产党（马列主义革命派）。由于他们中的大多数人都曾是日共党员，因此想要重新对党内成员施加影响力并不困难。而作为修正主义头子的宫本显治本人不久也“意外”死于一次精心安排的车祸事故。\n在宫本身亡后不久召开的日本共产党特别党代会上，革命左翼的代表与日共党内被其说服的党员联合起来，猛烈抨击了宫本显治的右派思想、独断专行、修正主义与破坏中日两国人民友好往来的行为。最终，党代会以小幅优势通过了批准革命左翼回归的提案。在随即召开的临时全会上，福田正义被正式选为新任领导人。\n在革命左翼的推动下，日本共产党停止了进一步的右倾化与修正化，开始全面清算“宫本路线”。诸如“马克思列宁主义”“无产阶级专政”等字眼也重新回归到党的纲领中。当然为了适应日本经济发展下的社会阶层变化，也对一些语句进行了重新调整。无论如何，我们成功帮助日本同志们走上了正确的道路！"
-const TXT_R1_A := "经过反复考虑，我们最终决定主动释放和解的信号。随后不久，《朝日新闻》刊登了我们内部对违反不干涉内政原则进行反省（当然，是有限度的）的消息，这对恢复两党间的关系是一个非正式信号。此后在一次中日国民间团体友好沟通的活动上，我们在访问团中秘密混入了自己的代表并私下与日共方面进行接触，表示愿意对过去两党关系进行一定的自我批评，希望重建双方的关系，并且承诺未来将给予日共更多的帮助。最终在经过全会讨论后，日共同意恢复双方的关系。数月后，宫本显治亲率代表团来华正式访问，双方充分交换了意见并发布了联合声明，正式恢复两党关系。有了这个支点，我们便可以方便地为日本共产党提供各种援助了。但党内许多人对此反应冷淡，毕竟我们这次可是与修正主义者握手言和了......"
-const TXT_R2_A := "中央经过讨论决定不采取任何行动。既然日共已经与我们彻底决裂，我们又为什么要主动与他们联系？更何况他们到现在还在公开场合继续批评我们！此外，我们目前的力量还难以对革命左翼进行长期的稳定援助，并且这样的举动似乎有点太激进了......\n日本共产党在宫本显治的带领下究竟会走向何方，无人知晓。但唯一可以确定的是，它已经彻底丧失了马列主义的色彩与活力。"
+const TXT_OPT0_DIS := "event.script.event_524_bombard_yoyogi_hq.c0"
+const TXT_OPT1_DIS := "event.script.event_524_bombard_yoyogi_hq.c1"
+const TXT_R0_A := "event.script.event_524_bombard_yoyogi_hq.c2"
+const TXT_R1_A := "event.script.event_524_bombard_yoyogi_hq.c3"
+const TXT_R2_A := "event.script.event_524_bombard_yoyogi_hq.c4"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -18,7 +16,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line < 2:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.political_line > 1 and ws.political_line < 4:
 		_enable(opt[1], event_def.options[1].text)
 	elif ws.political_line >= 0:
@@ -33,7 +31,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(50))
 			_add(9, -(50))
 			_add(1, 50)
@@ -41,7 +39,7 @@ func execute(context: Dictionary) -> void:
 			_add(6, 5)
 			_add_relation(0, -(50))
 		1:
-			context["result_text"] = TXT_R1_A
+			context["result_text"] = tr(TXT_R1_A)
 			_add(8, -(30))
 			_add(9, -(30))
 			_add(1, -(50))
@@ -49,7 +47,7 @@ func execute(context: Dictionary) -> void:
 			_add(6, -(5))
 			_add_relation(0, -(20))
 		2:
-			context["result_text"] = TXT_R2_A
+			context["result_text"] = tr(TXT_R2_A)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -184,3 +182,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_524_bombard_yoyogi_hq.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_524",
+	"num": 524,
+	"priority": 52400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_524_bombard_yoyogi_hq.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "44"}, {"t": "DATE_AFTER", "key": "1978.3.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

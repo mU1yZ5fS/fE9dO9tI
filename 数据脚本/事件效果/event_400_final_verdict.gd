@@ -298,3 +298,19 @@ func _fm_name() -> String:
 
 func _funeral_tail() -> String:
 	return TXT_R_APPEND[6]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_400_final_verdict.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_400",
+	"num": 400,
+	"priority": 40000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_400_final_verdict.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_400_final_verdict.gd",
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

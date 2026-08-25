@@ -4,11 +4,11 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：Event699.cs:71 load_scene_after_click + number_event=700 → Godot enqueue_chain 入队。
 ## 差异：LeaveAlliances→_leave_alliances；Torg→对华贸易、proprc→亲中；OilProd→ws.oil_prod。
 
-const TXT_OPT0_DIS := "这是给谁的自由？遍布谎言的自由？"
-const TXT_OPT1_DIS := "把沙特送给极左分子？然后让他们把石油产业里搞大锅饭吗？"
-const TXT_R0 := "最终，我们帮助这位进步的首相实现了初步的自由化：政府一方面在形式上引入若干西式制度元素，例如其咨询性议会向公众开放部分选举席位、扩大技术官僚与专业人士在行政系统中的比例、允许有限的新闻讨论空间，以及在地方治理层面进行试点性质的权力下放；沙特政府甚至首次允许了成立地方性政党，但全国性政党依旧屡屡受限。过去一些被内阁（主要是王室成员）所侵占的议会功能被交还给议会行驶，技术人员和世俗群体在其中有了更大的话语权。\n尽管如此，王室对国家政治结构的总体控制依然尽可能地得到了维护，且宗教机构和部落网络与国家的关系依旧密切。就改革后的议会而言，宗教学者和部落谢赫依然保留着多数席位，而对于王室的回馈则是同意王室的基本方针和多数原则性政策，这使得本就困难的改革之路更是举步维艰。不可否认，城市代表们当然“有权”提出异议，但大多数时候这对议会的最终结果聊胜于无。\n对于东部什叶派，政府在拒绝道歉的同时，进行着一种沉默的补偿性政策：改善公共建设与经济利益分配，但对于参与总体石油规划和政治代表权这些问题保持缄默。这确实短期内能够避免（尤其是与OIR的）公开冲突，但假若伊朗政权进一步加大输出，这种主体缺席的“改良主义”很可能在后续变化中显得被动。\n不管怎样，沙特王国可以说是永久地自我改变了其政治格局，以此勉力延续那并不神圣、也不悠久的家族。尽管一些坚定的反对派依旧会继续以“讨伐君主”的名义活动，但至少大部分市民群体已经心安理得地坐在了新椅子上，享受着来之不易的权利。似乎沙特王国的危机已经消弭，塔拉勒首相将毫无疑问地坐上国王的宝座，并以“稳健改革家”的名号名留青史，当然，这个名号只能等到他寿终正寝，其制度改革不会在最后关头掉链子的话……\n[color=red]真主必定不变更任何民众的情况，直到他们变更自己的情况。当真主欲降灾害于任何民众的时候，那灾害是不可抗拒的。除真主外，他们绝无保佑者。——古兰经·雷霆章13:11[/color]"
-const TXT_R1 := "塔拉勒首相在我们的帮助和老朋友的劝说下选择了一条更为艰难的道路：在参考各类选举制度和民主政治后，沙特政府第一次筹备了公平公正的选举，开放各级党禁，并邀请以前许多被沙特政府驱逐的政治活动家回到沙特参加。塔里基带领的民族进步党（新成立）、瓦赫巴带领的沙特共产党、哈桑·萨法尔的穆斯林人民变革联盟（新成立）都参与了选举，乃至于历来抵制沙特家族的纳西尔·赛义德也回到了祖国，带着他的“半岛人民联盟”宣布与其他民主爱国组织合作。最终，在选举中上述所有组织的联合体：阿拉伯半岛人民进步阵线赢得了选举，并得到塔拉勒的授命，开展完全的政府改组。\n政府的各级部门改革都向现代民主国家看齐，新的联合政府在塔拉勒的倡导与进步阵线的推动下，开始明确划分行政、立法与司法体系的权力边界，并强调职位的民选性。原本过度集中于情报部门和内阁的职能，被分别移交至经民选授权的地方议会与司法委员会。肆意行事、唯王室是从的执法机关和各类镇压机关被系统性地纳入法律框架，并接受来自议会与舆论的双重监督。\n经济的改革则体现在对阿美公司的国有化进程和利润与产品导向，以及对劳动法与相关条例的确立。阿美公司被全权国有化，其利润不再与美国五五分红，而是进行偏向“本国化”的调整。除此之外，产品进出口也不再单一依赖美国，并单独将相当一部分石油收入立法规划，为公共教育基金、住房改革基金和失业保障体系提供资金。在沙特共产党成员的推进下，各产业工会或职工委员会被建立，并逐步形成劳工协商、维权机制。工人开始得到在产业中的代表权，扭转了过去沙特王国那种“奴工”的悲惨情况。\n哈桑·萨法尔领导的穆斯林人民变革联盟则致力于推动宗教学术界与民间社会的思想转型，作为边缘的什叶派派系，思想向来推崇进步的萨法尔使用宗教与“真主”的语言，在保留伊斯兰伦理基础的前提下，讲述着社会公义、公共责任以及宗教与政治的适度分离。师承阿亚图拉·设拉子的他，宣称民主体制是宗教的伊斯兰唯一能够接受的体制，并以此为起点将各种现代人权和公民意识观念引入沙特社会，为先知曾启蒙过的半岛带来新的曙光。\r\n长期沉闷压抑的社会气氛第一次变得清新而富有活力：被迫噤声的学者重新走上讲坛，被迫流亡的记者重新拿起笔，青年学生走进公开论坛辩论公共事务，妇女团体开始提出自身权利与社会参与的议题。虽然客观来说，各族群、各部落的矛盾不会一夜之间消失，但至少一种新的公民意识正在这个曾经领先过世界的土地里崛起：政治不再是某些家族的专利，国家不再是某些人的私产，它是所有穆斯林以及半岛子民共同的事业。\n至少，在这片曾经出过先知和璀璨文明的大漠中，人民的声音再次如同伊斯兰辉煌时代一样，被执政者聆听着。或许旧利益阶层将会不悦，但启示已然下达，从经训和骄傲的阿拉伯民族精神中复活的自由与正义势必擒拿一切意图不轨的暴君……\n[color=red]奉真主之名，奉真理之名……奉受苦受难的工人和沦为高利贷者猎物的农民之名……奉胜利的士兵之名，奉流离失所的贝都因人之名……奉长期被剥夺知识之光的人民之名，陛下……哦，沙特国王……请允许我直呼您的真名，摒弃一切华丽辞藻，因为言辞的修饰是虚妄的……得不到人民尊敬的人，即使拥有虚名也得不到尊敬，真主也永远不会尊敬他。人民的满意就是真主的满意！全能的真主不会对任何人民不满意的人感到满意。——纳西尔·赛义德[/color]"
-const TXT_R2 := "就让他们滚回过去那种吃蜥蜴的日子吧！\n尽管王室风雨飘摇，在保守势力和王室内部掣肘的情况下，塔拉勒依然难以绕过王室委员会推行他的改革……\n[color=red]游牧的阿拉伯人是更加不信的，是更加伪信的，是更不能明白真主降示其使者的法度的。真主是全知的，是至睿的。——古兰经·忏悔章9:97[/color]"
+const TXT_OPT0_DIS := "event.script.event_700_red_sand_lawgiver.c0"
+const TXT_OPT1_DIS := "event.script.event_700_red_sand_lawgiver.c1"
+const TXT_R0 := "event.script.event_700_red_sand_lawgiver.c2"
+const TXT_R1 := "event.script.event_700_red_sand_lawgiver.c3"
+const TXT_R2 := "event.script.event_700_red_sand_lawgiver.c4"
 
 
 func prepare(event_def: EventDef, _world: WorldState) -> void:
@@ -20,11 +20,11 @@ func prepare(event_def: EventDef, _world: WorldState) -> void:
 	if line >= 2:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if line <= 2:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 
@@ -35,7 +35,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
 			if saudi != null:
@@ -46,7 +46,7 @@ func execute(context: Dictionary) -> void:
 				saudi.set_tag("亲中", true)
 			ws.oil_prod += 100.0
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			_add(W.I_BUDGET, -50)
 			_add(W.I_AGENTS, -50)
 			if saudi != null:
@@ -57,10 +57,25 @@ func execute(context: Dictionary) -> void:
 				saudi.set_tag("亲中", true)
 			ws.oil_prod += 100.0
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			if saudi != null:
 				_leave_alliances(saudi)
 				saudi.government = GameConstants.Government.AUTHORITARIAN
 				saudi.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 				saudi.set_tag("对华贸易", true)
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_700_red_sand_lawgiver.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_700",
+	"num": 700,
+	"priority": 70000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_700_red_sand_lawgiver.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

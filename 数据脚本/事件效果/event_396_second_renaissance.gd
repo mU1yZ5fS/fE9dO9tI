@@ -29,9 +29,9 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1107 := "战争即地狱？"
-const TXT_IDX_1110 := "激进派"
-const TXT_IDX_1111 := "政府军"
+const TXT_IDX_1107 := "event.script.event_396_second_renaissance.c0"
+const TXT_IDX_1110 := "event.script.event_396_second_renaissance.c1"
+const TXT_IDX_1111 := "event.script.event_396_second_renaissance.c2"
 
 ## 原文字符串附录（供自检）
 ## 第二次“复兴运动”
@@ -96,3 +96,19 @@ func _raw(i: int) -> int:
 	if d.size() > i:
 		return d.get_data_by_index(i)
 	return 0
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_396_second_renaissance.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_396",
+	"num": 396,
+	"priority": 39600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_396_second_renaissance.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_396_second_renaissance.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

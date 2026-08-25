@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 ## 差异：south_korea_gwangju_rebellion→ws.get_flag("south_korea_gwangju_rebellion")；ingamewars[0]→ws.wars[0]；
 ##   parts[0]→CountryData.parts[0]；IsSocialism 谓词对应关系见 evaluate。
 
-const TXT_OPT0_DIS := "我们无法支持！"
-const TXT_R0 := "在特工的帮助下，左翼学生，工人和部分前左翼政党的政治人物被团结在一起，武装的工人与学生等在全国各地进行暴动，韩国事实上正在进行一场小型内战。但在我们的施压下，军政府被迫倒台，全斗焕，卢泰愚，李鹤捧等军政府高层被临时法庭判处死刑并立即执行。反对派们上台了，没有一刻为军政府的倒台感到高兴，紧接而来的便是反对派内部激烈的派系斗争。不过在我们顾问的帮助下，反对派决定先与朝鲜进行和平谈判，并在不久之后与朝鲜一起召开宪政大会。"
-const TXT_R1 := "在美国驻军的支持下，韩国再一次颁布全国戒严令，各地均有军警与学生和工人们爆发冲突的事件，在冲突激烈的地区军警被批准直接向参与运动的人群开火，坦克也被使用冲散暴动的人群，前所未有的镇压强度使得这场席卷全韩国的民主运动被迅速平定，运动骨干被当作共匪和通北人士进行枪决。韩国未来将会一直与美国保持紧密的联系，但是能否一直维持军政府甚至维持韩国这个国家的存在仍打一个大大的问号。"
+const TXT_OPT0_DIS := "event.script.event_539_march_for_you.c0"
+const TXT_R0 := "event.script.event_539_march_for_you.c1"
+const TXT_R1 := "event.script.event_539_march_for_you.c2"
 
 
 func evaluate(world: WorldState) -> bool:
@@ -52,7 +52,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.get_flag("south_korea_gwangju_rebellion") and r474 == 0 and ws.completed_event_ids.has("event_474"):
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 
 
 func execute(context: Dictionary) -> void:
@@ -75,6 +75,22 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 50
 			_add(W.I_PARTY_SUPPORT, 100)
 			_add(W.I_PEOPLE_SUPPORT, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_539_march_for_you.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_539",
+	"num": 539,
+	"priority": 53900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_539_march_for_you.gd",
+	"trigger_script": "res://数据脚本/事件效果/event_539_march_for_you.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

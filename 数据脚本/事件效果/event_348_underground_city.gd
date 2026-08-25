@@ -5,9 +5,9 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "当然，世界或许风平浪静，但我们必须时刻备战。北京的防空洞将被扩建，所有主要城市附近也将建立起类似的系统。我们的目标是从帝国主义的核打击中拯救数千万人！"
-const TXT_R1 := "防空洞是必需的。但是进一步的建设需要太多的资源，其必要性有些值得怀疑。因此，把防空洞留给军方吧，但再去扩建它就没什么意义了。"
-const TXT_R2 := "防空洞系统被移交给了民事当局。不久，在这配套设备最为齐全的地方，小型企业以及各种休闲场所纷纷落户。关于改善其中一些建筑的讨论也已经开始，以便在防空洞中建造住宅公寓。当然，我们近代史上最好的博物馆之一即将开放！"
+const TXT_R0 := "event.script.event_348_underground_city.c0"
+const TXT_R1 := "event.script.event_348_underground_city.c1"
+const TXT_R2 := "event.script.event_348_underground_city.c2"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -34,13 +34,13 @@ func execute(context: Dictionary) -> void:
 		0:
 			_add(W.I_BUDGET, -70)
 			_add(W.I_ARMY, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_PEOPLE_SUPPORT, 30)
 			_add(W.I_THOUGHT_FREEDOM, 10)
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -62,3 +62,18 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_348_underground_city.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_348",
+	"num": 348,
+	"priority": 34800,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_348_underground_city.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

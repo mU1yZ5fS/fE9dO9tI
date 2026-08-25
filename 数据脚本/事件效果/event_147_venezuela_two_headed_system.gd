@@ -10,11 +10,11 @@ extends "res://数据脚本/event_script_base.gd"
 ##  - 已核对原作本文件无 achievements 调用（2026-08-16）；
 ##  - 选项显隐/动态文案 prepare 动态改写（如有）。
 
-const TXT_R5 := "路易斯·埃雷拉赢得了总统选举，从民主行动党（AD）人安德烈斯·佩雷斯手中接过了政权，后者在1975年石油产业繁荣时将其国有化。在埃雷拉任期的前几年，石油收入持续增长，埃雷拉采取了统制经济的政府经济观点，包括将公共资金投入农业和工业项目、采取慷慨的政府补贴、对多种商品实施价格限制。埃雷拉以总统的名义实施了多项文化发展工程，包括建立特雷莎·卡雷尼奥文化中心和改革教育体制。埃雷拉政府延续了佩雷斯执政时期的政策，从石油美金泛滥的世界市场高筑外债，到了80年代初，委内瑞拉欠了逾200亿美元的主权债务。政府预期全球油价将永远保持在高位，并使得公共支出与私人消费维持高涨。然而，在埃雷拉任期的末期，全球油价的暴跌与大量的外债迫使政府解除物价管制，这导致了通货膨胀的急剧攀升与经济的严重衰退。"
-const TXT_R7 := "在当选总统之后，路易斯·皮涅拉·奥尔达斯提名了一届由前总统卡洛斯·佩雷兹领导的内阁班底。在奥尔达斯任内，石油牌价陡然下跌，而由于委内瑞拉的国民经济建立在石油出口之上，导致该国国际收入意外下降。基于此，政府背弃了奥尔达斯的竞选承诺，以国际货币基金组织的提议为基础，推出了名为“华盛顿共识”的新自由主义改革方案。上述方案，还有诸如提高石油价格等不受欢迎的经济与社会改革，换来了45亿美元的IMF贷款，也招致了民粹主义与反对自由主义的声潮。结果是，仅仅在第二年，首都加拉加斯就爆发了大规模的群众抗议活动，并遭到了奥尔达斯的严厉镇压。再下一年，记者何塞·兰格爆料称总理佩雷兹涉嫌贪腐，而司法部长雷蒙·埃斯科瓦尔·萨洛姆对其挪用国家资金达2.5亿玻利瓦尔的指控印证了这一点。经过调查，最高法院宣判佩雷兹挪用公款证据确凿，并在次日参议院投票剥夺佩雷兹豁免权后将其逮捕。这一事件使得奥尔达斯的支持率陡然下降，并宣布辞职。"
-const TXT_R3 := "备受瞩目的记者与节目主持人何塞·兰格得以当选总统，但他的胜利并不是因为左翼政党形成了所谓“选举联盟”，而仅仅是因为所有左翼政党共同认可将他提名为候选人。这就意味着，兰格不得不在议会中组建一个“红蓝内阁”，并容纳持反帝立场的温和左翼政党人民选举运动（MEP）、温和左翼的社会主义运动（MAS）和经济上温和进步但政治上保守的社会基督教党（COPEI）。新政府的重点是进一步实现政治、立法、司法系统的民主化与自由化；加强反垄断，尤其在媒体与广电领域反对私人垄断。然而，随着国际油价突然下跌造成的国内经济危机，松散的执政联盟宣告瓦解：社基党要求同国际货币基金组织合作、实现部分自由化；民选运动和社运则希望转向经互会框架下的国际经济合作银行，向社会主义国家贷款，并且发展拉丁美洲内部的贸易。在这一分裂局面下，一位不起眼的左翼退役军官弗朗西斯科·卡德纳斯从名为玻利瓦尔革命运动200（MBR-200）的秘密军官团中组建了一套内阁班底，被民众称为“第一军”。尽管人人对内阁的过激举动战战兢兢，但军事政变最终没有发生，只是政府展开了为期200天的“非常经济措施”，期间政府亲自接管对外贸易的垄断，有效地促成了国家的外贸平衡与货币稳定。这一临时举措虽然已经事先设定明确的截止时间，但还是多次被自由主义者与保守主义者所诟病。在任期结束后，何塞·兰格宣布他将不再参选总统，因为政治不适合他，所以想解甲归田回到新闻业的老本行。"
-const TXT_FRIEND := "[color=red]新政府决心和我们做朋友。[/color]"
-const TXT_ENEMY := "[color=red]新政府不想和我们做朋友。[/color]"
+const TXT_R5 := "event.script.event_147_venezuela_two_headed_system.c0"
+const TXT_R7 := "event.script.event_147_venezuela_two_headed_system.c1"
+const TXT_R3 := "event.script.event_147_venezuela_two_headed_system.c2"
+const TXT_FRIEND := "event.script.event_147_venezuela_two_headed_system.c3"
+const TXT_ENEMY := "event.script.event_147_venezuela_two_headed_system.c4"
 
 
 
@@ -40,8 +40,8 @@ func _set_next_election(c: CountryData, year: int, month: int, day: int) -> void
 
 func _friend_suffix(c: CountryData) -> String:
 	if c != null and c.has_tag("亲中"):
-		return TXT_FRIEND
-	return TXT_ENEMY
+		return tr(TXT_FRIEND)
+	return tr(TXT_ENEMY)
 
 
 ## Country.WantToLeave() 逐行移植。
@@ -228,17 +228,32 @@ func execute(context: Dictionary) -> void:
 	if c.sub_government == GameConstants.SubGovernment.MODERATE:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
-		context["result_text"] = TXT_R5 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R5) + _friend_suffix(c)
 		return
 	if c.sub_government == GameConstants.SubGovernment.RIGHT_AUTHORITARIAN:
 		c.level_of_instability -= 20
 		c.level_of_development -= 5
 		_add_power(EmpireData.USA, 5)
-		context["result_text"] = TXT_R7 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R7) + _friend_suffix(c)
 		return
 	if c.sub_government == GameConstants.SubGovernment.DEMOCRATIC_SOCIALIST:
 		c.level_of_instability -= 10
 		c.level_of_development += 5
 		_add_power(EmpireData.USA, -5)
 		_add_power(EmpireData.USSR, 5)
-		context["result_text"] = TXT_R3 + _friend_suffix(c)
+		context["result_text"] = tr(TXT_R3) + _friend_suffix(c)
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_147_venezuela_two_headed_system.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_147",
+	"num": 147,
+	"priority": 14700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_147_venezuela_two_headed_system.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -5,16 +5,16 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_OPT0 := "我们支持土耳其政府的行动"
-const TXT_OPT1 := "我们反对土耳其政府的行动"
-const TXT_OPT2 := "我们漠不关心"
-const TXT_WAR14_NAME := "土耳其入侵塞浦路斯"
-const TXT_WAR14_SIDE1 := "土耳其"
-const TXT_WAR14_SIDE2 := "希腊-塞浦路斯"
+const TXT_OPT0 := "event.script.event_373_cyprus_second_invasion.c0"
+const TXT_OPT1 := "event.script.event_373_cyprus_second_invasion.c1"
+const TXT_OPT2 := "event.script.event_373_cyprus_second_invasion.c2"
+const TXT_WAR14_NAME := "event.script.event_373_cyprus_second_invasion.c3"
+const TXT_WAR14_SIDE1 := "event.script.event_373_cyprus_second_invasion.c4"
+const TXT_WAR14_SIDE2 := "event.script.event_373_cyprus_second_invasion.c5"
 
-const TXT_R0 := "针对土耳其对塞浦路斯发起军事行动一事，我国外交部发言人发表声明称：“土耳其方面对塞浦路斯提出的相关诉求，具有其合理之处。塞浦路斯岛上土耳其族裔的人权状况确实令人深感忧虑。但中方始终强调，相关各方应秉持对话协商的原则，积极开展合作，推动问题得到和平解决。我们衷心希望，各方能够在充分考虑彼此核心关切、进行平等协商的基础上，作出必要的妥协与让步，早日实现地区的和平与稳定。”这一声明被国际社会普遍解读为我方对土耳其入侵行动的默许。各国纷纷对我方的这一立场提出谴责，而土耳其政府则对我方的支持态度表示赞赏。"
-const TXT_R1 := "针对土耳其对塞浦路斯发起军事行动一事，我国外交部发言人发表声明称：“土耳其对塞浦路斯发动的军事行动，是明目张胆的武装入侵行为，严重践踏了国际法基本准则与塞浦路斯的国家主权和领土完整。我方对此表示强烈谴责，并严正要求土耳其立即停止一切军事行动，无条件撤出其派往塞浦路斯的所有军队，尽快与塞浦路斯方面回到谈判桌前，达成公平合理的和平协议。”"
-const TXT_R2 := "针对土耳其对塞浦路斯发起军事行动一事，我国外交部发言人发表声明称：“我们高度关注塞浦路斯问题的最新发展态势。中方始终认为，塞浦路斯问题本质上是相关参与方的内部事务，其他任何国家与国际组织均无权随意插手干涉。中方在这一国际问题上，将始终秉持客观公正立场，发挥自身应有的建设性作用，并正积极着手向整个塞浦路斯岛提供人道主义援助。”"
+const TXT_R0 := "event.script.event_373_cyprus_second_invasion.c6"
+const TXT_R1 := "event.script.event_373_cyprus_second_invasion.c7"
+const TXT_R2 := "event.script.event_373_cyprus_second_invasion.c8"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -22,9 +22,9 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 3:
 		return
 	var opt := event_def.options
-	_enable(opt[0], TXT_OPT0)
-	_enable(opt[1], TXT_OPT1)
-	_enable(opt[2], TXT_OPT2)
+	_enable(opt[0], tr(TXT_OPT0))
+	_enable(opt[1], tr(TXT_OPT1))
+	_enable(opt[2], tr(TXT_OPT2))
 
 
 func execute(context: Dictionary) -> void:
@@ -33,19 +33,19 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			_start_war(14, TXT_WAR14_SIDE1, TXT_WAR14_SIDE2, 700, 300, 1, 1, TXT_WAR14_NAME, 10)
+			_start_war(14, tr(TXT_WAR14_SIDE1), tr(TXT_WAR14_SIDE2), 700, 300, 1, 1, tr(TXT_WAR14_NAME), 10)
 			_add(W.I_PARTY_SUPPORT, -250)
 			_add_relation(EmpireData.USA, -200)
 			_add_relation(EmpireData.USSR, -200)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			_start_war(14, TXT_WAR14_SIDE1, TXT_WAR14_SIDE2, 700, 300, 1, 1, TXT_WAR14_NAME, 10)
+			_start_war(14, tr(TXT_WAR14_SIDE1), tr(TXT_WAR14_SIDE2), 700, 300, 1, 1, tr(TXT_WAR14_NAME), 10)
 			_add_relation(EmpireData.USA, 200)
 			_add_relation(EmpireData.USSR, 200)
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 		2:
-			_start_war(14, TXT_WAR14_SIDE1, TXT_WAR14_SIDE2, 700, 300, 1, 1, TXT_WAR14_NAME, 10)
-			context["result_text"] = TXT_R2
+			_start_war(14, tr(TXT_WAR14_SIDE1), tr(TXT_WAR14_SIDE2), 700, 300, 1, 1, tr(TXT_WAR14_NAME), 10)
+			context["result_text"] = tr(TXT_R2)
 
 
 
@@ -94,3 +94,19 @@ func _start_war(war_id: int, side1: String, side2: String, infl1: int, infl2: in
 		ws.wars[war_id].name_war = war_name
 		ws.wars[war_id].fortnight_max = tick_time
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_373_cyprus_second_invasion.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_373",
+	"num": 373,
+	"priority": 37300,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_373_cyprus_second_invasion.gd",
+	"trigger": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 9, "target": "84"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "puppet_of", "v": 84, "target": "14"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "puppet_of", "v": 84, "target": "8"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "puppet_of", "v": 84, "target": "35"}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "nato", "target": "84"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "亲美", "target": "84"}]}, {"t": "DATE_AFTER", "key": "1985.6.1"}],
+	"options": [{"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"notext": true, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

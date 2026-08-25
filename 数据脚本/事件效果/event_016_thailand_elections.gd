@@ -26,7 +26,7 @@ func _opt_support_cpt(context: Dictionary) -> void:
 	ws.influence_prc += 5
 	if d.size() > 41:
 		d.thailand_election_intervention = 100   # 原 data.thailand_election_intervention（泰国选举干预标志，无端口命名键）
-	context["result_text"] = "我们努力为泰共提供实质性支持同时和各种中左翼积极分子结盟，通过与社会行动党与民主党的关系的回暖，换取了政府停止对游击队军事基地的攻击。1976年的竞选活动伴随着血腥的街头冲突。通过与民主党和泰共的结盟，克立·巴莫的社会行动党获得了大多数的选票。保皇党政府以及官员们对左派的蓬勃发展感到不满，形势正在升温。"
+	context["result_text"] = tr("event.script.event_016_thailand_elections.i0")
 
 
 # 选项2：让选举见鬼去吧！（Event16.cs result 2）
@@ -34,4 +34,18 @@ func _opt_arms(context: Dictionary) -> void:
 	if d.size() > W.I_ARMY:
 		d.army -= 20
 	ws.influence_prc += 10
-	context["result_text"] = "我们通过泰共向游击队援助了更多的武器来无视选举，他们派遣新的军队袭击军事基地。然而，泰共仍然无法控制这个国家哪怕一个地区。1976年的竞选活动伴随着血腥的街头冲突。冲突造成了大约30人死亡。社尼·巴莫所领导的民主党—因为比库克立·巴莫领导社会行动党更右翼—从而获得了大多数选票。右翼国家党领袖邦朋·阿滴列讪成为副总理。"
+	context["result_text"] = tr("event.script.event_016_thailand_elections.i1")
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_016_thailand_elections.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "thailand_elections",
+	"num": 16,
+	"notify": false,
+	"trigger": [{"t": "DATE_AFTER", "key": "1976.4"}],
+	"options": [{"result": true, "fx": [{"t": "ADD_EMPIRE_POWER", "key": "0", "v": 5}]}, {"disabled": true, "cond": {"t": "ANY", "c": [{"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 20}, {"t": "COUNTRY_FIELD_EQUALS", "key": "stab", "v": 1, "target": "34"}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "army", "v": 20}, {"t": "RESOURCE_NOT_EQUALS", "key": "political_line", "v": 4}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

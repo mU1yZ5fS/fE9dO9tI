@@ -1,14 +1,12 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event526.cs：没有玫瑰，只有拳头（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event526.cs：没有玫瑰，只有拳头（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "和修正主义和解？你也想开修了？"
-const TXT_OPT1_DIS := "左派的社会实践太多了！"
-const TXT_R0_A := "我们很快与佐佐木派、改革派等大小派系建立了联系（江田三郎与佐佐木更三都曾多次访华，这让我们的介入更加顺利），并参与到它们的矛盾调解中。\n不久在社会党的中央会议上，社会主义协会遭到其他各派别联合起来的猛烈攻击，最终不得不“承认自身错误”并同意展开自我整肃。社会党长期的左派优位体制终于得到了改变。而另一方面，在我们的斡旋下，原先改革派的激进主张也得到了修改。现在的社会党开始与英国工党对标，开始向民主社会主义进行转型。但需要指出的是，该党并未完全切断与科学社会主义的联系，《日本通向社会主义之路》的党纲也在一定程度上得到了保留。且社会主义协会依旧掌握着大量的基层活动家。考虑到社会党目前的变化，现任书记长成田知巳决定辞去书记长的职务，曾任横滨市市长的飞鸟田一雄接替了他的位置。\n不管怎样，内部的矛盾得到了暂时的解决。团结起来的社会党已经准备好为了完成“参政交代”而再次努力了。"
-const TXT_R1_A := "我们选择支持社会主义协会。尽管该派别所坚持的并非真正的马克思列宁主义，但支持它总比支持伯恩施坦路线要好，对吧？\n不久在社会党的中央会议上，社会主义协会遭到各派系的猛烈攻击。但凭借着对社会党中基层组织与相关青年活跃组织的强有力掌控，该派系还是挺过了这次攻击。而江田三郎本人更是被几个激进的社会主义协会成员骂道：“老东西，去死吧。”这也宣布了各派之间的彻底决裂。不久改革派成员宣布退出社会党，并筹划组建社会民主联合。而社会主义协会借此机会对党内其他派系进行了进一步打击，巩固了自身的地位。同时在我们的帮助下，协会派扩大了基层组织，开始进一步深入工会、农村之中。\n协会派的举措遭到了党内外的许多责难，特别是当江田三郎这位社会党老党员在退党不久就因肺癌去世后。为了稳住局势，社会主义协会一方面进行了一定让步，同意展开自我整肃。另一方面也强调这是维护“革命路线”的无奈之举。为了更好地发挥力量，数月后的党大会上，社会党正式宣布解散派阀。同时在左派的支持下，成田知巳继续担任社会党的书记长。\n尽管社会党由于右派出走实力被削弱，但相对的，我们对社会党的影响力也得到了增强。且地位愈发巩固的社会党左派已经准备好在今后的选举中进一步动员劳工阶层以实现其目标了。"
-const TXT_R2_A := "我们与社会党内部的各个派系均取得了联系，希望他们能互相妥协并提出了一份方案。但由于他们在关键问题上的互不让步，谈判最终不了了之。\n不久在社会党的中央会议上，社会主义协会遭到各派系的猛烈攻击。但凭借着对社会党中基层组织与相关青年活跃组织的强有力掌控，该派系还是挺过了这次攻击。而江田三郎本人更是被几个激进的社会主义协会成员骂道：“老东西，去死吧。”这也宣布了各派之间的彻底决裂。不久改革派成员宣布退出社会党，并筹划组建社会民主联合。\n社会主义协会的行为遭到了党内外的一致谴责，特别是当江田三郎这位社会党老党员在退党不久就因肺癌去世后。为了稳住局势，社会主义协会不得不有所退让，同意展开自我整肃。同时一直支持社会主义协会的书记长成田知巳也饱受质疑，最终他宣布辞职。曾任横滨市市长的飞鸟田一雄接替了他的位置。社会党的内部纷争仍未解决，且该党的大众形象也进一步受损，很难说它在今后的国会选举中能有怎样的成绩。"
+const TXT_OPT0_DIS := "event.script.event_526_japan_no_rose_only_fist.c0"
+const TXT_OPT1_DIS := "event.script.event_526_japan_no_rose_only_fist.c1"
+const TXT_R0_A := "event.script.event_526_japan_no_rose_only_fist.c2"
+const TXT_R1_A := "event.script.event_526_japan_no_rose_only_fist.c3"
+const TXT_R2_A := "event.script.event_526_japan_no_rose_only_fist.c4"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -24,7 +22,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line < 2:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
@@ -33,7 +31,7 @@ func execute(context: Dictionary) -> void:
 	var opt := int(context.get("option_index", -1))
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(80))
 			_add(9, -(80))
 			_add(1, 50)
@@ -41,7 +39,7 @@ func execute(context: Dictionary) -> void:
 			_add(6, -(10))
 			_add_relation(0, 50)
 		1:
-			context["result_text"] = TXT_R1_A
+			context["result_text"] = tr(TXT_R1_A)
 			_add(8, -(80))
 			_add(9, -(80))
 			_add(1, 50)
@@ -50,7 +48,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(0, -(50))
 			ws.influence_prc += 10
 		2:
-			context["result_text"] = TXT_R2_A
+			context["result_text"] = tr(TXT_R2_A)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -185,3 +183,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_526_japan_no_rose_only_fist.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_526",
+	"num": 526,
+	"priority": 52600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_526_japan_no_rose_only_fist.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "44"}, {"t": "PREV_EVENT_DONE", "ref": "event_522"}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "ref": "event_522"}]}, {"t": "DATE_AFTER", "key": "1979.1.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -4,13 +4,13 @@ extends "res://数据脚本/event_script_base.gd"
 ## 触发：ReqEventForDLC02.cs:919-921 —— DATE_AFTER 1983.2.27；fire_only_once 承担 !event_done[615]。
 ## 差异：c112.parts[1]/war52 显隐原版不 Destroy 的选项用 _enable 双文案；level_of_unstab→level_of_instability。
 
-const TXT_OPT0_ALT := "这有什么可供选择的余地吗"
-const TXT_OPT1_DIS := "就算迪乌夫再不堪，我们也不能支持自由派啊"
-const TXT_OPT2_DIS := "民主社会主义也是社会主义！"
-const TXT_R0 := "塞内加尔军队在冈比亚战争中的灾难性战果导致迪乌夫的名声江河日下，社会党内部也因此出现了分裂（一部分党员出走组建了民主复兴联盟），财政赤字与外债急剧飙升，罢工游行接连不断，卡萨芒斯地区叛乱层出不穷，为此，政府不得不出台紧急措施增收节支，然而这也只是杯水车薪，随着西非法郎贬值，进口商品和生活必需品价格的大幅上涨，人民怨声载道。在这种情况下，1983年2月27日，阿卜杜拉耶·瓦德与塞内加尔民主党在总统选举中击败了迪乌夫，终结了社会党的霸权。新政府实行了一系列以自由市场、开放模式和创造良好投资环境为特征的经济自由化政策，开始了肢解国有资本与政治民主化的进程。现在，只有天知道这位桑戈尔口中的“狡兔”先生会把这个国家带到什么方向了……"
-const TXT_R0_FAIL := "不出意料，在1983年2月27日举行的总统选举中，阿卜杜·迪乌夫拿到了83.45%的票数，而议会选举中社会党更是大获全胜，赢得了120个议会席位中的111席，而排名第二的阿卜杜拉耶·瓦德和塞内加尔民主党仅仅只有14.79%的票数和8个议会席位，至于马马杜·迪亚的人民民主运动亦或者其他规模更小的反对党，则更是完全没有能威胁到迪乌夫的能力。塞内加尔社会党的霸权总有终结的那一天，但看起来还不是现在……"
-const TXT_R1 := "塞内加尔军队在冈比亚战争中的灾难性战果导致迪乌夫的名声江河日下，社会党内部也因此出现了分裂（一部分党员出走组建了民主复兴联盟），财政赤字与外债急剧飙升，罢工游行接连不断，卡萨芒斯地区叛乱层出不穷，为此，政府不得不出台紧急措施增收节支，然而这也只是杯水车薪，随着西非法郎贬值，进口商品和生活必需品价格的大幅上涨，人民怨声载道。在这种情况下，1983年2月27日，阿卜杜拉耶·瓦德与塞内加尔民主党在总统选举中击败了迪乌夫，终结了社会党的霸权。新政府实行了一系列以自由市场、开放模式和创造良好投资环境为特征的经济自由化政策，开始了肢解国有资本与政治民主化的进程。现在，只有天知道这位桑戈尔口中的“狡兔”先生会把这个国家带到什么方向了……"
-const TXT_R2 := "不出意料，在1983年2月27日举行的总统选举中，阿卜杜·迪乌夫拿到了83.45%的票数，而议会选举中社会党更是大获全胜，赢得了120个议会席位中的111席，而排名第二的阿卜杜拉耶·瓦德和塞内加尔民主党仅仅只有14.79%的票数和8个议会席位，至于马马杜·迪亚的人民民主运动亦或者其他规模更小的反对党则更是根本没有威胁到迪乌夫的能力。不过，那又与我们有什么关系呢。\n靠着几内亚、加纳等西非社会主义国家的关系网络，我们成功与共同行动/新民主革命运动、人民民主联盟、民主联盟等极左翼团体建立了联系。在我们的推动下，由共同行动/新民主革命运动牵头成立了塞内加尔共产党/马列主义，兰丁·萨瓦内当选为该党总书记，新党以马克思列宁主义、毛泽东思想为指导思想，并积极参与工人运动和学生运动，向城市与乡村中传播马列主义思想。"
+const TXT_OPT0_ALT := "event.script.event_615_red_lion.c0"
+const TXT_OPT1_DIS := "event.script.event_615_red_lion.c1"
+const TXT_OPT2_DIS := "event.script.event_615_red_lion.c2"
+const TXT_R0 := "event.script.event_615_red_lion.c3"
+const TXT_R0_FAIL := "event.script.event_615_red_lion.c4"
+const TXT_R1 := "event.script.event_615_red_lion.c5"
+const TXT_R2 := "event.script.event_615_red_lion.c6"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -29,15 +29,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if cond:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_enable(opt[0], TXT_OPT0_ALT)
+		_enable(opt[0], tr(TXT_OPT0_ALT))
 	if cond and line > 2:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	if line < 2 and guinea != null and guinea.has_tag("对华贸易"):
 		_enable(opt[2], event_def.options[2].text)
 	else:
-		_disable(opt[2], TXT_OPT2_DIS)
+		_disable(opt[2], tr(TXT_OPT2_DIS))
 
 
 
@@ -50,7 +50,7 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			if _res_ev("event_597") == 1 and not _part(112, 1) and not _war_going(52):
-				context["result_text"] = TXT_R0
+				context["result_text"] = tr(TXT_R0)
 				if senegal != null:
 					senegal.government = GameConstants.Government.LIBERAL
 					senegal.sub_government = GameConstants.SubGovernment.NEOLIBERAL
@@ -58,9 +58,9 @@ func execute(context: Dictionary) -> void:
 				_add(W.I_ARMY, -50)
 				_add(W.I_BUDGET, -20)
 			else:
-				context["result_text"] = TXT_R0_FAIL
+				context["result_text"] = tr(TXT_R0_FAIL)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 			if senegal != null:
 				senegal.government = GameConstants.Government.LIBERAL
 				senegal.sub_government = GameConstants.SubGovernment.NEOLIBERAL
@@ -68,7 +68,7 @@ func execute(context: Dictionary) -> void:
 			ws.influence_prc += 10
 			_add(W.I_BUDGET, -50)
 		2:
-			context["result_text"] = TXT_R2
+			context["result_text"] = tr(TXT_R2)
 			ws.influence_prc += 20
 			_add(W.I_ARMY, -50)
 			_add(W.I_BUDGET, -50)
@@ -164,3 +164,19 @@ func _free_puppets(overlord: int) -> void:
 			c.puppet_of = GameConstants.LegacySlot.NONE
 
 
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_615_red_lion.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_615",
+	"num": 615,
+	"priority": 61500,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_615_red_lion.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1983.2.27"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

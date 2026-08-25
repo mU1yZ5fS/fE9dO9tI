@@ -5,8 +5,8 @@ extends "res://数据脚本/event_script_base.gd"
 
 
 
-const TXT_R0 := "在苏联空军基地，两架米格-25截击机在夜间升空，因为一架中国飞机越过了苏联边界。那架不知名的间谍飞机很快就被驱赶回了中国领空。但是，在返回机场时，其中一架苏联飞机却突然转向中国方向，并开始加速飞离。几分钟后，他便进入了中国领空。防空部队没有击落叛逃者飞机，因为他们事先接到了警告，在实际上他们也没有这个能力。着陆后，飞行员向中国当局投降。与苏联的关系受到了很大影响，但军方将能借此改良我们的飞机。"
-const TXT_R1 := "没必要劫机，这将破坏与苏联的关系。"
+const TXT_R0 := "event.script.event_350_mig25_hijack.c0"
+const TXT_R1 := "event.script.event_350_mig25_hijack.c1"
 
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
@@ -39,9 +39,9 @@ func execute(context: Dictionary) -> void:
 				ws.techs.unlocked[23] = true
 			else:
 				_add(W.I_ARMY, 100)
-			context["result_text"] = TXT_R0
+			context["result_text"] = tr(TXT_R0)
 		1:
-			context["result_text"] = TXT_R1
+			context["result_text"] = tr(TXT_R1)
 
 
 
@@ -63,3 +63,19 @@ func _modifier_active(index: int) -> bool:
 func _set_modifier_active(index: int) -> void:
 	if ws.modifiers.size() > index and ws.modifiers[index] != null:
 		ws.modifiers[index].is_active = true
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_350_mig25_hijack.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_350",
+	"num": 350,
+	"priority": 35000,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_350_mig25_hijack.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1979.6.9"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

@@ -35,17 +35,17 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1345 := "葡萄牙革命的结束？"
-const TXT_IDX_1346 := "结束新国家体制的1974年康乃馨革命并没能扭转局势，反而进一步将葡萄牙推入到了经济与政治危机当中。成立于1975年的葡萄牙革命委员会内山头林立，各大派系均对国家未来有属于自己的野心——这个囊括左翼与右翼激进派、温和社会主义者与温和民主主义者的大帐篷内动荡不安。来自军方的激进派两翼的冲突导致了葡萄牙的未遂政变迭起，因此，该时期也被称为“1975年躁热之夏”。对左翼与右翼政变的镇压，最终导致了政府内激进主义派系的影响力衰退。前者已经开始实行部分社会主义改革，而社会也厌倦了浪潮迭起的革命。因此，那些在1976年便进入政府的民主党派的势力得到了大大提升，他们满怀信心地认为，革命将理所当然的结束。在今年4月，葡萄牙通过了一部新宪法。尽管如此，她还是巩固了将在该国建立社会主义的基本原则，并宣称绝不动摇先前的改革成果。在同期举行的议会选举中，由马里奥·苏亚雷斯领导的社会党拿下35%的选票，而两个右翼政党（即人民党与社会民主党）合计获得40%的选票。共产党仅得票15%。该国将在不久后举行总统选举，其中，由主要政党支持的拉马尔霍·埃亚内斯最有可能获胜。然而，尽管该国局势日趋稳定，但葡萄牙依然没能解决其发展的最主要问题——民主体制依然不受欢迎，哪怕是一点风吹草动，都有可能让革命春风吹又生。提示：倘若葡萄牙的稳定指数超过50%，该国将建立稳定的自由派政权。"
-const TXT_IDX_1347 := "给葡萄牙民主政体来点“尖叫”（需要2.0百万{0}与2.0点{1}）"
-const TXT_IDX_592 := "预算"
-const TXT_IDX_593 := "特工网络"
-const TXT_IDX_594 := "军事实力"
-const TXT_IDX_566 := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
-const TXT_IDX_567 := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
-const TXT_IDX_1348 := "不闻不问"
-const TXT_IDX_1349 := "我们对那些极端仇视现存体制的激进政治组织与恐怖主义团体送去了支持。在整个4月期间，他们闹出了多件政治大案——譬如刺杀激进派左翼牧师马克斯神父，制造古巴大使馆爆炸案。在共产党的工会组织与其地区支部内，其成员也并不热衷于巩固民主制度。值得注意的是，尽管葡萄牙已经通过了新宪法，但革命委员会依然没有解散。后者作为一个超出民主政体框架的咨询部门发挥作用，其成员仍比现政权的领导层要更加激进。然而，这将进一步激化该国的政治危机吗？目前情况还不明朗......"
-const TXT_IDX_1350 := "我们决定不加干涉。值得注意的是，尽管葡萄牙已经通过了新宪法，但革命委员会依然没有解散。后者作为一个超出民主政体框架的咨询部门发挥作用，其成员仍比现政权的领导层要更加激进。然而，这将进一步激化该国的政治危机吗？目前情况还不明朗......"
+const TXT_IDX_1345 := "event.script.event_414_portugal_revolution_end.c0"
+const TXT_IDX_1346 := "event.script.event_414_portugal_revolution_end.c1"
+const TXT_IDX_1347 := "event.script.event_414_portugal_revolution_end.c2"
+const TXT_IDX_592 := "event.script.event_414_portugal_revolution_end.c3"
+const TXT_IDX_593 := "event.script.event_414_portugal_revolution_end.c4"
+const TXT_IDX_594 := "event.script.event_414_portugal_revolution_end.c5"
+const TXT_IDX_566 := "event.script.event_414_portugal_revolution_end.c6"
+const TXT_IDX_567 := "event.script.event_414_portugal_revolution_end.c7"
+const TXT_IDX_1348 := "event.script.event_414_portugal_revolution_end.c8"
+const TXT_IDX_1349 := "event.script.event_414_portugal_revolution_end.c9"
+const TXT_IDX_1350 := "event.script.event_414_portugal_revolution_end.c10"
 
 ## 原文字符串附录（供自检）
 
@@ -77,3 +77,19 @@ func execute(context: Dictionary) -> void:
 		if portugal != null:
 			portugal.special += 5
 		context["result_text"] = TXT_R[1]
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_414_portugal_revolution_end.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_414",
+	"num": 414,
+	"priority": 41400,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_414_portugal_revolution_end.gd",
+	"trigger": [{"t": "DATE_AFTER", "key": "1976.4.20"}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

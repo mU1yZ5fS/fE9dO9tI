@@ -9,13 +9,13 @@ func execute(context: Dictionary) -> void:
 	if not _bind_world():
 		return
 	if d.people_support <= 700 or d.party_support < 500:
-		context["result_text"] = "你在全国直播的情况下亲自与北京的抗议者进行了交谈，并承诺尽一切努力改变政策，考虑到所有公民的利益，最后建立真正的民主机制（不过，你并不急于执行）。不过看来人民已经对你的承诺感到了厌倦，他们对你态度冷漠并要求你直接辞职。对你失去了信心的党最后决定罢免你并将你逮捕，之后他们重新组织了一个新的政府领导全国并开始筹划全国选举，而你只能在监狱里蹲着。"
+		context["result_text"] = tr("event.script.event_005_popular_discontent.i0")
 		d.party_support = 0
 		d.people_support = 0
 		game.queue_ending_after_event(1)
 		return
 
-	context["result_text"] = "你亲自与全国各地的抗议者进行了交谈。你承诺将尽一切努力改变政策，考虑到所有公民的利益，并建立真正的民主机制。（不过，你并不急于执行）。看来你已经成功地说服了人民，抗议活动正在慢慢地减少。"
+	context["result_text"] = tr("event.script.event_005_popular_discontent.i1")
 	d.people_support -= 150
 	d.thought_freedom -= 150
 	d.party_support -= 100
@@ -58,3 +58,16 @@ func _reorganize_parties() -> void:
 	var ruling := ws.factions[FactionData.CONSERVATIVE]
 	ruling.support += transferred
 	ruling.ideology += transferred
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_005_popular_discontent.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "popular_discontent",
+	"num": 5,
+	"trigger": [{"t": "ALL", "c": [{"t": "ANY", "c": [{"t": "RESOURCE_DIFFERENCE_AT_MOST", "key": "people_support", "v": -51, "target": "thought_freedom"}, {"t": "RESOURCE_AT_MOST", "key": "people_support", "v": 99}, {"t": "RESOURCE_AT_LEAST", "key": "thought_freedom", "v": 1200}]}, {"t": "NOT", "c": [{"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_444"}, {"t": "PREV_EVENT_RESULT_IS", "ref": "event_444"}]}]}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "ref": "event_503"}]}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "result": true, "cond": {"t": "ANY", "c": [{"t": "RESOURCE_NOT_EQUALS", "key": "party_system", "v": 9}, {"t": "RESOURCE_NOT_EQUALS", "key": "press_policy", "v": 19}]}, "fx": [{"t": "ADD_RESOURCE", "key": "party_support", "v": -50}, {"t": "ADD_RESOURCE", "key": "people_support", "v": 100}, {"t": "ADD_RESOURCE", "key": "diplo", "v": -50}, {"t": "SET_RESOURCE", "key": "press_policy", "v": 19, "if": {"t": "RESOURCE_EQUALS", "key": "party_system", "v": 9}}, {"t": "SET_RESOURCE", "key": "party_system", "v": 9, "if": {"t": "RESOURCE_NOT_EQUALS", "key": "party_system", "v": 9}}, {"t": "ADD_ALL_POLITICIAN_LOYALTY", "v": -100}]}, {"disabled": true, "result": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "army", "v": 100}, "fx": [{"t": "ADD_RESOURCE", "key": "thought_freedom", "v": -150}, {"t": "ADD_RESOURCE", "key": "army", "v": -100}, {"t": "ADD_RESOURCE", "key": "diplo", "v": 50}, {"t": "SET_RESOURCE", "key": "protest_repression", "v": 9}, {"t": "ADD_POLITICIAN_LOYALTY_BY_PERSONALITY", "key": "3", "v": -100}]}, {"disabled": true, "result": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "people_support", "v": 501}, "fx": [{"t": "ADD_RESOURCE", "key": "thought_freedom", "v": -200}, {"t": "ADD_RESOURCE", "key": "party_support", "v": -50}, {"t": "ADD_RESOURCE", "key": "diplo", "v": 20}, {"t": "ADD_RESOURCE", "key": "people_support", "v": -300}, {"t": "ADD_POLITICIAN_LOYALTY_BY_PERSONALITY", "key": "2,3", "v": -100}]}, {"disabled": true, "result": true, "cond": {"t": "RESOURCE_AT_LEAST", "key": "agents", "v": 150}, "fx": [{"t": "ADD_RESOURCE", "key": "agents", "v": -150}, {"t": "ADD_RESOURCE", "key": "thought_freedom", "v": -150}, {"t": "ADD_RESOURCE", "key": "people_support", "v": 100}]}],
+}

@@ -1,14 +1,12 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event506.cs：从1922到1984（3选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event506.cs：从1922到1984（3选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "我们没有能力做这样的事"
-const TXT_OPT1_DIS := "我们做不到背叛盟友！"
-const TXT_R0_A := "我们联络了内政部长阿卜杜拉耶·杜尔（杜尔的胞弟）和贝阿沃吉总统。表示了愿意为他们提供军事支持以促成反政变。二人欣然接受。很快，一批脸上涂着棕色迷彩的中国人民解放军士兵出现在了康康的街头，并与政变军发生了交火。几内亚人民军的六三式坦克攻入了反抗军据点，工人民兵也走上街头反抗军事管理。在我们的帮助下，几内亚人民军彻底打败了政变军官，他们要么逃入塞内加尔寻求政治避难，要么束手就擒期待政府的宽大处理。孔戴上校被当众处死，而群众为这一行为拍手叫好。经此一役，工人卫队的地位大大的提高了。几内亚人民反抗帝国主义干涉的伟业将会写入几内亚的历史书中，而杜尔的遗产也保住了。几内亚民主党宣布改为几内亚劳动党，党纲里不再宣称简单的“泛非主义”和科学社会主义，而是要在走马克思，列宁，毛泽东指出的路线的同时，继续致力于非洲国家的统一与解放。\n新政府宣布将扩大和我们的合作。尤其是在构建完善的工人阶级来对抗国家内部潜在的阶级敌人，防止资产阶级复辟。"
-const TXT_R1_A := "我们公开承认了孔戴上校的军政府，这招来了全非洲进步国家，甚至是扎伊尔的谴责。\n很快，政变军队攻占了全国，兰萨纳·孔戴上校组建了国家军事复兴委员会。并开始着手进行“去杜尔化”。大量谴责杜尔的或真或假的黑材料被大量公布，他的坟墓也从革命烈士陵园内迁出。"
-const TXT_R2_A := "很快，政变军队攻占了全国，兰萨纳·孔戴上校组建了国家军事复兴委员会。并开始着手进行“去杜尔化”。大量谴责杜尔的或真或假的黑材料被大量公布，他的坟墓也从革命烈士陵园内迁出。"
+const TXT_OPT0_DIS := "event.script.event_506_from_1922_to_1984.c0"
+const TXT_OPT1_DIS := "event.script.event_506_from_1922_to_1984.c1"
+const TXT_R0_A := "event.script.event_506_from_1922_to_1984.c2"
+const TXT_R1_A := "event.script.event_506_from_1922_to_1984.c3"
+const TXT_R2_A := "event.script.event_506_from_1922_to_1984.c4"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -18,11 +16,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line <= 2 and _tech(24) and _tag(68, "对华贸易"):
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	if ws.political_line > 1:
 		_enable(opt[1], event_def.options[1].text)
 	else:
-		_disable(opt[1], TXT_OPT1_DIS)
+		_disable(opt[1], tr(TXT_OPT1_DIS))
 	_enable(opt[2], event_def.options[2].text)
 
 func execute(context: Dictionary) -> void:
@@ -32,7 +30,7 @@ func execute(context: Dictionary) -> void:
 	var c68 := ws.get_country_by_legacy_index(68)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
+			context["result_text"] = tr(TXT_R0_A)
 			_add(8, -(20))
 			_add(22, -(100))
 			ws.influence_prc += 50
@@ -47,7 +45,7 @@ func execute(context: Dictionary) -> void:
 				if c68 != null: c68.set_tag("econ", true)
 				if c68 != null: c68.set_tag("au", true)
 		1:
-			context["result_text"] = TXT_R1_A
+			context["result_text"] = tr(TXT_R1_A)
 			_add(8, -(10))
 			if c68 != null: c68.government = GameConstants.Government.AUTHORITARIAN
 			if c68 != null: c68.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
@@ -57,7 +55,7 @@ func execute(context: Dictionary) -> void:
 			_add_relation(0, 80)
 			_add_power(0, 50)
 		2:
-			context["result_text"] = TXT_R2_A
+			context["result_text"] = tr(TXT_R2_A)
 			if c68 != null: c68.government = GameConstants.Government.AUTHORITARIAN
 			if c68 != null: c68.sub_government = GameConstants.SubGovernment.RIGHT_AUTHORITARIAN
 			if c68 != null: _leave_alliances(c68)
@@ -196,3 +194,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_506_from_1922_to_1984.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_506",
+	"num": 506,
+	"priority": 50600,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_506_from_1922_to_1984.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "ANY", "c": [{"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 1, "target": "68"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 15, "target": "68"}]}, {"t": "NOT", "c": [{"t": "COUNTRY_HAS_TAG", "key": "亲苏", "target": "68"}]}, {"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "68"}, {"t": "DATE_AFTER", "key": "1984.3.22"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

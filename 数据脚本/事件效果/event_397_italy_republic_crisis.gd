@@ -41,18 +41,18 @@ func _fmt(s: String, args: Array) -> String:
 		s = s.replace("{" + str(i) + "}", str(args[i]))
 	return s
 
-const TXT_IDX_1114 := "意大利共和国的危机"
-const TXT_IDX_1116 := "前总理阿尔多·莫罗被刺杀后，意大利警方对国内激进派发起了扫荡行动，但调查的最终结果令人始料不及。警方发现，意大利的主要政党与黑手党之间达成了一系列前所未有的腐败交易。作为对竞选资金的回报，天主教民主党与意大利社会党共同构成的政府自觉扮演起黑手党的利益说客，并纵容腐败与非法交易。丑闻导致了不计其数的检查：不少政治家、当地议会代表与企业家纷纷落马，并因此遭遇刑事指控。现存的政党制度已经受到了威胁。天主教民主党与意大利社会党的领导人纷纷被捕，上述政党也宣告自我解散，其成员则纷纷逃蹿到尚未卷入腐败丑闻的现存政党内——即意大利共产党与意大利社会运动等。因此，意大利的政治光谱被极端撕裂。同时，该国对选举制度进行了改革——比例代表制取代了原先的多数代表制。在这种情况下，介于意大利即将提前举行议会选举，我们可以选择将其中一派势力推上前台。"
-const TXT_IDX_1117 := "支持左派（需要10.0百万{0}与10.0点{1}）"
-const TXT_IDX_592 := "预算"
-const TXT_IDX_593 := "特工网络"
-const TXT_IDX_594 := "军事实力"
-const TXT_IDX_566 := "巧妇难为无米之炊，我们手头得有{0}百万才能干活......"
-const TXT_IDX_567 := "巧妇难为无米之炊，我们手头得有{0}支特工网络才能干活......"
-const TXT_IDX_1118 := "支持右派（需要10.0百万{0}与10.0点{1}）"
-const TXT_IDX_1102 := "不闻不问"
-const TXT_IDX_1119 := "根据投票结果显示，意大利共产党拿下了超过半数的议会席位，因此赢下选举。在如此大胜的背景下，由恩里科·贝林格领导的新政府得以建立，并宣布将对意大利现行的经济与军事政治一体化议程进行修订。然而，在意大利共产党内部。该党正因“接待”过多来自意大利社会党与天主教民主党的新人而陷入分裂危机，也许这很快便会对意大利历史上的第一个共产主义政府开一个残酷玩笑。"
-const TXT_IDX_1120 := "根据投票结果显示，意大利社会运动拿下了超过半数的议会席位，因此赢下选举。在如此大胜的背景下，由乔治·阿尔米兰特领导的新政府得以建立，并宣布将对意大利现行的经济与军事政治一体化议程进行修订。然而，在意大利社会运动内部。该党正因“接待”过多来自天主教民主党的新人而陷入分裂危机，也许这很快便会对意大利40年来的首个极端民族主义政府开一个残酷玩笑。"
+const TXT_IDX_1114 := "event.script.event_397_italy_republic_crisis.c0"
+const TXT_IDX_1116 := "event.script.event_397_italy_republic_crisis.c1"
+const TXT_IDX_1117 := "event.script.event_397_italy_republic_crisis.c2"
+const TXT_IDX_592 := "event.script.event_397_italy_republic_crisis.c3"
+const TXT_IDX_593 := "event.script.event_397_italy_republic_crisis.c4"
+const TXT_IDX_594 := "event.script.event_397_italy_republic_crisis.c5"
+const TXT_IDX_566 := "event.script.event_397_italy_republic_crisis.c6"
+const TXT_IDX_567 := "event.script.event_397_italy_republic_crisis.c7"
+const TXT_IDX_1118 := "event.script.event_397_italy_republic_crisis.c8"
+const TXT_IDX_1102 := "event.script.event_397_italy_republic_crisis.c9"
+const TXT_IDX_1119 := "event.script.event_397_italy_republic_crisis.c10"
+const TXT_IDX_1120 := "event.script.event_397_italy_republic_crisis.c11"
 
 ## 原文字符串附录（供自检）
 
@@ -144,3 +144,18 @@ func _raw(i: int) -> int:
 	if d.size() > i:
 		return d.get_data_by_index(i)
 	return 0
+
+
+
+# ══════════════════════════════════════════════════════════
+# 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_397_italy_republic_crisis.tres
+# 文案不在本文件，见 资产/本地化/events_zh_CN.csv
+# ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_397",
+	"num": 397,
+	"priority": 39700,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_397_italy_republic_crisis.gd",
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}

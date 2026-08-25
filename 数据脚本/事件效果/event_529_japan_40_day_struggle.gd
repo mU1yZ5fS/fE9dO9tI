@@ -1,12 +1,10 @@
 extends "res://数据脚本/event_script_base.gd"
 
-## 原作 Event529.cs：四十日抗争（2选项）。
-## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/||换行/剥 color）。
-## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
+## 原作 Event529.cs：四十日抗争（2选项）。 ## 触发来源见 .tres 与脚本头。文本逐字对齐原版（去空格/ 换行/剥 color）。 ## 选项显隐由 prepare 动态改写；result_text 由本脚本动态生成。
 
-const TXT_OPT0_DIS := "没人对他们有兴趣"
-const TXT_R0_A := "在难以弥合内部派系矛盾的情况下，我们所能做的就是确保各个在野党不会借此机会联合起来统一提名一位新的候选人以扰乱首相指名选举。因此我们迅速派出大批人员秘密前往东京，通过放出假消息、制造小型事故、泄露材料等方式扰乱在野党的注意力，使得它们无法完全团结一致。同时自由民主党内部的亲华派也开始四处走动，凭借他们的影响力劝住了一批摇摆派议员（为了防止有人与社会党等在野党私下串联，一些人不惜把个别立场十分不坚定的议员骗到酒店房间然后反锁屋子，直到投票即将开始的时候才放他们出来）。\n11月6日，国会正式举行内阁总理大臣指名选举。众议院第一轮投票中，大平和福田在第一轮投票（大平135票，福田125票）中顺利通过进入第二轮，在野党都投了自己政党的党首。虽然在第一轮投票中，福田的得票稍微落后，但是他寄望于和他关系不错的民主社会党会投票支持，不过其在第二轮投票中和其他在野党一样退席弃权；而大平和田中则早就策反了一些反主流派的议员，导致福田、三木、中曾根三派都有议员投票支持大平，连福田派的长老园田直也支持大平；此外，大平还从第一轮投票起就获得了关键小党新自由俱乐部的支持。\n最终结果是大平获得138票，福田获得121票，大平正芳得以继续担任首相。反主流派的倒大平运动失败。不久我们便收到了大平本人的亲笔信，感谢我们对他和对党的帮助。而亲华派也成功超越了自由民主党内的其他势力成为最大派阀。在他们的操纵下，自由民主党与美国的关系愈发疏远，与我们的关系更近了。不久，日本政府便就更改《日美安保条约》问题与美国开始谈判，最终签署了一份新协议。根据协议内容，驻日美军将在未来五年内分批次撤出日本。"
-const TXT_R1_A := "11月6日，国会正式举行内阁总理大臣指名选举。众议院第一轮投票中，大平和福田在第一轮投票（大平135票，福田125票）中顺利通过进入第二轮，在野党都投了自己政党的党首。虽然在第一轮投票中，福田的得票稍微落后，但是他寄望于和他关系不错的民主社会党会投票支持，不过其在第二轮投票中和其他在野党一样退席弃权；而大平和田中则早就策反了一些反主流派的议员，导致福田、三木、中曾根三派都有议员投票支持大平，连福田派的长老园田直也支持大平；此外，大平还从第一轮投票起就获得了关键小党新自由俱乐部的支持。\n最终结果是大平获得138票，福田获得121票，大平正芳得以继续担任首相。反主流派的倒大平运动失败。而亲华派没能进一步巩固自己的势力，我们对它的援助也越发困难。最终在其他派阀的压力下，“政党政策研究会”正式解散。"
+const TXT_OPT0_DIS := "event.script.event_529_japan_40_day_struggle.c0"
+const TXT_R0_A := "event.script.event_529_japan_40_day_struggle.c1"
+const TXT_R1_A := "event.script.event_529_japan_40_day_struggle.c2"
 
 func prepare(event_def: EventDef, world: WorldState) -> void:
 	_bind_world()
@@ -16,7 +14,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if ws.political_line >= 3 and _cf(44, "prcinfl") >= 50:
 		_enable(opt[0], event_def.options[0].text)
 	else:
-		_disable(opt[0], TXT_OPT0_DIS)
+		_disable(opt[0], tr(TXT_OPT0_DIS))
 	_enable(opt[1], event_def.options[1].text)
 
 func execute(context: Dictionary) -> void:
@@ -26,24 +24,8 @@ func execute(context: Dictionary) -> void:
 	var _c44 := ws.get_country_by_legacy_index(44)
 	match opt:
 		0:
-			context["result_text"] = TXT_R0_A
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3
-			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 6
-			# UNHANDLED: this.a.allcountries[44].Vyshi = false
-			# UNHANDLED: this.a.allcountries[44].Torg = true
-			_add(8, -(100))
-			_add(9, -(100))
-			_add(1, 100)
-			_add(3, 50)
-			_add(4, 50)
-			_add(6, -(100))
-			_add_relation(0, -(100))
-			_add_power(0, -(50))
-			ws.influence_prc += 50
-		1:
-			context["result_text"] = TXT_R1_A
-			_add_power(0, 30)
-			ws.influence_prc -= 30
+			context["result_text"] = tr(TXT_R0_A)
+			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3 # UNHANDLED: this.a.allcountries[44].SubGosstroy = 6 # UNHANDLED: this.a.allcountries[44].Vyshi = false # UNHANDLED: this.a.allcountries[44].Torg = true _add(8, -(100)) _add(9, -(100)) _add(1, 100) _add(3, 50) _add(4, 50) _add(6, -(100)) _add_relation(0, -(100)) _add_power(0, -(50)) ws.influence_prc += 50 1: context["result_text"] = tr(TXT_R1_A) _add_power(0, 30) ws.influence_prc -= 30
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -178,3 +160,16 @@ func _cf(idx: int, field: String) -> int:
 func _tag(idx: int, tag: String) -> bool:
 	var c := ws.get_country_by_legacy_index(idx)
 	return c != null and c.has_tag(tag)
+
+
+
+# ══════════════════════════════════════════════════════════ # 自动迁移的事件定义 —— 源： 场景/事件界面/events/event_529_japan_40_day_struggle.tres # 文案不在本文件，见 资产/本地化/events_zh_CN.csv # ══════════════════════════════════════════════════════════
+const META := {
+	"id": "event_529",
+	"num": 529,
+	"priority": 52900,
+	"notify": false,
+	"display_script": "res://数据脚本/事件效果/event_529_japan_40_day_struggle.gd",
+	"trigger": [{"t": "ALL", "c": [{"t": "COUNTRY_FIELD_AT_MOST", "key": "puppet_of", "v": -1, "target": "44"}, {"t": "PREV_EVENT_DONE", "ref": "event_522"}, {"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_522"}, {"t": "PREV_EVENT_DONE", "ref": "event_527"}, {"t": "ANY", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 3, "ref": "event_527"}, {"t": "PREV_EVENT_RESULT_IS", "v": 4, "ref": "event_527"}]}, {"t": "DATE_AFTER", "key": "1979.11.1"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}],
+}
