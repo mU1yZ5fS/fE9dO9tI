@@ -128,7 +128,7 @@
   <div id="content">
     <div class="loading">加载中…</div>
   </div>
-  <div class="footer">由 GitHub Pages 静态托管 · QQ群二维码请查看游戏内</div>
+  <div class="footer">由 GitHub Pages 静态托管</div>
 </div>
 
 <script>
@@ -157,10 +157,6 @@ async function loadData() {
     } else {
       html += '<div class="section"><div class="section-title">更新内容</div><div class="loading">暂无更新内容</div></div>';
     }
-
-    html += '<div class="section"><div class="section-title">QQ交流群</div>'
-      + '<div class="announcement">QQ群二维码请直接查看游戏内「更新/QQ群」弹窗。</div></div>';
-
     contentEl.innerHTML = html;
   } catch (e) {
     versionEl.textContent = '无法读取更新信息';
