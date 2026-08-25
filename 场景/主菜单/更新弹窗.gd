@@ -19,6 +19,10 @@ const UPDATE_URL_FALLBACK := "https://raw.githubusercontent.com/mU1yZ5fS/fE9dO9t
 
 var _used_fallback := false
 
+func _ready() -> void:
+	_close_btn.pressed.connect(close_popup)
+
+
 func open_update_popup() -> void:
 	_show_loading()
 	popup_centered()
@@ -35,6 +39,8 @@ func _show_loading() -> void:
 	_status.text = "正在检查更新…"
 	_announcement.text = ""
 	_changelog.text = "正在连接更新服务器…"
+
+
 func _fetch_update() -> void:
 	_used_fallback = false
 	_request_json(UPDATE_URL_PRIMARY)
