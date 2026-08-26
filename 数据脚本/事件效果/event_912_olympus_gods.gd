@@ -112,11 +112,11 @@ func _chinese_sub_government() -> int:
 			result = 22
 		elif ws.completed_event_ids.has("event_912") and _event_result("event_912") == 0:
 			result = 19
-		elif d.party_system == 8:
+		elif d.party_system == GameConstants.PartySystem.PEOPLE_DEMOCRACY:
 			result = 20
 		elif ws.completed_event_ids.has("event_503") and _event_result("event_503") == 0:
 			result = 10
-		elif d.ideology <= 2 and d.econ_system < 13 and d.diplomatic_reputation >= 700 and d.party_system < 8 and _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
+		elif d.ideology <= 2 and d.econ_system < 13 and d.diplomatic_reputation >= 700 and d.party_system < GameConstants.PartySystem.PEOPLE_DEMOCRACY and _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 			result = 0
 		elif (d.econ_system >= 13 and d.war_support >= 700 and not _mod_active(GameConstants.Modifier.MAOIST_BULWARK)) or _mod_active(GameConstants.Modifier.PRESIDENT_FOR_LIFE):
 			result = 9
@@ -129,7 +129,7 @@ func _chinese_sub_government() -> int:
 	elif china.government == GameConstants.Government.SOCIALIST:
 		if _mod_active(GameConstants.Modifier.FOURTH_INTERNATIONAL):
 			result = 18
-		elif _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and d.party_system <= 7 and d.econ_system <= 12 and d.religion_policy <= 25:
+		elif _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and d.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY and d.econ_system <= 12 and d.religion_policy <= 25:
 			result = 17
 		elif d.ideology == 1 and not _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and d.religion_policy <= 26:
 			result = 16
@@ -140,7 +140,7 @@ func _chinese_sub_government() -> int:
 	elif china.government == GameConstants.Government.REFORMIST:
 		if _mod_active(GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION):
 			result = 8
-		elif d.ideology >= 2 and d.econ_system >= 13 and d.diplomatic_reputation <= 700 and d.party_system >= 8 and d.press_policy >= 18 and not china.has_tag("ovd"):
+		elif d.ideology >= 2 and d.econ_system >= 13 and d.diplomatic_reputation <= 700 and d.party_system >= GameConstants.PartySystem.PEOPLE_DEMOCRACY and d.press_policy >= 18 and not china.has_tag("ovd"):
 			result = 14
 		elif d.ideology <= 3 and d.econ_system >= 12 and d.econ_system <= 13 and d.diplomatic_reputation >= 300 and d.territory_policy > 21 and d.war_support >= 700:
 			result = 11
@@ -148,7 +148,7 @@ func _chinese_sub_government() -> int:
 			result = 8
 		elif d.ideology <= 3 and d.econ_system <= 13 and d.press_policy > 17:
 			result = 3
-		elif d.party_system <= 8 and (d.econ_system == 13 or d.econ_system == 12) and d.war_support < 700 and not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and d.press_policy >= 17:
+		elif d.party_system <= GameConstants.PartySystem.PEOPLE_DEMOCRACY and (d.econ_system == 13 or d.econ_system == 12) and d.war_support < 700 and not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and d.press_policy >= 17:
 			result = 21
 		else:
 			result = 15
@@ -156,7 +156,7 @@ func _chinese_sub_government() -> int:
 		result = 13
 	elif d.econ_system <= 13 and d.diplomatic_reputation >= 500:
 		result = 4
-	elif (d.party_system <= 8 and d.press_policy <= 18) or d.war_support >= 700:
+	elif (d.party_system <= GameConstants.PartySystem.PEOPLE_DEMOCRACY and d.press_policy <= 18) or d.war_support >= 700:
 		result = 12
 	elif d.econ_system > 13 and d.diplomatic_reputation < 700:
 		result = 6

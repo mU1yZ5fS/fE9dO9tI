@@ -917,7 +917,7 @@ func _coalition_support_percent() -> int:
 	var ws: WorldState = world
 	if ws == null or ws.factions.size() < 5:
 		return 0
-	if ws.size() <= 15 or ws.party_system <= 7:
+	if ws.size() <= 15 or ws.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	var num := ws.factions[1].support
 	for i in ws.factions.size():

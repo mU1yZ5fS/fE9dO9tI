@@ -133,6 +133,6 @@ const META := {
 	"priority": 61700,
 	"notify": false,
 	"display_script": "res://数据脚本/事件效果/event_617_april_nine_revenge.gd",
-	"trigger": [{"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_680"}, {"t": "COUNTRY_FIELD_AT_MOST", "key": "level_of_instability", "v": 100, "target": "66"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 7, "target": "66"}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_618"}]}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_618"}]}]}],
+	"trigger": [{"t": "ALL", "c": [{"t": "PREV_EVENT_DONE", "ref": "event_680"}, {"t": "COUNTRY_FIELD_AT_LEAST", "key": "level_of_instability", "v": 100, "target": "66"}, {"t": "COUNTRY_FIELD_EQUALS", "key": "sub_government", "v": 7, "target": "66"}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_618"}]}, {"t": "NOT", "c": [{"t": "PREV_EVENT_RESULT_IS", "v": 2, "ref": "event_618"}]}]}],
 	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}],
 }

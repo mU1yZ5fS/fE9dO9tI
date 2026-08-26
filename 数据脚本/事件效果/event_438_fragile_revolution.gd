@@ -23,7 +23,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var data := world
 	var desc := tr(TXT_DESC_BASE)
-	if data.size() > W.I_PARTY_SYSTEM and data.party_system >= 8:
+	if data.size() > W.I_PARTY_SYSTEM and data.party_system >= GameConstants.PartySystem.PEOPLE_DEMOCRACY:
 		desc += tr(TXT_DESC_PARTY)
 	if data.size() > W.I_ECON_SYSTEM and data.econ_system >= 14:
 		desc += tr(TXT_DESC_ECON)
@@ -64,8 +64,8 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_PARTY_SUPPORT, -100)
 			_add(W.I_DIPLO, 10)
 			var num := 0
-			if d.party_system >= 8:
-				d.party_system = 7
+			if d.party_system >= GameConstants.PartySystem.PEOPLE_DEMOCRACY:
+				d.party_system = GameConstants.PartySystem.NEW_DEMOCRACY
 				num += 1
 			if d.econ_system >= 14:
 				d.econ_system = 13

@@ -13,7 +13,10 @@ const W = preload("res://数据脚本/world_state.gd")
 ## 对齐 Doctrine_button_script.cs 75-214。空数组 = 该项不施加路线限制。
 const POLICY_LINE_REQ_ONEPARTY := {
 	10: [0, 1], 11: [0, 1], 12: [1, 2], 13: [2, 3], 14: [3, 4], 15: [4],  # 经济 data.econ_system（原版 :42 id11=极左/保守0,1）
-	6: [0], 7: [1, 2], 8: [3], 9: [4],                                # 党政 data.party_system
+	GameConstants.PartySystem.ONE_PARTY_DICTATORSHIP: [0],
+			GameConstants.PartySystem.NEW_DEMOCRACY: [1, 2],
+			GameConstants.PartySystem.PEOPLE_DEMOCRACY: [3],
+			GameConstants.PartySystem.CONSOCIATIONALISM: [4],          # 党政 data.party_system
 	16: [0, 1, 2, 3], 17: [0, 1, 2, 3, 4], 18: [2, 3, 4], 19: [3, 4],  # 人权 data.press_policy（16/17 按原版中文块 :85-94：16=data.political_line!=4、17=data.political_line<=4；旧值 [0,1]/[0,1,2,3] 系误抄俄语块，2026-08-14 主控亲验修正）
 	20: [0, 1, 2, 3], 21: [2, 3], 22: [3, 4], 23: [4],                # 国家体制 data.territory_policy
 	24: [0], 25: [0, 1], 26: [1, 2, 3], 27: [2, 3, 4], 28: [3, 4], 29: [4],  # 宗教 data.religion_policy
@@ -82,7 +85,7 @@ func check_policy_change(category_idx: int, target_val: int) -> Dictionary:
 ## uslovie[2]：派系/路线领导条件。返回 {ok, text}。
 func _policy_leading_ok(_category_idx: int, target_val: int, d: WorldState) -> Dictionary:
 	var party_sys: int = d.party_system
-	if party_sys <= 7:
+	if party_sys <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		# neutral_leading：满足现状者席位 ≥ 所有派系 → 中间派主导，任何政策都不可变
 		if _satisfied_leads(d):
 			return {"ok": false, "text": " 满 意 现 状 者 失 去 领 导"}
@@ -94,7 +97,7 @@ func _policy_leading_ok(_category_idx: int, target_val: int, d: WorldState) -> D
 		var ok: bool = line in req
 		# 经济 10/15：额外要求 data.party_system!=7（非人民民主专政）
 		if target_val == 10 or target_val == 15:
-			ok = ok and party_sys != 7
+			ok = ok and party_sys != GameConstants.PartySystem.NEW_DEMOCRACY
 		# 宗教 29 特例：data.political_line==4 或 (威权 data.ideology==0 且 高民族主义 data.war_support≥700)
 		elif target_val == 29:
 			ok = ok or (d.ideology == 0 and d.war_support >= 700)
@@ -265,7 +268,7 @@ func change_policy(category_idx: int, target_val: int) -> bool:
 	else:
 		d.political_openness += delta * 50
 	# 党支持与异见
-	if d.party_system < 8:
+	if d.party_system < GameConstants.PartySystem.PEOPLE_DEMOCRACY:
 		d.party_support -= diff * 30
 		d.thought_freedom += diff * 10
 	else:
@@ -370,9 +373,9 @@ func set_faction_ally(faction_idx: int, want_ally: bool) -> void:
 	@warning_ignore("integer_division")
 	var pct := int(float(f.support * 100) / float(total)) if total > 0 else 0
 
-	if d.party_system > 7:
+	if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
 		# 原版：已结盟再点不会取消（OnMouseDown 多党分支只处理未结盟）
-		if not f.is_ally and d.party_system == 8 and f.is_enabled \
+		if not f.is_ally and d.party_system == GameConstants.PartySystem.PEOPLE_DEMOCRACY and f.is_enabled \
 				and d.agents >= pct and d.budget >= pct:
 			f.is_ally = true
 			if pct > 10:
@@ -423,11 +426,11 @@ func _can_ban_faction(faction_idx: int) -> bool:
 	var d := world
 	if not f.is_enabled:
 		return false
-	if d.party_support <= 0 or d.party_ban_count >= 4 or d.party_system == 9:
+	if d.party_support <= 0 or d.party_ban_count >= 4 or d.party_system == GameConstants.PartySystem.CONSOCIATIONALISM:
 		return false
 	if _faction_protected_by_leader(faction_idx):
 		return false
-	if d.party_system > 7 and faction_idx == FactionData.CONSERVATIVE:
+	if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY and faction_idx == FactionData.CONSERVATIVE:
 		return false
 	return true
 
@@ -437,7 +440,7 @@ func _can_unban_faction(faction_idx: int) -> bool:
 	if world == null:
 		return false
 	var d := world
-	return d.party_system <= 7 or faction_idx != FactionData.CONSERVATIVE
+	return d.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY or faction_idx != FactionData.CONSERVATIVE
 
 
 ## UI 查询用的公开包装（不暴露下划线内部函数）
@@ -478,7 +481,7 @@ func _ban_faction(faction_idx: int) -> void:
 	f.is_enabled = false
 	f.support = 0
 	f.is_ally = false
-	if d.party_system > 7:
+	if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
 		# 原版在此分支先置 ally=false 再判 ally，因此恒走 else：国际声望+10
 		d.diplomatic_reputation += 10
 		d.people_support -= pct * 20
@@ -495,7 +498,7 @@ func _ban_faction(faction_idx: int) -> void:
 func _unban_faction(faction_idx: int) -> void:
 	var f: FactionData = world.factions[faction_idx]
 	var d := world
-	if d.party_system > 7:
+	if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
 		d.people_support += 40
 		d.thought_freedom += 60
 	else:
@@ -504,7 +507,7 @@ func _unban_faction(faction_idx: int) -> void:
 			_transfer_ideology_backward(faction_idx)
 	d.party_ban_count -= 1
 	f.is_enabled = true
-	f.support = f.ideology if (f.ideology > 0 and d.party_system <= 7) else 0
+	f.support = f.ideology if (f.ideology > 0 and d.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY) else 0
 
 
 ## Party_zapret 禁止时把本派基础意识形态转移到下一个启用派系
@@ -544,7 +547,7 @@ func _transfer_ideology_backward(faction_idx: int) -> void:
 func _force_party_system_reset(d: WorldState) -> void:
 	if world.factions.size() < 5:
 		return
-	d.party_system = 6
+	d.party_system = GameConstants.PartySystem.ONE_PARTY_DICTATORSHIP
 	for i in world.factions.size():
 		var f: FactionData = world.factions[i]
 		if i != FactionData.CONSERVATIVE:

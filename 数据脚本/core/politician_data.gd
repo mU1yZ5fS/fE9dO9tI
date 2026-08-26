@@ -18,7 +18,7 @@ extends Resource
 # traits[0]: 0极左 20保守 1温和 2改革 3自由
 # traits[1]: 4硬汉 5实用主义 6宽容 7重视技术（扩展 29/30/39-42）
 # traits[2]: 8-19 特殊
-# traits[3]: 21-28/43 出身背景（月度被动效果；暗杀硬目标判定 ==28）
+# traits[3]: 21-28/34/43 出身背景（月度被动效果；暗杀硬目标判定 ==28；34 托派仅托线可刷）
 # Party 派系另有 0极左 1保守 2温和 3改革 4自由；映射见 party_index()
 @export var trait_personality: int = 0
 @export var trait_alignment: int = 4
@@ -65,6 +65,16 @@ func _init() -> void:
 		loyalty_matrix[i] = 50
 
 
+## 矩阵长度对齐：名录扩容后把缺失段补为默认值（不缩容，旧档安全）。
+func ensure_matrix_size(n: int, default_value: int = 50) -> void:
+	var old := loyalty_matrix.size()
+	if n <= old:
+		return
+	loyalty_matrix.resize(n)
+	for i in range(old, n):
+		loyalty_matrix[i] = default_value
+
+
 ## Party 槽：优先显式 faction；否则 traits[0] 启发式（0→0，20→1，1→2，2→3，3→4）
 func party_index() -> int:
 	if faction >= 0:
@@ -81,10 +91,12 @@ func ideology_label() -> String:
 	return WorldFactory.PARTY_LABELS_ZH.get(party_index(), "未知")
 
 
-## 第四槽背景标签：合法值域 21-28/43（traits[3]），0 或缺省一律显示「未知」，
-## 避免误落到 traits[0] 的「极左派」标签。
+## 第二槽出身背景标签：合法值域 21-28/34/43（traits[3]；34 托派自特质槽移入），
+## 0 或缺省一律显示「未知」，避免误落到 traits[0] 的「极左派」标签。
 func background_label() -> String:
-	if (trait_background >= GameConstants.PoliticianBackground.PARTY_CADRE and trait_background <= GameConstants.PoliticianBackground.AMBITIOUS) or trait_background == GameConstants.PoliticianBackground.SPECIAL:
+	if (trait_background >= GameConstants.PoliticianBackground.PARTY_CADRE and trait_background <= GameConstants.PoliticianBackground.AMBITIOUS) \
+			or trait_background == GameConstants.PoliticianBackground.SPECIAL \
+			or trait_background == GameConstants.PoliticianSpecial.TROTSKYITE:
 		return WorldFactory.TRAIT_LABELS_ZH.get(trait_background, "未知")
 	return "未知"
 

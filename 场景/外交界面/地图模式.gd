@@ -109,6 +109,8 @@ func refresh() -> void:
 func _refresh_button_styles() -> void:
 	for i in _mode_buttons.size():
 		var btn: Button = _mode_buttons[i]
+		if btn == null:
+			continue
 		var is_selected: bool = (current_mode == _BUTTON_MODES[i])
 		btn.modulate = Color.WHITE if is_selected else Color(0.55, 0.55, 0.55, 1.0)
 		btn.disabled = is_selected

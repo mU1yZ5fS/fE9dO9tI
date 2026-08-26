@@ -61,19 +61,19 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	event_def.description = tr(TXT_DESC_NORMAL)
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var coal := _coalition_percent(world)
-	var left_party := party < 8
+	var left_party := party < GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var opt := event_def.options
-	if (line < 3 and left_party) or (coal > 66 and party > 7):
+	if (line < 3 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[0], "没必要徒增麻烦，会议应照常进行")
 	else:
 		_disable(opt[0], "如果我们不打算在会议期间讨论真正要紧的问题，那为什么还要开会？")
-	if (line > 0 and left_party) or party > 7:
+	if (line > 0 and left_party) or party > GameConstants.PartySystem.NEW_DEMOCRACY:
 		_enable(opt[1], "我们将在“中国特色社会主义”的旗下对毛主席做扬弃，并靠不争论的方式确立新思维的霸权")
 	else:
 		_disable(opt[1], "不争不行——党和人民需要一个足够清晰的表态！")
-	if (line > 2 and left_party) or (coal > 66 and party > 7):
+	if (line > 2 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[2], "不破不立，我们怎么就摸不着赫鲁晓夫过河？")
 	else:
 		_disable(opt[2], "你疯了吗！上一个中国版赫鲁晓夫还尸骨未寒呢？！")
@@ -313,7 +313,7 @@ func _compute_num(world: WorldState) -> int:
 
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

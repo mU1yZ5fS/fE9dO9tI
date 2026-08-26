@@ -27,7 +27,7 @@ static func judge(w: WorldState, ee: Node = null) -> Dictionary:
 		return {"mode": "ending", "id": 1}
 	if w.party_support < 300 or (w.party_support < 500 and w.difficulty == 4):
 		return {"mode": "ending", "id": 2}
-	if w.party_system == 9 and w.econ_system == 15 and w.press_policy == 19 \
+	if w.party_system == GameConstants.PartySystem.CONSOCIATIONALISM and w.econ_system == 15 and w.press_policy == 19 \
 			and _modifier_active(w, 5) and w.oligarch >= 100:
 		return {"mode": "ending", "id": 9}
 	return {"mode": "ending", "id": 0}

@@ -12,6 +12,15 @@ const WANTED_POSITION_LABELS := [
 	" 国 务 院 总 理", " 军 委 主 席", " 外 交 部 长", " 地 方 长 官", " 第 四 国 际",
 ]
 
+## 派系色（FACTION_LEADER_COLORS 五色的压暗版，供左缘色条）
+const FACTION_STRIPE_COLORS: Array[Color] = [
+	Color(0.62, 0.13, 0.17),  # 0 极左 red
+	Color(0.42, 0.18, 0.52),  # 1 保守 purple
+	Color(0.65, 0.2, 0.5),    # 2 温和 fuchsia
+	Color(0.15, 0.5, 0.2),    # 3 改革 green
+	Color(0.15, 0.45, 0.5),   # 4 自由 aqua
+]
+
 var _pol_index: int = -1
 var _politician: PoliticianData
 
@@ -22,12 +31,18 @@ var _politician: PoliticianData
 @onready var _trait3_label: Label = get_node_or_null("特质3") as Label
 @onready var _loyalty_bar: ProgressBar = $忠诚度
 @onready var _portrait_container: Control = $人像
+@onready var _stripe: ColorRect = $派系色条
+@onready var _selected_frame: Panel = $选中框
+@onready var _status_badge: PanelContainer = $状态角标
+@onready var _status_text: Label = $状态角标/状态文字
 
 var _portrait_rect: TextureRect
 var _no_portrait_label: Label
+var _fx_tween: Tween
 
 
 func _ready() -> void:
+	pivot_offset = Vector2(110, 75)  # 缩放锚点=卡片中心（220×150）
 	_portrait_rect = TextureRect.new()
 	_portrait_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
@@ -74,11 +89,46 @@ func refresh() -> void:
 		_portrait_rect.texture = _politician.portrait if has_portrait else null
 		if _no_portrait_label:
 			_no_portrait_label.visible = not has_portrait
+	if _stripe:
+		var fi := _politician.party_index()
+		var fcol := FACTION_STRIPE_COLORS[fi] if fi >= 0 and fi < FACTION_STRIPE_COLORS.size() else Color(0.3, 0.3, 0.3)
+		_stripe.color = fcol
+		# 第一栏（派系）按派系着色
+		if _trait0_label:
+			_trait0_label.add_theme_color_override("font_color", fcol)
+	_refresh_status_badge()
 	_refresh_tooltip()
 	update_loyalty_bar(-1)
 
 
+## 状态角标：调查 / 监视 / 阴谋威胁 / 倒台未遂（可叠加，取前缀）
+func _refresh_status_badge() -> void:
+	if _status_badge == null or _status_text == null:
+		return
+	var tags: Array[String] = []
+	if _politician.is_under_investigation:
+		tags.append("审查")
+	if _politician.is_under_surveillance:
+		tags.append("监视")
+	if _politician.is_conspiracy:
+		tags.append("阴谋")
+	if _politician.you_fall:
+		tags.append("倒台")
+	if tags.is_empty():
+		_status_badge.visible = false
+	else:
+		_status_badge.visible = true
+		_status_text.text = "·".join(tags)
+
+
+## 选中高亮（由宿主界面调用）
+func set_selected(selected: bool) -> void:
+	if _selected_frame:
+		_selected_frame.visible = selected
+
+
 ## other_text_en.txt:350：意向职位 / 对领导人忠诚 / 年龄（OkoshkoScript 弹出提示）
+## 走 BbcTooltip 自绘管线（项目统一样式，避免默认 tooltip 在重构布局下不显示）
 func _refresh_tooltip() -> void:
 	if _politician == null:
 		tooltip_text = ""
@@ -86,9 +136,15 @@ func _refresh_tooltip() -> void:
 	var wanted := " 地 方 长 官"
 	if _politician.wanted_position >= 0 and _politician.wanted_position < WANTED_POSITION_LABELS.size():
 		wanted = WANTED_POSITION_LABELS[_politician.wanted_position]
-	tooltip_text = "意 向 职 位 为 ：%s\n对 我 国 领 导 人 的 忠 诚 度 为 ：%s\n年 龄 ：%d 岁" % [
-		wanted, float(_politician.loyalty) / 10.0, _politician.age
+	@warning_ignore("integer_division")
+	tooltip_text = "意 向 职 位 为 ：%s\n对 我 国 领 导 人 的 忠 诚 度 为 ：%s\n年 龄 ：%d 岁\n影 响 力 ：%d.%d" % [
+		wanted, float(_politician.loyalty) / 10.0, _politician.age,
+		_politician.power / 10, absi(_politician.power % 10)
 	]
+
+
+func _make_custom_tooltip(for_text: String) -> Control:
+	return BbcTooltip.build_tooltip(for_text)
 
 
 ## hover_target: -1=显示对领袖忠诚；>=0=显示本卡政客对 hover_target 的忠诚
@@ -121,17 +177,39 @@ func get_pol_index() -> int:
 	return _pol_index
 
 
+## 互动特效：悬停放大提亮 / 移出复位 / 按压缩弹（统一走单 Tween 防叠加）
+func _fx_to(target_scale: float, target_bright: float, dur: float) -> void:
+	if _fx_tween and _fx_tween.is_valid():
+		_fx_tween.kill()
+	_fx_tween = create_tween().set_parallel(true)
+	_fx_tween.tween_property(self, "scale", Vector2.ONE * target_scale, dur) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_fx_tween.tween_property(self, "modulate", Color(target_bright, target_bright, target_bright, 1.0), dur)
+
+
+func _press_fx() -> void:
+	if _fx_tween and _fx_tween.is_valid():
+		_fx_tween.kill()
+	_fx_tween = create_tween()
+	_fx_tween.tween_property(self, "scale", Vector2.ONE * 0.96, 0.05).set_trans(Tween.TRANS_QUAD)
+	_fx_tween.tween_property(self, "scale", Vector2.ONE * 1.04, 0.12) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+
 func _on_mouse_entered() -> void:
+	_fx_to(1.04, 1.12, 0.12)
 	if _pol_index >= 0:
 		card_hovered.emit(_pol_index)
 
 
 func _on_mouse_exited() -> void:
+	_fx_to(1.0, 1.0, 0.15)
 	card_unhovered.emit()
 
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_press_fx()
 		if _pol_index >= 0:
 			card_clicked.emit(_pol_index)
 			accept_event()

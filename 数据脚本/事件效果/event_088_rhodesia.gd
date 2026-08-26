@@ -18,15 +18,15 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var coal := _coalition_percent(world)
-	var left_party := party < 8
+	var left_party := party < GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var opt := event_def.options
-	if (line < 2 and left_party) or (coal > 66 and party > 7):
+	if (line < 2 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[0], "继续支持他们的武装斗争")
 	else:
 		_disable(opt[0], "他们？他们连保险都不会开！")
-	if (line >= 2 and left_party) or (coal > 66 and party > 7):
+	if (line >= 2 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[1], "和新政府做朋友")
 	else:
 		_disable(opt[1], "你看不出他们是在演戏？")
@@ -57,7 +57,7 @@ func execute(context: Dictionary) -> void:
 
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

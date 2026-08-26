@@ -1,0 +1,566 @@
+[gd_scene format=3 uid="uid://5wdpacp0bqch"]
+
+[ext_resource type="Script" uid="uid://cdu42jj18svs5" path="res://场景/政治界面/政治局.gd" id="1_main"]
+[ext_resource type="Texture2D" uid="uid://dyjgh5ovltwpu" path="res://资产/UI/政治/政治背景.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://72xblwah8bwa" path="res://资产/UI/复用/向上箭头.png" id="4_back"]
+[ext_resource type="Texture2D" uid="uid://cvjx2j0bi6k3l" path="res://资产/UI/政治/左栏背景.png" id="5_row"]
+[ext_resource type="Texture2D" uid="uid://dnophrpyfwhhl" path="res://资产/UI/政治/实权领袖背景.png" id="6_leader"]
+[ext_resource type="Texture2D" uid="uid://dvfsm4g8optn4" path="res://资产/UI/政治/右栏数据背景.png" id="7_cell"]
+[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="8_budget"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="8_wihr4"]
+[ext_resource type="Texture2D" uid="uid://cq007uywcr5pc" path="res://资产/UI/主游戏UI/特工网络.png" id="9_agents"]
+[ext_resource type="Texture2D" uid="uid://g224ia0w6f36" path="res://资产/UI/政治/地方职位背景.png" id="10_f3qq1"]
+[ext_resource type="Texture2D" uid="uid://di1ah2hso2tsg" path="res://资产/UI/政治/部分职位背景.png" id="11_wihr4"]
+[ext_resource type="PackedScene" uid="uid://vf387iy40ll2" path="res://场景/政治界面/人物小窗.tscn" id="12_win"]
+[ext_resource type="Texture2D" uid="uid://yomfjpbyl1rr" path="res://资产/UI/政治/中央职位背景.png" id="13_posc"]
+
+[node name="政治局" type="Control" unique_id=2133551011]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="背景层" type="CanvasLayer" parent="." unique_id=1445388987]
+layer = -1
+
+[node name="背景" type="TextureRect" parent="背景层" unique_id=874754549]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="返回外交界面" type="TextureButton" parent="." unique_id=1868218378]
+layout_mode = 0
+offset_left = 1784.0
+offset_top = 12.0
+offset_right = 1888.0
+offset_bottom = 116.0
+texture_normal = ExtResource("4_back")
+
+[node name="黑栏区" type="Control" parent="." unique_id=1331260651]
+anchors_preset = 0
+offset_top = 8.0
+offset_right = 408.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="信息列" type="VBoxContainer" parent="黑栏区" unique_id=1331959741]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="姓名行" type="Control" parent="黑栏区/信息列" unique_id=357144238]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+
+[node name="底" type="TextureRect" parent="黑栏区/信息列/姓名行" unique_id=991228100]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_row")
+expand_mode = 1
+
+[node name="姓名" type="Label" parent="黑栏区/信息列/姓名行" unique_id=2117397424]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.29, 0.11, 0.19, 1)
+theme_override_font_sizes/font_size = 22
+text = "张春桥（62岁）"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="派系行" type="Control" parent="黑栏区/信息列" unique_id=115707143]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+
+[node name="底" type="TextureRect" parent="黑栏区/信息列/派系行" unique_id=2146244098]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_row")
+expand_mode = 1
+
+[node name="值" type="Label" parent="黑栏区/信息列/派系行" unique_id=1042009503]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.29, 0.11, 0.19, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="特质行1" type="Control" parent="黑栏区/信息列" unique_id=712604168]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+
+[node name="底" type="TextureRect" parent="黑栏区/信息列/特质行1" unique_id=330112974]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_row")
+expand_mode = 1
+
+[node name="值" type="Label" parent="黑栏区/信息列/特质行1" unique_id=586550498]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.29, 0.11, 0.19, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="特质行2" type="Control" parent="黑栏区/信息列" unique_id=424358428]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+
+[node name="底" type="TextureRect" parent="黑栏区/信息列/特质行2" unique_id=879570198]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_row")
+expand_mode = 1
+
+[node name="值" type="Label" parent="黑栏区/信息列/特质行2" unique_id=435632978]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.29, 0.11, 0.19, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="特质行3" type="Control" parent="黑栏区/信息列" unique_id=1463023321]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+
+[node name="底" type="TextureRect" parent="黑栏区/信息列/特质行3" unique_id=887460964]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_row")
+expand_mode = 1
+
+[node name="值" type="Label" parent="黑栏区/信息列/特质行3" unique_id=271806837]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 2.0
+offset_right = -16.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.29, 0.11, 0.19, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="状态" type="RichTextLabel" parent="黑栏区/信息列" unique_id=875107644]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.92, 0.89, 0.8, 1)
+theme_override_font_sizes/normal_font_size = 17
+bbcode_enabled = true
+scroll_active = false
+
+[node name="预算格" type="Control" parent="黑栏区" unique_id=1984487767]
+custom_minimum_size = Vector2(184, 92)
+anchors_preset = 0
+offset_left = 1712.0
+offset_top = 128.0
+offset_right = 1896.0
+offset_bottom = 220.0
+size_flags_horizontal = 4
+
+[node name="底" type="TextureRect" parent="黑栏区/预算格" unique_id=1467307819]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_cell")
+expand_mode = 1
+
+[node name="图标" type="TextureRect" parent="黑栏区/预算格" unique_id=1586431582]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 24.0
+offset_right = 62.0
+offset_bottom = 72.0
+texture = ExtResource("8_budget")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="数值" type="Label" parent="黑栏区/预算格" unique_id=1014341282]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 22.0
+offset_right = 176.0
+offset_bottom = 74.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "0.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="特工格" type="Control" parent="黑栏区" unique_id=1064355654]
+custom_minimum_size = Vector2(184, 92)
+anchors_preset = 0
+offset_left = 1712.0
+offset_top = 226.0
+offset_right = 1896.0
+offset_bottom = 318.0
+size_flags_horizontal = 4
+
+[node name="底" type="TextureRect" parent="黑栏区/特工格" unique_id=495713419]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_cell")
+expand_mode = 1
+
+[node name="图标" type="TextureRect" parent="黑栏区/特工格" unique_id=1575289960]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 24.0
+offset_right = 62.0
+offset_bottom = 72.0
+texture = ExtResource("9_agents")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="数值" type="Label" parent="黑栏区/特工格" unique_id=1106472676]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 22.0
+offset_right = 176.0
+offset_bottom = 74.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "0.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="左栏_当前选中政治家状态_背景" type="TextureRect" parent="黑栏区" unique_id=804915575]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 215.0
+offset_right = 384.0
+offset_bottom = 429.0
+texture = ExtResource("5_row")
+expand_mode = 1
+
+[node name="左栏_当前选中政治家状态" type="RichTextLabel" parent="黑栏区" unique_id=1972244501]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 221.0
+offset_right = 379.0
+offset_bottom = 423.0
+theme_override_colors/default_color = Color(0.2901961, 0.10980392, 0.19215687, 1)
+theme_override_fonts/normal_font = ExtResource("8_wihr4")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "职务:
+主管:华东；
+尚未被纪律审查
+尚未被监察调查
+留置后的影响力未知
+影响力:120.0
+强影响力"
+fit_content = true
+scroll_active = false
+
+[node name="纸面区" type="Control" parent="." unique_id=652343355]
+anchors_preset = 0
+offset_left = 408.0
+offset_top = 8.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="职位中央" type="Control" parent="纸面区" unique_id=845491862]
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 2.0
+offset_right = 254.0
+offset_bottom = 159.0
+mouse_filter = 2
+
+[node name="底" type="TextureRect" parent="纸面区/职位中央" unique_id=1016572403]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("13_posc")
+expand_mode = 1
+
+[node name="国务院总理" type="Label" parent="纸面区/职位中央" unique_id=942147627]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 4.0
+offset_right = 237.0
+offset_bottom = 51.0
+tooltip_text = "国务院总理"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.29, 0.19, 0.12, 1)
+theme_override_font_sizes/font_size = 30
+text = "空缺"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="中央军委主席" type="Label" parent="纸面区/职位中央" unique_id=2111721195]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 55.0
+offset_right = 237.0
+offset_bottom = 102.0
+tooltip_text = "中央军委主席"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.29, 0.19, 0.12, 1)
+theme_override_font_sizes/font_size = 30
+text = "空缺"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="外交部长" type="Label" parent="纸面区/职位中央" unique_id=28278549]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 106.0
+offset_right = 237.0
+offset_bottom = 153.0
+tooltip_text = "外交部长"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.29, 0.19, 0.12, 1)
+theme_override_font_sizes/font_size = 30
+text = "空缺"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="职位地方" type="Control" parent="纸面区" unique_id=1047785296]
+layout_mode = 1
+anchor_left = 0.011000001
+anchor_top = 0.157
+anchor_right = 0.16800001
+anchor_bottom = 0.395
+offset_left = -4.632002
+offset_top = -4.304001
+offset_right = -0.016021729
+offset_bottom = -0.44000244
+
+[node name="地方职位背景" type="TextureRect" parent="纸面区/职位地方" unique_id=1606175689]
+layout_mode = 0
+offset_right = 242.0
+offset_bottom = 259.0
+texture = ExtResource("10_f3qq1")
+
+[node name="首都主管" type="Label" parent="纸面区/职位地方" unique_id=1504214382]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 4.0
+offset_right = 237.0
+offset_bottom = 51.0
+tooltip_text = "首都主管（北京）"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("8_wihr4")
+theme_override_font_sizes/font_size = 34
+text = "吴德"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="北方主管" type="Label" parent="纸面区/职位地方" unique_id=815846759]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 55.0
+offset_right = 237.0
+offset_bottom = 102.0
+tooltip_text = "北方主管（华北）"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("8_wihr4")
+theme_override_font_sizes/font_size = 34
+text = "陈锡联"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="西方主管" type="Label" parent="纸面区/职位地方" unique_id=36534846]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 106.0
+offset_right = 237.0
+offset_bottom = 153.0
+tooltip_text = "西方主管（华西）"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("8_wihr4")
+theme_override_font_sizes/font_size = 34
+text = "赵紫阳"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="南方主管" type="Label" parent="纸面区/职位地方" unique_id=444101559]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 157.0
+offset_right = 237.0
+offset_bottom = 204.0
+tooltip_text = "南方主管（华南）"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("8_wihr4")
+theme_override_font_sizes/font_size = 34
+text = "韦国清"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="东方主管" type="Label" parent="纸面区/职位地方" unique_id=1836276350]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 208.0
+offset_right = 237.0
+offset_bottom = 255.0
+tooltip_text = "东方主管（华东）"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.2901961, 0.1882353, 0.11764706, 1)
+theme_override_fonts/font = ExtResource("8_wihr4")
+theme_override_font_sizes/font_size = 34
+text = "张春桥"
+horizontal_alignment = 1
+vertical_alignment = 1
+[node name="实权领袖框" type="TextureRect" parent="纸面区" unique_id=204394159]
+layout_mode = 0
+offset_left = 648.0
+offset_top = 4.0
+offset_right = 860.0
+offset_bottom = 200.0
+texture = ExtResource("6_leader")
+expand_mode = 1
+
+[node name="肖像" type="TextureRect" parent="纸面区/实权领袖框" unique_id=685656290]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 34.0
+offset_right = 181.0
+offset_bottom = 184.0
+expand_mode = 1
+stretch_mode = 6
+[node name="页签_名录" type="Control" parent="纸面区" unique_id=1747570901]
+anchors_preset = 0
+offset_top = 432.0
+offset_right = 1512.0
+offset_bottom = 1072.0
+mouse_filter = 2
+
+[node name="行1" type="HBoxContainer" parent="纸面区/页签_名录" unique_id=1331480979]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 64.0
+offset_right = 1497.0
+offset_bottom = 214.0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="行2" type="HBoxContainer" parent="纸面区/页签_名录" unique_id=889006340]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 248.0
+offset_right = 1496.0
+offset_bottom = 398.0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="行3" type="HBoxContainer" parent="纸面区/页签_名录" unique_id=469233506]
+layout_mode = 0
+offset_left = -3.0
+offset_top = 448.0
+offset_right = 1492.0
+offset_bottom = 598.0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="人物小窗" parent="." unique_id=754977655 instance=ExtResource("12_win")]
+visible = false
+layout_mode = 1

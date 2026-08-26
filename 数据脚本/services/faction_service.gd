@@ -316,7 +316,7 @@ static func leading_tooltip(w: WorldState) -> String:
 		total += maxi(f.support, 0)
 	total += maxi(w.satisfied, 0)
 	var t := ""
-	if w.party_system > 7:
+	if w.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
 		t += " 领 导 中 ："
 		t += " 我 方 党 派 联 盟\n" if w.political_line == 1 else " 反 对 派\n"
 		for i in mini(5, w.factions.size()):
@@ -339,7 +339,7 @@ static func leading_tooltip(w: WorldState) -> String:
 	var sat := maxi(w.satisfied, 0)
 	var sat_pct := int(float(sat * 100) / float(total)) if (total > 0 and sat > 0) else 0
 	t += " 满 意 现 秩 序 者 ：%d%%; " % sat_pct
-	if w.party_system <= 7:
+	if w.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		t += "\n\n 领 导 中 ："
 		# 原版 :115-118 只与 party_number[1..4] 比较
 		var satisfied_leads := true

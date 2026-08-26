@@ -35,16 +35,44 @@ static var _scan_cache := {}
 
 static var _src_cache := {}
 
+static var _ref_title_cache := {}
+
 
 ## 外部文本嵌入 BBCode 前的统一转义：剥 [原样] 标记、'[' → '[lb]'。
 static func esc(s: String) -> String:
 	return s.replace("[原样]", "").replace("[/原样]", "").replace("[", "[lb]")
 
 
+## 事件引用标识（与 META id 同形，即运行时 completed_event_ids 的键）→ 中文标题；
+## 未命中回退原串。兼容零填充变体（event_056 → event_56 再查一次）。
+## 标题键约定见 EventText：event.<id>.title。
+static func ref_title(ref: String) -> String:
+	if _ref_title_cache.has(ref):
+		return _ref_title_cache[ref]
+	var candidates: Array[String] = [ref]
+	if ref.begins_with("event_"):
+		var tail := ref.substr(6)
+		if tail.is_valid_int() and str(int(tail)) != tail:
+			candidates.append("event_%d" % int(tail))
+	var disp := ref
+	for c in candidates:
+		var t := EventText.t("event.%s.title" % c)
+		if not t.begins_with("event."):
+			disp = t
+			break
+	_ref_title_cache[ref] = disp
+	return disp
+
+
 ## 数值显示：tenfold 键 ÷10，保留至多 1 位小数
 static func disp_value(raw: float, tenfold: bool) -> String:
 	var v := raw / 10.0 if tenfold else raw
 	return String.num(v, 0) if is_equal_approx(v, round(v)) else String.num(v, 1)
+
+
+## BBCode 去标签（搜索索引/单行摘要用）
+static func _strip_tags(s: String) -> String:
+	return RegEx.create_from_string("\\[[^\\]]*\\]").sub(s, " ", true)
 
 
 static func _script_src(path: String) -> String:
@@ -62,6 +90,7 @@ class OptRow:
 	var text := ""                    ## 已翻译的选项文本（未命中则原 key）
 	var disabled_text := ""           ## 已翻译的门槛提示（可为空）
 	var cond_bbcode := ""             ## 条件树 BBCode（cond_to_bbcode 产物）
+	var cond_dict := {}               ## 门槛原始 Dict（运行时求值探针用）
 	var fx_lines: Array[String] = []  ## 每条效果一行的摘要
 	var result_text := ""             ## 已翻译的静态结果（空=脚本动态结果）
 	var refs: Array[String] = []      ## 本选项引用的事件标识
@@ -77,6 +106,11 @@ var trigger_list := []             ## 触发条件原始 Dict 数组（隐含 AN
 var trigger_bbcode := ""           ## 触发条件树 BBCode
 var options: Array[OptRow] = []
 var out_refs: Array[String] = []   ## 引用的其它事件标识（去重保序）
+var in_refs: Array[String] = []    ## 被哪些事件引用（load_all 末尾按别名表回填）
+var meta_line := ""                ## 元信息一行串（优先级/通知/一次性/DLC/脚本）
+var has_gates := false             ## 任一选项带门槛提示（🔒）
+var has_custom_script := false     ## 任一选项走 CUSTOM_SCRIPT 动态结果
+var search_blob := ""              ## 小写全文索引：标题/stem/id/条件/选项/效果
 
 
 ## ── 全量构建 ──────────────────────────────────────────────────────────────
@@ -106,8 +140,55 @@ static func load_all(progress: Callable = Callable(), batch := 40) -> Array[Even
 			await Engine.get_main_loop().process_frame
 	if progress.is_valid():
 		progress.call(events.size(), events.size())
+	var alias := make_alias(out)
+	for n in out:  # 反向索引：谁会因我而触发（含零填充别名归一）
+		for ref in n.out_refs:
+			var tgt := resolve_ref(alias, ref)
+			if tgt != null and not tgt.in_refs.has(n.stem):
+				tgt.in_refs.append(n.stem)
 	out.sort_custom(func(a, b): return _sort_key(a) < _sort_key(b))
 	return out
+
+
+## ── 引用别名表 ────────────────────────────────────────────────────────────
+## 键空间：META id、manifest stem、"event_<num>"。id 为零填充写法时额外收
+## 非填充变体，让 "event_056" 这类引用也能命中。
+static func make_alias(nodes: Array[EventGraphData]) -> Dictionary:
+	var alias := {}
+	for n in nodes:
+		if not alias.has(n.id):
+			alias[n.id] = n
+		if not alias.has(n.stem):
+			alias[n.stem] = n
+		if n.num >= 0:
+			var ev := "event_%d" % n.num
+			if not alias.has(ev):
+				alias[ev] = n
+	return alias
+
+
+## ref → 节点；直查未命中且形如 event_<int> 时按非填充变体重试。
+static func resolve_ref(alias: Dictionary, ref: String) -> EventGraphData:
+	var hit: EventGraphData = alias.get(ref)
+	if hit != null:
+		return hit
+	if ref.begins_with("event_"):
+		var tail := ref.substr(6)
+		if tail.is_valid_int():
+			return alias.get("event_%d" % int(tail))
+	return null
+
+
+## 全项目悬空引用审计：{ref: 引用来源数}。迁移 QA 用——
+## 正常应为空；出现即说明 META id / start_event 字面量与 manifest 对不上。
+static func audit_dangling(nodes: Array[EventGraphData]) -> Dictionary:
+	var alias := make_alias(nodes)
+	var bad := {}
+	for n in nodes:
+		for ref in n.out_refs:
+			if resolve_ref(alias, ref) == null:
+				bad[ref] = int(bad.get(ref, 0)) + 1
+	return bad
 
 
 static func _sort_key(n: EventGraphData) -> String:
@@ -140,9 +221,33 @@ static func _build_one(p_stem: String, info: Dictionary) -> EventGraphData:
 	n.trigger_bbcode = "\n".join(trig_lines) if trig_lines.size() > 0 \
 			else "[color=#9aa0a6]（无条件）[/color]"
 
+	# 元信息一行串（详情栏头部展示）
+	var bits: Array[String] = []
+	if meta.has("priority"):
+		bits.append("优先级%s" % meta["priority"])
+	bits.append("通知" if bool(meta.get("notify", true)) else "静默")
+	bits.append("一次性" if bool(meta.get("once", true)) else "可重复")
+	if str(meta.get("dlc", "")) != "":
+		bits.append("DLC" + str(meta["dlc"]))
+	bits.append("脚本:" + n.def_path.get_file())
+	n.meta_line = " · ".join(bits)
+
 	for i in meta.get("options", []).size():
 		n.options.append(_build_option(n.id, i, meta["options"][i], n.def_path, n))
 	_collect_refs(n)
+
+	# 检索 blob + 快捷过滤标记
+	var blob_parts: Array[String] = [n.title, n.stem, n.id]
+	blob_parts.append(_strip_tags(n.trigger_bbcode))
+	for o in n.options:
+		blob_parts.append(o.text)
+		blob_parts.append(o.disabled_text)
+		if o.disabled_text != "":
+			n.has_gates = true
+		blob_parts.append(o.result_text)
+		for fl in o.fx_lines:
+			blob_parts.append(_strip_tags(fl))
+	n.search_blob = " ".join(blob_parts).to_lower()
 
 	if scr != null:  # 头部声明 + 脚本字面量引用
 		for line in scr.source_code.split("\n"):
@@ -167,11 +272,14 @@ static func _build_option(event_id: String, idx: int, o: Dictionary,
 	if bool(o.get("result", false)):
 		r.result_text = EventText.t(EventText.option_key(event_id, idx, "result"))
 	if o.has("cond"):
+		r.cond_dict = o["cond"]
 		r.cond_bbcode = cond_to_bbcode(o["cond"])
 	for fx in o.get("fx", []):
 		r.fx_lines.append(fx_to_line(fx))
 		_collect_fx_refs(r, fx)
 		if str(fx.get("t", "")) == "CUSTOM_SCRIPT":
+			if node != null:
+				node.has_custom_script = true
 			# 未写 script 字段时宿主脚本即效果脚本
 			_append_script_intel(r, str(fx.get("script", host_path)), node)
 	return r
@@ -214,7 +322,12 @@ static func _append_script_hints(r: OptRow, scan: Dictionary) -> void:
 				% ["[共]" if shared else "", humanize(txt)])
 
 
-## 把效果行里的 W.I_XXX 常量名换成中文资源名
+static var _rx_legacy_call: RegEx = null
+
+
+## 把效果行里的 W.I_XXX 常量名换成中文资源名；
+## 原版序号国家取用（get_country_by_legacy_index(N)/_country(N)）追加国名注释，
+## 让「_country(66)」这类裸下标在详情栏一眼可读。
 static func _pretty_const_line(ln: String) -> String:
 	var M := {
 		"I_PARTY_SUPPORT": "党内支持", "I_PEOPLE_SUPPORT": "民众支持",
@@ -229,6 +342,20 @@ static func _pretty_const_line(ln: String) -> String:
 	var out := ln
 	for k in M.keys():
 		out = out.replace("W." + k, M[k])
+	if _rx_legacy_call == null:
+		_rx_legacy_call = RegEx.create_from_string(
+				"\\b(?:get_country_by_legacy_index|_country)\\((\\d+)\\)")
+	var built := ""
+	var copied := 0
+	for m in _rx_legacy_call.search_all(out):
+		var nm := LX.country_name_by_legacy(int(m.get_string(1)))
+		if nm == "":
+			continue
+		built += out.substr(copied, m.get_end() - copied)
+		built += "→%s" % nm
+		copied = m.get_end()
+	if copied > 0:
+		out = built + out.substr(copied)
 	return out
 
 
@@ -530,49 +657,63 @@ static func _fmt_v(d: Dictionary) -> String:
 	return String.num(v, 0) if is_equal_approx(v, round(v)) else String.num(v, 2)
 
 
+## 叶子条件 → 具意 BBCode。所有编号/枚举/字段键都过词典翻译，
+## 未知类型橙色原样展示便于发现遗漏。
 static func _leaf_bbcode(d: Dictionary) -> String:
 	var t := str(d.get("t", "?"))
 	var key := str(d.get("key", ""))
 	var tgt := str(d.get("target", ""))
 	var ref := str(d.get("ref", d.get("ref_event_id", "")))
-	var who := "玩家" if tgt == "" or tgt == "ROOT" else _country_disp(tgt)
+	var who := _country_disp(tgt)
 	match t:
 		"RESOURCE_AT_LEAST": return "[color=#7fd17f]%s ≥ %s[/color]" % [_res_disp(key), _v(d, key)]
 		"RESOURCE_AT_MOST": return "[color=#7fd17f]%s ≤ %s[/color]" % [_res_disp(key), _v(d, key)]
 		"RESOURCE_EQUALS": return "[color=#7fd17f]%s = %s[/color]" % [_res_disp(key), _v(d, key)]
 		"RESOURCE_NOT_EQUALS": return "[color=#7fd17f]%s ≠ %s[/color]" % [_res_disp(key), _v(d, key)]
-		"RESOURCE_SUM_AT_LEAST": return "[color=#7fd17f]%s 合计 ≥ %s[/color]" % [str(d.get("keys", [])), _fmt_v(d)]
-		"RESOURCE_SUM_AT_MOST": return "[color=#7fd17f]%s 合计 ≤ %s[/color]" % [str(d.get("keys", [])), _fmt_v(d)]
+		"RESOURCE_DIFFERENCE_AT_MOST":
+			return "[color=#7fd17f]%s − %s ≤ %s[/color]" % [_res_disp(key), _res_disp(tgt), _fmt_v(d)]
+		"RESOURCE_SUM_AT_LEAST": return "[color=#7fd17f]%s 合计 ≥ %s[/color]" % [_keys_disp(d), _fmt_v(d)]
+		"RESOURCE_SUM_AT_MOST": return "[color=#7fd17f]%s 合计 ≤ %s[/color]" % [_keys_disp(d), _fmt_v(d)]
 		"MODIFIER_ACTIVE": return "[color=#7fd17f]修正[%s]生效[/color]" % esc(LX.modifier_name(int(key) if key.is_valid_int() else -1))
 		"MODIFIER_INACTIVE": return "[color=#7fd17f]修正[%s]未生效[/color]" % esc(LX.modifier_name(int(key) if key.is_valid_int() else -1))
-		"PREV_EVENT_DONE": return "[color=#e06c5a]前置事件[%s]已完成[/color]" % ref
-		"PREV_EVENT_NOT_DONE": return "[color=#e06c5a]前置事件[%s]未完成[/color]" % ref
-		"PREV_EVENT_RESULT_IS": return "[color=#e06c5a]前置事件[%s]结果=%s[/color]" % [ref, _fmt_v(d)]
+		"PREV_EVENT_DONE": return "[color=#e06c5a]前置事件[url=%s]「%s」[/url]已完成[/color]" % [ref, esc(ref_title(ref))]
+		"PREV_EVENT_NOT_DONE": return "[color=#e06c5a]前置事件[url=%s]「%s」[/url]未完成[/color]" % [ref, esc(ref_title(ref))]
+		"PREV_EVENT_RESULT_IS": return "[color=#e06c5a]前置事件[url=%s]「%s」[/url]结果=%s[/color]" % [ref, esc(ref_title(ref)), _fmt_v(d)]
 		"EMPIRE_RELATION_AT_LEAST": return "[color=#7fd17f]对%s关系 ≥ %s[/color]" % [LX.empire_name(int(key)), disp_value(float(d.get("v", 0)), true)]
 		"EMPIRE_RELATION_AT_MOST": return "[color=#7fd17f]对%s关系 ≤ %s[/color]" % [LX.empire_name(int(key)), disp_value(float(d.get("v", 0)), true)]
-		"EMPIRE_POWER_DIFFERENCE_AT_LEAST": return "[color=#7fd17f]影响力-帝国%s力量 ≥ %s[/color]" % [LX.empire_name(int(key)), _fmt_v(d)]
-		"EMPIRE_LEADER_IS": return "[color=#7fd17f]%s现任领导人=%s[/color]" % [LX.empire_name(int(key)), _fmt_v(d)]
-		"EMPIRE_LEADER_SUPPORT_AT_LEAST": return "[color=#7fd17f]%s领袖#%s支持度 ≥ %s[/color]" % [LX.empire_name(int(key)), tgt, _fmt_v(d)]
-		"EMPIRE_LEADER_SUPPORT_AT_MOST": return "[color=#7fd17f]%s领袖#%s支持度 ≤ %s[/color]" % [LX.empire_name(int(key)), tgt, _fmt_v(d)]
-		"COUNTRY_HAS_TAG": return "[color=#7fd17f]%s有标签[%s][/color]" % [who, key]
-		"COUNTRY_IS_SUBJECT_OF": return "[color=#7fd17f]%s是[%s]附庸[/color]" % [who, d.get("overlord", key)]
-		"COUNTRY_EXISTS": return "[color=#7fd17f]国家[%s]存在[/color]" % key
-		"COUNTRY_FIELD_EQUALS": return "[color=#7fd17f]%s.%s = %s[/color]" % [who, key, _fmt_v(d)]
-		"COUNTRY_FIELD_NOT_EQUALS": return "[color=#7fd17f]%s.%s ≠ %s[/color]" % [who, key, _fmt_v(d)]
-		"COUNTRY_FIELD_AT_LEAST": return "[color=#7fd17f]%s.%s ≥ %s[/color]" % [who, key, _fmt_v(d)]
-		"COUNTRY_FIELD_AT_MOST": return "[color=#7fd17f]%s.%s ≤ %s[/color]" % [who, key, _fmt_v(d)]
+		"EMPIRE_POWER_DIFFERENCE_AT_LEAST": return "[color=#7fd17f]我国全球影响力 − %s力量 ≥ %s[/color]" % [LX.empire_name(int(key)), _fmt_v(d)]
+		"EMPIRE_LEADER_IS": return "[color=#7fd17f]%s现任领导人序号 = %s[/color]" % [LX.empire_name(int(key)), _fmt_v(d)]
+		"EMPIRE_LEADER_SUPPORT_AT_LEAST": return "[color=#7fd17f]%s领袖（序号%s）支持度 ≥ %s[/color]" % [LX.empire_name(int(key)), tgt, _fmt_v(d)]
+		"EMPIRE_LEADER_SUPPORT_AT_MOST": return "[color=#7fd17f]%s领袖（序号%s）支持度 ≤ %s[/color]" % [LX.empire_name(int(key)), tgt, _fmt_v(d)]
+		"COUNTRY_HAS_TAG": return "[color=#7fd17f]%s持有标签[%s][/color]" % [who, esc(LX.tag_name(key))]
+		"COUNTRY_IS_SUBJECT_OF":
+			return "[color=#7fd17f]%s是[%s]的附庸[/color]" % [who, _country_disp(str(d.get("overlord", key)))]
+		"COUNTRY_EXISTS": return "[color=#7fd17f]%s存在[/color]" % _country_disp(key)
+		"COUNTRY_FIELD_EQUALS": return "[color=#7fd17f]%s·%s = %s[/color]" % [who, LX.field_label(key), LX.field_value(key, float(d.get("v", 0.0)))]
+		"COUNTRY_FIELD_NOT_EQUALS": return "[color=#7fd17f]%s·%s ≠ %s[/color]" % [who, LX.field_label(key), LX.field_value(key, float(d.get("v", 0.0)))]
+		"COUNTRY_FIELD_AT_LEAST": return "[color=#7fd17f]%s·%s ≥ %s[/color]" % [who, LX.field_label(key), LX.field_value(key, float(d.get("v", 0.0)))]
+		"COUNTRY_FIELD_AT_MOST": return "[color=#7fd17f]%s·%s ≤ %s[/color]" % [who, LX.field_label(key), LX.field_value(key, float(d.get("v", 0.0)))]
 		"DATE_AFTER": return "[color=#7fd17f]日期 ≥ %s[/color]" % key
 		"DATE_BEFORE": return "[color=#7fd17f]日期 ≤ %s[/color]" % key
 		"HAS_FLAG": return "[color=#7fd17f]标记[%s]为真[/color]" % key
 		"NOT_HAS_FLAG": return "[color=#7fd17f]标记[%s]为假[/color]" % key
 		"IS_FACTION_LEADER": return "[color=#7fd17f]派系[%s]执政[/color]" % esc(LX.faction_name(int(d.get("v", -1))))
 		"COALITION_SUPPORT_AT_LEAST": return "[color=#7fd17f]联盟支持率 ≥ %s%%[/color]" % _fmt_v(d)
-		"TECH_UNLOCKED": return "[color=#7fd17f]科技%s已解锁[/color]" % _fmt_v(d)
+		"TECH_UNLOCKED":
+			var ti := int(d.get("v", -1))
+			var tn := LX.tech_name(ti)
+			return "[color=#7fd17f]科技[%s]已解锁[/color]" % (esc(tn) if tn != "" else String.num(ti, 0))
 		"WAR_ACTIVE": return "[color=#7fd17f]%s进行中[/color]" % esc(LX.war_name(int(d.get("v", -1))))
-		"WAR_FIELD_EQUALS": return "[color=#7fd17f]战争%s.%s = %s[/color]" % [tgt, key, _fmt_v(d)]
-		"SOCIALIST_COUNT_AT_LEAST": return "[color=#7fd17f]社会主义国家数 ≥ %s[/color]" % _fmt_v(d)
-		"DECISION_DONE": return "[color=#7fd17f]决策[%s]已完成[/color]" % key
-		"POLITICIAN_POWER_DIFFERENCE_AT_LEAST": return "[color=#7fd17f]性格%s权力-性格%s ≥ %s[/color]" % [key, tgt, _fmt_v(d)]
+		"WAR_FIELD_EQUALS":
+			return "[color=#7fd17f]战争《%s》%s = %s[/color]" % [esc(LX.war_name(int(tgt) if tgt.is_valid_int() else -1)),
+					LX.war_field_label(key), LX.war_side_label(float(d.get("v", 0.0)))]
+		"SOCIALIST_COUNT_AT_LEAST": return "[color=#7fd17f]社会主义国家数 ≥ %s（%s）[/color]" % [_fmt_v(d), _legacy_list_disp(d.get("keys", []))]
+		"DECISION_DONE": return "[color=#7fd17f]决议《%s》已完成[/color]" % esc(LX.decision_name(int(key) if key.is_valid_int() else -1))
+		"POLITICIAN_POWER_DIFFERENCE_AT_LEAST":
+			return "[color=#7fd17f]%s权力 − %s权力 ≥ %s[/color]" % [
+					LX.personality_name(int(key) if key.is_valid_int() else -9999),
+					LX.personality_name(int(tgt) if tgt.is_valid_int() else -9999),
+					_fmt_v(d)]
 		_: return "[color=#ff9944]<未知:%s> %s[/color]" % [t, key]
 
 
@@ -581,23 +722,50 @@ static func _res_disp(key: String) -> String:
 	return esc(LX.resource_label(key))
 
 
+## RESOURCE_SUM_* 的 keys 数组 → 「A+B+C」资源名串
+static func _keys_disp(d: Dictionary) -> String:
+	var names: Array[String] = []
+	for k in d.get("keys", []):
+		names.append(_res_disp(str(k)))
+	return " + ".join(names)
+
+
+## 原版序号数组 → 中文国名列表（最多展示前 6 个，其余以「等N国」收尾）
+static func _legacy_list_disp(keys: Array) -> String:
+	var names: Array[String] = []
+	var total := 0
+	for tok in keys:
+		if not str(tok).is_valid_int():
+			continue
+		total += 1
+		if names.size() >= 6:
+			continue
+		var nm := LX.country_name_by_legacy(int(tok))
+		names.append(nm if nm != "" else "#" + str(tok))
+	var joined := "、".join(names)
+	return joined if names.size() >= total else joined + " 等%d国" % total
+
+
 ## 条件值：tenfold 资源按显示口径 ÷10，其余原值
 static func _v(d: Dictionary, key: String) -> String:
 	return disp_value(float(d.get("v", 0.0)), LX.resource_tenfold(key))
 
 
-## 国家 target（原版序号字符串）→ 中文名；无法解析回退原串
+## 条件/效果里的国家 target → 中文名。
+## 数字 target 一律是【原版序号】（EventEngine._resolve_country 同语义：
+## get_country_by_legacy_index），绝不能当 gwcode 查 map_countries——
+## 否则原版序号66（喀麦隆）会被错显示成 gw66（马提尼克）。
 static func _country_disp(tgt: String) -> String:
 	if tgt == "" or tgt == "ROOT":
 		return "玩家"
 	if tgt.is_valid_int():
-		var nm := LX.country_name(int(tgt))
+		var nm := LX.country_name_by_legacy(int(tgt))
 		if nm != "":
 			return esc(nm)
-	return "国家%s" % tgt
+	return "国家%s" % esc(tgt)
 
 
-## ── 单条效果 → 摘要行 ────────────────────────────────────────────────────
+## ── 单条效果 → 摘要行（编号/枚举/字段键全部过词典具意化）─────────────────
 static func fx_to_line(fx: Dictionary) -> String:
 	var t := str(fx.get("t", "?"))
 	var key := str(fx.get("key", ""))
@@ -607,7 +775,7 @@ static func fx_to_line(fx: Dictionary) -> String:
 			var sp := str(fx.get("script", ""))
 			return "📜 脚本 · %s" % (sp.get_file() if sp != "" else "宿主脚本")
 		"TRIGGER_EVENT":
-			return "[color=#e06c5a]▶ 触发事件 [%s][/color]" % key
+			return "[color=#e06c5a]▶ 触发事件[url=%s]「%s」[/url][/color]" % [key, esc(ref_title(key))]
 		"ADD_RESOURCE":
 			return "%s +%s" % [_res_disp(key), disp_value(float(fx.get("v", 0)), LX.resource_tenfold(key))]
 		"SET_RESOURCE":
@@ -621,13 +789,21 @@ static func fx_to_line(fx: Dictionary) -> String:
 			return "修正[%s]%s" % [esc(LX.modifier_name(int(key) if key.is_valid_int() else -1)),
 					"可用" if float(fx.get("v", 0)) >= 0.5 else "禁用"]
 		"START_WAR": return "⚔ 开战：%s" % esc(LX.war_name(int(fx.get("value", -1))))
-		"SET_WAR_STATE": return "战争%s状态=%s" % [tgt, _fmt_v(fx)]
+		"SET_WAR_STATE":
+			return "战争《%s》状态 = %s" % [esc(LX.war_name(int(tgt) if tgt.is_valid_int() else -1)),
+					LX.war_side_label(float(fx.get("v", 0)))]
 		"JOIN_ALLIANCE", "LEAVE_ALLIANCE", "JOIN_ALL_ALLIANCES", "JOIN_ECONOMIC_ALLIANCE":
-			return "%s 加入同盟[%s]" % [_country_disp(tgt), key] if t != "LEAVE_ALLIANCE" \
-					else "%s 退出同盟[%s]" % [_country_disp(tgt), key]
+			if t == "LEAVE_ALLIANCE":
+				return "%s 退出[%s]" % [_country_disp(tgt), esc(LX.tag_name(key))]
+			if t == "JOIN_ALL_ALLIANCES":
+				return "%s 复制我方全部同盟关系" % _country_disp(tgt)
+			if t == "JOIN_ECONOMIC_ALLIANCE":
+				return "%s 加入我方经济联盟阵营" % _country_disp(tgt)
+			return "%s 加入[%s]" % [_country_disp(tgt), esc(LX.tag_name(key))]
 		"SET_COUNTRY_VAR", "ADD_COUNTRY_VAR":
-			return "%s 变量 %s %s%s" % [_country_disp(tgt), key,
-					"=" if t.begins_with("SET") else "±", _fmt_v(fx)]
+			var val := LX.field_value(key, float(fx.get("v", 0)))
+			return "%s·%s %s %s" % [_country_disp(tgt), LX.field_label(key),
+					"=" if t.begins_with("SET") else "±", val]
 		"ADD_EMPIRE_RELATION":
 			return "对%s关系 +%s（显示口径）" % [LX.empire_name(int(key) if key.is_valid_int() else -1),
 					disp_value(float(fx.get("v", 0)), true)]
@@ -639,8 +815,17 @@ static func fx_to_line(fx: Dictionary) -> String:
 		"ADD_FACTION_SUPPORT":
 			return "派系[%s]支持±%s" % [esc(LX.faction_name(int(key) if key.is_valid_int() else -1)), _fmt_v(fx)]
 		"ADD_ALL_POLITICIAN_LOYALTY": return "全体政治家忠诚+%s" % _fmt_v(fx)
-		"ADD_POLITICIAN_LOYALTY_BY_PERSONALITY": return "按性格(%s)加忠诚" % key
+		"ADD_POLITICIAN_LOYALTY_BY_PERSONALITY":
+			return "按性格(%s)忠诚%+d" % [_personality_list_disp(key), int(fx.get("v", 0))]
 		_: return "%s %s" % [t, key]
+
+
+## 逗号分隔性格序号 → 「改革派、自由派」
+static func _personality_list_disp(key: String) -> String:
+	var names: Array[String] = []
+	for tok in key.split(",", false):
+		names.append(LX.personality_name(int(tok) if tok.strip_edges().is_valid_int() else -9999))
+	return "、".join(names)
 
 
 ## ── 引用收集 ──────────────────────────────────────────────────────────────

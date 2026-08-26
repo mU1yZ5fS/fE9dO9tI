@@ -116,6 +116,33 @@ static func swap_leader_profile(a: PoliticianData, b: PoliticianData) -> void:
 static func monthly_politics(d: WorldState, w: WorldState) -> void:
 	@warning_ignore("integer_division")
 	sync_in_power_flags(w)
+	# 政治挂帅维持（TimeScript.Repaint 日块 TimeScript.cs:444-449，此处月度近似）：
+	# 极左派的政治挂帅只有在文革(3)与毛主义的坚实壁垒(6)同时在线时才能维持，
+	# 否则转为硬汉；自由派的政治挂帅不受影响。
+	if not w.modifier_active(GameConstants.Modifier.CULTURAL_REVOLUTION) \
+			or not w.modifier_active(GameConstants.Modifier.MAOIST_BULWARK):
+		for p in w.politicians:
+			if is_vacant_politician(p):
+				continue
+			if p.trait_personality == GameConstants.PoliticianPersonality.FAR_LEFT \
+					and p.trait_alignment == GameConstants.PoliticianAlignment.POLITICS_FIRST:
+				p.trait_alignment = GameConstants.PoliticianAlignment.HARDLINER
+	# 特质禁令存量清洗：漫长的革命(444)选"相信人民" → 清墙头草；
+	# 踢开党委闹革命(670)选0且文革+毛堡并存、或444结果0 → 清一方诸侯。
+	# （禁刷在生成端 _roll_alignment 已生效；此处把存量转为实用主义）
+	var ev444_r0: bool = w.event_done_num(444) and w.result_of_event_num(444) == 0
+	var ev670_r0: bool = w.event_done_num(670) and w.result_of_event_num(670) == 0
+	var wb: bool = w.modifier_active(GameConstants.Modifier.CULTURAL_REVOLUTION) \
+			and w.modifier_active(GameConstants.Modifier.MAOIST_BULWARK)
+	if ev444_r0 or (ev670_r0 and wb):
+		for p in w.politicians:
+			if p == null or is_vacant_politician(p):
+				continue
+			if ev444_r0 and p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
+				p.trait_alignment = GameConstants.PoliticianAlignment.PRAGMATIST
+			elif ((ev670_r0 and wb) or ev444_r0) \
+					and p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
+				p.trait_alignment = GameConstants.PoliticianAlignment.PRAGMATIST
 	for i in w.politicians.size():
 		var p: PoliticianData = w.politicians[i]
 		if is_vacant_politician(p):
@@ -199,18 +226,23 @@ static func annual_politics(d: WorldState, w: WorldState) -> void:
 		var p: PoliticianData = w.politicians[i]
 		if is_vacant_politician(p):
 			continue
-		# 老死：age >= 91..94
-		var death_age: int = 91 + (i % 4)
+		# 托派（身份槽 34；旧档兼容特质槽 34）：病弱 90 岁、自然死亡 100 岁（用户口径）
+		var is_trotskyist: bool = p.trait_background == GameConstants.PoliticianSpecial.TROTSKYITE \
+				or p.trait_special == GameConstants.PoliticianSpecial.TROTSKYITE
+		# 老死：托派 100；其余 age >= 91..94
+		var death_age: int = 100 if is_trotskyist else 91 + (i % 4)
 		if p.age >= death_age:
 			if (_is_mao_protected_cb.is_valid() and _is_mao_protected_cb.call(i)):
 				continue
 			to_kill.append(i)
 			continue
-		# 病弱：非改革 traits[0]!=2 时 80..83；改革派 85..88
+		# 病弱：托派 90；非改革 traits[0]!=2 时 80..83；改革派 85..88
 		if p.trait_special == GameConstants.PoliticianSpecial.SICKLY:
 			continue
 		var sick_age: int
-		if p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
+		if is_trotskyist:
+			sick_age = 90
+		elif p.trait_personality == GameConstants.PoliticianPersonality.REFORMIST:
 			sick_age = 85 + (i % 4)
 		else:
 			sick_age = 80 + (i % 4)
@@ -242,7 +274,9 @@ static func plot_politics(d: WorldState, w: WorldState) -> void:
 			var pol: PoliticianData = w.politicians[j]
 			if is_vacant_politician(pol) or pol.is_under_investigation:
 				continue
-			if pol.trait_special == GameConstants.PoliticianSpecial.SHY or pol.trait_special == GameConstants.PoliticianSpecial.SICKLY:
+			if pol.trait_special == GameConstants.PoliticianSpecial.SHY \
+					or pol.trait_special == GameConstants.PoliticianSpecial.SICKLY \
+					or pol.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
 				continue
 			var rel := 0
 			if i < pol.loyalty_matrix.size():
@@ -325,6 +359,41 @@ static func _game_rule(w: WorldState, idx: int) -> int:
 	if v is float:
 		return int(v)
 	return 0
+
+
+## 名录扩容 / 读档后统一对齐全部关系矩阵长度（P1 动态化，不缩容）。
+static func normalize_loyalty_matrices(w: WorldState) -> void:
+	if w == null:
+		return
+	var n := w.politicians.size()
+	for p in w.politicians:
+		if p != null:
+			p.ensure_matrix_size(n)
+
+
+## 旧档职位迁移：非 8 槽存档（32 槽过渡版本）救援大区后截断回 8。
+## 救援映射：20→3 21→4 23→7 25→6 26→5；1000+ 省干编码废弃。
+static func migrate_positions(w: WorldState) -> void:
+	if w == null:
+		return
+	var old := w.politics_positions.duplicate()
+	if old.size() == 8:
+		return  # 原版结构
+	if old.size() < 8:
+		w.politics_positions.resize(8)
+		w.politics_positions.fill(-1)
+		return
+	var next: Array[int] = []
+	next.resize(8)
+	for i in 8:
+		next[i] = old[i]
+	var rescue := {20: 3, 21: 4, 23: 7, 25: 6, 26: 5}
+	if old.size() > 27:
+		for old_id in rescue:
+			var v: int = old[old_id]
+			if v >= 0 and v < 1000 and next[rescue[old_id]] == -1:
+				next[rescue[old_id]] = v
+	w.politics_positions = next
 
 
 static func sync_in_power_flags(w: WorldState) -> void:
@@ -434,11 +503,11 @@ static func apply_monthly_position_power(w: WorldState, pol_index: int, p: Polit
 		if w.politics_positions[pos_id] != pol_index:
 			continue
 		if pos_id <= 2:
-			bonus = maxi(bonus, 20)
+			bonus = maxi(bonus, 20)      # 中央三职
 		elif pos_id == 3:
-			bonus = maxi(bonus, 15)
+			bonus = maxi(bonus, 15)      # 京畿
 		else:
-			bonus = maxi(bonus, 10)
+			bonus = maxi(bonus, 10)      # 地方
 	if bonus > 0:
 		p.power += bonus
 	elif p.trait_special == GameConstants.PoliticianSpecial.CORRUPT:
@@ -458,6 +527,38 @@ static func apply_monthly_position_power(w: WorldState, pol_index: int, p: Polit
 # ============================================================================
 # 死亡 / 任命 / 派系领袖
 # ============================================================================
+
+## P4 再教育（语义重定义）：撤职并退回预备池——不处决、不计镇压数；
+## 本人保留档案可被再次起用（提名晋升/补员），空槽立即走常规补员。
+## 费用由调用方承担（沿用原再教育费率：预算20 / 特工 60(调查中):100）。
+static func send_to_reeducation(pol_index: int) -> bool:
+	var w: WorldState = current_world
+	if w == null or pol_index < 0 or pol_index >= w.politicians.size():
+		return false
+	if (_is_mao_protected_cb.is_valid() and _is_mao_protected_cb.call(pol_index)):
+		push_warning("再教育：毛泽东在世保护，拒绝 %d" % pol_index)
+		return false
+	var p: PoliticianData = w.politicians[pol_index]
+	if is_vacant_politician(p):
+		return false
+	for i in w.politics_positions.size():
+		if w.politics_positions[i] == pol_index:
+			w.politics_positions[i] = -1
+	for f in w.factions:
+		if f.leader_index == pol_index:
+			f.leader_index = -1
+	p.is_under_surveillance = false
+	p.is_under_investigation = false
+	p.is_conspiracy = false
+	p.you_fall = false
+	p.in_power = false
+	p.auto_support = 0
+	p.auto_hound = 0
+	# 先补员（此时 p 尚未入池，不会被补员逻辑选中），再入池
+	kill_politician(pol_index)
+	w.politician_reserve.append(p)
+	return true
+
 
 ## 死亡/再教育：清职与派系领袖，同槽补员（KillPerson → BalancePolitic）。
 ## preferred_name 非空时先从预备池点名补员（如舵手逝世→毛远新），
@@ -651,7 +752,7 @@ static func spawn_historical_politician(
 
 
 ## POL-10 任命：按职位细表改 loyalty / matrix，并 POL-20 重算关系
-## position_id: 0总理 1军委 2外交 3首都 4北方 5西方 6南方 7东方
+## position_id: 0总理 1军委 2外交 3京畿 4华北 5华西 6华南 7华东
 ## 对齐 Button_Pol_Script num7/5/6/8-12（注意原版按钮编号与 dolshnost 索引映射）
 static func assign_politician_position(pol_index: int, position_id: int) -> bool:
 	var w: WorldState = current_world
@@ -679,7 +780,7 @@ static func assign_politician_position(pol_index: int, position_id: int) -> bool
 		if w.politics_positions[other_central] == pol_index:
 			w.politics_positions[other_central] = -1
 
-	# 前任惩罚表：prev_loyalty_delta, prev_matrix_delta, new_loyalty, wanted_bonus
+	# 前任惩罚表：prev_loyalty_delta, prev_matrix_delta, new_loyalty
 	# prev_matrix_delta < 0 表示原版不扣关系矩阵（地方职 num9-12，Button_Pol_Script.cs:865-944）
 	var prev_loy := 250
 	var prev_mat := -1
@@ -691,7 +792,7 @@ static func assign_politician_position(pol_index: int, position_id: int) -> bool
 			prev_loy = 700; prev_mat = 300; new_loy = 350
 		2:  # 外交 num6（Button_Pol_Script.cs:798-822）
 			prev_loy = 600; prev_mat = 250; new_loy = 350
-		3:  # 首都 num8（Button_Pol_Script.cs:844-864）
+		3:  # 首都/京畿 num8（Button_Pol_Script.cs:844-864）
 			prev_loy = 250; prev_mat = 50; new_loy = 300
 		_:  # 地方 4-7（Button_Pol_Script.cs:865-944：只扣 loyalty，不动矩阵）
 			prev_loy = 150; prev_mat = -1; new_loy = 250

@@ -180,7 +180,7 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 				context["result_text"] = _build_44_result0_generic()
 			_kill_politician_if_exists(11, 11)
 			_kill_politician_if_exists(6, 6)
-			ws.party_system = 7
+			ws.party_system = GameConstants.PartySystem.NEW_DEMOCRACY
 			_change_politicians({0: [-500, -200], 1: [-100, 100], 2: [200, 200], 3: [70, 80]})
 			var reform_leader := _faction_leader_index(FactionData.REFORMIST)
 			if reform_leader >= 0:
@@ -215,7 +215,7 @@ func _event_44(option_index: int, context: Dictionary) -> void:
 				context["result_text"] = _build_44_result2_generic()
 			_kill_politician_if_exists(11, 11)
 			_kill_politician_if_exists(6, 6)
-			ws.party_system = 7
+			ws.party_system = GameConstants.PartySystem.NEW_DEMOCRACY
 			PoliticianSystem.sync_in_power_flags(ws)
 	# 原版 NewPolitician[4]=false / party_change[] 仅 UI 缓冲，建模说明。
 

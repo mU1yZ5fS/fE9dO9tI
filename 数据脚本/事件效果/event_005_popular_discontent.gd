@@ -22,12 +22,12 @@ func execute(context: Dictionary) -> void:
 	if ws.factions.size() > FactionData.CONSERVATIVE:
 		ws.factions[FactionData.CONSERVATIVE].is_enabled = true
 
-	if d.party_system >= 6 and d.party_system <= 7:
+	if d.party_system >= GameConstants.PartySystem.ONE_PARTY_DICTATORSHIP and d.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		_reorganize_parties()
 		if d.size() > 53:
 			d.party_ban_count = 0
 		ws.set_flag("election_due", true)
-	elif d.party_system < 9:
+	elif d.party_system < GameConstants.PartySystem.CONSOCIATIONALISM:
 		d.party_system += 1
 	elif d.press_policy < 19:
 		d.press_policy += 1

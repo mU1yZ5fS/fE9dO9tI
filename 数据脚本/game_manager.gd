@@ -531,15 +531,15 @@ func new_game(player_gwcode: int = 710, p_difficulty: int = 2) -> void:
 	world = WF.create_world(player_gwcode, p_difficulty)
 	WarSystem.current_world = world
 	PoliticianSystem.set_world(world)
-	PoliticianSystem.sync_in_power_flags(world)
+	PoliticianSystem.normalize_loyalty_matrices(world)
 	PoliticianPool.current_world = world
+	PoliticianSystem.sync_in_power_flags(world)
 	DecisionSystem.current_world = world
 	ModifierCatalog.current_world = world
 	DecisionAtoms.current_world = world
 	if _fortnight_service != null:
 		_fortnight_service.configure(self, world)
-	# 新开局必须重置 EventEngine 跨局运行时状态（活跃事件序列/pending/链队列），
-	# 否则上一局已触发的 fire_once 事件（如 death_of_mao）在本局永不触发。
+	# 新开局必须重置 EventEngine 跨局运行时状态（活跃事件序列/pending/链队列），	# 否则上一局已触发的 fire_once 事件（如 death_of_mao）在本局永不触发。
 	if EventEngine:
 		EventEngine.reset_runtime_for_new_game(world)
 	if _map_service:
@@ -570,9 +570,11 @@ func load_game(path: String) -> void:
 		world = loaded as WorldState
 		WarSystem.current_world = world
 		PoliticianSystem.set_world(world)
+		PoliticianSystem.migrate_positions(world)
+		PoliticianSystem.normalize_loyalty_matrices(world)
+		DecisionSystem.current_world = world
 		PoliticianSystem.sync_in_power_flags(world)
 		PoliticianPool.current_world = world
-		DecisionSystem.current_world = world
 		ModifierCatalog.current_world = world
 		DecisionAtoms.current_world = world
 		if _fortnight_service != null:
@@ -809,15 +811,12 @@ func science_alert_active() -> bool:
 	return not world.techs.is_researching() and not world.techs.is_all_researched()
 
 
-## 顶栏「政治局缺人」提示图标判定。
-## 用户口径：中央三职（总理/军委/外交）与地方主管（北京/华北/华西/华南/华东）
-## 任一槽为 -1 空缺时显示。
+## 顶栏「政治局缺人」提示图标判定（原版口径：8 槽任一空缺即显示）。
 func political_bureau_vacancy_alert_active() -> bool:
-	const SLOT_COUNT := 8  # 与 WorldState._init 的 politics_positions.resize(8) 对齐
 	if world == null:
 		return false
-	for i in mini(SLOT_COUNT, world.politics_positions.size()):
-		if world.politics_positions[i] == -1:
+	for id in 8:
+		if id < world.politics_positions.size() and world.politics_positions[id] == -1:
 			return true
 	return false
 
@@ -864,7 +863,7 @@ func manual_election() -> bool:
 	if world == null or current_event_id != "":
 		return false
 	var d := world
-	if d.party_system <= 7:
+	if d.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return false
 	if world.get_flag("manual_election_used"):
 		return false
@@ -1330,7 +1329,7 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 		w.is_socialism(china, false)
 		or not _mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION)
 		or not _mod_active(w, GameConstants.Modifier.MAOIST_BULWARK)
-		or d.party_system > 7
+		or d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY
 		or d.econ_system > 12
 		or d.religion_policy > 25
 		or _country_tag(w, 51, "对华贸易")
@@ -1370,7 +1369,7 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 				c.set_tag("rim", false)
 
 	# 993-999：阿尔巴尼亚(20)亲中条件退出（cond_full 含 data.econ_display>36）。
-	var cond_soft := d.ideology > 3 or d.party_system > 7 \
+	var cond_soft := d.ideology > 3 or d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY \
 		or d.econ_system > 13 or d.religion_policy > 28 \
 		or (china != null and china.has_tag("seato"))
 	var cond_full := cond_soft or d.econ_display > 36
@@ -1419,7 +1418,7 @@ func _daily_rim_and_alliance_checks(w: WorldState) -> void:
 	_recalc_export_value(d, w)
 
 	# 1026-1029：多党制下 data.election_timer==4 的选举余波清空。
-	if d.party_system > 7 and d.size() > 125 and d.election_timer == 4:
+	if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY and d.size() > 125 and d.election_timer == 4:
 		d.election_timer = 0
 
 	# 1028-1039：菲律宾(47)影响力达标时转亲中并触发事件441。
@@ -2434,7 +2433,7 @@ func _on_year_changed() -> void:
 	# 满意现秩序者衰减（原版 835 年 /=10）
 	d.satisfied = d.satisfied / 10
 	# 联合/人民民主(7/8) 额外腰斩（TimeScript 年滚 ~640）
-	if d.satisfied > 1 and (d.party_system == 7 or d.party_system == 8):
+	if d.satisfied > 1 and (d.party_system == GameConstants.PartySystem.NEW_DEMOCRACY or d.party_system == GameConstants.PartySystem.PEOPLE_DEMOCRACY):
 		d.satisfied = d.satisfied / 2
 	# 年度进口需求增量（原版 TimeScript.cs:514 data.import_needs += ImportChange；公式 GameState.cs:11-16）
 	d.import_needs += w.import_change()
@@ -2580,11 +2579,11 @@ func _monthly_oligarch(d: WorldState, w: WorldState) -> void:
 			d.oligarch += 10
 		elif econ == 15:
 			d.oligarch += 4
-		if d.party_system <= 7:
+		if d.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 			d.oligarch += 2
-		elif d.party_system == 8:
+		elif d.party_system == GameConstants.PartySystem.PEOPLE_DEMOCRACY:
 			d.oligarch += 1
-		elif d.party_system == 9:
+		elif d.party_system == GameConstants.PartySystem.CONSOCIATIONALISM:
 			d.oligarch -= 1
 		if d.press_policy <= 16:
 			d.oligarch += 2
@@ -2619,7 +2618,7 @@ func _monthly_oligarch(d: WorldState, w: WorldState) -> void:
 	elif econ == 13:
 		if year < 1980:
 			d.oligarch += 1
-		if d.party_system == 9:
+		if d.party_system == GameConstants.PartySystem.CONSOCIATIONALISM:
 			d.oligarch -= 1
 		if d.press_policy == 19:
 			d.oligarch -= 1
@@ -2652,7 +2651,7 @@ func _monthly_oligarch(d: WorldState, w: WorldState) -> void:
 			d.diplomatic_reputation += (d.oligarch - 50) * 5
 			d.agents -= (d.oligarch - 50) * 5
 			d.oligarch = 50
-		if d.party_system == 9:
+		if d.party_system == GameConstants.PartySystem.CONSOCIATIONALISM:
 			d.oligarch -= 1
 		if d.press_policy == 19:
 			d.oligarch -= 1

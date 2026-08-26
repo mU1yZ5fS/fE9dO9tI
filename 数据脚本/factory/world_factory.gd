@@ -250,8 +250,8 @@ const SOUTH_COUNTRY_ROWS := [
 #   Traits[0]: 0极左 1温和 2改革 3自由 / 20保守（Button_Pol_Script num14 特殊映射）
 #   Party[0..4]: 0极左 1保守 2温和 3改革 4自由（改版显式 faction 字段）
 # traits[1]: 4硬汉 5实用主义 6宽容 7重视技术 21-25 等扩展
-# traits[2]: 8-19 特殊 / 30-43 扩展
-# traits[3]: 21-28/43 出身背景
+# traits[2]: 8-19 特殊 / 30-43 扩展（34 托派已移入 traits[3]，随机池不再产出）
+# traits[3]: 21-28/34/43 出身背景（34 托派：仅第四国际在线时可刷出）
 # ============================================================================
 const TRAIT_LABELS_ZH := {
 	0: "极左派", 1: "温和派", 2: "改革派", 3: "自由派",
@@ -631,6 +631,14 @@ static func _set_leader(ws: WorldState) -> void:
 # dolshnost[0]=150(领袖) [1]=0(毛泽东) [2]=17(乔冠华) [3]=10(吴德)
 # [4]=9(陈锡联·北方) [5]=13(赵紫阳·西方) [6]=15(韦国清·南方) [7]=3(张春桥·东方)
 # 我们用 -2 表示「实权领袖本人」（原版 150）
+## 职位槽 v2（下标=PositionCatalog id）：
+## 0 总理=领袖华兼(-2) 1 军委=毛泽东 2 外交=乔冠华 8 党主席=毛泽东
+## 3-7 五大区=修改前原班（吴德/陈锡联/赵紫阳/韦国清/张春桥）
+## 9 财贸=李先念；待用户 .tres 就绪后补：
+## 10 工业=余秋里 11 农业=陈永贵 12 服务=王震(16) 15 民政=谷牧
+## 16 组织=郭玉峰 19 中调=罗青长 28 组宣=姚文元(4，解锁后)
+## 职位（原版 8 槽）：0 总理=领袖华兼(-2) 1 军委=毛泽东 2 外交=乔冠华
+## 3 京畿=吴德 4 华北=陈锡联 5 华西=赵紫阳 6 华南=韦国清 7 华东=张春桥
 const INITIAL_POSITIONS := [-2, 0, 17, 10, 9, 13, 15, 3]
 
 static func _init_positions(ws: WorldState) -> void:
@@ -828,7 +836,7 @@ static func _calc_rel(ws: WorldState, num: int) -> void:
 		var other: PoliticianData = pols[i]
 		var score := _compute_relation_score(other, target, true, ws, i, num)
 		if other.loyalty_matrix.size() <= num:
-			other.loyalty_matrix.resize(18)
+			other.loyalty_matrix.resize(pols.size())
 		other.loyalty_matrix[num] = score
 
 

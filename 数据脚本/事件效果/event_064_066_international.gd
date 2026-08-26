@@ -431,7 +431,7 @@ func _prepare_66(event_def: EventDef) -> void:
 
 
 func _summa_3_2() -> int:
-	if ws.party_system <= 7:
+	if ws.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	var num := 0
 	var den := 0

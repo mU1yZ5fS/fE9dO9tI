@@ -2,8 +2,39 @@ extends CanvasLayer
 
 ## 东方红一号卫星信息面板 — 霓虹灯/Synthwave 风格
 ## 节点全部在 外交.tscn 中布局，本脚本只做逻辑。
+##
+## 信息文案随玩家路线（政体地图配色）切换：
+##   蓝线（自由主义政体）→ 只剩一句冷冰冰的描述，蓝字；
+##   黑线（革命民族主义，即 CountryData.EXTREMIST_SUBS）→ 保留基本数据，结语换成"补充"版；
+##   其余路线但无"毛主义的坚实壁垒"修正 → 保留基本数据，结语改为平实总结；
+##   默认（有壁垒的红/绿/灰线）→ 维持原版红色文案。
 
 const MARKER_SIZE := 8.0
+
+const _BASIC_DATA := """[color=#FF1A00CC]◈  基本信息[/color]
+[color=#FF1A00CC]名称：东方红一号 (DFH-1)[/color]
+[color=#FF1A00CC]发射日期：1970年4月24日[/color]
+[color=#FF1A00CC]运载火箭：长征一号[/color]
+[color=#FF1A00CC]质量：173 公斤[/color]
+
+[color=#FF1A00CC]◈ 轨道参数[/color]
+[color=#FF1A00CC]近地点高度：441 公里[/color]
+[color=#FF1A00CC]远地点高度：2,386 公里[/color]
+[color=#FF1A00CC]轨道倾角：68.5°[/color]
+[color=#FF1A00CC]运行周期：114 分钟[/color]
+"""
+
+const _INFO_DEFAULT := _BASIC_DATA + """
+[color=#FF1A00CC]宇宙高歌东方红![/color]"""
+
+const _INFO_BLACK_LINE := _BASIC_DATA + """
+[color=#FF1A00CC]东方红 固然很好，但往往需要英明领袖与张维为同志加以补充[/color]"""
+
+const _INFO_NO_BULWARK := _BASIC_DATA + """
+[color=#FF1A00CC]我国人造卫星事业从无到有的跨越。[/color]"""
+
+## 蓝色同 世界地图渲染.gd 的 GOV_LIBERAL（Color(0.10, 0.24, 0.74)）。
+const _INFO_BLUE_LINE := "[color=#1A3DBD]一颗多余且占用宝贵轨道资源的老旧卫星，仅此而已[/color]"
 
 var _satellite: Node3D
 var _camera: Camera3D
@@ -48,7 +79,41 @@ func _toggle() -> void:
 		_hide_panel()
 
 
+## 按玩家当前路线刷新卫星简介（每次展开面板时重算，路线中途变化也能生效）。
+func _refresh_info_text() -> void:
+	var info := $面板/Margin/VBox/信息 as RichTextLabel
+	if info == null:
+		return
+	info.text = _political_line_info_bbcode()
+
+
+func _political_line_info_bbcode() -> String:
+	var pc := _player_country()
+	if pc == null:
+		return _INFO_DEFAULT
+	if pc.government == GameConstants.Government.LIBERAL:
+		return _INFO_BLUE_LINE
+	if pc.sub_government in CountryData.EXTREMIST_SUBS:
+		return _INFO_BLACK_LINE
+	if not _mod_active(GameConstants.Modifier.MAOIST_BULWARK):
+		return _INFO_NO_BULWARK
+	return _INFO_DEFAULT
+
+
+## 同 game_manager.gd/_mod_active：modifiers[idx] != null 且 is_active。
+func _mod_active(idx: int) -> bool:
+	var mods: Array = GameManager.world.modifiers
+	return idx >= 0 and idx < mods.size() and mods[idx] != null and mods[idx].is_active
+
+
+func _player_country() -> CountryData:
+	if GameManager == null or GameManager.world == null:
+		return null
+	return GameManager.world.get_player_country()
+
+
 func _show_panel() -> void:
+	_refresh_info_text()
 	_set_visible(true)
 	_panel.modulate = Color(1, 1, 1, 0)
 	_panel.scale = Vector2(0.9, 0.9)

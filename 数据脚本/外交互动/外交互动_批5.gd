@@ -390,7 +390,7 @@ func _def_1057(w: WorldState, _country: CountryData, caption: String) -> Diction
 	var conds: Array = []
 	match r659:
 		1:
-			opis = " 在 内 战 中 支 持 乌 干 达 民 族 解 放 军 粉 碎 反 政 府 武 装|力 量 对 比 ： " + _uganda_power_text(c118)
+			opis = " 在 内 战 中 支 持 乌 干 达 民 族 解 放 军 粉 碎 反 政 府 武 装\n力 量 对 比 ： " + _uganda_power_text(c118)
 			conds.append(cond(" 至 少 2 百 万 预 算 ，2 特 工 网 络 和 2 军 力",
 				func(): return d(w, 8) + d(w, 36) >= 20 and d(w, 9) >= 20 and d(w, 22) >= 20))
 			conds.append(cond(" 我 们 没 有 支 持 叛 乱 分 子", func(): return res(w, 659) < 2))

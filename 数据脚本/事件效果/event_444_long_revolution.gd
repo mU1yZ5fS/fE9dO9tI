@@ -36,7 +36,7 @@ func execute(context: Dictionary) -> void:
 		0:
 			# 原版 doctr[6]/doctr[19]/doctr[24] 为显示文案表赋值，Godot 建模说明，跳过。
 			d.people_support = 1000
-			d.party_system = 6
+			d.party_system = GameConstants.PartySystem.ONE_PARTY_DICTATORSHIP
 			d.press_policy = 19
 			d.religion_policy = 24
 			_add(W.I_PARTY_SUPPORT, 300)
