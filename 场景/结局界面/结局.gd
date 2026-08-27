@@ -39,6 +39,12 @@ var _bad_route: int = -1
 var _panel: int = 0
 ## 各面板当前页（原作各 EngingDLCController 的 numberOfPage 独立保存）。
 var _pages: Array[int] = [0, 0, 0, 0]
+## Unity 标签匹配器（含闭标签）—— 整段占位，杜绝残缺符号混入 BBCode。
+var _tag_rx: RegEx
+var _rx_c: RegEx
+var _rx_s: RegEx
+var _rx_cc: RegEx
+var _rx_ss: RegEx
 
 
 func _ready() -> void:
@@ -123,22 +129,14 @@ func _build_current() -> Dictionary:
 	return {}
 
 
-## 原作 Text()：'|'→换行 + 91 列折行。Godot RichTextLabel bbcode_enabled + autowrap_mode=3 承担折行，'|' 硬换行。
-## Unity RichText 标签 → Godot BBCode（gdd_0413_BBCode_in_RichTextLabel.md：color/font_size 标签）：
-##   <color=xxx> → [color=xxx]，</color> → [/color]；<size=N> → [font_size=N]，</size> → [/font_size]。
+## 原作 Text()：'|'→换行。Godot RichTextLabel bbcode_enabled 承担折行。
+## Unity 尖角标签 1:1 转 Godot 方括号标签；已有 Godot 形态标签原样保留。
 func _render_text(text: String) -> void:
-	text = text.replace("<color=", "[color=")
-	text = text.replace("</color>", "[/color]")
-	text = text.replace("<size=", "[font_size=")
-	text = text.replace("</size>", "[/font_size]")
-	# 亮色归一：例如 <color=#00A80B>（亮绿）、<color=#FFFF00> 在结局文本里仅剩的亮绿亮黄，
-	# 统一压暗到 darkgreen / darkgoldenrod。
+	text = text.replace("<color=", "[color=").replace("</color>", "[/color]")
+	text = text.replace("<size=", "[font_size=").replace("</size>", "[/font_size]")
 	text = BbcTooltip.darken_bright_colors(text)
 	text = text.replace("|", "\n")
-	# 整篇强制居中（原版 Text() 的 TextMesh 对齐即视觉居中；忽略自动行间距设置）。
-	结局文案.text = "[center]" + text + "[/center]"
-
-
+	结局文案.text = text
 func _refresh_dlc_buttons() -> void:
 	var w: WorldState = GameManager.world
 	本体按钮.show()

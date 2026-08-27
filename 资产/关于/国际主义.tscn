@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://7c27c1l80i4r"]
+
+[ext_resource type="PackedScene" uid="uid://6edgb1ojypwx" path="res://资产/关于/国际主义.glb" id="1_iw0nv"]
+[ext_resource type="Texture2D" uid="uid://y1hlphdgd08j" path="res://资产/关于/场景贴图/1K-Metallic_gold_Base Color.jpg" id="2_gqapb"]
+[ext_resource type="Texture2D" uid="uid://7naohyyisxxd" path="res://资产/关于/场景贴图/1K-Metallic_gold_Metallic.jpg" id="3_wpj7c"]
+[ext_resource type="Texture2D" uid="uid://n0uph6g4gko0" path="res://资产/关于/场景贴图/1K-Metallic_gold_Roughness.jpg" id="4_5a5jb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b4m4t"]
+albedo_texture = ExtResource("2_gqapb")
+metallic = 1.0
+metallic_texture = ExtResource("3_wpj7c")
+roughness_texture = ExtResource("4_5a5jb")
+
+[node name="国际主义" unique_id=986879504 instance=ExtResource("1_iw0nv")]
+
+[node name="Gerb_SSSR" parent="." index="0" unique_id=1574707628]
+surface_material_override/0 = SubResource("StandardMaterial3D_b4m4t")

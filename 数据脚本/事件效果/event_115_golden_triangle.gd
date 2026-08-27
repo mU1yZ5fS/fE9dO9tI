@@ -21,11 +21,11 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 3
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var coal := _coalition_percent(world)
 	var opt := event_def.options
 	_enable(opt[0], event_def.options[0].text)
-	if (line >= 2 and party < 8) or (coal > 66 and party > 7):
+	if (line >= 2 and party < GameConstants.PartySystem.PEOPLE_DEMOCRACY) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], tr(TXT_OPT1_DIS))
@@ -64,7 +64,7 @@ func execute(context: Dictionary) -> void:
 ## 原版 summa_3_2 复算：仅 party_system>7 时计算执政党(1)+盟友席位数 ×100 / 五党总席位数。
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

@@ -87,5 +87,5 @@ const META := {
 	"notify": false,
 	"display_script": "res://数据脚本/事件效果/event_300_vietnam_war.gd",
 	"trigger": [{"t": "PREV_EVENT_DONE", "ref": "event_056"}, {"t": "PREV_EVENT_RESULT_IS", "v": 1, "ref": "event_056"}, {"t": "RESOURCE_EQUALS", "key": "war", "v": 1}, {"t": "RESOURCE_AT_LEAST", "key": "year", "v": 1979}, {"t": "RESOURCE_AT_LEAST", "key": "month", "v": 3}],
-	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "global_influence", "v": 500}, {"t": "RESOURCE_AT_LEAST", "key": "diplo", "v": 800}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "IS_FACTION_LEADER"}, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
+	"options": [{"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "ALL", "c": [{"t": "RESOURCE_AT_LEAST", "key": "influence_prc", "v": 500}, {"t": "RESOURCE_AT_LEAST", "key": "diplo", "v": 800}]}, "fx": [{"t": "CUSTOM_SCRIPT"}]}, {"fx": [{"t": "CUSTOM_SCRIPT"}]}, {"disabled": true, "cond": {"t": "IS_FACTION_LEADER"}, "fx": [{"t": "CUSTOM_SCRIPT"}]}],
 }

@@ -25,7 +25,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	var living := data.living_standard if data.size() > W.I_LIVING else 0
 	var agents := data.agents if data.size() > W.I_AGENTS else 0
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var coal := _coalition_percent(world)
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
 	var opt := event_def.options
@@ -38,7 +38,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[2], "逮捕阴谋者并开始迫害最积极主动的合伙人（需要40特工网络）")
 	else:
 		_disable(opt[2], "国安部不会支持我们!")
-	if (line < 3 and party < 8) or (coal > 66 and party > 7):
+	if (line < 3 and party < GameConstants.PartySystem.PEOPLE_DEMOCRACY) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[3], "动员忠诚的军官反对阴谋家")
 	else:
 		_disable(opt[3], "军官不会拯救我们")
@@ -95,7 +95,7 @@ func _kill_3_low_loyalty() -> void:
 
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

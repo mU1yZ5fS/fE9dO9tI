@@ -24,22 +24,22 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var econ := data.econ_system if data.size() > W.I_ECON_SYSTEM else 0
 	var coal := _coalition_percent(world)
 	var agents := data.agents if data.size() > W.I_AGENTS else 0
-	var left_party := party < 8
+	var left_party := party < GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var opt := event_def.options
-	if agents >= 40 and ((line > 1 and left_party) or (coal > 66 and party > 7)):
+	if agents >= 40 and ((line > 1 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY)):
 		_enable(opt[0], "我们会对三合会开出他们无法拒绝的条件的（需要4特工网络）")
 	else:
 		_disable(opt[0], "只有国民党才会这么做！")
-	if agents >= 30 and ((line > 0 and left_party) or (coal > 66 and party > 7)):
+	if agents >= 30 and ((line > 0 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY)):
 		_enable(opt[1], "我们可以与犯罪辛迪加们结成战略同盟。但这可不意味着他们有了免死金牌（需要2特工网络）")
 	else:
 		_disable(opt[1], "不与黑社会妥协!!")
 	_enable(opt[2], "我们关心这些强盗干什么？")
-	if agents >= 80 and econ <= 13 and ((line < 3 and left_party) or (coal > 66 and party > 7)):
+	if agents >= 80 and econ <= 13 and ((line < 3 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY)):
 		_enable(opt[3], "现在是时候对我国南方省份的有组织犯罪进行有力打击了！（需要8特工网络）")
 	else:
 		_disable(opt[3], "他们是非常诚实合法的商人且支持改革开放。我们无权怀疑他们。")
@@ -92,7 +92,7 @@ func execute(context: Dictionary) -> void:
 
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

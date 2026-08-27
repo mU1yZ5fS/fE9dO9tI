@@ -16,6 +16,6 @@ drift_extra_flag = ""
 default_side1 = "阿根廷"
 default_side2 = "英国"
 default_usa_side = 1
-default_ussr_side = 0
+default_ussr_side = -1
 default_infl1 = 450
 default_infl2 = 550

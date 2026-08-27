@@ -333,8 +333,8 @@ static func start_war(
 		war_id: int,
 		infl1: int = -1,
 		infl2: int = -1,
-		usa_side: int = -1,
-		ussr_side: int = -1,
+		usa_side: int = -2,
+		ussr_side: int = -2,
 		side1: String = "",
 		side2: String = ""
 ) -> EffectNode:

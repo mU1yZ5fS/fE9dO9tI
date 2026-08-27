@@ -21,8 +21,8 @@ func start_war(
 		side2: String = "",
 		infl1: int = -1,
 		infl2: int = -1,
-		usa_side: int = -1,
-		ussr_side: int = -1
+		usa_side: int = -2,
+		ussr_side: int = -2
 ) -> bool:
 	if gm == null:
 		return false

@@ -49,7 +49,10 @@ func execute(context: Dictionary) -> void:
 			_add(W.I_AGENTS, -100)
 			_add(W.I_INDUSTRY, -200)
 			_add(W.I_BUDGET, -80)
-			# 原版 :61 resultOfEvents[648]=2 context["result_index_override"] = 2 2: context["result_text"] = tr(TXT_R2)
+			# 原版 :61 resultOfEvents[648]=2
+			context["result_index_override"] = 2
+		2:
+			context["result_text"] = tr(TXT_R2)
 
 
 func evaluate(world: WorldState) -> bool:

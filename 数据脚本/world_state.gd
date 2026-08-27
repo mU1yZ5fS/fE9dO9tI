@@ -122,6 +122,7 @@ const I_INDUSTRY_BASE := 152    ## 工业基数
 const 数值索引 := {
 	"party_support": I_PARTY_SUPPORT, "党内支持": I_PARTY_SUPPORT,
 	"soviet_influence": I_SOVIET_INFLUENCE, "苏联影响力": I_SOVIET_INFLUENCE,
+	"usa_influence": I_USA_INFLUENCE, "美国影响力": I_USA_INFLUENCE,
 	"people_support": I_PEOPLE_SUPPORT, "popular_support": I_PEOPLE_SUPPORT, "民众支持": I_PEOPLE_SUPPORT,
 	"thought_freedom": I_THOUGHT_FREEDOM, "liberalization": I_THOUGHT_FREEDOM, "思想自由": I_THOUGHT_FREEDOM,
 	"living_standard": I_LIVING, "living": I_LIVING, "生活水平": I_LIVING,

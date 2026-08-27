@@ -227,9 +227,9 @@ func _event_94_result_3(context: Dictionary) -> void:
 	d.people_support = 0
 	# LeaderAsset=0 / MoneyLevel=0 / ServeRMB=false 在 Godot 无对应字段，跳过。
 	# 原版 data.ending_route=1 → load_scene_after_click → SceneManager.LoadScene("Ending")
-	# 项目语义映射：结局 1（人民的选择）。见 event_001/event_005 同类迁移。
-	d.ending_route = 1
-	game.queue_ending_after_event(1)
+	# 项目语义映射：结局 5（人民的选择）。见 event_001/event_005 同类迁移。
+	d.ending_route = 5
+	game.queue_ending_after_event(5)
 
 
 ## 当前国家领袖显示名（Event95 描述插姓名时兜底；94 成功后领袖已换为自由派）。
@@ -305,7 +305,7 @@ func _event_95_result_0(context: Dictionary) -> void:
 		W.I_MANPOWER: -50, W.I_THOUGHT_FREEDOM: 100, W.I_DIPLO: -30})
 	d.ideology = 3
 	d.econ_system = 13
-	d.party_system = 8
+	d.party_system = GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	d.press_policy = 18
 	if d.diplomatic_reputation > 699:
 		d.diplomatic_reputation = 699
@@ -330,7 +330,7 @@ func _event_95_result_1(context: Dictionary) -> void:
 		d.diplomatic_reputation = 700
 	if d.ideology < 4:
 		# Event95.cs:135-159
-		d.party_system = 9
+		d.party_system = GameConstants.PartySystem.CONSOCIATIONALISM
 		if d.press_policy < 19:
 			d.press_policy = 19
 		if d.religion_policy < 26:
@@ -368,7 +368,7 @@ func _event_95_result_3(context: Dictionary) -> void:
 func _chinese_sub_government_after_95_option0(china: CountryData) -> int:
 	# Unity 此时 data.ideology=3, data.econ_system=13, data.diplomatic_reputation<=699, data.party_system=8, data.press_policy=18。
 	if d.ideology >= 2 and d.econ_system >= 13 and d.diplomatic_reputation <= 700 \
-			and d.party_system >= 8 and d.press_policy >= 18 \
+			and d.party_system >= GameConstants.PartySystem.PEOPLE_DEMOCRACY and d.press_policy >= 18 \
 			and not china.has_tag("ovd"):
 		return 14  # 欧洲共产主义
 	if d.ideology <= 3 and d.econ_system >= 12 and d.econ_system <= 13 \
@@ -387,7 +387,7 @@ func _chinese_sub_government_after_95_option0(china: CountryData) -> int:
 func _chinese_sub_government_after_95_option1(_china: CountryData) -> int:
 	if d.econ_system <= 13 and d.diplomatic_reputation >= 500:
 		return 4  # 社会民主主义
-	if (d.party_system <= 8 and d.press_policy <= 18) or d.war_support >= 700:
+	if (d.party_system <= GameConstants.PartySystem.PEOPLE_DEMOCRACY and d.press_policy <= 18) or d.war_support >= 700:
 		return 12  # 新自由主义
 	if d.econ_system > 13 and d.diplomatic_reputation < 700:
 		return 6  # 自由主义
@@ -413,7 +413,7 @@ func _event_96(option_index: int, context: Dictionary) -> void:
 func _event_96_result_0(context: Dictionary) -> void:
 	# Event96.cs:44-61
 	context["result_text"] = tr(TXT96_R0)
-	d.party_system = 8
+	d.party_system = GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	d.religion_policy = 27
 	_add_data({W.I_MANPOWER: -80})
 	# 官方版 DLL 反编译（tmp_Event96.cs case 0）证实 data[17](press_policy)++ 为 ref 真实
@@ -426,7 +426,7 @@ func _event_96_result_0(context: Dictionary) -> void:
 func _event_96_result_1(context: Dictionary) -> void:
 	# Event96.cs:62-71
 	context["result_text"] = tr(TXT96_R1)
-	d.party_system = 9
+	d.party_system = GameConstants.PartySystem.CONSOCIATIONALISM
 	_add_data({W.I_PEOPLE_SUPPORT: 50, W.I_MANPOWER: -50})
 	d.religion_policy = 27
 	_add_data({W.I_THOUGHT_FREEDOM: 80, W.I_DIPLO: -20})
@@ -435,7 +435,7 @@ func _event_96_result_1(context: Dictionary) -> void:
 func _event_96_result_2(context: Dictionary) -> void:
 	# Event96.cs:72-88
 	context["result_text"] = tr(TXT96_R2)
-	d.party_system = 9
+	d.party_system = GameConstants.PartySystem.CONSOCIATIONALISM
 	_add_data({W.I_PEOPLE_SUPPORT: 50, W.I_MANPOWER: -70})
 	# 官方版 DLL 反编译（tmp_Event96.cs case 2）证实 data[17]++ 为 ref 真实写入（<19 守卫）。
 	if d.press_policy < 19:
@@ -446,7 +446,7 @@ func _event_96_result_2(context: Dictionary) -> void:
 func _event_96_result_3(context: Dictionary) -> void:
 	# Event96.cs:89-106
 	context["result_text"] = tr(TXT96_R3)
-	d.party_system = 9
+	d.party_system = GameConstants.PartySystem.CONSOCIATIONALISM
 	_add_data({W.I_PEOPLE_SUPPORT: 80, W.I_MANPOWER: -120})
 	# 官方版 DLL 反编译（tmp_Event96.cs case 3）证实 data[17]++ 为 ref 真实写入（<19 守卫）。
 	if d.press_policy < 19:

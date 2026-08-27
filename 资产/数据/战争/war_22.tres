@@ -16,6 +16,6 @@ drift_extra_flag = ""
 default_side1 = "中国"
 default_side2 = "苏联"
 default_usa_side = -1
-default_ussr_side = -1
+default_ussr_side = 1
 default_infl1 = 250
 default_infl2 = 750

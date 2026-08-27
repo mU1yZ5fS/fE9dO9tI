@@ -12,7 +12,7 @@ extends CanvasLayer
 ##     经济联盟 (TextureRect)
 ##     贸易伙伴 (TextureRect)
 ##     在某国影响下 (TextureRect)   # 槽1：仅中美苏法四国势力（原版 Znach(4)）
-##     联盟 (TextureRect)            # 槽2：阿联共/阿革共/巴尔干联邦（原版 Znach(5) 联盟项）
+##     联盟 (TextureRect)            # 槽2：非洲联盟/阿联共/阿革共/巴尔干联邦（原版 Znach(5) 联盟项）
 ##     傀儡 (TextureRect)            # 槽3：按宗主国差异化的傀儡图标（原版 Znach(5) 傀儡项）
 ##     互动按钮 / 互动按钮2 / 互动按钮3 / 互动按钮4 (Button)
 ##     执行当前互动按钮所需条件及检查 (Label)
@@ -65,9 +65,9 @@ const MIL_ALLIANCE_ICONS := {
 	"seato": preload("res://资产/UI/外交/军事联盟_东南亚条约.png"),
 	"sento": preload("res://资产/UI/外交/军事联盟_中央条约.png"),
 }
-## okb 变体图标（原版 Znach(1) okb 分支的三个子态，:150-180）：
-## 非洲革命链 → znachki[24]；mod49（第四国际）激活 → znachki[22]；普通 → znachki[6]。
-const OKB_AFRICA_REVOLUTION_ICON := preload("res://资产/UI/外交/军事联盟_非洲革命联盟.png")
+## 非洲联盟图标（原版 znachki[24]）：仅用于 Znach(5) 联盟槽 isAU 分支
+## （CountryScript.cs:351-357）。原版军事槽 Znach(1) 的 okb 分支没有非洲子态。
+const AU_UNION_ICON := preload("res://资产/UI/外交/军事联盟_非洲革命联盟.png")
 const OKB_FOURTH_INTERNATIONAL_ICON := preload("res://资产/UI/外交/军事联盟_第四国际.png")
 const OKB_GENERIC_ICON := preload("res://资产/UI/外交/军事联盟_军事同盟.png")
 ## SEATO 成员且泰国(51)内战 → znachki[19] 东约-中央条约合并态（:193-201）。
@@ -415,13 +415,17 @@ func _refresh_icons(country: CountryData) -> void:
 			inf_icon.tooltip_text = label
 			inf_icon.visible = false
 
-	# ── 槽2：联盟（原版 Znach(5) 联盟项，CountryScript.cs:404-430）──
-	# 阿联共(阿革共) → 巴尔干联邦，与槽1/槽3 并行显示，互不占用。
+	# ── 槽2：联盟（原版 Znach(5) 联盟项，CountryScript.cs:345-455）──
+	# 优先级照原版：非洲联盟(isAU) → 阿拉伯阵营(oar) → 巴尔干联邦，与槽1/槽3 并行显示。
 	var union_icon := find_child("联盟", true, false) as TextureRect
 	if union_icon:
 		var tex2: Texture2D = null
 		var label2 := ""
-		if country.has_tag("oar"):
+		if country.has_tag("au"):
+			# 非洲联盟（原版 :351-357，znachki[24]“ 非 洲 联 盟”）
+			tex2 = AU_UNION_ICON
+			label2 = "非洲联盟"
+		elif country.has_tag("oar"):
 			# 阿拉伯阵营（原版 :404-430）：埃及(30)社会主义化后为革命态（阿革共），否则阿联
 			var egypt_socialist := false
 			var world: WorldState = GameManager.world if GameManager != null else null
@@ -480,23 +484,15 @@ func _refresh_icons(country: CountryData) -> void:
 			puppet_icon.visible = false
 
 
-## okb 军盟图标子态（原版 Znach(1) :150-180）：
-## 非洲革命链（非洲成员国+亲中+社会主义+事件500结果0）> 第四国际(mod49) > 普通军盟。
-func _okb_variant_texture(country: CountryData) -> Texture2D:
+## okb 军盟图标子态（原版 Znach(1) okb 分支，CountryScript.cs:177-191）：
+## mod49（第四国际）激活 → znachki[22]；未激活 → znachki[6] 普通军盟。
+## 注：原版军事槽没有“非洲革命链”子态；非洲大陆图标(znachki[24])只在联盟槽
+## isAU 分支使用（见 _refresh_icons 联盟槽）。此前移植版自创的“非洲革命链”
+## 子态把事件500守卫写反（未完成也算满足），导致非盟成立前非洲国家就挂出
+## 非盟样式图标，已按原版删除。
+func _okb_variant_texture(_country: CountryData) -> Texture2D:
 	var w: WorldState = GameManager.world if GameManager != null else null
-	if w != null:
-		var is_african := country.原版序号 > 53 and country.原版序号 < 69 \
-			or (country.原版序号 > 105 and country.原版序号 < 109) \
-			or (country.原版序号 > 111 and country.原版序号 < 134) \
-			or country.原版序号 in [41, 42, 52, 99, 100, 150, 151, 153, 155, 158]
-		var event500_ok: bool = w.completed_event_ids.get("event_500", -1) == 0 \
-			or not w.completed_event_ids.has("event_500")
-		if is_african and country.has_tag("亲中") and event500_ok \
-				and (country.government == GameConstants.Government.SOCIALIST
-					or country.sub_government == GameConstants.SubGovernment.LEFT_RADICAL):
-			return OKB_AFRICA_REVOLUTION_ICON
-		if w.modifiers.size() > 49 and w.modifiers[49] != null and not w.modifiers[49].is_active:
-			return OKB_GENERIC_ICON
+	if w != null and w.modifiers.size() > 49 and w.modifiers[49] != null and w.modifiers[49].is_active:
 		return OKB_FOURTH_INTERNATIONAL_ICON
 	return OKB_GENERIC_ICON
 
@@ -628,7 +624,7 @@ func _on_action_hover(index: int) -> void:
 		var met: bool = cond.check.call() if cond.has("check") else true
 		lines.append("%s  [%s]" % [cond.get("desc", ""), "√" if met else "×"])
 	if action.has("effect_desc"):
-		lines.append("\n效果：%s" % action.effect_desc)
+		lines.append("\n%s" % action.effect_desc)
 	var label := find_child("执行当前互动按钮所需条件及检查", true, false) as Label
 	if label:
 		label.text = "\n".join(lines)
@@ -2381,7 +2377,8 @@ func _revint_sub17_ok(w: WorldState, country: CountryData) -> bool:
 ## AU 列表级守卫（CS L2739 等）：IsSocialism(true) && ev500 && res==0
 ## 注：resultOfEvents[500] 移植说明，视为 0
 func _soc500_ok(w: WorldState, country: CountryData) -> bool:
-	return w.is_socialism(country, true) and w.get_flag("event_done_500")
+	return w.is_socialism(country, true) and w.event_done_num(500) \
+		and w.result_of_event_num(500) == 0
 
 
 ## 块K（CS L3942）：ev713 && n!=1 && puppet<0 && IsSocialism(true) && sub∉{16,18}

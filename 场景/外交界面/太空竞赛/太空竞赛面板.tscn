@@ -1,0 +1,1105 @@
+[gd_scene format=3 uid="uid://g6gre7gily0b"]
+
+[ext_resource type="Script" uid="uid://d4i4n60wp4ii4" path="res://场景/外交界面/太空竞赛/太空竞赛面板.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://csfps8e2o8ed5" path="res://场景/外交界面/太空竞赛/太空竞赛轨道.gdshader" id="2_shader"]
+[ext_resource type="Texture2D" uid="uid://dp62vv8nr53ya" path="res://资产/UI/事件/事件背景.png" id="2_vcjcc"]
+[ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="3_font"]
+[ext_resource type="Texture2D" uid="uid://cjwwrjeyr3uuo" path="res://资产/UI/成就/ui_close.png" id="4_close"]
+[ext_resource type="Texture2D" uid="uid://bncv8nmopowl7" path="res://资产/UI/科研/科研点数图标.png" id="5_sci"]
+[ext_resource type="Texture2D" uid="uid://h3ful3cgix68" path="res://资产/UI/科研/航天科技_通讯卫星.png" id="6_t27"]
+[ext_resource type="Texture2D" uid="uid://c35t1rksivwmk" path="res://资产/UI/科研/航天科技_导航卫星.png" id="7_t28"]
+[ext_resource type="Texture2D" uid="uid://dtnewdki61lr0" path="res://资产/UI/科研/航天科技_军事卫星.png" id="8_t29"]
+[ext_resource type="Texture2D" uid="uid://b41urgleiemye" path="res://资产/UI/科研/航天科技_载人航天.png" id="9_t30"]
+[ext_resource type="Texture2D" uid="uid://dwkuhbxu7d6di" path="res://资产/UI/科研/航天科技_行星际飞行器.png" id="10_t31"]
+[ext_resource type="Texture2D" uid="uid://ddgo4kk5thnvi" path="res://资产/UI/科研/航天科技_轨道空间站.png" id="11_t32"]
+[ext_resource type="Texture2D" uid="uid://2kredme6a3hs" path="res://资产/UI/科研/航天科技_航天飞机.png" id="12_t33"]
+
+[sub_resource type="StyleBoxFlat" id="sb_barbg"]
+bg_color = Color(0.05, 0.1, 0.075, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.22, 1, 0.45, 0.22)
+
+[sub_resource type="StyleBoxFlat" id="sb_barfill"]
+bg_color = Color(0.22, 1, 0.45, 0.92)
+
+[sub_resource type="StyleBoxFlat" id="sb_screen"]
+bg_color = Color(0.004, 0.02, 0.014, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.22, 1, 0.45, 0.45)
+
+[sub_resource type="ShaderMaterial" id="mat_orbit"]
+shader = ExtResource("2_shader")
+shader_parameter/aspect = 1.06
+shader_parameter/phosphor = Color(0.25, 1, 0.47, 1)
+shader_parameter/alert_red = Color(1, 0.16, 0.1, 1)
+shader_parameter/grid_density = 8.0
+
+[sub_resource type="StyleBoxFlat" id="sb_inner"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.22, 1, 0.45, 0.16)
+
+[sub_resource type="Animation" id="anim_reset"]
+length = 0.001
+
+[sub_resource type="Animation" id="anim_open"]
+resource_name = "开窗"
+length = 0.28
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("窗口:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.28),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="anim_tick"]
+resource_name = "播报滚动"
+length = 16.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("窗口/底部播报/播报文本:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 16),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1560, 4), Vector2(-2500, 4)]
+}
+
+[sub_resource type="Animation" id="anim_blink"]
+resource_name = "红星闪烁"
+length = 1.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("窗口/中部/轨道屏/录制点:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8, 1.2, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 0.1, 1.0, 0.1, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="lib_main"]
+_data = {
+&"RESET": SubResource("anim_reset"),
+&"开窗": SubResource("anim_open"),
+&"播报滚动": SubResource("anim_tick"),
+&"红星闪烁": SubResource("anim_blink")
+}
+
+[node name="太空竞赛面板" type="CanvasLayer" unique_id=1961850320]
+layer = 80
+visible = false
+script = ExtResource("1_script")
+
+[node name="遮罩" type="TextureRect" parent="." unique_id=1878107521]
+offset_left = 152.00002
+offset_top = 79.0
+offset_right = 2072.0
+offset_bottom = 1159.0
+scale = Vector2(0.87, 0.825)
+texture = ExtResource("2_vcjcc")
+
+[node name="刷新计时器" type="Timer" parent="." unique_id=1614976709]
+wait_time = 0.5
+
+[node name="窗口" type="Control" parent="." unique_id=1400873745]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -780.0
+offset_top = -450.0
+offset_right = 780.0
+offset_bottom = 450.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="主标题" type="Label" parent="窗口" unique_id=1269567004]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 26.0
+offset_right = 709.0
+offset_bottom = 82.0
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 40
+text = "敢上九天揽月"
+vertical_alignment = 1
+
+[node name="关闭按钮" type="TextureButton" parent="窗口" unique_id=1490189765]
+layout_mode = 0
+offset_left = 1492.0
+offset_top = 16.0
+offset_right = 1544.0
+offset_bottom = 68.0
+texture_normal = ExtResource("4_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="状态条" type="HBoxContainer" parent="窗口" unique_id=10519954]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 96.0
+offset_right = 1278.0
+offset_bottom = 134.0
+theme_override_constants/separation = 18
+
+[node name="科研图标" type="TextureRect" parent="窗口/状态条" unique_id=603222529]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = ExtResource("5_sci")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="科研前缀" type="Label" parent="窗口/状态条" unique_id=1580403278]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "科研点"
+vertical_alignment = 1
+
+[node name="读数科研点" type="Label" parent="窗口/状态条" unique_id=1446021726]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 21
+text = "0"
+vertical_alignment = 1
+
+[node name="分隔A" type="Label" parent="窗口/状态条" unique_id=1011184350]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "|"
+vertical_alignment = 1
+
+[node name="日期前缀" type="Label" parent="窗口/状态条" unique_id=499769879]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "档案日期"
+vertical_alignment = 1
+
+[node name="读数日期" type="Label" parent="窗口/状态条" unique_id=522807007]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 21
+text = "----"
+vertical_alignment = 1
+
+[node name="分隔B" type="Label" parent="窗口/状态条" unique_id=1618647980]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "|"
+vertical_alignment = 1
+
+[node name="读数项目" type="Label" parent="窗口/状态条" unique_id=2059405778]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 19
+text = "当前无在研项目"
+vertical_alignment = 1
+
+[node name="总进度前缀" type="Label" parent="窗口/状态条" unique_id=747996623]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "总进度"
+vertical_alignment = 1
+
+[node name="读数总进度" type="Label" parent="窗口/状态条" unique_id=1246712737]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 21
+text = "0.0%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="总进度条" type="ProgressBar" parent="窗口" unique_id=1792434420]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 24.0
+offset_top = 140.0
+offset_right = 1279.0
+offset_bottom = 150.0
+theme_override_styles/background = SubResource("sb_barbg")
+theme_override_styles/fill = SubResource("sb_barfill")
+show_percentage = false
+
+[node name="中部" type="HBoxContainer" parent="窗口" unique_id=193110576]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 162.0
+offset_right = 1536.0
+offset_bottom = 830.0
+theme_override_constants/separation = 14
+
+[node name="左列" type="VBoxContainer" parent="窗口/中部" unique_id=405754878]
+custom_minimum_size = Vector2(468, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="科技行27" type="HBoxContainer" parent="窗口/中部/左列" unique_id=1901696514]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="图27" type="TextureRect" parent="窗口/中部/左列/科技行27" unique_id=1197738773]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 2
+texture = ExtResource("6_t27")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="列" type="VBoxContainer" parent="窗口/中部/左列/科技行27" unique_id=1565115505]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="名" type="Label" parent="窗口/中部/左列/科技行27/列" unique_id=1902418958]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "通讯卫星"
+
+[node name="条27" type="ProgressBar" parent="窗口/中部/左列/科技行27/列" unique_id=1606966675]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("sb_barbg")
+theme_override_styles/fill = SubResource("sb_barfill")
+show_percentage = false
+
+[node name="态27" type="Label" parent="窗口/中部/左列/科技行27" unique_id=566693007]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 15
+text = "锁定"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="科技行28" type="HBoxContainer" parent="窗口/中部/左列" unique_id=421379108]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="图28" type="TextureRect" parent="窗口/中部/左列/科技行28" unique_id=347503654]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 2
+texture = ExtResource("7_t28")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="列" type="VBoxContainer" parent="窗口/中部/左列/科技行28" unique_id=1494078369]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="名" type="Label" parent="窗口/中部/左列/科技行28/列" unique_id=270437957]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "导航卫星"
+
+[node name="条28" type="ProgressBar" parent="窗口/中部/左列/科技行28/列" unique_id=504757327]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("sb_barbg")
+theme_override_styles/fill = SubResource("sb_barfill")
+show_percentage = false
+
+[node name="态28" type="Label" parent="窗口/中部/左列/科技行28" unique_id=2110819478]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 15
+text = "锁定"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="科技行29" type="HBoxContainer" parent="窗口/中部/左列" unique_id=1594246132]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="图29" type="TextureRect" parent="窗口/中部/左列/科技行29" unique_id=102979557]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 2
+texture = ExtResource("8_t29")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="列" type="VBoxContainer" parent="窗口/中部/左列/科技行29" unique_id=1254347522]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="名" type="Label" parent="窗口/中部/左列/科技行29/列" unique_id=224449538]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "军事卫星"
+
+[node name="条29" type="ProgressBar" parent="窗口/中部/左列/科技行29/列" unique_id=378238311]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("sb_barbg")
+theme_override_styles/fill = SubResource("sb_barfill")
+show_percentage = false
+
+[node name="态29" type="Label" parent="窗口/中部/左列/科技行29" unique_id=1314920878]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 15
+text = "锁定"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="科技行30" type="HBoxContainer" parent="窗口/中部/左列" unique_id=643411620]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="图30" type="TextureRect" parent="窗口/中部/左列/科技行30" unique_id=1928526059]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 2
+texture = ExtResource("9_t30")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="列" type="VBoxContainer" parent="窗口/中部/左列/科技行30" unique_id=1204652751]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="名" type="Label" parent="窗口/中部/左列/科技行30/列" unique_id=727002997]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "载人航天"
+
+[node name="条30" type="ProgressBar" parent="窗口/中部/左列/科技行30/列" unique_id=1452091578]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("sb_barbg")
+theme_override_styles/fill = SubResource("sb_barfill")
+show_percentage = false
+
+[node name="态30" type="Label" parent="窗口/中部/左列/科技行30" unique_id=1323745603]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 15
+text = "锁定"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="科技行31" type="HBoxContainer" parent="窗口/中部/左列" unique_id=13605670]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="图31" type="TextureRect" parent="窗口/中部/左列/科技行31" unique_id=234294345]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 2
+texture = ExtResource("10_t31")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="列" type="VBoxContainer" parent="窗口/中部/左列/科技行31" unique_id=932679637]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="名" type="Label" parent="窗口/中部/左列/科技行31/列" unique_id=74202785]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "行星际飞行器"
+
+[node name="条31" type="ProgressBar" parent="窗口/中部/左列/科技行31/列" unique_id=1221596022]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("sb_barbg")
+theme_override_styles/fill = SubResource("sb_barfill")
+show_percentage = false
+
+[node name="态31" type="Label" parent="窗口/中部/左列/科技行31" unique_id=618883475]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 15
+text = "锁定"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="科技行32" type="HBoxContainer" parent="窗口/中部/左列" unique_id=1947119969]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="图32" type="TextureRect" parent="窗口/中部/左列/科技行32" unique_id=555907259]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 2
+texture = ExtResource("11_t32")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="列" type="VBoxContainer" parent="窗口/中部/左列/科技行32" unique_id=1616111950]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="名" type="Label" parent="窗口/中部/左列/科技行32/列" unique_id=900036722]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "轨道空间站"
+
+[node name="条32" type="ProgressBar" parent="窗口/中部/左列/科技行32/列" unique_id=1954861238]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("sb_barbg")
+theme_override_styles/fill = SubResource("sb_barfill")
+show_percentage = false
+
+[node name="态32" type="Label" parent="窗口/中部/左列/科技行32" unique_id=1376032462]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 15
+text = "锁定"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="科技行33" type="HBoxContainer" parent="窗口/中部/左列" unique_id=1967848977]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="图33" type="TextureRect" parent="窗口/中部/左列/科技行33" unique_id=124875003]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 2
+texture = ExtResource("12_t33")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="列" type="VBoxContainer" parent="窗口/中部/左列/科技行33" unique_id=1304560581]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="名" type="Label" parent="窗口/中部/左列/科技行33/列" unique_id=1869416494]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+text = "航天飞机"
+
+[node name="条33" type="ProgressBar" parent="窗口/中部/左列/科技行33/列" unique_id=589779396]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("sb_barbg")
+theme_override_styles/fill = SubResource("sb_barfill")
+show_percentage = false
+
+[node name="态33" type="Label" parent="窗口/中部/左列/科技行33" unique_id=561862039]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 15
+text = "锁定"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="轨道屏" type="Control" parent="窗口/中部" unique_id=1337247441]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="屏框" type="Panel" parent="窗口/中部/轨道屏" unique_id=1514985428]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("sb_screen")
+
+[node name="轨道着色层" type="ColorRect" parent="窗口/中部/轨道屏" unique_id=1520870617]
+material = SubResource("mat_orbit")
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="内框" type="Panel" parent="窗口/中部/轨道屏" unique_id=671275933]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("sb_inner")
+
+[node name="角签A" type="Label" parent="窗口/中部/轨道屏" unique_id=56739737]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 14.0
+offset_right = 420.0
+offset_bottom = 38.0
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "近地轨道"
+
+[node name="录制点" type="ColorRect" parent="窗口/中部/轨道屏" unique_id=1693387217]
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -88.0
+offset_top = 18.0
+offset_right = -76.0
+offset_bottom = 30.0
+color = Color(1, 0.16, 0.1, 1)
+
+[node name="角签B" type="Label" parent="窗口/中部/轨道屏" unique_id=1527532929]
+layout_mode = 0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -36.0
+offset_right = -18.0
+offset_bottom = -12.0
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 13
+text = "FEED CRT-714 · LIVE"
+horizontal_alignment = 2
+
+[node name="右列" type="VBoxContainer" parent="窗口/中部" unique_id=1035341048]
+custom_minimum_size = Vector2(430, 0)
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="右列标题" type="Label" parent="窗口/中部/右列" unique_id=772526348]
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 18
+text = "——任务——"
+vertical_alignment = 1
+
+[node name="任务352" type="HBoxContainer" parent="窗口/中部/右列" unique_id=917580125]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点352" type="ColorRect" parent="窗口/中部/右列/任务352" unique_id=1474066171]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名352" type="Label" parent="窗口/中部/右列/任务352" unique_id=1938956295]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "352 航天发射场"
+
+[node name="果352" type="Label" parent="窗口/中部/右列/任务352" unique_id=104710182]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务353" type="HBoxContainer" parent="窗口/中部/右列" unique_id=2025113746]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点353" type="ColorRect" parent="窗口/中部/右列/任务353" unique_id=557891553]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名353" type="Label" parent="窗口/中部/右列/任务353" unique_id=699025266]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "353 新型运载火箭"
+
+[node name="果353" type="Label" parent="窗口/中部/右列/任务353" unique_id=700458197]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务354" type="HBoxContainer" parent="窗口/中部/右列" unique_id=856551063]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点354" type="ColorRect" parent="窗口/中部/右列/任务354" unique_id=359320030]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名354" type="Label" parent="窗口/中部/右列/任务354" unique_id=1004752852]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "354 空间通信"
+
+[node name="果354" type="Label" parent="窗口/中部/右列/任务354" unique_id=1014425708]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务355" type="HBoxContainer" parent="窗口/中部/右列" unique_id=1466403088]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点355" type="ColorRect" parent="窗口/中部/右列/任务355" unique_id=958172866]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名355" type="Label" parent="窗口/中部/右列/任务355" unique_id=20595065]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "355 卫星导航网络"
+
+[node name="果355" type="Label" parent="窗口/中部/右列/任务355" unique_id=1446009227]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务356" type="HBoxContainer" parent="窗口/中部/右列" unique_id=1343136303]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点356" type="ColorRect" parent="窗口/中部/右列/任务356" unique_id=62469104]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名356" type="Label" parent="窗口/中部/右列/任务356" unique_id=677673699]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "356 载人航天计划"
+
+[node name="果356" type="Label" parent="窗口/中部/右列/任务356" unique_id=793292592]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务357" type="HBoxContainer" parent="窗口/中部/右列" unique_id=1702017659]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点357" type="ColorRect" parent="窗口/中部/右列/任务357" unique_id=1983414336]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名357" type="Label" parent="窗口/中部/右列/任务357" unique_id=487502264]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "357 多座载人飞船"
+
+[node name="果357" type="Label" parent="窗口/中部/右列/任务357" unique_id=1469240233]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务358" type="HBoxContainer" parent="窗口/中部/右列" unique_id=72039135]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点358" type="ColorRect" parent="窗口/中部/右列/任务358" unique_id=704911776]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名358" type="Label" parent="窗口/中部/右列/任务358" unique_id=74772852]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "358 探月·首批仪器"
+
+[node name="果358" type="Label" parent="窗口/中部/右列/任务358" unique_id=786569948]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务359" type="HBoxContainer" parent="窗口/中部/右列" unique_id=147025568]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点359" type="ColorRect" parent="窗口/中部/右列/任务359" unique_id=442004733]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名359" type="Label" parent="窗口/中部/右列/任务359" unique_id=769481569]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "359 探月·补办窗口"
+
+[node name="果359" type="Label" parent="窗口/中部/右列/任务359" unique_id=1233854859]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务360" type="HBoxContainer" parent="窗口/中部/右列" unique_id=738609534]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点360" type="ColorRect" parent="窗口/中部/右列/任务360" unique_id=1538807293]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名360" type="Label" parent="窗口/中部/右列/任务360" unique_id=1655518318]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "360 载人登月抉择"
+
+[node name="果360" type="Label" parent="窗口/中部/右列/任务360" unique_id=375764473]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务361" type="HBoxContainer" parent="窗口/中部/右列" unique_id=1720414460]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点361" type="ColorRect" parent="窗口/中部/右列/任务361" unique_id=873265081]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名361" type="Label" parent="窗口/中部/右列/任务361" unique_id=1413159504]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "361 探月·先进任务"
+
+[node name="果361" type="Label" parent="窗口/中部/右列/任务361" unique_id=1630174225]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务362" type="HBoxContainer" parent="窗口/中部/右列" unique_id=2079665510]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点362" type="ColorRect" parent="窗口/中部/右列/任务362" unique_id=518606350]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名362" type="Label" parent="窗口/中部/右列/任务362" unique_id=760289063]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "362 首次火星任务"
+
+[node name="果362" type="Label" parent="窗口/中部/右列/任务362" unique_id=1576910923]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务363" type="HBoxContainer" parent="窗口/中部/右列" unique_id=641195000]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点363" type="ColorRect" parent="窗口/中部/右列/任务363" unique_id=1794352906]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名363" type="Label" parent="窗口/中部/右列/任务363" unique_id=13993781]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "363 轨道空间站"
+
+[node name="果363" type="Label" parent="窗口/中部/右列/任务363" unique_id=1349393783]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务364" type="HBoxContainer" parent="窗口/中部/右列" unique_id=1551269521]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点364" type="ColorRect" parent="窗口/中部/右列/任务364" unique_id=1336429632]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名364" type="Label" parent="窗口/中部/右列/任务364" unique_id=788602857]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "364 太空飞机计划"
+
+[node name="果364" type="Label" parent="窗口/中部/右列/任务364" unique_id=1941995164]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="任务648" type="HBoxContainer" parent="窗口/中部/右列" unique_id=798977824]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="点648" type="ColorRect" parent="窗口/中部/右列/任务648" unique_id=1686677340]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.27, 0.31, 0.36, 1)
+
+[node name="名648" type="Label" parent="窗口/中部/右列/任务648" unique_id=1487772019]
+custom_minimum_size = Vector2(172, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "648 金星探测·太白"
+
+[node name="果648" type="Label" parent="窗口/中部/右列/任务648" unique_id=241754982]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "—— 待触发 ————"
+
+[node name="底部播报" type="Control" parent="窗口" unique_id=1710393608]
+clip_contents = true
+anchors_preset = 0
+offset_left = 24.0
+offset_top = 838.0
+offset_right = 1536.0
+offset_bottom = 878.0
+mouse_filter = 2
+
+[node name="播报文本" type="Label" parent="窗口/底部播报" unique_id=2025688427]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 964.0
+offset_top = 18.0
+offset_right = 1448.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(7.219613e-08, 0.46745527, 0.1810394, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 18
+text = "★ 九院播报：酒泉测控站例行标校正常"
+
+[node name="动画机" type="AnimationPlayer" parent="." unique_id=846661926]
+libraries/ = SubResource("lib_main")
+autoplay = &"播报滚动"
+
+[connection signal="timeout" from="刷新计时器" to="." method="_on_刷新计时器_timeout"]
+[connection signal="pressed" from="窗口/关闭按钮" to="." method="close"]

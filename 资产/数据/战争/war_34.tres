@@ -16,6 +16,6 @@ drift_extra_flag = ""
 default_side1 = "马来亚民族解放同盟"
 default_side2 = "马来西亚政府"
 default_usa_side = 1
-default_ussr_side = 0
+default_ussr_side = -1
 default_infl1 = 300
 default_infl2 = 700

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bhy8el1biqfb8"]
 
-[ext_resource type="Script" uid="uid://h2aistekcxyl" path="res://场景/外交界面/卫星信息面板.gd" id="25_satui"]
+[ext_resource type="Script" uid="uid://h2aistekcxyl" path="res://场景/外交界面/卫星/卫星信息面板.gd" id="25_satui"]
 [ext_resource type="AudioStream" uid="uid://c2wox2hiyetj1" path="res://资产/音频/音效/东方红.MP3" id="26_dfhbgm"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="17_v5qqf"]
 [sub_resource type="StyleBoxFlat" id="synthwave_panel"]

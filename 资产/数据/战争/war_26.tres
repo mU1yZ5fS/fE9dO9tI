@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_def")
 id = 26
-name_zh = "索马里内战"
+name_zh = "厄立特里亚独立战争"
 name_en = ""
 fortnight_max = 20
 drift_infl1 = 5

@@ -101,7 +101,7 @@ func execute(context: Dictionary) -> void:
 			else:
 				d.press_policy += 1
 			_set_mod_active(28, false)
-			if d.party_system > 7:
+			if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
 				_set_data(W.I_PARTY_SYSTEM, 7)
 			_set_mod_active(29, true)
 			context["result_text"] = tr(TXT_R1)
@@ -127,7 +127,7 @@ func execute(context: Dictionary) -> void:
 			_add_faction_support(4, 50)
 			if d.econ_system < 15:
 				d.econ_system += 1
-			if d.party_system < 8:
+			if d.party_system < GameConstants.PartySystem.PEOPLE_DEMOCRACY:
 				d.party_system += 1
 			_add(W.I_DIPLO, -250)
 			_add(W.I_THOUGHT_FREEDOM, 50)

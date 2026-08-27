@@ -37,7 +37,10 @@ func execute(context: Dictionary) -> void:
 			context["result_text"] = tr(TXT_R1)
 		2:
 			_add(W.I_ARMY, -50)
-			# 原版 TickTime(4)，但 TimeScript.WorldWarsDone 对 war15 另有 fortnight_go>=16 门槛， # 有效超时 = max(4,16)=16。 _start_war_15(somalia, num, 400, 600, 16) context["result_text"] = tr(TXT_R2)
+			# 原版 TickTime(4)，但 TimeScript.WorldWarsDone 对 war15 另有 fortnight_go>=16 门槛，
+			# 有效超时 = max(4,16)=16。
+			_start_war_15(somalia, num, 400, 600, 16)
+			context["result_text"] = tr(TXT_R2)
 
 
 func _start_war_15(somalia: CountryData, num: int, infl1: int, infl2: int, tick: int) -> void:

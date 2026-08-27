@@ -19,10 +19,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var coal := _coalition_percent(world)
-	var policy_left := (line < 2 and party < 8) or (coal > 66 and party > 7)
-	var policy_right := (line > 1 and party < 8) or (coal > 66 and party > 7)
+	var policy_left := (line < 2 and party < GameConstants.PartySystem.PEOPLE_DEMOCRACY) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY)
+	var policy_right := (line > 1 and party < GameConstants.PartySystem.PEOPLE_DEMOCRACY) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY)
 	var opt := event_def.options
 	if data.size() > W.I_AGENTS and data.agents >= 100 \
 			and data.size() > W.I_ARMY and data.army >= 80 and policy_left:
@@ -69,7 +69,7 @@ func execute(context: Dictionary) -> void:
 
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

@@ -2483,7 +2483,7 @@ func _influence_from_investments(d: WorldState, year: int) -> void:
 		d.diplomatic_reputation -= 1
 	# 【对拍修正 2026-08-25】原版无此规则（全库 data[0] += 仅 data[81]/50 与
 	# flag2 门控 influencePRC/12 两处，见 TimeScript 清洗版 3074/3410）。
-	# budget_diplo 的外交贡献已由 war_system.gd 的 /50 规则承担。见 tools/replay/FINDINGS.md F-C。
+	# budget_diplo 的外交贡献已由 war_system.gd 的 /50 规则在双周块承担。
 	# if d.budget_diplo >= 0:
 	# 	@warning_ignore("integer_division")
 	# 	d.mil_intervention += d.budget_diplo / 5
@@ -3664,7 +3664,7 @@ func _fortnight_modifiers(
 	var c21b := w.get_country_by_legacy_index(21)
 	var chinab := w.get_player_country()
 	if gm._mod_active(w, GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS) and c21b != null and c21b.has_tag("对华贸易") \
-			and chinab != null and chinab.has_tag("okb") and d.global_influence >= 500:
+			and chinab != null and chinab.has_tag("okb") and d.influence_prc >= 500:
 		d.mil_intervention += 5
 		d.budget += 2
 		_add_empire_relation(w, EmpireData.USA, -3)

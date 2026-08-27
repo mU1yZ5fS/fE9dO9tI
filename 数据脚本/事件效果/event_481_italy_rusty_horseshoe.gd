@@ -74,7 +74,7 @@ func execute(context: Dictionary) -> void:
 				italy.sub_government = GameConstants.SubGovernment.LEFT_RADICAL
 				_leave_alliances(italy)
 				italy.name = tr(S_91)
-				if d.ideology > 3 or d.party_system > 7 or d.econ_system > 13 \
+				if d.ideology > 3 or d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY or d.econ_system > 13 \
 						or d.religion_policy > 28 or d.political_display > 40 or d.econ_display > 36:
 					_leave_alliances(italy)
 				else:

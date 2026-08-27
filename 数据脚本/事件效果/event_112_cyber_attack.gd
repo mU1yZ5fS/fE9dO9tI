@@ -37,7 +37,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var coal := _coalition_percent(world)
 	var ussr_rel := world.empires[EmpireData.USSR].relations if world.empires.size() > EmpireData.USSR and world.empires[EmpireData.USSR] != null else 0
 	var mod3 := world.modifiers.size() > 3 and world.modifiers[3] != null and world.modifiers[3].is_active
@@ -47,7 +47,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], tr(TXT_OPT1_494) if is_494 else tr(TXT_OPT1_OTHER))
 	else:
 		_disable(opt[1], tr(TXT_OPT1_DIS))
-	if (line > 0 and party < 8) or (coal > 66 and party > 7):
+	if (line > 0 and party < GameConstants.PartySystem.PEOPLE_DEMOCRACY) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], tr(TXT_OPT2_DIS))
@@ -126,7 +126,7 @@ func _is_494_route(world: WorldState) -> bool:
 
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

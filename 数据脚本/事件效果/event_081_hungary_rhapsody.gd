@@ -19,25 +19,25 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var stage := data.reform_stage if data.size() > W.I_REFORM_STAGE else -1
 	var coal := _coalition_percent(world)
-	var left_party := party < 8
+	var left_party := party < GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var left_line := line < 3
 	var opt := event_def.options
-	if ((line == 0 or line == 4) and left_party) or (coal > 66 and party > 7):
+	if ((line == 0 or line == 4) and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[0], "我们将无条件向匈牙利提供经济援助（需要35百万元预算）")
 	else:
 		_disable(opt[0], "我们没有足够的钱资助卡达尔主义者")
-	if stage == 0 and ((left_line and left_party) or (coal > 66 and party > 7)):
+	if stage == 0 and ((left_line and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY)):
 		_enable(opt[1], "我们利用匈牙利人民共和国的问题来诋毁市场改革")
 	else:
 		_disable(opt[1], "匈牙利的例子并不能证明一切改革的失败")
-	if (line < 2 and left_party) or (coal > 66 and party > 7):
+	if (line < 2 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[2], "我们将向匈牙利提供经济援助，但交换条件是平反比斯库集团（需要15百万元预算，8特工网络）")
 	else:
 		_disable(opt[2], "对我们来说不是很好")
-	if (line <= 2 and left_party) or (coal > 66 and party > 7):
+	if (line <= 2 and left_party) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY):
 		_enable(opt[3], "我们将完全承担匈牙利国债，但交换条件是完全平反比斯库集团（需要45百万元预算，10特工）")
 	else:
 		_disable(opt[3], "对我们来说太激进了！")
@@ -90,7 +90,7 @@ func execute(context: Dictionary) -> void:
 
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

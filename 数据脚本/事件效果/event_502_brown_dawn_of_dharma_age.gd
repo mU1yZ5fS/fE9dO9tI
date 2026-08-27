@@ -75,7 +75,11 @@ func execute(context: Dictionary) -> void:
 				# 原版 GlobalScript.inst.gameState.doctr[6] = "无 产 阶 级 专 政"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 无产阶级专政 # 原版 GlobalScript.inst.gameState.doctr[8] = "人 民 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 人民民主制度 # 原版 GlobalScript.inst.gameState.doctr[9] = "协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制 # 原版 GlobalScript.inst.gameState.doctr[10] = "经 典 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 经典计划经济 # 原版 GlobalScript.inst.gameState.doctr[11] = "中 式 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 中式计划经济 # 原版 GlobalScript.inst.gameState.doctr[13] = "国 家 监 护 资 本 主 义"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 国家监护资本主义 # 原版 GlobalScript.inst.gameState.doctr[14] = "社 会 主 义 导 向 市 场"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 社会主义导向市场 # 原版 GlobalScript.inst.gameState.doctr[15] = "左 翼 小 政 府"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 左翼小政府 # 原版 GlobalScript.inst.gameState.doctr[21] = "改 良 区 域 自 治 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 改良区域自治制度 # 原版 GlobalScript.inst.gameState.doctr[22] = "联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制 # 原版 GlobalScript.inst.gameState.doctr[24] = "文 化 革 命"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 文化革命
 			else:
 				pass
-				# 原版 GlobalScript.inst.gameState.doctr[6] = " 一 党 制 共 和 国"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党制共和国 # 原版 GlobalScript.inst.gameState.doctr[7] = "一 党 独 大 式 民 主"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党独大式民主 # 原版 GlobalScript.inst.gameState.doctr[8] = " 宪 政 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 宪政民主制度 # 原版 GlobalScript.inst.gameState.doctr[9] = " 协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制 # 原版 GlobalScript.inst.gameState.doctr[10] = " 中 央 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 中央计划经济 # 原版 GlobalScript.inst.gameState.doctr[11] = " 分 权 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 分权计划经济 # 原版 GlobalScript.inst.gameState.doctr[13] = " 鸟 笼 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 鸟笼经济 # 原版 GlobalScript.inst.gameState.doctr[14] = " “ 社 会 ” 市 场 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: “社会”市场经济 # 原版 GlobalScript.inst.gameState.doctr[15] = " 最 小 干 预"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 最小干预 # 原版 GlobalScript.inst.gameState.doctr[21] = " 联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制 # 原版 GlobalScript.inst.gameState.doctr[22] = " 联 省 自 治"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联省自治 # 原版 GlobalScript.inst.gameState.doctr[24] = " 破 除 传 统"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 破除传统 _add(8, -(40)) _add(9, -(40)) _add_relation(0, 150) _add_relation(1, -(150))
+				# 原版 GlobalScript.inst.gameState.doctr[24] = " 破 除 传 统"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 破除传统
+			_add(8, -(40))
+			_add(9, -(40))
+			_add_relation(0, 150)
+			_add_relation(1, -(150))
 			if c1 != null: c1.government = GameConstants.Government.AUTHORITARIAN
 			if c1 != null: c1.sub_government = _chinese_sub_government()
 			return
@@ -97,7 +101,9 @@ func execute(context: Dictionary) -> void:
 				# 原版 GlobalScript.inst.gameState.doctr[6] = "无 产 阶 级 专 政"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 无产阶级专政 # 原版 GlobalScript.inst.gameState.doctr[8] = "人 民 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 人民民主制度 # 原版 GlobalScript.inst.gameState.doctr[9] = "协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制 # 原版 GlobalScript.inst.gameState.doctr[10] = "经 典 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 经典计划经济 # 原版 GlobalScript.inst.gameState.doctr[11] = "中 式 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 中式计划经济 # 原版 GlobalScript.inst.gameState.doctr[13] = "国 家 监 护 资 本 主 义"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 国家监护资本主义 # 原版 GlobalScript.inst.gameState.doctr[14] = "社 会 主 义 导 向 市 场"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 社会主义导向市场 # 原版 GlobalScript.inst.gameState.doctr[15] = "左 翼 小 政 府"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 左翼小政府 # 原版 GlobalScript.inst.gameState.doctr[21] = "改 良 区 域 自 治 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 改良区域自治制度 # 原版 GlobalScript.inst.gameState.doctr[22] = "联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制 # 原版 GlobalScript.inst.gameState.doctr[24] = "文 化 革 命"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 文化革命
 			else:
 				pass
-				# 原版 GlobalScript.inst.gameState.doctr[6] = " 一 党 制 共 和 国"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党制共和国 # 原版 GlobalScript.inst.gameState.doctr[7] = "一 党 独 大 式 民 主"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 一党独大式民主 # 原版 GlobalScript.inst.gameState.doctr[8] = " 宪 政 民 主 制 度"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 宪政民主制度 # 原版 GlobalScript.inst.gameState.doctr[9] = " 协 和 民 主 体 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 协和民主体制 # 原版 GlobalScript.inst.gameState.doctr[10] = " 中 央 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 中央计划经济 # 原版 GlobalScript.inst.gameState.doctr[11] = " 分 权 计 划 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 分权计划经济 # 原版 GlobalScript.inst.gameState.doctr[13] = " 鸟 笼 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 鸟笼经济 # 原版 GlobalScript.inst.gameState.doctr[14] = " “ 社 会 ” 市 场 经 济"；display-only / 修正文案由 Godot 静态维护，跳过。文本: “社会”市场经济 # 原版 GlobalScript.inst.gameState.doctr[15] = " 最 小 干 预"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 最小干预 # 原版 GlobalScript.inst.gameState.doctr[21] = " 联 邦 制"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联邦制 # 原版 GlobalScript.inst.gameState.doctr[22] = " 联 省 自 治"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 联省自治 # 原版 GlobalScript.inst.gameState.doctr[24] = " 破 除 传 统"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 破除传统 _add_relation(0, -(100)) _add_relation(1, -(100))
+				# 原版 GlobalScript.inst.gameState.doctr[24] = " 破 除 传 统"；display-only / 修正文案由 Godot 静态维护，跳过。文本: 破除传统
+			_add_relation(0, -(100))
+			_add_relation(1, -(100))
 			if c1 != null: c1.government = GameConstants.Government.AUTHORITARIAN
 			if c1 != null: c1.sub_government = _chinese_sub_government()
 			return
@@ -170,11 +176,11 @@ func _chinese_sub_government() -> int:
 			result = 22
 		elif ws.completed_event_ids.has("event_912") and _event_result("event_912") == 0:
 			result = 19
-		elif data.party_system == 8:
+		elif data.party_system == GameConstants.PartySystem.PEOPLE_DEMOCRACY:
 			result = 20
 		elif ws.completed_event_ids.has("event_503") and _event_result("event_503") == 0:
 			result = 10
-		elif data.ideology <= 2 and data.econ_system < 13 				and data.diplomatic_reputation >= 700 and data.party_system < 8 				and _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
+		elif data.ideology <= 2 and data.econ_system < 13 				and data.diplomatic_reputation >= 700 and data.party_system < GameConstants.PartySystem.PEOPLE_DEMOCRACY 				and _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 			result = 0
 		elif (data.econ_system >= 13 and data.war_support >= 700 and not _mod_active(GameConstants.Modifier.MAOIST_BULWARK)) 				or _mod_active(GameConstants.Modifier.PRESIDENT_FOR_LIFE):
 			result = 9
@@ -187,7 +193,7 @@ func _chinese_sub_government() -> int:
 	elif china.government == GameConstants.Government.SOCIALIST:
 		if _mod_active(GameConstants.Modifier.FOURTH_INTERNATIONAL):
 			result = 18
-		elif _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and data.party_system <= 7 				and data.econ_system <= 12 and data.religion_policy <= 25:
+		elif _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY 				and data.econ_system <= 12 and data.religion_policy <= 25:
 			result = 17
 		elif data.ideology == 1 and not _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and data.religion_policy <= 26:
 			result = 16
@@ -198,7 +204,7 @@ func _chinese_sub_government() -> int:
 	elif china.government == GameConstants.Government.REFORMIST:
 		if _mod_active(GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION):
 			result = 8
-		elif data.ideology >= 2 and data.econ_system >= 13 				and data.diplomatic_reputation <= 700 and data.party_system >= 8 				and data.press_policy >= 18 and not china.has_tag("ovd"):
+		elif data.ideology >= 2 and data.econ_system >= 13 				and data.diplomatic_reputation <= 700 and data.party_system >= GameConstants.PartySystem.PEOPLE_DEMOCRACY 				and data.press_policy >= 18 and not china.has_tag("ovd"):
 			result = 14
 		elif data.ideology <= 3 and data.econ_system >= 12 				and data.econ_system <= 13 and data.diplomatic_reputation >= 300 				and data.territory_policy > 21 and data.war_support >= 700:
 			result = 11
@@ -206,7 +212,7 @@ func _chinese_sub_government() -> int:
 			result = 8
 		elif data.ideology <= 3 and data.econ_system <= 13 				and data.press_policy > 17:
 			result = 3
-		elif data.party_system <= 8 				and (data.econ_system == 13 or data.econ_system == 12) 				and data.war_support < 700 and not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) 				and data.press_policy >= 17:
+		elif data.party_system <= GameConstants.PartySystem.PEOPLE_DEMOCRACY 				and (data.econ_system == 13 or data.econ_system == 12) 				and data.war_support < 700 and not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) 				and data.press_policy >= 17:
 			result = 21
 		else:
 			result = 15
@@ -214,7 +220,7 @@ func _chinese_sub_government() -> int:
 		result = 13
 	elif data.econ_system <= 13 and data.diplomatic_reputation >= 500:
 		result = 4
-	elif (data.party_system <= 8 and data.press_policy <= 18) 			or data.war_support >= 700:
+	elif (data.party_system <= GameConstants.PartySystem.PEOPLE_DEMOCRACY and data.press_policy <= 18) 			or data.war_support >= 700:
 		result = 12
 	elif data.econ_system > 13 and data.diplomatic_reputation < 700:
 		result = 6

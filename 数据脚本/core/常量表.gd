@@ -83,7 +83,13 @@ enum SubGovernment {
 	RENEWAL_SOCIALIST = 21,
 	REVOLUTIONARY_NATIONALIST = 22,
 }
-
+# ── 党制（WorldState.party_system，I_PARTY_SYSTEM=15） ──
+enum PartySystem {
+	ONE_PARTY_DICTATORSHIP = 6, # 一党制共和国 / 无产阶级专政
+	NEW_DEMOCRACY = 7,          # 新民主主义制度（一党优势民主）
+	PEOPLE_DEMOCRACY = 8,       # 人民民主制度（宪政民主，可选举结盟）
+	CONSOCIATIONALISM = 9,      # 协和民主体制（寡头化）
+}
 # ── 战争阵营（WarData.usa_side / ussr_side） ──
 enum WarSide {
 	NONE = -1,

@@ -28,7 +28,32 @@ func execute(context: Dictionary) -> void:
 			_add(1, 50)
 			_add(3, 50)
 			ws.influence_prc += 30
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 0 9 3 核 潜 艇 ：</color>| 军 力+2.0 ， 人 民 支 持 度+0.5 ， 美 苏 关 系-0.3 "；display-only / 修正文案由 Godot 静态维护，跳过。文本: |093核潜艇：|军力+2.0，人民支持度+0.5，美苏关系-0.3 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(150)) _add(12, -(150)) _add(22, 40) _add(1, 50) _add(3, 50) ws.influence_prc += 20 # 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 0 9 4 核 潜 艇 与 巨 浪 - 2 型 潜 射 导 弹  ：</color>| 军 力+4.0 ， 人 民 支 持 度+0.8 ， 美 苏 关 系-0.4 ， 预 算-0.5 "；display-only / 修正文案由 Godot 静态维护，跳过。文本: |094核潜艇与巨浪-2型潜射导弹：|军力+4.0，人民支持度+0.8，美苏关系-0.4，预算-0.5 2: context["result_text"] = tr(TXT_R2_A) _add(8, -(70)) _add(22, 80) _add(1, 100) _add(6, 5) _add(3, 100) _add(57, 50) ws.influence_prc += 50 # 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num3 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc3[num3] += "<color=red>| 0 9 2 核 潜 艇 ：</color>| 军 力+1.0 ， 人 民 支 持 度+1.0 ， 美 苏 关 系-0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |092核潜艇：|军力+1.0，人民支持度+1.0，美苏关系-0.2
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc[num] += "<color=red>| 0 9 3 核 潜 艇 ：</color>| 军 力+2.0 ， 人 民 支 持 度+0.5 ， 美 苏 关 系-0.3 "；display-only / 修正文案由 Godot 静态维护，跳过。文本: |093核潜艇：|军力+2.0，人民支持度+0.5，美苏关系-0.3
+		1:
+			context["result_text"] = tr(TXT_R1_A)
+			_add(8, -(150))
+			_add(12, -(150))
+			_add(22, 40)
+			_add(1, 50)
+			_add(3, 50)
+			ws.influence_prc += 20
+			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc2[num2] += "<color=red>| 0 9 4 核 潜 艇 与 巨 浪 - 2 型 潜 射 导 弹  ：</color>| 军 力+4.0 ， 人 民 支 持 度+0.8 ， 美 苏 关 系-0.4 ， 预 算-0.5 "；display-only / 修正文案由 Godot 静态维护，跳过。文本: |094核潜艇与巨浪-2型潜射导弹：|军力+4.0，人民支持度+0.8，美苏关系-0.4，预算-0.5
+		2:
+			context["result_text"] = tr(TXT_R2_A)
+			_add(8, -(70))
+			_add(22, 80)
+			_add(1, 100)
+			_add(6, 5)
+			_add(3, 100)
+			_add(57, 50)
+			ws.influence_prc += 50
+			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num3 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc3[num3] += "<color=red>| 0 9 2 核 潜 艇 ：</color>| 军 力+1.0 ， 人 民 支 持 度+1.0 ， 美 苏 关 系-0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |092核潜艇：|军力+1.0，人民支持度+1.0，美苏关系-0.2
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":
@@ -70,11 +95,11 @@ func _chinese_sub_government() -> int:
 			result = 22
 		elif ws.completed_event_ids.has("event_912") and _event_result("event_912") == 0:
 			result = 19
-		elif data.party_system == 8:
+		elif data.party_system == GameConstants.PartySystem.PEOPLE_DEMOCRACY:
 			result = 20
 		elif ws.completed_event_ids.has("event_503") and _event_result("event_503") == 0:
 			result = 10
-		elif data.ideology <= 2 and data.econ_system < 13 				and data.diplomatic_reputation >= 700 and data.party_system < 8 				and _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
+		elif data.ideology <= 2 and data.econ_system < 13 				and data.diplomatic_reputation >= 700 and data.party_system < GameConstants.PartySystem.PEOPLE_DEMOCRACY 				and _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION):
 			result = 0
 		elif (data.econ_system >= 13 and data.war_support >= 700 and not _mod_active(GameConstants.Modifier.MAOIST_BULWARK)) 				or _mod_active(GameConstants.Modifier.PRESIDENT_FOR_LIFE):
 			result = 9
@@ -87,7 +112,7 @@ func _chinese_sub_government() -> int:
 	elif china.government == GameConstants.Government.SOCIALIST:
 		if _mod_active(GameConstants.Modifier.FOURTH_INTERNATIONAL):
 			result = 18
-		elif _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and data.party_system <= 7 				and data.econ_system <= 12 and data.religion_policy <= 25:
+		elif _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) and data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY 				and data.econ_system <= 12 and data.religion_policy <= 25:
 			result = 17
 		elif data.ideology == 1 and not _mod_active(GameConstants.Modifier.MAOIST_BULWARK) and data.religion_policy <= 26:
 			result = 16
@@ -98,7 +123,7 @@ func _chinese_sub_government() -> int:
 	elif china.government == GameConstants.Government.REFORMIST:
 		if _mod_active(GameConstants.Modifier.RETURN_TO_AGRARIAN_CIVILIZATION):
 			result = 8
-		elif data.ideology >= 2 and data.econ_system >= 13 				and data.diplomatic_reputation <= 700 and data.party_system >= 8 				and data.press_policy >= 18 and not china.has_tag("ovd"):
+		elif data.ideology >= 2 and data.econ_system >= 13 				and data.diplomatic_reputation <= 700 and data.party_system >= GameConstants.PartySystem.PEOPLE_DEMOCRACY 				and data.press_policy >= 18 and not china.has_tag("ovd"):
 			result = 14
 		elif data.ideology <= 3 and data.econ_system >= 12 				and data.econ_system <= 13 and data.diplomatic_reputation >= 300 				and data.territory_policy > 21 and data.war_support >= 700:
 			result = 11
@@ -106,7 +131,7 @@ func _chinese_sub_government() -> int:
 			result = 8
 		elif data.ideology <= 3 and data.econ_system <= 13 				and data.press_policy > 17:
 			result = 3
-		elif data.party_system <= 8 				and (data.econ_system == 13 or data.econ_system == 12) 				and data.war_support < 700 and not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) 				and data.press_policy >= 17:
+		elif data.party_system <= GameConstants.PartySystem.PEOPLE_DEMOCRACY 				and (data.econ_system == 13 or data.econ_system == 12) 				and data.war_support < 700 and not _mod_active(GameConstants.Modifier.CULTURAL_REVOLUTION) 				and data.press_policy >= 17:
 			result = 21
 		else:
 			result = 15
@@ -114,7 +139,7 @@ func _chinese_sub_government() -> int:
 		result = 13
 	elif data.econ_system <= 13 and data.diplomatic_reputation >= 500:
 		result = 4
-	elif (data.party_system <= 8 and data.press_policy <= 18) 			or data.war_support >= 700:
+	elif (data.party_system <= GameConstants.PartySystem.PEOPLE_DEMOCRACY and data.press_policy <= 18) 			or data.war_support >= 700:
 		result = 12
 	elif data.econ_system > 13 and data.diplomatic_reputation < 700:
 		result = 6

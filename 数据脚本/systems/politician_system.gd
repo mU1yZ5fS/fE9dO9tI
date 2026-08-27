@@ -507,7 +507,11 @@ static func kill_politician(pol_index: int, preferred_name: String = "") -> void
 		if replacement.loyalty_matrix.size() < w.politicians.size():
 			replacement.loyalty_matrix.resize(w.politicians.size())
 		w.politicians[pol_index] = replacement
+		# 原版 KillPerson → BalancePolitic：对新补入政客依次 CalcRel/CalcRel2/CalcRelLeader
+		# （GameState.cs:7327-7335），三连缺一不可：CalcRel 写他人对 TA 的列、
+		# CalcRel2 写 TA 对他人的行、CalcRelLeader 覆盖 TA 对领袖的忠诚。
 		WorldFactory._calc_rel(w, pol_index)
+		WorldFactory._calc_rel2(w, pol_index)
 		WorldFactory._calc_rel_leader(w, pol_index)
 	else:
 		var empty := w.politicians[pol_index]
@@ -713,14 +717,11 @@ static func assign_politician_position(pol_index: int, position_id: int) -> bool
 		pol.loyalty += 250
 	pol.in_power = true
 
-	# POL-20：任命后重算目标与前任关系矩阵 + 对领袖忠诚
-	WorldFactory._calc_rel(w, pol_index)
-	WorldFactory._calc_rel2(w, pol_index)
-	WorldFactory._calc_rel_leader(w, pol_index)
-	if prev_holder >= 0 and prev_holder < w.politicians.size() and prev_holder != pol_index:
-		WorldFactory._calc_rel(w, prev_holder)
-		WorldFactory._calc_rel2(w, prev_holder)
-		WorldFactory._calc_rel_leader(w, prev_holder)
+	# 原版任命后不重算矩阵/对领袖忠诚（Button_Pol_Script.cs:977 只调 BalancePolitic([])，
+	# 空列表不触发 CalcRel/CalcRel2/CalcRelLeader）。之前的实现在此调用
+	# _calc_rel/_calc_rel2/_calc_rel_leader——其中 CalcRelLeader 用 `loyality = score`
+	# 直接覆盖，把刚加的 +250/+350(400) 以及事件/硬编码加成全部抹掉，
+	# 造成「升官反而倒扣忠诚度」。必须在职位变更后保持原版语义，只做直接加减。
 
 	sync_in_power_flags(w)
 	fill_vacant_faction_leaders()
@@ -772,13 +773,8 @@ static func set_faction_leader_politician(pol_index: int) -> bool:
 		if other != null and other.trait_personality == pol.trait_personality:
 			other.loyalty -= 100
 	pol.loyalty += 400
-	WorldFactory._calc_rel(w, pol_index)
-	WorldFactory._calc_rel2(w, pol_index)
-	WorldFactory._calc_rel_leader(w, pol_index)
-	if prev >= 0 and prev < w.politicians.size() and prev != pol_index:
-		WorldFactory._calc_rel(w, prev)
-		WorldFactory._calc_rel2(w, prev)
-		WorldFactory._calc_rel_leader(w, prev)
+	# 原版 num14 任命派系领袖后同样不重算矩阵/对领袖忠诚（Button_Pol_Script.cs:977
+	# BalancePolitic([]) 空列表不触发 CalcRel 系列），只做直接加减。
 	if _notify_stats_cb.is_valid():
 		_notify_stats_cb.call()
 	return true

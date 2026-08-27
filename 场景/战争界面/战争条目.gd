@@ -2,6 +2,7 @@ extends Control
 
 ## 单场战争条目（对齐用户重制的 战争条目.tscn）。
 ## 左方 = side1，右方 = side2。
+## 图标根据 usa_side / ussr_side 动态显示美国或苏联图标。
 ## 按钮映射原作 WarButtonScript action_id：
 ##   左 人力增援=0 人道 | 特战支援=1 专家 | 军武援助=2 武器 | 外交声援=3
 ##   右 人力增援=5 | 特战支援=4 | 军武援助=6 | 外交声援=7
@@ -23,10 +24,11 @@ const _RIGHT_BTNS := {
 	"外交声援右方参战势力": 7,
 }
 
-## 左右双方图标：优先使用 WarDef 中显式指定的图片资源。
-## 不再使用“子意识形态图标”作为参战方图标——内战/阵营/非国家势力会被错误表达。
-const GENERIC_LEFT_ICON := preload("res://资产/UI/战争/左方参战势力图标.png")
-const GENERIC_RIGHT_ICON := preload("res://资产/UI/战争/右方参战势力图标.png")
+## 美苏图标：左方参战势力图标.png = 苏联，右方参战势力图标.png = 美国。
+## 根据 war.usa_side / war.ussr_side 动态决定哪方显示哪个图标（不固定左=苏联右=美国）。
+## WarDef 中 icon_side1/icon_side2 可手动覆盖特殊战争。
+const ICON_USSR := preload("res://资产/UI/战争/左方参战势力图标.png")
+const ICON_USA := preload("res://资产/UI/战争/右方参战势力图标.png")
 
 
 func _ready() -> void:
@@ -63,24 +65,54 @@ func setup(p_war_id: int, war: WarData) -> void:
 	_refresh_button_states()
 
 
-## 按 WarDef 中显式指定的图片资源设置左右图标；
-## 未指定时回退到通用左右图标，不再按国家/子意识形态推断。
-func _apply_side_icons(p_war_id: int, _war: WarData) -> void:
+## 根据 usa_side / ussr_side 动态决定左右图标显示美国还是苏联；
+## -1 = 中立（不显示图标）；双方都支持同一方时，装饰圆圈替换为另一个图标。
+## WarDef 中 icon_side1/icon_side2 可手动覆盖特殊战争。
+func _apply_side_icons(p_war_id: int, war: WarData) -> void:
 	var def := WarCatalog.get_def(p_war_id)
-	var left_icon := GENERIC_LEFT_ICON
-	var right_icon := GENERIC_RIGHT_ICON
-	if def != null:
-		if def.icon_side1 != null:
-			left_icon = def.icon_side1
-		if def.icon_side2 != null:
-			right_icon = def.icon_side2
+	# 优先使用 WarDef 中显式指定的图标（特殊战争手动覆盖）。
+	if def != null and (def.icon_side1 != null or def.icon_side2 != null):
+		_set_icon("左方参战势力图标", def.icon_side1 if def.icon_side1 != null else ICON_USSR)
+		_set_icon("右方参战势力图标", def.icon_side2 if def.icon_side2 != null else ICON_USA)
+		return
+	# 默认不显示图标（中立/无超级大国支持）。
+	var left_icon: Texture2D = null
+	var right_icon: Texture2D = null
+	var left_extra: Texture2D = null  # 左方装饰圆圈替换
+	var right_extra: Texture2D = null  # 右方装饰圆圈替换
+	if war != null:
+		# 左方 (side1)：谁支持 side1？
+		if war.usa_side == GameConstants.WarSide.SIDE1:
+			left_icon = ICON_USA
+		elif war.ussr_side == GameConstants.WarSide.SIDE1:
+			left_icon = ICON_USSR
+		# 右方 (side2)：谁支持 side2？
+		if war.usa_side == GameConstants.WarSide.SIDE2:
+			right_icon = ICON_USA
+		elif war.ussr_side == GameConstants.WarSide.SIDE2:
+			right_icon = ICON_USSR
+		# 双方都支持同一方时，装饰圆圈替换为另一个图标
+		if war.usa_side == GameConstants.WarSide.SIDE1 and war.ussr_side == GameConstants.WarSide.SIDE1:
+			left_icon = ICON_USA
+			left_extra = ICON_USSR
+		elif war.usa_side == GameConstants.WarSide.SIDE2 and war.ussr_side == GameConstants.WarSide.SIDE2:
+			right_icon = ICON_USA
+			right_extra = ICON_USSR
 	_set_icon("左方参战势力图标", left_icon)
 	_set_icon("右方参战势力图标", right_icon)
+	# 装饰圆圈：只有需要替换时才改，否则保持原样（圆圈.png）
+	if left_extra != null:
+		_set_icon("左方装饰圆圈", left_extra)
+	if right_extra != null:
+		_set_icon("右方装饰圆圈", right_extra)
 
 
 func _set_icon(node_name: String, tex: Texture2D) -> void:
 	var n := find_child(node_name, true, false)
 	if n is TextureRect:
+		if tex == null:
+			n.texture = null
+			return
 		# 图标来源可能是任意比例的图片：强制按占位矩形缩放并保持原图比例，
 		# 避免巨大/压扁/错位。
 		n.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

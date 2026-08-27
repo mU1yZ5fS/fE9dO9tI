@@ -59,7 +59,27 @@ text = "事件拓扑图"
 [node name="Filter" type="LineEdit" parent="Root/VBox/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "过滤：编号 / ID / 标题关键字…"
+placeholder_text = "全文过滤：编号 / ID / 标题 / 条件 / 选项 / 效果…"
+
+[node name="GateChk" type="CheckBox" parent="Root/VBox/TopBar"]
+layout_mode = 2
+tooltip_text = "只列带门槛提示（🔒）选项的事件"
+text = "含门槛"
+
+[node name="ScriptChk" type="CheckBox" parent="Root/VBox/TopBar"]
+layout_mode = 2
+tooltip_text = "只列走 CUSTOM_SCRIPT 动态结果的事件"
+text = "含脚本"
+
+[node name="AuditBtn" type="Button" parent="Root/VBox/TopBar"]
+layout_mode = 2
+tooltip_text = "全项目扫描解析失败的事件引用（迁移 QA）"
+text = "审计悬空引用"
+
+[node name="RefreshBtn" type="Button" parent="Root/VBox/TopBar"]
+layout_mode = 2
+tooltip_text = "重跑全部事件的实时条件判定（游戏内有效）"
+text = "刷新状态"
 
 [node name="ClearBtn" type="Button" parent="Root/VBox/TopBar"]
 layout_mode = 2
@@ -93,9 +113,9 @@ size_flags_horizontal = 3
 [node name="Graph" type="GraphEdit" parent="Root/VBox/Main/Right"]
 layout_mode = 2
 size_flags_vertical = 3
-show_minimap = false
-zoom_min = 0.4
-zoom_max = 1.0
+show_minimap = true
+zoom_min = 0.2
+zoom_max = 1.5
 
 [node name="DetailPanel" type="PanelContainer" parent="Root/VBox/Main/Right"]
 layout_mode = 2

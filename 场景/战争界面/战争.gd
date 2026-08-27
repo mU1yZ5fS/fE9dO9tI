@@ -11,7 +11,7 @@ var _refresh_list_queued: bool = false
 
 
 func _ready() -> void:
-	_ensure_list_host()
+	_list = $战争列表滚动/战争列表
 	if GameManager:
 		UISettings.apply_font_scale(self, GameManager.ui_font_scale)
 		if GameManager.has_signal("stats_changed") and not GameManager.stats_changed.is_connected(_on_stats):
@@ -44,40 +44,6 @@ func _request_full_refresh() -> void:
 	_refresh_list_queued = true
 	call_deferred("_rebuild_list")
 
-
-func _ensure_list_host() -> void:
-	var scroll := get_node_or_null("战争列表滚动") as ScrollContainer
-	if scroll == null:
-		scroll = ScrollContainer.new()
-		scroll.name = "战争列表滚动"
-		# 条目宽约 1186：用中心锚点水平居中于视口，适配任意宽度
-		const ENTRY_W := 1186.0
-		scroll.anchor_left = 0.5
-		scroll.anchor_right = 0.5
-		scroll.offset_left = -ENTRY_W * 0.5
-		scroll.offset_right = ENTRY_W * 0.5
-		scroll.offset_top = 176.0
-		scroll.offset_bottom = 760.0
-		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-		add_child(scroll)
-	else:
-		# 已存在时也强制中心锚点居中，避免旧 offset 偏左
-		const ENTRY_W2 := 1186.0
-		scroll.anchor_left = 0.5
-		scroll.anchor_right = 0.5
-		scroll.offset_left = -ENTRY_W2 * 0.5
-		scroll.offset_right = ENTRY_W2 * 0.5
-	_list = scroll.get_node_or_null("战争列表") as VBoxContainer
-	if _list == null:
-		_list = VBoxContainer.new()
-		_list.name = "战争列表"
-		_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_list.alignment = BoxContainer.ALIGNMENT_CENTER
-		_list.add_theme_constant_override("separation", 8)
-		scroll.add_child(_list)
-	else:
-		_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_list.alignment = BoxContainer.ALIGNMENT_CENTER
 
 
 

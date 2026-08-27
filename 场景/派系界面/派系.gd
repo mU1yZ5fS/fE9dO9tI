@@ -131,7 +131,7 @@ func _refresh() -> void:
 		FactionService.doctr_name(w, _raw(w, W.I_POLITICAL_DISPLAY)),
 	])
 	# 派系列表标题随政党制度切换（原版 ElectScript.Repaint text_part，逐字含空格）
-	var multi: bool = w.party_system > 7
+	var multi: bool = w.party_system > GameConstants.PartySystem.NEW_DEMOCRACY
 	_label("中共党内派系", " 中 共 党 内 派 系" if not multi else " 人 大 党 派 组 织")
 	# 顶部按钮可用态：选举=多党制 且 本月尚未选举（原版 is_elect 月块复位）；
 	# 同盟按事件自动触发条件；演讲一次性（原版 is_speech 永不复位）。

@@ -1,6 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b13ioqypy2mhs"]
-
-[ext_resource type="Script" path="res://场景/战争界面/战争条目.gd" id="script_entry"]
+[gd_scene format=3 uid="uid://b13ioqypy2mhs"]
 
 [ext_resource type="Texture2D" uid="uid://bgloilhkremty" path="res://资产/UI/战争/条目背景.png" id="1_5010t"]
 [ext_resource type="Texture2D" uid="uid://c4sxnhb6bcdnt" path="res://资产/UI/战争/条目战争名称背景.png" id="2_f6uxw"]
@@ -10,16 +8,17 @@
 [ext_resource type="Texture2D" uid="uid://vwcredj8ancr" path="res://资产/UI/战争/圆圈.png" id="6_l21k2"]
 [ext_resource type="Texture2D" uid="uid://2wmdqm3cdo6u" path="res://资产/UI/战争/右方参战势力图标.png" id="7_uhcjt"]
 [ext_resource type="Texture2D" uid="uid://dec4efus8irwv" path="res://资产/UI/战争/按钮背景.png" id="8_f6uxw"]
+[ext_resource type="Script" uid="uid://f08kopt2sn4e" path="res://场景/战争界面/战争条目.gd" id="script_entry"]
 
 [node name="Control" type="Control" unique_id=1799883235]
 layout_mode = 3
-script = ExtResource("script_entry")
 anchor_right = 0.61800003
 anchor_bottom = 0.09900001
 offset_right = -0.5600586
 offset_bottom = 0.0799942
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("script_entry")
 
 [node name="条目背景" type="TextureRect" parent="." unique_id=2119196491]
 layout_mode = 0

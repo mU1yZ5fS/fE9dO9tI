@@ -78,7 +78,7 @@ func _event_72(option_index: int, context: Dictionary) -> void:
 	var india := ws.get_country_by_legacy_index(19)
 	match option_index:
 		0:
-			ws.global_influence -= 10
+			ws.influence_prc -= 10
 			if india != null:
 				india.set_tag("对华贸易", false)
 				india.set_tag("亲苏", true)

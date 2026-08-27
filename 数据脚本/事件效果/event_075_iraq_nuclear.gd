@@ -17,10 +17,10 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	var data := world
 	var line := data.political_line if data.size() > W.I_POLITICAL_LINE else 1
-	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else 8
+	var party := data.party_system if data.size() > W.I_PARTY_SYSTEM else GameConstants.PartySystem.PEOPLE_DEMOCRACY
 	var coal := _coalition_percent(world)
-	var policy_left := (line < 3 and party < 8) or (coal > 66 and party > 7)
-	var policy_right := (line > 2 and party < 8) or (coal > 66 and party > 7)
+	var policy_left := (line < 3 and party < GameConstants.PartySystem.PEOPLE_DEMOCRACY) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY)
+	var policy_right := (line > 2 and party < GameConstants.PartySystem.PEOPLE_DEMOCRACY) or (coal > 66 and party > GameConstants.PartySystem.NEW_DEMOCRACY)
 	var done36: bool = world.completed_event_ids.has("iraqi_coalition")
 	var result36: int = world.completed_event_ids.get("iraqi_coalition", -1)
 	var opt := event_def.options
@@ -94,7 +94,7 @@ func execute(context: Dictionary) -> void:
 ## 原版 summa_3_2：data.party_system>7 时，保守派 + 结盟且启用的小党，占总席位百分比。
 func _coalition_percent(world: WorldState) -> int:
 	var data := world
-	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= 7:
+	if data.size() <= W.I_PARTY_SYSTEM or data.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
 		return 0
 	if world.factions.size() < 5:
 		return 0

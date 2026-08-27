@@ -2,23 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://bukufoll3cd6s" path="res://资产/UI/战争/战争界面背景.png" id="1_033kj"]
 [ext_resource type="Script" uid="uid://bahbffid1oy0u" path="res://场景/战争界面/战争.gd" id="1_x8il1"]
-[ext_resource type="Texture2D" uid="uid://cna2yftijoqqi" path="res://资产/UI/主游戏UI/状态栏背景.png" id="2_lxdax"]
-[ext_resource type="Texture2D" uid="uid://dy8kecb6d4loa" path="res://资产/UI/主游戏UI/状态背景.png" id="3_x8il1"]
-[ext_resource type="Texture2D" uid="uid://ck3yssxxbuhru" path="res://资产/UI/主游戏UI/党内支持度.png" id="4_inddi"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="5_yhuv4"]
-[ext_resource type="Texture2D" uid="uid://bp4vslkj6seye" path="res://资产/UI/主游戏UI/人民支持度.png" id="6_ubtup"]
-[ext_resource type="Texture2D" uid="uid://b6bb575lb8cw0" path="res://资产/UI/主游戏UI/思想自由度.png" id="7_gux8f"]
-[ext_resource type="Texture2D" uid="uid://cbi2105s7kje2" path="res://资产/UI/主游戏UI/生活水平.png" id="8_2al5g"]
-[ext_resource type="Texture2D" uid="uid://cjr8ydvc7fuh0" path="res://资产/UI/主游戏UI/国际声望.png" id="9_yje8l"]
-[ext_resource type="Texture2D" uid="uid://cq007uywcr5pc" path="res://资产/UI/主游戏UI/特工网络.png" id="10_4s5ff"]
-[ext_resource type="Texture2D" uid="uid://cw0u78fykq5ws" path="res://资产/UI/主游戏UI/全球影响力.png" id="11_xjlxi"]
-[ext_resource type="Texture2D" uid="uid://ccqh1h787cp5c" path="res://资产/UI/主游戏UI/与苏联关系.png" id="12_wj3ou"]
-[ext_resource type="Texture2D" uid="uid://b5rynoptf3d37" path="res://资产/UI/主游戏UI/与美国关系.png" id="13_1lmqg"]
-[ext_resource type="Texture2D" uid="uid://b1aligndb78mg" path="res://资产/UI/主游戏UI/预算.png" id="14_562t7"]
-[ext_resource type="Texture2D" uid="uid://bqaw1khohkkov" path="res://资产/UI/主游戏UI/切场景菜单背景.png" id="15_tgxsx"]
 [ext_resource type="Texture2D" uid="uid://drkp6indmqlu3" path="res://资产/UI/战争/军事介入点背景.png" id="16_6orqm"]
-[ext_resource type="PackedScene" uid="uid://8cda01e84fe50" path="res://场景/复用/状态数值区.tscn" id="90_bar"]
-[ext_resource type="PackedScene" uid="uid://c9b4f1a2d3e45" path="res://场景/复用/导航栏.tscn" id="91_nav"]
+[ext_resource type="PackedScene" uid="uid://ce3cbk18lse3v" path="res://场景/复用/状态数值区.tscn" id="90_bar"]
+[ext_resource type="PackedScene" uid="uid://dab4f1a2d3e45" path="res://场景/复用/导航栏.tscn" id="91_nav"]
 
 [node name="战争" type="Control" unique_id=1392311200]
 layout_mode = 3
@@ -40,10 +27,11 @@ texture = ExtResource("1_033kj")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="状态栏" parent="." instance=ExtResource("90_bar")]
+[node name="状态栏" parent="." unique_id=1553190949 instance=ExtResource("90_bar")]
 
-[node name="导航栏" parent="." instance=ExtResource("91_nav")]
+[node name="导航栏" parent="." unique_id=1394078446 instance=ExtResource("91_nav")]
 current_screen = "war"
+
 [node name="军事介入点背景" type="TextureRect" parent="." unique_id=634027337]
 layout_mode = 0
 offset_left = 40.0
@@ -77,3 +65,17 @@ theme_override_font_sizes/font_size = 20
 text = "军事介入点"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="战争列表滚动" type="ScrollContainer" parent="." unique_id=1907417044]
+layout_mode = 0
+offset_left = 312.0
+offset_top = 176.0
+offset_right = 1800.0
+offset_bottom = 1040.0
+horizontal_scroll_mode = 0
+
+[node name="战争列表" type="VBoxContainer" parent="战争列表滚动" unique_id=1026399375]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+alignment = 1

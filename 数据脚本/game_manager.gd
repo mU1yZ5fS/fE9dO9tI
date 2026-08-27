@@ -698,6 +698,9 @@ func tick() -> void:
 
 	if current_event_id == "" and world.date.day % 14 == 0:
 		_on_fortnight()
+		# 原版 TimeScript.cs:3074/3410：data[0] += data[81]/50 及 influencePRC/12
+		# 均在 data[19]%14==0 双周块内，非月块。此前误放月块导致产出减半。
+		WAR_SYS.monthly_war_points()
 
 	WAR_SYS.check_war_endings()
 
@@ -1283,6 +1286,8 @@ func _mirror_empires_to_data(w: WorldState) -> void:
 	if w.empires.size() > 1 and w.empires[1] != null:
 		d.ussr_relations = w.empires[1].relations
 		d.soviet_influence = w.empires[1].power
+	# 原版 KumihaRepaint: data[7] = influencePRC（每日镜像）
+	d.global_influence = d.influence_prc
 
 
 
@@ -1315,7 +1320,6 @@ func _on_month_changed() -> void:
 	_monthly_african_coups(w)
 	_monthly_post_coups(w)
 	_monthly_population(d, w)
-	WAR_SYS.monthly_war_points()
 	w.flush_economy()
 
 
@@ -3020,8 +3024,8 @@ func start_war(
 		side2: String = "",
 		infl1: int = -1,
 		infl2: int = -1,
-		usa_side: int = -1,
-		ussr_side: int = -1
+		usa_side: int = -2,
+		ussr_side: int = -2
 ) -> bool:
 	return WAR_SYS.start_war(war_id, side1, side2, infl1, infl2, usa_side, ussr_side)
 

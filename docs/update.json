@@ -1,9 +1,9 @@
 {
-  "version": "0.3.6",
-  "version_code": 36,
+  "version": "0.3.8",
+  "version_code": 38,
   "title": "中国:毛的遗产[Godot] 更新公告",
   "is_force": false,
-  "announcement": "1.",
+  "announcement": "修复了战争势力的显示问题\n修了双周结算逻辑的错误",
   "changelog": [
   ]
 }
