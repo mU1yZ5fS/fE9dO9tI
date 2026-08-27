@@ -98,7 +98,7 @@ func _event_49(option_index: int, context: Dictionary) -> void:
 	match option_index:
 		0:
 			_add_empire_power(EmpireData.USSR, 10)
-			ws.global_influence += 20
+			ws.influence_prc += 20
 			if ws.afghan_parcham > 150:
 				ws.afghan_khalq = 150
 				ws.afghan_parcham = 100
@@ -206,11 +206,10 @@ func _event_52(option_index: int) -> void:
 func _start_afghan_war(
 		side1: String, side2: String, infl1: int, infl2: int,
 		usa_side: int, ussr_side: int, apply_regional_modifiers: bool) -> void:
-	game.start_war(5, side1, side2, infl1, infl2, usa_side, maxi(ussr_side, 0))
+	game.start_war(5, side1, side2, infl1, infl2, usa_side, ussr_side)
 	var war := _war(5)
 	if war == null:
 		return
-	war.ussr_side = ussr_side
 	if apply_regional_modifiers:
 		var pakistan := ws.get_country_by_legacy_index(31)
 		if pakistan != null and pakistan.has_tag("亲美"):

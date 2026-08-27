@@ -192,7 +192,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		return
 	@warning_ignore("shadowed_variable_base_class")
 	var d := world
-	var left := d.size() > W.I_ECON_SYSTEM and d.ideology <= 3 and d.econ_system <= 12 and d.global_influence >= 150
+	var left := d.size() > W.I_ECON_SYSTEM and d.ideology <= 3 and d.econ_system <= 12 and d.influence_prc >= 150
 	if left:
 		_enable(event_def.options[2], tr(TXT_OPT2_LEFT))
 	else:

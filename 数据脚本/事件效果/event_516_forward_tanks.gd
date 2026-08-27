@@ -40,7 +40,26 @@ func execute(context: Dictionary) -> void:
 			_add(1, 50)
 			_add(3, 50)
 			ws.influence_prc += 20
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 改 进 坦 克 ：</color>| 军 力+0.3 ， 预 算-0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |改进坦克：|军力+0.3，预算-0.1 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(80)) _add(22, 80) _add(1, 80) _add(6, 5) _add(3, 100) _add(57, 50) ws.influence_prc += 50 # 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 自 研 坦 克 ：</color>| 军 力+0.6 ， 预 算-0.2 ， 凝 聚 力+0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |自研坦克：|军力+0.6，预算-0.2，凝聚力+0.2 2: context["result_text"] = tr(TXT_R2_A) _add(8, -(20)) _add(22, 30) _add(6, -(15))
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc[num] += "<color=red>| 改 进 坦 克 ：</color>| 军 力+0.3 ， 预 算-0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |改进坦克：|军力+0.3，预算-0.1
+		1:
+			context["result_text"] = tr(TXT_R1_A)
+			_add(8, -(80))
+			_add(22, 80)
+			_add(1, 80)
+			_add(6, 5)
+			_add(3, 100)
+			_add(57, 50)
+			ws.influence_prc += 50
+			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc2[num2] += "<color=red>| 自 研 坦 克 ：</color>| 军 力+0.6 ， 预 算-0.2 ， 凝 聚 力+0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |自研坦克：|军力+0.6，预算-0.2，凝聚力+0.2
+		2:
+			context["result_text"] = tr(TXT_R2_A)
+			_add(8, -(20))
+			_add(22, 30)
+			_add(6, -(15))
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

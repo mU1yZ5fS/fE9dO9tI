@@ -35,23 +35,9 @@ const RANDOM_GIVEN_NAMES := [
 const FACTION_PERSONALITY := [0, 20, 1, 2, 3]
 
 ## 合法 traits 池（对应 WorldFactory.TRAIT_LABELS_ZH 的取值）。
-## 出身/身份池（第二栏）：34 托派移入本槽（原版改版 GeneratePolitic identity 表），
-## 27 科学家不进池 —— 由 1/50 彩蛋单独刷出，43 特异人士仅历史人物专用。
-const BACKGROUND_POOL := [21, 22, 23, 24, 25, 26, 28, 34]
-## 作风池（第三栏）。
+const BACKGROUND_POOL := [21, 22, 23, 24, 25, 26, 27, 28, 43]
 const ALIGNMENT_POOL := [4, 5, 6, 7, 29, 30, 39, 40, 41, 42]
-## 特质池（第四栏）：不含 19 病弱（只随年龄刷出）与 34 托派（已移入身份槽）。
-const SPECIAL_POOL := [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 31, 32, 33, 35, 36, 37, 38]
-
-## 随机生成永不使用的特殊姓名（史实要人，即便不在政治家池中也不该被随机人顶替）。
-const SPECIAL_BANNED_NAMES := [
-	"毛泽东", "周恩来", "朱德", "刘少奇", "任弼时", "林彪", "彭德怀", "刘伯承",
-	"陈毅", "贺龙", "聂荣臻", "徐向前", "林伯渠", "董必武", "康生", "陈伯达",
-	"邓小平", "陈云", "华国锋", "叶剑英", "李先念", "汪东兴", "江青", "张春桥",
-	"姚文元", "王洪文", "纪登奎", "吴德", "陈锡联", "苏振华", "罗瑞卿", "杨得志",
-	"胡耀邦", "赵紫阳", "万里", "习仲勋", "薄一波", "李鹏", "江泽民", "胡锦涛",
-	"温家宝", "习近平", "李克强", "粟裕", "许世友", "杨尚昆",
-]
+const SPECIAL_POOL := [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 31, 32, 33, 34, 35, 36, 37, 38]
 
 
 static func load_initial() -> Array[PoliticianData]:
@@ -276,8 +262,6 @@ static func _make_named_politician(
 
 
 ## 池子耗尽时的兜底：随机生成一位新政治家（名称、特质、无肖像）。
-## 特质生成逐条对齐原版改版 GeneratePolitic（用户提供的 identity/style/other 三段
-## do-while 拒绝式重抽），拒绝上限仅为防死锁兜底，正常情况下必在数抽内收敛。
 static func generate_random_politician(
 	current_year: int,
 	faction_count: Dictionary,
@@ -309,187 +293,26 @@ static func generate_random_politician(
 	pd.exit_year = 9999
 	pd.faction = faction_id
 	pd.trait_personality = FACTION_PERSONALITY[faction_id]
-
-	# ── 特质三连卷（身份/作风/特质）──
-	var traits := roll_trait_set(rng, pd.trait_personality)
-	pd.trait_background = traits["background"]
-	pd.trait_alignment = traits["alignment"]
-	pd.trait_special = traits["special"]
-
-	# ── 年龄：群众领袖/学生小将 40-59，其余 50-79（Random.Range 上界开区间）──
-	if pd.trait_background == GameConstants.PoliticianBackground.MASS_LEADER \
-			or pd.trait_background == GameConstants.PoliticianBackground.STUDENT_REBEL:
-		pd.age = rng.randi_range(40, 59)
-	else:
-		pd.age = rng.randi_range(50, 79)
-
-	# ── 兵源不足时的强征特质（原版 GeneratePolitic 尾段 data[57]<500）──
-	if current_world != null and current_world.size() > WorldState.I_MANPOWER \
-			and _dv(current_world, WorldState.I_MANPOWER) < 500:
-		if rng.randi_range(0, 49) % 6 == 0:
-			pd.trait_special = GameConstants.PoliticianSpecial.ADVISER
-		elif rng.randi_range(0, 49) % 6 == 0:
-			pd.trait_special = GameConstants.PoliticianSpecial.ARROGANT
-
+	pd.trait_background = BACKGROUND_POOL[rng.randi_range(0, BACKGROUND_POOL.size() - 1)]
+	pd.trait_alignment = ALIGNMENT_POOL[rng.randi_range(0, ALIGNMENT_POOL.size() - 1)]
+	pd.trait_special = SPECIAL_POOL[rng.randi_range(0, SPECIAL_POOL.size() - 1)]
+	pd.age = rng.randi_range(35, 62)
 	pd.power = rng.randi_range(100, 600)
 	pd.loyalty = rng.randi_range(300, 800)
 	pd.portrait = null
 	return pd
 
 
-## 特质三连卷（公共入口）：身份 →（1/50 科学家彩蛋）→ 作风 → 特质。
-## 所有随机生成的政治家（含事件补员兜底）都必须经过此卷轴。
-static func roll_trait_set(rng: RandomNumberGenerator, personality: int) -> Dictionary:
-	var background: int = _roll_background(rng, personality)
-	if rng.randi_range(0, 49) == 5:
-		background = GameConstants.PoliticianBackground.SCIENTIST  # 1/50 刷出科学家
-	var alignment: int = GameConstants.PoliticianAlignment.TECH  # 科学家的作风必定为重视技术
-	if background != GameConstants.PoliticianBackground.SCIENTIST:
-		alignment = _roll_alignment(rng, personality, background)
-	var special := _roll_special(rng, personality, alignment, background)
-	return {"background": background, "alignment": alignment, "special": special}
-
-
-## 身份拒绝条件（改版 GeneratePolitic identity do-while）：
-##   群众领袖/学生小将 → 仅极左/保守派，且仅红色政体；
-##   工农劳模 → 仅极左/保守/温和派，且仅红色政体；
-##   野心家 → 极左派不刷；托派 → 仅第四国际（托线）在线时刷。
-static func _roll_background(rng: RandomNumberGenerator, personality: int) -> int:
-	var socialist_regime := _china_is_socialist()
-	var fourth_intl: bool = current_world != null \
-			and current_world.modifier_active(GameConstants.Modifier.FOURTH_INTERNATIONAL)
-	for _attempt in 200:
-		var t3: int = BACKGROUND_POOL[rng.randi_range(0, BACKGROUND_POOL.size() - 1)]
-		if (t3 == GameConstants.PoliticianBackground.MASS_LEADER or t3 == GameConstants.PoliticianBackground.STUDENT_REBEL) \
-				and ((personality != GameConstants.PoliticianPersonality.FAR_LEFT and personality != GameConstants.PoliticianPersonality.CONSERVATIVE) \
-					or not socialist_regime):
-			continue
-		if t3 == GameConstants.PoliticianBackground.WORKER_MODEL \
-				and (personality == GameConstants.PoliticianPersonality.REFORMIST \
-					or personality == GameConstants.PoliticianPersonality.LIBERAL \
-					or not socialist_regime):
-			continue
-		if t3 == GameConstants.PoliticianBackground.AMBITIOUS and personality == GameConstants.PoliticianPersonality.FAR_LEFT:
-			continue
-		if t3 == GameConstants.PoliticianSpecial.TROTSKYITE and not fourth_intl:
-			continue
-		return t3
-	return GameConstants.PoliticianBackground.PARTY_CADRE
-
-
-## 作风拒绝条件（改版 GeneratePolitic style do-while）：
-##   漫长的革命(444)结果0后不再刷墙头草；
-##   踢开党委(670)结果0且文革+毛堡并存、或漫长的革命结果0后，不再刷一方诸侯；
-##   政治挂帅仅自由派与（文革+毛堡并存下的）极左派可刷；
-##   野心家与墙头草不兼容。
-static func _roll_alignment(rng: RandomNumberGenerator, personality: int, background: int) -> int:
-	var ev444_r0: bool = current_world != null and current_world.event_done_num(444) \
-			and current_world.result_of_event_num(444) == 0
-	var ev670_r0: bool = current_world != null and current_world.event_done_num(670) \
-			and current_world.result_of_event_num(670) == 0
-	var wenge_bulwark: bool = current_world != null \
-			and current_world.modifier_active(GameConstants.Modifier.CULTURAL_REVOLUTION) \
-			and current_world.modifier_active(GameConstants.Modifier.MAOIST_BULWARK)
-	for _attempt in 200:
-		var t1: int = ALIGNMENT_POOL[rng.randi_range(0, ALIGNMENT_POOL.size() - 1)]
-		if ev444_r0 and t1 == GameConstants.PoliticianAlignment.FENCE_SITTER:
-			continue
-		if ((ev670_r0 and wenge_bulwark) or ev444_r0) and t1 == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
-			continue
-		if (personality != GameConstants.PoliticianPersonality.FAR_LEFT or not wenge_bulwark) \
-				and personality != GameConstants.PoliticianPersonality.LIBERAL \
-				and t1 == GameConstants.PoliticianAlignment.POLITICS_FIRST:
-			continue
-		if background == GameConstants.PoliticianBackground.AMBITIOUS and t1 == GameConstants.PoliticianAlignment.FENCE_SITTER:
-			continue
-		return t1
-	return GameConstants.PoliticianAlignment.PRAGMATIST
-
-
-## 特质拒绝条件（改版 GeneratePolitic other do-while）：
-##   新时代公社社员 buff 下不刷贪污；
-##   军队将领/野心家不与和平兼容；宽容不与苛刻、小暴君兼容；
-##   治军有方/平易近人仅军队将领可刷；人民之友仅极左/保守/温和派可刷；
-##   极左派不刷投机分子；不屈不挠仅硬汉/政治挂帅可刷。
-static func _roll_special(rng: RandomNumberGenerator, personality: int, alignment: int, background: int) -> int:
-	var commune: bool = current_world != null and current_world.new_era_commune_member > 0
-	for _attempt in 200:
-		var t2: int = SPECIAL_POOL[rng.randi_range(0, SPECIAL_POOL.size() - 1)]
-		if commune and t2 == GameConstants.PoliticianSpecial.CORRUPT:
-			continue
-		if (background == GameConstants.PoliticianBackground.MILITARY_GENERAL or background == GameConstants.PoliticianBackground.AMBITIOUS) \
-				and t2 == GameConstants.PoliticianSpecial.PEACE:
-			continue
-		if background == GameConstants.PoliticianBackground.AMBITIOUS \
-				and t2 == GameConstants.PoliticianSpecial.AFFABLE:
-			continue  # 平易近人与野心家不会同时出现
-		if alignment == GameConstants.PoliticianAlignment.TOLERANT \
-				and (t2 == GameConstants.PoliticianSpecial.HARSH or t2 == GameConstants.PoliticianSpecial.TYRANT):
-			continue
-		if background != GameConstants.PoliticianBackground.MILITARY_GENERAL \
-				and (t2 == GameConstants.PoliticianSpecial.MILITARY_TALENT or t2 == GameConstants.PoliticianSpecial.AFFABLE):
-			continue
-		if (personality == GameConstants.PoliticianPersonality.REFORMIST or personality == GameConstants.PoliticianPersonality.LIBERAL) \
-				and t2 == GameConstants.PoliticianSpecial.PEOPLES_FRIEND:
-			continue
-		if personality == GameConstants.PoliticianPersonality.FAR_LEFT and t2 == GameConstants.PoliticianSpecial.OPPORTUNIST:
-			continue
-		if alignment != GameConstants.PoliticianAlignment.HARDLINER and alignment != GameConstants.PoliticianAlignment.POLITICS_FIRST \
-				and t2 == GameConstants.PoliticianSpecial.INDOMITABLE:
-			continue
-		return t2
-	return GameConstants.PoliticianSpecial.ECONOMIST
-
-
-## 原版 IsSocialism(true, 1)：中国 Gosstroy==1 或 SubGosstroy==0。
-static func _china_is_socialist() -> bool:
-	if current_world == null:
-		return false
-	var china := current_world.get_player_country()
-	if china == null:
-		return false
-	return current_world.is_socialism(china, true)
-
-
-static func _dv(w: WorldState, idx: int) -> int:
-	return w.get_data_by_index(idx) if w.size() > idx else 0
-
-
-## 史实/特殊姓名黑名单缓存：初始池 + 预备池全部模板、事件补员与随机特殊人物、
-## 以及 SPECIAL_BANNED_NAMES。随机生成永不与之撞名。
-static var _banned_name_cache: Dictionary = {}
-
-static func _banned_names() -> Dictionary:
-	if not _banned_name_cache.is_empty():
-		return _banned_name_cache
-	var banned := {}
-	for pd in load_initial():
-		if pd != null and pd.name_display != "":
-			banned[pd.name_display] = true
-	for pd in load_reserve():
-		if pd != null and pd.name_display != "":
-			banned[pd.name_display] = true
-	for d in _event241_defs():
-		banned[d["name"]] = true
-	for d in _random_special_defs():
-		banned[d["name"]] = true
-	for n in SPECIAL_BANNED_NAMES:
-		banned[n] = true
-	_banned_name_cache = banned
-	return banned
-
-
 static func _random_name(rng: RandomNumberGenerator, existing_names: Dictionary) -> String:
-	var forbidden := _banned_names()
 	for _attempt in 100:
 		var surname: String = RANDOM_SURNAMES[rng.randi_range(0, RANDOM_SURNAMES.size() - 1)]
 		var given: String = RANDOM_GIVEN_NAMES[rng.randi_range(0, RANDOM_GIVEN_NAMES.size() - 1)]
 		var name: String = surname + given
-		if not forbidden.has(name) and not existing_names.has(name):
+		if not existing_names.has(name):
 			existing_names[name] = true
 			return name
 	var fallback := "同志" + str(rng.randi_range(1000, 9999))
-	while forbidden.has(fallback) or existing_names.has(fallback):
+	while existing_names.has(fallback):
 		fallback = "同志" + str(rng.randi_range(1000, 9999))
 	existing_names[fallback] = true
 	return fallback

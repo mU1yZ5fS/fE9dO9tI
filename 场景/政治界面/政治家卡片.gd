@@ -198,6 +198,7 @@ func _press_fx() -> void:
 
 func _on_mouse_entered() -> void:
 	_fx_to(1.04, 1.12, 0.12)
+	音频总管.play_button_hover_sound()
 	if _pol_index >= 0:
 		card_hovered.emit(_pol_index)
 
@@ -210,6 +211,7 @@ func _on_mouse_exited() -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_press_fx()
+		音频总管.play_button_click_sound()
 		if _pol_index >= 0:
 			card_clicked.emit(_pol_index)
 			accept_event()

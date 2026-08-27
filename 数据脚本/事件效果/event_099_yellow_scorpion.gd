@@ -62,7 +62,14 @@ func execute(context: Dictionary) -> void:
 			if algeria != null:
 				algeria.set_tag("对华贸易", true)
 				algeria.set_tag("亲苏", false)
-			# data.oil_price++ 局部指针死代码，跳过 context["result_text"] = tr(TXT_R1) 2: _add_power(EmpireData.USSR, -30) _add(W.I_AGENTS, -60) _add_relation(EmpireData.USA, 100) _add_relation(EmpireData.USSR, -300) _add_power(EmpireData.USA, 30)
+			# data.oil_price++ 局部指针死代码，跳过
+			context["result_text"] = tr(TXT_R1)
+		2:
+			_add_power(EmpireData.USSR, -30)
+			_add(W.I_AGENTS, -60)
+			_add_relation(EmpireData.USA, 100)
+			_add_relation(EmpireData.USSR, -300)
+			_add_power(EmpireData.USA, 30)
 			if algeria != null:
 				algeria.set_tag("对华贸易", true)
 				algeria.government = GameConstants.Government.AUTHORITARIAN

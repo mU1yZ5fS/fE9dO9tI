@@ -227,9 +227,9 @@ func _event_94_result_3(context: Dictionary) -> void:
 	d.people_support = 0
 	# LeaderAsset=0 / MoneyLevel=0 / ServeRMB=false 在 Godot 无对应字段，跳过。
 	# 原版 data.ending_route=1 → load_scene_after_click → SceneManager.LoadScene("Ending")
-	# 项目语义映射：结局 1（人民的选择）。见 event_001/event_005 同类迁移。
-	d.ending_route = 1
-	game.queue_ending_after_event(1)
+	# 项目语义映射：结局 5（人民的选择）。见 event_001/event_005 同类迁移。
+	d.ending_route = 5
+	game.queue_ending_after_event(5)
 
 
 ## 当前国家领袖显示名（Event95 描述插姓名时兜底；94 成功后领袖已换为自由派）。

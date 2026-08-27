@@ -1,12 +1,1053 @@
 [gd_scene format=3 uid="uid://cb1wvmuscp64r"]
 
-[ext_resource type="Script" uid="uid://din8rhkhfxup5" path="res://场景/关于界面/关于.gd" id="1_dqhv2"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="1_t8q0p"]
+[ext_resource type="Script" uid="uid://din8rhkhfxup5" path="res://场景/关于界面/关于.gd" id="2_niyhs"]
+[ext_resource type="Texture2D" uid="uid://cpxhgro5cvr71" path="res://资产/关于/场景贴图/marble_97_basecolor-1K.png" id="2_r5w3o"]
+[ext_resource type="Texture2D" uid="uid://cgek3tgofitov" path="res://资产/关于/场景贴图/marble_97_height-1K.png" id="3_jfngd"]
 [ext_resource type="AudioStream" uid="uid://c2wox2hiyetj1" path="res://资产/音频/音效/东方红.MP3" id="3_music"]
+[ext_resource type="Texture2D" uid="uid://fmje3jneat82" path="res://资产/关于/场景贴图/marble_97_normal-1K.png" id="4_dhwxc"]
+[ext_resource type="Texture2D" uid="uid://x2mgjk12ovrk" path="res://资产/事件插画/38.png" id="4_w7nks"]
+[ext_resource type="Texture2D" uid="uid://duc7c047wjb8q" path="res://资产/关于/场景贴图/marble_97_roughness-1K.png" id="5_dyiks"]
+[ext_resource type="Texture2D" uid="uid://dfiti8j77p2c6" path="res://资产/关于/场景贴图/metal_18_basecolor-1K.png" id="6_72u2p"]
+[ext_resource type="Texture2D" uid="uid://hwnaj64vtryv" path="res://资产/关于/场景贴图/metal_18_height-1K.png" id="7_dann1"]
+[ext_resource type="Texture2D" uid="uid://ct6uri5t4bk0l" path="res://资产/关于/场景贴图/metal_18_metallic-1K.png" id="8_hiqdj"]
+[ext_resource type="Texture2D" uid="uid://cddn52aumfofi" path="res://资产/关于/场景贴图/metal_18_normal-1K.png" id="9_b4m4t"]
+[ext_resource type="Texture2D" uid="uid://ddq8h1l35b67s" path="res://资产/关于/场景贴图/metal_18_roughness-1K.png" id="10_fw0lj"]
+[ext_resource type="PackedScene" uid="uid://7c27c1l80i4r" path="res://资产/关于/国际主义.tscn" id="12_hiqdj"]
+[ext_resource type="Texture2D" uid="uid://bvxe7y6f6lnvh" path="res://资产/关于/人民英雄/Kwame_Nkrumah_-_The_National_Archives_UK_-_CO_1069-50-1-crop.jpg" id="14_ivtyq"]
+[ext_resource type="Texture2D" uid="uid://u3mnv5jfk6uk" path="res://资产/关于/人民英雄/Modibo_Keita_1961-09-13.jpg" id="16_ivtyq"]
+[ext_resource type="Texture2D" uid="uid://cejao3ffj1fec" path="res://资产/关于/匿名.jpg" id="19_rpd11"]
+[ext_resource type="Texture2D" uid="uid://dpsdn2o6q4ap0" path="res://资产/关于/Kazuha1029.png" id="20_n71lt"]
+[ext_resource type="Texture2D" uid="uid://8j33celabk6p" path="res://资产/关于/丰川祥子.jpg" id="21_cbpe5"]
+[ext_resource type="Texture2D" uid="uid://tpqmte2wx0w5" path="res://资产/关于/威廉先生.jpg" id="22_ujdu4"]
+[ext_resource type="PackedScene" uid="uid://brgbpejiajwp6" path="res://资产/关于/毛主席.glb" id="35_hiqdj"]
+
+[sub_resource type="Environment" id="Env_hall"]
+background_mode = 1
+background_color = Color(0.014, 0.007, 0.007, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.34, 0.21, 0.16, 1)
+ambient_light_energy = 1.15
+tonemap_mode = 3
+tonemap_exposure = 1.05
+glow_enabled = true
+glow_intensity = 0.6
+glow_bloom = 0.06
+glow_hdr_threshold = 1.1
+fog_enabled = true
+fog_light_color = Color(0.13, 0.055, 0.05, 1)
+fog_density = 0.006
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_34yt3"]
+albedo_texture = ExtResource("2_r5w3o")
+roughness_texture = ExtResource("5_dyiks")
+normal_enabled = true
+normal_texture = ExtResource("4_dhwxc")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_jfngd")
+uv1_scale = Vector3(10, 10, 1)
+
+[sub_resource type="BoxMesh" id="MeshFloor"]
+material = SubResource("StandardMaterial3D_34yt3")
+size = Vector3(40, 1, 100)
+
+[sub_resource type="BoxMesh" id="MeshCarpet"]
+size = Vector3(7, 0.08, 86)
+
+[sub_resource type="StandardMaterial3D" id="MatCarpet"]
+albedo_color = Color(0.37, 0.055, 0.065, 1)
+roughness = 0.95
+emission_enabled = true
+emission = Color(0.1, 0.016, 0.02, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_72u2p"]
+albedo_texture = ExtResource("6_72u2p")
+metallic = 1.0
+metallic_texture = ExtResource("8_hiqdj")
+roughness_texture = ExtResource("10_fw0lj")
+normal_enabled = true
+normal_texture = ExtResource("9_b4m4t")
+heightmap_enabled = true
+heightmap_texture = ExtResource("7_dann1")
+uv1_scale = Vector3(5, 5, 5)
+
+[sub_resource type="BoxMesh" id="MeshWallNS"]
+material = SubResource("StandardMaterial3D_72u2p")
+size = Vector3(41, 20, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7aksu"]
+albedo_texture = ExtResource("6_72u2p")
+metallic = 1.0
+metallic_texture = ExtResource("8_hiqdj")
+roughness_texture = ExtResource("10_fw0lj")
+normal_enabled = true
+normal_texture = ExtResource("9_b4m4t")
+heightmap_enabled = true
+heightmap_texture = ExtResource("7_dann1")
+uv1_scale = Vector3(5, 5, 5)
+
+[sub_resource type="BoxMesh" id="MeshWallEW"]
+material = SubResource("StandardMaterial3D_7aksu")
+size = Vector3(1, 20, 101)
+
+[sub_resource type="BoxShape3D" id="ShFloor"]
+size = Vector3(40, 2, 100)
+
+[sub_resource type="BoxShape3D" id="ShWallNS"]
+size = Vector3(43, 22, 2)
+
+[sub_resource type="BoxShape3D" id="ShWallEW"]
+size = Vector3(2, 22, 103)
+
+[sub_resource type="BoxMesh" id="MeshCeil"]
+size = Vector3(43, 1, 103)
+
+[sub_resource type="BoxMesh" id="MeshTrimNS"]
+size = Vector3(39, 0.22, 0.22)
+
+[sub_resource type="StandardMaterial3D" id="MatGold"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="MeshTrimEW"]
+size = Vector3(0.22, 0.22, 99)
+
+[sub_resource type="CylinderMesh" id="MeshTier1"]
+top_radius = 6.6
+bottom_radius = 7.0
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="MatStone"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="MeshTier2"]
+top_radius = 4.8
+bottom_radius = 5.2
+height = 0.5
+
+[sub_resource type="CylinderMesh" id="MeshTier3"]
+top_radius = 3.0
+bottom_radius = 3.4
+height = 0.5
+
+[sub_resource type="CylinderShape3D" id="ShPodium"]
+height = 1.7
+radius = 3.7
+
+[sub_resource type="CylinderMesh" id="MeshSkyDisc"]
+top_radius = 3.6
+bottom_radius = 3.6
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="MatSkylight"]
+albedo_color = Color(0.12, 0.09, 0.07, 1)
+emission_enabled = true
+emission = Color(1, 0.93, 0.7, 1)
+emission_energy_multiplier = 2.8
+
+[sub_resource type="BoxMesh" id="MeshPaperBoard"]
+size = Vector3(12.5, 7.4, 0.35)
+
+[sub_resource type="StandardMaterial3D" id="MatVelvet"]
+albedo_color = Color(0.145, 0.032, 0.042, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="MatPaper"]
+albedo_color = Color(0.8, 0.72, 0.53, 1)
+roughness = 0.88
 
 [sub_resource type="CapsuleShape3D" id="ShPlayer"]
 radius = 0.35
 height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vife"]
+albedo_color = Color(0.145, 0.032, 0.042, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_n308v"]
+size = Vector3(2.6408696, 3.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_72jfc"]
+albedo_texture = ExtResource("14_ivtyq")
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_6lyh4"]
+size = Vector2(1.7408695, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lflvo"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_v7xtw"]
+size = Vector3(2.0608695, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kfytn"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_yi3x1"]
+size = Vector3(2.0608695, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckuqs"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_2bm1j"]
+size = Vector3(0.16, 2.52, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ansg"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_wplpl"]
+size = Vector3(0.16, 2.52, 0.16)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kumkn"]
+size = Vector3(3.1408696, 4, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_27ur0"]
+shading_mode = 0
+albedo_texture = ExtResource("16_ivtyq")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_umuyd"]
+albedo_color = Color(0.145, 0.032, 0.042, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_rh0hl"]
+size = Vector3(4.233333, 3.9, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gu0oo"]
+shading_mode = 0
+albedo_texture = ExtResource("19_rpd11")
+
+[sub_resource type="QuadMesh" id="QuadMesh_q4ogd"]
+size = Vector2(3.3333333, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1mulf"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_0ommo"]
+size = Vector3(3.6533334, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44cqn"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_t2mhp"]
+size = Vector3(3.6533334, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vourm"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_aa5sn"]
+size = Vector3(0.16, 3.32, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2gfbb"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_6ai4d"]
+size = Vector3(0.16, 3.32, 0.16)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s5ff1"]
+size = Vector3(4.733333, 4.8, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ke5la"]
+albedo_color = Color(0.145, 0.032, 0.042, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_mrlxq"]
+size = Vector3(3.922409, 3.9, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r1cog"]
+shading_mode = 0
+albedo_texture = ExtResource("20_n71lt")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ixsui"]
+size = Vector2(3.022409, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tjipu"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_8prcf"]
+size = Vector3(3.342409, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_klxei"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_rldw5"]
+size = Vector3(3.342409, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6u2wr"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_dxmqc"]
+size = Vector3(0.16, 3.32, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1owaw"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_055hl"]
+size = Vector3(0.16, 3.32, 0.16)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0o388"]
+size = Vector3(4.422409, 4.8, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfojc"]
+albedo_color = Color(0.145, 0.032, 0.042, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_ohtg1"]
+size = Vector3(2.9340248, 3.9, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gdhqh"]
+shading_mode = 0
+albedo_texture = ExtResource("21_cbpe5")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8urrm"]
+size = Vector2(2.034025, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bri77"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_maifn"]
+size = Vector3(2.354025, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cnx6h"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_t66iy"]
+size = Vector3(2.354025, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3q8gg"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_h5284"]
+size = Vector3(0.16, 3.32, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqgws"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_adgbf"]
+size = Vector3(0.16, 3.32, 0.16)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ogrox"]
+size = Vector3(3.4340248, 4.8, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_60urx"]
+albedo_color = Color(0.145, 0.032, 0.042, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_wxalm"]
+size = Vector3(3.801354, 3.9, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7uc11"]
+shading_mode = 0
+albedo_texture = ExtResource("22_ujdu4")
+
+[sub_resource type="QuadMesh" id="QuadMesh_j1ul4"]
+size = Vector2(2.901354, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_17nki"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_wrfyk"]
+size = Vector3(3.221354, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cc2sj"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_qgi6e"]
+size = Vector3(3.221354, 0.16, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ng5w5"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_3y2l1"]
+size = Vector3(0.16, 3.32, 0.16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gqqyo"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_242co"]
+size = Vector3(0.16, 3.32, 0.16)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t568v"]
+size = Vector3(4.301354, 4.8, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gp6tw"]
+albedo_color = Color(0.145, 0.032, 0.042, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_8xi37"]
+size = Vector3(7.8, 8.8, 0.14)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yltcl"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_deef2"]
+size = Vector3(8.2, 0.18, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_foyt4"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_woovs"]
+size = Vector3(8.2, 0.18, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_utc2b"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_08abg"]
+size = Vector3(0.18, 8.98, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mi2dy"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_w7rn5"]
+size = Vector3(0.18, 8.98, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hs5mn"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_iewks"]
+size = Vector3(5.4, 1.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4gf0q"]
+albedo_color = Color(0.145, 0.032, 0.042, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_yjoi5"]
+size = Vector3(7.8, 8.8, 0.14)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ggmh"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_se4oy"]
+size = Vector3(8.2, 0.18, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6afk"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_ue1ur"]
+size = Vector3(8.2, 0.18, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0wq5"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_imdpe"]
+size = Vector3(0.18, 8.98, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x1005"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_hg58b"]
+size = Vector3(0.18, 8.98, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_43bd1"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_1bwjv"]
+size = Vector3(5.4, 1.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5qu0c"]
+albedo_color = Color(0.2, 0.15, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0.55, 1)
+emission_energy_multiplier = 2.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_aiski"]
+top_radius = 1.15
+bottom_radius = 1.15
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3vyo6"]
+albedo_color = Color(0.2, 0.15, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0.55, 1)
+emission_energy_multiplier = 2.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fil2d"]
+top_radius = 1.15
+bottom_radius = 1.15
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eyek4"]
+albedo_color = Color(0.2, 0.15, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ybm02"]
+top_radius = 1.15
+bottom_radius = 1.15
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g2dr3"]
+albedo_color = Color(0.2, 0.15, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0.55, 1)
+emission_energy_multiplier = 2.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_x3k1j"]
+top_radius = 1.15
+bottom_radius = 1.15
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nix2k"]
+albedo_color = Color(0.2, 0.15, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0.55, 1)
+emission_energy_multiplier = 2.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4ltnn"]
+top_radius = 1.15
+bottom_radius = 1.15
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q4e6n"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jxdu1"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pfnfl"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_iym0r"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uv3cw"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_iqvq6"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p0njm"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_118re"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qgjux"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_d3swy"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tcn3b"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_2x22o"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iu4q4"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pr08d"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3aem"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mddga"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6fshw"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_xyi88"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d0g2x"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8s2io"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kr7mf"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nd351"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tlsm8"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_bq6xf"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgdq3"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vcs0a"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gwyup"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cepxc"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tq5t5"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_trrqu"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_foql6"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_oy37g"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_asvi8"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_me3gs"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ux4e"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_f5nuy"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8gpog"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_o6l05"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r2vpk"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gbmwl"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nd134"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_xpj10"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wf4sg"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1xqae"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8plrj"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mxi1i"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uoxbo"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_oth65"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arkju"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nbukd"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s56je"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7texc"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1f8dp"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_xhalq"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qp2gd"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_5tauj"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7fcl0"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_grk2i"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ao37"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_8nqt1"]
+radius = 0.17
+height = 0.36
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3jd14"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_p21c0"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6s152"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i5fqc"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vg3t2"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+velocity_pivot = Vector3(0, 0, 4)
+direction = Vector3(1, 1, 0)
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77rck"]
+albedo_color = Color(0.19, 0.165, 0.165, 1)
+metallic = 0.18
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jkfeb"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_60q6w"]
+albedo_color = Color(0.88, 0.68, 0.24, 1)
+metallic = 1.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.28, 0.17, 0.045, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_18j5y"]
+top_radius = 0.3
+bottom_radius = 0.18
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qk24s"]
+albedo_color = Color(1, 0.45, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.15, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_l6u4q"]
+radius = 0.17
+height = 0.36
 
 [sub_resource type="StyleBoxFlat" id="SBPanel"]
 content_margin_left = 26.0
@@ -20,7 +1061,218 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [node name="关于" type="Node3D" unique_id=1746443086]
-script = ExtResource("1_dqhv2")
+script = ExtResource("2_niyhs")
+
+[node name="世界环境" type="WorldEnvironment" parent="." unique_id=962043642]
+environment = SubResource("Env_hall")
+
+[node name="天光" type="DirectionalLight3D" parent="." unique_id=113491047]
+transform = Transform3D(0.90044713, -0.3180232, 0.2967427, 0, 0.68222123, 0.7311458, -0.43496552, -0.65835816, 0.6143041, 0, 0, 0)
+light_color = Color(1, 0.94, 0.85, 1)
+light_energy = 0.32
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="." unique_id=623335415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4292078, 9.885297, 0.04699707)
+size = Vector3(41.188538, 20, 99.414795)
+box_projection = true
+
+[node name="大厅" type="Node3D" parent="." unique_id=1400985735]
+
+[node name="地板" type="MeshInstance3D" parent="大厅" unique_id=645201709]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("MeshFloor")
+
+[node name="地毯" type="MeshInstance3D" parent="大厅" unique_id=1383460191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -2)
+mesh = SubResource("MeshCarpet")
+surface_material_override/0 = SubResource("MatCarpet")
+
+[node name="北墙" type="MeshInstance3D" parent="大厅" unique_id=1065759319]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -50)
+mesh = SubResource("MeshWallNS")
+
+[node name="南墙" type="MeshInstance3D" parent="大厅" unique_id=1252536435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 50)
+mesh = SubResource("MeshWallNS")
+
+[node name="西墙" type="MeshInstance3D" parent="大厅" unique_id=244865516]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 10, 0)
+mesh = SubResource("MeshWallEW")
+
+[node name="碰撞体" type="StaticBody3D" parent="大厅" unique_id=2005280277]
+
+[node name="地面" type="CollisionShape3D" parent="大厅/碰撞体" unique_id=1342138008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("ShFloor")
+
+[node name="北墙" type="CollisionShape3D" parent="大厅/碰撞体" unique_id=1783805418]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -50)
+shape = SubResource("ShWallNS")
+
+[node name="南墙" type="CollisionShape3D" parent="大厅/碰撞体" unique_id=1515944366]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 50)
+shape = SubResource("ShWallNS")
+
+[node name="西墙" type="CollisionShape3D" parent="大厅/碰撞体" unique_id=1430608130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 10, 0)
+shape = SubResource("ShWallEW")
+
+[node name="东墙" type="CollisionShape3D" parent="大厅/碰撞体" unique_id=1196924590]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 10, 0)
+shape = SubResource("ShWallEW")
+
+[node name="东墙" type="MeshInstance3D" parent="大厅" unique_id=158152711]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 10, 0)
+mesh = SubResource("MeshWallEW")
+
+[node name="天花" type="MeshInstance3D" parent="大厅" unique_id=505080435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19, 0)
+mesh = SubResource("MeshCeil")
+
+[node name="金线低北" type="MeshInstance3D" parent="大厅" unique_id=1887820427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, -49.35)
+mesh = SubResource("MeshTrimNS")
+surface_material_override/0 = SubResource("MatGold")
+
+[node name="金线低南" type="MeshInstance3D" parent="大厅" unique_id=1688662951]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 49.35)
+mesh = SubResource("MeshTrimNS")
+surface_material_override/0 = SubResource("MatGold")
+
+[node name="金线低西" type="MeshInstance3D" parent="大厅" unique_id=1329525792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.35, 3.1, 0)
+mesh = SubResource("MeshTrimEW")
+surface_material_override/0 = SubResource("MatGold")
+
+[node name="金线低东" type="MeshInstance3D" parent="大厅" unique_id=1157231453]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.35, 3.1, 0)
+mesh = SubResource("MeshTrimEW")
+surface_material_override/0 = SubResource("MatGold")
+
+[node name="金线顶南" type="MeshInstance3D" parent="大厅" unique_id=1529866332]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.9, 49.35)
+mesh = SubResource("MeshTrimNS")
+surface_material_override/0 = SubResource("MatGold")
+
+[node name="金线顶西" type="MeshInstance3D" parent="大厅" unique_id=611310633]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.35, 16.9, 0)
+mesh = SubResource("MeshTrimEW")
+surface_material_override/0 = SubResource("MatGold")
+
+[node name="金线顶东" type="MeshInstance3D" parent="大厅" unique_id=28579998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.35, 16.9, 0)
+mesh = SubResource("MeshTrimEW")
+surface_material_override/0 = SubResource("MatGold")
+
+[node name="纪念大厅" type="Node3D" parent="." unique_id=1100984557]
+
+[node name="基座一" type="MeshInstance3D" parent="纪念大厅" unique_id=2097411789]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -40)
+mesh = SubResource("MeshTier1")
+surface_material_override/0 = SubResource("MatStone")
+
+[node name="基座二" type="MeshInstance3D" parent="纪念大厅" unique_id=10009004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -40)
+mesh = SubResource("MeshTier2")
+surface_material_override/0 = SubResource("MatStone")
+
+[node name="基座三" type="MeshInstance3D" parent="纪念大厅" unique_id=1524842302]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -40)
+mesh = SubResource("MeshTier3")
+surface_material_override/0 = SubResource("MatStone")
+
+[node name="基座碰撞" type="StaticBody3D" parent="纪念大厅" unique_id=452885613]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -40)
+
+[node name="碰撞" type="CollisionShape3D" parent="纪念大厅/基座碰撞" unique_id=1141378027]
+shape = SubResource("ShPodium")
+
+[node name="天窗盘" type="MeshInstance3D" parent="纪念大厅" unique_id=1505886487]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.3, -40)
+mesh = SubResource("MeshSkyDisc")
+surface_material_override/0 = SubResource("MatSkylight")
+
+[node name="主星" type="MeshInstance3D" parent="纪念大厅" unique_id=1660487501]
+transform = Transform3D(1.9, 0, 0, 0, 1.9, 0, 0, 0, 1.9, 0, 8.6, -40)
+
+[node name="圣光" type="OmniLight3D" parent="纪念大厅" unique_id=812731799]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.6, -40)
+light_color = Color(1, 0.76, 0.42, 1)
+light_energy = 2.6
+omni_range = 20.0
+
+[node name="大字" type="Label3D" parent="纪念大厅" unique_id=204283463]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.791395, -49.42)
+pixel_size = 0.0095
+modulate = Color(0.8910881, 0.7226836, 0, 1)
+text = "世界人民大团结万岁"
+font = ExtResource("1_t8q0p")
+font_size = 300
+outline_size = 0
+
+[node name="名言" type="Label3D" parent="纪念大厅" unique_id=2014883376]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, -49.42)
+pixel_size = 0.0085
+modulate = Color(0.96, 0.84, 0.56, 1)
+text = "人民，只有人民，才是创造世界历史的动力。"
+font = ExtResource("1_t8q0p")
+font_size = 66
+outline_size = 0
+
+[node name="名录底衬" type="MeshInstance3D" parent="纪念大厅" unique_id=565786085]
+transform = Transform3D(34, 0, 0, 0, 1.15, 0, 0, 0, 1, 0, 1.35, -49.55)
+mesh = SubResource("MeshPaperBoard")
+surface_material_override/0 = SubResource("MatVelvet")
+
+[node name="门额" type="Label3D" parent="纪念大厅" unique_id=1390360344]
+transform = Transform3D(-1, 0, 2.5351817e-06, 0, 1, 0, -2.5351817e-06, 0, -1, 0, 13.6, 49.36)
+pixel_size = 0.012
+modulate = Color(0.97, 0.84, 0.48, 1)
+text = "开发纪念堂"
+font = ExtResource("1_t8q0p")
+font_size = 150
+outline_size = 0
+
+[node name="国际主义2" parent="纪念大厅" unique_id=986879504 instance=ExtResource("12_hiqdj")]
+transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 8.70433, -49.336018)
+
+[node name="信展区" type="Node3D" parent="." unique_id=1446571246]
+
+[node name="信板" type="MeshInstance3D" parent="信展区" unique_id=651641255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.3, 49.28)
+mesh = SubResource("MeshPaperBoard")
+surface_material_override/0 = SubResource("MatPaper")
+
+[node name="信题" type="Label3D" parent="信展区" unique_id=1605821097]
+transform = Transform3D(-1, 0, 2.5351817e-06, 0, 1, 0, -2.5351817e-06, 0, -1, 0, 9.05, 49.02)
+pixel_size = 0.01
+text = "写给每一位来访者"
+font = ExtResource("1_t8q0p")
+font_size = 92
+outline_size = 0
+
+[node name="信正文" type="Label3D" parent="信展区" unique_id=2115806262]
+transform = Transform3D(-1, 0, 2.5351817e-06, 0, 1, 0, -2.5351817e-06, 0, -1, 0, 5.95, 49)
+pixel_size = 0.0078
+text = "亲爱的朋友：
+[占位]
+感谢你的到来。"
+font = ExtResource("1_t8q0p")
+font_size = 40
+outline_size = 0
+line_spacing = 10.0
+autowrap_mode = 3
+width = 1450.0
+
+[node name="落款" type="Label3D" parent="信展区" unique_id=101081793]
+transform = Transform3D(-1, 0, 2.5351817e-06, 0, 1, 0, -2.5351817e-06, 0, -1, 0, 3.05, 48.98)
+pixel_size = 0.0078
+text = "—— 改版制作组 暨 Godot 重制工程 全体成员 敬上"
+font = ExtResource("1_t8q0p")
+font_size = 38
+outline_size = 0
+horizontal_alignment = 2
+width = 1500.0
 
 [node name="音乐" type="AudioStreamPlayer" parent="." unique_id=348899241]
 stream = ExtResource("3_music")
@@ -30,7 +1282,7 @@ volume_db = -14.0
 volume_db = -8.0
 
 [node name="玩家" type="CharacterBody3D" parent="." unique_id=407933325]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.2, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 42)
 
 [node name="碰撞" type="CollisionShape3D" parent="玩家" unique_id=1122780354]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
@@ -49,6 +1301,870 @@ target_position = Vector3(0, 0, -8)
 collide_with_areas = true
 collide_with_bodies = false
 
+[node name="大字1" type="Label3D" parent="." unique_id=1251816201]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -19.46394, 1.7913952, 15.580002)
+modulate = Color(0.8910881, 0.7226836, 0, 1)
+outline_modulate = Color(1, 0, 0, 1)
+text = "开发组及内测人员"
+font = ExtResource("1_t8q0p")
+font_size = 300
+outline_size = 42
+
+[node name="大字2" type="Label3D" parent="." unique_id=904349777]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 19.479385, 1.7913952, 15.580002)
+modulate = Color(0.8910881, 0.7226836, 0, 1)
+outline_modulate = Color(1, 0, 0, 1)
+text = "人民英雄永垂不朽"
+font = ExtResource("1_t8q0p")
+font_size = 300
+outline_size = 42
+
+[node name="生成区" type="Node3D" parent="." unique_id=591436635]
+
+[node name="画作_插图 · 壹" type="Node3D" parent="生成区" unique_id=727480208]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 19.3, 6, 36)
+
+[node name="@MeshInstance3D@32180" type="MeshInstance3D" parent="生成区/画作_插图 · 壹" unique_id=17927753]
+material_override = SubResource("StandardMaterial3D_5vife")
+mesh = SubResource("BoxMesh_n308v")
+
+[node name="@MeshInstance3D@32181" type="MeshInstance3D" parent="生成区/画作_插图 · 壹" unique_id=333207576]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.09)
+material_override = SubResource("StandardMaterial3D_72jfc")
+mesh = SubResource("QuadMesh_6lyh4")
+
+[node name="@MeshInstance3D@32182" type="MeshInstance3D" parent="生成区/画作_插图 · 壹" unique_id=1647791269]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0.1)
+material_override = SubResource("StandardMaterial3D_lflvo")
+mesh = SubResource("BoxMesh_v7xtw")
+
+[node name="@MeshInstance3D@32183" type="MeshInstance3D" parent="生成区/画作_插图 · 壹" unique_id=2106543501]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.18, 0.1)
+material_override = SubResource("StandardMaterial3D_kfytn")
+mesh = SubResource("BoxMesh_yi3x1")
+
+[node name="@MeshInstance3D@32184" type="MeshInstance3D" parent="生成区/画作_插图 · 壹" unique_id=1284797271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9504348, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_ckuqs")
+mesh = SubResource("BoxMesh_2bm1j")
+
+[node name="@MeshInstance3D@32185" type="MeshInstance3D" parent="生成区/画作_插图 · 壹" unique_id=583021004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9504348, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_8ansg")
+mesh = SubResource("BoxMesh_wplpl")
+
+[node name="@Label3D@32186" type="Label3D" parent="生成区/画作_插图 · 壹" unique_id=1631250976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8208361, 0.12000084)
+pixel_size = 0.0085
+modulate = Color(0.95, 0.88, 0.66, 1)
+text = "克瓦米·恩克鲁玛"
+font = ExtResource("1_t8q0p")
+font_size = 46
+
+[node name="@Label3D@32187" type="Label3D" parent="生成区/画作_插图 · 壹" unique_id=1608578336]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.196, 0.13)
+pixel_size = 0.0072
+modulate = Color(0.87, 0.82, 0.72, 1)
+text = "“永远做人民的仆人”"
+font = ExtResource("1_t8q0p")
+font_size = 28
+outline_size = 9
+line_spacing = 6.0
+autowrap_mode = 3
+width = 1150.0
+
+[node name="@Area3D@32189" type="Area3D" parent="生成区/画作_插图 · 壹" unique_id=144749980]
+metadata/exhibit = {
+"图": ExtResource("4_w7nks"),
+"述": "事件系统插画 · 原件编号 38",
+"题": "插图 · 壹"
+}
+
+[node name="@CollisionShape3D@32188" type="CollisionShape3D" parent="生成区/画作_插图 · 壹/@Area3D@32189" unique_id=1422850257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.2)
+shape = SubResource("BoxShape3D_kumkn")
+
+[node name="画作_插图 · 壹2" type="Node3D" parent="生成区" unique_id=458251683]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 19.3, 6, 32)
+
+[node name="_MeshInstance3D_32180" type="MeshInstance3D" parent="生成区/画作_插图 · 壹2" unique_id=899859061]
+material_override = SubResource("StandardMaterial3D_5vife")
+mesh = SubResource("BoxMesh_n308v")
+
+[node name="_MeshInstance3D_32181" type="MeshInstance3D" parent="生成区/画作_插图 · 壹2" unique_id=76743200]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.09)
+material_override = SubResource("StandardMaterial3D_27ur0")
+mesh = SubResource("QuadMesh_6lyh4")
+
+[node name="_MeshInstance3D_32182" type="MeshInstance3D" parent="生成区/画作_插图 · 壹2" unique_id=1126467999]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0.1)
+material_override = SubResource("StandardMaterial3D_lflvo")
+mesh = SubResource("BoxMesh_v7xtw")
+
+[node name="_MeshInstance3D_32183" type="MeshInstance3D" parent="生成区/画作_插图 · 壹2" unique_id=1129262958]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.18, 0.1)
+material_override = SubResource("StandardMaterial3D_kfytn")
+mesh = SubResource("BoxMesh_yi3x1")
+
+[node name="_MeshInstance3D_32184" type="MeshInstance3D" parent="生成区/画作_插图 · 壹2" unique_id=424828174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9504348, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_ckuqs")
+mesh = SubResource("BoxMesh_2bm1j")
+
+[node name="_MeshInstance3D_32185" type="MeshInstance3D" parent="生成区/画作_插图 · 壹2" unique_id=845218697]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9504348, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_8ansg")
+mesh = SubResource("BoxMesh_wplpl")
+
+[node name="_Label3D_32186" type="Label3D" parent="生成区/画作_插图 · 壹2" unique_id=454443208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8208361, 0.12000084)
+pixel_size = 0.0085
+modulate = Color(0.95, 0.88, 0.66, 1)
+text = "莫迪博·凯塔"
+font = ExtResource("1_t8q0p")
+font_size = 46
+
+[node name="_Label3D_32187" type="Label3D" parent="生成区/画作_插图 · 壹2" unique_id=640361186]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.196, 0.13)
+pixel_size = 0.0072
+modulate = Color(0.87, 0.82, 0.72, 1)
+text = "--"
+font = ExtResource("1_t8q0p")
+font_size = 28
+outline_size = 9
+line_spacing = 6.0
+autowrap_mode = 3
+width = 1150.0
+
+[node name="_Area3D_32189" type="Area3D" parent="生成区/画作_插图 · 壹2" unique_id=640648479]
+metadata/exhibit = {
+"图": ExtResource("4_w7nks"),
+"述": "事件系统插画 · 原件编号 38",
+"题": "插图 · 壹"
+}
+
+[node name="_CollisionShape3D_32188" type="CollisionShape3D" parent="生成区/画作_插图 · 壹2/_Area3D_32189" unique_id=778160387]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.2)
+shape = SubResource("BoxShape3D_kumkn")
+
+[node name="画作_XX****" type="Node3D" parent="生成区" unique_id=1474535931]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -19.3, 14.3402405, 45.594215)
+
+[node name="@MeshInstance3D@32330" type="MeshInstance3D" parent="生成区/画作_XX****" unique_id=1614944684]
+material_override = SubResource("StandardMaterial3D_umuyd")
+mesh = SubResource("BoxMesh_rh0hl")
+
+[node name="@MeshInstance3D@32331" type="MeshInstance3D" parent="生成区/画作_XX****" unique_id=1379476089]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.09)
+material_override = SubResource("StandardMaterial3D_gu0oo")
+mesh = SubResource("QuadMesh_q4ogd")
+
+[node name="@MeshInstance3D@32332" type="MeshInstance3D" parent="生成区/画作_XX****" unique_id=1145123182]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0.1)
+material_override = SubResource("StandardMaterial3D_1mulf")
+mesh = SubResource("BoxMesh_0ommo")
+
+[node name="@MeshInstance3D@32333" type="MeshInstance3D" parent="生成区/画作_XX****" unique_id=1776952774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.58, 0.1)
+material_override = SubResource("StandardMaterial3D_44cqn")
+mesh = SubResource("BoxMesh_t2mhp")
+
+[node name="@MeshInstance3D@32334" type="MeshInstance3D" parent="生成区/画作_XX****" unique_id=508656333]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7466667, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_vourm")
+mesh = SubResource("BoxMesh_aa5sn")
+
+[node name="@MeshInstance3D@32335" type="MeshInstance3D" parent="生成区/画作_XX****" unique_id=1258260433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7466667, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_2gfbb")
+mesh = SubResource("BoxMesh_6ai4d")
+
+[node name="@Label3D@32336" type="Label3D" parent="生成区/画作_XX****" unique_id=1323575461]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.05, 0.12)
+pixel_size = 0.0085
+modulate = Color(0.95, 0.88, 0.66, 1)
+text = "XX****"
+font = ExtResource("1_t8q0p")
+font_size = 46
+
+[node name="@Label3D@32337" type="Label3D" parent="生成区/画作_XX****" unique_id=1425692775]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.596, 0.13)
+pixel_size = 0.0072
+modulate = Color(0.87, 0.82, 0.72, 1)
+text = "总有一天光明要来到————不愿透露姓名的代码组成员"
+font = ExtResource("1_t8q0p")
+font_size = 28
+outline_size = 9
+line_spacing = 6.0
+autowrap_mode = 3
+width = 1150.0
+
+[node name="@Area3D@32339" type="Area3D" parent="生成区/画作_XX****" unique_id=5775935]
+metadata/exhibit = {
+"图": ExtResource("19_rpd11"),
+"述": "总有一天光明要来到————不愿透露姓名的代码组成员",
+"题": "XX****"
+}
+
+[node name="@CollisionShape3D@32338" type="CollisionShape3D" parent="生成区/画作_XX****/@Area3D@32339" unique_id=1281999638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.2)
+shape = SubResource("BoxShape3D_s5ff1")
+
+[node name="画作_Kazuha1029" type="Node3D" parent="生成区" unique_id=35048366]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -19.3, 14.308069, 39.05803)
+
+[node name="@MeshInstance3D@32340" type="MeshInstance3D" parent="生成区/画作_Kazuha1029" unique_id=1791122118]
+material_override = SubResource("StandardMaterial3D_ke5la")
+mesh = SubResource("BoxMesh_mrlxq")
+
+[node name="@MeshInstance3D@32341" type="MeshInstance3D" parent="生成区/画作_Kazuha1029" unique_id=401244786]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.09)
+material_override = SubResource("StandardMaterial3D_r1cog")
+mesh = SubResource("QuadMesh_ixsui")
+
+[node name="@MeshInstance3D@32342" type="MeshInstance3D" parent="生成区/画作_Kazuha1029" unique_id=1888144215]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0.1)
+material_override = SubResource("StandardMaterial3D_tjipu")
+mesh = SubResource("BoxMesh_8prcf")
+
+[node name="@MeshInstance3D@32343" type="MeshInstance3D" parent="生成区/画作_Kazuha1029" unique_id=1775026311]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.58, 0.1)
+material_override = SubResource("StandardMaterial3D_klxei")
+mesh = SubResource("BoxMesh_rldw5")
+
+[node name="@MeshInstance3D@32344" type="MeshInstance3D" parent="生成区/画作_Kazuha1029" unique_id=2034909393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5912045, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_6u2wr")
+mesh = SubResource("BoxMesh_dxmqc")
+
+[node name="@MeshInstance3D@32345" type="MeshInstance3D" parent="生成区/画作_Kazuha1029" unique_id=1017585243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5912045, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_1owaw")
+mesh = SubResource("BoxMesh_055hl")
+
+[node name="@Label3D@32346" type="Label3D" parent="生成区/画作_Kazuha1029" unique_id=1657942186]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.05, 0.12)
+pixel_size = 0.0085
+modulate = Color(0.95, 0.88, 0.66, 1)
+text = "Kazuha1029"
+font = ExtResource("1_t8q0p")
+font_size = 46
+
+[node name="@Label3D@32347" type="Label3D" parent="生成区/画作_Kazuha1029" unique_id=195759478]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.596, 0.13)
+pixel_size = 0.0072
+modulate = Color(0.87, 0.82, 0.72, 1)
+text = "知我罪我，其惟春秋"
+font = ExtResource("1_t8q0p")
+font_size = 28
+outline_size = 9
+line_spacing = 6.0
+autowrap_mode = 3
+width = 1150.0
+
+[node name="@Area3D@32349" type="Area3D" parent="生成区/画作_Kazuha1029" unique_id=1703599334]
+metadata/exhibit = {
+"图": ExtResource("20_n71lt"),
+"述": "知我罪我，其惟春秋",
+"题": "Kazuha1029"
+}
+
+[node name="@CollisionShape3D@32348" type="CollisionShape3D" parent="生成区/画作_Kazuha1029/@Area3D@32349" unique_id=1201255673]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.2)
+shape = SubResource("BoxShape3D_0o388")
+
+[node name="画作_丰川祥子" type="Node3D" parent="生成区" unique_id=548220127]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -19.3, 14.6, 32)
+
+[node name="@MeshInstance3D@32350" type="MeshInstance3D" parent="生成区/画作_丰川祥子" unique_id=1692880539]
+material_override = SubResource("StandardMaterial3D_hfojc")
+mesh = SubResource("BoxMesh_ohtg1")
+
+[node name="@MeshInstance3D@32351" type="MeshInstance3D" parent="生成区/画作_丰川祥子" unique_id=224298363]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.09)
+material_override = SubResource("StandardMaterial3D_gdhqh")
+mesh = SubResource("QuadMesh_8urrm")
+
+[node name="@MeshInstance3D@32352" type="MeshInstance3D" parent="生成区/画作_丰川祥子" unique_id=1663280103]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0.1)
+material_override = SubResource("StandardMaterial3D_bri77")
+mesh = SubResource("BoxMesh_maifn")
+
+[node name="@MeshInstance3D@32353" type="MeshInstance3D" parent="生成区/画作_丰川祥子" unique_id=1907323486]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.58, 0.1)
+material_override = SubResource("StandardMaterial3D_cnx6h")
+mesh = SubResource("BoxMesh_t66iy")
+
+[node name="@MeshInstance3D@32354" type="MeshInstance3D" parent="生成区/画作_丰川祥子" unique_id=2094010313]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0970124, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_3q8gg")
+mesh = SubResource("BoxMesh_h5284")
+
+[node name="@MeshInstance3D@32355" type="MeshInstance3D" parent="生成区/画作_丰川祥子" unique_id=715808735]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0970124, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_yqgws")
+mesh = SubResource("BoxMesh_adgbf")
+
+[node name="@Label3D@32356" type="Label3D" parent="生成区/画作_丰川祥子" unique_id=81255618]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.05, 0.12)
+pixel_size = 0.0085
+modulate = Color(0.95, 0.88, 0.66, 1)
+text = "丰川祥子"
+font = ExtResource("1_t8q0p")
+font_size = 46
+
+[node name="@Label3D@32357" type="Label3D" parent="生成区/画作_丰川祥子" unique_id=2133980612]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.596, 0.13)
+pixel_size = 0.0072
+modulate = Color(0.87, 0.82, 0.72, 1)
+text = "冷冷的冰雨无情地泼洒在纪念堂前，伟大的无产阶级理想仿佛留在了春日的幻影中，
+欢迎回到过去，他们仍然在这里，但你只有最后一次机会，做一日雄狮，胜于百年羔羊。"
+font = ExtResource("1_t8q0p")
+font_size = 28
+outline_size = 9
+line_spacing = 6.0
+autowrap_mode = 3
+width = 1150.0
+
+[node name="@Area3D@32359" type="Area3D" parent="生成区/画作_丰川祥子" unique_id=878112374]
+metadata/exhibit = {
+"图": ExtResource("21_cbpe5"),
+"述": "冷冷的冰雨无情地泼洒在纪念堂前，伟大的无产阶级理想仿佛留在了春日的幻影中，
+欢迎回到过去，他们仍然在这里，但你只有最后一次机会，做一日雄狮，胜于百年羔羊。",
+"题": "丰川祥子"
+}
+
+[node name="@CollisionShape3D@32358" type="CollisionShape3D" parent="生成区/画作_丰川祥子/@Area3D@32359" unique_id=1104439852]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.2)
+shape = SubResource("BoxShape3D_ogrox")
+
+[node name="画作_威廉先生" type="Node3D" parent="生成区" unique_id=679946482]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -19.3, 14.6, 24)
+
+[node name="@MeshInstance3D@32360" type="MeshInstance3D" parent="生成区/画作_威廉先生" unique_id=1763176461]
+material_override = SubResource("StandardMaterial3D_60urx")
+mesh = SubResource("BoxMesh_wxalm")
+
+[node name="@MeshInstance3D@32361" type="MeshInstance3D" parent="生成区/画作_威廉先生" unique_id=456199399]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.09)
+material_override = SubResource("StandardMaterial3D_7uc11")
+mesh = SubResource("QuadMesh_j1ul4")
+
+[node name="@MeshInstance3D@32362" type="MeshInstance3D" parent="生成区/画作_威廉先生" unique_id=872483261]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58, 0.1)
+material_override = SubResource("StandardMaterial3D_17nki")
+mesh = SubResource("BoxMesh_wrfyk")
+
+[node name="@MeshInstance3D@32363" type="MeshInstance3D" parent="生成区/画作_威廉先生" unique_id=1433787893]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.58, 0.1)
+material_override = SubResource("StandardMaterial3D_cc2sj")
+mesh = SubResource("BoxMesh_qgi6e")
+
+[node name="@MeshInstance3D@32364" type="MeshInstance3D" parent="生成区/画作_威廉先生" unique_id=528015809]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.530677, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_ng5w5")
+mesh = SubResource("BoxMesh_3y2l1")
+
+[node name="@MeshInstance3D@32365" type="MeshInstance3D" parent="生成区/画作_威廉先生" unique_id=1956799899]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.530677, 0, 0.1)
+material_override = SubResource("StandardMaterial3D_gqqyo")
+mesh = SubResource("BoxMesh_242co")
+
+[node name="@Label3D@32366" type="Label3D" parent="生成区/画作_威廉先生" unique_id=952209948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.05, 0.12)
+pixel_size = 0.0085
+modulate = Color(0.95, 0.88, 0.66, 1)
+text = "威廉先生"
+font = ExtResource("1_t8q0p")
+font_size = 46
+
+[node name="@Label3D@32367" type="Label3D" parent="生成区/画作_威廉先生" unique_id=828508011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5479999, 0.13)
+pixel_size = 0.0072
+modulate = Color(0.87, 0.82, 0.72, 1)
+text = "面对自由而有尊严的自我批评，我们不应惧怕其后果，正因如此，我们要说：我们衰落了！
+我们消极被动地与他人搅在一起，与他人的政治图谋、虚假问题、意识形态主张纠缠不清。
+他者已经重新殖民了我们那些至少是模棱两可地与他人绑在一起的最终目标。所有人的表现——先是领导人，后是游击队员——往好的说是天真，往坏的说是愚钝。"
+font = ExtResource("1_t8q0p")
+font_size = 20
+outline_size = 9
+line_spacing = 6.0
+autowrap_mode = 3
+width = 1150.0
+
+[node name="@Area3D@32369" type="Area3D" parent="生成区/画作_威廉先生" unique_id=2076987339]
+metadata/exhibit = {
+"图": ExtResource("22_ujdu4"),
+"述": "面对自由而有尊严的自我批评，我们不应惧怕其后果，正因如此，我们要说：我们衰落了！
+我们消极被动地与他人搅在一起，与他人的政治图谋、虚假问题、意识形态主张纠缠不清。
+他者已经重新殖民了我们那些至少是模棱两可地与他人绑在一起的最终目标。所有人的表现——先是领导人，后是游击队员——往好的说是天真，往坏的说是愚钝。",
+"题": "威廉先生"
+}
+
+[node name="@CollisionShape3D@32368" type="CollisionShape3D" parent="生成区/画作_威廉先生/@Area3D@32369" unique_id=442323021]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.2)
+shape = SubResource("BoxShape3D_t568v")
+
+[node name="致谢墙_原作 · 汉化" type="Node3D" parent="生成区" unique_id=900233997]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -19.25, 5.6, -16)
+
+[node name="@MeshInstance3D@32391" type="MeshInstance3D" parent="生成区/致谢墙_原作 · 汉化" unique_id=130383234]
+material_override = SubResource("StandardMaterial3D_gp6tw")
+mesh = SubResource("BoxMesh_8xi37")
+
+[node name="@MeshInstance3D@32392" type="MeshInstance3D" parent="生成区/致谢墙_原作 · 汉化" unique_id=1981657820]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0.05)
+material_override = SubResource("StandardMaterial3D_yltcl")
+mesh = SubResource("BoxMesh_deef2")
+
+[node name="@MeshInstance3D@32393" type="MeshInstance3D" parent="生成区/致谢墙_原作 · 汉化" unique_id=596069776]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.4, 0.05)
+material_override = SubResource("StandardMaterial3D_foyt4")
+mesh = SubResource("BoxMesh_woovs")
+
+[node name="@MeshInstance3D@32394" type="MeshInstance3D" parent="生成区/致谢墙_原作 · 汉化" unique_id=775810050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01, 0, 0.05)
+material_override = SubResource("StandardMaterial3D_utc2b")
+mesh = SubResource("BoxMesh_08abg")
+
+[node name="@MeshInstance3D@32395" type="MeshInstance3D" parent="生成区/致谢墙_原作 · 汉化" unique_id=333083413]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.01, 0, 0.05)
+material_override = SubResource("StandardMaterial3D_mi2dy")
+mesh = SubResource("BoxMesh_w7rn5")
+
+[node name="@MeshInstance3D@32396" type="MeshInstance3D" parent="生成区/致谢墙_原作 · 汉化" unique_id=2071852919]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.35, 0.1)
+material_override = SubResource("StandardMaterial3D_hs5mn")
+mesh = SubResource("BoxMesh_iewks")
+
+[node name="@Label3D@32397" type="Label3D" parent="生成区/致谢墙_原作 · 汉化" unique_id=1720761438]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.38, 0.17)
+pixel_size = 0.0095
+modulate = Color(0.28, 0.11, 0.03, 1)
+text = "原作 · 汉化"
+font = ExtResource("1_t8q0p")
+font_size = 64
+outline_size = 0
+
+[node name="@Label3D@32398" type="Label3D" parent="生成区/致谢墙_原作 · 汉化" unique_id=2076110257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0.12)
+pixel_size = 0.008
+modulate = Color(0.97, 0.92, 0.76, 1)
+text = "《中国：毛的遗产》原作开发组
+
+GKchP 汉化组
+
+改版制作组"
+font = ExtResource("1_t8q0p")
+font_size = 38
+outline_size = 0
+line_spacing = 12.0
+autowrap_mode = 3
+width = 900.0
+
+[node name="致谢墙_美术 · 音频 · 测试" type="Node3D" parent="生成区" unique_id=601308364]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 19.25, 5.6, -16)
+
+[node name="@MeshInstance3D@32407" type="MeshInstance3D" parent="生成区/致谢墙_美术 · 音频 · 测试" unique_id=1094017453]
+material_override = SubResource("StandardMaterial3D_4gf0q")
+mesh = SubResource("BoxMesh_yjoi5")
+
+[node name="@MeshInstance3D@32408" type="MeshInstance3D" parent="生成区/致谢墙_美术 · 音频 · 测试" unique_id=505102696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0.05)
+material_override = SubResource("StandardMaterial3D_5ggmh")
+mesh = SubResource("BoxMesh_se4oy")
+
+[node name="@MeshInstance3D@32409" type="MeshInstance3D" parent="生成区/致谢墙_美术 · 音频 · 测试" unique_id=70775350]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.4, 0.05)
+material_override = SubResource("StandardMaterial3D_g6afk")
+mesh = SubResource("BoxMesh_ue1ur")
+
+[node name="@MeshInstance3D@32410" type="MeshInstance3D" parent="生成区/致谢墙_美术 · 音频 · 测试" unique_id=1818301117]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01, 0, 0.05)
+material_override = SubResource("StandardMaterial3D_b0wq5")
+mesh = SubResource("BoxMesh_imdpe")
+
+[node name="@MeshInstance3D@32411" type="MeshInstance3D" parent="生成区/致谢墙_美术 · 音频 · 测试" unique_id=1458729943]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.01, 0, 0.05)
+material_override = SubResource("StandardMaterial3D_x1005")
+mesh = SubResource("BoxMesh_hg58b")
+
+[node name="@MeshInstance3D@32412" type="MeshInstance3D" parent="生成区/致谢墙_美术 · 音频 · 测试" unique_id=848208536]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.35, 0.1)
+material_override = SubResource("StandardMaterial3D_43bd1")
+mesh = SubResource("BoxMesh_1bwjv")
+
+[node name="@Label3D@32413" type="Label3D" parent="生成区/致谢墙_美术 · 音频 · 测试" unique_id=1382168211]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.38, 0.17)
+pixel_size = 0.0095
+modulate = Color(0.28, 0.11, 0.03, 1)
+text = "致谢"
+font = ExtResource("1_t8q0p")
+font_size = 64
+outline_size = 0
+
+[node name="@Label3D@32414" type="Label3D" parent="生成区/致谢墙_美术 · 音频 · 测试" unique_id=1279092289]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0.12)
+pixel_size = 0.008
+modulate = Color(0.97, 0.92, 0.76, 1)
+text = "界面与场景视觉
+重制组美术组
+
+音频整理
+曲集 · 音效适配
+
+内测体验
+全体参与者"
+font = ExtResource("1_t8q0p")
+font_size = 38
+outline_size = 0
+line_spacing = 12.0
+autowrap_mode = 3
+width = 900.0
+
+[node name="@MeshInstance3D@32534" type="MeshInstance3D" parent="生成区" unique_id=186846121]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.35, -32)
+material_override = SubResource("StandardMaterial3D_5qu0c")
+mesh = SubResource("CylinderMesh_aiski")
+
+[node name="@OmniLight3D@32535" type="OmniLight3D" parent="生成区" unique_id=1566145229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.8, -32)
+light_color = Color(1, 0.85, 0.6, 1)
+light_energy = 0.85
+omni_range = 15.0
+
+[node name="@MeshInstance3D@32536" type="MeshInstance3D" parent="生成区" unique_id=1312557227]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.35, -16)
+material_override = SubResource("StandardMaterial3D_3vyo6")
+mesh = SubResource("CylinderMesh_fil2d")
+
+[node name="@OmniLight3D@32537" type="OmniLight3D" parent="生成区" unique_id=639515208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.8, -16)
+light_color = Color(1, 0.85, 0.6, 1)
+light_energy = 0.85
+omni_range = 15.0
+
+[node name="@MeshInstance3D@32538" type="MeshInstance3D" parent="生成区" unique_id=1941872199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.35, 0)
+material_override = SubResource("StandardMaterial3D_eyek4")
+mesh = SubResource("CylinderMesh_ybm02")
+
+[node name="@OmniLight3D@32539" type="OmniLight3D" parent="生成区" unique_id=365183637]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.8, 0)
+light_color = Color(1, 0.85, 0.6, 1)
+light_energy = 0.85
+omni_range = 15.0
+
+[node name="@MeshInstance3D@32540" type="MeshInstance3D" parent="生成区" unique_id=249525632]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.35, 16)
+material_override = SubResource("StandardMaterial3D_g2dr3")
+mesh = SubResource("CylinderMesh_x3k1j")
+
+[node name="@OmniLight3D@32541" type="OmniLight3D" parent="生成区" unique_id=872864557]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.8, 16)
+light_color = Color(1, 0.85, 0.6, 1)
+light_energy = 0.85
+omni_range = 15.0
+
+[node name="@MeshInstance3D@32542" type="MeshInstance3D" parent="生成区" unique_id=1141166532]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.35, 32)
+material_override = SubResource("StandardMaterial3D_nix2k")
+mesh = SubResource("CylinderMesh_4ltnn")
+
+[node name="@OmniLight3D@32543" type="OmniLight3D" parent="生成区" unique_id=844080969]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.8, 32)
+light_color = Color(1, 0.85, 0.6, 1)
+light_energy = 0.85
+omni_range = 15.0
+
+[node name="长明灯_-1_32" type="Node3D" parent="生成区" unique_id=1011401978]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 32)
+
+[node name="@MeshInstance3D@32544" type="MeshInstance3D" parent="生成区/长明灯_-1_32" unique_id=160158532]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_q4e6n")
+mesh = SubResource("CylinderMesh_jxdu1")
+
+[node name="@MeshInstance3D@32545" type="MeshInstance3D" parent="生成区/长明灯_-1_32" unique_id=1355149895]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_pfnfl")
+mesh = SubResource("CylinderMesh_iym0r")
+
+[node name="@MeshInstance3D@32546" type="MeshInstance3D" parent="生成区/长明灯_-1_32" unique_id=1429595132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_uv3cw")
+mesh = SubResource("SphereMesh_iqvq6")
+
+[node name="@OmniLight3D@32547" type="OmniLight3D" parent="生成区/长明灯_-1_32" unique_id=780574104]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_1_32" type="Node3D" parent="生成区" unique_id=1403572523]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 32)
+
+[node name="@MeshInstance3D@32548" type="MeshInstance3D" parent="生成区/长明灯_1_32" unique_id=567624835]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_p0njm")
+mesh = SubResource("CylinderMesh_118re")
+
+[node name="@MeshInstance3D@32549" type="MeshInstance3D" parent="生成区/长明灯_1_32" unique_id=1072854072]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_qgjux")
+mesh = SubResource("CylinderMesh_d3swy")
+
+[node name="@MeshInstance3D@32550" type="MeshInstance3D" parent="生成区/长明灯_1_32" unique_id=1433566593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_tcn3b")
+mesh = SubResource("SphereMesh_2x22o")
+
+[node name="@OmniLight3D@32551" type="OmniLight3D" parent="生成区/长明灯_1_32" unique_id=1554959008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_-1_20" type="Node3D" parent="生成区" unique_id=488972812]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 20)
+
+[node name="@MeshInstance3D@32552" type="MeshInstance3D" parent="生成区/长明灯_-1_20" unique_id=1473679749]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_iu4q4")
+mesh = SubResource("CylinderMesh_pr08d")
+
+[node name="@MeshInstance3D@32553" type="MeshInstance3D" parent="生成区/长明灯_-1_20" unique_id=1399503026]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_r3aem")
+mesh = SubResource("CylinderMesh_mddga")
+
+[node name="@MeshInstance3D@32554" type="MeshInstance3D" parent="生成区/长明灯_-1_20" unique_id=1475912895]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_6fshw")
+mesh = SubResource("SphereMesh_xyi88")
+
+[node name="@OmniLight3D@32555" type="OmniLight3D" parent="生成区/长明灯_-1_20" unique_id=880128145]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_1_20" type="Node3D" parent="生成区" unique_id=946827955]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 20)
+
+[node name="@MeshInstance3D@32556" type="MeshInstance3D" parent="生成区/长明灯_1_20" unique_id=1895577161]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_d0g2x")
+mesh = SubResource("CylinderMesh_8s2io")
+
+[node name="@MeshInstance3D@32557" type="MeshInstance3D" parent="生成区/长明灯_1_20" unique_id=554983804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_kr7mf")
+mesh = SubResource("CylinderMesh_nd351")
+
+[node name="@MeshInstance3D@32558" type="MeshInstance3D" parent="生成区/长明灯_1_20" unique_id=1553035476]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_tlsm8")
+mesh = SubResource("SphereMesh_bq6xf")
+
+[node name="@OmniLight3D@32559" type="OmniLight3D" parent="生成区/长明灯_1_20" unique_id=562267285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_-1_8" type="Node3D" parent="生成区" unique_id=1734843887]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 8)
+
+[node name="@MeshInstance3D@32560" type="MeshInstance3D" parent="生成区/长明灯_-1_8" unique_id=1281567616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_fgdq3")
+mesh = SubResource("CylinderMesh_vcs0a")
+
+[node name="@MeshInstance3D@32561" type="MeshInstance3D" parent="生成区/长明灯_-1_8" unique_id=584426811]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_gwyup")
+mesh = SubResource("CylinderMesh_cepxc")
+
+[node name="@MeshInstance3D@32562" type="MeshInstance3D" parent="生成区/长明灯_-1_8" unique_id=327526818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_tq5t5")
+mesh = SubResource("SphereMesh_trrqu")
+
+[node name="@OmniLight3D@32563" type="OmniLight3D" parent="生成区/长明灯_-1_8" unique_id=651853622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_1_8" type="Node3D" parent="生成区" unique_id=759719802]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 8)
+
+[node name="@MeshInstance3D@32564" type="MeshInstance3D" parent="生成区/长明灯_1_8" unique_id=73390114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_foql6")
+mesh = SubResource("CylinderMesh_oy37g")
+
+[node name="@MeshInstance3D@32565" type="MeshInstance3D" parent="生成区/长明灯_1_8" unique_id=7956540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_asvi8")
+mesh = SubResource("CylinderMesh_me3gs")
+
+[node name="@MeshInstance3D@32566" type="MeshInstance3D" parent="生成区/长明灯_1_8" unique_id=372430866]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_5ux4e")
+mesh = SubResource("SphereMesh_f5nuy")
+
+[node name="@OmniLight3D@32567" type="OmniLight3D" parent="生成区/长明灯_1_8" unique_id=1774512411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_-1_-4" type="Node3D" parent="生成区" unique_id=464762035]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -4)
+
+[node name="@MeshInstance3D@32568" type="MeshInstance3D" parent="生成区/长明灯_-1_-4" unique_id=2038363326]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_8gpog")
+mesh = SubResource("CylinderMesh_o6l05")
+
+[node name="@MeshInstance3D@32569" type="MeshInstance3D" parent="生成区/长明灯_-1_-4" unique_id=1642297501]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_r2vpk")
+mesh = SubResource("CylinderMesh_gbmwl")
+
+[node name="@MeshInstance3D@32570" type="MeshInstance3D" parent="生成区/长明灯_-1_-4" unique_id=709274731]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_nd134")
+mesh = SubResource("SphereMesh_xpj10")
+
+[node name="@OmniLight3D@32571" type="OmniLight3D" parent="生成区/长明灯_-1_-4" unique_id=1011889359]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_1_-4" type="Node3D" parent="生成区" unique_id=1546832451]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -4)
+
+[node name="@MeshInstance3D@32572" type="MeshInstance3D" parent="生成区/长明灯_1_-4" unique_id=1083922970]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_wf4sg")
+mesh = SubResource("CylinderMesh_1xqae")
+
+[node name="@MeshInstance3D@32573" type="MeshInstance3D" parent="生成区/长明灯_1_-4" unique_id=1283887938]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_8plrj")
+mesh = SubResource("CylinderMesh_mxi1i")
+
+[node name="@MeshInstance3D@32574" type="MeshInstance3D" parent="生成区/长明灯_1_-4" unique_id=278861046]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_uoxbo")
+mesh = SubResource("SphereMesh_oth65")
+
+[node name="@OmniLight3D@32575" type="OmniLight3D" parent="生成区/长明灯_1_-4" unique_id=123073604]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_-1_-16" type="Node3D" parent="生成区" unique_id=1461646808]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -16)
+
+[node name="@MeshInstance3D@32576" type="MeshInstance3D" parent="生成区/长明灯_-1_-16" unique_id=2094817622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_arkju")
+mesh = SubResource("CylinderMesh_nbukd")
+
+[node name="@MeshInstance3D@32577" type="MeshInstance3D" parent="生成区/长明灯_-1_-16" unique_id=1732858083]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_s56je")
+mesh = SubResource("CylinderMesh_7texc")
+
+[node name="@MeshInstance3D@32578" type="MeshInstance3D" parent="生成区/长明灯_-1_-16" unique_id=1284709172]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_1f8dp")
+mesh = SubResource("SphereMesh_xhalq")
+
+[node name="@OmniLight3D@32579" type="OmniLight3D" parent="生成区/长明灯_-1_-16" unique_id=596783953]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_1_-16" type="Node3D" parent="生成区" unique_id=1396759238]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -16)
+
+[node name="@MeshInstance3D@32580" type="MeshInstance3D" parent="生成区/长明灯_1_-16" unique_id=1768817391]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_qp2gd")
+mesh = SubResource("CylinderMesh_5tauj")
+
+[node name="@MeshInstance3D@32581" type="MeshInstance3D" parent="生成区/长明灯_1_-16" unique_id=888585492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_7fcl0")
+mesh = SubResource("CylinderMesh_grk2i")
+
+[node name="@MeshInstance3D@32582" type="MeshInstance3D" parent="生成区/长明灯_1_-16" unique_id=1729230057]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_7ao37")
+mesh = SubResource("SphereMesh_8nqt1")
+
+[node name="@OmniLight3D@32583" type="OmniLight3D" parent="生成区/长明灯_1_-16" unique_id=2144388081]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_-1_-26" type="Node3D" parent="生成区" unique_id=2010393416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -26)
+
+[node name="@MeshInstance3D@32584" type="MeshInstance3D" parent="生成区/长明灯_-1_-26" unique_id=2074120424]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_3jd14")
+mesh = SubResource("CylinderMesh_p21c0")
+
+[node name="@MeshInstance3D@32585" type="MeshInstance3D" parent="生成区/长明灯_-1_-26" unique_id=2137610705]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_6s152")
+mesh = SubResource("CylinderMesh_i5fqc")
+
+[node name="星星之火" type="GPUParticles3D" parent="生成区/长明灯_-1_-26" unique_id=1234119494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+amount = 500
+process_material = SubResource("ParticleProcessMaterial_vg3t2")
+
+[node name="@OmniLight3D@32587" type="OmniLight3D" parent="生成区/长明灯_-1_-26" unique_id=452606053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="长明灯_1_-26" type="Node3D" parent="生成区" unique_id=1955719177]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -26)
+
+[node name="@MeshInstance3D@32588" type="MeshInstance3D" parent="生成区/长明灯_1_-26" unique_id=975336407]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+material_override = SubResource("StandardMaterial3D_77rck")
+mesh = SubResource("CylinderMesh_jkfeb")
+
+[node name="@MeshInstance3D@32589" type="MeshInstance3D" parent="生成区/长明灯_1_-26" unique_id=1790498161]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("StandardMaterial3D_60q6w")
+mesh = SubResource("CylinderMesh_18j5y")
+
+[node name="@MeshInstance3D@32590" type="MeshInstance3D" parent="生成区/长明灯_1_-26" unique_id=2126558616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+material_override = SubResource("StandardMaterial3D_qk24s")
+mesh = SubResource("SphereMesh_l6u4q")
+
+[node name="@OmniLight3D@32591" type="OmniLight3D" parent="生成区/长明灯_1_-26" unique_id=11078065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+light_color = Color(1, 0.55, 0.22, 1)
+light_energy = 1.5
+omni_range = 6.5
+
 [node name="UI" type="CanvasLayer" parent="." unique_id=1692529826]
 
 [node name="准星" type="ColorRect" parent="UI" unique_id=253645065]
@@ -64,105 +2180,29 @@ offset_bottom = 2.0
 mouse_filter = 2
 color = Color(1, 1, 1, 0.85)
 
-[node name="注视信息" type="PanelContainer" parent="UI" unique_id=1439943092]
+[node name="提示条" type="PanelContainer" parent="UI" unique_id=207482740]
 visible = false
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -360.0
-offset_top = -150.0
-offset_right = 360.0
-offset_bottom = -86.0
+offset_left = -470.0
+offset_top = -72.0
+offset_right = 470.0
+offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("SBPanel")
 
-[node name="列表" type="VBoxContainer" parent="UI/注视信息" unique_id=1164398341]
-layout_mode = 2
-theme_override_constants/separation = 2
-alignment = 1
-
-[node name="展品名" type="Label" parent="UI/注视信息/列表" unique_id=1229515846]
-modulate = Color(0.98, 0.86, 0.5, 1)
+[node name="提示文本" type="Label" parent="UI/提示条" unique_id=470030111]
+modulate = Color(0.93, 0.89, 0.79, 1)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_t8q0p")
-theme_override_font_sizes/font_size = 30
-horizontal_alignment = 1
-
-[node name="观赏提示" type="Label" parent="UI/注视信息/列表" unique_id=199123177]
-modulate = Color(0.82, 0.79, 0.72, 1)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_t8q0p")
-theme_override_font_sizes/font_size = 19
-text = "按 E 键 近赏展品"
-horizontal_alignment = 1
-
-[node name="观展弹层" type="Control" parent="UI" unique_id=1189239228]
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="底色" type="ColorRect" parent="UI/观展弹层" unique_id=1187697917]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 0.94)
-
-[node name="中" type="CenterContainer" parent="UI/观展弹层" unique_id=913489210]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="内容" type="VBoxContainer" parent="UI/观展弹层/中" unique_id=1453509117]
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="大图" type="TextureRect" parent="UI/观展弹层/中/内容" unique_id=615934703]
-custom_minimum_size = Vector2(1160, 600)
-layout_mode = 2
-mouse_filter = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="题名" type="Label" parent="UI/观展弹层/中/内容" unique_id=520088813]
-modulate = Color(0.98, 0.86, 0.5, 1)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_t8q0p")
-theme_override_font_sizes/font_size = 36
-horizontal_alignment = 1
-
-[node name="说明" type="Label" parent="UI/观展弹层/中/内容" unique_id=2046080061]
-modulate = Color(0.88, 0.85, 0.77, 1)
-custom_minimum_size = Vector2(1060, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_t8q0p")
-theme_override_font_sizes/font_size = 23
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="小贴士" type="Label" parent="UI/观展弹层/中/内容" unique_id=697191084]
-modulate = Color(0.62, 0.6, 0.54, 1)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_t8q0p")
-theme_override_font_sizes/font_size = 18
-text = "按 E / Esc 或点击 返回展厅"
+theme_override_font_sizes/font_size = 21
+text = "WASD 行走 · Shift 快步 · Space 跳跃
+Esc 菜单 · B 返回主菜单"
 horizontal_alignment = 1
 
 [node name="菜单层" type="Control" parent="UI" unique_id=1784510665]
@@ -262,18 +2302,5 @@ text = "谨以此馆
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="顶部题字" type="Label" parent="UI" unique_id=1903482761]
-modulate = Color(1, 1, 1, 0)
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -600.0
-offset_top = 16.0
-offset_right = 600.0
-offset_bottom = 76.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.97, 0.86, 0.52, 1)
-theme_override_fonts/font = ExtResource("1_t8q0p")
-theme_override_font_sizes/font_size = 44
-text = "开  发  纪  念  堂"
-horizontal_alignment = 1
+[node name="毛主席" parent="." unique_id=2055298284 instance=ExtResource("35_hiqdj")]
+transform = Transform3D(-3.059797e-08, 0, 0.7, 0, 0.7, 0, -0.7, 0, -3.059797e-08, -10.591298, -0.22249174, -29.260746)

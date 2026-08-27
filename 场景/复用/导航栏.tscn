@@ -1,14 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://c9b4f1a2d3e45"]
+[gd_scene format=3 uid="uid://dab4f1a2d3e45"]
 
-[ext_resource type="Script" path="res://场景/复用/导航栏.gd" id="1_nav"]
+[ext_resource type="Script" uid="uid://drb2teh2pyj3w" path="res://场景/复用/导航栏.gd" id="1_nav"]
 [ext_resource type="Texture2D" uid="uid://bqaw1khohkkov" path="res://资产/UI/主游戏UI/切场景菜单背景.png" id="2_navbg"]
 [ext_resource type="Texture2D" uid="uid://d0l4bgmlrwl12" path="res://资产/UI/外交/决议.png" id="3_dec"]
 [ext_resource type="FontFile" uid="uid://dbgq15wdpa7ck" path="res://资产/字体/方正跃进简体.ttf" id="4_font"]
 
-[node name="导航栏" type="CanvasLayer"]
+[node name="导航栏" type="CanvasLayer" unique_id=1007205109]
 script = ExtResource("1_nav")
 
-[node name="切场景菜单背景" type="TextureRect" parent="."]
+[node name="切场景菜单背景" type="TextureRect" parent="." unique_id=225504180]
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 71.0
@@ -17,7 +17,7 @@ texture = ExtResource("2_navbg")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="世界地图" type="Button" parent="."]
+[node name="世界地图" type="Button" parent="." unique_id=194019547]
 offset_left = 56.0
 offset_top = 80.0
 offset_right = 335.0
@@ -33,7 +33,7 @@ metadata/_edit_use_anchors_ = true
 metadata/screen_id = "diplomacy"
 metadata/scene_uid = "uid://vq6jexkk5tru"
 
-[node name="派系" type="Button" parent="."]
+[node name="派系" type="Button" parent="." unique_id=1310487811]
 offset_left = 366.0
 offset_top = 80.0
 offset_right = 645.0
@@ -49,7 +49,7 @@ metadata/_edit_use_anchors_ = true
 metadata/screen_id = "faction"
 metadata/scene_uid = "uid://dly5fmobnogab"
 
-[node name="经济" type="Button" parent="."]
+[node name="经济" type="Button" parent="." unique_id=1327585915]
 offset_left = 676.0
 offset_top = 80.0
 offset_right = 955.0
@@ -65,7 +65,7 @@ metadata/_edit_use_anchors_ = true
 metadata/screen_id = "economy"
 metadata/scene_uid = "uid://btldk7ul11cqn"
 
-[node name="科学" type="Button" parent="."]
+[node name="科学" type="Button" parent="." unique_id=767988167]
 offset_left = 986.0
 offset_top = 80.0
 offset_right = 1265.0
@@ -81,7 +81,7 @@ metadata/_edit_use_anchors_ = true
 metadata/screen_id = "science"
 metadata/scene_uid = "uid://d2qkifpx3o8pl"
 
-[node name="概览" type="Button" parent="."]
+[node name="概览" type="Button" parent="." unique_id=90751825]
 offset_left = 1296.0
 offset_top = 80.0
 offset_right = 1575.0
@@ -97,7 +97,7 @@ metadata/_edit_use_anchors_ = true
 metadata/screen_id = "overview"
 metadata/scene_uid = "uid://cj3ye88n40e8y"
 
-[node name="政治" type="Button" parent="."]
+[node name="政治" type="Button" parent="." unique_id=1849096870]
 offset_left = 1606.0
 offset_top = 80.0
 offset_right = 1885.0
@@ -111,9 +111,9 @@ flat = true
 icon_alignment = 1
 metadata/_edit_use_anchors_ = true
 metadata/screen_id = "politics"
-metadata/scene_uid = "uid://5wdpacp0bqch"
+metadata/scene_uid = "uid://dsmslhxc0e8u5"
 
-[node name="战争" type="Button" parent="."]
+[node name="战争" type="Button" parent="." unique_id=1976339663]
 offset_left = 1916.0
 offset_top = 80.0
 offset_right = 2195.0
@@ -129,7 +129,7 @@ metadata/_edit_use_anchors_ = true
 metadata/screen_id = "war"
 metadata/scene_uid = "uid://bs6bexbaawcyw"
 
-[node name="决议" type="TextureButton" parent="."]
+[node name="决议" type="TextureButton" parent="." unique_id=1217231457]
 offset_left = 1790.0
 offset_top = 8.0
 offset_right = 1876.0

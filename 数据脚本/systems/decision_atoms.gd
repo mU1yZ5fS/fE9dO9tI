@@ -220,7 +220,7 @@ static func is_liberal(yes: bool) -> bool:
 static func is_autoritharian(yes: bool) -> bool:
 	var d := _d()
 	var v := _faction_leading(0) or _faction_leading(3) or (d.size() > W.I_PARTY_SYSTEM and d.size() > W.I_POLITICAL_DISPLAY
-		and d.party_system >= GameConstants.PartySystem.PEOPLE_DEMOCRACY and d.political_display <= 38)
+		and d.party_system >= 8 and d.political_display <= 38)
 	return v if yes else not v
 
 
@@ -1534,7 +1534,7 @@ static func ally_with_other_parties(_yes: bool = true) -> void:
 static func block_for_new_democracy(_num: int) -> void:
 	var d := _d()
 	if d.size() > W.I_PARTY_SYSTEM:
-		d.party_system = GameConstants.PartySystem.NEW_DEMOCRACY
+		d.party_system = 7
 
 
 ## BlockForStatemoncap — data.econ_system=12

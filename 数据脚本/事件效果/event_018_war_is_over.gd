@@ -76,13 +76,18 @@ func execute(context: Dictionary) -> void:
 		return
 	var war_id: int = d.war_resolve if d.size() > W.I_WAR_RESOLVE else -1
 	var war := _get_war(war_id)
-	# 统一从战争结束文本查找表读取。原版 WarResult 的数值/领土效果已由 # war_system.gd 在事件关闭后执行，这里只负责文案显示。 context["result_text"] = _lookup_war_result_text(war_id, war)
+	# 统一从战争结束文本查找表读取。原版 WarResult 的数值/领土效果已由
+	# war_system.gd 在事件关闭后执行，这里只负责文案显示。
+	context["result_text"] = _lookup_war_result_text(war_id, war)
 	if _is_mongol_defeat(war_id, war):
 		context["result_title"] = tr("event.script.event_018_war_is_over.i0")
-		# 原 Event18.cs:143：data.war_resolve==69 && ingamewars[69].infl1<1000 → data.ending_route=11 + load_scene_after_click。 # Godot 用 queue_ending_after_event 复现「结果页确认后进结局」。 game.queue_ending_after_event(11)
+		# 原 Event18.cs:143：data.war_resolve==69 && ingamewars[69].infl1<1000 → data.ending_route=11 + load_scene_after_click。
+		# Godot 用 queue_ending_after_event 复现「结果页确认后进结局」。
+		game.queue_ending_after_event(11)
 	elif _is_ussr_victory(war_id, war):
 		context["result_title"] = tr("event.script.event_018_war_is_over.i1")
-		# 原 Event18.cs:151：data.war_resolve==70 && ingamewars[70].infl1<1000 → data.ending_route=12 + load_scene_after_click。 game.queue_ending_after_event(12)
+		# 原 Event18.cs:151：data.war_resolve==70 && ingamewars[70].infl1<1000 → data.ending_route=12 + load_scene_after_click。
+		game.queue_ending_after_event(12)
 
 
 # ── WarResult 文案查找表（资产/数据/war_result_texts.json） ──
@@ -195,7 +200,15 @@ func _lookup_war_result_text(war_id: int, war: WarData) -> String:
 		22:
 			txt = _t(entry, "a") if war.infl1 >= 900 else _t(entry, "b")
 		23:
-			# 意大利战争（原版 GameState.cs:1247-1338）：两个阶段共用一个 war23 槽。 # 新阶段区分：event_556（意大利内战/激进派起义）→ 起义 a/b； # event_396（第二次复兴运动）→ 复兴 rev_win/rev_lose。 txt = _war23_result_text_from_table(entry, war) 34: txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b") 35: txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b") 		39:
+			# 意大利战争（原版 GameState.cs:1247-1338）：两个阶段共用一个 war23 槽。
+			# 新阶段区分：event_556（意大利内战/激进派起义）→ 起义 a/b；
+			# event_396（第二次复兴运动）→ 复兴 rev_win/rev_lose。
+			txt = _war23_result_text_from_table(entry, war)
+		34:
+			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
+		35:
+			txt = _t(entry, "a") if war.infl1 >= 850 else _t(entry, "b")
+		39:
 			txt = _war39_result_text(war)
 		43:
 			# 阿拉伯湾革命：side1=海湾政府方、side2=阿湾人阵起义军（Event568 开战）。

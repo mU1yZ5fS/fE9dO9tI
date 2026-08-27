@@ -1,12 +1,17 @@
 extends Node3D
 ## 「纪念堂」—— 关于界面的 3D 参观模式。
-## 本脚本只负责玩法：行走 / 注视交互 / 开场演出 / 菜单导航。
-## 3D 建筑在「纪念堂世界.tscn」（实例化 开发纪念堂.blend，灯光/环境/碰撞均在该场景内）。
+## 3D场景内容（画作、致谢墙、柱廊、长明灯、方尖碑、徽记名录）已烘焙到.tscn
 ## 操作：WASD 行走 / Shift 快步 / Space 跳跃 / E 近赏展品 / Esc 菜单 / B 返回主菜单。
 
 # ── 导航与资源 ──────────────────────────────────────────────
 const 主菜单场景 := "uid://bydan4iqthbaa" # 与旧版关于界面的返回目标保持一致
+const 字体: Font = preload("res://资产/字体/方正跃进简体.ttf") # 保留用于动态标签（如展品名称）
 const 点击音效: AudioStream = preload("res://资产/音频/音效/click_default.wav")
+
+# ── 名单数据已烘焙到.tscn ──
+# 致谢板块、西廊画作、东廊画作等数据已移至烘焙工具
+## ── 主席半身像（已烘焙到.tscn） ──
+# 雕像场景、雕像目标高度等配置已移至烘焙工具
 
 # ── 移动手感 ────────────────────────────────────────────────
 const 走速 := 4.6
@@ -19,12 +24,14 @@ const 鼠标灵敏度 := 0.0021
 var 偏航 := 0.0
 var 俯仰 := 0.0
 var 步频 := 0.0
+var 时间 := 0.0
 var 暂停中 := false
 var 观展中 := false
 var 运镜中 := true
 var 已离开 := false
 var 注视目标: Area3D = null
 
+var _星体材质: StandardMaterial3D
 var _升降动画: Tween
 var _序幕动画: Tween
 
@@ -32,29 +39,33 @@ var _序幕动画: Tween
 @onready var _头部: Node3D = $玩家/头部
 @onready var _相机: Camera3D = $玩家/头部/相机
 @onready var _视线: RayCast3D = $玩家/头部/相机/视线
+@onready var _主星: MeshInstance3D = $纪念大厅/主星
 @onready var _音乐: AudioStreamPlayer = $音乐
 @onready var _界面音: AudioStreamPlayer = $界面音
 @onready var _准星: ColorRect = $UI/准星
-@onready var _顶部题字: Label = $UI/顶部题字
-@onready var _注视信息: PanelContainer = $UI/注视信息
-@onready var _展品名: Label = $UI/注视信息/列表/展品名
-@onready var _弹层: Control = $UI/观展弹层
-@onready var _大图: TextureRect = $UI/观展弹层/中/内容/大图
-@onready var _题名: Label = $UI/观展弹层/中/内容/题名
-@onready var _说明: Label = $UI/观展弹层/中/内容/说明
-@onready var _菜单层: Control = $UI/菜单层
+@onready var _提示条: PanelContainer = $UI/提示条
 @onready var _遮罩层: Control = $UI/开场遮罩
 @onready var _黑幕: ColorRect = $UI/开场遮罩/黑幕
 @onready var _序言: Label = $UI/开场遮罩/序言
-
+@onready var _菜单层: Control = $UI/菜单层
 
 func _ready() -> void:
-	# 本馆必须永远处于运行态：上游界面（ESC 菜单等）可能带着暂停树切场景进来
-	get_tree().paused = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_视线.add_exception(_玩家)
-	_相机.far = 420.0
-	_玩家.position = Vector3(2, 0.2, 2)   # 主厅南端启程，面北观展
+
+	# ── 星体材质（主星在.tscn中，保留材质设置）──
+	_星体材质 = StandardMaterial3D.new()
+	_星体材质.albedo_color = Color(0.95, 0.78, 0.32)
+	_星体材质.metallic = 0.9
+	_星体材质.roughness = 0.22
+	_星体材质.emission_enabled = true
+	_星体材质.emission = Color(1.0, 0.72, 0.25)
+	_星体材质.emission_energy_multiplier = 2.0
+	_主星.material_override = _星体材质
+
+	# ── 3D内容已烘焙到.tscn，不再动态生成 ──
+	# 画作、致谢墙、柱廊、藻井灯带、长明灯、方尖碑、徽记名录、雕像
+	# 均已在编辑器中通过烘焙工具生成并保存
 
 	$UI/菜单层/中/菜单盒/继续按钮.pressed.connect(继续参观)
 	$UI/菜单层/中/菜单盒/返回按钮.pressed.connect(返回主菜单)
@@ -74,7 +85,7 @@ func _ready() -> void:
 # ════════════════════════ 开场演出 ════════════════════════
 
 func 开始序幕() -> void:
-	_顶部题字.modulate.a = 0.0
+	_提示条.modulate.a = 0.0
 	_准星.visible = false
 	_头部.position = Vector3(0, 5.6, 0)
 	俯仰 = -0.16
@@ -118,7 +129,7 @@ func 跳过演出() -> void:
 func 渐显参观界面() -> void:
 	var 渐显 := create_tween()
 	渐显.set_parallel(true)
-	渐显.tween_property(_顶部题字, "modulate:a", 1.0, 0.8)
+	渐显.tween_property(_提示条, "modulate:a", 1.0, 0.8)
 	渐显.set_parallel(false)
 	渐显.tween_callback(func() -> void: _准星.visible = true)
 
@@ -136,8 +147,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		if 运镜中:
 			跳过演出()
-		elif 观展中:
-			关闭展品()
 		elif 暂停中:
 			继续参观()
 		else:
@@ -150,11 +159,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		if 运镜中 and (移动键 or 码 == KEY_E):
 			跳过演出()
 			return
-		if 码 == KEY_E and not 暂停中:
-			if 观展中:
-				关闭展品()
-			elif 注视目标 != null:
-				打开展品()
 		elif 码 == KEY_B:
 			返回主菜单()
 
@@ -162,14 +166,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			and event.button_index == MOUSE_BUTTON_LEFT:
 		if 运镜中:
 			跳过演出()
-		elif 观展中:
-			关闭展品()
 		elif 暂停中:
 			pass
 		elif Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		elif 注视目标 != null:
-			打开展品()
 
 
 # ════════════════════════ 移动与注视 ════════════════════════
@@ -205,8 +205,8 @@ func _physics_process(delta: float) -> void:
 		_玩家.velocity.y = 跳速
 
 	_玩家.move_and_slide()
-	_玩家.position.x = clampf(_玩家.position.x, -64.0, 33.0)
-	_玩家.position.z = clampf(_玩家.position.z, -28.0, 62.0)
+	_玩家.position.x = clampf(_玩家.position.x, -19.0, 19.0)
+	_玩家.position.z = clampf(_玩家.position.z, -48.8, 48.8)
 
 	_玩家.rotation.y = 偏航
 	_头部.rotation.x = 俯仰
@@ -221,24 +221,7 @@ func _physics_process(delta: float) -> void:
 	var 目标视场 := 80.0 if (冲刺 and 平速 > 5.0) else 74.0
 	_相机.fov = lerpf(_相机.fov, 目标视场, delta * 6.0)
 
-	更新注视提示()
 
-
-func 更新注视提示() -> void:
-	if 暂停中 or 观展中 or 运镜中:
-		_注视信息.visible = false
-		设置准星(false)
-		return
-	var 命中 := _视线.get_collider()
-	if 命中 is Area3D and 命中.has_meta("exhibit"):
-		注视目标 = 命中
-		_展品名.text = String(命中.get_meta("exhibit")["题"])
-		_注视信息.visible = true
-		设置准星(true)
-	else:
-		注视目标 = null
-		_注视信息.visible = false
-		设置准星(false)
 
 
 func 设置准星(有目标: bool) -> void:
@@ -255,39 +238,12 @@ func 设置准星(有目标: bool) -> void:
 		_准星.offset_right = 2
 		_准星.offset_bottom = 2
 
-
 # ════════════════════════ 弹层与导航 ════════════════════════
-
-func 打开展品() -> void:
-	if 注视目标 == null:
-		return
-	var 信息: Dictionary = 注视目标.get_meta("exhibit")
-	var 图: Texture2D = 信息.get("图")
-	if 图 != null:
-		_大图.texture = 图
-		_大图.visible = true
-	else:
-		_大图.visible = false
-	_题名.text = 信息["题"]
-	_说明.text = String(信息.get("详", 信息.get("述", "")))
-	_弹层.visible = true
-	观展中 = true
-	_注视信息.visible = false
-	_准星.visible = false
-	_界面音.play()
-
-
-func 关闭展品() -> void:
-	_弹层.visible = false
-	_大图.visible = true
-	观展中 = false
-	_界面音.play()
 
 
 func 打开菜单() -> void:
 	_菜单层.visible = true
 	暂停中 = true
-	_注视信息.visible = false
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_界面音.play()
 
@@ -305,7 +261,6 @@ func 返回主菜单() -> void:
 	if 已离开:
 		return
 	已离开 = true
-	get_tree().paused = false
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	get_tree().change_scene_to_file(主菜单场景)
 

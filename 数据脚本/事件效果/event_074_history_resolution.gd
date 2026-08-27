@@ -26,7 +26,10 @@ func execute(context: Dictionary) -> void:
 			_rel(100, 250)
 			ws.influence_prc -= 50
 			_politicians({0: [0, -300], 1: [0, -300], 2: [0, -300], 3: [0, 150]})
-			# 差异：load_scene_after_click → 原版触发事件4（党内阴谋） game.start_event("congress_conspiracy") context["result_text"] = tr("event.script.event_074_history_resolution.i3") 3:
+			# 差异：load_scene_after_click → 原版触发事件4（党内阴谋）
+			game.start_event("congress_conspiracy")
+			context["result_text"] = tr("event.script.event_074_history_resolution.i3")
+		3:
 			var line: int = d.political_line if d.size() > W.I_POLITICAL_LINE else 0
 			if line < 2:
 				_add_data(20, 50, 40, -20, -60)

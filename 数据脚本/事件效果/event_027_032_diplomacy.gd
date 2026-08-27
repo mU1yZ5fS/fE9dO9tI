@@ -69,7 +69,7 @@ func _event_27(option_index: int, context: Dictionary) -> void:
 				W.I_PARTY_SUPPORT: 100, W.I_INFLUENCE: 20})
 			d.hk_macau_status = 1
 		1:
-			if (d.diplomatic_reputation <= 600 or d.global_influence >= 150) and _relation(EmpireData.USA) >= 800:
+			if (d.diplomatic_reputation <= 600 or d.influence_prc >= 150) and _relation(EmpireData.USA) >= 800:
 				_add_data(d, {W.I_PEOPLE_SUPPORT: 100, W.I_INFLUENCE: 50, W.I_PARTY_SUPPORT: 100})
 				d.hk_macau_status = 1
 			else:
@@ -77,7 +77,7 @@ func _event_27(option_index: int, context: Dictionary) -> void:
 				_add_data(d, {W.I_PEOPLE_SUPPORT: -50, W.I_THOUGHT_FREEDOM: 50,
 					W.I_INFLUENCE: -30, W.I_PARTY_SUPPORT: -100})
 		2:
-			if (d.diplomatic_reputation <= 500 or d.global_influence >= 250) and _relation(EmpireData.USA) >= 800:
+			if (d.diplomatic_reputation <= 500 or d.influence_prc >= 250) and _relation(EmpireData.USA) >= 800:
 				_add_data(d, {W.I_PEOPLE_SUPPORT: 120, W.I_PARTY_SUPPORT: 200, W.I_INFLUENCE: 100})
 				d.hk_macau_status = 2
 			else:
@@ -96,7 +96,7 @@ func _event_28(option_index: int) -> void:
 		1:
 			_add_data(d, {W.I_BUDGET: -20, W.I_AGENTS: -20})
 			_add_power(EmpireData.USA, -20)
-			d.global_influence += 5
+			d.influence_prc += 5
 			if indonesia != null:
 				indonesia.set_tag("亲美", false)
 				indonesia.government = GameConstants.Government.LIBERAL
@@ -106,7 +106,7 @@ func _event_28(option_index: int) -> void:
 		2:
 			_add_data(d, {W.I_BUDGET: -60, W.I_AGENTS: -60, W.I_DIPLO: 20})
 			_add_power(EmpireData.USA, -40)
-			d.global_influence += 20
+			d.influence_prc += 20
 			if indonesia != null:
 				indonesia.set_tag("亲美", false)
 				indonesia.set_tag("asean", false)
@@ -131,19 +131,19 @@ func _event_28(option_index: int) -> void:
 					war.infl2 = 700
 					war.fortnight_max = 20
 			_add_relation(EmpireData.USA, -300)
-			d.global_influence += 20
+			d.influence_prc += 20
 
 
 func _event_29(option_index: int, context: Dictionary) -> void:
 	var north_korea := ws.get_country_by_legacy_index(10)
 	match option_index:
 		0:
-			d.global_influence += 10
+			d.influence_prc += 10
 			_add_relation(EmpireData.USA, 70)
 			_change_loyalty_split(1, -50, 50)
 		1:
-			if d.global_influence > _power(EmpireData.USSR):
-				d.global_influence += 10
+			if d.influence_prc > _power(EmpireData.USSR):
+				d.influence_prc += 10
 				_add_relation(EmpireData.USA, 100)
 				_add_relation(EmpireData.USSR, -100)
 				_add_power(EmpireData.USA, 30)
@@ -155,7 +155,7 @@ func _event_29(option_index: int, context: Dictionary) -> void:
 				_set_korea_soviet_result(context)
 				_apply_korea_soviet_turn(north_korea)
 		2:
-			d.global_influence += 10
+			d.influence_prc += 10
 			d.budget += 40
 			_change_loyalty(func(personality: int) -> bool: return personality >= 1, 100)
 		3:
@@ -165,7 +165,7 @@ func _event_29(option_index: int, context: Dictionary) -> void:
 				_apply_korea_soviet_turn(north_korea)
 			else:
 				context["result_text"] = tr(TXT_29_R3_NO_SEV)
-				d.global_influence += 30
+				d.influence_prc += 30
 				_add_relation(EmpireData.USA, 150)
 				_add_relation(EmpireData.USSR, -150)
 				_change_loyalty_split(0, -120, 120)
@@ -178,8 +178,8 @@ func _event_30(option_index: int, context: Dictionary) -> void:
 	var israel := ws.get_country_by_legacy_index(37)
 	match option_index:
 		0:
-			if d.global_influence >= 150:
-				d.global_influence += 10
+			if d.influence_prc >= 150:
+				d.influence_prc += 10
 				_add_relation(EmpireData.USSR, 100)
 				_add_relation(EmpireData.USA, -50)
 				d.palestine_status = 2
@@ -188,16 +188,16 @@ func _event_30(option_index: int, context: Dictionary) -> void:
 			else:
 				_apply_peace_failure(context)
 		1:
-			d.global_influence += 10
+			d.influence_prc += 10
 			_add_relation(EmpireData.USSR, 50)
 			_add_relation(EmpireData.USA, 50)
 			d.palestine_status = 1
 		2:
 			var player := ws.get_player_country()
 			var oar_active := ws.oar or ws.get_flag("oar") or (player != null and player.has_tag("oar"))
-			if d.global_influence >= 200 and oar_active:
+			if d.influence_prc >= 200 and oar_active:
 				var china := ws.get_country_by_legacy_index(1)
-				d.global_influence += 30
+				d.influence_prc += 30
 				_add_relation(EmpireData.USA, -50)
 				_add_relation(EmpireData.USSR, 100)
 				d.palestine_status = 3
@@ -216,7 +216,7 @@ func _event_31(option_index: int) -> void:
 	var south_korea := ws.get_country_by_legacy_index(46)
 	match option_index:
 		0:
-			d.global_influence -= 10
+			d.influence_prc -= 10
 			if south_korea != null:
 				south_korea.government = GameConstants.Government.AUTHORITARIAN
 				south_korea.sub_government = GameConstants.SubGovernment.CONSTITUTIONAL_AUTHORITARIAN
@@ -236,7 +236,7 @@ func _event_31(option_index: int) -> void:
 				south_korea.sub_government = GameConstants.SubGovernment.NEOLIBERAL
 				south_korea.set_tag("对华贸易", true)
 		3:
-			d.global_influence += 5
+			d.influence_prc += 5
 			_add_data(d, {W.I_BUDGET: -30, W.I_DIPLO: 10})
 			if south_korea != null:
 				south_korea.government = GameConstants.Government.AUTHORITARIAN
@@ -275,7 +275,7 @@ func _event_32(option_index: int, context: Dictionary) -> void:
 			_add_data(d, {W.I_BUDGET: -100, W.I_AGENTS: -100})
 			_add_relation(EmpireData.USSR, -100)
 			_add_power(EmpireData.USSR, -20)
-			d.global_influence += 20
+			d.influence_prc += 20
 		1:
 			if int(ws.completed_event_ids.get("event_549", -1)) == 0:
 				context["result_text"] = tr(TXT_32_R1_ZALAN)

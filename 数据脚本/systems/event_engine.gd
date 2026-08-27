@@ -700,8 +700,8 @@ func _start_war_from_effect(fx: EffectNode) -> void:
 	var war_id := int(fx.value)
 	var infl1 := -1
 	var infl2 := -1
-	var usa_side := -1
-	var ussr_side := -1
+	var usa_side := -2
+	var ussr_side := -2
 	if fx.key != "":
 		var parts := fx.key.split(",")
 		if parts.size() > 0 and parts[0].is_valid_int():
@@ -917,7 +917,7 @@ func _coalition_support_percent() -> int:
 	var ws: WorldState = world
 	if ws == null or ws.factions.size() < 5:
 		return 0
-	if ws.size() <= 15 or ws.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
+	if ws.size() <= 15 or ws.party_system <= 7:
 		return 0
 	var num := ws.factions[1].support
 	for i in ws.factions.size():
@@ -1190,4 +1190,3 @@ func import_runtime_from_world(ws: WorldState) -> void:
 			_pending_deadline = ws.date.tick_count + grace_days
 		var title := EventText.t(edef.title) if edef else pending_event_id
 		event_notification.emit(pending_event_id, title)
-

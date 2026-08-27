@@ -38,7 +38,12 @@ func execute(context: Dictionary) -> void:
 			if c63 != null: c63.set_tag("对华贸易", true)
 			if c63 != null: c63.set_tag("亲中", true)
 			ws.influence_prc += 10
-			# UNHANDLED: GlobalScript.inst.gameState.allcountries[63].JoinAllOurAlliances(true) _add_relation(0, -(100)) _add(8, -(70)) 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(30))
+			# UNHANDLED: GlobalScript.inst.gameState.allcountries[63].JoinAllOurAlliances(true)
+			_add_relation(0, -(100))
+			_add(8, -(70))
+		1:
+			context["result_text"] = tr(TXT_R1_A)
+			_add(8, -(30))
 			if c63 != null: _leave_alliances(c63)
 			if c63 != null: c63.government = GameConstants.Government.SOCIALIST
 			if c63 != null: c63.sub_government = GameConstants.SubGovernment.STATE_SOCIALIST

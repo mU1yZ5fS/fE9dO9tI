@@ -20,7 +20,8 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 	if event_def == null or world == null or event_def.options.size() < 4:
 		return
 	var opt := event_def.options
-	event_def.description = _leader_name() + event_def.description
+	# description 存的是本地化键，先 tr() 再拼领袖名（同 event_513/541/548 约定）
+	event_def.description = _leader_name() + tr(event_def.description)
 	_enable(opt[0], event_def.options[0].text)
 	_enable(opt[1], event_def.options[1].text)
 	_enable(opt[2], event_def.options[2].text)
@@ -40,7 +41,11 @@ func execute(context: Dictionary) -> void:
 			_add(3, 50)
 			_add(6, 5)
 			ws.influence_prc += 50
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 导 弹 驱 逐 舰 ：</color>| 军 力+3.0 ， 人 民 支 持 度+1.0 ， 影 响 力+0.5 "；display-only / 修正文案由 Godot 静态维护，跳过。文本: |导弹驱逐舰：|军力+3.0，人民支持度+1.0，影响力+0.5 1: context["result_text"] = tr(TXT_R1_A)
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc[num] += "<color=red>| 导 弹 驱 逐 舰 ：</color>| 军 力+3.0 ， 人 民 支 持 度+1.0 ， 影 响 力+0.5 "；display-only / 修正文案由 Godot 静态维护，跳过。文本: |导弹驱逐舰：|军力+3.0，人民支持度+1.0，影响力+0.5
+		1:
+			context["result_text"] = tr(TXT_R1_A)
 			if _cf(92, "Gosstroy") == 0  or  _cf(92, "Gosstroy") == 3:
 				context["result_text"] += tr(TXT_R1_B)
 			else:
@@ -55,7 +60,11 @@ func execute(context: Dictionary) -> void:
 			_add(3, 100)
 			_add(6, 8)
 			ws.influence_prc += 80
-			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 航 空 母 舰 ：</color>| 军 力+3.0 ， 干 涉 点 数+2.0 ， 人 民 支 持 度+1.0 ， 影 响 力+0.5 ， 军 武 支 援 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |航空母舰：|军力+3.0，干涉点数+2.0，人民支持度+1.0，影响力+0.5，军武支援效果+1 2: context["result_text"] = tr(TXT_R2_A)
+			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc2[num2] += "<color=red>| 航 空 母 舰 ：</color>| 军 力+3.0 ， 干 涉 点 数+2.0 ， 人 民 支 持 度+1.0 ， 影 响 力+0.5 ， 军 武 支 援 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |航空母舰：|军力+3.0，干涉点数+2.0，人民支持度+1.0，影响力+0.5，军武支援效果+1
+		2:
+			context["result_text"] = tr(TXT_R2_A)
 			if _cf(92, "Gosstroy") == 0  or  _cf(92, "Gosstroy") == 3:
 				context["result_text"] += tr(TXT_R2_B)
 			else:
@@ -71,7 +80,18 @@ func execute(context: Dictionary) -> void:
 			_add(6, 10)
 			_add(57, 50)
 			ws.influence_prc += 100
-			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num3 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc3[num3] += "<color=red>| 导 弹 驱 逐 舰 与 航 空 母 舰 ：</color>| 军 力+5.0 ， 人 民 支 持 度+2.5 ， 干 涉 点 数+3.0 ， 影 响 力+1.0 ， 军 武 支 援 效 果+2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |导弹驱逐舰与航空母舰：|军力+5.0，人民支持度+2.5，干涉点数+3.0，影响力+1.0，军武支援效果+2 3: context["result_text"] = tr(TXT_R3_A) _add(8, -(30)) _add(22, 30) _add(1, 50) _add(6, 5) _add(3, 50) _add(57, 50) ws.influence_prc += 50
+			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num3 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc3[num3] += "<color=red>| 导 弹 驱 逐 舰 与 航 空 母 舰 ：</color>| 军 力+5.0 ， 人 民 支 持 度+2.5 ， 干 涉 点 数+3.0 ， 影 响 力+1.0 ， 军 武 支 援 效 果+2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |导弹驱逐舰与航空母舰：|军力+5.0，人民支持度+2.5，干涉点数+3.0，影响力+1.0，军武支援效果+2
+		3:
+			context["result_text"] = tr(TXT_R3_A)
+			_add(8, -(30))
+			_add(22, 30)
+			_add(1, 50)
+			_add(6, 5)
+			_add(3, 50)
+			_add(57, 50)
+			ws.influence_prc += 50
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

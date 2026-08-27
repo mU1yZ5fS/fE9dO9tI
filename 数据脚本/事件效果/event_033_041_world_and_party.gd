@@ -189,7 +189,7 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 				iraq.sub_government = GameConstants.SubGovernment.PRAGMATIST
 				iraq.set_tag("对华贸易", true)
 			ws.oil_prod += 200.0  # Event36.cs result0：扩大石油出口
-			d.global_influence += 10
+			d.influence_prc += 10
 			_add_empire_relation(EmpireData.USSR, -50)
 		1:
 			_add_data({W.I_BUDGET: -50, W.I_AGENTS: -50})
@@ -199,7 +199,7 @@ func _event_36(option_index: int, context: Dictionary) -> void:
 				iraq.sub_government = GameConstants.SubGovernment.LEFT_NATIONALIST
 				iraq.set_tag("对华贸易", true)
 			ws.oil_prod += 200.0  # Event36.cs result1：扩大石油出口
-			d.global_influence += 10
+			d.influence_prc += 10
 			_add_empire_relation(EmpireData.USSR, -50)
 		2:
 			if iraq != null:
@@ -364,7 +364,7 @@ func _event_41(option_index: int) -> void:
 	var india := ws.get_country_by_legacy_index(19)
 	match option_index:
 		0:
-			d.global_influence += 10
+			d.influence_prc += 10
 			d.india_election = 2
 			if india != null:
 				india.set_tag("对华贸易", true)

@@ -1,7 +1,7 @@
 extends EventScriptBase
 
 # ============================================================================
-# 本地化与排版测试事件（手动触发：调试控制台 start_event("test_localization")）
+# 本地化与排版测试事件（手动触发：调试控制台 event test_localization
 # ============================================================================
 # 覆盖能力清单：
 #   - BBCode 全样式：[b][i][u][s][color][code][center]（描述/结果为 RichTextLabel 生效；
@@ -17,7 +17,7 @@ extends EventScriptBase
 
 const SELF_PATH := "res://数据脚本/事件效果/event_test_localization.gd"
 
-## 颜色样例（原版风格）
+## 颜色样例
 const C_GOLD := "#C8A457"
 const C_GREEN := "#7FD17F"
 const C_RED := "#E06C5A"
@@ -71,7 +71,7 @@ func prepare(_event_def: EventDef, _p_ws: WorldState) -> void:
 			"2": _disp(d.people_support), "3": _disp(d.army),
 			"4": "%d-%d-%d" % [d.year, d.month, d.day]}))
 
-	# ── 原样块：诗行不受排版设置影响 ──
+	# ── 原样块：不受排版设置影响 ──
 	lines.append(tr("event.test_localization.poem_intro"))
 	lines.append("[原样]\n北国风光，\n千里冰封，\n万里雪飘。\n[/原样]")
 	lines.append(tr("event.test_localization.outro"))
@@ -114,7 +114,7 @@ func _leader_faction_name() -> String:
 
 
 # ══════════════════════════════════════════════════════════
-# 自动迁移的事件定义 —— 源： 手写测试事件（非 .tres 迁移产物）
+# 事件定义源
 # 文案不在本文件，见 资产/本地化/events_zh_CN.csv
 # ══════════════════════════════════════════════════════════
 const META := {

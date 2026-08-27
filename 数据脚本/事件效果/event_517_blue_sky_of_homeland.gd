@@ -50,7 +50,33 @@ func execute(context: Dictionary) -> void:
 			_add(1, 50)
 			_add(3, 50)
 			ws.influence_prc += 20
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 新 式 歼 击 机 ：</color>| 军 力+0.3 ， 人 民 支 持 度+0.2 ， 预 算-0.2 ， 军 武 援 助 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式歼击机：|军力+0.3，人民支持度+0.2，预算-0.2，军武援助效果+1 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(50)) _add(22, 50) _add(1, 50) _add(3, 50) ws.influence_prc += 30 # 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 新 式 轰 炸 机 ：</color>| 军 力+0.5 ， 预 算-0.2 ，与 美 苏 关 系-0.2 ， 军 武 援 助 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式轰炸机：|军力+0.5，预算-0.2，与美苏关系-0.2，军武援助效果+1 2: context["result_text"] = tr(TXT_R2_A) _add(8, -(80)) _add(22, 80) _add(1, 100) _add(6, 5) _add(3, 100) _add(57, 50) ws.influence_prc += 50 # 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num3 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc3[num3] += "<color=red>| 新 式 歼 击 机 与 轰 炸 机 ：</color>| 军 力+1.0 ， 人 民 支 持 度+0.2 ， 预 算-0.3 ，与 美 苏 关 系-0.2 ， 军 武 援 助 效 果+2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式歼击机与轰炸机：|军力+1.0，人民支持度+0.2，预算-0.3，与美苏关系-0.2，军武援助效果+2 3: context["result_text"] = tr(TXT_R3_A)
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc[num] += "<color=red>| 新 式 歼 击 机 ：</color>| 军 力+0.3 ， 人 民 支 持 度+0.2 ， 预 算-0.2 ， 军 武 援 助 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式歼击机：|军力+0.3，人民支持度+0.2，预算-0.2，军武援助效果+1
+		1:
+			context["result_text"] = tr(TXT_R1_A)
+			_add(8, -(50))
+			_add(22, 50)
+			_add(1, 50)
+			_add(3, 50)
+			ws.influence_prc += 30
+			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc2[num2] += "<color=red>| 新 式 轰 炸 机 ：</color>| 军 力+0.5 ， 预 算-0.2 ，与 美 苏 关 系-0.2 ， 军 武 援 助 效 果+1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式轰炸机：|军力+0.5，预算-0.2，与美苏关系-0.2，军武援助效果+1
+		2:
+			context["result_text"] = tr(TXT_R2_A)
+			_add(8, -(80))
+			_add(22, 80)
+			_add(1, 100)
+			_add(6, 5)
+			_add(3, 100)
+			_add(57, 50)
+			ws.influence_prc += 50
+			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num3 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc3[num3] += "<color=red>| 新 式 歼 击 机 与 轰 炸 机 ：</color>| 军 力+1.0 ， 人 民 支 持 度+0.2 ， 预 算-0.3 ，与 美 苏 关 系-0.2 ， 军 武 援 助 效 果+2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式歼击机与轰炸机：|军力+1.0，人民支持度+0.2，预算-0.3，与美苏关系-0.2，军武援助效果+2
+		3:
+			context["result_text"] = tr(TXT_R3_A)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

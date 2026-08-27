@@ -168,11 +168,6 @@ func _trait_influence_central(w: WorldState, d: WorldState, p: PoliticianData) -
 			_addi(d, W.I_AGENTS, 3)
 		GameConstants.PoliticianBackground.SPECIAL:
 			_addi(d, W.I_SCIENCE, 5)
-		GameConstants.PoliticianSpecial.TROTSKYITE:
-			_addi(d, W.I_PARTY_SUPPORT, -3)
-			_addi(d, W.I_PEOPLE_SUPPORT, -2)
-			_addi(d, W.I_THOUGHT_FREEDOM, -5)
-			_addi(d, W.I_MANPOWER, -3)
 	match p.trait_alignment:
 		GameConstants.PoliticianAlignment.HARDLINER:
 			_addi(d, W.I_CORRUPTION, -1)
@@ -442,9 +437,6 @@ func _trait_influence_foreign(w: WorldState, d: WorldState, p: PoliticianData, i
 			_add_empire_relation(w, EmpireData.USA, -3)
 		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
 			_addi(d, W.I_SCIENCE, 5)
-		elif p.trait_background == GameConstants.PoliticianSpecial.TROTSKYITE:
-			_add_empire_relation(w, EmpireData.USSR, -5)
-			_add_empire_relation(w, EmpireData.USA, -1)
 		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 			_add_empire_relation(w, EmpireData.USSR, -3)
 			_add_empire_relation(w, EmpireData.USA, -3)
@@ -757,12 +749,6 @@ func _trait_influence_premier(w: WorldState, d: WorldState, p: PoliticianData, i
 			_addi(d, W.I_AGENTS, 6)
 		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
 			_addi(d, W.I_SCIENCE, 8)
-		elif p.trait_background == GameConstants.PoliticianSpecial.TROTSKYITE:
-			_addi(d, W.I_PARTY_SUPPORT, -5)
-			_addi(d, W.I_PEOPLE_SUPPORT, -3)
-			_addi(d, W.I_THOUGHT_FREEDOM, -8)
-			_addi(d, W.I_ARMY, 2)
-			_addi(d, W.I_MANPOWER, -5)
 		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 			_addi(d, W.I_CORRUPTION, -1)
 			_addi(d, W.I_THOUGHT_FREEDOM, -7)
@@ -1081,11 +1067,6 @@ func _trait_influence_chairman(w: WorldState, d: WorldState, p: PoliticianData, 
 			_add_empire_relation(w, EmpireData.USA, -5)
 		elif p.trait_background == GameConstants.PoliticianBackground.SPECIAL:
 			_addi(d, W.I_SCIENCE, 15)
-		elif p.trait_background == GameConstants.PoliticianSpecial.TROTSKYITE:
-			_addi(d, W.I_PARTY_SUPPORT, -10)
-			_addi(d, W.I_PEOPLE_SUPPORT, -8)
-			_addi(d, W.I_THOUGHT_FREEDOM, -15)
-			_addi(d, W.I_MANPOWER, -6)
 		if p.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
 			_addi(d, W.I_CORRUPTION, -2)
 			_addi(d, W.I_THOUGHT_FREEDOM, -15)
@@ -1303,7 +1284,6 @@ func _trait_influence_chairman(w: WorldState, d: WorldState, p: PoliticianData, 
 			_addi(d, W.I_LIVING, -4)
 
 func _in_central_office(w: WorldState, idx: int) -> bool:
-	# 五大区（原版 3-7）
 	for pos in [3, 4, 5, 6, 7]:
 		if w.politics_positions.size() > pos and w.politics_positions[pos] == idx:
 			return true
@@ -1717,6 +1697,8 @@ func _apply_modifier2_services(d: WorldState, w: WorldState) -> void:
 		for p in w.politicians:
 			if p != null and not PoliticianSystem.is_vacant_politician(p):
 				p.loyalty += 10
+
+
 ## 民众不满事件触发冷却：同一事件至少间隔 24 个双周（约 1 年）才允许再次入队。
 ## 原版有 event_done[5] 一次性门槛；这里再加一层冷却，防止读档/异常状态下重复弹窗。
 func _try_popular_discontent(w: WorldState, gm_node: Node) -> void:
@@ -2501,7 +2483,7 @@ func _influence_from_investments(d: WorldState, year: int) -> void:
 		d.diplomatic_reputation -= 1
 	# 【对拍修正 2026-08-25】原版无此规则（全库 data[0] += 仅 data[81]/50 与
 	# flag2 门控 influencePRC/12 两处，见 TimeScript 清洗版 3074/3410）。
-	# budget_diplo 的外交贡献已由 war_system.gd 的 /50 规则承担。见 tools/replay/FINDINGS.md F-C。
+	# budget_diplo 的外交贡献已由 war_system.gd 的 /50 规则在双周块承担。
 	# if d.budget_diplo >= 0:
 	# 	@warning_ignore("integer_division")
 	# 	d.mil_intervention += d.budget_diplo / 5
@@ -2527,11 +2509,11 @@ func _political_system_recalc(d: WorldState, w: WorldState) -> void:
 			num20 += 1
 		else:
 			num20 -= 1
-	if d.party_system == GameConstants.PartySystem.ONE_PARTY_DICTATORSHIP:
+	if d.party_system == 6:
 		num20 -= 1
-	if d.party_system == GameConstants.PartySystem.PEOPLE_DEMOCRACY:
+	if d.party_system == 8:
 		num20 += 1
-	if d.party_system == GameConstants.PartySystem.CONSOCIATIONALISM:
+	if d.party_system == 9:
 		num20 += 2
 	if d.press_policy == 16:
 		num20 -= 1
@@ -2562,7 +2544,7 @@ func _political_system_recalc(d: WorldState, w: WorldState) -> void:
 	# 且 data.party_system==8（政党制度8）再 -3。
 	if w.event_done_num(502) and w.result_of_event_num(502) != 4:
 		num20 -= 3
-		if d.party_system == GameConstants.PartySystem.PEOPLE_DEMOCRACY:
+		if d.party_system == 8:
 			num20 -= 3
 	# TimeScript.cs:1350-1353：event_done[681] && res681==3 → num20--。
 	if w.event_done_num(681) and w.result_of_event_num(681) == 3:
@@ -2646,7 +2628,7 @@ func _update_political_line(d: WorldState, w: WorldState) -> void:
 	var p2: int = w.factions[2].support if w.factions.size() > 2 else 0
 	var p3: int = w.factions[3].support if w.factions.size() > 3 else 0
 	var p4: int = w.factions[4].support if w.factions.size() > 4 else 0
-	if d.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
+	if d.party_system <= 7:
 		if p0 >= p1 and p0 >= p2 and p0 >= p3 and p0 >= p4:
 			d.political_line = 0
 		elif p0 <= p1 and p1 >= p2 and p1 >= p3 and p1 >= p4:
@@ -2694,9 +2676,9 @@ func _sync_faction_numbers_from_ideology(d: WorldState, w: WorldState) -> void:
 		if f != null and not f.is_enabled:
 			disabled += 1
 	d.party_ban_count = disabled
-	if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY and disabled >= 4:
-		d.party_system = GameConstants.PartySystem.ONE_PARTY_DICTATORSHIP
-	if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
+	if d.party_system > 7 and disabled >= 4:
+		d.party_system = 6
+	if d.party_system > 7:
 		return
 	var transferred: Array[int] = [0, 0, 0, 0, 0]
 	for i in w.factions.size():
@@ -2733,7 +2715,7 @@ func _sync_faction_numbers_from_ideology(d: WorldState, w: WorldState) -> void:
 func _weekly_ally_upkeep(d: WorldState, w: WorldState) -> void:
 	if w == null or w.factions.is_empty() or d.size() <= W.I_AGENTS:
 		return
-	if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
+	if d.party_system > 7:
 		return
 	for f in w.factions:
 		if f == null or not f.is_ally:
@@ -2762,7 +2744,7 @@ func _apply_policy_satisfied_growth(d: WorldState, w: WorldState) -> void:
 	if w.factions.is_empty() or d.size() <= W.I_SATISFIED:
 		return
 	@warning_ignore("integer_division")
-	if d.party_system <= GameConstants.PartySystem.NEW_DEMOCRACY:
+	if d.party_system <= 7:
 		var line: int = clampi(d.political_line, 0, w.factions.size() - 1)
 		var base_ideo: int = w.factions[line].ideology
 		if base_ideo <= 0:
@@ -3458,7 +3440,7 @@ func _fortnight_modifiers(
 	if gm._mod_active(w, GameConstants.Modifier.CONSTITUTION_75):
 		if w.event_done_num(326) and w.result_of_event_num(326) == 0 \
 				and gm._mod_active(w, GameConstants.Modifier.CULTURAL_REVOLUTION) and gm._mod_active(w, GameConstants.Modifier.MAOIST_BULWARK) \
-				and d.religion_policy <= 25 and d.party_system == GameConstants.PartySystem.ONE_PARTY_DICTATORSHIP and d.econ_system <= 11:
+				and d.religion_policy <= 25 and d.party_system == 6 and d.econ_system <= 11:
 			_add_ideology(w, 0, 3)
 			d.party_support -= 5
 			d.people_support += 15
@@ -3500,7 +3482,7 @@ func _fortnight_modifiers(
 				continue
 			if p.trait_personality != GameConstants.PoliticianPersonality.MODERATE:
 				p.power -= 5
-		if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
+		if d.party_system > 7:
 			w.modifiers[29].is_active = false
 			w.modifiers[28].is_active = true
 	elif gm._mod_active(w, GameConstants.Modifier.LEFTIST_MARKET_CONSTITUTION):
@@ -3682,7 +3664,7 @@ func _fortnight_modifiers(
 	var c21b := w.get_country_by_legacy_index(21)
 	var chinab := w.get_player_country()
 	if gm._mod_active(w, GameConstants.Modifier.FRENCH_PRESIDENT_MARCHAIS) and c21b != null and c21b.has_tag("对华贸易") \
-			and chinab != null and chinab.has_tag("okb") and d.global_influence >= 500:
+			and chinab != null and chinab.has_tag("okb") and d.influence_prc >= 500:
 		d.mil_intervention += 5
 		d.budget += 2
 		_add_empire_relation(w, EmpireData.USA, -3)
@@ -3866,7 +3848,7 @@ func _fortnight_modifiers(
 			d.party_support += 5
 			if d.party_support < 400:
 				d.party_support = 400
-			if d.party_system > GameConstants.PartySystem.NEW_DEMOCRACY and d.thought_freedom > 400:
+			if d.party_system > 7 and d.thought_freedom > 400:
 				d.thought_freedom = 400
 			d.mil_intervention += 10
 			_add_empire_relation(w, EmpireData.USSR, -2)
@@ -4350,61 +4332,34 @@ func _check_coup(d: WorldState, w: WorldState) -> void:
 ## 并把结果写到 leader.is_sagovor（本端口对应 leader.is_conspiracy）。
 ## 谓词与 _check_coup（PlotPlayer）不同：trait_background = GameConstants.PoliticianBackground.AMBITIOUS 阈值 1500、
 ## trait_alignment = GameConstants.PoliticianAlignment.LOCAL_WARLORD 阈值 1200、trait_special 16/35 阈值 300 等。
-func _plot_player_cause(_d: WorldState, w: WorldState) -> void:
-	# 两阶段阴谋（用户定稿）：羞怯/病弱/墙头草/被审查者绝不阴谋；
-	# 被暗杀失败者必定策划+尝试；其余按特质忠诚线——
-	#   野心家 <150策划 <100尝试；一方诸侯 <120/<80；谋士/投机 <30/<30；
-	#   非和平系 <15/<15；和平/平易近人 <5/<5（内部×10 口径）。
-	# 策划 → 领袖 is_conspiracy 警示；尝试 → 触发大会阴谋事件（30 天冷却）。
-	# 毛在世期间不判定（与 _check_coup / plot_politics 同口径）：否则开局
-	# 邓小平(-350)/黄华(-50)/叶剑英(-100)/韦国清(780) 等低忠诚政客会在首日
-	# 直接命中「尝试」线，导致新档第一天就弹大会阴谋事件。
+func _plot_player_cause(d: WorldState, w: WorldState) -> void:
 	if w == null or w.leader == null:
 		return
-	if not gm.is_mao_dead():
-		return
-	var any_plan := false
-	var any_act := false
+	var disloyal_power := 0
 	for p in w.politicians:
 		if p == null or p.is_under_investigation:
 			continue
-		if p.trait_special == GameConstants.PoliticianSpecial.SHY \
-				or p.trait_special == GameConstants.PoliticianSpecial.SICKLY \
-				or p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
+		if p.trait_special == GameConstants.PoliticianSpecial.SHY or p.trait_special == GameConstants.PoliticianSpecial.SICKLY or p.trait_alignment == GameConstants.PoliticianAlignment.FENCE_SITTER:
 			continue
-		var plan := false
-		var act := false
-		if p.you_fall:
-			plan = true
-			act = true
-		elif p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS:
-			plan = p.loyalty < 1500
-			act = p.loyalty < 1000
-		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD:
-			plan = p.loyalty < 1200
-			act = p.loyalty < 800
-		elif p.trait_special == GameConstants.PoliticianSpecial.ADVISER or p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST:
-			plan = p.loyalty < 300
-			act = p.loyalty < 300
-		elif p.trait_special != GameConstants.PoliticianSpecial.PEACE and p.trait_special != GameConstants.PoliticianSpecial.AFFABLE:
-			plan = p.loyalty < 150
-			act = p.loyalty < 150
-		else:
-			plan = p.loyalty < 50
-			act = p.loyalty < 50
-		if plan:
-			any_plan = true
-		if act:
-			any_act = true
-	w.leader.is_conspiracy = any_plan
-	if any_act:
-		var now := w.date.tick_count if w.date != null else 0
-		var last := int(w.global_flags.get("conspiracy_act_last_tick", 0))
-		# 冷却必须存当前 tick：set_flag 只收 bool，旧实现写 true（int(true)==1），
-		# 31 天后 now-last>=30 恒成立 → 阴谋事件每天必弹。
-		if now <= 0 or last <= 0 or now - last >= 30:
-			w.global_flags["conspiracy_act_last_tick"] = now
-			gm.start_event("congress_conspiracy")
+		var dominated := false
+		if p.trait_background == GameConstants.PoliticianBackground.AMBITIOUS and p.loyalty < 1500:
+			dominated = true
+		elif p.trait_alignment == GameConstants.PoliticianAlignment.LOCAL_WARLORD and p.loyalty < 1200:
+			dominated = true
+		elif p.loyalty < 300 and (p.trait_special == GameConstants.PoliticianSpecial.ADVISER or p.trait_special == GameConstants.PoliticianSpecial.OPPORTUNIST):
+			dominated = true
+		elif p.you_fall:
+			dominated = true
+		elif p.loyalty < 150 and p.trait_special != GameConstants.PoliticianSpecial.PEACE and p.trait_special != GameConstants.PoliticianSpecial.AFFABLE:
+			dominated = true
+		elif p.loyalty < 50 and (p.trait_special == GameConstants.PoliticianSpecial.PEACE or p.trait_special == GameConstants.PoliticianSpecial.AFFABLE):
+			dominated = true
+		if dominated:
+			disloyal_power += p.power
+	@warning_ignore("integer_division")
+	var threshold: int = d.party_support / 4 * 3
+	@warning_ignore("integer_division")
+	w.leader.is_conspiracy = disloyal_power / 5 > threshold
 
 
 ## 顶栏「阴谋临近」提示图标判定（TimeScript.AlarmIconChange 45-49 行）：
@@ -4432,11 +4387,11 @@ func _check_daily_conspiracy(d: WorldState) -> void:
 func _check_scheduled_events(ws: WorldState) -> void:
 	if ws == null or gm.current_event_id != "":
 		return
-	if ws.get_flag("election_due") and ws.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
+	if ws.get_flag("election_due") and ws.party_system > 7:
 		ws.set_flag("election_due", false)
 		gm.start_event("npc_elections")
 		return
-	if ws.date.day == 1 and ws.date.month == 10 and ws.party_system > GameConstants.PartySystem.NEW_DEMOCRACY:
+	if ws.date.day == 1 and ws.date.month == 10 and ws.party_system > 7:
 		gm.start_event("npc_elections")
 
 

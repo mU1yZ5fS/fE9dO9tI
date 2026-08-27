@@ -33,7 +33,17 @@ func execute(context: Dictionary) -> void:
 			_add(6, 5)
 			_add(3, 50)
 			ws.influence_prc += 20
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 无 人 飞 行 器 ：</color>| 军 力+0.2 ， 特 工 网 络 + 0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |无人飞行器：|军力+0.2，特工网络+0.1 1: context["result_text"] = tr(TXT_R1_A) _add(1, 50) _add(3, 100) 2: context["result_text"] = tr(TXT_R2_A) _add(31, 50) _add(57, 50)
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc[num] += "<color=red>| 无 人 飞 行 器 ：</color>| 军 力+0.2 ， 特 工 网 络 + 0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |无人飞行器：|军力+0.2，特工网络+0.1
+		1:
+			context["result_text"] = tr(TXT_R1_A)
+			_add(1, 50)
+			_add(3, 100)
+		2:
+			context["result_text"] = tr(TXT_R2_A)
+			_add(31, 50)
+			_add(57, 50)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

@@ -225,12 +225,6 @@ func _execute(line: String) -> void:
 			_cmd_country(parts)
 		"policy", "政策", "player_policy":
 			_cmd_policy(parts)
-		"mod", "modifier", "修正":
-			_cmd_mod(parts)
-		"polgen", "生成政客":
-			_cmd_polgen(parts)
-		"topo", "拓扑", "事件拓扑":
-			_cmd_topo()
 		_:
 			_print_line("[color=red]未知命令：%s（输入 help 查看帮助）[/color]" % cmd)
 
@@ -820,62 +814,6 @@ func _cmd_policy(parts: Array) -> void:
 	GameManager.notify_stats_changed()
 
 
-## 修正查看/开关：mod [id] [0|1]。毛主义的坚实壁垒 = 6。
-func _cmd_mod(parts: Array) -> void:
-	var w: WorldState = GameManager.world if GameManager else null
-	if w == null:
-		_print_line("[color=red]当前没有活动世界。[/color]")
-		return
-	if parts.size() >= 2:
-		var idx := int(parts[1])
-		if idx < 0 or idx >= w.modifiers.size() or w.modifiers[idx] == null:
-			_print_line("[color=red]修正下标越界或不存在：%s[/color]" % parts[1])
-			return
-		if parts.size() >= 3:
-			w.modifiers[idx].is_active = int(parts[2]) != 0
-			GameManager.notify_stats_changed()
-		_print_line("[color=green]%s(#%d)：%s[/color]" % [
-			ModifierTextData.NAME_ZH.get(idx, "未知修正"), idx,
-			"开" if w.modifiers[idx].is_active else "关",
-		])
-		return
-	var act: Array[String] = []
-	for i in w.modifiers.size():
-		var m = w.modifiers[i]
-		if m != null and m.is_active:
-			act.append("#%d %s" % [i, ModifierTextData.NAME_ZH.get(i, "?")])
-	_print_line("[color=yellow]已激活修正：[/color]%s" % ("、".join(act) if not act.is_empty() else "（无）"))
-	_print_line("[color=green]mod <id> <0|1>[/color] 开/关指定修正")
-
-
-## polgen [数量]：试跑随机政客生成链（身份/作风/特质拒绝式重抽 + 姓名黑名单），不入政坛。
-func _cmd_polgen(parts: Array) -> void:
-	var w: WorldState = GameManager.world if GameManager else null
-	if w == null:
-		_print_line("[color=red]当前没有活动世界。[/color]")
-		return
-	var count := clampi(int(parts[1]) if parts.size() > 1 else 5, 1, 30)
-	var faction_count := {}
-	var existing := {}
-	for p in w.politicians:
-		if PoliticianSystem.is_vacant_politician(p) or p.name_display == "":
-			continue
-		faction_count[p.party_index()] = faction_count.get(p.party_index(), 0) + 1
-		existing[p.name_display] = true
-	PoliticianPool.current_world = w
-	var year: int = w.date.year if w.date else 1976
-	for _i in count:
-		var pd := PoliticianPool.generate_random_politician(year, faction_count, existing)
-		_print_line("%s ｜ %s · %s · %s · %s ｜ %d岁" % [
-			pd.name_display,
-			WorldFactory.PARTY_LABELS_ZH.get(pd.party_index(), "?"),
-			pd.background_label(),
-			WorldFactory.TRAIT_LABELS_ZH.get(pd.trait_alignment, "?"),
-			WorldFactory.TRAIT_LABELS_ZH.get(pd.trait_special, "?"),
-			pd.age,
-		])
-
-
 func _print_help_policy() -> void:
 	_print_line("""
 [color=yellow]===== policy 玩家政策调整 =====[/color]
@@ -907,27 +845,6 @@ func _print_line(text: String) -> void:
 	_output.append_text(text + "\n")
 
 
-## 事件拓扑图（叠加模式）：实例化到根，不离开当前游戏现场；ESC 关闭即销毁。
-## 首次加载需解析 586 个事件脚本，控制台会短暂卡顿数秒。
-func _cmd_topo() -> void:
-	if GameManager.world == null:
-		_print_line("[color=red]topo 需在游戏局内使用（需要世界状态做实时判定）。[/color]")
-		return
-	var packed: PackedScene = load("res://场景/调试界面/event_graph_viewer.tscn")
-	if packed == null:
-		_print_line("[color=red]拓扑图场景缺失。[/color]")
-		return
-	for child in get_tree().root.get_children():
-		if child.name == "EventGraphViewerOverlay":
-			child.queue_free()
-	var inst := packed.instantiate()
-	inst.name = "EventGraphViewerOverlay"
-	inst.overlay_mode = true
-	get_tree().root.add_child(inst)
-	_close_console()
-	_print_line("已打开事件拓扑图（叠加模式，ESC 关闭）。")
-
-
 func _print_help() -> void:
 	_print_line("""
 [color=yellow]===== 调试控制台命令 =====[/color]
@@ -953,9 +870,6 @@ func _print_help() -> void:
 [color=green]ending [面板 页][/color]       直跳结局场景核对文案（0=本体 1~3=DLC；bad N=坏结局；无参=默认页）
 [color=green]country <国家> ...[/color]     查看/修改国家政体、势力圈、影响力（输入 country 查看用法）
 [color=green]policy <类别> <值>[/color]     调整玩家政策（输入 policy 查看类别）
-[color=green]mod [id] [0|1][/color]        查看/开关修正（例：mod 6 0 关闭“毛主义的坚实壁垒”）
-[color=green]polgen [数量][/color]        试跑随机政客生成（1-30，默认 5；验证特质/姓名规避，不入政坛）
-[color=green]topo[/color]                  事件拓扑图（实时模式：逐条显示条件当前是否满足；ESC 关闭）
 
 [color=yellow]===== 沙盒作弊快捷键（仅沙盒难度）=====[/color]
 快捷键在“设置 → 自定义页 → 作弊快捷键”中自定义。

@@ -12,12 +12,25 @@ const UPDATE_POPUP_SCENE := preload("res://场景/主菜单/更新弹窗.tscn")
 @onready var _ach_count: Label = $成就弹窗/布局/标题栏/计数
 @onready var _ach_scroll: ScrollContainer = $成就弹窗/布局/列表滚动
 
+# 版本检查相关节点
+@onready var _update_btn: Button = $更新公告
+@onready var _version_info2: Label = $版本信息2
+
 const COLOR_UNLOCKED := Color(0.13, 0.5, 0.16, 1)
 const COLOR_LOCKED := Color(0.5, 0.5, 0.5, 1)
 const COLOR_TITLE_GREEN := Color(0.1, 0.55, 0.2, 1)
 
+# 版本检查常量（与更新弹窗.gd保持一致）
+const LOCAL_VERSION_CODE := 38
+const LOCAL_VERSION_TEXT := "0.3.8"
+const UPDATE_URL_PRIMARY := "https://mU1yZ5fS.github.io/fE9dO9tI/update.json"
+const UPDATE_URL_FALLBACK := "https://raw.githubusercontent.com/mU1yZ5fS/fE9dO9tI/main/docs/update.json"
+
 var _row_style: StyleBoxTexture = null
 var _update_popup: PopupPanel = null
+var _has_new_version: bool = false
+var _update_tween: Tween = null
+var _used_fallback := false
 
 
 func _ready() -> void:
@@ -26,6 +39,8 @@ func _ready() -> void:
 	_ach_mask.gui_input.connect(_on_成就遮罩_gui_input)
 	_style_scrollbar()
 	_refresh_achievement_rows()
+	# 启动时检查版本
+	_check_version_on_startup()
 
 
 func _on_退出_pressed() -> void:
@@ -187,3 +202,110 @@ func _on_更新公告_pressed() -> void:
 		_update_popup = UPDATE_POPUP_SCENE.instantiate()
 		add_child(_update_popup)
 	_update_popup.open_update_popup()
+
+
+# ═══════════════════════════════════════════════════════════════
+# 版本检查功能
+# ═══════════════════════════════════════════════════════════════
+
+func _check_version_on_startup() -> void:
+	_used_fallback = false
+	_request_version_json(UPDATE_URL_PRIMARY)
+
+
+func _request_version_json(url: String) -> void:
+	var http := HTTPRequest.new()
+	add_child(http)
+	http.request_completed.connect(_on_version_json_completed.bind(http, url))
+	var err := http.request(url)
+	if err != OK:
+		http.queue_free()
+		_on_version_request_failed(url)
+
+
+func _on_version_json_completed(
+	result: int,
+	response_code: int,
+	_headers: PackedStringArray,
+	body: PackedByteArray,
+	http: HTTPRequest,
+	url: String
+) -> void:
+	http.queue_free()
+	if result == HTTPRequest.RESULT_SUCCESS and response_code == 200:
+		var parsed = JSON.parse_string(body.get_string_from_utf8())
+		if parsed is Dictionary:
+			_apply_version_check(parsed)
+			return
+	_on_version_request_failed(url)
+
+
+func _on_version_request_failed(url: String) -> void:
+	if url == UPDATE_URL_PRIMARY and not _used_fallback:
+		_used_fallback = true
+		_request_version_json(UPDATE_URL_FALLBACK)
+		return
+	# 无法连接服务器时保持原样
+	print("版本检查失败：无法连接更新服务器")
+
+
+func _apply_version_check(data: Dictionary) -> void:
+	var remote_code := int(data.get("version_code", 0))
+	
+	if remote_code > LOCAL_VERSION_CODE:
+		# 有新版本可用
+		_has_new_version = true
+		_apply_update_effects()
+	elif remote_code == LOCAL_VERSION_CODE:
+		# 当前已是最新版本，保持原样
+		_has_new_version = false
+	else:
+		# 远程版本号更小（开发版），保持原样
+		_has_new_version = false
+
+
+func _apply_update_effects() -> void:
+	# 1. 修改按钮文本
+	_update_btn.text = "[有新版本可用!]"
+	_update_btn.add_theme_color_override("font_color", Color(1, 0.2, 0.2, 1))
+	
+	# 2. 修改版本信息2文本，在末尾加[过时版本]
+	var original_text = _version_info2.text
+	if not original_text.contains("[过时版本]"):
+		_version_info2.text = original_text + " [过时版本]"
+	_version_info2.add_theme_color_override("font_color", Color(1, 0.3, 0.3, 1))
+	
+	# 3. 添加醒目的脉冲动画特效
+	_start_pulse_animation()
+
+
+func _start_pulse_animation() -> void:
+	# 停止之前的动画
+	if _update_tween and _update_tween.is_valid():
+		_update_tween.kill()
+	
+	# 创建脉冲动画：按钮缩放+颜色闪烁
+	_update_tween = _update_btn.create_tween()
+	_update_tween.set_loops()  # 无限循环
+	
+	# 缩放脉冲效果
+	_update_tween.tween_property(_update_btn, "scale", Vector2(1.08, 1.08), 0.4)
+	_update_tween.tween_property(_update_btn, "scale", Vector2(1.0, 1.0), 0.4)
+	
+	# 颜色脉冲效果（红色闪烁）
+	_update_tween.parallel().tween_property(
+		_update_btn, 
+		"modulate", 
+		Color(1.0, 0.8, 0.8, 1.0), 
+		0.4
+	)
+	_update_tween.parallel().tween_property(
+		_update_btn, 
+		"modulate", 
+		Color(1.0, 1.0, 1.0, 1.0), 
+		0.4
+	)
+	
+	# 设置缓动曲线
+	_update_tween.set_trans(Tween.TRANS_SINE)
+	_update_tween.set_ease(Tween.EASE_IN_OUT)

@@ -25,7 +25,23 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = tr(TXT_R0_A)
-			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3 # UNHANDLED: this.a.allcountries[44].SubGosstroy = 6 # UNHANDLED: this.a.allcountries[44].Vyshi = false # UNHANDLED: this.a.allcountries[44].Torg = true _add(8, -(100)) _add(9, -(100)) _add(1, 100) _add(3, 50) _add(4, 50) _add(6, -(100)) _add_relation(0, -(100)) _add_power(0, -(50)) ws.influence_prc += 50 1: context["result_text"] = tr(TXT_R1_A) _add_power(0, 30) ws.influence_prc -= 30
+			# UNHANDLED: this.a.allcountries[44].Gosstroy = 3
+			# UNHANDLED: this.a.allcountries[44].SubGosstroy = 6
+			# UNHANDLED: this.a.allcountries[44].Vyshi = false
+			# UNHANDLED: this.a.allcountries[44].Torg = true
+			_add(8, -(100))
+			_add(9, -(100))
+			_add(1, 100)
+			_add(3, 50)
+			_add(4, 50)
+			_add(6, -(100))
+			_add_relation(0, -(100))
+			_add_power(0, -(50))
+			ws.influence_prc += 50
+		1:
+			context["result_text"] = tr(TXT_R1_A)
+			_add_power(0, 30)
+			ws.influence_prc -= 30
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

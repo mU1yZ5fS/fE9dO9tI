@@ -250,8 +250,8 @@ const SOUTH_COUNTRY_ROWS := [
 #   Traits[0]: 0极左 1温和 2改革 3自由 / 20保守（Button_Pol_Script num14 特殊映射）
 #   Party[0..4]: 0极左 1保守 2温和 3改革 4自由（改版显式 faction 字段）
 # traits[1]: 4硬汉 5实用主义 6宽容 7重视技术 21-25 等扩展
-# traits[2]: 8-19 特殊 / 30-43 扩展（34 托派已移入 traits[3]，随机池不再产出）
-# traits[3]: 21-28/34/43 出身背景（34 托派：仅第四国际在线时可刷出）
+# traits[2]: 8-19 特殊 / 30-43 扩展
+# traits[3]: 21-28/43 出身背景
 # ============================================================================
 const TRAIT_LABELS_ZH := {
 	0: "极左派", 1: "温和派", 2: "改革派", 3: "自由派",
@@ -359,8 +359,15 @@ static func create_world(player_gwcode: int = 710, difficulty: int = 2) -> World
 	_build_politicians(ws)
 	_build_factions(ws)
 	_set_leader(ws)
-	_init_positions(ws)
+	# 顺序严格对齐 GameStartScript.cs:481-534：
+	#   481-485 先 CalcRel + CalcRelLeader（此刻 politics_dolshnost 全 0 / wantedDolzh 全 3，
+	#            职位冲突项 -400 不生效）；486-508 应用开局硬编码覆盖；
+	#   509-516 才写入 politics_dolshnost，517-534 才写入 wantedDolzh。
+	# 因此 _init_positions 必须在 _init_politician_relations 之后，
+	# 否则初始 loyalty_matrix 会混入「真实职位 vs 真实想要职位」的 -400 冲突扣减，
+	# 与原版开局矩阵不一致（这正是改版开局忠诚度偏低/不对齐的根源）。
 	_init_politician_relations(ws)
+	_init_positions(ws)
 	_init_modifiers(ws)
 	_init_science(ws)
 	_init_empires(ws)
@@ -631,14 +638,6 @@ static func _set_leader(ws: WorldState) -> void:
 # dolshnost[0]=150(领袖) [1]=0(毛泽东) [2]=17(乔冠华) [3]=10(吴德)
 # [4]=9(陈锡联·北方) [5]=13(赵紫阳·西方) [6]=15(韦国清·南方) [7]=3(张春桥·东方)
 # 我们用 -2 表示「实权领袖本人」（原版 150）
-## 职位槽 v2（下标=PositionCatalog id）：
-## 0 总理=领袖华兼(-2) 1 军委=毛泽东 2 外交=乔冠华 8 党主席=毛泽东
-## 3-7 五大区=修改前原班（吴德/陈锡联/赵紫阳/韦国清/张春桥）
-## 9 财贸=李先念；待用户 .tres 就绪后补：
-## 10 工业=余秋里 11 农业=陈永贵 12 服务=王震(16) 15 民政=谷牧
-## 16 组织=郭玉峰 19 中调=罗青长 28 组宣=姚文元(4，解锁后)
-## 职位（原版 8 槽）：0 总理=领袖华兼(-2) 1 军委=毛泽东 2 外交=乔冠华
-## 3 京畿=吴德 4 华北=陈锡联 5 华西=赵紫阳 6 华南=韦国清 7 华东=张春桥
 const INITIAL_POSITIONS := [-2, 0, 17, 10, 9, 13, 15, 3]
 
 static func _init_positions(ws: WorldState) -> void:
@@ -684,12 +683,16 @@ static func _is_holder(ws: WorldState, position_id: int, pol_index: int) -> bool
 
 
 # 计算两个政客之间的基础关系忠诚得分 (100% 还原原版匹配逻辑值)
-static func _compute_relation_score(source: PoliticianData, target: PoliticianData, include_special: bool, ws: WorldState, source_index: int, target_index: int) -> int:
+# rel2=false：复刻 GameState.CalcRel（GameState.cs:5790-6090，按 target 侧 traits 匹配）
+# rel2=true ：复刻 GameState.CalcRel2（GameState.cs:6092-6392，按 source 侧 traits 匹配，
+#             其中派系/特殊/冲突表和 CalcRel 主宾互换，唯独 trait[1] 作风表是另一套数值，
+#             见 GameState.cs:6198-6235 与 5896-5933 的差异，不能简单地参数互换）
+static func _compute_relation_score(source: PoliticianData, target: PoliticianData, include_special: bool, ws: WorldState, source_index: int, target_index: int, rel2: bool = false) -> int:
 	var score := 0
 	if source.trait_personality == target.trait_personality:
 		score += 500
 	# traits[0] 五派系矩阵（内部值 = 显示×10；0极左 20保守 1温和 2改革 3自由）
-	# 逐字对齐 GameState.CalcRel（GameState.cs:5801-5895）
+	# 逐字对齐 GameState.CalcRel（GameState.cs:5801-5895）/ CalcRel2（6103-6197）
 	match target.trait_personality:
 		0:
 			match source.trait_personality:
@@ -722,27 +725,51 @@ static func _compute_relation_score(source: PoliticianData, target: PoliticianDa
 				1: score -= 150
 				2: score += 100
 
-	match target.trait_alignment:
-		4:
-			if source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
-				score -= 250
-			elif source.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
-				score += 100
-			else:
-				score -= 100
-		6:
-			if source.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
-				score -= 300
-			elif source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
-				score += 100
-			else:
-				score += 100
-		5:
-			if source.trait_alignment != GameConstants.PoliticianAlignment.PRAGMATIST:
-				score += 100
-		7:
-			if source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
-				score += 50
+	if rel2:
+		# CalcRel2 作风表（GameState.cs:6198-6235）：按 source 侧 traits[1] 外层匹配
+		match source.trait_alignment:
+			4:
+				if target.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
+					score -= 250
+				elif target.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
+					score += 100
+				else:
+					score -= 100
+			5:
+				if target.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
+					score -= 300
+				elif target.trait_alignment == GameConstants.PoliticianAlignment.PRAGMATIST:
+					score += 100
+				else:
+					score += 100
+			6:
+				if target.trait_alignment != GameConstants.PoliticianAlignment.TOLERANT:
+					score += 100
+			7:
+				if target.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
+					score += 50
+	else:
+		match target.trait_alignment:
+			4:
+				if source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
+					score -= 250
+				elif source.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
+					score += 100
+				else:
+					score -= 100
+			6:
+				if source.trait_alignment == GameConstants.PoliticianAlignment.HARDLINER:
+					score -= 300
+				elif source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
+					score += 100
+				else:
+					score += 100
+			5:
+				if source.trait_alignment != GameConstants.PoliticianAlignment.PRAGMATIST:
+					score += 100
+			7:
+				if source.trait_alignment == GameConstants.PoliticianAlignment.TOLERANT:
+					score += 50
 
 	if include_special:
 		match target.trait_special:
@@ -836,12 +863,14 @@ static func _calc_rel(ws: WorldState, num: int) -> void:
 		var other: PoliticianData = pols[i]
 		var score := _compute_relation_score(other, target, true, ws, i, num)
 		if other.loyalty_matrix.size() <= num:
-			other.loyalty_matrix.resize(pols.size())
+			other.loyalty_matrix.resize(18)
 		other.loyalty_matrix[num] = score
 
 
 ## 原版 CalcRel2：写入 politics[num].loyality_to_other[i]（num 对他人的忠诚）
-## 与 _calc_rel 对称，供任命/换领袖后双向刷新（POL-20）
+## 与 _calc_rel 对称，供任命/换领袖后……不，供政客生成后双向刷新（POL-20 重算语义）。
+## CalcRel2 的派系/特殊/冲突表与 CalcRel 主宾互换，唯独作风 traits[1] 表是另一套数值，
+## 因此必须传 rel2=true（详见 _compute_relation_score 注）。
 static func _calc_rel2(ws: WorldState, num: int) -> void:
 	var pols := ws.politicians
 	if num < 0 or num >= pols.size():
@@ -854,7 +883,7 @@ static func _calc_rel2(ws: WorldState, num: int) -> void:
 			self_pol.loyalty_matrix[i] = 1000
 			continue
 		var other: PoliticianData = pols[i]
-		var score := _compute_relation_score(self_pol, other, false, ws, num, i)
+		var score := _compute_relation_score(self_pol, other, true, ws, num, i, true)
 		self_pol.loyalty_matrix[i] = score
 
 

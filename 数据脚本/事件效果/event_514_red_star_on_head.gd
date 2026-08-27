@@ -39,7 +39,24 @@ func execute(context: Dictionary) -> void:
 			_add(6, 5)
 			_add(3, 50)
 			ws.influence_prc += 10
-			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc[num] += "<color=red>| 新 式 军 装 ：</color>| 人 民 支 持 度+0.1 ， 思 想 自 由 化-0.1 ， 国 际 声 望 高 于90/ 低 于 70 时 ， 国 际 声 望-0.1/ +0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式军装：|人民支持度+0.1，思想自由化-0.1，国际声望高于90/低于70时，国际声望-0.1/+0.1 1: context["result_text"] = tr(TXT_R1_A) _add(8, -(10)) ws.influence_prc += 5 _add(6, -(30)) _add(22, 80) # 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num2 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc2[num2] += "<color=red>| 西 式 军 装 ：</color>| 人 民 支 持 度+0.1 ， 思 想 自 由 化+0.1 ， 国 际 声 望-0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |西式军装：|人民支持度+0.1，思想自由化+0.1，国际声望-0.2 2: context["result_text"] = tr(TXT_R2_A) _add(6, 10) # 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。文本: # 原版 int num3 = 50；old_modify_desc 辅助变量，跳过 # 原版 old_modify_desc3[num3] += "<color=red>| 65 式 军 装 ：</color>| 人 民 支 持 度+0.1 ， 思 想 自 由 化-0.2 ， 国 际 声 望+0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |65式军装：|人民支持度+0.1，思想自由化-0.2，国际声望+0.2
+			# 原版 string[] old_modify_desc = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc[num] += "<color=red>| 新 式 军 装 ：</color>| 人 民 支 持 度+0.1 ， 思 想 自 由 化-0.1 ， 国 际 声 望 高 于90/ 低 于 70 时 ， 国 际 声 望-0.1/ +0.1"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |新式军装：|人民支持度+0.1，思想自由化-0.1，国际声望高于90/低于70时，国际声望-0.1/+0.1
+		1:
+			context["result_text"] = tr(TXT_R1_A)
+			_add(8, -(10))
+			ws.influence_prc += 5
+			_add(6, -(30))
+			_add(22, 80)
+			# 原版 string[] old_modify_desc2 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num2 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc2[num2] += "<color=red>| 西 式 军 装 ：</color>| 人 民 支 持 度+0.1 ， 思 想 自 由 化+0.1 ， 国 际 声 望-0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |西式军装：|人民支持度+0.1，思想自由化+0.1，国际声望-0.2
+		2:
+			context["result_text"] = tr(TXT_R2_A)
+			_add(6, 10)
+			# 原版 string[] old_modify_desc3 = GlobalScript.inst.old_modify_desc；display-only / 修正文案由 Godot 静态维护，跳过。
+			# 原版 int num3 = 50；old_modify_desc 辅助变量，跳过
+			# 原版 old_modify_desc3[num3] += "<color=red>| 65 式 军 装 ：</color>| 人 民 支 持 度+0.1 ， 思 想 自 由 化-0.2 ， 国 际 声 望+0.2"；display-only / 修正文案由 Godot 静态维护，跳过。文本: |65式军装：|人民支持度+0.1，思想自由化-0.2，国际声望+0.2
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

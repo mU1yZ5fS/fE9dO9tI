@@ -24,7 +24,10 @@ func execute(context: Dictionary) -> void:
 				else:
 					p.loyalty -= 500
 			_set_modifier(11, true)
-			# doctr[10]/[11] = new_events_text[360/361]：显示名建模说明，跳过 context["result_text"] = tr(TXT_R0) 1: context["result_text"] = tr(TXT_R1)
+			# doctr[10]/[11] = new_events_text[360/361]：显示名建模说明，跳过
+			context["result_text"] = tr(TXT_R0)
+		1:
+			context["result_text"] = tr(TXT_R1)
 
 
 

@@ -25,7 +25,14 @@ func execute(context: Dictionary) -> void:
 	match opt:
 		0:
 			context["result_text"] = tr(TXT_R0_A)
-			# UNHANDLED: this.a.allcountries[44].prcpower = 10 _add(9, -(50)) _add(8, -(50)) _add(1, 50) _add(3, 50) _add(6, 5) 1: context["result_text"] = tr(TXT_R1_A)
+			# UNHANDLED: this.a.allcountries[44].prcpower = 10
+			_add(9, -(50))
+			_add(8, -(50))
+			_add(1, 50)
+			_add(3, 50)
+			_add(6, 5)
+		1:
+			context["result_text"] = tr(TXT_R1_A)
 
 func _leader_name() -> String:
 	if ws != null and ws.leader != null and ws.leader.name_display != "":

@@ -24,7 +24,7 @@ func prepare(event_def: EventDef, world: WorldState) -> void:
 		_enable(opt[1], event_def.options[1].text)
 	else:
 		_disable(opt[1], tr(TXT_OPT1_DIS))
-	if data.global_influence > 10:
+	if data.influence_prc > 10:
 		_enable(opt[2], event_def.options[2].text)
 	else:
 		_disable(opt[2], tr(TXT_OPT2_DIS))

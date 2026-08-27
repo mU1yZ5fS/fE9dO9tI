@@ -16,6 +16,6 @@ drift_extra_flag = ""
 default_side1 = "印度尼西亚反对派"
 default_side2 = "印度尼西亚政府"
 default_usa_side = 1
-default_ussr_side = 0
+default_ussr_side = -1
 default_infl1 = 300
 default_infl2 = 700
